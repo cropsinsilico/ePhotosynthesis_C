@@ -1,0 +1,52 @@
+#include "globals.hpp"
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
+//CAS-MPG Partner Institute for Computational Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
+//China Institute of Genomic Biology and Department of Plant Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
+//University of Illinois at Urbana Champaign
+//Global Change and Photosynthesis Research Unit, USDA/ARS, 1406 Institute of Genomic Biology, Urbana, IL 61801, USA.
+
+//   This file is part of e-photosynthesis.
+
+//    e-photosynthesis is free software; you can redistribute it and/or modify
+//    it under the terms of the GNU General Public License as published by
+//    the Free Software Foundation;
+
+//    e-photosynthesis is distributed in the hope that it will be useful,
+//    but WITHOUT ANY WARRANTY; without even the implied warranty of
+//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//    GNU General Public License for more details.
+
+//    You should have received a copy of the GNU General Public License (GPL)
+//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+arr XanCycle_Mb(double t, arr &XanCycle_Con, arr &XanCycle_Param, varptr &myVars) {
+    
+    
+    const double fini = Condition(t, myVars);
+    
+    arr XanCycle_Vel = zeros(7);
+    XanCycle_Vel = XanCycle_Rate(t, XanCycle_Con, XanCycle_Param, myVars);
+    
+    const double Vva = XanCycle_Vel[0];	//	The velocity of v to a conversion
+    const double Vaz = XanCycle_Vel[1];	//	The rate of A to z
+    const double Vza = XanCycle_Vel[2];	//	THe rate of z to a
+    const double Vav = XanCycle_Vel[3];	//	The rate of A to V
+    const double Vvf = XanCycle_Vel[4];	//	The rate of V formation
+    const double Vv2ABA = XanCycle_Vel[5];	//	The rate of conversion from v to ABA.
+    const double VABAdg = XanCycle_Vel[6];	//	The rate of ABA degradation
+    
+    arr XanCycle_mb = zeros(4);
+    
+    XanCycle_mb[0] = Vvf + Vav - Vva - Vv2ABA;
+    XanCycle_mb[1] = Vva - Vav + Vza - Vaz;
+    XanCycle_mb[2] = Vaz - Vza;
+    XanCycle_mb[3] = Vv2ABA - VABAdg;
+    
+    return XanCycle_mb;
+}
