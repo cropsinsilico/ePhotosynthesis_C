@@ -25,7 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-arr PRrate(double t, arr &PrS, varptr *myVars) {
+void PRrate(double t, arr &PrS, varptr *myVars) {
     
     //global NADHc;
     //global NADc;
@@ -297,46 +297,45 @@ arr PRrate(double t, arr &PrS, varptr *myVars) {
     const double v1in = PrV1T * (Gceac / (Gceac + PrKM1011 * (1 + Gcac / PrKI1011)) - Gcea / (Gcea + PrKM1011 * (1 + Gca / PrKI1011)));// Competive inhibition
     
     
-    if (myVars->PR_TIME_N == 0)
-        myVars->PR_TIME_N = 1;
-    
-    
+    //if (myVars->PR_TIME_N == 0)
+    //    myVars->PR_TIME_N = 1;
     if (t > myVars->PR_OLD_TIME) {
-        myVars->PR_TIME_N = myVars->PR_TIME_N + 1;
-        myVars->PR_OLD_TIME = t;
-    }
+            myVars->PR_TIME_N = myVars->PR_TIME_N + 1;
+            myVars->PR_OLD_TIME = t;
+        }
     
-    if (myVars->PR_VEL.shape()[0] < myVars->PR_TIME_N) {
-        myVars->PR_VEL.resize(boost::extents[myVars->PR_TIME_N][PR_VEL_SIZE]);
-    }
+    if (myVars->record) {
+        
+        if (myVars->PR_VEL.shape()[0] < myVars->PR_TIME_N) {
+            myVars->PR_VEL.resize(boost::extents[myVars->PR_TIME_N][PR_VEL_SIZE]);
+        }
 
-    myVars->PR_VEL[myVars->PR_TIME_N - 1][0] = t;
+        myVars->PR_VEL[myVars->PR_TIME_N - 1][0] = t;
     
-    myVars->PR_VEL[myVars->PR_TIME_N - 1][1] = v111;
-    myVars->PR_VEL[myVars->PR_TIME_N - 1][2] = v112;
-    myVars->PR_VEL[myVars->PR_TIME_N - 1][3] = v113;
-    myVars->PR_VEL[myVars->PR_TIME_N - 1][4] = v121;
-    myVars->PR_VEL[myVars->PR_TIME_N - 1][5] = v122;
-    myVars->PR_VEL[myVars->PR_TIME_N - 1][6] = v123;
-    myVars->PR_VEL[myVars->PR_TIME_N - 1][7] = v124;
-    myVars->PR_VEL[myVars->PR_TIME_N - 1][8] = v131;
-    myVars->PR_VEL[myVars->PR_TIME_N - 1][9] = v1in;
-    myVars->PR_VEL[myVars->PR_TIME_N - 1][10] = v2out;
-    
+        myVars->PR_VEL[myVars->PR_TIME_N - 1][1] = v111;
+        myVars->PR_VEL[myVars->PR_TIME_N - 1][2] = v112;
+        myVars->PR_VEL[myVars->PR_TIME_N - 1][3] = v113;
+        myVars->PR_VEL[myVars->PR_TIME_N - 1][4] = v121;
+        myVars->PR_VEL[myVars->PR_TIME_N - 1][5] = v122;
+        myVars->PR_VEL[myVars->PR_TIME_N - 1][6] = v123;
+        myVars->PR_VEL[myVars->PR_TIME_N - 1][7] = v124;
+        myVars->PR_VEL[myVars->PR_TIME_N - 1][8] = v131;
+        myVars->PR_VEL[myVars->PR_TIME_N - 1][9] = v1in;
+        myVars->PR_VEL[myVars->PR_TIME_N - 1][10] = v2out;
+    }
     // The following is used to take the information back to the PRmb routine.
+    //arr myVars->PR_Vel = zeros(10);
     
-    arr Velocity = zeros(10);
-    
-    Velocity[0] = v111;
-    Velocity[1] = v112;
-    Velocity[2] = v113;
-    Velocity[3] = v121;
-    Velocity[4] = v122;
-    Velocity[5] = v123;
-    Velocity[6] = v124;
-    Velocity[7] = v131;
-    Velocity[8] = v1in;
-    Velocity[9] = v2out;
+    myVars->PR_Vel[0] = v111;
+    myVars->PR_Vel[1] = v112;
+    myVars->PR_Vel[2] = v113;
+    myVars->PR_Vel[3] = v121;
+    myVars->PR_Vel[4] = v122;
+    myVars->PR_Vel[5] = v123;
+    myVars->PR_Vel[6] = v124;
+    myVars->PR_Vel[7] = v131;
+    myVars->PR_Vel[8] = v1in;
+    myVars->PR_Vel[9] = v2out;
     
     
     // here is some parameters we need to output
@@ -355,5 +354,4 @@ arr PRrate(double t, arr &PrS, varptr *myVars) {
     myVars->PR2OUT[9] = Gceac;
     myVars->PR2OUT[10] = Rubp;
     myVars->PR2OUT[11] = v131;
-    return Velocity;
 }

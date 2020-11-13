@@ -41,8 +41,8 @@ arr RedoxReg_mb(double t, arr &RedoxReg_Con, varptr *myVars) {
     
     // ThioRe = RedoxReg_Con[92];// --unused
     
-    arr RedoxReg_Vel = zeros(2);
-    RedoxReg_Vel = RedoxReg_Rate(t, RedoxReg_Con, myVars);
+    //arr RedoxReg_Vel = zeros(2);
+    RedoxReg_Rate(t, RedoxReg_Con, myVars);
     
     arr RA_DYDT = RA_mb(t, RA_Con, myVars);
     
@@ -52,8 +52,8 @@ arr RedoxReg_mb(double t, arr &RedoxReg_Con, varptr *myVars) {
         RedoxReg_DYDT[index] = RA_DYDT[index];
     
     
-    const double vred = RedoxReg_Vel[0];
-    const double vox = RedoxReg_Vel[1];
+    const double vred = myVars->RedoxReg_Vel[0];
+    const double vox = myVars->RedoxReg_Vel[1];
     
     RedoxReg_DYDT[92] = vred - vox;
     RedoxReg_DYDT[92] = 0;

@@ -96,7 +96,7 @@ arr EPS_Ini(varptr *myVars) {
     //global PS_TIME_N;
     //global PS_VEL;
     myVars->PS_OLD_TIME = 0;
-    myVars->PS_TIME_N = 0;
+    myVars->PS_TIME_N = 1;
     // PS_VEL = zeros(1, 1);
     
     //global PR_OLD_TIME;

@@ -34,14 +34,14 @@ arr RuACT_Mb(double t, arr &RuACT_Con, varptr *myVars) {
     
     myVars->RuACT_Param[0] = light;
     
-    arr RuACT_Vel = RuACT_Rate(t, RuACT_Con, myVars);
+    RuACT_Rate(t, RuACT_Con, myVars);
     
-    const double v1 = RuACT_Vel[0];	//	v1	The rate of ER activation due to Rubisco activase
-    const double vn1 = RuACT_Vel[1];	//	vn1	The rate of E inactiavtion due to binding of RuBP
-    const double v7 = RuACT_Vel[2];	//	v7	The rate of formation of ECMR from ECM by binding of RuBP
-    const double vn7 = RuACT_Vel[3];	//	vn7	The rate of actiavtion of ECMR by Rubisco activase
-    const double v6_1 = RuACT_Vel[4];	//	v6_1	The rate of RuBP carboxylation
-    const double v6_2 = RuACT_Vel[5];	//	v6_2	The rate of RuBP oxygenation
+    const double v1 = myVars->RuACT_Vel[0];	//	v1	The rate of ER activation due to Rubisco activase
+    const double vn1 = myVars->RuACT_Vel[1];	//	vn1	The rate of E inactiavtion due to binding of RuBP
+    const double v7 = myVars->RuACT_Vel[2];	//	v7	The rate of formation of ECMR from ECM by binding of RuBP
+    const double vn7 = myVars->RuACT_Vel[3];	//	vn7	The rate of actiavtion of ECMR by Rubisco activase
+    const double v6_1 = myVars->RuACT_Vel[4];	//	v6_1	The rate of RuBP carboxylation
+    const double v6_2 = myVars->RuACT_Vel[5];	//	v6_2	The rate of RuBP oxygenation
     
     
     arr RuACT_mb = zeros(4);

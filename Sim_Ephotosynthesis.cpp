@@ -17,7 +17,7 @@ void readFile(const std::string &filename, std::map<std::string, std::string> &m
     }
 }
 
-void Sim_Ephotosynthesis() {
+void Sim_Ephotosynthesis(bool record) {
     std::map<std::string, std::string> inputs;
     readFile("/home/friedel/crops_in_silico/ODE-FBA/ePhotosynthesis/C++/InputEvn.txt", inputs);
     readFile("/home/friedel/crops_in_silico/ODE-FBA/ePhotosynthesis/C++/InputATPCost.txt", inputs);
@@ -26,6 +26,7 @@ void Sim_Ephotosynthesis() {
     myVars.TestLi = stof(inputs.at("PAR"), nullptr);
     myVars.TestSucPath = stoi(inputs.at("SucPath"), nullptr);
     myVars.TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
+    myVars.record = record;
     trDynaPS *myDyna = new trDynaPS(&myVars);
     std::vector<double> ResultRate = myDyna->trDynaPS_Drive(1, 1);
     

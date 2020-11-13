@@ -36,29 +36,29 @@ arr PSmb(double t, arr &PSs, arr &Param, varptr *myVars) {
     
     // Get the rate for the reactions in the photosynthesis sytem
     
-    arr PSr = zeros(18);
-    PSr = PSRate(t, PSs, Param, myVars);
+    //arr myVars->PS_Vel = zeros(18);
+    PSRate(t, PSs, Param, myVars);
     
     // Get the rate
     
-    const double v1 = PSr[0];
-    const double v2 = PSr[1];
-    const double v3 = PSr[2];
-    // NONE = PSr[3];// --unused
-    const double v5 = PSr[4];
-    const double v6 = PSr[5];
-    const double v7 = PSr[6];
-    const double v8 = PSr[7];
-    const double v9 = PSr[8];
-    const double v10 = PSr[9];
-    const double v13 = PSr[10];
-    const double v16 = PSr[11];
-    const double v23 = PSr[12];
-    const double v31 = PSr[13];
-    const double v32 = PSr[14];
-    const double v33 = PSr[15];
-    const double v24 = PSr[16];
-    const double v25 = PSr[17];
+    const double v1 = myVars->PS_Vel[0];
+    const double v2 = myVars->PS_Vel[1];
+    const double v3 = myVars->PS_Vel[2];
+    // NONE = myVars->PS_Vel[3];// --unused
+    const double v5 = myVars->PS_Vel[4];
+    const double v6 = myVars->PS_Vel[5];
+    const double v7 = myVars->PS_Vel[6];
+    const double v8 = myVars->PS_Vel[7];
+    const double v9 = myVars->PS_Vel[8];
+    const double v10 = myVars->PS_Vel[9];
+    const double v13 = myVars->PS_Vel[10];
+    const double v16 = myVars->PS_Vel[11];
+    const double v23 = myVars->PS_Vel[12];
+    const double v31 = myVars->PS_Vel[13];
+    const double v32 = myVars->PS_Vel[14];
+    const double v33 = myVars->PS_Vel[15];
+    const double v24 = myVars->PS_Vel[16];
+    const double v25 = myVars->PS_Vel[17];
     
     // Implement the mass balance equations
     

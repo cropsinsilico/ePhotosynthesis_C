@@ -12,12 +12,17 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 #include "globals.hpp"
 /*
  * 
  */
 int main(int argc, char** argv) {
-    Sim_Ephotosynthesis();
+    bool record = false;
+    if (argc != 1)
+        if (strcmp(argv[0], "record") == 0)
+            record = true;
+    Sim_Ephotosynthesis(record);
     return (EXIT_SUCCESS);
 }
 

@@ -34,20 +34,20 @@ arr RROEA_Mb(double t, arr &RROEA_Con, varptr *myVars) {
     
     myVars->RROEA_Param[0] = light;
     
-    arr RROEA_Vel = zeros(11);
-    RROEA_Vel = RROEA_Rate(t, RROEA_Con, myVars);
+    //arr myVars->RROEA_Vel = zeros(11);
+    RROEA_Rate(t, RROEA_Con, myVars);
     
-    const double ve2GAPDH = RROEA_Vel[0];
-    const double ve2FBPase = RROEA_Vel[1];
-    const double ve2SBPase = RROEA_Vel[2];
-    const double ve2PRK = RROEA_Vel[3];
-    const double ve2ATPase = RROEA_Vel[4];
-    const double ve2ATPGPP = RROEA_Vel[5];
-    const double ve2MDH = RROEA_Vel[6];
-    const double ve2Fd = RROEA_Vel[7];
-    const double veFd2Thio = RROEA_Vel[8];
-    const double veFd2Calvin = RROEA_Vel[9];
-    const double ve2RuACT = RROEA_Vel[10];
+    const double ve2GAPDH = myVars->RROEA_Vel[0];
+    const double ve2FBPase = myVars->RROEA_Vel[1];
+    const double ve2SBPase = myVars->RROEA_Vel[2];
+    const double ve2PRK = myVars->RROEA_Vel[3];
+    const double ve2ATPase = myVars->RROEA_Vel[4];
+    const double ve2ATPGPP = myVars->RROEA_Vel[5];
+    const double ve2MDH = myVars->RROEA_Vel[6];
+    const double ve2Fd = myVars->RROEA_Vel[7];
+    const double veFd2Thio = myVars->RROEA_Vel[8];
+    const double veFd2Calvin = myVars->RROEA_Vel[9];
+    const double ve2RuACT = myVars->RROEA_Vel[10];
     
     arr RROEA_mb = zeros(10);
     RROEA_mb[0] = ve2GAPDH;	//	GAPDH

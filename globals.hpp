@@ -56,6 +56,7 @@ const int XanCycle_CON_SIZE = 2;
 const int XanCycle_VEL_SIZE = 8;
 
 struct Variables {
+    bool record = false;
     bool BF_FI_com = false;
     bool EPS_SUCS_com = false;
     bool FIBF_PSPR_com = false;
@@ -68,25 +69,25 @@ struct Variables {
     bool XanCycle_BF_com = false;
 
     unsigned long BF_OLD_TIME = 0;
-    unsigned long BF_TIME_N = 0;
+    unsigned long BF_TIME_N = 1;
     unsigned long FI_OLD_TIME = 0;
-    unsigned long FI_TIME_N = 0;
+    unsigned long FI_TIME_N = 1;
     unsigned long PR_OLD_TIME = 0;
-    unsigned long PR_TIME_N = 0;
+    unsigned long PR_TIME_N = 1;
     unsigned long PS_OLD_TIME = 0;
-    unsigned long PS_TIME_N = 0;
+    unsigned long PS_TIME_N = 1;
     unsigned long PS_PR_OLDTIME = 0;
-    unsigned long PS_PR_TIME_N = 0;
+    unsigned long PS_PR_TIME_N = 1;
     unsigned long RROEA_OLD_TIME = 0;
-    unsigned long RROEA_TIME_N = 0;
+    unsigned long RROEA_TIME_N = 1;
     unsigned long RedoxReg_OLD_TIME = 0;
-    unsigned long RedoxReg_TIME_N = 0;
+    unsigned long RedoxReg_TIME_N = 1;
     unsigned long RuACT_OLD_TIME = 0;
-    unsigned long RuACT_TIME_N = 0;
+    unsigned long RuACT_TIME_N = 1;
     unsigned long SUCS_OLD_TIME = 0;
-    unsigned long SUCS_TIME_N = 0;
+    unsigned long SUCS_TIME_N = 1;
     unsigned long XanCycle_OLD_TIME = 0;
-    unsigned long XanCycle_TIME_N = 0;
+    unsigned long XanCycle_TIME_N = 1;
 
     double ADPc = 0.;
     double ATPActive = 0.;
@@ -427,25 +428,32 @@ struct Variables {
     arr FluxTR = zeros(142);
     arr PR2OUT = zeros(12);
     arr PRRatio = ones(48);
+    arr PR_Vel = zeros(10);
     arr PS2OUT = zeros(18);
     arr PSRatio = ones(103);
     arr PS_PR_VEL = zeros(0);
+    arr PS_Vel = zeros(18);
     arr RROEA_KE = zeros(9);
     arr RROEA_Pool = zeros(10);
     arr RROEA_RC = zeros(10);
     arr RROEA_Param = zeros(2);
+    arr RROEA_Vel = zeros(11);
     arr RacRatio = ones(16);
     arr RedoxReg_CON = zeros(0);
+    arr RedoxReg_Vel = zeros(2);
     arr RuACT_Pool = zeros(5);
     arr RuACT_Param = zeros(2);
     arr RuACT_RC = zeros(10);
+    arr RuACT_Vel = zeros(6);
     arr SUCRatio = ones(66);
     arr SUCS2OUT = zeros(12);
     arr SUCS_Pool = zeros(3);
     arr SUCS_Param = zeros(2);
+    arr SUCS_Vel = zeros(15);
     arr StomCon2OUT = zeros(3);
     arr XanCycle2OUT = zeros(4);
     arr XanCycle_Param = zeros(2);
+    arr XanCycle_Vel = zeros(7);
     arr XanRatio = ones(4);
     arr trDynaPS_CON = zeros(0);
     arr trDynaPS_VEL = zeros(0);
@@ -502,13 +510,13 @@ arr PRinitial(varptr *myVars);
 
 arr PRmb(double t, arr &PrS, varptr *myVars);
 
-arr PRrate(double t, arr &PrS, varptr *myVars);
+void PRrate(double t, arr &PrS, varptr *myVars);
 
 arr PSI(varptr *myVars);
 
 arr PSInitial(varptr *myVars);
 
-arr PSRate(double t, arr &PSs, arr &Param, varptr *myVars);
+void PSRate(double t, arr &PSs, arr &Param, varptr *myVars);
 
 arr PS_PRIni(varptr *myVars);
 
@@ -528,13 +536,13 @@ arr RROEA_Ini(varptr *myVars);
 
 arr RROEA_Mb(double t, arr &RROEA_Con, varptr *myVars);
 
-arr RROEA_Rate(double t, arr &RROEA_Con, varptr *myVars);
+void RROEA_Rate(double t, arr &RROEA_Con, varptr *myVars);
 
 int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data);
 
 arr RedoxReg_Ini(varptr *myVars);
 
-arr RedoxReg_Rate(double t, arr &RedoxReg_Con, varptr *myVars);
+void RedoxReg_Rate(double t, arr &RedoxReg_Con, varptr *myVars);
 
 arr RedoxReg_mb(double t, arr &RedoxReg_Con, varptr *myVars);
 
@@ -542,17 +550,17 @@ arr RuACT_Ini(varptr *myVars);
 
 arr RuACT_Mb(double t, arr &RuACT_Con, varptr *myVars);
 
-arr RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars);
+void RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars);
 
 arr SUCS_Ini(varptr *myVars);
 
 arr SUCS_Mb(double t, arr &SUCS_Con, varptr *myVars);
 
-arr SUCS_Rate(double t, arr &SUCS_Con, varptr *myVars);
+void SUCS_Rate(double t, arr &SUCS_Con, varptr *myVars);
 
 void SYSInitial(varptr *myVars);
 
-void Sim_Ephotosynthesis();
+void Sim_Ephotosynthesis(bool record);
 
 double TargetFunVal(varptr *myVars);
 
@@ -560,7 +568,7 @@ arr XanCycle_Ini(varptr *myVars);
 
 arr XanCycle_Mb(double t, arr &XanCycle_Con, varptr *myVars);
 
-arr XanCycle_Rate(double t, arr &XanCycle_Con, varptr *myVars);
+void XanCycle_Rate(double t, arr &XanCycle_Con, varptr *myVars);
 
 arr ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, double Light, varptr *myVars);
 

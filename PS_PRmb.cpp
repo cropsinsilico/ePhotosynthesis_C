@@ -73,14 +73,14 @@ arr PS_PRmb(double t, arr &PS_PRs, varptr *myVars) {
     Condition(t, myVars);
     
     
-    arr PR_v = zeros(10);
-    arr PS_v = zeros(18);
+    //arr myVars->PR_Vel = zeros(10);
+    //arr myVars->PS_Vel = zeros(18);
     
     arr PS_Param = zeros(2);
     PS_Param[0] = myVars->PS_PR_Param;
     PS_Param[1] = PR2PS_Pgca;
     
-    PS_v = PSRate(t, PSs, PS_Param, myVars);
+    PSRate(t, PSs, PS_Param, myVars);
     
     arr PR_Param = zeros(2);
     PR_Param[0] = myVars->PS_PR_Param;                  // To indicate that the calcualtion is using the combined model
@@ -88,44 +88,44 @@ arr PS_PRmb(double t, arr &PS_PRs, varptr *myVars) {
     //global PS2PR_Pi;
     PR_Param[1] = myVars->PS2PR_Pi;
     
-    PR_v = PRrate(t, PrS, myVars);
+    PRrate(t, PrS, myVars);
     //throw(MException(""));
     //global PR2OUT;
     //global mRuBP;
     //fid = fopen('v1.txt','a+');
-    //fprintf(fid, '//f    //f     //f\n', t, mRuBP, (PS_v(1)-PR2OUT(12))*30.0);
+    //fprintf(fid, '//f    //f     //f\n', t, mRuBP, (myVars->PS_Vel(1)-PR2OUT(12))*30.0);
     //fclose(fid);
     // Assign the rate of reaction that is calculated from the photosynthesis and photorespiration routine.
     
-    const double v1 = PS_v[0];
-    const double v2 = PS_v[1];
-    const double v3 = PS_v[2];
-    // v4 = PS_v[3];// --unused
-    const double v5 = PS_v[4];
-    const double v6 = PS_v[5];
-    const double v7 = PS_v[6];
-    const double v8 = PS_v[7];
-    const double v9 = PS_v[8];
-    const double v10 = PS_v[9];
-    const double v13 = PS_v[10];
-    const double v16 = PS_v[11];
-    const double v23 = PS_v[12];
-    const double v31 = PS_v[13];
-    const double v32 = PS_v[14];
-    const double v33 = PS_v[15];
-    const double v24 = PS_v[16];
-    const double v25 = PS_v[17];
+    const double v1 = myVars->PS_Vel[0];
+    const double v2 = myVars->PS_Vel[1];
+    const double v3 = myVars->PS_Vel[2];
+    // v4 = myVars->PS_Vel[3];// --unused
+    const double v5 = myVars->PS_Vel[4];
+    const double v6 = myVars->PS_Vel[5];
+    const double v7 = myVars->PS_Vel[6];
+    const double v8 = myVars->PS_Vel[7];
+    const double v9 = myVars->PS_Vel[8];
+    const double v10 = myVars->PS_Vel[9];
+    const double v13 = myVars->PS_Vel[10];
+    const double v16 = myVars->PS_Vel[11];
+    const double v23 = myVars->PS_Vel[12];
+    const double v31 = myVars->PS_Vel[13];
+    const double v32 = myVars->PS_Vel[14];
+    const double v33 = myVars->PS_Vel[15];
+    const double v24 = myVars->PS_Vel[16];
+    const double v25 = myVars->PS_Vel[17];
     
-    const double v111 = PR_v[0];
-    const double v112 = PR_v[1];
-    const double v113 = PR_v[2];
-    const double v121 = PR_v[3];
-    const double v122 = PR_v[4];
-    const double v123 = PR_v[5];
-    const double v124 = PR_v[6];
-    const double v131 = PR_v[7];
-    const double v1in = PR_v[8];
-    const double v2out = PR_v[9];
+    const double v111 = myVars->PR_Vel[0];
+    const double v112 = myVars->PR_Vel[1];
+    const double v113 = myVars->PR_Vel[2];
+    const double v121 = myVars->PR_Vel[3];
+    const double v122 = myVars->PR_Vel[4];
+    const double v123 = myVars->PR_Vel[5];
+    const double v124 = myVars->PR_Vel[6];
+    const double v131 = myVars->PR_Vel[7];
+    const double v1in = myVars->PR_Vel[8];
+    const double v2out = myVars->PR_Vel[9];
     
     //fid = fopen('Mymatrix3.txt','a');
     //fprintf(fid, '//f   //f   //f   //f   //f   //f   //f   //f   //f   //f   //f   //f   //f   //f   //f   //f   //f   //f   //f   //f   //f   //f   //f   //f   //f   //f   //f   //f   //f\n',t, v1, v2, v3, v4, v5, v6, v7, v8, v9, v10, v13, v16, v23, v31, v32, v33, v24, v25, v111, v112, v113, v121, v122, v123, v124, v131, v1in, v2out);

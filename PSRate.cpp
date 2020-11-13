@@ -26,7 +26,7 @@
 
 
 
-arr PSRate(double t, arr &PSs, arr &Param, varptr *myVars) {
+void PSRate(double t, arr &PSs, arr &Param, varptr *myVars) {
     //global PSRatio;
     
     //global PS_C_CA;             //   Global constant for the total adenylates
@@ -584,65 +584,64 @@ arr PSRate(double t, arr &PSs, arr &Param, varptr *myVars) {
     //global PS2Stom_CO2_consum;
     //myVars->PS2Stom_CO2_consum = v1;  // --unused
     
-    arr PSr = zeros(18);
+    //arr myVars->PS_Vel = zeros(18);
     
-    PSr[0] = v1;
-    PSr[1] = v2;
-    PSr[2] = v3;
-    PSr[3] = 0;
-    PSr[4] = v5;
-    PSr[5] = v6;
-    PSr[6] = v7;
-    PSr[7] = v8;
-    PSr[8] = v9;
-    PSr[9] = v10;
-    PSr[10] = v13;
-    PSr[11] = v16;
-    PSr[12] = v23;
-    PSr[13] = v31;
-    PSr[14] = v32;
-    PSr[15] = v33;
-    PSr[16] = v24;
-    PSr[17] = v25;
+    myVars->PS_Vel[0] = v1;
+    myVars->PS_Vel[1] = v2;
+    myVars->PS_Vel[2] = v3;
+    myVars->PS_Vel[3] = 0;
+    myVars->PS_Vel[4] = v5;
+    myVars->PS_Vel[5] = v6;
+    myVars->PS_Vel[6] = v7;
+    myVars->PS_Vel[7] = v8;
+    myVars->PS_Vel[8] = v9;
+    myVars->PS_Vel[9] = v10;
+    myVars->PS_Vel[10] = v13;
+    myVars->PS_Vel[11] = v16;
+    myVars->PS_Vel[12] = v23;
+    myVars->PS_Vel[13] = v31;
+    myVars->PS_Vel[14] = v32;
+    myVars->PS_Vel[15] = v33;
+    myVars->PS_Vel[16] = v24;
+    myVars->PS_Vel[17] = v25;
     
     // Getting the information for output as figures.
     
-    if (myVars->PS_TIME_N == 0)
-        myVars->PS_TIME_N = 1;
-    
-    
+    //if (myVars->PS_TIME_N == 0)
+    //    myVars->PS_TIME_N = 1;
     if (t > myVars->PS_OLD_TIME) {
-        myVars->PS_TIME_N = myVars->PS_TIME_N + 1;
-        myVars->PS_OLD_TIME = t;
-    }
+            myVars->PS_TIME_N = myVars->PS_TIME_N + 1;
+            myVars->PS_OLD_TIME = t;
+        }
+    if (myVars->record) {
+        
     
-    if (myVars->PS_VEL.shape()[1] < myVars->PS_TIME_N) {
-        myVars->PS_VEL.resize(boost::extents[PS_VEL_SIZE][myVars->PS_TIME_N]);
-    }
+        if (myVars->PS_VEL.shape()[1] < myVars->PS_TIME_N) {
+            myVars->PS_VEL.resize(boost::extents[PS_VEL_SIZE][myVars->PS_TIME_N]);
+        }
 
-    myVars->PS_VEL[0][myVars->PS_TIME_N - 1] = t;
+        myVars->PS_VEL[0][myVars->PS_TIME_N - 1] = t;
     
-    myVars->PS_VEL[1][myVars->PS_TIME_N - 1] = v1;
-    myVars->PS_VEL[2][myVars->PS_TIME_N - 1] = v2;
-    myVars->PS_VEL[3][myVars->PS_TIME_N - 1] = v3;
-    myVars->PS_VEL[4][myVars->PS_TIME_N - 1] = 0;
-    myVars->PS_VEL[5][myVars->PS_TIME_N - 1] = v5;
-    myVars->PS_VEL[6][myVars->PS_TIME_N - 1] = v6;
-    myVars->PS_VEL[7][myVars->PS_TIME_N - 1] = v7;
-    myVars->PS_VEL[8][myVars->PS_TIME_N - 1] = v8;
-    myVars->PS_VEL[9][myVars->PS_TIME_N - 1] = v9;
-    myVars->PS_VEL[10][myVars->PS_TIME_N - 1] = v10;
-    myVars->PS_VEL[11][myVars->PS_TIME_N - 1] = v13;
-    myVars->PS_VEL[12][myVars->PS_TIME_N - 1] = v16;
-    myVars->PS_VEL[13][myVars->PS_TIME_N - 1] = v23;
-    myVars->PS_VEL[14][myVars->PS_TIME_N - 1] = v31;
-    myVars->PS_VEL[15][myVars->PS_TIME_N - 1] = v32;
-    myVars->PS_VEL[16][myVars->PS_TIME_N - 1] = v33;
-    myVars->PS_VEL[17][myVars->PS_TIME_N - 1] = Pi;
-    myVars->PS_VEL[18][myVars->PS_TIME_N - 1] = v24;
-    myVars->PS_VEL[19][myVars->PS_TIME_N - 1] = v25;
-    
-    
+        myVars->PS_VEL[1][myVars->PS_TIME_N - 1] = v1;
+        myVars->PS_VEL[2][myVars->PS_TIME_N - 1] = v2;
+        myVars->PS_VEL[3][myVars->PS_TIME_N - 1] = v3;
+        myVars->PS_VEL[4][myVars->PS_TIME_N - 1] = 0;
+        myVars->PS_VEL[5][myVars->PS_TIME_N - 1] = v5;
+        myVars->PS_VEL[6][myVars->PS_TIME_N - 1] = v6;
+        myVars->PS_VEL[7][myVars->PS_TIME_N - 1] = v7;
+        myVars->PS_VEL[8][myVars->PS_TIME_N - 1] = v8;
+        myVars->PS_VEL[9][myVars->PS_TIME_N - 1] = v9;
+        myVars->PS_VEL[10][myVars->PS_TIME_N - 1] = v10;
+        myVars->PS_VEL[11][myVars->PS_TIME_N - 1] = v13;
+        myVars->PS_VEL[12][myVars->PS_TIME_N - 1] = v16;
+        myVars->PS_VEL[13][myVars->PS_TIME_N - 1] = v23;
+        myVars->PS_VEL[14][myVars->PS_TIME_N - 1] = v31;
+        myVars->PS_VEL[15][myVars->PS_TIME_N - 1] = v32;
+        myVars->PS_VEL[16][myVars->PS_TIME_N - 1] = v33;
+        myVars->PS_VEL[17][myVars->PS_TIME_N - 1] = Pi;
+        myVars->PS_VEL[18][myVars->PS_TIME_N - 1] = v24;
+        myVars->PS_VEL[19][myVars->PS_TIME_N - 1] = v25;
+    }
     
     // Transfer the variables for output
     
@@ -667,5 +666,5 @@ arr PSRate(double t, arr &PSs, arr &Param, varptr *myVars) {
     myVars->PS2OUT[15] = Pi;
     myVars->PS2OUT[16] = ADP;
     myVars->PS2OUT[17] = v1;
-    return PSr;
+    //return myVars->PS_Vel;
 }

@@ -26,9 +26,9 @@
 
 
 
-arr RROEA_Rate(double t, arr &RROEA_Con, varptr *myVars) {
+void RROEA_Rate(double t, arr &RROEA_Con, varptr *myVars) {
     
-    arr RROEA_Vel = zeros(11);
+    //arr RROEA_Vel = zeros(11);
     
     //global RROEA_RC;
     
@@ -125,50 +125,50 @@ arr RROEA_Rate(double t, arr &RROEA_Con, varptr *myVars) {
     //global RROEA_TIME_N;
     //global RROEA_VEL;
     //global RROEA_CON;
-    
-    if (myVars->RROEA_TIME_N == 0)
-        myVars->RROEA_TIME_N = 1;
-    
-    
-    if (t > myVars->RROEA_OLD_TIME) {
-        myVars->RROEA_TIME_N = myVars->RROEA_TIME_N + 1;
-        myVars->RROEA_OLD_TIME = t;
-    }
-    
-    if (myVars->RROEA_VEL.shape()[0] < myVars->RROEA_TIME_N) {
-        myVars->RROEA_VEL.resize(boost::extents[myVars->RROEA_TIME_N][RROEA_VEL_SIZE]);
-        myVars->RROEA_CON.resize(boost::extents[myVars->RROEA_TIME_N][RROEA_CON_SIZE]);
-    }
 
-    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][0] = t;
-    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][1] = ve2GAPDH;
-    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][2] = ve2FBPase;
-    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][3] = ve2SBPase;
-    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][4] = ve2PRK;
-    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][5] = ve2ATPase;
-    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][6] = ve2ATPGPP;
-    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][7] = ve2MDH;
-    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][8] = ve2Fd;
-    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][9] = veFd2Thio;
-    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][10] = veFd2Calvin;
-    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][11] = ve2RuACT;
-    
+    if (t > myVars->RROEA_OLD_TIME) {
+            myVars->RROEA_TIME_N = myVars->RROEA_TIME_N + 1;
+            myVars->RROEA_OLD_TIME = t;
+        }
+        
+    if (myVars->record) {
+        //if (myVars->RROEA_TIME_N == 0)
+        //    myVars->RROEA_TIME_N = 1;
+
+        if (myVars->RROEA_VEL.shape()[0] < myVars->RROEA_TIME_N) {
+            myVars->RROEA_VEL.resize(boost::extents[myVars->RROEA_TIME_N][RROEA_VEL_SIZE]);
+            myVars->RROEA_CON.resize(boost::extents[myVars->RROEA_TIME_N][RROEA_CON_SIZE]);
+        }
+
+        myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][0] = t;
+        myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][1] = ve2GAPDH;
+        myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][2] = ve2FBPase;
+        myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][3] = ve2SBPase;
+        myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][4] = ve2PRK;
+        myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][5] = ve2ATPase;
+        myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][6] = ve2ATPGPP;
+        myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][7] = ve2MDH;
+        myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][8] = ve2Fd;
+        myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][9] = veFd2Thio;
+        myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][10] = veFd2Calvin;
+        myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][11] = ve2RuACT;
+    }
     //myVars->RROEA_CON[myVars->RROEA_TIME_N - 1][0] = t;  // --unused
     //myVars->RROEA_CON[myVars->RROEA_TIME_N - 1][1] = Thioo;  // --unused
     
     
     
-    RROEA_Vel[0] = ve2GAPDH;
-    RROEA_Vel[1] = ve2FBPase;
-    RROEA_Vel[2] = ve2SBPase;
-    RROEA_Vel[3] = ve2PRK;
-    RROEA_Vel[4] = ve2ATPase;
-    RROEA_Vel[5] = ve2ATPGPP;
-    RROEA_Vel[6] = ve2MDH;
-    RROEA_Vel[7] = ve2Fd;
-    RROEA_Vel[8] = veFd2Thio;
-    RROEA_Vel[9] = veFd2Calvin;
-    RROEA_Vel[10] = ve2RuACT;
+    myVars->RROEA_Vel[0] = ve2GAPDH;
+    myVars->RROEA_Vel[1] = ve2FBPase;
+    myVars->RROEA_Vel[2] = ve2SBPase;
+    myVars->RROEA_Vel[3] = ve2PRK;
+    myVars->RROEA_Vel[4] = ve2ATPase;
+    myVars->RROEA_Vel[5] = ve2ATPGPP;
+    myVars->RROEA_Vel[6] = ve2MDH;
+    myVars->RROEA_Vel[7] = ve2Fd;
+    myVars->RROEA_Vel[8] = veFd2Thio;
+    myVars->RROEA_Vel[9] = veFd2Calvin;
+    myVars->RROEA_Vel[10] = ve2RuACT;
     
     //global RROEA2PS_GAPDH;
     //global RROEA2PS_FBPase;
@@ -192,5 +192,5 @@ arr RROEA_Rate(double t, arr &RROEA_Con, varptr *myVars) {
     
     //global RROEA2trDynaPS_veFd2Calvin;
     myVars->RROEA2trDynaPS_veFd2Calvin = veFd2Calvin;
-    return RROEA_Vel;
+    //return RROEA_Vel;
 }

@@ -26,7 +26,7 @@
 
 
 
-arr RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars) {
+void RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars) {
     
     //global RuACT_RC;
     // k1 = myVars->RuACT_RC[0];	//	The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco myVars->activase content or activity; i.e. 	Lazar (1999), 0.25~1 *10^(9)// --unused
@@ -151,41 +151,44 @@ arr RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars) {
     //global RuACT_VEL;
     //global RuACT_CON;
     
-    if (myVars->RuACT_TIME_N == 0)
-        myVars->RuACT_TIME_N = 1;
-    
-    
     if (t > myVars->RuACT_OLD_TIME) {
-        myVars->RuACT_TIME_N = myVars->RuACT_TIME_N + 1;
-        myVars->RuACT_OLD_TIME = t;
-    }
+            myVars->RuACT_TIME_N = myVars->RuACT_TIME_N + 1;
+            myVars->RuACT_OLD_TIME = t;
+        }
     
-    if (myVars->RuACT_VEL.shape()[0] < myVars->RuACT_TIME_N) {
-        myVars->RuACT_VEL.resize(boost::extents[myVars->RuACT_TIME_N][RuACT_VEL_SIZE]);
-        myVars->RuACT_CON.resize(boost::extents[myVars->RuACT_TIME_N][RuACT_CON_SIZE]);
-    }
+    if (myVars->record) {
+        //if (myVars->RuACT_TIME_N == 0)
+        //    myVars->RuACT_TIME_N = 1;
+    
+    
+        
+    
+        if (myVars->RuACT_VEL.shape()[0] < myVars->RuACT_TIME_N) {
+            myVars->RuACT_VEL.resize(boost::extents[myVars->RuACT_TIME_N][RuACT_VEL_SIZE]);
+            myVars->RuACT_CON.resize(boost::extents[myVars->RuACT_TIME_N][RuACT_CON_SIZE]);
+        }
 
-    myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][0] = t;
-    myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][1] = v1;
-    myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][2] = vn1;
-    myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][3] = v7;
-    myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][4] = vn7;
-    myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][5] = v6_1;
-    myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][6] = v6_2;
-    
+        myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][0] = t;
+        myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][1] = v1;
+        myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][2] = vn1;
+        myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][3] = v7;
+        myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][4] = vn7;
+        myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][5] = v6_1;
+        myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][6] = v6_2;
+    }
     //myVars->RuACT_CON[myVars->RuACT_TIME_N - 1][0] = t;  // --unused
     //myVars->RuACT_CON[myVars->RuACT_TIME_N - 1][1] = E;  // --unused
     //myVars->RuACT_CON[myVars->RuACT_TIME_N - 1][2] = EC;  // --unused
     //myVars->RuACT_CON[myVars->RuACT_TIME_N - 1][3] = ECM;  // --unused
     
     
-    arr RuACT_Vel = zeros(6);
-    RuACT_Vel[0] = v1;
-    RuACT_Vel[1] = vn1;
-    RuACT_Vel[2] = v7;
-    RuACT_Vel[3] = vn7;
-    RuACT_Vel[4] = v6_1;
-    RuACT_Vel[5] = v6_2;
+    //arr RuACT_Vel = zeros(6);
+    myVars->RuACT_Vel[0] = v1;
+    myVars->RuACT_Vel[1] = vn1;
+    myVars->RuACT_Vel[2] = v7;
+    myVars->RuACT_Vel[3] = vn7;
+    myVars->RuACT_Vel[4] = v6_1;
+    myVars->RuACT_Vel[5] = v6_2;
     
     //global RuACT2RA_v61;
     //global RuACT2RA_v62;
@@ -206,5 +209,5 @@ arr RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars) {
     
     //global RuACT2PS_Percent;
     //myVars->RuACT2PS_Percent = Percent;  // --unused
-    return RuACT_Vel;
+    //return RuACT_Vel;
 }

@@ -26,7 +26,7 @@
 
 
 
-arr SUCS_Rate(double t, arr &SUCS_Con, varptr *myVars) {
+void SUCS_Rate(double t, arr &SUCS_Con, varptr *myVars) {
     //global SUCRatio;
     //global SUCS_RC;
     
@@ -232,38 +232,39 @@ arr SUCS_Rate(double t, arr &SUCS_Con, varptr *myVars) {
     //global SUCS_TIME_N;
     //global SUCS_VEL;
     //global SUCS_CON;
-    
-    if (myVars->SUCS_TIME_N == 0)
-        myVars->SUCS_TIME_N = 1;
-    
-    
     if (t > myVars->SUCS_OLD_TIME) {
-        myVars->SUCS_TIME_N = myVars->SUCS_TIME_N + 1;
-        myVars->SUCS_OLD_TIME = t;
-    }
+            myVars->SUCS_TIME_N = myVars->SUCS_TIME_N + 1;
+            myVars->SUCS_OLD_TIME = t;
+        }
+    if (myVars->record) {
+        //if (myVars->SUCS_TIME_N == 0)
+        //    myVars->SUCS_TIME_N = 1;
     
-    if (myVars->SUCS_VEL.shape()[0] < myVars->SUCS_TIME_N) {
-        myVars->SUCS_VEL.resize(boost::extents[myVars->SUCS_TIME_N][SUCS_VEL_SIZE]);
-        myVars->SUCS_CON.resize(boost::extents[myVars->SUCS_TIME_N][SUCS_CON_SIZE]);
-    }
+    
+        
+    
+        if (myVars->SUCS_VEL.shape()[0] < myVars->SUCS_TIME_N) {
+            myVars->SUCS_VEL.resize(boost::extents[myVars->SUCS_TIME_N][SUCS_VEL_SIZE]);
+            myVars->SUCS_CON.resize(boost::extents[myVars->SUCS_TIME_N][SUCS_CON_SIZE]);
+        }
 
-    myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][0] = t;//
-    myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][1] = v51;//	DHAP+GAP --FBP
-    myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][2] = v52;//	FBP --F6P + Pi
-    myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][3] = v55;//	G1P+UTP --OPOP+UDPG
-    myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][4] = v56;//	UDPG+F6P--SUCP + UDP
-    myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][5] = v57;//	SUCP--Pi + SUC
-    myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][6] = v58;//	F26BP--F6P + Pi
-    myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][7] = v59;//	F6P + ATP --ADP + F26BP
-    myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][8] = v60;//	ATP+UDP --UTP + ADP
-    myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][9] = 0;//	POPO --2PO
-    myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][10] = v62;//	SUC SINK
-    myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][11] = vdhap_in;//	DHAP IN
-    myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][12] = vgap_in;//	GAP Export from chloroplast
-    myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][13] = vpga_in;//	PGA export from chloroplast
-    myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][14] = vpga_use;//	PGA utilisation in cytosol
-    myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][15] = vatpf;//	ATP synthesis rate
-    
+        myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][0] = t;//
+        myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][1] = v51;//	DHAP+GAP --FBP
+        myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][2] = v52;//	FBP --F6P + Pi
+        myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][3] = v55;//	G1P+UTP --OPOP+UDPG
+        myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][4] = v56;//	UDPG+F6P--SUCP + UDP
+        myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][5] = v57;//	SUCP--Pi + SUC
+        myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][6] = v58;//	F26BP--F6P + Pi
+        myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][7] = v59;//	F6P + ATP --ADP + F26BP
+        myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][8] = v60;//	ATP+UDP --UTP + ADP
+        myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][9] = 0;//	POPO --2PO
+        myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][10] = v62;//	SUC SINK
+        myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][11] = vdhap_in;//	DHAP IN
+        myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][12] = vgap_in;//	GAP Export from chloroplast
+        myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][13] = vpga_in;//	PGA export from chloroplast
+        myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][14] = vpga_use;//	PGA utilisation in cytosol
+        myVars->SUCS_VEL[myVars->SUCS_TIME_N - 1][15] = vatpf;//	ATP synthesis rate
+    }
     
     //myVars->SUCS_CON[myVars->SUCS_TIME_N - 1][0] = t;  // --unused
     //myVars->SUCS_CON[myVars->SUCS_TIME_N - 1][1] = Pic;  // --unused
@@ -272,22 +273,22 @@ arr SUCS_Rate(double t, arr &SUCS_Con, varptr *myVars) {
     // Assign table
     ////////////////////////////////////////////////////////////////////////////////
     
-    arr SUCS_Vel = zeros(15);
-    SUCS_Vel[0] = v51;//	DHAP+GAP --FBP
-    SUCS_Vel[1] = v52;//	FBP --F6P + Pi
-    SUCS_Vel[2] = v55;//	G1P+UTP --OPOP+UDPG
-    SUCS_Vel[3] = v56;//	UDPG+F6P--SUCP + UDP
-    SUCS_Vel[4] = v57;//	SUCP--Pi + SUC
-    SUCS_Vel[5] = v58;//	F26BP--F6P + Pi
-    SUCS_Vel[6] = v59;//	F6P + ATP --ADP + F26BP
-    SUCS_Vel[7] = v60;//	ATP+UDP --UTP + ADP
-    SUCS_Vel[8] = 0;//	POPO --2PO
-    SUCS_Vel[9] = v62;//	SUC SINK
-    SUCS_Vel[10] = vdhap_in;//	DHAP IN
-    SUCS_Vel[11] = vgap_in;//	GAP Export from chloroplast
-    SUCS_Vel[12] = vpga_in;//	PGA export from chloroplast
-    SUCS_Vel[13] = vpga_use;//	PGA utilisation in cytosol
-    SUCS_Vel[14] = vatpf;//	ATP synthesis rate
+    //arr SUCS_Vel = zeros(15);
+    myVars->SUCS_Vel[0] = v51;//	DHAP+GAP --FBP
+    myVars->SUCS_Vel[1] = v52;//	FBP --F6P + Pi
+    myVars->SUCS_Vel[2] = v55;//	G1P+UTP --OPOP+UDPG
+    myVars->SUCS_Vel[3] = v56;//	UDPG+F6P--SUCP + UDP
+    myVars->SUCS_Vel[4] = v57;//	SUCP--Pi + SUC
+    myVars->SUCS_Vel[5] = v58;//	F26BP--F6P + Pi
+    myVars->SUCS_Vel[6] = v59;//	F6P + ATP --ADP + F26BP
+    myVars->SUCS_Vel[7] = v60;//	ATP+UDP --UTP + ADP
+    myVars->SUCS_Vel[8] = 0;//	POPO --2PO
+    myVars->SUCS_Vel[9] = v62;//	SUC SINK
+    myVars->SUCS_Vel[10] = vdhap_in;//	DHAP IN
+    myVars->SUCS_Vel[11] = vgap_in;//	GAP Export from chloroplast
+    myVars->SUCS_Vel[12] = vpga_in;//	PGA export from chloroplast
+    myVars->SUCS_Vel[13] = vpga_use;//	PGA utilisation in cytosol
+    myVars->SUCS_Vel[14] = vatpf;//	ATP synthesis rate
     
     
     //global SUCS2PS_Pic;
@@ -325,5 +326,5 @@ arr SUCS_Rate(double t, arr &SUCS_Con, varptr *myVars) {
     myVars->SUCS2OUT[9] = SUCP;
     myVars->SUCS2OUT[10] = SUC;
     myVars->SUCS2OUT[11] = PGAc;
-    return SUCS_Vel;
+    //return SUCS_Vel;
 }

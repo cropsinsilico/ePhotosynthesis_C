@@ -219,14 +219,15 @@ arr trDynaPS::trDynaPS_Drive(double ParaNum, double Ratio) {
     
     //PSIabs2=BF_VEL(:, 14)+BF_VEL(:, 16);
     
-    arr CarbonRate = zeros(row);
-    arr VPR = zeros(row);
-    
-    arr temp = zeros(RuACT_VEL_SIZE);
-    for (int x = 0; x < row; x++) {
-        CarbonRate[x] = myVars->RuACT_VEL[x][5] * myVars->AVR;
-        VPR[x] = myVars->RuACT_VEL[x][6] * myVars->AVR;
-    }
+    //arr CarbonRate = zeros(row);
+    //arr VPR = zeros(row);
+    double CarbonRate = myVars->RuACT_Vel[4] * myVars->AVR;
+    double VPR = myVars->RuACT_Vel[5] * myVars->AVR;
+    //arr temp = zeros(RuACT_VEL_SIZE);
+    //for (int x = 0; x < row; x++) {
+    //    CarbonRate[x] = myVars->RuACT_VEL[x][5] * myVars->AVR;
+    //    VPR[x] = myVars->RuACT_VEL[x][6] * myVars->AVR;
+    //}
     
     //const double VPR;
     //for (int x = 0; x < RuACT_VEL_SIZE1; x++)
@@ -234,17 +235,20 @@ arr trDynaPS::trDynaPS_Drive(double ParaNum, double Ratio) {
     
     //     CO2Release = PR_VEL(:,9) * AVR;
     //     Assim = CarbonRate - CO2Release;
-    arr Vpgasink = zeros(myVars->SUCS_VEL.shape()[0]);
-    for (int x = 0; x < SUCS_VEL_SIZE; x++)
-        Vpgasink[x] = myVars->SUCS_VEL[x][14] * myVars->AVR;
+    double Vpgasink = myVars->SUCS_Vel[13] * myVars->AVR;
+    //arr Vpgasink = zeros(myVars->SUCS_VEL.shape()[0]);
+    //for (int x = 0; x < row; x++)
+    //    Vpgasink[x] = myVars->SUCS_VEL[x][14] * myVars->AVR;
     
     
-    arr VStarch = zeros(myVars->PS_VEL.shape()[1]);
-    arr Vt3p = zeros(myVars->PS_VEL.shape()[1]);
-    for (int y = 0; y < PS_VEL_SIZE; y++) {
-        VStarch[y] = (myVars->PS_VEL[13][y] - myVars->PS_VEL[19][y]) * myVars->AVR;
-        Vt3p[y] = (myVars->PS_VEL[14][y] + myVars->PS_VEL[16][y]) * myVars->AVR;
-    }
+    //arr VStarch = zeros(myVars->PS_VEL.shape()[1]);
+    //arr Vt3p = zeros(myVars->PS_VEL.shape()[1]);
+    double VStarch = (myVars->PS_Vel[12] - myVars->PS_Vel[18]) * myVars->AVR;
+    double Vt3p = (myVars->PS_Vel[13] + myVars->PS_Vel[15]) * myVars->AVR;
+    //for (int y = 0; y < row; y++) {
+    //    VStarch[y] = (myVars->PS_VEL[13][y] - myVars->PS_VEL[19][y]) * myVars->AVR;
+    //    Vt3p[y] = (myVars->PS_VEL[14][y] + myVars->PS_VEL[16][y]) * myVars->AVR;
+    //}
     //Vsucrose=SUCS_VEL(:,11)*AVR;
     
     // Vt3p=(SUCS_VEL(:,2))'*AVR*2;//+SUCS_VEL(:,13)
@@ -253,15 +257,16 @@ arr trDynaPS::trDynaPS_Drive(double ParaNum, double Ratio) {
     //     Resulta(2)=PSIabs(row);
     //Resulta(3)=PSIabs2(row);
     
-    Resulta[0] = CarbonRate[row - 1];//Vc
-    Resulta[1] = VPR[row - 1];//Vo
-    Resulta[2] = Vpgasink[row - 1];//PGA
-    Resulta[3] = Vt3p[row - 1];//VT3P
-    Resulta[4] = VStarch[row - 1];//Vstarch
-    Resulta[5] = myVars->PR_VEL[row - 1][9] * myVars->AVR;//Vt_glycerate
-    Resulta[6] = myVars->PR_VEL[row - 1][10] * myVars->AVR;//Vt_glycolate
+    Resulta[0] = CarbonRate;//[row - 1];//Vc
+    Resulta[1] = VPR;//[row - 1];//Vo
+    Resulta[2] = Vpgasink;//[row - 1];//PGA
+    Resulta[3] = Vt3p;//[row - 1];//VT3P
+    Resulta[4] = VStarch;//[row - 1];//Vstarch
+    Resulta[5] = myVars->PR_Vel[8] * myVars->AVR;//Vt_glycerate
+    Resulta[6] = myVars->PR_Vel[9] * myVars->AVR;//Vt_glycolate
     //global FluxTR;
     // FluxTR = zeros(81, 1);
+    /*
     myVars->FluxTR[0] = myVars->RuACT_VEL[row - 1][5];//PS
     myVars->FluxTR[1] = myVars->RuACT_VEL[row - 1][6];//PR
     myVars->FluxTR[2] = myVars->PS_VEL[2][row - 1];// v2
@@ -327,7 +332,7 @@ arr trDynaPS::trDynaPS_Drive(double ParaNum, double Ratio) {
     
     myVars->FluxTR[46] = myVars->FluxTR[46] * myVars->AVR;
     myVars->FluxTR[64] = myVars->FluxTR[64] * myVars->AVR / 2;
-    
+    */
     
     //FluxTR(132:133)=RedoxReg_VEL(row,2:3);
     //RedoxReg_VEL(2,RedoxReg_TIME_N) = Vred;

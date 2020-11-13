@@ -31,19 +31,19 @@ arr PRmb(double t, arr &PrS, varptr *myVars) {
     
     Condition(t, myVars);
     
-    arr Velocity = zeros(10);
-    Velocity = PRrate(t, PrS, myVars);
+    //arr myVars->PR_Vel = zeros(10);
+    PRrate(t, PrS, myVars);
     
-    const double v111 = Velocity[0];
-    const double v112 = Velocity[1];
-    const double v113 = Velocity[2];
-    const double v121 = Velocity[3];
-    const double v122 = Velocity[4];
-    const double v123 = Velocity[5];
-    const double v124 = Velocity[6];
-    const double v131 = Velocity[7];
-    const double v1in = Velocity[8];
-    const double v2out = Velocity[9];
+    const double v111 = myVars->PR_Vel[0];
+    const double v112 = myVars->PR_Vel[1];
+    const double v113 = myVars->PR_Vel[2];
+    const double v121 = myVars->PR_Vel[3];
+    const double v122 = myVars->PR_Vel[4];
+    const double v123 = myVars->PR_Vel[5];
+    const double v124 = myVars->PR_Vel[6];
+    const double v131 = myVars->PR_Vel[7];
+    const double v1in = myVars->PR_Vel[8];
+    const double v2out = myVars->PR_Vel[9];
     
     
     arr tmp = zeros(13);
@@ -91,6 +91,6 @@ arr PRmb(double t, arr &PrS, varptr *myVars) {
     tmp[12] = 0;
     
     
-    arr PR_DYDT = tmp;
-    return PR_DYDT;
+    //arr PR_DYDT = tmp;
+    return tmp;
 }

@@ -340,55 +340,61 @@ void BF_Rate(double t, varptr *myVars) {
     
     
     if (t > myVars->BF_OLD_TIME) {
-        myVars->BF_TIME_N = myVars->BF_TIME_N + 1;
-        myVars->BF_OLD_TIME = t;
-    }
+            myVars->BF_TIME_N = myVars->BF_TIME_N + 1;
+            myVars->BF_OLD_TIME = t;
+        }
+    if (myVars->record) {
+        //if (myVars->BF_TIME_N == 0)
+        //    myVars->BF_TIME_N = 1;
     
-    if (myVars->BF_VEL.shape()[0] < myVars->BF_TIME_N) {
-        myVars->BF_VEL.resize(boost::extents[myVars->BF_TIME_N][BF_VEL_SIZE]);
-        myVars->BF_CON.resize(boost::extents[myVars->BF_TIME_N][BF_CON_SIZE]);
-    }
+    
+        
+    
+        if (myVars->BF_VEL.shape()[0] < myVars->BF_TIME_N) {
+            myVars->BF_VEL.resize(boost::extents[myVars->BF_TIME_N][BF_VEL_SIZE]);
+            myVars->BF_CON.resize(boost::extents[myVars->BF_TIME_N][BF_CON_SIZE]);
+        }
 
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][0] = t;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][1] = Vbf1;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][2] = Vbf2;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][3] = Vbf3;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][4] = Vbf4;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][0] = t;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][1] = Vbf1;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][2] = Vbf2;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][3] = Vbf3;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][4] = Vbf4;
     
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][5] = Vbf5;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][6] = Vbf6;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][7] = Vbf7;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][8] = Vbf8;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][9] = Vbf9;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][5] = Vbf5;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][6] = Vbf6;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][7] = Vbf7;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][8] = Vbf8;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][9] = Vbf9;
     
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][10] = Vbf10;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][11] = Vbf11;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][12] = Vqi;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][13] = Vipc;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][14] = Vicp;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][10] = Vbf10;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][11] = Vbf11;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][12] = Vqi;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][13] = Vipc;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][14] = Vicp;
     
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][15] = Vinc;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][16] = Vinp;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][17] = Vdp;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][18] = Vdc;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][19] = Vfp;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][15] = Vinc;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][16] = Vinp;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][17] = Vdp;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][18] = Vdc;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][19] = Vfp;
     
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][20] = Vfc;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][21] = Vsfd;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][22] = VsATP;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][23] = VgPQH2;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][24] = Vbf12;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][20] = Vfc;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][21] = Vsfd;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][22] = VsATP;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][23] = VgPQH2;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][24] = Vbf12;
     
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][25] = Vbf13;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][26] = Vbf14;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][27] = Vbf15;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][28] = Vbf16;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][29] = vbfn2;
-    myVars->BF_VEL[myVars->BF_TIME_N - 1][30] = VsNADPH;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][25] = Vbf13;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][26] = Vbf14;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][27] = Vbf15;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][28] = Vbf16;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][29] = vbfn2;
+        myVars->BF_VEL[myVars->BF_TIME_N - 1][30] = VsNADPH;
     
-    //myVars->BF_CON[myVars->BF_TIME_N - 1][0] = t;  // --unused
-    //myVars->BF_CON[myVars->BF_TIME_N - 1][1] = MPotential;  // --unused
-    
+        //myVars->BF_CON[myVars->BF_TIME_N - 1][0] = t;  // --unused
+        //myVars->BF_CON[myVars->BF_TIME_N - 1][1] = MPotential;  // --unused
+    }
     //global BF_Vel;
     myVars->BF_Vel[0] = Vbf1;
     myVars->BF_Vel[1] = Vbf2;
