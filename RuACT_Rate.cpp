@@ -26,19 +26,19 @@
 
 
 
-arr RuACT_Rate(double t, arr &RuACT_Con, arr &RuACT_Param, varptr &myVars) {
+arr RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars) {
     
     //global RuACT_RC;
-    // k1 = myVars.RuACT_RC[0];	//	The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco myVars.activase content or activity; i.e. 	Lazar (1999), 0.25~1 *10^(9)// --unused
-    const double kn1 = myVars.RuACT_RC[1];	//	The rate constant of E inactivation by binding of RuBP;	Lazar 1999, with a lifetime of 5 ns at closed reaction center
-    // km1 = myVars.RuACT_RC[2];	//	The michaelis menton constant for RuBP with E.	Reference needed, a guess// --unused
-    const double Ke2 = myVars.RuACT_RC[3];	//	Data from Mate et al 1996. Unit: micormolar;	Reference needed, a guess
-    const double Ke3 = myVars.RuACT_RC[4];	//	Data from Mate et al 1996. Unit: micormolar;
-    const double k6 = myVars.RuACT_RC[5];	//	micromolar per meter square per second, transfered to unit
-    const double kc = myVars.RuACT_RC[6];	//	Michaelis menton constant for CO2
-    const double ko = myVars.RuACT_RC[7];	//	Michaelis menton constant for O2
-    const double k7 = myVars.RuACT_RC[8];	//	The rate constant for ecm to ecmr
-    // kr = myVars.RuACT_RC[9];	//	The apparaent michaelis menton constant for RuBP// --unused
+    // k1 = myVars->RuACT_RC[0];	//	The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco myVars->activase content or activity; i.e. 	Lazar (1999), 0.25~1 *10^(9)// --unused
+    const double kn1 = myVars->RuACT_RC[1];	//	The rate constant of E inactivation by binding of RuBP;	Lazar 1999, with a lifetime of 5 ns at closed reaction center
+    // km1 = myVars->RuACT_RC[2];	//	The michaelis menton constant for RuBP with E.	Reference needed, a guess// --unused
+    const double Ke2 = myVars->RuACT_RC[3];	//	Data from Mate et al 1996. Unit: micormolar;	Reference needed, a guess
+    const double Ke3 = myVars->RuACT_RC[4];	//	Data from Mate et al 1996. Unit: micormolar;
+    const double k6 = myVars->RuACT_RC[5];	//	micromolar per meter square per second, transfered to unit
+    const double kc = myVars->RuACT_RC[6];	//	Michaelis menton constant for CO2
+    const double ko = myVars->RuACT_RC[7];	//	Michaelis menton constant for O2
+    const double k7 = myVars->RuACT_RC[8];	//	The rate constant for ecm to ecmr
+    // kr = myVars->RuACT_RC[9];	//	The apparaent michaelis menton constant for RuBP// --unused
     
     const double ER = RuACT_Con[0];	//	The concentration of inactive ER
     const double Eaf = RuACT_Con[1];	//	The total concentration of  E, EC, AND ECM
@@ -46,24 +46,24 @@ arr RuACT_Rate(double t, arr &RuACT_Con, arr &RuACT_Param, varptr &myVars) {
     const double RuBP = RuACT_Con[3];	//	The concentration of ECMR
     
     //global RuACT_Pool;
-    const double ET = myVars.RuACT_Pool[0];
-    double Rac = myVars.RuACT_Pool[1];
-    double C = myVars.RuACT_Pool[2];
-    double O = myVars.RuACT_Pool[3];
-    double MT = myVars.RuACT_Pool[4];
+    //const double ET = myVars->RuACT_Pool[0];
+    //double Rac = myVars->RuACT_Pool[1];
+    double C = myVars->RuACT_Pool[2];
+    double O = myVars->RuACT_Pool[3];
+    double MT = myVars->RuACT_Pool[4];
     
     //global activase;
     // activase = 80  ;
     
     //global RROEA_EPS_com;
     
-    if (myVars.RROEA_EPS_com) {
+    if (myVars->RROEA_EPS_com) {
         
-        //global myVars.RROEA_Pool;
-        Rac = myVars.RROEA_Pool[9];
+        //global myVars->RROEA_Pool;
+        //Rac = myVars->RROEA_Pool[9];
         
-        //global myVars.RROEA2RuACT_RuAC;
-        myVars.activase = myVars.RROEA2RuACT_RuAC * 14364;
+        //global myVars->RROEA2RuACT_RuAC;
+        myVars->activase = myVars->RROEA2RuACT_RuAC * 14364;
     }
     
     //global RuACT_EPS_com;
@@ -76,27 +76,27 @@ arr RuACT_Rate(double t, arr &RuACT_Con, arr &RuACT_Param, varptr &myVars) {
     double RatioDT;
     double ADP;
     double ATP;
-    if (!myVars.RuACT_EPS_com) {
+    if (!myVars->RuACT_EPS_com) {
         ATP = 1.45;
         ADP = 1.5 - ATP;
         RatioDT = ADP / ATP;
     } else {
-        C = myVars.PSPR_RA_CO2;
-        O = myVars.PSPR_RA_O2;
+        C = myVars->PSPR_RA_CO2;
+        O = myVars->PSPR_RA_O2;
         
         
-        //global myVars.StomCond_TrDynaPS_com;
-        if (myVars.StomCond_TrDynaPS_com) {
-            //global myVars.PS2RubACC;
-            //global myVars.PS2RubACO;
+        //global myVars->StomCond_TrDynaPS_com;
+        if (myVars->StomCond_TrDynaPS_com) {
+            //global myVars->PS2RubACC;
+            //global myVars->PS2RubACO;
             
-            C = myVars.PS2RubACC;
-            O = myVars.PS2RubACO;
+            C = myVars->PS2RubACC;
+            O = myVars->PS2RubACO;
         }
         
-        MT = myVars.FIBF_RA_Mg;
-        ATP = myVars.PS2RA_ATP;
-        ADP = myVars.PSPR_RA_CA - ATP;
+        MT = myVars->FIBF_RA_Mg;
+        ATP = myVars->PS2RA_ATP;
+        ADP = myVars->PSPR_RA_CA - ATP;
         RatioDT = ADP / ATP;
         
     }
@@ -113,10 +113,10 @@ arr RuACT_Rate(double t, arr &RuACT_Con, arr &RuACT_Param, varptr &myVars) {
     
     double LT;
     double RCA;
-    if (myVars.activase < pow(10, -6)) {
+    if (myVars->activase < pow(10, -6)) {
         RCA = 0;
     } else {
-        LT = 216.9 / myVars.activase;//	The lifetime of the activation; UNIT: MIN;
+        LT = 216.9 / myVars->activase;//	The lifetime of the activation; UNIT: MIN;
         RCA = 1 / (LT * 60);// 	The rate constant of the activation reaction
     }
     
@@ -151,34 +151,32 @@ arr RuACT_Rate(double t, arr &RuACT_Con, arr &RuACT_Param, varptr &myVars) {
     //global RuACT_VEL;
     //global RuACT_CON;
     
-    if (myVars.RuACT_TIME_N == 0)
-        myVars.RuACT_TIME_N = 1;
+    if (myVars->RuACT_TIME_N == 0)
+        myVars->RuACT_TIME_N = 1;
     
     
-    if (t > myVars.RuACT_OLD_TIME) {
-        myVars.RuACT_TIME_N = myVars.RuACT_TIME_N + 1;
-        myVars.RuACT_OLD_TIME = t;
+    if (t > myVars->RuACT_OLD_TIME) {
+        myVars->RuACT_TIME_N = myVars->RuACT_TIME_N + 1;
+        myVars->RuACT_OLD_TIME = t;
     }
     
-    if (myVars.RuACT_VEL.shape()[0] < myVars.RuACT_TIME_N) {
-        int t = myVars.RuACT_VEL.shape()[0];
-        int tt = myVars.RuACT_VEL.shape()[1];
-        myVars.RuACT_VEL.resize(boost::extents[myVars.RuACT_TIME_N][RuACT_VEL_SIZE]);
-        myVars.RuACT_CON.resize(boost::extents[myVars.RuACT_TIME_N][RuACT_CON_SIZE]);
+    if (myVars->RuACT_VEL.shape()[0] < myVars->RuACT_TIME_N) {
+        myVars->RuACT_VEL.resize(boost::extents[myVars->RuACT_TIME_N][RuACT_VEL_SIZE]);
+        myVars->RuACT_CON.resize(boost::extents[myVars->RuACT_TIME_N][RuACT_CON_SIZE]);
     }
 
-    myVars.RuACT_VEL[myVars.RuACT_TIME_N - 1][0] = t;
-    myVars.RuACT_VEL[myVars.RuACT_TIME_N - 1][1] = v1;
-    myVars.RuACT_VEL[myVars.RuACT_TIME_N - 1][2] = vn1;
-    myVars.RuACT_VEL[myVars.RuACT_TIME_N - 1][3] = v7;
-    myVars.RuACT_VEL[myVars.RuACT_TIME_N - 1][4] = vn7;
-    myVars.RuACT_VEL[myVars.RuACT_TIME_N - 1][5] = v6_1;
-    myVars.RuACT_VEL[myVars.RuACT_TIME_N - 1][6] = v6_2;
+    myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][0] = t;
+    myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][1] = v1;
+    myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][2] = vn1;
+    myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][3] = v7;
+    myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][4] = vn7;
+    myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][5] = v6_1;
+    myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][6] = v6_2;
     
-    //myVars.RuACT_CON[myVars.RuACT_TIME_N - 1][0] = t;  // --unused
-    //myVars.RuACT_CON[myVars.RuACT_TIME_N - 1][1] = E;  // --unused
-    //myVars.RuACT_CON[myVars.RuACT_TIME_N - 1][2] = EC;  // --unused
-    //myVars.RuACT_CON[myVars.RuACT_TIME_N - 1][3] = ECM;  // --unused
+    //myVars->RuACT_CON[myVars->RuACT_TIME_N - 1][0] = t;  // --unused
+    //myVars->RuACT_CON[myVars->RuACT_TIME_N - 1][1] = E;  // --unused
+    //myVars->RuACT_CON[myVars->RuACT_TIME_N - 1][2] = EC;  // --unused
+    //myVars->RuACT_CON[myVars->RuACT_TIME_N - 1][3] = ECM;  // --unused
     
     
     arr RuACT_Vel = zeros(6);
@@ -196,17 +194,17 @@ arr RuACT_Rate(double t, arr &RuACT_Con, arr &RuACT_Param, varptr &myVars) {
     //global RuACT2RA_v7;
     //global RuACT2RA_vn7;
     
-    myVars.RuACT2RA_v61 = v6_1;
-    myVars.RuACT2RA_v62 = v6_2;
-    myVars.RuACT2RA_v1 = v1;
-    myVars.RuACT2RA_vn1 = vn1;
-    myVars.RuACT2RA_vn7 = vn7;
-    myVars.RuACT2RA_v7 = v7;
+    myVars->RuACT2RA_v61 = v6_1;
+    myVars->RuACT2RA_v62 = v6_2;
+    myVars->RuACT2RA_v1 = v1;
+    myVars->RuACT2RA_vn1 = vn1;
+    myVars->RuACT2RA_vn7 = vn7;
+    myVars->RuACT2RA_v7 = v7;
     
-    const double Percent = ECM / ET;
+    //const double Percent = ECM / ET;
     
     
     //global RuACT2PS_Percent;
-    //myVars.RuACT2PS_Percent = Percent;  // --unused
+    //myVars->RuACT2PS_Percent = Percent;  // --unused
     return RuACT_Vel;
 }

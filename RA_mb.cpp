@@ -27,7 +27,7 @@
 
 
 
-arr RA_mb(double t, arr &RA_Con, arr &BF_Param, arr &FI_Param, double PS_PR_Param, arr &RuACT_Param, arr &SUCS_Param, varptr &myVars) {
+arr RA_mb(double t, arr &RA_Con, varptr *myVars) {
     
     arr EPS_Con = zeros(88);
     for (int m = 0; m < 88; m++)
@@ -38,8 +38,8 @@ arr RA_mb(double t, arr &RA_Con, arr &BF_Param, arr &FI_Param, double PS_PR_Para
     for (int m = 0; m < 4; m++)
         RuACT_Con[m] = RA_Con[m + 88];
     
-    arr EPS_DYDT = EPS_mb(t, EPS_Con, BF_Param, FI_Param, PS_PR_Param, SUCS_Param, myVars);
-    arr RuACT_DYDT = RuACT_Mb(t, RuACT_Con, RuACT_Param, myVars);
+    arr EPS_DYDT = EPS_mb(t, EPS_Con, myVars);
+    arr RuACT_DYDT = RuACT_Mb(t, RuACT_Con, myVars);
     
     arr RA_DYDT = zeros(92);
     
@@ -63,15 +63,15 @@ arr RA_mb(double t, arr &RA_Con, arr &BF_Param, arr &FI_Param, double PS_PR_Para
     //global RuACT2RA_v7;
     //global RuACT2RA_vn7;
     
-    const double DYDT_RuBP = myVars.RuACT2RA_v1 + myVars.PSPR2RA_v13 - myVars.RuACT2RA_vn1 + myVars.RuACT2RA_vn7 - myVars.RuACT2RA_v7;
+    const double DYDT_RuBP = myVars->RuACT2RA_v1 + myVars->PSPR2RA_v13 - myVars->RuACT2RA_vn1 + myVars->RuACT2RA_vn7 - myVars->RuACT2RA_v7;
     RA_DYDT[52] = DYDT_RuBP;
     RA_DYDT[91] = DYDT_RuBP;
     
-    const double DYDT_PGA = EPS_DYDT[53] - 2 * myVars.PSPR2RA_v1 + 2 * myVars.RuACT2RA_v61 - myVars.PSPR2RA_v111 + myVars.RuACT2RA_v62;// Originally it is pspr(2), now use EPS_DYDT[53].
+    const double DYDT_PGA = EPS_DYDT[53] - 2 * myVars->PSPR2RA_v1 + 2 * myVars->RuACT2RA_v61 - myVars->PSPR2RA_v111 + myVars->RuACT2RA_v62;// Originally it is pspr(2), now use EPS_DYDT[53].
     RA_DYDT[53] = DYDT_PGA;
     
     
-    const double DYDT_PGCA = EPS_DYDT[68] - myVars.PSPR2RA_v111 + myVars.RuACT2RA_v62;
+    const double DYDT_PGCA = EPS_DYDT[68] - myVars->PSPR2RA_v111 + myVars->RuACT2RA_v62;
     RA_DYDT[68] = DYDT_PGCA;
     return RA_DYDT;
 }

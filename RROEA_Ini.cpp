@@ -27,7 +27,7 @@
 
 
 
-arr RROEA_Ini(varptr &myVars) {
+arr RROEA_Ini(varptr *myVars) {
     
     
     //global RROEA_OLD_TIME;
@@ -35,8 +35,8 @@ arr RROEA_Ini(varptr &myVars) {
     //global RROEA_VEL;
     //global RROEA_CON;
     
-    myVars.RROEA_OLD_TIME = 0;
-    myVars.RROEA_TIME_N = 1;
+    myVars->RROEA_OLD_TIME = 0;
+    myVars->RROEA_TIME_N = 1;
     
     // RROEA_VEL = zeros(1, 3);    // Clean memory
     // RROEA_CON = zeros(3, 1);    // Clean memory
@@ -62,16 +62,16 @@ arr RROEA_Ini(varptr &myVars) {
     // RROEA_RC = zeros(5, 1);
     
     // The rate constant used in the model
-    myVars.RROEA_RC[0] = ke2GAPDH;	//	The rate constant of electron transfer to GAPDH. From literature.
-    myVars.RROEA_RC[1] = ke2MDH;		//	The rate constant of electront transfer to MDH, this rate is totally ASSUMED.
-    myVars.RROEA_RC[2] = ke2FBPase;	//	The rate constant of electron transfer from thioredoxin to FBPase.
-    myVars.RROEA_RC[3] = ke2SBPase;	//	The rate constant of electron tranfer from thioredoxin to SBPase
-    myVars.RROEA_RC[4] = ke2PRK;	    //	The rate constant of electron transfer from thioredoxin to PRK, Phosphoribulase kinase
-    myVars.RROEA_RC[5] = ke2RubACT;	//	The rate constant of electron transfer from thioredoxin to Rubisco activase
-    myVars.RROEA_RC[6] = ke2Fd;	    //	The rate constant of electron transfer to fe
-    myVars.RROEA_RC[7] = keFd2Thio;	//	The rate constant of electron transfer from fd to thio
-    myVars.RROEA_RC[8] = keFd2Calvin;	    //	The rate constant of electron transfer from fd to Calvin cycle
-    myVars.RROEA_RC[9] = ke2ATPGPP;	    //	The rate constant of electron transfer to ATPGPP
+    myVars->RROEA_RC[0] = ke2GAPDH;	//	The rate constant of electron transfer to GAPDH. From literature.
+    myVars->RROEA_RC[1] = ke2MDH;		//	The rate constant of electront transfer to MDH, this rate is totally ASSUMED.
+    myVars->RROEA_RC[2] = ke2FBPase;	//	The rate constant of electron transfer from thioredoxin to FBPase.
+    myVars->RROEA_RC[3] = ke2SBPase;	//	The rate constant of electron tranfer from thioredoxin to SBPase
+    myVars->RROEA_RC[4] = ke2PRK;	    //	The rate constant of electron transfer from thioredoxin to PRK, Phosphoribulase kinase
+    myVars->RROEA_RC[5] = ke2RubACT;	//	The rate constant of electron transfer from thioredoxin to Rubisco activase
+    myVars->RROEA_RC[6] = ke2Fd;	    //	The rate constant of electron transfer to fe
+    myVars->RROEA_RC[7] = keFd2Thio;	//	The rate constant of electron transfer from fd to thio
+    myVars->RROEA_RC[8] = keFd2Calvin;	    //	The rate constant of electron transfer from fd to Calvin cycle
+    myVars->RROEA_RC[9] = ke2ATPGPP;	    //	The rate constant of electron transfer to ATPGPP
     
     // RROEA_RC = RROEA_RC  * 10;
     
@@ -88,15 +88,15 @@ arr RROEA_Ini(varptr &myVars) {
     
     //global RROEA_KE;
     
-    myVars.RROEA_KE[0] = KEe2FBPase;
-    myVars.RROEA_KE[1] = KEe2SBPase;
-    myVars.RROEA_KE[2] = KEe2PRK;
-    myVars.RROEA_KE[3] = KEe2ATPase;
-    myVars.RROEA_KE[4] = KEe2RuACT;
-    myVars.RROEA_KE[5] = KEe2GAPDH;
-    myVars.RROEA_KE[6] = KEe2MDH;
-    myVars.RROEA_KE[7] = KEe2ATPGPP;
-    myVars.RROEA_KE[8] = KEeFd2Thio;
+    myVars->RROEA_KE[0] = KEe2FBPase;
+    myVars->RROEA_KE[1] = KEe2SBPase;
+    myVars->RROEA_KE[2] = KEe2PRK;
+    myVars->RROEA_KE[3] = KEe2ATPase;
+    myVars->RROEA_KE[4] = KEe2RuACT;
+    myVars->RROEA_KE[5] = KEe2GAPDH;
+    myVars->RROEA_KE[6] = KEe2MDH;
+    myVars->RROEA_KE[7] = KEe2ATPGPP;
+    myVars->RROEA_KE[8] = KEeFd2Thio;
     
     //for (int x = 0; x < 8; x++)
     //    RROEA_KE[x] = RROEA_KE[x] * 1;
@@ -117,18 +117,18 @@ arr RROEA_Ini(varptr &myVars) {
     double SC;
     double fc16;
     double FC;
-    if (!myVars.RROEA_EPS_com) {
+    if (!myVars->RROEA_EPS_com) {
         
         FC = 1;
         fc16 = 1;
         SC = 1;
         
-        myVars.V3 = 5.04 * SC;//	(Harris & Koniger, 1997)	3	GAP dehydragenase	DPGA+NADPH <->GAP + OP+NADP
-        myVars.V6 = 1.155 * SC;//	(Harris & Koniger, 1997)	6	FBPase	FBP<->F6P+OP    1.155
-        myVars.V9 = 0.168 * SC * FC;//	(Harris & Koniger, 1997)	9	SBPase	SBP<->S7P+OP    0.168 as original value; 0.4168 was its value.
-        myVars.V13 = 8.0094 * SC;//	(Harris & Koniger, 1997)	13	Ribulosebiphosphate kinase	Ru5P+ATP<->RuBP+ADP
-        myVars.V16 = 3 * SC * fc16;//	(Aflalo & Shavit, 1983, Davenport & McLeod, 1986)	16	ATP synthase	ADP+Pi<->ATP    1.47
-        myVars.V23 = 1.68 * SC * FC;//	(Latzko, Steup & Schachtele, 1981)	23	ADP-glucose pyrophosphorylase and	ADPG+Gn<->G(n+1)+ADP 0.18
+        myVars->V3 = 5.04 * SC;//	(Harris & Koniger, 1997)	3	GAP dehydragenase	DPGA+NADPH <->GAP + OP+NADP
+        myVars->V6 = 1.155 * SC;//	(Harris & Koniger, 1997)	6	FBPase	FBP<->F6P+OP    1.155
+        myVars->V9 = 0.168 * SC * FC;//	(Harris & Koniger, 1997)	9	SBPase	SBP<->S7P+OP    0.168 as original value; 0.4168 was its value.
+        myVars->V13 = 8.0094 * SC;//	(Harris & Koniger, 1997)	13	Ribulosebiphosphate kinase	Ru5P+ATP<->RuBP+ADP
+        myVars->V16 = 3 * SC * fc16;//	(Aflalo & Shavit, 1983, Davenport & McLeod, 1986)	16	ATP synthase	ADP+Pi<->ATP    1.47
+        myVars->V23 = 1.68 * SC * FC;//	(Latzko, Steup & Schachtele, 1981)	23	ADP-glucose pyrophosphorylase and	ADPG+Gn<->G(n+1)+ADP 0.18
     }
     
     
@@ -159,31 +159,31 @@ arr RROEA_Ini(varptr &myVars) {
     
     //global BF2RROEA_FdT;
     
-    if (myVars.RROEA_EPS_com)
-        FdT = myVars.BF2RROEA_FdT;
+    if (myVars->RROEA_EPS_com)
+        FdT = myVars->BF2RROEA_FdT;
     
     
     //global RROEA_Pool;
-    myVars.RROEA_Pool[0] = myVars.V3 * 1000 * 60 / SA_GAPDH / mw_GAPDH;
-    myVars.RROEA_Pool[1] = myVars.V6 * 1000 * 60 / SA_FBPase / mw_FBPase;
-    myVars.RROEA_Pool[2] = myVars.V9 * 1000 * 60 / SA_SBPase / mw_SBPase;
-    myVars.RROEA_Pool[3] = myVars.V13 * 1000 * 60 / SA_PRK / mw_PRK;
-    myVars.RROEA_Pool[4] = myVars.V16 * 1000 * 60 / SA_ATPase / mw_ATPase;
-    myVars.RROEA_Pool[5] = myVars.V23 * 1000 * 60 / SA_ATPGPP / mw_ATPGPP;
-    myVars.RROEA_Pool[6] = MDH_Vmax * 1000 * 60 / SA_MDH / mw_MDH;
-    myVars.RROEA_Pool[7] = ThioT;
-    myVars.RROEA_Pool[8] = FdT;
-    myVars.RROEA_Pool[9] = RuACTT;
+    myVars->RROEA_Pool[0] = myVars->V3 * 1000 * 60 / SA_GAPDH / mw_GAPDH;
+    myVars->RROEA_Pool[1] = myVars->V6 * 1000 * 60 / SA_FBPase / mw_FBPase;
+    myVars->RROEA_Pool[2] = myVars->V9 * 1000 * 60 / SA_SBPase / mw_SBPase;
+    myVars->RROEA_Pool[3] = myVars->V13 * 1000 * 60 / SA_PRK / mw_PRK;
+    myVars->RROEA_Pool[4] = myVars->V16 * 1000 * 60 / SA_ATPase / mw_ATPase;
+    myVars->RROEA_Pool[5] = myVars->V23 * 1000 * 60 / SA_ATPGPP / mw_ATPGPP;
+    myVars->RROEA_Pool[6] = MDH_Vmax * 1000 * 60 / SA_MDH / mw_MDH;
+    myVars->RROEA_Pool[7] = ThioT;
+    myVars->RROEA_Pool[8] = FdT;
+    myVars->RROEA_Pool[9] = RuACTT;
     
     
     Coeff = 0.3;
     
-    const double GAPDH = myVars.RROEA_Pool[0] * Coeff;// 	The concentration of active GAPDH
-    const double FBPase = myVars.RROEA_Pool[1] * Coeff;//	The concentration of active FBPase
-    const double SBPase = myVars.RROEA_Pool[2] * Coeff;// 	The concentration of active SBPase
-    const double PRK = myVars.RROEA_Pool[3] * Coeff;//   The concentration of active PRK
-    const double ATPase = myVars.RROEA_Pool[4] * Coeff;//   The concentratino of active ATP synthase
-    const double ATPGPP = myVars.RROEA_Pool[5] * Coeff;//   The concnetratin of active ATP Glucose pyrophosphorylas
+    const double GAPDH = myVars->RROEA_Pool[0] * Coeff;// 	The concentration of active GAPDH
+    const double FBPase = myVars->RROEA_Pool[1] * Coeff;//	The concentration of active FBPase
+    const double SBPase = myVars->RROEA_Pool[2] * Coeff;// 	The concentration of active SBPase
+    const double PRK = myVars->RROEA_Pool[3] * Coeff;//   The concentration of active PRK
+    const double ATPase = myVars->RROEA_Pool[4] * Coeff;//   The concentratino of active ATP synthase
+    const double ATPGPP = myVars->RROEA_Pool[5] * Coeff;//   The concnetratin of active ATP Glucose pyrophosphorylas
     const double MDH = 0;     //   The concentration of active MDH
     const double Thio = 0.081 * Coeff;// The initial concentration of reduced thioredoxin
     double Fd = 0.081 * Coeff;// The initial concentraiton of reduced fd
@@ -193,8 +193,8 @@ arr RROEA_Ini(varptr &myVars) {
     //global RROEA_EPS_com;
     //global BF2RROEA_Fdn;
     
-    if (myVars.RROEA_EPS_com)
-        Fd = myVars.BF2RROEA_Fdn;
+    if (myVars->RROEA_EPS_com)
+        Fd = myVars->BF2RROEA_Fdn;
     
     
     
@@ -221,11 +221,11 @@ arr RROEA_Ini(varptr &myVars) {
     //global RROEA2PS_ATPase;
     //global RROEA2PS_ATPGPP;
     
-    myVars.RROEA2PS_GAPDH = GAPDH;
-    //myVars.RROEA2PS_FBPase = FBPase;  // --unused
-    myVars.RROEA2PS_SBPase = SBPase;
-    myVars.RROEA2PS_PRK = PRK;
-    myVars.RROEA2PS_ATPase = ATPase;
-    myVars.RROEA2PS_ATPGPP = ATPGPP;
+    myVars->RROEA2PS_GAPDH = GAPDH;
+    //myVars->RROEA2PS_FBPase = FBPase;  // --unused
+    myVars->RROEA2PS_SBPase = SBPase;
+    myVars->RROEA2PS_PRK = PRK;
+    myVars->RROEA2PS_ATPase = ATPase;
+    myVars->RROEA2PS_ATPGPP = ATPGPP;
     return RROEA_Con;
 }

@@ -43,8 +43,8 @@ int CM::CM_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
     
     
     arr SUCS_DYDT = zeros(12);
-    SUCS_DYDT = SUCS_Mb(t, SUCS_Con, myVars->SUCS_Param, *myVars);
-    arr PSPR_DYDT = PS_PRmb(t, PSPR_Con, myVars->PS_PR_Param, *myVars);
+    SUCS_DYDT = SUCS_Mb(t, SUCS_Con, myVars);
+    arr PSPR_DYDT = PS_PRmb(t, PSPR_Con, myVars);
     
     for (int m = 0; m < 23; m++)
         dxdt[m] = PSPR_DYDT[m];

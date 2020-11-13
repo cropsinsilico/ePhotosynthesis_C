@@ -24,11 +24,11 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-arr EPS_Ini(varptr &myVars) {
+arr EPS_Ini(varptr *myVars) {
     
     // Begin = 1;// --unused
     
-    const double FIBFsuc = FIBF_Ini(myVars);
+    FIBF_Ini(myVars);
     FI_Ini(myVars);
     BF_Ini(myVars);
     
@@ -39,8 +39,8 @@ arr EPS_Ini(varptr &myVars) {
     //global BF_VEL;
     //global BF_CON;
     
-    myVars.BF_OLD_TIME = 0;
-    myVars.BF_TIME_N = 1;
+    myVars->BF_OLD_TIME = 0;
+    myVars->BF_TIME_N = 1;
     
     // BF_VEL = zeros(1, 5);    // Clean memory
     // BF_CON = zeros(1, 5);    // Clean memory
@@ -52,8 +52,8 @@ arr EPS_Ini(varptr &myVars) {
     //global FI_VEL;
     //global FI_CON;
     
-    myVars.FI_OLD_TIME = 0;
-    myVars.FI_TIME_N = 1;
+    myVars->FI_OLD_TIME = 0;
+    myVars->FI_TIME_N = 1;
     
     // FI_VEL = zeros(1, 5);    // Clean memory
     // FI_CON = zeros(5, 1);    // Clean memory
@@ -62,18 +62,18 @@ arr EPS_Ini(varptr &myVars) {
     //global FIBF_Pool;
     //global FI_Pool;
     //global BF_Pool;
-    myVars.FI_Pool[1] = myVars.FIBF_Pool[0];
-    myVars.BF_Pool[7] = myVars.FIBF_Pool[0];
+    myVars->FI_Pool[1] = myVars->FIBF_Pool[0];
+    myVars->BF_Pool[7] = myVars->FIBF_Pool[0];
     
     // Initial concentration for FIBF_Con
     arr FIBF_Con = zeros(52);
     //FIBF_Con;
     for (int m = 0; m < 29; m++)
-        FIBF_Con[m] = myVars.BF_con[m];
+        FIBF_Con[m] = myVars->BF_con[m];
     
     
     for (int m = 0; m < 22; m++)
-        FIBF_Con[m + 29] = myVars.FI_Con[m];
+        FIBF_Con[m + 29] = myVars->FI_Con[m];
     
     
     FIBF_Con[51] = pow(10, 8) * 0.5;
@@ -88,22 +88,22 @@ arr EPS_Ini(varptr &myVars) {
     //global PS_PR_TIME_N;
     //global PS_PR_VEL;
     
-    //myVars.PS_PR_OLDTIME = 0;  // --unused
-    //myVars.PS_PR_TIME_N = 1;  // --unused
+    //myVars->PS_PR_OLDTIME = 0;  // --unused
+    //myVars->PS_PR_TIME_N = 1;  // --unused
     // PS_PR_VEL = zeros(27, 1);        // Store the flux value
     
     //global PS_OLD_TIME;
     //global PS_TIME_N;
     //global PS_VEL;
-    myVars.PS_OLD_TIME = 0;
-    myVars.PS_TIME_N = 0;
+    myVars->PS_OLD_TIME = 0;
+    myVars->PS_TIME_N = 0;
     // PS_VEL = zeros(1, 1);
     
     //global PR_OLD_TIME;
     //global PR_TIME_N;
     //global PR_VEL;
-    myVars.PR_OLD_TIME = 0;
-    myVars.PR_TIME_N = 1;
+    myVars->PR_OLD_TIME = 0;
+    myVars->PR_TIME_N = 1;
     // PR_VEL = zeros(1, 1);
     
     ////////////////////////////////////////////////
@@ -111,7 +111,7 @@ arr EPS_Ini(varptr &myVars) {
     ////////////////////////////////////////////////
     
     //Begin = 1;  // --unused
-    CM temp = CM(&myVars);
+    CM temp = CM(myVars);
     arr CMs = temp.CM_Ini();
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

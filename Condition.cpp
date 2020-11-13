@@ -31,14 +31,14 @@
 // contains two parts. Part a includes the generic (default) conditions and the
 // second part contains the detailed conditions for different time period.
 
-double Condition(double t, varptr &myVars) {
+void Condition(double t, varptr *myVars) {
     //global TestCa;
     //global TestLi;
     //global RUBISCOMETHOD;         // The method for calculation of Rubisco catalyzed reaction
-    //myVars.RUBISCOMETHOD = 1;     // was 2     // 1: Use enzyme concentration for calculation   // constant set in globals.hpp
+    //myVars->RUBISCOMETHOD = 1;     // was 2     // 1: Use enzyme concentration for calculation   // constant set in globals.hpp
     // 2: Use the michaelis menton and enzyme together for calculation
     //global VolRatioStCyto
-    //myVars.VolRatioStCyto = 1;   // constant set in globals.hpp
+    //myVars->VolRatioStCyto = 1;   // constant set in globals.hpp
     
     
     // First get the generic conditions
@@ -50,14 +50,14 @@ double Condition(double t, varptr &myVars) {
     //global Temp_cond;
     
     //global Cond_V16;        // This variable is transfered from PSInitial for modificatin of V16, the rate of ATP synthesis.
-    const double CO2Temp = myVars.TestCa * 0.7;//280;          // CO2 concentation  // ppm
+    const double CO2Temp = myVars->TestCa * 0.7;//280;          // CO2 concentation  // ppm
     const double O2Temp = 0.21;          // O2 concentration  //default is 0.21, i.e. 21//.
     
-    myVars.CO2_cond = CO2Temp / (3 * pow(10, 4));
-    myVars.O2_cond = O2Temp * 1.26;
-    //myVars.Temp_cond = 25;  // --unused
+    myVars->CO2_cond = CO2Temp / (3 * pow(10, 4));
+    myVars->O2_cond = O2Temp * 1.26;
+    //myVars->Temp_cond = 25;  // --unused
     
-    const double light = myVars.TestLi * 0.85 * 0.85;// light umol m-2 s-1
+    const double light = myVars->TestLi * 0.85 * 0.85;// light umol m-2 s-1
     
     // Here the time dependent variable is regulated.
     //global tglobal;
@@ -65,15 +65,15 @@ double Condition(double t, varptr &myVars) {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////   Here define how many interval needed for the experiments  //
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    const double NumberInterval = 10;
+    //const double NumberInterval = 10;
     
     //global NumInter_draw;
-    //myVars.NumInter_draw = NumberInterval;  // --unused
+    //myVars->NumInter_draw = NumberInterval;  // --unused
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // This is an experimental protocol for doing repeatative experiment
     
-    // Tinter = myVars.tglobal / NumberInterval;// --unused
+    // Tinter = myVars->tglobal / NumberInterval;// --unused
     
     // FirstMet = 0;// --unused
     
@@ -143,7 +143,7 @@ double Condition(double t, varptr &myVars) {
     //     light = 1000;
     // end
     
-    myVars.GLight = light;
-    const double fini = 1;
-    return fini;
+    myVars->GLight = light;
+    //const double fini = 1;
+    //return fini;
 }

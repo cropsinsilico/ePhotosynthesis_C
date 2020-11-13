@@ -25,19 +25,19 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-arr SUCS_Mb(double t, arr &SUCS_Con, arr &SUCS_Param, varptr &myVars) {
+arr SUCS_Mb(double t, arr &SUCS_Con, varptr *myVars) {
     
     //global GLight;
     
-    const double fini = Condition(t, myVars);
-    const double light = myVars.GLight;
+    Condition(t, myVars);
+    const double light = myVars->GLight;
     
-    SUCS_Param[0] = light;
+    myVars->SUCS_Param[0] = light;
     
     
     
     arr SUCS_Vel = zeros(15);
-    SUCS_Vel = SUCS_Rate(t, SUCS_Con, SUCS_Param, myVars);
+    SUCS_Vel = SUCS_Rate(t, SUCS_Con, myVars);
     
     
     const double v51 = SUCS_Vel[0];//	DHAP+GAP --FBP

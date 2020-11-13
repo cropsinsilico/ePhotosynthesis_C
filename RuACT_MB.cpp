@@ -26,15 +26,15 @@
 
 
 
-arr RuACT_Mb(double t, arr &RuACT_Con, arr &RuACT_Param, varptr &myVars) {
+arr RuACT_Mb(double t, arr &RuACT_Con, varptr *myVars) {
     
     //global GLight;
-    const double fini = Condition(t, myVars);
-    const double light = myVars.GLight;
+    Condition(t, myVars);
+    const double light = myVars->GLight;
     
-    RuACT_Param[0] = light;
+    myVars->RuACT_Param[0] = light;
     
-    arr RuACT_Vel = RuACT_Rate(t, RuACT_Con, RuACT_Param, myVars);
+    arr RuACT_Vel = RuACT_Rate(t, RuACT_Con, myVars);
     
     const double v1 = RuACT_Vel[0];	//	v1	The rate of ER activation due to Rubisco activase
     const double vn1 = RuACT_Vel[1];	//	vn1	The rate of E inactiavtion due to binding of RuBP

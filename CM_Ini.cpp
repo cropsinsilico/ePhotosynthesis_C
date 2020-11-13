@@ -29,14 +29,14 @@
 arr CM::CM_Ini() {
     
     arr PS_PRs = zeros(24);
-    PS_PRs = PS_PRIni(*myVars);
+    PS_PRs = PS_PRIni(myVars);
     arr CMs = zeros(36);
     
     for (int m = 0; m < 23; m++)
         CMs[m] = PS_PRs[m];
     
     
-    arr SUCS_Con = SUCS_Ini(*myVars);
+    arr SUCS_Con = SUCS_Ini(myVars);
     
     // The gap left is for later use.
     

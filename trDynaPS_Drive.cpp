@@ -85,13 +85,13 @@ arr trDynaPS::trDynaPS_Drive(double ParaNum, double Ratio) {
     
     //clear;
     // time1 = clock;// --unused
-    double suc = PreProcess(*myVars);
+    PreProcess(myVars);
     
     // Begin = 1;// --unused
-    const double fin = SYSInitial(*myVars);
+    SYSInitial(myVars);
     //global options1;
     //global tglobal;
-    const double time = myVars->tglobal;
+    //const double time = myVars->tglobal;
     
     
     //global ATPActive;
@@ -100,7 +100,7 @@ arr trDynaPS::trDynaPS_Drive(double ParaNum, double Ratio) {
     //global EPS_ATP_Rate;        // Indicate in the beginning there is no ATP synthesis activity.
     myVars->EPS_ATP_Rate = 0;
     
-    const double ModelComb = IniModelCom(*myVars);        // Initialize the structure of the model, i.e. Is this model separate or combined with others.
+    IniModelCom(myVars);        // Initialize the structure of the model, i.e. Is this model separate or combined with others.
     
     //global BF_FI_com;            // The combination of BF and FI model
     myVars->BF_FI_com = true;
@@ -137,7 +137,7 @@ arr trDynaPS::trDynaPS_Drive(double ParaNum, double Ratio) {
     arr trDynaPS_Con = trDynaPS_Ini();
     //fprintf("//f   //f", trDynaPS_Con(12), trDynaPS_Con(13));
     //fprintf("\n");
-    ParamSet(*myVars);
+    ParamSet(myVars);
     
     //[FI_Param, BF_Param, PS_PR_Param, SUCS_Param, EPS_Param, RuACT_Param, XanCycle_Param, RROEA_Param, RedoxReg_Param] = ParamSet(myVars);
     
@@ -443,7 +443,7 @@ arr trDynaPS::trDynaPS_Drive(double ParaNum, double Ratio) {
     // time2 = clock;
     // TotalRunTime = time2-time1
     
-    IniModelCom(*myVars);
+    IniModelCom(myVars);
     //save LRC
     
 

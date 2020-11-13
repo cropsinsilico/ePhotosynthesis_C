@@ -32,11 +32,11 @@
 varptr *CM::myVars = new varptr();
 double CM::CM_Drive2(double pop, double currentPop) {
     
-    double Begin = 1;
+    //double Begin = 1;
     // fin = SysInitial(Begin);// --unused
     //global options1;
     //global tglobal;
-    const double time = myVars->tglobal;
+    //const double time = myVars->tglobal;
     
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //   Global variables used for obtaining flux and concentration data //
@@ -66,9 +66,9 @@ double CM::CM_Drive2(double pop, double currentPop) {
     ////////////////////////////////////////////////
     //   Initialation step //
     ////////////////////////////////////////////////
-    Begin = 1;
+    //Begin = 1;
     //arr PS_PRs = zeros(0);
-    const double ModelComb = IniModelCom(*myVars);        // Initialize the structure of the model, i.e. Is this model separate or combined with others.
+    IniModelCom(myVars);        // Initialize the structure of the model, i.e. Is this model separate or combined with others.
     //global PR_PS_com;    // This is a variable indicating whether the PR model is actually need to be combined with PS or not. If 1 then means combined; 0 means not.
     myVars->PR_PS_com = true;
     //global PSPR_SUCS_com;    // This is a variable indicating whether the PSPR model is actually need to be combined with SUCS or not. If 1 then means combined; 0 means not.
@@ -151,9 +151,9 @@ double CM::CM_Drive2(double pop, double currentPop) {
     
     // Reinitialize some values of global variables.
     myVars->PSPR_SUCS_com = false;
-    IniModelCom(*myVars);
+    IniModelCom(myVars);
     
-    const double CO2AR = TargetFunVal(*myVars);
+    const double CO2AR = TargetFunVal(myVars);
 
     N_VDestroy(y);
     CVodeFree(&cvode_mem);

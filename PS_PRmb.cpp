@@ -27,7 +27,7 @@
 
 
 
-arr PS_PRmb(double t, arr &PS_PRs, double PS_PR_Param, varptr &myVars) {
+arr PS_PRmb(double t, arr &PS_PRs, varptr *myVars) {
     //global TestATPCost;
     //global AVR;
     
@@ -35,7 +35,7 @@ arr PS_PRmb(double t, arr &PS_PRs, double PS_PR_Param, varptr &myVars) {
     //global O2_cond;
     //global PS_C_CP;
     
-    const double vATPcost = myVars.TestATPCost / myVars.AVR;
+    const double vATPcost = myVars->TestATPCost / myVars->AVR;
     
     arr PSs = zeros(15);
     arr PrS = zeros(13);
@@ -70,25 +70,25 @@ arr PS_PRmb(double t, arr &PS_PRs, double PS_PR_Param, varptr &myVars) {
     // 2. Add exprimental conditions here; Conditions like light, temperature, CO2, O2 concentration should be added here //
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    const double fini = Condition(t, myVars);
+    Condition(t, myVars);
     
     
     arr PR_v = zeros(10);
     arr PS_v = zeros(18);
     
     arr PS_Param = zeros(2);
-    PS_Param[0] = PS_PR_Param;
+    PS_Param[0] = myVars->PS_PR_Param;
     PS_Param[1] = PR2PS_Pgca;
     
     PS_v = PSRate(t, PSs, PS_Param, myVars);
     
     arr PR_Param = zeros(2);
-    PR_Param[0] = PS_PR_Param;                  // To indicate that the calcualtion is using the combined model
+    PR_Param[0] = myVars->PS_PR_Param;                  // To indicate that the calcualtion is using the combined model
     // for the PS-PR combined model. 0: Combined model; 1: Separate model
     //global PS2PR_Pi;
-    PR_Param[1] = myVars.PS2PR_Pi;
+    PR_Param[1] = myVars->PS2PR_Pi;
     
-    PR_v = PRrate(t, PrS, PR_Param, myVars);
+    PR_v = PRrate(t, PrS, myVars);
     //throw(MException(""));
     //global PR2OUT;
     //global mRuBP;
@@ -138,10 +138,10 @@ arr PS_PRmb(double t, arr &PS_PRs, double PS_PR_Param, varptr &myVars) {
     //global PSPR2RA_v13;
     //global PSPR2RA_v111;
     //global PRGlu;
-    myVars.PSPR2RA_v1 = v1;
-    myVars.PSPR2RA_v13 = v13;
-    myVars.PSPR2RA_v111 = v111;
-    myVars.PRGlu = v124;
+    myVars->PSPR2RA_v1 = v1;
+    myVars->PSPR2RA_v13 = v13;
+    myVars->PSPR2RA_v111 = v111;
+    myVars->PRGlu = v124;
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // 6.  Calculation of the mass balance equations ////
     //////////////////////////////////////////////////////////////////////////////////////////////$

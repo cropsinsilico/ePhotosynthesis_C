@@ -49,7 +49,7 @@ arr trDynaPS::trDynaPS_Ini() {
         trDynaPS_Con[m] = DynaPS_Con[m];
     
     
-    arr RROEA_Con = RROEA_Ini(*myVars);
+    arr RROEA_Con = RROEA_Ini(myVars);
     
     for (int m = 0; m < 10; m++)
         DynaPS_Con[m + 110] = RROEA_Con[m];

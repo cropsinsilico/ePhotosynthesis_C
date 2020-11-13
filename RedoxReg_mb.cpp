@@ -28,11 +28,11 @@
 
 
 
-arr RedoxReg_mb(double t, arr &RedoxReg_Con, arr &BF_Param, arr &FI_Param, double PS_PR_Param, arr &RuACT_Param, double RedoxReg_Param, arr &SUCS_Param, varptr &myVars) {
+arr RedoxReg_mb(double t, arr &RedoxReg_Con, varptr *myVars) {
     
     
     //global trDynaPS2RedReg_cal
-    myVars.trDynaPS2RedReg_cal = 1;
+    myVars->trDynaPS2RedReg_cal = 1;
     
     arr RA_Con = zeros(92);
     for (int m = 0; m < 92; m++)
@@ -42,9 +42,9 @@ arr RedoxReg_mb(double t, arr &RedoxReg_Con, arr &BF_Param, arr &FI_Param, doubl
     // ThioRe = RedoxReg_Con[92];// --unused
     
     arr RedoxReg_Vel = zeros(2);
-    RedoxReg_Vel = RedoxReg_Rate(t, RedoxReg_Con, RedoxReg_Param, myVars);
+    RedoxReg_Vel = RedoxReg_Rate(t, RedoxReg_Con, myVars);
     
-    arr RA_DYDT = RA_mb(t, RA_Con, BF_Param, FI_Param, PS_PR_Param, RuACT_Param, SUCS_Param, myVars);
+    arr RA_DYDT = RA_mb(t, RA_Con, myVars);
     
     arr RedoxReg_DYDT = zeros(93);
     

@@ -26,61 +26,61 @@
 
 
 
-arr BF_Mb(double t, arr &BF_Con, arr &BF_Param, varptr &myVars) {
+arr BF_Mb(double t, varptr *myVars) {
     
     //global GLight;
-    const double fini = Condition(t, myVars);
-    const double light = myVars.GLight;
+    Condition(t, myVars);
+    const double light = myVars->GLight;
     
-    BF_Param[0] = light;
+    myVars->BF_Param[0] = light;
     
     //////////////////////////////////////////////////////////////////
     //   Calculate the rates BFrst   //
     //////////////////////////////////////////////////////////////////
     //global BF_Vel;
-    BF_Rate(t, BF_Con, BF_Param, myVars);
+    BF_Rate(t, myVars);
     
     ////////////////////////////////////////////////////////////////////////////////
     //   Get the rate of different reactions//
     ////////////////////////////////////////////////////////////////////////////////
     
     //	Assign velocities of different reactions in the model
-    const double Vbf1 = myVars.BF_Vel[0];
-    const double Vbf2 = myVars.BF_Vel[1];
-    const double Vbf3 = myVars.BF_Vel[2];
-    const double Vbf4 = myVars.BF_Vel[3];
-    const double Vbf5 = myVars.BF_Vel[4];
+    const double Vbf1 = myVars->BF_Vel[0];
+    const double Vbf2 = myVars->BF_Vel[1];
+    const double Vbf3 = myVars->BF_Vel[2];
+    const double Vbf4 = myVars->BF_Vel[3];
+    const double Vbf5 = myVars->BF_Vel[4];
     
-    const double Vbf6 = myVars.BF_Vel[5];
-    const double Vbf7 = myVars.BF_Vel[6];
-    const double Vbf8 = myVars.BF_Vel[7];
-    const double Vbf9 = myVars.BF_Vel[8];
-    const double Vbf10 = myVars.BF_Vel[9];
+    const double Vbf6 = myVars->BF_Vel[5];
+    const double Vbf7 = myVars->BF_Vel[6];
+    const double Vbf8 = myVars->BF_Vel[7];
+    const double Vbf9 = myVars->BF_Vel[8];
+    const double Vbf10 = myVars->BF_Vel[9];
     
-    const double Vbf11 = myVars.BF_Vel[10];
-    const double Vqi = myVars.BF_Vel[11];
-    const double Vipc = myVars.BF_Vel[12];
-    const double Vicp = myVars.BF_Vel[13];
-    const double Vinc = myVars.BF_Vel[14];
+    const double Vbf11 = myVars->BF_Vel[10];
+    const double Vqi = myVars->BF_Vel[11];
+    const double Vipc = myVars->BF_Vel[12];
+    const double Vicp = myVars->BF_Vel[13];
+    const double Vinc = myVars->BF_Vel[14];
     
-    const double Vinp = myVars.BF_Vel[15];
-    const double Vdp = myVars.BF_Vel[16];
-    const double Vdc = myVars.BF_Vel[17];
-    const double Vfp = myVars.BF_Vel[18];
-    const double Vfc = myVars.BF_Vel[19];
+    const double Vinp = myVars->BF_Vel[15];
+    const double Vdp = myVars->BF_Vel[16];
+    const double Vdc = myVars->BF_Vel[17];
+    const double Vfp = myVars->BF_Vel[18];
+    const double Vfc = myVars->BF_Vel[19];
     
-    // Vsfd = myVars.BF_Vel[20];// --unused
-    const double VsATP = myVars.BF_Vel[21];
-    const double VgPQH2 = myVars.BF_Vel[22];
-    const double Vbf12 = myVars.BF_Vel[23];
-    const double Vbf13 = myVars.BF_Vel[24];
+    // Vsfd = myVars->BF_Vel[20];// --unused
+    const double VsATP = myVars->BF_Vel[21];
+    const double VgPQH2 = myVars->BF_Vel[22];
+    const double Vbf12 = myVars->BF_Vel[23];
+    const double Vbf13 = myVars->BF_Vel[24];
     
-    const double Vbf14 = myVars.BF_Vel[25];
-    const double Vbf15 = myVars.BF_Vel[26];
-    const double Vbf16 = myVars.BF_Vel[27];
-    const double vbfn2 = myVars.BF_Vel[28];
-    const double VsNADPH = myVars.BF_Vel[29];
-    const double vcet = myVars.BF_Vel[30];
+    const double Vbf14 = myVars->BF_Vel[25];
+    const double Vbf15 = myVars->BF_Vel[26];
+    const double Vbf16 = myVars->BF_Vel[27];
+    const double vbfn2 = myVars->BF_Vel[28];
+    const double VsNADPH = myVars->BF_Vel[29];
+    const double vcet = myVars->BF_Vel[30];
     
     ////////////////////////////////////////////////////////////////
     // Get the mass balance equation //
@@ -88,7 +88,7 @@ arr BF_Mb(double t, arr &BF_Con, arr &BF_Param, varptr &myVars) {
     arr BF_mb = zeros(29);
     
     //global AVR;
-    const double CoeffVol = myVars.AVR; // This is the conversion factor between volume and area.
+    const double CoeffVol = myVars->AVR; // This is the conversion factor between volume and area.
     
     
     BF_mb[0] = Vbf2 - Vbf8;//	ISPHr	The reduced ion sulfer protein (ISPH)
@@ -138,10 +138,10 @@ arr BF_Mb(double t, arr &BF_Con, arr &BF_Param, varptr &myVars) {
     const double Hvqi = Vqi / CoeffVol;//	The rate of proton uptake from stroma at Qi site of cytbc1 complex
     
     //global HPR;
-    BF_mb[24] = (myVars.HPR * Vbf11 - Hrqb - Hvqi - vbfn2);//	BFHs	The proton and protonated buffer species in stroma. The proton concentration is not used in the MB procedure. The reason is that the proton concentration is buffered and therefore did not changed linerly with the generation of the protons.
-    BF_mb[25] = (Hvqo1 + Hvqo2 + Hroe - myVars.HPR * Vbf11);//	BFHl	The proton and protonated buffer species in lumen, similarly, we can only use the buff concentration, but, the proton concentration can not be used here.
-    BF_mb[26] = - (myVars.HPR * Vbf11 - Hrqb - Hvqi - vbfn2) / 1000 / 0.015;//	PHs, The changes of PH in stoma, 0.03 mol /PH from Laisk et al.
-    BF_mb[27] = - (Hvqo1 + Hvqo2 + Hroe - myVars.HPR * Vbf11) / 1000 / 0.015;//   PHl  The changes in PH of lumen, 0.03 is from Curz et al., 2001, Biochemistry.
+    BF_mb[24] = (myVars->HPR * Vbf11 - Hrqb - Hvqi - vbfn2);//	BFHs	The proton and protonated buffer species in stroma. The proton concentration is not used in the MB procedure. The reason is that the proton concentration is buffered and therefore did not changed linerly with the generation of the protons.
+    BF_mb[25] = (Hvqo1 + Hvqo2 + Hroe - myVars->HPR * Vbf11);//	BFHl	The proton and protonated buffer species in lumen, similarly, we can only use the buff concentration, but, the proton concentration can not be used here.
+    BF_mb[26] = - (myVars->HPR * Vbf11 - Hrqb - Hvqi - vbfn2) / 1000 / 0.015;//	PHs, The changes of PH in stoma, 0.03 mol /PH from Laisk et al.
+    BF_mb[27] = - (Hvqo1 + Hvqo2 + Hroe - myVars->HPR * Vbf11) / 1000 / 0.015;//   PHl  The changes in PH of lumen, 0.03 is from Curz et al., 2001, Biochemistry.
     BF_mb[28] = vbfn2 - VsNADPH;
     return BF_mb;
 }

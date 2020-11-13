@@ -53,13 +53,13 @@ int trDynaPS::trDynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_dat
         RROEA_Con[m] = x[m + 110];
     
     
-    const double light = Condition(t, *myVars);
-    
+    Condition(t, myVars);
+    const double light = 1.0;
     myVars->FI_Param[0] = light;
     myVars->BF_Param[0] = light;
     
     myVars->RROEA_Param[1] = 1;
-    arr RROEA_DYDT = RROEA_Mb(t, RROEA_Con, myVars->RROEA_Param, *myVars);
+    arr RROEA_DYDT = RROEA_Mb(t, RROEA_Con, myVars);
     //fprintf(" //g    ", DynaPS_Con);
     //fprintf("\n");
     DynaPS dps = DynaPS(myVars);
@@ -97,7 +97,7 @@ int trDynaPS::trDynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_dat
     //fprintf(fid, '\n');
     //fclose(fid);
     
-    GenOut(t, *myVars);
+    GenOut(t, myVars);
     N_VDestroy(dy);
     N_VDestroy(ddxdt);
     return 0;

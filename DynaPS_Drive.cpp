@@ -81,10 +81,10 @@ arr DynaPS::DynaPS_Drive(double ParaNum, double Ratio) {
     
     // The time information is set in a global variable called tglobal in SYSInitial.
     // Begin = 1;// --unused
-    const double fin = SYSInitial(*myVars);
+    SYSInitial(myVars);
     //global options1;
     //global tglobal;
-    const double time = myVars->tglobal;
+    //const double time = myVars->tglobal;
     
     ////////////////////////////////////////////////
     //   Calculation  step //
@@ -96,7 +96,7 @@ arr DynaPS::DynaPS_Drive(double ParaNum, double Ratio) {
     //global EPS_ATP_Rate;        // Indicate in the beginning there is no ATP synthesis activity.
     myVars->EPS_ATP_Rate = 0;
     
-    const double ModelComb = IniModelCom(*myVars);        // Initialize the structure of the model, i.e. Is this model separate or combined with others.
+    IniModelCom(myVars);        // Initialize the structure of the model, i.e. Is this model separate or combined with others.
     
     //global BF_FI_com;            // The combination of BF and FI model
     myVars->BF_FI_com = true;
@@ -326,7 +326,7 @@ arr DynaPS::DynaPS_Drive(double ParaNum, double Ratio) {
     // global FI_VEL;
     // global PS_VEL;
     
-    IniModelCom(*myVars);
+    IniModelCom(myVars);
     //save FDC2
 
     N_VDestroy(y);

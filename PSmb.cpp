@@ -24,7 +24,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-arr PSmb(double t, arr &PSs, arr &Param, varptr &myVars) {
+arr PSmb(double t, arr &PSs, arr &Param, varptr *myVars) {
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Modifying KM, KI, KE VMAX for different reactions as the regulation//
@@ -32,7 +32,7 @@ arr PSmb(double t, arr &PSs, arr &Param, varptr &myVars) {
     
     
     // Regulations first.
-    const double fini = Condition(t, myVars);
+    Condition(t, myVars);
     
     // Get the rate for the reactions in the photosynthesis sytem
     

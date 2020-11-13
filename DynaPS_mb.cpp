@@ -49,13 +49,14 @@ int DynaPS::DynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
     
     // This is a sensitivity test to show that the model is stable udner fluctuating light
     
-    const double light = Condition(t, *myVars);
+    const double light = 1;
+    Condition(t, myVars);
     
     myVars->FI_Param[0] = light;
     myVars->BF_Param[0] = light;
     
-    arr RA_DYDT = RA_mb(t, RA_Con, myVars->BF_Param, myVars->FI_Param, myVars->PS_PR_Param, myVars->RuACT_Param, myVars->SUCS_Param, *myVars);
-    arr XanCycle_DYDT = XanCycle_Mb(t, XanCycle_Con, myVars->XanCycle_Param, *myVars);
+    arr RA_DYDT = RA_mb(t, RA_Con, myVars);
+    arr XanCycle_DYDT = XanCycle_Mb(t, XanCycle_Con, myVars);
     
     // Here get the rate of Thioredoxin reduction and oxidation and use it to construct the differential equation for both thio and fd.
     

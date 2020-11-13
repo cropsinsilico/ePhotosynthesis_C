@@ -24,7 +24,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-arr XanCycle_Ini(varptr &myVars) {
+arr XanCycle_Ini(varptr *myVars) {
     //global XanRatio;
     //global XanCycle_kva;
     //global XanCycle_kaz;
@@ -34,14 +34,14 @@ arr XanCycle_Ini(varptr &myVars) {
     //global XanCycle_kv2ABA;
     //global XanCycle_kABAdg;
     
-    myVars.XanCycle_kva = 0.163 / 60 * myVars.XanRatio[0];// Ruth Frommolt et a; 2001; Planta
-    myVars.XanCycle_kaz = 0.691 / 60 * myVars.XanRatio[1];// Ruth Frommolt et a; 2001; Planta
-    myVars.XanCycle_kza = 0.119 / 60 * myVars.XanRatio[2];// Ruth Frommolt et a; 2001; Planta
-    myVars.XanCycle_kav = 0.119 / 60 * myVars.XanRatio[3];// Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
+    myVars->XanCycle_kva = 0.163 / 60 * myVars->XanRatio[0];// Ruth Frommolt et a; 2001; Planta
+    myVars->XanCycle_kaz = 0.691 / 60 * myVars->XanRatio[1];// Ruth Frommolt et a; 2001; Planta
+    myVars->XanCycle_kza = 0.119 / 60 * myVars->XanRatio[2];// Ruth Frommolt et a; 2001; Planta
+    myVars->XanCycle_kav = 0.119 / 60 * myVars->XanRatio[3];// Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
     
-    //myVars.XanCycle_kvf = 0;            // This is the rate of formation of v from its precursors, reprenting the net generation of new V.  // --unused
-    //myVars.XanCycle_kv2ABA = 0;         // This represent the rate constant of conversion from v to ABA. This is just a guess.  // --unused
-    //myVars.XanCycle_kABAdg = 0;         // This represent the rate constant of conversion ABA degradation  // --unused
+    //myVars->XanCycle_kvf = 0;            // This is the rate of formation of v from its precursors, reprenting the net generation of new V.  // --unused
+    //myVars->XanCycle_kv2ABA = 0;         // This represent the rate constant of conversion from v to ABA. This is just a guess.  // --unused
+    //myVars->XanCycle_kABAdg = 0;         // This represent the rate constant of conversion ABA degradation  // --unused
     
     const double Vx = 160;
     const double Ax = 10;
@@ -60,15 +60,15 @@ arr XanCycle_Ini(varptr &myVars) {
     //global XanCycle_VEL;
     //global XanCycle_CON;
     
-    myVars.XanCycle_OLD_TIME = 0;
-    myVars.XanCycle_TIME_N = 1;
+    myVars->XanCycle_OLD_TIME = 0;
+    myVars->XanCycle_TIME_N = 1;
     
     // XanCycle_VEL = zeros(1, 4);    // Clean memory
     // XanCycle_CON = zeros(1, 4);    // Clean memory
     
     
     //global XanCycle2FIBF_Xstate;
-    myVars.XanCycle2FIBF_Xstate = Zx / (Ax + Vx + Zx);
+    myVars->XanCycle2FIBF_Xstate = Zx / (Ax + Vx + Zx);
     
     return XanCycle_Con;
 }

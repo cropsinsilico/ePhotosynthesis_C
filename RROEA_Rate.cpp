@@ -26,37 +26,37 @@
 
 
 
-arr RROEA_Rate(double t, arr &RROEA_Con, arr &RROEA_Param, varptr &myVars) {
+arr RROEA_Rate(double t, arr &RROEA_Con, varptr *myVars) {
     
     arr RROEA_Vel = zeros(11);
     
     //global RROEA_RC;
     
-    const double light = RROEA_Param[0];
+    const double light =myVars-> RROEA_Param[0];
     
-    const double ke2GAPDH = myVars.RROEA_RC[0];	//	The rate constant of electron transfer to GAPDH. From literature.
-    const double ke2MDH = myVars.RROEA_RC[1];		//	The rate constant of electront transfer to MDH, this rate is totally ASSUMED.
-    const double ke2FBPase = myVars.RROEA_RC[2];	//	The rate constant of electron transfer from thioredoxin to FBPase.
-    const double ke2SBPase = myVars.RROEA_RC[3];	//	The rate constant of electron tranfer from thioredoxin to SBPase
-    const double ke2PRK = myVars.RROEA_RC[4];	    //	The rate constant of electron transfer from thioredoxin to PRK, Phosphoribulase kinase
-    const double ke2RuACT = myVars.RROEA_RC[5];	//	The rate constant of electron transfer from thioredoxin to Rubisco activase
-    const double ke2Fd = myVars.RROEA_RC[6];	    //	The rate constant of electron transfer to fe
-    const double keFd2Thio = myVars.RROEA_RC[7];	//	The rate constant of electron transfer from fd to thio
-    const double keFd2Calvin = myVars.RROEA_RC[8];	    //	The rate constant of electron transfer from fd to Calvin cycle
-    const double ke2ATPGPP = myVars.RROEA_RC[9];	    //	The rate constant of electron transfer from fd to ATPGPP
+    const double ke2GAPDH = myVars->RROEA_RC[0];	//	The rate constant of electron transfer to GAPDH. From literature.
+    const double ke2MDH = myVars->RROEA_RC[1];		//	The rate constant of electront transfer to MDH, this rate is totally ASSUMED.
+    const double ke2FBPase = myVars->RROEA_RC[2];	//	The rate constant of electron transfer from thioredoxin to FBPase.
+    const double ke2SBPase = myVars->RROEA_RC[3];	//	The rate constant of electron tranfer from thioredoxin to SBPase
+    const double ke2PRK = myVars->RROEA_RC[4];	    //	The rate constant of electron transfer from thioredoxin to PRK, Phosphoribulase kinase
+    const double ke2RuACT = myVars->RROEA_RC[5];	//	The rate constant of electron transfer from thioredoxin to Rubisco activase
+    const double ke2Fd = myVars->RROEA_RC[6];	    //	The rate constant of electron transfer to fe
+    const double keFd2Thio = myVars->RROEA_RC[7];	//	The rate constant of electron transfer from fd to thio
+    const double keFd2Calvin = myVars->RROEA_RC[8];	    //	The rate constant of electron transfer from fd to Calvin cycle
+    const double ke2ATPGPP = myVars->RROEA_RC[9];	    //	The rate constant of electron transfer from fd to ATPGPP
     
     
     //global RROEA_KE;
     
-    const double KEe2FBPase = myVars.RROEA_KE[0];
-    const double KEe2SBPase = myVars.RROEA_KE[1];
-    const double KEe2PRK = myVars.RROEA_KE[2];
-    double KEe2ATPase = myVars.RROEA_KE[3];
-    const double KEe2RuACT = myVars.RROEA_KE[4];
-    const double KEe2GAPDH = myVars.RROEA_KE[5];
-    const double KEe2MDH = myVars.RROEA_KE[6];
-    const double KEe2ATPGPP = myVars.RROEA_KE[7];
-    const double KEeFd2Thio = myVars.RROEA_KE[8];
+    const double KEe2FBPase = myVars->RROEA_KE[0];
+    const double KEe2SBPase = myVars->RROEA_KE[1];
+    const double KEe2PRK = myVars->RROEA_KE[2];
+    double KEe2ATPase = myVars->RROEA_KE[3];
+    const double KEe2RuACT = myVars->RROEA_KE[4];
+    const double KEe2GAPDH = myVars->RROEA_KE[5];
+    const double KEe2MDH = myVars->RROEA_KE[6];
+    const double KEe2ATPGPP = myVars->RROEA_KE[7];
+    const double KEeFd2Thio = myVars->RROEA_KE[8];
     
     const double GAPDH = RROEA_Con[0];	//	The  concentration of active GAPDH
     const double FBPase = RROEA_Con[1];	//	The  concentration of active FBPase
@@ -72,16 +72,16 @@ arr RROEA_Rate(double t, arr &RROEA_Con, arr &RROEA_Param, varptr &myVars) {
     
     //global RROEA_Pool;
     
-    const double GAPDHT = myVars.RROEA_Pool[0];
-    const double FBPaseT = myVars.RROEA_Pool[1];
-    const double SBPaseT = myVars.RROEA_Pool[2];
-    const double PRKT = myVars.RROEA_Pool[3];
-    const double ATPaseT = myVars.RROEA_Pool[4];
-    const double ATPGPPT = myVars.RROEA_Pool[5];
-    const double MDHT = myVars.RROEA_Pool[6];
-    const double ThioT = myVars.RROEA_Pool[7];
-    const double FdT = myVars.RROEA_Pool[8];
-    const double RuACTT = myVars.RROEA_Pool[9];
+    const double GAPDHT = myVars->RROEA_Pool[0];
+    const double FBPaseT = myVars->RROEA_Pool[1];
+    const double SBPaseT = myVars->RROEA_Pool[2];
+    const double PRKT = myVars->RROEA_Pool[3];
+    const double ATPaseT = myVars->RROEA_Pool[4];
+    const double ATPGPPT = myVars->RROEA_Pool[5];
+    const double MDHT = myVars->RROEA_Pool[6];
+    const double ThioT = myVars->RROEA_Pool[7];
+    const double FdT = myVars->RROEA_Pool[8];
+    const double RuACTT = myVars->RROEA_Pool[9];
     
     
     const double GAPDHo = GAPDHT - GAPDH;
@@ -126,35 +126,35 @@ arr RROEA_Rate(double t, arr &RROEA_Con, arr &RROEA_Param, varptr &myVars) {
     //global RROEA_VEL;
     //global RROEA_CON;
     
-    if (myVars.RROEA_TIME_N == 0)
-        myVars.RROEA_TIME_N = 1;
+    if (myVars->RROEA_TIME_N == 0)
+        myVars->RROEA_TIME_N = 1;
     
     
-    if (t > myVars.RROEA_OLD_TIME) {
-        myVars.RROEA_TIME_N = myVars.RROEA_TIME_N + 1;
-        myVars.RROEA_OLD_TIME = t;
+    if (t > myVars->RROEA_OLD_TIME) {
+        myVars->RROEA_TIME_N = myVars->RROEA_TIME_N + 1;
+        myVars->RROEA_OLD_TIME = t;
     }
     
-    if (myVars.RROEA_VEL.shape()[0] < myVars.RROEA_TIME_N) {
-        myVars.RROEA_VEL.resize(boost::extents[myVars.RROEA_TIME_N][RROEA_VEL_SIZE]);
-        myVars.RROEA_CON.resize(boost::extents[myVars.RROEA_TIME_N][RROEA_CON_SIZE]);
+    if (myVars->RROEA_VEL.shape()[0] < myVars->RROEA_TIME_N) {
+        myVars->RROEA_VEL.resize(boost::extents[myVars->RROEA_TIME_N][RROEA_VEL_SIZE]);
+        myVars->RROEA_CON.resize(boost::extents[myVars->RROEA_TIME_N][RROEA_CON_SIZE]);
     }
 
-    myVars.RROEA_VEL[myVars.RROEA_TIME_N - 1][0] = t;
-    myVars.RROEA_VEL[myVars.RROEA_TIME_N - 1][1] = ve2GAPDH;
-    myVars.RROEA_VEL[myVars.RROEA_TIME_N - 1][2] = ve2FBPase;
-    myVars.RROEA_VEL[myVars.RROEA_TIME_N - 1][3] = ve2SBPase;
-    myVars.RROEA_VEL[myVars.RROEA_TIME_N - 1][4] = ve2PRK;
-    myVars.RROEA_VEL[myVars.RROEA_TIME_N - 1][5] = ve2ATPase;
-    myVars.RROEA_VEL[myVars.RROEA_TIME_N - 1][6] = ve2ATPGPP;
-    myVars.RROEA_VEL[myVars.RROEA_TIME_N - 1][7] = ve2MDH;
-    myVars.RROEA_VEL[myVars.RROEA_TIME_N - 1][8] = ve2Fd;
-    myVars.RROEA_VEL[myVars.RROEA_TIME_N - 1][9] = veFd2Thio;
-    myVars.RROEA_VEL[myVars.RROEA_TIME_N - 1][10] = veFd2Calvin;
-    myVars.RROEA_VEL[myVars.RROEA_TIME_N - 1][11] = ve2RuACT;
+    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][0] = t;
+    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][1] = ve2GAPDH;
+    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][2] = ve2FBPase;
+    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][3] = ve2SBPase;
+    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][4] = ve2PRK;
+    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][5] = ve2ATPase;
+    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][6] = ve2ATPGPP;
+    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][7] = ve2MDH;
+    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][8] = ve2Fd;
+    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][9] = veFd2Thio;
+    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][10] = veFd2Calvin;
+    myVars->RROEA_VEL[myVars->RROEA_TIME_N - 1][11] = ve2RuACT;
     
-    //myVars.RROEA_CON[myVars.RROEA_TIME_N - 1][0] = t;  // --unused
-    //myVars.RROEA_CON[myVars.RROEA_TIME_N - 1][1] = Thioo;  // --unused
+    //myVars->RROEA_CON[myVars->RROEA_TIME_N - 1][0] = t;  // --unused
+    //myVars->RROEA_CON[myVars->RROEA_TIME_N - 1][1] = Thioo;  // --unused
     
     
     
@@ -177,20 +177,20 @@ arr RROEA_Rate(double t, arr &RROEA_Con, arr &RROEA_Param, varptr &myVars) {
     //global RROEA2PS_ATPase;
     //global RROEA2PS_ATPGPP;
     
-    myVars.RROEA2PS_GAPDH = GAPDH;
-    //myVars.RROEA2PS_FBPase = FBPase;  // --unused
-    myVars.RROEA2PS_SBPase = SBPase;
-    myVars.RROEA2PS_PRK = PRK;
-    myVars.RROEA2PS_ATPase = ATPase;
-    myVars.RROEA2PS_ATPGPP = ATPGPP;
+    myVars->RROEA2PS_GAPDH = GAPDH;
+    //myVars->RROEA2PS_FBPase = FBPase;  // --unused
+    myVars->RROEA2PS_SBPase = SBPase;
+    myVars->RROEA2PS_PRK = PRK;
+    myVars->RROEA2PS_ATPase = ATPase;
+    myVars->RROEA2PS_ATPGPP = ATPGPP;
     
     //global RROEA2RuACT_RuAC;
-    myVars.RROEA2RuACT_RuAC = RuACT;
+    myVars->RROEA2RuACT_RuAC = RuACT;
     
     //global RROEA2trDynaPS_ve2Fd;
-    myVars.RROEA2trDynaPS_ve2Fd = ve2Fd;
+    myVars->RROEA2trDynaPS_ve2Fd = ve2Fd;
     
     //global RROEA2trDynaPS_veFd2Calvin;
-    myVars.RROEA2trDynaPS_veFd2Calvin = veFd2Calvin;
+    myVars->RROEA2trDynaPS_veFd2Calvin = veFd2Calvin;
     return RROEA_Vel;
 }

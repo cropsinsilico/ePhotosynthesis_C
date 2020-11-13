@@ -29,7 +29,7 @@
 // The following information is initialized sequentially 1) Rate constants; 2) Initial concentration ( or conditions); 3) THe maximum
 // concentration of components of photosystems.
 
-void FI_Ini(varptr &myVars) {
+void FI_Ini(varptr *myVars) {
     //global FIRatio;
     //////////////////////////////////////////////////////////////////////////
     // Initilization of the rate constant //
@@ -40,56 +40,56 @@ void FI_Ini(varptr &myVars) {
     // The rate constant used in the model
     // Reference
     
-    const double kA_d = 2 * pow(10, 8) * myVars.FIRatio[0];
-    const double kA_f = 6.3 * pow(10, 6) * 0.2 * myVars.FIRatio[1];
-    const double kA_U = pow(10, 10) * myVars.FIRatio[2];
-    const double kU_A = pow(10, 10) * myVars.FIRatio[3];
-    const double kU_d = 2 * pow(10, 8) * myVars.FIRatio[4];
-    const double kU_f = 6.3 * pow(10, 6) * 0.2 * myVars.FIRatio[5];
+    const double kA_d = 2 * pow(10, 8) * myVars->FIRatio[0];
+    const double kA_f = 6.3 * pow(10, 6) * 0.2 * myVars->FIRatio[1];
+    const double kA_U = pow(10, 10) * myVars->FIRatio[2];
+    const double kU_A = pow(10, 10) * myVars->FIRatio[3];
+    const double kU_d = 2 * pow(10, 8) * myVars->FIRatio[4];
+    const double kU_f = 6.3 * pow(10, 6) * 0.2 * myVars->FIRatio[5];
     
-    const double k1 = 2.5 * pow(10, 11) * myVars.FIRatio[6];
-    const double k_r1 = 3 * pow(10, 8) * myVars.FIRatio[7];
-    const double kz = 5 * pow(10, 6) * myVars.FIRatio[8];
-    const double k12 = 30000 * myVars.FIRatio[9];//	The rate constant of the S1 to S2 transition	Lazar (1999); 0.667~33.3 * 10^3
-    const double k23 = 10000 * myVars.FIRatio[10];//	The rate constant of the S2 to S3 transition	Lazar (1999); 0.667~33.3 * 10^3
-    const double k30 = 3000 * myVars.FIRatio[11];//	The rate constant of the S3 to S0 transition	Lazar (1999); 0.667~33.3 * 10^3
-    const double k01 = 500 * myVars.FIRatio[12];//	The rate constant of the S0 to S1 transition	Lazar (1999); 0.667~33.3 * 10^3
+    const double k1 = 2.5 * pow(10, 11) * myVars->FIRatio[6];
+    const double k_r1 = 3 * pow(10, 8) * myVars->FIRatio[7];
+    const double kz = 5 * pow(10, 6) * myVars->FIRatio[8];
+    const double k12 = 30000 * myVars->FIRatio[9];//	The rate constant of the S1 to S2 transition	Lazar (1999); 0.667~33.3 * 10^3
+    const double k23 = 10000 * myVars->FIRatio[10];//	The rate constant of the S2 to S3 transition	Lazar (1999); 0.667~33.3 * 10^3
+    const double k30 = 3000 * myVars->FIRatio[11];//	The rate constant of the S3 to S0 transition	Lazar (1999); 0.667~33.3 * 10^3
+    const double k01 = 500 * myVars->FIRatio[12];//	The rate constant of the S0 to S1 transition	Lazar (1999); 0.667~33.3 * 10^3
     
-    const double k2 = 2 * pow(10, 9) * myVars.FIRatio[13];
-    const double kAB1 = 2500 * myVars.FIRatio[14];//	The rate constant of QAQB-->QAQB-	Lazar (1999); 2.5~5 * 10^3
-    const double kBA1 = 200 * myVars.FIRatio[15];//	The rate constant of the QAQB- -->QAQB	Lazar (1999)
-    const double kAB2 = 3300 * myVars.FIRatio[16];//	The rate constant of the QAQB- --> QAQB2-	Lazar (1999); 1.25~3.33 * 10^3
-    const double kBA2 = 250 * myVars.FIRatio[17];//	The rate constant of the QAQB2- --> QAQB- 	Lazar (1999), or same as kAB2 depend on the equilibium constant
-    const double k3 = 800 * myVars.FIRatio[18];//	The rate constant of the exchange of PQ and QBH2	Lazar (1999),0.12~1 for the fast PQ pool,  or 3~8 for the slow recycling PQ pool
-    const double k_r3 = 80 * myVars.FIRatio[19];//	The rate constant of the exchange of QB and PQH2	Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
-    const double k_pq_oxy = 500 * myVars.FIRatio[20];//	The rate constant of the PQH2 oxidation	Lazar (1999),50~500
+    const double k2 = 2 * pow(10, 9) * myVars->FIRatio[13];
+    const double kAB1 = 2500 * myVars->FIRatio[14];//	The rate constant of QAQB-->QAQB-	Lazar (1999); 2.5~5 * 10^3
+    const double kBA1 = 200 * myVars->FIRatio[15];//	The rate constant of the QAQB- -->QAQB	Lazar (1999)
+    const double kAB2 = 3300 * myVars->FIRatio[16];//	The rate constant of the QAQB- --> QAQB2-	Lazar (1999); 1.25~3.33 * 10^3
+    const double kBA2 = 250 * myVars->FIRatio[17];//	The rate constant of the QAQB2- --> QAQB- 	Lazar (1999), or same as kAB2 depend on the equilibium constant
+    const double k3 = 800 * myVars->FIRatio[18];//	The rate constant of the exchange of PQ and QBH2	Lazar (1999),0.12~1 for the fast PQ pool,  or 3~8 for the slow recycling PQ pool
+    const double k_r3 = 80 * myVars->FIRatio[19];//	The rate constant of the exchange of QB and PQH2	Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
+    const double k_pq_oxy = 500 * myVars->FIRatio[20];//	The rate constant of the PQH2 oxidation	Lazar (1999),50~500
     
     // The rate constant used in the model
     //global FI_RC;
     // FI_RC = zeros(5, 1);
     // The rate constant used in the model
     // The rate constant used in the model
-    myVars.FI_RC[0] = kA_d;	//	The rate constant of heat dissipation from peripheral antenna	Lazar (1999), 0.25~1 *10^(9)
-    myVars.FI_RC[1] = kA_f;	//	The rate constant of fluorescence emission from peripheral antenna	Lazar 1999, with a lifetime of 5 ns at closed reaction center
-    myVars.FI_RC[2] = kA_U;	//	The rate constant of exciton transfer from periphral antenna to core antenna	Reference needed, a guess
-    myVars.FI_RC[3] = kU_A;	//	The rate constant of exciton transfer from core antenna to peripheral antenna	Reference needed, a guess
-    myVars.FI_RC[4] = kU_d;	//	The rate constant of  heat emission from core antenna
-    myVars.FI_RC[5] = kU_f;	//	The rate constant of fluorescence emission from core antenna
-    myVars.FI_RC[6] = k1;	//	The rate constant of primary charge separation for open reaction center
-    myVars.FI_RC[7] = k_r1;	//	The rate constant of charge recombination for open reactoin center
-    myVars.FI_RC[8] = kz;	//	The rate constant of the Tyrosine oxidation	Lazar (1999); 3.8~50 * 10^6
-    myVars.FI_RC[9] = k12;	//	The rate constant of the S1 to S2 transition	Lazar (1999); 0.667~33.3 * 10^3
-    myVars.FI_RC[10] = k23;	//	The rate constant of the S2 to S3 transition	Lazar (1999); 0.667~33.3 * 10^3
-    myVars.FI_RC[11] = k30;	//	The rate constant of the S3 to S0 transition	Lazar (1999); 0.667~33.3 * 10^3
-    myVars.FI_RC[12] = k01;	//	The rate constant of the S0 to S1 transition	Lazar (1999); 0.667~33.3 * 10^3
-    myVars.FI_RC[13] = k2;	//	The rate constant of the QA reduction by Pheo-	Lazar (1999); 2~2.3 * 10^9
-    myVars.FI_RC[14] = kAB1;	//	The rate constant of QAQB-->QAQB-	Lazar (1999); 2.5~5 * 10^3
-    myVars.FI_RC[15] = kBA1;	//	The rate constant of the QAQB- -->QAQB	Lazar (1999)
-    myVars.FI_RC[16] = kAB2;	//	The rate constant of the QAQB- --> QAQB2-	Lazar (1999); 1.25~3.33 * 10^3
-    myVars.FI_RC[17] = kBA2;	//	The rate constant of the QAQB2- --> QAQB- 	Lazar (1999), or same as kAB2 depend on the equilibium constant
-    myVars.FI_RC[18] = k3;	//	The rate constant of the exchange of PQ and QBH2	Lazar (1999),0.12~1 for the fast PQ pool,  or 3~8 for the slow recycling PQ pool
-    myVars.FI_RC[19] = k_r3;	//	The rate constant of the exchange of QB and PQH2	Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
-    myVars.FI_RC[20] = k_pq_oxy;	//	The rate constant of the PQH2 oxidation	Lazar (1999),50~500
+    myVars->FI_RC[0] = kA_d;	//	The rate constant of heat dissipation from peripheral antenna	Lazar (1999), 0.25~1 *10^(9)
+    myVars->FI_RC[1] = kA_f;	//	The rate constant of fluorescence emission from peripheral antenna	Lazar 1999, with a lifetime of 5 ns at closed reaction center
+    myVars->FI_RC[2] = kA_U;	//	The rate constant of exciton transfer from periphral antenna to core antenna	Reference needed, a guess
+    myVars->FI_RC[3] = kU_A;	//	The rate constant of exciton transfer from core antenna to peripheral antenna	Reference needed, a guess
+    myVars->FI_RC[4] = kU_d;	//	The rate constant of  heat emission from core antenna
+    myVars->FI_RC[5] = kU_f;	//	The rate constant of fluorescence emission from core antenna
+    myVars->FI_RC[6] = k1;	//	The rate constant of primary charge separation for open reaction center
+    myVars->FI_RC[7] = k_r1;	//	The rate constant of charge recombination for open reactoin center
+    myVars->FI_RC[8] = kz;	//	The rate constant of the Tyrosine oxidation	Lazar (1999); 3.8~50 * 10^6
+    myVars->FI_RC[9] = k12;	//	The rate constant of the S1 to S2 transition	Lazar (1999); 0.667~33.3 * 10^3
+    myVars->FI_RC[10] = k23;	//	The rate constant of the S2 to S3 transition	Lazar (1999); 0.667~33.3 * 10^3
+    myVars->FI_RC[11] = k30;	//	The rate constant of the S3 to S0 transition	Lazar (1999); 0.667~33.3 * 10^3
+    myVars->FI_RC[12] = k01;	//	The rate constant of the S0 to S1 transition	Lazar (1999); 0.667~33.3 * 10^3
+    myVars->FI_RC[13] = k2;	//	The rate constant of the QA reduction by Pheo-	Lazar (1999); 2~2.3 * 10^9
+    myVars->FI_RC[14] = kAB1;	//	The rate constant of QAQB-->QAQB-	Lazar (1999); 2.5~5 * 10^3
+    myVars->FI_RC[15] = kBA1;	//	The rate constant of the QAQB- -->QAQB	Lazar (1999)
+    myVars->FI_RC[16] = kAB2;	//	The rate constant of the QAQB- --> QAQB2-	Lazar (1999); 1.25~3.33 * 10^3
+    myVars->FI_RC[17] = kBA2;	//	The rate constant of the QAQB2- --> QAQB- 	Lazar (1999), or same as kAB2 depend on the equilibium constant
+    myVars->FI_RC[18] = k3;	//	The rate constant of the exchange of PQ and QBH2	Lazar (1999),0.12~1 for the fast PQ pool,  or 3~8 for the slow recycling PQ pool
+    myVars->FI_RC[19] = k_r3;	//	The rate constant of the exchange of QB and PQH2	Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
+    myVars->FI_RC[20] = k_pq_oxy;	//	The rate constant of the PQH2 oxidation	Lazar (1999),50~500
     
     
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -131,44 +131,44 @@ void FI_Ini(varptr &myVars) {
     // FI_ini.m
     // This is the program that initialize the major variables used in the fluorescence induction system.In this file, the n represent negative charges, _red represent that the components are associated with the closed reaction center; while _ox represent a system with open reaction center.
     //global FI_Con;
-    myVars.FI_Con[0] = A;	// 	The concentration of excitons in the peripheral antenna
-    myVars.FI_Con[1] = U;	//	The concentration fo excitons in the core antenna
-    myVars.FI_Con[2] = P680Pheo;	// 	The concentration of the P680Pheo
-    myVars.FI_Con[3] = P680pPheon;	//	The concentration for the P680+ Pheo-
-    myVars.FI_Con[4] = P680pPheo;	// 	The concentration of P680+ Pheo
-    myVars.FI_Con[5] = P680Pheon;	//	The concentration of P680Pheo-
-    myVars.FI_Con[6] = Yz;           //	The concentration of reduced tyrosine
-    myVars.FI_Con[7] = S1T;           // 	The concentration of S1 in combination with reduced tyrosine
-    myVars.FI_Con[8] = S2T;           //	The concentration of S2 in combination with reduced tyrosine
-    myVars.FI_Con[9] = S3T;           // 	The concentration of S3 in combination with reduced tyrosine
-    myVars.FI_Con[10] = S0T;           //	The concentration of S0 in combination with reduced tyrosine
-    myVars.FI_Con[11] = S1Tp;	// 	The concentration of S1 in combination with oxidized tyrosine
-    myVars.FI_Con[12] = S2Tp;	// 	The concentration of S2 in combination with oxidized tyrosine
-    myVars.FI_Con[13] = S3Tp;	//	The concentration of S3 in combination with oxidized tyrosine
-    myVars.FI_Con[14] = S0Tp;	// 	The concentration of S0 in combination with oxidized tyrosine
-    myVars.FI_Con[15] = QAQB;	// 	The concentration of [QAQB]
-    myVars.FI_Con[16] = QAnQB;	// 	The concentration of [QA-QB];
-    myVars.FI_Con[17] = QAQBn;	//	The concentration of [QAQB-]
-    myVars.FI_Con[18] = QAnQBn;	// 	The concentration of [QA-QB-];
-    myVars.FI_Con[19] = QAQB2n;	//	The concentration of [QAQB2-]
-    myVars.FI_Con[20] = QAnQB2n;	// 	The concentration of [QA-QB2-];
-    myVars.FI_Con[21] = PQn;	//	The concentration of reduced PQ, i.e. PQH2;
+    myVars->FI_Con[0] = A;	// 	The concentration of excitons in the peripheral antenna
+    myVars->FI_Con[1] = U;	//	The concentration fo excitons in the core antenna
+    myVars->FI_Con[2] = P680Pheo;	// 	The concentration of the P680Pheo
+    myVars->FI_Con[3] = P680pPheon;	//	The concentration for the P680+ Pheo-
+    myVars->FI_Con[4] = P680pPheo;	// 	The concentration of P680+ Pheo
+    myVars->FI_Con[5] = P680Pheon;	//	The concentration of P680Pheo-
+    myVars->FI_Con[6] = Yz;           //	The concentration of reduced tyrosine
+    myVars->FI_Con[7] = S1T;           // 	The concentration of S1 in combination with reduced tyrosine
+    myVars->FI_Con[8] = S2T;           //	The concentration of S2 in combination with reduced tyrosine
+    myVars->FI_Con[9] = S3T;           // 	The concentration of S3 in combination with reduced tyrosine
+    myVars->FI_Con[10] = S0T;           //	The concentration of S0 in combination with reduced tyrosine
+    myVars->FI_Con[11] = S1Tp;	// 	The concentration of S1 in combination with oxidized tyrosine
+    myVars->FI_Con[12] = S2Tp;	// 	The concentration of S2 in combination with oxidized tyrosine
+    myVars->FI_Con[13] = S3Tp;	//	The concentration of S3 in combination with oxidized tyrosine
+    myVars->FI_Con[14] = S0Tp;	// 	The concentration of S0 in combination with oxidized tyrosine
+    myVars->FI_Con[15] = QAQB;	// 	The concentration of [QAQB]
+    myVars->FI_Con[16] = QAnQB;	// 	The concentration of [QA-QB];
+    myVars->FI_Con[17] = QAQBn;	//	The concentration of [QAQB-]
+    myVars->FI_Con[18] = QAnQBn;	// 	The concentration of [QA-QB-];
+    myVars->FI_Con[19] = QAQB2n;	//	The concentration of [QAQB2-]
+    myVars->FI_Con[20] = QAnQB2n;	// 	The concentration of [QA-QB2-];
+    myVars->FI_Con[21] = PQn;	//	The concentration of reduced PQ, i.e. PQH2;
     
     //global FI_Pool;
-    const double QBt = 1 * myVars.FIRatio[21];// The total concentration of Qb site;
-    const double PQT = 8 * myVars.FIRatio[22];// The total concentration of PQ;
+    const double QBt = 1 * myVars->FIRatio[21];// The total concentration of Qb site;
+    const double PQT = 8 * myVars->FIRatio[22];// The total concentration of PQ;
     
-    myVars.FI_Pool[0] = QBt;
-    myVars.FI_Pool[1] = PQT;
+    myVars->FI_Pool[0] = QBt;
+    myVars->FI_Pool[1] = PQT;
     
     
     //global FIBF_AUX;
     // FIBF_AUX = zeros(5, 1);
     
     //global FI_RC_Reg_o;
-    //myVars.FI_RC_Reg_o(1) = myVars.FI_RC[10];  // --unused
-    //myVars.FI_RC_Reg_o(2) = myVars.FI_RC[11];  // --unused
-    //myVars.FI_RC_Reg_o(3) = myVars.FI_RC[12];  // --unused
-    //myVars.FI_RC_Reg_o(4) = myVars.FI_RC[6];  // --unused
+    //myVars->FI_RC_Reg_o(1) = myVars->FI_RC[10];  // --unused
+    //myVars->FI_RC_Reg_o(2) = myVars->FI_RC[11];  // --unused
+    //myVars->FI_RC_Reg_o(3) = myVars->FI_RC[12];  // --unused
+    //myVars->FI_RC_Reg_o(4) = myVars->FI_RC[6];  // --unused
     
 }

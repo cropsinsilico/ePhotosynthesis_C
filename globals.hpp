@@ -37,7 +37,7 @@ inline arr zeros(const int length) {
     return arr(length, 0.);
 }
 
-    
+
 const int BF_CON_SIZE = 2;
 const int BF_VEL_SIZE = 31;
 const int CO2A_SIZE = 100;
@@ -405,6 +405,7 @@ struct Variables {
     double PS_PR_Param = 0;
     double SUCS_PARAM = 0;
 
+    arr PR_Param = zeros(2);
     arr BF2OUT = zeros(5);
     arr BFRatio = ones(49);
     arr BF_Param = zeros(2);
@@ -471,103 +472,99 @@ struct Variables {
 };
 typedef Variables varptr;
 
-void BF_Ini(varptr &myVars);
+void BF_Ini(varptr *myVars);
 
-arr BF_Mb(double t, arr &BF_Con, arr &BF_Param, varptr &myVars);
+arr BF_Mb(double t, varptr *myVars);
 
-void BF_Rate(double t, arr &BF_con, arr &BF_Param, varptr &myVars);
+void BF_Rate(double t, varptr *myVars);
 
-double Condition(double t, varptr &myVars);
+void Condition(double t, varptr *myVars);
 
-arr EPS_Ini(varptr &myVars);
+arr EPS_Ini(varptr *myVars);
 
-arr EPS_mb(double t, arr &EPS_Con, arr &BF_Param, arr &FI_Param, double PS_PR_Param, arr &Sucs_Param, varptr &myVars);
+arr EPS_mb(double t, arr &EPS_Con, varptr *myVars);
 
-double FIBF_Ini(varptr &myVars);
+void FIBF_Ini(varptr *myVars);
 
-arr FIBF_MB(double t, arr &FIBF_Con, arr &BF_Param, arr &FI_Param, varptr &myVars);
+arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars);
 
-void FI_Ini(varptr &myVars);
+void FI_Ini(varptr *myVars);
 
-arr FI_Mb(double t, arr &FI_Con, arr &FI_Param, varptr &myVars);
+arr FI_Mb(double t, varptr *myVars);
 
-void FI_Rate(double t, arr &FI_Con, arr &FI_Param, varptr &myVars);
+void FI_Rate(double t, varptr *myVars);
 
-double GenOut(double t, varptr &myVars);
+void GenOut(double t, varptr *myVars);
 
-double IModelCom(varptr &myVars);
+void IniModelCom(varptr *myVars);
 
-double IniModelCom(varptr &myVars);
+arr PRinitial(varptr *myVars);
 
-arr PRinitial(varptr &myVars);
+arr PRmb(double t, arr &PrS, varptr *myVars);
 
-arr PRmb(double t, arr &PrS, arr &PR_Param, varptr &myVars);
+arr PRrate(double t, arr &PrS, varptr *myVars);
 
-arr PRrate(double t, arr &PrS, arr &PR_Param, varptr &myVars);
+arr PSI(varptr *myVars);
 
-arr PSI(varptr &myVars);
+arr PSInitial(varptr *myVars);
 
-arr PSInitial(varptr &myVars);
+arr PSRate(double t, arr &PSs, arr &Param, varptr *myVars);
 
-arr PSRate(double t, arr &PSs, arr &Param, varptr &myVars);
+arr PS_PRIni(varptr *myVars);
 
-arr PS_PRIni(varptr &myVars);
+arr PS_PRmb(double t, arr &PS_PRs, varptr *myVars);
 
-double PS_PR_Titl(double m, double p, double n, varptr &myVars);
+arr PSmb(double t, arr &PSs, arr &Param, varptr *myVars);
 
-arr PS_PRmb(double t, arr &PS_PRs, double PS_PR_Param, varptr &myVars);
+void ParamSet(varptr *myVars);
 
-arr PSmb(double t, arr &PSs, arr &Param, varptr &myVars);
+void PreProcess(varptr *myVars);
 
-void ParamSet(varptr &myVars);
+arr RA_Ini(varptr *myVars);
 
-double PreProcess(varptr &myVars);
+arr RA_mb(double t, arr &RA_Con, varptr *myVars);
 
-arr RA_Ini(varptr &myVars);
+arr RROEA_Ini(varptr *myVars);
 
-arr RA_mb(double t, arr &RA_Con, arr &BF_Param, arr &FI_Param, double PS_PR_Param, arr &RuACT_Param, arr &SUCS_Param, varptr &myVars);
+arr RROEA_Mb(double t, arr &RROEA_Con, varptr *myVars);
 
-arr RROEA_Ini(varptr &myVars);
-
-arr RROEA_Mb(double t, arr &RROEA_Con, arr &RROEA_Param, varptr &myVars);
-
-arr RROEA_Rate(double t, arr &RROEA_Con, arr &RROEA_Param, varptr &myVars);
+arr RROEA_Rate(double t, arr &RROEA_Con, varptr *myVars);
 
 int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data);
 
-arr RedoxReg_Ini(varptr &myVars);
+arr RedoxReg_Ini(varptr *myVars);
 
-arr RedoxReg_Rate(double t, arr &RedoxReg_Con, double RedoxReg_Param, varptr &myVars);
+arr RedoxReg_Rate(double t, arr &RedoxReg_Con, varptr *myVars);
 
-arr RedoxReg_mb(double t, arr &RedoxReg_Con, arr &BF_Param, arr &FI_Param, double PS_PR_Param, double RuACT_Param, double RedoxReg_Param, arr &SUCS_Param, varptr &myVars);
+arr RedoxReg_mb(double t, arr &RedoxReg_Con, varptr *myVars);
 
-arr RuACT_Ini(varptr &myVars);
+arr RuACT_Ini(varptr *myVars);
 
-arr RuACT_Mb(double t, arr &RuACT_Con, arr &RuACT_Param, varptr &myVars);
+arr RuACT_Mb(double t, arr &RuACT_Con, varptr *myVars);
 
-arr RuACT_Rate(double t, arr &RuACT_Con, arr &RuACT_Param, varptr &myVars);
+arr RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars);
 
-arr SUCS_Ini(varptr &myVars);
+arr SUCS_Ini(varptr *myVars);
 
-arr SUCS_Mb(double t, arr &SUCS_Con, arr &SUCS_Param, varptr &myVars);
+arr SUCS_Mb(double t, arr &SUCS_Con, varptr *myVars);
 
-arr SUCS_Rate(double t, arr &SUCS_Con, arr &SUCS_Param, varptr &myVars);
+arr SUCS_Rate(double t, arr &SUCS_Con, varptr *myVars);
 
-double SYSInitial(varptr &myVars);
+void SYSInitial(varptr *myVars);
 
 void Sim_Ephotosynthesis();
 
-double TargetFunVal(varptr &myVars);
+double TargetFunVal(varptr *myVars);
 
-arr XanCycle_Ini(varptr &myVars);
+arr XanCycle_Ini(varptr *myVars);
 
-arr XanCycle_Mb(double t, arr &XanCycle_Con, arr &XanCycle_Param, varptr &myVars);
+arr XanCycle_Mb(double t, arr &XanCycle_Con, varptr *myVars);
 
-arr XanCycle_Rate(double t, arr &XanCycle_Con, arr &XanCycle_Param, varptr &myVars);
+arr XanCycle_Rate(double t, arr &XanCycle_Con, varptr *myVars);
 
-arr ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, double Light, varptr &myVars);
+arr ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, double Light, varptr *myVars);
 
-double ssPSIni(double t, varptr &myVars);
+void ssPSIni(double t, varptr *myVars);
 
 
 class CM {

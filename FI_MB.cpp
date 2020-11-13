@@ -30,80 +30,80 @@
 // 1) The initialization of the rates that was transfered from the FI_Rate routine
 // 2) The computation of the mass balance equations
 
-arr FI_Mb(double t, arr &FI_Con, arr &FI_Param, varptr &myVars) {
+arr FI_Mb(double t, varptr *myVars) {
     
     //////////////////////////////////////////////////////////////////
     //   Calculate the rates first   //
     //////////////////////////////////////////////////////////////////
     //global GLight;
-    const double fini = Condition(t, myVars);
-    const double light = myVars.GLight;
+    Condition(t, myVars);
+    const double light = myVars->GLight;
     
-    FI_Param[0] = light;
+    myVars->FI_Param[0] = light;
     
-    FI_Rate(t, FI_Con, FI_Param, myVars);
+    FI_Rate(t, myVars);
     
     ////////////////////////////////////////////////////////////////////////////////
     //   Get the rate of different reactions//
     ////////////////////////////////////////////////////////////////////////////////
     
-    const double vA_d = myVars.FI_Vel[0];	//	vA_d	The rate of heat dissipation from peripheral antenna
-    const double vA_f = myVars.FI_Vel[1];	//	vA_f	The rate of fluorescence emission from peripheral antenna
-    const double vA_U = myVars.FI_Vel[2];	//	vA_U	The rate of exciton transfer from peripheral antenna to core antenna in open reaction center
-    const double vU_A = myVars.FI_Vel[3];	//	vU_A	The rate of exciton transfer from core antenna to perpheral antenna in open center
-    const double vU_f = myVars.FI_Vel[4];	//	vU_f	The rate of fluorescence emission from core antenna
-    const double vU_d = myVars.FI_Vel[5];	//	vU_d	The rate of heat dissipation from core antenna
-    const double v1 = myVars.FI_Vel[6];	//	v1	The rate of primary charge separation
-    const double v_r1 = myVars.FI_Vel[7];	//	v_r1	The rate of charge recombination
-    const double vS1_S2 = myVars.FI_Vel[8];	//	vS1_S2	The rate of transition from S1 to S2
-    const double vS2_S3 = myVars.FI_Vel[9];	//	vS2_S3	The rate of transition from S2 to S3
-    const double vS3_S0 = myVars.FI_Vel[10];	//	vS3_S0	The rate of transition from S3 to S0
-    const double vS0_S1 = myVars.FI_Vel[11];	//	vS0_S1	The rate of transition from S0 to S1
-    const double vz_1 = myVars.FI_Vel[12];	//	vz_1	The rate of P680p reduction
+    const double vA_d = myVars->FI_Vel[0];	//	vA_d	The rate of heat dissipation from peripheral antenna
+    const double vA_f = myVars->FI_Vel[1];	//	vA_f	The rate of fluorescence emission from peripheral antenna
+    const double vA_U = myVars->FI_Vel[2];	//	vA_U	The rate of exciton transfer from peripheral antenna to core antenna in open reaction center
+    const double vU_A = myVars->FI_Vel[3];	//	vU_A	The rate of exciton transfer from core antenna to perpheral antenna in open center
+    const double vU_f = myVars->FI_Vel[4];	//	vU_f	The rate of fluorescence emission from core antenna
+    const double vU_d = myVars->FI_Vel[5];	//	vU_d	The rate of heat dissipation from core antenna
+    const double v1 = myVars->FI_Vel[6];	//	v1	The rate of primary charge separation
+    const double v_r1 = myVars->FI_Vel[7];	//	v_r1	The rate of charge recombination
+    const double vS1_S2 = myVars->FI_Vel[8];	//	vS1_S2	The rate of transition from S1 to S2
+    const double vS2_S3 = myVars->FI_Vel[9];	//	vS2_S3	The rate of transition from S2 to S3
+    const double vS3_S0 = myVars->FI_Vel[10];	//	vS3_S0	The rate of transition from S3 to S0
+    const double vS0_S1 = myVars->FI_Vel[11];	//	vS0_S1	The rate of transition from S0 to S1
+    const double vz_1 = myVars->FI_Vel[12];	//	vz_1	The rate of P680p reduction
     // v1z_1 = FI_Vel[13];	//	v1z_1	The rate of oxidation of S1T by P680pPheon// --unused
     // v2z_1 = FI_Vel[14];	//	v2z_1	The rate of oxidation of S2T  by P680pPheon// --unused
     // v3z_1 = FI_Vel[15];	//	v3z_1	The rate of oxidation of S3T  by P680pPheon// --unused
     // v0z_1 = FI_Vel[16];	//	v0z_1	The rate of oxidation of S0T  by P680pPheon// --unused
-    const double vz_2 = myVars.FI_Vel[17];	//	vz_2	The rate of P680pPheon reduction
+    const double vz_2 = myVars->FI_Vel[17];	//	vz_2	The rate of P680pPheon reduction
     // v1z_2 = FI_Vel[18];	//	v1z_2	The rate of oxidation of S1T by P680pPheo// --unused
     // v2z_2 = FI_Vel[19];	//	v2z_2	The rate of oxidation of S2T  by P680pPheo// --unused
     // v3z_2 = FI_Vel[20];	//	v3z_2	The rate of oxidation of S3T  by P680pPheo// --unused
     // v0z_2 = FI_Vel[21];	//	v0z_2	The rate of oxidation of S0T  by P680pPheo// --unused
-    const double v1z = myVars.FI_Vel[22];	//	v1z
-    const double v2z = myVars.FI_Vel[23];	//	v2z
-    const double v3z = myVars.FI_Vel[24];	//	v3z
-    const double v0z = myVars.FI_Vel[25];	//	v0z
-    const double vAB1 = myVars.FI_Vel[26];	//	vAB1	The rate of electron transfer from QA- to QB
-    const double vBA1 = myVars.FI_Vel[27];	//	vBA1	The rate of electron transfer from QB- to QA
-    const double vAB2 = myVars.FI_Vel[28];	//	vAB2	The rate of electron transfer from QA- to QB-
-    const double vBA2 = myVars.FI_Vel[29];	//	vBA2	The rate of electron transfer from QB2- TO QA
-    const double v3 = myVars.FI_Vel[30];	//	v3	The rate of exchange of QAQBH2 with PQ
-    const double v_r3 = myVars.FI_Vel[31];	//	v_r3	The rate of exchange of QAQB with PQH2
-    const double v3_n = myVars.FI_Vel[32];	//	v3_n	The rate of exchange of QAnQBH2 with PQ
-    const double v_r3_n = myVars.FI_Vel[33];	//	v_r3_n	The rate of exchange of QAnQB with PQH2
-    const double v_pq_ox = myVars.FI_Vel[34];	//	v_pq_ox	The rate of PQH2 oxidation
-    const double Ic = myVars.FI_Vel[35];	//	Ic	The incident light on the core antenna
-    const double Ia = myVars.FI_Vel[36];	//	Ia	The incident light on the peripheral antenna
-    const double v2_1 = myVars.FI_Vel[37];	//	v2_1	The rate of P680pPheon oxidation
-    const double v2_2 = myVars.FI_Vel[38];	//	v2_1	The rate of P680pPheon oxidation
-    const double v2_00_1 = myVars.FI_Vel[39];	//	v2_00_1	The rate of reduction of QAQB by P680pPheon
-    const double v2_01_1 = myVars.FI_Vel[40];	//	v2_01_1	The rate of reduction of QAQBn by P680pPheon
-    const double v2_02_1 = myVars.FI_Vel[41];	//	v2_02_1	The rate of reduction of QAQB2n by P680pPheon
-    const double v2_00_2 = myVars.FI_Vel[42];	//	v2_00_2	The rate of reduction of QAQB by P680Pheon
-    const double v2_01_2 = myVars.FI_Vel[43];	//	v2_01_2	The rate of reduction of QAQBn by P680Pheon
-    const double v2_02_2 = myVars.FI_Vel[44];	//	v2_02_2	The rate of reduction of QAQB2n by P680Pheon
-    const double vr2_00_1 = myVars.FI_Vel[45];	//	vr2_00_1	The reverse reaction of The rate of reduction of QAQB by P680pPheon
-    const double vr2_01_1 = myVars.FI_Vel[46];	//	vr2_01_1	The reverse reaction of The rate of reduction of QAQBn by P680pPheon
-    const double vr2_02_1 = myVars.FI_Vel[47];	//	vr2_02_1	The reverse reaction of The rate of reduction of QAQB2n by P680pPheon
-    const double vr2_1 = myVars.FI_Vel[48];	//	vr2_1
-    const double vr2_00_2 = myVars.FI_Vel[49];	//	vr2_00_2	The reverse reaction of The rate of reduction of QAQB by P680Pheon
-    const double vr2_01_2 = myVars.FI_Vel[50];	//	vr2_01_2	The reverse reaction of The rate of reduction of QAQBn by P680Pheon
-    const double vr2_02_2 = myVars.FI_Vel[51];	//	vr2_02_2	The reverse reaction of The rate of reduction of QAQB2n by P680Pheon
-    const double vr2_2 = myVars.FI_Vel[52];	//	vr2_2
-    const double vP680qU = myVars.FI_Vel[53];	//	vP680qU
+    const double v1z = myVars->FI_Vel[22];	//	v1z
+    const double v2z = myVars->FI_Vel[23];	//	v2z
+    const double v3z = myVars->FI_Vel[24];	//	v3z
+    const double v0z = myVars->FI_Vel[25];	//	v0z
+    const double vAB1 = myVars->FI_Vel[26];	//	vAB1	The rate of electron transfer from QA- to QB
+    const double vBA1 = myVars->FI_Vel[27];	//	vBA1	The rate of electron transfer from QB- to QA
+    const double vAB2 = myVars->FI_Vel[28];	//	vAB2	The rate of electron transfer from QA- to QB-
+    const double vBA2 = myVars->FI_Vel[29];	//	vBA2	The rate of electron transfer from QB2- TO QA
+    const double v3 = myVars->FI_Vel[30];	//	v3	The rate of exchange of QAQBH2 with PQ
+    const double v_r3 = myVars->FI_Vel[31];	//	v_r3	The rate of exchange of QAQB with PQH2
+    const double v3_n = myVars->FI_Vel[32];	//	v3_n	The rate of exchange of QAnQBH2 with PQ
+    const double v_r3_n = myVars->FI_Vel[33];	//	v_r3_n	The rate of exchange of QAnQB with PQH2
+    const double v_pq_ox = myVars->FI_Vel[34];	//	v_pq_ox	The rate of PQH2 oxidation
+    const double Ic = myVars->FI_Vel[35];	//	Ic	The incident light on the core antenna
+    const double Ia = myVars->FI_Vel[36];	//	Ia	The incident light on the peripheral antenna
+    const double v2_1 = myVars->FI_Vel[37];	//	v2_1	The rate of P680pPheon oxidation
+    const double v2_2 = myVars->FI_Vel[38];	//	v2_1	The rate of P680pPheon oxidation
+    const double v2_00_1 = myVars->FI_Vel[39];	//	v2_00_1	The rate of reduction of QAQB by P680pPheon
+    const double v2_01_1 = myVars->FI_Vel[40];	//	v2_01_1	The rate of reduction of QAQBn by P680pPheon
+    const double v2_02_1 = myVars->FI_Vel[41];	//	v2_02_1	The rate of reduction of QAQB2n by P680pPheon
+    const double v2_00_2 = myVars->FI_Vel[42];	//	v2_00_2	The rate of reduction of QAQB by P680Pheon
+    const double v2_01_2 = myVars->FI_Vel[43];	//	v2_01_2	The rate of reduction of QAQBn by P680Pheon
+    const double v2_02_2 = myVars->FI_Vel[44];	//	v2_02_2	The rate of reduction of QAQB2n by P680Pheon
+    const double vr2_00_1 = myVars->FI_Vel[45];	//	vr2_00_1	The reverse reaction of The rate of reduction of QAQB by P680pPheon
+    const double vr2_01_1 = myVars->FI_Vel[46];	//	vr2_01_1	The reverse reaction of The rate of reduction of QAQBn by P680pPheon
+    const double vr2_02_1 = myVars->FI_Vel[47];	//	vr2_02_1	The reverse reaction of The rate of reduction of QAQB2n by P680pPheon
+    const double vr2_1 = myVars->FI_Vel[48];	//	vr2_1
+    const double vr2_00_2 = myVars->FI_Vel[49];	//	vr2_00_2	The reverse reaction of The rate of reduction of QAQB by P680Pheon
+    const double vr2_01_2 = myVars->FI_Vel[50];	//	vr2_01_2	The reverse reaction of The rate of reduction of QAQBn by P680Pheon
+    const double vr2_02_2 = myVars->FI_Vel[51];	//	vr2_02_2	The reverse reaction of The rate of reduction of QAQB2n by P680Pheon
+    const double vr2_2 = myVars->FI_Vel[52];	//	vr2_2
+    const double vP680qU = myVars->FI_Vel[53];	//	vP680qU
     // vP680qA = FI_Vel[54];	//	vP680qA// --unused
-    const double vU_P680 = myVars.FI_Vel[55];
-    const double vP680_d = myVars.FI_Vel[56];
+    const double vU_P680 = myVars->FI_Vel[55];
+    const double vP680_d = myVars->FI_Vel[56];
     // vP680_f = FI_Vel[57];// --unused
     
     ////////////////////////////////////////////////////////////////

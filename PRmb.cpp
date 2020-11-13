@@ -27,12 +27,12 @@
 
 
 
-arr PRmb(double t, arr &PrS, arr &PR_Param, varptr &myVars) {
+arr PRmb(double t, arr &PrS, varptr *myVars) {
     
-    const double fini = Condition(t, myVars);
+    Condition(t, myVars);
     
     arr Velocity = zeros(10);
-    Velocity = PRrate(t, PrS, PR_Param, myVars);
+    Velocity = PRrate(t, PrS, myVars);
     
     const double v111 = Velocity[0];
     const double v112 = Velocity[1];

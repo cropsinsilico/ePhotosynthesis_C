@@ -25,15 +25,15 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-arr SUCS_Ini(varptr &myVars) {
+arr SUCS_Ini(varptr *myVars) {
     //global SUCRatio;
     //global SUCS_OLD_TIME;
     //global SUCS_TIME_N;
     //global SUCS_VEL;
     //global SUCS_CON;
     
-    myVars.SUCS_OLD_TIME = 0;
-    myVars.SUCS_TIME_N = 1;
+    myVars->SUCS_OLD_TIME = 0;
+    myVars->SUCS_TIME_N = 1;
     
     // SUCS_VEL = zeros(1, 3);    // Clean memory
     // SUCS_CON = zeros(3, 1);    // Clean memory
@@ -87,51 +87,51 @@ arr SUCS_Ini(varptr &myVars) {
     //global 	Km621;
     
     
-    myVars.KE501 = 1 / 0.05 * myVars.SUCRatio[15];
-    myVars.Km511 = 0.02 * myVars.SUCRatio[16];
-    myVars.Km512 = 0.3 * myVars.SUCRatio[17];
-    myVars.Km513 = 0.4 * myVars.SUCRatio[18];
-    myVars.KE51 = 12 * myVars.SUCRatio[19];
-    //myVars.Km514 = 0.014 * myVars.SUCRatio[20];  // --unused
-    myVars.Km521 = 0.0025 * myVars.SUCRatio[21];
-    myVars.KI521 = 0.7 * myVars.SUCRatio[22];
-    myVars.KI522 = 12 * myVars.SUCRatio[23];
-    myVars.KI523 = 7 * pow(10, (-5)) * myVars.SUCRatio[24];
-    myVars.KE52 = 6663 * myVars.SUCRatio[25];
-    myVars.KE531 = 2.3 * myVars.SUCRatio[26];
-    myVars.KE541 = 0.0584 * myVars.SUCRatio[27];
-    myVars.Km551 = 0.14 * myVars.SUCRatio[28];
-    myVars.Km552 = 0.1 * myVars.SUCRatio[29];
-    myVars.Km553 = 0.11 * myVars.SUCRatio[30];
-    myVars.Km554 = 0.12 * myVars.SUCRatio[31];
-    myVars.KE55 = 0.31 * myVars.SUCRatio[32];
-    myVars.Km561 = 0.8 * myVars.SUCRatio[33];
-    myVars.Km562 = 2.4 * myVars.SUCRatio[34];
-    myVars.KI561 = 0.7 * myVars.SUCRatio[35];
-    myVars.KI562 = 0.8 * myVars.SUCRatio[36];
-    myVars.KI563 = 0.4 * myVars.SUCRatio[37];
-    myVars.KI564 = 11 * myVars.SUCRatio[38];
-    myVars.KI565 = 50 * myVars.SUCRatio[39];
-    myVars.KE56 = 10 * myVars.SUCRatio[40];
-    myVars.Km571 = 0.35 * myVars.SUCRatio[41];
-    myVars.Ki572 = 10 * myVars.SUCRatio[42];
-    myVars.KE57 = 780 * myVars.SUCRatio[43];
-    myVars.Km581 = 0.032 * myVars.SUCRatio[44];
-    myVars.KI581 = 0.1 * myVars.SUCRatio[45];
-    myVars.KI582 = 0.5 * myVars.SUCRatio[46];
-    myVars.Km591 = 0.5 * myVars.SUCRatio[47];
-    //myVars.Km592 = 0.021 * myVars.SUCRatio[48];  // --unused
-    myVars.Km593 = 0.5 * myVars.SUCRatio[49];
-    myVars.KI591 = 0.16 * myVars.SUCRatio[50];
-    //myVars.KI592 = 0.7 * myVars.SUCRatio[51];  // --unused
-    myVars.KE59 = 590 * myVars.SUCRatio[52];
-    //myVars.Km601 = 0.042 * myVars.SUCRatio[53];  // --unused
-    //myVars.Km602 = 1.66 * myVars.SUCRatio[54];  // --unused
-    //myVars.Km603 = 0.28 * myVars.SUCRatio[55];  // --unused
-    //myVars.Km604 = 16 * myVars.SUCRatio[56];  // --unused
-    //myVars.KE60 = 16 * myVars.SUCRatio[57];  // --unused
-    myVars.KE61 = 1.2 * 107 * myVars.SUCRatio[58];
-    myVars.Km621 = 5 * myVars.SUCRatio[59];
+    myVars->KE501 = 1 / 0.05 * myVars->SUCRatio[15];
+    myVars->Km511 = 0.02 * myVars->SUCRatio[16];
+    myVars->Km512 = 0.3 * myVars->SUCRatio[17];
+    myVars->Km513 = 0.4 * myVars->SUCRatio[18];
+    myVars->KE51 = 12 * myVars->SUCRatio[19];
+    //myVars->Km514 = 0.014 * myVars->SUCRatio[20];  // --unused
+    myVars->Km521 = 0.0025 * myVars->SUCRatio[21];
+    myVars->KI521 = 0.7 * myVars->SUCRatio[22];
+    myVars->KI522 = 12 * myVars->SUCRatio[23];
+    myVars->KI523 = 7 * pow(10, (-5)) * myVars->SUCRatio[24];
+    myVars->KE52 = 6663 * myVars->SUCRatio[25];
+    myVars->KE531 = 2.3 * myVars->SUCRatio[26];
+    myVars->KE541 = 0.0584 * myVars->SUCRatio[27];
+    myVars->Km551 = 0.14 * myVars->SUCRatio[28];
+    myVars->Km552 = 0.1 * myVars->SUCRatio[29];
+    myVars->Km553 = 0.11 * myVars->SUCRatio[30];
+    myVars->Km554 = 0.12 * myVars->SUCRatio[31];
+    myVars->KE55 = 0.31 * myVars->SUCRatio[32];
+    myVars->Km561 = 0.8 * myVars->SUCRatio[33];
+    myVars->Km562 = 2.4 * myVars->SUCRatio[34];
+    myVars->KI561 = 0.7 * myVars->SUCRatio[35];
+    myVars->KI562 = 0.8 * myVars->SUCRatio[36];
+    myVars->KI563 = 0.4 * myVars->SUCRatio[37];
+    myVars->KI564 = 11 * myVars->SUCRatio[38];
+    myVars->KI565 = 50 * myVars->SUCRatio[39];
+    myVars->KE56 = 10 * myVars->SUCRatio[40];
+    myVars->Km571 = 0.35 * myVars->SUCRatio[41];
+    myVars->Ki572 = 10 * myVars->SUCRatio[42];
+    myVars->KE57 = 780 * myVars->SUCRatio[43];
+    myVars->Km581 = 0.032 * myVars->SUCRatio[44];
+    myVars->KI581 = 0.1 * myVars->SUCRatio[45];
+    myVars->KI582 = 0.5 * myVars->SUCRatio[46];
+    myVars->Km591 = 0.5 * myVars->SUCRatio[47];
+    //myVars->Km592 = 0.021 * myVars->SUCRatio[48];  // --unused
+    myVars->Km593 = 0.5 * myVars->SUCRatio[49];
+    myVars->KI591 = 0.16 * myVars->SUCRatio[50];
+    //myVars->KI592 = 0.7 * myVars->SUCRatio[51];  // --unused
+    myVars->KE59 = 590 * myVars->SUCRatio[52];
+    //myVars->Km601 = 0.042 * myVars->SUCRatio[53];  // --unused
+    //myVars->Km602 = 1.66 * myVars->SUCRatio[54];  // --unused
+    //myVars->Km603 = 0.28 * myVars->SUCRatio[55];  // --unused
+    //myVars->Km604 = 16 * myVars->SUCRatio[56];  // --unused
+    //myVars->KE60 = 16 * myVars->SUCRatio[57];  // --unused
+    myVars->KE61 = 1.2 * 107 * myVars->SUCRatio[58];
+    myVars->Km621 = 5 * myVars->SUCRatio[59];
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Initialization of the initial concentration of the different component //
@@ -178,22 +178,22 @@ arr SUCS_Ini(varptr &myVars) {
     
     
     //global GP;
-    if (myVars.GP == 0) {
-        //global 	myVars.V51;
-        //global 	myVars.V52;
-        //global 	myVars.V55;
-        //global 	myVars.V56;
-        //global 	myVars.V57;
-        //global 	myVars.V58;
+    if (myVars->GP == 0) {
+        //global 	myVars->V51;
+        //global 	myVars->V52;
+        //global 	myVars->V55;
+        //global 	myVars->V56;
+        //global 	myVars->V57;
+        //global 	myVars->V58;
         
         // Unit: mmol l-1 s-1;
         
-        myVars.V51 = 0.107376831 * SC * myVars.SUCRatio[0];//	DHAP+GAP --FBP          // default 0.5
-        myVars.V52 = 0.063979048 * SC * myVars.SUCRatio[1];//	FBP --F6P + Pi
-        myVars.V55 = 0.115403205 * SC * myVars.SUCRatio[2];//	G1P+UTP --OPOP+UDPG
-        myVars.V56 = 0.055503446 * SC * myVars.SUCRatio[3];//	UDPG+F6P--SUCP + UDP
-        myVars.V57 = 0.55503446 * SC1 * myVars.SUCRatio[4];//	SUCP--Pi + SUC; 0.27 DEFALT
-        myVars.V58 = 0.016819226 * SC * myVars.SUCRatio[5];//	F26BP--F6P + Pi
+        myVars->V51 = 0.107376831 * SC * myVars->SUCRatio[0];//	DHAP+GAP --FBP          // default 0.5
+        myVars->V52 = 0.063979048 * SC * myVars->SUCRatio[1];//	FBP --F6P + Pi
+        myVars->V55 = 0.115403205 * SC * myVars->SUCRatio[2];//	G1P+UTP --OPOP+UDPG
+        myVars->V56 = 0.055503446 * SC * myVars->SUCRatio[3];//	UDPG+F6P--SUCP + UDP
+        myVars->V57 = 0.55503446 * SC1 * myVars->SUCRatio[4];//	SUCP--Pi + SUC; 0.27 DEFALT
+        myVars->V58 = 0.016819226 * SC * myVars->SUCRatio[5];//	F26BP--F6P + Pi
     }
     //global 	V59;
     //global  V60;
@@ -203,28 +203,28 @@ arr SUCS_Ini(varptr &myVars) {
     //global  Vgap_in;
     //global  Vpga_in;
     
-    myVars.V59 = 0.03 * SC * myVars.SUCRatio[6];//	F6P + ATP --ADP + F26BP // defalut 0.03  (* 0.3)
-    myVars.V60 = 6.1 * myVars.SUCRatio[7];//	ATP+UDP --UTP + ADP
-    //myVars.V61 = 10000;	        //	POPO --2PO   // constant set in globals.hpp
-    myVars.V62 = 2 * SC1 * myVars.SUCRatio[8];//	SUC Sink        0.9 works.
-    myVars.Vdhap_in = 1.05 * SC1 * myVars.SUCRatio[9];//   DHAP export from chloroplast
-    myVars.Vgap_in = 1.05 * SC1 * myVars.SUCRatio[10];//   GAP export from chloroplast
-    myVars.Vpga_in = 1.05 * SC1 * myVars.SUCRatio[11];//   PGA export from chloropalst
+    myVars->V59 = 0.03 * SC * myVars->SUCRatio[6];//	F6P + ATP --ADP + F26BP // defalut 0.03  (* 0.3)
+    myVars->V60 = 6.1 * myVars->SUCRatio[7];//	ATP+UDP --UTP + ADP
+    //myVars->V61 = 10000;	        //	POPO --2PO   // constant set in globals.hpp
+    myVars->V62 = 2 * SC1 * myVars->SUCRatio[8];//	SUC Sink        0.9 works.
+    myVars->Vdhap_in = 1.05 * SC1 * myVars->SUCRatio[9];//   DHAP export from chloroplast
+    myVars->Vgap_in = 1.05 * SC1 * myVars->SUCRatio[10];//   GAP export from chloroplast
+    myVars->Vpga_in = 1.05 * SC1 * myVars->SUCRatio[11];//   PGA export from chloropalst
     
     
     //////////////////////////////////////////////////////////////////
     // Here is some pool values      //
     //////////////////////////////////////////////////////////////////
     
-    const double ATc = 1.0 * myVars.SUCRatio[12];// mM
-    const double UTc = 1.5 * myVars.SUCRatio[13];// mM
-    const double PTc = 15 * myVars.SUCRatio[14];//
+    const double ATc = 1.0 * myVars->SUCRatio[12];// mM
+    const double UTc = 1.5 * myVars->SUCRatio[13];// mM
+    const double PTc = 15 * myVars->SUCRatio[14];//
     
     
     //global SUCS_Pool;
-    myVars.SUCS_Pool[0] = ATc;
-    myVars.SUCS_Pool[1] = UTc;
-    myVars.SUCS_Pool[2] = PTc;
+    myVars->SUCS_Pool[0] = ATc;
+    myVars->SUCS_Pool[1] = UTc;
+    myVars->SUCS_Pool[2] = PTc;
     
     return SUCS_Con;
 }

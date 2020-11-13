@@ -24,44 +24,44 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-double IniModelCom(varptr &myVars) {
+void IniModelCom(varptr *myVars) {
     
     //global RuACT_EPS_com;
-    myVars.RuACT_EPS_com = false;
+    myVars->RuACT_EPS_com = false;
     
     //global BF_FI_com;            // The combination of BF and FI model
-    myVars.BF_FI_com = false;
+    myVars->BF_FI_com = false;
     
     //global PR_PS_com;    // This is a variable indicating whether the PR model is actually need to be combined with PS or not. If 1 then means combined; 0 means not.
-    myVars.PR_PS_com = false;
+    myVars->PR_PS_com = false;
     
     //global FIBF_PSPR_com; // 1 means that the overall EPS model is used. 0 means partial model of FIBF is used.
-    myVars.FIBF_PSPR_com = false;
+    myVars->FIBF_PSPR_com = false;
     
     //global ATPActive;
-    myVars.ATPActive = 0;
+    myVars->ATPActive = 0;
     
     //global RedoxReg_RA_com;
-    myVars.RedoxReg_RA_com = false;
+    myVars->RedoxReg_RA_com = false;
     
     //global XanCycle_BF_com;
-    myVars.XanCycle_BF_com = false;
+    myVars->XanCycle_BF_com = false;
     
     //global RROEA_EPS_com;
-    myVars.RROEA_EPS_com = false;
+    myVars->RROEA_EPS_com = false;
     
     //global StomCond_TrDynaPS_com;
-    myVars.StomCond_TrDynaPS_com = false;
+    myVars->StomCond_TrDynaPS_com = false;
     
     //global PSPR_SUCS_com;
-    myVars.PSPR_SUCS_com = false;
+    myVars->PSPR_SUCS_com = false;
     
     //global trDynaPS_SUCS_com;
-    //myVars.trDynaPS_SUCS_com = false;  // --unused
+    //myVars->trDynaPS_SUCS_com = false;  // --unused
     
     //global EPS_SUCS_com;
-    myVars.EPS_SUCS_com = false;
+    myVars->EPS_SUCS_com = false;
     
-    const double ModelComb = 1;
-    return ModelComb;
+    //const double ModelComb = 1;
+    //return ModelComb;
 }

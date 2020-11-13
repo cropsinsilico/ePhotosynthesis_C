@@ -25,9 +25,9 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-arr RA_Ini(varptr &myVars) {
+arr RA_Ini(varptr *myVars) {
     
-    const double BEGIN = 1;
+    //const double BEGIN = 1;
     arr EPS_Con = EPS_Ini(myVars);
     arr RuACT_Con = RuACT_Ini(myVars);
     
@@ -37,8 +37,8 @@ arr RA_Ini(varptr &myVars) {
     //global RuACT_VEL;
     //global RuACT_CON;
     
-    myVars.RuACT_OLD_TIME = 0;
-    myVars.RuACT_TIME_N = 1;
+    myVars->RuACT_OLD_TIME = 0;
+    myVars->RuACT_TIME_N = 1;
     
     // RuACT_VEL = zeros(1, 3);    // Clean memory
     // RuACT_CON = zeros(3, 1);    // Clean memory

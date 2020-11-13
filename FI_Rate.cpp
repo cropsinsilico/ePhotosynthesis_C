@@ -27,7 +27,7 @@
 
 
 
-void FI_Rate(double t, arr &FI_Con, arr &FI_Param, varptr &myVars) {
+void FI_Rate(double t, varptr *myVars) {
     
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Step 1 Get the rate constant and the initial concentrations //
@@ -36,62 +36,62 @@ void FI_Rate(double t, arr &FI_Con, arr &FI_Param, varptr &myVars) {
     //global FI_RC;
     
     // The rate constant used in the model
-    const double kA_d = myVars.FI_RC[0];	//	The rate constant of heat dissipation from peripheral antenna	Lazar (1999), 0.25~1 *10^(9)
-    const double kA_f = myVars.FI_RC[1];	//	The rate constant of fluorescence emission from peripheral antenna	Lazar 1999, with a lifetime of 5 ns at closed reaction center
-    const double kA_U = myVars.FI_RC[2];	//	The rate constant of exciton transfer from periphral antenna to core antenna	Reference needed, a guess
-    const double kU_A = myVars.FI_RC[3];	//	The rate constant of exciton transfer from core antenna to peripheral antenna	Reference needed, a guess
-    const double kU_d = myVars.FI_RC[4];	//	The rate constant of  heat emission from core antenna
-    const double kU_f = myVars.FI_RC[5];	//	The rate constant of fluorescence emission from core antenna
-    const double k1 = myVars.FI_RC[6];	//	The rate constant of primary charge separation for open reaction center
-    const double k_r1 = myVars.FI_RC[7];	//	The rate constant of charge recombination for open reactoin center
-    const double kz = myVars.FI_RC[8];	//	The rate constant of the Tyrosine oxidation	Lazar (1999); 3.8~50 * 10^6
-    const double k12 = myVars.FI_RC[9];	//	The rate constant of the S1 to S2 transition	Lazar (1999); 0.667~33.3 * 10^3
-    const double k23 = myVars.FI_RC[10];	//	The rate constant of the S2 to S3 transition	Lazar (1999); 0.667~33.3 * 10^3
-    const double k30 = myVars.FI_RC[11];	//	The rate constant of the S3 to S0 transition	Lazar (1999); 0.667~33.3 * 10^3
-    const double k01 = myVars.FI_RC[12];	//	The rate constant of the S0 to S1 transition	Lazar (1999); 0.667~33.3 * 10^3
-    const double k2 = myVars.FI_RC[13];	//	The rate constant of the QA reduction by Pheo-	Lazar (1999); 2~2.3 * 10^9
-    const double kAB1 = myVars.FI_RC[14];	//	The rate constant of QAQB-->QAQB-	Lazar (1999); 2.5~5 * 10^3
-    const double kBA1 = myVars.FI_RC[15];	//	The rate constant of the QAQB- -->QAQB	Lazar (1999)
-    const double kAB2 = myVars.FI_RC[16];	//	The rate constant of the QAQB- --> QAQB2-	Lazar (1999); 1.25~3.33 * 10^3
-    const double kBA2 = myVars.FI_RC[17];	//	The rate constant of the QAQB2- --> QAQB- 	Lazar (1999), or same as kAB2 depend on the equilibium constant
-    const double k3 = myVars.FI_RC[18];	//	The rate constant of the exchange of PQ and QBH2	Lazar (1999),0.12~1 for the fast PQ pool,  or 3~8 for the slow recycling PQ pool
-    const double k_r3 = myVars.FI_RC[19];	//	The rate constant of the exchange of QB and PQH2	Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
-    const double k_pq_oxy = myVars.FI_RC[20];	//	The rate constant of the PQH2 oxidation	Lazar (1999),50~500
+    const double kA_d = myVars->FI_RC[0];	//	The rate constant of heat dissipation from peripheral antenna	Lazar (1999), 0.25~1 *10^(9)
+    const double kA_f = myVars->FI_RC[1];	//	The rate constant of fluorescence emission from peripheral antenna	Lazar 1999, with a lifetime of 5 ns at closed reaction center
+    const double kA_U = myVars->FI_RC[2];	//	The rate constant of exciton transfer from periphral antenna to core antenna	Reference needed, a guess
+    const double kU_A = myVars->FI_RC[3];	//	The rate constant of exciton transfer from core antenna to peripheral antenna	Reference needed, a guess
+    const double kU_d = myVars->FI_RC[4];	//	The rate constant of  heat emission from core antenna
+    const double kU_f = myVars->FI_RC[5];	//	The rate constant of fluorescence emission from core antenna
+    const double k1 = myVars->FI_RC[6];	//	The rate constant of primary charge separation for open reaction center
+    const double k_r1 = myVars->FI_RC[7];	//	The rate constant of charge recombination for open reactoin center
+    const double kz = myVars->FI_RC[8];	//	The rate constant of the Tyrosine oxidation	Lazar (1999); 3.8~50 * 10^6
+    const double k12 = myVars->FI_RC[9];	//	The rate constant of the S1 to S2 transition	Lazar (1999); 0.667~33.3 * 10^3
+    const double k23 = myVars->FI_RC[10];	//	The rate constant of the S2 to S3 transition	Lazar (1999); 0.667~33.3 * 10^3
+    const double k30 = myVars->FI_RC[11];	//	The rate constant of the S3 to S0 transition	Lazar (1999); 0.667~33.3 * 10^3
+    const double k01 = myVars->FI_RC[12];	//	The rate constant of the S0 to S1 transition	Lazar (1999); 0.667~33.3 * 10^3
+    const double k2 = myVars->FI_RC[13];	//	The rate constant of the QA reduction by Pheo-	Lazar (1999); 2~2.3 * 10^9
+    const double kAB1 = myVars->FI_RC[14];	//	The rate constant of QAQB-->QAQB-	Lazar (1999); 2.5~5 * 10^3
+    const double kBA1 = myVars->FI_RC[15];	//	The rate constant of the QAQB- -->QAQB	Lazar (1999)
+    const double kAB2 = myVars->FI_RC[16];	//	The rate constant of the QAQB- --> QAQB2-	Lazar (1999); 1.25~3.33 * 10^3
+    const double kBA2 = myVars->FI_RC[17];	//	The rate constant of the QAQB2- --> QAQB- 	Lazar (1999), or same as kAB2 depend on the equilibium constant
+    const double k3 = myVars->FI_RC[18];	//	The rate constant of the exchange of PQ and QBH2	Lazar (1999),0.12~1 for the fast PQ pool,  or 3~8 for the slow recycling PQ pool
+    const double k_r3 = myVars->FI_RC[19];	//	The rate constant of the exchange of QB and PQH2	Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
+    const double k_pq_oxy = myVars->FI_RC[20];	//	The rate constant of the PQH2 oxidation	Lazar (1999),50~500
     
     
-    const double A = FI_Con[0];	// 	The concentration of excitons in the peripheral antenna
-    const double U = FI_Con[1];	//	The concentration fo excitons in the core antenna
-    const double P680ePheo = FI_Con[2];          //QF add
-    const double P680pPheon = FI_Con[3];	//	The concentration for the P680+ Pheo-
-    const double P680pPheo = FI_Con[4];	// 	The concentration of P680+ Pheo
-    const double P680Pheon = FI_Con[5];	//	The concentration of P680Pheo-
+    const double A = myVars->FI_Con[0];	// 	The concentration of excitons in the peripheral antenna
+    const double U = myVars->FI_Con[1];	//	The concentration fo excitons in the core antenna
+    const double P680ePheo = myVars->FI_Con[2];          //QF add
+    const double P680pPheon = myVars->FI_Con[3];	//	The concentration for the P680+ Pheo-
+    const double P680pPheo = myVars->FI_Con[4];	// 	The concentration of P680+ Pheo
+    const double P680Pheon = myVars->FI_Con[5];	//	The concentration of P680Pheo-
     // Yz = FI_Con[6];	//	The concentration of reduced tyrosine// --unused
-    const double S1T = FI_Con[7];	// 	The concentration of S1 in combination with reduced tyrosine
-    const double S2T = FI_Con[8];	//	The concentration of S2 in combination with reduced tyrosine
-    const double S3T = FI_Con[9];	// 	The concentration of S3 in combination with reduced tyrosine
-    const double S0T = FI_Con[10];	//	The concentration of S0 in combination with reduced tyrosine
-    const double S1Tp = FI_Con[11];	// 	The concentration of S1 in combination with oxidized tyrosine
-    const double S2Tp = FI_Con[12];	// 	The concentration of S2 in combination with oxidized tyrosine
-    const double S3Tp = FI_Con[13];	//	The concentration of S3 in combination with oxidized tyrosine
-    const double S0Tp = FI_Con[14];	// 	The concentration of S0 in combination with oxidized tyrosine
-    const double QAQB = FI_Con[15];	// 	The concentration of [QAQB]
-    const double QAnQB = FI_Con[16];	// 	The concentration of [QA-QB];
-    const double QAQBn = FI_Con[17];	//	The concentration of [QAQB-]
-    const double QAnQBn = FI_Con[18];	// 	The concentration of [QA-QB-];
-    const double QAQB2n = FI_Con[19];	//	The concentration of [QAQB2-]
-    const double QAnQB2n = FI_Con[20];	// 	The concentration of [QA-QB2-];
-    const double PQn = FI_Con[21];	//	The concentration of reduced PQ, i.e. PQH2;
+    const double S1T = myVars->FI_Con[7];	// 	The concentration of S1 in combination with reduced tyrosine
+    const double S2T = myVars->FI_Con[8];	//	The concentration of S2 in combination with reduced tyrosine
+    const double S3T = myVars->FI_Con[9];	// 	The concentration of S3 in combination with reduced tyrosine
+    const double S0T = myVars->FI_Con[10];	//	The concentration of S0 in combination with reduced tyrosine
+    const double S1Tp = myVars->FI_Con[11];	// 	The concentration of S1 in combination with oxidized tyrosine
+    const double S2Tp = myVars->FI_Con[12];	// 	The concentration of S2 in combination with oxidized tyrosine
+    const double S3Tp = myVars->FI_Con[13];	//	The concentration of S3 in combination with oxidized tyrosine
+    const double S0Tp = myVars->FI_Con[14];	// 	The concentration of S0 in combination with oxidized tyrosine
+    const double QAQB = myVars->FI_Con[15];	// 	The concentration of [QAQB]
+    const double QAnQB = myVars->FI_Con[16];	// 	The concentration of [QA-QB];
+    const double QAQBn = myVars->FI_Con[17];	//	The concentration of [QAQB-]
+    const double QAnQBn = myVars->FI_Con[18];	// 	The concentration of [QA-QB-];
+    const double QAQB2n = myVars->FI_Con[19];	//	The concentration of [QAQB2-]
+    const double QAnQB2n = myVars->FI_Con[20];	// 	The concentration of [QA-QB2-];
+    const double PQn = myVars->FI_Con[21];	//	The concentration of reduced PQ, i.e. PQH2;
     
     //global FI_Pool;
-    const double PQT = myVars.FI_Pool[1];  // The total concentraion of PQH2 and PQ;
+    const double PQT = myVars->FI_Pool[1];  // The total concentraion of PQH2 and PQ;
     //global FIBF_AUX;
-    const double PQa = myVars.FIBF_AUX[1];
+    const double PQa = myVars->FIBF_AUX[1];
     double PQ = PQT - PQn - PQa;
     
     //global BF_FI_com;
-    if (myVars.BF_FI_com)
-        //global myVars.FIBF2FI_PQ;
-        PQ = myVars.FIBF2FI_PQ;
+    if (myVars->BF_FI_com)
+        //global myVars->FIBF2FI_PQ;
+        PQ = myVars->FIBF2FI_PQ;
     
     
     
@@ -109,12 +109,12 @@ void FI_Rate(double t, arr &FI_Con, arr &FI_Param, varptr &myVars) {
     //P680ePheo	=	U /(ChlT) * P680Pheo	;	//	The amount of excitons on P680 molecules; the difference in the energy of P680 and antenna chlorophyll is not incorporated
     
     // n = FI_Param[1];	//	n	The ratio of the number of PSI to PSII// --unused
-    const double It = FI_Param[0];	//	It	The total incident light intensity
+    const double It = myVars->FI_Param[0];	//	It	The total incident light intensity
     
     // rate: U -> U*
-    const double Ic = It * myVars.ChlT / (myVars.ChlT2 + myVars.ChlPSI);//	Ic	The incident light on the core antenna; myVars.ChlT is defined in upper lines as the total amount of Chl in one U.
+    const double Ic = It * myVars->ChlT / (myVars->ChlT2 + myVars->ChlPSI);//	Ic	The incident light on the core antenna; myVars->ChlT is defined in upper lines as the total amount of Chl in one U.
     // rate: A -> A*
-    const double Ia = It * (myVars.ChlT2 - myVars.ChlT) / (myVars.ChlT2 + myVars.ChlPSI);//	Ia	The incident light on the peripheral antenna
+    const double Ia = It * (myVars->ChlT2 - myVars->ChlT) / (myVars->ChlT2 + myVars->ChlPSI);//	Ia	The incident light on the peripheral antenna
     
     // Ic 	=	It * ChlT/(ChlT2 + 200*n)	;	//	Ic	The incident light on the core antenna; ChlT is defined in upper lines as the total amount of Chl in one U.
     // Ia	=	It * (ChlT2 - ChlT)/(ChlT2 + 200*n)	;	//	Ia	The incident light on the peripheral antenna
@@ -210,7 +210,7 @@ void FI_Rate(double t, arr &FI_Con, arr &FI_Param, varptr &myVars) {
     
     ////////////////////////////////////////
     //////  FOR TESITNG  ////
-    const double f = vA_f + vU_f;
+    //const double f = vA_f + vU_f;
     ////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////
     //   Part V Output of Velocity for plot          //
@@ -221,95 +221,93 @@ void FI_Rate(double t, arr &FI_Con, arr &FI_Param, varptr &myVars) {
     //global FI_VEL;
     //global FI_CON;
     
-    if (myVars.FI_TIME_N == 0)
-        myVars.FI_TIME_N = 1;
+    if (myVars->FI_TIME_N == 0)
+        myVars->FI_TIME_N = 1;
     
     
-    if (t > myVars.FI_OLD_TIME) {
-        myVars.FI_TIME_N = myVars.FI_TIME_N + 1;
-        myVars.FI_OLD_TIME = t;
+    if (t > myVars->FI_OLD_TIME) {
+        myVars->FI_TIME_N = myVars->FI_TIME_N + 1;
+        myVars->FI_OLD_TIME = t;
     }
     
-    if (myVars.FI_VEL.shape()[0] < myVars.FI_TIME_N) {
-        myVars.FI_VEL.resize(boost::extents[myVars.FI_TIME_N][FI_VEL_SIZE]);
-        myVars.FI_CON.resize(boost::extents[myVars.FI_TIME_N][FI_CON_SIZE]);
+    if (myVars->FI_VEL.shape()[0] < myVars->FI_TIME_N) {
+        myVars->FI_VEL.resize(boost::extents[myVars->FI_TIME_N][FI_VEL_SIZE]);
+        myVars->FI_CON.resize(boost::extents[myVars->FI_TIME_N][FI_CON_SIZE]);
     }
 
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][0] = t;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][1] = vA_d;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][2] = vA_f;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][3] = vA_U;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][4] = vU_A;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][5] = vU_f;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][6] = vU_d;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][7] = v1;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][8] = v_r1;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][9] = vS1_S2;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][10] = vS2_S3;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][11] = vS3_S0;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][12] = vS0_S1;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][13] = vz_1;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][14] = v1z_1;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][15] = v2z_1;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][16] = v3z_1;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][17] = v0z_1;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][18] = vz_2;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][19] = v1z_2;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][20] = v2z_2;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][21] = v3z_2;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][22] = v0z_2;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][23] = v1z;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][24] = v2z;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][25] = v3z;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][26] = v0z;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][27] = vAB1;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][28] = vBA1;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][29] = vAB2;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][30] = vBA2;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][31] = v3;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][32] = v_r3;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][33] = v3_n;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][34] = v_r3_n;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][35] = v_pq_ox;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][36] = Ic;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][37] = Ia;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][38] = v2_1;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][39] = v2_2;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][40] = v2_00_1;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][41] = v2_01_1;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][42] = v2_02_1;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][43] = v2_00_2;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][44] = v2_01_2;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][45] = v2_02_2;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][46] = vr2_00_1;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][47] = vr2_01_1;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][48] = vr2_02_1;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][49] = vr2_1;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][50] = vr2_00_2;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][51] = vr2_01_2;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][52] = vr2_02_2;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][53] = vr2_2;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][54] = vP680qU;	//	vr2_2
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][55] = vP680qA;	//	vr2_2
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][56] = vU_P680;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][57] = vP680_d;
-    myVars.FI_VEL[myVars.FI_TIME_N - 1][58] = vP680_f;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][0] = t;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][1] = vA_d;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][2] = vA_f;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][3] = vA_U;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][4] = vU_A;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][5] = vU_f;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][6] = vU_d;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][7] = v1;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][8] = v_r1;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][9] = vS1_S2;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][10] = vS2_S3;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][11] = vS3_S0;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][12] = vS0_S1;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][13] = vz_1;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][14] = v1z_1;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][15] = v2z_1;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][16] = v3z_1;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][17] = v0z_1;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][18] = vz_2;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][19] = v1z_2;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][20] = v2z_2;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][21] = v3z_2;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][22] = v0z_2;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][23] = v1z;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][24] = v2z;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][25] = v3z;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][26] = v0z;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][27] = vAB1;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][28] = vBA1;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][29] = vAB2;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][30] = vBA2;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][31] = v3;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][32] = v_r3;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][33] = v3_n;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][34] = v_r3_n;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][35] = v_pq_ox;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][36] = Ic;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][37] = Ia;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][38] = v2_1;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][39] = v2_2;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][40] = v2_00_1;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][41] = v2_01_1;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][42] = v2_02_1;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][43] = v2_00_2;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][44] = v2_01_2;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][45] = v2_02_2;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][46] = vr2_00_1;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][47] = vr2_01_1;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][48] = vr2_02_1;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][49] = vr2_1;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][50] = vr2_00_2;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][51] = vr2_01_2;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][52] = vr2_02_2;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][53] = vr2_2;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][54] = vP680qU;	//	vr2_2
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][55] = vP680qA;	//	vr2_2
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][56] = vU_P680;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][57] = vP680_d;
+    myVars->FI_VEL[myVars->FI_TIME_N - 1][58] = vP680_f;
     
-    //myVars.FI_CON[myVars.FI_TIME_N - 1][0] = t;  // --unused
-    //myVars.FI_CON[myVars.FI_TIME_N - 1][1] = f;  // --unused
-    //myVars.FI_CON[myVars.FI_TIME_N - 1][2] = 1 - q;  // --unused
-    //myVars.FI_CON[myVars.FI_TIME_N - 1][3] = vA_d + vU_d;  // --unused
-    //myVars.FI_CON[myVars.FI_TIME_N - 1][4] = vS3_S0;  // --unused
-    double It2;
-    double fPSII;
-    if (It == 0) {
-        fPSII = 0;
-    } else {
-        It2 = It * 27 / 47;
-        fPSII = (It2 - f - vA_d - vU_d) / It2;
-    }
+    //myVars->FI_CON[myVars->FI_TIME_N - 1][0] = t;  // --unused
+    //myVars->FI_CON[myVars->FI_TIME_N - 1][1] = f;  // --unused
+    //myVars->FI_CON[myVars->FI_TIME_N - 1][2] = 1 - q;  // --unused
+    //myVars->FI_CON[myVars->FI_TIME_N - 1][3] = vA_d + vU_d;  // --unused
+    //myVars->FI_CON[myVars->FI_TIME_N - 1][4] = vS3_S0;  // --unused
+    //double It2;
+    //double fPSII;
+    //if (It != 0) {
+    //    It2 = It * 27 / 47;
+    //    //fPSII = (It2 - f - vA_d - vU_d) / It2;
+    // }
     
-    //myVars.FI_CON[myVars.FI_TIME_N - 1][5] = fPSII;  // --unused
+    //myVars->FI_CON[myVars->FI_TIME_N - 1][5] = fPSII;  // --unused
     
     
     ////////////////////////////////////////////////////////////////////////////
@@ -317,71 +315,71 @@ void FI_Rate(double t, arr &FI_Con, arr &FI_Param, varptr &myVars) {
     ////////////////////////////////////////////////////////////////////////////////
     //global FI_Vel;
     
-    myVars.FI_Vel[0] = vA_d;	//	vA_d	The rate of heat dissipation from peripheral antenna
-    myVars.FI_Vel[1] = vA_f;	//	vA_f	The rate of fluorescence emission from peripheral antenna
-    myVars.FI_Vel[2] = vA_U;	//	vA_U	The rate of exciton transfer from peripheral antenna to core antenna in open reaction center
-    myVars.FI_Vel[3] = vU_A;	//	vU_A	The rate of exciton transfer from core antenna to perpheral antenna in open center
-    myVars.FI_Vel[4] = vU_f;	//	vU_f	The rate of fluorescence emission from core antenna
-    myVars.FI_Vel[5] = vU_d;	//	vU_d	The rate of heat dissipation from core antenna
-    myVars.FI_Vel[6] = v1;	//	v1	The rate of primary charge separation
-    myVars.FI_Vel[7] = v_r1;	//	v_r1	The rate of charge recombination
-    myVars.FI_Vel[8] = vS1_S2;	//	vS1_S2	The rate of transition from S1 to S2
-    myVars.FI_Vel[9] = vS2_S3;	//	vS2_S3	The rate of transition from S2 to S3
-    myVars.FI_Vel[10] = vS3_S0;	//	vS3_S0	The rate of transition from S3 to S0
-    myVars.FI_Vel[11] = vS0_S1;	//	vS0_S1	The rate of transition from S0 to S1
-    myVars.FI_Vel[12] = vz_1;	//	vz_1	The rate of P680p reduction
-    myVars.FI_Vel[13] = v1z_1;	//	v1z_1	The rate of oxidation of S1T by P680pPheon
-    myVars.FI_Vel[14] = v2z_1;	//	v2z_1	The rate of oxidation of S2T  by P680pPheon
-    myVars.FI_Vel[15] = v3z_1;	//	v3z_1	The rate of oxidation of S3T  by P680pPheon
-    myVars.FI_Vel[16] = v0z_1;	//	v0z_1	The rate of oxidation of S0T  by P680pPheon
-    myVars.FI_Vel[17] = vz_2;	//	vz_2	The rate of P680pPheon reduction
-    myVars.FI_Vel[18] = v1z_2;	//	v1z_2	The rate of oxidation of S1T by P680pPheo
-    myVars.FI_Vel[19] = v2z_2;	//	v2z_2	The rate of oxidation of S2T  by P680pPheo
-    myVars.FI_Vel[20] = v3z_2;	//	v3z_2	The rate of oxidation of S3T  by P680pPheo
-    myVars.FI_Vel[21] = v0z_2;	//	v0z_2	The rate of oxidation of S0T  by P680pPheo
+    myVars->FI_Vel[0] = vA_d;	//	vA_d	The rate of heat dissipation from peripheral antenna
+    myVars->FI_Vel[1] = vA_f;	//	vA_f	The rate of fluorescence emission from peripheral antenna
+    myVars->FI_Vel[2] = vA_U;	//	vA_U	The rate of exciton transfer from peripheral antenna to core antenna in open reaction center
+    myVars->FI_Vel[3] = vU_A;	//	vU_A	The rate of exciton transfer from core antenna to perpheral antenna in open center
+    myVars->FI_Vel[4] = vU_f;	//	vU_f	The rate of fluorescence emission from core antenna
+    myVars->FI_Vel[5] = vU_d;	//	vU_d	The rate of heat dissipation from core antenna
+    myVars->FI_Vel[6] = v1;	//	v1	The rate of primary charge separation
+    myVars->FI_Vel[7] = v_r1;	//	v_r1	The rate of charge recombination
+    myVars->FI_Vel[8] = vS1_S2;	//	vS1_S2	The rate of transition from S1 to S2
+    myVars->FI_Vel[9] = vS2_S3;	//	vS2_S3	The rate of transition from S2 to S3
+    myVars->FI_Vel[10] = vS3_S0;	//	vS3_S0	The rate of transition from S3 to S0
+    myVars->FI_Vel[11] = vS0_S1;	//	vS0_S1	The rate of transition from S0 to S1
+    myVars->FI_Vel[12] = vz_1;	//	vz_1	The rate of P680p reduction
+    myVars->FI_Vel[13] = v1z_1;	//	v1z_1	The rate of oxidation of S1T by P680pPheon
+    myVars->FI_Vel[14] = v2z_1;	//	v2z_1	The rate of oxidation of S2T  by P680pPheon
+    myVars->FI_Vel[15] = v3z_1;	//	v3z_1	The rate of oxidation of S3T  by P680pPheon
+    myVars->FI_Vel[16] = v0z_1;	//	v0z_1	The rate of oxidation of S0T  by P680pPheon
+    myVars->FI_Vel[17] = vz_2;	//	vz_2	The rate of P680pPheon reduction
+    myVars->FI_Vel[18] = v1z_2;	//	v1z_2	The rate of oxidation of S1T by P680pPheo
+    myVars->FI_Vel[19] = v2z_2;	//	v2z_2	The rate of oxidation of S2T  by P680pPheo
+    myVars->FI_Vel[20] = v3z_2;	//	v3z_2	The rate of oxidation of S3T  by P680pPheo
+    myVars->FI_Vel[21] = v0z_2;	//	v0z_2	The rate of oxidation of S0T  by P680pPheo
     
-    myVars.FI_Vel[22] = v1z;	//	v1z
-    myVars.FI_Vel[23] = v2z;	//	v2z
-    myVars.FI_Vel[24] = v3z;	//	v3z
-    myVars.FI_Vel[25] = v0z;	//	v0z
+    myVars->FI_Vel[22] = v1z;	//	v1z
+    myVars->FI_Vel[23] = v2z;	//	v2z
+    myVars->FI_Vel[24] = v3z;	//	v3z
+    myVars->FI_Vel[25] = v0z;	//	v0z
     
-    myVars.FI_Vel[26] = vAB1;	//	vAB1	The rate of electron transfer from QA- to QB
-    myVars.FI_Vel[27] = vBA1;	//	vBA1	The rate of electron transfer from QB- to QA
-    myVars.FI_Vel[28] = vAB2;	//	vAB2	The rate of electron transfer from QA- to QB-
-    myVars.FI_Vel[29] = vBA2;	//	vBA2	The rate of electron transfer from QB2- TO QA
-    myVars.FI_Vel[30] = v3;	//	v3	The rate of exchange of QAQBH2 with PQ
+    myVars->FI_Vel[26] = vAB1;	//	vAB1	The rate of electron transfer from QA- to QB
+    myVars->FI_Vel[27] = vBA1;	//	vBA1	The rate of electron transfer from QB- to QA
+    myVars->FI_Vel[28] = vAB2;	//	vAB2	The rate of electron transfer from QA- to QB-
+    myVars->FI_Vel[29] = vBA2;	//	vBA2	The rate of electron transfer from QB2- TO QA
+    myVars->FI_Vel[30] = v3;	//	v3	The rate of exchange of QAQBH2 with PQ
     
-    myVars.FI_Vel[31] = v_r3;	//	v_r3	The rate of exchange of QAQB with PQH2
-    myVars.FI_Vel[32] = v3_n;	//	v3_n	The rate of exchange of QAnQBH2 with PQ
-    myVars.FI_Vel[33] = v_r3_n;	//	v_r3_n	The rate of exchange of QAnQB with PQH2
-    myVars.FI_Vel[34] = v_pq_ox;	//	v_pq_ox	The rate of PQH2 oxidation
-    myVars.FI_Vel[35] = Ic;	    //	Ic	The incident light on the core antenna
+    myVars->FI_Vel[31] = v_r3;	//	v_r3	The rate of exchange of QAQB with PQH2
+    myVars->FI_Vel[32] = v3_n;	//	v3_n	The rate of exchange of QAnQBH2 with PQ
+    myVars->FI_Vel[33] = v_r3_n;	//	v_r3_n	The rate of exchange of QAnQB with PQH2
+    myVars->FI_Vel[34] = v_pq_ox;	//	v_pq_ox	The rate of PQH2 oxidation
+    myVars->FI_Vel[35] = Ic;	    //	Ic	The incident light on the core antenna
     
-    myVars.FI_Vel[36] = Ia;	    //	Ia	The incident light on the peripheral antenna
-    myVars.FI_Vel[37] = v2_1;	//	v2_1	The rate of P680pPheon oxidation
-    myVars.FI_Vel[38] = v2_2;	//	v2_1	The rate of P680pPheon oxidation
-    myVars.FI_Vel[39] = v2_00_1;	//	v2_00_1	The rate of reduction of QAQB by P680pPheon
-    myVars.FI_Vel[40] = v2_01_1;	//	v2_01_1	The rate of reduction of QAQBn by P680pPheon
-    myVars.FI_Vel[41] = v2_02_1;	//	v2_02_1	The rate of reduction of QAQB2n by P680pPheon
+    myVars->FI_Vel[36] = Ia;	    //	Ia	The incident light on the peripheral antenna
+    myVars->FI_Vel[37] = v2_1;	//	v2_1	The rate of P680pPheon oxidation
+    myVars->FI_Vel[38] = v2_2;	//	v2_1	The rate of P680pPheon oxidation
+    myVars->FI_Vel[39] = v2_00_1;	//	v2_00_1	The rate of reduction of QAQB by P680pPheon
+    myVars->FI_Vel[40] = v2_01_1;	//	v2_01_1	The rate of reduction of QAQBn by P680pPheon
+    myVars->FI_Vel[41] = v2_02_1;	//	v2_02_1	The rate of reduction of QAQB2n by P680pPheon
     
-    myVars.FI_Vel[42] = v2_00_2;	//	v2_00_2	The rate of reduction of QAQB by P680Pheon
-    myVars.FI_Vel[43] = v2_01_2;	//	v2_01_2	The rate of reduction of QAQBn by P680Pheon
-    myVars.FI_Vel[44] = v2_02_2;	//	v2_02_2	The rate of reduction of QAQB2n by P680Pheon
-    myVars.FI_Vel[45] = vr2_00_1;	//	vr2_00_1	The reverse reaction of The rate of reduction of QAQB by P680pPheon
-    myVars.FI_Vel[46] = vr2_01_1;	//	vr2_01_1	The reverse reaction of The rate of reduction of QAQBn by P680pPheon
-    myVars.FI_Vel[47] = vr2_02_1;	//	vr2_02_1	The reverse reaction of The rate of reduction of QAQB2n by P680pPheon
-    myVars.FI_Vel[48] = vr2_1;	//	vr2_1
+    myVars->FI_Vel[42] = v2_00_2;	//	v2_00_2	The rate of reduction of QAQB by P680Pheon
+    myVars->FI_Vel[43] = v2_01_2;	//	v2_01_2	The rate of reduction of QAQBn by P680Pheon
+    myVars->FI_Vel[44] = v2_02_2;	//	v2_02_2	The rate of reduction of QAQB2n by P680Pheon
+    myVars->FI_Vel[45] = vr2_00_1;	//	vr2_00_1	The reverse reaction of The rate of reduction of QAQB by P680pPheon
+    myVars->FI_Vel[46] = vr2_01_1;	//	vr2_01_1	The reverse reaction of The rate of reduction of QAQBn by P680pPheon
+    myVars->FI_Vel[47] = vr2_02_1;	//	vr2_02_1	The reverse reaction of The rate of reduction of QAQB2n by P680pPheon
+    myVars->FI_Vel[48] = vr2_1;	//	vr2_1
     
-    myVars.FI_Vel[49] = vr2_00_2;	//	vr2_00_2	The reverse reaction of The rate of reduction of QAQB by P680Pheon
-    myVars.FI_Vel[50] = vr2_01_2;	//	vr2_01_2	The reverse reaction of The rate of reduction of QAQBn by P680Pheon
-    myVars.FI_Vel[51] = vr2_02_2;	//	vr2_02_2	The reverse reaction of The rate of reduction of QAQB2n by P680Pheon
+    myVars->FI_Vel[49] = vr2_00_2;	//	vr2_00_2	The reverse reaction of The rate of reduction of QAQB by P680Pheon
+    myVars->FI_Vel[50] = vr2_01_2;	//	vr2_01_2	The reverse reaction of The rate of reduction of QAQBn by P680Pheon
+    myVars->FI_Vel[51] = vr2_02_2;	//	vr2_02_2	The reverse reaction of The rate of reduction of QAQB2n by P680Pheon
     
-    myVars.FI_Vel[52] = vr2_2;	//	vr2_2
-    myVars.FI_Vel[53] = vP680qU;	//	vr2_2
-    myVars.FI_Vel[54] = vP680qA;	//	vr2_2
-    myVars.FI_Vel[55] = vU_P680;
-    myVars.FI_Vel[56] = vP680_d;
-    myVars.FI_Vel[57] = vP680_f;
+    myVars->FI_Vel[52] = vr2_2;	//	vr2_2
+    myVars->FI_Vel[53] = vP680qU;	//	vr2_2
+    myVars->FI_Vel[54] = vP680qA;	//	vr2_2
+    myVars->FI_Vel[55] = vU_P680;
+    myVars->FI_Vel[56] = vP680_d;
+    myVars->FI_Vel[57] = vP680_f;
     
     
     

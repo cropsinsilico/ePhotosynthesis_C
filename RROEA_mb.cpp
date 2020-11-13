@@ -26,16 +26,16 @@
 
 
 
-arr RROEA_Mb(double t, arr &RROEA_Con, arr &RROEA_Param, varptr &myVars) {
+arr RROEA_Mb(double t, arr &RROEA_Con, varptr *myVars) {
     
     //global GLight;
-    const double fini = Condition(t, myVars);
-    const double light = myVars.GLight;
+    Condition(t, myVars);
+    const double light = myVars->GLight;
     
-    RROEA_Param[0] = light;
+    myVars->RROEA_Param[0] = light;
     
     arr RROEA_Vel = zeros(11);
-    RROEA_Vel = RROEA_Rate(t, RROEA_Con, RROEA_Param, myVars);
+    RROEA_Vel = RROEA_Rate(t, RROEA_Con, myVars);
     
     const double ve2GAPDH = RROEA_Vel[0];
     const double ve2FBPase = RROEA_Vel[1];

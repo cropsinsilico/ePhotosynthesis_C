@@ -27,18 +27,18 @@
 // SYSInitial.m
 // This routine initialze the parameters used for all the routines.
 
-double SYSInitial(varptr &myVars) {
+void SYSInitial(varptr *myVars) {
     
     // The total runing time is set as tglobal
     //global tglobal;
     //global Primer;
-    //myVars.Primer = 300;  // --unused
+    //myVars->Primer = 300;  // --unused
     
-    //myVars.tglobal = 250;   // constant set in globals.hpp
+    //myVars->tglobal = 250;   // constant set in globals.hpp
     
     
     //global options1
-    //myVars.options1 = odeset('RelTol', 1e - 4);
+    //myVars->options1 = odeset('RelTol', 1e - 4);
     
     //global PS12ratio;
     //global input_PSIIcore;
@@ -48,28 +48,28 @@ double SYSInitial(varptr &myVars) {
     //global input_LHCII;
     //global input_LHCI;
     
-    //myVars.input_PSIIcore = 1;   // constant set in globals.hpp
-    //myVars.input_PSI = 1;   // constant set in globals.hpp
-    myVars.PS12ratio = myVars.input_PSI / myVars.input_PSIIcore;
+    //myVars->input_PSIIcore = 1;   // constant set in globals.hpp
+    //myVars->input_PSI = 1;   // constant set in globals.hpp
+    myVars->PS12ratio = myVars->input_PSI / myVars->input_PSIIcore;
     
-    //myVars.PSIIantennaSize = 37;   // constant set in globals.hpp
-    //myVars.PSIantennaSize = 95;   // constant set in globals.hpp
-    //myVars.input_LHCII = 13;   // constant set in globals.hpp
-    //myVars.input_LHCI = 6;   // constant set in globals.hpp
+    //myVars->PSIIantennaSize = 37;   // constant set in globals.hpp
+    //myVars->PSIantennaSize = 95;   // constant set in globals.hpp
+    //myVars->input_LHCII = 13;   // constant set in globals.hpp
+    //myVars->input_LHCI = 6;   // constant set in globals.hpp
     //global ChlT2;
     //global ChlT;
     //global ChlPSI;
-    myVars.ChlT2 = myVars.input_PSIIcore * (myVars.PSIIantennaSize + 13 * myVars.input_LHCII);// U and A, PSII and LHCII
-    myVars.ChlT = myVars.PSIIantennaSize * myVars.input_PSIIcore;// U , PSII
-    myVars.ChlPSI = myVars.input_PSI * (myVars.PSIantennaSize + 13 * myVars.input_LHCI);// U and A of PSI, total Chl in PSI
+    myVars->ChlT2 = myVars->input_PSIIcore * (myVars->PSIIantennaSize + 13 * myVars->input_LHCII);// U and A, PSII and LHCII
+    myVars->ChlT = myVars->PSIIantennaSize * myVars->input_PSIIcore;// U , PSII
+    myVars->ChlPSI = myVars->input_PSI * (myVars->PSIantennaSize + 13 * myVars->input_LHCI);// U and A of PSI, total Chl in PSI
     
     
     //global AVR;
-    //myVars.AVR = 30;   // constant set in globals.hpp
+    //myVars->AVR = 30;   // constant set in globals.hpp
     
     //global GP;
-    //myVars.GP = 0;   // constant set in globals.hpp
+    //myVars->GP = 0;   // constant set in globals.hpp
     
-    const double fin = 1;
-    return fin;
+    //const double fin = 1;
+    //return fin;
 }

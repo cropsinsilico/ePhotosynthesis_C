@@ -32,7 +32,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-arr RedoxReg_Rate(double t, arr &RedoxReg_Con, double RedoxReg_Param, varptr &myVars) {
+arr RedoxReg_Rate(double t, arr &RedoxReg_Con, varptr *myVars) {
     //global RedoxReg_MP;
     
     //global RedoxReg_VMAX6;
@@ -49,36 +49,37 @@ arr RedoxReg_Rate(double t, arr &RedoxReg_Con, double RedoxReg_Param, varptr &my
     //global Redox2PS_V16;
     
     const double Fdn = RedoxReg_Con[23];
-    // Fd = myVars.BF2RedoxReg_Fdt - Fdn;// --unused
+    // Fd = myVars->BF2RedoxReg_Fdt - Fdn;// --unused
     
     const double Thion = RedoxReg_Con[92];
-    const double Thio = myVars.ThioT - Thion;
+    const double Thio = myVars->ThioT - Thion;
     
-    myVars.RedoxReg_MP[0][2] = Thion / myVars.ThioT;
+    myVars->RedoxReg_MP[0][2] = Thion / myVars->ThioT;
     
-    double TEMP = myVars.RedoxReg_MP[0][2];
+    double TEMP = myVars->RedoxReg_MP[0][2];
     
     //global RROEA_EPS_com;
-    if (myVars.RROEA_EPS_com)
+    if (myVars->RROEA_EPS_com)
         TEMP = 0.5;
     
     
     //global trDynaPS2RedReg_cal
     
-    double pr;
-    if (myVars.trDynaPS2RedReg_cal == 1) {
+    //double pr;
+    if (myVars->trDynaPS2RedReg_cal == 1) {
         UserData *data = alloc_user_data();
         data->coeffs.resize(2);
 
-        data->coeffs[0] = myVars.RedoxReg_MP[0][1] - 0.03 * log10(TEMP / (1 - TEMP));
-        double RedPercent, MPE;
+        data->coeffs[0] = myVars->RedoxReg_MP[0][1] - 0.03 * log10(TEMP / (1 - TEMP));
+        //double RedPercent, MPE;
         
         N_Vector y, constraints, scaling;
         y = N_VNew_Serial(1);
         constraints = N_VNew_Serial(1);
+        scaling = N_VNew_Serial(1);
         N_VConst(ONE, scaling);
         realtype abstol = 1e-5;
-        realtype reltol = 1e-4;
+        //realtype reltol = 1e-4;
         NV_Ith_S(constraints, 0) = ZERO;
         void *kmem = NULL;
         kmem = KINCreate();
@@ -89,8 +90,8 @@ arr RedoxReg_Rate(double t, arr &RedoxReg_Con, double RedoxReg_Param, varptr &my
 
         for (int index = 1; index < 5; index++) {
             
-            NV_Ith_S(y, 0) = myVars.RedoxReg_MP[index][2];
-            data->coeffs[1] = myVars.RedoxReg_MP[index][1];
+            NV_Ith_S(y, 0) = myVars->RedoxReg_MP[index][2];
+            data->coeffs[1] = myVars->RedoxReg_MP[index][1];
             KINSetUserData(kmem, data);
             KINSetConstraints(kmem, constraints);
             KINSetFuncNormTol(kmem, abstol);
@@ -99,21 +100,21 @@ arr RedoxReg_Rate(double t, arr &RedoxReg_Con, double RedoxReg_Param, varptr &my
             KINSol(kmem, y, KIN_LINESEARCH, scaling, scaling);
             realtype *retvals = N_VGetArrayPointer(y);
             //pr = fsolve(@RedoxReg_FPercent, RedPercent, optimset('Display', 'off'), RedP, MPE);
-            myVars.RedoxReg_MP[index][2] = retvals[0];
+            myVars->RedoxReg_MP[index][2] = retvals[0];
             
                    
-            if (myVars.RedoxReg_MP[index][0] == 6) {
-                myVars.Redox2PS_V6 = myVars.RedoxReg_VMAX6 * myVars.RedoxReg_MP[index][2];
-                //myVars.Redox2PS_V6 = myVars.RedoxReg_VMAX6;
-            } else if (myVars.RedoxReg_MP[index][0] == 9) {
-                myVars.Redox2PS_V9 = myVars.RedoxReg_VMAX9 * myVars.RedoxReg_MP[index][2];
-                //myVars.Redox2PS_V9 = myVars.RedoxReg_VMAX9;
-            } else if (myVars.RedoxReg_MP[index][0] == 13) {
-                myVars.Redox2PS_V13 = myVars.RedoxReg_VMAX13 * myVars.RedoxReg_MP[index][2];
-                //myVars.Redox2PS_V13 = myVars.RedoxReg_VMAX13;
-            } else if (myVars.RedoxReg_MP[index][0] == 16) {
-                myVars.Redox2PS_V16 = myVars.RedoxReg_VMAX16 * myVars.RedoxReg_MP[index][2];
-                //myVars.Redox2PS_V16 = myVars.RedoxReg_VMAX16;
+            if (myVars->RedoxReg_MP[index][0] == 6) {
+                myVars->Redox2PS_V6 = myVars->RedoxReg_VMAX6 * myVars->RedoxReg_MP[index][2];
+                //myVars->Redox2PS_V6 = myVars->RedoxReg_VMAX6;
+            } else if (myVars->RedoxReg_MP[index][0] == 9) {
+                myVars->Redox2PS_V9 = myVars->RedoxReg_VMAX9 * myVars->RedoxReg_MP[index][2];
+                //myVars->Redox2PS_V9 = myVars->RedoxReg_VMAX9;
+            } else if (myVars->RedoxReg_MP[index][0] == 13) {
+                myVars->Redox2PS_V13 = myVars->RedoxReg_VMAX13 * myVars->RedoxReg_MP[index][2];
+                //myVars->Redox2PS_V13 = myVars->RedoxReg_VMAX13;
+            } else if (myVars->RedoxReg_MP[index][0] == 16) {
+                myVars->Redox2PS_V16 = myVars->RedoxReg_VMAX16 * myVars->RedoxReg_MP[index][2];
+                //myVars->Redox2PS_V16 = myVars->RedoxReg_VMAX16;
             }
         }
         N_VDestroy(y);
@@ -127,8 +128,8 @@ arr RedoxReg_Rate(double t, arr &RedoxReg_Con, double RedoxReg_Param, varptr &my
     //global Thio_Oxidation;
     //global Fd_Thio_ET;
     
-    const double Vred = Fdn * myVars.Fd_Thio_ET * Thio / myVars.ThioT;
-    const double Vox = Thion * myVars.Thio_Oxidation;
+    const double Vred = Fdn * myVars->Fd_Thio_ET * Thio / myVars->ThioT;
+    const double Vox = Thion * myVars->Thio_Oxidation;
     
     
     arr RedoxReg_Vel = zeros(2);
@@ -142,21 +143,21 @@ arr RedoxReg_Rate(double t, arr &RedoxReg_Con, double RedoxReg_Param, varptr &my
     //global RedoxReg_VEL;
     //global RedoxReg_CON;
     
-    if (myVars.RedoxReg_TIME_N == 0)
-        myVars.RedoxReg_TIME_N = 1;
+    if (myVars->RedoxReg_TIME_N == 0)
+        myVars->RedoxReg_TIME_N = 1;
     
     
-    if (t > myVars.RedoxReg_TIME_N) {
-        myVars.RedoxReg_TIME_N = myVars.RedoxReg_TIME_N + 1;
-        myVars.RedoxReg_OLD_TIME = t;
+    if (t > myVars->RedoxReg_TIME_N) {
+        myVars->RedoxReg_TIME_N = myVars->RedoxReg_TIME_N + 1;
+        myVars->RedoxReg_OLD_TIME = t;
     }
     
-    if (myVars.RedoxReg_VEL.shape()[1] < myVars.RedoxReg_TIME_N) {
-        myVars.RedoxReg_VEL.resize(boost::extents[RedoxReg_VEL_SIZE][myVars.RedoxReg_TIME_N]);
+    if (myVars->RedoxReg_VEL.shape()[1] < myVars->RedoxReg_TIME_N) {
+        myVars->RedoxReg_VEL.resize(boost::extents[RedoxReg_VEL_SIZE][myVars->RedoxReg_TIME_N]);
     }
 
-    //myVars.RedoxReg_VEL[0][myVars.RedoxReg_TIME_N - 1] = t;  // --unused
-    //myVars.RedoxReg_VEL[1][myVars.RedoxReg_TIME_N - 1] = Vred;  // --unused
-    //myVars.RedoxReg_VEL[2][myVars.RedoxReg_TIME_N - 1] = Vox;  // --unused
+    //myVars->RedoxReg_VEL[0][myVars->RedoxReg_TIME_N - 1] = t;  // --unused
+    //myVars->RedoxReg_VEL[1][myVars->RedoxReg_TIME_N - 1] = Vred;  // --unused
+    //myVars->RedoxReg_VEL[2][myVars->RedoxReg_TIME_N - 1] = Vox;  // --unused
     return RedoxReg_Vel;
 }

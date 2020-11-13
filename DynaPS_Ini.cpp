@@ -43,7 +43,7 @@ arr DynaPS::DynaPS_Ini() {
     // DynaPS_CON = zeros(3, 1);    // Clean memory
     
     
-    arr RA_Con = RA_Ini(*myVars);
+    arr RA_Con = RA_Ini(myVars);
     arr DynaPS_Con = zeros(120);
     
     for (int m = 0; m < 92; m++)
@@ -51,7 +51,7 @@ arr DynaPS::DynaPS_Ini() {
     
     
     
-    arr XanCycle_Con = XanCycle_Ini(*myVars);
+    arr XanCycle_Con = XanCycle_Ini(myVars);
     
     for (int m = 0; m < 4; m++)
         DynaPS_Con[m + 92] = XanCycle_Con[m];

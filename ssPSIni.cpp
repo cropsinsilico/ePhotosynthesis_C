@@ -24,7 +24,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-double ssPSIni(double t, varptr &myVars) {
+void ssPSIni(double t, varptr *myVars) {
     
     //global kmCO2;
     //global kmO2;
@@ -34,12 +34,12 @@ double ssPSIni(double t, varptr &myVars) {
     
     const double RT = 0.0083 * (273 + t);
     
-    //myVars.Rd = exp(18.72 - 46.39 / RT);  // --unused
-    myVars.GammaStar = exp(19.02 - 37.83 / RT);
-    myVars.kmCO2 = exp(38.05 - 79.43 / RT);
-    myVars.kmO2 = exp(20.30 - 36.38 / RT);
-    //myVars.O2 = 210;   // constant set in globals.hpp
+    //myVars->Rd = exp(18.72 - 46.39 / RT);  // --unused
+    myVars->GammaStar = exp(19.02 - 37.83 / RT);
+    myVars->kmCO2 = exp(38.05 - 79.43 / RT);
+    myVars->kmO2 = exp(20.30 - 36.38 / RT);
+    //myVars->O2 = 210;   // constant set in globals.hpp
     
-    const double Done = 1;
-    return Done;
+    //const double Done = 1;
+    //return Done;
 }

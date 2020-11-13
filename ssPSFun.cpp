@@ -25,7 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-arr ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, double Light, varptr &myVars) {
+arr ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, double Light, varptr *myVars) {
     
     //global kmCO2;
     //global kmO2;
@@ -33,11 +33,11 @@ arr ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, double Light, 
     //global GammaStar;
     //global Rd;
     
-    const double done = ssPSIni(temp, myVars);
+    ssPSIni(temp, myVars);
     
     const double Ci = CO2;
-    const double wc = VcmaxT * (Ci - myVars.GammaStar) / (Ci + myVars.kmCO2 * (1 + myVars.O2 / myVars.kmO2));
-    const double wj = JmaxT * (Ci - myVars.GammaStar) / (4.5 * Ci + 10.5 * myVars.GammaStar);
+    const double wc = VcmaxT * (Ci - myVars->GammaStar) / (Ci + myVars->kmCO2 * (1 + myVars->O2 / myVars->kmO2));
+    const double wj = JmaxT * (Ci - myVars->GammaStar) / (4.5 * Ci + 10.5 * myVars->GammaStar);
     const double w = std::min(wc, wj);
     
     const double Vm = 88.6 * pow(10, -3);

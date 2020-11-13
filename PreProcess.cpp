@@ -24,7 +24,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-double PreProcess(varptr &myVars) {
+void PreProcess(varptr *myVars) {
     
     // d = 0;// --unused
     //global FIBF;
@@ -32,13 +32,13 @@ double PreProcess(varptr &myVars) {
     //global FI;
     //global BF;
     //global ATPActive;
-    myVars.ATPActive = 0;
+    myVars->ATPActive = 0;
     
-    //myVars.FIBF = 0;  // --unused
-    //myVars.PSPR = 0;   // constant set in globals.hpp
-    //myVars.BF = 0;  // --unused
-    //myVars.FI = 0;  // --unused
+    //myVars->FIBF = 0;  // --unused
+    //myVars->PSPR = 0;   // constant set in globals.hpp
+    //myVars->BF = 0;  // --unused
+    //myVars->FI = 0;  // --unused
     
-    const double suc = 1;
-    return suc;
+    //const double suc = 1;
+    //return suc;
 }

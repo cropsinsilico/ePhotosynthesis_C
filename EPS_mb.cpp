@@ -28,7 +28,7 @@
 
 // EPS_mb.m  This model includes the mass balance equations for the full model of the light reactions.
 
-arr EPS_mb(double t, arr &EPS_Con, arr &BF_Param, arr &FI_Param, double PS_PR_Param, arr &Sucs_Param, varptr &myVars) {
+arr EPS_mb(double t, arr &EPS_Con, varptr *myVars) {
     
     // Try out one new way of calculating the mass balance equation.
     // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.
@@ -55,9 +55,9 @@ arr EPS_mb(double t, arr &EPS_Con, arr &BF_Param, arr &FI_Param, double PS_PR_Pa
     dxdt = N_VNew_Serial(36);
     
     //arr CM_DYDT = zeros(9);
-    CM cm = CM(&myVars);
+    CM cm = CM(myVars);
     cm.CM_mb(t, CMs, dxdt, nullptr);
-    arr FIBF_DYDT = FIBF_MB(t, FIBF_Con, BF_Param, FI_Param, myVars);
+    arr FIBF_DYDT = FIBF_MB(t, FIBF_Con, myVars);
     
     realtype *CM_DYDT = N_VGetArrayPointer(dxdt);
     // Step III: Calculate the mass balanec equation for the EPS model. This basically need to make sure that the variables
@@ -75,7 +75,7 @@ arr EPS_mb(double t, arr &EPS_Con, arr &BF_Param, arr &FI_Param, double PS_PR_Pa
     //global EPS_ATP_Rate;   // The EPS_ATP_Rate is used in the overall model for the calculation of the mass balance equation of ATP.
     //global PS2EPS_V16;
     //global PRGlu;
-    EPS_DYDT[60] = CM_DYDT[8] - myVars.PS2EPS_V16 + myVars.EPS_ATP_Rate - myVars.PRGlu;//WY 201804
+    EPS_DYDT[60] = CM_DYDT[8] - myVars->PS2EPS_V16 + myVars->EPS_ATP_Rate - myVars->PRGlu;//WY 201804
     EPS_DYDT[16] = EPS_DYDT[60];
     
     //global PS2EPS_v3;
@@ -83,11 +83,11 @@ arr EPS_mb(double t, arr &EPS_Con, arr &BF_Param, arr &FI_Param, double PS_PR_Pa
     //global PS2EPS_NADPH;
     
     //global BF_RC;
-    // Vmax11 = myVars.BF_RC[10];	//	The maximum rate of ATP synthesis	Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1// --unused
+    // Vmax11 = myVars->BF_RC[10];	//	The maximum rate of ATP synthesis	Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1// --unused
     
     //EPS_DYDT(62) = BF2EPS_vbfn2 - PS2EPS_v3 - 1 * PS2EPS_NADPH/(PS2EPS_NADPH + 0.5) ;
     //EPS_DYDT(62) = BF2EPS_vbfn2/2 - PS2EPS_v3;//- 1 * PS2EPS_NADPH/(PS2EPS_NADPH + 0.5) ;  //QF changed /2 and ;// - 1 * PS2EPS_NADPH/(PS2EPS_NADPH + 0.5)
-    EPS_DYDT[61] = myVars.BF2EPS_vbfn2 / 2 - myVars.PS2EPS_v3 - 2 * myVars.PRGlu;//WY 201804
+    EPS_DYDT[61] = myVars->BF2EPS_vbfn2 / 2 - myVars->PS2EPS_v3 - 2 * myVars->PRGlu;//WY 201804
     EPS_DYDT[28] = EPS_DYDT[61];
     return EPS_DYDT;
 }

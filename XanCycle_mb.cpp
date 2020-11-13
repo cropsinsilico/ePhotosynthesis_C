@@ -25,13 +25,13 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-arr XanCycle_Mb(double t, arr &XanCycle_Con, arr &XanCycle_Param, varptr &myVars) {
+arr XanCycle_Mb(double t, arr &XanCycle_Con, varptr *myVars) {
     
     
-    const double fini = Condition(t, myVars);
+    Condition(t, myVars);
     
     arr XanCycle_Vel = zeros(7);
-    XanCycle_Vel = XanCycle_Rate(t, XanCycle_Con, XanCycle_Param, myVars);
+    XanCycle_Vel = XanCycle_Rate(t, XanCycle_Con, myVars);
     
     const double Vva = XanCycle_Vel[0];	//	The velocity of v to a conversion
     const double Vaz = XanCycle_Vel[1];	//	The rate of A to z

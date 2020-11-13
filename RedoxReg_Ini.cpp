@@ -26,7 +26,7 @@
 
 
 
-arr RedoxReg_Ini(varptr &myVars) {
+arr RedoxReg_Ini(varptr *myVars) {
     
     // BEGIN = 1;// --unused
     
@@ -35,8 +35,8 @@ arr RedoxReg_Ini(varptr &myVars) {
     //global RedoxReg_VEL;
     //global RedoxReg_CON;
     
-    myVars.RedoxReg_OLD_TIME = 0;
-    myVars.RedoxReg_TIME_N = 1;
+    myVars->RedoxReg_OLD_TIME = 0;
+    myVars->RedoxReg_TIME_N = 1;
     // RedoxReg_VEL = zeros(1, 3);
     // RedoxReg_CON = zeros(3, 1);
     
@@ -62,46 +62,46 @@ arr RedoxReg_Ini(varptr &myVars) {
     //global V13;
     //global V16;
     
-    myVars.RedoxReg_VMAX6 = myVars.V6;
-    myVars.RedoxReg_VMAX9 = myVars.V9;
-    myVars.RedoxReg_VMAX13 = myVars.V13;
-    myVars.RedoxReg_VMAX16 = myVars.V16;
+    myVars->RedoxReg_VMAX6 = myVars->V6;
+    myVars->RedoxReg_VMAX9 = myVars->V9;
+    myVars->RedoxReg_VMAX13 = myVars->V13;
+    myVars->RedoxReg_VMAX16 = myVars->V16;
     
     //global RedoxReg_MP;
     
-    myVars.RedoxReg_MP[0][0] = 1000;
-    myVars.RedoxReg_MP[0][1] = - 0.3;
-    myVars.RedoxReg_MP[0][2] = 0.5;
+    myVars->RedoxReg_MP[0][0] = 1000;
+    myVars->RedoxReg_MP[0][1] = - 0.3;
+    myVars->RedoxReg_MP[0][2] = 0.5;
     
-    myVars.RedoxReg_MP[1][0] = 6;             // FBPase
-    myVars.RedoxReg_MP[1][1] = - 0.305;
-    myVars.RedoxReg_MP[1][2] = 0.5;
+    myVars->RedoxReg_MP[1][0] = 6;             // FBPase
+    myVars->RedoxReg_MP[1][1] = - 0.305;
+    myVars->RedoxReg_MP[1][2] = 0.5;
     
-    myVars.RedoxReg_MP[2][0] = 9;             // SBPase
-    myVars.RedoxReg_MP[2][1] = - 0.3;
-    myVars.RedoxReg_MP[2][2] = 0.5;
+    myVars->RedoxReg_MP[2][0] = 9;             // SBPase
+    myVars->RedoxReg_MP[2][1] = - 0.3;
+    myVars->RedoxReg_MP[2][2] = 0.5;
     
-    myVars.RedoxReg_MP[3][0] = 13;            // PRK
-    myVars.RedoxReg_MP[3][1] = - 0.295;
-    myVars.RedoxReg_MP[3][2] = 0.5;
+    myVars->RedoxReg_MP[3][0] = 13;            // PRK
+    myVars->RedoxReg_MP[3][1] = - 0.295;
+    myVars->RedoxReg_MP[3][2] = 0.5;
     
-    myVars.RedoxReg_MP[4][0] = 16;            // ATPase
-    myVars.RedoxReg_MP[4][1] = - 0.28;
-    myVars.RedoxReg_MP[4][2] = 0.5;
+    myVars->RedoxReg_MP[4][0] = 16;            // ATPase
+    myVars->RedoxReg_MP[4][1] = - 0.28;
+    myVars->RedoxReg_MP[4][2] = 0.5;
     
     
     //global Thio_Oxidation;
     //global Fd_Thio_ET;
     
-    //myVars.Thio_Oxidation = 0.1;   // constant set in globals.hpp
-    //myVars.Fd_Thio_ET = 500;   // constant set in globals.hpp
+    //myVars->Thio_Oxidation = 0.1;   // constant set in globals.hpp
+    //myVars->Fd_Thio_ET = 500;   // constant set in globals.hpp
     
     
     //global ThioT;
-    //myVars.ThioT = 0.5;   // constant set in globals.hpp
+    //myVars->ThioT = 0.5;   // constant set in globals.hpp
     
     //global BF_Pool;
     //global BF2RedoxReg_Fdt;
-    myVars.BF2RedoxReg_Fdt = myVars.BF_Pool[5];
+    myVars->BF2RedoxReg_Fdt = myVars->BF_Pool[5];
     return RedoxReg_Con;
 }

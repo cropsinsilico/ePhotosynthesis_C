@@ -25,7 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-arr XanCycle_Rate(double t, arr &XanCycle_Con, arr &XanCycle_Param, varptr &myVars) {
+arr XanCycle_Rate(double t, arr &XanCycle_Con, varptr *myVars) {
     
     //global XanCycle_kva;
     //global XanCycle_kaz;
@@ -41,16 +41,16 @@ arr XanCycle_Rate(double t, arr &XanCycle_Con, arr &XanCycle_Param, varptr &myVa
     double ABA = XanCycle_Con[3];	//	The concentration of ABA
     
     
-    const double fini = Condition(t, myVars);
+    Condition(t, myVars);
     //global Glight;
     
-    // light = myVars.Glight;// --unused
+    // light = myVars->Glight;// --unused
     
     //global XanCycle_BF_com;
     double pH;
-    if (myVars.XanCycle_BF_com) {
-        //global myVars.BF2XanCycle_pHl;
-        pH = myVars.BF2XanCycle_pHl;
+    if (myVars->XanCycle_BF_com) {
+        //global myVars->BF2XanCycle_pHl;
+        pH = myVars->BF2XanCycle_pHl;
     } else {
         pH = 6;
     }
@@ -65,10 +65,10 @@ arr XanCycle_Rate(double t, arr &XanCycle_Con, arr &XanCycle_Param, varptr &myVa
     }
     
     
-    const double Vva = Vx * myVars.XanCycle_kva * RegCof;
-    const double Vaz = Ax * myVars.XanCycle_kaz * RegCof;
-    const double Vza = Zx * myVars.XanCycle_kza;
-    const double Vav = Ax * myVars.XanCycle_kav;
+    const double Vva = Vx * myVars->XanCycle_kva * RegCof;
+    const double Vaz = Ax * myVars->XanCycle_kaz * RegCof;
+    const double Vza = Zx * myVars->XanCycle_kza;
+    const double Vav = Ax * myVars->XanCycle_kav;
     
     const double Vvf = 0;
     const double Vv2ABA = 0;
@@ -79,31 +79,31 @@ arr XanCycle_Rate(double t, arr &XanCycle_Con, arr &XanCycle_Param, varptr &myVa
     //global XanCycle_VEL;
     //global XanCycle_CON;
     
-    if (myVars.XanCycle_TIME_N == 0)
-        myVars.XanCycle_TIME_N = 1;
+    if (myVars->XanCycle_TIME_N == 0)
+        myVars->XanCycle_TIME_N = 1;
     
     
-    if (t > myVars.XanCycle_OLD_TIME) {
-        myVars.XanCycle_TIME_N = myVars.XanCycle_TIME_N + 1;
-        myVars.XanCycle_OLD_TIME = t;
+    if (t > myVars->XanCycle_OLD_TIME) {
+        myVars->XanCycle_TIME_N = myVars->XanCycle_TIME_N + 1;
+        myVars->XanCycle_OLD_TIME = t;
     }
     
-    if (myVars.XanCycle_VEL.shape()[0] < myVars.XanCycle_TIME_N) {
-        myVars.XanCycle_VEL.resize(boost::extents[myVars.XanCycle_TIME_N][XanCycle_VEL_SIZE]);
-        myVars.XanCycle_CON.resize(boost::extents[myVars.XanCycle_TIME_N][XanCycle_CON_SIZE]);
+    if (myVars->XanCycle_VEL.shape()[0] < myVars->XanCycle_TIME_N) {
+        myVars->XanCycle_VEL.resize(boost::extents[myVars->XanCycle_TIME_N][XanCycle_VEL_SIZE]);
+        myVars->XanCycle_CON.resize(boost::extents[myVars->XanCycle_TIME_N][XanCycle_CON_SIZE]);
     }
 
-    myVars.XanCycle_VEL[myVars.XanCycle_TIME_N - 1][0] = t;
-    myVars.XanCycle_VEL[myVars.XanCycle_TIME_N - 1][1] = Vva;
-    myVars.XanCycle_VEL[myVars.XanCycle_TIME_N - 1][2] = Vaz;
-    myVars.XanCycle_VEL[myVars.XanCycle_TIME_N - 1][3] = Vza;
-    myVars.XanCycle_VEL[myVars.XanCycle_TIME_N - 1][4] = Vav;
-    myVars.XanCycle_VEL[myVars.XanCycle_TIME_N - 1][5] = Vvf;
-    myVars.XanCycle_VEL[myVars.XanCycle_TIME_N - 1][6] = Vv2ABA;
-    myVars.XanCycle_VEL[myVars.XanCycle_TIME_N - 1][7] = VABAdg;
+    myVars->XanCycle_VEL[myVars->XanCycle_TIME_N - 1][0] = t;
+    myVars->XanCycle_VEL[myVars->XanCycle_TIME_N - 1][1] = Vva;
+    myVars->XanCycle_VEL[myVars->XanCycle_TIME_N - 1][2] = Vaz;
+    myVars->XanCycle_VEL[myVars->XanCycle_TIME_N - 1][3] = Vza;
+    myVars->XanCycle_VEL[myVars->XanCycle_TIME_N - 1][4] = Vav;
+    myVars->XanCycle_VEL[myVars->XanCycle_TIME_N - 1][5] = Vvf;
+    myVars->XanCycle_VEL[myVars->XanCycle_TIME_N - 1][6] = Vv2ABA;
+    myVars->XanCycle_VEL[myVars->XanCycle_TIME_N - 1][7] = VABAdg;
     
-    //myVars.XanCycle_CON[myVars.XanCycle_TIME_N - 1][0] = t;  // --unused
-    //myVars.XanCycle_CON[myVars.XanCycle_TIME_N - 1][1] = Vx;  // --unused
+    //myVars->XanCycle_CON[myVars->XanCycle_TIME_N - 1][0] = t;  // --unused
+    //myVars->XanCycle_CON[myVars->XanCycle_TIME_N - 1][1] = Vx;  // --unused
     
     
     arr XanCycle_Vel = zeros(7);
@@ -116,7 +116,7 @@ arr XanCycle_Rate(double t, arr &XanCycle_Con, arr &XanCycle_Param, varptr &myVa
     XanCycle_Vel[6] = VABAdg;	//	The rate of ABA degradation
     
     
-    const double Xstate = Zx / (Vx + Ax + Zx);
+    //const double Xstate = Zx / (Vx + Ax + Zx);
     ABA = Vx / (Vx + Ax + Zx);
     
     //global XanCycle2FIBF_Xstate;
@@ -124,13 +124,13 @@ arr XanCycle_Rate(double t, arr &XanCycle_Con, arr &XanCycle_Param, varptr &myVa
     
     //global Xan2Stom_ABA;
     
-    //myVars.Xan2Stom_ABA = ABA;  // --unused
+    //myVars->Xan2Stom_ABA = ABA;  // --unused
     
     //global XanCycle2OUT;
     // XanCycle2OUT = zeros(5, 1);
-    myVars.XanCycle2OUT[0] = Vx;
-    myVars.XanCycle2OUT[1] = Ax;
-    myVars.XanCycle2OUT[2] = Zx;
-    myVars.XanCycle2OUT[3] = ABA;
+    myVars->XanCycle2OUT[0] = Vx;
+    myVars->XanCycle2OUT[1] = Ax;
+    myVars->XanCycle2OUT[2] = Zx;
+    myVars->XanCycle2OUT[3] = ABA;
     return XanCycle_Vel;
 }
