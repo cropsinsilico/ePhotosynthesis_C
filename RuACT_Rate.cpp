@@ -156,13 +156,20 @@ void RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars) {
             myVars->RuACT_OLD_TIME = t;
         }
     
+    myVars->RuACT_Vel[0] = v1;
+    myVars->RuACT_Vel[1] = vn1;
+    myVars->RuACT_Vel[2] = v7;
+    myVars->RuACT_Vel[3] = vn7;
+    myVars->RuACT_Vel[4] = v6_1;
+    myVars->RuACT_Vel[5] = v6_2;
+
     if (myVars->record) {
         //if (myVars->RuACT_TIME_N == 0)
         //    myVars->RuACT_TIME_N = 1;
-    
+        myVars->RuACT_VEL.insert(myVars->RuACT_TIME_N - 1, t, myVars->RuACT_Vel);
     
         
-    
+        /*
         if (myVars->RuACT_VEL.shape()[0] < myVars->RuACT_TIME_N) {
             myVars->RuACT_VEL.resize(boost::extents[myVars->RuACT_TIME_N][RuACT_VEL_SIZE]);
             myVars->RuACT_CON.resize(boost::extents[myVars->RuACT_TIME_N][RuACT_CON_SIZE]);
@@ -175,6 +182,7 @@ void RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars) {
         myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][4] = vn7;
         myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][5] = v6_1;
         myVars->RuACT_VEL[myVars->RuACT_TIME_N - 1][6] = v6_2;
+        */
     }
     //myVars->RuACT_CON[myVars->RuACT_TIME_N - 1][0] = t;  // --unused
     //myVars->RuACT_CON[myVars->RuACT_TIME_N - 1][1] = E;  // --unused
@@ -183,12 +191,6 @@ void RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars) {
     
     
     //arr RuACT_Vel = zeros(6);
-    myVars->RuACT_Vel[0] = v1;
-    myVars->RuACT_Vel[1] = vn1;
-    myVars->RuACT_Vel[2] = v7;
-    myVars->RuACT_Vel[3] = vn7;
-    myVars->RuACT_Vel[4] = v6_1;
-    myVars->RuACT_Vel[5] = v6_2;
     
     //global RuACT2RA_v61;
     //global RuACT2RA_v62;

@@ -224,91 +224,8 @@ void FI_Rate(double t, varptr *myVars) {
             myVars->FI_TIME_N = myVars->FI_TIME_N + 1;
             myVars->FI_OLD_TIME = t;
         }
-    if (myVars->record) {
-        //if (myVars->FI_TIME_N == 0)
-        //    myVars->FI_TIME_N = 1;
     
-        if (myVars->FI_VEL.shape()[0] < myVars->FI_TIME_N) {
-            myVars->FI_VEL.resize(boost::extents[myVars->FI_TIME_N][FI_VEL_SIZE]);
-            myVars->FI_CON.resize(boost::extents[myVars->FI_TIME_N][FI_CON_SIZE]);
-        }
-
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][0] = t;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][1] = vA_d;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][2] = vA_f;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][3] = vA_U;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][4] = vU_A;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][5] = vU_f;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][6] = vU_d;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][7] = v1;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][8] = v_r1;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][9] = vS1_S2;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][10] = vS2_S3;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][11] = vS3_S0;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][12] = vS0_S1;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][13] = vz_1;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][14] = v1z_1;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][15] = v2z_1;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][16] = v3z_1;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][17] = v0z_1;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][18] = vz_2;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][19] = v1z_2;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][20] = v2z_2;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][21] = v3z_2;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][22] = v0z_2;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][23] = v1z;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][24] = v2z;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][25] = v3z;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][26] = v0z;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][27] = vAB1;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][28] = vBA1;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][29] = vAB2;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][30] = vBA2;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][31] = v3;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][32] = v_r3;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][33] = v3_n;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][34] = v_r3_n;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][35] = v_pq_ox;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][36] = Ic;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][37] = Ia;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][38] = v2_1;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][39] = v2_2;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][40] = v2_00_1;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][41] = v2_01_1;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][42] = v2_02_1;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][43] = v2_00_2;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][44] = v2_01_2;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][45] = v2_02_2;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][46] = vr2_00_1;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][47] = vr2_01_1;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][48] = vr2_02_1;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][49] = vr2_1;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][50] = vr2_00_2;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][51] = vr2_01_2;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][52] = vr2_02_2;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][53] = vr2_2;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][54] = vP680qU;	//	vr2_2
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][55] = vP680qA;	//	vr2_2
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][56] = vU_P680;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][57] = vP680_d;
-        myVars->FI_VEL[myVars->FI_TIME_N - 1][58] = vP680_f;
-    }
-    //myVars->FI_CON[myVars->FI_TIME_N - 1][0] = t;  // --unused
-    //myVars->FI_CON[myVars->FI_TIME_N - 1][1] = f;  // --unused
-    //myVars->FI_CON[myVars->FI_TIME_N - 1][2] = 1 - q;  // --unused
-    //myVars->FI_CON[myVars->FI_TIME_N - 1][3] = vA_d + vU_d;  // --unused
-    //myVars->FI_CON[myVars->FI_TIME_N - 1][4] = vS3_S0;  // --unused
-    //double It2;
-    //double fPSII;
-    //if (It != 0) {
-    //    It2 = It * 27 / 47;
-    //    //fPSII = (It2 - f - vA_d - vU_d) / It2;
-    // }
-    
-    //myVars->FI_CON[myVars->FI_TIME_N - 1][5] = fPSII;  // --unused
-    
-    
-    ////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////
     // Assign table
     ////////////////////////////////////////////////////////////////////////////////
     //global FI_Vel;
@@ -379,4 +296,91 @@ void FI_Rate(double t, varptr *myVars) {
     myVars->FI_Vel[56] = vP680_d;
     myVars->FI_Vel[57] = vP680_f;
     
+    if (myVars->record) {
+        myVars->FI_VEL.insert(myVars->FI_TIME_N - 1, t, myVars->FI_Vel);
+        //if (myVars->FI_TIME_N == 0)
+        //    myVars->FI_TIME_N = 1;
+        /*
+        if (myVars->FI_VEL.shape()[0] < myVars->FI_TIME_N) {
+            myVars->FI_VEL.resize(boost::extents[myVars->FI_TIME_N][FI_VEL_SIZE]);
+            myVars->FI_CON.resize(boost::extents[myVars->FI_TIME_N][FI_CON_SIZE]);
+        }
+
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][0] = t;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][1] = vA_d;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][2] = vA_f;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][3] = vA_U;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][4] = vU_A;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][5] = vU_f;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][6] = vU_d;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][7] = v1;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][8] = v_r1;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][9] = vS1_S2;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][10] = vS2_S3;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][11] = vS3_S0;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][12] = vS0_S1;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][13] = vz_1;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][14] = v1z_1;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][15] = v2z_1;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][16] = v3z_1;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][17] = v0z_1;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][18] = vz_2;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][19] = v1z_2;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][20] = v2z_2;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][21] = v3z_2;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][22] = v0z_2;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][23] = v1z;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][24] = v2z;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][25] = v3z;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][26] = v0z;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][27] = vAB1;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][28] = vBA1;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][29] = vAB2;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][30] = vBA2;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][31] = v3;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][32] = v_r3;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][33] = v3_n;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][34] = v_r3_n;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][35] = v_pq_ox;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][36] = Ic;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][37] = Ia;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][38] = v2_1;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][39] = v2_2;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][40] = v2_00_1;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][41] = v2_01_1;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][42] = v2_02_1;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][43] = v2_00_2;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][44] = v2_01_2;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][45] = v2_02_2;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][46] = vr2_00_1;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][47] = vr2_01_1;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][48] = vr2_02_1;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][49] = vr2_1;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][50] = vr2_00_2;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][51] = vr2_01_2;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][52] = vr2_02_2;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][53] = vr2_2;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][54] = vP680qU;	//	vr2_2
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][55] = vP680qA;	//	vr2_2
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][56] = vU_P680;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][57] = vP680_d;
+        myVars->FI_VEL[myVars->FI_TIME_N - 1][58] = vP680_f;
+        */
+    }
+    //myVars->FI_CON[myVars->FI_TIME_N - 1][0] = t;  // --unused
+    //myVars->FI_CON[myVars->FI_TIME_N - 1][1] = f;  // --unused
+    //myVars->FI_CON[myVars->FI_TIME_N - 1][2] = 1 - q;  // --unused
+    //myVars->FI_CON[myVars->FI_TIME_N - 1][3] = vA_d + vU_d;  // --unused
+    //myVars->FI_CON[myVars->FI_TIME_N - 1][4] = vS3_S0;  // --unused
+    //double It2;
+    //double fPSII;
+    //if (It != 0) {
+    //    It2 = It * 27 / 47;
+    //    //fPSII = (It2 - f - vA_d - vU_d) / It2;
+    // }
+    
+    //myVars->FI_CON[myVars->FI_TIME_N - 1][5] = fPSII;  // --unused
+    
+    
+
 }

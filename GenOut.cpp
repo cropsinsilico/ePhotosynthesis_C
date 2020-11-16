@@ -127,92 +127,95 @@ void GenOut(double t, varptr *myVars) {
     //global FIBF_PSPR_com;
     
     //global PS_TIME_N
-    
-    if (myVars->CO2A.shape()[0] < myVars->PS_TIME_N) {
-        myVars->CO2A.resize(boost::extents[myVars->PS_TIME_N][CO2A_SIZE]);
-        myVars->    CO2A.resize(boost::extents[myVars->PS_TIME_N][    CO2A_SIZE]);
-    }
-
-    myVars->CO2A[myVars->PS_TIME_N - 1][0] = CO2 * 3 * pow(10, 4);
-    myVars->CO2A[myVars->PS_TIME_N - 1][1] = O2 / 1.26;
+    //std::cout << myVars->PS_TIME_N << std::endl;
+    if (myVars->record) {
+    //if (myVars->CO2A.shape()[0] < myVars->PS_TIME_N) {
+    //    myVars->CO2A.resize(boost::extents[myVars->PS_TIME_N][CO2A_SIZE]);
+        //myVars->    CO2A.resize(boost::extents[myVars->PS_TIME_N][    CO2A_SIZE]);
+    //}
+        arr co2a = zeros(100);
+    co2a[0] = CO2 * 3 * pow(10, 4);
+    co2a[1] = O2 / 1.26;
     
     //global V123;
     //global V16;
     
     if (myVars->FIBF_PSPR_com) {
-        myVars->CO2A[myVars->PS_TIME_N - 1][2] = myVars->GLight;
+        co2a[2] = myVars->GLight;
     } else {
-        myVars->CO2A[myVars->PS_TIME_N - 1][2] = myVars->V16;
+        co2a[2] = myVars->V16;
     }
     
     //global CytoPi;
     
-    myVars->CO2A[myVars->PS_TIME_N - 1][3] = ABA;
-    myVars->CO2A[myVars->PS_TIME_N - 1][4] = ATP;
-    myVars->CO2A[myVars->PS_TIME_N - 1][5] = Gs;
+    co2a[3] = ABA;
+    co2a[4] = ATP;
+    co2a[5] = Gs;
     
     
     //global AVR;
     
-    myVars->CO2A[myVars->PS_TIME_N - 1][6] = (v1 - v131) * myVars->AVR;//
+    co2a[6] = (v1 - v131) * myVars->AVR;//
     //global RuACT2RA_v61;
     //global RuACT_EPS_com;
     
     if (myVars->RuACT_EPS_com)
-        myVars->CO2A[myVars->PS_TIME_N - 1][6] = (myVars->RuACT2RA_v61 - v131) * myVars->AVR;//
+        co2a[6] = (myVars->RuACT2RA_v61 - v131) * myVars->AVR;//
     
     
     
-    myVars->CO2A[myVars->PS_TIME_N - 1][7] = PGA;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][8] = DPGA;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][9] = T3P;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][10] = FBP;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][11] = E4P;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][12] = S7P;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][13] = SBP;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][14] = ATP;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][15] = NADPH;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][16] = HexP;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][17] = PenP;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][18] = Pi;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][19] = ADP;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][20] = RuBP;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][21] = Gcea;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][22] = Gca;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][23] = Pga;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][24] = Pgca;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][25] = Gcac;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][26] = Goac;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][27] = Serc;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][28] = Glyc;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][29] = Hprc;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][30] = Gceac;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][31] = Rubp;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][32] = Fdn;//      Fdn
-    myVars->CO2A[myVars->PS_TIME_N - 1][33] = PHs;//      PhS
-    myVars->CO2A[myVars->PS_TIME_N - 1][34] = PHl;//      PHl
-    myVars->CO2A[myVars->PS_TIME_N - 1][35] = T3Pc;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][36] = FBPc;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][37] = HexPc;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][38] = F26BPc;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][39] = ATPc;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][40] = ADPc;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][41] = OPOPc;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][42] = UDPGc;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][43] = UTPc;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][44] = SUCP;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][45] = SUC;   //
-    myVars->CO2A[myVars->PS_TIME_N - 1][46] = PGAc;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][47] = V;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][48] = A;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][49] = Z;   //
-    myVars->CO2A[myVars->PS_TIME_N - 1][50] = ABA;//
-    myVars->CO2A[myVars->PS_TIME_N - 1][51] = TurgorPressure;
-    myVars->CO2A[myVars->PS_TIME_N - 1][52] = Gs;
-    myVars->CO2A[myVars->PS_TIME_N - 1][53] = Posm;
+    co2a[7] = PGA;//
+    co2a[8] = DPGA;//
+    co2a[9] = T3P;//
+    co2a[10] = FBP;//
+    co2a[11] = E4P;//
+    co2a[12] = S7P;//
+    co2a[13] = SBP;//
+    co2a[14] = ATP;//
+    co2a[15] = NADPH;//
+    co2a[16] = HexP;//
+    co2a[17] = PenP;//
+    co2a[18] = Pi;//
+    co2a[19] = ADP;//
+    co2a[20] = RuBP;//
+    co2a[21] = Gcea;//
+    co2a[22] = Gca;//
+    co2a[23] = Pga;//
+    co2a[24] = Pgca;//
+    co2a[25] = Gcac;//
+    co2a[26] = Goac;//
+    co2a[27] = Serc;//
+    co2a[28] = Glyc;//
+    co2a[29] = Hprc;//
+    co2a[30] = Gceac;//
+    co2a[31] = Rubp;//
+    co2a[32] = Fdn;//      Fdn
+    co2a[33] = PHs;//      PhS
+    co2a[34] = PHl;//      PHl
+    co2a[35] = T3Pc;//
+    co2a[36] = FBPc;//
+    co2a[37] = HexPc;//
+    co2a[38] = F26BPc;//
+    co2a[39] = ATPc;//
+    co2a[40] = ADPc;//
+    co2a[41] = OPOPc;//
+    co2a[42] = UDPGc;//
+    co2a[43] = UTPc;//
+    co2a[44] = SUCP;//
+    co2a[45] = SUC;   //
+    co2a[46] = PGAc;//
+    co2a[47] = V;//
+    co2a[48] = A;//
+    co2a[49] = Z;   //
+    co2a[50] = ABA;//
+    co2a[51] = TurgorPressure;
+    co2a[52] = Gs;
+    co2a[53] = Posm;
     
     
-    myVars->CO2A[myVars->PS_TIME_N - 1][99] = t;
+    co2a[99] = t;
+    myVars->CO2A.insert(myVars->PS_TIME_N - 1, t, co2a);
     //const double OutSuc = 1;
     //return OutSuc;
+    }
 }

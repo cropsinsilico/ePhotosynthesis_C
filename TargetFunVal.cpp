@@ -25,13 +25,14 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 double TargetFunVal(varptr *myVars) {
-    
+    if (!myVars->record)
+        return 0.;
     //global PS_VEL;
     //global PR_VEL;
     
     const double PSVCOEFF = 30;
 
-    for (int i = 1; i < myVars->PS_VEL.shape()[0]; i++)    
+    for (int i = 1; i < myVars->PS_VEL.size(); i++)    
         for (int y = 0; y < PS_VEL_SIZE; y++)
             myVars->PS_VEL[i][y] *= PSVCOEFF;
     
@@ -44,15 +45,15 @@ double TargetFunVal(varptr *myVars) {
     } else {
         ratio = PSVCOEFF * 4 / 9;
     }
-    for (int i = 0; i < myVars->PR_VEL.shape()[0]; i++)
+    for (int i = 0; i < myVars->PR_VEL.size(); i++)
         for (int j = 0; j < PR_VEL_SIZE; j++)
             myVars->PR_VEL[i][j] *= ratio;
     
     
     
-    const size_t* n = myVars->PS_VEL.shape();
-    const double a = myVars->PS_VEL[1][n[1]];
-    const double b = myVars->PR_VEL[n[1]][8];
+    const size_t n = myVars->PS_VEL[0].size();
+    const double a = myVars->PS_VEL[1][n];
+    const double b = myVars->PR_VEL[n][8];
     
     const double CO2AR = a - b;
     

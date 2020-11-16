@@ -213,7 +213,7 @@ arr DynaPS::DynaPS_Drive(double ParaNum, double Ratio) {
     //global RedoxReg_VEL;
     //global RROEA_VEL;
     //global AVR;
-    const int row = myVars->RuACT_VEL.shape()[0] - 1;
+    const int row = myVars->RuACT_VEL.size() - 1;
     arr PSIIabs = zeros(FI_VEL_SIZE);
     for (int x = 0; x < FI_VEL_SIZE; x++)
         PSIIabs[x] = myVars->FI_VEL[x][56];

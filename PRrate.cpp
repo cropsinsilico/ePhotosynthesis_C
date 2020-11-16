@@ -303,9 +303,23 @@ void PRrate(double t, arr &PrS, varptr *myVars) {
             myVars->PR_TIME_N = myVars->PR_TIME_N + 1;
             myVars->PR_OLD_TIME = t;
         }
+    // The following is used to take the information back to the PRmb routine.
+    //arr myVars->PR_Vel = zeros(10);
+    
+    myVars->PR_Vel[0] = v111;
+    myVars->PR_Vel[1] = v112;
+    myVars->PR_Vel[2] = v113;
+    myVars->PR_Vel[3] = v121;
+    myVars->PR_Vel[4] = v122;
+    myVars->PR_Vel[5] = v123;
+    myVars->PR_Vel[6] = v124;
+    myVars->PR_Vel[7] = v131;
+    myVars->PR_Vel[8] = v1in;
+    myVars->PR_Vel[9] = v2out;
     
     if (myVars->record) {
-        
+        myVars->PR_VEL.insert(myVars->PR_TIME_N - 1, t, myVars->PR_Vel);
+        /*
         if (myVars->PR_VEL.shape()[0] < myVars->PR_TIME_N) {
             myVars->PR_VEL.resize(boost::extents[myVars->PR_TIME_N][PR_VEL_SIZE]);
         }
@@ -322,21 +336,8 @@ void PRrate(double t, arr &PrS, varptr *myVars) {
         myVars->PR_VEL[myVars->PR_TIME_N - 1][8] = v131;
         myVars->PR_VEL[myVars->PR_TIME_N - 1][9] = v1in;
         myVars->PR_VEL[myVars->PR_TIME_N - 1][10] = v2out;
+        */
     }
-    // The following is used to take the information back to the PRmb routine.
-    //arr myVars->PR_Vel = zeros(10);
-    
-    myVars->PR_Vel[0] = v111;
-    myVars->PR_Vel[1] = v112;
-    myVars->PR_Vel[2] = v113;
-    myVars->PR_Vel[3] = v121;
-    myVars->PR_Vel[4] = v122;
-    myVars->PR_Vel[5] = v123;
-    myVars->PR_Vel[6] = v124;
-    myVars->PR_Vel[7] = v131;
-    myVars->PR_Vel[8] = v1in;
-    myVars->PR_Vel[9] = v2out;
-    
     
     // here is some parameters we need to output
     //global PR2OUT;

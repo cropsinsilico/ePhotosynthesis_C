@@ -32,7 +32,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-arr RedoxReg_Rate(double t, arr &RedoxReg_Con, varptr *myVars) {
+void RedoxReg_Rate(double t, arr &RedoxReg_Con, varptr *myVars) {
     //global RedoxReg_MP;
     
     //global RedoxReg_VMAX6;
@@ -132,9 +132,9 @@ arr RedoxReg_Rate(double t, arr &RedoxReg_Con, varptr *myVars) {
     const double Vox = Thion * myVars->Thio_Oxidation;
     
     
-    arr RedoxReg_Vel = zeros(2);
-    RedoxReg_Vel[0] = Vred;
-    RedoxReg_Vel[1] = Vox;
+    //arr RedoxReg_Vel = zeros(2);
+    myVars->RedoxReg_Vel[0] = Vred;
+    myVars->RedoxReg_Vel[1] = Vox;
     
     
     
@@ -152,12 +152,14 @@ arr RedoxReg_Rate(double t, arr &RedoxReg_Con, varptr *myVars) {
         myVars->RedoxReg_OLD_TIME = t;
     }
     
-    if (myVars->RedoxReg_VEL.shape()[1] < myVars->RedoxReg_TIME_N) {
-        myVars->RedoxReg_VEL.resize(boost::extents[RedoxReg_VEL_SIZE][myVars->RedoxReg_TIME_N]);
-    }
+    if (myVars->record)
+        myVars->RedoxReg_VEL.insert(myVars->RedoxReg_TIME_N - 1, t, myVars->RedoxReg_Vel);
+    //if (myVars->RedoxReg_VEL.shape()[1] < myVars->RedoxReg_TIME_N) {
+    //    myVars->RedoxReg_VEL.resize(boost::extents[RedoxReg_VEL_SIZE][myVars->RedoxReg_TIME_N]);
+    //}
 
     //myVars->RedoxReg_VEL[0][myVars->RedoxReg_TIME_N - 1] = t;  // --unused
     //myVars->RedoxReg_VEL[1][myVars->RedoxReg_TIME_N - 1] = Vred;  // --unused
     //myVars->RedoxReg_VEL[2][myVars->RedoxReg_TIME_N - 1] = Vox;  // --unused
-    return RedoxReg_Vel;
+    //return RedoxReg_Vel;
 }

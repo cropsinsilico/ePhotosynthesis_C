@@ -614,8 +614,8 @@ void PSRate(double t, arr &PSs, arr &Param, varptr *myVars) {
             myVars->PS_OLD_TIME = t;
         }
     if (myVars->record) {
-        
-    
+        myVars->PS_VEL.insert(myVars->PS_TIME_N - 1, t, myVars->PS_Vel);
+        /*
         if (myVars->PS_VEL.shape()[1] < myVars->PS_TIME_N) {
             myVars->PS_VEL.resize(boost::extents[PS_VEL_SIZE][myVars->PS_TIME_N]);
         }
@@ -641,6 +641,7 @@ void PSRate(double t, arr &PSs, arr &Param, varptr *myVars) {
         myVars->PS_VEL[17][myVars->PS_TIME_N - 1] = Pi;
         myVars->PS_VEL[18][myVars->PS_TIME_N - 1] = v24;
         myVars->PS_VEL[19][myVars->PS_TIME_N - 1] = v25;
+        */
     }
     
     // Transfer the variables for output

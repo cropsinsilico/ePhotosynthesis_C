@@ -85,9 +85,17 @@ void XanCycle_Rate(double t, arr &XanCycle_Con, varptr *myVars) {
             myVars->XanCycle_TIME_N = myVars->XanCycle_TIME_N + 1;
             myVars->XanCycle_OLD_TIME = t;
         }
+    myVars->XanCycle_Vel[0] = Vva;	//	The velocity of v to a conversion
+    myVars->XanCycle_Vel[1] = Vaz;	//	The rate of A to z
+    myVars->XanCycle_Vel[2] = Vza;	//	THe rate of z to a
+    myVars->XanCycle_Vel[3] = Vav;	//	The rate of A to V
+    myVars->XanCycle_Vel[4] = Vvf;	//	The rate of V formation
+    myVars->XanCycle_Vel[5] = Vv2ABA;	//	The rate of conversion from v to ABA.
+    myVars->XanCycle_Vel[6] = VABAdg;	//	The rate of ABA degradation
+
     if (myVars->record) {
-        
-    
+        myVars->XanCycle_VEL.insert(myVars->XanCycle_TIME_N, t, myVars->XanCycle_Vel);
+        /*
         if (myVars->XanCycle_VEL.shape()[0] < myVars->XanCycle_TIME_N) {
             myVars->XanCycle_VEL.resize(boost::extents[myVars->XanCycle_TIME_N][XanCycle_VEL_SIZE]);
             myVars->XanCycle_CON.resize(boost::extents[myVars->XanCycle_TIME_N][XanCycle_CON_SIZE]);
@@ -101,19 +109,13 @@ void XanCycle_Rate(double t, arr &XanCycle_Con, varptr *myVars) {
         myVars->XanCycle_VEL[myVars->XanCycle_TIME_N - 1][5] = Vvf;
         myVars->XanCycle_VEL[myVars->XanCycle_TIME_N - 1][6] = Vv2ABA;
         myVars->XanCycle_VEL[myVars->XanCycle_TIME_N - 1][7] = VABAdg;
+        */
     }
     //myVars->XanCycle_CON[myVars->XanCycle_TIME_N - 1][0] = t;  // --unused
     //myVars->XanCycle_CON[myVars->XanCycle_TIME_N - 1][1] = Vx;  // --unused
     
     
     //arr XanCycle_Vel = zeros(7);
-    myVars->XanCycle_Vel[0] = Vva;	//	The velocity of v to a conversion
-    myVars->XanCycle_Vel[1] = Vaz;	//	The rate of A to z
-    myVars->XanCycle_Vel[2] = Vza;	//	THe rate of z to a
-    myVars->XanCycle_Vel[3] = Vav;	//	The rate of A to V
-    myVars->XanCycle_Vel[4] = Vvf;	//	The rate of V formation
-    myVars->XanCycle_Vel[5] = Vv2ABA;	//	The rate of conversion from v to ABA.
-    myVars->XanCycle_Vel[6] = VABAdg;	//	The rate of ABA degradation
     
     
     //const double Xstate = Zx / (Vx + Ax + Zx);

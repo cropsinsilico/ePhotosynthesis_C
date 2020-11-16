@@ -207,7 +207,7 @@ arr trDynaPS::trDynaPS_Drive(double ParaNum, double Ratio) {
     //global RedoxReg_VEL;
     //global RROEA_VEL;
     //global AVR;
-    const size_t row = myVars->RuACT_VEL.shape()[0];
+    const size_t row = myVars->RuACT_VEL.size();
     
     //arr PSIIabs = zeros(FI_VEL_SIZE);
     //for (int x = 0; x < FI_VEL_SIZE; x++)

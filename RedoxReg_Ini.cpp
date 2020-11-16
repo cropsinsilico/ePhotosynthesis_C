@@ -68,7 +68,8 @@ arr RedoxReg_Ini(varptr *myVars) {
     myVars->RedoxReg_VMAX16 = myVars->V16;
     
     //global RedoxReg_MP;
-    
+    for (int i = 0; i < 5; i++)
+        myVars->RedoxReg_MP.push_back(zeros(3));
     myVars->RedoxReg_MP[0][0] = 1000;
     myVars->RedoxReg_MP[0][1] = - 0.3;
     myVars->RedoxReg_MP[0][2] = 0.5;

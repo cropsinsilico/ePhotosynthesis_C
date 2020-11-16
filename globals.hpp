@@ -3,6 +3,7 @@
 #include <boost/multi_array.hpp>
 #include <boost/smart_ptr/atomic_shared_ptr.hpp>
 #include <iostream>
+#include <fstream>
 
 #include <nvector/nvector_serial.h>
 #include <sundials/sundials_types.h>
@@ -27,7 +28,7 @@ inline UserData* alloc_user_data() {
 
 
 typedef std::vector<double> arr;
-typedef boost::multi_array<double, 2> Matrix;
+//typedef boost::multi_array<double, 2> Matrix;
 
 inline arr ones(const int length){
     return arr(length, 1.);
@@ -37,6 +38,41 @@ inline arr zeros(const int length) {
     return arr(length, 0.);
 }
 
+class TimeSeries{
+public:
+    TimeSeries(){}
+
+    void insert(int step, double time, std::vector<double> &input);
+    
+    std::vector<double> &operator[](int i){
+        return _data[i];
+    }
+    
+    double timestamp(int i = -1) {
+        if (i < 0)
+            return _timestamp[current];
+        return _timestamp[i];
+    }
+    
+    std::vector<double> getLastData() {
+        return _data.back();
+    }
+    
+    double getLastTime(){
+        return _timestamp.back();
+    }
+    int size() {
+        return _step.size();
+    }
+    
+    void write(std::ofstream &of);
+    
+private:
+    int current = 0;
+    std::vector<std::vector<double> > _data;
+    std::vector<int> _step;
+    std::vector<double> _timestamp;
+};
 
 const int BF_CON_SIZE = 2;
 const int BF_VEL_SIZE = 31;
@@ -458,25 +494,25 @@ struct Variables {
     arr trDynaPS_CON = zeros(0);
     arr trDynaPS_VEL = zeros(0);
 
-    Matrix BF_CON = Matrix();
-    Matrix BF_VEL = Matrix();
-    Matrix CO2A = Matrix();
-    Matrix FI_CON = Matrix();
-    Matrix FI_VEL = Matrix();
-    Matrix PR_VEL = Matrix();
-    Matrix PSPR = Matrix();
-    Matrix PS_VEL = Matrix();
-    Matrix RROEA_CON = Matrix();
-    Matrix RROEA_VEL = Matrix();
-    Matrix RedoxReg_MP = Matrix();
-    Matrix RedoxReg_VEL = Matrix();
-    Matrix RuACT_CON = Matrix();
-    Matrix RuACT_VEL = Matrix();
-    Matrix SUCS_CON = Matrix();
-    Matrix SUCS_VEL = Matrix();
-    Matrix XanCycle_CON = Matrix();
-    Matrix XanCycle_VEL = Matrix();
-    Matrix d = Matrix();
+    //Matrix BF_CON = Matrix();
+    TimeSeries BF_VEL = TimeSeries();
+    TimeSeries CO2A = TimeSeries();
+    //Matrix FI_CON = Matrix();
+    TimeSeries FI_VEL = TimeSeries();
+    TimeSeries PR_VEL = TimeSeries();
+    //Matrix PSPR = Matrix();
+    TimeSeries PS_VEL = TimeSeries();
+    //Matrix RROEA_CON = Matrix();
+    TimeSeries RROEA_VEL = TimeSeries();
+    std::vector<arr> RedoxReg_MP;
+    TimeSeries RedoxReg_VEL = TimeSeries();
+    //Matrix RuACT_CON = Matrix();
+    TimeSeries RuACT_VEL = TimeSeries();
+    //Matrix SUCS_CON = Matrix();
+    TimeSeries SUCS_VEL = TimeSeries();
+    //Matrix XanCycle_CON = Matrix();
+    TimeSeries XanCycle_VEL = TimeSeries();
+    //Matrix d = Matrix();
 };
 typedef Variables varptr;
 
