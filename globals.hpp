@@ -17,6 +17,7 @@
 #include "PS.hpp"
 #include "PR.hpp"
 #include "RROEA.hpp"
+#include "RuACT.hpp"
 
 // static int f(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
 // static int jtv(N_Vector v, N_Vector Jv, realtype t, N_Vector u, N_Vector fu,
@@ -500,7 +501,7 @@ struct Variables {
     arr RuACT_Pool = zeros(5);
     arr RuACT_Param = zeros(2);
     arr RuACT_RC = zeros(10);
-    arr RuACT_Vel = zeros(6);
+    RuACTVel RuACT_Vel;// = zeros(6);
     arr SUCRatio = ones(66);
     arr SUCS2OUT = zeros(12);
     arr SUCS_Pool = zeros(3);
@@ -527,7 +528,7 @@ struct Variables {
   std::vector<arr> RedoxReg_MP;
   TimeSeries<std::vector<double> > RedoxReg_VEL = TimeSeries<std::vector<double> > ();
   // Matrix RuACT_CON = Matrix();
-  TimeSeries<std::vector<double> > RuACT_VEL = TimeSeries<std::vector<double> > ();
+  TimeSeries<RuACTVel> RuACT_VEL = TimeSeries<RuACTVel> ();
   // Matrix SUCS_CON = Matrix();
   TimeSeries<arr> SUCS_VEL = TimeSeries<arr> ();
   // Matrix XanCycle_CON = Matrix();

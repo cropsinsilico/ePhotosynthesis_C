@@ -156,12 +156,12 @@ void RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars) {
             myVars->RuACT_OLD_TIME = t;
         }
     
-    myVars->RuACT_Vel[0] = v1;
-    myVars->RuACT_Vel[1] = vn1;
-    myVars->RuACT_Vel[2] = v7;
-    myVars->RuACT_Vel[3] = vn7;
-    myVars->RuACT_Vel[4] = v6_1;
-    myVars->RuACT_Vel[5] = v6_2;
+    myVars->RuACT_Vel.v1 = v1;
+    myVars->RuACT_Vel.vn1 = vn1;
+    myVars->RuACT_Vel.v7 = v7;
+    myVars->RuACT_Vel.vn7 = vn7;
+    myVars->RuACT_Vel.v6_1 = v6_1;
+    myVars->RuACT_Vel.v6_2 = v6_2;
 
     if (myVars->record) {
         //if (myVars->RuACT_TIME_N == 0)

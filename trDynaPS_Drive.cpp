@@ -221,8 +221,8 @@ arr trDynaPS::trDynaPS_Drive(double ParaNum, double Ratio) {
     
     //arr CarbonRate = zeros(row);
     //arr VPR = zeros(row);
-    double CarbonRate = myVars->RuACT_Vel[4] * myVars->AVR;
-    double VPR = myVars->RuACT_Vel[5] * myVars->AVR;
+    double CarbonRate = myVars->RuACT_Vel.v6_1 * myVars->AVR;
+    double VPR = myVars->RuACT_Vel.v6_2 * myVars->AVR;
     //arr temp = zeros(RuACT_VEL_SIZE);
     //for (int x = 0; x < row; x++) {
     //    CarbonRate[x] = myVars->RuACT_VEL[x][5] * myVars->AVR;
