@@ -80,7 +80,7 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     myVars->FI_RC[4] = FIBF_Con[51];
     
     //global BF_RC;
-    myVars->BF_RC[18] = FIBF_Con[51];
+    myVars->BF_RC.Kd = FIBF_Con[51];
     
     //arr BF_mb = zeros(28);
     arr BF_mb = BF_Mb(t, myVars);

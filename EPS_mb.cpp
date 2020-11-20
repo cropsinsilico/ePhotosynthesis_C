@@ -83,7 +83,7 @@ arr EPS_mb(double t, arr &EPS_Con, varptr *myVars) {
     //global PS2EPS_NADPH;
     
     //global BF_RC;
-    // Vmax11 = myVars->BF_RC[10];	//	The maximum rate of ATP synthesis	Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1// --unused
+    // Vmax11 = myVars->BF_RC.Vmax11;	//	The maximum rate of ATP synthesis	Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1// --unused
     
     //EPS_DYDT(62) = BF2EPS_vbfn2 - PS2EPS_v3 - 1 * PS2EPS_NADPH/(PS2EPS_NADPH + 0.5) ;
     //EPS_DYDT(62) = BF2EPS_vbfn2/2 - PS2EPS_v3;//- 1 * PS2EPS_NADPH/(PS2EPS_NADPH + 0.5) ;  //QF changed /2 and ;// - 1 * PS2EPS_NADPH/(PS2EPS_NADPH + 0.5)

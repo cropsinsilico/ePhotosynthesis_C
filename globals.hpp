@@ -471,7 +471,7 @@ struct Variables {
     arr BFRatio = ones(49);
     arr BF_Param = zeros(2);
     arr BF_Pool = zeros(12);
-    arr BF_RC = zeros(34);
+    BFRC BF_RC; // = zeros(34);
     BFVEL BF_Vel; // = zeros(31);
     arr BF_con = zeros(29);
     arr DynaPS_CON = zeros(0);

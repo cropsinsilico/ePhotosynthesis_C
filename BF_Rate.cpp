@@ -28,46 +28,46 @@ void BF_Rate(double t, varptr *myVars) {
     
     //global BF_RC;
     
-    const double K1 = myVars->BF_RC[0];	//	The rate constant for formation of ISP.QH2 complex; unit:  per second
-    const double K2 = myVars->BF_RC[1];	//	The rate constant for ISP.QH2-->QH(semi) + ISPH(red) ; unit:  per second
-    const double K3 = myVars->BF_RC[2];	//	The rate constant for QH. + cytbL --> Q + cytbL- + H+	Unit: s-1
-    const double K4 = myVars->BF_RC[3];	//	The rate constant for cytbL- + cytbH --> cytbL + cytbH-	Unit: s-1
-    const double K5 = myVars->BF_RC[4];	//	The rate constant for CytbH- + Q --> cytbH + Q-	Unit: s-1
+    const double K1 = myVars->BF_RC.K1;	//	The rate constant for formation of ISP.QH2 complex; unit:  per second
+    const double K2 = myVars->BF_RC.K2;	//	The rate constant for ISP.QH2-->QH(semi) + ISPH(red) ; unit:  per second
+    const double K3 = myVars->BF_RC.K3;	//	The rate constant for QH. + cytbL --> Q + cytbL- + H+	Unit: s-1
+    const double K4 = myVars->BF_RC.K4;	//	The rate constant for cytbL- + cytbH --> cytbL + cytbH-	Unit: s-1
+    const double K5 = myVars->BF_RC.K5;	//	The rate constant for CytbH- + Q --> cytbH + Q-	Unit: s-1
     
-    const double K6 = myVars->BF_RC[5];	//	The rate constant  for CytbH- + Q- --> cytbH + Q2-	Unit: s-1
-    const double K7 = myVars->BF_RC[6];	//	The rate constant for Q binding to Qi site; which assumed half time as 200 us, following Croft's website	Unit: s-1
-    const double K8 = myVars->BF_RC[7];	//	The rate constant for ISPH + CytC1 --> ISPH(ox) + CytC1+	Unit: s-1
-    const double K9 = myVars->BF_RC[8];	//	The rate constant for the electron transport from cytc1 to cytc2	Unit: s-1
-    const double K10 = myVars->BF_RC[9];	//	The rate constant for the electron transport from cytc2 to P700	Unit: s-1
+    const double K6 = myVars->BF_RC.K6;	//	The rate constant  for CytbH- + Q- --> cytbH + Q2-	Unit: s-1
+    const double K7 = myVars->BF_RC.K7;	//	The rate constant for Q binding to Qi site; which assumed half time as 200 us, following Croft's website	Unit: s-1
+    const double K8 = myVars->BF_RC.K8;	//	The rate constant for ISPH + CytC1 --> ISPH(ox) + CytC1+	Unit: s-1
+    const double K9 = myVars->BF_RC.K9;	//	The rate constant for the electron transport from cytc1 to cytc2	Unit: s-1
+    const double K10 = myVars->BF_RC.K10;	//	The rate constant for the electron transport from cytc2 to P700	Unit: s-1
     
-    const double Vmax11 = myVars->BF_RC[10];	//	The maximum rate of ATP synthesis	Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
-    const double Kqi = myVars->BF_RC[11];	//	The rate constant for uptake of two protons from the stroma to Q2-	s-1
-    const double PK = myVars->BF_RC[12];	//	The permeability constant for K	Unit: cm s-1
-    const double PMg = myVars->BF_RC[13];	//	The permeability constant for Mg	Unit: cm s-1
-    const double PCl = myVars->BF_RC[14];	//	The permeability constant for Cl	Unit: cm s-1
+    const double Vmax11 = myVars->BF_RC.Vmax11;	//	The maximum rate of ATP synthesis	Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+    const double Kqi = myVars->BF_RC.Kqi;	//	The rate constant for uptake of two protons from the stroma to Q2-	s-1
+    const double PK = myVars->BF_RC.PK;	//	The permeability constant for K	Unit: cm s-1
+    const double PMg = myVars->BF_RC.PMg;	//	The permeability constant for Mg	Unit: cm s-1
+    const double PCl = myVars->BF_RC.PCl;	//	The permeability constant for Cl	Unit: cm s-1
     
-    const double Kau = myVars->BF_RC[15];	//	The rate constant for exciton transfer from perpheral antenna to core antenna, see FI	Unit: s-1
-    const double Kua = myVars->BF_RC[16];	//	The rate constant for exciton transfer from core antenna to peripheral antenna, SEE FI	Unit: s-1
-    const double Kf = myVars->BF_RC[17];	//	The rate constant for fluorescence emission, see the note in FI	Unit: s-1
-    const double Kd = myVars->BF_RC[18];	//	The rate constant for heat dissipation; see the note for FI	Unit: s-1
-    const double KE8 = myVars->BF_RC[19];	//	ISPHr + cytc1 --> ISPHox + cytc1-	Unit: s-1
+    const double Kau = myVars->BF_RC.Kau;	//	The rate constant for exciton transfer from perpheral antenna to core antenna, see FI	Unit: s-1
+    const double Kua = myVars->BF_RC.Kua;	//	The rate constant for exciton transfer from core antenna to peripheral antenna, SEE FI	Unit: s-1
+    const double Kf = myVars->BF_RC.Kf;	//	The rate constant for fluorescence emission, see the note in FI	Unit: s-1
+    const double Kd = myVars->BF_RC.Kd;	//	The rate constant for heat dissipation; see the note for FI	Unit: s-1
+    const double KE8 = myVars->BF_RC.KE8;	//	ISPHr + cytc1 --> ISPHox + cytc1-	Unit: s-1
     
-    const double KE9 = myVars->BF_RC[20];	//	cytc1- + cytc2 --> cytc1 + cytc2-	Unit: s-1
-    const double K15 = myVars->BF_RC[21];	//	The rate constant for primary charge separation in PSI	Unit: s-1
-    const double K16 = myVars->BF_RC[22];	//	The rate constant for electron tranfer from electron acceptor of PSI to Fd	Unit: s-1
-    // MemCap = myVars->BF_RC[23];	//	The membrane capacity// --unused
-    const double RVA = myVars->BF_RC[24];	//	The ratio of lumen volume to thylakoid membrane area
+    const double KE9 = myVars->BF_RC.KE9;	//	cytc1- + cytc2 --> cytc1 + cytc2-	Unit: s-1
+    const double K15 = myVars->BF_RC.K15;	//	The rate constant for primary charge separation in PSI	Unit: s-1
+    const double K16 = myVars->BF_RC.K16;	//	The rate constant for electron tranfer from electron acceptor of PSI to Fd	Unit: s-1
+    // MemCap = myVars->BF_RC.MemCap;	//	The membrane capacity// --unused
+    const double RVA = myVars->BF_RC.RVA;	//	The ratio of lumen volume to thylakoid membrane area
     
-    // KBs = myVars->BF_RC[25];	//	The buffer equilibrium constant in stroma// --unused
-    // KBl = myVars->BF_RC[26];	//	The buffer equilibrium constant in lumen// --unused
-    // KmATP = myVars->BF_RC[27];	//	The michaelis menton constant for ATP for ATP synthesis// --unused
-    const double KmADP = myVars->BF_RC[28];	//	The michaelis menton constant for ATP for ADP synthesis
-    const double KmPi = myVars->BF_RC[29];	//	The michaelis menton constant for ATP for PI synthesis
+    // KBs = myVars->BF_RC.KBs;	//	The buffer equilibrium constant in stroma// --unused
+    // KBl = myVars->BF_RC.KBl;	//	The buffer equilibrium constant in lumen// --unused
+    // KmATP = myVars->BF_RC.KM1ATP;	//	The michaelis menton constant for ATP for ATP synthesis// --unused
+    const double KmADP = myVars->BF_RC.KM1ADP;	//	The michaelis menton constant for ATP for ADP synthesis
+    const double KmPi = myVars->BF_RC.KM1PI;	//	The michaelis menton constant for ATP for PI synthesis
     
-    const double KM2NADP = myVars->BF_RC[30];	//	The michaelis menten constant for NADP	Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
-    const double KM2NADPH = myVars->BF_RC[31];	//	The michaelis menten constant for NADPH	Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
-    const double V2M = myVars->BF_RC[32];	//	The maximum rate of NADPH formation	Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
-    const double KE2 = myVars->BF_RC[33];	//	Equilibrium constatn
+    const double KM2NADP = myVars->BF_RC.KM2NADP;	//	The michaelis menten constant for NADP	Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+    const double KM2NADPH = myVars->BF_RC.KM2NADPH;	//	The michaelis menten constant for NADPH	Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+    const double V2M = myVars->BF_RC.V2M;	//	The maximum rate of NADPH formation	Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+    const double KE2 = myVars->BF_RC.KE2;	//	Equilibrium constatn
     
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Step II get the concentration of differnet component //
