@@ -328,12 +328,12 @@ void PSRate(double t, arr &PSs, arr &Param, varptr *myVars) {
     } else {
         ATPreg = 1;
         
-        //GAPDHT = myVars->RROEA_Pool[0];
-        //FBPaseT = myVars->RROEA_Pool[1];
-        //SBPaseT = myVars->RROEA_Pool[2];
-        //PRKT = myVars->RROEA_Pool[3];
-        //ATPaseT = myVars->RROEA_Pool[4];
-        //ATPGPPT = myVars->RROEA_Pool[5];
+        //GAPDHT = myVars->RROEA_Pool.GAPDH;
+        //FBPaseT = myVars->RROEA_Pool.FBPase;
+        //SBPaseT = myVars->RROEA_Pool.SBPase;
+        //PRKT = myVars->RROEA_Pool.PRK;
+        //ATPaseT = myVars->RROEA_Pool.ATPase;
+        //ATPGPPT = myVars->RROEA_Pool.ATPGPP;
         
         //const double PsV3 = myVars->V3 * myVars->RROEA2PS_GAPDH / GAPDHT;
         //const double PsV9 = myVars->V9 * myVars->RROEA2PS_SBPase / SBPaseT;

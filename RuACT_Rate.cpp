@@ -60,7 +60,7 @@ void RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars) {
     if (myVars->RROEA_EPS_com) {
         
         //global myVars->RROEA_Pool;
-        //Rac = myVars->RROEA_Pool[9];
+        //Rac = myVars->RROEA_Pool.RuACTT;
         
         //global myVars->RROEA2RuACT_RuAC;
         myVars->activase = myVars->RROEA2RuACT_RuAC * 14364;

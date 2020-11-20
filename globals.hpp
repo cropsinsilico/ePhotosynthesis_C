@@ -494,9 +494,9 @@ struct Variables {
     arr PSRatio = ones(103);
     //arr PS_PR_VEL = zeros(0);
     PSVel PS_Vel;// = zeros(18);
-    arr RROEA_KE = zeros(9);
-    arr RROEA_Pool = zeros(10);
-    arr RROEA_RC = zeros(10);
+    RROEAKE RROEA_KE;// = zeros(9);
+    RROEAPool RROEA_Pool; // = zeros(10);
+    RROEARC RROEA_RC;// = zeros(10);
     arr RROEA_Param = zeros(2);
     RROEAVel RROEA_Vel; // = zeros(11);
     arr RacRatio = ones(16);

@@ -31,6 +31,91 @@ double veFd2Calvin = 0.;
 double ve2RuACT = 0.;  
 
 };
+
+class RROEARC {
+public:
+    RROEARC() {}
+    RROEARC(const RROEARC &other) {
+
+        ke2GAPDH = other.ke2GAPDH;
+        ke2MDH = other.ke2MDH;
+        ke2FBPase = other.ke2FBPase;
+        ke2SBPase = other.ke2SBPase;
+        ke2PRK = other.ke2PRK;
+        ke2RubACT = other.ke2RubACT;
+        ke2Fd = other.ke2Fd;
+        keFd2Thio = other.keFd2Thio;
+        keFd2Calvin = other.keFd2Calvin;
+        ke2ATPGPP = other.ke2ATPGPP;
+}
+
+    double ke2GAPDH = 0;
+    double ke2MDH = 0;
+    double ke2FBPase = 0;
+    double ke2SBPase = 0;
+    double ke2PRK = 0;
+    double ke2RubACT = 0;
+    double ke2Fd = 0;
+    double keFd2Thio = 0;
+    double keFd2Calvin = 0;
+    double ke2ATPGPP = 0;
+};
+
+class RROEAKE {
+public:
+    RROEAKE() {}
+    RROEAKE(const RROEAKE &other) {
+
+        KEe2FBPase = other.KEe2FBPase;
+        KEe2SBPase = other.KEe2SBPase;
+        KEe2PRK = other.KEe2PRK;
+        KEe2ATPase = other.KEe2ATPase;
+        KEe2RuACT = other.KEe2RuACT;
+        KEe2GAPDH = other.KEe2GAPDH;
+        KEe2MDH = other.KEe2MDH;
+        KEe2ATPGPP = other.KEe2ATPGPP;
+        KEeFd2Thio = other.KEeFd2Thio;
+}
+
+    double KEe2FBPase = 0;
+    double KEe2SBPase = 0;
+    double KEe2PRK = 0;
+    double KEe2ATPase = 0;
+    double KEe2RuACT = 0;
+    double KEe2GAPDH = 0;
+    double KEe2MDH = 0;
+    double KEe2ATPGPP = 0;
+    double KEeFd2Thio = 0;
+};
+class RROEAPool {
+public:
+    RROEAPool() {}
+    RROEAPool(const RROEAPool &other) {
+
+        GAPDH = other.GAPDH;
+        FBPase = other.FBPase;
+        SBPase = other.SBPase;
+        PRK = other.PRK;
+        ATPase = other.ATPase;
+        ATPGPP = other.ATPGPP;
+        MDH = other.MDH;
+        ThioT = other.ThioT;
+        FdT = other.FdT;
+        RuACTT = other.RuACTT;
+}
+
+    double GAPDH = 0;
+    double FBPase = 0;
+    double SBPase = 0;
+    double PRK = 0;
+    double ATPase = 0;
+    double ATPGPP = 0;
+    double MDH = 0;
+    double ThioT = 0;
+    double FdT = 0;
+    double RuACTT = 0;
+};
+
 /*
 struct Variables;
 class RROEACon {

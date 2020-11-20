@@ -62,16 +62,16 @@ arr RROEA_Ini(varptr *myVars) {
     // RROEA_RC = zeros(5, 1);
     
     // The rate constant used in the model
-    myVars->RROEA_RC[0] = ke2GAPDH;	//	The rate constant of electron transfer to GAPDH. From literature.
-    myVars->RROEA_RC[1] = ke2MDH;		//	The rate constant of electront transfer to MDH, this rate is totally ASSUMED.
-    myVars->RROEA_RC[2] = ke2FBPase;	//	The rate constant of electron transfer from thioredoxin to FBPase.
-    myVars->RROEA_RC[3] = ke2SBPase;	//	The rate constant of electron tranfer from thioredoxin to SBPase
-    myVars->RROEA_RC[4] = ke2PRK;	    //	The rate constant of electron transfer from thioredoxin to PRK, Phosphoribulase kinase
-    myVars->RROEA_RC[5] = ke2RubACT;	//	The rate constant of electron transfer from thioredoxin to Rubisco activase
-    myVars->RROEA_RC[6] = ke2Fd;	    //	The rate constant of electron transfer to fe
-    myVars->RROEA_RC[7] = keFd2Thio;	//	The rate constant of electron transfer from fd to thio
-    myVars->RROEA_RC[8] = keFd2Calvin;	    //	The rate constant of electron transfer from fd to Calvin cycle
-    myVars->RROEA_RC[9] = ke2ATPGPP;	    //	The rate constant of electron transfer to ATPGPP
+    myVars->RROEA_RC.ke2GAPDH = ke2GAPDH;	//	The rate constant of electron transfer to GAPDH. From literature.
+    myVars->RROEA_RC.ke2MDH = ke2MDH;		//	The rate constant of electront transfer to MDH, this rate is totally ASSUMED.
+    myVars->RROEA_RC.ke2FBPase = ke2FBPase;	//	The rate constant of electron transfer from thioredoxin to FBPase.
+    myVars->RROEA_RC.ke2SBPase = ke2SBPase;	//	The rate constant of electron tranfer from thioredoxin to SBPase
+    myVars->RROEA_RC.ke2PRK = ke2PRK;	    //	The rate constant of electron transfer from thioredoxin to PRK, Phosphoribulase kinase
+    myVars->RROEA_RC.ke2RubACT = ke2RubACT;	//	The rate constant of electron transfer from thioredoxin to Rubisco activase
+    myVars->RROEA_RC.ke2Fd = ke2Fd;	    //	The rate constant of electron transfer to fe
+    myVars->RROEA_RC.keFd2Thio = keFd2Thio;	//	The rate constant of electron transfer from fd to thio
+    myVars->RROEA_RC.keFd2Calvin = keFd2Calvin;	    //	The rate constant of electron transfer from fd to Calvin cycle
+    myVars->RROEA_RC.ke2ATPGPP = ke2ATPGPP;	    //	The rate constant of electron transfer to ATPGPP
     
     // RROEA_RC = RROEA_RC  * 10;
     
@@ -88,15 +88,15 @@ arr RROEA_Ini(varptr *myVars) {
     
     //global RROEA_KE;
     
-    myVars->RROEA_KE[0] = KEe2FBPase;
-    myVars->RROEA_KE[1] = KEe2SBPase;
-    myVars->RROEA_KE[2] = KEe2PRK;
-    myVars->RROEA_KE[3] = KEe2ATPase;
-    myVars->RROEA_KE[4] = KEe2RuACT;
-    myVars->RROEA_KE[5] = KEe2GAPDH;
-    myVars->RROEA_KE[6] = KEe2MDH;
-    myVars->RROEA_KE[7] = KEe2ATPGPP;
-    myVars->RROEA_KE[8] = KEeFd2Thio;
+    myVars->RROEA_KE.KEe2FBPase = KEe2FBPase;
+    myVars->RROEA_KE.KEe2SBPase = KEe2SBPase;
+    myVars->RROEA_KE.KEe2PRK = KEe2PRK;
+    myVars->RROEA_KE.KEe2ATPase = KEe2ATPase;
+    myVars->RROEA_KE.KEe2RuACT = KEe2RuACT;
+    myVars->RROEA_KE.KEe2GAPDH = KEe2GAPDH;
+    myVars->RROEA_KE.KEe2MDH = KEe2MDH;
+    myVars->RROEA_KE.KEe2ATPGPP = KEe2ATPGPP;
+    myVars->RROEA_KE.KEeFd2Thio = KEeFd2Thio;
     
     //for (int x = 0; x < 8; x++)
     //    RROEA_KE[x] = RROEA_KE[x] * 1;
@@ -164,26 +164,26 @@ arr RROEA_Ini(varptr *myVars) {
     
     
     //global RROEA_Pool;
-    myVars->RROEA_Pool[0] = myVars->V3 * 1000 * 60 / SA_GAPDH / mw_GAPDH;
-    myVars->RROEA_Pool[1] = myVars->V6 * 1000 * 60 / SA_FBPase / mw_FBPase;
-    myVars->RROEA_Pool[2] = myVars->V9 * 1000 * 60 / SA_SBPase / mw_SBPase;
-    myVars->RROEA_Pool[3] = myVars->V13 * 1000 * 60 / SA_PRK / mw_PRK;
-    myVars->RROEA_Pool[4] = myVars->V16 * 1000 * 60 / SA_ATPase / mw_ATPase;
-    myVars->RROEA_Pool[5] = myVars->V23 * 1000 * 60 / SA_ATPGPP / mw_ATPGPP;
-    myVars->RROEA_Pool[6] = MDH_Vmax * 1000 * 60 / SA_MDH / mw_MDH;
-    myVars->RROEA_Pool[7] = ThioT;
-    myVars->RROEA_Pool[8] = FdT;
-    myVars->RROEA_Pool[9] = RuACTT;
+    myVars->RROEA_Pool.GAPDH = myVars->V3 * 1000 * 60 / SA_GAPDH / mw_GAPDH;
+    myVars->RROEA_Pool.FBPase = myVars->V6 * 1000 * 60 / SA_FBPase / mw_FBPase;
+    myVars->RROEA_Pool.SBPase = myVars->V9 * 1000 * 60 / SA_SBPase / mw_SBPase;
+    myVars->RROEA_Pool.PRK = myVars->V13 * 1000 * 60 / SA_PRK / mw_PRK;
+    myVars->RROEA_Pool.ATPase = myVars->V16 * 1000 * 60 / SA_ATPase / mw_ATPase;
+    myVars->RROEA_Pool.ATPGPP = myVars->V23 * 1000 * 60 / SA_ATPGPP / mw_ATPGPP;
+    myVars->RROEA_Pool.MDH = MDH_Vmax * 1000 * 60 / SA_MDH / mw_MDH;
+    myVars->RROEA_Pool.ThioT = ThioT;
+    myVars->RROEA_Pool.FdT = FdT;
+    myVars->RROEA_Pool.RuACTT = RuACTT;
     
     
     Coeff = 0.3;
     
-    const double GAPDH = myVars->RROEA_Pool[0] * Coeff;// 	The concentration of active GAPDH
-    const double FBPase = myVars->RROEA_Pool[1] * Coeff;//	The concentration of active FBPase
-    const double SBPase = myVars->RROEA_Pool[2] * Coeff;// 	The concentration of active SBPase
-    const double PRK = myVars->RROEA_Pool[3] * Coeff;//   The concentration of active PRK
-    const double ATPase = myVars->RROEA_Pool[4] * Coeff;//   The concentratino of active ATP synthase
-    const double ATPGPP = myVars->RROEA_Pool[5] * Coeff;//   The concnetratin of active ATP Glucose pyrophosphorylas
+    const double GAPDH = myVars->RROEA_Pool.GAPDH * Coeff;// 	The concentration of active GAPDH
+    const double FBPase = myVars->RROEA_Pool.FBPase * Coeff;//	The concentration of active FBPase
+    const double SBPase = myVars->RROEA_Pool.SBPase * Coeff;// 	The concentration of active SBPase
+    const double PRK = myVars->RROEA_Pool.PRK * Coeff;//   The concentration of active PRK
+    const double ATPase = myVars->RROEA_Pool.ATPase * Coeff;//   The concentratino of active ATP synthase
+    const double ATPGPP = myVars->RROEA_Pool.ATPGPP * Coeff;//   The concnetratin of active ATP Glucose pyrophosphorylas
     const double MDH = 0;     //   The concentration of active MDH
     const double Thio = 0.081 * Coeff;// The initial concentration of reduced thioredoxin
     double Fd = 0.081 * Coeff;// The initial concentraiton of reduced fd
