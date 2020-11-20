@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "PR.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -25,7 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-void PRrate(double t, arr &PrS, varptr *myVars) {
+void PRrate(double t, PRCon &PR_con, varptr *myVars) {
     
     //global NADHc;
     //global NADc;
@@ -40,19 +40,19 @@ void PRrate(double t, arr &PrS, varptr *myVars) {
     //global PR_VEL;
     //global PR_CON;
     
-    const double Gcea = PrS[0];
-    const double Gca = PrS[1];
-    const double Pga = PrS[2];
-    const double Pgca = PrS[3];
-    const double Gcac = PrS[4];
-    const double Goac = PrS[5];
-    const double Serc = PrS[6];
-    const double Glyc = PrS[7];
-    const double Hprc = PrS[8];
-    const double Gceac = PrS[9];
-    const double Rubp = PrS[10];
-    double C = PrS[11];
-    double O = PrS[12];
+    const double Gcea = PR_con.GCEA;
+    const double Gca = PR_con.GCA;
+    const double Pga = PR_con.PGA;
+    const double Pgca = PR_con.PGCA;
+    const double Gcac = PR_con.GCAc;
+    const double Goac = PR_con.GOAc;
+    const double Serc = PR_con.SERc;
+    const double Glyc = PR_con.GLYc;
+    const double Hprc = PR_con.HPRc;
+    const double Gceac = PR_con.GCEAc;
+    const double Rubp = PR_con.RUBP;
+    double C = PR_con.CO2;
+    double O = PR_con.O2;
     
     // To set global information for different reactions
     

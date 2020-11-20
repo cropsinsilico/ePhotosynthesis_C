@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include"PR.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -87,8 +87,8 @@ arr PS_PRmb(double t, arr &PS_PRs, varptr *myVars) {
     // for the PS-PR combined model. 0: Combined model; 1: Separate model
     //global PS2PR_Pi;
     PR_Param[1] = myVars->PS2PR_Pi;
-    
-    PRrate(t, PrS, myVars);
+    PRCon PR_con(PrS);
+    PRrate(t, PR_con, myVars);
     //throw(MException(""));
     //global PR2OUT;
     //global mRuBP;

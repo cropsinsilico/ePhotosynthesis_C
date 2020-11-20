@@ -27,12 +27,11 @@
 
 
 
-arr PRmb(double t, arr &PrS, varptr *myVars) {
-    
+arr PRmb(double t, PRCon &PR_con, varptr *myVars) {
     Condition(t, myVars);
     
     //arr myVars->PR_Vel = zeros(10);
-    PRrate(t, PrS, myVars);
+    PRrate(t, PR_con, myVars);
     
     const double v111 = myVars->PR_Vel.v111;
     const double v112 = myVars->PR_Vel.v112;

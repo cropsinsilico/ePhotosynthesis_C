@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "PR.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -29,8 +29,9 @@ arr PS_PRIni(varptr *myVars) {
     
     arr PSs = zeros(5);
     PSs = PSInitial(myVars);
-    arr PrS = PRinitial(myVars);
-    
+    //arr PrS = PRinitial(myVars);
+    PRCon PR_con = PRinitial(myVars);
+    arr PrS = PR_con.toArray();
     arr PS_PRs = zeros(24);
     
     for (int m = 0; m < 4; m++)

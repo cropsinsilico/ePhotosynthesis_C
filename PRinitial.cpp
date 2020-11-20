@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "PR.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -26,7 +26,7 @@
 
 
 
-arr PRinitial(varptr *myVars) {
+PRCon PRinitial(varptr *myVars) {
     //global PRRatio;
     //global NADHc;
     //global NADc;
@@ -67,22 +67,23 @@ arr PRinitial(varptr *myVars) {
     const double CO2 = 0.012;                 // CO2 concentration(mM)
     const double O2 = 0.264;                  // O2 concentration(mM)
     
-    arr PrS = zeros(13);
-    
-    PrS[0] = GCEA;
-    PrS[1] = GCA;
-    PrS[2] = PGA;
-    PrS[3] = PGCA;
-    
-    PrS[4] = GCAc;
-    PrS[5] = GOAc;
-    PrS[6] = SERc;
-    PrS[7] = GLYc;
-    PrS[8] = HPRc;
-    PrS[9] = GCEAc;
-    PrS[10] = RUBP;
-    PrS[11] = CO2;
-    PrS[12] = O2;
+    PRCon PR_con;
+
+    PR_con.GCEA = GCEA;
+    PR_con.GCA = GCA;
+    PR_con.PGA = PGA;
+    PR_con.PGCA = PGCA;
+
+    PR_con.GCAc = GCAc;
+    PR_con.GOAc = GOAc;
+    PR_con.SERc = SERc;
+    PR_con.GLYc = GLYc;
+    PR_con.HPRc = HPRc;
+    PR_con.GCEAc = GCEAc;
+    PR_con.RUBP = RUBP;
+    PR_con.CO2 = CO2;
+    PR_con.O2 = O2;
+
     
     // To set global information for different reactions
     // Reaction: 110: RuBP + CO2 <--> 2PGA
@@ -229,5 +230,5 @@ arr PRinitial(varptr *myVars) {
         myVars->V131 = 2.494745448 * myVars->PRRatio[7];
     }
     
-    return PrS;
+    return PR_con;
 }

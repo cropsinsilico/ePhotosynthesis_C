@@ -2,7 +2,7 @@
 #include <vector>
 
 struct Variables;
-/*
+
 class PRCon {
 public:
     PRCon() {}
@@ -62,7 +62,7 @@ public:
 private:
     size_t count = 13;
 };
-*/
+
 class PRVel {
 public:
     PRVel() {}
@@ -103,8 +103,8 @@ public:
     double v2out = 0.;
 };
 
-//PRCon PRinitial(Variables *myVars);
+PRCon PRinitial(Variables *myVars);
 
-//std::vector<double> PRmb(double t, PRCon &PR_con, Variables *myVars);
+std::vector<double> PRmb(double t, PRCon &PR_con, Variables *myVars);
 
-//void PRrate(double t, PRCon &PR_con, Variables *myVars);
+void PRrate(double t, PRCon &PR_con, Variables *myVars);

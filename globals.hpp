@@ -580,11 +580,11 @@ void GenOut(double t, varptr *myVars);
 
 void IniModelCom(varptr *myVars);
 
-arr PRinitial(varptr *myVars);
+//arr PRinitial(varptr *myVars);
 
-arr PRmb(double t, arr &PrS, varptr *myVars);
+//arr PRmb(double t, arr &PrS, varptr *myVars);
 
-void PRrate(double t, arr &PrS, varptr *myVars);
+//void PRrate(double t, arr &PrS, varptr *myVars);
 
 arr PSI(varptr *myVars);
 
