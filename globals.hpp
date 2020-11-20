@@ -6,7 +6,7 @@
 #include <unordered_map>
 #include <vector>
 #include <algorithm>
-
+#include <math.h>
 #include <nvector/nvector_serial.h>
 #include <sundials/sundials_types.h>
 
@@ -166,7 +166,6 @@ struct Variables {
     double Fd_Thio_ET = 500;
     double GLUc = 0.;
     double GLight = 0.;
-    double GP = 0;
     double GammaStar = 0.;
     double Glight = 0.;
     double HPR = 4.66;
@@ -464,9 +463,9 @@ struct Variables {
     arr BFRatio = ones(49);
     arr BF_Param = zeros(2);
     arr BF_Pool = zeros(12);
-  BFRC BF_RC;// = zeros(34);
-  BFVEL BF_Vel;// = zeros(31);
-  BFCON BF_con;// = zeros(29);
+    arr BF_RC = zeros(34);
+    arr BF_Vel = zeros(31);
+    arr BF_con = zeros(29);
     arr DynaPS_CON = zeros(0);
     arr DynaPS_VEL = zeros(0);
     arr FIBF_AUX = zeros(2);
@@ -512,13 +511,13 @@ struct Variables {
     arr trDynaPS_VEL = zeros(0);
   arr ddd = zeros(120);
   // Matrix BF_CON = Matrix();
-  TimeSeries<BFVEL> BF_VEL = TimeSeries<BFVEL>();
+  TimeSeries<arr> BF_VEL = TimeSeries<arr>();
   TimeSeries<std::vector<double> > CO2A = TimeSeries<std::vector<double> > ();
   // Matrix FI_CON = Matrix();
-  TimeSeries<FI> FI_VEL = TimeSeries<FI> ();
-  TimeSeries<PRVel> PR_VEL = TimeSeries<PRVel> ();
+  TimeSeries<arr> FI_VEL = TimeSeries<arr> ();
+  TimeSeries<arr> PR_VEL = TimeSeries<arr> ();
   // Matrix PSPR = Matrix();
-  TimeSeries<PSVel> PS_VEL = TimeSeries<PSVel> ();
+  TimeSeries<arr> PS_VEL = TimeSeries<arr> ();
   // Matrix RROEA_CON = Matrix();
   TimeSeries<std::vector<double> > RROEA_VEL = TimeSeries<std::vector<double> > ();
   std::vector<arr> RedoxReg_MP;
@@ -526,7 +525,7 @@ struct Variables {
   // Matrix RuACT_CON = Matrix();
   TimeSeries<std::vector<double> > RuACT_VEL = TimeSeries<std::vector<double> > ();
   // Matrix SUCS_CON = Matrix();
-  TimeSeries<SUCSVel> SUCS_VEL = TimeSeries<SUCSVel> ();
+  TimeSeries<arr> SUCS_VEL = TimeSeries<arr> ();
   // Matrix XanCycle_CON = Matrix();
   TimeSeries<std::vector<double> > XanCycle_VEL = TimeSeries<std::vector<double> > ();
   // Matrix d = Matrix();

@@ -115,12 +115,12 @@ void GenOut(double t, varptr *myVars) {
     //global StomCond_TrDynaPS_com;
     //global StomCon2OUT;
     
-    if (!myVars->StomCond_TrDynaPS_com)
-         myVars->StomCon2OUT = zeros(3);
+    //if (!myVars->StomCond_TrDynaPS_com)
+    //     myVars->StomCon2OUT = zeros(3);
     
-    const double TurgorPressure = myVars->StomCon2OUT[0];
-    const double Gs = myVars->StomCon2OUT[1];
-    const double Posm = myVars->StomCon2OUT[2];
+    //const double TurgorPressure = myVars->StomCon2OUT[0];
+    //const double Gs = myVars->StomCon2OUT[1];
+    //const double Posm = myVars->StomCon2OUT[2];
     
     //global CO2A;
     //global GLight;
@@ -150,7 +150,7 @@ void GenOut(double t, varptr *myVars) {
     
     co2a[3] = ABA;
     co2a[4] = ATP;
-    co2a[5] = Gs;
+    co2a[5] = 0.; // Gs;
     
     
     //global AVR;
@@ -208,9 +208,9 @@ void GenOut(double t, varptr *myVars) {
     co2a[48] = A;//
     co2a[49] = Z;   //
     co2a[50] = ABA;//
-    co2a[51] = TurgorPressure;
-    co2a[52] = Gs;
-    co2a[53] = Posm;
+    co2a[51] = 0.; // TurgorPressure;
+    co2a[52] = 0.; // Gs;
+    co2a[53] = 0.; // Posm;
     
     
     co2a[99] = t;

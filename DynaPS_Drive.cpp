@@ -31,103 +31,70 @@
 varptr *DynaPS::myVars = new varptr();
 
 arr DynaPS::DynaPS_Drive(double ParaNum, double Ratio) {
-    // trDynaPS_Drive.m
     // This part include the function to begin the simulation.
     
     // The time information is set in a global variable called tglobal in SYSInitial.
-    //global PSRatio;
-    // PSRatio = ones(103, 1);
     if (ParaNum <= 103)
         myVars->PSRatio[ParaNum] = Ratio;
-    
-    //global SUCRatio;
-    // SUCRatio = ones(66, 1);
-    if (ParaNum > 103&&ParaNum <= 169)
+
+    if (ParaNum > 103 && ParaNum <= 169)
         myVars->SUCRatio[ParaNum - 103] = Ratio;
-    
-    //global PRRatio;
-    // PRRatio = ones(48, 1);
-    if (ParaNum > 169&&ParaNum <= 217)
+
+    if (ParaNum > 169 && ParaNum <= 217)
         myVars->PRRatio[ParaNum - 169] = Ratio;
-    
-    
-    //global RacRatio;
-    // RacRatio = ones(16, 1);
-    if (ParaNum > 217&&ParaNum <= 233)
+
+    if (ParaNum > 217 && ParaNum <= 233)
         myVars->RacRatio[ParaNum - 217] = Ratio;
-    
-    
-    //global FIRatio;
-    // FIRatio = ones(23, 1);
-    if (ParaNum > 233&&ParaNum <= 256)
+
+    if (ParaNum > 233 && ParaNum <= 256)
         myVars->FIRatio[ParaNum - 233] = Ratio;
-    
-    
-    //global BFRatio;
-    // BFRatio = ones(49, 1);
-    if (ParaNum > 256&&ParaNum <= 305)
-        myVars->BFRatio[ParaNum - 256] = Ratio;
-    
-    
-    
-    //global XanRatio;
-    // XanRatio = ones(4, 1);
-    if (ParaNum > 305&&ParaNum <= 309)
+
+    if (ParaNum > 256 && ParaNum <= 305)
+        myVars->BFRatio[ParaNum - 256] = Ratio;    
+
+    if (ParaNum > 305 && ParaNum <= 309)
         myVars->XanRatio[ParaNum - 305] = Ratio;
     
-    
-    // DynaPS_Drive.m
     // This part include the function to begin the simulation.
-    
     // The time information is set in a global variable called tglobal in SYSInitial.
-    // Begin = 1;// --unused
+
     SYSInitial(myVars);
-    //global options1;
-    //global tglobal;
-    //const double time = myVars->tglobal;
-    
+
     ////////////////////////////////////////////////
     //   Calculation  step //
     ////////////////////////////////////////////////
-    
-    //global ATPActive;
+
     myVars->ATPActive = 0;
     
-    //global EPS_ATP_Rate;        // Indicate in the beginning there is no ATP synthesis activity.
+    // Indicate in the beginning there is no ATP synthesis activity.
     myVars->EPS_ATP_Rate = 0;
     
     IniModelCom(myVars);        // Initialize the structure of the model, i.e. Is this model separate or combined with others.
     
-    //global BF_FI_com;            // The combination of BF and FI model
+    // The combination of BF and FI model
     myVars->BF_FI_com = true;
     
-    //global PR_PS_com;    // This is a variable indicating whether the PR model is actually need to be combined with PS or not. If 1 then means combined; 0 means not.
+    // This is a variable indicating whether the PR model is actually need to be combined with PS or not. If 1 then means combined; 0 means not.
     myVars->PR_PS_com = true;
     
-    //global FIBF_PSPR_com; // 1 means that the overall EPS model is used. 0 means partial model of FIBF is used.
+    // 1 means that the overall EPS model is used. 0 means partial model of FIBF is used.
     myVars->FIBF_PSPR_com = true;
     
-    //global RuACT_EPS_com;     // A global variable to indicate whether the RuACT is run by itself or combined with others.
+    // A global variable to indicate whether the RuACT is run by itself or combined with others.
     myVars->RuACT_EPS_com = true;        // Since this is run within this program, it is combinbed, therefore, it is assigned value true, otherwise, assign value false.
     
-    //global RedoxReg_RA_com;     // This is the connection between Redox and RA.
+    // This is the connection between Redox and RA.
     myVars->RedoxReg_RA_com = false;        // This means that the connection is not provided there.
     
-    //global XanCycle_BF_com;
     myVars->XanCycle_BF_com = true;
-    
-    //global EPS_SUCS_com;
+
     myVars->EPS_SUCS_com = true;
     
-    //global PSPR_SUCS_com;    // This is a variable indicating whether the PSPR model is actually need to be combined with SUCS or not. If 1 then means combined; 0 means not.
+    // This is a variable indicating whether the PSPR model is actually need to be combined with SUCS or not. If 1 then means combined; 0 means not.
     myVars->PSPR_SUCS_com = true;
     
     myVars->SUCS_Param = zeros(2);
-    
-    //global CO2A;
-    // CO2A = zeros(5, 1);
-    
-    
+
     // Next is to initialize the vector.
     
     arr DynaPS_Con = DynaPS_Ini();
@@ -196,23 +163,7 @@ arr DynaPS::DynaPS_Drive(double ParaNum, double Ratio) {
     for (tout = step_length; tout <= end_time; tout += step_length)
         flag = CVode(cvode_mem, tout, y, &t, CV_NORMAL);
 
-    
-    
-    //done = DynaPS_Graph(Tt,d);
-    //global BF_VEL;
-    //global FI_VEL;
-    //global BF_CON;
-    //global PS_VEL;
-    //global PR_VEL;
-    //global FI_CON;
-    //global PS_CON;
-    //global PR_CON;
-    //global SUCS_VEL;
-    //global RuACT_VEL;
-    //global XanCycle_VEL;
-    //global RedoxReg_VEL;
-    //global RROEA_VEL;
-    //global AVR;
+    /*
     const int row = myVars->RuACT_VEL.size() - 1;
     arr PSIIabs = zeros(FI_VEL_SIZE);
     for (int x = 0; x < FI_VEL_SIZE; x++)
@@ -325,7 +276,8 @@ arr DynaPS::DynaPS_Drive(double ParaNum, double Ratio) {
     // global BF_VEL;
     // global FI_VEL;
     // global PS_VEL;
-    
+    */
+    arr Resulta;
     IniModelCom(myVars);
     //save FDC2
 
