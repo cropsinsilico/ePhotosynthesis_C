@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "PS.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -24,7 +24,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-arr PSmb(double t, arr &PSs, arr &Param, varptr *myVars) {
+arr PSmb(double t, PSCon &PS_con, arr &Param, varptr *myVars) {
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Modifying KM, KI, KE VMAX for different reactions as the regulation//
@@ -37,7 +37,7 @@ arr PSmb(double t, arr &PSs, arr &Param, varptr *myVars) {
     // Get the rate for the reactions in the photosynthesis sytem
     
     //arr myVars->PS_Vel = zeros(18);
-    PSRate(t, PSs, Param, myVars);
+    PSRate(t, PS_con, Param, myVars);
     
     // Get the rate
     

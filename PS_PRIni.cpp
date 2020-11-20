@@ -1,5 +1,5 @@
 #include "globals.hpp"
-#include "PR.hpp"
+#include "PS_PR.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -27,11 +27,15 @@
 
 arr PS_PRIni(varptr *myVars) {
     
-    arr PSs = zeros(5);
-    PSs = PSInitial(myVars);
+    //arr PSs = zeros(5);
+    //PSs = PSInitial(myVars);
     //arr PrS = PRinitial(myVars);
+    PSCon PS_con = PSInitial(myVars);
     PRCon PR_con = PRinitial(myVars);
     arr PrS = PR_con.toArray();
+    arr PSs = PS_con.toArray();
+    //PS_PRCon PS_PR_con(PS_con, PR_con);
+    
     arr PS_PRs = zeros(24);
     
     for (int m = 0; m < 4; m++)
@@ -51,5 +55,6 @@ arr PS_PRIni(varptr *myVars) {
     
     
     PS_PRs[23] = PSs[4];
+    std::cout << "PSS 4   " << PSs[4] << std::endl;
     return PS_PRs;
 }

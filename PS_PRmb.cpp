@@ -80,7 +80,8 @@ arr PS_PRmb(double t, arr &PS_PRs, varptr *myVars) {
     PS_Param[0] = myVars->PS_PR_Param;
     PS_Param[1] = PR2PS_Pgca;
     
-    PSRate(t, PSs, PS_Param, myVars);
+    PSCon PS_con(PSs);
+    PSRate(t, PS_con, PS_Param, myVars);
     
     arr PR_Param = zeros(2);
     PR_Param[0] = myVars->PS_PR_Param;                  // To indicate that the calcualtion is using the combined model

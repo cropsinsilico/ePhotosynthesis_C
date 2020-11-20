@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "PS.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -24,9 +24,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-void PSRate(double t, arr &PSs, arr &Param, varptr *myVars) {
+void PSRate(double t, PSCon &PS_con, arr &Param, varptr *myVars) {
     //global PSRatio;
     
     //global PS_C_CA;             //   Global constant for the total adenylates
@@ -345,21 +343,21 @@ void PSRate(double t, arr &PSs, arr &Param, varptr *myVars) {
     // Setting the concentration
     //fprintf("//f   ", PSs);
     //sfprintf("\n\n");
-    const double RuBP = PSs[0];
-    const double PGA = PSs[1];
-    const double DPGA = PSs[2];
-    const double T3P = PSs[3];
-    const double ADPG = PSs[4];
-    const double FBP = PSs[5];
-    const double E4P = PSs[6];
-    const double S7P = PSs[7];
-    const double SBP = PSs[8];
-    const double ATP = PSs[9];
-    const double NADPH = PSs[10];
-    double CO2 = PSs[11];
-    double O2 = PSs[12];
-    const double HexP = PSs[13];
-    const double PenP = PSs[14];
+    const double RuBP = PS_con.RuBP;
+    const double PGA = PS_con.PGA;
+    const double DPGA = PS_con.DPGA;
+    const double T3P = PS_con.T3P;
+    const double ADPG = PS_con.ADPG;
+    const double FBP = PS_con.FBP;
+    const double E4P = PS_con.E4P;
+    const double S7P = PS_con.S7P;
+    const double SBP = PS_con.SBP;
+    const double ATP = PS_con.ATP;
+    const double NADPH = PS_con.NADPH;
+    double CO2 = PS_con.CO2;
+    double O2 = PS_con.O2;
+    const double HexP = PS_con.HexP;
+    const double PenP = PS_con.PenP;
     
     // Assuming that the regulation exists no matter there is enzyme regulation or not. ATPReg is
     // used to regulate the TP export and starch synthesis.

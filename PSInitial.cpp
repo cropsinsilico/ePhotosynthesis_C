@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "PS.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -26,7 +26,7 @@
 
 
 
-arr PSInitial(varptr *myVars) {
+PSCon PSInitial(varptr *myVars) {
     //global PSRatio;
     //global PS_C_CA;             //   Global constant for the total adenylates
     //global PS_C_CP;             //   Global constant for the total phosphate
@@ -58,22 +58,22 @@ arr PSInitial(varptr *myVars) {
     const double CO2 = 0.012;
     const double O2 = 0.21 * 1.26;
     
-    arr PSs = zeros(15);
-    PSs[0] = RuBP;
-    PSs[1] = PGA;
-    PSs[2] = DPGA;
-    PSs[3] = T3P;
-    PSs[4] = ADPG;
-    PSs[5] = FBP;
-    PSs[6] = E4P;
-    PSs[7] = S7P;
-    PSs[8] = SBP;
-    PSs[9] = ATP;
-    PSs[10] = NADPH;
-    PSs[11] = CO2;
-    PSs[12] = O2;
-    PSs[13] = HexP;
-    PSs[14] = PenP;
+    PSCon PS_con;
+    PS_con.RuBP = RuBP;
+    PS_con.PGA = PGA;
+    PS_con.DPGA = DPGA;
+    PS_con.T3P = T3P;
+    PS_con.ADPG = ADPG;
+    PS_con.FBP = FBP;
+    PS_con.E4P = E4P;
+    PS_con.S7P = S7P;
+    PS_con.SBP = SBP;
+    PS_con.ATP = ATP;
+    PS_con.NADPH = NADPH;
+    PS_con.CO2 = CO2;
+    PS_con.O2 = O2;
+    PS_con.HexP = HexP;
+    PS_con.PenP = PenP;
     
     
     // Initialize the constants for the different reactions
@@ -376,5 +376,5 @@ arr PSInitial(varptr *myVars) {
     
     //global PS2SUCS_PGA;
     //myVars->PS2SUCS_PGA = PGA;  // --unused
-    return PSs;
+    return PS_con;
 }

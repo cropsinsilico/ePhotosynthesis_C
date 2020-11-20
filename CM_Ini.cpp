@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "PS_PR.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -28,8 +28,9 @@
 
 arr CM::CM_Ini() {
     
-    arr PS_PRs = zeros(24);
-    PS_PRs = PS_PRIni(myVars);
+    arr PS_PRs = PS_PRIni(myVars);
+    //PS_PRCon PS_PR_con = PS_PRIni(myVars);
+    //arr PS_PRs = PS_PR_con.toArray();
     arr CMs = zeros(36);
     
     for (int m = 0; m < 23; m++)

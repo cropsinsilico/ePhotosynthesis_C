@@ -588,15 +588,15 @@ void IniModelCom(varptr *myVars);
 
 arr PSI(varptr *myVars);
 
-arr PSInitial(varptr *myVars);
+//arr PSInitial(varptr *myVars);
 
-void PSRate(double t, arr &PSs, arr &Param, varptr *myVars);
+//void PSRate(double t, arr &PSs, arr &Param, varptr *myVars);
 
-arr PS_PRIni(varptr *myVars);
+//arr PS_PRIni(varptr *myVars);
 
 arr PS_PRmb(double t, arr &PS_PRs, varptr *myVars);
 
-arr PSmb(double t, arr &PSs, arr &Param, varptr *myVars);
+//arr PSmb(double t, arr &PSs, arr &Param, varptr *myVars);
 
 void ParamSet(varptr *myVars);
 

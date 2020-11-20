@@ -2,7 +2,7 @@
 #include <vector>
 
 struct Variables;
-/*
+
 class PSCon {
 public:
     PSCon() {}
@@ -71,7 +71,7 @@ public:
 private:
     size_t count = 15;
 };
-*/
+
 class PSVel {
 public:
     PSVel() {}
@@ -143,9 +143,9 @@ public:
 
 };
 
-//std::vector<double> PSmb(double t, PSCon &PSs, std::vector<double> &Param, Variables *myVars);
+std::vector<double> PSmb(double t, PSCon &PSs, std::vector<double> &Param, Variables *myVars);
 //std::vector<double> PSI(Variables *myVars);
 
-//PSCon PSInitial(Variables *myVars);
+PSCon PSInitial(Variables *myVars);
 
-//void PSRate(double t, PSCon &PSs, std::vector<double> &Param, Variables *myVars);
+void PSRate(double t, PSCon &PSs, std::vector<double> &Param, Variables *myVars);
