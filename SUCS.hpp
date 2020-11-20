@@ -99,6 +99,20 @@ public:
     double vatpf = 0.;  //   ATP synthesis rate
 
 };
+class SUCSPool {
+public:
+    SUCSPool() {}
+    SUCSPool(const SUCSPool &other) {
+
+        ATc = other.ATc;
+        UTc = other.UTc;
+        PTc = other.PTc;
+}
+
+    double ATc = 0;
+    double UTc = 0;
+    double PTc = 0;
+};
 
 //SUCSCon SUCS_Ini(Variables *myVars);
 

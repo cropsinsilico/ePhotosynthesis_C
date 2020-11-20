@@ -504,7 +504,7 @@ struct Variables {
     FIPool FI_Pool; // = zeros(2);
     RROEAPool RROEA_Pool; // = zeros(10);
     RuACTPool RuACT_Pool; // = zeros(5);
-    arr SUCS_Pool = zeros(3);
+    SUCSPool SUCS_Pool; // = zeros(3);
  
     // RC
     BFRC BF_RC; // = zeros(34);

@@ -126,9 +126,9 @@ void SUCS_Rate(double t, arr &SUCS_Con, varptr *myVars) {
     
     //global SUCS_Pool;
     
-    const double ATc = myVars->SUCS_Pool[0];
-    const double UTc = myVars->SUCS_Pool[1];
-    const double PTc = myVars->SUCS_Pool[2];
+    const double ATc = myVars->SUCS_Pool.ATc;
+    const double UTc = myVars->SUCS_Pool.UTc;
+    const double PTc = myVars->SUCS_Pool.PTc;
     
     ////////////////////////////////////////////////////////////
     // Get the auxiliary variables //

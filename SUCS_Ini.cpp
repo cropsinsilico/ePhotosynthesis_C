@@ -222,9 +222,9 @@ arr SUCS_Ini(varptr *myVars) {
     
     
     //global SUCS_Pool;
-    myVars->SUCS_Pool[0] = ATc;
-    myVars->SUCS_Pool[1] = UTc;
-    myVars->SUCS_Pool[2] = PTc;
+    myVars->SUCS_Pool.ATc = ATc;
+    myVars->SUCS_Pool.UTc = UTc;
+    myVars->SUCS_Pool.PTc = PTc;
     
     return SUCS_Con;
 }
