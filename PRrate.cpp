@@ -306,16 +306,16 @@ void PRrate(double t, arr &PrS, varptr *myVars) {
     // The following is used to take the information back to the PRmb routine.
     //arr myVars->PR_Vel = zeros(10);
     
-    myVars->PR_Vel[0] = v111;
-    myVars->PR_Vel[1] = v112;
-    myVars->PR_Vel[2] = v113;
-    myVars->PR_Vel[3] = v121;
-    myVars->PR_Vel[4] = v122;
-    myVars->PR_Vel[5] = v123;
-    myVars->PR_Vel[6] = v124;
-    myVars->PR_Vel[7] = v131;
-    myVars->PR_Vel[8] = v1in;
-    myVars->PR_Vel[9] = v2out;
+    myVars->PR_Vel.v111 = v111;
+    myVars->PR_Vel.v112 = v112;
+    myVars->PR_Vel.v113 = v113;
+    myVars->PR_Vel.v121 = v121;
+    myVars->PR_Vel.v122 = v122;
+    myVars->PR_Vel.v123 = v123;
+    myVars->PR_Vel.v124 = v124;
+    myVars->PR_Vel.v131 = v131;
+    myVars->PR_Vel.v1in = v1in;
+    myVars->PR_Vel.v2out = v2out;
     
     if (myVars->record) {
         myVars->PR_VEL.insert(myVars->PR_TIME_N - 1, t, myVars->PR_Vel);

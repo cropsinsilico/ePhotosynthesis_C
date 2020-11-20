@@ -34,16 +34,16 @@ arr PRmb(double t, arr &PrS, varptr *myVars) {
     //arr myVars->PR_Vel = zeros(10);
     PRrate(t, PrS, myVars);
     
-    const double v111 = myVars->PR_Vel[0];
-    const double v112 = myVars->PR_Vel[1];
-    const double v113 = myVars->PR_Vel[2];
-    const double v121 = myVars->PR_Vel[3];
-    const double v122 = myVars->PR_Vel[4];
-    const double v123 = myVars->PR_Vel[5];
-    const double v124 = myVars->PR_Vel[6];
-    const double v131 = myVars->PR_Vel[7];
-    const double v1in = myVars->PR_Vel[8];
-    const double v2out = myVars->PR_Vel[9];
+    const double v111 = myVars->PR_Vel.v111;
+    const double v112 = myVars->PR_Vel.v112;
+    const double v113 = myVars->PR_Vel.v113;
+    const double v121 = myVars->PR_Vel.v121;
+    const double v122 = myVars->PR_Vel.v122;
+    const double v123 = myVars->PR_Vel.v123;
+    const double v124 = myVars->PR_Vel.v124;
+    const double v131 = myVars->PR_Vel.v131;
+    const double v1in = myVars->PR_Vel.v1in;
+    const double v2out = myVars->PR_Vel.v2out;
     
     
     arr tmp = zeros(13);

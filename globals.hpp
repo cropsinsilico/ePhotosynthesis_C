@@ -15,6 +15,7 @@
 #include "FI.hpp"
 #include "BF.hpp"
 #include "PS.hpp"
+#include "PR.hpp"
 // static int f(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
 // static int jtv(N_Vector v, N_Vector Jv, realtype t, N_Vector u, N_Vector fu,
 // void *user_data, N_Vector tmp); static int check_flag(void *flagvalue, const
@@ -481,7 +482,7 @@ struct Variables {
     arr FluxTR = zeros(142);
     arr PR2OUT = zeros(12);
     arr PRRatio = ones(48);
-    arr PR_Vel = zeros(10);
+    PRVel PR_Vel; // = zeros(10);
     arr PS2OUT = zeros(18);
     arr PSRatio = ones(103);
     //arr PS_PR_VEL = zeros(0);
@@ -516,7 +517,7 @@ struct Variables {
   TimeSeries<std::vector<double> > CO2A = TimeSeries<std::vector<double> > ();
   // Matrix FI_CON = Matrix();
   TimeSeries<FI> FI_VEL = TimeSeries<FI> ();
-  TimeSeries<arr> PR_VEL = TimeSeries<arr> ();
+  TimeSeries<PRVel> PR_VEL = TimeSeries<PRVel> ();
   // Matrix PSPR = Matrix();
   TimeSeries<PSVel> PS_VEL = TimeSeries<PSVel> ();
   // Matrix RROEA_CON = Matrix();

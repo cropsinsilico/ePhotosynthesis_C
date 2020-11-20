@@ -262,8 +262,8 @@ arr trDynaPS::trDynaPS_Drive(double ParaNum, double Ratio) {
     Resulta[2] = Vpgasink;//[row - 1];//PGA
     Resulta[3] = Vt3p;//[row - 1];//VT3P
     Resulta[4] = VStarch;//[row - 1];//Vstarch
-    Resulta[5] = myVars->PR_Vel[8] * myVars->AVR;//Vt_glycerate
-    Resulta[6] = myVars->PR_Vel[9] * myVars->AVR;//Vt_glycolate
+    Resulta[5] = myVars->PR_Vel.v1in * myVars->AVR;//Vt_glycerate
+    Resulta[6] = myVars->PR_Vel.v2out * myVars->AVR;//Vt_glycolate
     //global FluxTR;
     // FluxTR = zeros(81, 1);
     /*
