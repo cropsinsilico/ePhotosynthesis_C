@@ -54,16 +54,16 @@ arr RuACT_Ini(varptr *myVars) {
     // RuACT_RC = zeros(5, 1);
     
     // The rate constant used in the model
-    myVars->RuACT_RC[0] = k1;	//	The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco myVars->activase content or activity;
-    myVars->RuACT_RC[1] = kn1;	//	The rate constant of E inactivation by binding of RuBP;
-    myVars->RuACT_RC[2] = km1;	//	The michaelis menton constant for RuBP with E.
-    myVars->RuACT_RC[3] = Ke2;	//	Data from Mate et al 1996. Unit: micormolar;
-    myVars->RuACT_RC[4] = Ke3;	//	Data from Mate et al 1996. Unit: micormolar;
-    myVars->RuACT_RC[5] = k6;	//	micromolar per meter square per second, transfered to unit
-    myVars->RuACT_RC[6] = kc;	//	Michaelis menton constant for CO2
-    myVars->RuACT_RC[7] = ko;	//	Michaelis menton constant for O2
-    myVars->RuACT_RC[8] = k7;	//	The rate constant for ecm to ecmr
-    myVars->RuACT_RC[9] = kr;	//	The apparaent michaelis menton constant for RuBP
+    myVars->RuACT_RC.k1 = k1;	//	The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco myVars->activase content or activity;
+    myVars->RuACT_RC.kn1 = kn1;	//	The rate constant of E inactivation by binding of RuBP;
+    myVars->RuACT_RC.km1 = km1;	//	The michaelis menton constant for RuBP with E.
+    myVars->RuACT_RC.Ke2 = Ke2;	//	Data from Mate et al 1996. Unit: micormolar;
+    myVars->RuACT_RC.Ke3 = Ke3;	//	Data from Mate et al 1996. Unit: micormolar;
+    myVars->RuACT_RC.k6 = k6;	//	micromolar per meter square per second, transfered to unit
+    myVars->RuACT_RC.kc = kc;	//	Michaelis menton constant for CO2
+    myVars->RuACT_RC.ko = ko;	//	Michaelis menton constant for O2
+    myVars->RuACT_RC.k7 = k7;	//	The rate constant for ecm to ecmr
+    myVars->RuACT_RC.kr = kr;	//	The apparaent michaelis menton constant for RuBP
     
     //factor = 0.224/0.3;
     const double factor = 1;
@@ -95,10 +95,10 @@ arr RuACT_Ini(varptr *myVars) {
     
     //global RuACT_Pool;
     // RuACT_Pool = zeros(2, 1);
-    myVars->RuACT_Pool[0] = ET;
-    myVars->RuACT_Pool[1] = Rac;
-    myVars->RuACT_Pool[2] = C;
-    myVars->RuACT_Pool[3] = O;
-    myVars->RuACT_Pool[4] = M;
+    myVars->RuACT_Pool.ET = ET;
+    myVars->RuACT_Pool.Rac = Rac;
+    myVars->RuACT_Pool.C = C;
+    myVars->RuACT_Pool.O = O;
+    myVars->RuACT_Pool.M = M;
     return RuACT_Con;
 }

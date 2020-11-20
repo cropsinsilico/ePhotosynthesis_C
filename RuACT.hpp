@@ -20,6 +20,54 @@ double vn7 = 0.;
 double v6_1 = 0.;  
 double v6_2 = 0.;  
 };
+
+class RuACTRC {
+public:
+    RuACTRC() {}
+    RuACTRC(const RuACTRC &other) {
+
+        k1 = other.k1;
+        kn1 = other.kn1;
+        km1 = other.km1;
+        Ke2 = other.Ke2;
+        Ke3 = other.Ke3;
+        k6 = other.k6;
+        kc = other.kc;
+        ko = other.ko;
+        k7 = other.k7;
+        kr = other.kr;
+}
+
+    double k1 = 0;
+    double kn1 = 0;
+    double km1 = 0;
+    double Ke2 = 0;
+    double Ke3 = 0;
+    double k6 = 0;
+    double kc = 0;
+    double ko = 0;
+    double k7 = 0;
+    double kr = 0;
+};
+class RuACTPool {
+public:
+    RuACTPool() {}
+    RuACTPool(const RuACTPool &other) {
+
+        ET = other.ET;
+        Rac = other.Rac;
+        C = other.C;
+        O = other.O;
+        M = other.M;
+}
+
+    double ET = 0;
+    double Rac = 0;
+    double C = 0;
+    double O = 0;
+    double M = 0;
+};
+
 /*
 struct Variables;
 class RuACTCon {

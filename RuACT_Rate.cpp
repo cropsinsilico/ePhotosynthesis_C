@@ -29,16 +29,16 @@
 void RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars) {
     
     //global RuACT_RC;
-    // k1 = myVars->RuACT_RC[0];	//	The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco myVars->activase content or activity; i.e. 	Lazar (1999), 0.25~1 *10^(9)// --unused
-    const double kn1 = myVars->RuACT_RC[1];	//	The rate constant of E inactivation by binding of RuBP;	Lazar 1999, with a lifetime of 5 ns at closed reaction center
-    // km1 = myVars->RuACT_RC[2];	//	The michaelis menton constant for RuBP with E.	Reference needed, a guess// --unused
-    const double Ke2 = myVars->RuACT_RC[3];	//	Data from Mate et al 1996. Unit: micormolar;	Reference needed, a guess
-    const double Ke3 = myVars->RuACT_RC[4];	//	Data from Mate et al 1996. Unit: micormolar;
-    const double k6 = myVars->RuACT_RC[5];	//	micromolar per meter square per second, transfered to unit
-    const double kc = myVars->RuACT_RC[6];	//	Michaelis menton constant for CO2
-    const double ko = myVars->RuACT_RC[7];	//	Michaelis menton constant for O2
-    const double k7 = myVars->RuACT_RC[8];	//	The rate constant for ecm to ecmr
-    // kr = myVars->RuACT_RC[9];	//	The apparaent michaelis menton constant for RuBP// --unused
+    // k1 = myVars->RuACT_RC.k1;	//	The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco myVars->activase content or activity; i.e. 	Lazar (1999), 0.25~1 *10^(9)// --unused
+    const double kn1 = myVars->RuACT_RC.kn1;	//	The rate constant of E inactivation by binding of RuBP;	Lazar 1999, with a lifetime of 5 ns at closed reaction center
+    // km1 = myVars->RuACT_RC.km1;	//	The michaelis menton constant for RuBP with E.	Reference needed, a guess// --unused
+    const double Ke2 = myVars->RuACT_RC.Ke2;	//	Data from Mate et al 1996. Unit: micormolar;	Reference needed, a guess
+    const double Ke3 = myVars->RuACT_RC.Ke3;	//	Data from Mate et al 1996. Unit: micormolar;
+    const double k6 = myVars->RuACT_RC.k6;	//	micromolar per meter square per second, transfered to unit
+    const double kc = myVars->RuACT_RC.kc;	//	Michaelis menton constant for CO2
+    const double ko = myVars->RuACT_RC.ko;	//	Michaelis menton constant for O2
+    const double k7 = myVars->RuACT_RC.k7;	//	The rate constant for ecm to ecmr
+    // kr = myVars->RuACT_RC.kr;	//	The apparaent michaelis menton constant for RuBP// --unused
     
     const double ER = RuACT_Con[0];	//	The concentration of inactive ER
     const double Eaf = RuACT_Con[1];	//	The total concentration of  E, EC, AND ECM
@@ -46,11 +46,11 @@ void RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars) {
     const double RuBP = RuACT_Con[3];	//	The concentration of ECMR
     
     //global RuACT_Pool;
-    //const double ET = myVars->RuACT_Pool[0];
-    //double Rac = myVars->RuACT_Pool[1];
-    double C = myVars->RuACT_Pool[2];
-    double O = myVars->RuACT_Pool[3];
-    double MT = myVars->RuACT_Pool[4];
+    //const double ET = myVars->RuACT_Pool.ET;
+    //double Rac = myVars->RuACT_Pool.Rac;
+    double C = myVars->RuACT_Pool.C;
+    double O = myVars->RuACT_Pool.O;
+    double MT = myVars->RuACT_Pool.M;
     
     //global activase;
     // activase = 80  ;

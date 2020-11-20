@@ -503,14 +503,14 @@ struct Variables {
     FIBFPool FIBF_Pool; // = zeros(1);
     FIPool FI_Pool; // = zeros(2);
     RROEAPool RROEA_Pool; // = zeros(10);
-    arr RuACT_Pool = zeros(5);
+    RuACTPool RuACT_Pool; // = zeros(5);
     arr SUCS_Pool = zeros(3);
  
     // RC
     BFRC BF_RC; // = zeros(34);
     FIRC FI_RC;// = zeros(21);
     RROEARC RROEA_RC;// = zeros(10);
-    arr RuACT_RC = zeros(10);
+    RuACTRC RuACT_RC;// = zeros(10);
     
     // Con
     arr BF_con = zeros(29);
