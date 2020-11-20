@@ -140,9 +140,9 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     const double Hroe = 4 * Vs3s0 / CoeffVol;// 27 is the conversion of unit from micromole per meter squre leaf area to mmol per liter.
     
     //global BF_Vel;
-    const double Vbf3 = myVars->BF_Vel[2];
-    const double Vbf8 = myVars->BF_Vel[7];
-    const double Vbf11 = myVars->BF_Vel[10];
+    const double Vbf3 = myVars->BF_Vel.Vbf3 ;
+    const double Vbf8 = myVars->BF_Vel.Vbf8 ;
+    const double Vbf11 = myVars->BF_Vel.Vbf11 ;
     
     const double Hvqo1 = Vbf8 / CoeffVol;//	The rate of release of protons into lumen through Qo site
     const double Hvqo2 = Vbf3 / CoeffVol;//	The rate of proton release into lumen through Qo site
@@ -168,9 +168,9 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     const double GPQH2_qb = v3 - v_r3 + v3_n - v_r3_n;
     const double vqb = 2 * GPQH2_qb;//   The total rate of proton uptake at the QB site of PSII.
     
-    const double Vqi = myVars->BF_Vel[11];   //   The rate of proton uptake from the stroma side
+    const double Vqi = myVars->BF_Vel.Vqi ;   //   The rate of proton uptake from the stroma side
     const double Hvqi = Vqi / CoeffVol;//	The rate of proton uptake from stroma at Qi site of cytbc1 complex
-    const double vbfn2 = myVars->BF_Vel[28];   //   The rate of proton consumption by formation of NADPH
+    const double vbfn2 = myVars->BF_Vel.vbfn2 ;   //   The rate of proton consumption by formation of NADPH
     const double Hrqb = vqb / CoeffVol;//	Convert the unit of vqb from micormole per meter square per second to mM s-1; vqb is the rate of QB2- reduction in thylakoid membrane.
     
     BF_mb[24] = (myVars->HPR * Vbf11 - Hrqb - Hvqi - vbfn2);//	BFHs	The proton and protonated buffer species in stroma. The proton concentration is not used in the MB procedure. The reason is that the proton concentration is buffered and therefore did not changed linerly with the generation of the protons.
@@ -178,9 +178,9 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     
     FIBF_mb[24] = BF_mb[24];
     FIBF_mb[26] = BF_mb[26];
-    const double Vbf1 = myVars->BF_Vel[0];          // The rate of PQH2 utilization when forming the PQH2.ISP complex
+    const double Vbf1 = myVars->BF_Vel.Vbf1 ;          // The rate of PQH2 utilization when forming the PQH2.ISP complex
     const double GPQH2_t = GPQH2_qb - Vbf1 + Vqi / 2;// This is the total rate of PQH2 generation
-    //const double Vbf7 = myVars->BF_Vel[6];               // The rate of consumption of PQ at the Qi site.
+    //const double Vbf7 = myVars->BF_Vel.Vbf7 ;               // The rate of consumption of PQ at the Qi site.
     // CPQ = - GPQH2_qb + Vbf3 - Vbf7;// --unused
     FIBF_mb[7] = 0;	        //	Q	Quinone in thylakoid membrane in free form
     FIBF_mb[11] = GPQH2_t;	//	QH2	The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.

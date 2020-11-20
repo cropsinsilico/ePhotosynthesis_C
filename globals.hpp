@@ -13,6 +13,7 @@
 #define NV_Ith_S(v, i) (NV_DATA_S(v)[i])
 
 #include "FI.hpp"
+#include "BF.hpp"
 // static int f(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
 // static int jtv(N_Vector v, N_Vector Jv, realtype t, N_Vector u, N_Vector fu,
 // void *user_data, N_Vector tmp); static int check_flag(void *flagvalue, const
@@ -463,7 +464,7 @@ struct Variables {
     arr BF_Param = zeros(2);
     arr BF_Pool = zeros(12);
     arr BF_RC = zeros(34);
-    arr BF_Vel = zeros(31);
+    BFVEL BF_Vel; // = zeros(31);
     arr BF_con = zeros(29);
     arr DynaPS_CON = zeros(0);
     arr DynaPS_VEL = zeros(0);
@@ -510,7 +511,7 @@ struct Variables {
     arr trDynaPS_VEL = zeros(0);
   arr ddd = zeros(120);
   // Matrix BF_CON = Matrix();
-  TimeSeries<arr> BF_VEL = TimeSeries<arr>();
+  TimeSeries<BFVEL> BF_VEL = TimeSeries<BFVEL>();
   TimeSeries<std::vector<double> > CO2A = TimeSeries<std::vector<double> > ();
   // Matrix FI_CON = Matrix();
   TimeSeries<FI> FI_VEL = TimeSeries<FI> ();

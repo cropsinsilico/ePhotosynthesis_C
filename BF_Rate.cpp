@@ -343,42 +343,42 @@ void BF_Rate(double t, varptr *myVars) {
             myVars->BF_TIME_N = myVars->BF_TIME_N + 1;
             myVars->BF_OLD_TIME = t;
         }
-        myVars->BF_Vel[0] = Vbf1;
-    myVars->BF_Vel[1] = Vbf2;
-    myVars->BF_Vel[2] = Vbf3;
-    myVars->BF_Vel[3] = Vbf4;
-    myVars->BF_Vel[4] = Vbf5;
+        myVars->BF_Vel.Vbf1  = Vbf1;
+    myVars->BF_Vel.Vbf2  = Vbf2;
+    myVars->BF_Vel.Vbf3  = Vbf3;
+    myVars->BF_Vel.Vbf4  = Vbf4;
+    myVars->BF_Vel.Vbf5  = Vbf5;
     
-    myVars->BF_Vel[5] = Vbf6;
-    myVars->BF_Vel[6] = Vbf7;
-    myVars->BF_Vel[7] = Vbf8;
-    myVars->BF_Vel[8] = Vbf9;
-    myVars->BF_Vel[9] = Vbf10;
+    myVars->BF_Vel.Vbf6  = Vbf6;
+    myVars->BF_Vel.Vbf7  = Vbf7;
+    myVars->BF_Vel.Vbf8  = Vbf8;
+    myVars->BF_Vel.Vbf9  = Vbf9;
+    myVars->BF_Vel.Vbf10  = Vbf10;
     
-    myVars->BF_Vel[10] = Vbf11;
-    myVars->BF_Vel[11] = Vqi;
-    myVars->BF_Vel[12] = Vipc;
-    myVars->BF_Vel[13] = Vicp;
-    myVars->BF_Vel[14] = Vinc;
+    myVars->BF_Vel.Vbf11  = Vbf11;
+    myVars->BF_Vel.Vqi  = Vqi;
+    myVars->BF_Vel.Vipc  = Vipc;
+    myVars->BF_Vel.Vicp  = Vicp;
+    myVars->BF_Vel.Vinc  = Vinc;
     
-    myVars->BF_Vel[15] = Vinp;
-    myVars->BF_Vel[16] = Vdp;
-    myVars->BF_Vel[17] = Vdc;
-    myVars->BF_Vel[18] = Vfp;
-    myVars->BF_Vel[19] = Vfc;
+    myVars->BF_Vel.Vinp  = Vinp;
+    myVars->BF_Vel.Vdp  = Vdp;
+    myVars->BF_Vel.Vdc  = Vdc;
+    myVars->BF_Vel.Vfp  = Vfp;
+    myVars->BF_Vel.Vfc  = Vfc;
     
-    myVars->BF_Vel[20] = Vsfd;
-    myVars->BF_Vel[21] = VsATP;
-    myVars->BF_Vel[22] = VgPQH2;
-    myVars->BF_Vel[23] = Vbf12;
-    myVars->BF_Vel[24] = Vbf13;
+    myVars->BF_Vel.Vsfd  = Vsfd;
+    myVars->BF_Vel.VsATP  = VsATP;
+    myVars->BF_Vel.VgPQH2  = VgPQH2;
+    myVars->BF_Vel.JKc  = Vbf12;
+    myVars->BF_Vel.JMgc  = Vbf13;
     
-    myVars->BF_Vel[25] = Vbf14;
-    myVars->BF_Vel[26] = Vbf15;
-    myVars->BF_Vel[27] = Vbf16;
-    myVars->BF_Vel[28] = vbfn2;
-    myVars->BF_Vel[29] = VsNADPH;
-    myVars->BF_Vel[30] = vcet;
+    myVars->BF_Vel.JClc  = Vbf14;
+    myVars->BF_Vel.Vbf15  = Vbf15;
+    myVars->BF_Vel.Vbf16  = Vbf16;
+    myVars->BF_Vel.vbfn2  = vbfn2;
+    myVars->BF_Vel.VsNADPH  = VsNADPH;
+    myVars->BF_Vel.vcet  = vcet;
 
     if (myVars->record) {
         myVars->BF_VEL.insert(myVars->BF_TIME_N - 1, t, myVars->BF_Vel);

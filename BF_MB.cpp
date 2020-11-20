@@ -45,42 +45,42 @@ arr BF_Mb(double t, varptr *myVars) {
     ////////////////////////////////////////////////////////////////////////////////
     
     //	Assign velocities of different reactions in the model
-    const double Vbf1 = myVars->BF_Vel[0];
-    const double Vbf2 = myVars->BF_Vel[1];
-    const double Vbf3 = myVars->BF_Vel[2];
-    const double Vbf4 = myVars->BF_Vel[3];
-    const double Vbf5 = myVars->BF_Vel[4];
+    const double Vbf1 = myVars->BF_Vel.Vbf1 ;
+    const double Vbf2 = myVars->BF_Vel.Vbf2 ;
+    const double Vbf3 = myVars->BF_Vel.Vbf3 ;
+    const double Vbf4 = myVars->BF_Vel.Vbf4 ;
+    const double Vbf5 = myVars->BF_Vel.Vbf5 ;
     
-    const double Vbf6 = myVars->BF_Vel[5];
-    const double Vbf7 = myVars->BF_Vel[6];
-    const double Vbf8 = myVars->BF_Vel[7];
-    const double Vbf9 = myVars->BF_Vel[8];
-    const double Vbf10 = myVars->BF_Vel[9];
+    const double Vbf6 = myVars->BF_Vel.Vbf6 ;
+    const double Vbf7 = myVars->BF_Vel.Vbf7 ;
+    const double Vbf8 = myVars->BF_Vel.Vbf8 ;
+    const double Vbf9 = myVars->BF_Vel.Vbf9 ;
+    const double Vbf10 = myVars->BF_Vel.Vbf10 ;
     
-    const double Vbf11 = myVars->BF_Vel[10];
-    const double Vqi = myVars->BF_Vel[11];
-    const double Vipc = myVars->BF_Vel[12];
-    const double Vicp = myVars->BF_Vel[13];
-    const double Vinc = myVars->BF_Vel[14];
+    const double Vbf11 = myVars->BF_Vel.Vbf11 ;
+    const double Vqi = myVars->BF_Vel.Vqi ;
+    const double Vipc = myVars->BF_Vel.Vipc ;
+    const double Vicp = myVars->BF_Vel.Vicp ;
+    const double Vinc = myVars->BF_Vel.Vinc ;
     
-    const double Vinp = myVars->BF_Vel[15];
-    const double Vdp = myVars->BF_Vel[16];
-    const double Vdc = myVars->BF_Vel[17];
-    const double Vfp = myVars->BF_Vel[18];
-    const double Vfc = myVars->BF_Vel[19];
+    const double Vinp = myVars->BF_Vel.Vinp ;
+    const double Vdp = myVars->BF_Vel.Vdp ;
+    const double Vdc = myVars->BF_Vel.Vdc ;
+    const double Vfp = myVars->BF_Vel.Vfp ;
+    const double Vfc = myVars->BF_Vel.Vfc ;
     
-    // Vsfd = myVars->BF_Vel[20];// --unused
-    const double VsATP = myVars->BF_Vel[21];
-    const double VgPQH2 = myVars->BF_Vel[22];
-    const double Vbf12 = myVars->BF_Vel[23];
-    const double Vbf13 = myVars->BF_Vel[24];
+    // Vsfd = myVars->BF_Vel.Vsfd ;// --unused
+    const double VsATP = myVars->BF_Vel.VsATP ;
+    const double VgPQH2 = myVars->BF_Vel.VgPQH2 ;
+    const double Vbf12 = myVars->BF_Vel.JKc ;
+    const double Vbf13 = myVars->BF_Vel.JMgc ;
     
-    const double Vbf14 = myVars->BF_Vel[25];
-    const double Vbf15 = myVars->BF_Vel[26];
-    const double Vbf16 = myVars->BF_Vel[27];
-    const double vbfn2 = myVars->BF_Vel[28];
-    const double VsNADPH = myVars->BF_Vel[29];
-    const double vcet = myVars->BF_Vel[30];
+    const double Vbf14 = myVars->BF_Vel.JClc ;
+    const double Vbf15 = myVars->BF_Vel.Vbf15 ;
+    const double Vbf16 = myVars->BF_Vel.Vbf16 ;
+    const double vbfn2 = myVars->BF_Vel.vbfn2 ;
+    const double VsNADPH = myVars->BF_Vel.VsNADPH ;
+    const double vcet = myVars->BF_Vel.vcet ;
     
     ////////////////////////////////////////////////////////////////
     // Get the mass balance equation //
