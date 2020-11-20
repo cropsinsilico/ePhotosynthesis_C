@@ -1,5 +1,6 @@
 #include "globals.hpp"
 #include "PS_PR.hpp"
+#include "SUCS.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -37,12 +38,12 @@ arr CM::CM_Ini() {
         CMs[m] = PS_PRs[m];
     
     
-    arr SUCS_Con = SUCS_Ini(myVars);
-    
+    SUCSCon SUCS_Con = SUCS_Ini(myVars);
+    arr SUCSc = SUCS_Con.toArray();
     // The gap left is for later use.
     
     for (int m = 0; m < 12; m++)
-        CMs[23 + m] = SUCS_Con[m];
+        CMs[23 + m] = SUCSc[m];
     
     
     CMs[35] = PS_PRs[23];

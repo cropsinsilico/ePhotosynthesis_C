@@ -626,11 +626,11 @@ arr RuACT_Mb(double t, arr &RuACT_Con, varptr *myVars);
 
 void RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars);
 
-arr SUCS_Ini(varptr *myVars);
+//arr SUCS_Ini(varptr *myVars);
 
-arr SUCS_Mb(double t, arr &SUCS_Con, varptr *myVars);
+//arr SUCS_Mb(double t, arr &SUCS_Con, varptr *myVars);
 
-void SUCS_Rate(double t, arr &SUCS_Con, varptr *myVars);
+//void SUCS_Rate(double t, arr &SUCS_Con, varptr *myVars);
 void GenOut(double t, varptr *myVars);
 
 void IniModelCom(varptr *myVars);

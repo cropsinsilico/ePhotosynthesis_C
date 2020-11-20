@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "SUCS.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -26,7 +26,7 @@
 
 
 
-void SUCS_Rate(double t, arr &SUCS_Con, varptr *myVars) {
+void SUCS_Rate(double t, SUCSCon &SUCS_Con, varptr *myVars) {
     //global SUCRatio;
     //global SUCS_RC;
     
@@ -111,18 +111,18 @@ void SUCS_Rate(double t, arr &SUCS_Con, varptr *myVars) {
     // The rate constant used in the model
     
     
-    const double T3Pc = SUCS_Con[0];
-    const double FBPc = SUCS_Con[1];
-    const double HexPc = SUCS_Con[2];
-    const double F26BPc = SUCS_Con[3];
-    const double ATPc = SUCS_Con[4];
-    double ADPc = SUCS_Con[5];
-    double OPOPc = SUCS_Con[6];
-    const double UDPGc = SUCS_Con[7];
-    const double UTPc = SUCS_Con[8];
-    const double SUCP = SUCS_Con[9];
-    const double SUC = SUCS_Con[10];
-    const double PGAc = SUCS_Con[11];
+    const double T3Pc = SUCS_Con.T3Pc;
+    const double FBPc = SUCS_Con.FBPc;
+    const double HexPc = SUCS_Con.HexPc;
+    const double F26BPc = SUCS_Con.F26BPc;
+    const double ATPc = SUCS_Con.ATPc;
+    double ADPc = SUCS_Con.ADPc;
+    double OPOPc = SUCS_Con.OPOPc;
+    const double UDPGc = SUCS_Con.UDPGc;
+    const double UTPc = SUCS_Con.UTPc;
+    const double SUCP = SUCS_Con.SUCP;
+    const double SUC = SUCS_Con.SUC;
+    const double PGAc = SUCS_Con.PGAc;
     
     //global SUCS_Pool;
     

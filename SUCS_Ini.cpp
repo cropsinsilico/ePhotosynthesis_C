@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "SUCS.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -25,7 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-arr SUCS_Ini(varptr *myVars) {
+SUCSCon SUCS_Ini(varptr *myVars) {
     //global SUCRatio;
     //global SUCS_OLD_TIME;
     //global SUCS_TIME_N;
@@ -155,20 +155,20 @@ arr SUCS_Ini(varptr *myVars) {
     
     // Assign value to a variable that is transferred to the program
     
-    arr SUCS_Con = zeros(12);
-    
-    SUCS_Con[0] = T3Pc;
-    SUCS_Con[1] = FBPc;
-    SUCS_Con[2] = HexPc;
-    SUCS_Con[3] = F26BPc;
-    SUCS_Con[4] = ATPc;
-    SUCS_Con[5] = ADPc;
+    //arr SUCS_Con = zeros(12);
+    SUCSCon SUCS_Con;
+    SUCS_Con.T3Pc = T3Pc;
+    SUCS_Con.FBPc = FBPc;
+    SUCS_Con.HexPc = HexPc;
+    SUCS_Con.F26BPc = F26BPc;
+    SUCS_Con.ATPc = ATPc;
+    SUCS_Con.ADPc = ADPc;
     // SUCS_Con	(	7		)	=	OPOPc	;
-    SUCS_Con[7] = UDPGc;
-    SUCS_Con[8] = UTPc;
-    SUCS_Con[9] = SUCP;
-    SUCS_Con[10] = SUC;
-    SUCS_Con[11] = PGAc;
+    SUCS_Con.UDPGc = UDPGc;
+    SUCS_Con.UTPc = UTPc;
+    SUCS_Con.SUCP = SUCP;
+    SUCS_Con.SUC = SUC;
+    SUCS_Con.PGAc = PGAc;
     
     
     // The following calculate the total concentration of different enzymes.

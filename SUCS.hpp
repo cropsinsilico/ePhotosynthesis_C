@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-/*
+
 struct Variables;
 class SUCSCon {
 public:
@@ -61,7 +61,7 @@ public:
 private:
     size_t count = 12;
 };
-*/
+
 class SUCSVel {
 public:
     SUCSVel() {}
@@ -114,8 +114,8 @@ public:
     double PTc = 0;
 };
 
-//SUCSCon SUCS_Ini(Variables *myVars);
+SUCSCon SUCS_Ini(Variables *myVars);
 
-//std::vector<double> SUCS_Mb(double t, SUCSCon &SUCS_Con, Variables *myVars);
+std::vector<double> SUCS_Mb(double t, SUCSCon &SUCS_Con, Variables *myVars);
 
-//void SUCS_Rate(double t, SUCSCon &SUCS_Con, Variables *myVars);
+void SUCS_Rate(double t, SUCSCon &SUCS_Con, Variables *myVars);

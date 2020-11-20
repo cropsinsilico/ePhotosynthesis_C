@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "SUCS.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -34,10 +34,10 @@ int CM::CM_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
         PSPR_Con[m] = x[m];
     
     
-    arr SUCS_Con = zeros(12);
+    arr SUCSc = zeros(12);
     for (int m = 0; m < 12; m++)
-        SUCS_Con[m] = x[23 + m];
-    
+        SUCSc[m] = x[23 + m];
+    SUCSCon SUCS_Con(SUCSc);
     
     PSPR_Con[23] = x[35];
     
