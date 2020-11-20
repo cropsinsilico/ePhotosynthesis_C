@@ -103,6 +103,6 @@ arr RedoxReg_Ini(varptr *myVars) {
     
     //global BF_Pool;
     //global BF2RedoxReg_Fdt;
-    myVars->BF2RedoxReg_Fdt = myVars->BF_Pool[5];
+    myVars->BF2RedoxReg_Fdt = myVars->BF_Pool.kU_f;
     return RedoxReg_Con;
 }

@@ -57,10 +57,10 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     const double ISPoQH2 = myVars->BF_con[3];	//	The complex of oxidized ion sulfer protein and reduced quinone
     const double QHsemi = myVars->BF_con[4];	//	Semiquinone
     
-    double TQ = myVars->BF_Pool[7];	//	The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
+    double TQ = myVars->BF_Pool.k_r1;	//	The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
     
     //global FIBF_Pool;       // Since in this file, the FIBF is combined, therefore, we can use the common variable directly.
-    TQ = myVars->FIBF_Pool[0];
+    TQ = myVars->FIBF_Pool.PQT;
     
     const double QBt = myVars->FI_Pool[0];      //   The total concentration of QB site.
     

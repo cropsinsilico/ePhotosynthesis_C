@@ -21,6 +21,7 @@
 #include "XanCycle.hpp"
 #include "RedoxReg.hpp"
 #include "SUCS.hpp"
+#include "FIBF.hpp"
 
 // static int f(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
 // static int jtv(N_Vector v, N_Vector Jv, realtype t, N_Vector u, N_Vector fu,
@@ -470,14 +471,14 @@ struct Variables {
     arr BF2OUT = zeros(5);
     arr BFRatio = ones(49);
     arr BF_Param = zeros(2);
-    arr BF_Pool = zeros(12);
+    BFPool BF_Pool;// = zeros(12);
     BFRC BF_RC; // = zeros(34);
     BFVEL BF_Vel; // = zeros(31);
     arr BF_con = zeros(29);
     arr DynaPS_CON = zeros(0);
     //arr DynaPS_VEL = zeros(0);
     arr FIBF_AUX = zeros(2);
-    arr FIBF_Pool = zeros(1);
+    FIBFPool FIBF_Pool; // = zeros(1);
     arr FI_PARAM = zeros(2);
     arr FIRatio = ones(23);
     arr FI_Con = zeros(22);

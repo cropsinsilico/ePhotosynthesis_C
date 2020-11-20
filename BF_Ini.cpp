@@ -239,18 +239,18 @@ void BF_Ini(varptr *myVars) {
     
     //global BF_Pool;
     // BF_Pool = zeros(5, 1);
-    myVars->BF_Pool[0] = Tcyt;	//	The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
-    myVars->BF_Pool[1] = Tcytc2;	//	The total amount of cytc; Unit: micromole m-2 leaf area
-    myVars->BF_Pool[2] = TK;	//	The total concentration of K in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant.
-    myVars->BF_Pool[3] = TMg;	//	The total concentration of Mg in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant.
-    myVars->BF_Pool[4] = TCl;	//	The total concentration of Cl in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant.
-    myVars->BF_Pool[5] = TFd;	//	The total concentration of Ferrodoxin
-    myVars->BF_Pool[6] = TA;	//	The total concentration of the primary electron acceptor of PSI; Unit: micromole m-2 leaf area
-    myVars->BF_Pool[7] = TQ;	//	The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
-    myVars->BF_Pool[8] = BFTs;	//	The total concentration of buffer in stroma; unit: mmol per liter
-    myVars->BF_Pool[9] = BFTl;	//	The total concentration of buffer in lumen; unit: mmol per liter
-    myVars->BF_Pool[10] = P700T;	//	The total number of P700; unit: micromole m-2 leaf area
-    myVars->BF_Pool[11] = NADPHT;	//   The total concentration of NADPH in stroma; 1 is an guessed value;
+    myVars->BF_Pool.kA_d = Tcyt;	//	The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
+    myVars->BF_Pool.kA_f = Tcytc2;	//	The total amount of cytc; Unit: micromole m-2 leaf area
+    myVars->BF_Pool.kA_U = TK;	//	The total concentration of K in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant.
+    myVars->BF_Pool.kU_A = TMg;	//	The total concentration of Mg in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant.
+    myVars->BF_Pool.kU_d = TCl;	//	The total concentration of Cl in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant.
+    myVars->BF_Pool.kU_f = TFd;	//	The total concentration of Ferrodoxin
+    myVars->BF_Pool.k1 = TA;	//	The total concentration of the primary electron acceptor of PSI; Unit: micromole m-2 leaf area
+    myVars->BF_Pool.k_r1 = TQ;	//	The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
+    myVars->BF_Pool.kz = BFTs;	//	The total concentration of buffer in stroma; unit: mmol per liter
+    myVars->BF_Pool.k12 = BFTl;	//	The total concentration of buffer in lumen; unit: mmol per liter
+    myVars->BF_Pool.k23 = P700T;	//	The total number of P700; unit: micromole m-2 leaf area
+    myVars->BF_Pool.k30 = NADPHT;	//   The total concentration of NADPH in stroma; 1 is an guessed value;
     
     //global HPR;
     //myVars->HPR = 4.66;   // constant set in globals.hpp

@@ -35,7 +35,7 @@ void FIBF_Ini(varptr *myVars) {
     
     //global FIBF_Pool;
     // FIBF_Pool = zeros(5, 1);
-    myVars->FIBF_Pool[0] = FIBF_PQT;
+    myVars->FIBF_Pool.PQT = FIBF_PQT;
     
     // Assign values for output variable
     //const double fibfSUC = 1;

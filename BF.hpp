@@ -153,6 +153,58 @@ double V2M = 0.;  //      The maximum rate of NADPH formation     Unit: mmol l-1
 double KE2 = 0.;  //  Equilibrium constant
 
 };
+
+class BFPool {
+public:
+    BFPool() {}
+    BFPool(const BFPool &other) {
+
+        kA_d = other.kA_d;
+        kA_f = other.kA_f;
+        kA_U = other.kA_U;
+        kU_A = other.kU_A;
+        kU_d = other.kU_d;
+        kU_f = other.kU_f;
+        k1 = other.k1;
+        k_r1 = other.k_r1;
+        kz = other.kz;
+        k12 = other.k12;
+        k23 = other.k23;
+        k30 = other.k30;
+        k01 = other.k01;
+        k2 = other.k2;
+        kAB1 = other.kAB1;
+        kBA1 = other.kBA1;
+        kAB2 = other.kAB2;
+        kBA2 = other.kBA2;
+        k3 = other.k3;
+        k_r3 = other.k_r3;
+        k_pq_oxy = other.k_pq_oxy;
+}
+
+    double kA_d = 0;
+    double kA_f = 0;
+    double kA_U = 0;
+    double kU_A = 0;
+    double kU_d = 0;
+    double kU_f = 0;
+    double k1 = 0;
+    double k_r1 = 0;
+    double kz = 0;
+    double k12 = 0;
+    double k23 = 0;
+    double k30 = 0;
+    double k01 = 0;
+    double k2 = 0;
+    double kAB1 = 0;
+    double kBA1 = 0;
+    double kAB2 = 0;
+    double kBA2 = 0;
+    double k3 = 0;
+    double k_r3 = 0;
+    double k_pq_oxy = 0;
+};
+
 /*
 class BFCON {
 public:
