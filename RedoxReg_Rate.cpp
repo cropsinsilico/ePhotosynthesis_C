@@ -133,8 +133,8 @@ void RedoxReg_Rate(double t, arr &RedoxReg_Con, varptr *myVars) {
     
     
     //arr RedoxReg_Vel = zeros(2);
-    myVars->RedoxReg_Vel[0] = Vred;
-    myVars->RedoxReg_Vel[1] = Vox;
+    myVars->RedoxReg_Vel.Vred = Vred;
+    myVars->RedoxReg_Vel.Vox = Vox;
     
     
     

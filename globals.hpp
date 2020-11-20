@@ -19,6 +19,7 @@
 #include "RROEA.hpp"
 #include "RuACT.hpp"
 #include "XanCycle.hpp"
+#include "RedoxReg.hpp"
 
 // static int f(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
 // static int jtv(N_Vector v, N_Vector Jv, realtype t, N_Vector u, N_Vector fu,
@@ -498,7 +499,7 @@ struct Variables {
     RROEAVel RROEA_Vel; // = zeros(11);
     arr RacRatio = ones(16);
     arr RedoxReg_CON = zeros(0);
-    arr RedoxReg_Vel = zeros(2);
+    RedoxRegVel RedoxReg_Vel; // = zeros(2);
     arr RuACT_Pool = zeros(5);
     arr RuACT_Param = zeros(2);
     arr RuACT_RC = zeros(10);
@@ -527,7 +528,7 @@ struct Variables {
   // Matrix RROEA_CON = Matrix();
   TimeSeries<RROEAVel> RROEA_VEL = TimeSeries<RROEAVel> ();
   std::vector<arr> RedoxReg_MP;
-  TimeSeries<std::vector<double> > RedoxReg_VEL = TimeSeries<std::vector<double> > ();
+  TimeSeries<RedoxRegVel> RedoxReg_VEL = TimeSeries<RedoxRegVel> ();
   // Matrix RuACT_CON = Matrix();
   TimeSeries<RuACTVel> RuACT_VEL = TimeSeries<RuACTVel> ();
   // Matrix SUCS_CON = Matrix();

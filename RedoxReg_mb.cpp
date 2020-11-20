@@ -52,8 +52,8 @@ arr RedoxReg_mb(double t, arr &RedoxReg_Con, varptr *myVars) {
         RedoxReg_DYDT[index] = RA_DYDT[index];
     
     
-    const double vred = myVars->RedoxReg_Vel[0];
-    const double vox = myVars->RedoxReg_Vel[1];
+    const double vred = myVars->RedoxReg_Vel.Vred;
+    const double vox = myVars->RedoxReg_Vel.Vox;
     
     RedoxReg_DYDT[92] = vred - vox;
     RedoxReg_DYDT[92] = 0;
