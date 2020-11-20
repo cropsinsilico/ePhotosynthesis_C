@@ -33,13 +33,13 @@ arr XanCycle_Mb(double t, arr &XanCycle_Con, varptr *myVars) {
     //arr XanCycle_Vel = zeros(7);
     XanCycle_Rate(t, XanCycle_Con, myVars);
     
-    const double Vva = myVars->XanCycle_Vel[0];	//	The velocity of v to a conversion
-    const double Vaz = myVars->XanCycle_Vel[1];	//	The rate of A to z
-    const double Vza = myVars->XanCycle_Vel[2];	//	THe rate of z to a
-    const double Vav = myVars->XanCycle_Vel[3];	//	The rate of A to V
-    const double Vvf = myVars->XanCycle_Vel[4];	//	The rate of V formation
-    const double Vv2ABA = myVars->XanCycle_Vel[5];	//	The rate of conversion from v to ABA.
-    const double VABAdg = myVars->XanCycle_Vel[6];	//	The rate of ABA degradation
+    const double Vva = myVars->XanCycle_Vel.Vva;	//	The velocity of v to a conversion
+    const double Vaz = myVars->XanCycle_Vel.Vaz;	//	The rate of A to z
+    const double Vza = myVars->XanCycle_Vel.Vza;	//	THe rate of z to a
+    const double Vav = myVars->XanCycle_Vel.Vav;	//	The rate of A to V
+    const double Vvf = myVars->XanCycle_Vel.Vvf;	//	The rate of V formation
+    const double Vv2ABA = myVars->XanCycle_Vel.Vv2ABA;	//	The rate of conversion from v to ABA.
+    const double VABAdg = myVars->XanCycle_Vel.VABAdg;	//	The rate of ABA degradation
     
     arr XanCycle_mb = zeros(4);
     

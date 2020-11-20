@@ -85,13 +85,13 @@ void XanCycle_Rate(double t, arr &XanCycle_Con, varptr *myVars) {
             myVars->XanCycle_TIME_N = myVars->XanCycle_TIME_N + 1;
             myVars->XanCycle_OLD_TIME = t;
         }
-    myVars->XanCycle_Vel[0] = Vva;	//	The velocity of v to a conversion
-    myVars->XanCycle_Vel[1] = Vaz;	//	The rate of A to z
-    myVars->XanCycle_Vel[2] = Vza;	//	THe rate of z to a
-    myVars->XanCycle_Vel[3] = Vav;	//	The rate of A to V
-    myVars->XanCycle_Vel[4] = Vvf;	//	The rate of V formation
-    myVars->XanCycle_Vel[5] = Vv2ABA;	//	The rate of conversion from v to ABA.
-    myVars->XanCycle_Vel[6] = VABAdg;	//	The rate of ABA degradation
+    myVars->XanCycle_Vel.Vva = Vva;	//	The velocity of v to a conversion
+    myVars->XanCycle_Vel.Vaz = Vaz;	//	The rate of A to z
+    myVars->XanCycle_Vel.Vza = Vza;	//	THe rate of z to a
+    myVars->XanCycle_Vel.Vav = Vav;	//	The rate of A to V
+    myVars->XanCycle_Vel.Vvf = Vvf;	//	The rate of V formation
+    myVars->XanCycle_Vel.Vv2ABA = Vv2ABA;	//	The rate of conversion from v to ABA.
+    myVars->XanCycle_Vel.VABAdg = VABAdg;	//	The rate of ABA degradation
 
     if (myVars->record) {
         myVars->XanCycle_VEL.insert(myVars->XanCycle_TIME_N, t, myVars->XanCycle_Vel);

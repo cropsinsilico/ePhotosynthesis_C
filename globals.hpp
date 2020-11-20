@@ -18,6 +18,7 @@
 #include "PR.hpp"
 #include "RROEA.hpp"
 #include "RuACT.hpp"
+#include "XanCycle.hpp"
 
 // static int f(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
 // static int jtv(N_Vector v, N_Vector Jv, realtype t, N_Vector u, N_Vector fu,
@@ -510,7 +511,7 @@ struct Variables {
   // arr StomCon2OUT = zeros(3);
     arr XanCycle2OUT = zeros(4);
     arr XanCycle_Param = zeros(2);
-    arr XanCycle_Vel = zeros(7);
+    XanCycleVel XanCycle_Vel; // = zeros(7);
     arr XanRatio = ones(4);
     arr trDynaPS_CON = zeros(0);
     arr trDynaPS_VEL = zeros(0);
@@ -532,7 +533,7 @@ struct Variables {
   // Matrix SUCS_CON = Matrix();
   TimeSeries<arr> SUCS_VEL = TimeSeries<arr> ();
   // Matrix XanCycle_CON = Matrix();
-  TimeSeries<std::vector<double> > XanCycle_VEL = TimeSeries<std::vector<double> > ();
+  TimeSeries<XanCycleVel> XanCycle_VEL = TimeSeries<XanCycleVel> ();
   // Matrix d = Matrix();
 };
 typedef Variables varptr;
