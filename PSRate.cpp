@@ -586,24 +586,24 @@ void PSRate(double t, arr &PSs, arr &Param, varptr *myVars) {
     
     //arr myVars->PS_Vel = zeros(18);
     
-    myVars->PS_Vel[0] = v1;
-    myVars->PS_Vel[1] = v2;
-    myVars->PS_Vel[2] = v3;
-    myVars->PS_Vel[3] = 0;
-    myVars->PS_Vel[4] = v5;
-    myVars->PS_Vel[5] = v6;
-    myVars->PS_Vel[6] = v7;
-    myVars->PS_Vel[7] = v8;
-    myVars->PS_Vel[8] = v9;
-    myVars->PS_Vel[9] = v10;
-    myVars->PS_Vel[10] = v13;
-    myVars->PS_Vel[11] = v16;
-    myVars->PS_Vel[12] = v23;
-    myVars->PS_Vel[13] = v31;
-    myVars->PS_Vel[14] = v32;
-    myVars->PS_Vel[15] = v33;
-    myVars->PS_Vel[16] = v24;
-    myVars->PS_Vel[17] = v25;
+    myVars->PS_Vel.v1 = v1;
+    myVars->PS_Vel.v2 = v2;
+    myVars->PS_Vel.v3 = v3;
+    myVars->PS_Vel.v4 = 0;
+    myVars->PS_Vel.v5 = v5;
+    myVars->PS_Vel.v6 = v6;
+    myVars->PS_Vel.v7 = v7;
+    myVars->PS_Vel.v8 = v8;
+    myVars->PS_Vel.v9 = v9;
+    myVars->PS_Vel.v10 = v10;
+    myVars->PS_Vel.v13 = v13;
+    myVars->PS_Vel.v16 = v16;
+    myVars->PS_Vel.v23 = v23;
+    myVars->PS_Vel.v31 = v31;
+    myVars->PS_Vel.v32 = v32;
+    myVars->PS_Vel.v33 = v33;
+    myVars->PS_Vel.v24 = v24;
+    myVars->PS_Vel.v25 = v25;
     
     // Getting the information for output as figures.
     

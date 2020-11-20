@@ -243,8 +243,8 @@ arr trDynaPS::trDynaPS_Drive(double ParaNum, double Ratio) {
     
     //arr VStarch = zeros(myVars->PS_VEL.shape()[1]);
     //arr Vt3p = zeros(myVars->PS_VEL.shape()[1]);
-    double VStarch = (myVars->PS_Vel[12] - myVars->PS_Vel[18]) * myVars->AVR;
-    double Vt3p = (myVars->PS_Vel[13] + myVars->PS_Vel[15]) * myVars->AVR;
+    double VStarch = (myVars->PS_Vel.v23 - myVars->PS_Vel.v25) * myVars->AVR;
+    double Vt3p = (myVars->PS_Vel.v31 + myVars->PS_Vel.v33) * myVars->AVR;
     //for (int y = 0; y < row; y++) {
     //    VStarch[y] = (myVars->PS_VEL[13][y] - myVars->PS_VEL[19][y]) * myVars->AVR;
     //    Vt3p[y] = (myVars->PS_VEL[14][y] + myVars->PS_VEL[16][y]) * myVars->AVR;

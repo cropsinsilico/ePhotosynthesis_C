@@ -14,6 +14,7 @@
 
 #include "FI.hpp"
 #include "BF.hpp"
+#include "PS.hpp"
 // static int f(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
 // static int jtv(N_Vector v, N_Vector Jv, realtype t, N_Vector u, N_Vector fu,
 // void *user_data, N_Vector tmp); static int check_flag(void *flagvalue, const
@@ -467,7 +468,7 @@ struct Variables {
     BFVEL BF_Vel; // = zeros(31);
     arr BF_con = zeros(29);
     arr DynaPS_CON = zeros(0);
-    arr DynaPS_VEL = zeros(0);
+    //arr DynaPS_VEL = zeros(0);
     arr FIBF_AUX = zeros(2);
     arr FIBF_Pool = zeros(1);
     arr FI_PARAM = zeros(2);
@@ -483,8 +484,8 @@ struct Variables {
     arr PR_Vel = zeros(10);
     arr PS2OUT = zeros(18);
     arr PSRatio = ones(103);
-    arr PS_PR_VEL = zeros(0);
-    arr PS_Vel = zeros(18);
+    //arr PS_PR_VEL = zeros(0);
+    PSVel PS_Vel;// = zeros(18);
     arr RROEA_KE = zeros(9);
     arr RROEA_Pool = zeros(10);
     arr RROEA_RC = zeros(10);
@@ -517,7 +518,7 @@ struct Variables {
   TimeSeries<FI> FI_VEL = TimeSeries<FI> ();
   TimeSeries<arr> PR_VEL = TimeSeries<arr> ();
   // Matrix PSPR = Matrix();
-  TimeSeries<arr> PS_VEL = TimeSeries<arr> ();
+  TimeSeries<PSVel> PS_VEL = TimeSeries<PSVel> ();
   // Matrix RROEA_CON = Matrix();
   TimeSeries<std::vector<double> > RROEA_VEL = TimeSeries<std::vector<double> > ();
   std::vector<arr> RedoxReg_MP;

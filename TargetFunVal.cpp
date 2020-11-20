@@ -29,7 +29,7 @@ double TargetFunVal(varptr *myVars) {
         return 0.;
     //global PS_VEL;
     //global PR_VEL;
-    
+    /*
     const double PSVCOEFF = 30;
 
     for (int i = 1; i < myVars->PS_VEL.size(); i++)    
@@ -58,4 +58,6 @@ double TargetFunVal(varptr *myVars) {
     const double CO2AR = a - b;
     
     return CO2AR;
+     */
+    return 0.;
 }
