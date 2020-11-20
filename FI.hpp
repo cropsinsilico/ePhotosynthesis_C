@@ -177,6 +177,19 @@ public:
 
 };
 
+class FIPool {
+public:
+    FIPool() {}
+    FIPool(const FIPool &other) {
+
+        QBt = other.QBt;
+        PQT = other.PQT;
+}
+
+    double QBt = 0;
+    double PQT = 0;
+};
+
 /*
 class FICon {
 public:

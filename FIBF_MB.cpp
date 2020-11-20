@@ -62,7 +62,7 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     //global FIBF_Pool;       // Since in this file, the FIBF is combined, therefore, we can use the common variable directly.
     TQ = myVars->FIBF_Pool.PQT;
     
-    const double QBt = myVars->FI_Pool[0];      //   The total concentration of QB site.
+    const double QBt = myVars->FI_Pool.QBt;      //   The total concentration of QB site.
     
     //global FIBF_AUX;
     const double PQ = TQ - QBt - PQn - Qi - Qn - Qr - ISPoQH2 - QHsemi;

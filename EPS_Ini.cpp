@@ -62,7 +62,7 @@ arr EPS_Ini(varptr *myVars) {
     //global FIBF_Pool;
     //global FI_Pool;
     //global BF_Pool;
-    myVars->FI_Pool[1] = myVars->FIBF_Pool.PQT;
+    myVars->FI_Pool.PQT = myVars->FIBF_Pool.PQT;
     myVars->BF_Pool.k_r1 = myVars->FIBF_Pool.PQT;
     
     // Initial concentration for FIBF_Con

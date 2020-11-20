@@ -83,7 +83,7 @@ void FI_Rate(double t, varptr *myVars) {
     const double PQn = myVars->FI_Con[21];	//	The concentration of reduced PQ, i.e. PQH2;
     
     //global FI_Pool;
-    const double PQT = myVars->FI_Pool[1];  // The total concentraion of PQH2 and PQ;
+    const double PQT = myVars->FI_Pool.PQT;  // The total concentraion of PQH2 and PQ;
     //global FIBF_AUX;
     const double PQa = myVars->FIBF_AUX[1];
     double PQ = PQT - PQn - PQa;

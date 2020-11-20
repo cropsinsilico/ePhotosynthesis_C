@@ -158,8 +158,8 @@ void FI_Ini(varptr *myVars) {
     const double QBt = 1 * myVars->FIRatio[21];// The total concentration of Qb site;
     const double PQT = 8 * myVars->FIRatio[22];// The total concentration of PQ;
     
-    myVars->FI_Pool[0] = QBt;
-    myVars->FI_Pool[1] = PQT;
+    myVars->FI_Pool.QBt = QBt;
+    myVars->FI_Pool.PQT = PQT;
     
     
     //global FIBF_AUX;
