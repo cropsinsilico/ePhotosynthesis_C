@@ -1,81 +1,97 @@
 #pragma once
-#include <vector>
-#include <boost/multi_array.hpp>
-#include <boost/smart_ptr/atomic_shared_ptr.hpp>
-#include <iostream>
+//#include <boost/multi_array.hpp>
+//#include <boost/smart_ptr/atomic_shared_ptr.hpp>
 #include <fstream>
+#include <iostream>
+#include <unordered_map>
+#include <vector>
+#include <algorithm>
 
 #include <nvector/nvector_serial.h>
 #include <sundials/sundials_types.h>
 
 #define NV_Ith_S(v,i) ( NV_DATA_S(v)[i] )
 
-//static int f(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
-//static int jtv(N_Vector v, N_Vector Jv, realtype t, N_Vector u, N_Vector fu, void *user_data, N_Vector tmp);
-//static int check_flag(void *flagvalue, const char *funcname, int opt);
+#define NV_Ith_S(v, i) (NV_DATA_S(v)[i])
 
-//typedef N_Vector myvec2;
+// static int f(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
+// static int jtv(N_Vector v, N_Vector Jv, realtype t, N_Vector u, N_Vector fu,
+// void *user_data, N_Vector tmp); static int check_flag(void *flagvalue, const
+// char *funcname, int opt);
+
+// typedef N_Vector myvec2;
 
 struct UserData {
-  std::vector < realtype > coeffs;
+  std::vector<realtype> coeffs;
 };
 
-inline UserData* alloc_user_data() {
-    UserData *data;
-    data = new UserData();
-    return data;
+inline UserData *alloc_user_data() {
+  UserData *data;
+  data = new UserData();
+  return data;
 }
-
 
 typedef std::vector<double> arr;
-//typedef boost::multi_array<double, 2> Matrix;
+// typedef boost::multi_array<double, 2> Matrix;
 
-inline arr ones(const int length){
-    return arr(length, 1.);
-}
+inline arr ones(const size_t length) { return arr(length, 1.); }
 
-inline arr zeros(const int length) {
-    return arr(length, 0.);
-}
+inline arr zeros(const size_t length) { return arr(length, 0.); }
 
-class TimeSeries{
+template <typename T>
+class TimeSeries {
 public:
-    TimeSeries(){}
+  TimeSeries() {}
 
-    void insert(int step, double time, std::vector<double> &input);
-    
-    std::vector<double> &operator[](int i){
-        return _data[i];
-    }
-    
-    double timestamp(int i = -1) {
-        if (i < 0)
-            return _timestamp[current];
-        return _timestamp[i];
-    }
-    
-    std::vector<double> getLastData() {
-        return _data.back();
-    }
-    
-    double getLastTime(){
-        return _timestamp.back();
-    }
-    int size() {
-        return _step.size();
-    }
-    
-    void write(std::ofstream &of);
-    
+  void insert(size_t step, double time, T &input);
+
+  T &operator[](size_t i) { return _data[i]; }
+
+  double timestamp(int i = -1) {
+    if (i < 0)
+        return _timestamp[current];
+    return _timestamp[i];
+  }
+
+  std::vector<double> getLastData() { return _data.back(); }
+
+  double getLastTime() { return _timestamp.back(); }
+  size_t size() { return _step.size(); }
+
+  void write(std::ofstream &of);
+
 private:
-    int current = 0;
-    std::vector<std::vector<double> > _data;
-    std::vector<int> _step;
-    std::vector<double> _timestamp;
+  size_t current = 0;
+  std::vector<T> _data;
+  std::vector<int> _step;
+  std::vector<double> _timestamp;
 };
 
-const int BF_CON_SIZE = 2;
-const int BF_VEL_SIZE = 31;
+template <typename T>
+void TimeSeries<T>::insert(size_t step, double time, T &input) {
+        std::vector<int>::iterator it = std::find(_step.begin(), _step.end(), step);
+        T vec(input);
+        if (it == _step.end()) {
+            _step.push_back(step);
+            _timestamp.push_back(time);
+            _data.push_back(vec);
+        } else {
+            int index = std::distance(_step.begin(), it);
+            _timestamp[index] = time;
+            _data[index] = vec;
+        }
+    }
+
+template <typename T>
+void TimeSeries<T>::write(std::ofstream &of) {
+        for (size_t i = 0; i < _step.size(); i++) {
+            of << _timestamp[i];
+            for (const auto &e : _data[i])
+                of << "," << e;
+            of << std::endl;
+    }
+}
+
 const int CO2A_SIZE = 100;
 const int FI_CON_SIZE = 6;
 const int FI_VEL_SIZE = 59;
@@ -104,26 +120,27 @@ struct Variables {
     bool StomCond_TrDynaPS_com = false;
     bool XanCycle_BF_com = false;
 
-    unsigned long BF_OLD_TIME = 0;
-    unsigned long BF_TIME_N = 1;
-    unsigned long FI_OLD_TIME = 0;
-    unsigned long FI_TIME_N = 1;
-    unsigned long PR_OLD_TIME = 0;
-    unsigned long PR_TIME_N = 1;
-    unsigned long PS_OLD_TIME = 0;
-    unsigned long PS_TIME_N = 1;
-    unsigned long PS_PR_OLDTIME = 0;
-    unsigned long PS_PR_TIME_N = 1;
-    unsigned long RROEA_OLD_TIME = 0;
-    unsigned long RROEA_TIME_N = 1;
-    unsigned long RedoxReg_OLD_TIME = 0;
-    unsigned long RedoxReg_TIME_N = 1;
-    unsigned long RuACT_OLD_TIME = 0;
-    unsigned long RuACT_TIME_N = 1;
-    unsigned long SUCS_OLD_TIME = 0;
-    unsigned long SUCS_TIME_N = 1;
-    unsigned long XanCycle_OLD_TIME = 0;
-    unsigned long XanCycle_TIME_N = 1;
+  int GP = 0;
+  double BF_OLD_TIME = 0;
+  size_t BF_TIME_N = 1;
+  double FI_OLD_TIME = 0;
+  size_t FI_TIME_N = 1;
+  double PR_OLD_TIME = 0;
+  size_t PR_TIME_N = 1;
+  double PS_OLD_TIME = 0;
+  size_t PS_TIME_N = 1;
+  double PS_PR_OLDTIME = 0;
+  size_t PS_PR_TIME_N = 1;
+  double RROEA_OLD_TIME = 0;
+  size_t RROEA_TIME_N = 1;
+  double RedoxReg_OLD_TIME = 0;
+  size_t RedoxReg_TIME_N = 1;
+  double RuACT_OLD_TIME = 0;
+  size_t RuACT_TIME_N = 1;
+  double SUCS_OLD_TIME = 0;
+  size_t SUCS_TIME_N = 1;
+  double XanCycle_OLD_TIME = 0;
+  size_t XanCycle_TIME_N = 1;
 
     double ADPc = 0.;
     double ATPActive = 0.;
@@ -447,9 +464,9 @@ struct Variables {
     arr BFRatio = ones(49);
     arr BF_Param = zeros(2);
     arr BF_Pool = zeros(12);
-    arr BF_RC = zeros(34);
-    arr BF_Vel = zeros(31);
-    arr BF_con = zeros(29);
+  BFRC BF_RC;// = zeros(34);
+  BFVEL BF_Vel;// = zeros(31);
+  BFCON BF_con;// = zeros(29);
     arr DynaPS_CON = zeros(0);
     arr DynaPS_VEL = zeros(0);
     arr FIBF_AUX = zeros(2);
@@ -486,33 +503,33 @@ struct Variables {
     arr SUCS_Pool = zeros(3);
     arr SUCS_Param = zeros(2);
     arr SUCS_Vel = zeros(15);
-    arr StomCon2OUT = zeros(3);
+  // arr StomCon2OUT = zeros(3);
     arr XanCycle2OUT = zeros(4);
     arr XanCycle_Param = zeros(2);
     arr XanCycle_Vel = zeros(7);
     arr XanRatio = ones(4);
     arr trDynaPS_CON = zeros(0);
     arr trDynaPS_VEL = zeros(0);
-
-    //Matrix BF_CON = Matrix();
-    TimeSeries BF_VEL = TimeSeries();
-    TimeSeries CO2A = TimeSeries();
-    //Matrix FI_CON = Matrix();
-    TimeSeries FI_VEL = TimeSeries();
-    TimeSeries PR_VEL = TimeSeries();
-    //Matrix PSPR = Matrix();
-    TimeSeries PS_VEL = TimeSeries();
-    //Matrix RROEA_CON = Matrix();
-    TimeSeries RROEA_VEL = TimeSeries();
-    std::vector<arr> RedoxReg_MP;
-    TimeSeries RedoxReg_VEL = TimeSeries();
-    //Matrix RuACT_CON = Matrix();
-    TimeSeries RuACT_VEL = TimeSeries();
-    //Matrix SUCS_CON = Matrix();
-    TimeSeries SUCS_VEL = TimeSeries();
-    //Matrix XanCycle_CON = Matrix();
-    TimeSeries XanCycle_VEL = TimeSeries();
-    //Matrix d = Matrix();
+  arr ddd = zeros(120);
+  // Matrix BF_CON = Matrix();
+  TimeSeries<BFVEL> BF_VEL = TimeSeries<BFVEL>();
+  TimeSeries<std::vector<double> > CO2A = TimeSeries<std::vector<double> > ();
+  // Matrix FI_CON = Matrix();
+  TimeSeries<FI> FI_VEL = TimeSeries<FI> ();
+  TimeSeries<PRVel> PR_VEL = TimeSeries<PRVel> ();
+  // Matrix PSPR = Matrix();
+  TimeSeries<PSVel> PS_VEL = TimeSeries<PSVel> ();
+  // Matrix RROEA_CON = Matrix();
+  TimeSeries<std::vector<double> > RROEA_VEL = TimeSeries<std::vector<double> > ();
+  std::vector<arr> RedoxReg_MP;
+  TimeSeries<std::vector<double> > RedoxReg_VEL = TimeSeries<std::vector<double> > ();
+  // Matrix RuACT_CON = Matrix();
+  TimeSeries<std::vector<double> > RuACT_VEL = TimeSeries<std::vector<double> > ();
+  // Matrix SUCS_CON = Matrix();
+  TimeSeries<SUCSVel> SUCS_VEL = TimeSeries<SUCSVel> ();
+  // Matrix XanCycle_CON = Matrix();
+  TimeSeries<std::vector<double> > XanCycle_VEL = TimeSeries<std::vector<double> > ();
+  // Matrix d = Matrix();
 };
 typedef Variables varptr;
 
@@ -593,6 +610,13 @@ arr SUCS_Ini(varptr *myVars);
 arr SUCS_Mb(double t, arr &SUCS_Con, varptr *myVars);
 
 void SUCS_Rate(double t, arr &SUCS_Con, varptr *myVars);
+void GenOut(double t, varptr *myVars);
+
+void IniModelCom(varptr *myVars);
+
+void ParamSet(varptr *myVars);
+
+void PreProcess(varptr *myVars);
 
 void SYSInitial(varptr *myVars);
 
