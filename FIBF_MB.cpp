@@ -135,7 +135,7 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     
     //global FI_Vel;
     
-    const double Vs3s0 = myVars->FI_Vel[10];     // This is the rate of state transition from S3 state to So state. This conversion is accompanied by splitting
+    const double Vs3s0 = myVars->FI_Vel.vS3_S0 ;     // This is the rate of state transition from S3 state to So state. This conversion is accompanied by splitting
     // one molecular water molecules to release four protons.
     const double Hroe = 4 * Vs3s0 / CoeffVol;// 27 is the conversion of unit from micromole per meter squre leaf area to mmol per liter.
     
@@ -160,10 +160,10 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     //          Calculate the PH of stroma        //
     ////////////////////////////////////////////////////////////////////////////////////////////
     
-    const double v3 = myVars->FI_Vel[30];	//	v3	The rate of exchange of QAQBH2 with PQ; There is two proton uptake from stroma
-    const double v_r3 = myVars->FI_Vel[31];	//	v_r3	The rate of exchange of QAQB with PQH2; there is two proton release into stroma
-    const double v3_n = myVars->FI_Vel[32];	//	v3_n	The rate of exchange of QAnQBH2 with PQ; there is two protons uptake from stroma
-    const double v_r3_n = myVars->FI_Vel[33];	//	v_r3_n	The rate of exchange of QAnQB with PQH2; there is two protons release into stroma
+    const double v3 = myVars->FI_Vel.v3 ;	//	v3	The rate of exchange of QAQBH2 with PQ; There is two proton uptake from stroma
+    const double v_r3 = myVars->FI_Vel.v_r3 ;	//	v_r3	The rate of exchange of QAQB with PQH2; there is two proton release into stroma
+    const double v3_n = myVars->FI_Vel.v3_n ;	//	v3_n	The rate of exchange of QAnQBH2 with PQ; there is two protons uptake from stroma
+    const double v_r3_n = myVars->FI_Vel.v_r3_n ;	//	v_r3_n	The rate of exchange of QAnQB with PQH2; there is two protons release into stroma
     
     const double GPQH2_qb = v3 - v_r3 + v3_n - v_r3_n;
     const double vqb = 2 * GPQH2_qb;//   The total rate of proton uptake at the QB site of PSII.

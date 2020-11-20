@@ -10,10 +10,9 @@
 #include <nvector/nvector_serial.h>
 #include <sundials/sundials_types.h>
 
-#define NV_Ith_S(v,i) ( NV_DATA_S(v)[i] )
-
 #define NV_Ith_S(v, i) (NV_DATA_S(v)[i])
 
+#include "FI.hpp"
 // static int f(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
 // static int jtv(N_Vector v, N_Vector Jv, realtype t, N_Vector u, N_Vector fu,
 // void *user_data, N_Vector tmp); static int check_flag(void *flagvalue, const
@@ -476,7 +475,7 @@ struct Variables {
     arr FI_Pool = zeros(2);
     arr FI_RC = zeros(21);
     arr FI_Param = zeros(2);
-    arr FI_Vel = zeros(58);
+    FI FI_Vel; // = zeros(58);
     arr FluxTR = zeros(142);
     arr PR2OUT = zeros(12);
     arr PRRatio = ones(48);
@@ -514,7 +513,7 @@ struct Variables {
   TimeSeries<arr> BF_VEL = TimeSeries<arr>();
   TimeSeries<std::vector<double> > CO2A = TimeSeries<std::vector<double> > ();
   // Matrix FI_CON = Matrix();
-  TimeSeries<arr> FI_VEL = TimeSeries<arr> ();
+  TimeSeries<FI> FI_VEL = TimeSeries<FI> ();
   TimeSeries<arr> PR_VEL = TimeSeries<arr> ();
   // Matrix PSPR = Matrix();
   TimeSeries<arr> PS_VEL = TimeSeries<arr> ();

@@ -230,71 +230,71 @@ void FI_Rate(double t, varptr *myVars) {
     ////////////////////////////////////////////////////////////////////////////////
     //global FI_Vel;
     
-    myVars->FI_Vel[0] = vA_d;	//	vA_d	The rate of heat dissipation from peripheral antenna
-    myVars->FI_Vel[1] = vA_f;	//	vA_f	The rate of fluorescence emission from peripheral antenna
-    myVars->FI_Vel[2] = vA_U;	//	vA_U	The rate of exciton transfer from peripheral antenna to core antenna in open reaction center
-    myVars->FI_Vel[3] = vU_A;	//	vU_A	The rate of exciton transfer from core antenna to perpheral antenna in open center
-    myVars->FI_Vel[4] = vU_f;	//	vU_f	The rate of fluorescence emission from core antenna
-    myVars->FI_Vel[5] = vU_d;	//	vU_d	The rate of heat dissipation from core antenna
-    myVars->FI_Vel[6] = v1;	//	v1	The rate of primary charge separation
-    myVars->FI_Vel[7] = v_r1;	//	v_r1	The rate of charge recombination
-    myVars->FI_Vel[8] = vS1_S2;	//	vS1_S2	The rate of transition from S1 to S2
-    myVars->FI_Vel[9] = vS2_S3;	//	vS2_S3	The rate of transition from S2 to S3
-    myVars->FI_Vel[10] = vS3_S0;	//	vS3_S0	The rate of transition from S3 to S0
-    myVars->FI_Vel[11] = vS0_S1;	//	vS0_S1	The rate of transition from S0 to S1
-    myVars->FI_Vel[12] = vz_1;	//	vz_1	The rate of P680p reduction
-    myVars->FI_Vel[13] = v1z_1;	//	v1z_1	The rate of oxidation of S1T by P680pPheon
-    myVars->FI_Vel[14] = v2z_1;	//	v2z_1	The rate of oxidation of S2T  by P680pPheon
-    myVars->FI_Vel[15] = v3z_1;	//	v3z_1	The rate of oxidation of S3T  by P680pPheon
-    myVars->FI_Vel[16] = v0z_1;	//	v0z_1	The rate of oxidation of S0T  by P680pPheon
-    myVars->FI_Vel[17] = vz_2;	//	vz_2	The rate of P680pPheon reduction
-    myVars->FI_Vel[18] = v1z_2;	//	v1z_2	The rate of oxidation of S1T by P680pPheo
-    myVars->FI_Vel[19] = v2z_2;	//	v2z_2	The rate of oxidation of S2T  by P680pPheo
-    myVars->FI_Vel[20] = v3z_2;	//	v3z_2	The rate of oxidation of S3T  by P680pPheo
-    myVars->FI_Vel[21] = v0z_2;	//	v0z_2	The rate of oxidation of S0T  by P680pPheo
+    myVars->FI_Vel.vA_d  = vA_d;	//	vA_d	The rate of heat dissipation from peripheral antenna
+    myVars->FI_Vel.vA_f  = vA_f;	//	vA_f	The rate of fluorescence emission from peripheral antenna
+    myVars->FI_Vel.vA_U  = vA_U;	//	vA_U	The rate of exciton transfer from peripheral antenna to core antenna in open reaction center
+    myVars->FI_Vel.vU_A  = vU_A;	//	vU_A	The rate of exciton transfer from core antenna to perpheral antenna in open center
+    myVars->FI_Vel.vU_f  = vU_f;	//	vU_f	The rate of fluorescence emission from core antenna
+    myVars->FI_Vel.vU_d  = vU_d;	//	vU_d	The rate of heat dissipation from core antenna
+    myVars->FI_Vel.v1  = v1;	//	v1	The rate of primary charge separation
+    myVars->FI_Vel.v_r1  = v_r1;	//	v_r1	The rate of charge recombination
+    myVars->FI_Vel.vS1_S2  = vS1_S2;	//	vS1_S2	The rate of transition from S1 to S2
+    myVars->FI_Vel.vS2_S3  = vS2_S3;	//	vS2_S3	The rate of transition from S2 to S3
+    myVars->FI_Vel.vS3_S0  = vS3_S0;	//	vS3_S0	The rate of transition from S3 to S0
+    myVars->FI_Vel.vS0_S1  = vS0_S1;	//	vS0_S1	The rate of transition from S0 to S1
+    myVars->FI_Vel.vz_1  = vz_1;	//	vz_1	The rate of P680p reduction
+    myVars->FI_Vel.v1z_1  = v1z_1;	//	v1z_1	The rate of oxidation of S1T by P680pPheon
+    myVars->FI_Vel.v2z_1  = v2z_1;	//	v2z_1	The rate of oxidation of S2T  by P680pPheon
+    myVars->FI_Vel.v3z_1  = v3z_1;	//	v3z_1	The rate of oxidation of S3T  by P680pPheon
+    myVars->FI_Vel.v0z_1  = v0z_1;	//	v0z_1	The rate of oxidation of S0T  by P680pPheon
+    myVars->FI_Vel.vz_2  = vz_2;	//	vz_2	The rate of P680pPheon reduction
+    myVars->FI_Vel.v1z_2  = v1z_2;	//	v1z_2	The rate of oxidation of S1T by P680pPheo
+    myVars->FI_Vel.v2z_2  = v2z_2;	//	v2z_2	The rate of oxidation of S2T  by P680pPheo
+    myVars->FI_Vel.v3z_2  = v3z_2;	//	v3z_2	The rate of oxidation of S3T  by P680pPheo
+    myVars->FI_Vel.v0z_2  = v0z_2;	//	v0z_2	The rate of oxidation of S0T  by P680pPheo
     
-    myVars->FI_Vel[22] = v1z;	//	v1z
-    myVars->FI_Vel[23] = v2z;	//	v2z
-    myVars->FI_Vel[24] = v3z;	//	v3z
-    myVars->FI_Vel[25] = v0z;	//	v0z
+    myVars->FI_Vel.v1z  = v1z;	//	v1z
+    myVars->FI_Vel.v2z  = v2z;	//	v2z
+    myVars->FI_Vel.v3z  = v3z;	//	v3z
+    myVars->FI_Vel.v0z  = v0z;	//	v0z
     
-    myVars->FI_Vel[26] = vAB1;	//	vAB1	The rate of electron transfer from QA- to QB
-    myVars->FI_Vel[27] = vBA1;	//	vBA1	The rate of electron transfer from QB- to QA
-    myVars->FI_Vel[28] = vAB2;	//	vAB2	The rate of electron transfer from QA- to QB-
-    myVars->FI_Vel[29] = vBA2;	//	vBA2	The rate of electron transfer from QB2- TO QA
-    myVars->FI_Vel[30] = v3;	//	v3	The rate of exchange of QAQBH2 with PQ
+    myVars->FI_Vel.vAB1  = vAB1;	//	vAB1	The rate of electron transfer from QA- to QB
+    myVars->FI_Vel.vBA1  = vBA1;	//	vBA1	The rate of electron transfer from QB- to QA
+    myVars->FI_Vel.vAB2  = vAB2;	//	vAB2	The rate of electron transfer from QA- to QB-
+    myVars->FI_Vel.vBA2  = vBA2;	//	vBA2	The rate of electron transfer from QB2- TO QA
+    myVars->FI_Vel.v3  = v3;	//	v3	The rate of exchange of QAQBH2 with PQ
     
-    myVars->FI_Vel[31] = v_r3;	//	v_r3	The rate of exchange of QAQB with PQH2
-    myVars->FI_Vel[32] = v3_n;	//	v3_n	The rate of exchange of QAnQBH2 with PQ
-    myVars->FI_Vel[33] = v_r3_n;	//	v_r3_n	The rate of exchange of QAnQB with PQH2
-    myVars->FI_Vel[34] = v_pq_ox;	//	v_pq_ox	The rate of PQH2 oxidation
-    myVars->FI_Vel[35] = Ic;	    //	Ic	The incident light on the core antenna
+    myVars->FI_Vel.v_r3  = v_r3;	//	v_r3	The rate of exchange of QAQB with PQH2
+    myVars->FI_Vel.v3_n  = v3_n;	//	v3_n	The rate of exchange of QAnQBH2 with PQ
+    myVars->FI_Vel.v_r3_n  = v_r3_n;	//	v_r3_n	The rate of exchange of QAnQB with PQH2
+    myVars->FI_Vel.v_pq_ox  = v_pq_ox;	//	v_pq_ox	The rate of PQH2 oxidation
+    myVars->FI_Vel.Ic  = Ic;	    //	Ic	The incident light on the core antenna
     
-    myVars->FI_Vel[36] = Ia;	    //	Ia	The incident light on the peripheral antenna
-    myVars->FI_Vel[37] = v2_1;	//	v2_1	The rate of P680pPheon oxidation
-    myVars->FI_Vel[38] = v2_2;	//	v2_1	The rate of P680pPheon oxidation
-    myVars->FI_Vel[39] = v2_00_1;	//	v2_00_1	The rate of reduction of QAQB by P680pPheon
-    myVars->FI_Vel[40] = v2_01_1;	//	v2_01_1	The rate of reduction of QAQBn by P680pPheon
-    myVars->FI_Vel[41] = v2_02_1;	//	v2_02_1	The rate of reduction of QAQB2n by P680pPheon
+    myVars->FI_Vel.Ia  = Ia;	    //	Ia	The incident light on the peripheral antenna
+    myVars->FI_Vel.v2_1  = v2_1;	//	v2_1	The rate of P680pPheon oxidation
+    myVars->FI_Vel.v2_2  = v2_2;	//	v2_1	The rate of P680pPheon oxidation
+    myVars->FI_Vel.v2_00_1  = v2_00_1;	//	v2_00_1	The rate of reduction of QAQB by P680pPheon
+    myVars->FI_Vel.v2_01_1  = v2_01_1;	//	v2_01_1	The rate of reduction of QAQBn by P680pPheon
+    myVars->FI_Vel.v2_02_1  = v2_02_1;	//	v2_02_1	The rate of reduction of QAQB2n by P680pPheon
     
-    myVars->FI_Vel[42] = v2_00_2;	//	v2_00_2	The rate of reduction of QAQB by P680Pheon
-    myVars->FI_Vel[43] = v2_01_2;	//	v2_01_2	The rate of reduction of QAQBn by P680Pheon
-    myVars->FI_Vel[44] = v2_02_2;	//	v2_02_2	The rate of reduction of QAQB2n by P680Pheon
-    myVars->FI_Vel[45] = vr2_00_1;	//	vr2_00_1	The reverse reaction of The rate of reduction of QAQB by P680pPheon
-    myVars->FI_Vel[46] = vr2_01_1;	//	vr2_01_1	The reverse reaction of The rate of reduction of QAQBn by P680pPheon
-    myVars->FI_Vel[47] = vr2_02_1;	//	vr2_02_1	The reverse reaction of The rate of reduction of QAQB2n by P680pPheon
-    myVars->FI_Vel[48] = vr2_1;	//	vr2_1
+    myVars->FI_Vel.v2_00_2  = v2_00_2;	//	v2_00_2	The rate of reduction of QAQB by P680Pheon
+    myVars->FI_Vel.v2_01_2  = v2_01_2;	//	v2_01_2	The rate of reduction of QAQBn by P680Pheon
+    myVars->FI_Vel.v2_02_2  = v2_02_2;	//	v2_02_2	The rate of reduction of QAQB2n by P680Pheon
+    myVars->FI_Vel.vr2_00_1  = vr2_00_1;	//	vr2_00_1	The reverse reaction of The rate of reduction of QAQB by P680pPheon
+    myVars->FI_Vel.vr2_01_1  = vr2_01_1;	//	vr2_01_1	The reverse reaction of The rate of reduction of QAQBn by P680pPheon
+    myVars->FI_Vel.vr2_02_1  = vr2_02_1;	//	vr2_02_1	The reverse reaction of The rate of reduction of QAQB2n by P680pPheon
+    myVars->FI_Vel.vr2_1  = vr2_1;	//	vr2_1
     
-    myVars->FI_Vel[49] = vr2_00_2;	//	vr2_00_2	The reverse reaction of The rate of reduction of QAQB by P680Pheon
-    myVars->FI_Vel[50] = vr2_01_2;	//	vr2_01_2	The reverse reaction of The rate of reduction of QAQBn by P680Pheon
-    myVars->FI_Vel[51] = vr2_02_2;	//	vr2_02_2	The reverse reaction of The rate of reduction of QAQB2n by P680Pheon
+    myVars->FI_Vel.vr2_00_2  = vr2_00_2;	//	vr2_00_2	The reverse reaction of The rate of reduction of QAQB by P680Pheon
+    myVars->FI_Vel.vr2_01_2  = vr2_01_2;	//	vr2_01_2	The reverse reaction of The rate of reduction of QAQBn by P680Pheon
+    myVars->FI_Vel.vr2_02_2  = vr2_02_2;	//	vr2_02_2	The reverse reaction of The rate of reduction of QAQB2n by P680Pheon
     
-    myVars->FI_Vel[52] = vr2_2;	//	vr2_2
-    myVars->FI_Vel[53] = vP680qU;	//	vr2_2
-    myVars->FI_Vel[54] = vP680qA;	//	vr2_2
-    myVars->FI_Vel[55] = vU_P680;
-    myVars->FI_Vel[56] = vP680_d;
-    myVars->FI_Vel[57] = vP680_f;
+    myVars->FI_Vel.vr2_2  = vr2_2;	//	vr2_2
+    myVars->FI_Vel.vP680qU  = vP680qU;	//	vr2_2
+    myVars->FI_Vel.vP680qA  = vP680qA;	//	vr2_2
+    myVars->FI_Vel.vU_P680  = vU_P680;
+    myVars->FI_Vel.vP680_d  = vP680_d;
+    myVars->FI_Vel.vP680_f  = vP680_f;
     
     if (myVars->record) {
         myVars->FI_VEL.insert(myVars->FI_TIME_N - 1, t, myVars->FI_Vel);
