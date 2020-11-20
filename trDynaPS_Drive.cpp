@@ -235,7 +235,7 @@ arr trDynaPS::trDynaPS_Drive(double ParaNum, double Ratio) {
     
     //     CO2Release = PR_VEL(:,9) * AVR;
     //     Assim = CarbonRate - CO2Release;
-    double Vpgasink = myVars->SUCS_Vel[13] * myVars->AVR;
+    double Vpgasink = myVars->SUCS_Vel.vpga_use * myVars->AVR;
     //arr Vpgasink = zeros(myVars->SUCS_VEL.shape()[0]);
     //for (int x = 0; x < row; x++)
     //    Vpgasink[x] = myVars->SUCS_VEL[x][14] * myVars->AVR;

@@ -20,6 +20,7 @@
 #include "RuACT.hpp"
 #include "XanCycle.hpp"
 #include "RedoxReg.hpp"
+#include "SUCS.hpp"
 
 // static int f(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
 // static int jtv(N_Vector v, N_Vector Jv, realtype t, N_Vector u, N_Vector fu,
@@ -508,7 +509,7 @@ struct Variables {
     arr SUCS2OUT = zeros(12);
     arr SUCS_Pool = zeros(3);
     arr SUCS_Param = zeros(2);
-    arr SUCS_Vel = zeros(15);
+    SUCSVel SUCS_Vel; // = zeros(15);
   // arr StomCon2OUT = zeros(3);
     arr XanCycle2OUT = zeros(4);
     arr XanCycle_Param = zeros(2);
@@ -532,7 +533,7 @@ struct Variables {
   // Matrix RuACT_CON = Matrix();
   TimeSeries<RuACTVel> RuACT_VEL = TimeSeries<RuACTVel> ();
   // Matrix SUCS_CON = Matrix();
-  TimeSeries<arr> SUCS_VEL = TimeSeries<arr> ();
+  TimeSeries<SUCSVel> SUCS_VEL = TimeSeries<SUCSVel> ();
   // Matrix XanCycle_CON = Matrix();
   TimeSeries<XanCycleVel> XanCycle_VEL = TimeSeries<XanCycleVel> ();
   // Matrix d = Matrix();
