@@ -16,6 +16,8 @@
 #include "BF.hpp"
 #include "PS.hpp"
 #include "PR.hpp"
+#include "RROEA.hpp"
+
 // static int f(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
 // static int jtv(N_Vector v, N_Vector Jv, realtype t, N_Vector u, N_Vector fu,
 // void *user_data, N_Vector tmp); static int check_flag(void *flagvalue, const
@@ -491,7 +493,7 @@ struct Variables {
     arr RROEA_Pool = zeros(10);
     arr RROEA_RC = zeros(10);
     arr RROEA_Param = zeros(2);
-    arr RROEA_Vel = zeros(11);
+    RROEAVel RROEA_Vel; // = zeros(11);
     arr RacRatio = ones(16);
     arr RedoxReg_CON = zeros(0);
     arr RedoxReg_Vel = zeros(2);
@@ -521,7 +523,7 @@ struct Variables {
   // Matrix PSPR = Matrix();
   TimeSeries<PSVel> PS_VEL = TimeSeries<PSVel> ();
   // Matrix RROEA_CON = Matrix();
-  TimeSeries<std::vector<double> > RROEA_VEL = TimeSeries<std::vector<double> > ();
+  TimeSeries<RROEAVel> RROEA_VEL = TimeSeries<RROEAVel> ();
   std::vector<arr> RedoxReg_MP;
   TimeSeries<std::vector<double> > RedoxReg_VEL = TimeSeries<std::vector<double> > ();
   // Matrix RuACT_CON = Matrix();

@@ -130,17 +130,17 @@ void RROEA_Rate(double t, arr &RROEA_Con, varptr *myVars) {
             myVars->RROEA_TIME_N = myVars->RROEA_TIME_N + 1;
             myVars->RROEA_OLD_TIME = t;
         }
-    myVars->RROEA_Vel[0] = ve2GAPDH;
-    myVars->RROEA_Vel[1] = ve2FBPase;
-    myVars->RROEA_Vel[2] = ve2SBPase;
-    myVars->RROEA_Vel[3] = ve2PRK;
-    myVars->RROEA_Vel[4] = ve2ATPase;
-    myVars->RROEA_Vel[5] = ve2ATPGPP;
-    myVars->RROEA_Vel[6] = ve2MDH;
-    myVars->RROEA_Vel[7] = ve2Fd;
-    myVars->RROEA_Vel[8] = veFd2Thio;
-    myVars->RROEA_Vel[9] = veFd2Calvin;
-    myVars->RROEA_Vel[10] = ve2RuACT;
+    myVars->RROEA_Vel.ve2GAPDH = ve2GAPDH;
+    myVars->RROEA_Vel.ve2FBPase = ve2FBPase;
+    myVars->RROEA_Vel.ve2SBPase = ve2SBPase;
+    myVars->RROEA_Vel.ve2PRK = ve2PRK;
+    myVars->RROEA_Vel.ve2ATPase = ve2ATPase;
+    myVars->RROEA_Vel.ve2ATPGPP = ve2ATPGPP;
+    myVars->RROEA_Vel.ve2MDH = ve2MDH;
+    myVars->RROEA_Vel.ve2Fd = ve2Fd;
+    myVars->RROEA_Vel.veFd2Thio = veFd2Thio;
+    myVars->RROEA_Vel.veFd2Calvin = veFd2Calvin;
+    myVars->RROEA_Vel.ve2RuACT = ve2RuACT;
 
     if (myVars->record) {
         //if (myVars->RROEA_TIME_N == 0)
