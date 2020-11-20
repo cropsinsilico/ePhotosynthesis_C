@@ -34,7 +34,7 @@ void Sim_Ephotosynthesis(bool record) {
     //800,23.8514,8.04985,0.00395613,1.5763,2.58119,4.16627,8.04976
     std::cout << "e " << 800-myVars.TestLi << "," << 23.8514-ResultRate[0] << ",";
     std::cout << 8.04985-ResultRate[1] << "," << 0.00395613-ResultRate[2] << "," << 1.5763-ResultRate[3] << ",";
-    std::cout << 2.59575-ResultRate[4] << "," << 4.16627-ResultRate[5] << "," << 8.04976-ResultRate[6] << std::endl;
+    std::cout << 2.58119-ResultRate[4] << "," << 4.16627-ResultRate[5] << "," << 8.04976-ResultRate[6] << std::endl;
     //outfile.close();
     delete myDyna;
 }
