@@ -467,57 +467,70 @@ struct Variables {
     double PS_PR_Param = 0;
     double SUCS_PARAM = 0;
 
+    // Parameters
     arr PR_Param = zeros(2);
-    arr BF2OUT = zeros(5);
-    arr BFRatio = ones(49);
     arr BF_Param = zeros(2);
-    BFPool BF_Pool;// = zeros(12);
-    BFRC BF_RC; // = zeros(34);
+    arr FI_PARAM = zeros(2);
+    arr FI_Param = zeros(2);
+    arr RROEA_Param = zeros(2);
+    arr RuACT_Param = zeros(2);
+    arr SUCS_Param = zeros(2);
+    arr XanCycle_Param = zeros(2);
+    
+    // Vel
     BFVEL BF_Vel; // = zeros(31);
+    FI FI_Vel; // = zeros(58);
+    PRVel PR_Vel; // = zeros(10);
+    PSVel PS_Vel;// = zeros(18);
+    RROEAVel RROEA_Vel; // = zeros(11);
+    RedoxRegVel RedoxReg_Vel; // = zeros(2);
+    RuACTVel RuACT_Vel;// = zeros(6);
+    SUCSVel SUCS_Vel; // = zeros(15);
+    XanCycleVel XanCycle_Vel; // = zeros(7);
+    arr trDynaPS_VEL = zeros(0);
+    
+    // Ratio
+    arr BFRatio = ones(49);
+    arr FIRatio = ones(23);
+    arr PRRatio = ones(48);
+    arr PSRatio = ones(103);
+    arr RacRatio = ones(16);
+    arr SUCRatio = ones(66);
+    arr XanRatio = ones(4);
+    
+    // Pool
+    BFPool BF_Pool;// = zeros(12);
+    FIBFPool FIBF_Pool; // = zeros(1);
+    FIPool FI_Pool; // = zeros(2);
+    RROEAPool RROEA_Pool; // = zeros(10);
+    arr RuACT_Pool = zeros(5);
+    arr SUCS_Pool = zeros(3);
+ 
+    // RC
+    BFRC BF_RC; // = zeros(34);
+    FIRC FI_RC;// = zeros(21);
+    RROEARC RROEA_RC;// = zeros(10);
+    arr RuACT_RC = zeros(10);
+    
+    // Con
     arr BF_con = zeros(29);
     arr DynaPS_CON = zeros(0);
-    //arr DynaPS_VEL = zeros(0);
-    arr FIBF_AUX = zeros(2);
-    FIBFPool FIBF_Pool; // = zeros(1);
-    arr FI_PARAM = zeros(2);
-    arr FIRatio = ones(23);
     arr FI_Con = zeros(22);
-    FIPool FI_Pool; // = zeros(2);
-    FIRC FI_RC;// = zeros(21);
-    arr FI_Param = zeros(2);
-    FI FI_Vel; // = zeros(58);
-    arr FluxTR = zeros(142);
-    arr PR2OUT = zeros(12);
-    arr PRRatio = ones(48);
-    PRVel PR_Vel; // = zeros(10);
-    arr PS2OUT = zeros(18);
-    arr PSRatio = ones(103);
-    //arr PS_PR_VEL = zeros(0);
-    PSVel PS_Vel;// = zeros(18);
-    RROEAKE RROEA_KE;// = zeros(9);
-    RROEAPool RROEA_Pool; // = zeros(10);
-    RROEARC RROEA_RC;// = zeros(10);
-    arr RROEA_Param = zeros(2);
-    RROEAVel RROEA_Vel; // = zeros(11);
-    arr RacRatio = ones(16);
     arr RedoxReg_CON = zeros(0);
-    RedoxRegVel RedoxReg_Vel; // = zeros(2);
-    arr RuACT_Pool = zeros(5);
-    arr RuACT_Param = zeros(2);
-    arr RuACT_RC = zeros(10);
-    RuACTVel RuACT_Vel;// = zeros(6);
-    arr SUCRatio = ones(66);
-    arr SUCS2OUT = zeros(12);
-    arr SUCS_Pool = zeros(3);
-    arr SUCS_Param = zeros(2);
-    SUCSVel SUCS_Vel; // = zeros(15);
-  // arr StomCon2OUT = zeros(3);
-    arr XanCycle2OUT = zeros(4);
-    arr XanCycle_Param = zeros(2);
-    XanCycleVel XanCycle_Vel; // = zeros(7);
-    arr XanRatio = ones(4);
     arr trDynaPS_CON = zeros(0);
-    arr trDynaPS_VEL = zeros(0);
+
+    // OUT
+    arr BF2OUT = zeros(5);
+    arr PR2OUT = zeros(12);
+    arr PS2OUT = zeros(18);
+    arr SUCS2OUT = zeros(12);
+    arr XanCycle2OUT = zeros(4);
+
+    // misc
+    arr FIBF_AUX = zeros(2);
+    arr FluxTR = zeros(142);
+    RROEAKE RROEA_KE;// = zeros(9);
+    
   arr ddd = zeros(120);
   // Matrix BF_CON = Matrix();
   TimeSeries<BFVEL> BF_VEL = TimeSeries<BFVEL>();
