@@ -125,7 +125,7 @@ public:
   double vP680_d = 0.;
   double vP680_f = 0.;
 };
-/*
+
 class FIRC {
 public:
     FIRC() {}
@@ -176,7 +176,7 @@ public:
     double k_pq_oxy = 0.;  //  The rate constant of the PQH2 oxidation Lazar (1999),50~500
 
 };
-*/
+
 /*
 class FICon {
 public:

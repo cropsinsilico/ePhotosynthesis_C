@@ -482,7 +482,7 @@ struct Variables {
     arr FIRatio = ones(23);
     arr FI_Con = zeros(22);
     arr FI_Pool = zeros(2);
-    arr FI_RC = zeros(21);
+    FIRC FI_RC;// = zeros(21);
     arr FI_Param = zeros(2);
     FI FI_Vel; // = zeros(58);
     arr FluxTR = zeros(142);

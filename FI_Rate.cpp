@@ -36,27 +36,27 @@ void FI_Rate(double t, varptr *myVars) {
     //global FI_RC;
     
     // The rate constant used in the model
-    const double kA_d = myVars->FI_RC[0];	//	The rate constant of heat dissipation from peripheral antenna	Lazar (1999), 0.25~1 *10^(9)
-    const double kA_f = myVars->FI_RC[1];	//	The rate constant of fluorescence emission from peripheral antenna	Lazar 1999, with a lifetime of 5 ns at closed reaction center
-    const double kA_U = myVars->FI_RC[2];	//	The rate constant of exciton transfer from periphral antenna to core antenna	Reference needed, a guess
-    const double kU_A = myVars->FI_RC[3];	//	The rate constant of exciton transfer from core antenna to peripheral antenna	Reference needed, a guess
-    const double kU_d = myVars->FI_RC[4];	//	The rate constant of  heat emission from core antenna
-    const double kU_f = myVars->FI_RC[5];	//	The rate constant of fluorescence emission from core antenna
-    const double k1 = myVars->FI_RC[6];	//	The rate constant of primary charge separation for open reaction center
-    const double k_r1 = myVars->FI_RC[7];	//	The rate constant of charge recombination for open reactoin center
-    const double kz = myVars->FI_RC[8];	//	The rate constant of the Tyrosine oxidation	Lazar (1999); 3.8~50 * 10^6
-    const double k12 = myVars->FI_RC[9];	//	The rate constant of the S1 to S2 transition	Lazar (1999); 0.667~33.3 * 10^3
-    const double k23 = myVars->FI_RC[10];	//	The rate constant of the S2 to S3 transition	Lazar (1999); 0.667~33.3 * 10^3
-    const double k30 = myVars->FI_RC[11];	//	The rate constant of the S3 to S0 transition	Lazar (1999); 0.667~33.3 * 10^3
-    const double k01 = myVars->FI_RC[12];	//	The rate constant of the S0 to S1 transition	Lazar (1999); 0.667~33.3 * 10^3
-    const double k2 = myVars->FI_RC[13];	//	The rate constant of the QA reduction by Pheo-	Lazar (1999); 2~2.3 * 10^9
-    const double kAB1 = myVars->FI_RC[14];	//	The rate constant of QAQB-->QAQB-	Lazar (1999); 2.5~5 * 10^3
-    const double kBA1 = myVars->FI_RC[15];	//	The rate constant of the QAQB- -->QAQB	Lazar (1999)
-    const double kAB2 = myVars->FI_RC[16];	//	The rate constant of the QAQB- --> QAQB2-	Lazar (1999); 1.25~3.33 * 10^3
-    const double kBA2 = myVars->FI_RC[17];	//	The rate constant of the QAQB2- --> QAQB- 	Lazar (1999), or same as kAB2 depend on the equilibium constant
-    const double k3 = myVars->FI_RC[18];	//	The rate constant of the exchange of PQ and QBH2	Lazar (1999),0.12~1 for the fast PQ pool,  or 3~8 for the slow recycling PQ pool
-    const double k_r3 = myVars->FI_RC[19];	//	The rate constant of the exchange of QB and PQH2	Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
-    const double k_pq_oxy = myVars->FI_RC[20];	//	The rate constant of the PQH2 oxidation	Lazar (1999),50~500
+    const double kA_d = myVars->FI_RC.kA_d;	//	The rate constant of heat dissipation from peripheral antenna	Lazar (1999), 0.25~1 *10^(9)
+    const double kA_f = myVars->FI_RC.kA_f;	//	The rate constant of fluorescence emission from peripheral antenna	Lazar 1999, with a lifetime of 5 ns at closed reaction center
+    const double kA_U = myVars->FI_RC.kA_U;	//	The rate constant of exciton transfer from periphral antenna to core antenna	Reference needed, a guess
+    const double kU_A = myVars->FI_RC.kU_A;	//	The rate constant of exciton transfer from core antenna to peripheral antenna	Reference needed, a guess
+    const double kU_d = myVars->FI_RC.kU_d;	//	The rate constant of  heat emission from core antenna
+    const double kU_f = myVars->FI_RC.kU_f;	//	The rate constant of fluorescence emission from core antenna
+    const double k1 = myVars->FI_RC.k1;	//	The rate constant of primary charge separation for open reaction center
+    const double k_r1 = myVars->FI_RC.k_r1;	//	The rate constant of charge recombination for open reactoin center
+    const double kz = myVars->FI_RC.kz;	//	The rate constant of the Tyrosine oxidation	Lazar (1999); 3.8~50 * 10^6
+    const double k12 = myVars->FI_RC.k12;	//	The rate constant of the S1 to S2 transition	Lazar (1999); 0.667~33.3 * 10^3
+    const double k23 = myVars->FI_RC.k23;	//	The rate constant of the S2 to S3 transition	Lazar (1999); 0.667~33.3 * 10^3
+    const double k30 = myVars->FI_RC.k30;	//	The rate constant of the S3 to S0 transition	Lazar (1999); 0.667~33.3 * 10^3
+    const double k01 = myVars->FI_RC.k01;	//	The rate constant of the S0 to S1 transition	Lazar (1999); 0.667~33.3 * 10^3
+    const double k2 = myVars->FI_RC.k2;	//	The rate constant of the QA reduction by Pheo-	Lazar (1999); 2~2.3 * 10^9
+    const double kAB1 = myVars->FI_RC.kAB1;	//	The rate constant of QAQB-->QAQB-	Lazar (1999); 2.5~5 * 10^3
+    const double kBA1 = myVars->FI_RC.kBA1;	//	The rate constant of the QAQB- -->QAQB	Lazar (1999)
+    const double kAB2 = myVars->FI_RC.kAB2;	//	The rate constant of the QAQB- --> QAQB2-	Lazar (1999); 1.25~3.33 * 10^3
+    const double kBA2 = myVars->FI_RC.kBA2;	//	The rate constant of the QAQB2- --> QAQB- 	Lazar (1999), or same as kAB2 depend on the equilibium constant
+    const double k3 = myVars->FI_RC.k3;	//	The rate constant of the exchange of PQ and QBH2	Lazar (1999),0.12~1 for the fast PQ pool,  or 3~8 for the slow recycling PQ pool
+    const double k_r3 = myVars->FI_RC.k_r3;	//	The rate constant of the exchange of QB and PQH2	Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
+    const double k_pq_oxy = myVars->FI_RC.k_pq_oxy;	//	The rate constant of the PQH2 oxidation	Lazar (1999),50~500
     
     
     const double A = myVars->FI_Con[0];	// 	The concentration of excitons in the peripheral antenna

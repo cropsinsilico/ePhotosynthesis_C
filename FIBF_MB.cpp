@@ -76,8 +76,8 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     myVars->FIBF2FI_PQ = PQ;
     
     //global FI_RC;
-    myVars->FI_RC[0] = FIBF_Con[51];
-    myVars->FI_RC[4] = FIBF_Con[51];
+    myVars->FI_RC.kA_d = FIBF_Con[51];
+    myVars->FI_RC.kU_d = FIBF_Con[51];
     
     //global BF_RC;
     myVars->BF_RC.Kd = FIBF_Con[51];
