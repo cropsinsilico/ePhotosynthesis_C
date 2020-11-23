@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "XanCycle.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -25,7 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-void XanCycle_Rate(double t, arr &XanCycle_Con, varptr *myVars) {
+void XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, varptr *myVars) {
     
     //global XanCycle_kva;
     //global XanCycle_kaz;
@@ -35,10 +35,10 @@ void XanCycle_Rate(double t, arr &XanCycle_Con, varptr *myVars) {
     //global XanCycle_kv2ABA;
     //global XanCycle_kABAdg;
     
-    const double Vx = XanCycle_Con[0];	// The concentration of Violozanthin
-    const double Ax = XanCycle_Con[1];	//	The concentration of Anthrozanthin
-    const double Zx = XanCycle_Con[2];	//	The concentration of Zeaznthin
-    double ABA = XanCycle_Con[3];	//	The concentration of ABA
+    const double Vx = XanCycle_Con.Vx;	// The concentration of Violozanthin
+    const double Ax = XanCycle_Con.Ax;	//	The concentration of Anthrozanthin
+    const double Zx = XanCycle_Con.Zx;	//	The concentration of Zeaznthin
+    double ABA = XanCycle_Con.ABA;	//	The concentration of ABA
     
     
     Condition(t, myVars);

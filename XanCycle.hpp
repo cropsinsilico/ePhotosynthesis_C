@@ -23,7 +23,7 @@ double Vv2ABA = 0.;  //  The rate of conversion from v to ABA.
 double VABAdg = 0.;  //  The rate of ABA degradation
 
 };
-/*
+
 struct Variables;
 class XanCycleCon {
 public:
@@ -63,4 +63,3 @@ XanCycleCon XanCycle_Ini(Variables *myVars);
 std::vector<double> XanCycle_Mb(double t, XanCycleCon &XanCycle_Con, Variables *myVars);
 
 void XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myVars);
-*/

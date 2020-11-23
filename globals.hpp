@@ -645,11 +645,11 @@ void Sim_Ephotosynthesis(bool record);
 
 double TargetFunVal(varptr *myVars);
 
-arr XanCycle_Ini(varptr *myVars);
+//arr XanCycle_Ini(varptr *myVars);
 
-arr XanCycle_Mb(double t, arr &XanCycle_Con, varptr *myVars);
+//arr XanCycle_Mb(double t, arr &XanCycle_Con, varptr *myVars);
 
-void XanCycle_Rate(double t, arr &XanCycle_Con, varptr *myVars);
+//void XanCycle_Rate(double t, arr &XanCycle_Con, varptr *myVars);
 
 arr ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, double Light, varptr *myVars);
 

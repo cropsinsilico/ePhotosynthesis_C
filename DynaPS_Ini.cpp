@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "XanCycle.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -51,10 +51,10 @@ arr DynaPS::DynaPS_Ini() {
     
     
     
-    arr XanCycle_Con = XanCycle_Ini(myVars);
-    
+    XanCycleCon XanCycle_Con = XanCycle_Ini(myVars);
+    arr XanCycle_con = XanCycle_Con.toArray();
     for (int m = 0; m < 4; m++)
-        DynaPS_Con[m + 92] = XanCycle_Con[m];
+        DynaPS_Con[m + 92] = XanCycle_con[m];
     
     return DynaPS_Con;
 }

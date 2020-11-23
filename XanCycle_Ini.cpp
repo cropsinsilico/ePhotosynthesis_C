@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "XanCycle.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -24,7 +24,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-arr XanCycle_Ini(varptr *myVars) {
+XanCycleCon XanCycle_Ini(varptr *myVars) {
     //global XanRatio;
     //global XanCycle_kva;
     //global XanCycle_kaz;
@@ -47,13 +47,13 @@ arr XanCycle_Ini(varptr *myVars) {
     const double Ax = 10;
     const double Zx = 5;
     const double ABA = 1;
-    arr XanCycle_Con = zeros(4);
+    //arr XanCycle_Con = zeros(4);
     // Coeff = 0.37;// --unused
-    
-    XanCycle_Con[0] = Vx * 0.37;
-    XanCycle_Con[1] = Ax * 0.37;
-    XanCycle_Con[2] = Zx * 0.37;
-    XanCycle_Con[3] = ABA;
+    XanCycleCon XanCycle_con;
+    XanCycle_con.Vx = Vx * 0.37;
+    XanCycle_con.Ax = Ax * 0.37;
+    XanCycle_con.Zx = Zx * 0.37;
+    XanCycle_con.ABA = ABA;
     
     //global XanCycle_OLD_TIME;
     //global XanCycle_TIME_N;
@@ -70,5 +70,5 @@ arr XanCycle_Ini(varptr *myVars) {
     //global XanCycle2FIBF_Xstate;
     myVars->XanCycle2FIBF_Xstate = Zx / (Ax + Vx + Zx);
     
-    return XanCycle_Con;
+    return XanCycle_con;
 }

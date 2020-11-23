@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "XanCycle.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -45,7 +45,7 @@ int DynaPS::DynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
     arr XanCycle_Con = zeros(4);
     for (int m = 0; m < 4; m++)
         XanCycle_Con[m] = x[m + 92];
-    
+    XanCycleCon XanCycle_con(XanCycle_Con);
     
     // This is a sensitivity test to show that the model is stable udner fluctuating light
     
@@ -56,7 +56,7 @@ int DynaPS::DynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
     myVars->BF_Param[0] = light;
     
     arr RA_DYDT = RA_mb(t, RA_Con, myVars);
-    arr XanCycle_DYDT = XanCycle_Mb(t, XanCycle_Con, myVars);
+    arr XanCycle_DYDT = XanCycle_Mb(t, XanCycle_con, myVars);
     
     // Here get the rate of Thioredoxin reduction and oxidation and use it to construct the differential equation for both thio and fd.
     
