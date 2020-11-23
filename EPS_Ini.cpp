@@ -71,9 +71,9 @@ arr EPS_Ini(varptr *myVars) {
     for (int m = 0; m < 29; m++)
         FIBF_Con[m] = myVars->BF_con[m];
     
-    
+    arr FI_con = myVars->FI_Con.toArray();
     for (int m = 0; m < 22; m++)
-        FIBF_Con[m + 29] = myVars->FI_Con[m];
+        FIBF_Con[m + 29] = FI_con[m];
     
     
     FIBF_Con[51] = pow(10, 8) * 0.5;

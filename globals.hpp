@@ -515,7 +515,7 @@ struct Variables {
     // Con
     arr BF_con = zeros(29);
     arr DynaPS_CON = zeros(0);
-    arr FI_Con = zeros(22);
+    FICon FI_Con = zeros(22);
     arr RedoxReg_CON = zeros(0);
     arr trDynaPS_CON = zeros(0);
 
@@ -570,11 +570,11 @@ void FIBF_Ini(varptr *myVars);
 
 arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars);
 
-void FI_Ini(varptr *myVars);
+//void FI_Ini(varptr *myVars);
 
-arr FI_Mb(double t, varptr *myVars);
+//arr FI_Mb(double t, varptr *myVars);
 
-void FI_Rate(double t, varptr *myVars);
+//void FI_Rate(double t, varptr *myVars);
 
 void GenOut(double t, varptr *myVars);
 

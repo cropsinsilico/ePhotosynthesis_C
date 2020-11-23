@@ -131,28 +131,28 @@ void FI_Ini(varptr *myVars) {
     // FI_ini.m
     // This is the program that initialize the major variables used in the fluorescence induction system.In this file, the n represent negative charges, _red represent that the components are associated with the closed reaction center; while _ox represent a system with open reaction center.
     //global FI_Con;
-    myVars->FI_Con[0] = A;	// 	The concentration of excitons in the peripheral antenna
-    myVars->FI_Con[1] = U;	//	The concentration fo excitons in the core antenna
-    myVars->FI_Con[2] = P680Pheo;	// 	The concentration of the P680Pheo
-    myVars->FI_Con[3] = P680pPheon;	//	The concentration for the P680+ Pheo-
-    myVars->FI_Con[4] = P680pPheo;	// 	The concentration of P680+ Pheo
-    myVars->FI_Con[5] = P680Pheon;	//	The concentration of P680Pheo-
-    myVars->FI_Con[6] = Yz;           //	The concentration of reduced tyrosine
-    myVars->FI_Con[7] = S1T;           // 	The concentration of S1 in combination with reduced tyrosine
-    myVars->FI_Con[8] = S2T;           //	The concentration of S2 in combination with reduced tyrosine
-    myVars->FI_Con[9] = S3T;           // 	The concentration of S3 in combination with reduced tyrosine
-    myVars->FI_Con[10] = S0T;           //	The concentration of S0 in combination with reduced tyrosine
-    myVars->FI_Con[11] = S1Tp;	// 	The concentration of S1 in combination with oxidized tyrosine
-    myVars->FI_Con[12] = S2Tp;	// 	The concentration of S2 in combination with oxidized tyrosine
-    myVars->FI_Con[13] = S3Tp;	//	The concentration of S3 in combination with oxidized tyrosine
-    myVars->FI_Con[14] = S0Tp;	// 	The concentration of S0 in combination with oxidized tyrosine
-    myVars->FI_Con[15] = QAQB;	// 	The concentration of [QAQB]
-    myVars->FI_Con[16] = QAnQB;	// 	The concentration of [QA-QB];
-    myVars->FI_Con[17] = QAQBn;	//	The concentration of [QAQB-]
-    myVars->FI_Con[18] = QAnQBn;	// 	The concentration of [QA-QB-];
-    myVars->FI_Con[19] = QAQB2n;	//	The concentration of [QAQB2-]
-    myVars->FI_Con[20] = QAnQB2n;	// 	The concentration of [QA-QB2-];
-    myVars->FI_Con[21] = PQn;	//	The concentration of reduced PQ, i.e. PQH2;
+    myVars->FI_Con.A = A;	// 	The concentration of excitons in the peripheral antenna
+    myVars->FI_Con.U = U;	//	The concentration fo excitons in the core antenna
+    myVars->FI_Con.P680ePheo = P680Pheo;	// 	The concentration of the P680Pheo
+    myVars->FI_Con.P680pPheon = P680pPheon;	//	The concentration for the P680+ Pheo-
+    myVars->FI_Con.P680pPheo = P680pPheo;	// 	The concentration of P680+ Pheo
+    myVars->FI_Con.P680Pheon = P680Pheon;	//	The concentration of P680Pheo-
+    myVars->FI_Con.Yz = Yz;           //	The concentration of reduced tyrosine
+    myVars->FI_Con.S1T = S1T;           // 	The concentration of S1 in combination with reduced tyrosine
+    myVars->FI_Con.S2T = S2T;           //	The concentration of S2 in combination with reduced tyrosine
+    myVars->FI_Con.S3T = S3T;           // 	The concentration of S3 in combination with reduced tyrosine
+    myVars->FI_Con.S0T = S0T;           //	The concentration of S0 in combination with reduced tyrosine
+    myVars->FI_Con.S1Tp = S1Tp;	// 	The concentration of S1 in combination with oxidized tyrosine
+    myVars->FI_Con.S2Tp = S2Tp;	// 	The concentration of S2 in combination with oxidized tyrosine
+    myVars->FI_Con.S3Tp = S3Tp;	//	The concentration of S3 in combination with oxidized tyrosine
+    myVars->FI_Con.S0Tp = S0Tp;	// 	The concentration of S0 in combination with oxidized tyrosine
+    myVars->FI_Con.QAQB = QAQB;	// 	The concentration of [QAQB]
+    myVars->FI_Con.QAnQB = QAnQB;	// 	The concentration of [QA-QB];
+    myVars->FI_Con.QAQBn = QAQBn;	//	The concentration of [QAQB-]
+    myVars->FI_Con.QAnQBn = QAnQBn;	// 	The concentration of [QA-QB-];
+    myVars->FI_Con.QAQB2n = QAQB2n;	//	The concentration of [QAQB2-]
+    myVars->FI_Con.QAnQB2n = QAnQB2n;	// 	The concentration of [QA-QB2-];
+    myVars->FI_Con.PQn = PQn;	//	The concentration of reduced PQ, i.e. PQH2;
     
     //global FI_Pool;
     const double QBt = 1 * myVars->FIRatio[21];// The total concentration of Qb site;

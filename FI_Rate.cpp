@@ -59,28 +59,28 @@ void FI_Rate(double t, varptr *myVars) {
     const double k_pq_oxy = myVars->FI_RC.k_pq_oxy;	//	The rate constant of the PQH2 oxidation	Lazar (1999),50~500
     
     
-    const double A = myVars->FI_Con[0];	// 	The concentration of excitons in the peripheral antenna
-    const double U = myVars->FI_Con[1];	//	The concentration fo excitons in the core antenna
-    const double P680ePheo = myVars->FI_Con[2];          //QF add
-    const double P680pPheon = myVars->FI_Con[3];	//	The concentration for the P680+ Pheo-
-    const double P680pPheo = myVars->FI_Con[4];	// 	The concentration of P680+ Pheo
-    const double P680Pheon = myVars->FI_Con[5];	//	The concentration of P680Pheo-
-    // Yz = FI_Con[6];	//	The concentration of reduced tyrosine// --unused
-    const double S1T = myVars->FI_Con[7];	// 	The concentration of S1 in combination with reduced tyrosine
-    const double S2T = myVars->FI_Con[8];	//	The concentration of S2 in combination with reduced tyrosine
-    const double S3T = myVars->FI_Con[9];	// 	The concentration of S3 in combination with reduced tyrosine
-    const double S0T = myVars->FI_Con[10];	//	The concentration of S0 in combination with reduced tyrosine
-    const double S1Tp = myVars->FI_Con[11];	// 	The concentration of S1 in combination with oxidized tyrosine
-    const double S2Tp = myVars->FI_Con[12];	// 	The concentration of S2 in combination with oxidized tyrosine
-    const double S3Tp = myVars->FI_Con[13];	//	The concentration of S3 in combination with oxidized tyrosine
-    const double S0Tp = myVars->FI_Con[14];	// 	The concentration of S0 in combination with oxidized tyrosine
-    const double QAQB = myVars->FI_Con[15];	// 	The concentration of [QAQB]
-    const double QAnQB = myVars->FI_Con[16];	// 	The concentration of [QA-QB];
-    const double QAQBn = myVars->FI_Con[17];	//	The concentration of [QAQB-]
-    const double QAnQBn = myVars->FI_Con[18];	// 	The concentration of [QA-QB-];
-    const double QAQB2n = myVars->FI_Con[19];	//	The concentration of [QAQB2-]
-    const double QAnQB2n = myVars->FI_Con[20];	// 	The concentration of [QA-QB2-];
-    const double PQn = myVars->FI_Con[21];	//	The concentration of reduced PQ, i.e. PQH2;
+    const double A = myVars->FI_Con.A;	// 	The concentration of excitons in the peripheral antenna
+    const double U = myVars->FI_Con.U;	//	The concentration fo excitons in the core antenna
+    const double P680ePheo = myVars->FI_Con.P680ePheo;          //QF add
+    const double P680pPheon = myVars->FI_Con.P680pPheon;	//	The concentration for the P680+ Pheo-
+    const double P680pPheo = myVars->FI_Con.P680pPheo;	// 	The concentration of P680+ Pheo
+    const double P680Pheon = myVars->FI_Con.P680Pheon;	//	The concentration of P680Pheo-
+    // Yz = FI_Con.Yz;	//	The concentration of reduced tyrosine// --unused
+    const double S1T = myVars->FI_Con.S1T;	// 	The concentration of S1 in combination with reduced tyrosine
+    const double S2T = myVars->FI_Con.S2T;	//	The concentration of S2 in combination with reduced tyrosine
+    const double S3T = myVars->FI_Con.S3T;	// 	The concentration of S3 in combination with reduced tyrosine
+    const double S0T = myVars->FI_Con.S0T;	//	The concentration of S0 in combination with reduced tyrosine
+    const double S1Tp = myVars->FI_Con.S1Tp;	// 	The concentration of S1 in combination with oxidized tyrosine
+    const double S2Tp = myVars->FI_Con.S2Tp;	// 	The concentration of S2 in combination with oxidized tyrosine
+    const double S3Tp = myVars->FI_Con.S3Tp;	//	The concentration of S3 in combination with oxidized tyrosine
+    const double S0Tp = myVars->FI_Con.S0Tp;	// 	The concentration of S0 in combination with oxidized tyrosine
+    const double QAQB = myVars->FI_Con.QAQB;	// 	The concentration of [QAQB]
+    const double QAnQB = myVars->FI_Con.QAnQB;	// 	The concentration of [QA-QB];
+    const double QAQBn = myVars->FI_Con.QAQBn;	//	The concentration of [QAQB-]
+    const double QAnQBn = myVars->FI_Con.QAnQBn;	// 	The concentration of [QA-QB-];
+    const double QAQB2n = myVars->FI_Con.QAQB2n;	//	The concentration of [QAQB2-]
+    const double QAnQB2n = myVars->FI_Con.QAnQB2n;	// 	The concentration of [QA-QB2-];
+    const double PQn = myVars->FI_Con.PQn;	//	The concentration of reduced PQ, i.e. PQH2;
     
     //global FI_Pool;
     const double PQT = myVars->FI_Pool.PQT;  // The total concentraion of PQH2 and PQ;

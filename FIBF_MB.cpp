@@ -38,9 +38,10 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
         myVars->BF_con[m] = FIBF_Con[m];
     
     
-    //arr FI_Con = zeros(22);
+    arr FI_con = zeros(22);
     for (int m = 0; m < 22; m++)
-        myVars->FI_Con[m] = FIBF_Con[m + 29];
+        FI_con[m] = FIBF_Con[m + 29];
+    myVars->FI_Con.fromArray(FI_con);
     
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -50,7 +51,7 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     //global BF_Pool;
     //global FI_Pool;
     
-    const double PQn = myVars->FI_Con[21];	//	The concentration of reduced PQ, i.e. PQH2;
+    const double PQn = myVars->FI_Con.PQn;	//	The concentration of reduced PQ, i.e. PQH2;
     const double Qi = myVars->BF_con[6];	//	The binding Quinone
     const double Qn = myVars->BF_con[9];	//	Q-
     const double Qr = myVars->BF_con[10];	//	Q2-
