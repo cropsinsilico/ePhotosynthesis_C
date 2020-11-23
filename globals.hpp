@@ -513,9 +513,9 @@ struct Variables {
     RuACTRC RuACT_RC;// = zeros(10);
     
     // Con
-    BFCon BF_con;
+    //BFCon BF_con;
     arr DynaPS_CON = zeros(0);
-    FICon FI_Con;
+    //FICon FI_Con;
     arr RedoxReg_CON = zeros(0);
     arr trDynaPS_CON = zeros(0);
 

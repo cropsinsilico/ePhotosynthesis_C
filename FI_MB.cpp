@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "FI.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -30,7 +30,7 @@
 // 1) The initialization of the rates that was transfered from the FI_Rate routine
 // 2) The computation of the mass balance equations
 
-arr FI_Mb(double t, varptr *myVars) {
+arr FI_Mb(double t, FICon &FI_Con, varptr *myVars) {
     
     //////////////////////////////////////////////////////////////////
     //   Calculate the rates first   //
@@ -41,7 +41,7 @@ arr FI_Mb(double t, varptr *myVars) {
     
     myVars->FI_Param[0] = light;
     
-    FI_Rate(t, myVars);
+    FI_Rate(t, FI_Con, myVars);
     
     ////////////////////////////////////////////////////////////////////////////////
     //   Get the rate of different reactions//

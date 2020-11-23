@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "BF.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -26,7 +26,7 @@
 
 
 
-arr BF_Mb(double t, varptr *myVars) {
+arr BF_Mb(double t, BFCon &BF_con, varptr *myVars) {
     
     //global GLight;
     Condition(t, myVars);
@@ -38,7 +38,7 @@ arr BF_Mb(double t, varptr *myVars) {
     //   Calculate the rates BFrst   //
     //////////////////////////////////////////////////////////////////
     //global BF_Vel;
-    BF_Rate(t, myVars);
+    BF_Rate(t, BF_con, myVars);
     
     ////////////////////////////////////////////////////////////////////////////////
     //   Get the rate of different reactions//

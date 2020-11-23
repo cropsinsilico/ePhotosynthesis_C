@@ -316,8 +316,8 @@ private:
     size_t count = 29;
 };
 
-void BF_Ini(Variables *myVars);
+BFCon BF_Ini(Variables *myVars);
 
-std::vector<double> BF_Mb(double t, Variables *myVars);
+std::vector<double> BF_Mb(double t, BFCon &BF_con, Variables *myVars);
 
-void BF_Rate(double t, Variables *myVars);
+void BF_Rate(double t, BFCon &BF_con, Variables *myVars);

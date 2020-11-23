@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "BF.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -29,8 +29,8 @@ arr EPS_Ini(varptr *myVars) {
     // Begin = 1;// --unused
     
     FIBF_Ini(myVars);
-    FI_Ini(myVars);
-    BF_Ini(myVars);
+    FICon FI_Con = FI_Ini(myVars);
+    BFCon BF_con = BF_Ini(myVars);
     
     //// Step 1 Get the initialization of the variables for BF
     
@@ -68,11 +68,11 @@ arr EPS_Ini(varptr *myVars) {
     // Initial concentration for FIBF_Con
     arr FIBF_Con = zeros(52);
     //FIBF_Con;
-    arr BF_Con = myVars->BF_con.toArray();
+    arr BF_Con = BF_con.toArray();
     for (int m = 0; m < 29; m++)
         FIBF_Con[m] = BF_Con[m];
     
-    arr FI_con = myVars->FI_Con.toArray();
+    arr FI_con = FI_Con.toArray();
     for (int m = 0; m < 22; m++)
         FIBF_Con[m + 29] = FI_con[m];
     

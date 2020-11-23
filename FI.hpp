@@ -283,6 +283,6 @@ private:
     size_t count = 22;
 };
 
-void FI_Ini(Variables *myVars);
-std::vector<double> FI_Mb(double t, Variables *myVars);
-void FI_Rate(double t, Variables *myVars);
+FICon FI_Ini(Variables *myVars);
+std::vector<double> FI_Mb(double t, FICon &FI_Con, Variables *myVars);
+void FI_Rate(double t, FICon &FI_Con, Variables *myVars);

@@ -1,4 +1,8 @@
 #pragma once
+#include <math.h>
+#include "FI.hpp"
+#include "BF.hpp"
+
 class FIBFPool {
   public:
   FIBFPool() {}
@@ -8,11 +12,6 @@ class FIBFPool {
   double PQT;  
 };
 /*
-#include <math.h>
-
-#include "FI.hpp"
-#include "BF.hpp"
-
 class FIBFCon {
 public:
     FIBFCon() {}
@@ -21,7 +20,7 @@ public:
         FI_con = other.FI_con;
         kd = other.kd;
     }
-    FIBFCon(const BFCON &bother, const FICon &fother) {
+    FIBFCon(const BFCon &bother, const FICon &fother) {
         BF_con = bother;
         FI_con = fother;
         kd = pow(10, 8) * 0.5;
@@ -48,7 +47,7 @@ public:
     size_t size() {
         return BF_con.size() + FI_con.size() + 1;
     }
-    BFCON BF_con;
+    BFCon BF_con;
     FICon FI_con;
     double kd = 0; // The initialization of the initial rate constant for heat dissipation
 

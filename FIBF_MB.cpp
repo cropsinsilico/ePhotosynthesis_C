@@ -37,13 +37,13 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     arr BF_Con = zeros(29);
     for (int m = 0; m < 29; m++)
         BF_Con[m] = FIBF_Con[m];
-    myVars->BF_con.fromArray(BF_Con);
+    BFCon BF_con(BF_Con);
     
     
     arr FI_con = zeros(22);
     for (int m = 0; m < 22; m++)
         FI_con[m] = FIBF_Con[m + 29];
-    myVars->FI_Con.fromArray(FI_con);
+    FICon FI_Con(FI_con);
     
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -53,12 +53,12 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     //global BF_Pool;
     //global FI_Pool;
     
-    const double PQn = myVars->FI_Con.PQn;	//	The concentration of reduced PQ, i.e. PQH2;
-    const double Qi = myVars->BF_con.Qi;	//	The binding Quinone
-    const double Qn = myVars->BF_con.Qn;	//	Q-
-    const double Qr = myVars->BF_con.Qr;	//	Q2-
-    const double ISPoQH2 = myVars->BF_con.ISPoQH2;	//	The complex of oxidized ion sulfer protein and reduced quinone
-    const double QHsemi = myVars->BF_con.QHsemi;	//	Semiquinone
+    const double PQn = FI_Con.PQn;	//	The concentration of reduced PQ, i.e. PQH2;
+    const double Qi = BF_con.Qi;	//	The binding Quinone
+    const double Qn = BF_con.Qn;	//	Q-
+    const double Qr = BF_con.Qr;	//	Q2-
+    const double ISPoQH2 = BF_con.ISPoQH2;	//	The complex of oxidized ion sulfer protein and reduced quinone
+    const double QHsemi = BF_con.QHsemi;	//	Semiquinone
     
     double TQ = myVars->BF_Pool.k_r1;	//	The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
     
@@ -73,7 +73,7 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     
     myVars->FIBF_AUX[0] = PQ;
     myVars->FIBF_AUX[1] = PQa;
-    myVars->BF_con.Q = PQ;
+    BF_con.Q = PQ;
     
     //global FIBF2FI_PQ;
     myVars->FIBF2FI_PQ = PQ;
@@ -86,8 +86,8 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     myVars->BF_RC.Kd = FIBF_Con[51];
     
     //arr BF_mb = zeros(28);
-    arr BF_mb = BF_Mb(t, myVars);
-    arr FI_mb = FI_Mb(t, myVars);
+    arr BF_mb = BF_Mb(t, BF_con, myVars);
+    arr FI_mb = FI_Mb(t, FI_Con, myVars);
     
     // Assign the value of the calcualted BF_mb and FI_mb to FIBF_MB variable
     arr FIBF_mb = zeros(52);
@@ -103,7 +103,7 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     // Now specially calcualte the mass balance equation for the rate constant of the heat dissipation
     
     const double kd = FIBF_Con[51];          // The initialization of the initial rate constant for heat dissipation
-    double PHl = myVars->BF_con.PHl;           // Get the PH value of the lumen
+    double PHl = BF_con.PHl;           // Get the PH value of the lumen
     const double Hl = pow(10, PHl);
     const double QH = pow(10, (5.5)) / (Hl + pow(10, (5.5)));
     
