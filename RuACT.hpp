@@ -68,7 +68,7 @@ public:
     double M = 0;
 };
 
-/*
+
 struct Variables;
 class RuACTCon {
 public:
@@ -108,4 +108,3 @@ RuACTCon RuACT_Ini(Variables *myVars);
 std::vector<double> RuACT_Mb(double t, RuACTCon &RuACT_Con, Variables *myVars);
 
 void RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *myVars);
-*/

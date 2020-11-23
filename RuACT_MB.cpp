@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "RuACT.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -26,7 +26,7 @@
 
 
 
-arr RuACT_Mb(double t, arr &RuACT_Con, varptr *myVars) {
+arr RuACT_Mb(double t, RuACTCon &RuACT_Con, varptr *myVars) {
     
     //global GLight;
     Condition(t, myVars);

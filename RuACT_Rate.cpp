@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "RuACT.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -26,7 +26,7 @@
 
 
 
-void RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars) {
+void RuACT_Rate(double t, RuACTCon &RuACT_Con, varptr *myVars) {
     
     //global RuACT_RC;
     // k1 = myVars->RuACT_RC.k1;	//	The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco myVars->activase content or activity; i.e. 	Lazar (1999), 0.25~1 *10^(9)// --unused
@@ -40,10 +40,10 @@ void RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars) {
     const double k7 = myVars->RuACT_RC.k7;	//	The rate constant for ecm to ecmr
     // kr = myVars->RuACT_RC.kr;	//	The apparaent michaelis menton constant for RuBP// --unused
     
-    const double ER = RuACT_Con[0];	//	The concentration of inactive ER
-    const double Eaf = RuACT_Con[1];	//	The total concentration of  E, EC, AND ECM
-    const double ECMR = RuACT_Con[2];	//	The concentration of ECMR
-    const double RuBP = RuACT_Con[3];	//	The concentration of ECMR
+    const double ER = RuACT_Con.ER;	//	The concentration of inactive ER
+    const double Eaf = RuACT_Con.Eaf;	//	The total concentration of  E, EC, AND ECM
+    const double ECMR = RuACT_Con.ECMR;	//	The concentration of ECMR
+    const double RuBP = RuACT_Con.RuBP;	//	The concentration of ECMR
     
     //global RuACT_Pool;
     //const double ET = myVars->RuACT_Pool.ET;

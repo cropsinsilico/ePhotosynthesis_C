@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "RuACT.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -26,7 +26,7 @@
 
 
 
-arr RuACT_Ini(varptr *myVars) {
+RuACTCon RuACT_Ini(varptr *myVars) {
     //global RacRatio;
     const double k1 = 0.006 * myVars->RacRatio[0];//	The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco myVars->activase content or activity;
     
@@ -80,12 +80,12 @@ arr RuACT_Ini(varptr *myVars) {
     
     
     // Assign value to a variable that is transferred to the program
-    arr RuACT_Con = zeros(4);
-    
-    RuACT_Con[0] = ER;	//	The concentration of inactive ER
-    RuACT_Con[1] = Eaf;	//	The total concentration of E, EC, AND ECM
-    RuACT_Con[2] = ECMR;	//	The concentration of ECMR
-    RuACT_Con[3] = RuBP;	//	The concentration of ECMR
+    //arr RuACT_Con = zeros(4);
+    RuACTCon RuACT_Con;
+    RuACT_Con.ER = ER;	//	The concentration of inactive ER
+    RuACT_Con.Eaf = Eaf;	//	The total concentration of E, EC, AND ECM
+    RuACT_Con.ECMR = ECMR;	//	The concentration of ECMR
+    RuACT_Con.RuBP = RuBP;	//	The concentration of ECMR
     
     const double ET = 0.3 * 4 * factor * myVars->RacRatio[11];// 	The total concentraiton of E, ER, EC, ECM, ECMR	, mM
     const double Rac = 0.0056 * myVars->RacRatio[12];//	The concentration of the activase, mM

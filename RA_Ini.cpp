@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "RuACT.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -29,7 +29,7 @@ arr RA_Ini(varptr *myVars) {
     
     //const double BEGIN = 1;
     arr EPS_Con = EPS_Ini(myVars);
-    arr RuACT_Con = RuACT_Ini(myVars);
+    RuACTCon RuACT_Con = RuACT_Ini(myVars);
     
     
     //global RuACT_OLD_TIME;
@@ -51,8 +51,9 @@ arr RA_Ini(varptr *myVars) {
         RA_Con[m] = EPS_Con[m];
     
     
+    arr RuACT_con = RuACT_Con.toArray();
     for (int m = 0; m < 4; m++)
-        RA_Con[m + 88] = RuACT_Con[m];
+        RA_Con[m + 88] = RuACT_con[m];
     
     return RA_Con;
 }

@@ -620,11 +620,11 @@ void RedoxReg_Rate(double t, arr &RedoxReg_Con, varptr *myVars);
 
 arr RedoxReg_mb(double t, arr &RedoxReg_Con, varptr *myVars);
 
-arr RuACT_Ini(varptr *myVars);
+//arr RuACT_Ini(varptr *myVars);
 
-arr RuACT_Mb(double t, arr &RuACT_Con, varptr *myVars);
+//arr RuACT_Mb(double t, arr &RuACT_Con, varptr *myVars);
 
-void RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars);
+//void RuACT_Rate(double t, arr &RuACT_Con, varptr *myVars);
 
 //arr SUCS_Ini(varptr *myVars);
 

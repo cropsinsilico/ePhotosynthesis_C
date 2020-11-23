@@ -37,9 +37,9 @@ arr RA_mb(double t, arr &RA_Con, varptr *myVars) {
     arr RuACT_Con = zeros(4);
     for (int m = 0; m < 4; m++)
         RuACT_Con[m] = RA_Con[m + 88];
-    
+    RuACTCon RuACT_con(RuACT_Con);
     arr EPS_DYDT = EPS_mb(t, EPS_Con, myVars);
-    arr RuACT_DYDT = RuACT_Mb(t, RuACT_Con, myVars);
+    arr RuACT_DYDT = RuACT_Mb(t, RuACT_con, myVars);
     
     arr RA_DYDT = zeros(92);
     
