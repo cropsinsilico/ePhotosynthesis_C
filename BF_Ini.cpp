@@ -183,40 +183,40 @@ void BF_Ini(varptr *myVars) {
     // BF_ini.m
     // 	This is the initialization step for the module of the Q cycle, and ATP synthesis steps
     //global BF_con;
-    myVars->BF_con[0] = ISPHr;	//	The reduced ion sulfer protein (ISPH)
-    myVars->BF_con[1] = cytc1;	//	The oxidized state of cytc1
-    myVars->BF_con[2] = ISPo;	//	The oxidized ion sulfer protein (ISP)
-    myVars->BF_con[3] = ISPoQH2;	//	The complex of oxidized ion sulfer protein and reduced quinone
-    myVars->BF_con[4] = QHsemi;	//	Semiquinone
+    myVars->BF_con.ISPHr = ISPHr;	//	The reduced ion sulfer protein (ISPH)
+    myVars->BF_con.cytc1 = cytc1;	//	The oxidized state of cytc1
+    myVars->BF_con.ISPo = ISPo;	//	The oxidized ion sulfer protein (ISP)
+    myVars->BF_con.ISPoQH2 = ISPoQH2;	//	The complex of oxidized ion sulfer protein and reduced quinone
+    myVars->BF_con.QHsemi = QHsemi;	//	Semiquinone
     
-    myVars->BF_con[5] = cytbL;	//	The oxidized cytbL
-    myVars->BF_con[6] = Qi;	//	The binding Quinone
-    myVars->BF_con[7] = Q;	//	Quinone
-    myVars->BF_con[8] = cytbH;	//	The oxidized form of cytbH
-    myVars->BF_con[9] = Qn;	//	Q-
+    myVars->BF_con.cytbL = cytbL;	//	The oxidized cytbL
+    myVars->BF_con.Qi = Qi;	//	The binding Quinone
+    myVars->BF_con.Q = Q;	//	Quinone
+    myVars->BF_con.cytbH = cytbH;	//	The oxidized form of cytbH
+    myVars->BF_con.Qn = Qn;	//	Q-
     
-    myVars->BF_con[10] = Qr;	//	Q2-
-    myVars->BF_con[11] = QH2;	//	QH2
-    myVars->BF_con[12] = cytc2;	//	oxidized cytc2
-    myVars->BF_con[13] = P700;	//	The reduced state of P700, including both P700 and excited P700
-    myVars->BF_con[14] = ADP;	//	ADP in stroma
+    myVars->BF_con.Qr = Qr;	//	Q2-
+    myVars->BF_con.QH2 = QH2;	//	QH2
+    myVars->BF_con.cytc2 = cytc2;	//	oxidized cytc2
+    myVars->BF_con.P700 = P700;	//	The reduced state of P700, including both P700 and excited P700
+    myVars->BF_con.ADP = ADP;	//	ADP in stroma
     
-    myVars->BF_con[15] = Pi;	//	Phosphate in stroma
-    myVars->BF_con[16] = ATP;	//	ATP in stroma
-    myVars->BF_con[17] = Ks;	//	K ions in stroma
-    myVars->BF_con[18] = Mgs;	//	Mg ions in stroma
-    myVars->BF_con[19] = Cls;	//	Cl ions in stroma
+    myVars->BF_con.Pi = Pi;	//	Phosphate in stroma
+    myVars->BF_con.ATP = ATP;	//	ATP in stroma
+    myVars->BF_con.Ks = Ks;	//	K ions in stroma
+    myVars->BF_con.Mgs = Mgs;	//	Mg ions in stroma
+    myVars->BF_con.Cls = Cls;	//	Cl ions in stroma
     
-    myVars->BF_con[20] = Aip;	//	The number of photons in peripheral antenna
-    myVars->BF_con[21] = U;	//	The number of photons in core antenna
-    myVars->BF_con[22] = An;	//	The reduced electron acceptor in PSI
-    myVars->BF_con[23] = Fdn;	//	The reduced ferrodoxin
-    myVars->BF_con[24] = BFHs;	//	The total concentration of proton and protonated buffer species in stroma, put in unit: mmol l-1
-    myVars->BF_con[25] = BFHl;	//	The total concentration of proton and protonated buffer species in lumen, unit: mmol l-1
+    myVars->BF_con.Aip = Aip;	//	The number of photons in peripheral antenna
+    myVars->BF_con.U = U;	//	The number of photons in core antenna
+    myVars->BF_con.An = An;	//	The reduced electron acceptor in PSI
+    myVars->BF_con.Fdn = Fdn;	//	The reduced ferrodoxin
+    myVars->BF_con.BFHs = BFHs;	//	The total concentration of proton and protonated buffer species in stroma, put in unit: mmol l-1
+    myVars->BF_con.BFHl = BFHl;	//	The total concentration of proton and protonated buffer species in lumen, unit: mmol l-1
     
-    myVars->BF_con[26] = PHs;	//	The PH value of the stroma
-    myVars->BF_con[27] = PHl;	//	The PH value of the lumen
-    myVars->BF_con[28] = NADPH;	//	The NADPH concentration in stroma, Unit: mmol l-1;
+    myVars->BF_con.PHs = PHs;	//	The PH value of the stroma
+    myVars->BF_con.PHl = PHl;	//	The PH value of the lumen
+    myVars->BF_con.NADPH = NADPH;	//	The NADPH concentration in stroma, Unit: mmol l-1;
     
     // Assigning the pool variables
     //	The sizes of different pools in the model

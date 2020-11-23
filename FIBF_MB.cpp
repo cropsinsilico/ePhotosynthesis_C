@@ -34,8 +34,10 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     // First Get the variables needed for the calcualtion step
     
     //arr BF_con = zeros(29);
+    arr BF_Con = zeros(29);
     for (int m = 0; m < 29; m++)
-        myVars->BF_con[m] = FIBF_Con[m];
+        BF_Con[m] = FIBF_Con[m];
+    myVars->BF_con.fromArray(BF_Con);
     
     
     arr FI_con = zeros(22);
@@ -52,11 +54,11 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     //global FI_Pool;
     
     const double PQn = myVars->FI_Con.PQn;	//	The concentration of reduced PQ, i.e. PQH2;
-    const double Qi = myVars->BF_con[6];	//	The binding Quinone
-    const double Qn = myVars->BF_con[9];	//	Q-
-    const double Qr = myVars->BF_con[10];	//	Q2-
-    const double ISPoQH2 = myVars->BF_con[3];	//	The complex of oxidized ion sulfer protein and reduced quinone
-    const double QHsemi = myVars->BF_con[4];	//	Semiquinone
+    const double Qi = myVars->BF_con.Qi;	//	The binding Quinone
+    const double Qn = myVars->BF_con.Qn;	//	Q-
+    const double Qr = myVars->BF_con.Qr;	//	Q2-
+    const double ISPoQH2 = myVars->BF_con.ISPoQH2;	//	The complex of oxidized ion sulfer protein and reduced quinone
+    const double QHsemi = myVars->BF_con.QHsemi;	//	Semiquinone
     
     double TQ = myVars->BF_Pool.k_r1;	//	The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
     
@@ -71,7 +73,7 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     
     myVars->FIBF_AUX[0] = PQ;
     myVars->FIBF_AUX[1] = PQa;
-    myVars->BF_con[7] = PQ;
+    myVars->BF_con.Q = PQ;
     
     //global FIBF2FI_PQ;
     myVars->FIBF2FI_PQ = PQ;
@@ -101,7 +103,7 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     // Now specially calcualte the mass balance equation for the rate constant of the heat dissipation
     
     const double kd = FIBF_Con[51];          // The initialization of the initial rate constant for heat dissipation
-    double PHl = myVars->BF_con[27];           // Get the PH value of the lumen
+    double PHl = myVars->BF_con.PHl;           // Get the PH value of the lumen
     const double Hl = pow(10, PHl);
     const double QH = pow(10, (5.5)) / (Hl + pow(10, (5.5)));
     

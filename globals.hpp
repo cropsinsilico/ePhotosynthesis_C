@@ -513,9 +513,9 @@ struct Variables {
     RuACTRC RuACT_RC;// = zeros(10);
     
     // Con
-    arr BF_con = zeros(29);
+    BFCon BF_con;
     arr DynaPS_CON = zeros(0);
-    FICon FI_Con = zeros(22);
+    FICon FI_Con;
     arr RedoxReg_CON = zeros(0);
     arr trDynaPS_CON = zeros(0);
 
@@ -554,11 +554,11 @@ struct Variables {
 };
 typedef Variables varptr;
 
-void BF_Ini(varptr *myVars);
+//void BF_Ini(varptr *myVars);
 
-arr BF_Mb(double t, varptr *myVars);
+//arr BF_Mb(double t, varptr *myVars);
 
-void BF_Rate(double t, varptr *myVars);
+//void BF_Rate(double t, varptr *myVars);
 
 void Condition(double t, varptr *myVars);
 

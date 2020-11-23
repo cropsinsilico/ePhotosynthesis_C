@@ -205,110 +205,110 @@ public:
     double k_pq_oxy = 0;
 };
 
-/*
-class BFCON {
+
+class BFCon {
 public:
-    BFCON() {}
-    BFCON(const BFCON &other){
-        ISPH = other.ISPH;
-        oCytc1 = other.oCytc1;
-        ISP = other.ISP;
-        cISP = other.cISP;
-        semq = other.semq;
-        oCytbl = other.oCytbl;
-        bQ = other.bQ;
-        Q = other.Q;
-        oCytbH = other.oCytbH;
+    BFCon() {}
+    BFCon(const BFCon &other){
+        ISPHr = other.ISPHr;
+        cytc1 = other.cytc1;
+        ISPo = other.ISPo;
+        ISPoQH2 = other.ISPoQH2;
+        QHsemi = other.QHsemi;
+        cytbL = other.cytbL;
         Qi = other.Qi;
-        Q2 = other.Q2;
-        PQH2 = other.PQH2;
-        oCytc2 = other.oCytc2;
-        rP700 = other.rP700;
+        Q = other.Q;
+        cytbH = other.cytbH;
+        Qn = other.Qn;
+        Qr = other.Qr;
+        QH2 = other.QH2;
+        cytc2 = other.cytc2;
+        P700 = other.P700;
         ADP = other.ADP;
-        P = other.P;
+        Pi = other.Pi;
         ATP = other.ATP;
-        K = other.K;
-        Mg = other.Mg;
-        Cl = other.Cl;
-        paPhot = other.paPhot;
-        caPhot = other.caPhot;
-        eacc = other.eacc;
-        ferrox = other.ferrox;
-        PBSs = other.PBSs;
-        PBSl = other.PBSl;
+        Ks = other.Ks;
+        Mgs = other.Mgs;
+        Cls = other.Cls;
+        Aip = other.Aip;
+        U = other.U;
+        An = other.An;
+        Fdn = other.Fdn;
+        BFHs = other.BFHs;
+        BFHl = other.BFHl;
         PHs = other.PHs;
         PHl = other.PHl;
         NADPH = other.NADPH;
 
     }
-    BFCON(const std::vector<double> &vec, const size_t offset = 0) {
+    BFCon(const std::vector<double> &vec, const size_t offset = 0) {
         fromArray(vec, offset);
     }
 
     void fromArray(const std::vector<double> &vec, const size_t offset = 0) {
-        ISPH = vec[offset];
-        oCytc1 = vec[offset + 1];
-        ISP = vec[offset + 2];
-        cISP = vec[offset + 3];
-        semq = vec[offset + 4];
-        oCytbl = vec[offset + 5];
-        bQ = vec[offset + 6];
+        ISPHr = vec[offset];
+        cytc1 = vec[offset + 1];
+        ISPo = vec[offset + 2];
+        ISPoQH2 = vec[offset + 3];
+        QHsemi = vec[offset + 4];
+        cytbL = vec[offset + 5];
+        Qi = vec[offset + 6];
         Q = vec[offset + 7];
-        oCytbH = vec[offset + 8];
-        Qi = vec[offset + 9];
-        Q2 = vec[offset + 10];
-        PQH2 = vec[offset + 11];
-        oCytc2 = vec[offset + 12];
-        rP700 = vec[offset + 13];
+        cytbH = vec[offset + 8];
+        Qn = vec[offset + 9];
+        Qr = vec[offset + 10];
+        QH2 = vec[offset + 11];
+        cytc2 = vec[offset + 12];
+        P700 = vec[offset + 13];
         ADP = vec[offset + 14];
-        P = vec[offset + 15];
+        Pi = vec[offset + 15];
         ATP = vec[offset + 16];
-        K = vec[offset + 17];
-        Mg = vec[offset + 18];
-        Cl = vec[offset + 19];
-        paPhot = vec[offset + 20];
-        caPhot = vec[offset + 21];
-        eacc = vec[offset + 22];
-        ferrox = vec[offset + 23];
-        PBSs = vec[offset + 24];
-        PBSl = vec[offset + 25];
+        Ks = vec[offset + 17];
+        Mgs = vec[offset + 18];
+        Cls = vec[offset + 19];
+        Aip = vec[offset + 20];
+        U = vec[offset + 21];
+        An = vec[offset + 22];
+        Fdn = vec[offset + 23];
+        BFHs = vec[offset + 24];
+        BFHl = vec[offset + 25];
         PHs = vec[offset + 26];
         PHl = vec[offset + 27];
         NADPH = vec[offset + 28];
     }
     std::vector<double> toArray() {
-        std::vector<double> vec = {ISPH, oCytc1, ISP, cISP, semq, oCytbl, bQ, Q, oCytbH, Qi, Q2, PQH2, oCytc2, rP700, ADP, P, ATP, K, Mg, Cl, paPhot, caPhot, eacc, ferrox, PBSs, PBSl, PHs, PHl, NADPH};
+        std::vector<double> vec = {ISPHr, cytc1, ISPo, ISPoQH2, QHsemi, cytbL, Qi, Q, cytbH, Qn, Qr, QH2, cytc2, P700, ADP, Pi, ATP, Ks, Mgs, Cls, Aip, U, An, Fdn, BFHs, BFHl, PHs, PHl, NADPH};
         return vec;
     }
     size_t size() {
         return count;
     }
-    double ISPH = 0.;  //  The reduced ion sulfer protein (ISPH); unit: micromole per m2
-    double oCytc1 = 0.;  //  The oxidized state of cytc1; unit: micromole per meter square
-    double ISP = 0.;  //  The oxidized ion sulfer protein (ISP); unit: micromole per meter square
-    double cISP = 0.;  //  The complex of oxidized ion sulfer protein and reduced quinone; unit: micromole per meter square
-    double semq = 0.;  //  Semiquinone; micromole per meter square
-    double oCytbl = 0.;  //  The oxidized cytbL; micromole per meter square
-    double bQ = 0.;  //  The binding Quinone; micromole per meter square
+    double ISPHr = 0.;  //  The reduced ion sulfer protein (ISPH); unit: micromole per m2
+    double cytc1 = 0.;  //  The oxidized state of cytc1; unit: micromole per meter square
+    double ISPo = 0.;  //  The oxidized ion sulfer protein (ISP); unit: micromole per meter square
+    double ISPoQH2 = 0.;  //  The complex of oxidized ion sulfer protein and reduced quinone; unit: micromole per meter square
+    double QHsemi = 0.;  //  Semiquinone; micromole per meter square
+    double cytbL = 0.;  //  The oxidized cytbL; micromole per meter square
+    double Qi = 0.;  //  The binding Quinone; micromole per meter square
     double Q = 0.;  //  Quinone; micromole per meter square
-    double oCytbH = 0.;  //  The oxidized form of cytbH; micromole per meter square
-    double Qi = 0.;  //  Q-; unit: micromole per meter square
-    double Q2 = 0.;  //  The reduced quinone Q2-; micromole per meter square
-    double PQH2 = 0.;  //  The reduced quinone PQH2; micromole per meter square
-    double oCytc2 = 0.;  //  oxidized cytc2; micromole per meter square
-    double rP700 = 0.;  //  The reduced state of P700, including both P700 and excited P700; micromole per meter square
+    double cytbH = 0.;  //  The oxidized form of cytbH; micromole per meter square
+    double Qn = 0.;  //  Q-; unit: micromole per meter square
+    double Qr = 0.;  //  The reduced quinone Q2-; micromole per meter square
+    double QH2 = 0.;  //  The reduced quinone PQH2; micromole per meter square
+    double cytc2 = 0.;  //  oxidized cytc2; micromole per meter square
+    double P700 = 0.;  //  The reduced state of P700, including both P700 and excited P700; micromole per meter square
     double ADP = 0.;  //  ADP in stroma, from the earlier photorespiration model; mmol l-1
-    double P = 0.;  //  Phosphate in stroma, from the photorespiration model; mmol l-1
+    double Pi = 0.;  //  Phosphate in stroma, from the photorespiration model; mmol l-1
     double ATP = 0.;  //  ATP in stroma, from the photorespiration model; mmol l-1
-    double K = 0.;  //  K ions in stroma, mM, from the literature; mmol l-1; 90 might be an default;
-    double Mg = 0.;  //  Mg ions in stroma, mM, from the literature of the ion estimate
-    double Cl = 0.;  //  Cl ions in stroma, mM, from the literature of the ion estimate
-    double paPhot = 0.;  //  The number of photons in peripheral antenna; micromole per meter square
-    double caPhot = 0.;  //  The number of photons in core antenna; micromole per meter square
-    double eacc = 0.;  //  The reduced electron acceptor in PSI; micromole per meter square
-    double ferrox = 0.;  //  The reduced ferrodoxin; micromole per meter square leaf area
-    double PBSs = 0.;  //  The protonated buffer species  and free proton together in stroma; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number.; default 25
-    double PBSl = 0.;  //  The protonated buffer species and free proton together in lumen; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number. ; default 5
+    double Ks = 0.;  //  K ions in stroma, mM, from the literature; mmol l-1; 90 might be an default;
+    double Mgs = 0.;  //  Mg ions in stroma, mM, from the literature of the ion estimate
+    double Cls = 0.;  //  Cl ions in stroma, mM, from the literature of the ion estimate
+    double Aip = 0.;  //  The number of photons in peripheral antenna; micromole per meter square
+    double U = 0.;  //  The number of photons in core antenna; micromole per meter square
+    double An = 0.;  //  The reduced electron acceptor in PSI; micromole per meter square
+    double Fdn = 0.;  //  The reduced ferrodoxin; micromole per meter square leaf area
+    double BFHs = 0.;  //  The protonated buffer species  and free proton together in stroma; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number.; default 25
+    double BFHl = 0.;  //  The protonated buffer species and free proton together in lumen; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number. ; default 5
     double PHs = 0.;  //  The PH value of the stroma
     double PHl = 0.;  //  The PH value of the lumen
     double NADPH = 0.;  //  The NADPH concentration in stroma, Unit: mmol l-1;
@@ -321,4 +321,3 @@ void BF_Ini(Variables *myVars);
 std::vector<double> BF_Mb(double t, Variables *myVars);
 
 void BF_Rate(double t, Variables *myVars);
-*/

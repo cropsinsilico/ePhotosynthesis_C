@@ -68,8 +68,9 @@ arr EPS_Ini(varptr *myVars) {
     // Initial concentration for FIBF_Con
     arr FIBF_Con = zeros(52);
     //FIBF_Con;
+    arr BF_Con = myVars->BF_con.toArray();
     for (int m = 0; m < 29; m++)
-        FIBF_Con[m] = myVars->BF_con[m];
+        FIBF_Con[m] = BF_Con[m];
     
     arr FI_con = myVars->FI_Con.toArray();
     for (int m = 0; m < 22; m++)

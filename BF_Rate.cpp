@@ -75,40 +75,40 @@ void BF_Rate(double t, varptr *myVars) {
     
     // 	This is the initialization step for the module of the Q cycle, and ATP synthesis steps
     
-    const double ISPHr = myVars->BF_con[0];	//	The reduced ion sulfer protein (ISPH)
-    const double cytc1 = myVars->BF_con[1];	//	The oxidized state of cytc1
-    const double ISPo = myVars->BF_con[2];	//	The oxidized ion sulfer protein (ISP)
-    const double ISPoQH2 = myVars->BF_con[3];	//	The complex of oxidized ion sulfer protein and reduced quinone
-    const double QHsemi = myVars->BF_con[4];	//	Semiquinone
+    const double ISPHr = myVars->BF_con.ISPHr;	//	The reduced ion sulfer protein (ISPH)
+    const double cytc1 = myVars->BF_con.cytc1;	//	The oxidized state of cytc1
+    const double ISPo = myVars->BF_con.ISPo;	//	The oxidized ion sulfer protein (ISP)
+    const double ISPoQH2 = myVars->BF_con.ISPoQH2;	//	The complex of oxidized ion sulfer protein and reduced quinone
+    const double QHsemi = myVars->BF_con.QHsemi;	//	Semiquinone
     
-    const double cytbL = myVars->BF_con[5];	//	The oxidized cytbL
-    const double Qi = myVars->BF_con[6];	//	The binding Quinone
-    const double Q = myVars->BF_con[7];	//	Quinone
-    const double cytbH = myVars->BF_con[8];	//	The oxidized form of cytbH
-    const double Qn = myVars->BF_con[9];	//	Q-
+    const double cytbL = myVars->BF_con.cytbL;	//	The oxidized cytbL
+    const double Qi = myVars->BF_con.Qi;	//	The binding Quinone
+    const double Q = myVars->BF_con.Q;	//	Quinone
+    const double cytbH = myVars->BF_con.cytbH;	//	The oxidized form of cytbH
+    const double Qn = myVars->BF_con.Qn;	//	Q-
     
-    const double Qr = myVars->BF_con[10];	//	Q2-
-    const double QH2 = myVars->BF_con[11];	//	QH2
-    const double cytc2 = myVars->BF_con[12];	//	oxidized cytc2
-    const double P700 = myVars->BF_con[13];	//	The reduced state of P700, including both P700 and excited P700
-    double ADP = myVars->BF_con[14];	//	ADP in stroma
+    const double Qr = myVars->BF_con.Qr;	//	Q2-
+    const double QH2 = myVars->BF_con.QH2;	//	QH2
+    const double cytc2 = myVars->BF_con.cytc2;	//	oxidized cytc2
+    const double P700 = myVars->BF_con.P700;	//	The reduced state of P700, including both P700 and excited P700
+    double ADP = myVars->BF_con.ADP;	//	ADP in stroma
     
-    double Pi = myVars->BF_con[15];	//	Phosphate in stroma
-    const double ATP = myVars->BF_con[16];	//	ATP in stroma
-    const double Ks = myVars->BF_con[17];	//	K ions in stroma
-    const double Mgs = myVars->BF_con[18];	//	Mg ions in stroma
-    const double Cls = myVars->BF_con[19];	//	Cl ions in stroma
+    double Pi = myVars->BF_con.Pi;	//	Phosphate in stroma
+    const double ATP = myVars->BF_con.ATP;	//	ATP in stroma
+    const double Ks = myVars->BF_con.Ks;	//	K ions in stroma
+    const double Mgs = myVars->BF_con.Mgs;	//	Mg ions in stroma
+    const double Cls = myVars->BF_con.Cls;	//	Cl ions in stroma
     
-    const double Aip = myVars->BF_con[20];	//	The number of photons in peripheral antenna
-    const double U = myVars->BF_con[21];	//	The number of photons in core antenna
-    const double An = myVars->BF_con[22];	//	The reduced electron acceptor in PSI
-    const double Fdn = myVars->BF_con[23];	//	The reduced ferrodoxin
-    const double BFHs = myVars->BF_con[24];	//	The proton concentration in stroma, put in unit: mol l-1
+    const double Aip = myVars->BF_con.Aip;	//	The number of photons in peripheral antenna
+    const double U = myVars->BF_con.U;	//	The number of photons in core antenna
+    const double An = myVars->BF_con.An;	//	The reduced electron acceptor in PSI
+    const double Fdn = myVars->BF_con.Fdn;	//	The reduced ferrodoxin
+    const double BFHs = myVars->BF_con.BFHs;	//	The proton concentration in stroma, put in unit: mol l-1
     
-    // BFHl = BF_con[25];	//	The proton concentration in lumen; put in unit: mol l-1// --unused
-    const double PHs = myVars->BF_con[26];	//	The PH value of stroma
-    const double PHl = myVars->BF_con[27];	//	The PH value of lumen
-    const double NADPH = myVars->BF_con[28];	//	The NADPH concentratin in stroma, Unit: mmol l-1
+    // BFHl = BF_con.BFHl;	//	The proton concentration in lumen; put in unit: mol l-1// --unused
+    const double PHs = myVars->BF_con.PHs;	//	The PH value of stroma
+    const double PHl = myVars->BF_con.PHl;	//	The PH value of lumen
+    const double NADPH = myVars->BF_con.NADPH;	//	The NADPH concentratin in stroma, Unit: mmol l-1
     
     
     //global BF_Pool;
