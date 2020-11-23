@@ -514,10 +514,10 @@ struct Variables {
     
     // Con
     //BFCon BF_con;
-    arr DynaPS_CON = zeros(0);
+    //arr DynaPS_CON = zeros(0);
     //FICon FI_Con;
-    arr RedoxReg_CON = zeros(0);
-    arr trDynaPS_CON = zeros(0);
+    //arr RedoxReg_CON = zeros(0);
+    //arr trDynaPS_CON = zeros(0);
 
     // OUT
     arr BF2OUT = zeros(5);
@@ -566,9 +566,9 @@ arr EPS_Ini(varptr *myVars);
 
 arr EPS_mb(double t, arr &EPS_Con, varptr *myVars);
 
-void FIBF_Ini(varptr *myVars);
+//void FIBF_Ini(varptr *myVars);
 
-arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars);
+//arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars);
 
 //void FI_Ini(varptr *myVars);
 

@@ -31,7 +31,7 @@ arr EPS_Ini(varptr *myVars) {
     FIBF_Ini(myVars);
     FICon FI_Con = FI_Ini(myVars);
     BFCon BF_con = BF_Ini(myVars);
-    
+    FIBFCon FIBF_con(BF_con, FI_Con);
     //// Step 1 Get the initialization of the variables for BF
     
     //global BF_OLD_TIME;
@@ -66,19 +66,19 @@ arr EPS_Ini(varptr *myVars) {
     myVars->BF_Pool.k_r1 = myVars->FIBF_Pool.PQT;
     
     // Initial concentration for FIBF_Con
-    arr FIBF_Con = zeros(52);
+    //arr FIBF_Con = zeros(52);
     //FIBF_Con;
-    arr BF_Con = BF_con.toArray();
-    for (int m = 0; m < 29; m++)
-        FIBF_Con[m] = BF_Con[m];
+    //arr BF_Con = BF_con.toArray();
+    //for (int m = 0; m < 29; m++)
+    //    FIBF_Con[m] = BF_Con[m];
     
-    arr FI_con = FI_Con.toArray();
-    for (int m = 0; m < 22; m++)
-        FIBF_Con[m + 29] = FI_con[m];
+    //arr FI_con = FI_Con.toArray();
+    //for (int m = 0; m < 22; m++)
+    //    FIBF_Con[m + 29] = FI_con[m];
     
     
-    FIBF_Con[51] = pow(10, 8) * 0.5;
-    
+    //FIBF_Con[51] = pow(10, 8) * 0.5;
+    arr FIBF_Con = FIBF_con.toArray();
     // Second, try to get the iniitalzation files for the PSPR model
     
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

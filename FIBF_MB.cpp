@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "FIBF.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -29,21 +29,21 @@
 // FIBF_MB.m
 // This function calculate the mass balance equation for the complete model of the light reactions.
 
-arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
+arr FIBF_MB(double t, FIBFCon &FIBF_Con, varptr *myVars) {
     
     // First Get the variables needed for the calcualtion step
     
     //arr BF_con = zeros(29);
-    arr BF_Con = zeros(29);
-    for (int m = 0; m < 29; m++)
-        BF_Con[m] = FIBF_Con[m];
-    BFCon BF_con(BF_Con);
+    //arr BF_Con = zeros(29);
+    //for (int m = 0; m < 29; m++)
+    //    BF_Con[m] = FIBF_Con[m];
+    BFCon BF_con(FIBF_Con.BF_con);
     
     
-    arr FI_con = zeros(22);
-    for (int m = 0; m < 22; m++)
-        FI_con[m] = FIBF_Con[m + 29];
-    FICon FI_Con(FI_con);
+    //arr FI_con = zeros(22);
+    //for (int m = 0; m < 22; m++)
+    //    FI_con[m] = FIBF_Con[m + 29];
+    FICon FI_Con(FIBF_Con.FI_con);
     
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -79,11 +79,11 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     myVars->FIBF2FI_PQ = PQ;
     
     //global FI_RC;
-    myVars->FI_RC.kA_d = FIBF_Con[51];
-    myVars->FI_RC.kU_d = FIBF_Con[51];
+    myVars->FI_RC.kA_d = FIBF_Con.kd;
+    myVars->FI_RC.kU_d = FIBF_Con.kd;
     
     //global BF_RC;
-    myVars->BF_RC.Kd = FIBF_Con[51];
+    myVars->BF_RC.Kd = FIBF_Con.kd;
     
     //arr BF_mb = zeros(28);
     arr BF_mb = BF_Mb(t, BF_con, myVars);
@@ -102,7 +102,7 @@ arr FIBF_MB(double t, arr &FIBF_Con, varptr *myVars) {
     
     // Now specially calcualte the mass balance equation for the rate constant of the heat dissipation
     
-    const double kd = FIBF_Con[51];          // The initialization of the initial rate constant for heat dissipation
+    const double kd = FIBF_Con.kd;          // The initialization of the initial rate constant for heat dissipation
     double PHl = BF_con.PHl;           // Get the PH value of the lumen
     const double Hl = pow(10, PHl);
     const double QH = pow(10, (5.5)) / (Hl + pow(10, (5.5)));

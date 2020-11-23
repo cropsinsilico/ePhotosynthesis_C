@@ -11,7 +11,7 @@ class FIBFPool {
   }
   double PQT;  
 };
-/*
+
 class FIBFCon {
 public:
     FIBFCon() {}
@@ -56,4 +56,3 @@ public:
 void FIBF_Ini(Variables *myVars);
 
 std::vector<double> FIBF_MB(double t, FIBFCon &FIBF_Con, Variables *myVars);
-*/

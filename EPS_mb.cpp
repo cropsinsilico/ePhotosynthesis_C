@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "FIBF.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -38,7 +38,7 @@ arr EPS_mb(double t, arr &EPS_Con, varptr *myVars) {
     arr FIBF_Con = zeros(52);
     for (int m = 0; m < 52; m++)
         FIBF_Con[m] = EPS_Con[m];
-    
+    FIBFCon FIBF_con(FIBF_Con);
     
     N_Vector CMs;
     CMs = N_VNew_Serial(36);
@@ -57,7 +57,7 @@ arr EPS_mb(double t, arr &EPS_Con, varptr *myVars) {
     //arr CM_DYDT = zeros(9);
     CM cm = CM(myVars);
     cm.CM_mb(t, CMs, dxdt, nullptr);
-    arr FIBF_DYDT = FIBF_MB(t, FIBF_Con, myVars);
+    arr FIBF_DYDT = FIBF_MB(t, FIBF_con, myVars);
     
     realtype *CM_DYDT = N_VGetArrayPointer(dxdt);
     // Step III: Calculate the mass balanec equation for the EPS model. This basically need to make sure that the variables
