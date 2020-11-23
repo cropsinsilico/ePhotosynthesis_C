@@ -606,11 +606,11 @@ arr RA_Ini(varptr *myVars);
 
 arr RA_mb(double t, arr &RA_Con, varptr *myVars);
 
-arr RROEA_Ini(varptr *myVars);
+//arr RROEA_Ini(varptr *myVars);
 
-arr RROEA_Mb(double t, arr &RROEA_Con, varptr *myVars);
+//arr RROEA_Mb(double t, arr &RROEA_Con, varptr *myVars);
 
-void RROEA_Rate(double t, arr &RROEA_Con, varptr *myVars);
+//void RROEA_Rate(double t, arr &RROEA_Con, varptr *myVars);
 
 int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data);
 

@@ -1,6 +1,6 @@
 #include "globals.hpp"
 #include <nvector/nvector_serial.h>    /* access to serial N_Vector       */
-
+#include "RROEA.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -51,7 +51,7 @@ int trDynaPS::trDynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_dat
     arr RROEA_Con = zeros(10);
     for (int m = 0; m < 10; m++)
         RROEA_Con[m] = x[m + 110];
-    
+    RROEACon RROEA_con(RROEA_Con);
     
     Condition(t, myVars);
     const double light = 1.0;
@@ -59,7 +59,7 @@ int trDynaPS::trDynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_dat
     myVars->BF_Param[0] = light;
     
     myVars->RROEA_Param[1] = 1;
-    arr RROEA_DYDT = RROEA_Mb(t, RROEA_Con, myVars);
+    arr RROEA_DYDT = RROEA_Mb(t, RROEA_con, myVars);
     //fprintf(" //g    ", DynaPS_Con);
     //fprintf("\n");
     DynaPS dps = DynaPS(myVars);

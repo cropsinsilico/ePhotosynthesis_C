@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "RROEA.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -26,7 +26,7 @@
 
 
 
-arr RROEA_Mb(double t, arr &RROEA_Con, varptr *myVars) {
+arr RROEA_Mb(double t, RROEACon &RROEA_Con, varptr *myVars) {
     
     //global GLight;
     Condition(t, myVars);

@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "RROEA.hpp"]
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -43,14 +43,14 @@ arr trDynaPS::trDynaPS_Ini() {
     // Now get the combined total concentration of different concentration variables.
     DynaPS dps = DynaPS(myVars);
     arr DynaPS_Con = dps.DynaPS_Ini();
-    arr trDynaPS_Con = zeros(96);
+    //arr trDynaPS_Con = zeros(96);
     
-    for (int m = 0; m < 96; m++)
-        trDynaPS_Con[m] = DynaPS_Con[m];
+    //for (int m = 0; m < 96; m++)
+    //    trDynaPS_Con[m] = DynaPS_Con[m];
     
     
-    arr RROEA_Con = RROEA_Ini(myVars);
-    
+    RROEACon RROEA_con = RROEA_Ini(myVars);
+    arr RROEA_Con = RROEA_con.toArray();
     for (int m = 0; m < 10; m++)
         DynaPS_Con[m + 110] = RROEA_Con[m];
     

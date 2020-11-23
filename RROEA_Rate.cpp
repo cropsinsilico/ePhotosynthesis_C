@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "RROEA.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -26,7 +26,7 @@
 
 
 
-void RROEA_Rate(double t, arr &RROEA_Con, varptr *myVars) {
+void RROEA_Rate(double t, RROEACon &RROEA_con, varptr *myVars) {
     
     //arr RROEA_Vel = zeros(11);
     
@@ -58,16 +58,16 @@ void RROEA_Rate(double t, arr &RROEA_Con, varptr *myVars) {
     const double KEe2ATPGPP = myVars->RROEA_KE.KEe2ATPGPP;
     const double KEeFd2Thio = myVars->RROEA_KE.KEeFd2Thio;
     
-    const double GAPDH = RROEA_Con[0];	//	The  concentration of active GAPDH
-    const double FBPase = RROEA_Con[1];	//	The  concentration of active FBPase
-    const double SBPase = RROEA_Con[2];	//	The  concentration of active SBPase
-    const double PRK = RROEA_Con[3];	//	The  concentration of actove PRK
-    const double ATPase = RROEA_Con[4];	//	The  concentration of actove ATPase
-    const double ATPGPP = RROEA_Con[5];	//	The  concentration of actove ATPGPP
-    const double MDH = RROEA_Con[6];	//	The  concentration of actove MDH
-    const double Thio = RROEA_Con[7];                  //   The  concentration of
-    const double Fd = RROEA_Con[8];	//	The  concentration of reduced ferrodoxin
-    const double RuACT = RROEA_Con[9];               // The concentration of Rubisco activase
+    const double GAPDH = RROEA_con.GAPDH;	//	The  concentration of active GAPDH
+    const double FBPase = RROEA_con.FBPase;	//	The  concentration of active FBPase
+    const double SBPase = RROEA_con.SBPase;	//	The  concentration of active SBPase
+    const double PRK = RROEA_con.PRK;	//	The  concentration of actove PRK
+    const double ATPase = RROEA_con.ATPase;	//	The  concentration of actove ATPase
+    const double ATPGPP = RROEA_con.ATPGPP;	//	The  concentration of actove ATPGPP
+    const double MDH = RROEA_con.MDH;	//	The  concentration of actove MDH
+    const double Thio = RROEA_con.Thio;                  //   The  concentration of
+    const double Fd = RROEA_con.Fd;	//	The  concentration of reduced ferrodoxin
+    const double RuACT = RROEA_con.RuACT;               // The concentration of Rubisco activase
     
     
     //global RROEA_Pool;

@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "RROEA.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -27,7 +27,7 @@
 
 
 
-arr RROEA_Ini(varptr *myVars) {
+RROEACon RROEA_Ini(varptr *myVars) {
     
     
     //global RROEA_OLD_TIME;
@@ -198,18 +198,17 @@ arr RROEA_Ini(varptr *myVars) {
     
     
     
-    arr RROEA_Con = zeros(10);
-    
-    RROEA_Con[0] = GAPDH;	//	The initial concentration of active GAPDH
-    RROEA_Con[1] = FBPase;	//	The initial concentration of active FBPase
-    RROEA_Con[2] = SBPase;	//	The initial concentration of active SBPase
-    RROEA_Con[3] = PRK;	//	The initial concentration of actove PRK
-    RROEA_Con[4] = ATPase;	//	The initial concentration of actove ATPase
-    RROEA_Con[5] = ATPGPP;	//	The initial concentration of actove ATPGPP
-    RROEA_Con[6] = MDH;	//	The initial concentration of actove MDH
-    RROEA_Con[7] = Thio;	//	The initial concentration of reduced thioredoxin
-    RROEA_Con[8] = Fd;	//	The initial concentration of reduced ferrodoxin
-    RROEA_Con[9] = RuACT;	//	The initial concentration of active Rubisco activase
+    RROEACon RROEA_con;
+    RROEA_con.GAPDH = GAPDH;	//	The initial concentration of active GAPDH
+    RROEA_con.FBPase = FBPase;	//	The initial concentration of active FBPase
+    RROEA_con.SBPase = SBPase;	//	The initial concentration of active SBPase
+    RROEA_con.PRK = PRK;	//	The initial concentration of actove PRK
+    RROEA_con.ATPase = ATPase;	//	The initial concentration of actove ATPase
+    RROEA_con.ATPGPP = ATPGPP;	//	The initial concentration of actove ATPGPP
+    RROEA_con.MDH = MDH;	//	The initial concentration of actove MDH
+    RROEA_con.Thio = Thio;	//	The initial concentration of reduced thioredoxin
+    RROEA_con.Fd = Fd;	//	The initial concentration of reduced ferrodoxin
+    RROEA_con.RuACT = RuACT;	//	The initial concentration of active Rubisco activase
     
     
     // Here defines the information for transfer between models
@@ -227,5 +226,5 @@ arr RROEA_Ini(varptr *myVars) {
     myVars->RROEA2PS_PRK = PRK;
     myVars->RROEA2PS_ATPase = ATPase;
     myVars->RROEA2PS_ATPGPP = ATPGPP;
-    return RROEA_Con;
+    return RROEA_con;
 }

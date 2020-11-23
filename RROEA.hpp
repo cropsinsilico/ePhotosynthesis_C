@@ -116,7 +116,7 @@ public:
     double RuACTT = 0;
 };
 
-/*
+
 struct Variables;
 class RROEACon {
 public:
@@ -180,4 +180,3 @@ RROEACon RROEA_Ini(Variables *myVars);
 std::vector<double> RROEA_Mb(double t, RROEACon &RROEA_Con, Variables *myVars);
 
 void RROEA_Rate(double t, RROEACon &RROEA_Con, Variables *myVars);
-*/
