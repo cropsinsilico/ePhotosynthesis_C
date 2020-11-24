@@ -1,5 +1,5 @@
 #include "globals.hpp"
-#include "RA.hpp"
+#include "RedoxReg.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -24,9 +24,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-arr RedoxReg_Ini(varptr *myVars) {
+RedoxRegCon RedoxReg_Ini(varptr *myVars) {
     
     // BEGIN = 1;// --unused
     
@@ -42,14 +40,15 @@ arr RedoxReg_Ini(varptr *myVars) {
     
     
     RACon RA_con = RA_Ini(myVars);
-    arr RedoxReg_Con = zeros(93);
-    arr RA_Con = RA_con.toArray();
-    for (int m = 0; m < 92; m++)
-        RedoxReg_Con[m] = RA_Con[m];
+    //arr RedoxReg_Con = zeros(93);
+    //arr RA_Con = RA_con.toArray();
+    //for (int m = 0; m < 92; m++)
+    //    RedoxReg_Con[m] = RA_Con[m];
     
     
     const double Thion = 0.25;     // This is a wild guess
-    RedoxReg_Con[92] = Thion;             //
+    RedoxRegCon RedoxReg_con(RA_con, Thion);
+    //RedoxReg_Con[92] = Thion;             //
     
     
     //global RedoxReg_VMAX6;
@@ -104,5 +103,5 @@ arr RedoxReg_Ini(varptr *myVars) {
     //global BF_Pool;
     //global BF2RedoxReg_Fdt;
     myVars->BF2RedoxReg_Fdt = myVars->BF_Pool.kU_f;
-    return RedoxReg_Con;
+    return RedoxReg_con;
 }

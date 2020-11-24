@@ -4,6 +4,7 @@
 #include <sunmatrix/sunmatrix_dense.h> /* access to dense SUNMatrix       */
 #include <sunlinsol/sunlinsol_dense.h> /* access to dense SUNLinearSolver */
 #include <sundials/sundials_types.h>   /* defs. of realtype, sunindextype */
+#include "RedoxReg.hpp"
 
 #define ONE    RCONST(1.0)
 #define ZERO   RCONST(0.0)
@@ -32,7 +33,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void RedoxReg_Rate(double t, arr &RedoxReg_Con, varptr *myVars) {
+void RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, varptr *myVars) {
     //global RedoxReg_MP;
     
     //global RedoxReg_VMAX6;
@@ -48,10 +49,10 @@ void RedoxReg_Rate(double t, arr &RedoxReg_Con, varptr *myVars) {
     //global Redox2PS_V13;
     //global Redox2PS_V16;
     
-    const double Fdn = RedoxReg_Con[23];
+    const double Fdn = RedoxReg_Con.RA_con.EPS_con.FIBF_con.BF_con.Fdn;//[23];
     // Fd = myVars->BF2RedoxReg_Fdt - Fdn;// --unused
     
-    const double Thion = RedoxReg_Con[92];
+    const double Thion = RedoxReg_Con.Thion;
     const double Thio = myVars->ThioT - Thion;
     
     myVars->RedoxReg_MP[0][2] = Thion / myVars->ThioT;

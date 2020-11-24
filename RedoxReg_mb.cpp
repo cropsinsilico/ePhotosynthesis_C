@@ -1,5 +1,5 @@
 #include "globals.hpp"
-#include "RA.hpp"
+#include "RedoxReg.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -24,27 +24,23 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-arr RedoxReg_mb(double t, arr &RedoxReg_Con, varptr *myVars) {
+arr RedoxReg_mb(double t, RedoxRegCon &RedoxReg_Con, varptr *myVars) {
     
     
     //global trDynaPS2RedReg_cal
     myVars->trDynaPS2RedReg_cal = 1;
     
-    arr RA_Con = zeros(92);
-    for (int m = 0; m < 92; m++)
-        RA_Con[m] = RedoxReg_Con[m];
+    //arr RA_Con = zeros(92);
+    //for (int m = 0; m < 92; m++)
+    //    RA_Con[m] = RedoxReg_Con[m];
     
-    RACon RA_con(RA_Con);
+    //RACon RA_con(RA_Con);
     // ThioRe = RedoxReg_Con[92];// --unused
     
     //arr RedoxReg_Vel = zeros(2);
     RedoxReg_Rate(t, RedoxReg_Con, myVars);
     
-    arr RA_DYDT = RA_mb(t, RA_con, myVars);
+    arr RA_DYDT = RA_mb(t, RedoxReg_Con.RA_con, myVars);
     
     arr RedoxReg_DYDT = zeros(93);
     

@@ -612,13 +612,13 @@ void PreProcess(varptr *myVars);
 
 //void RROEA_Rate(double t, arr &RROEA_Con, varptr *myVars);
 
-int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data);
+//int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data);
 
-arr RedoxReg_Ini(varptr *myVars);
+//arr RedoxReg_Ini(varptr *myVars);
 
-void RedoxReg_Rate(double t, arr &RedoxReg_Con, varptr *myVars);
+//void RedoxReg_Rate(double t, arr &RedoxReg_Con, varptr *myVars);
 
-arr RedoxReg_mb(double t, arr &RedoxReg_Con, varptr *myVars);
+//arr RedoxReg_mb(double t, arr &RedoxReg_Con, varptr *myVars);
 
 //arr RuACT_Ini(varptr *myVars);
 

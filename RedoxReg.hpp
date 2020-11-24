@@ -1,5 +1,5 @@
 #pragma once
-//#include "RA.hpp"
+#include "RA.hpp"
 
 class RedoxRegVel {
   public:
@@ -13,7 +13,7 @@ Vox = other.Vox;
 double Vox = 0.;  
 
 };
-/*
+
 class RedoxRegCon {
 public:
     RedoxRegCon() {}
@@ -52,4 +52,3 @@ void RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, Variables *myVars);
 std::vector<double> RedoxReg_mb(double t, RedoxRegCon &RedoxReg_Con, Variables *myVars);
 
 int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data);
-*/

@@ -1,5 +1,6 @@
 #include "globals.hpp"
 #include <sundials/sundials_types.h>   /* defs. of realtype, sunindextype */
+#include "RedoxReg.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
