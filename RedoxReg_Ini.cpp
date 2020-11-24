@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "RA.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -41,9 +41,9 @@ arr RedoxReg_Ini(varptr *myVars) {
     // RedoxReg_CON = zeros(3, 1);
     
     
-    arr RA_Con = RA_Ini(myVars);
+    RACon RA_con = RA_Ini(myVars);
     arr RedoxReg_Con = zeros(93);
-    
+    arr RA_Con = RA_con.toArray();
     for (int m = 0; m < 92; m++)
         RedoxReg_Con[m] = RA_Con[m];
     

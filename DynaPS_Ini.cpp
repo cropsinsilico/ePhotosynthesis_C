@@ -1,5 +1,6 @@
 #include "globals.hpp"
 #include "XanCycle.hpp"
+#include "RA.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -43,9 +44,9 @@ arr DynaPS::DynaPS_Ini() {
     // DynaPS_CON = zeros(3, 1);    // Clean memory
     
     
-    arr RA_Con = RA_Ini(myVars);
+    RACon RA_con = RA_Ini(myVars);
     arr DynaPS_Con = zeros(120);
-    
+    arr RA_Con = RA_con.toArray();
     for (int m = 0; m < 92; m++)
         DynaPS_Con[m] = RA_Con[m];
     

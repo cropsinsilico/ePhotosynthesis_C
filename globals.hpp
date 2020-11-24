@@ -602,9 +602,9 @@ void ParamSet(varptr *myVars);
 
 void PreProcess(varptr *myVars);
 
-arr RA_Ini(varptr *myVars);
+//arr RA_Ini(varptr *myVars);
 
-arr RA_mb(double t, arr &RA_Con, varptr *myVars);
+//arr RA_mb(double t, arr &RA_Con, varptr *myVars);
 
 //arr RROEA_Ini(varptr *myVars);
 

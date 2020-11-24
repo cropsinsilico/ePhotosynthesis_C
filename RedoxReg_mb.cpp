@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "RA.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -38,13 +38,13 @@ arr RedoxReg_mb(double t, arr &RedoxReg_Con, varptr *myVars) {
     for (int m = 0; m < 92; m++)
         RA_Con[m] = RedoxReg_Con[m];
     
-    
+    RACon RA_con(RA_Con);
     // ThioRe = RedoxReg_Con[92];// --unused
     
     //arr RedoxReg_Vel = zeros(2);
     RedoxReg_Rate(t, RedoxReg_Con, myVars);
     
-    arr RA_DYDT = RA_mb(t, RA_Con, myVars);
+    arr RA_DYDT = RA_mb(t, RA_con, myVars);
     
     arr RedoxReg_DYDT = zeros(93);
     
