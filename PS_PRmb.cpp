@@ -1,5 +1,5 @@
 #include "globals.hpp"
-#include"PR.hpp"
+#include "PS_PR.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -34,37 +34,41 @@ arr PS_PRmb(double t, arr &PS_PRs, varptr *myVars) {
     //global CO2_cond;
     //global O2_cond;
     //global PS_C_CP;
-    
+    PS_PRCon PS_PR_con(PS_PRs);
     const double vATPcost = myVars->TestATPCost / myVars->AVR;
     
-    arr PSs = zeros(15);
-    arr PrS = zeros(13);
+    //arr PSs = zeros(15);
+    //arr PrS = zeros(13);
     
-    for (int m = 0; m < 4; m++)
-        PSs[m] = PS_PRs[m];
-    
-    
-    for (int m = 4; m < 14; m++)
-        PSs[m + 1] = PS_PRs[m];
+    //for (int m = 0; m < 4; m++)
+    //    PSs[m] = PS_PRs[m];
     
     
-    PSs[4] = PS_PRs[23];
-    
-    for (int m = 14; m < 16; m++)
-        PrS[m - 14] = PS_PRs[m];
-    
-    PrS[2] = PS_PRs[1];
-    
-    for (int m = 16; m < 23; m++)
-        PrS[m - 13] = PS_PRs[m];
+    //for (int m = 4; m < 14; m++)
+    //    PSs[m + 1] = PS_PRs[m];
     
     
+    //PSs[4] = PS_PRs[23];
     
-    PrS[10] = PS_PRs[0];            // RUBP
-    PrS[11] = PS_PRs[10];           // CO2
-    PrS[12] = PS_PRs[11];           // O2
+    //for (int m = 14; m < 16; m++)
+    //    PrS[m - 14] = PS_PRs[m];
+    PRCon PR_con = PS_PR_con.PR_con;
+    PSCon PS_con = PS_PR_con.PS_con;
+    //PrS[2] = PS_PRs[1];
+    PR_con.PGA = PS_con.PGA;
+    //for (int m = 16; m < 23; m++)
+    //    PrS[m - 13] = PS_PRs[m];
     
-    const double PR2PS_Pgca = PrS[3];            // FOr transfering information between PR to PS.
+    
+    
+    //PrS[10] = PS_PRs[0];            // RUBP
+    PR_con.RUBP = PS_con.RuBP;
+    //PrS[11] = PS_PRs[10];           // CO2
+    PR_con.CO2 = PS_con.CO2;
+    //PrS[12] = PS_PRs[11];           // O2
+    PR_con.O2 = PS_con.O2;
+    
+    const double PR2PS_Pgca = PS_PR_con.PR_con.PGCA; //PrS[3];            // FOr transfering information between PR to PS.
     
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 2. Add exprimental conditions here; Conditions like light, temperature, CO2, O2 concentration should be added here //
@@ -80,7 +84,7 @@ arr PS_PRmb(double t, arr &PS_PRs, varptr *myVars) {
     PS_Param[0] = myVars->PS_PR_Param;
     PS_Param[1] = PR2PS_Pgca;
     
-    PSCon PS_con(PSs);
+    //PSCon PS_con(PSs);
     PSRate(t, PS_con, PS_Param, myVars);
     
     arr PR_Param = zeros(2);
@@ -88,7 +92,7 @@ arr PS_PRmb(double t, arr &PS_PRs, varptr *myVars) {
     // for the PS-PR combined model. 0: Combined model; 1: Separate model
     //global PS2PR_Pi;
     PR_Param[1] = myVars->PS2PR_Pi;
-    PRCon PR_con(PrS);
+    //PRCon PR_con(PrS);
     PRrate(t, PR_con, myVars);
     //throw(MException(""));
     //global PR2OUT;
