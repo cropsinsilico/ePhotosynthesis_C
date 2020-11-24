@@ -13,10 +13,10 @@ public:
         PS_con = sother;
         PR_con = rother;
     }
-    PS_PRCon(const std::vector<double> &vec, size_t offset = 0){
+    PS_PRCon(const std::vector<double> &vec, const size_t offset = 0){
         fromArray(vec, offset);
     }
-    void fromArray(const std::vector<double> &vec, size_t offset = 0) {
+    void fromArray(const std::vector<double> &vec, const size_t offset = 0) {
         PS_con.RuBP = vec[offset],
         PS_con.PGA = vec[offset + 1],
         PS_con.DPGA = vec[offset + 2],
@@ -45,13 +45,8 @@ public:
         PR_con.CO2 = PS_con.CO2;
         PR_con.O2 = PS_con.O2;
         PR_con.PGA = PS_con.PGA;
-        //PS_con.fromArray(vec, offset);
-        //PR_con.fromArray(vec, offset + PS_con.size());
     }
     std::vector<double> toArray() {
-        //std::vector<double> psvec = PS_con.toArray();
-        //std::vector<double> prvec = PR_con.toArray();
-        
         std::vector<double> outvec = {PS_con.RuBP,
                                       PS_con.PGA,
         PS_con.DPGA,
@@ -79,6 +74,7 @@ public:
         
         return outvec;
     }
+
     size_t size() {
         return 24;//PS_con.size() + PR_con.size();
     }
