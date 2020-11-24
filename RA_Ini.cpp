@@ -1,5 +1,6 @@
 #include "globals.hpp"
 #include "RuACT.hpp"
+#include "EPS.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -28,9 +29,9 @@
 arr RA_Ini(varptr *myVars) {
     
     //const double BEGIN = 1;
-    arr EPS_Con = EPS_Ini(myVars);
+    EPSCon EPS_con = EPS_Ini(myVars);
     RuACTCon RuACT_Con = RuACT_Ini(myVars);
-    
+    arr EPS_Con = EPS_con.toArray();
     
     //global RuACT_OLD_TIME;
     //global RuACT_TIME_N;

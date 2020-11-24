@@ -562,9 +562,9 @@ typedef Variables varptr;
 
 void Condition(double t, varptr *myVars);
 
-arr EPS_Ini(varptr *myVars);
+//arr EPS_Ini(varptr *myVars);
 
-arr EPS_mb(double t, arr &EPS_Con, varptr *myVars);
+//arr EPS_mb(double t, arr &EPS_Con, varptr *myVars);
 
 //void FIBF_Ini(varptr *myVars);
 

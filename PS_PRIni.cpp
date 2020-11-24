@@ -56,6 +56,6 @@ PS_PRCon PS_PRIni(varptr *myVars) {
     
     PS_PRs[23] = PSs[4];
      */
-    std::cout << "PSS 4   " << PSs[4] << std::endl;
+    //std::cout << "PSS 4   " << PSs[4] << std::endl;
     return PS_PR_con;
 }

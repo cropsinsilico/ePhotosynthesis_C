@@ -29,7 +29,6 @@ public:
         fromArray(vec, offset);
     }
     void fromArray(const std::vector<double> &vec, const size_t offset = 0) {
-        //std::cout << "FIBF " << offset << " " << offset + size() << std::endl;
         BF_con.fromArray(vec, offset);
         FI_con.fromArray(vec, offset + BF_con.size());
         kd = vec[offset + BF_con.size() + FI_con.size()];

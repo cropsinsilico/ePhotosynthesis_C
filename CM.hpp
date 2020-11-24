@@ -19,10 +19,12 @@ public:
         SUCS_con = sother;
     }
     void fromArray(const std::vector<double> &vec, size_t offset = 0) {
+
         std::vector<double> pvec(PS_PR_con.size());
         std::copy(vec.begin() + offset, vec.begin() + PS_PR_con.size() + offset, pvec.begin());
-        pvec[23] = vec[35];
-        PS_PR_con.fromArray(pvec, offset);
+        pvec[23] = vec[35 + offset];
+
+        PS_PR_con.fromArray(pvec);
         SUCS_con.fromArray(vec, offset + PS_PR_con.size() - 1);
     }
     void fromArray(realtype *x) {
@@ -38,7 +40,13 @@ public:
         double temp = psprvec[23];
         psprvec.insert(psprvec.end() - 1, svec.begin(), svec.end());
         psprvec[35] = temp;
+        
         return psprvec;
+    }
+    friend std::ostream &operator<<(std::ostream &out, const CMCon &cc) {
+        out << cc.PS_PR_con << std::endl;
+        out << cc.SUCS_con;
+        return out;
     }
     size_t size() {
         return PS_PR_con.size() + SUCS_con.size();

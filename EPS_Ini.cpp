@@ -1,5 +1,5 @@
 #include "globals.hpp"
-#include "BF.hpp"
+#include "EPS.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -24,7 +24,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-arr EPS_Ini(varptr *myVars) {
+EPSCon EPS_Ini(varptr *myVars) {
     
     // Begin = 1;// --unused
     
@@ -78,7 +78,7 @@ arr EPS_Ini(varptr *myVars) {
     
     
     //FIBF_Con[51] = pow(10, 8) * 0.5;
-    arr FIBF_Con = FIBF_con.toArray();
+    //arr FIBF_Con = FIBF_con.toArray();
     // Second, try to get the iniitalzation files for the PSPR model
     
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,21 +112,22 @@ arr EPS_Ini(varptr *myVars) {
     ////////////////////////////////////////////////
     
     //Begin = 1;  // --unused
-    CM temp = CM(myVars);
-    arr CMs = temp.CM_Ini();
-    
+    //CM temp = CM(myVars);
+    CMCon CM_con = CMInit(myVars);
+    //arr CMs = CM_con.toArray();
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //   Use the initialized variables to construct variables that will be transfered to the Drive file. ////////////
     // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
-    arr EPS_Con = zeros(52 + 36);
-    for (int m = 0; m < 52; m++)
-        EPS_Con[m] = FIBF_Con[m];
+    //arr EPS_Con = zeros(52 + 36);
+    //for (int m = 0; m < 52; m++)
+    //    EPS_Con[m] = FIBF_Con[m];
     
     
-    for (int m = 0; m < 36; m++)
-        EPS_Con[m + 52] = CMs[m];
+    //for (int m = 0; m < 36; m++)
+    //    EPS_Con[m + 52] = CMs[m];
+    EPSCon EPS_con(FIBF_con, CM_con);
     
     
-    return EPS_Con;
+    return EPS_con;
 }
