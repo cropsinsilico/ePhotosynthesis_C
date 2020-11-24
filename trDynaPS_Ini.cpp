@@ -1,6 +1,5 @@
 #include "globals.hpp"
-#include "RROEA.hpp"
-#include "DynaPS.hpp"
+#include "trDynaPS.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -27,7 +26,7 @@
 
 
 
-arr trDynaPS::trDynaPS_Ini() {
+trDynaPSCon trDynaPS::trDynaPS_Ini() {
     
     // BEGIN = 1;// --unused
     
@@ -45,18 +44,18 @@ arr trDynaPS::trDynaPS_Ini() {
     //DynaPS dps = DynaPS(myVars);
     DynaPSCon DynaPS_con = DynaPS_Init(myVars);
     //arr DynaPS_Con = dps.DynaPS_Ini();
-    arr temp = DynaPS_con.toArray();
+    //arr temp = DynaPS_con.toArray();
     //DynaPS_Con.reserve(120);
-    arr DynaPS_Con = zeros(120);
+    //arr DynaPS_Con = zeros(120);
     
-    for (int m = 0; m < 96; m++)
-        DynaPS_Con[m] = temp[m];
+    //for (int m = 0; m < 96; m++)
+    //    DynaPS_Con[m] = temp[m];
     
     
     RROEACon RROEA_con = RROEA_Ini(myVars);
-    arr RROEA_Con = RROEA_con.toArray();
-    for (int m = 0; m < 10; m++)
-        DynaPS_Con[m + 110] = RROEA_Con[m];
-    
-    return DynaPS_Con;
+    //arr RROEA_Con = RROEA_con.toArray();
+    //for (int m = 0; m < 10; m++)
+    //    DynaPS_Con[m + 110] = RROEA_Con[m];
+    trDynaPSCon trDynaPS_Con(DynaPS_con, RROEA_con);
+    return trDynaPS_Con;
 }

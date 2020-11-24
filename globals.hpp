@@ -679,7 +679,7 @@ public:
     arr DynaPS_Ini();
 };*/
 
-class trDynaPS {
+/*class trDynaPS {
 public:
     trDynaPS(varptr *myVars) {
         this->myVars = myVars;
@@ -689,4 +689,4 @@ public:
 
     static int trDynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
     arr trDynaPS_Ini();
-};
+};*/

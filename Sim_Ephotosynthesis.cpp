@@ -1,4 +1,5 @@
 #include "globals.hpp"
+#include "trDynaPS.hpp"
 #include <string>
 #include <map>
 #include <vector>

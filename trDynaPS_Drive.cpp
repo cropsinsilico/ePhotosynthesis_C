@@ -4,6 +4,7 @@
 #include <sunmatrix/sunmatrix_dense.h>
 #include <sunlinsol/sunlinsol_dense.h>
 #include <cvode/cvode_direct.h>
+#include "trDynaPS.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -134,11 +135,11 @@ arr trDynaPS::trDynaPS_Drive(double ParaNum, double Ratio) {
     
     // Next is to initialize the vector.
     //global d;
-    arr trDynaPS_Con = trDynaPS_Ini();
+    trDynaPSCon trDynaPS_con = trDynaPS_Ini();
     //fprintf("//f   //f", trDynaPS_Con(12), trDynaPS_Con(13));
     //fprintf("\n");
     ParamSet(myVars);
-    
+    arr trDynaPS_Con = trDynaPS_con.toArray();
     //[FI_Param, BF_Param, PS_PR_Param, SUCS_Param, EPS_Param, RuACT_Param, XanCycle_Param, RROEA_Param, RedoxReg_Param] = ParamSet(myVars);
     
 //[Tt, d] = ode15s(@trDynaPS_mb, [0, time], trDynaPS_Con, options1, BF_Param, FI_Param, PS_PR_Param, SUCS_Param, RuACT_Param, RedoxReg_Param, XanCycle_Param, RROEA_Param);
