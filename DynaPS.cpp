@@ -1,5 +1,4 @@
 #include "globals.hpp"
-#include "RROEA.hpp"
 #include "DynaPS.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -25,38 +24,31 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+DynaPSCon DynaPS::DynaPS_Ini() {
+    return DynaPS_Init(myVars);
+}
 
+// DynaPS_mb.m  This model includes the mass balance equations for the full model of photosynthesis.
 
-arr trDynaPS::trDynaPS_Ini() {
+int DynaPS::DynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
     
-    // BEGIN = 1;// --unused
+    // Try out one new way of calculating the mass balance equation.
+    // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.
     
-    //global trDynaPS_OLD_TIME;
-    //global trDynaPS_TIME_N;
-    //global trDynaPS_VEL;
-    //global trDynaPS_CON;
+    //// Step One: Get the initialization of the concentrations for the RedoxReg model which will be used in the calculation of mb of RedoxReg.
+    realtype *x = N_VGetArrayPointer(u);
+    realtype *dxdt = N_VGetArrayPointer(u_dot);
     
-    //myVars.trDynaPS_OLD_TIME = 0;  // --unused
-    //myVars.trDynaPS_TIME_N = 1;  // --unused
-    // trDynaPS_VEL = zeros(1, 3);    // Clean memory
-    // trDynaPS_CON = zeros(3, 1);    // Clean memory
-    
-    // Now get the combined total concentration of different concentration variables.
-    //DynaPS dps = DynaPS(myVars);
-    DynaPSCon DynaPS_con = DynaPS_Init(myVars);
-    //arr DynaPS_Con = dps.DynaPS_Ini();
-    arr temp = DynaPS_con.toArray();
-    //DynaPS_Con.reserve(120);
-    arr DynaPS_Con = zeros(120);
-    
-    for (int m = 0; m < 96; m++)
-        DynaPS_Con[m] = temp[m];
+    DynaPSCon DynaPS_con(x);
+
+    arr ddxdt = DynaPSmb(t, DynaPS_con, myVars);
+    for (int index = 0; index < 96; index++)
+        dxdt[index] = ddxdt[index];
     
     
-    RROEACon RROEA_con = RROEA_Ini(myVars);
-    arr RROEA_Con = RROEA_con.toArray();
-    for (int m = 0; m < 10; m++)
-        DynaPS_Con[m + 110] = RROEA_Con[m];
+    //for (int index = 0; index < 4; index++)
+    //    dxdt[index + 92] = XanCycle_DYDT[index];
     
-    return DynaPS_Con;
+
+    return 0;
 }

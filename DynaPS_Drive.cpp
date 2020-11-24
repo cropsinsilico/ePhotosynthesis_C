@@ -1,4 +1,5 @@
 #include "globals.hpp"
+#include "DynaPS.hpp"
 #include <sundials/sundials_math.h>
 #include <cvode/cvode.h>
 #include <sunmatrix/sunmatrix_dense.h>
@@ -97,7 +98,7 @@ arr DynaPS::DynaPS_Drive(double ParaNum, double Ratio) {
 
     // Next is to initialize the vector.
     
-    arr DynaPS_Con = DynaPS_Ini();
+    DynaPSCon DynaPS_con = DynaPS_Ini();
     
     const double va1 = 0;
     //global PS12ratio; // The ratio of the PSI unit to the PSII unit
@@ -123,7 +124,10 @@ arr DynaPS::DynaPS_Drive(double ParaNum, double Ratio) {
     myVars->RedoxReg_Param = 0; // This parameter is just used here as a future storage tool. NOt used now.
     
 //[Tt, d] = ode15s(@DynaPS_mb, [0, time], DynaPS_Con, options1, BF_Param, FI_Param, PS_PR_Param, RuACT_Param, RedoxReg_Param, XanCycle_Param, SUCS_Param);
-
+    arr DynaPS_Con = zeros(120);
+    arr temp = DynaPS_con.toArray();
+    for (int i = 0; i < DynaPS_con.size(); i++)
+        DynaPS_Con[i] = temp[i];
     UserData *data = alloc_user_data();
     int flag;
     realtype abstol = 1e-5;

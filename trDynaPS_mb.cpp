@@ -1,6 +1,7 @@
 #include "globals.hpp"
 #include <nvector/nvector_serial.h>    /* access to serial N_Vector       */
 #include "RROEA.hpp"
+#include "DynaPS.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -40,13 +41,15 @@ int trDynaPS::trDynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_dat
     //fprintf(fidw, '//g  ', trDynaPS_Con);
     //fprintf(fidw, '\n');
     //fclose(fidw);
-    N_Vector dy, ddxdt;
-    dy = N_VNew_Serial(96);
-    ddxdt = N_VNew_Serial(96);
+    //N_Vector dy, ddxdt;
+    //dy = N_VNew_Serial(96);
+    //ddxdt = N_VNew_Serial(96);
     //arr DynaPS_Con = zeros(96);
-    for (int m = 0; m < 96; m++)
-        NV_Ith_S(dy, m) = x[m];
     
+    //for (int m = 0; m < 96; m++)
+    //    DynaPS_Con[m] = x[m];
+        //NV_Ith_S(dy, m) = x[m];
+    DynaPSCon DynaPS_con(x);
     
     arr RROEA_Con = zeros(10);
     for (int m = 0; m < 10; m++)
@@ -62,11 +65,11 @@ int trDynaPS::trDynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_dat
     arr RROEA_DYDT = RROEA_Mb(t, RROEA_con, myVars);
     //fprintf(" //g    ", DynaPS_Con);
     //fprintf("\n");
-    DynaPS dps = DynaPS(myVars);
+    //DynaPS dps = DynaPS(myVars);
     
-    dps.DynaPS_mb(t, dy, ddxdt, nullptr);
+    arr DynaPS_DYDT = DynaPSmb(t, DynaPS_con, myVars);
     
-    realtype *DynaPS_DYDT = N_VGetArrayPointer(ddxdt);
+    //realtype *DynaPS_DYDT = N_VGetArrayPointer(ddxdt);
     //arr trDynaPS_DYDT = zeros(119);
     
     for (int index = 0; index < 96; index++)
@@ -98,7 +101,7 @@ int trDynaPS::trDynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_dat
     //fclose(fid);
     
     GenOut(t, myVars);
-    N_VDestroy(dy);
-    N_VDestroy(ddxdt);
+    //N_VDestroy(dy);
+    //N_VDestroy(ddxdt);
     return 0;
 }

@@ -667,7 +667,7 @@ public:
     static int CM_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
 };*/
 
-class DynaPS {
+/*class DynaPS {
 public:
     DynaPS(varptr *myVars) {
         this->myVars = myVars;
@@ -677,7 +677,7 @@ public:
 
     static int DynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
     arr DynaPS_Ini();
-};
+};*/
 
 class trDynaPS {
 public:

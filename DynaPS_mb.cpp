@@ -1,6 +1,5 @@
 #include "globals.hpp"
-#include "XanCycle.hpp"
-#include "RA.hpp"
+#include "DynaPS.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -26,27 +25,25 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-// DynaPS_mb.m  This model includes the mass balance equations for the full model of photosynthesis.
+// This model includes the mass balance equations for the full model of photosynthesis.
 
-int DynaPS::DynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
+std::vector<double> DynaPSmb(double t, DynaPSCon &DynaPS_con, varptr *myVars) {
     
     // Try out one new way of calculating the mass balance equation.
     // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.
     
     //// Step One: Get the initialization of the concentrations for the RedoxReg model which will be used in the calculation of mb of RedoxReg.
-    realtype *x = N_VGetArrayPointer(u);
-    realtype *dxdt = N_VGetArrayPointer(u_dot);
 
-    arr RA_Con = zeros(92);
-    for (int m = 0; m < 92; m++)
-        RA_Con[m] = x[m];
+    //arr RA_Con = zeros(92);
+    //for (int m = 0; m < 92; m++)
+    //    RA_Con[m] = x[m];
     
-    RACon RA_con(RA_Con);
+    //RACon RA_con(RA_Con);
     
-    arr XanCycle_Con = zeros(4);
-    for (int m = 0; m < 4; m++)
-        XanCycle_Con[m] = x[m + 92];
-    XanCycleCon XanCycle_con(XanCycle_Con);
+    //arr XanCycle_Con = zeros(4);
+    //for (int m = 0; m < 4; m++)
+    //    XanCycle_Con[m] = x[m + 92];
+    //XanCycleCon XanCycle_con(XanCycle_Con);
     
     // This is a sensitivity test to show that the model is stable udner fluctuating light
     
@@ -56,13 +53,14 @@ int DynaPS::DynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
     myVars->FI_Param[0] = light;
     myVars->BF_Param[0] = light;
     
-    arr RA_DYDT = RA_mb(t, RA_con, myVars);
-    arr XanCycle_DYDT = XanCycle_Mb(t, XanCycle_con, myVars);
+    arr RA_DYDT = RA_mb(t, DynaPS_con.RA_con, myVars);
+    arr XanCycle_DYDT = XanCycle_Mb(t, DynaPS_con.XanCycle_con, myVars);
     
     // Here get the rate of Thioredoxin reduction and oxidation and use it to construct the differential equation for both thio and fd.
     
     //arr DynaPS_DYDT = zeros(0);
     //global PRGlu;
+    arr dxdt = zeros(96);
     for (int index = 0; index < 92; index++)
         dxdt[index] = RA_DYDT[index];
     
@@ -72,5 +70,5 @@ int DynaPS::DynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
     
     // Temp = DynaPS_DYDT(24) -2*PRGlu;
     //DynaPS_DYDT(24) = Temp;
-    return 0;
+    return dxdt;
 }

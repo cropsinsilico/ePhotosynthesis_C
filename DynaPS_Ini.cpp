@@ -1,6 +1,5 @@
 #include "globals.hpp"
-#include "XanCycle.hpp"
-#include "RA.hpp"
+#include "DynaPS.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -25,7 +24,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-arr DynaPS::DynaPS_Ini() {
+DynaPSCon DynaPS_Init(varptr *myVars) {
     
     // BEGIN = 1;// --unused
     
@@ -45,17 +44,17 @@ arr DynaPS::DynaPS_Ini() {
     
     
     RACon RA_con = RA_Ini(myVars);
-    arr DynaPS_Con = zeros(120);
-    arr RA_Con = RA_con.toArray();
-    for (int m = 0; m < 92; m++)
-        DynaPS_Con[m] = RA_Con[m];
+    //arr DynaPS_Con = zeros(120);
+    //arr RA_Con = RA_con.toArray();
+    //for (int m = 0; m < 92; m++)
+    //    DynaPS_Con[m] = RA_Con[m];
     
     
     
-    XanCycleCon XanCycle_Con = XanCycle_Ini(myVars);
-    arr XanCycle_con = XanCycle_Con.toArray();
-    for (int m = 0; m < 4; m++)
-        DynaPS_Con[m + 92] = XanCycle_con[m];
-    
-    return DynaPS_Con;
+    XanCycleCon XanCycle_con = XanCycle_Ini(myVars);
+    //arr XanCycle_con = XanCycle_Con.toArray();
+    //for (int m = 0; m < 4; m++)
+    //    DynaPS_Con[m + 92] = XanCycle_con[m];
+    DynaPSCon DynaPS_con(RA_con, XanCycle_con);
+    return DynaPS_con;
 }
