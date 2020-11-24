@@ -27,14 +27,14 @@
 
 
 
-arr PS_PRmb(double t, arr &PS_PRs, varptr *myVars) {
+arr PS_PRmb(double t, PS_PRCon &PS_PR_con, varptr *myVars) {
     //global TestATPCost;
     //global AVR;
     
     //global CO2_cond;
     //global O2_cond;
     //global PS_C_CP;
-    PS_PRCon PS_PR_con(PS_PRs);
+    //PS_PRCon PS_PR_con(PS_PRs);
     const double vATPcost = myVars->TestATPCost / myVars->AVR;
     
     //arr PSs = zeros(15);

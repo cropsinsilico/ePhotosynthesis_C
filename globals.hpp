@@ -594,7 +594,7 @@ arr PSI(varptr *myVars);
 
 //arr PS_PRIni(varptr *myVars);
 
-arr PS_PRmb(double t, arr &PS_PRs, varptr *myVars);
+//arr PS_PRmb(double t, arr &PS_PRs, varptr *myVars);
 
 //arr PSmb(double t, arr &PSs, arr &Param, varptr *myVars);
 
@@ -656,7 +656,7 @@ arr ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, double Light, 
 void ssPSIni(double t, varptr *myVars);
 
 
-class CM {
+/*class CM {
 public:
     CM(varptr *myVars) {
         this->myVars = myVars;
@@ -665,7 +665,7 @@ public:
     double CM_Drive2(double pop, double currentPop);
     arr CM_Ini();
     static int CM_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
-};
+};*/
 
 class DynaPS {
 public:

@@ -1,6 +1,5 @@
 #include "globals.hpp"
-#include "PS_PR.hpp"
-#include "SUCS.hpp"
+#include "CM.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -27,25 +26,26 @@
 
 
 
-arr CM::CM_Ini() {
+CMCon CMInit(varptr *myVars) {
     
-    arr PS_PRs = PS_PRIni(myVars);
+    PS_PRCon PS_PR_con = PS_PRIni(myVars);
     //PS_PRCon PS_PR_con = PS_PRIni(myVars);
     //arr PS_PRs = PS_PR_con.toArray();
-    arr CMs = zeros(36);
-    
-    for (int m = 0; m < 23; m++)
-        CMs[m] = PS_PRs[m];
+    //arr CMs = zeros(36);
+    //arr PS_PRs = PS_PR_con.toArray();
+    //for (int m = 0; m < 23; m++)
+    //    CMs[m] = PS_PRs[m];
     
     
     SUCSCon SUCS_Con = SUCS_Ini(myVars);
-    arr SUCSc = SUCS_Con.toArray();
+    //arr SUCSc = SUCS_Con.toArray();
     // The gap left is for later use.
     
-    for (int m = 0; m < 12; m++)
-        CMs[23 + m] = SUCSc[m];
+    //for (int m = 0; m < 12; m++)
+    //    CMs[23 + m] = SUCSc[m];
     
     
-    CMs[35] = PS_PRs[23];
+    //CMs[35] = PS_PRs[23];
+    CMCon CMs(PS_PR_con, SUCS_Con);
     return CMs;
 }

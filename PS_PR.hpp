@@ -86,6 +86,6 @@ public:
     PRCon PR_con;
 };
 
-std::vector<double> PS_PRIni(Variables *myVars);
+PS_PRCon PS_PRIni(Variables *myVars);
 
 std::vector<double> PS_PRmb(double t, PS_PRCon &PS_PRs, Variables *myVars);

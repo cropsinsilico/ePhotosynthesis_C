@@ -4,6 +4,7 @@
 #include <sunmatrix/sunmatrix_dense.h>
 #include <sunlinsol/sunlinsol_dense.h>
 #include <cvode/cvode_direct.h>
+#include "CM.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -77,8 +78,8 @@ double CM::CM_Drive2(double pop, double currentPop) {
     //global ATPActive;
     myVars->ATPActive = 0;
     
-    arr CMs = CM_Ini();
-    
+    CMCon CM_con = CM_Ini();
+    arr CMs = CM_con.toArray();
     ////////////////////////////////////////////////
     //   Calculation  step //
     ////////////////////////////////////////////////

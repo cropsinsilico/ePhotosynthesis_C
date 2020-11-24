@@ -1,5 +1,6 @@
 #include "globals.hpp"
 #include "FIBF.hpp"
+#include "CM.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -40,26 +41,28 @@ arr EPS_mb(double t, arr &EPS_Con, varptr *myVars) {
         FIBF_Con[m] = EPS_Con[m];
     FIBFCon FIBF_con(FIBF_Con);
     
-    N_Vector CMs;
-    CMs = N_VNew_Serial(36);
-    //arr CMs = zeros(0);
+    //N_Vector CMs;
+    //CMs = N_VNew_Serial(36);
+    arr CMs = zeros(36);
     for (int m = 0; m < 36; m++)
-        NV_Ith_S(CMs, m) = EPS_Con[m + 52];
-    
+        CMs[m] = EPS_Con[m + 52];
+    //    NV_Ith_S(CMs, m) = EPS_Con[m + 52];
+    CMCon CM_con(CMs);
     
     // This is a sensitivity test to show that the model is stable udner fluctuating light
     // the condition are is distributed into the separate mb file.
     
     // Step II, Calculate the PYPT using the existing modules.
-    N_Vector dxdt;
-    dxdt = N_VNew_Serial(36);
+    //N_Vector dxdt;
+    //dxdt = N_VNew_Serial(36);
     
     //arr CM_DYDT = zeros(9);
-    CM cm = CM(myVars);
-    cm.CM_mb(t, CMs, dxdt, nullptr);
+    //CM cm = CM(myVars);
+    //cm.CM_mb(t, CMs, dxdt, nullptr);
+    arr CM_DYDT = CM_Mb(t, CM_con, myVars);
     arr FIBF_DYDT = FIBF_MB(t, FIBF_con, myVars);
     
-    realtype *CM_DYDT = N_VGetArrayPointer(dxdt);
+    //realtype *CM_DYDT = N_VGetArrayPointer(dxdt);
     // Step III: Calculate the mass balanec equation for the EPS model. This basically need to make sure that the variables
     // used in the mass balance equation should be in exact sequence with the sequence used in the inialization.
     

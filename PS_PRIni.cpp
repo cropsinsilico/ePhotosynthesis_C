@@ -25,7 +25,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-arr PS_PRIni(varptr *myVars) {
+PS_PRCon PS_PRIni(varptr *myVars) {
     
     //arr PSs = zeros(5);
     //PSs = PSInitial(myVars);
@@ -57,5 +57,5 @@ arr PS_PRIni(varptr *myVars) {
     PS_PRs[23] = PSs[4];
      */
     std::cout << "PSS 4   " << PSs[4] << std::endl;
-    return PS_PR_con.toArray();
+    return PS_PR_con;
 }
