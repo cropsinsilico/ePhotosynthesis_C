@@ -38,41 +38,24 @@ PRCon PRinitial(Variables *myVars) {
     myVars->PR_ADP = 0.82 * myVars->PRRatio[14];
     myVars->PR_ATP = 0.68 * myVars->PRRatio[15];
 
-    const double SERc = 7.5;                  // Serine in cytosol; 7.5 original value
-    const double GLYc = 1.8;                 // Glycine in cytosol; 1.8 original vlaue
-    const double PGA = 4.3;                  // PGA in chloroplast;4.3 is the original value;
-
-    const double GOAc = 0.028;              // Glyoxylate in cytosol; 0.028; EXPERIMENTAL DATA;
-
-    const double GCAc = 0.36;                   // See the note for GCA.
-    const double GCA = 0.36;                    // Derived from radioactive labelling experiment; assuem equal concenatration
-    // inside and outshide chloroplast
-
-    const double PGCA = 0.0029;                // Phosphoglycolate in chloroplast derived based on the Km112; orignal value is : 0.0029;
-    const double GCEA = 0.1812;                  // Glycerate in chloroplast; derived based on V113
-    const double GCEAc = 0.1812;                 // Glycerate in cytosol; assume at equilibrium with GCEA initially.
-    const double HPRc = 0.0035;                // HydroxylPyruvate; derived from equation 123;
-    const double RUBP = 2;                   // RuBP concentration
-
-    const double CO2 = 0.012;                 // CO2 concentration(mM)
-    const double O2 = 0.264;                  // O2 concentration(mM)
-
     PRCon PR_con;
 
-    PR_con.GCEA = GCEA;
-    PR_con.GCA = GCA;
-    PR_con.PGA = PGA;
-    PR_con.PGCA = PGCA;
+    PR_con.GCEA = 0.1812;       // Glycerate in chloroplast; derived based on V113
+    PR_con.GCA = 0.36;       // Derived from radioactive labelling experiment; assuem equal concenatration
+                             // inside and outshide chloroplast
+    PR_con.PGA = 4.3;     // PGA in chloroplast;4.3 is the original value;
+    PR_con.PGCA = 0.0029;       // Phosphoglycolate in chloroplast derived based on the Km112; orignal value is : 0.0029;
 
-    PR_con.GCAc = GCAc;
-    PR_con.GOAc = GOAc;
-    PR_con.SERc = SERc;
-    PR_con.GLYc = GLYc;
-    PR_con.HPRc = HPRc;
-    PR_con.GCEAc = GCEAc;
-    PR_con.RUBP = RUBP;
-    PR_con.CO2 = CO2;
-    PR_con.O2 = O2;
+    PR_con.GCAc = 0.36;      // See the note for GCA.
+    PR_con.GOAc = 0.028;     // Glyoxylate in cytosol; 0.028; EXPERIMENTAL DATA;
+    PR_con.SERc = 7.5;             // Serine in cytosol; 7.5 original value
+    PR_con.GLYc = 1.8;           // Glycine in cytosol; 1.8 original vlaue
+    PR_con.HPRc = 0.0035;       // HydroxylPyruvate; derived from equation 123;
+    PR_con.GCEAc = 0.1812;      // Glycerate in cytosol; assume at equilibrium with GCEA initially.
+    PR_con.RUBP = 2.;       // RuBP concentration
+    PR_con.CO2 = 0.012;         // CO2 concentration(mM)
+    PR_con.O2 = 0.264;         // O2 concentration(mM)
+
 
 
     // To set global information for different reactions
@@ -86,8 +69,6 @@ PRCon PRinitial(Variables *myVars) {
     myVars->KC = 0.0115 * myVars->PRRatio[17];// Michaelis constant for CO2
 
     if (myVars->PR_PS_com) {
-        //global	myVars->KM11;
-        //global	myVars->KM12;
         myVars->KC = myVars->KM11;
         myVars->KO = myVars->KM12;
     }

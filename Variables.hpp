@@ -251,7 +251,6 @@ struct Variables {
     double NADc = 0.;
     double O2 = 210;
     double O2_cond = 0.;
-    double PRGlu = 0.;
     double PR_ADP = 0.;
     double PR_ATP = 0.;
     double PS12ratio = 0.;
@@ -265,9 +264,6 @@ struct Variables {
     double PS2SUCSV32 = 0.;
     double PSIIantennaSize = 37;
     double PSIantennaSize = 95;
-    double PSPR2RA_v1 = 0.;
-    double PSPR2RA_v111 = 0.;
-    double PSPR2RA_v13 = 0.;
     double PSPR_RA_CA = 0.;
     double PS_C_CA = 0.;
     double PS_C_CN = 0.;
