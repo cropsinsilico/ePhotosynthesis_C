@@ -76,32 +76,19 @@ SUCSCon SUCS_Ini(Variables *myVars) {
     // Initialize the leaves of active enzyme in a dark adapted leaves;
     //	mM
 
-    const double T3Pc = 2;
-    const double FBPc = 2;
-    const double HexPc = 5.8;
-    const double F26BPc = 7.8 * pow(10, -6);
-    const double ATPc = 0.4;
-    const double ADPc = 0.4;
-    const double UDPGc = 0.57;
-    const double UTPc = 0.75;
-    const double SUCP = 0;
-    const double SUC = 0;
-    const double PGAc = 0.5;
-
-
     // Assign value to a variable that is transferred to the program
     SUCSCon SUCS_Con;
-    SUCS_Con.T3Pc = T3Pc;
-    SUCS_Con.FBPc = FBPc;
-    SUCS_Con.HexPc = HexPc;
-    SUCS_Con.F26BPc = F26BPc;
-    SUCS_Con.ATPc = ATPc;
-    SUCS_Con.ADPc = ADPc;
-    SUCS_Con.UDPGc = UDPGc;
-    SUCS_Con.UTPc = UTPc;
-    SUCS_Con.SUCP = SUCP;
-    SUCS_Con.SUC = SUC;
-    SUCS_Con.PGAc = PGAc;
+    SUCS_Con.T3Pc = 2.;
+    SUCS_Con.FBPc = 2.;
+    SUCS_Con.HexPc = 5.8;
+    SUCS_Con.F26BPc = 7.8 * pow(10, -6);
+    SUCS_Con.ATPc = 0.4;
+    SUCS_Con.ADPc = 0.4;
+    SUCS_Con.UDPGc = 0.57;
+    SUCS_Con.UTPc = 0.75;
+    SUCS_Con.SUCP = 0.;
+    SUCS_Con.SUC = 0.;
+    SUCS_Con.PGAc = 0.5;
 
 
     // The following calculate the total concentration of different enzymes.
@@ -110,7 +97,6 @@ SUCSCon SUCS_Ini(Variables *myVars) {
 
     if (myVars->GP == 0) {
         // Unit: mmol l-1 s-1;
-
         myVars->V51 = 0.107376831 * SC * myVars->SUCRatio[0];//	DHAP+GAP --FBP          // default 0.5
         myVars->V52 = 0.063979048 * SC * myVars->SUCRatio[1];//	FBP --F6P + Pi
         myVars->V55 = 0.115403205 * SC * myVars->SUCRatio[2];//	G1P+UTP --OPOP+UDPG
@@ -131,15 +117,9 @@ SUCSCon SUCS_Ini(Variables *myVars) {
     // Here is some pool values      //
     //////////////////////////////////////////////////////////////////
 
-    const double ATc = 1.0 * myVars->SUCRatio[12];// mM
-    const double UTc = 1.5 * myVars->SUCRatio[13];// mM
-    const double PTc = 15 * myVars->SUCRatio[14];//
-
-
-    //global SUCS_Pool;
-    myVars->SUCS_Pool.ATc = ATc;
-    myVars->SUCS_Pool.UTc = UTc;
-    myVars->SUCS_Pool.PTc = PTc;
+    myVars->SUCS_Pool.ATc = 1.0 * myVars->SUCRatio[12];// mM
+    myVars->SUCS_Pool.UTc = 1.5 * myVars->SUCRatio[13];// mM
+    myVars->SUCS_Pool.PTc = 15 * myVars->SUCRatio[14];//
 
     return SUCS_Con;
 }

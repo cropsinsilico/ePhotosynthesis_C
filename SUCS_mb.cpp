@@ -29,25 +29,11 @@
 
 arr SUCS_Mb(double t, SUCSCon &SUCS_Con, Variables *myVars) {
     Condition(t, myVars);
-    const double light = myVars->GLight;
 
-    myVars->SUCS_Param[0] = light;
+    myVars->SUCS_Param[0] = myVars->GLight;
 
     arr SUCS_Vel = zeros(15);
     SUCS_Rate(t, SUCS_Con, myVars);
-
-    const double v51 = myVars->SUCS_Vel.v51;//	DHAP+GAP --FBP
-    const double v52 = myVars->SUCS_Vel.v52;//	FBP --F6P + Pi
-    const double v55 = myVars->SUCS_Vel.v55;//	G1P+UTP --OPOP+UDPG
-    const double v56 = myVars->SUCS_Vel.v56;//	UDPG+F6P--SUCP + UDP
-    const double v57 = myVars->SUCS_Vel.v57;//	SUCP--Pi + SUC
-    const double v58 = myVars->SUCS_Vel.v58;//	F26BP--F6P + Pi
-    const double v59 = myVars->SUCS_Vel.v59;//	F6P + ATP --ADP + F26BP
-    const double v62 = myVars->SUCS_Vel.v62;                      //	SUC SINK
-    const double vdhap_in = myVars->SUCS_Vel.vdhap_in;   //	DHAP IN
-    const double vgap_in = myVars->SUCS_Vel.vgap_in;                  //	GAP Export from chloroplast
-    const double vpga_in = myVars->SUCS_Vel.vpga_in;       //	PGA export from chloroplast
-    const double vpga_use = myVars->SUCS_Vel.vpga_use;   //	PGA utilisation in chloroplast
 
     ////////////////////////////////////////////////////////////////
     // Get the mass balance equation//
@@ -55,16 +41,16 @@ arr SUCS_Mb(double t, SUCSCon &SUCS_Con, Variables *myVars) {
 
     // The Major Variables
     arr SUCS_mb = zeros(12);
-    SUCS_mb[0] = vdhap_in + vgap_in - 2 * v51;//	T3Pc
-    SUCS_mb[1] = v51 - v52;//	FBPc
-    SUCS_mb[2] = v52 - v55 - v59 + v58 - v56;//	HexPc
-    SUCS_mb[3] = v59 - v58;//	F26BPc
-    SUCS_mb[4] = 0;                                      //   vatpf - v59 - v60;   //	ATPc
+    SUCS_mb[0] = myVars->SUCS_Vel.vdhap_in + myVars->SUCS_Vel.vgap_in - 2 * myVars->SUCS_Vel.v51;//	T3Pc
+    SUCS_mb[1] = myVars->SUCS_Vel.v51 - myVars->SUCS_Vel.v52;//	FBPc
+    SUCS_mb[2] = myVars->SUCS_Vel.v52 - myVars->SUCS_Vel.v55 - myVars->SUCS_Vel.v59 + myVars->SUCS_Vel.v58 - myVars->SUCS_Vel.v56;//	HexPc
+    SUCS_mb[3] = myVars->SUCS_Vel.v59 - myVars->SUCS_Vel.v58;//	F26BPc
+    SUCS_mb[4] = 0;                                      //   vatpf - myVars->SUCS_Vel.v59 - v60;   //	ATPc
     SUCS_mb[5] = 0;                       //	ADPc
-    SUCS_mb[7] = v55 - v56;//	UDPGc
+    SUCS_mb[7] = myVars->SUCS_Vel.v55 - myVars->SUCS_Vel.v56;//	UDPGc
     SUCS_mb[8] = 0;//  v60 - v55		;   //	UTPc
-    SUCS_mb[9] = v56 - v57;//	SUCP
-    SUCS_mb[10] = v57 - v62;//	SUC
-    SUCS_mb[11] = vpga_in - vpga_use;//	pgaC
+    SUCS_mb[9] = myVars->SUCS_Vel.v56 - myVars->SUCS_Vel.v57;//	SUCP
+    SUCS_mb[10] = myVars->SUCS_Vel.v57 - myVars->SUCS_Vel.v62;//	SUC
+    SUCS_mb[11] = myVars->SUCS_Vel.vpga_in - myVars->SUCS_Vel.vpga_use;//	pgaC
     return SUCS_mb;
 }
