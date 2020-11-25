@@ -293,8 +293,6 @@ struct Variables {
     double RROEA2PS_PRK = 0.;
     double RROEA2PS_SBPase = 0.;
     double RROEA2RuACT_RuAC = 0.;
-    double RROEA2trDynaPS_ve2Fd = 0.;
-    double RROEA2trDynaPS_veFd2Calvin = 0.;
     int RUBISCOMETHOD = 1;
     double RUBISCOTOTAL = 0.;
     double Redox2PS_V13 = 0.;
