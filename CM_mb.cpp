@@ -51,8 +51,8 @@ arr CM_Mb(realtype t, CMCon &CM_con, Variables *myVars) {
     const double vgap = myVars->PS2CM_vgap;
 
     // The rate of import into the cytosol
-    const double vdhap_ins = myVars->SUCS2CM_vdhap;   //	DHAP IN
-    const double vgap_ins = myVars->SUCS2CM_vgap;   //	GAP IN
+    const double vdhap_ins = myVars->SUCS_Vel.vdhap_in;   //	DHAP IN
+    const double vgap_ins = myVars->SUCS_Vel.vgap_in;   //	GAP IN
     if (myVars->TestSucPath == 1)
         SUCS_DYDT[0] = SUCS_DYDT[0] + vdhap + vgap - (vdhap_ins + vgap_ins);
 
@@ -61,7 +61,7 @@ arr CM_Mb(realtype t, CMCon &CM_con, Variables *myVars) {
 
     const double vpga = myVars->PS2CM_vpga;
 
-    const double vpga_ins = myVars->SUCS2CM_vpga;                                       //	PGA export from chloroplast
+    const double vpga_ins = myVars->SUCS_Vel.vpga_in;                                       //	PGA export from chloroplast
 
     SUCS_DYDT[11] = SUCS_DYDT[11] - vpga_ins + vpga;//	pgaC
     dxdt[34] = SUCS_DYDT[11];

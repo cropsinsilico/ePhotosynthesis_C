@@ -67,9 +67,6 @@ void SUCS_Rate(double t, SUCSCon &SUCS_Con, Variables *myVars) {
     const double temp59 = (F6Pc + myVars->Km593) * (SUCS_Con.ATPc + myVars->Km591 * (1 + ADPc / myVars->KI591));// This is the orginal equation
 
     const double Km_in = 0.6 * myVars->SUCRatio[62];
-    const double vdhap_in = myVars->Vdhap_in * Pic / (Pic + Km_in);
-    const double vgap_in = myVars->Vgap_in * Pic / (Pic + Km_in);
-
 
     double Kmpga_in;
     double Kmpga_u;
@@ -110,8 +107,8 @@ void SUCS_Rate(double t, SUCSCon &SUCS_Con, Variables *myVars) {
     myVars->SUCS_Vel.v60 = 0.;//	ATP+UDP --UTP + ADP
     myVars->SUCS_Vel.v61 = 0.;//	POPO --2PO
     myVars->SUCS_Vel.v62 = myVars->V62 * SUCS_Con.SUC / (SUCS_Con.SUC + myVars->Km621);//	SUC SINK
-    myVars->SUCS_Vel.vdhap_in = vdhap_in;//	DHAP IN
-    myVars->SUCS_Vel.vgap_in = vgap_in;//	GAP Export from chloroplast
+    myVars->SUCS_Vel.vdhap_in = myVars->Vdhap_in * Pic / (Pic + Km_in);//	DHAP IN
+    myVars->SUCS_Vel.vgap_in = myVars->Vgap_in * Pic / (Pic + Km_in);//	GAP Export from chloroplast
     myVars->SUCS_Vel.vpga_in = vpga_in;//	PGA export from chloroplast
     myVars->SUCS_Vel.vpga_use = vpga_use;//	PGA utilisation in cytosol
     myVars->SUCS_Vel.vatpf = 0.;//	ATP synthesis rate
@@ -133,8 +130,4 @@ void SUCS_Rate(double t, SUCSCon &SUCS_Con, Variables *myVars) {
     }
 
     myVars->SUCS2PS_Pic = Pic;                // This is the original code.
-
-    myVars->SUCS2CM_vdhap = vdhap_in;   //	DHAP IN
-    myVars->SUCS2CM_vgap = vgap_in;   //	GAP Export from chloroplast
-    myVars->SUCS2CM_vpga = vpga_in;   //	PGA export from chloroplast
 }

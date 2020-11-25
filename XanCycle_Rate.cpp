@@ -29,9 +29,6 @@
 
 void XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myVars) {
 
-    double ABA = XanCycle_Con.ABA;	//	The concentration of XanCycle_Con.ABA
-
-
     Condition(t, myVars);
 
     double pH;
@@ -75,10 +72,9 @@ void XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myVars) {
     if (myVars->record) {
         myVars->XanCycle_VEL.insert(myVars->XanCycle_TIME_N, t, myVars->XanCycle_Vel);
     }
-    ABA = XanCycle_Con.Vx / (XanCycle_Con.Vx + XanCycle_Con.Ax + XanCycle_Con.Zx);
 
     myVars->XanCycle2OUT[0] = XanCycle_Con.Vx;
     myVars->XanCycle2OUT[1] = XanCycle_Con.Ax;
     myVars->XanCycle2OUT[2] = XanCycle_Con.Zx;
-    myVars->XanCycle2OUT[3] = ABA;
+    myVars->XanCycle2OUT[3] = XanCycle_Con.Vx / (XanCycle_Con.Vx + XanCycle_Con.Ax + XanCycle_Con.Zx);
 }

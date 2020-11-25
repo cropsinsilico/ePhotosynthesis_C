@@ -88,28 +88,19 @@ void RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *myVars) {
     if (FATP < 0.6)
         FATP = 0.6;
 
-    const double v1 = RCA * RuACT_Con.ER * FATP;
-    const double vn1 = myVars->RuACT_RC.kn1 * E * RuACT_Con.RuBP;
-    const double v7 = myVars->RuACT_RC.k7 * ECM * RuACT_Con.RuBP;
-
     const double factor_n7 = 1;
-
-    const double vn7 = RuACT_Con.ECMR * 0.5 * factor_n7;
-
-    const double v6_1 = RuACT_Con.ECMR * myVars->RuACT_RC.k6 * C / (C + myVars->RuACT_RC.kc * (1 + O / myVars->RuACT_RC.ko));
-    const double v6_2 = RuACT_Con.ECMR * myVars->RuACT_RC.k6 / 3 * O / (O + myVars->RuACT_RC.ko * (1 + C / myVars->RuACT_RC.kc));
 
     if (t > myVars->RuACT_OLD_TIME) {
         myVars->RuACT_TIME_N = myVars->RuACT_TIME_N + 1;
         myVars->RuACT_OLD_TIME = t;
     }
 
-    myVars->RuACT_Vel.v1 = v1;
-    myVars->RuACT_Vel.vn1 = vn1;
-    myVars->RuACT_Vel.v7 = v7;
-    myVars->RuACT_Vel.vn7 = vn7;
-    myVars->RuACT_Vel.v6_1 = v6_1;
-    myVars->RuACT_Vel.v6_2 = v6_2;
+    myVars->RuACT_Vel.v1 = RCA * RuACT_Con.ER * FATP;
+    myVars->RuACT_Vel.vn1 = myVars->RuACT_RC.kn1 * E * RuACT_Con.RuBP;
+    myVars->RuACT_Vel.v7 = myVars->RuACT_RC.k7 * ECM * RuACT_Con.RuBP;
+    myVars->RuACT_Vel.vn7 = RuACT_Con.ECMR * 0.5 * factor_n7;
+    myVars->RuACT_Vel.v6_1 = RuACT_Con.ECMR * myVars->RuACT_RC.k6 * C / (C + myVars->RuACT_RC.kc * (1 + O / myVars->RuACT_RC.ko));
+    myVars->RuACT_Vel.v6_2 = RuACT_Con.ECMR * myVars->RuACT_RC.k6 / 3 * O / (O + myVars->RuACT_RC.ko * (1 + C / myVars->RuACT_RC.kc));
 
     if (myVars->record) {
         myVars->RuACT_VEL.insert(myVars->RuACT_TIME_N - 1, t, myVars->RuACT_Vel);
