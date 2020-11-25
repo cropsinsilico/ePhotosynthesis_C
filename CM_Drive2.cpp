@@ -4,6 +4,7 @@
 #include <sunmatrix/sunmatrix_dense.h>
 #include <sunlinsol/sunlinsol_dense.h>
 #include <cvode/cvode_direct.h>
+#include "Variables.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -29,73 +30,41 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-varptr *CM::myVars = new varptr();
+Variables *CM::myVars = new Variables();
 double CM::CM_Drive2(double pop, double currentPop) {
-    
-    //double Begin = 1;
-    // fin = SysInitial(Begin);// --unused
-    //global options1;
-    //global tglobal;
-    //const double time = myVars->tglobal;
-    
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //   Global variables used for obtaining flux and concentration data //
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //global PS_PR_OLDTIME;
-    //global PS_PR_TIME_N;
-    //global PS_PR_VEL;
-    
+
     myVars->PS_PR_OLDTIME = 0;
     myVars->PS_PR_TIME_N = 1;
-    // PS_PR_VEL = zeros(27, 1);        // Store the flux value
-    
-    //global PS_OLD_TIME;
-    //global PS_TIME_N;
-    //global PS_VEL;
     myVars->PS_OLD_TIME = 0;
     myVars->PS_TIME_N = 0;
-    // PS_VEL = zeros(1, 1);
-    
-    //global PR_OLD_TIME;
-    //global PR_TIME_N;
-    //global PR_VEL;
     myVars->PR_OLD_TIME = 0;
     myVars->PR_TIME_N = 1;
-    // PR_VEL = zeros(1, 1);
-    
+
     ////////////////////////////////////////////////
     //   Initialation step //
     ////////////////////////////////////////////////
-    //Begin = 1;
-    //arr PS_PRs = zeros(0);
     IniModelCom(myVars);        // Initialize the structure of the model, i.e. Is this model separate or combined with others.
-    //global PR_PS_com;    // This is a variable indicating whether the PR model is actually need to be combined with PS or not. If 1 then means combined; 0 means not.
+    // This is a variable indicating whether the PR model is actually need to be combined with PS or not. If 1 then means combined; 0 means not.
     myVars->PR_PS_com = true;
-    //global PSPR_SUCS_com;    // This is a variable indicating whether the PSPR model is actually need to be combined with SUCS or not. If 1 then means combined; 0 means not.
+    // This is a variable indicating whether the PSPR model is actually need to be combined with SUCS or not. If 1 then means combined; 0 means not.
     myVars->PSPR_SUCS_com = true;
-    
-    //global ATPActive;
+
     myVars->ATPActive = 0;
-    
-    arr CMs = CM_Ini();
-    
+
+    CMCon CM_con = CM_Ini();
+    arr CMs = CM_con.toArray();
     ////////////////////////////////////////////////
     //   Calculation  step //
     ////////////////////////////////////////////////
-    
-    // CM_Param = 0;// --unused
-    
-    //global CO2A;
-    // CO2A = zeros(5, 1);
-    
+
     myVars->SUCS_Param[0] = 1;
     myVars->SUCS_Param[1] = 1;
-    
+
     myVars->PS_PR_Param = 0;
-    
-    // suc = AssignVelocity(pop, currentPop);// --unused
-    
-//[Tt, d] = ode15s(@CM_mb, [0, time], CMs, options1, PS_PR_Param, SUCS_Param);
 
     UserData *data = alloc_user_data();
     int flag;
@@ -136,28 +105,20 @@ double CM::CM_Drive2(double pop, double currentPop) {
     for (tout = step_length; tout <= end_time; tout += step_length)
         flag = CVode(cvode_mem, tout, y, &t, CV_NORMAL);
 
-    
-    //global d_plot;
-    //myVars->d_plot = d;
-    
-    //global Tt_plot;
-    //myVars->Tt_plot = Tt;
-    
+
     //////////////////////////////////////////////
     //   output  step      //
     //////////////////////////////////////////////
-    
-    // success = CM_Out(Tt, d);// --unused
-    
+
     // Reinitialize some values of global variables.
     myVars->PSPR_SUCS_com = false;
     IniModelCom(myVars);
-    
+
     const double CO2AR = TargetFunVal(myVars);
 
     N_VDestroy(y);
     CVodeFree(&cvode_mem);
     SUNLinSolFree(LS);
 
-                return CO2AR;
+    return CO2AR;
 }

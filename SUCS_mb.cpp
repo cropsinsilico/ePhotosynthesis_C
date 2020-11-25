@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "Variables.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -25,43 +25,33 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-arr SUCS_Mb(double t, arr &SUCS_Con, varptr *myVars) {
-    
-    //global GLight;
-    
+arr SUCS_Mb(double t, SUCSCon &SUCS_Con, Variables *myVars) {
     Condition(t, myVars);
     const double light = myVars->GLight;
-    
+
     myVars->SUCS_Param[0] = light;
-    
-    
-    
+
     arr SUCS_Vel = zeros(15);
-    SUCS_Vel = SUCS_Rate(t, SUCS_Con, myVars);
-    
-    
-    const double v51 = SUCS_Vel[0];//	DHAP+GAP --FBP
-    const double v52 = SUCS_Vel[1];//	FBP --F6P + Pi
-    const double v55 = SUCS_Vel[2];//	G1P+UTP --OPOP+UDPG
-    const double v56 = SUCS_Vel[3];//	UDPG+F6P--SUCP + UDP
-    const double v57 = SUCS_Vel[4];//	SUCP--Pi + SUC
-    const double v58 = SUCS_Vel[5];//	F26BP--F6P + Pi
-    const double v59 = SUCS_Vel[6];//	F6P + ATP --ADP + F26BP
-    // v60 = SUCS_Vel[7];//	ATP+UDP --UTP + ADP// --unused
-    // v61	=	SUCS_Vel	(	9	);                  //	POPO --2PO
-    const double v62 = SUCS_Vel[9];                      //	SUC SINK
-    const double vdhap_in = SUCS_Vel[10];   //	DHAP IN
-    const double vgap_in = SUCS_Vel[11];                  //	GAP Export from chloroplast
-    const double vpga_in = SUCS_Vel[12];       //	PGA export from chloroplast
-    const double vpga_use = SUCS_Vel[13];   //	PGA utilisation in chloroplast
-    // vatpf = SUCS_Vel[14];       //	ATP synthesis rate// --unused
-    
+    SUCS_Rate(t, SUCS_Con, myVars);
+
+    const double v51 = myVars->SUCS_Vel.v51;//	DHAP+GAP --FBP
+    const double v52 = myVars->SUCS_Vel.v52;//	FBP --F6P + Pi
+    const double v55 = myVars->SUCS_Vel.v55;//	G1P+UTP --OPOP+UDPG
+    const double v56 = myVars->SUCS_Vel.v56;//	UDPG+F6P--SUCP + UDP
+    const double v57 = myVars->SUCS_Vel.v57;//	SUCP--Pi + SUC
+    const double v58 = myVars->SUCS_Vel.v58;//	F26BP--F6P + Pi
+    const double v59 = myVars->SUCS_Vel.v59;//	F6P + ATP --ADP + F26BP
+    const double v62 = myVars->SUCS_Vel.v62;                      //	SUC SINK
+    const double vdhap_in = myVars->SUCS_Vel.vdhap_in;   //	DHAP IN
+    const double vgap_in = myVars->SUCS_Vel.vgap_in;                  //	GAP Export from chloroplast
+    const double vpga_in = myVars->SUCS_Vel.vpga_in;       //	PGA export from chloroplast
+    const double vpga_use = myVars->SUCS_Vel.vpga_use;   //	PGA utilisation in chloroplast
+
     ////////////////////////////////////////////////////////////////
     // Get the mass balance equation//
     ////////////////////////////////////////////////////////////////
-    
+
     // The Major Variables
-    
     arr SUCS_mb = zeros(12);
     SUCS_mb[0] = vdhap_in + vgap_in - 2 * v51;//	T3Pc
     SUCS_mb[1] = v51 - v52;//	FBPc

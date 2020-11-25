@@ -1,5 +1,4 @@
-#include "globals.hpp"
-
+#include "Variables.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -24,53 +23,27 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+arr RA_mb(double t, RACon &RA_Con, Variables *myVars) {
+    arr EPS_DYDT = EPS_mb(t, RA_Con.EPS_con, myVars);
+    arr RuACT_DYDT = RuACT_Mb(t, RA_Con.RuACT_con, myVars);
 
-
-
-arr RA_mb(double t, arr &RA_Con, varptr *myVars) {
-    
-    arr EPS_Con = zeros(88);
-    for (int m = 0; m < 88; m++)
-        EPS_Con[m] = RA_Con[m];
-    
-    
-    arr RuACT_Con = zeros(4);
-    for (int m = 0; m < 4; m++)
-        RuACT_Con[m] = RA_Con[m + 88];
-    
-    arr EPS_DYDT = EPS_mb(t, EPS_Con, myVars);
-    arr RuACT_DYDT = RuACT_Mb(t, RuACT_Con, myVars);
-    
     arr RA_DYDT = zeros(92);
-    
-    for (int m = 0; m < 88; m++)
+
+    for (size_t m = 0; m < 88; m++)
         RA_DYDT[m] = EPS_DYDT[m];
-    
-    
-    for (int m = 0; m < 4; m++)
+
+
+    for (size_t m = 0; m < 4; m++)
         RA_DYDT[m + 88] = RuACT_DYDT[m];
-    
-    
-    //global PSPR2RA_v1;
-    //global PSPR2RA_v13;
-    //global PSPR2RA_v111;
-    
-    
-    //global RuACT2RA_v61;
-    //global RuACT2RA_v62;
-    //global RuACT2RA_v1;
-    //global RuACT2RA_vn1;
-    //global RuACT2RA_v7;
-    //global RuACT2RA_vn7;
-    
+
     const double DYDT_RuBP = myVars->RuACT2RA_v1 + myVars->PSPR2RA_v13 - myVars->RuACT2RA_vn1 + myVars->RuACT2RA_vn7 - myVars->RuACT2RA_v7;
     RA_DYDT[52] = DYDT_RuBP;
     RA_DYDT[91] = DYDT_RuBP;
-    
+
     const double DYDT_PGA = EPS_DYDT[53] - 2 * myVars->PSPR2RA_v1 + 2 * myVars->RuACT2RA_v61 - myVars->PSPR2RA_v111 + myVars->RuACT2RA_v62;// Originally it is pspr(2), now use EPS_DYDT[53].
     RA_DYDT[53] = DYDT_PGA;
-    
-    
+
+
     const double DYDT_PGCA = EPS_DYDT[68] - myVars->PSPR2RA_v111 + myVars->RuACT2RA_v62;
     RA_DYDT[68] = DYDT_PGCA;
     return RA_DYDT;

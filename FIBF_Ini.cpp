@@ -1,6 +1,5 @@
-#include "globals.hpp"
+#include "Variables.hpp"
 
-//#codegen
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -25,19 +24,10 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// This is the function to initialize some global variable used in FIBF MODEL
 
+void FIBF_Ini(Variables *myVars) {
 
-// FIBF_Ini.m This is the function to initialize some global variable used in FIBF MODEL
-
-void FIBF_Ini(varptr *myVars) {
-    
     const double FIBF_PQT = 8;
-    
-    //global FIBF_Pool;
-    // FIBF_Pool = zeros(5, 1);
-    myVars->FIBF_Pool[0] = FIBF_PQT;
-    
-    // Assign values for output variable
-    //const double fibfSUC = 1;
-    //return fibfSUC;
+    myVars->FIBF_Pool.PQT = FIBF_PQT;
 }

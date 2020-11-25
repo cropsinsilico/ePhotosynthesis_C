@@ -1,4 +1,4 @@
-#include "globals.hpp"
+#include "Variables.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -24,41 +24,26 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-arr RedoxReg_mb(double t, arr &RedoxReg_Con, varptr *myVars) {
-    
-    
-    //global trDynaPS2RedReg_cal
+arr RedoxReg_mb(double t, RedoxRegCon &RedoxReg_Con, Variables *myVars) {
     myVars->trDynaPS2RedReg_cal = 1;
-    
-    arr RA_Con = zeros(92);
-    for (int m = 0; m < 92; m++)
-        RA_Con[m] = RedoxReg_Con[m];
-    
-    
-    // ThioRe = RedoxReg_Con[92];// --unused
-    
-    arr RedoxReg_Vel = zeros(2);
-    RedoxReg_Vel = RedoxReg_Rate(t, RedoxReg_Con, myVars);
-    
-    arr RA_DYDT = RA_mb(t, RA_Con, myVars);
-    
+
+    RedoxReg_Rate(t, RedoxReg_Con, myVars);
+
+    arr RA_DYDT = RA_mb(t, RedoxReg_Con.RA_con, myVars);
+
     arr RedoxReg_DYDT = zeros(93);
-    
-    for (int index = 0; index < 92; index++)
+
+    for (size_t index = 0; index < 92; index++)
         RedoxReg_DYDT[index] = RA_DYDT[index];
-    
-    
-    const double vred = RedoxReg_Vel[0];
-    const double vox = RedoxReg_Vel[1];
-    
+
+
+    const double vred = myVars->RedoxReg_Vel.Vred;
+    const double vox = myVars->RedoxReg_Vel.Vox;
+
     RedoxReg_DYDT[92] = vred - vox;
     RedoxReg_DYDT[92] = 0;
-    
-    
+
+
     const double Temp = RedoxReg_DYDT[23];
     RedoxReg_DYDT[23] = Temp;
     return RedoxReg_DYDT;

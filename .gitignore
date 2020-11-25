@@ -40,3 +40,10 @@ cp/
 cp2/
 
 ePhotosynthesis/
+
+bup/
+
+output.data.orig
+
+.ccls-cache/
+nbproject/

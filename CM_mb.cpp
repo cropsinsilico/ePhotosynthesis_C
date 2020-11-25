@@ -1,5 +1,5 @@
-#include "globals.hpp"
-
+#include "Variables.hpp"
+#include "CM.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -25,64 +25,43 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-int CM::CM_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
-    //global TestSucPath;
-    realtype *x = N_VGetArrayPointer(u);
-    realtype *dxdt = N_VGetArrayPointer(u_dot);
-    arr PSPR_Con = zeros(24);
-    for (int m = 0; m < 23; m++)
-        PSPR_Con[m] = x[m];
-    
-    
-    arr SUCS_Con = zeros(12);
-    for (int m = 0; m < 12; m++)
-        SUCS_Con[m] = x[23 + m];
-    
-    
-    PSPR_Con[23] = x[35];
-    
-    
+arr CM_Mb(realtype t, CMCon &CM_con, Variables *myVars) {
+    arr dxdt = zeros(36);
+
     arr SUCS_DYDT = zeros(12);
-    SUCS_DYDT = SUCS_Mb(t, SUCS_Con, myVars);
-    arr PSPR_DYDT = PS_PRmb(t, PSPR_Con, myVars);
-    
-    for (int m = 0; m < 23; m++)
+    SUCS_DYDT = SUCS_Mb(t, CM_con.SUCS_con, myVars);
+    //PS_PRCon PS_PR_con(PSPR_Con);
+    arr PSPR_DYDT = PS_PRmb(t, CM_con.PS_PR_con, myVars);
+
+    for (size_t m = 0; m < 23; m++)
         dxdt[m] = PSPR_DYDT[m];
-    
-    
-    for (int m = 0; m < 12; m++)
+
+
+    for (size_t m = 0; m < 12; m++)
         dxdt[m + 23] = SUCS_DYDT[m];
-    
-    
+
+
     dxdt[35] = PSPR_DYDT[23];
-    
-    //global PS2CM_vdhap;
+
     const double vdhap = myVars->PS2CM_vdhap;        // The rate of export out of chloroplast
-    
-    //global PS2CM_vgap;          // The rate of export out of chloroplast
+
+    // The rate of export out of chloroplast
     const double vgap = myVars->PS2CM_vgap;
-    
-    //global SUCS2CM_vdhap;       // The rate of import into the cytosol
-    //global SUCS2CM_vgap;        // The rate of import into the cytosol
+
+    // The rate of import into the cytosol
     const double vdhap_ins = myVars->SUCS2CM_vdhap;   //	DHAP IN
     const double vgap_ins = myVars->SUCS2CM_vgap;   //	GAP IN
     if (myVars->TestSucPath == 1)
         SUCS_DYDT[0] = SUCS_DYDT[0] + vdhap + vgap - (vdhap_ins + vgap_ins);
-    
-    if (myVars->TestSucPath == 0)
-        SUCS_DYDT[0] = SUCS_DYDT[0];
-    
-    //;   //	T3Pc WY1905
+
+    //	T3Pc WY1905
     dxdt[23] = SUCS_DYDT[0];
-    
-    
-    //global PS2CM_vpga;
+
     const double vpga = myVars->PS2CM_vpga;
-    
-    //global SUCS2CM_vpga;
+
     const double vpga_ins = myVars->SUCS2CM_vpga;                                       //	PGA export from chloroplast
-    
+
     SUCS_DYDT[11] = SUCS_DYDT[11] - vpga_ins + vpga;//	pgaC
     dxdt[34] = SUCS_DYDT[11];
-    return 0;
+    return dxdt;
 }

@@ -1,3 +1,4 @@
+#include "Variables.hpp"
 #include "globals.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -24,73 +25,66 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-arr PRmb(double t, arr &PrS, varptr *myVars) {
-    
+arr PRmb(double t, PRCon &PR_con, Variables *myVars) {
     Condition(t, myVars);
-    
-    arr Velocity = zeros(10);
-    Velocity = PRrate(t, PrS, myVars);
-    
-    const double v111 = Velocity[0];
-    const double v112 = Velocity[1];
-    const double v113 = Velocity[2];
-    const double v121 = Velocity[3];
-    const double v122 = Velocity[4];
-    const double v123 = Velocity[5];
-    const double v124 = Velocity[6];
-    const double v131 = Velocity[7];
-    const double v1in = Velocity[8];
-    const double v2out = Velocity[9];
-    
-    
+
+    PRrate(t, PR_con, myVars);
+
+    const double v111 = myVars->PR_Vel.v111;
+    const double v112 = myVars->PR_Vel.v112;
+    const double v113 = myVars->PR_Vel.v113;
+    const double v121 = myVars->PR_Vel.v121;
+    const double v122 = myVars->PR_Vel.v122;
+    const double v123 = myVars->PR_Vel.v123;
+    const double v124 = myVars->PR_Vel.v124;
+    const double v131 = myVars->PR_Vel.v131;
+    const double v1in = myVars->PR_Vel.v1in;
+    const double v2out = myVars->PR_Vel.v2out;
+
+
     arr tmp = zeros(13);
-    
-    
+
+
     tmp[0] = v1in - v113;
-    
-    
+
+
     tmp[1] = v112 - v2out;
-    
-    
+
+
     tmp[2] = v111 + v113 - 0.5;
-    
+
     tmp[2] = 0;
-    
-    
+
+
     tmp[3] = v111 - v112;
-    
-    
+
+
     tmp[4] = v2out - v121;
-    
-    
-    
+
+
+
     tmp[5] = v121 - v122 - v124;
-    
-    
+
+
     tmp[6] = v131 - v122;
-    
-    
+
+
     tmp[7] = v122 + v124 - 2 * v131;
-    
-    
+
+
     tmp[8] = v122 - v123;
-    
-    
+
+
     tmp[9] = v123 - v1in;
-    
-    
+
+
     tmp[10] = 0.3 - v111;
-    
-    
+
+
     tmp[11] = 0;
-    
-    
+
+
     tmp[12] = 0;
-    
-    
-    arr PR_DYDT = tmp;
-    return PR_DYDT;
+
+    return tmp;
 }

@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "trDynaPS.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -26,33 +26,11 @@
 
 
 
-arr trDynaPS::trDynaPS_Ini() {
-    
-    // BEGIN = 1;// --unused
-    
-    //global trDynaPS_OLD_TIME;
-    //global trDynaPS_TIME_N;
-    //global trDynaPS_VEL;
-    //global trDynaPS_CON;
-    
-    //myVars.trDynaPS_OLD_TIME = 0;  // --unused
-    //myVars.trDynaPS_TIME_N = 1;  // --unused
-    // trDynaPS_VEL = zeros(1, 3);    // Clean memory
-    // trDynaPS_CON = zeros(3, 1);    // Clean memory
-    
-    // Now get the combined total concentration of different concentration variables.
-    DynaPS dps = DynaPS(myVars);
-    arr DynaPS_Con = dps.DynaPS_Ini();
-    arr trDynaPS_Con = zeros(96);
-    
-    for (int m = 0; m < 96; m++)
-        trDynaPS_Con[m] = DynaPS_Con[m];
-    
-    
-    arr RROEA_Con = RROEA_Ini(myVars);
-    
-    for (int m = 0; m < 10; m++)
-        DynaPS_Con[m + 110] = RROEA_Con[m];
-    
-    return DynaPS_Con;
+trDynaPSCon trDynaPS::trDynaPS_Ini() {
+    DynaPSCon DynaPS_con = DynaPS_Init(myVars);
+
+    RROEACon RROEA_con = RROEA_Ini(myVars);
+
+    trDynaPSCon trDynaPS_Con(DynaPS_con, RROEA_con);
+    return trDynaPS_Con;
 }

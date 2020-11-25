@@ -1,5 +1,5 @@
 #include "globals.hpp"
-
+#include "CM.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -26,24 +26,12 @@
 
 
 
-arr CM::CM_Ini() {
-    
-    arr PS_PRs = zeros(24);
-    PS_PRs = PS_PRIni(myVars);
-    arr CMs = zeros(36);
-    
-    for (int m = 0; m < 23; m++)
-        CMs[m] = PS_PRs[m];
-    
-    
-    arr SUCS_Con = SUCS_Ini(myVars);
-    
-    // The gap left is for later use.
-    
-    for (int m = 0; m < 12; m++)
-        CMs[23 + m] = SUCS_Con[m];
-    
-    
-    CMs[35] = PS_PRs[23];
+CMCon CMInit(Variables *myVars) {
+
+    PS_PRCon PS_PR_con = PS_PRIni(myVars);
+
+    SUCSCon SUCS_Con = SUCS_Ini(myVars);
+
+    CMCon CMs(PS_PR_con, SUCS_Con);
     return CMs;
 }

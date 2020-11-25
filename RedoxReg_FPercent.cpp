@@ -1,5 +1,6 @@
 #include "globals.hpp"
 #include <sundials/sundials_types.h>   /* defs. of realtype, sunindextype */
+#include "RedoxReg.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -28,16 +29,10 @@ int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data) {
     realtype *udata = N_VGetArrayPointer(u);
     realtype *fdata = N_VGetArrayPointer(f_val);
     UserData *data = static_cast<UserData*>(user_data);
-    
+
     double Etr = data->coeffs[0];
     double Em = data->coeffs[1];
     realtype x = udata[0];
     fdata[0] = Etr - (Em - 0.03 * log10(x / (1 - x)));
     return 0;
 }
-//double RedoxReg_FPercent(double x, double Etr, double Em) {
-    
-//    const double f = Etr - (Em - 0.03 * log10(x / (1 - x)));
-    
-//    return f;
-//}
