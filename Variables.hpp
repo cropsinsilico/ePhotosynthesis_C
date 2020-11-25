@@ -306,12 +306,6 @@ struct Variables {
     double RedoxReg_VMAX6 = 0.;
     double RedoxReg_VMAX9 = 0.;
     double RedoxReg_Param = 0;
-    double RuACT2RA_v1 = 0.;
-    double RuACT2RA_v61 = 0.;
-    double RuACT2RA_v62 = 0.;
-    double RuACT2RA_v7 = 0.;
-    double RuACT2RA_vn1 = 0.;
-    double RuACT2RA_vn7 = 0.;
     double SUCS2CM_vdhap = 0.;
     double SUCS2CM_vgap = 0.;
     double SUCS2CM_vpga = 0.;

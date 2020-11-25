@@ -110,7 +110,7 @@ void GenOut(double t, Variables *myVars) {
         co2a[5] = 0.; // Gs;
         co2a[6] = (v1 - v131) * myVars->AVR;//
         if (myVars->RuACT_EPS_com)
-            co2a[6] = (myVars->RuACT2RA_v61 - v131) * myVars->AVR;//
+            co2a[6] = (myVars->RuACT_Vel.v6_1 - v131) * myVars->AVR;//
         co2a[7] = PGA;//
         co2a[8] = DPGA;//
         co2a[9] = T3P;//
