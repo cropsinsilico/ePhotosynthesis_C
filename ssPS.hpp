@@ -1,3 +1,5 @@
+#pragma once
+
 /**********************************************************************************************************************************************
  *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
  *
@@ -24,15 +26,8 @@
  *
  **********************************************************************************************************************************************/
 
-#include "Variables.hpp"
+#include "definitions.hpp"
 
-// This routine initialze the parameters used for all the routines.
+arr ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, double Light, Variables *myVars);
 
-void SYSInitial(Variables *myVars) {
-
-    myVars->PS12ratio = myVars->input_PSI / myVars->input_PSIIcore;
-
-    myVars->ChlT2 = myVars->input_PSIIcore * (myVars->PSIIantennaSize + 13 * myVars->input_LHCII);// U and A, PSII and LHCII
-    myVars->ChlT = myVars->PSIIantennaSize * myVars->input_PSIIcore;// U , PSII
-    myVars->ChlPSI = myVars->input_PSI * (myVars->PSIantennaSize + 13 * myVars->input_LHCI);// U and A of PSI, total Chl in PSI
-}
+void ssPSIni(double t, Variables *myVars);
