@@ -72,14 +72,14 @@ double CM::CM_Drive2(double pop, double currentPop) {
     int flag;
     realtype abstol = 1e-5;
     realtype reltol = 1e-4;
-    sunindextype N =  CMs.size();
+    sunindextype N =  static_cast<long>(CMs.size());
     N_Vector y;
     y = N_VNew_Serial(N);
 
-    for (int i = 0; i < N; i++)
+    for (size_t i = 0; i < CMs.size(); i++)
         NV_Ith_S(y, i) =  CMs[i];
 
-    void *cvode_mem = NULL;
+    void *cvode_mem = nullptr;
     cvode_mem = CVodeCreate(CV_BDF);
     realtype t0 = 0;
     flag = CVodeInit(cvode_mem, CM_mb, t0, y);
@@ -92,7 +92,6 @@ double CM::CM_Drive2(double pop, double currentPop) {
     flag = CVodeSetUserData(cvode_mem, data);
 
     SUNMatrix A = SUNDenseMatrix(N, N);
-
 
     SUNLinearSolver LS = SUNDenseLinearSolver(y, A);
 

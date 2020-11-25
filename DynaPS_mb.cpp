@@ -50,13 +50,10 @@ std::vector<double> DynaPSmb(double t, DynaPSCon &DynaPS_con, Variables *myVars)
 
     // Here get the rate of Thioredoxin reduction and oxidation and use it to construct the differential equation for both thio and fd.
 
-    arr dxdt = zeros(96);
-    for (size_t index = 0; index < 92; index++)
-        dxdt[index] = RA_DYDT[index];
-
-
-    for (size_t index = 0; index < 4; index++)
-        dxdt[index + 92] = XanCycle_DYDT[index];
+    arr dxdt;
+    dxdt.reserve(96);
+    dxdt.insert(dxdt.end(), RA_DYDT.begin(), RA_DYDT.begin() + 92);
+    dxdt.insert(dxdt.end(), XanCycle_DYDT.begin(), XanCycle_DYDT.end());
 
     return dxdt;
 }

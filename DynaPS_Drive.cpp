@@ -128,14 +128,14 @@ arr DynaPS::DynaPS_Drive(size_t ParaNum, double Ratio) {
     int flag;
     realtype abstol = 1e-5;
     realtype reltol = 1e-4;
-    sunindextype N =  DynaPS_Con.size();
+    sunindextype N =  static_cast<long>(DynaPS_Con.size());
     N_Vector y;
     y = N_VNew_Serial(N);
 
-    for (size_t i = 0; i < N; i++)
+    for (size_t i = 0; i < DynaPS_Con.size(); i++)
         NV_Ith_S(y, i) =  DynaPS_Con[i];
 
-    void *cvode_mem = NULL;
+    void *cvode_mem = nullptr;
     cvode_mem = CVodeCreate(CV_BDF);
     realtype t0 = 0;
     flag = CVodeInit(cvode_mem, DynaPS_mb, t0, y);
