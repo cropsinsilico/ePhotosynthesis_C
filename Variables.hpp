@@ -92,6 +92,7 @@ struct Variables {
     double EPS_ATP_Rate = 0.;
     double EPS_Param = 0;
     double FIBF2FI_PQ = 0.;
+    double FIBF2FI_PQa = 0.;
     double FIBF_RA_Mg = 0.;
     double Fd_Thio_ET = 500;
     double GLUc = 0.;
@@ -416,7 +417,6 @@ struct Variables {
     arr XanCycle2OUT = zeros(4);
 
     // misc
-    arr FIBF_AUX = zeros(2);
     arr FluxTR = zeros(142);
     RROEAKE RROEA_KE;
 
