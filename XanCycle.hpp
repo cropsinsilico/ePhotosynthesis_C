@@ -48,7 +48,6 @@ public:
     double VABAdg = 0.;  //  The rate of ABA degradation
 };
 
-struct Variables;
 class XanCycleCon {
 public:
     XanCycleCon() {}
@@ -74,10 +73,10 @@ public:
     size_t size() {
         return count;
     }
-    double Vx = 0.;
-    double Ax = 0.;
-    double Zx = 0.;
-    double ABA = 0.;
+    double Vx = 0.;	// The concentration of Violozanthin
+    double Ax = 0.;	//	The concentration of Anthrozanthin
+    double Zx = 0.;	//	The concentration of Zeaznthin
+    double ABA = 0.;	//	The concentration of ABA
 private:
     size_t count = 4;
 };
