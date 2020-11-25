@@ -44,13 +44,8 @@ void RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *myVars) {
         ADP = 1.5 - ATP;
         RatioDT = ADP / ATP;
     } else {
-        C = myVars->PSPR_RA_CO2;
-        O = myVars->PSPR_RA_O2;
-
-        if (myVars->StomCond_TrDynaPS_com) {
-            C = myVars->PS2RubACC;
-            O = myVars->PS2RubACO;
-        }
+        C = myVars->CO2_cond;
+        O = myVars->O2_cond;
 
         MT = myVars->FIBF_RA_Mg;
         ATP = myVars->PS2RA_ATP;

@@ -151,7 +151,7 @@ PRCon PRinitial(Variables *myVars) {
 
     if (myVars->GP == 0) {
         if (myVars->PR_PS_com) {
-            myVars->V111 = 0.24 * myVars->PS2PR_V1 * myVars->PRRatio[0];
+            myVars->V111 = 0.24 * myVars->V1 * myVars->PRRatio[0];
 
     } else {
             myVars->V111 = 3.7 * 0.24 * 1;

@@ -48,10 +48,10 @@ arr EPS_mb(double t, EPSCon &EPS_Con, Variables *myVars) {
     for (size_t m = 0; m < 36; m++)
         EPS_DYDT[m + 52] = CM_DYDT[m];
 
-    EPS_DYDT[60] = CM_DYDT[8] - myVars->PS2EPS_V16 + myVars->EPS_ATP_Rate - myVars->PRGlu;//WY 201804
+    EPS_DYDT[60] = CM_DYDT[8] - myVars->PS_Vel.v16 + myVars->EPS_ATP_Rate - myVars->PRGlu;//WY 201804
     EPS_DYDT[16] = EPS_DYDT[60];
 
-    EPS_DYDT[61] = myVars->BF2EPS_vbfn2 / 2 - myVars->PS2EPS_v3 - 2 * myVars->PRGlu;//WY 201804
+    EPS_DYDT[61] = myVars->BF2EPS_vbfn2 / 2 - myVars->PS_Vel.v3 - 2 * myVars->PRGlu;//WY 201804
     EPS_DYDT[28] = EPS_DYDT[61];
     return EPS_DYDT;
 }

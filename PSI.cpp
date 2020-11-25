@@ -34,39 +34,22 @@ PSCon PSI(Variables *myVars) {
 
     myVars->PSPR_RA_CA = myVars->PS_C_CA;
 
-    const double RuBP = 2.000;
-    const double PGA = 2.400;
-    const double DPGA = 0.0011;
-    const double T3P = 0.5;
-    const double NONE = 0;
-    const double FBP = 0.670;
-    const double E4P = 0.050;
-    const double S7P = 2.000;
-    const double SBP = 0.300;
-    const double ATP = 0.68;
-    const double NADPH = 0.21;
-    const double HexP = 2.2;
-    const double PenP = 0.25;
-
-    const double CO2 = 0.012;
-    const double O2 = 0.264;
-
     PSCon PS_con;
-    PS_con.RuBP = RuBP;
-    PS_con.PGA = PGA;
-    PS_con.DPGA = DPGA;
-    PS_con.T3P = T3P;
-    PS_con.ADPG = NONE;
-    PS_con.FBP = FBP;
-    PS_con.E4P = E4P;
-    PS_con.S7P = S7P;
-    PS_con.SBP = SBP;
-    PS_con.ATP = ATP;
-    PS_con.NADPH = NADPH;
-    PS_con.CO2 = CO2;
-    PS_con.O2 = O2;
-    PS_con.HexP = HexP;
-    PS_con.PenP = PenP;
+    PS_con.RuBP = 2.000;
+    PS_con.PGA = 2.400;
+    PS_con.DPGA = 0.001;
+    PS_con.T3P = 0.5;
+    PS_con.ADPG = 0.;
+    PS_con.FBP = 0.670;
+    PS_con.E4P = 0.050;
+    PS_con.S7P = 2.000;
+    PS_con.SBP = 0.300;
+    PS_con.ATP = 0.68;
+    PS_con.NADPH = 0.21;
+    PS_con.CO2 = 0.012;
+    PS_con.O2 = 0.264;
+    PS_con.HexP = 2.2;
+    PS_con.PenP = 0.25;
 
     myVars->KM11 = 0.0115;		// 	CO2	1	RuBP+CO2->2PGA
     myVars->KM12 = 0.222;		//	O2	1	RuBP+CO2->2PGA  0.28 DEFAUL.
@@ -163,9 +146,9 @@ PSCon PSI(Variables *myVars) {
     //   Here is the location for transfering variables
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    myVars->PS2RA_RuBP_ini = RuBP;
+    myVars->PS2RA_RuBP_ini = PS_con.RuBP;
 
-    myVars->PS2BF_ADP = myVars->PS_C_CA - ATP;
+    myVars->PS2BF_ADP = myVars->PS_C_CA - PS_con.ATP;
 
     return PS_con;
 }

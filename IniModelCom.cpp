@@ -47,8 +47,6 @@ void IniModelCom(Variables *myVars) {
 
     myVars->RROEA_EPS_com = false;
 
-    myVars->StomCond_TrDynaPS_com = false;
-
     myVars->PSPR_SUCS_com = false;
 
     myVars->EPS_SUCS_com = false;

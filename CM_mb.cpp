@@ -45,10 +45,10 @@ arr CM_Mb(realtype t, CMCon &CM_con, Variables *myVars) {
 
     dxdt[35] = PSPR_DYDT[23];
 
-    const double vdhap = myVars->PS2CM_vdhap;        // The rate of export out of chloroplast
+    const double vdhap = myVars->PS_Vel.v31;        // The rate of export out of chloroplast
 
     // The rate of export out of chloroplast
-    const double vgap = myVars->PS2CM_vgap;
+    const double vgap = myVars->PS_Vel.v33;
 
     // The rate of import into the cytosol
     const double vdhap_ins = myVars->SUCS_Vel.vdhap_in;   //	DHAP IN
@@ -59,7 +59,7 @@ arr CM_Mb(realtype t, CMCon &CM_con, Variables *myVars) {
     //	T3Pc WY1905
     dxdt[23] = SUCS_DYDT[0];
 
-    const double vpga = myVars->PS2CM_vpga;
+    const double vpga = myVars->PS_Vel.v32;
 
     const double vpga_ins = myVars->SUCS_Vel.vpga_in;                                       //	PGA export from chloroplast
 
