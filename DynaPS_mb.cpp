@@ -1,5 +1,6 @@
 #include "globals.hpp"
 #include "DynaPS.hpp"
+#include "Variables.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -27,48 +28,33 @@
 
 // This model includes the mass balance equations for the full model of photosynthesis.
 
-std::vector<double> DynaPSmb(double t, DynaPSCon &DynaPS_con, varptr *myVars) {
-    
+std::vector<double> DynaPSmb(double t, DynaPSCon &DynaPS_con, Variables *myVars) {
+
     // Try out one new way of calculating the mass balance equation.
     // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.
-    
+
     //// Step One: Get the initialization of the concentrations for the RedoxReg model which will be used in the calculation of mb of RedoxReg.
 
-    //arr RA_Con = zeros(92);
-    //for (int m = 0; m < 92; m++)
-    //    RA_Con[m] = x[m];
-    
-    //RACon RA_con(RA_Con);
-    
-    //arr XanCycle_Con = zeros(4);
-    //for (int m = 0; m < 4; m++)
-    //    XanCycle_Con[m] = x[m + 92];
-    //XanCycleCon XanCycle_con(XanCycle_Con);
-    
     // This is a sensitivity test to show that the model is stable udner fluctuating light
-    
+
     const double light = 1;
     Condition(t, myVars);
-    
+
     myVars->FI_Param[0] = light;
     myVars->BF_Param[0] = light;
-    
+
     arr RA_DYDT = RA_mb(t, DynaPS_con.RA_con, myVars);
     arr XanCycle_DYDT = XanCycle_Mb(t, DynaPS_con.XanCycle_con, myVars);
-    
+
     // Here get the rate of Thioredoxin reduction and oxidation and use it to construct the differential equation for both thio and fd.
-    
-    //arr DynaPS_DYDT = zeros(0);
-    //global PRGlu;
+
     arr dxdt = zeros(96);
-    for (int index = 0; index < 92; index++)
+    for (size_t index = 0; index < 92; index++)
         dxdt[index] = RA_DYDT[index];
-    
-    
-    for (int index = 0; index < 4; index++)
+
+
+    for (size_t index = 0; index < 4; index++)
         dxdt[index + 92] = XanCycle_DYDT[index];
-    
-    // Temp = DynaPS_DYDT(24) -2*PRGlu;
-    //DynaPS_DYDT(24) = Temp;
+
     return dxdt;
 }

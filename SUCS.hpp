@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include "definitions.hpp"
 
 struct Variables;
 class SUCSCon {
@@ -19,11 +19,11 @@ public:
         SUC = other.SUC;
         PGAc = other.PGAc;
     }
-    SUCSCon(const std::vector<double> &vec, const size_t offset = 0) {
+    SUCSCon(const arr &vec, const size_t offset = 0) {
         fromArray(vec, offset);
     }
 
-    void fromArray(const std::vector<double> &vec, const size_t offset = 0) {
+    void fromArray(const arr &vec, const size_t offset = 0) {
         T3Pc = vec[offset];
         FBPc = vec[offset + 1];
         HexPc = vec[offset + 2];
@@ -39,8 +39,8 @@ public:
 
     }
 
-    std::vector<double> toArray() {
-        std::vector<double> vec = {T3Pc, FBPc, HexPc, F26BPc, ATPc, ADPc, OPOPc, UDPGc, UTPc, SUCP, SUC, PGAc};
+    arr toArray() {
+        arr vec = {T3Pc, FBPc, HexPc, F26BPc, ATPc, ADPc, OPOPc, UDPGc, UTPc, SUCP, SUC, PGAc};
         return vec;
     }
     size_t size() {
@@ -116,6 +116,6 @@ public:
 
 SUCSCon SUCS_Ini(Variables *myVars);
 
-std::vector<double> SUCS_Mb(double t, SUCSCon &SUCS_Con, Variables *myVars);
+arr SUCS_Mb(double t, SUCSCon &SUCS_Con, Variables *myVars);
 
 void SUCS_Rate(double t, SUCSCon &SUCS_Con, Variables *myVars);

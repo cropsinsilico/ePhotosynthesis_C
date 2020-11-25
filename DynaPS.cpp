@@ -31,24 +31,19 @@ DynaPSCon DynaPS::DynaPS_Ini() {
 // DynaPS_mb.m  This model includes the mass balance equations for the full model of photosynthesis.
 
 int DynaPS::DynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
-    
+
     // Try out one new way of calculating the mass balance equation.
     // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.
-    
+
     //// Step One: Get the initialization of the concentrations for the RedoxReg model which will be used in the calculation of mb of RedoxReg.
     realtype *x = N_VGetArrayPointer(u);
     realtype *dxdt = N_VGetArrayPointer(u_dot);
-    
+
     DynaPSCon DynaPS_con(x);
 
     arr ddxdt = DynaPSmb(t, DynaPS_con, myVars);
-    for (int index = 0; index < 96; index++)
+    for (size_t index = 0; index < 96; index++)
         dxdt[index] = ddxdt[index];
-    
-    
-    //for (int index = 0; index < 4; index++)
-    //    dxdt[index + 92] = XanCycle_DYDT[index];
-    
 
     return 0;
 }

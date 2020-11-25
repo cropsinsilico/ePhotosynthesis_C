@@ -1,7 +1,7 @@
 #pragma once
 #include "RA.hpp"
 #include "XanCycle.hpp"
-#include <sundials/sundials_types.h>
+#include "driver.hpp"
 
 class DynaPSCon {
 public:
@@ -17,22 +17,22 @@ public:
         RA_con = rother;
         XanCycle_con = xother;
     }
-    DynaPSCon(const std::vector<double> &vec, size_t offset = 0){
+    DynaPSCon(const arr &vec, size_t offset = 0){
             fromArray(vec, offset);
     }
     void fromArray(realtype *x) {
-        std::vector<double> vec(120);
-        for (int i = 0; i < size(); i++)
+        arr vec(120);
+        for (size_t i = 0; i < size(); i++)
             vec[i] = x[i];
         fromArray(vec);
     }
-    void fromArray(const std::vector<double> &vec, size_t offset = 0) {
+    void fromArray(const arr &vec, size_t offset = 0) {
             RA_con.fromArray(vec, offset);
             XanCycle_con.fromArray(vec, offset + RA_con.size());
     }
-    std::vector<double> toArray() {
-        std::vector<double> rvec = RA_con.toArray();
-        std::vector<double> xvec = XanCycle_con.toArray();
+    arr toArray() {
+        arr rvec = RA_con.toArray();
+        arr xvec = XanCycle_con.toArray();
         rvec.insert(rvec.end(), xvec.begin(), xvec.end());
         return rvec;
     }
@@ -44,13 +44,13 @@ public:
 };
 
 DynaPSCon DynaPS_Init(Variables *myVars);
-std::vector<double> DynaPSmb(double t, DynaPSCon &DynaPS_con, Variables *myVars);
+arr DynaPSmb(double t, DynaPSCon &DynaPS_con, Variables *myVars);
 class DynaPS {
 public:
-  DynaPS(Variables *myVars) { this->myVars = myVars; }
-  static Variables *myVars;
-  std::vector<double> DynaPS_Drive(double ParaNum, double Ratio);
+    DynaPS(Variables *myVars) { this->myVars = myVars; }
+    static Variables *myVars;
+    arr DynaPS_Drive(size_t ParaNum, double Ratio);
 
-  static int DynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
-  DynaPSCon DynaPS_Ini();
+    static int DynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
+    DynaPSCon DynaPS_Ini();
 };

@@ -1,4 +1,4 @@
-#include "globals.hpp"
+#include "Variables.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -24,21 +24,7 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-void PreProcess(varptr *myVars) {
-    
-    // d = 0;// --unused
-    //global FIBF;
-    //global PSPR;
-    //global FI;
-    //global BF;
-    //global ATPActive;
+void PreProcess(Variables *myVars) {
     myVars->ATPActive = 0;
-    
-    //myVars->FIBF = 0;  // --unused
-    //myVars->PSPR = 0;   // constant set in globals.hpp
-    //myVars->BF = 0;  // --unused
-    //myVars->FI = 0;  // --unused
-    
-    //const double suc = 1;
-    //return suc;
+
 }

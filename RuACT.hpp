@@ -1,24 +1,23 @@
 #pragma once
-#include <vector>
+#include "definitions.hpp"
 
 class RuACTVel {
-  public:
-  RuACTVel() {}
-  RuACTVel(const RuACTVel &other) {
-      v1 = other.v1;
-vn1 = other.vn1;
-v7 = other.v7;
-vn7 = other.vn7;
-v6_1 = other.v6_1;
-v6_2 = other.v6_2;
-
-  }
-    double v1 = 0.;  
-double vn1 = 0.;  
-double v7 = 0.;  
-double vn7 = 0.;  
-double v6_1 = 0.;  
-double v6_2 = 0.;  
+public:
+    RuACTVel() {}
+    RuACTVel(const RuACTVel &other) {
+        v1 = other.v1;
+        vn1 = other.vn1;
+        v7 = other.v7;
+        vn7 = other.vn7;
+        v6_1 = other.v6_1;
+        v6_2 = other.v6_2;
+    }
+    double v1 = 0.;
+    double vn1 = 0.;
+    double v7 = 0.;
+    double vn7 = 0.;
+    double v6_1 = 0.;
+    double v6_2 = 0.;
 };
 
 class RuACTRC {
@@ -68,8 +67,6 @@ public:
     double M = 0;
 };
 
-
-struct Variables;
 class RuACTCon {
 public:
     RuACTCon() {}
@@ -79,17 +76,17 @@ public:
         ECMR = other.ECMR;
         RuBP = other.RuBP;
     }
-    RuACTCon(const std::vector<double> vec, size_t offset = 0) {
+    RuACTCon(const arr vec, size_t offset = 0) {
         fromArray(vec, offset);
     }
-    void fromArray(const std::vector<double> vec, size_t offset = 0){
+    void fromArray(const arr vec, size_t offset = 0){
         ER = vec[offset];
         Eaf = vec[offset + 1];
         ECMR = vec[offset + 2];
         RuBP = vec[offset + 3];
     }
-    std::vector<double> toArray() {
-        std::vector<double> array = {ER, Eaf, ECMR, RuBP};
+    arr toArray() {
+        arr array = {ER, Eaf, ECMR, RuBP};
         return array;
     }
     size_t size() {
@@ -105,6 +102,6 @@ private:
 
 RuACTCon RuACT_Ini(Variables *myVars);
 
-std::vector<double> RuACT_Mb(double t, RuACTCon &RuACT_Con, Variables *myVars);
+arr RuACT_Mb(double t, RuACTCon &RuACT_Con, Variables *myVars);
 
 void RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *myVars);

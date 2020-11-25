@@ -1,129 +1,127 @@
 #pragma once
-#include <vector>
-
-struct Variables;
+#include "definitions.hpp"
 
 class FI {
 public:
-  FI() {}
-  FI(const FI &other) {
-    vA_d = other.vA_d;
-    vA_f = other.vA_f;
-    vA_U = other.vA_U;
-    vU_A = other.vU_A;
-    vU_f = other.vU_f;
-    vU_d = other.vU_d;
-    v1 = other.v1;
-    v_r1 = other.v_r1;
-    vS1_S2 = other.vS1_S2;
-    vS2_S3 = other.vS2_S3;
-    vS3_S0 = other.vS3_S0;
-    vS0_S1 = other.vS0_S1;
-    vz_1 = other.vz_1;
-    v1z_1 = other.v1z_1;
-    v2z_1 = other.v2z_1;
-    v3z_1 = other.v3z_1;
-    v0z_1 = other.v0z_1;
-    vz_2 = other.vz_2;
-    v1z_2 = other.v1z_2;
-    v2z_2 = other.v2z_2;
-    v3z_2 = other.v3z_2;
-    v0z_2 = other.v0z_2;
-    v1z = other.v1z;
-    v2z = other.v2z;
-    v3z = other.v3z;
-    v0z = other.v0z;
-    vAB1 = other.vAB1;
-    vBA1 = other.vBA1;
-    vAB2 = other.vAB2;
-    vBA2 = other.vBA2;
-    v3 = other.v3;
-    v_r3 = other.v_r3;
-    v3_n = other.v3_n;
-    v_r3_n = other.v_r3_n;
-    v_pq_ox = other.v_pq_ox;
-    Ic = other.Ic;
-    Ia = other.Ia;
-    v2_1 = other.v2_1;
-    v2_2 = other.v2_2;
-    v2_00_1 = other.v2_00_1;
-    v2_01_1 = other.v2_01_1;
-    v2_02_1 = other.v2_02_1;
-    v2_00_2 = other.v2_00_2;
-    v2_01_2 = other.v2_01_2;
-    v2_02_2 = other.v2_02_2;
-    vr2_00_1 = other.vr2_00_1;
-    vr2_01_1 = other.vr2_01_1;
-    vr2_02_1 = other.vr2_02_1;
-    vr2_1 = other.vr2_1;
-    vr2_00_2 = other.vr2_00_2;
-    vr2_01_2 = other.vr2_01_2;
-    vr2_02_2 = other.vr2_02_2;
-    vr2_2 = other.vr2_2;
-    vP680qU = other.vP680qU;
-    vP680qA = other.vP680qA;
-    vU_P680 = other.vU_P680;
-    vP680_d = other.vP680_d;
-    vP680_f = other.vP680_f;
-  }
-  double vA_d = 0.;//	vA_d	The rate of heat dissipation from peripheral antenna
-  double vA_f = 0.;	//	vA_f	The rate of fluorescence emission from peripheral antenna
-  double vA_U = 0.;	//	vA_U	The rate of exciton transfer from peripheral antenna to core antenna in open reaction center
-  double vU_A = 0.;	//	vU_A	The rate of exciton transfer from core antenna to perpheral antenna in open center
-  double vU_f = 0.;	//	vU_f	The rate of fluorescence emission from core antenna
-  double vU_d = 0.;	//	vU_d	The rate of heat dissipation from core antenna
-  double v1 = 0.;	//	v1	The rate of primary charge separation
-  double v_r1 = 0.;//	v_r1	The rate of charge recombination
-  double vS1_S2 = 0.;	//	vS1_S2	The rate of transition from S1 to S2
-  double vS2_S3 = 0.;	//	vS2_S3	The rate of transition from S2 to S3
-  double vS3_S0 = 0.;	//	vS3_S0	The rate of transition from S3 to S0
-  double vS0_S1 = 0.;	//	vS0_S1	The rate of transition from S0 to S1
-  double vz_1 = 0.;	//	vz_1	The rate of P680p reduction
-  double v1z_1 = 0.;	//	v1z_1	The rate of oxidation of S1T by P680pPheon
-  double v2z_1 = 0.;	//	v2z_1	The rate of oxidation of S2T  by P680pPheon
-  double v3z_1 = 0.;	//	v3z_1	The rate of oxidation of S3T  by P680pPheon
-  double v0z_1 = 0.;	//	v0z_1	The rate of oxidation of S0T  by P680pPheon
-  double vz_2 = 0.;	//	vz_2	The rate of P680pPheon reduction
-  double v1z_2 = 0.;	//	v1z_2	The rate of oxidation of S1T by P680pPheo
-  double v2z_2 = 0.;	//	v2z_2	The rate of oxidation of S2T  by P680pPheo
-  double v3z_2 = 0.;	//	v3z_2	The rate of oxidation of S3T  by P680pPheo
-  double v0z_2 = 0.;	//	v0z_2	The rate of oxidation of S0T  by P680pPheo
-  double v1z = 0.;
-  double v2z = 0.;
-  double v3z = 0.;
-  double v0z = 0.;
-  double vAB1 = 0.;//	vAB1	The rate of electron transfer from QA- to QB
-  double vBA1 = 0.;//	vBA1	The rate of electron transfer from QB- to QA
-  double vAB2 = 0.;//	vAB2	The rate of electron transfer from QA- to QB-
-  double vBA2 = 0.;//	vBA2	The rate of electron transfer from QB2- TO QA
-  double v3 = 0.;//	v3	The rate of exchange of QAQBH2 with PQ
-  double v_r3 = 0.;//	v_r3	The rate of exchange of QAQB with PQH2
-  double v3_n = 0.;//	v3_n	The rate of exchange of QAnQBH2 with PQ
-  double v_r3_n = 0.;//	v_r3_n	The rate of exchange of QAnQB with PQH2
-  double v_pq_ox = 0.;//	v_pq_ox	The rate of PQH2 oxidation
-  double Ic = 0.; //	Ic	The incident light on the core antenna
-  double Ia = 0.;//	Ia	The incident light on the peripheral antenna
-  double v2_1 = 0.;//	v2_1	The rate of P680pPheon oxidation
-  double v2_2 = 0.;//	v2_1	The rate of P680pPheon oxidation
-  double v2_00_1 = 0.;//	v2_00_1	The rate of reduction of QAQB by P680pPheon
-  double v2_01_1 = 0.;//	v2_01_1	The rate of reduction of QAQBn by P680pPheon
-  double v2_02_1 = 0.;//	v2_02_1	The rate of reduction of QAQB2n by P680pPheon
-  double v2_00_2 = 0.;//	v2_00_2	The rate of reduction of QAQB by P680Pheon
-  double v2_01_2 = 0.;//	v2_01_2	The rate of reduction of QAQBn by P680Pheon
-  double v2_02_2 = 0.;//	v2_02_2	The rate of reduction of QAQB2n by P680Pheon
-  double vr2_00_1 = 0.;//	vr2_00_1	The reverse reaction of The rate of reduction of QAQB by P680pPheon
-  double vr2_01_1 = 0.;//	vr2_01_1	The reverse reaction of The rate of reduction of QAQBn by P680pPheon
-  double vr2_02_1 = 0.;//	vr2_02_1	The reverse reaction of The rate of reduction of QAQB2n by P680pPheon
-  double vr2_1 = 0.;
-  double vr2_00_2 = 0.;//	vr2_00_2	The reverse reaction of The rate of reduction of QAQB by P680Pheon
-  double vr2_01_2 = 0.;//	vr2_01_2	The reverse reaction of The rate of reduction of QAQBn by P680Pheon
-  double vr2_02_2 = 0.;//	vr2_02_2	The reverse reaction of The rate of reduction of QAQB2n by P680Pheon
-  double vr2_2 = 0.;
-  double vP680qU = 0.;
-  double vP680qA = 0.;
-  double vU_P680 = 0.;
-  double vP680_d = 0.;
-  double vP680_f = 0.;
+    FI() {}
+    FI(const FI &other) {
+        vA_d = other.vA_d;
+        vA_f = other.vA_f;
+        vA_U = other.vA_U;
+        vU_A = other.vU_A;
+        vU_f = other.vU_f;
+        vU_d = other.vU_d;
+        v1 = other.v1;
+        v_r1 = other.v_r1;
+        vS1_S2 = other.vS1_S2;
+        vS2_S3 = other.vS2_S3;
+        vS3_S0 = other.vS3_S0;
+        vS0_S1 = other.vS0_S1;
+        vz_1 = other.vz_1;
+        v1z_1 = other.v1z_1;
+        v2z_1 = other.v2z_1;
+        v3z_1 = other.v3z_1;
+        v0z_1 = other.v0z_1;
+        vz_2 = other.vz_2;
+        v1z_2 = other.v1z_2;
+        v2z_2 = other.v2z_2;
+        v3z_2 = other.v3z_2;
+        v0z_2 = other.v0z_2;
+        v1z = other.v1z;
+        v2z = other.v2z;
+        v3z = other.v3z;
+        v0z = other.v0z;
+        vAB1 = other.vAB1;
+        vBA1 = other.vBA1;
+        vAB2 = other.vAB2;
+        vBA2 = other.vBA2;
+        v3 = other.v3;
+        v_r3 = other.v_r3;
+        v3_n = other.v3_n;
+        v_r3_n = other.v_r3_n;
+        v_pq_ox = other.v_pq_ox;
+        Ic = other.Ic;
+        Ia = other.Ia;
+        v2_1 = other.v2_1;
+        v2_2 = other.v2_2;
+        v2_00_1 = other.v2_00_1;
+        v2_01_1 = other.v2_01_1;
+        v2_02_1 = other.v2_02_1;
+        v2_00_2 = other.v2_00_2;
+        v2_01_2 = other.v2_01_2;
+        v2_02_2 = other.v2_02_2;
+        vr2_00_1 = other.vr2_00_1;
+        vr2_01_1 = other.vr2_01_1;
+        vr2_02_1 = other.vr2_02_1;
+        vr2_1 = other.vr2_1;
+        vr2_00_2 = other.vr2_00_2;
+        vr2_01_2 = other.vr2_01_2;
+        vr2_02_2 = other.vr2_02_2;
+        vr2_2 = other.vr2_2;
+        vP680qU = other.vP680qU;
+        vP680qA = other.vP680qA;
+        vU_P680 = other.vU_P680;
+        vP680_d = other.vP680_d;
+        vP680_f = other.vP680_f;
+    }
+    double vA_d = 0.;//	vA_d	The rate of heat dissipation from peripheral antenna
+    double vA_f = 0.;	//	vA_f	The rate of fluorescence emission from peripheral antenna
+    double vA_U = 0.;	//	vA_U	The rate of exciton transfer from peripheral antenna to core antenna in open reaction center
+    double vU_A = 0.;	//	vU_A	The rate of exciton transfer from core antenna to perpheral antenna in open center
+    double vU_f = 0.;	//	vU_f	The rate of fluorescence emission from core antenna
+    double vU_d = 0.;	//	vU_d	The rate of heat dissipation from core antenna
+    double v1 = 0.;	//	v1	The rate of primary charge separation
+    double v_r1 = 0.;//	v_r1	The rate of charge recombination
+    double vS1_S2 = 0.;	//	vS1_S2	The rate of transition from S1 to S2
+    double vS2_S3 = 0.;	//	vS2_S3	The rate of transition from S2 to S3
+    double vS3_S0 = 0.;	//	vS3_S0	The rate of transition from S3 to S0
+    double vS0_S1 = 0.;	//	vS0_S1	The rate of transition from S0 to S1
+    double vz_1 = 0.;	//	vz_1	The rate of P680p reduction
+    double v1z_1 = 0.;	//	v1z_1	The rate of oxidation of S1T by P680pPheon
+    double v2z_1 = 0.;	//	v2z_1	The rate of oxidation of S2T  by P680pPheon
+    double v3z_1 = 0.;	//	v3z_1	The rate of oxidation of S3T  by P680pPheon
+    double v0z_1 = 0.;	//	v0z_1	The rate of oxidation of S0T  by P680pPheon
+    double vz_2 = 0.;	//	vz_2	The rate of P680pPheon reduction
+    double v1z_2 = 0.;	//	v1z_2	The rate of oxidation of S1T by P680pPheo
+    double v2z_2 = 0.;	//	v2z_2	The rate of oxidation of S2T  by P680pPheo
+    double v3z_2 = 0.;	//	v3z_2	The rate of oxidation of S3T  by P680pPheo
+    double v0z_2 = 0.;	//	v0z_2	The rate of oxidation of S0T  by P680pPheo
+    double v1z = 0.;
+    double v2z = 0.;
+    double v3z = 0.;
+    double v0z = 0.;
+    double vAB1 = 0.;//	vAB1	The rate of electron transfer from QA- to QB
+    double vBA1 = 0.;//	vBA1	The rate of electron transfer from QB- to QA
+    double vAB2 = 0.;//	vAB2	The rate of electron transfer from QA- to QB-
+    double vBA2 = 0.;//	vBA2	The rate of electron transfer from QB2- TO QA
+    double v3 = 0.;//	v3	The rate of exchange of QAQBH2 with PQ
+    double v_r3 = 0.;//	v_r3	The rate of exchange of QAQB with PQH2
+    double v3_n = 0.;//	v3_n	The rate of exchange of QAnQBH2 with PQ
+    double v_r3_n = 0.;//	v_r3_n	The rate of exchange of QAnQB with PQH2
+    double v_pq_ox = 0.;//	v_pq_ox	The rate of PQH2 oxidation
+    double Ic = 0.; //	Ic	The incident light on the core antenna
+    double Ia = 0.;//	Ia	The incident light on the peripheral antenna
+    double v2_1 = 0.;//	v2_1	The rate of P680pPheon oxidation
+    double v2_2 = 0.;//	v2_1	The rate of P680pPheon oxidation
+    double v2_00_1 = 0.;//	v2_00_1	The rate of reduction of QAQB by P680pPheon
+    double v2_01_1 = 0.;//	v2_01_1	The rate of reduction of QAQBn by P680pPheon
+    double v2_02_1 = 0.;//	v2_02_1	The rate of reduction of QAQB2n by P680pPheon
+    double v2_00_2 = 0.;//	v2_00_2	The rate of reduction of QAQB by P680Pheon
+    double v2_01_2 = 0.;//	v2_01_2	The rate of reduction of QAQBn by P680Pheon
+    double v2_02_2 = 0.;//	v2_02_2	The rate of reduction of QAQB2n by P680Pheon
+    double vr2_00_1 = 0.;//	vr2_00_1	The reverse reaction of The rate of reduction of QAQB by P680pPheon
+    double vr2_01_1 = 0.;//	vr2_01_1	The reverse reaction of The rate of reduction of QAQBn by P680pPheon
+    double vr2_02_1 = 0.;//	vr2_02_1	The reverse reaction of The rate of reduction of QAQB2n by P680pPheon
+    double vr2_1 = 0.;
+    double vr2_00_2 = 0.;//	vr2_00_2	The reverse reaction of The rate of reduction of QAQB by P680Pheon
+    double vr2_01_2 = 0.;//	vr2_01_2	The reverse reaction of The rate of reduction of QAQBn by P680Pheon
+    double vr2_02_2 = 0.;//	vr2_02_2	The reverse reaction of The rate of reduction of QAQB2n by P680Pheon
+    double vr2_2 = 0.;
+    double vP680qU = 0.;
+    double vP680qA = 0.;
+    double vU_P680 = 0.;
+    double vP680_d = 0.;
+    double vP680_f = 0.;
 };
 
 class FIRC {
@@ -181,11 +179,9 @@ class FIPool {
 public:
     FIPool() {}
     FIPool(const FIPool &other) {
-
         QBt = other.QBt;
         PQT = other.PQT;
-}
-
+    }
     double QBt = 0;
     double PQT = 0;
 };
@@ -193,9 +189,7 @@ public:
 
 class FICon {
 public:
-    FICon() {
-
-    }
+    FICon() {}
     FICon(const FICon &other){
         A = other.A;
         U = other.U;
@@ -220,12 +214,12 @@ public:
         QAnQB2n = other.QAnQB2n;
         PQn = other.PQn;
     }
-    
-    FICon(const std::vector<double> &vec, const size_t offset = 0) {
+
+    FICon(const arr &vec, const size_t offset = 0) {
         fromArray(vec, offset);
     }
 
-    void fromArray(const std::vector<double> &vec, const size_t offset = 0) {
+    void fromArray(const arr &vec, const size_t offset = 0) {
         A = vec[offset];
         U = vec[offset + 1];
         P680ePheo = vec[offset + 2];
@@ -250,8 +244,8 @@ public:
         PQn = vec[offset + 21];
     }
 
-    std::vector<double> toArray() {
-        std::vector<double> vec = {A, U, P680ePheo, P680pPheon, P680pPheo, P680Pheon, Yz, S1T, S2T, S3T, S0T, S1Tp, S2Tp, S3Tp, S0Tp, QAQB, QAnQB, QAQBn, QAnQBn, QAQB2n, QAnQB2n, PQn};
+    arr toArray() {
+        arr vec = {A, U, P680ePheo, P680pPheon, P680pPheo, P680Pheon, Yz, S1T, S2T, S3T, S0T, S1Tp, S2Tp, S3Tp, S0Tp, QAQB, QAnQB, QAQBn, QAnQBn, QAQB2n, QAnQB2n, PQn};
         return vec;
     }
     size_t size() {
@@ -284,5 +278,5 @@ private:
 };
 
 FICon FI_Ini(Variables *myVars);
-std::vector<double> FI_Mb(double t, FICon &FI_Con, Variables *myVars);
+arr FI_Mb(double t, FICon &FI_Con, Variables *myVars);
 void FI_Rate(double t, FICon &FI_Con, Variables *myVars);

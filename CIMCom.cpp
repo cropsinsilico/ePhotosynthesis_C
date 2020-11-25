@@ -1,4 +1,4 @@
-#include "globals.hpp"
+#include "Variables.hpp"
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -26,44 +26,29 @@
 
 
 
-double IModelCom(varptr &myVars) {
-    
-    //global RuACT_EPS_com;
+double IModelCom(Variables &myVars) {
     myVars.RuACT_EPS_com = false;
-    
-    //global BF_FI_com;
+
     myVars.BF_FI_com = false;
-    
-    //global PR_PS_com;
+
     myVars.PR_PS_com = false;
-    
-    //global FIBF_PSPR_com;
+
     myVars.FIBF_PSPR_com = false;
-    
-    //global ATPActive;
+
     myVars.ATPActive = 0;
-    
-    //global RedoxReg_RA_com;
+
     myVars.RedoxReg_RA_com = false;
-    
-    //global XanCycle_BF_com;
+
     myVars.XanCycle_BF_com = false;
-    
-    //global RROEA_EPS_com;
+
     myVars.RROEA_EPS_com = false;
-    
-    //global StomCond_TrDynaPS_com;
+
     myVars.StomCond_TrDynaPS_com = false;
-    
-    //global PSPR_SUCS_com;
+
     myVars.PSPR_SUCS_com = false;
-    
-    //global trDynaPS_SUCS_com;
-    //myVars.trDynaPS_SUCS_com = false;  // --unused
-    
-    //global EPS_SUCS_com;
+
     myVars.EPS_SUCS_com = false;
-    
+
     const double ModelComb = 1;
     return ModelComb;
 }

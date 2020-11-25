@@ -1,3 +1,4 @@
+#pragma once
 #include "FIBF.hpp"
 #include "CM.hpp"
 
@@ -12,33 +13,18 @@ public:
         CM_con = cother;
         FIBF_con = fother;
     }
-    EPSCon(const std::vector<double> &vec, const size_t offset = 0) {
+    EPSCon(const arr &vec, const size_t offset = 0) {
         fromArray(vec, offset);
     }
-    void fromArray(const std::vector<double> &vec, const size_t offset = 0) {
-        //for (int i = 0; i < size(); i++)
-        //    std::cout << vec[offset + i] << ", ";
-        //std::cout << std::endl;
+    void fromArray(const arr &vec, const size_t offset = 0) {
         FIBF_con.fromArray(vec, offset);
-        //for (int i = FIBF_con.size(); i < size(); i++)
-        //    std::cout << vec[offset + i] << ", ";
-        //std::cout << std::endl;
         CM_con.fromArray(vec, offset + FIBF_con.size());
-        //std::cout << FIBF_con.size() << "  " << vec.size() << std::endl;
-        //std::cout << std::endl << std::endl;
     }
-    std::vector<double> toArray() {
-        std::vector<double> fvec = FIBF_con.toArray();
-        std::vector<double> cvec = CM_con.toArray();
+    arr toArray() {
+        arr fvec = FIBF_con.toArray();
+        arr cvec = CM_con.toArray();
         fvec.reserve(size());
-        //std::cout << fvec.size() << std::endl;
         fvec.insert(fvec.end(), cvec.begin(), cvec.end());
-        //std::cout << fvec.size() << std::endl;
-        //std::cout << "INIT" << std::endl;
-        //for (int i = 0; i < fvec.size(); i++)
-        //    std::cout << fvec.at(i) << ", ";
-        //std::cout << std::endl;
-        //std::cout << FIBF_con.size() << std::endl;
         return fvec;
     }
     size_t size() {
@@ -50,4 +36,4 @@ public:
 
 EPSCon EPS_Ini(Variables *myVars);
 
-std::vector<double> EPS_mb(double t, EPSCon &EPS_Con, Variables *myVars);
+arr EPS_mb(double t, EPSCon &EPS_Con, Variables *myVars);

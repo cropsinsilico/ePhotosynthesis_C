@@ -27,35 +27,10 @@
 
 
 trDynaPSCon trDynaPS::trDynaPS_Ini() {
-    
-    // BEGIN = 1;// --unused
-    
-    //global trDynaPS_OLD_TIME;
-    //global trDynaPS_TIME_N;
-    //global trDynaPS_VEL;
-    //global trDynaPS_CON;
-    
-    //myVars.trDynaPS_OLD_TIME = 0;  // --unused
-    //myVars.trDynaPS_TIME_N = 1;  // --unused
-    // trDynaPS_VEL = zeros(1, 3);    // Clean memory
-    // trDynaPS_CON = zeros(3, 1);    // Clean memory
-    
-    // Now get the combined total concentration of different concentration variables.
-    //DynaPS dps = DynaPS(myVars);
     DynaPSCon DynaPS_con = DynaPS_Init(myVars);
-    //arr DynaPS_Con = dps.DynaPS_Ini();
-    //arr temp = DynaPS_con.toArray();
-    //DynaPS_Con.reserve(120);
-    //arr DynaPS_Con = zeros(120);
-    
-    //for (int m = 0; m < 96; m++)
-    //    DynaPS_Con[m] = temp[m];
-    
-    
+
     RROEACon RROEA_con = RROEA_Ini(myVars);
-    //arr RROEA_Con = RROEA_con.toArray();
-    //for (int m = 0; m < 10; m++)
-    //    DynaPS_Con[m + 110] = RROEA_Con[m];
+
     trDynaPSCon trDynaPS_Con(DynaPS_con, RROEA_con);
     return trDynaPS_Con;
 }

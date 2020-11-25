@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include "definitions.hpp"
 
 class RROEAVel {
 public:
@@ -7,36 +7,33 @@ public:
     RROEAVel(const RROEAVel &other) {
         ve2GAPDH = other.ve2GAPDH;
         ve2FBPase = other.ve2FBPase;
-ve2SBPase = other.ve2SBPase;
-ve2PRK = other.ve2PRK;
-ve2ATPase = other.ve2ATPase;
-ve2ATPGPP = other.ve2ATPGPP;
-ve2MDH = other.ve2MDH;
-ve2Fd = other.ve2Fd;
-veFd2Thio = other.veFd2Thio;
-veFd2Calvin = other.veFd2Calvin;
-ve2RuACT = other.ve2RuACT;
-
+        ve2SBPase = other.ve2SBPase;
+        ve2PRK = other.ve2PRK;
+        ve2ATPase = other.ve2ATPase;
+        ve2ATPGPP = other.ve2ATPGPP;
+        ve2MDH = other.ve2MDH;
+        ve2Fd = other.ve2Fd;
+        veFd2Thio = other.veFd2Thio;
+        veFd2Calvin = other.veFd2Calvin;
+        ve2RuACT = other.ve2RuACT;
     }
-    double ve2GAPDH = 0.;  
-double ve2FBPase = 0.;  
-double ve2SBPase = 0.;  
-double ve2PRK = 0.;  
-double ve2ATPase = 0.;  
-double ve2ATPGPP = 0.;  
-double ve2MDH = 0.;  
-double ve2Fd = 0.;  
-double veFd2Thio = 0.;  
-double veFd2Calvin = 0.;  
-double ve2RuACT = 0.;  
-
+    double ve2GAPDH = 0.;
+    double ve2FBPase = 0.;
+    double ve2SBPase = 0.;
+    double ve2PRK = 0.;
+    double ve2ATPase = 0.;
+    double ve2ATPGPP = 0.;
+    double ve2MDH = 0.;
+    double ve2Fd = 0.;
+    double veFd2Thio = 0.;
+    double veFd2Calvin = 0.;
+    double ve2RuACT = 0.;
 };
 
 class RROEARC {
 public:
     RROEARC() {}
     RROEARC(const RROEARC &other) {
-
         ke2GAPDH = other.ke2GAPDH;
         ke2MDH = other.ke2MDH;
         ke2FBPase = other.ke2FBPase;
@@ -47,7 +44,7 @@ public:
         keFd2Thio = other.keFd2Thio;
         keFd2Calvin = other.keFd2Calvin;
         ke2ATPGPP = other.ke2ATPGPP;
-}
+    }
 
     double ke2GAPDH = 0;
     double ke2MDH = 0;
@@ -75,7 +72,7 @@ public:
         KEe2MDH = other.KEe2MDH;
         KEe2ATPGPP = other.KEe2ATPGPP;
         KEeFd2Thio = other.KEeFd2Thio;
-}
+    }
 
     double KEe2FBPase = 0;
     double KEe2SBPase = 0;
@@ -87,6 +84,7 @@ public:
     double KEe2ATPGPP = 0;
     double KEeFd2Thio = 0;
 };
+
 class RROEAPool {
 public:
     RROEAPool() {}
@@ -102,7 +100,7 @@ public:
         ThioT = other.ThioT;
         FdT = other.FdT;
         RuACTT = other.RuACTT;
-}
+    }
 
     double GAPDH = 0;
     double FBPase = 0;
@@ -134,11 +132,11 @@ public:
         RuACT = other.RuACT;
     }
 
-    RROEACon(const std::vector<double> &vec, size_t offset = 0) {
+    RROEACon(const arr &vec, size_t offset = 0) {
         fromArray(vec, offset);
     }
 
-    void fromArray(const std::vector<double> &vec, size_t offset = 0) {
+    void fromArray(const arr &vec, size_t offset = 0) {
         GAPDH = vec[offset];
         FBPase = vec[offset + 1];
         SBPase = vec[offset + 2];
@@ -154,8 +152,8 @@ public:
         return count;
     }
 
-    std::vector<double> toArray() {
-        std::vector<double> array = {GAPDH, FBPase, SBPase, PRK, ATPase, ATPGPP, MDH, Thio, Fd, RuACT};
+    arr toArray() {
+        arr array = {GAPDH, FBPase, SBPase, PRK, ATPase, ATPGPP, MDH, Thio, Fd, RuACT};
         return array;
     }
 
@@ -177,6 +175,6 @@ private:
 
 RROEACon RROEA_Ini(Variables *myVars);
 
-std::vector<double> RROEA_Mb(double t, RROEACon &RROEA_Con, Variables *myVars);
+arr RROEA_Mb(double t, RROEACon &RROEA_Con, Variables *myVars);
 
 void RROEA_Rate(double t, RROEACon &RROEA_Con, Variables *myVars);

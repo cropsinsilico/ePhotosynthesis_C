@@ -1,5 +1,5 @@
 #pragma once
-#include <vector>
+#include "definitions.hpp"
 
 struct Variables;
 
@@ -24,11 +24,11 @@ public:
         PenP = other.PenP;
     }
 
-    PSCon(const std::vector<double> &vec, size_t offset = 0) {
+    PSCon(const arr &vec, size_t offset = 0) {
         fromArray(vec, offset);
     }
 
-    void fromArray(const std::vector<double> &vec, size_t offset = 0) {
+    void fromArray(const arr &vec, size_t offset = 0) {
         RuBP = vec[offset];
         PGA = vec[offset + 1];
         DPGA = vec[offset + 2];
@@ -46,8 +46,8 @@ public:
         PenP = vec[offset + 14];
     }
 
-    std::vector<double> toArray() {
-        std::vector<double> array = {RuBP, PGA, DPGA, T3P, ADPG, FBP, E4P, S7P, SBP, ATP, NADPH, CO2, O2, HexP, PenP};
+    arr toArray() {
+        arr array = {RuBP, PGA, DPGA, T3P, ADPG, FBP, E4P, S7P, SBP, ATP, NADPH, CO2, O2, HexP, PenP};
         return array;
     }
     size_t size() {
@@ -97,9 +97,6 @@ public:
         v25 = other.v25;
     }
     PSVel& operator*=(const double val) {
-
-
-        //t
         this->v1 *= val;
         this->v2 *= val;
         this->v3 *= val;
@@ -143,9 +140,9 @@ public:
 
 };
 
-std::vector<double> PSmb(double t, PSCon &PSs, std::vector<double> &Param, Variables *myVars);
+arr PSmb(double t, PSCon &PSs, arr &Param, Variables *myVars);
 //std::vector<double> PSI(Variables *myVars);
 
 PSCon PSInitial(Variables *myVars);
 
-void PSRate(double t, PSCon &PSs, std::vector<double> &Param, Variables *myVars);
+void PSRate(double t, PSCon &PSs, arr &Param, Variables *myVars);

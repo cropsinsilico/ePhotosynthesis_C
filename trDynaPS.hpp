@@ -1,4 +1,3 @@
-
 #pragma once
 #include "RROEA.hpp"
 #include "DynaPS.hpp"
@@ -14,34 +13,32 @@ public:
         DynaPS_con = dother;
         RROEA_con = rother;
     }
-    trDynaPSCon(const std::vector<double> &vec, size_t offset = 0) {
+    trDynaPSCon(const arr &vec, size_t offset = 0) {
         fromArray(vec, offset);
     }
     trDynaPSCon(realtype *x) {
         fromArray(x);
     }
     void fromArray(realtype *x) {
-        std::vector<double> vec(size());
-        for (int i = 0; i < size(); i++)
+        arr vec(size());
+        for (size_t i = 0; i < size(); i++)
             vec[i] = x[i];
         fromArray(vec);
     }
-    void fromArray(const std::vector<double> &vec, size_t offset = 0) {
+    void fromArray(const arr &vec, size_t offset = 0) {
         DynaPS_con.fromArray(vec, offset);
         RROEA_con.fromArray(vec, offset + 110);//DynaPS_con.size());
     }
-    std::vector<double> toArray() {
-        std::vector<double> dyvec = DynaPS_con.toArray();
-        std::vector<double> rrvec = RROEA_con.toArray();
-        std::vector<double> vec = zeros(120);
-        for (int i = 0; i < 96; i++)
+    arr toArray() {
+        arr dyvec = DynaPS_con.toArray();
+        arr rrvec = RROEA_con.toArray();
+        arr vec = zeros(120);
+        for (size_t i = 0; i < 96; i++)
             vec[i] = dyvec[i];
-        for (int i = 0; i < 10; i++)
+        for (size_t i = 0; i < 10; i++)
             vec[i+110] = rrvec[i];
         return vec;
-        //dyvec.reserve(size());
-        //dyvec.insert(dyvec.end(), rrvec.begin(), rrvec.end());
-        //return dyvec;
+
     }
     size_t size() {
         return 120;//RROEA_con.size() + DynaPS_con.size();
@@ -55,7 +52,7 @@ class trDynaPS {
 public:
   trDynaPS(Variables *myVars) { this->myVars = myVars; }
   static Variables *myVars;
-  std::vector<double> trDynaPS_Drive(double ParaNum, double Ratio);
+  arr trDynaPS_Drive(double ParaNum, double Ratio);
 
   static int trDynaPS_mb(realtype t, N_Vector u, N_Vector u_dot,
                          void *user_data);

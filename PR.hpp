@@ -1,7 +1,5 @@
 #pragma once
-#include <vector>
-
-struct Variables;
+#include "definitions.hpp"
 
 class PRCon {
 public:
@@ -21,10 +19,10 @@ public:
         CO2 = other.CO2;
         O2 = other.O2;
     }
-    PRCon(const std::vector<double> vec, size_t offset = 0) {
+    PRCon(const arr vec, size_t offset = 0) {
         fromArray(vec, offset);
     }
-    void fromArray(const std::vector<double> vec, size_t offset = 0){
+    void fromArray(const arr vec, size_t offset = 0){
         GCEA= vec[offset];
         GCA= vec[offset + 1];
         PGA= vec[offset + 2];
@@ -39,8 +37,8 @@ public:
         CO2= vec[offset + 11];
         O2= vec[offset + 12];
     }
-    std::vector<double> toArray() {
-        std::vector<double> array = {GCEA, GCA, PGA, PGCA, GCAc, GOAc, SERc, GLYc, HPRc, GCEAc, RUBP, CO2, O2};
+    arr toArray() {
+        arr array = {GCEA, GCA, PGA, PGCA, GCAc, GOAc, SERc, GLYc, HPRc, GCEAc, RUBP, CO2, O2};
         return array;
     }
     size_t size() {
@@ -105,6 +103,6 @@ public:
 
 PRCon PRinitial(Variables *myVars);
 
-std::vector<double> PRmb(double t, PRCon &PR_con, Variables *myVars);
+arr PRmb(double t, PRCon &PR_con, Variables *myVars);
 
 void PRrate(double t, PRCon &PR_con, Variables *myVars);

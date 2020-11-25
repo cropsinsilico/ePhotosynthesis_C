@@ -1,5 +1,4 @@
-#include "globals.hpp"
-#include "RA.hpp"
+#include "Variables.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -25,35 +24,14 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-RACon RA_Ini(varptr *myVars) {
-    
-    //const double BEGIN = 1;
+RACon RA_Ini(Variables *myVars) {
     EPSCon EPS_con = EPS_Ini(myVars);
     RuACTCon RuACT_con = RuACT_Ini(myVars);
-    //arr EPS_Con = EPS_con.toArray();
-    
-    //global RuACT_OLD_TIME;
-    //global RuACT_TIME_N;
-    //global RuACT_VEL;
-    //global RuACT_CON;
-    
+
     myVars->RuACT_OLD_TIME = 0;
     myVars->RuACT_TIME_N = 1;
-    
-    // RuACT_VEL = zeros(1, 3);    // Clean memory
-    // RuACT_CON = zeros(3, 1);    // Clean memory
-    
+
     // Now get the combined total concentration of different concentration variables.
-    
-    //arr RA_Con = zeros(92);
-    
-    //for (int m = 0; m < 88; m++)
-    //    RA_Con[m] = EPS_Con[m];
-    
-    
-    //arr RuACT_con = RuACT_Con.toArray();
-    //for (int m = 0; m < 4; m++)
-    //    RA_Con[m + 88] = RuACT_con[m];
     RACon RA_con(EPS_con, RuACT_con);
     return RA_con;
 }

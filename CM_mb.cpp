@@ -1,4 +1,4 @@
-#include "globals.hpp"
+#include "Variables.hpp"
 #include "CM.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -25,66 +25,42 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-arr CM_Mb(realtype t, CMCon &CM_con, varptr *myVars) {
-    //global TestSucPath;
-    //realtype *x = N_VGetArrayPointer(u);
-    //realtype *dxdt = N_VGetArrayPointer(u_dot);
+arr CM_Mb(realtype t, CMCon &CM_con, Variables *myVars) {
     arr dxdt = zeros(36);
-    //CMCon CM_con(CMs);
-    //arr PSPR_Con = zeros(24);
-    //for (int m = 0; m < 23; m++)
-    //    PSPR_Con[m] = CM_con[m];
-    
-    
-    //arr SUCSc = zeros(12);
-    //for (int m = 0; m < 12; m++)
-    //    SUCSc[m] = CM_con[23 + m];
-    //SUCSCon SUCS_Con(SUCSc);
-    
-    //PSPR_Con[23] = CM_con[35];
-    
-    
+
     arr SUCS_DYDT = zeros(12);
     SUCS_DYDT = SUCS_Mb(t, CM_con.SUCS_con, myVars);
     //PS_PRCon PS_PR_con(PSPR_Con);
     arr PSPR_DYDT = PS_PRmb(t, CM_con.PS_PR_con, myVars);
-    
-    for (int m = 0; m < 23; m++)
+
+    for (size_t m = 0; m < 23; m++)
         dxdt[m] = PSPR_DYDT[m];
-    
-    
-    for (int m = 0; m < 12; m++)
+
+
+    for (size_t m = 0; m < 12; m++)
         dxdt[m + 23] = SUCS_DYDT[m];
-    
-    
+
+
     dxdt[35] = PSPR_DYDT[23];
-    
-    //global PS2CM_vdhap;
+
     const double vdhap = myVars->PS2CM_vdhap;        // The rate of export out of chloroplast
-    
-    //global PS2CM_vgap;          // The rate of export out of chloroplast
+
+    // The rate of export out of chloroplast
     const double vgap = myVars->PS2CM_vgap;
-    
-    //global SUCS2CM_vdhap;       // The rate of import into the cytosol
-    //global SUCS2CM_vgap;        // The rate of import into the cytosol
+
+    // The rate of import into the cytosol
     const double vdhap_ins = myVars->SUCS2CM_vdhap;   //	DHAP IN
     const double vgap_ins = myVars->SUCS2CM_vgap;   //	GAP IN
     if (myVars->TestSucPath == 1)
         SUCS_DYDT[0] = SUCS_DYDT[0] + vdhap + vgap - (vdhap_ins + vgap_ins);
-    
-    if (myVars->TestSucPath == 0)
-        SUCS_DYDT[0] = SUCS_DYDT[0];
-    
-    //;   //	T3Pc WY1905
+
+    //	T3Pc WY1905
     dxdt[23] = SUCS_DYDT[0];
-    
-    
-    //global PS2CM_vpga;
+
     const double vpga = myVars->PS2CM_vpga;
-    
-    //global SUCS2CM_vpga;
+
     const double vpga_ins = myVars->SUCS2CM_vpga;                                       //	PGA export from chloroplast
-    
+
     SUCS_DYDT[11] = SUCS_DYDT[11] - vpga_ins + vpga;//	pgaC
     dxdt[34] = SUCS_DYDT[11];
     return dxdt;

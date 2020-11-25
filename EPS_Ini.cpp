@@ -1,4 +1,4 @@
-#include "globals.hpp"
+#include "Variables.hpp"
 #include "EPS.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -24,110 +24,43 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-EPSCon EPS_Ini(varptr *myVars) {
-    
-    // Begin = 1;// --unused
-    
+EPSCon EPS_Ini(Variables *myVars) {
     FIBF_Ini(myVars);
     FICon FI_Con = FI_Ini(myVars);
     BFCon BF_con = BF_Ini(myVars);
     FIBFCon FIBF_con(BF_con, FI_Con);
     //// Step 1 Get the initialization of the variables for BF
-    
-    //global BF_OLD_TIME;
-    //global BF_TIME_N;
-    //global BF_VEL;
-    //global BF_CON;
-    
+
     myVars->BF_OLD_TIME = 0;
     myVars->BF_TIME_N = 1;
-    
-    // BF_VEL = zeros(1, 5);    // Clean memory
-    // BF_CON = zeros(1, 5);    // Clean memory
-    
+
     //// Get the initialization of the variables for FI
-    
-    //global FI_OLD_TIME;
-    //global FI_TIME_N;
-    //global FI_VEL;
-    //global FI_CON;
-    
+
     myVars->FI_OLD_TIME = 0;
     myVars->FI_TIME_N = 1;
-    
-    // FI_VEL = zeros(1, 5);    // Clean memory
-    // FI_CON = zeros(5, 1);    // Clean memory
-    
-    
-    //global FIBF_Pool;
-    //global FI_Pool;
-    //global BF_Pool;
     myVars->FI_Pool.PQT = myVars->FIBF_Pool.PQT;
     myVars->BF_Pool.k_r1 = myVars->FIBF_Pool.PQT;
-    
-    // Initial concentration for FIBF_Con
-    //arr FIBF_Con = zeros(52);
-    //FIBF_Con;
-    //arr BF_Con = BF_con.toArray();
-    //for (int m = 0; m < 29; m++)
-    //    FIBF_Con[m] = BF_Con[m];
-    
-    //arr FI_con = FI_Con.toArray();
-    //for (int m = 0; m < 22; m++)
-    //    FIBF_Con[m + 29] = FI_con[m];
-    
-    
-    //FIBF_Con[51] = pow(10, 8) * 0.5;
-    //arr FIBF_Con = FIBF_con.toArray();
+
     // Second, try to get the iniitalzation files for the PSPR model
-    
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //   Global variables used for obtaining flux and concentration data //
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    //global PS_PR_OLDTIME;
-    //global PS_PR_TIME_N;
-    //global PS_PR_VEL;
-    
-    //myVars->PS_PR_OLDTIME = 0;  // --unused
-    //myVars->PS_PR_TIME_N = 1;  // --unused
-    // PS_PR_VEL = zeros(27, 1);        // Store the flux value
-    
-    //global PS_OLD_TIME;
-    //global PS_TIME_N;
-    //global PS_VEL;
     myVars->PS_OLD_TIME = 0;
     myVars->PS_TIME_N = 1;
-    // PS_VEL = zeros(1, 1);
-    
-    //global PR_OLD_TIME;
-    //global PR_TIME_N;
-    //global PR_VEL;
     myVars->PR_OLD_TIME = 0;
     myVars->PR_TIME_N = 1;
-    // PR_VEL = zeros(1, 1);
-    
+
     ////////////////////////////////////////////////
     //   Initialation step //
     ////////////////////////////////////////////////
-    
-    //Begin = 1;  // --unused
-    //CM temp = CM(myVars);
+
     CMCon CM_con = CMInit(myVars);
-    //arr CMs = CM_con.toArray();
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //   Use the initialized variables to construct variables that will be transfered to the Drive file. ////////////
     // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    //arr EPS_Con = zeros(52 + 36);
-    //for (int m = 0; m < 52; m++)
-    //    EPS_Con[m] = FIBF_Con[m];
-    
-    
-    //for (int m = 0; m < 36; m++)
-    //    EPS_Con[m + 52] = CMs[m];
+
     EPSCon EPS_con(FIBF_con, CM_con);
-    
-    
+
     return EPS_con;
 }

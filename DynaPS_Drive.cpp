@@ -1,5 +1,6 @@
-#include "globals.hpp"
+#include "Variables.hpp"
 #include "DynaPS.hpp"
+#include "globals.hpp"
 #include <sundials/sundials_math.h>
 #include <cvode/cvode.h>
 #include <sunmatrix/sunmatrix_dense.h>
@@ -29,11 +30,11 @@
 //    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-varptr *DynaPS::myVars = new varptr();
+Variables *DynaPS::myVars = new Variables();
 
-arr DynaPS::DynaPS_Drive(double ParaNum, double Ratio) {
+arr DynaPS::DynaPS_Drive(size_t ParaNum, double Ratio) {
     // This part include the function to begin the simulation.
-    
+
     // The time information is set in a global variable called tglobal in SYSInitial.
     if (ParaNum <= 103)
         myVars->PSRatio[ParaNum] = Ratio;
@@ -51,11 +52,11 @@ arr DynaPS::DynaPS_Drive(double ParaNum, double Ratio) {
         myVars->FIRatio[ParaNum - 233] = Ratio;
 
     if (ParaNum > 256 && ParaNum <= 305)
-        myVars->BFRatio[ParaNum - 256] = Ratio;    
+        myVars->BFRatio[ParaNum - 256] = Ratio;
 
     if (ParaNum > 305 && ParaNum <= 309)
         myVars->XanRatio[ParaNum - 305] = Ratio;
-    
+
     // This part include the function to begin the simulation.
     // The time information is set in a global variable called tglobal in SYSInitial.
 
@@ -66,67 +67,59 @@ arr DynaPS::DynaPS_Drive(double ParaNum, double Ratio) {
     ////////////////////////////////////////////////
 
     myVars->ATPActive = 0;
-    
+
     // Indicate in the beginning there is no ATP synthesis activity.
     myVars->EPS_ATP_Rate = 0;
-    
+
     IniModelCom(myVars);        // Initialize the structure of the model, i.e. Is this model separate or combined with others.
-    
+
     // The combination of BF and FI model
     myVars->BF_FI_com = true;
-    
+
     // This is a variable indicating whether the PR model is actually need to be combined with PS or not. If 1 then means combined; 0 means not.
     myVars->PR_PS_com = true;
-    
+
     // 1 means that the overall EPS model is used. 0 means partial model of FIBF is used.
     myVars->FIBF_PSPR_com = true;
-    
+
     // A global variable to indicate whether the RuACT is run by itself or combined with others.
     myVars->RuACT_EPS_com = true;        // Since this is run within this program, it is combinbed, therefore, it is assigned value true, otherwise, assign value false.
-    
+
     // This is the connection between Redox and RA.
     myVars->RedoxReg_RA_com = false;        // This means that the connection is not provided there.
-    
+
     myVars->XanCycle_BF_com = true;
 
     myVars->EPS_SUCS_com = true;
-    
+
     // This is a variable indicating whether the PSPR model is actually need to be combined with SUCS or not. If 1 then means combined; 0 means not.
     myVars->PSPR_SUCS_com = true;
-    
+
     myVars->SUCS_Param = zeros(2);
 
     // Next is to initialize the vector.
-    
+
     DynaPSCon DynaPS_con = DynaPS_Ini();
-    
+
     const double va1 = 0;
-    //global PS12ratio; // The ratio of the PSI unit to the PSII unit
-    //arr BF_Param = zeros(2);
+    // The ratio of the PSI unit to the PSII unit
     myVars->BF_Param[0] = va1;
     myVars->BF_Param[1] = myVars->PS12ratio;
-    
-    //arr FI_Param = zeros(2);
+
     myVars->FI_Param[0] = va1;
     myVars->FI_Param[1] = myVars->PS12ratio;
-    
-    //const double PS_PR_Param = 0;
-    // EPS_Param = 0;// --unused
-    
-    //arr RuACT_Param = zeros(2);
+
     myVars->RuACT_Param[0] = va1;
     myVars->RuACT_Param[1] = myVars->PS12ratio;
-    
-    //arr XanCycle_Param = zeros(2);
+
     myVars->XanCycle_Param[0] = va1;
     myVars->XanCycle_Param[1] = myVars->PS12ratio;
-    
+
     myVars->RedoxReg_Param = 0; // This parameter is just used here as a future storage tool. NOt used now.
-    
-//[Tt, d] = ode15s(@DynaPS_mb, [0, time], DynaPS_Con, options1, BF_Param, FI_Param, PS_PR_Param, RuACT_Param, RedoxReg_Param, XanCycle_Param, SUCS_Param);
+
     arr DynaPS_Con = zeros(120);
     arr temp = DynaPS_con.toArray();
-    for (int i = 0; i < DynaPS_con.size(); i++)
+    for (size_t i = 0; i < DynaPS_con.size(); i++)
         DynaPS_Con[i] = temp[i];
     UserData *data = alloc_user_data();
     int flag;
@@ -136,7 +129,7 @@ arr DynaPS::DynaPS_Drive(double ParaNum, double Ratio) {
     N_Vector y;
     y = N_VNew_Serial(N);
 
-    for (int i = 0; i < N; i++)
+    for (size_t i = 0; i < N; i++)
         NV_Ith_S(y, i) =  DynaPS_Con[i];
 
     void *cvode_mem = NULL;
@@ -172,34 +165,34 @@ arr DynaPS::DynaPS_Drive(double ParaNum, double Ratio) {
     arr PSIIabs = zeros(FI_VEL_SIZE);
     for (int x = 0; x < FI_VEL_SIZE; x++)
         PSIIabs[x] = myVars->FI_VEL[x][56];
-    
+
     arr PSIabs = zeros(BF_VEL_SIZE);
     for (int x = 0; x < BF_VEL_SIZE; x++)
         PSIabs[x] = myVars->BF_VEL[x][10];
-    
+
     //PSIabs2=BF_VEL(:, 14)+BF_VEL(:, 16);
     arr CarbonRate = zeros(RuACT_VEL_SIZE);
     for (int x = 0; x < RuACT_VEL_SIZE; x++)
         CarbonRate[x] = myVars->RuACT_VEL[x][5] * myVars->AVR;
-    
+
     arr VPR = zeros(RuACT_VEL_SIZE);
     for (int x = 0; x < RuACT_VEL_SIZE; x++)
         VPR[x] = myVars->RuACT_VEL[x][6] * myVars->AVR;
-    
+
     //     CO2Release = PR_VEL(:,9) * AVR;
     //     Assim = CarbonRate - CO2Release;
     arr Vpgasink = zeros(SUCS_VEL_SIZE);
     for (int x = 0; x < SUCS_VEL_SIZE; x++)
         Vpgasink[x] = myVars->SUCS_VEL[x][14] * myVars->AVR;
-    
+
     arr VStarch = zeros(PS_VEL_SIZE);
     for (int y = 0; y < PS_VEL_SIZE; y++)
         VStarch[y] = (myVars->PS_VEL[13][y] - myVars->PS_VEL[19][y]) * myVars->AVR;
-    
+
     arr Vsucrose = zeros(SUCS_VEL_SIZE);
     for (int x = 0; x < SUCS_VEL_SIZE; x++)
         Vsucrose[x] = myVars->SUCS_VEL[x][10] * myVars->AVR;
-    
+
     arr Resulta = zeros(7);
     //Resulta = [0;0;0;0;0;0;0];
     Resulta[0] = PSIIabs[row];
@@ -251,22 +244,22 @@ arr DynaPS::DynaPS_Drive(double ParaNum, double Ratio) {
     for (int x = 36; x < 66; x++) {
         for (int y = 1; y < 31; y++)
             myVars->FluxTR[x] = myVars->BF_VEL[row][y];
-        
+
     }
     for (int x = 66; x < 124; x++) {
         for (int y = 1; y < 59; y++)
             myVars->FluxTR[x] = myVars->FI_VEL[row][y];
-        
+
     }
     for (int x = 124; x < 131; x++) {
         for (int y = 1; y < 8; y++)
             myVars->FluxTR[x] = myVars->XanCycle_VEL[row][y];
-        
+
     }
     //FluxTR(132:142)=RROEA_VEL(row,2:12);
     for (int x = 0; x < 36; x++)
         myVars->FluxTR[x] = myVars->FluxTR[x] * myVars->AVR;
-    
+
     myVars->FluxTR[46] = myVars->FluxTR[46] * myVars->AVR;
     myVars->FluxTR[64] = myVars->FluxTR[64] * myVars->AVR / 2;
     // This is to set the regualtions to be as beginning.

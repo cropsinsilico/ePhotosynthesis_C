@@ -9,7 +9,7 @@ class FIBFPool {
   FIBFPool(const FIBFPool &other) {
       PQT = other.PQT;
   }
-  double PQT;  
+  double PQT;
 };
 
 class FIBFCon {
@@ -25,21 +25,20 @@ public:
         FI_con = fother;
         kd = pow(10, 8) * 0.5;
     }
-    FIBFCon(const std::vector<double> &vec, const size_t offset = 0) {
+    FIBFCon(const arr &vec, const size_t offset = 0) {
         fromArray(vec, offset);
     }
-    void fromArray(const std::vector<double> &vec, const size_t offset = 0) {
+    void fromArray(const arr &vec, const size_t offset = 0) {
         BF_con.fromArray(vec, offset);
         FI_con.fromArray(vec, offset + BF_con.size());
         kd = vec[offset + BF_con.size() + FI_con.size()];
     }
-    std::vector<double> toArray() {
-        std::vector<double> bvec = BF_con.toArray();
-        std::vector<double> fvec = FI_con.toArray();
+    arr toArray() {
+        arr bvec = BF_con.toArray();
+        arr fvec = FI_con.toArray();
         bvec.reserve(size());
         bvec.insert(bvec.end(), fvec.begin(), fvec.end());
-        std::vector<double> fivec = {kd};
-        //bvec[size() - 1] = kd;
+        arr fivec = {kd};
         bvec.insert(bvec.end(), fivec.begin(), fivec.end());
         return bvec;
     }
@@ -54,4 +53,4 @@ public:
 
 void FIBF_Ini(Variables *myVars);
 
-std::vector<double> FIBF_MB(double t, FIBFCon &FIBF_Con, Variables *myVars);
+arr FIBF_MB(double t, FIBFCon &FIBF_Con, Variables *myVars);

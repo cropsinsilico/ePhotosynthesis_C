@@ -1,5 +1,5 @@
+#include "Variables.hpp"
 #include "globals.hpp"
-#include "PS.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -24,27 +24,24 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-arr PSmb(double t, PSCon &PS_con, arr &Param, varptr *myVars) {
-    
+arr PSmb(double t, PSCon &PS_con, arr &Param, Variables *myVars) {
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Modifying KM, KI, KE VMAX for different reactions as the regulation//
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    
+
+
     // Regulations first.
     Condition(t, myVars);
-    
+
     // Get the rate for the reactions in the photosynthesis sytem
-    
-    //arr myVars->PS_Vel = zeros(18);
     PSRate(t, PS_con, Param, myVars);
-    
+
     // Get the rate
-    
+
     const double v1 = myVars->PS_Vel.v1;
     const double v2 = myVars->PS_Vel.v2;
     const double v3 = myVars->PS_Vel.v3;
-    // NONE = myVars->PS_Vel.v4;// --unused
     const double v5 = myVars->PS_Vel.v5;
     const double v6 = myVars->PS_Vel.v6;
     const double v7 = myVars->PS_Vel.v7;
@@ -59,59 +56,57 @@ arr PSmb(double t, PSCon &PS_con, arr &Param, varptr *myVars) {
     const double v33 = myVars->PS_Vel.v33;
     const double v24 = myVars->PS_Vel.v24;
     const double v25 = myVars->PS_Vel.v25;
-    
+
     // Implement the mass balance equations
-    
+
     arr tmp = zeros(15);
-    
-    
+
+
     tmp[0] = v13 - v1;
-    
-    
+
+
     tmp[1] = 2 * v1 - v2 - v32;
-    
-    
+
+
     tmp[2] = v2 - v3;
-    
-    
+
+
     tmp[3] = v3 - 2 * v5 - v7 - v8 - v10 - v31 - v33;
-    
-    
+
+
     tmp[4] = v23 - v24;
-    
-    
+
+
     tmp[5] = v5 - v6;
-    
-    
+
+
     tmp[6] = v7 - v8;
-    
-    
+
+
     tmp[7] = v9 - v10;
-    
-    
+
+
     tmp[8] = v8 - v9;
-    
-    
+
+
     tmp[9] = v16 - v2 - v23 - v13 - v25;
-    
-    //global PS2EPS_NADPH;
-    //global PS_C_CN;
-    
+
+
     tmp[10] = 0;
-    
-    
-    
+
+
+
     tmp[11] = 0;
-    
-    
+
+
     tmp[12] = 0;
-    
-    
+
+
     tmp[13] = v6 - v7 - v23 + v25;
-    
-    
+
+
     tmp[14] = v7 + v10 * 2 - v13;
-    
+
     arr PSdydt = tmp;
     return PSdydt;
 }

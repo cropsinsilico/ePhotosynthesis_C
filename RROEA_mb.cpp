@@ -1,5 +1,5 @@
 #include "globals.hpp"
-#include "RROEA.hpp"
+#include "Variables.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -24,19 +24,14 @@
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-arr RROEA_Mb(double t, RROEACon &RROEA_Con, varptr *myVars) {
-    
-    //global GLight;
+arr RROEA_Mb(double t, RROEACon &RROEA_Con, Variables *myVars) {
     Condition(t, myVars);
     const double light = myVars->GLight;
-    
+
     myVars->RROEA_Param[0] = light;
-    
-    //arr myVars->RROEA_Vel = zeros(11);
+
     RROEA_Rate(t, RROEA_Con, myVars);
-    
+
     const double ve2GAPDH = myVars->RROEA_Vel.ve2GAPDH;
     const double ve2FBPase = myVars->RROEA_Vel.ve2FBPase;
     const double ve2SBPase = myVars->RROEA_Vel.ve2SBPase;
@@ -48,7 +43,7 @@ arr RROEA_Mb(double t, RROEACon &RROEA_Con, varptr *myVars) {
     const double veFd2Thio = myVars->RROEA_Vel.veFd2Thio;
     const double veFd2Calvin = myVars->RROEA_Vel.veFd2Calvin;
     const double ve2RuACT = myVars->RROEA_Vel.ve2RuACT;
-    
+
     arr RROEA_mb = zeros(10);
     RROEA_mb[0] = ve2GAPDH;	//	GAPDH
     RROEA_mb[1] = ve2FBPase;	//	FBPase

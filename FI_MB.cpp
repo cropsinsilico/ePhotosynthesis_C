@@ -1,5 +1,5 @@
+#include "Variables.hpp"
 #include "globals.hpp"
-#include "FI.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -25,28 +25,27 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-// FI_mb.m   This is the routine for calculation of the mass balance equations for the fluorescence induction model
+// This is the routine for calculation of the mass balance equations for the fluorescence induction model
 // This routine is composed of two components;
 // 1) The initialization of the rates that was transfered from the FI_Rate routine
 // 2) The computation of the mass balance equations
 
-arr FI_Mb(double t, FICon &FI_Con, varptr *myVars) {
-    
+arr FI_Mb(double t, FICon &FI_Con, Variables *myVars) {
+
     //////////////////////////////////////////////////////////////////
     //   Calculate the rates first   //
     //////////////////////////////////////////////////////////////////
-    //global GLight;
     Condition(t, myVars);
     const double light = myVars->GLight;
-    
+
     myVars->FI_Param[0] = light;
-    
+
     FI_Rate(t, FI_Con, myVars);
-    
+
     ////////////////////////////////////////////////////////////////////////////////
     //   Get the rate of different reactions//
     ////////////////////////////////////////////////////////////////////////////////
-    
+
     const double vA_d = myVars->FI_Vel.vA_d ;	//	vA_d	The rate of heat dissipation from peripheral antenna
     const double vA_f = myVars->FI_Vel.vA_f ;	//	vA_f	The rate of fluorescence emission from peripheral antenna
     const double vA_U = myVars->FI_Vel.vA_U ;	//	vA_U	The rate of exciton transfer from peripheral antenna to core antenna in open reaction center
@@ -60,15 +59,7 @@ arr FI_Mb(double t, FICon &FI_Con, varptr *myVars) {
     const double vS3_S0 = myVars->FI_Vel.vS3_S0 ;	//	vS3_S0	The rate of transition from S3 to S0
     const double vS0_S1 = myVars->FI_Vel.vS0_S1 ;	//	vS0_S1	The rate of transition from S0 to S1
     const double vz_1 = myVars->FI_Vel.vz_1 ;	//	vz_1	The rate of P680p reduction
-    // v1z_1 = FI_Vel.v1z_1 ;	//	v1z_1	The rate of oxidation of S1T by P680pPheon// --unused
-    // v2z_1 = FI_Vel.v2z_1 ;	//	v2z_1	The rate of oxidation of S2T  by P680pPheon// --unused
-    // v3z_1 = FI_Vel.v3z_1 ;	//	v3z_1	The rate of oxidation of S3T  by P680pPheon// --unused
-    // v0z_1 = FI_Vel.v0z_1 ;	//	v0z_1	The rate of oxidation of S0T  by P680pPheon// --unused
     const double vz_2 = myVars->FI_Vel.vz_2 ;	//	vz_2	The rate of P680pPheon reduction
-    // v1z_2 = FI_Vel.v1z_2 ;	//	v1z_2	The rate of oxidation of S1T by P680pPheo// --unused
-    // v2z_2 = FI_Vel.v2z_2 ;	//	v2z_2	The rate of oxidation of S2T  by P680pPheo// --unused
-    // v3z_2 = FI_Vel.v3z_2 ;	//	v3z_2	The rate of oxidation of S3T  by P680pPheo// --unused
-    // v0z_2 = FI_Vel.v0z_2 ;	//	v0z_2	The rate of oxidation of S0T  by P680pPheo// --unused
     const double v1z = myVars->FI_Vel.v1z ;	//	v1z
     const double v2z = myVars->FI_Vel.v2z ;	//	v2z
     const double v3z = myVars->FI_Vel.v3z ;	//	v3z
@@ -101,20 +92,17 @@ arr FI_Mb(double t, FICon &FI_Con, varptr *myVars) {
     const double vr2_02_2 = myVars->FI_Vel.vr2_02_2 ;	//	vr2_02_2	The reverse reaction of The rate of reduction of QAQB2n by P680Pheon
     const double vr2_2 = myVars->FI_Vel.vr2_2 ;	//	vr2_2
     const double vP680qU = myVars->FI_Vel.vP680qU ;	//	vP680qU
-    // vP680qA = FI_Vel.vP680qA ;	//	vP680qA// --unused
     const double vU_P680 = myVars->FI_Vel.vU_P680 ;
     const double vP680_d = myVars->FI_Vel.vP680_d ;
-    // vP680_f = FI_Vel.vP680_f ;// --unused
-    
+
     ////////////////////////////////////////////////////////////////
     // Get the mass balance equation //
     ////////////////////////////////////////////////////////////////
-    
+
     // This page defines the mass balance equation for the system under study
     // One problem need to be taken care of is the variables needed to transfer from FI_CalV to FI_mb
     // The Major Variables
     arr FI_mb = zeros(22);
-    //FI_mb	(	1	)	=	Ia - vA_f - vA_d - vA_U + vU_A - vP680qA	;	//	A
     FI_mb[0] = Ia - vA_f - vA_d - vA_U + vU_A;//	A	6
     FI_mb[1] = Ic + vA_U - vU_A - vU_f - vU_d - v1 + v_r1 - vP680qU;//	U
     FI_mb[2] = vU_P680 + v_r1 - v1 - vP680_d;//	P680ePheo	QF add

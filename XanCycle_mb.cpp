@@ -1,5 +1,5 @@
 #include "globals.hpp"
-#include "XanCycle.hpp"
+#include "Variables.hpp"
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -25,14 +25,11 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-arr XanCycle_Mb(double t, XanCycleCon &XanCycle_Con, varptr *myVars) {
-    
-    
+arr XanCycle_Mb(double t, XanCycleCon &XanCycle_Con, Variables *myVars) {
     Condition(t, myVars);
-    
-    //arr XanCycle_Vel = zeros(7);
+
     XanCycle_Rate(t, XanCycle_Con, myVars);
-    
+
     const double Vva = myVars->XanCycle_Vel.Vva;	//	The velocity of v to a conversion
     const double Vaz = myVars->XanCycle_Vel.Vaz;	//	The rate of A to z
     const double Vza = myVars->XanCycle_Vel.Vza;	//	THe rate of z to a
@@ -40,13 +37,13 @@ arr XanCycle_Mb(double t, XanCycleCon &XanCycle_Con, varptr *myVars) {
     const double Vvf = myVars->XanCycle_Vel.Vvf;	//	The rate of V formation
     const double Vv2ABA = myVars->XanCycle_Vel.Vv2ABA;	//	The rate of conversion from v to ABA.
     const double VABAdg = myVars->XanCycle_Vel.VABAdg;	//	The rate of ABA degradation
-    
+
     arr XanCycle_mb = zeros(4);
-    
+
     XanCycle_mb[0] = Vvf + Vav - Vva - Vv2ABA;
     XanCycle_mb[1] = Vva - Vav + Vza - Vaz;
     XanCycle_mb[2] = Vaz - Vza;
     XanCycle_mb[3] = Vv2ABA - VABAdg;
-    
+
     return XanCycle_mb;
 }

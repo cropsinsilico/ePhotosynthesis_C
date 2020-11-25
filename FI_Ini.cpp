@@ -1,5 +1,6 @@
-#include "globals.hpp"
-#include "FI.hpp"
+#include <math.h>
+#include "Variables.hpp"
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -25,28 +26,25 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-// FI_Init.m     This is the routine that initialize the parameters, initial conditions for simulation of fluorescence induction curve.
+// This is the routine that initialize the parameters, initial conditions for simulation of fluorescence induction curve.
 // The following information is initialized sequentially 1) Rate constants; 2) Initial concentration ( or conditions); 3) THe maximum
 // concentration of components of photosystems.
 
-FICon FI_Ini(varptr *myVars) {
-    //global FIRatio;
+FICon FI_Ini(Variables *myVars) {
     //////////////////////////////////////////////////////////////////////////
     // Initilization of the rate constant //
     ////////////////////////////////////////////////////////////////////////////
-    
-    // The rate constant used in the model
-    // The rate constant used in the model
+
     // The rate constant used in the model
     // Reference
-    
+
     const double kA_d = 2 * pow(10, 8) * myVars->FIRatio[0];
     const double kA_f = 6.3 * pow(10, 6) * 0.2 * myVars->FIRatio[1];
     const double kA_U = pow(10, 10) * myVars->FIRatio[2];
     const double kU_A = pow(10, 10) * myVars->FIRatio[3];
     const double kU_d = 2 * pow(10, 8) * myVars->FIRatio[4];
     const double kU_f = 6.3 * pow(10, 6) * 0.2 * myVars->FIRatio[5];
-    
+
     const double k1 = 2.5 * pow(10, 11) * myVars->FIRatio[6];
     const double k_r1 = 3 * pow(10, 8) * myVars->FIRatio[7];
     const double kz = 5 * pow(10, 6) * myVars->FIRatio[8];
@@ -54,7 +52,7 @@ FICon FI_Ini(varptr *myVars) {
     const double k23 = 10000 * myVars->FIRatio[10];//	The rate constant of the S2 to S3 transition	Lazar (1999); 0.667~33.3 * 10^3
     const double k30 = 3000 * myVars->FIRatio[11];//	The rate constant of the S3 to S0 transition	Lazar (1999); 0.667~33.3 * 10^3
     const double k01 = 500 * myVars->FIRatio[12];//	The rate constant of the S0 to S1 transition	Lazar (1999); 0.667~33.3 * 10^3
-    
+
     const double k2 = 2 * pow(10, 9) * myVars->FIRatio[13];
     const double kAB1 = 2500 * myVars->FIRatio[14];//	The rate constant of QAQB-->QAQB-	Lazar (1999); 2.5~5 * 10^3
     const double kBA1 = 200 * myVars->FIRatio[15];//	The rate constant of the QAQB- -->QAQB	Lazar (1999)
@@ -63,11 +61,7 @@ FICon FI_Ini(varptr *myVars) {
     const double k3 = 800 * myVars->FIRatio[18];//	The rate constant of the exchange of PQ and QBH2	Lazar (1999),0.12~1 for the fast PQ pool,  or 3~8 for the slow recycling PQ pool
     const double k_r3 = 80 * myVars->FIRatio[19];//	The rate constant of the exchange of QB and PQH2	Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
     const double k_pq_oxy = 500 * myVars->FIRatio[20];//	The rate constant of the PQH2 oxidation	Lazar (1999),50~500
-    
-    // The rate constant used in the model
-    //global FI_RC;
-    // FI_RC = zeros(5, 1);
-    // The rate constant used in the model
+
     // The rate constant used in the model
     myVars->FI_RC.kA_d = kA_d;	//	The rate constant of heat dissipation from peripheral antenna	Lazar (1999), 0.25~1 *10^(9)
     myVars->FI_RC.kA_f = kA_f;	//	The rate constant of fluorescence emission from peripheral antenna	Lazar 1999, with a lifetime of 5 ns at closed reaction center
@@ -90,20 +84,20 @@ FICon FI_Ini(varptr *myVars) {
     myVars->FI_RC.k3 = k3;	//	The rate constant of the exchange of PQ and QBH2	Lazar (1999),0.12~1 for the fast PQ pool,  or 3~8 for the slow recycling PQ pool
     myVars->FI_RC.k_r3 = k_r3;	//	The rate constant of the exchange of QB and PQH2	Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
     myVars->FI_RC.k_pq_oxy = k_pq_oxy;	//	The rate constant of the PQH2 oxidation	Lazar (1999),50~500
-    
-    
+
+
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Initialization of the initial concentration of the different component  //
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    
+
     // Initialize the leaves for a dark adapted leaves;
     // Unit		micro mol per m2
     // Initialize the leaves for a dark adapted leaves;
     //		mircomol per m2
-    
+
     // Initialize the leaves for a dark adapted leaves;
     //	 Micro mol m2
-    
+
     const double A = 0;	// 	The concentration of excitons in the peripheral antenna
     const double U = 0;	//	The concentration fo excitons in the core antenna
     const double P680Pheo = 1;	// 	The concentration of the P680Pheo
@@ -126,11 +120,9 @@ FICon FI_Ini(varptr *myVars) {
     const double QAQB2n = 0;	//	The concentration of [QAQB2-]
     const double QAnQB2n = 0;	// 	The concentration of [QA-QB2-];
     const double PQn = 5;	//	The concentration of reduced PQ, i.e. PQH2;
-    
+
     // Assign the value to a array
-    // FI_ini.m
     // This is the program that initialize the major variables used in the fluorescence induction system.In this file, the n represent negative charges, _red represent that the components are associated with the closed reaction center; while _ox represent a system with open reaction center.
-    //global FI_Con;
     FICon FI_Con;
     FI_Con.A = A;	// 	The concentration of excitons in the peripheral antenna
     FI_Con.U = U;	//	The concentration fo excitons in the core antenna
@@ -154,23 +146,11 @@ FICon FI_Ini(varptr *myVars) {
     FI_Con.QAQB2n = QAQB2n;	//	The concentration of [QAQB2-]
     FI_Con.QAnQB2n = QAnQB2n;	// 	The concentration of [QA-QB2-];
     FI_Con.PQn = PQn;	//	The concentration of reduced PQ, i.e. PQH2;
-    
-    //global FI_Pool;
+
     const double QBt = 1 * myVars->FIRatio[21];// The total concentration of Qb site;
     const double PQT = 8 * myVars->FIRatio[22];// The total concentration of PQ;
-    
+
     myVars->FI_Pool.QBt = QBt;
     myVars->FI_Pool.PQT = PQT;
-    
-    
-    //global FIBF_AUX;
-    // FIBF_AUX = zeros(5, 1);
-    
-    //global FI_RC_Reg_o;
-    //myVars->FI_RC_Reg_o(1) = myVars->FI_RC.k23;  // --unused
-    //myVars->FI_RC_Reg_o(2) = myVars->FI_RC.k30;  // --unused
-    //myVars->FI_RC_Reg_o(3) = myVars->FI_RC.k01;  // --unused
-    //myVars->FI_RC_Reg_o(4) = myVars->FI_RC.k1;  // --unused
     return FI_Con;
-    
 }

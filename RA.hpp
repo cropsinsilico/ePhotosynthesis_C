@@ -13,16 +13,16 @@ public:
         RuACT_con = rother;
         EPS_con = eother;
     }
-    RACon(const std::vector<double> &vec, size_t offset = 0){
+    RACon(const arr &vec, size_t offset = 0){
         fromArray(vec, offset);
     }
-    void fromArray(const std::vector<double> &vec, size_t offset = 0) {
+    void fromArray(const arr &vec, size_t offset = 0) {
         EPS_con.fromArray(vec, offset);
         RuACT_con.fromArray(vec, offset + EPS_con.size());
     }
-    std::vector<double> toArray() {
-        std::vector<double> evec = EPS_con.toArray();
-        std::vector<double> rvec = RuACT_con.toArray();
+    arr toArray() {
+        arr evec = EPS_con.toArray();
+        arr rvec = RuACT_con.toArray();
         evec.reserve(size());
         evec.insert(evec.end(), rvec.begin(), rvec.end());
         return evec;
@@ -36,4 +36,4 @@ public:
 
 RACon RA_Ini(Variables *myVars);
 
-std::vector<double> RA_mb(double t, RACon &RA_Con, Variables *myVars);
+arr RA_mb(double t, RACon &RA_Con, Variables *myVars);
