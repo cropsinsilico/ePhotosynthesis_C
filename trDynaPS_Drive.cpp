@@ -35,7 +35,7 @@
 
 Variables *trDynaPS::myVars = new Variables();
 
-arr trDynaPS::trDynaPS_Drive(double ParaNum, double Ratio) {
+arr trDynaPS::trDynaPS_Drive(size_t ParaNum, double Ratio) {
 
     if (ParaNum <= 103)
         myVars->PSRatio[ParaNum] = Ratio;
@@ -99,14 +99,14 @@ arr trDynaPS::trDynaPS_Drive(double ParaNum, double Ratio) {
     int flag;
     realtype abstol = 1e-5;
     realtype reltol = 1e-4;
-    sunindextype N =  trDynaPS_Con.size();
+    sunindextype N =  static_cast<long>(trDynaPS_Con.size());
     N_Vector y;
     y = N_VNew_Serial(N);
 
-    for (int i = 0; i < N; i++)
+    for (size_t i = 0; i < trDynaPS_Con.size(); i++)
         NV_Ith_S(y, i) =  trDynaPS_Con[i];
 
-    void *cvode_mem = NULL;
+    void *cvode_mem = nullptr;
     cvode_mem = CVodeCreate(CV_BDF);
     realtype t0 = 0;
     flag = CVodeInit(cvode_mem, trDynaPS_mb, t0, y);
@@ -135,7 +135,6 @@ arr trDynaPS::trDynaPS_Drive(double ParaNum, double Ratio) {
         flag = CVode(cvode_mem, tout, y, &t, CV_NORMAL);
 
     myVars->ATPActive = 0;
-    const size_t row = myVars->RuACT_VEL.size();
 
     double CarbonRate = myVars->RuACT_Vel.v6_1 * myVars->AVR;
     double VPR = myVars->RuACT_Vel.v6_2 * myVars->AVR;
@@ -144,11 +143,11 @@ arr trDynaPS::trDynaPS_Drive(double ParaNum, double Ratio) {
     double Vt3p = (myVars->PS_Vel.v31 + myVars->PS_Vel.v33) * myVars->AVR;
     arr Resulta = zeros(7);
 
-    Resulta[0] = CarbonRate;//[row - 1];//Vc
-    Resulta[1] = VPR;//[row - 1];//Vo
-    Resulta[2] = Vpgasink;//[row - 1];//PGA
-    Resulta[3] = Vt3p;//[row - 1];//VT3P
-    Resulta[4] = VStarch;//[row - 1];//Vstarch
+    Resulta[0] = CarbonRate; //Vc
+    Resulta[1] = VPR;        //Vo
+    Resulta[2] = Vpgasink;   //PGA
+    Resulta[3] = Vt3p;       //VT3P
+    Resulta[4] = VStarch;    //Vstarch
     Resulta[5] = myVars->PR_Vel.v1in * myVars->AVR;//Vt_glycerate
     Resulta[6] = myVars->PR_Vel.v2out * myVars->AVR;//Vt_glycolate
 
