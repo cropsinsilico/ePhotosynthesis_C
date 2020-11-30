@@ -63,9 +63,21 @@ public:
         SUCP = vec[offset + 9];
         SUC = vec[offset + 10];
         PGAc = vec[offset + 11];
-
     }
-
+    void clear() {
+        T3Pc = 0.;
+        FBPc = 0.;
+        HexPc = 0.;
+        F26BPc = 0.;
+        ATPc = 0.;
+        ADPc = 0.;
+        OPOPc = 0.;
+        UDPGc = 0.;
+        UTPc = 0.;
+        SUCP = 0.;
+        SUC = 0.;
+        PGAc = 0.;
+    }
     arr toArray() {
         arr vec = {T3Pc, FBPc, HexPc, F26BPc, ATPc, ADPc, OPOPc, UDPGc, UTPc, SUCP, SUC, PGAc};
         return vec;
@@ -141,8 +153,61 @@ public:
     double PTc = 0;
 };
 
-SUCSCon SUCS_Ini(Variables *myVars);
+class SUCS {
+public:
+    static SUCSCon SUCS_Ini(Variables *myVars);
 
-arr SUCS_Mb(double t, SUCSCon &SUCS_Con, Variables *myVars);
+    static arr SUCS_Mb(double t, SUCSCon &SUCS_Con, Variables *myVars);
 
-void SUCS_Rate(double t, SUCSCon &SUCS_Con, Variables *myVars);
+    static void SUCS_Rate(double t, SUCSCon &SUCS_Con, Variables *myVars);
+private:
+
+    static double KE501;
+    static double KE51;
+    static double KE52;
+    static double KE531;
+    static double KE541;
+    static double KE55;
+    static double KE56;
+    static double KE57;
+    static double KE59;
+    static double KE61;
+    static double KI521;
+    static double KI522;
+    static double KI523;
+    static double KI561;
+    static double KI562;
+    static double KI563;
+    static double KI564;
+    static double KI565;
+    static double KI581;
+    static double KI582;
+    static double KI591;
+    static double Ki572;
+    static double Km511;
+    static double Km512;
+    static double Km513;
+    static double Km521;
+    static double Km551;
+    static double Km552;
+    static double Km553;
+    static double Km554;
+    static double Km561;
+    static double Km562;
+    static double Km571;
+    static double Km581;
+    static double Km591;
+    static double Km593;
+    static double Km621;
+    static double V51;//	DHAP+GAP --FBP
+    static double V52;//	FBP --F6P + Pi
+    static double V55;//	G1P+UTP --OPOP+UDPG
+    static double V56;//	UDPG+F6P--SUCP + UDP
+    static double V57;//	SUCP--Pi + SUC
+    static double V58;//	F26BP--F6P + Pi
+    static double V59;//	F6P + ATP --ADP + F26BP
+    static double V62;//	SUC Sink
+    static double Vdhap_in;//   DHAP export from chloroplast
+    static double Vgap_in;//   GAP export from chloroplast
+    static double Vpga_in;//   PGA export from chloropalst
+};

@@ -49,7 +49,7 @@ arr EPS_mb(double t, EPSCon &EPS_Con, Variables *myVars) {
     EPS_DYDT[60] = CM_DYDT[8] - myVars->PS_Vel.v16 + myVars->EPS_ATP_Rate - myVars->PR_Vel.v124;//WY 201804
     EPS_DYDT[16] = EPS_DYDT[60];
 
-    EPS_DYDT[61] = myVars->BF2EPS_vbfn2 / 2 - myVars->PS_Vel.v3 - 2 * myVars->PR_Vel.v124;//WY 201804
+    EPS_DYDT[61] = myVars->BF_Vel.vbfn2 / 2 - myVars->PS_Vel.v3 - 2 * myVars->PR_Vel.v124;//WY 201804
     EPS_DYDT[28] = EPS_DYDT[61];
     return EPS_DYDT;
 }

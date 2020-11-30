@@ -27,7 +27,7 @@
 #include "Variables.hpp"
 #include "globals.hpp"
 
-arr PRmb(double t, PRCon &PR_con, Variables *myVars) {
+arr PR::PRmb(double t, PRCon &PR_con, Variables *myVars) {
     Condition(t, myVars);
 
     PRrate(t, PR_con, myVars);

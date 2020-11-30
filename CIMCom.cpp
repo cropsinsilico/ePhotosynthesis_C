@@ -35,8 +35,6 @@ double IModelCom(Variables *myVars) {
 
     myVars->FIBF_PSPR_com = false;
 
-    myVars->ATPActive = 0;
-
     myVars->RedoxReg_RA_com = false;
 
     myVars->XanCycle_BF_com = false;

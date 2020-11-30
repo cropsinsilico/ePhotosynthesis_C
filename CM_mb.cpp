@@ -30,7 +30,7 @@
 arr CM_Mb(realtype t, CMCon &CM_con, Variables *myVars) {
     arr dxdt;
     dxdt.reserve(36);
-    arr SUCS_DYDT = SUCS_Mb(t, CM_con.SUCS_con, myVars);
+    arr SUCS_DYDT = SUCS::SUCS_Mb(t, CM_con.SUCS_con, myVars);
 
     arr PSPR_DYDT = PS_PRmb(t, CM_con.PS_PR_con, myVars);
 

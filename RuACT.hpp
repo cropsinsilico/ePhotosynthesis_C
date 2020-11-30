@@ -127,8 +127,11 @@ private:
     size_t count = 4;
 };
 
-RuACTCon RuACT_Ini(Variables *myVars);
+class RuACT {
+public:
+    static RuACTCon RuACT_Ini(Variables *myVars);
 
-arr RuACT_Mb(double t, RuACTCon &RuACT_Con, Variables *myVars);
+    static arr RuACT_Mb(double t, RuACTCon &RuACT_Con, Variables *myVars);
 
-void RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *myVars);
+    static void RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *myVars);
+};

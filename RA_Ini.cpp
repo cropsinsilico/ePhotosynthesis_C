@@ -28,7 +28,7 @@
 
 RACon RA_Ini(Variables *myVars) {
     EPSCon EPS_con = EPS_Ini(myVars);
-    RuACTCon RuACT_con = RuACT_Ini(myVars);
+    RuACTCon RuACT_con = RuACT::RuACT_Ini(myVars);
 
     myVars->RuACT_OLD_TIME = 0;
     myVars->RuACT_TIME_N = 1;

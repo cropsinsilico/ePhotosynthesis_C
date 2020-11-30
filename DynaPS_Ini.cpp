@@ -34,7 +34,7 @@ DynaPSCon DynaPS_Init(Variables *myVars) {
     //////////////////////////////////////////////////////////////////////////////////
 
     RACon RA_con = RA_Ini(myVars);
-    XanCycleCon XanCycle_con = XanCycle_Ini(myVars);
+    XanCycleCon XanCycle_con = XanCycle::XanCycle_Ini(myVars);
     DynaPSCon DynaPS_con(RA_con, XanCycle_con);
     return DynaPS_con;
 }

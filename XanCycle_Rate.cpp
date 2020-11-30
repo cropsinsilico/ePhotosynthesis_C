@@ -27,7 +27,7 @@
 #include "Variables.hpp"
 #include "globals.hpp"
 
-void XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myVars) {
+void XanCycle::XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myVars) {
 
     Condition(t, myVars);
 
@@ -48,10 +48,10 @@ void XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myVars) {
     }
 
 
-    const double Vva = XanCycle_Con.Vx * myVars->XanCycle_kva * RegCof;
-    const double Vaz = XanCycle_Con.Ax * myVars->XanCycle_kaz * RegCof;
-    const double Vza = XanCycle_Con.Zx * myVars->XanCycle_kza;
-    const double Vav = XanCycle_Con.Ax * myVars->XanCycle_kav;
+    const double Vva = XanCycle_Con.Vx * XanCycle_kva * RegCof;
+    const double Vaz = XanCycle_Con.Ax * XanCycle_kaz * RegCof;
+    const double Vza = XanCycle_Con.Zx * XanCycle_kza;
+    const double Vav = XanCycle_Con.Ax * XanCycle_kav;
 
     const double Vvf = 0;
     const double Vv2ABA = 0;
@@ -71,10 +71,11 @@ void XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myVars) {
 
     if (myVars->record) {
         myVars->XanCycle_VEL.insert(myVars->XanCycle_TIME_N, t, myVars->XanCycle_Vel);
+
+        myVars->XanCycle2OUT.Vx = XanCycle_Con.Vx;
+        myVars->XanCycle2OUT.Ax = XanCycle_Con.Ax;
+        myVars->XanCycle2OUT.Zx = XanCycle_Con.Zx;
+        myVars->XanCycle2OUT.ABA = XanCycle_Con.Vx / (XanCycle_Con.Vx + XanCycle_Con.Ax + XanCycle_Con.Zx);
     }
 
-    myVars->XanCycle2OUT[0] = XanCycle_Con.Vx;
-    myVars->XanCycle2OUT[1] = XanCycle_Con.Ax;
-    myVars->XanCycle2OUT[2] = XanCycle_Con.Zx;
-    myVars->XanCycle2OUT[3] = XanCycle_Con.Vx / (XanCycle_Con.Vx + XanCycle_Con.Ax + XanCycle_Con.Zx);
 }

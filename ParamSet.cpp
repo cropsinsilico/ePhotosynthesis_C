@@ -39,7 +39,6 @@ void ParamSet(Variables *myVars) {
     myVars->FI_Param[1] = myVars->PS12ratio;
 
     myVars->PS_PR_Param = 0;
-    myVars->EPS_Param = 0;
 
     myVars->SUCS_Param = zeros(2);
 

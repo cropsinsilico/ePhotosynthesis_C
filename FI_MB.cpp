@@ -32,7 +32,7 @@
 // 1) The initialization of the rates that was transfered from the FI_Rate routine
 // 2) The computation of the mass balance equations
 
-arr FI_Mb(double t, FICon &FI_Con, Variables *myVars) {
+arr FI::FI_Mb(double t, FICon &FI_Con, Variables *myVars) {
 
     //////////////////////////////////////////////////////////////////
     //   Calculate the rates first   //

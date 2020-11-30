@@ -55,8 +55,6 @@ double CM::CM_Drive2(double pop, double currentPop) {
     // This is a variable indicating whether the PSPR model is actually need to be combined with SUCS or not. If 1 then means combined; 0 means not.
     myVars->PSPR_SUCS_com = true;
 
-    myVars->ATPActive = 0;
-
     CMCon CM_con = CM_Ini();
     arr CMs = CM_con.toArray();
     ////////////////////////////////////////////////

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.11.0, 2020-11-24T14:56:42. -->
+<!-- Written by QtCreator 4.11.0, 2020-11-30T15:52:52. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -118,6 +118,7 @@
     <valuelist type="QVariantList" key="CMake.Configuration">
      <value type="QString">CMAKE_BUILD_TYPE:STRING=Release</value>
      <value type="QString">CMAKE_CXX_COMPILER:STRING=%{Compiler:Executable:Cxx}</value>
+     <value type="QString">CMAKE_CXX_FLAGS:STRING=</value>
      <value type="QString">CMAKE_C_COMPILER:STRING=%{Compiler:Executable:C}</value>
      <value type="QString">CMAKE_EXE_LINKER_FLAGS:STRING=-lsundials_nvecserial -lsundials_kinsol -lsundials_cvode</value>
      <value type="QString">CMAKE_PREFIX_PATH:STRING=%{Qt:QT_INSTALL_PREFIX}</value>

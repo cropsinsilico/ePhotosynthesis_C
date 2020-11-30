@@ -27,7 +27,7 @@
 #include <math.h>
 #include "Variables.hpp"
 
-RuACTCon RuACT_Ini(Variables *myVars) {
+RuACTCon RuACT::RuACT_Ini(Variables *myVars) {
     myVars->activase = 80 * myVars->RacRatio[10];
 
     // The rate constant used in the model

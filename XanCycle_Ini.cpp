@@ -26,12 +26,17 @@
 
 #include "Variables.hpp"
 
-XanCycleCon XanCycle_Ini(Variables *myVars) {
+double XanCycle::XanCycle_kav = 0.;
+double XanCycle::XanCycle_kaz = 0.;
+double XanCycle::XanCycle_kva = 0.;
+double XanCycle::XanCycle_kza = 0.;
 
-    myVars->XanCycle_kva = 0.163 / 60 * myVars->XanRatio[0];// Ruth Frommolt et a; 2001; Planta
-    myVars->XanCycle_kaz = 0.691 / 60 * myVars->XanRatio[1];// Ruth Frommolt et a; 2001; Planta
-    myVars->XanCycle_kza = 0.119 / 60 * myVars->XanRatio[2];// Ruth Frommolt et a; 2001; Planta
-    myVars->XanCycle_kav = 0.119 / 60 * myVars->XanRatio[3];// Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
+XanCycleCon XanCycle::XanCycle_Ini(Variables *myVars) {
+
+    XanCycle_kva = 0.163 / 60 * myVars->XanRatio[0];// Ruth Frommolt et a; 2001; Planta
+    XanCycle_kaz = 0.691 / 60 * myVars->XanRatio[1];// Ruth Frommolt et a; 2001; Planta
+    XanCycle_kza = 0.119 / 60 * myVars->XanRatio[2];// Ruth Frommolt et a; 2001; Planta
+    XanCycle_kav = 0.119 / 60 * myVars->XanRatio[3];// Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
 
     const double Vx = 160;
     const double Ax = 10;

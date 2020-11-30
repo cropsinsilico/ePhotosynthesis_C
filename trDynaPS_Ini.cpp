@@ -30,7 +30,7 @@
 trDynaPSCon trDynaPS::trDynaPS_Ini() {
     DynaPSCon DynaPS_con = DynaPS_Init(myVars);
 
-    RROEACon RROEA_con = RROEA_Ini(myVars);
+    RROEACon RROEA_con = RROEA::RROEA_Ini(myVars);
 
     trDynaPSCon trDynaPS_Con(DynaPS_con, RROEA_con);
     return trDynaPS_Con;

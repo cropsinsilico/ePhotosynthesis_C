@@ -27,7 +27,7 @@
 #include "globals.hpp"
 #include "Variables.hpp"
 
-arr RROEA_Mb(double t, RROEACon &RROEA_Con, Variables *myVars) {
+arr RROEA::RROEA_Mb(double t, RROEACon &RROEA_Con, Variables *myVars) {
     Condition(t, myVars);
     myVars->RROEA_Param[0] = myVars->GLight;
 

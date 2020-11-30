@@ -27,7 +27,7 @@
 #include "Variables.hpp"
 #include "globals.hpp"
 
-arr PSmb(double t, PSCon &PS_con, arr &Param, Variables *myVars) {
+arr PS::PSmb(double t, PSCon &PS_con, arr &Param, Variables *myVars) {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Modifying KM, KI, KE VMAX for different reactions as the regulation//

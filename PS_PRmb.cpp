@@ -52,14 +52,14 @@ arr PS_PRmb(double t, PS_PRCon &PS_PR_con, Variables *myVars) {
     PS_Param[0] = myVars->PS_PR_Param;
     PS_Param[1] = PR2PS_Pgca;
 
-    PSRate(t, PS_con, PS_Param, myVars);
+    PS::PSRate(t, PS_con, PS_Param, myVars);
 
     arr PR_Param = zeros(2);
     PR_Param[0] = myVars->PS_PR_Param;                  // To indicate that the calcualtion is using the combined model
     // for the PS-PR combined model. 0: Combined model; 1: Separate model
     PR_Param[1] = myVars->PS2PR_Pi;
 
-    PRrate(t, PR_con, myVars);
+    PR::PRrate(t, PR_con, myVars);
 
     // Assign the rate of reaction that is calculated from the photosynthesis and photorespiration routine.
     ////////////////////////////////////////////////////////////////////////////////////////////////

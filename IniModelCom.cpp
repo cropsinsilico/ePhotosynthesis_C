@@ -39,8 +39,6 @@ void IniModelCom(Variables *myVars) {
     // 1 means that the overall EPS model is used. 0 means partial model of FIBF is used.
     myVars->FIBF_PSPR_com = false;
 
-    myVars->ATPActive = 0;
-
     myVars->RedoxReg_RA_com = false;
 
     myVars->XanCycle_BF_com = false;

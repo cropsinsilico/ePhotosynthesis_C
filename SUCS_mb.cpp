@@ -27,7 +27,7 @@
 #include "globals.hpp"
 #include "Variables.hpp"
 
-arr SUCS_Mb(double t, SUCSCon &SUCS_Con, Variables *myVars) {
+arr SUCS::SUCS_Mb(double t, SUCSCon &SUCS_Con, Variables *myVars) {
     Condition(t, myVars);
 
     myVars->SUCS_Param[0] = myVars->GLight;

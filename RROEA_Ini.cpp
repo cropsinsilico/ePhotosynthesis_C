@@ -26,7 +26,7 @@
 
 #include "Variables.hpp"
 
-RROEACon RROEA_Ini(Variables *myVars) {
+RROEACon RROEA::RROEA_Ini(Variables *myVars) {
     myVars->RROEA_OLD_TIME = 0;
     myVars->RROEA_TIME_N = 1;
 
@@ -122,11 +122,6 @@ RROEACon RROEA_Ini(Variables *myVars) {
 
     Coeff = 0.3;
 
-    const double GAPDH = myVars->RROEA_Pool.GAPDH * Coeff;// 	The concentration of active GAPDH
-    const double SBPase = myVars->RROEA_Pool.SBPase * Coeff;// 	The concentration of active SBPase
-    const double PRK = myVars->RROEA_Pool.PRK * Coeff;//   The concentration of active PRK
-    const double ATPase = myVars->RROEA_Pool.ATPase * Coeff;//   The concentratino of active ATP synthase
-    const double ATPGPP = myVars->RROEA_Pool.ATPGPP * Coeff;//   The concnetratin of active ATP Glucose pyrophosphorylas
     double Fd = 0.081 * Coeff;// The initial concentraiton of reduced fd
 
     if (myVars->RROEA_EPS_com)
@@ -146,10 +141,5 @@ RROEACon RROEA_Ini(Variables *myVars) {
 
     // Here defines the information for transfer between models
 
-    myVars->RROEA2PS_GAPDH = GAPDH;
-    myVars->RROEA2PS_SBPase = SBPase;
-    myVars->RROEA2PS_PRK = PRK;
-    myVars->RROEA2PS_ATPase = ATPase;
-    myVars->RROEA2PS_ATPGPP = ATPGPP;
     return RROEA_con;
 }

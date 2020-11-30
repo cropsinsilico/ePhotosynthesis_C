@@ -26,7 +26,7 @@
 
 #include "Variables.hpp"
 
-void RROEA_Rate(double t, RROEACon &RROEA_con, Variables *myVars) {
+void RROEA::RROEA_Rate(double t, RROEACon &RROEA_con, Variables *myVars) {
 
     const double GAPDHo = myVars->RROEA_Pool.GAPDH - RROEA_con.GAPDH;
     const double FBPaseo = myVars->RROEA_Pool.FBPase - RROEA_con.FBPase;
@@ -67,11 +67,6 @@ void RROEA_Rate(double t, RROEACon &RROEA_con, Variables *myVars) {
     if (myVars->record) {
         myVars->RROEA_VEL.insert(myVars->RROEA_TIME_N - 1, t, myVars->RROEA_Vel);
     }
-    myVars->RROEA2PS_GAPDH = RROEA_con.GAPDH;
-    myVars->RROEA2PS_SBPase = RROEA_con.SBPase;
-    myVars->RROEA2PS_PRK = RROEA_con.PRK;
-    myVars->RROEA2PS_ATPase = RROEA_con.ATPase;
-    myVars->RROEA2PS_ATPGPP = RROEA_con.ATPGPP;
 
     myVars->RROEA2RuACT_RuAC = RROEA_con.RuACT;
 }

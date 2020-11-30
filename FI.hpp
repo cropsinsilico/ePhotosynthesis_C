@@ -28,10 +28,10 @@
 
 #include "definitions.hpp"
 
-class FI {
+class FIVel {
 public:
-    FI() {}
-    FI(const FI &other) {
+    FIVel() {}
+    FIVel(const FIVel &other) {
         vA_d = other.vA_d;
         vA_f = other.vA_f;
         vA_U = other.vA_U;
@@ -304,6 +304,9 @@ private:
     size_t count = 22;
 };
 
-FICon FI_Ini(Variables *myVars);
-arr FI_Mb(double t, FICon &FI_Con, Variables *myVars);
-void FI_Rate(double t, FICon &FI_Con, Variables *myVars);
+class FI {
+public:
+    static FICon FI_Ini(Variables *myVars);
+    static arr FI_Mb(double t, FICon &FI_Con, Variables *myVars);
+    static void FI_Rate(double t, FICon &FI_Con, Variables *myVars);
+};

@@ -26,7 +26,7 @@
 
 #include "Variables.hpp"
 
-void RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *myVars) {
+void RuACT::RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *myVars) {
 
     double C = myVars->RuACT_Pool.C;
     double O = myVars->RuACT_Pool.O;
@@ -36,13 +36,11 @@ void RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *myVars) {
         myVars->activase = myVars->RROEA2RuACT_RuAC * 14364;
     }
 
-    double RatioDT;
     double ADP;
     double ATP;
     if (!myVars->RuACT_EPS_com) {
         ATP = 1.45;
         ADP = 1.5 - ATP;
-        RatioDT = ADP / ATP;
     } else {
         C = myVars->CO2_cond;
         O = myVars->O2_cond;
@@ -50,8 +48,8 @@ void RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *myVars) {
         MT = myVars->FIBF_RA_Mg;
         ATP = myVars->PS2RA_ATP;
         ADP = myVars->PSPR_RA_CA - ATP;
-        RatioDT = ADP / ATP;
     }
+    double RatioDT = ADP / ATP;
 
 
     const double CA = 1;

@@ -28,7 +28,7 @@
 
 arr RA_mb(double t, RACon &RA_Con, Variables *myVars) {
     arr EPS_DYDT = EPS_mb(t, RA_Con.EPS_con, myVars);
-    arr RuACT_DYDT = RuACT_Mb(t, RA_Con.RuACT_con, myVars);
+    arr RuACT_DYDT = RuACT::RuACT_Mb(t, RA_Con.RuACT_con, myVars);
 
     arr RA_DYDT = zeros(92);
 

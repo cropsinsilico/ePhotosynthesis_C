@@ -34,7 +34,7 @@
 #define ONE    RCONST(1.0)
 #define ZERO   RCONST(0.0)
 
-void RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, Variables *myVars) {
+void RedoxReg::RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, Variables *myVars) {
     const double Thio = myVars->ThioT - RedoxReg_Con.Thion;
 
     myVars->RedoxReg_MP[0][2] = RedoxReg_Con.Thion / myVars->ThioT;
@@ -81,13 +81,13 @@ void RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, Variables *myVars) {
 
 
             if (myVars->RedoxReg_MP[index][0] == 6) {
-                myVars->Redox2PS_V6 = myVars->RedoxReg_VMAX6 * myVars->RedoxReg_MP[index][2];
+                myVars->Redox2PS_V6 = RedoxReg_VMAX6 * myVars->RedoxReg_MP[index][2];
             } else if (myVars->RedoxReg_MP[index][0] == 9) {
-                myVars->Redox2PS_V9 = myVars->RedoxReg_VMAX9 * myVars->RedoxReg_MP[index][2];
+                myVars->Redox2PS_V9 = RedoxReg_VMAX9 * myVars->RedoxReg_MP[index][2];
             } else if (myVars->RedoxReg_MP[index][0] == 13) {
-                myVars->Redox2PS_V13 = myVars->RedoxReg_VMAX13 * myVars->RedoxReg_MP[index][2];
+                myVars->Redox2PS_V13 = RedoxReg_VMAX13 * myVars->RedoxReg_MP[index][2];
             } else if (myVars->RedoxReg_MP[index][0] == 16) {
-                myVars->Redox2PS_V16 = myVars->RedoxReg_VMAX16 * myVars->RedoxReg_MP[index][2];
+                myVars->Redox2PS_V16 = RedoxReg_VMAX16 * myVars->RedoxReg_MP[index][2];
             }
         }
         N_VDestroy(y);

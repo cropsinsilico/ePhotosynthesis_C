@@ -53,8 +53,8 @@ arr FIBF_MB(double t, FIBFCon &FIBF_Con, Variables *myVars) {
 
     myVars->BF_RC.Kd = FIBF_Con.kd;
 
-    arr BF_mb = BF_Mb(t, BF_con, myVars);
-    arr FI_mb = FI_Mb(t, FI_Con, myVars);
+    arr BF_mb = BF::BF_Mb(t, BF_con, myVars);
+    arr FI_mb = FI::FI_Mb(t, FI_Con, myVars);
 
     // Assign the value of the calcualted BF_mb and FI_mb to FIBF_MB variable
     arr FIBF_mb;// = zeros(52);
@@ -64,8 +64,8 @@ arr FIBF_MB(double t, FIBFCon &FIBF_Con, Variables *myVars) {
 
     // Now specially calcualte the mass balance equation for the rate constant of the heat dissipation
 
-    double PHl = BF_con.PHl;           // Get the PH value of the lumen
-    const double Hl = pow(10, PHl);
+    //const double PHl = BF_con.PHl;           // Get the PH value of the lumen
+    const double Hl = pow(10, BF_con.PHl);
     const double QH = pow(10, (5.5)) / (Hl + pow(10, (5.5)));
 
     const double RC = 0.1;                   // RC is the relaxation constant, which is one term borrowed from Laisk et al., 1997;
@@ -73,7 +73,7 @@ arr FIBF_MB(double t, FIBFCon &FIBF_Con, Variables *myVars) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     //   Here is the section implementing the nonphotochemical quenching.
     //////////////////////////////////////////////////////////////////////////////////////////////////
-    PHl = myVars->BF2FIBFMB_PHl;
+    //PHl = myVars->BF2FIBFMB_PHl;
 
     double dmax = 5 * pow(10, 8) * QH;
 

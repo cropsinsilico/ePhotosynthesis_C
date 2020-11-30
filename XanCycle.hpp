@@ -70,6 +70,12 @@ public:
         arr array = {Vx, Ax, Zx, ABA};
         return array;
     }
+    void clear() {
+        Vx = 0.;
+        Ax = 0.;
+        Zx = 0.;
+        ABA = 0.;
+    }
     size_t size() {
         return count;
     }
@@ -81,8 +87,17 @@ private:
     size_t count = 4;
 };
 
-XanCycleCon XanCycle_Ini(Variables *myVars);
+class XanCycle {
+public:
+    static XanCycleCon XanCycle_Ini(Variables *myVars);
 
-arr XanCycle_Mb(double t, XanCycleCon &XanCycle_Con, Variables *myVars);
+    static arr XanCycle_Mb(double t, XanCycleCon &XanCycle_Con, Variables *myVars);
 
-void XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myVars);
+    static void XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myVars);
+private:
+    static double XanCycle_kav;
+    static double XanCycle_kaz;
+    static double XanCycle_kva;
+    static double XanCycle_kza;
+};
+

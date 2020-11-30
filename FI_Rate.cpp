@@ -26,7 +26,7 @@
 
 #include "Variables.hpp"
 
-void FI_Rate(double t, FICon &FI_Con, Variables *myVars) {
+void FI::FI_Rate(double t, FICon &FI_Con, Variables *myVars) {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Step 1 Get the rate constant and the initial concentrations //
