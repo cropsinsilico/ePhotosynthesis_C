@@ -27,7 +27,7 @@
 #include "globals.hpp"
 #include "Variables.hpp"
 
-arr RuACT_Mb(double t, RuACTCon &RuACT_Con, Variables *myVars) {
+arr RuACT::RuACT_Mb(double t, RuACTCon &RuACT_Con, Variables *myVars) {
     Condition(t, myVars);
     const double light = myVars->GLight;
 

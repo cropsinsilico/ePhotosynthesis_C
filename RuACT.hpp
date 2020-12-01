@@ -62,17 +62,17 @@ public:
         ko = other.ko;
         k7 = other.k7;
         kr = other.kr;
-}
+    }
 
     double k1 = 0;
-    double kn1 = 0;
+    double kn1 = 0;  //	The rate constant of E inactivation by binding of RuBP;	Lazar 1999, with a lifetime of 5 ns at closed reaction center
     double km1 = 0;
-    double Ke2 = 0;
-    double Ke3 = 0;
-    double k6 = 0;
-    double kc = 0;
-    double ko = 0;
-    double k7 = 0;
+    double Ke2 = 0;//	Data from Mate et al 1996. Unit: micormolar;	Reference needed, a guess
+    double Ke3 = 0;//	Data from Mate et al 1996. Unit: micormolar;
+    double k6 = 0;//	micromolar per meter square per second, transfered to unit
+    double kc = 0;//	Michaelis menton constant for CO2
+    double ko = 0;//	Michaelis menton constant for O2
+    double k7 = 0;//	The rate constant for ecm to ecmr
     double kr = 0;
 };
 class RuACTPool {
@@ -127,8 +127,11 @@ private:
     size_t count = 4;
 };
 
-RuACTCon RuACT_Ini(Variables *myVars);
+class RuACT {
+public:
+    static RuACTCon RuACT_Ini(Variables *myVars);
 
-arr RuACT_Mb(double t, RuACTCon &RuACT_Con, Variables *myVars);
+    static arr RuACT_Mb(double t, RuACTCon &RuACT_Con, Variables *myVars);
 
-void RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *myVars);
+    static void RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *myVars);
+};

@@ -73,10 +73,18 @@ public:
     double Thion = 0;
 };
 
-RedoxRegCon RedoxReg_Ini(Variables *myVars);
+class RedoxReg{
+public:
+    static RedoxRegCon RedoxReg_Ini(Variables *myVars);
 
-void RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, Variables *myVars);
+    static void RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, Variables *myVars);
 
-arr RedoxReg_mb(double t, RedoxRegCon &RedoxReg_Con, Variables *myVars);
+    static arr RedoxReg_mb(double t, RedoxRegCon &RedoxReg_Con, Variables *myVars);
 
-int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data);
+    static int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data);
+private:
+    static double RedoxReg_VMAX13;
+    static double RedoxReg_VMAX16;
+    static double RedoxReg_VMAX6;
+    static double RedoxReg_VMAX9;
+};

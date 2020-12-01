@@ -36,10 +36,10 @@ void IniModelCom(Variables *myVars);
 
 void ParamSet(Variables *myVars);
 
-void PreProcess(Variables *myVars);
-
 void SYSInitial(Variables *myVars);
 
 void Sim_Ephotosynthesis(bool record);
 
 double TargetFunVal(Variables *myVars);
+
+void makeFluxTR(Variables *myVars);

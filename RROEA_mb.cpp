@@ -27,36 +27,22 @@
 #include "globals.hpp"
 #include "Variables.hpp"
 
-arr RROEA_Mb(double t, RROEACon &RROEA_Con, Variables *myVars) {
+arr RROEA::RROEA_Mb(double t, RROEACon &RROEA_Con, Variables *myVars) {
     Condition(t, myVars);
-    const double light = myVars->GLight;
-
-    myVars->RROEA_Param[0] = light;
+    myVars->RROEA_Param[0] = myVars->GLight;
 
     RROEA_Rate(t, RROEA_Con, myVars);
 
-    const double ve2GAPDH = myVars->RROEA_Vel.ve2GAPDH;
-    const double ve2FBPase = myVars->RROEA_Vel.ve2FBPase;
-    const double ve2SBPase = myVars->RROEA_Vel.ve2SBPase;
-    const double ve2PRK = myVars->RROEA_Vel.ve2PRK;
-    const double ve2ATPase = myVars->RROEA_Vel.ve2ATPase;
-    const double ve2ATPGPP = myVars->RROEA_Vel.ve2ATPGPP;
-    const double ve2MDH = myVars->RROEA_Vel.ve2MDH;
-    const double ve2Fd = myVars->RROEA_Vel.ve2Fd;
-    const double veFd2Thio = myVars->RROEA_Vel.veFd2Thio;
-    const double veFd2Calvin = myVars->RROEA_Vel.veFd2Calvin;
-    const double ve2RuACT = myVars->RROEA_Vel.ve2RuACT;
-
     arr RROEA_mb = zeros(10);
-    RROEA_mb[0] = ve2GAPDH;	//	GAPDH
-    RROEA_mb[1] = ve2FBPase;	//	FBPase
-    RROEA_mb[2] = ve2SBPase;	//	SBPase
-    RROEA_mb[3] = ve2PRK;	    //	PRK
-    RROEA_mb[4] = ve2ATPase;	//	ATPase
-    RROEA_mb[5] = ve2ATPGPP;	//	ATPGPP
-    RROEA_mb[6] = ve2MDH;	    //	MDH
-    RROEA_mb[7] = veFd2Thio - ve2GAPDH - ve2FBPase - ve2SBPase - ve2PRK - ve2ATPGPP - ve2RuACT;//	Thio
-    RROEA_mb[8] = ve2Fd - veFd2Thio - veFd2Calvin;//	Fd
-    RROEA_mb[9] = ve2RuACT;   // RuACT;
+    RROEA_mb[0] = myVars->RROEA_Vel.ve2GAPDH;	//	GAPDH
+    RROEA_mb[1] = myVars->RROEA_Vel.ve2FBPase;	//	FBPase
+    RROEA_mb[2] = myVars->RROEA_Vel.ve2SBPase;	//	SBPase
+    RROEA_mb[3] = myVars->RROEA_Vel.ve2PRK;	    //	PRK
+    RROEA_mb[4] = myVars->RROEA_Vel.ve2ATPase;	//	ATPase
+    RROEA_mb[5] = myVars->RROEA_Vel.ve2ATPGPP;	//	ATPGPP
+    RROEA_mb[6] = myVars->RROEA_Vel.ve2MDH;	    //	MDH
+    RROEA_mb[7] = myVars->RROEA_Vel.veFd2Thio - myVars->RROEA_Vel.ve2GAPDH - myVars->RROEA_Vel.ve2FBPase - myVars->RROEA_Vel.ve2SBPase - myVars->RROEA_Vel.ve2PRK - myVars->RROEA_Vel.ve2ATPGPP - myVars->RROEA_Vel.ve2RuACT;//	Thio
+    RROEA_mb[8] = myVars->RROEA_Vel.ve2Fd - myVars->RROEA_Vel.veFd2Thio - myVars->RROEA_Vel.veFd2Calvin;//	Fd
+    RROEA_mb[9] = myVars->RROEA_Vel.ve2RuACT;   // RuACT;
     return RROEA_mb;
 }

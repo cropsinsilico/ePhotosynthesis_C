@@ -27,7 +27,7 @@
 #include "Variables.hpp"
 #include "globals.hpp"
 
-arr PSmb(double t, PSCon &PS_con, arr &Param, Variables *myVars) {
+arr PS::PSmb(double t, PSCon &PS_con, arr &Param, Variables *myVars) {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Modifying KM, KI, KE VMAX for different reactions as the regulation//
@@ -42,74 +42,24 @@ arr PSmb(double t, PSCon &PS_con, arr &Param, Variables *myVars) {
 
     // Get the rate
 
-    const double v1 = myVars->PS_Vel.v1;
-    const double v2 = myVars->PS_Vel.v2;
-    const double v3 = myVars->PS_Vel.v3;
-    const double v5 = myVars->PS_Vel.v5;
-    const double v6 = myVars->PS_Vel.v6;
-    const double v7 = myVars->PS_Vel.v7;
-    const double v8 = myVars->PS_Vel.v8;
-    const double v9 = myVars->PS_Vel.v9;
-    const double v10 = myVars->PS_Vel.v10;
-    const double v13 = myVars->PS_Vel.v13;
-    const double v16 = myVars->PS_Vel.v16;
-    const double v23 = myVars->PS_Vel.v23;
-    const double v31 = myVars->PS_Vel.v31;
-    const double v32 = myVars->PS_Vel.v32;
-    const double v33 = myVars->PS_Vel.v33;
-    const double v24 = myVars->PS_Vel.v24;
-    const double v25 = myVars->PS_Vel.v25;
-
     // Implement the mass balance equations
 
-    arr tmp = zeros(15);
+    arr PSdydt = zeros(15);
+    PSdydt[0] = myVars->PS_Vel.v13 - myVars->PS_Vel.v1;
+    PSdydt[1] = 2 * myVars->PS_Vel.v1 - myVars->PS_Vel.v2 - myVars->PS_Vel.v32;
+    PSdydt[2] = myVars->PS_Vel.v2 - myVars->PS_Vel.v3;
+    PSdydt[3] = myVars->PS_Vel.v3 - 2 * myVars->PS_Vel.v5 - myVars->PS_Vel.v7 - myVars->PS_Vel.v8 - myVars->PS_Vel.v10 - myVars->PS_Vel.v31 - myVars->PS_Vel.v33;
+    PSdydt[4] = myVars->PS_Vel.v23 - myVars->PS_Vel.v24;
+    PSdydt[5] = myVars->PS_Vel.v5 - myVars->PS_Vel.v6;
+    PSdydt[6] = myVars->PS_Vel.v7 - myVars->PS_Vel.v8;
+    PSdydt[7] = myVars->PS_Vel.v9 - myVars->PS_Vel.v10;
+    PSdydt[8] = myVars->PS_Vel.v8 - myVars->PS_Vel.v9;
+    PSdydt[9] = myVars->PS_Vel.v16 - myVars->PS_Vel.v2 - myVars->PS_Vel.v23 - myVars->PS_Vel.v13 - myVars->PS_Vel.v25;
+    PSdydt[10] = 0;
+    PSdydt[11] = 0;
+    PSdydt[12] = 0;
+    PSdydt[13] = myVars->PS_Vel.v6 - myVars->PS_Vel.v7 - myVars->PS_Vel.v23 + myVars->PS_Vel.v25;
+    PSdydt[14] = myVars->PS_Vel.v7 + myVars->PS_Vel.v10 * 2 - myVars->PS_Vel.v13;
 
-
-    tmp[0] = v13 - v1;
-
-
-    tmp[1] = 2 * v1 - v2 - v32;
-
-
-    tmp[2] = v2 - v3;
-
-
-    tmp[3] = v3 - 2 * v5 - v7 - v8 - v10 - v31 - v33;
-
-
-    tmp[4] = v23 - v24;
-
-
-    tmp[5] = v5 - v6;
-
-
-    tmp[6] = v7 - v8;
-
-
-    tmp[7] = v9 - v10;
-
-
-    tmp[8] = v8 - v9;
-
-
-    tmp[9] = v16 - v2 - v23 - v13 - v25;
-
-
-    tmp[10] = 0;
-
-
-
-    tmp[11] = 0;
-
-
-    tmp[12] = 0;
-
-
-    tmp[13] = v6 - v7 - v23 + v25;
-
-
-    tmp[14] = v7 + v10 * 2 - v13;
-
-    arr PSdydt = tmp;
     return PSdydt;
 }

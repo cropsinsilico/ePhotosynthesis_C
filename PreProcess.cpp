@@ -27,6 +27,6 @@
 #include "Variables.hpp"
 
 void PreProcess(Variables *myVars) {
-    myVars->ATPActive = 0;
+    //myVars->ATPActive = 0;
 
 }

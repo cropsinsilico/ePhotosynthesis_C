@@ -48,7 +48,6 @@ public:
     double VABAdg = 0.;  //  The rate of ABA degradation
 };
 
-struct Variables;
 class XanCycleCon {
 public:
     XanCycleCon() {}
@@ -71,19 +70,34 @@ public:
         arr array = {Vx, Ax, Zx, ABA};
         return array;
     }
+    void clear() {
+        Vx = 0.;
+        Ax = 0.;
+        Zx = 0.;
+        ABA = 0.;
+    }
     size_t size() {
         return count;
     }
-    double Vx = 0.;
-    double Ax = 0.;
-    double Zx = 0.;
-    double ABA = 0.;
+    double Vx = 0.;	// The concentration of Violozanthin
+    double Ax = 0.;	//	The concentration of Anthrozanthin
+    double Zx = 0.;	//	The concentration of Zeaznthin
+    double ABA = 0.;	//	The concentration of ABA
 private:
     size_t count = 4;
 };
 
-XanCycleCon XanCycle_Ini(Variables *myVars);
+class XanCycle {
+public:
+    static XanCycleCon XanCycle_Ini(Variables *myVars);
 
-arr XanCycle_Mb(double t, XanCycleCon &XanCycle_Con, Variables *myVars);
+    static arr XanCycle_Mb(double t, XanCycleCon &XanCycle_Con, Variables *myVars);
 
-void XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myVars);
+    static void XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myVars);
+private:
+    static double XanCycle_kav;
+    static double XanCycle_kaz;
+    static double XanCycle_kva;
+    static double XanCycle_kza;
+};
+

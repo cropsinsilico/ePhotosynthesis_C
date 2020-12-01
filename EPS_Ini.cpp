@@ -29,8 +29,8 @@
 
 EPSCon EPS_Ini(Variables *myVars) {
     FIBF_Ini(myVars);
-    FICon FI_Con = FI_Ini(myVars);
-    BFCon BF_con = BF_Ini(myVars);
+    FICon FI_Con = FI::FI_Ini(myVars);
+    BFCon BF_con = BF::BF_Ini(myVars);
     FIBFCon FIBF_con(BF_con, FI_Con);
     //// Step 1 Get the initialization of the variables for BF
 

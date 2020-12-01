@@ -28,8 +28,8 @@
 #include "PS_PR.hpp"
 
 PS_PRCon PS_PRIni(Variables *myVars) {
-    PSCon PS_con = PSInitial(myVars);
-    PRCon PR_con = PRinitial(myVars);
+    PSCon PS_con = PS::PSInitial(myVars);
+    PRCon PR_con = PR::PRinitial(myVars);
     arr PrS = PR_con.toArray();
     arr PSs = PS_con.toArray();
     PS_PRCon PS_PR_con(PS_con, PR_con);

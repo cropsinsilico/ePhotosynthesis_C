@@ -25,15 +25,72 @@
  **********************************************************************************************************************************************/
 
 #include <stdlib.h>
-#include <string.h>
-#include "globals.hpp"
+#include <string>
+#include <map>
+#include <vector>
+#include <fstream>
+#include <iterator>
+#include <boost/algorithm/string.hpp>
 
-int main(int argc, char** argv) {
+#include "cxxopts.hpp"
+#include "globals.hpp"
+#include "trDynaPS.hpp"
+#include "Variables.hpp"
+
+void readFile(const std::string &filename, std::map<std::string, std::string> &mapper) {
+    std::vector<std::string> tempVec;
+    std::string input;
+    std::ifstream inputfile(filename);
+    while (getline(inputfile, input)) {
+        if (input.empty())
+            return;
+        boost::split(tempVec, input, boost::is_any_of("\t "));
+        mapper.insert(std::pair<std::string, std::string>(tempVec[0], tempVec[1]));
+    }
+}
+
+int main(int argc, const char* argv[]) {
     bool record = false;
-    if (argc != 1)
-        if (strcmp(argv[0], "record") == 0)
-            record = true;
-    Sim_Ephotosynthesis(record);
+    cxxopts::Options options("ePhotosynthesis", "C++ implementation of the matlab original");
+    options.show_positional_help();
+    options.add_options()
+            ("r,record", "Record output values for all steps (this can significantly slow the program)", cxxopts::value<bool>(record)->default_value("false"))
+            ("e,evn", "The InputEvn.txt file", cxxopts::value<std::string>()->default_value("/home/friedel/crops_in_silico/ODE-FBA/ePhotosynthesis/C++/InputEvn.txt"))
+            ("a,atpcost", "The InputATPCost.txt file", cxxopts::value<std::string>()->default_value("/home/friedel/crops_in_silico/ODE-FBA/ePhotosynthesis/C++/InputATPCost.txt"))
+            ("h,help", "Produce help message")
+            ;
+
+    auto result = options.parse(argc, argv);
+
+    if (result.count("help")) {
+        std::cout << options.help() << std::endl;
+        return (EXIT_SUCCESS);
+    }
+    std::map<std::string, std::string> inputs;
+
+    readFile(result["evn"].as<std::string>(), inputs);
+    readFile(result["atpcost"].as<std::string>(), inputs);
+    Variables myVars;
+    myVars.TestCa = static_cast<double>(stof(inputs.at("CO2"), nullptr));
+    myVars.TestLi = static_cast<double>(stof(inputs.at("PAR"), nullptr));
+    myVars.TestSucPath = stoi(inputs.at("SucPath"), nullptr);
+    myVars.TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
+    myVars.record = record;
+    trDynaPS *myDyna = new trDynaPS(&myVars);
+    std::vector<double> ResultRate = myDyna->trDynaPS_Drive(1, 1);
+
+    std::ofstream outfile("output.data");
+    outfile << myVars.TestLi << ",  " << ResultRate[0] << ",  ";
+    outfile << ResultRate[1] << ",  " << ResultRate[2] << ",  " << ResultRate[3] << ",  ";
+    outfile << ResultRate[4] << ",  " << ResultRate[5] << ",  " << ResultRate[6] << std::endl;
+    outfile.close();
+    //800,23.8514,8.04985,0.00395613,1.5763,2.58119,4.16627,8.04976
+    std::cout << 800-myVars.TestLi << ",  " << 23.8514-ResultRate[0] << ",  ";
+    std::cout << 8.04985-ResultRate[1] << ",  " << 0.00395613-ResultRate[2] << ",  " << 1.5763-ResultRate[3] << ",  ";
+    std::cout << 2.58119-ResultRate[4] << ",  " << 4.16627-ResultRate[5] << ",  " << 8.04976-ResultRate[6] << std::endl;
+
+    delete myDyna;
+
     return (EXIT_SUCCESS);
 }
 

@@ -30,35 +30,29 @@ double TargetFunVal(Variables *myVars) {
     if (!myVars->record)
         return 0.;
 
-    /*
+
     const double PSVCOEFF = 30;
 
-    for (int i = 1; i < myVars->PS_VEL.size(); i++)
-        for (int y = 0; y < PS_VEL_SIZE; y++)
-            myVars->PS_VEL[i][y] *= PSVCOEFF;
+    for (size_t i = 1; i < myVars->PS_VEL.size(); i++)
+        myVars->PS_VEL[i] *= PSVCOEFF;
 
-    // PSVEL = PS_VEL';// --unused
-
-    //global VolRatioStCyto
+    //PSVEL = PS_VEL';// --unused
     double ratio;
     if (myVars->VolRatioStCyto == 1) {
         ratio = PSVCOEFF;
     } else {
         ratio = PSVCOEFF * 4 / 9;
     }
-    for (int i = 0; i < myVars->PR_VEL.size(); i++)
-        for (int j = 0; j < PR_VEL_SIZE; j++)
-            myVars->PR_VEL[i][j] *= ratio;
+    for (size_t i = 0; i < myVars->PR_VEL.size(); i++)
+        myVars->PR_VEL[i] *= ratio;
 
 
 
-    const size_t n = myVars->PS_VEL[0].size();
-    const double a = myVars->PS_VEL[1][n];
-    const double b = myVars->PR_VEL[n][8];
+    //const size_t n = myVars->PS_VEL.size();
+    const double a = myVars->PS_VEL.getLastData().v1; // [1][n];
+    const double b = myVars->PR_VEL.getLastData().v1in;
 
     const double CO2AR = a - b;
 
     return CO2AR;
-     */
-    return 0.;
 }

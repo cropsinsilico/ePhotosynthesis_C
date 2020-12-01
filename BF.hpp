@@ -336,8 +336,11 @@ private:
     size_t count = 29;
 };
 
-BFCon BF_Ini(Variables *myVars);
+class BF {
+public:
+    static BFCon BF_Ini(Variables *myVars);
 
-arr BF_Mb(double t, BFCon &BF_con, Variables *myVars);
+    static arr BF_Mb(double t, BFCon &BF_con, Variables *myVars);
 
-void BF_Rate(double t, BFCon &BF_con, Variables *myVars);
+    static void BF_Rate(double t, BFCon &BF_con, Variables *myVars);
+};

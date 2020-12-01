@@ -27,7 +27,12 @@
 #include "Variables.hpp"
 #include "RedoxReg.hpp"
 
-RedoxRegCon RedoxReg_Ini(Variables *myVars) {
+double RedoxReg::RedoxReg_VMAX13 = 0.;
+double RedoxReg::RedoxReg_VMAX16 = 0.;
+double RedoxReg::RedoxReg_VMAX6 = 0.;
+double RedoxReg::RedoxReg_VMAX9 = 0.;
+
+RedoxRegCon RedoxReg::RedoxReg_Ini(Variables *myVars) {
     myVars->RedoxReg_OLD_TIME = 0;
     myVars->RedoxReg_TIME_N = 1;
     RACon RA_con = RA_Ini(myVars);
@@ -35,10 +40,10 @@ RedoxRegCon RedoxReg_Ini(Variables *myVars) {
     const double Thion = 0.25;     // This is a wild guess
     RedoxRegCon RedoxReg_con(RA_con, Thion);
 
-    myVars->RedoxReg_VMAX6 = myVars->V6;
-    myVars->RedoxReg_VMAX9 = myVars->V9;
-    myVars->RedoxReg_VMAX13 = myVars->V13;
-    myVars->RedoxReg_VMAX16 = myVars->V16;
+    RedoxReg_VMAX6 = myVars->V6;
+    RedoxReg_VMAX9 = myVars->V9;
+    RedoxReg_VMAX13 = myVars->V13;
+    RedoxReg_VMAX16 = myVars->V16;
 
     for (int i = 0; i < 5; i++)
         myVars->RedoxReg_MP.push_back(zeros(3));

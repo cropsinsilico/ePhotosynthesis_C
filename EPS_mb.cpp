@@ -41,17 +41,15 @@ arr EPS_mb(double t, EPSCon &EPS_Con, Variables *myVars) {
     // Step III: Calculate the mass balanec equation for the EPS model. This basically need to make sure that the variables
     // used in the mass balance equation should be in exact sequence with the sequence used in the inialization.
 
-    arr EPS_DYDT = zeros(96);
-    for (size_t m = 0; m < 52; m++)
-        EPS_DYDT[m] = FIBF_DYDT[m];
+    arr EPS_DYDT;
+    EPS_DYDT.reserve(96);
+    EPS_DYDT.insert(EPS_DYDT.end(), FIBF_DYDT.begin(), FIBF_DYDT.begin() + 52);
+    EPS_DYDT.insert(EPS_DYDT.end(), CM_DYDT.begin(), CM_DYDT.begin() + 36);
 
-    for (size_t m = 0; m < 36; m++)
-        EPS_DYDT[m + 52] = CM_DYDT[m];
-
-    EPS_DYDT[60] = CM_DYDT[8] - myVars->PS2EPS_V16 + myVars->EPS_ATP_Rate - myVars->PRGlu;//WY 201804
+    EPS_DYDT[60] = CM_DYDT[8] - myVars->PS_Vel.v16 + myVars->EPS_ATP_Rate - myVars->PR_Vel.v124;//WY 201804
     EPS_DYDT[16] = EPS_DYDT[60];
 
-    EPS_DYDT[61] = myVars->BF2EPS_vbfn2 / 2 - myVars->PS2EPS_v3 - 2 * myVars->PRGlu;//WY 201804
+    EPS_DYDT[61] = myVars->BF_Vel.vbfn2 / 2 - myVars->PS_Vel.v3 - 2 * myVars->PR_Vel.v124;//WY 201804
     EPS_DYDT[28] = EPS_DYDT[61];
     return EPS_DYDT;
 }

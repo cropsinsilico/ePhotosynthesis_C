@@ -47,3 +47,9 @@ output.data.orig
 
 .ccls-cache/
 nbproject/
+
+conv.py
+
+junk
+
+build/

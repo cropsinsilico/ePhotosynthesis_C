@@ -26,21 +26,7 @@
 
 #include "Variables.hpp"
 
-void RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *myVars) {
-
-    const double kn1 = myVars->RuACT_RC.kn1;	//	The rate constant of E inactivation by binding of RuBP;	Lazar 1999, with a lifetime of 5 ns at closed reaction center
-
-    const double Ke2 = myVars->RuACT_RC.Ke2;	//	Data from Mate et al 1996. Unit: micormolar;	Reference needed, a guess
-    const double Ke3 = myVars->RuACT_RC.Ke3;	//	Data from Mate et al 1996. Unit: micormolar;
-    const double k6 = myVars->RuACT_RC.k6;	//	micromolar per meter square per second, transfered to unit
-    const double kc = myVars->RuACT_RC.kc;	//	Michaelis menton constant for CO2
-    const double ko = myVars->RuACT_RC.ko;	//	Michaelis menton constant for O2
-    const double k7 = myVars->RuACT_RC.k7;	//	The rate constant for ecm to ecmr
-
-    const double ER = RuACT_Con.ER;	//	The concentration of inactive ER
-    const double Eaf = RuACT_Con.Eaf;	//	The total concentration of  E, EC, AND ECM
-    const double ECMR = RuACT_Con.ECMR;	//	The concentration of ECMR
-    const double RuBP = RuACT_Con.RuBP;	//	The concentration of ECMR
+void RuACT::RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *myVars) {
 
     double C = myVars->RuACT_Pool.C;
     double O = myVars->RuACT_Pool.O;
@@ -50,37 +36,30 @@ void RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *myVars) {
         myVars->activase = myVars->RROEA2RuACT_RuAC * 14364;
     }
 
-    double RatioDT;
     double ADP;
     double ATP;
     if (!myVars->RuACT_EPS_com) {
         ATP = 1.45;
         ADP = 1.5 - ATP;
-        RatioDT = ADP / ATP;
     } else {
-        C = myVars->PSPR_RA_CO2;
-        O = myVars->PSPR_RA_O2;
-
-        if (myVars->StomCond_TrDynaPS_com) {
-            C = myVars->PS2RubACC;
-            O = myVars->PS2RubACO;
-        }
+        C = myVars->CO2_cond;
+        O = myVars->O2_cond;
 
         MT = myVars->FIBF_RA_Mg;
         ATP = myVars->PS2RA_ATP;
         ADP = myVars->PSPR_RA_CA - ATP;
-        RatioDT = ADP / ATP;
     }
+    double RatioDT = ADP / ATP;
 
 
     const double CA = 1;
-    const double CB = Ke3 + Ke2 * Ke3 / C + Eaf - MT;
-    const double CC = - MT * (Ke3 + Ke2 * Ke3 / C);
+    const double CB = myVars->RuACT_RC.Ke3 + myVars->RuACT_RC.Ke2 * myVars->RuACT_RC.Ke3 / C + RuACT_Con.Eaf - MT;
+    const double CC = - MT * (myVars->RuACT_RC.Ke3 + myVars->RuACT_RC.Ke2 * myVars->RuACT_RC.Ke3 / C);
 
     const double M = (-CB + pow(( pow(CB, 2) - 4 * CA * CC), 0.5)) / (2 * CA);
-    const double EC = Eaf *  pow((1 + Ke2 / C + M / Ke3), -1);
-    const double E = EC / C * Ke2;
-    const double ECM = EC * M / Ke3;
+    const double EC = RuACT_Con.Eaf *  pow((1 + myVars->RuACT_RC.Ke2 / C + M / myVars->RuACT_RC.Ke3), -1);
+    const double E = EC / C * myVars->RuACT_RC.Ke2;
+    const double ECM = EC * M / myVars->RuACT_RC.Ke3;
 
     double LT;
     double RCA;
@@ -102,38 +81,21 @@ void RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *myVars) {
     if (FATP < 0.6)
         FATP = 0.6;
 
-    const double v1 = RCA * ER * FATP;
-    const double vn1 = kn1 * E * RuBP;
-    const double v7 = k7 * ECM * RuBP;
-
     const double factor_n7 = 1;
-    const double kn7 = 0.5 * factor_n7;
-
-    const double vn7 = ECMR * kn7;
-
-    const double v6_1 = ECMR * k6 * C / (C + kc * (1 + O / ko));
-    const double v6_2 = ECMR * k6 / 3 * O / (O + ko * (1 + C / kc));
 
     if (t > myVars->RuACT_OLD_TIME) {
         myVars->RuACT_TIME_N = myVars->RuACT_TIME_N + 1;
         myVars->RuACT_OLD_TIME = t;
     }
 
-    myVars->RuACT_Vel.v1 = v1;
-    myVars->RuACT_Vel.vn1 = vn1;
-    myVars->RuACT_Vel.v7 = v7;
-    myVars->RuACT_Vel.vn7 = vn7;
-    myVars->RuACT_Vel.v6_1 = v6_1;
-    myVars->RuACT_Vel.v6_2 = v6_2;
+    myVars->RuACT_Vel.v1 = RCA * RuACT_Con.ER * FATP;
+    myVars->RuACT_Vel.vn1 = myVars->RuACT_RC.kn1 * E * RuACT_Con.RuBP;
+    myVars->RuACT_Vel.v7 = myVars->RuACT_RC.k7 * ECM * RuACT_Con.RuBP;
+    myVars->RuACT_Vel.vn7 = RuACT_Con.ECMR * 0.5 * factor_n7;
+    myVars->RuACT_Vel.v6_1 = RuACT_Con.ECMR * myVars->RuACT_RC.k6 * C / (C + myVars->RuACT_RC.kc * (1 + O / myVars->RuACT_RC.ko));
+    myVars->RuACT_Vel.v6_2 = RuACT_Con.ECMR * myVars->RuACT_RC.k6 / 3 * O / (O + myVars->RuACT_RC.ko * (1 + C / myVars->RuACT_RC.kc));
 
     if (myVars->record) {
         myVars->RuACT_VEL.insert(myVars->RuACT_TIME_N - 1, t, myVars->RuACT_Vel);
     }
-
-    myVars->RuACT2RA_v61 = v6_1;
-    myVars->RuACT2RA_v62 = v6_2;
-    myVars->RuACT2RA_v1 = v1;
-    myVars->RuACT2RA_vn1 = vn1;
-    myVars->RuACT2RA_vn7 = vn7;
-    myVars->RuACT2RA_v7 = v7;
 }

@@ -28,7 +28,7 @@
 #include <sundials/sundials_types.h>   /* defs. of realtype, sunindextype */
 #include "RedoxReg.hpp"
 
-int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data) {
+int RedoxReg::RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data) {
     realtype *udata = N_VGetArrayPointer(u);
     realtype *fdata = N_VGetArrayPointer(f_val);
     UserData *data = static_cast<UserData*>(user_data);

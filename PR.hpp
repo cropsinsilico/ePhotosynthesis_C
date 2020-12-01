@@ -84,6 +84,7 @@ public:
     double RUBP = 0.;
     double CO2 = 0.;
     double O2 = 0.;
+    double _v131;
 private:
     size_t count = 13;
 };
@@ -128,8 +129,53 @@ public:
     double v2out = 0.;
 };
 
-PRCon PRinitial(Variables *myVars);
+class PR {
+public:
+    static PRCon PRinitial(Variables *myVars);
 
-arr PRmb(double t, PRCon &PR_con, Variables *myVars);
+    static arr PRmb(double t, PRCon &PR_con, Variables *myVars);
 
-void PRrate(double t, PRCon &PR_con, Variables *myVars);
+    static void PRrate(double t, PRCon &PR_con, Variables *myVars);
+private:
+    static double KC;
+    static double KE113;
+    static double KE122;
+    static double KE123;
+    static double KE124;
+    static double KGc;
+    static double KI1011;
+    static double KI1012;
+    static double KI1121;
+    static double KI1122;
+    static double KI113;
+    static double KI1221;
+    static double KI123;
+    static double KI1311;
+    static double KM1011;
+    static double KM1012;
+    static double KM112;
+    static double KM1131;
+    static double KM1132;
+    static double KM121;
+    static double KM1221;
+    static double KM1222;
+    static double KM123;
+    static double KM1241;
+    static double KM1242;
+    static double KM1311;
+    static double KO;
+    static double KR;
+    static double NADHc;
+    static double NADc;
+    static double PR_ADP;
+    static double PR_ATP;
+    static double V111;
+    static double V112;
+    static double V113;
+    static double V121;
+    static double V122;
+    static double V123;
+    static double V124;
+    static double V131;
+    static double V2T;
+};

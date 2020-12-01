@@ -28,42 +28,25 @@
 #include "CM.hpp"
 
 arr CM_Mb(realtype t, CMCon &CM_con, Variables *myVars) {
-    arr dxdt = zeros(36);
+    arr dxdt;
+    dxdt.reserve(36);
+    arr SUCS_DYDT = SUCS::SUCS_Mb(t, CM_con.SUCS_con, myVars);
 
-    arr SUCS_DYDT = zeros(12);
-    SUCS_DYDT = SUCS_Mb(t, CM_con.SUCS_con, myVars);
-    //PS_PRCon PS_PR_con(PSPR_Con);
     arr PSPR_DYDT = PS_PRmb(t, CM_con.PS_PR_con, myVars);
 
-    for (size_t m = 0; m < 23; m++)
-        dxdt[m] = PSPR_DYDT[m];
-
-
-    for (size_t m = 0; m < 12; m++)
-        dxdt[m + 23] = SUCS_DYDT[m];
-
+    dxdt.insert(dxdt.end(), PSPR_DYDT.begin(), PSPR_DYDT.begin() + 23);
+    dxdt.insert(dxdt.end(), SUCS_DYDT.begin(), SUCS_DYDT.begin() + 12);
 
     dxdt[35] = PSPR_DYDT[23];
 
-    const double vdhap = myVars->PS2CM_vdhap;        // The rate of export out of chloroplast
-
-    // The rate of export out of chloroplast
-    const double vgap = myVars->PS2CM_vgap;
-
     // The rate of import into the cytosol
-    const double vdhap_ins = myVars->SUCS2CM_vdhap;   //	DHAP IN
-    const double vgap_ins = myVars->SUCS2CM_vgap;   //	GAP IN
     if (myVars->TestSucPath == 1)
-        SUCS_DYDT[0] = SUCS_DYDT[0] + vdhap + vgap - (vdhap_ins + vgap_ins);
+        SUCS_DYDT[0] = SUCS_DYDT[0] + myVars->PS_Vel.v31 + myVars->PS_Vel.v33 - (myVars->SUCS_Vel.vdhap_in + myVars->SUCS_Vel.vgap_in);
 
     //	T3Pc WY1905
     dxdt[23] = SUCS_DYDT[0];
 
-    const double vpga = myVars->PS2CM_vpga;
-
-    const double vpga_ins = myVars->SUCS2CM_vpga;                                       //	PGA export from chloroplast
-
-    SUCS_DYDT[11] = SUCS_DYDT[11] - vpga_ins + vpga;//	pgaC
+    SUCS_DYDT[11] = SUCS_DYDT[11] - myVars->SUCS_Vel.vpga_in + myVars->PS_Vel.v32;//	pgaC
     dxdt[34] = SUCS_DYDT[11];
     return dxdt;
 }
