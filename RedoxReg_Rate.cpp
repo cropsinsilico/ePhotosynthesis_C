@@ -1,3 +1,29 @@
+/**********************************************************************************************************************************************
+ *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
+ *
+ * CAS-MPG Partner Institute for Computational Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
+ * China Institute of Genomic Biology and Department of Plant Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
+ * University of Illinois at Urbana Champaign
+ * Global Change and Photosynthesis Research Unit, USDA/ARS, 1406 Institute of Genomic Biology, Urbana, IL 61801, USA.
+ *
+ * Converted from Matlab to C++ by Douglas N. Friedel, National Center for Supercomputing Applications (2020)
+ *
+ *   This file is part of e-photosynthesis.
+ *
+ *    e-photosynthesis is free software; you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation;
+ *
+ *    e-photosynthesis is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License (GPL)
+ *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **********************************************************************************************************************************************/
+
 #include "Variables.hpp"
 #include <kinsol/kinsol.h>             /* access to KINSOL func., consts. */
 #include <nvector/nvector_serial.h>    /* access to serial N_Vector       */
@@ -8,37 +34,10 @@
 #define ONE    RCONST(1.0)
 #define ZERO   RCONST(0.0)
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void RedoxReg::RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, Variables *myVars) {
+    const double Thio = myVars->ThioT - RedoxReg_Con.Thion;
 
-//   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
-//CAS-MPG Partner Institute for Computational Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
-//China Institute of Genomic Biology and Department of Plant Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
-//University of Illinois at Urbana Champaign
-//Global Change and Photosynthesis Research Unit, USDA/ARS, 1406 Institute of Genomic Biology, Urbana, IL 61801, USA.
-
-//   This file is part of e-photosynthesis.
-
-//    e-photosynthesis is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation;
-
-//    e-photosynthesis is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License (GPL)
-//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-void RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, Variables *myVars) {
-    const double Fdn = RedoxReg_Con.RA_con.EPS_con.FIBF_con.BF_con.Fdn;//[23];
-
-    const double Thion = RedoxReg_Con.Thion;
-    const double Thio = myVars->ThioT - Thion;
-
-    myVars->RedoxReg_MP[0][2] = Thion / myVars->ThioT;
+    myVars->RedoxReg_MP[0][2] = RedoxReg_Con.Thion / myVars->ThioT;
 
     double TEMP = myVars->RedoxReg_MP[0][2];
 
@@ -59,7 +58,7 @@ void RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, Variables *myVars) {
         realtype abstol = 1e-5;
         //realtype reltol = 1e-4;
         NV_Ith_S(constraints, 0) = ZERO;
-        void *kmem = NULL;
+        void *kmem = nullptr;
         kmem = KINCreate();
 
         SUNMatrix A = SUNDenseMatrix(1, 1);
@@ -82,17 +81,13 @@ void RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, Variables *myVars) {
 
 
             if (myVars->RedoxReg_MP[index][0] == 6) {
-                myVars->Redox2PS_V6 = myVars->RedoxReg_VMAX6 * myVars->RedoxReg_MP[index][2];
-                //myVars->Redox2PS_V6 = myVars->RedoxReg_VMAX6;
+                myVars->Redox2PS_V6 = RedoxReg_VMAX6 * myVars->RedoxReg_MP[index][2];
             } else if (myVars->RedoxReg_MP[index][0] == 9) {
-                myVars->Redox2PS_V9 = myVars->RedoxReg_VMAX9 * myVars->RedoxReg_MP[index][2];
-                //myVars->Redox2PS_V9 = myVars->RedoxReg_VMAX9;
+                myVars->Redox2PS_V9 = RedoxReg_VMAX9 * myVars->RedoxReg_MP[index][2];
             } else if (myVars->RedoxReg_MP[index][0] == 13) {
-                myVars->Redox2PS_V13 = myVars->RedoxReg_VMAX13 * myVars->RedoxReg_MP[index][2];
-                //myVars->Redox2PS_V13 = myVars->RedoxReg_VMAX13;
+                myVars->Redox2PS_V13 = RedoxReg_VMAX13 * myVars->RedoxReg_MP[index][2];
             } else if (myVars->RedoxReg_MP[index][0] == 16) {
-                myVars->Redox2PS_V16 = myVars->RedoxReg_VMAX16 * myVars->RedoxReg_MP[index][2];
-                //myVars->Redox2PS_V16 = myVars->RedoxReg_VMAX16;
+                myVars->Redox2PS_V16 = RedoxReg_VMAX16 * myVars->RedoxReg_MP[index][2];
             }
         }
         N_VDestroy(y);
@@ -102,11 +97,8 @@ void RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, Variables *myVars) {
         SUNLinSolFree(LS);
     }
 
-    const double Vred = Fdn * myVars->Fd_Thio_ET * Thio / myVars->ThioT;
-    const double Vox = Thion * myVars->Thio_Oxidation;
-
-    myVars->RedoxReg_Vel.Vred = Vred;
-    myVars->RedoxReg_Vel.Vox = Vox;
+    myVars->RedoxReg_Vel.Vred = RedoxReg_Con.RA_con.EPS_con.FIBF_con.BF_con.Fdn * myVars->Fd_Thio_ET * Thio / myVars->ThioT;
+    myVars->RedoxReg_Vel.Vox = RedoxReg_Con.Thion * myVars->Thio_Oxidation;
 
     if (myVars->RedoxReg_TIME_N == 0)
         myVars->RedoxReg_TIME_N = 1;

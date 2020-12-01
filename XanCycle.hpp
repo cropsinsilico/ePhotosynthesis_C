@@ -1,6 +1,32 @@
 #pragma once
 #include "definitions.hpp"
 
+/**********************************************************************************************************************************************
+ *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
+ *
+ * CAS-MPG Partner Institute for Computational Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
+ * China Institute of Genomic Biology and Department of Plant Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
+ * University of Illinois at Urbana Champaign
+ * Global Change and Photosynthesis Research Unit, USDA/ARS, 1406 Institute of Genomic Biology, Urbana, IL 61801, USA.
+ *
+ * Converted from Matlab to C++ by Douglas N. Friedel, National Center for Supercomputing Applications (2020)
+ *
+ *   This file is part of e-photosynthesis.
+ *
+ *    e-photosynthesis is free software; you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation;
+ *
+ *    e-photosynthesis is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License (GPL)
+ *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **********************************************************************************************************************************************/
+
 class XanCycleVel {
 public:
     XanCycleVel() {}
@@ -22,7 +48,6 @@ public:
     double VABAdg = 0.;  //  The rate of ABA degradation
 };
 
-struct Variables;
 class XanCycleCon {
 public:
     XanCycleCon() {}
@@ -45,19 +70,34 @@ public:
         arr array = {Vx, Ax, Zx, ABA};
         return array;
     }
+    void clear() {
+        Vx = 0.;
+        Ax = 0.;
+        Zx = 0.;
+        ABA = 0.;
+    }
     size_t size() {
         return count;
     }
-    double Vx = 0.;
-    double Ax = 0.;
-    double Zx = 0.;
-    double ABA = 0.;
+    double Vx = 0.;	// The concentration of Violozanthin
+    double Ax = 0.;	//	The concentration of Anthrozanthin
+    double Zx = 0.;	//	The concentration of Zeaznthin
+    double ABA = 0.;	//	The concentration of ABA
 private:
     size_t count = 4;
 };
 
-XanCycleCon XanCycle_Ini(Variables *myVars);
+class XanCycle {
+public:
+    static XanCycleCon XanCycle_Ini(Variables *myVars);
 
-arr XanCycle_Mb(double t, XanCycleCon &XanCycle_Con, Variables *myVars);
+    static arr XanCycle_Mb(double t, XanCycleCon &XanCycle_Con, Variables *myVars);
 
-void XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myVars);
+    static void XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myVars);
+private:
+    static double XanCycle_kav;
+    static double XanCycle_kaz;
+    static double XanCycle_kva;
+    static double XanCycle_kza;
+};
+

@@ -1,3 +1,5 @@
+#pragma once
+
 /**********************************************************************************************************************************************
  *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
  *
@@ -24,17 +26,8 @@
  *
  **********************************************************************************************************************************************/
 
-#include "globals.hpp"
-#include "DynaPS.hpp"
+#include "definitions.hpp"
 
-DynaPSCon DynaPS_Init(Variables *myVars) {
+arr ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, double Light, Variables *myVars);
 
-    //////////////////////////////////////////////////////////////////////////////////
-    //   Clear up memory for simulation       //
-    //////////////////////////////////////////////////////////////////////////////////
-
-    RACon RA_con = RA_Ini(myVars);
-    XanCycleCon XanCycle_con = XanCycle::XanCycle_Ini(myVars);
-    DynaPSCon DynaPS_con(RA_con, XanCycle_con);
-    return DynaPS_con;
-}
+void ssPSIni(double t, Variables *myVars);

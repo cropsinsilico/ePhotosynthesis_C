@@ -1,3 +1,29 @@
+/**********************************************************************************************************************************************
+ *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
+ *
+ * CAS-MPG Partner Institute for Computational Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
+ * China Institute of Genomic Biology and Department of Plant Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
+ * University of Illinois at Urbana Champaign
+ * Global Change and Photosynthesis Research Unit, USDA/ARS, 1406 Institute of Genomic Biology, Urbana, IL 61801, USA.
+ *
+ * Converted from Matlab to C++ by Douglas N. Friedel, National Center for Supercomputing Applications (2020)
+ *
+ *   This file is part of e-photosynthesis.
+ *
+ *    e-photosynthesis is free software; you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation;
+ *
+ *    e-photosynthesis is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License (GPL)
+ *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **********************************************************************************************************************************************/
+
 #include "globals.hpp"
 #include <sundials/sundials_math.h>
 #include <cvode/cvode.h>
@@ -5,30 +31,6 @@
 #include <sunlinsol/sunlinsol_dense.h>
 #include <cvode/cvode_direct.h>
 #include "Variables.hpp"
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
-//CAS-MPG Partner Institute for Computational Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
-//China Institute of Genomic Biology and Department of Plant Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
-//University of Illinois at Urbana Champaign
-//Global Change and Photosynthesis Research Unit, USDA/ARS, 1406 Institute of Genomic Biology, Urbana, IL 61801, USA.
-
-//   This file is part of e-photosynthesis.
-
-//    e-photosynthesis is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation;
-
-//    e-photosynthesis is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License (GPL)
-//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 Variables *CM::myVars = new Variables();
 double CM::CM_Drive2(double pop, double currentPop) {
@@ -53,8 +55,6 @@ double CM::CM_Drive2(double pop, double currentPop) {
     // This is a variable indicating whether the PSPR model is actually need to be combined with SUCS or not. If 1 then means combined; 0 means not.
     myVars->PSPR_SUCS_com = true;
 
-    myVars->ATPActive = 0;
-
     CMCon CM_con = CM_Ini();
     arr CMs = CM_con.toArray();
     ////////////////////////////////////////////////
@@ -70,14 +70,14 @@ double CM::CM_Drive2(double pop, double currentPop) {
     int flag;
     realtype abstol = 1e-5;
     realtype reltol = 1e-4;
-    sunindextype N =  CMs.size();
+    sunindextype N =  static_cast<long>(CMs.size());
     N_Vector y;
     y = N_VNew_Serial(N);
 
-    for (int i = 0; i < N; i++)
+    for (size_t i = 0; i < CMs.size(); i++)
         NV_Ith_S(y, i) =  CMs[i];
 
-    void *cvode_mem = NULL;
+    void *cvode_mem = nullptr;
     cvode_mem = CVodeCreate(CV_BDF);
     realtype t0 = 0;
     flag = CVodeInit(cvode_mem, CM_mb, t0, y);
@@ -90,7 +90,6 @@ double CM::CM_Drive2(double pop, double currentPop) {
     flag = CVodeSetUserData(cvode_mem, data);
 
     SUNMatrix A = SUNDenseMatrix(N, N);
-
 
     SUNLinearSolver LS = SUNDenseLinearSolver(y, A);
 

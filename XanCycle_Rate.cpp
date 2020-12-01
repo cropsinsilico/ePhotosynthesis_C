@@ -1,37 +1,33 @@
+/**********************************************************************************************************************************************
+ *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
+ *
+ * CAS-MPG Partner Institute for Computational Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
+ * China Institute of Genomic Biology and Department of Plant Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
+ * University of Illinois at Urbana Champaign
+ * Global Change and Photosynthesis Research Unit, USDA/ARS, 1406 Institute of Genomic Biology, Urbana, IL 61801, USA.
+ *
+ * Converted from Matlab to C++ by Douglas N. Friedel, National Center for Supercomputing Applications (2020)
+ *
+ *   This file is part of e-photosynthesis.
+ *
+ *    e-photosynthesis is free software; you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation;
+ *
+ *    e-photosynthesis is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License (GPL)
+ *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **********************************************************************************************************************************************/
+
 #include "Variables.hpp"
 #include "globals.hpp"
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-//   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
-//CAS-MPG Partner Institute for Computational Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
-//China Institute of Genomic Biology and Department of Plant Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
-//University of Illinois at Urbana Champaign
-//Global Change and Photosynthesis Research Unit, USDA/ARS, 1406 Institute of Genomic Biology, Urbana, IL 61801, USA.
-
-//   This file is part of e-photosynthesis.
-
-//    e-photosynthesis is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation;
-
-//    e-photosynthesis is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License (GPL)
-//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-void XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myVars) {
-
-    const double Vx = XanCycle_Con.Vx;	// The concentration of Violozanthin
-    const double Ax = XanCycle_Con.Ax;	//	The concentration of Anthrozanthin
-    const double Zx = XanCycle_Con.Zx;	//	The concentration of Zeaznthin
-    double ABA = XanCycle_Con.ABA;	//	The concentration of ABA
-
+void XanCycle::XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myVars) {
 
     Condition(t, myVars);
 
@@ -52,10 +48,10 @@ void XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myVars) {
     }
 
 
-    const double Vva = Vx * myVars->XanCycle_kva * RegCof;
-    const double Vaz = Ax * myVars->XanCycle_kaz * RegCof;
-    const double Vza = Zx * myVars->XanCycle_kza;
-    const double Vav = Ax * myVars->XanCycle_kav;
+    const double Vva = XanCycle_Con.Vx * XanCycle_kva * RegCof;
+    const double Vaz = XanCycle_Con.Ax * XanCycle_kaz * RegCof;
+    const double Vza = XanCycle_Con.Zx * XanCycle_kza;
+    const double Vav = XanCycle_Con.Ax * XanCycle_kav;
 
     const double Vvf = 0;
     const double Vv2ABA = 0;
@@ -70,16 +66,16 @@ void XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myVars) {
     myVars->XanCycle_Vel.Vza = Vza;	//	THe rate of z to a
     myVars->XanCycle_Vel.Vav = Vav;	//	The rate of A to V
     myVars->XanCycle_Vel.Vvf = Vvf;	//	The rate of V formation
-    myVars->XanCycle_Vel.Vv2ABA = Vv2ABA;	//	The rate of conversion from v to ABA.
-    myVars->XanCycle_Vel.VABAdg = VABAdg;	//	The rate of ABA degradation
+    myVars->XanCycle_Vel.Vv2ABA = Vv2ABA;	//	The rate of conversion from v to XanCycle_Con.ABA.
+    myVars->XanCycle_Vel.VABAdg = VABAdg;	//	The rate of XanCycle_Con.ABA degradation
 
     if (myVars->record) {
         myVars->XanCycle_VEL.insert(myVars->XanCycle_TIME_N, t, myVars->XanCycle_Vel);
-    }
-    ABA = Vx / (Vx + Ax + Zx);
 
-    myVars->XanCycle2OUT[0] = Vx;
-    myVars->XanCycle2OUT[1] = Ax;
-    myVars->XanCycle2OUT[2] = Zx;
-    myVars->XanCycle2OUT[3] = ABA;
+        myVars->XanCycle2OUT.Vx = XanCycle_Con.Vx;
+        myVars->XanCycle2OUT.Ax = XanCycle_Con.Ax;
+        myVars->XanCycle2OUT.Zx = XanCycle_Con.Zx;
+        myVars->XanCycle2OUT.ABA = XanCycle_Con.Vx / (XanCycle_Con.Vx + XanCycle_Con.Ax + XanCycle_Con.Zx);
+    }
+
 }

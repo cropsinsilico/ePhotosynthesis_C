@@ -1,4 +1,31 @@
 #pragma once
+
+/**********************************************************************************************************************************************
+ *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
+ *
+ * CAS-MPG Partner Institute for Computational Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
+ * China Institute of Genomic Biology and Department of Plant Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
+ * University of Illinois at Urbana Champaign
+ * Global Change and Photosynthesis Research Unit, USDA/ARS, 1406 Institute of Genomic Biology, Urbana, IL 61801, USA.
+ *
+ * Converted from Matlab to C++ by Douglas N. Friedel, National Center for Supercomputing Applications (2020)
+ *
+ *   This file is part of e-photosynthesis.
+ *
+ *    e-photosynthesis is free software; you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation;
+ *
+ *    e-photosynthesis is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License (GPL)
+ *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **********************************************************************************************************************************************/
+
 #include "definitions.hpp"
 
 struct Variables;
@@ -22,6 +49,9 @@ public:
         O2 = other.O2;
         HexP = other.HexP;
         PenP = other.PenP;
+        _Pi = other._Pi;
+        _ADP = other._ADP;
+        _v1 = other._v1;
     }
 
     PSCon(const arr &vec, size_t offset = 0) {
@@ -68,6 +98,9 @@ public:
     double O2 = 0.;
     double HexP = 0.;
     double PenP = 0.;
+    double _Pi = 0.;
+    double _ADP = 0.;
+    double _v1 = 0.;
 private:
     size_t count = 15;
 };
@@ -140,9 +173,85 @@ public:
 
 };
 
-arr PSmb(double t, PSCon &PSs, arr &Param, Variables *myVars);
-//std::vector<double> PSI(Variables *myVars);
+class PS{
+public:
+    static arr PSmb(double t, PSCon &PSs, arr &Param, Variables *myVars);
+    static PSCon PSI(Variables *myVars);
 
-PSCon PSInitial(Variables *myVars);
+    static PSCon PSInitial(Variables *myVars);
 
-void PSRate(double t, PSCon &PSs, arr &Param, Variables *myVars);
+    static void PSRate(double t, PSCon &PSs, arr &Param, Variables *myVars);
+private:
+    static double KA231;
+    static double KE11;
+    static double KE12;
+    static double KE13;
+    static double KE16;
+    static double KE21;
+    static double KE22;
+    static double KE23;
+    static double KE25;
+    static double KE4;
+    static double KE5;
+    static double KE6;
+    static double KE7;
+    static double KE8;
+    static double KE9;
+    static double KI11;
+    static double KI12;
+    static double KI13;
+    static double KI131;
+    static double KI132;
+    static double KI133;
+    static double KI134;
+    static double KI135;
+    static double KI14;
+    static double KI15;
+    static double KI231;
+    static double KI61;
+    static double KI62;
+    static double KI9;
+    static double KM10;
+    static double KM101;
+    static double KM102;
+    static double KM103;
+    static double KM13;
+    static double KM131;
+    static double KM132;
+    static double KM161;
+    static double KM162;
+    static double KM163;
+    static double KM21;
+    static double KM22;
+    static double KM23;
+    static double KM231;
+    static double KM232;
+    static double KM233;
+    static double KM234;
+    static double KM241;
+    static double KM311;
+    static double KM313;
+    static double KM31a;
+    static double KM32;
+    static double KM32b;
+    static double KM33;
+    static double KM51;
+    static double KM52;
+    static double KM53;
+    static double KM61;
+    static double KM81;
+    static double KM82;
+    static double KM9;
+    static double KVmo;
+    static double PS_C_CA;
+    static double PS_C_CP;
+    static double PS_PEXT;
+    static double V24;
+    static double V31;
+    static double V32;
+    static double V33;
+    static double V5;
+    static double V7;
+    static double V8;
+
+};

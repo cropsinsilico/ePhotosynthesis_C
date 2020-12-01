@@ -1,62 +1,58 @@
+/**********************************************************************************************************************************************
+ *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
+ *
+ * CAS-MPG Partner Institute for Computational Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
+ * China Institute of Genomic Biology and Department of Plant Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
+ * University of Illinois at Urbana Champaign
+ * Global Change and Photosynthesis Research Unit, USDA/ARS, 1406 Institute of Genomic Biology, Urbana, IL 61801, USA.
+ *
+ * Converted from Matlab to C++ by Douglas N. Friedel, National Center for Supercomputing Applications (2020)
+ *
+ *   This file is part of e-photosynthesis.
+ *
+ *    e-photosynthesis is free software; you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation;
+ *
+ *    e-photosynthesis is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License (GPL)
+ *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **********************************************************************************************************************************************/
+
 #include "Variables.hpp"
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-//   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
-//CAS-MPG Partner Institute for Computational Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
-//China Institute of Genomic Biology and Department of Plant Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
-//University of Illinois at Urbana Champaign
-//Global Change and Photosynthesis Research Unit, USDA/ARS, 1406 Institute of Genomic Biology, Urbana, IL 61801, USA.
-
-//   This file is part of e-photosynthesis.
-
-//    e-photosynthesis is free software; you can redistribute it and/or modify
-//    it under the terms of the GNU General Public License as published by
-//    the Free Software Foundation;
-
-//    e-photosynthesis is distributed in the hope that it will be useful,
-//    but WITHOUT ANY WARRANTY; without even the implied warranty of
-//    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-//    GNU General Public License for more details.
-
-//    You should have received a copy of the GNU General Public License (GPL)
-//    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 double TargetFunVal(Variables *myVars) {
     if (!myVars->record)
         return 0.;
 
-    /*
+
     const double PSVCOEFF = 30;
 
-    for (int i = 1; i < myVars->PS_VEL.size(); i++)
-        for (int y = 0; y < PS_VEL_SIZE; y++)
-            myVars->PS_VEL[i][y] *= PSVCOEFF;
+    for (size_t i = 1; i < myVars->PS_VEL.size(); i++)
+        myVars->PS_VEL[i] *= PSVCOEFF;
 
-    // PSVEL = PS_VEL';// --unused
-
-    //global VolRatioStCyto
+    //PSVEL = PS_VEL';// --unused
     double ratio;
     if (myVars->VolRatioStCyto == 1) {
         ratio = PSVCOEFF;
     } else {
         ratio = PSVCOEFF * 4 / 9;
     }
-    for (int i = 0; i < myVars->PR_VEL.size(); i++)
-        for (int j = 0; j < PR_VEL_SIZE; j++)
-            myVars->PR_VEL[i][j] *= ratio;
+    for (size_t i = 0; i < myVars->PR_VEL.size(); i++)
+        myVars->PR_VEL[i] *= ratio;
 
 
 
-    const size_t n = myVars->PS_VEL[0].size();
-    const double a = myVars->PS_VEL[1][n];
-    const double b = myVars->PR_VEL[n][8];
+    //const size_t n = myVars->PS_VEL.size();
+    const double a = myVars->PS_VEL.getLastData().v1; // [1][n];
+    const double b = myVars->PR_VEL.getLastData().v1in;
 
     const double CO2AR = a - b;
 
     return CO2AR;
-     */
-    return 0.;
 }
