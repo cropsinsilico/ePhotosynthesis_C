@@ -53,3 +53,5 @@ conv.py
 junk
 
 build/
+
+CMakeLists.txt.user
