@@ -134,11 +134,11 @@ public:
 // class for grouping PR related functions and common variables
 class PR {
 public:
-    static PRCon PRinitial(Variables *theVars);
+    static PRCon PR_Ini(Variables *theVars);
 
-    static arr PRmb(double t, PRCon &PR_con, Variables *theVars);
+    static arr PR_Mb(double t, PRCon &PR_con, Variables *theVars);
 
-    static void PRrate(double t, PRCon &PR_con, Variables *theVars);
+    static void PR_Rate(double t, PRCon &PR_con, Variables *theVars);
 private:
     static double KC;
     static double KE113;

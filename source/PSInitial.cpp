@@ -98,7 +98,7 @@ double PS::V5 = 0.;
 double PS::V7 = 0.;
 double PS::V8 = 0.;
 
-PSCon PS::PSInitial(Variables *theVars) {
+PSCon PS::PS_Ini(Variables *theVars) {
     PS_C_CP = 15 * theVars->PSRatio[0];   //   Global constant for the total phosphate
     PS_C_CA = 1.5 * theVars->PSRatio[1];    //   Global constant for the total adenylates
     PS_PEXT = 0.5 * theVars->PSRatio[3];   //   Global constant for the cytosolic Phosphate concentration;

@@ -26,12 +26,12 @@
 
 #include "Variables.hpp"
 
-arr RedoxReg::RedoxReg_mb(double t, RedoxRegCon &RedoxReg_Con, Variables *theVars) {
+arr RedoxReg::RedoxReg_Mb(double t, RedoxRegCon &RedoxReg_Con, Variables *theVars) {
     theVars->trDynaPS2RedReg_cal = 1;
 
     RedoxReg_Rate(t, RedoxReg_Con, theVars);
 
-    arr RA_DYDT = RA_mb(t, RedoxReg_Con.RA_con, theVars);
+    arr RA_DYDT = RA_Mb(t, RedoxReg_Con.RA_con, theVars);
 
     arr RedoxReg_DYDT;
     RedoxReg_DYDT.reserve(93);

@@ -159,7 +159,7 @@ struct Variables {
     arr XanCycle_Param = zeros(2);
 
     // Vel
-    BFVEL BF_Vel;
+    BFVel BF_Vel;
     FIVel FI_Vel;
     PRVel PR_Vel;
     PSVel PS_Vel;
@@ -203,7 +203,7 @@ struct Variables {
     arr FluxTR;
     RROEAKE RROEA_KE;
 
-    TimeSeries<BFVEL> BF_VEL = TimeSeries<BFVEL>();
+    TimeSeries<BFVel> BF_VEL = TimeSeries<BFVel>();
     TimeSeries<std::vector<double> > CO2A = TimeSeries<std::vector<double> > ();
     TimeSeries<FIVel> FI_VEL = TimeSeries<FIVel> ();
     TimeSeries<PRVel> PR_VEL = TimeSeries<PRVel> ();

@@ -72,7 +72,7 @@ public:
 };
 
 DynaPSCon DynaPS_Init(Variables *theVars);
-arr DynaPSmb(double t, DynaPSCon &DynaPS_con, Variables *theVars);
+arr DynaPS_Mb(double t, DynaPSCon &DynaPS_con, Variables *theVars);
 
 //class for running DynaPS through an ODE solver
 class DynaPS {

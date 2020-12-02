@@ -82,4 +82,4 @@ public:
 
 void FIBF_Ini(Variables *theVars);
 
-arr FIBF_MB(double t, FIBFCon &FIBF_Con, Variables *theVars);
+arr FIBF_Mb(double t, FIBFCon &FIBF_Con, Variables *theVars);

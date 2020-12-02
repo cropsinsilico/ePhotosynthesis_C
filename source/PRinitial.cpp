@@ -68,7 +68,7 @@ double PR::V124 = 0.;
 double PR::V131 = 0.;
 double PR::V2T = 0.;
 
-PRCon PR::PRinitial(Variables *theVars) {
+PRCon PR::PR_Ini(Variables *theVars) {
     NADHc = 0.47 * theVars->PRRatio[8];
     NADc = 0.4 * theVars->PRRatio[9];
 

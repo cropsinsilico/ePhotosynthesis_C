@@ -82,7 +82,7 @@ public:
 
     static void RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, Variables *theVars);
 
-    static arr RedoxReg_mb(double t, RedoxRegCon &RedoxReg_Con, Variables *theVars);
+    static arr RedoxReg_Mb(double t, RedoxRegCon &RedoxReg_Con, Variables *theVars);
 
     static int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data);
 private:

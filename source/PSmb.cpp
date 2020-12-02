@@ -27,7 +27,7 @@
 #include "Variables.hpp"
 #include "globals.hpp"
 
-arr PS::PSmb(double t, PSCon &PS_con, arr &Param, Variables *theVars) {
+arr PS::PS_Mb(double t, PSCon &PS_con, arr &Param, Variables *theVars) {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Modifying KM, KI, KE VMAX for different reactions as the regulation//
@@ -38,7 +38,7 @@ arr PS::PSmb(double t, PSCon &PS_con, arr &Param, Variables *theVars) {
     Condition(t, theVars);
 
     // Get the rate for the reactions in the photosynthesis sytem
-    PSRate(t, PS_con, Param, theVars);
+    PS_Rate(t, PS_con, Param, theVars);
 
     // Get the rate
 

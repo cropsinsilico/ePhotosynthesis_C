@@ -29,10 +29,10 @@
 #include "definitions.hpp"
 
 // class for holding the result of the BF_Rate calculations
-class BFVEL {
+class BFVel {
 public:
-    BFVEL() {}
-    BFVEL(const BFVEL &other) {
+    BFVel() {}
+    BFVel(const BFVel &other) {
         Vbf1 = other.Vbf1;
         Vbf2 = other.Vbf2;
         Vbf3 = other.Vbf3;

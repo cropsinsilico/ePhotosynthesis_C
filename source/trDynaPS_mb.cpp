@@ -47,7 +47,7 @@ int trDynaPS::trDynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_dat
     theVars->RROEA_Param[1] = 1;
     arr RROEA_DYDT = RROEA::RROEA_Mb(t, trDynaPS_con.RROEA_con, theVars);
 
-    arr DynaPS_DYDT = DynaPSmb(t, trDynaPS_con.DynaPS_con, theVars);
+    arr DynaPS_DYDT = DynaPS_Mb(t, trDynaPS_con.DynaPS_con, theVars);
 
     for (size_t index = 0; index < 96; index++)
         dxdt[index] = DynaPS_DYDT[index];

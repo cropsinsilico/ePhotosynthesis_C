@@ -30,7 +30,7 @@
 
 // This model includes the mass balance equations for the full model of photosynthesis.
 
-std::vector<double> DynaPSmb(double t, DynaPSCon &DynaPS_con, Variables *theVars) {
+std::vector<double> DynaPS_Mb(double t, DynaPSCon &DynaPS_con, Variables *theVars) {
 
     // Try out one new way of calculating the mass balance equation.
     // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.
@@ -45,7 +45,7 @@ std::vector<double> DynaPSmb(double t, DynaPSCon &DynaPS_con, Variables *theVars
     theVars->FI_Param[0] = light;
     theVars->BF_Param[0] = light;
 
-    arr RA_DYDT = RA_mb(t, DynaPS_con.RA_con, theVars);
+    arr RA_DYDT = RA_Mb(t, DynaPS_con.RA_con, theVars);
     arr XanCycle_DYDT = XanCycle::XanCycle_Mb(t, DynaPS_con.XanCycle_con, theVars);
 
     // Here get the rate of Thioredoxin reduction and oxidation and use it to construct the differential equation for both thio and fd.

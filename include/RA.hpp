@@ -64,4 +64,4 @@ public:
 
 RACon RA_Ini(Variables *theVars);
 
-arr RA_mb(double t, RACon &RA_Con, Variables *theVars);
+arr RA_Mb(double t, RACon &RA_Con, Variables *theVars);

@@ -29,7 +29,7 @@
 
 CMCon CMInit(Variables *theVars) {
 
-    PS_PRCon PS_PR_con = PS_PRIni(theVars);
+    PS_PRCon PS_PR_con = PS_PR_Ini(theVars);
 
     SUCSCon SUCS_Con = SUCS::SUCS_Ini(theVars);
 

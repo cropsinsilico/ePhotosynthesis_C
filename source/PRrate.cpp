@@ -26,7 +26,7 @@
 #include <stdexcept>
 #include "Variables.hpp"
 
-void PR::PRrate(double t, PRCon &PR_con, Variables *theVars) {
+void PR::PR_Rate(double t, PRCon &PR_con, Variables *theVars) {
     // To set global information for different reactions
 
     // Reaction: 111: RUBP+O2<-->PGlycolate + PGA
