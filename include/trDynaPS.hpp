@@ -28,6 +28,7 @@
 
 #include "RROEA.hpp"
 #include "DynaPS.hpp"
+#include "driver.hpp"
 
 // class for holding inputs to trDynaPS_mb
 class trDynaPSCon {
@@ -75,6 +76,8 @@ public:
     DynaPSCon DynaPS_con;
 };
 
+trDynaPSCon trDynaPS_Init(Variables *theVars);
+arr trDynaPS_Mb(double t, trDynaPSCon &trDynaPS_con, Variables *theVars);
 // class for running trDynaPS with an ODE solver
 class trDynaPS {
 public:

@@ -27,7 +27,7 @@
 #include "globals.hpp"
 #include "trDynaPS.hpp"
 
-trDynaPSCon trDynaPS::trDynaPS_Ini() {
+trDynaPSCon trDynaPS_Init(Variables *theVars) {
     DynaPSCon DynaPS_con = DynaPS_Init(theVars);
 
     RROEACon RROEA_con = RROEA::RROEA_Ini(theVars);

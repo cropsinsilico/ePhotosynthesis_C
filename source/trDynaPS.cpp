@@ -24,40 +24,22 @@
  *
  **********************************************************************************************************************************************/
 
-#include "Variables.hpp"
 #include "globals.hpp"
-#include <nvector/nvector_serial.h>    /* access to serial N_Vector       */
 #include "trDynaPS.hpp"
 
-// This model includes the mass balance equations for the full model of photosynthesis.
+trDynaPSCon trDynaPS::trDynaPS_Ini() {
+    return trDynaPS_Init(theVars);
+}
 
-arr trDynaPS_Mb(double t, trDynaPSCon &trDynaPS_con, Variables *theVars) {
-    theVars->trDynaPS2RedReg_cal = 0;
-
-    Condition(t, theVars);
-    const double light = 1.0;
-    theVars->FI_Param[0] = light;
-    theVars->BF_Param[0] = light;
-
-    theVars->RROEA_Param[1] = 1;
-    arr RROEA_DYDT = RROEA::RROEA_Mb(t, trDynaPS_con.RROEA_con, theVars);
-
-    arr DynaPS_DYDT = DynaPS_Mb(t, trDynaPS_con.DynaPS_con, theVars);
-    arr dxdt = zeros(120);
-    for (size_t index = 0; index < 96; index++)
-        dxdt[index] = DynaPS_DYDT[index];
+int trDynaPS::trDynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
+    realtype *x = N_VGetArrayPointer(u);
+    realtype *dxdt = N_VGetArrayPointer(u_dot);
 
 
-    for (size_t index = 0; index < 10; index++)
-        dxdt[index + 110] = RROEA_DYDT[index];
+    trDynaPSCon trDynaPS_con(x);
+    arr ddxdt = trDynaPS_Mb(t, trDynaPS_con, theVars);
+    for (size_t index = 0; index < 120; index++)
+        dxdt[index] = ddxdt[index];
 
-
-    //////WY201804
-    const double Temp = RROEA_DYDT[8] - theVars->RROEA_Vel.ve2Fd + theVars->BF_Vel.Vbf16 / theVars->AVR + theVars->RROEA_Vel.veFd2Calvin - theVars->BF_Vel.vbfn2 - theVars->BF_Vel.vcet / theVars->AVR;
-
-    dxdt[118] = Temp * theVars->AVR;
-    dxdt[23] = Temp * theVars->AVR;
-
-    GenOut(t, theVars);
-    return dxdt;
+    return 0;
 }
