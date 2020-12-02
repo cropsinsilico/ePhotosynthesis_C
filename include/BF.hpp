@@ -344,7 +344,7 @@ class BF {
 public:
     static BFCon BF_Ini(Variables *theVars);
 
-    static arr BF_Mb(double t, BFCon &BF_con, Variables *theVars);
+    static arr BF_Mb(const double t, const BFCon &BF_con, Variables *theVars);
 
-    static void BF_Rate(double t, BFCon &BF_con, Variables *theVars);
+    static void BF_Rate(const double t, const BFCon &BF_con, Variables *theVars);
 };

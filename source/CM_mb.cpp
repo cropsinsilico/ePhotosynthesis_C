@@ -27,7 +27,7 @@
 #include "Variables.hpp"
 #include "CM.hpp"
 
-arr CM_Mb(realtype t, CMCon &CM_con, Variables *theVars) {
+arr CM_Mb(const realtype t, const CMCon &CM_con, Variables *theVars) {
     arr dxdt;
     dxdt.reserve(36);
     arr SUCS_DYDT = SUCS::SUCS_Mb(t, CM_con.SUCS_con, theVars);

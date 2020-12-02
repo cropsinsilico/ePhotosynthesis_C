@@ -137,7 +137,7 @@ class RuACT {
 public:
     static RuACTCon RuACT_Ini(Variables *theVars);
 
-    static arr RuACT_Mb(double t, RuACTCon &RuACT_Con, Variables *theVars);
+    static arr RuACT_Mb(const double t, const RuACTCon &RuACT_Con, Variables *theVars);
 
-    static void RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *theVars);
+    static void RuACT_Rate(const double t, const RuACTCon &RuACT_Con, Variables *theVars);
 };

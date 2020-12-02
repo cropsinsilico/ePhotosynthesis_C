@@ -136,9 +136,9 @@ class PR {
 public:
     static PRCon PR_Ini(Variables *theVars);
 
-    static arr PR_Mb(double t, PRCon &PR_con, Variables *theVars);
+    static arr PR_Mb(const double t, const PRCon &PR_con, Variables *theVars);
 
-    static void PR_Rate(double t, PRCon &PR_con, Variables *theVars);
+    static void PR_Rate(const double t, const PRCon &PR_con, Variables *theVars);
 private:
     static double KC;
     static double KE113;

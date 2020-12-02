@@ -27,7 +27,7 @@
 #include "Variables.hpp"
 const double KI583 = 1.55;
 
-void SUCS::SUCS_Rate(double t, SUCSCon &SUCS_Con, Variables *theVars) {
+void SUCS::SUCS_Rate(const double t, const SUCSCon &SUCS_Con, Variables *theVars) {
     ////////////////////////////////////////////////////////////
     // Get the auxiliary variables //
     ////////////////////////////////////////////////////////////

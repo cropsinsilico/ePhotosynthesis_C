@@ -112,4 +112,4 @@ public:
 
 PS_PRCon PS_PR_Ini(Variables *theVars);
 
-arr PS_PR_Mb(double t, PS_PRCon &PS_PRs, Variables *theVars);
+arr PS_PR_Mb(const double t, const PS_PRCon &PS_PRs, Variables *theVars);

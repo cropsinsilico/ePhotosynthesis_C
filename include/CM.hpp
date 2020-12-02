@@ -94,4 +94,4 @@ public:
 };
 
 CMCon CMInit(Variables *theVars);
-arr CM_Mb(double t, CMCon &CM_con, Variables *theVars);
+arr CM_Mb(const double t, const CMCon &CM_con, Variables *theVars);

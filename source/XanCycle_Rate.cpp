@@ -27,7 +27,7 @@
 #include "Variables.hpp"
 #include "globals.hpp"
 
-void XanCycle::XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *theVars) {
+void XanCycle::XanCycle_Rate(const double t, const XanCycleCon &XanCycle_Con, Variables *theVars) {
 
     Condition(t, theVars);
 

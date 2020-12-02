@@ -311,6 +311,6 @@ private:
 class FI {
 public:
     static FICon FI_Ini(Variables *theVars);
-    static arr FI_Mb(double t, FICon &FI_Con, Variables *theVars);
-    static void FI_Rate(double t, FICon &FI_Con, Variables *theVars);
+    static arr FI_Mb(const double t, const FICon &FI_Con, Variables *theVars);
+    static void FI_Rate(const double t, const FICon &FI_Con, Variables *theVars);
 };

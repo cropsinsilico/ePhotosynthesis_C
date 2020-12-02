@@ -48,7 +48,7 @@ template <typename T>
 class TimeSeries {
 public:
     TimeSeries() {}
-
+    ~TimeSeries() {}
     void insert(size_t step, double time, T &input);
 
     T &operator[](size_t i) { return _data[i]; }

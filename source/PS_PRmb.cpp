@@ -28,7 +28,7 @@
 #include "PS_PR.hpp"
 #include "globals.hpp"
 
-arr PS_PR_Mb(double t, PS_PRCon &PS_PR_con, Variables *theVars) {
+arr PS_PR_Mb(const double t, const PS_PRCon &PS_PR_con, Variables *theVars) {
 
     const double vATPcost = theVars->TestATPCost / theVars->AVR;
 

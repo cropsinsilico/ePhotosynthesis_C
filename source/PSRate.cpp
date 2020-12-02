@@ -26,7 +26,7 @@
 
 #include "Variables.hpp"
 
-void PS::PS_Rate(double t, PSCon &PS_con, arr &Param, Variables *theVars) {
+void PS::PS_Rate(const double t, const PSCon &PS_con, const arr &Param, Variables *theVars) {
     double PsPEXT = PS_PEXT;
 
     // First the physical and chemical constant for all the reactions

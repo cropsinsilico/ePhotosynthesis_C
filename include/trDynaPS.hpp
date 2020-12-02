@@ -77,11 +77,12 @@ public:
 };
 
 trDynaPSCon trDynaPS_Init(Variables *theVars);
-arr trDynaPS_Mb(double t, trDynaPSCon &trDynaPS_con, Variables *theVars);
+arr trDynaPS_Mb(const double t, const trDynaPSCon &trDynaPS_con, Variables *theVars);
 // class for running trDynaPS with an ODE solver
 class trDynaPS {
 public:
   trDynaPS(Variables *theVars) { this->theVars = theVars; }
+  ~trDynaPS();
   static Variables *theVars;
   arr trDynaPS_Drive(size_t ParaNum, double Ratio);
 

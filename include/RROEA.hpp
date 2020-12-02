@@ -209,7 +209,7 @@ class RROEA {
 public:
     static RROEACon RROEA_Ini(Variables *theVars);
 
-    static arr RROEA_Mb(double t, RROEACon &RROEA_Con, Variables *theVars);
+    static arr RROEA_Mb(const double t, const RROEACon &RROEA_Con, Variables *theVars);
 
-    static void RROEA_Rate(double t, RROEACon &RROEA_Con, Variables *theVars);
+    static void RROEA_Rate(const double t, const RROEACon &RROEA_Con, Variables *theVars);
 };

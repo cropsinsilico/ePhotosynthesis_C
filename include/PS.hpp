@@ -176,12 +176,12 @@ public:
 // class to for PS related functions and common variables
 class PS{
 public:
-    static arr PS_Mb(double t, PSCon &PSs, arr &Param, Variables *theVars);
+    static arr PS_Mb(const double t, const PSCon &PSs, const arr &Param, Variables *theVars);
     static PSCon PSI(Variables *theVars);
 
     static PSCon PS_Ini(Variables *theVars);
 
-    static void PS_Rate(double t, PSCon &PSs, arr &Param, Variables *theVars);
+    static void PS_Rate(const double t, const PSCon &PSs, const arr &Param, Variables *theVars);
 private:
     static double KA231;
     static double KE11;

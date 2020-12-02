@@ -26,7 +26,7 @@
 
 #include "Variables.hpp"
 
-void RROEA::RROEA_Rate(double t, RROEACon &RROEA_con, Variables *theVars) {
+void RROEA::RROEA_Rate(const double t, const RROEACon &RROEA_con, Variables *theVars) {
 
     const double GAPDHo = theVars->RROEA_Pool.GAPDH - RROEA_con.GAPDH;
     const double FBPaseo = theVars->RROEA_Pool.FBPase - RROEA_con.FBPase;

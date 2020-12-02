@@ -30,4 +30,4 @@
 
 arr ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, double Light, Variables *theVars);
 
-void ssPSIni(double t, Variables *theVars);
+void ssPSIni(const double t, Variables *theVars);

@@ -64,4 +64,4 @@ public:
 
 EPSCon EPS_Ini(Variables *theVars);
 
-arr EPS_Mb(double t, EPSCon &EPS_Con, Variables *theVars);
+arr EPS_Mb(const double t, const EPSCon &EPS_Con, Variables *theVars);

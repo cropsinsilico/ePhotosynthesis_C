@@ -33,31 +33,25 @@
 #include <cvode/cvode_direct.h>
 #include "trDynaPS.hpp"
 
-Variables *trDynaPS::theVars = new Variables();
+Variables *trDynaPS::theVars = nullptr;
 
 arr trDynaPS::trDynaPS_Drive(size_t ParaNum, double Ratio) {
 
-    if (ParaNum <= 103)
+    if (ParaNum <= 103) {
         theVars->PSRatio[ParaNum] = Ratio;
-
-    if (ParaNum > 103&&ParaNum <= 169)
+    } else if (ParaNum <= 169) {
         theVars->SUCRatio[ParaNum - 103] = Ratio;
-
-    if (ParaNum > 169&&ParaNum <= 217)
+    } else if (ParaNum <= 217) {
         theVars->PRRatio[ParaNum - 169] = Ratio;
-
-    if (ParaNum > 217&&ParaNum <= 233)
+    } else if (ParaNum <= 233) {
         theVars->RacRatio[ParaNum - 217] = Ratio;
-
-    if (ParaNum > 233&&ParaNum <= 256)
+    } else if (ParaNum <= 256) {
         theVars->FIRatio[ParaNum - 233] = Ratio;
-
-    if (ParaNum > 256&&ParaNum <= 305)
+    } else if (ParaNum <= 305) {
         theVars->BFRatio[ParaNum - 256] = Ratio;
-
-    if (ParaNum > 305&&ParaNum <= 309)
+    } else if (ParaNum <= 309) {
         theVars->XanRatio[ParaNum - 305] = Ratio;
-
+    }
     SYSInitial(theVars);
 
     // Indicate in the beginning there is no ATP synthesis activity.
@@ -68,7 +62,7 @@ arr trDynaPS::trDynaPS_Drive(size_t ParaNum, double Ratio) {
     // The combination of BF and FI model
     theVars->BF_FI_com = true;
 
-    // 1 means that the overall EPS model is used. 0 means partial model of FIBF is used.
+    // true means that the overall EPS model is used. false means partial model of FIBF is used.
     theVars->FIBF_PSPR_com = true;
 
     // A global variable to indicate whether the RuACT is run by itself or combined with others.
@@ -113,11 +107,11 @@ arr trDynaPS::trDynaPS_Drive(size_t ParaNum, double Ratio) {
     if (flag != 0)
         std::cout << "FAIL" << std::endl;
     flag = CVodeSetUserData(cvode_mem, data);
+    flag = CVodeSetMaxNumSteps(cvode_mem, 750);
 
     SUNMatrix A = SUNDenseMatrix(N, N);
 
-
-    SUNLinearSolver LS = SUNDenseLinearSolver(y, A);
+    SUNLinearSolver LS = SUNLinSol_Dense(y, A);
 
     flag = CVDlsSetLinearSolver(cvode_mem, LS, A);
     if (flag != 0)
@@ -134,7 +128,7 @@ arr trDynaPS::trDynaPS_Drive(size_t ParaNum, double Ratio) {
     realtype *results = N_VGetArrayPointer(y);
     trDynaPSCon trDynaPS_res(results);
     arr temp = trDynaPS_Mb(t, trDynaPS_res, theVars);
-
+    delete data;
     double CarbonRate = theVars->RuACT_Vel.v6_1 * theVars->AVR;
     double VPR = theVars->RuACT_Vel.v6_2 * theVars->AVR;
     double Vpgasink = theVars->SUCS_Vel.vpga_use * theVars->AVR;
@@ -158,6 +152,6 @@ arr trDynaPS::trDynaPS_Drive(size_t ParaNum, double Ratio) {
     N_VDestroy(y);
     CVodeFree(&cvode_mem);
     SUNLinSolFree(LS);
-
+    SUNMatDestroy(A);
     return Resulta;
 }

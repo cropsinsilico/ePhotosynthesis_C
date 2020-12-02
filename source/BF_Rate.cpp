@@ -27,7 +27,7 @@
 #include "Variables.hpp"
 #include "BF.hpp"
 
-void BF::BF_Rate(double t, BFCon &BF_con, Variables *theVars) {
+void BF::BF_Rate(const double t, const BFCon &BF_con, Variables *theVars) {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Step II get the concentration of differnet component //

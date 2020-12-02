@@ -161,9 +161,9 @@ class SUCS {
 public:
     static SUCSCon SUCS_Ini(Variables *theVars);
 
-    static arr SUCS_Mb(double t, SUCSCon &SUCS_Con, Variables *theVars);
+    static arr SUCS_Mb(const double t, const SUCSCon &SUCS_Con, Variables *theVars);
 
-    static void SUCS_Rate(double t, SUCSCon &SUCS_Con, Variables *theVars);
+    static void SUCS_Rate(const double t, const SUCSCon &SUCS_Con, Variables *theVars);
 private:
 
     static double KE501;

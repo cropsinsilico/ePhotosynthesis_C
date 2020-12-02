@@ -26,7 +26,7 @@
 
 #include "Variables.hpp"
 
-void ssPSIni(double t, Variables *theVars) {
+void ssPSIni(const double t, Variables *theVars) {
     const double RT = 0.0083 * (273 + t);
 
     theVars->GammaStar = exp(19.02 - 37.83 / RT);

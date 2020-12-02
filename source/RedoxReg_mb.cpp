@@ -26,7 +26,7 @@
 
 #include "Variables.hpp"
 
-arr RedoxReg::RedoxReg_Mb(double t, RedoxRegCon &RedoxReg_Con, Variables *theVars) {
+arr RedoxReg::RedoxReg_Mb(const double t, const RedoxRegCon &RedoxReg_Con, Variables *theVars) {
     theVars->trDynaPS2RedReg_cal = 1;
 
     RedoxReg_Rate(t, RedoxReg_Con, theVars);

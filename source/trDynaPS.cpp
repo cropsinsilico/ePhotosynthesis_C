@@ -26,6 +26,7 @@
 
 #include "globals.hpp"
 #include "trDynaPS.hpp"
+#include "Variables.hpp"
 
 trDynaPSCon trDynaPS::trDynaPS_Ini() {
     return trDynaPS_Init(theVars);
@@ -42,4 +43,9 @@ int trDynaPS::trDynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_dat
         dxdt[index] = ddxdt[index];
 
     return 0;
+}
+
+trDynaPS::~trDynaPS()  {
+    if (theVars != nullptr)
+        delete theVars;
 }

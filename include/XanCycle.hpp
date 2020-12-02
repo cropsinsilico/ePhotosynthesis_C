@@ -94,9 +94,9 @@ class XanCycle {
 public:
     static XanCycleCon XanCycle_Ini(Variables *theVars);
 
-    static arr XanCycle_Mb(double t, XanCycleCon &XanCycle_Con, Variables *theVars);
+    static arr XanCycle_Mb(const double t, const XanCycleCon &XanCycle_Con, Variables *theVars);
 
-    static void XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *theVars);
+    static void XanCycle_Rate(const double t, const XanCycleCon &XanCycle_Con, Variables *theVars);
 private:
     static double XanCycle_kav;
     static double XanCycle_kaz;
