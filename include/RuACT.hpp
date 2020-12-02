@@ -28,6 +28,7 @@
 
 #include "definitions.hpp"
 
+// class for holding the results of RuACT_Rate calculations
 class RuACTVel {
 public:
     RuACTVel() {}
@@ -47,6 +48,7 @@ public:
     double v6_2 = 0.;
 };
 
+// class for RuACT_RC data
 class RuACTRC {
 public:
     RuACTRC() {}
@@ -75,6 +77,8 @@ public:
     double k7 = 0;//	The rate constant for ecm to ecmr
     double kr = 0;
 };
+
+// class for RuACT_Pool data
 class RuACTPool {
 public:
     RuACTPool() {}
@@ -94,6 +98,7 @@ public:
     double M = 0;
 };
 
+// class for holding the inputs to RuACT_mb
 class RuACTCon {
 public:
     RuACTCon() {}
@@ -127,6 +132,7 @@ private:
     size_t count = 4;
 };
 
+// class for RuACT related functions
 class RuACT {
 public:
     static RuACTCon RuACT_Ini(Variables *theVars);

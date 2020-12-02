@@ -30,6 +30,7 @@
 #include "XanCycle.hpp"
 #include "driver.hpp"
 
+// class for holding inputs to DynaPS_mb
 class DynaPSCon {
 public:
     DynaPSCon() {}
@@ -72,6 +73,8 @@ public:
 
 DynaPSCon DynaPS_Init(Variables *theVars);
 arr DynaPSmb(double t, DynaPSCon &DynaPS_con, Variables *theVars);
+
+//class for running DynaPS through an ODE solver
 class DynaPS {
 public:
     DynaPS(Variables *theVars) { this->theVars = theVars; }

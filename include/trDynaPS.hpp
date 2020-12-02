@@ -29,6 +29,7 @@
 #include "RROEA.hpp"
 #include "DynaPS.hpp"
 
+// class for holding inputs to trDynaPS_mb
 class trDynaPSCon {
 public:
     trDynaPSCon() {}
@@ -74,7 +75,7 @@ public:
     DynaPSCon DynaPS_con;
 };
 
-
+// class for running trDynaPS with an ODE solver
 class trDynaPS {
 public:
   trDynaPS(Variables *theVars) { this->theVars = theVars; }

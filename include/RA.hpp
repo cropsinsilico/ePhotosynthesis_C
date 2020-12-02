@@ -29,6 +29,7 @@
 #include "EPS.hpp"
 #include "RuACT.hpp"
 
+// class for holding input for RA_mb
 class RACon {
 public:
     RACon() {}

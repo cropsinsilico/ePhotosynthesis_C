@@ -28,6 +28,7 @@
 
 #include "definitions.hpp"
 
+// class for holding the result of the BF_Rate calculations
 class BFVEL {
 public:
     BFVEL() {}
@@ -99,6 +100,7 @@ public:
 
 };
 
+// class for holding BF_RC data
 class BFRC {
 public:
     BFRC(){}
@@ -174,6 +176,7 @@ public:
     double KE2 = 0.;  //  Equilibrium constant
 };
 
+// class for holding BF_Pool data
 class BFPool {
 public:
     BFPool() {}
@@ -225,7 +228,7 @@ public:
     double k_pq_oxy = 0;
 };
 
-
+// class for holding the inputs to BF_mb
 class BFCon {
 public:
     BFCon() {}
@@ -336,6 +339,7 @@ private:
     size_t count = 29;
 };
 
+// class for the BF related functions
 class BF {
 public:
     static BFCon BF_Ini(Variables *theVars);

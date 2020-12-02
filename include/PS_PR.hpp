@@ -29,6 +29,7 @@
 #include "PS.hpp"
 #include "PR.hpp"
 
+// class to hold inputs to PS_PR_mb
 class PS_PRCon {
 public:
     PS_PRCon() {}
@@ -75,35 +76,35 @@ public:
     }
     arr toArray() {
         arr outvec = {PS_con.RuBP,
-                                      PS_con.PGA,
-                                      PS_con.DPGA,
-                                      PS_con.T3P,
-                                      PS_con.FBP,
-                                      PS_con.E4P,
-                                      PS_con.S7P,
-                                      PS_con.SBP,
-                                      PS_con.ATP,
-                                      PS_con.NADPH,
-                                      PS_con.CO2,
-                                      PS_con.O2,
-                                      PS_con.HexP,
-                                      PS_con.PenP,
-                                      PR_con.GCEA,
-                                      PR_con.GCA,
-                                      PR_con.PGCA,
-                                      PR_con.GCAc,
-                                      PR_con.GOAc,
-                                      PR_con.SERc,
-                                      PR_con.GLYc,
-                                      PR_con.HPRc,
-                                      PR_con.GCEAc,
-                                      PS_con.ADPG};
+                      PS_con.PGA,
+                      PS_con.DPGA,
+                      PS_con.T3P,
+                      PS_con.FBP,
+                      PS_con.E4P,
+                      PS_con.S7P,
+                      PS_con.SBP,
+                      PS_con.ATP,
+                      PS_con.NADPH,
+                      PS_con.CO2,
+                      PS_con.O2,
+                      PS_con.HexP,
+                      PS_con.PenP,
+                      PR_con.GCEA,
+                      PR_con.GCA,
+                      PR_con.PGCA,
+                      PR_con.GCAc,
+                      PR_con.GOAc,
+                      PR_con.SERc,
+                      PR_con.GLYc,
+                      PR_con.HPRc,
+                      PR_con.GCEAc,
+                      PS_con.ADPG};
 
         return outvec;
     }
 
     size_t size() {
-        return 24;//PS_con.size() + PR_con.size();
+        return 24;
     }
     PSCon PS_con;
     PRCon PR_con;

@@ -28,6 +28,7 @@
 
 #include "definitions.hpp"
 
+// class for holding the results of RROEA_Rate calculations
 class RROEAVel {
 public:
     RROEAVel() {}
@@ -57,6 +58,7 @@ public:
     double ve2RuACT = 0.;
 };
 
+// class for RROEA_RC data
 class RROEARC {
 public:
     RROEARC() {}
@@ -85,6 +87,7 @@ public:
     double ke2ATPGPP = 0;
 };
 
+// class for RROEA_KE data
 class RROEAKE {
 public:
     RROEAKE() {}
@@ -112,6 +115,7 @@ public:
     double KEeFd2Thio = 0;
 };
 
+// class for RROEA_Pool data
 class RROEAPool {
 public:
     RROEAPool() {}
@@ -142,7 +146,7 @@ public:
 };
 
 
-struct Variables;
+// class for holding the inputs to RROEA_mb
 class RROEACon {
 public:
     RROEACon() {}
@@ -200,6 +204,7 @@ private:
 
 };
 
+// class for RROEA related functions
 class RROEA {
 public:
     static RROEACon RROEA_Ini(Variables *theVars);

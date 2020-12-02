@@ -31,14 +31,19 @@
 #include <algorithm>
 #include <fstream>
 
+// predeclare main global data structure
 struct Variables;
 
+// rename a common data type to make it easier
 typedef std::vector<double> arr;
 
+// initialize an array of 1's
 inline arr ones(const size_t length) { return arr(length, 1.); }
 
+// initialize an array of 0's
 inline arr zeros(const size_t length) { return arr(length, 0.); }
 
+// template class for tracking intermediate results
 template <typename T>
 class TimeSeries {
 public:
@@ -63,11 +68,14 @@ public:
 
 private:
     size_t current = 0;
-    std::vector<T> _data;
-    std::vector<int> _step;
-    std::vector<double> _timestamp;
+    std::vector<T> _data;            // a vector of the accumulated data
+    std::vector<int> _step;          // the step number for each entry
+    std::vector<double> _timestamp;  // the timestamp for each entry
 };
 
+// insert a new data set into the array
+// If step already exists then replace the existing entry, otherwise
+// add the new data to the vector
 template <typename T>
 void TimeSeries<T>::insert(size_t step, double time, T &input) {
     std::vector<int>::iterator it = std::find(_step.begin(), _step.end(), step);
@@ -83,6 +91,7 @@ void TimeSeries<T>::insert(size_t step, double time, T &input) {
     }
 }
 
+// write the contents of the class to the stream
 template <typename T>
 void TimeSeries<T>::write(std::ofstream &of) {
     for (size_t i = 0; i < _step.size(); i++) {

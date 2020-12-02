@@ -30,6 +30,7 @@
 #include "SUCS.hpp"
 #include "driver.hpp"
 
+// class for holding the inputs to CM_mb
 class CMCon {
 public:
     CMCon() {}
@@ -79,7 +80,8 @@ public:
     PS_PRCon PS_PR_con;
     SUCSCon SUCS_con;
 };
-struct Variables;
+
+// class for running the CM calculations in an ODE solver
 class CM {
 public:
     CM(Variables *theVars) {

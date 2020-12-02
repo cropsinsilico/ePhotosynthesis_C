@@ -28,8 +28,7 @@
 
 #include "definitions.hpp"
 
-struct Variables;
-
+// class for holding the inputs to PS_mb
 class PSCon {
 public:
     PSCon() {}
@@ -105,6 +104,7 @@ private:
     size_t count = 15;
 };
 
+// class for holding the results of PS_Rate calculations
 class PSVel {
 public:
     PSVel() {}
@@ -173,6 +173,7 @@ public:
 
 };
 
+// class to for PS related functions and common variables
 class PS{
 public:
     static arr PSmb(double t, PSCon &PSs, arr &Param, Variables *theVars);

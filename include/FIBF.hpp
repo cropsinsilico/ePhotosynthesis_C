@@ -30,6 +30,7 @@
 #include "FI.hpp"
 #include "BF.hpp"
 
+// class for FIBF_Pool data
 class FIBFPool {
   public:
   FIBFPool() {}
@@ -39,6 +40,7 @@ class FIBFPool {
   double PQT;
 };
 
+// class for input to FIBF_mb
 class FIBFCon {
 public:
     FIBFCon() {}

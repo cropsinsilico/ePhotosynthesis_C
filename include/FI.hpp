@@ -28,6 +28,7 @@
 
 #include "definitions.hpp"
 
+// class for holding the results of the FI_Rate calculations
 class FIVel {
 public:
     FIVel() {}
@@ -151,6 +152,7 @@ public:
     double vP680_f = 0.;
 };
 
+// class for holding FIRC data
 class FIRC {
 public:
     FIRC() {}
@@ -202,6 +204,7 @@ public:
 
 };
 
+// class for hoplding FI_Pool data
 class FIPool {
 public:
     FIPool() {}
@@ -213,7 +216,7 @@ public:
     double PQT = 0;
 };
 
-
+// class for holding the inputs to FI_mb
 class FICon {
 public:
     FICon() {}
@@ -304,6 +307,7 @@ private:
     size_t count = 22;
 };
 
+// class for FI related functions
 class FI {
 public:
     static FICon FI_Ini(Variables *theVars);

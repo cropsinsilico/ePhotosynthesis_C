@@ -28,7 +28,7 @@
 
 #include "definitions.hpp"
 
-struct Variables;
+// class for holding the inputs for SUCS_mb
 class SUCSCon {
 public:
     SUCSCon() {}
@@ -101,6 +101,7 @@ private:
     size_t count = 12;
 };
 
+// class for holding the results of SUCS_Rate calculations
 class SUCSVel {
 public:
     SUCSVel() {}
@@ -138,6 +139,8 @@ public:
     double vatpf = 0.;  //   ATP synthesis rate
 
 };
+
+// class for SUCS_Pool data
 class SUCSPool {
 public:
     SUCSPool() {}
@@ -153,6 +156,7 @@ public:
     double PTc = 0;
 };
 
+// class for SUCS related functions and common variables
 class SUCS {
 public:
     static SUCSCon SUCS_Ini(Variables *theVars);

@@ -29,6 +29,7 @@
 #include "RA.hpp"
 #include "driver.hpp"
 
+// class for holding the results of RedoxReg_Rate calculations
 class RedoxRegVel {
   public:
   RedoxRegVel() {}
@@ -42,6 +43,7 @@ double Vox = 0.;
 
 };
 
+// class for holding the inputs to RedoxReg_mb
 class RedoxRegCon {
 public:
     RedoxRegCon() {}
@@ -73,6 +75,7 @@ public:
     double Thion = 0;
 };
 
+// class for RedoxReg related calculations and common variables
 class RedoxReg{
 public:
     static RedoxRegCon RedoxReg_Ini(Variables *theVars);

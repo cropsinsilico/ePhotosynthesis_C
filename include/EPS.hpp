@@ -29,6 +29,7 @@
 #include "FIBF.hpp"
 #include "CM.hpp"
 
+// class for holding the inputs to EPS_mb
 class EPSCon {
 public:
     EPSCon() {}

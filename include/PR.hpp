@@ -28,6 +28,7 @@
 
 #include "definitions.hpp"
 
+// class for holding the inputs to PR_mb
 class PRCon {
 public:
     PRCon() {}
@@ -89,6 +90,7 @@ private:
     size_t count = 13;
 };
 
+// class for holding the results of the PR_Rate calculations
 class PRVel {
 public:
     PRVel() {}
@@ -129,6 +131,7 @@ public:
     double v2out = 0.;
 };
 
+// class for grouping PR related functions and common variables
 class PR {
 public:
     static PRCon PRinitial(Variables *theVars);

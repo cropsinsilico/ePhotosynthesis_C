@@ -28,6 +28,7 @@
 
 #include "definitions.hpp"
 
+// some ungrouped functions
 void Condition(double t, Variables *theVars);
 
 void GenOut(double t, Variables *theVars);
@@ -37,8 +38,6 @@ void IniModelCom(Variables *theVars);
 void ParamSet(Variables *theVars);
 
 void SYSInitial(Variables *theVars);
-
-void Sim_Ephotosynthesis(bool record);
 
 double TargetFunVal(Variables *theVars);
 
