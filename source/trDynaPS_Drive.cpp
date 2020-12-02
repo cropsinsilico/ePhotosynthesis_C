@@ -130,6 +130,11 @@ arr trDynaPS::trDynaPS_Drive(size_t ParaNum, double Ratio) {
     for (realtype tout = step_length; tout <= end_time; tout += step_length)
         flag = CVode(cvode_mem, tout, y, &t, CV_NORMAL);
 
+    // call the functions one last time to get the correct values we need
+    realtype *results = N_VGetArrayPointer(y);
+    trDynaPSCon trDynaPS_res(results);
+    arr temp = trDynaPS_Mb(t, trDynaPS_res, theVars);
+
     double CarbonRate = theVars->RuACT_Vel.v6_1 * theVars->AVR;
     double VPR = theVars->RuACT_Vel.v6_2 * theVars->AVR;
     double Vpgasink = theVars->SUCS_Vel.vpga_use * theVars->AVR;
@@ -149,9 +154,7 @@ arr trDynaPS::trDynaPS_Drive(size_t ParaNum, double Ratio) {
         makeFluxTR(theVars);
     }
 
-
     IniModelCom(theVars);
-    //save LRC
     N_VDestroy(y);
     CVodeFree(&cvode_mem);
     SUNLinSolFree(LS);
