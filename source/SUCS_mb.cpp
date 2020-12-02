@@ -41,16 +41,16 @@ arr SUCS::SUCS_Mb(const double t, const SUCSCon &SUCS_Con, Variables *theVars) {
 
     // The Major Variables
     arr SUCS_mb = zeros(12);
-    SUCS_mb[0] = theVars->SUCS_Vel.vdhap_in + theVars->SUCS_Vel.vgap_in - 2 * theVars->SUCS_Vel.v51;//	T3Pc
-    SUCS_mb[1] = theVars->SUCS_Vel.v51 - theVars->SUCS_Vel.v52;//	FBPc
-    SUCS_mb[2] = theVars->SUCS_Vel.v52 - theVars->SUCS_Vel.v55 - theVars->SUCS_Vel.v59 + theVars->SUCS_Vel.v58 - theVars->SUCS_Vel.v56;//	HexPc
-    SUCS_mb[3] = theVars->SUCS_Vel.v59 - theVars->SUCS_Vel.v58;//	F26BPc
-    SUCS_mb[4] = 0;                                      //   vatpf - theVars->SUCS_Vel.v59 - v60;   //	ATPc
-    SUCS_mb[5] = 0;                       //	ADPc
-    SUCS_mb[7] = theVars->SUCS_Vel.v55 - theVars->SUCS_Vel.v56;//	UDPGc
-    SUCS_mb[8] = 0;//  v60 - v55		;   //	UTPc
-    SUCS_mb[9] = theVars->SUCS_Vel.v56 - theVars->SUCS_Vel.v57;//	SUCP
-    SUCS_mb[10] = theVars->SUCS_Vel.v57 - theVars->SUCS_Vel.v62;//	SUC
-    SUCS_mb[11] = theVars->SUCS_Vel.vpga_in - theVars->SUCS_Vel.vpga_use;//	pgaC
+    SUCS_mb[0] = theVars->SUCS_Vel.vdhap_in + theVars->SUCS_Vel.vgap_in - 2 * theVars->SUCS_Vel.v51; // T3Pc
+    SUCS_mb[1] = theVars->SUCS_Vel.v51 - theVars->SUCS_Vel.v52; // FBPc
+    SUCS_mb[2] = theVars->SUCS_Vel.v52 - theVars->SUCS_Vel.v55 - theVars->SUCS_Vel.v59 + theVars->SUCS_Vel.v58 - theVars->SUCS_Vel.v56;// HexPc
+    SUCS_mb[3] = theVars->SUCS_Vel.v59 - theVars->SUCS_Vel.v58; // F26BPc
+    SUCS_mb[4] = 0; //   vatpf - theVars->SUCS_Vel.v59 - v60;   // ATPc
+    SUCS_mb[5] = 0; // ADPc
+    SUCS_mb[7] = theVars->SUCS_Vel.v55 - theVars->SUCS_Vel.v56; // UDPGc
+    SUCS_mb[8] = 0; //  v60 - v55  ;   // UTPc
+    SUCS_mb[9] = theVars->SUCS_Vel.v56 - theVars->SUCS_Vel.v57; // SUCP
+    SUCS_mb[10] = theVars->SUCS_Vel.v57 - theVars->SUCS_Vel.v62; // SUC
+    SUCS_mb[11] = theVars->SUCS_Vel.vpga_in - theVars->SUCS_Vel.vpga_use; // pgaC
     return SUCS_mb;
 }

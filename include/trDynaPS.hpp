@@ -56,7 +56,7 @@ public:
     }
     void fromArray(const arr &vec, size_t offset = 0) {
         DynaPS_con.fromArray(vec, offset);
-        RROEA_con.fromArray(vec, offset + 110);//DynaPS_con.size());
+        RROEA_con.fromArray(vec, offset + 110);
     }
     arr toArray() {
         arr dyvec = DynaPS_con.toArray();
@@ -70,7 +70,7 @@ public:
 
     }
     size_t size() {
-        return 120;//RROEA_con.size() + DynaPS_con.size();
+        return 120; //RROEA_con.size() + DynaPS_con.size();
     }
     RROEACon RROEA_con;
     DynaPSCon DynaPS_con;

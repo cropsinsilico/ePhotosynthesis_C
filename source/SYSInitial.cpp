@@ -32,7 +32,7 @@ void SYSInitial(Variables *theVars) {
 
     theVars->PS12ratio = theVars->input_PSI / theVars->input_PSIIcore;
 
-    theVars->ChlT2 = theVars->input_PSIIcore * (theVars->PSIIantennaSize + 13 * theVars->input_LHCII);// U and A, PSII and LHCII
-    theVars->ChlT = theVars->PSIIantennaSize * theVars->input_PSIIcore;// U , PSII
-    theVars->ChlPSI = theVars->input_PSI * (theVars->PSIantennaSize + 13 * theVars->input_LHCI);// U and A of PSI, total Chl in PSI
+    theVars->ChlT2 = theVars->input_PSIIcore * (theVars->PSIIantennaSize + 13 * theVars->input_LHCII); // U and A, PSII and LHCII
+    theVars->ChlT = theVars->PSIIantennaSize * theVars->input_PSIIcore;  // U , PSII
+    theVars->ChlPSI = theVars->input_PSI * (theVars->PSIantennaSize + 13 * theVars->input_LHCI);       // U and A of PSI, total Chl in PSI
 }

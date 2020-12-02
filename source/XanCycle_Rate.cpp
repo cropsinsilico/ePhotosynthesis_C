@@ -61,13 +61,13 @@ void XanCycle::XanCycle_Rate(const double t, const XanCycleCon &XanCycle_Con, Va
             theVars->XanCycle_TIME_N = theVars->XanCycle_TIME_N + 1;
             theVars->XanCycle_OLD_TIME = t;
         }
-    theVars->XanCycle_Vel.Vva = Vva;	//	The velocity of v to a conversion
-    theVars->XanCycle_Vel.Vaz = Vaz;	//	The rate of A to z
-    theVars->XanCycle_Vel.Vza = Vza;	//	THe rate of z to a
-    theVars->XanCycle_Vel.Vav = Vav;	//	The rate of A to V
-    theVars->XanCycle_Vel.Vvf = Vvf;	//	The rate of V formation
-    theVars->XanCycle_Vel.Vv2ABA = Vv2ABA;	//	The rate of conversion from v to XanCycle_Con.ABA.
-    theVars->XanCycle_Vel.VABAdg = VABAdg;	//	The rate of XanCycle_Con.ABA degradation
+    theVars->XanCycle_Vel.Vva = Vva; // The velocity of v to a conversion
+    theVars->XanCycle_Vel.Vaz = Vaz; // The rate of A to z
+    theVars->XanCycle_Vel.Vza = Vza; // THe rate of z to a
+    theVars->XanCycle_Vel.Vav = Vav; // The rate of A to V
+    theVars->XanCycle_Vel.Vvf = Vvf; // The rate of V formation
+    theVars->XanCycle_Vel.Vv2ABA = Vv2ABA; // The rate of conversion from v to XanCycle_Con.ABA.
+    theVars->XanCycle_Vel.VABAdg = VABAdg; // The rate of XanCycle_Con.ABA degradation
 
     if (theVars->record) {
         theVars->XanCycle_VEL.insert(theVars->XanCycle_TIME_N, t, theVars->XanCycle_Vel);

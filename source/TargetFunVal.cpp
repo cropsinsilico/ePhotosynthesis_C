@@ -46,10 +46,7 @@ double TargetFunVal(Variables *theVars) {
     for (size_t i = 0; i < theVars->PR_VEL.size(); i++)
         theVars->PR_VEL[i] *= ratio;
 
-
-
-    //const size_t n = theVars->PS_VEL.size();
-    const double a = theVars->PS_VEL.getLastData().v1; // [1][n];
+    const double a = theVars->PS_VEL.getLastData().v1;
     const double b = theVars->PR_VEL.getLastData().v1in;
 
     const double CO2AR = a - b;

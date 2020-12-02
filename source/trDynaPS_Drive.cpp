@@ -141,8 +141,8 @@ arr trDynaPS::trDynaPS_Drive(size_t ParaNum, double Ratio) {
     Resulta[2] = Vpgasink;   //PGA
     Resulta[3] = Vt3p;       //VT3P
     Resulta[4] = VStarch;    //Vstarch
-    Resulta[5] = theVars->PR_Vel.v1in * theVars->AVR;//Vt_glycerate
-    Resulta[6] = theVars->PR_Vel.v2out * theVars->AVR;//Vt_glycolate
+    Resulta[5] = theVars->PR_Vel.v1in * theVars->AVR;  //Vt_glycerate
+    Resulta[6] = theVars->PR_Vel.v2out * theVars->AVR; //Vt_glycolate
 
     if(theVars->record) {
         makeFluxTR(theVars);

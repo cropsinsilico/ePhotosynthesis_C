@@ -67,14 +67,14 @@ public:
     }
 
     double k1 = 0;
-    double kn1 = 0;  //	The rate constant of E inactivation by binding of RuBP;	Lazar 1999, with a lifetime of 5 ns at closed reaction center
+    double kn1 = 0; // The rate constant of E inactivation by binding of RuBP; Lazar 1999, with a lifetime of 5 ns at closed reaction center
     double km1 = 0;
-    double Ke2 = 0;//	Data from Mate et al 1996. Unit: micormolar;	Reference needed, a guess
-    double Ke3 = 0;//	Data from Mate et al 1996. Unit: micormolar;
-    double k6 = 0;//	micromolar per meter square per second, transfered to unit
-    double kc = 0;//	Michaelis menton constant for CO2
-    double ko = 0;//	Michaelis menton constant for O2
-    double k7 = 0;//	The rate constant for ecm to ecmr
+    double Ke2 = 0; // Data from Mate et al 1996. Unit: micormolar; Reference needed, a guess
+    double Ke3 = 0; // Data from Mate et al 1996. Unit: micormolar;
+    double k6 = 0;  // micromolar per meter square per second, transfered to unit
+    double kc = 0;  // Michaelis menton constant for CO2
+    double ko = 0;  // Michaelis menton constant for O2
+    double k7 = 0;  // The rate constant for ecm to ecmr
     double kr = 0;
 };
 
@@ -124,10 +124,10 @@ public:
     size_t size() {
         return count;
     }
-    double ER = 0.;	//	The concentration of inactive ER
-    double Eaf = 0.;	//	The total concentration of E, EC, AND ECM
-    double ECMR = 0.;	//	The concentration of ECMR
-    double RuBP = 0.;	//	The concentration of ECMR
+    double ER = 0.;   // The concentration of inactive ER
+    double Eaf = 0.;  // The total concentration of E, EC, AND ECM
+    double ECMR = 0.; // The concentration of ECMR
+    double RuBP = 0.; // The concentration of ECMR
 private:
     size_t count = 4;
 };

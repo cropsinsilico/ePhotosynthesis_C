@@ -34,15 +34,15 @@ arr RROEA::RROEA_Mb(const double t, const RROEACon &RROEA_Con, Variables *theVar
     RROEA_Rate(t, RROEA_Con, theVars);
 
     arr RROEA_mb = zeros(10);
-    RROEA_mb[0] = theVars->RROEA_Vel.ve2GAPDH;	//	GAPDH
-    RROEA_mb[1] = theVars->RROEA_Vel.ve2FBPase;	//	FBPase
-    RROEA_mb[2] = theVars->RROEA_Vel.ve2SBPase;	//	SBPase
-    RROEA_mb[3] = theVars->RROEA_Vel.ve2PRK;	    //	PRK
-    RROEA_mb[4] = theVars->RROEA_Vel.ve2ATPase;	//	ATPase
-    RROEA_mb[5] = theVars->RROEA_Vel.ve2ATPGPP;	//	ATPGPP
-    RROEA_mb[6] = theVars->RROEA_Vel.ve2MDH;	    //	MDH
-    RROEA_mb[7] = theVars->RROEA_Vel.veFd2Thio - theVars->RROEA_Vel.ve2GAPDH - theVars->RROEA_Vel.ve2FBPase - theVars->RROEA_Vel.ve2SBPase - theVars->RROEA_Vel.ve2PRK - theVars->RROEA_Vel.ve2ATPGPP - theVars->RROEA_Vel.ve2RuACT;//	Thio
-    RROEA_mb[8] = theVars->RROEA_Vel.ve2Fd - theVars->RROEA_Vel.veFd2Thio - theVars->RROEA_Vel.veFd2Calvin;//	Fd
-    RROEA_mb[9] = theVars->RROEA_Vel.ve2RuACT;   // RuACT;
+    RROEA_mb[0] = theVars->RROEA_Vel.ve2GAPDH;  // GAPDH
+    RROEA_mb[1] = theVars->RROEA_Vel.ve2FBPase; // FBPase
+    RROEA_mb[2] = theVars->RROEA_Vel.ve2SBPase; // SBPase
+    RROEA_mb[3] = theVars->RROEA_Vel.ve2PRK;    // PRK
+    RROEA_mb[4] = theVars->RROEA_Vel.ve2ATPase; // ATPase
+    RROEA_mb[5] = theVars->RROEA_Vel.ve2ATPGPP; // ATPGPP
+    RROEA_mb[6] = theVars->RROEA_Vel.ve2MDH;    // MDH
+    RROEA_mb[7] = theVars->RROEA_Vel.veFd2Thio - theVars->RROEA_Vel.ve2GAPDH - theVars->RROEA_Vel.ve2FBPase - theVars->RROEA_Vel.ve2SBPase - theVars->RROEA_Vel.ve2PRK - theVars->RROEA_Vel.ve2ATPGPP - theVars->RROEA_Vel.ve2RuACT; // Thio
+    RROEA_mb[8] = theVars->RROEA_Vel.ve2Fd - theVars->RROEA_Vel.veFd2Thio - theVars->RROEA_Vel.veFd2Calvin; // Fd
+    RROEA_mb[9] = theVars->RROEA_Vel.ve2RuACT;  // RuACT;
     return RROEA_mb;
 }

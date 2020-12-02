@@ -36,17 +36,16 @@ void PS::PS_Rate(const double t, const PSCon &PS_con, const arr &Param, Variable
     // Initialize the PrVmax of the different reactions based on the global variables Vmax
     const double RegFactor = 1;
 
-    double PsV6 = theVars->V6;	//	6	FBPase	FBP<->F6P+OP
-    double PsV9 = theVars->V9;	//	9	SBPase	SBP<->S7P+OP
-    double PsV13 = theVars->V13;	//	13	Ribulosebiphosphate kinase	Ru5P+ATP<->RuBP+ADP
-    double PsV16 = theVars->V16;	//	16	ATP synthase	ADP+Pi<->ATP
-    const double PsV31 = V31 * RegFactor;//	31	Phosphate translocator	DHAPi<->DHAPo
-    const double PsV32 = V32 * RegFactor;//	32	Phosphate translocator	PGAi<->PGAo
-    const double PsV33 = V33 * RegFactor;//	33	Phosphate translocator	GAPi<->GAPo
+    double PsV6 = theVars->V6;            // 6 FBPase FBP<->F6P+OP
+    double PsV9 = theVars->V9;            // 9 SBPase SBP<->S7P+OP
+    double PsV13 = theVars->V13;          // 13 Ribulosebiphosphate kinase Ru5P+ATP<->RuBP+ADP
+    double PsV16 = theVars->V16;          // 16 ATP synthase ADP+Pi<->ATP
+    const double PsV31 = V31 * RegFactor; // 31 Phosphate translocator DHAPi<->DHAPo
+    const double PsV32 = V32 * RegFactor; // 32 Phosphate translocator PGAi<->PGAo
+    const double PsV33 = V33 * RegFactor; // 33 Phosphate translocator GAPi<->GAPo
 
     if (theVars->PSPR_SUCS_com)
         PsPEXT = theVars->SUCS2PS_Pic;
-
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -87,7 +86,7 @@ void PS::PS_Rate(const double t, const PSCon &PS_con, const arr &Param, Variable
     // GAP =  T3P/(1+KE4);
     //////////////////////////////////////////////////////////////////////
 
-    double ATPreg = DHAP / 3;// If there is no regulation of enzyme activity, some forcing needed to be added.
+    double ATPreg = DHAP / 3; // If there is no regulation of enzyme activity, some forcing needed to be added.
     if (ATPreg > 1)
         ATPreg = 1;
 

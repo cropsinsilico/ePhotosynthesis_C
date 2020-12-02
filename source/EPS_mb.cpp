@@ -46,10 +46,10 @@ arr EPS_Mb(const double t, const EPSCon &EPS_Con, Variables *theVars) {
     EPS_DYDT.insert(EPS_DYDT.end(), FIBF_DYDT.begin(), FIBF_DYDT.begin() + 52);
     EPS_DYDT.insert(EPS_DYDT.end(), CM_DYDT.begin(), CM_DYDT.begin() + 36);
 
-    EPS_DYDT[60] = CM_DYDT[8] - theVars->PS_Vel.v16 + theVars->EPS_ATP_Rate - theVars->PR_Vel.v124;//WY 201804
+    EPS_DYDT[60] = CM_DYDT[8] - theVars->PS_Vel.v16 + theVars->EPS_ATP_Rate - theVars->PR_Vel.v124; //WY 201804
     EPS_DYDT[16] = EPS_DYDT[60];
 
-    EPS_DYDT[61] = theVars->BF_Vel.vbfn2 / 2 - theVars->PS_Vel.v3 - 2 * theVars->PR_Vel.v124;//WY 201804
+    EPS_DYDT[61] = theVars->BF_Vel.vbfn2 / 2 - theVars->PS_Vel.v3 - 2 * theVars->PR_Vel.v124; //WY 201804
     EPS_DYDT[28] = EPS_DYDT[61];
     return EPS_DYDT;
 }

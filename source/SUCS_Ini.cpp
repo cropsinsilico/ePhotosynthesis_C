@@ -123,7 +123,7 @@ SUCSCon SUCS::SUCS_Ini(Variables *theVars) {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // Initialize the leaves of active enzyme in a dark adapted leaves;
-    //	mM
+    // mM
 
     // Assign value to a variable that is transferred to the program
     SUCSCon SUCS_Con;
@@ -146,29 +146,29 @@ SUCSCon SUCS::SUCS_Ini(Variables *theVars) {
 
     if (theVars->GP == 0) {
         // Unit: mmol l-1 s-1;
-        V51 = 0.107376831 * SC * theVars->SUCRatio[0];//	DHAP+GAP --FBP          // default 0.5
-        V52 = 0.063979048 * SC * theVars->SUCRatio[1];//	FBP --F6P + Pi
-        V55 = 0.115403205 * SC * theVars->SUCRatio[2];//	G1P+UTP --OPOP+UDPG
-        V56 = 0.055503446 * SC * theVars->SUCRatio[3];//	UDPG+F6P--SUCP + UDP
-        V57 = 0.55503446 * SC1 * theVars->SUCRatio[4];//	SUCP--Pi + SUC; 0.27 DEFALT
-        V58 = 0.016819226 * SC * theVars->SUCRatio[5];//	F26BP--F6P + Pi
+        V51 = 0.107376831 * SC * theVars->SUCRatio[0]; // DHAP+GAP --FBP          // default 0.5
+        V52 = 0.063979048 * SC * theVars->SUCRatio[1]; // FBP --F6P + Pi
+        V55 = 0.115403205 * SC * theVars->SUCRatio[2]; // G1P+UTP --OPOP+UDPG
+        V56 = 0.055503446 * SC * theVars->SUCRatio[3]; // UDPG+F6P--SUCP + UDP
+        V57 = 0.55503446 * SC1 * theVars->SUCRatio[4]; // SUCP--Pi + SUC; 0.27 DEFALT
+        V58 = 0.016819226 * SC * theVars->SUCRatio[5]; // F26BP--F6P + Pi
     }
-    V59 = 0.03 * SC * theVars->SUCRatio[6];//	F6P + ATP --ADP + F26BP // defalut 0.03  (* 0.3)
-    //theVars->V60 = 6.1 * theVars->SUCRatio[7];//	ATP+UDP --UTP + ADP
-    //theVars->V61 = 10000;	        //	POPO --2PO   // constant set in globals.hpp
-    V62 = 2 * SC1 * theVars->SUCRatio[8];//	SUC Sink        0.9 works.
-    Vdhap_in = 1.05 * SC1 * theVars->SUCRatio[9];//   DHAP export from chloroplast
-    Vgap_in = 1.05 * SC1 * theVars->SUCRatio[10];//   GAP export from chloroplast
-    Vpga_in = 1.05 * SC1 * theVars->SUCRatio[11];//   PGA export from chloropalst
+    V59 = 0.03 * SC * theVars->SUCRatio[6];            // F6P + ATP --ADP + F26BP // defalut 0.03  (* 0.3)
+    //theVars->V60 = 6.1 * theVars->SUCRatio[7];// ATP+UDP --UTP + ADP
+    //theVars->V61 = 10000;         // POPO --2PO   // constant set in globals.hpp
+    V62 = 2 * SC1 * theVars->SUCRatio[8];              // SUC Sink        0.9 works.
+    Vdhap_in = 1.05 * SC1 * theVars->SUCRatio[9];      // DHAP export from chloroplast
+    Vgap_in = 1.05 * SC1 * theVars->SUCRatio[10];      // GAP export from chloroplast
+    Vpga_in = 1.05 * SC1 * theVars->SUCRatio[11];      // PGA export from chloropalst
 
 
     //////////////////////////////////////////////////////////////////
     // Here is some pool values      //
     //////////////////////////////////////////////////////////////////
 
-    theVars->SUCS_Pool.ATc = 1.0 * theVars->SUCRatio[12];// mM
-    theVars->SUCS_Pool.UTc = 1.5 * theVars->SUCRatio[13];// mM
-    theVars->SUCS_Pool.PTc = 15 * theVars->SUCRatio[14];//
+    theVars->SUCS_Pool.ATc = 1.0 * theVars->SUCRatio[12]; // mM
+    theVars->SUCS_Pool.UTc = 1.5 * theVars->SUCRatio[13]; // mM
+    theVars->SUCS_Pool.PTc = 15 * theVars->SUCRatio[14];  //
 
     return SUCS_Con;
 }

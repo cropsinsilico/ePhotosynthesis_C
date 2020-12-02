@@ -50,75 +50,75 @@ void Condition(double t, Variables *theVars) {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // This is an experimental protocol for doing repeatative experiment
 
-    // Tinter = theVars->tglobal / NumberInterval;// --unused
+    // double Tinter = theVars->tglobal / NumberInterval;
 
-    // FirstMet = 0;// --unused
+    // bool FirstMet = false;
 
-    //     for index = 1:NumberInterval
-    //             b = index * Tinter;
-    //         if t <= b & FirstMet == 0
+    // for (size_t index = 0; index < NumberInterval; index++) {
+    //     double b = index * Tinter;
+    //     if (t <= b && !FirstMet) {
     //
-    //             modifier = 1 * index;
+    //         int modifier = 1 * index;
     //
-    //             global BF2XanCycle_pHl;
+    //         global BF2XanCycle_pHl;
     //
-    //             global Xan2Stom_ABA;
+    //         global Xan2Stom_ABA;
     //
     //
-    //             // Light regulation
-    //             light =  100 * index;
-    //             light = 2000;
+    //         // Light regulation
+    //         light =  100 * index;
+    //         light = 2000;
     //
-    //             // CO2 regulation
-    //             temp = 280;
-    //             //temp = 1000-100 * (index-1);
+    //         // CO2 regulation
+    //         doble temp = 280;
+    //         //temp = 1000-100 * (index-1);
     //
-    //             // O2 regualtion
-    //             O2Temp = 0.21 ;
+    //         // O2 regualtion
+    //         O2Temp = 0.21 ;
     //
-    //             CO2_cond = temp /(3 * 10 ^ 4);
-    //             O2_cond = O2Temp*1.26;
+    //         theVars->CO2_cond = temp /(3 * 10 ^ 4);
+    //         theVars->O2_cond = O2Temp*1.26;
     //
-    //             // Regulation of Vmax
-    //             // Global RuACT_RC;
-    //             // RuACT_RC(9) = 25 + 25  * index/2;
+    //         // Regulation of Vmax
+    //         // Global RuACT_RC;
+    //         // RuACT_RC(9) = 25 + 25  * index/2;
     //
-    //             FirstMet = 1;
+    //         FirstMet = true;
     //
-    //         end
-    //     end
+    //     }
+    // }
 
 
 
     // // // PAM MEASUREMENT
-    // if t < 20
-    //     light = 7;
-    // else
-    //     light=500;
-    // end
+    // if (t < 20.) {
+    //     light = 7.;
+    // } else {
+    //     light = 500.;
+    // }
     // // // PAM MEASUREMENT
-    //   StepL = 20;
-    //     if t<1
-    //         light = 8000;
-    //     elseif t>1 & t < 20
-    //         light = 1;
-    //     else
-    //         index = floor(t/StepL);
-    //         if t > (StepL*index) & t < (StepL*index+1)
-    //             light = 8000;
-    //         else
-    //             light = 500;
-    //         end
-    //     end
+    // double StepL = 20.;
+    // if (t < 1.) {
+    //     light = 8000.;
+    // } else if (t > 1. && t < 20.) {
+    //     light = 1.;
+    // } else {
+    //     int index = floor(t / StepL);
+    //     if (t > (StepL * index) && t < (StepL * index + 1)) {
+    //         light = 8000.;
+    //     } else {
+    //         light = 500.;
+    //     }
+    // }
 
 
-    // if t<200
-    //     light = 1000;
-    // elseif t>200 & t<400
-    //     light = 100;
-    // else
-    //     light = 1000;
-    // end
+    // if (t < 200.) {
+    //     light = 1000.;
+    // } else if (t > 200. && t < 400.) {
+    //     light = 100.;
+    // } else {
+    //     light = 1000.;
+    // }
 
     theVars->GLight = light;
 }

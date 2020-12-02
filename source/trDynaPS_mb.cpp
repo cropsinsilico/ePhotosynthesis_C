@@ -52,7 +52,7 @@ arr trDynaPS_Mb(const double t, const trDynaPSCon &trDynaPS_con, Variables *theV
         dxdt[index + 110] = RROEA_DYDT[index];
 
 
-    //////WY201804
+    //WY201804
     const double Temp = RROEA_DYDT[8] - theVars->RROEA_Vel.ve2Fd + theVars->BF_Vel.Vbf16 / theVars->AVR + theVars->RROEA_Vel.veFd2Calvin - theVars->BF_Vel.vbfn2 - theVars->BF_Vel.vcet / theVars->AVR;
 
     dxdt[118] = Temp * theVars->AVR;

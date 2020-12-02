@@ -80,21 +80,21 @@ PRCon PR::PR_Ini(Variables *theVars) {
 
     PRCon PR_con;
 
-    PR_con.GCEA = 0.1812;       // Glycerate in chloroplast; derived based on V113
-    PR_con.GCA = 0.36;       // Derived from radioactive labelling experiment; assuem equal concenatration
-                             // inside and outshide chloroplast
-    PR_con.PGA = 4.3;     // PGA in chloroplast;4.3 is the original value;
-    PR_con.PGCA = 0.0029;       // Phosphoglycolate in chloroplast derived based on the Km112; orignal value is : 0.0029;
+    PR_con.GCEA = 0.1812;   // Glycerate in chloroplast; derived based on V113
+    PR_con.GCA = 0.36;      // Derived from radioactive labelling experiment; assuem equal concenatration
+                            // inside and outshide chloroplast
+    PR_con.PGA = 4.3;       // PGA in chloroplast;4.3 is the original value;
+    PR_con.PGCA = 0.0029;   // Phosphoglycolate in chloroplast derived based on the Km112; orignal value is : 0.0029;
 
-    PR_con.GCAc = 0.36;      // See the note for GCA.
-    PR_con.GOAc = 0.028;     // Glyoxylate in cytosol; 0.028; EXPERIMENTAL DATA;
-    PR_con.SERc = 7.5;             // Serine in cytosol; 7.5 original value
-    PR_con.GLYc = 1.8;           // Glycine in cytosol; 1.8 original vlaue
-    PR_con.HPRc = 0.0035;       // HydroxylPyruvate; derived from equation 123;
-    PR_con.GCEAc = 0.1812;      // Glycerate in cytosol; assume at equilibrium with GCEA initially.
+    PR_con.GCAc = 0.36;     // See the note for GCA.
+    PR_con.GOAc = 0.028;    // Glyoxylate in cytosol; 0.028; EXPERIMENTAL DATA;
+    PR_con.SERc = 7.5;      // Serine in cytosol; 7.5 original value
+    PR_con.GLYc = 1.8;      // Glycine in cytosol; 1.8 original vlaue
+    PR_con.HPRc = 0.0035;   // HydroxylPyruvate; derived from equation 123;
+    PR_con.GCEAc = 0.1812;  // Glycerate in cytosol; assume at equilibrium with GCEA initially.
     PR_con.RUBP = 2.;       // RuBP concentration
-    PR_con.CO2 = 0.012;         // CO2 concentration(mM)
-    PR_con.O2 = 0.264;         // O2 concentration(mM)
+    PR_con.CO2 = 0.012;     // CO2 concentration(mM)
+    PR_con.O2 = 0.264;      // O2 concentration(mM)
 
 
 
@@ -105,28 +105,28 @@ PRCon PR::PR_Ini(Variables *theVars) {
 
     // Reaction: 111: RUBP+O2<-->PGlycolate + PGA
 
-    KO = 0.222 * theVars->PRRatio[16];// Michaelis constant for O2
-    KC = 0.0115 * theVars->PRRatio[17];// Michaelis constant for CO2
+    KO = 0.222 * theVars->PRRatio[16];  // Michaelis constant for O2
+    KC = 0.0115 * theVars->PRRatio[17]; // Michaelis constant for CO2
 
     if (theVars->PR_PS_com) {
         KC = theVars->KM11;
         KO = theVars->KM12;
     }
 
-    KR = 0.02 * theVars->PRRatio[18];// Michaelis constant for RUBP
+    KR = 0.02 * theVars->PRRatio[18]; // Michaelis constant for RUBP
 
     // Reaction: 112: PGlycolate-->Pi+Glycolate;
 
-    KM112 = 0.026 * theVars->PRRatio[19];// Km112 for PGlycolate;
-    KI1122 = 94 * theVars->PRRatio[20];// Inhibition constant for Glycolate;
-    KI1121 = 2.55 * theVars->PRRatio[21];// The competitive Pi inhibition for PGlycolate
+    KM112 = 0.026 * theVars->PRRatio[19]; // Km112 for PGlycolate;
+    KI1122 = 94 * theVars->PRRatio[20];   // Inhibition constant for Glycolate;
+    KI1121 = 2.55 * theVars->PRRatio[21]; // The competitive Pi inhibition for PGlycolate
 
 
     // Reaction 113  : Gcea+ATP<-->ADP + PGA
-    KM1131 = 0.21 * theVars->PRRatio[22];// Km for ATP;
-    KM1132 = 0.25 * theVars->PRRatio[23];// Km for Gcea;
-    KI113 = 0.36 * theVars->PRRatio[24];////////////////////////////////////////////////// Competitive inhibition for ATP; in original paper it is 0.36;
-    KE113 = 300 * theVars->PRRatio[25];// New       Kleczkowski et al . 1985 Archives of Biochemistry and Biophysics  300, as default
+    KM1131 = 0.21 * theVars->PRRatio[22]; // Km for ATP;
+    KM1132 = 0.25 * theVars->PRRatio[23]; // Km for Gcea;
+    KI113 = 0.36 * theVars->PRRatio[24];  // Competitive inhibition for ATP; in original paper it is 0.36;
+    KE113 = 300 * theVars->PRRatio[25];   // New       Kleczkowski et al . 1985 Archives of Biochemistry and Biophysics  300, as default
 
 
     // Reactoin 121; Glycolate +O2<-->H2O2+Glyoxylate
@@ -134,23 +134,23 @@ PRCon PR::PR_Ini(Variables *theVars) {
 
     // Reaction 122  : Glyoxylate + Serine<--> Hydoxypyruvate + Glycine;
     KM1221 = 0.15 * theVars->PRRatio[27]; // Michaelis constant for glyoxylate;
-    KM1222 = 2.7 * theVars->PRRatio[28];// Michaelis constant for serinie;
-    KI1221 = 33 * theVars->PRRatio[29]; // Inhibition constant for Glycine;
-    KE122 = 0.24 * theVars->PRRatio[30];//  New: Guynn, R.W.; Arch. Biochem. Biophys.; 218, 14 (1982).; 0.24. At 25 degree.
+    KM1222 = 2.7 * theVars->PRRatio[28];  // Michaelis constant for serinie;
+    KI1221 = 33 * theVars->PRRatio[29];   // Inhibition constant for Glycine;
+    KE122 = 0.24 * theVars->PRRatio[30];  //  New: Guynn, R.W.; Arch. Biochem. Biophys.; 218, 14 (1982).; 0.24. At 25 degree.
 
     // Reaction 123: HydroxylPyruvate + NAD <--> NADH + Glycerate
 
-    KM123 = 0.09 * theVars->PRRatio[31];//   Michaelis constant for hydroxylpyruvate;
-    KI123 = 12 * theVars->PRRatio[32];// Inhibition constant for hydroxypyruvate;
+    KM123 = 0.09 * theVars->PRRatio[31];  //   Michaelis constant for hydroxylpyruvate;
+    KI123 = 12 * theVars->PRRatio[32];    // Inhibition constant for hydroxypyruvate;
     KE123 = 1 / (4 * pow(10, (-6))) * theVars->PRRatio[33];
 
     // Reaction 124: Glyoxylate + Glu  <--> KG + Glycine;
     KM1241 = 0.15 * theVars->PRRatio[34]; // Michaelis constant for glyoxylate
-    KM1242 = 1.7 * theVars->PRRatio[35];// Michaelis constant for Glu
-    KE124 = 607 * theVars->PRRatio[37];// New       Cooper, A.J.L.; Meister, A.; Biochemistry; 11, 661 (1972).; K' 607.
+    KM1242 = 1.7 * theVars->PRRatio[35];  // Michaelis constant for Glu
+    KE124 = 607 * theVars->PRRatio[37];   // New       Cooper, A.J.L.; Meister, A.; Biochemistry; 11, 661 (1972).; K' 607.
 
     // Reaction 131: NAD+Glycine <--> CO2+ NADH + NH3
-    KM1311 = 6 * theVars->PRRatio[38]; // Michaelis constant for Glycine;
+    KM1311 = 6 * theVars->PRRatio[38];  // Michaelis constant for Glycine;
     KI1311 = 4 * theVars->PRRatio[39];  // Inhibition constant for Serine
 
     // The consant for calculating the glycerate uptake.

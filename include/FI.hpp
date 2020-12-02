@@ -281,28 +281,28 @@ public:
     size_t size() {
         return count;
     }
-    double A = 0.;  //  The concentration of excitons in the peripheral antenna
-    double U = 0.;  //  The concentration fo excitons in the core antenna
-    double P680ePheo = 0.;  //QF add
-    double P680pPheon = 0.;  //  The concentration for the P680+ Pheo-
-    double P680pPheo = 0.;  //  The concentration of P680+ Pheo
-    double P680Pheon = 0.;  //  The concentration of P680Pheo-
-    double Yz = 0.;  //  The concentration of reduced tyrosine// --unused
-    double S1T = 0.;  //  The concentration of S1 in combination with reduced tyrosine
-    double S2T = 0.;  //  The concentration of S2 in combination with reduced tyrosine
-    double S3T = 0.;  //  The concentration of S3 in combination with reduced tyrosine
-    double S0T = 0.;  //  The concentration of S0 in combination with reduced tyrosine
-    double S1Tp = 0.;  //  The concentration of S1 in combination with oxidized tyrosine
-    double S2Tp = 0.;  //  The concentration of S2 in combination with oxidized tyrosine
-    double S3Tp = 0.;  //  The concentration of S3 in combination with oxidized tyrosine
-    double S0Tp = 0.;  //  The concentration of S0 in combination with oxidized tyrosine
-    double QAQB = 0.;  //  The concentration of [QAQB]
-    double QAnQB = 0.;  //  The concentration of [QA-QB]
-    double QAQBn = 0.;  //  The concentration of [QAQB-]
-    double QAnQBn = 0.;  //  The concentration of [QA-QB-]
-    double QAQB2n = 0.;  //  The concentration of [QAQB2-]
-    double QAnQB2n = 0.;  //  The concentration of [QA-QB2-]
-    double PQn = 0.;  //  The concentration of reduced PQ, i.e. PQH2;
+    double A = 0.;          // The concentration of excitons in the peripheral antenna
+    double U = 0.;          // The concentration fo excitons in the core antenna
+    double P680ePheo = 0.;  // QF add
+    double P680pPheon = 0.; // The concentration for the P680+ Pheo-
+    double P680pPheo = 0.;  // The concentration of P680+ Pheo
+    double P680Pheon = 0.;  // The concentration of P680Pheo-
+    double Yz = 0.;         // The concentration of reduced tyrosine// --unused
+    double S1T = 0.;        // The concentration of S1 in combination with reduced tyrosine
+    double S2T = 0.;        // The concentration of S2 in combination with reduced tyrosine
+    double S3T = 0.;        // The concentration of S3 in combination with reduced tyrosine
+    double S0T = 0.;        // The concentration of S0 in combination with reduced tyrosine
+    double S1Tp = 0.;       // The concentration of S1 in combination with oxidized tyrosine
+    double S2Tp = 0.;       // The concentration of S2 in combination with oxidized tyrosine
+    double S3Tp = 0.;       // The concentration of S3 in combination with oxidized tyrosine
+    double S0Tp = 0.;       // The concentration of S0 in combination with oxidized tyrosine
+    double QAQB = 0.;       // The concentration of [QAQB]
+    double QAnQB = 0.;      // The concentration of [QA-QB]
+    double QAQBn = 0.;      // The concentration of [QAQB-]
+    double QAnQBn = 0.;     // The concentration of [QA-QB-]
+    double QAQB2n = 0.;     // The concentration of [QAQB2-]
+    double QAnQB2n = 0.;    // The concentration of [QA-QB2-]
+    double PQn = 0.;        // The concentration of reduced PQ, i.e. PQH2;
 private:
     size_t count = 22;
 };

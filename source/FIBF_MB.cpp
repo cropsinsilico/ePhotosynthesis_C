@@ -57,7 +57,7 @@ arr FIBF_Mb(const double t, const FIBFCon &FIBF_Con, Variables *theVars) {
     arr FI_mb = FI::FI_Mb(t, FI_Con, theVars);
 
     // Assign the value of the calcualted BF_mb and FI_mb to FIBF_MB variable
-    arr FIBF_mb;// = zeros(52);
+    arr FIBF_mb;
     FIBF_mb.insert(FIBF_mb.end(), BF_mb.begin(), BF_mb.end());
     FIBF_mb.insert(FIBF_mb.end(), FI_mb.begin(), FI_mb.end());
 
@@ -89,12 +89,11 @@ arr FIBF_Mb(const double t, const FIBFCon &FIBF_Con, Variables *theVars) {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // one molecular water molecules to release four protons.
-    const double Hroe = 4 * theVars->FI_Vel.vS3_S0 / theVars->AVR;// 27 is the conversion of unit from micromole per meter squre leaf area to mmol per liter.
+    const double Hroe = 4 * theVars->FI_Vel.vS3_S0 / theVars->AVR; // 27 is the conversion of unit from micromole per meter squre leaf area to mmol per liter.
+    const double Hvqo1 = theVars->BF_Vel.Vbf8 / theVars->AVR;      // The rate of release of protons into lumen through Qo site
+    const double Hvqo2 = theVars->BF_Vel.Vbf3 / theVars->AVR;      // The rate of proton release into lumen through Qo site
 
-    const double Hvqo1 = theVars->BF_Vel.Vbf8 / theVars->AVR;//	The rate of release of protons into lumen through Qo site
-    const double Hvqo2 = theVars->BF_Vel.Vbf3 / theVars->AVR;//	The rate of proton release into lumen through Qo site
-
-    BF_mb[25] = (Hvqo1 + Hvqo2 + Hroe - theVars->HPR * theVars->BF_Vel.Vbf11);//	BFHl	The proton and protonated buffer species in lumen, similarly, we can only use the buff concentration, but, the proton concentration can not be used here.
+    BF_mb[25] = (Hvqo1 + Hvqo2 + Hroe - theVars->HPR * theVars->BF_Vel.Vbf11); // BFHl The proton and protonated buffer species in lumen, similarly, we can only use the buff concentration, but, the proton concentration can not be used here.
     BF_mb[27] = - (Hvqo1 + Hvqo2 + Hroe - theVars->HPR * theVars->BF_Vel.Vbf11) / 1000 / 0.015;//   PHl  The changes in PH of lumen, 0.03 is from Curz et al., 2001, Biochemistry.
 
     FIBF_mb[25] = BF_mb[25];
@@ -104,29 +103,29 @@ arr FIBF_Mb(const double t, const FIBFCon &FIBF_Con, Variables *theVars) {
     //          Calculate the PH of stroma        //
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-    //const double v3 = theVars->FI_Vel.v3 ;	//	v3	The rate of exchange of QAQBH2 with PQ; There is two proton uptake from stroma
-    //const double v_r3 = theVars->FI_Vel.v_r3 ;	//	v_r3	The rate of exchange of QAQB with PQH2; there is two proton release into stroma
-    //const double v3_n = theVars->FI_Vel.v3_n ;	//	v3_n	The rate of exchange of QAnQBH2 with PQ; there is two protons uptake from stroma
-    //const double v_r3_n = theVars->FI_Vel.v_r3_n ;	//	v_r3_n	The rate of exchange of QAnQB with PQH2; there is two protons release into stroma
+    //const double v3 = theVars->FI_Vel.v3 ; // v3 The rate of exchange of QAQBH2 with PQ; There is two proton uptake from stroma
+    //const double v_r3 = theVars->FI_Vel.v_r3 ; // v_r3 The rate of exchange of QAQB with PQH2; there is two proton release into stroma
+    //const double v3_n = theVars->FI_Vel.v3_n ; // v3_n The rate of exchange of QAnQBH2 with PQ; there is two protons uptake from stroma
+    //const double v_r3_n = theVars->FI_Vel.v_r3_n ; // v_r3_n The rate of exchange of QAnQB with PQH2; there is two protons release into stroma
 
     const double GPQH2_qb = theVars->FI_Vel.v3 - theVars->FI_Vel.v_r3 + theVars->FI_Vel.v3_n - theVars->FI_Vel.v_r3_n;
     const double vqb = 2 * GPQH2_qb;//   The total rate of proton uptake at the QB site of PSII.
 
     //const double Vqi = theVars->BF_Vel.Vqi ;   //   The rate of proton uptake from the stroma side
-    const double Hvqi = theVars->BF_Vel.Vqi / theVars->AVR;//	The rate of proton uptake from stroma at BF_con.Qi site of cytbc1 complex
-    //const double vbfn2 = theVars->BF_Vel.vbfn2 ;   //   The rate of proton consumption by formation of NADPH
-    const double Hrqb = vqb / theVars->AVR;//	Convert the unit of vqb from micormole per meter square per second to mM s-1; vqb is the rate of QB2- reduction in thylakoid membrane.
+    const double Hvqi = theVars->BF_Vel.Vqi / theVars->AVR;  // The rate of proton uptake from stroma at BF_con.Qi site of cytbc1 complex
+    //const double vbfn2 = theVars->BF_Vel.vbfn2 ;   // The rate of proton consumption by formation of NADPH
+    const double Hrqb = vqb / theVars->AVR; // Convert the unit of vqb from micormole per meter square per second to mM s-1; vqb is the rate of QB2- reduction in thylakoid membrane.
 
-    BF_mb[24] = (theVars->HPR * theVars->BF_Vel.Vbf11 - Hrqb - Hvqi - theVars->BF_Vel.vbfn2);//	BFHs	The proton and protonated buffer species in stroma. The proton concentration is not used in the MB procedure. The reason is that the proton concentration is buffered and therefore did not changed linerly with the generation of the protons.
-    BF_mb[26] = - (theVars->HPR * theVars->BF_Vel.Vbf11 - Hrqb - Hvqi - theVars->BF_Vel.vbfn2) / 1000 / 0.015;//	PHs, The changes of PH in stoma, 0.03 mol /PH from Laisk et al.
+    BF_mb[24] = (theVars->HPR * theVars->BF_Vel.Vbf11 - Hrqb - Hvqi - theVars->BF_Vel.vbfn2);  // BFHs The proton and protonated buffer species in stroma. The proton concentration is not used in the MB procedure. The reason is that the proton concentration is buffered and therefore did not changed linerly with the generation of the protons.
+    BF_mb[26] = - (theVars->HPR * theVars->BF_Vel.Vbf11 - Hrqb - Hvqi - theVars->BF_Vel.vbfn2) / 1000 / 0.015;  // PHs, The changes of PH in stoma, 0.03 mol /PH from Laisk et al.
 
     FIBF_mb[24] = BF_mb[24];
     FIBF_mb[26] = BF_mb[26];
     //const double Vbf1 = theVars->BF_Vel.Vbf1 ;          // The rate of PQH2 utilization when forming the PQH2.ISP complex
-    const double GPQH2_t = GPQH2_qb - theVars->BF_Vel.Vbf1 + theVars->BF_Vel.Vqi / 2;// This is the total rate of PQH2 generation
+    const double GPQH2_t = GPQH2_qb - theVars->BF_Vel.Vbf1 + theVars->BF_Vel.Vqi / 2;  // This is the total rate of PQH2 generation
 
-    FIBF_mb[7] = 0;	        //	Q	Quinone in thylakoid membrane in free form
-    FIBF_mb[11] = GPQH2_t;	//	QH2	The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
-    FIBF_mb[50] = GPQH2_t;	//	QH2	The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
+    FIBF_mb[7] = 0;        // Q Quinone in thylakoid membrane in free form
+    FIBF_mb[11] = GPQH2_t; // QH2 The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
+    FIBF_mb[50] = GPQH2_t; // QH2 The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
     return FIBF_mb;
 }

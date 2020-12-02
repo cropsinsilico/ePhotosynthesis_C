@@ -188,16 +188,16 @@ public:
         return array;
     }
 
-    double GAPDH = 0.;  //  The initial concentration of active GAPDH
-    double FBPase = 0.;  //  The initial concentration of active FBPase
-    double SBPase = 0.;  //  The initial concentration of active SBPase
-    double PRK = 0.;  //  The initial concentration of actove PRK
-    double ATPase = 0.;  //  The initial concentration of actove ATPase
-    double ATPGPP = 0.;  //  The initial concentration of actove ATPGPP
-    double MDH = 0.;  //  The initial concentration of actove MDH
-    double Thio = 0.;  //  The initial concentration of reduced thioredoxin
-    double Fd = 0.;  //  The initial concentration of reduced ferrodoxin
-    double RuACT = 0.;  //  The initial concentration of active Rubisco activase
+    double GAPDH = 0.;  // The initial concentration of active GAPDH
+    double FBPase = 0.; // The initial concentration of active FBPase
+    double SBPase = 0.; // The initial concentration of active SBPase
+    double PRK = 0.;    // The initial concentration of actove PRK
+    double ATPase = 0.; // The initial concentration of actove ATPase
+    double ATPGPP = 0.; // The initial concentration of actove ATPGPP
+    double MDH = 0.;    // The initial concentration of actove MDH
+    double Thio = 0.;   // The initial concentration of reduced thioredoxin
+    double Fd = 0.;     // The initial concentration of reduced ferrodoxin
+    double RuACT = 0.;  // The initial concentration of active Rubisco activase
 
 private:
     size_t count = 10;

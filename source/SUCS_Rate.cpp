@@ -97,21 +97,21 @@ void SUCS::SUCS_Rate(const double t, const SUCSCon &SUCS_Con, Variables *theVars
     ////////////////////////////////////////////////////////////////////////////
     // Assign table
     ////////////////////////////////////////////////////////////////////////////////
-    theVars->SUCS_Vel.v51 = V51 * (GAPc * DHAPc - SUCS_Con.FBPc / KE51) / temp51;//	DHAP+GAP --FBP
-    theVars->SUCS_Vel.v52 = V52 * (SUCS_Con.FBPc - F6Pc * Pic / KE52) / temp52;//	FBP --F6P + Pi
-    theVars->SUCS_Vel.v55 = V55 * (SUCS_Con.UTPc * G1Pc - SUCS_Con.UDPGc * OPOPc / KE55) / temp55;//	G1P+UTP --OPOP+UDPG
-    theVars->SUCS_Vel.v56 = V56 * (F6Pc * SUCS_Con.UDPGc - SUCS_Con.SUCP * UDPc / KE56) / temp56 * 2 * (SUCS_Con.HexPc / (SUCS_Con.HexPc + 2));//	UDPG+F6P--SUCP + UDP
-    theVars->SUCS_Vel.v57 = V57 * (SUCS_Con.SUCP - SUCS_Con.SUC * Pic / KE57) / temp57;//	SUCP--Pi + SUC
-    theVars->SUCS_Vel.v58 = V58 * SUCS_Con.F26BPc / (temp58 * (1 + Pic / KI582) * (1 + F6Pc / KI583));//	F26BP--F6P + Pi
-    theVars->SUCS_Vel.v59 = V59 * (SUCS_Con.ATPc * F6Pc - ADPc * SUCS_Con.F26BPc / KE59) / temp59;//	F6P + ATP --ADP + F26BP
-    theVars->SUCS_Vel.v60 = 0.;//	ATP+UDP --UTP + ADP
-    theVars->SUCS_Vel.v61 = 0.;//	POPO --2PO
-    theVars->SUCS_Vel.v62 = V62 * SUCS_Con.SUC / (SUCS_Con.SUC + Km621);//	SUC SINK
-    theVars->SUCS_Vel.vdhap_in = Vdhap_in * Pic / (Pic + Km_in);//	DHAP IN
-    theVars->SUCS_Vel.vgap_in = Vgap_in * Pic / (Pic + Km_in);//	GAP Export from chloroplast
-    theVars->SUCS_Vel.vpga_in = vpga_in;//	PGA export from chloroplast
-    theVars->SUCS_Vel.vpga_use = vpga_use;//	PGA utilisation in cytosol
-    theVars->SUCS_Vel.vatpf = 0.;//	ATP synthesis rate
+    theVars->SUCS_Vel.v51 = V51 * (GAPc * DHAPc - SUCS_Con.FBPc / KE51) / temp51;  // DHAP+GAP --FBP
+    theVars->SUCS_Vel.v52 = V52 * (SUCS_Con.FBPc - F6Pc * Pic / KE52) / temp52;    // FBP --F6P + Pi
+    theVars->SUCS_Vel.v55 = V55 * (SUCS_Con.UTPc * G1Pc - SUCS_Con.UDPGc * OPOPc / KE55) / temp55; // G1P+UTP --OPOP+UDPG
+    theVars->SUCS_Vel.v56 = V56 * (F6Pc * SUCS_Con.UDPGc - SUCS_Con.SUCP * UDPc / KE56) / temp56 * 2 * (SUCS_Con.HexPc / (SUCS_Con.HexPc + 2));// UDPG+F6P--SUCP + UDP
+    theVars->SUCS_Vel.v57 = V57 * (SUCS_Con.SUCP - SUCS_Con.SUC * Pic / KE57) / temp57; // SUCP--Pi + SUC
+    theVars->SUCS_Vel.v58 = V58 * SUCS_Con.F26BPc / (temp58 * (1 + Pic / KI582) * (1 + F6Pc / KI583)); // F26BP--F6P + Pi
+    theVars->SUCS_Vel.v59 = V59 * (SUCS_Con.ATPc * F6Pc - ADPc * SUCS_Con.F26BPc / KE59) / temp59;     // F6P + ATP --ADP + F26BP
+    theVars->SUCS_Vel.v60 = 0.;  // ATP+UDP --UTP + ADP
+    theVars->SUCS_Vel.v61 = 0.;  // POPO --2PO
+    theVars->SUCS_Vel.v62 = V62 * SUCS_Con.SUC / (SUCS_Con.SUC + Km621); // SUC SINK
+    theVars->SUCS_Vel.vdhap_in = Vdhap_in * Pic / (Pic + Km_in);         // DHAP IN
+    theVars->SUCS_Vel.vgap_in = Vgap_in * Pic / (Pic + Km_in);           // GAP Export from chloroplast
+    theVars->SUCS_Vel.vpga_in = vpga_in;   // PGA export from chloroplast
+    theVars->SUCS_Vel.vpga_use = vpga_use; // PGA utilisation in cytosol
+    theVars->SUCS_Vel.vatpf = 0.;          // ATP synthesis rate
 
     if (theVars->record) {
         theVars->SUCS_VEL.insert(theVars->SUCS_TIME_N - 1, t, theVars->SUCS_Vel);

@@ -35,17 +35,17 @@ arr RuACT::RuACT_Mb(const double t, const RuACTCon &RuACT_Con, Variables *theVar
 
     RuACT_Rate(t, RuACT_Con, theVars);
 
-    const double v1 = theVars->RuACT_Vel.v1;	//	v1	The rate of ER activation due to Rubisco activase
-    const double vn1 = theVars->RuACT_Vel.vn1;	//	vn1	The rate of E inactiavtion due to binding of RuBP
-    const double v7 = theVars->RuACT_Vel.v7;	//	v7	The rate of formation of ECMR from ECM by binding of RuBP
-    const double vn7 = theVars->RuACT_Vel.vn7;	//	vn7	The rate of actiavtion of ECMR by Rubisco activase
-    const double v6_1 = theVars->RuACT_Vel.v6_1;	//	v6_1	The rate of RuBP carboxylation
-    const double v6_2 = theVars->RuACT_Vel.v6_2;	//	v6_2	The rate of RuBP oxygenation
+    const double v1 = theVars->RuACT_Vel.v1;     // v1 The rate of ER activation due to Rubisco activase
+    const double vn1 = theVars->RuACT_Vel.vn1;   // vn1 The rate of E inactiavtion due to binding of RuBP
+    const double v7 = theVars->RuACT_Vel.v7;     // v7 The rate of formation of ECMR from ECM by binding of RuBP
+    const double vn7 = theVars->RuACT_Vel.vn7;   // vn7 The rate of actiavtion of ECMR by Rubisco activase
+    const double v6_1 = theVars->RuACT_Vel.v6_1; // v6_1 The rate of RuBP carboxylation
+    const double v6_2 = theVars->RuACT_Vel.v6_2; // v6_2 The rate of RuBP oxygenation
 
     arr RuACT_mb = zeros(4);
-    RuACT_mb[0] = vn1 - v1;//	ER
-    RuACT_mb[1] = v1 - v7 + vn7 + v6_1 + v6_2 - vn1;//	EAF
-    RuACT_mb[2] = v7 - vn7 - v6_1 - v6_2;//	ECMR
-    RuACT_mb[3] = v6_1 + v6_2 + v1 - vn1 + vn7 - v7;//	RuBP
+    RuACT_mb[0] = vn1 - v1;                          // ER
+    RuACT_mb[1] = v1 - v7 + vn7 + v6_1 + v6_2 - vn1; // EAF
+    RuACT_mb[2] = v7 - vn7 - v6_1 - v6_2;            // ECMR
+    RuACT_mb[3] = v6_1 + v6_2 + v1 - vn1 + vn7 - v7; // RuBP
     return RuACT_mb;
 }

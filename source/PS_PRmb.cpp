@@ -40,7 +40,7 @@ arr PS_PR_Mb(const double t, const PS_PRCon &PS_PR_con, Variables *theVars) {
     PR_con.CO2 = PS_con.CO2;
     PR_con.O2 = PS_con.O2;
 
-    const double PR2PS_Pgca = PS_PR_con.PR_con.PGCA; //PrS[3];            // FOr transfering information between PR to PS.
+    const double PR2PS_Pgca = PS_PR_con.PR_con.PGCA;  // FOr transfering information between PR to PS.
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 2. Add exprimental conditions here; Conditions like light, temperature, CO2, O2 concentration should be added here //
@@ -55,7 +55,7 @@ arr PS_PR_Mb(const double t, const PS_PRCon &PS_PR_con, Variables *theVars) {
     PS::PS_Rate(t, PS_con, PS_Param, theVars);
 
     arr PR_Param = zeros(2);
-    PR_Param[0] = theVars->PS_PR_Param;                  // To indicate that the calcualtion is using the combined model
+    PR_Param[0] = theVars->PS_PR_Param;      // To indicate that the calcualtion is using the combined model
     // for the PS-PR combined model. 0: Combined model; 1: Separate model
     PR_Param[1] = theVars->PS2PR_Pi;
 

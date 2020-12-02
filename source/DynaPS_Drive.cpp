@@ -39,26 +39,21 @@ arr DynaPS::DynaPS_Drive(size_t ParaNum, double Ratio) {
     // This part include the function to begin the simulation.
 
     // The time information is set in a global variable called tglobal in SYSInitial.
-    if (ParaNum <= 103)
+    if (ParaNum <= 103) {
         theVars->PSRatio[ParaNum] = Ratio;
-
-    if (ParaNum > 103 && ParaNum <= 169)
+    } else if (ParaNum <= 169) {
         theVars->SUCRatio[ParaNum - 103] = Ratio;
-
-    if (ParaNum > 169 && ParaNum <= 217)
+    } else if (ParaNum <= 217) {
         theVars->PRRatio[ParaNum - 169] = Ratio;
-
-    if (ParaNum > 217 && ParaNum <= 233)
+    } else if (ParaNum <= 233) {
         theVars->RacRatio[ParaNum - 217] = Ratio;
-
-    if (ParaNum > 233 && ParaNum <= 256)
+    } else if (ParaNum <= 256) {
         theVars->FIRatio[ParaNum - 233] = Ratio;
-
-    if (ParaNum > 256 && ParaNum <= 305)
+    } else if (ParaNum <= 305) {
         theVars->BFRatio[ParaNum - 256] = Ratio;
-
-    if (ParaNum > 305 && ParaNum <= 309)
+    } else if (ParaNum <= 309) {
         theVars->XanRatio[ParaNum - 305] = Ratio;
+    }
 
     // This part include the function to begin the simulation.
     // The time information is set in a global variable called tglobal in SYSInitial.

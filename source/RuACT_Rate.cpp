@@ -66,8 +66,8 @@ void RuACT::RuACT_Rate(const double t, const RuACTCon &RuACT_Con, Variables *the
     if (theVars->activase < pow(10, -6)) {
         RCA = 0;
     } else {
-        LT = 216.9 / theVars->activase;//	The lifetime of the activation; UNIT: MIN;
-        RCA = 1 / (LT * 60);// 	The rate constant of the activation reaction
+        LT = 216.9 / theVars->activase; // The lifetime of the activation; UNIT: MIN;
+        RCA = 1 / (LT * 60);            // The rate constant of the activation reaction
     }
 
     if (RatioDT > 3) {

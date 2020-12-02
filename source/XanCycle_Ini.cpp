@@ -33,10 +33,10 @@ double XanCycle::XanCycle_kza = 0.;
 
 XanCycleCon XanCycle::XanCycle_Ini(Variables *theVars) {
 
-    XanCycle_kva = 0.163 / 60 * theVars->XanRatio[0];// Ruth Frommolt et a; 2001; Planta
-    XanCycle_kaz = 0.691 / 60 * theVars->XanRatio[1];// Ruth Frommolt et a; 2001; Planta
-    XanCycle_kza = 0.119 / 60 * theVars->XanRatio[2];// Ruth Frommolt et a; 2001; Planta
-    XanCycle_kav = 0.119 / 60 * theVars->XanRatio[3];// Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
+    XanCycle_kva = 0.163 / 60 * theVars->XanRatio[0]; // Ruth Frommolt et a; 2001; Planta
+    XanCycle_kaz = 0.691 / 60 * theVars->XanRatio[1]; // Ruth Frommolt et a; 2001; Planta
+    XanCycle_kza = 0.119 / 60 * theVars->XanRatio[2]; // Ruth Frommolt et a; 2001; Planta
+    XanCycle_kav = 0.119 / 60 * theVars->XanRatio[3]; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
 
     const double Vx = 160;
     const double Ax = 10;
