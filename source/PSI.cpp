@@ -26,12 +26,12 @@
 
 #include "Variables.hpp"
 
-PSCon PS::PSI(Variables *myVars) {
+PSCon PS::PSI(Variables *theVars) {
     PS_C_CP = 15;    //   Global constant for the total phosphate
     PS_C_CA = 1.5;    //   Global constant for the total adenylates
     PS_PEXT = 0.5;     //   Global constant for the cytosolic Phosphate concentration;
 
-    myVars->PSPR_RA_CA = PS_C_CA;
+    theVars->PSPR_RA_CA = PS_C_CA;
 
     PSCon PS_con;
     PS_con.RuBP = 2.000;
@@ -50,8 +50,8 @@ PSCon PS::PSI(Variables *myVars) {
     PS_con.HexP = 2.2;
     PS_con.PenP = 0.25;
 
-    myVars->KM11 = 0.0115;		// 	CO2	1	RuBP+CO2->2PGA
-    myVars->KM12 = 0.222;		//	O2	1	RuBP+CO2->2PGA  0.28 DEFAUL.
+    theVars->KM11 = 0.0115;		// 	CO2	1	RuBP+CO2->2PGA
+    theVars->KM12 = 0.222;		//	O2	1	RuBP+CO2->2PGA  0.28 DEFAUL.
     KM13 = 0.02;		// 	RuBP	1	RuBP+CO2->2PGA
 
     KI11 = 0.84;    // PGA
@@ -95,7 +95,7 @@ PSCon PS::PSI(Variables *myVars) {
     KM101 = 0.1;       //   Xu5P
     KM102 = 0.072;       //   Estimate for GAP
     KM103 = 0.46;        //   Estimate for S7P                                    // New
-    //myVars->KE10 = 1 / 0.85;//   The equilibrium constant for this reaction          // New From Laisk or Bassham and Krause 1969 BBA
+    //theVars->KE10 = 1 / 0.85;//   The equilibrium constant for this reaction          // New From Laisk or Bassham and Krause 1969 BBA
 
     KE11 = 0.4;	    //	Equilibrium Constant	11	Ri5P<-->Ru5P
     KE12 = 0.67;		// 	Equilibrium Constant	12	Xu5P<-->Ru5P
@@ -123,7 +123,7 @@ PSCon PS::PSI(Variables *myVars) {
     KA231 = 0.1;		//	PGA	23	G1P+ATP+Gn<->PPi+ADP+Gn+1
 
     KM311 = 0.077;		//	DHAP	31	DHAPi<->DHAPo
-    //myVars->KM312 = 0.63;		// 	Pi	31	DHAPi<->DHAPo
+    //theVars->KM312 = 0.63;		// 	Pi	31	DHAPi<->DHAPo
     KM313 = 0.74;		//	Pext	31	DHAPi<->DHAPo
     KM32 = 0.25;		// 	PGA	32	PGAi<->PGAo
     KM33 = 0.075;		//	GAP	33	GAPi<->GAPo
@@ -138,9 +138,9 @@ PSCon PS::PSI(Variables *myVars) {
     //   Here is the location for transfering variables
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    myVars->PS2RA_RuBP_ini = PS_con.RuBP;
+    theVars->PS2RA_RuBP_ini = PS_con.RuBP;
 
-    myVars->PS2BF_ADP = PS_C_CA - PS_con.ATP;
+    theVars->PS2BF_ADP = PS_C_CA - PS_con.ATP;
 
     return PS_con;
 }

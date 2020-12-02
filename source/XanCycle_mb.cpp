@@ -27,17 +27,17 @@
 #include "globals.hpp"
 #include "Variables.hpp"
 
-arr XanCycle::XanCycle_Mb(double t, XanCycleCon &XanCycle_Con, Variables *myVars) {
-    Condition(t, myVars);
+arr XanCycle::XanCycle_Mb(double t, XanCycleCon &XanCycle_Con, Variables *theVars) {
+    Condition(t, theVars);
 
-    XanCycle_Rate(t, XanCycle_Con, myVars);
+    XanCycle_Rate(t, XanCycle_Con, theVars);
 
     arr XanCycle_mb = zeros(4);
 
-    XanCycle_mb[0] = myVars->XanCycle_Vel.Vvf + myVars->XanCycle_Vel.Vav - myVars->XanCycle_Vel.Vva - myVars->XanCycle_Vel.Vv2ABA;
-    XanCycle_mb[1] = myVars->XanCycle_Vel.Vva - myVars->XanCycle_Vel.Vav + myVars->XanCycle_Vel.Vza - myVars->XanCycle_Vel.Vaz;
-    XanCycle_mb[2] = myVars->XanCycle_Vel.Vaz - myVars->XanCycle_Vel.Vza;
-    XanCycle_mb[3] = myVars->XanCycle_Vel.Vv2ABA - myVars->XanCycle_Vel.VABAdg;
+    XanCycle_mb[0] = theVars->XanCycle_Vel.Vvf + theVars->XanCycle_Vel.Vav - theVars->XanCycle_Vel.Vva - theVars->XanCycle_Vel.Vv2ABA;
+    XanCycle_mb[1] = theVars->XanCycle_Vel.Vva - theVars->XanCycle_Vel.Vav + theVars->XanCycle_Vel.Vza - theVars->XanCycle_Vel.Vaz;
+    XanCycle_mb[2] = theVars->XanCycle_Vel.Vaz - theVars->XanCycle_Vel.Vza;
+    XanCycle_mb[3] = theVars->XanCycle_Vel.Vv2ABA - theVars->XanCycle_Vel.VABAdg;
 
     return XanCycle_mb;
 }

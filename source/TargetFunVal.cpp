@@ -26,31 +26,31 @@
 
 #include "Variables.hpp"
 
-double TargetFunVal(Variables *myVars) {
-    if (!myVars->record)
+double TargetFunVal(Variables *theVars) {
+    if (!theVars->record)
         return 0.;
 
 
     const double PSVCOEFF = 30;
 
-    for (size_t i = 1; i < myVars->PS_VEL.size(); i++)
-        myVars->PS_VEL[i] *= PSVCOEFF;
+    for (size_t i = 1; i < theVars->PS_VEL.size(); i++)
+        theVars->PS_VEL[i] *= PSVCOEFF;
 
     //PSVEL = PS_VEL';// --unused
     double ratio;
-    if (myVars->VolRatioStCyto == 1) {
+    if (theVars->VolRatioStCyto == 1) {
         ratio = PSVCOEFF;
     } else {
         ratio = PSVCOEFF * 4 / 9;
     }
-    for (size_t i = 0; i < myVars->PR_VEL.size(); i++)
-        myVars->PR_VEL[i] *= ratio;
+    for (size_t i = 0; i < theVars->PR_VEL.size(); i++)
+        theVars->PR_VEL[i] *= ratio;
 
 
 
-    //const size_t n = myVars->PS_VEL.size();
-    const double a = myVars->PS_VEL.getLastData().v1; // [1][n];
-    const double b = myVars->PR_VEL.getLastData().v1in;
+    //const size_t n = theVars->PS_VEL.size();
+    const double a = theVars->PS_VEL.getLastData().v1; // [1][n];
+    const double b = theVars->PR_VEL.getLastData().v1in;
 
     const double CO2AR = a - b;
 

@@ -26,47 +26,47 @@
 
 #include "Variables.hpp"
 
-void RROEA::RROEA_Rate(double t, RROEACon &RROEA_con, Variables *myVars) {
+void RROEA::RROEA_Rate(double t, RROEACon &RROEA_con, Variables *theVars) {
 
-    const double GAPDHo = myVars->RROEA_Pool.GAPDH - RROEA_con.GAPDH;
-    const double FBPaseo = myVars->RROEA_Pool.FBPase - RROEA_con.FBPase;
-    const double SBPaseo = myVars->RROEA_Pool.SBPase - RROEA_con.SBPase;
-    const double PRKo = myVars->RROEA_Pool.PRK - RROEA_con.PRK;
-    const double ATPaseo = myVars->RROEA_Pool.ATPase - RROEA_con.ATPase;
-    const double ATPGPPo = myVars->RROEA_Pool.ATPGPP - RROEA_con.ATPGPP;
-    const double MDHo = myVars->RROEA_Pool.MDH - RROEA_con.MDH;
-    const double Thioo = myVars->RROEA_Pool.ThioT - RROEA_con.Thio;
-    const double Fdo = myVars->RROEA_Pool.FdT - RROEA_con.Fd;
-    const double RuACTo = myVars->RROEA_Pool.RuACTT - RROEA_con.RuACT;
+    const double GAPDHo = theVars->RROEA_Pool.GAPDH - RROEA_con.GAPDH;
+    const double FBPaseo = theVars->RROEA_Pool.FBPase - RROEA_con.FBPase;
+    const double SBPaseo = theVars->RROEA_Pool.SBPase - RROEA_con.SBPase;
+    const double PRKo = theVars->RROEA_Pool.PRK - RROEA_con.PRK;
+    const double ATPaseo = theVars->RROEA_Pool.ATPase - RROEA_con.ATPase;
+    const double ATPGPPo = theVars->RROEA_Pool.ATPGPP - RROEA_con.ATPGPP;
+    const double MDHo = theVars->RROEA_Pool.MDH - RROEA_con.MDH;
+    const double Thioo = theVars->RROEA_Pool.ThioT - RROEA_con.Thio;
+    const double Fdo = theVars->RROEA_Pool.FdT - RROEA_con.Fd;
+    const double RuACTo = theVars->RROEA_Pool.RuACTT - RROEA_con.RuACT;
 
 
     const double KEe2ATPase = 1;
     const double ke2ATPase = 1;
 
-    if (myVars-> RROEA_Param[0] > 500) {
-        myVars->RROEA_Vel.ve2Fd = myVars->RROEA_RC.ke2Fd * Fdo;
+    if (theVars-> RROEA_Param[0] > 500) {
+        theVars->RROEA_Vel.ve2Fd = theVars->RROEA_RC.ke2Fd * Fdo;
     } else {
-        myVars->RROEA_Vel.ve2Fd = myVars->RROEA_RC.ke2Fd * myVars-> RROEA_Param[0] / 500 * Fdo;
+        theVars->RROEA_Vel.ve2Fd = theVars->RROEA_RC.ke2Fd * theVars-> RROEA_Param[0] / 500 * Fdo;
     }
 
-    if (t > myVars->RROEA_OLD_TIME) {
-            myVars->RROEA_TIME_N = myVars->RROEA_TIME_N + 1;
-            myVars->RROEA_OLD_TIME = t;
+    if (t > theVars->RROEA_OLD_TIME) {
+            theVars->RROEA_TIME_N = theVars->RROEA_TIME_N + 1;
+            theVars->RROEA_OLD_TIME = t;
         }
-    myVars->RROEA_Vel.ve2GAPDH = myVars->RROEA_RC.ke2GAPDH * (RROEA_con.Thio * GAPDHo - Thioo * RROEA_con.GAPDH / myVars->RROEA_KE.KEe2GAPDH);
-    myVars->RROEA_Vel.ve2FBPase = myVars->RROEA_RC.ke2FBPase * (RROEA_con.Thio * FBPaseo - Thioo * RROEA_con.FBPase / myVars->RROEA_KE.KEe2FBPase);
-    myVars->RROEA_Vel.ve2SBPase = myVars->RROEA_RC.ke2SBPase * (RROEA_con.Thio * SBPaseo - Thioo * RROEA_con.SBPase / myVars->RROEA_KE.KEe2SBPase);
-    myVars->RROEA_Vel.ve2PRK = myVars->RROEA_RC.ke2PRK * (RROEA_con.Thio * PRKo - Thioo * RROEA_con.PRK / myVars->RROEA_KE.KEe2PRK);
-    myVars->RROEA_Vel.ve2ATPase = ke2ATPase * (RROEA_con.Thio * ATPaseo - Thioo * RROEA_con.ATPase / KEe2ATPase);
-    myVars->RROEA_Vel.ve2ATPGPP = myVars->RROEA_RC.ke2ATPGPP * (RROEA_con.Thio * ATPGPPo - Thioo * RROEA_con.ATPGPP / myVars->RROEA_KE.KEe2ATPGPP);
-    myVars->RROEA_Vel.ve2MDH = myVars->RROEA_RC.ke2MDH * (RROEA_con.Thio * MDHo - Thioo * RROEA_con.MDH / myVars->RROEA_KE.KEe2MDH) - RROEA_con.MDH;
-    myVars->RROEA_Vel.veFd2Thio = myVars->RROEA_RC.keFd2Thio * (RROEA_con.Fd * Thioo - RROEA_con.Thio * Fdo / myVars->RROEA_KE.KEeFd2Thio);
-    myVars->RROEA_Vel.veFd2Calvin = RROEA_con.Fd * myVars->RROEA_RC.keFd2Calvin * (RROEA_con.FBPase / myVars->RROEA_Pool.FBPase);
-    myVars->RROEA_Vel.ve2RuACT = myVars->RROEA_RC.ke2RubACT * (RROEA_con.Thio * RuACTo - Thioo * RROEA_con.RuACT / myVars->RROEA_KE.KEe2RuACT);
+    theVars->RROEA_Vel.ve2GAPDH = theVars->RROEA_RC.ke2GAPDH * (RROEA_con.Thio * GAPDHo - Thioo * RROEA_con.GAPDH / theVars->RROEA_KE.KEe2GAPDH);
+    theVars->RROEA_Vel.ve2FBPase = theVars->RROEA_RC.ke2FBPase * (RROEA_con.Thio * FBPaseo - Thioo * RROEA_con.FBPase / theVars->RROEA_KE.KEe2FBPase);
+    theVars->RROEA_Vel.ve2SBPase = theVars->RROEA_RC.ke2SBPase * (RROEA_con.Thio * SBPaseo - Thioo * RROEA_con.SBPase / theVars->RROEA_KE.KEe2SBPase);
+    theVars->RROEA_Vel.ve2PRK = theVars->RROEA_RC.ke2PRK * (RROEA_con.Thio * PRKo - Thioo * RROEA_con.PRK / theVars->RROEA_KE.KEe2PRK);
+    theVars->RROEA_Vel.ve2ATPase = ke2ATPase * (RROEA_con.Thio * ATPaseo - Thioo * RROEA_con.ATPase / KEe2ATPase);
+    theVars->RROEA_Vel.ve2ATPGPP = theVars->RROEA_RC.ke2ATPGPP * (RROEA_con.Thio * ATPGPPo - Thioo * RROEA_con.ATPGPP / theVars->RROEA_KE.KEe2ATPGPP);
+    theVars->RROEA_Vel.ve2MDH = theVars->RROEA_RC.ke2MDH * (RROEA_con.Thio * MDHo - Thioo * RROEA_con.MDH / theVars->RROEA_KE.KEe2MDH) - RROEA_con.MDH;
+    theVars->RROEA_Vel.veFd2Thio = theVars->RROEA_RC.keFd2Thio * (RROEA_con.Fd * Thioo - RROEA_con.Thio * Fdo / theVars->RROEA_KE.KEeFd2Thio);
+    theVars->RROEA_Vel.veFd2Calvin = RROEA_con.Fd * theVars->RROEA_RC.keFd2Calvin * (RROEA_con.FBPase / theVars->RROEA_Pool.FBPase);
+    theVars->RROEA_Vel.ve2RuACT = theVars->RROEA_RC.ke2RubACT * (RROEA_con.Thio * RuACTo - Thioo * RROEA_con.RuACT / theVars->RROEA_KE.KEe2RuACT);
 
-    if (myVars->record) {
-        myVars->RROEA_VEL.insert(myVars->RROEA_TIME_N - 1, t, myVars->RROEA_Vel);
+    if (theVars->record) {
+        theVars->RROEA_VEL.insert(theVars->RROEA_TIME_N - 1, t, theVars->RROEA_Vel);
     }
 
-    myVars->RROEA2RuACT_RuAC = RROEA_con.RuACT;
+    theVars->RROEA2RuACT_RuAC = RROEA_con.RuACT;
 }

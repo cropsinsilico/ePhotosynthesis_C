@@ -78,6 +78,6 @@ public:
 
 };
 
-void FIBF_Ini(Variables *myVars);
+void FIBF_Ini(Variables *theVars);
 
-arr FIBF_MB(double t, FIBFCon &FIBF_Con, Variables *myVars);
+arr FIBF_MB(double t, FIBFCon &FIBF_Con, Variables *theVars);

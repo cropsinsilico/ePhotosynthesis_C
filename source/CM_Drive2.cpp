@@ -32,28 +32,28 @@
 #include <cvode/cvode_direct.h>
 #include "Variables.hpp"
 
-Variables *CM::myVars = new Variables();
+Variables *CM::theVars = new Variables();
 double CM::CM_Drive2(double pop, double currentPop) {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //   Global variables used for obtaining flux and concentration data //
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    myVars->PS_PR_OLDTIME = 0;
-    myVars->PS_PR_TIME_N = 1;
-    myVars->PS_OLD_TIME = 0;
-    myVars->PS_TIME_N = 0;
-    myVars->PR_OLD_TIME = 0;
-    myVars->PR_TIME_N = 1;
+    theVars->PS_PR_OLDTIME = 0;
+    theVars->PS_PR_TIME_N = 1;
+    theVars->PS_OLD_TIME = 0;
+    theVars->PS_TIME_N = 0;
+    theVars->PR_OLD_TIME = 0;
+    theVars->PR_TIME_N = 1;
 
     ////////////////////////////////////////////////
     //   Initialation step //
     ////////////////////////////////////////////////
-    IniModelCom(myVars);        // Initialize the structure of the model, i.e. Is this model separate or combined with others.
+    IniModelCom(theVars);        // Initialize the structure of the model, i.e. Is this model separate or combined with others.
     // This is a variable indicating whether the PR model is actually need to be combined with PS or not. If 1 then means combined; 0 means not.
-    myVars->PR_PS_com = true;
+    theVars->PR_PS_com = true;
     // This is a variable indicating whether the PSPR model is actually need to be combined with SUCS or not. If 1 then means combined; 0 means not.
-    myVars->PSPR_SUCS_com = true;
+    theVars->PSPR_SUCS_com = true;
 
     CMCon CM_con = CM_Ini();
     arr CMs = CM_con.toArray();
@@ -61,10 +61,10 @@ double CM::CM_Drive2(double pop, double currentPop) {
     //   Calculation  step //
     ////////////////////////////////////////////////
 
-    myVars->SUCS_Param[0] = 1;
-    myVars->SUCS_Param[1] = 1;
+    theVars->SUCS_Param[0] = 1;
+    theVars->SUCS_Param[1] = 1;
 
-    myVars->PS_PR_Param = 0;
+    theVars->PS_PR_Param = 0;
 
     UserData *data = alloc_user_data();
     int flag;
@@ -110,10 +110,10 @@ double CM::CM_Drive2(double pop, double currentPop) {
     //////////////////////////////////////////////
 
     // Reinitialize some values of global variables.
-    myVars->PSPR_SUCS_com = false;
-    IniModelCom(myVars);
+    theVars->PSPR_SUCS_com = false;
+    IniModelCom(theVars);
 
-    const double CO2AR = TargetFunVal(myVars);
+    const double CO2AR = TargetFunVal(theVars);
 
     N_VDestroy(y);
     CVodeFree(&cvode_mem);

@@ -338,9 +338,9 @@ private:
 
 class BF {
 public:
-    static BFCon BF_Ini(Variables *myVars);
+    static BFCon BF_Ini(Variables *theVars);
 
-    static arr BF_Mb(double t, BFCon &BF_con, Variables *myVars);
+    static arr BF_Mb(double t, BFCon &BF_con, Variables *theVars);
 
-    static void BF_Rate(double t, BFCon &BF_con, Variables *myVars);
+    static void BF_Rate(double t, BFCon &BF_con, Variables *theVars);
 };

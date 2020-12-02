@@ -27,14 +27,14 @@
 #include "globals.hpp"
 #include "DynaPS.hpp"
 
-DynaPSCon DynaPS_Init(Variables *myVars) {
+DynaPSCon DynaPS_Init(Variables *theVars) {
 
     //////////////////////////////////////////////////////////////////////////////////
     //   Clear up memory for simulation       //
     //////////////////////////////////////////////////////////////////////////////////
 
-    RACon RA_con = RA_Ini(myVars);
-    XanCycleCon XanCycle_con = XanCycle::XanCycle_Ini(myVars);
+    RACon RA_con = RA_Ini(theVars);
+    XanCycleCon XanCycle_con = XanCycle::XanCycle_Ini(theVars);
     DynaPSCon DynaPS_con(RA_con, XanCycle_con);
     return DynaPS_con;
 }

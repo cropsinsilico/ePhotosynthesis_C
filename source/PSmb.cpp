@@ -27,7 +27,7 @@
 #include "Variables.hpp"
 #include "globals.hpp"
 
-arr PS::PSmb(double t, PSCon &PS_con, arr &Param, Variables *myVars) {
+arr PS::PSmb(double t, PSCon &PS_con, arr &Param, Variables *theVars) {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Modifying KM, KI, KE VMAX for different reactions as the regulation//
@@ -35,31 +35,31 @@ arr PS::PSmb(double t, PSCon &PS_con, arr &Param, Variables *myVars) {
 
 
     // Regulations first.
-    Condition(t, myVars);
+    Condition(t, theVars);
 
     // Get the rate for the reactions in the photosynthesis sytem
-    PSRate(t, PS_con, Param, myVars);
+    PSRate(t, PS_con, Param, theVars);
 
     // Get the rate
 
     // Implement the mass balance equations
 
     arr PSdydt = zeros(15);
-    PSdydt[0] = myVars->PS_Vel.v13 - myVars->PS_Vel.v1;
-    PSdydt[1] = 2 * myVars->PS_Vel.v1 - myVars->PS_Vel.v2 - myVars->PS_Vel.v32;
-    PSdydt[2] = myVars->PS_Vel.v2 - myVars->PS_Vel.v3;
-    PSdydt[3] = myVars->PS_Vel.v3 - 2 * myVars->PS_Vel.v5 - myVars->PS_Vel.v7 - myVars->PS_Vel.v8 - myVars->PS_Vel.v10 - myVars->PS_Vel.v31 - myVars->PS_Vel.v33;
-    PSdydt[4] = myVars->PS_Vel.v23 - myVars->PS_Vel.v24;
-    PSdydt[5] = myVars->PS_Vel.v5 - myVars->PS_Vel.v6;
-    PSdydt[6] = myVars->PS_Vel.v7 - myVars->PS_Vel.v8;
-    PSdydt[7] = myVars->PS_Vel.v9 - myVars->PS_Vel.v10;
-    PSdydt[8] = myVars->PS_Vel.v8 - myVars->PS_Vel.v9;
-    PSdydt[9] = myVars->PS_Vel.v16 - myVars->PS_Vel.v2 - myVars->PS_Vel.v23 - myVars->PS_Vel.v13 - myVars->PS_Vel.v25;
+    PSdydt[0] = theVars->PS_Vel.v13 - theVars->PS_Vel.v1;
+    PSdydt[1] = 2 * theVars->PS_Vel.v1 - theVars->PS_Vel.v2 - theVars->PS_Vel.v32;
+    PSdydt[2] = theVars->PS_Vel.v2 - theVars->PS_Vel.v3;
+    PSdydt[3] = theVars->PS_Vel.v3 - 2 * theVars->PS_Vel.v5 - theVars->PS_Vel.v7 - theVars->PS_Vel.v8 - theVars->PS_Vel.v10 - theVars->PS_Vel.v31 - theVars->PS_Vel.v33;
+    PSdydt[4] = theVars->PS_Vel.v23 - theVars->PS_Vel.v24;
+    PSdydt[5] = theVars->PS_Vel.v5 - theVars->PS_Vel.v6;
+    PSdydt[6] = theVars->PS_Vel.v7 - theVars->PS_Vel.v8;
+    PSdydt[7] = theVars->PS_Vel.v9 - theVars->PS_Vel.v10;
+    PSdydt[8] = theVars->PS_Vel.v8 - theVars->PS_Vel.v9;
+    PSdydt[9] = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13 - theVars->PS_Vel.v25;
     PSdydt[10] = 0;
     PSdydt[11] = 0;
     PSdydt[12] = 0;
-    PSdydt[13] = myVars->PS_Vel.v6 - myVars->PS_Vel.v7 - myVars->PS_Vel.v23 + myVars->PS_Vel.v25;
-    PSdydt[14] = myVars->PS_Vel.v7 + myVars->PS_Vel.v10 * 2 - myVars->PS_Vel.v13;
+    PSdydt[13] = theVars->PS_Vel.v6 - theVars->PS_Vel.v7 - theVars->PS_Vel.v23 + theVars->PS_Vel.v25;
+    PSdydt[14] = theVars->PS_Vel.v7 + theVars->PS_Vel.v10 * 2 - theVars->PS_Vel.v13;
 
     return PSdydt;
 }

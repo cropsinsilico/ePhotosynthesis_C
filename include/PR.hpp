@@ -131,11 +131,11 @@ public:
 
 class PR {
 public:
-    static PRCon PRinitial(Variables *myVars);
+    static PRCon PRinitial(Variables *theVars);
 
-    static arr PRmb(double t, PRCon &PR_con, Variables *myVars);
+    static arr PRmb(double t, PRCon &PR_con, Variables *theVars);
 
-    static void PRrate(double t, PRCon &PR_con, Variables *myVars);
+    static void PRrate(double t, PRCon &PR_con, Variables *theVars);
 private:
     static double KC;
     static double KE113;

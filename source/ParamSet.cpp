@@ -26,36 +26,36 @@
 
 #include "Variables.hpp"
 
-void ParamSet(Variables *myVars) {
+void ParamSet(Variables *theVars) {
 
     const double va1 = 0;
 
-    myVars->BF_Param = zeros(2);
-    myVars->BF_Param[0] = va1;
-    myVars->BF_Param[1] = myVars->PS12ratio;
+    theVars->BF_Param = zeros(2);
+    theVars->BF_Param[0] = va1;
+    theVars->BF_Param[1] = theVars->PS12ratio;
 
-    myVars->FI_Param = zeros(2);
-    myVars->FI_Param[0] = va1;
-    myVars->FI_Param[1] = myVars->PS12ratio;
+    theVars->FI_Param = zeros(2);
+    theVars->FI_Param[0] = va1;
+    theVars->FI_Param[1] = theVars->PS12ratio;
 
-    myVars->PS_PR_Param = 0;
+    theVars->PS_PR_Param = 0;
 
-    myVars->SUCS_Param = zeros(2);
-
-
-    myVars->RuACT_Param = zeros(2);
-    myVars->RuACT_Param[0] = va1;
-    myVars->RuACT_Param[1] = myVars->PS12ratio;
-
-    myVars->XanCycle_Param = zeros(2);
-    myVars->XanCycle_Param[0] = va1;
-    myVars->XanCycle_Param[1] = myVars->PS12ratio;
+    theVars->SUCS_Param = zeros(2);
 
 
-    myVars->RROEA_Param = zeros(2);
-    myVars->RROEA_Param[0] = va1;
-    myVars->RROEA_Param[1] = myVars->PS12ratio;
+    theVars->RuACT_Param = zeros(2);
+    theVars->RuACT_Param[0] = va1;
+    theVars->RuACT_Param[1] = theVars->PS12ratio;
 
-    myVars->RedoxReg_Param = 0;
+    theVars->XanCycle_Param = zeros(2);
+    theVars->XanCycle_Param[0] = va1;
+    theVars->XanCycle_Param[1] = theVars->PS12ratio;
+
+
+    theVars->RROEA_Param = zeros(2);
+    theVars->RROEA_Param[0] = va1;
+    theVars->RROEA_Param[1] = theVars->PS12ratio;
+
+    theVars->RedoxReg_Param = 0;
 
 }

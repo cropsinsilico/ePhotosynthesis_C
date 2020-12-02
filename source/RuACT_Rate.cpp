@@ -26,47 +26,47 @@
 
 #include "Variables.hpp"
 
-void RuACT::RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *myVars) {
+void RuACT::RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *theVars) {
 
-    double C = myVars->RuACT_Pool.C;
-    double O = myVars->RuACT_Pool.O;
-    double MT = myVars->RuACT_Pool.M;
+    double C = theVars->RuACT_Pool.C;
+    double O = theVars->RuACT_Pool.O;
+    double MT = theVars->RuACT_Pool.M;
 
-    if (myVars->RROEA_EPS_com) {
-        myVars->activase = myVars->RROEA2RuACT_RuAC * 14364;
+    if (theVars->RROEA_EPS_com) {
+        theVars->activase = theVars->RROEA2RuACT_RuAC * 14364;
     }
 
     double ADP;
     double ATP;
-    if (!myVars->RuACT_EPS_com) {
+    if (!theVars->RuACT_EPS_com) {
         ATP = 1.45;
         ADP = 1.5 - ATP;
     } else {
-        C = myVars->CO2_cond;
-        O = myVars->O2_cond;
+        C = theVars->CO2_cond;
+        O = theVars->O2_cond;
 
-        MT = myVars->FIBF_RA_Mg;
-        ATP = myVars->PS2RA_ATP;
-        ADP = myVars->PSPR_RA_CA - ATP;
+        MT = theVars->FIBF_RA_Mg;
+        ATP = theVars->PS2RA_ATP;
+        ADP = theVars->PSPR_RA_CA - ATP;
     }
     double RatioDT = ADP / ATP;
 
 
     const double CA = 1;
-    const double CB = myVars->RuACT_RC.Ke3 + myVars->RuACT_RC.Ke2 * myVars->RuACT_RC.Ke3 / C + RuACT_Con.Eaf - MT;
-    const double CC = - MT * (myVars->RuACT_RC.Ke3 + myVars->RuACT_RC.Ke2 * myVars->RuACT_RC.Ke3 / C);
+    const double CB = theVars->RuACT_RC.Ke3 + theVars->RuACT_RC.Ke2 * theVars->RuACT_RC.Ke3 / C + RuACT_Con.Eaf - MT;
+    const double CC = - MT * (theVars->RuACT_RC.Ke3 + theVars->RuACT_RC.Ke2 * theVars->RuACT_RC.Ke3 / C);
 
     const double M = (-CB + pow(( pow(CB, 2) - 4 * CA * CC), 0.5)) / (2 * CA);
-    const double EC = RuACT_Con.Eaf *  pow((1 + myVars->RuACT_RC.Ke2 / C + M / myVars->RuACT_RC.Ke3), -1);
-    const double E = EC / C * myVars->RuACT_RC.Ke2;
-    const double ECM = EC * M / myVars->RuACT_RC.Ke3;
+    const double EC = RuACT_Con.Eaf *  pow((1 + theVars->RuACT_RC.Ke2 / C + M / theVars->RuACT_RC.Ke3), -1);
+    const double E = EC / C * theVars->RuACT_RC.Ke2;
+    const double ECM = EC * M / theVars->RuACT_RC.Ke3;
 
     double LT;
     double RCA;
-    if (myVars->activase < pow(10, -6)) {
+    if (theVars->activase < pow(10, -6)) {
         RCA = 0;
     } else {
-        LT = 216.9 / myVars->activase;//	The lifetime of the activation; UNIT: MIN;
+        LT = 216.9 / theVars->activase;//	The lifetime of the activation; UNIT: MIN;
         RCA = 1 / (LT * 60);// 	The rate constant of the activation reaction
     }
 
@@ -83,19 +83,19 @@ void RuACT::RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *myVars) {
 
     const double factor_n7 = 1;
 
-    if (t > myVars->RuACT_OLD_TIME) {
-        myVars->RuACT_TIME_N = myVars->RuACT_TIME_N + 1;
-        myVars->RuACT_OLD_TIME = t;
+    if (t > theVars->RuACT_OLD_TIME) {
+        theVars->RuACT_TIME_N = theVars->RuACT_TIME_N + 1;
+        theVars->RuACT_OLD_TIME = t;
     }
 
-    myVars->RuACT_Vel.v1 = RCA * RuACT_Con.ER * FATP;
-    myVars->RuACT_Vel.vn1 = myVars->RuACT_RC.kn1 * E * RuACT_Con.RuBP;
-    myVars->RuACT_Vel.v7 = myVars->RuACT_RC.k7 * ECM * RuACT_Con.RuBP;
-    myVars->RuACT_Vel.vn7 = RuACT_Con.ECMR * 0.5 * factor_n7;
-    myVars->RuACT_Vel.v6_1 = RuACT_Con.ECMR * myVars->RuACT_RC.k6 * C / (C + myVars->RuACT_RC.kc * (1 + O / myVars->RuACT_RC.ko));
-    myVars->RuACT_Vel.v6_2 = RuACT_Con.ECMR * myVars->RuACT_RC.k6 / 3 * O / (O + myVars->RuACT_RC.ko * (1 + C / myVars->RuACT_RC.kc));
+    theVars->RuACT_Vel.v1 = RCA * RuACT_Con.ER * FATP;
+    theVars->RuACT_Vel.vn1 = theVars->RuACT_RC.kn1 * E * RuACT_Con.RuBP;
+    theVars->RuACT_Vel.v7 = theVars->RuACT_RC.k7 * ECM * RuACT_Con.RuBP;
+    theVars->RuACT_Vel.vn7 = RuACT_Con.ECMR * 0.5 * factor_n7;
+    theVars->RuACT_Vel.v6_1 = RuACT_Con.ECMR * theVars->RuACT_RC.k6 * C / (C + theVars->RuACT_RC.kc * (1 + O / theVars->RuACT_RC.ko));
+    theVars->RuACT_Vel.v6_2 = RuACT_Con.ECMR * theVars->RuACT_RC.k6 / 3 * O / (O + theVars->RuACT_RC.ko * (1 + C / theVars->RuACT_RC.kc));
 
-    if (myVars->record) {
-        myVars->RuACT_VEL.insert(myVars->RuACT_TIME_N - 1, t, myVars->RuACT_Vel);
+    if (theVars->record) {
+        theVars->RuACT_VEL.insert(theVars->RuACT_TIME_N - 1, t, theVars->RuACT_Vel);
     }
 }

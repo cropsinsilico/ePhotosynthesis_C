@@ -27,12 +27,12 @@
 #include "ssPS.hpp"
 #include "Variables.hpp"
 
-arr ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, double Light, Variables *myVars) {
-    ssPSIni(temp, myVars);
+arr ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, double Light, Variables *theVars) {
+    ssPSIni(temp, theVars);
 
     const double Ci = CO2;
-    const double wc = VcmaxT * (Ci - myVars->GammaStar) / (Ci + myVars->kmCO2 * (1 + myVars->O2 / myVars->kmO2));
-    const double wj = JmaxT * (Ci - myVars->GammaStar) / (4.5 * Ci + 10.5 * myVars->GammaStar);
+    const double wc = VcmaxT * (Ci - theVars->GammaStar) / (Ci + theVars->kmCO2 * (1 + theVars->O2 / theVars->kmO2));
+    const double wj = JmaxT * (Ci - theVars->GammaStar) / (4.5 * Ci + 10.5 * theVars->GammaStar);
     const double w = std::min(wc, wj);
 
     const double Vm = 88.6 * pow(10, -3);

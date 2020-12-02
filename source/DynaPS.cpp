@@ -28,7 +28,7 @@
 #include "DynaPS.hpp"
 
 DynaPSCon DynaPS::DynaPS_Ini() {
-    return DynaPS_Init(myVars);
+    return DynaPS_Init(theVars);
 }
 
 // DynaPS_mb.m  This model includes the mass balance equations for the full model of photosynthesis.
@@ -44,7 +44,7 @@ int DynaPS::DynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
 
     DynaPSCon DynaPS_con(x);
 
-    arr ddxdt = DynaPSmb(t, DynaPS_con, myVars);
+    arr ddxdt = DynaPSmb(t, DynaPS_con, theVars);
     for (size_t index = 0; index < 96; index++)
         dxdt[index] = ddxdt[index];
 

@@ -26,10 +26,10 @@
 
 #include "Variables.hpp"
 
-void ssPSIni(double t, Variables *myVars) {
+void ssPSIni(double t, Variables *theVars) {
     const double RT = 0.0083 * (273 + t);
 
-    myVars->GammaStar = exp(19.02 - 37.83 / RT);
-    myVars->kmCO2 = exp(38.05 - 79.43 / RT);
-    myVars->kmO2 = exp(20.30 - 36.38 / RT);
+    theVars->GammaStar = exp(19.02 - 37.83 / RT);
+    theVars->kmCO2 = exp(38.05 - 79.43 / RT);
+    theVars->kmO2 = exp(20.30 - 36.38 / RT);
 }

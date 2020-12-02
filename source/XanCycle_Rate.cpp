@@ -27,13 +27,13 @@
 #include "Variables.hpp"
 #include "globals.hpp"
 
-void XanCycle::XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myVars) {
+void XanCycle::XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *theVars) {
 
-    Condition(t, myVars);
+    Condition(t, theVars);
 
     double pH;
-    if (myVars->XanCycle_BF_com) {
-        pH = myVars->BF2XanCycle_pHl;
+    if (theVars->XanCycle_BF_com) {
+        pH = theVars->BF2XanCycle_pHl;
     } else {
         pH = 6;
     }
@@ -57,25 +57,25 @@ void XanCycle::XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myV
     const double Vv2ABA = 0;
     const double VABAdg = 0;
 
-    if (t > myVars->XanCycle_OLD_TIME) {
-            myVars->XanCycle_TIME_N = myVars->XanCycle_TIME_N + 1;
-            myVars->XanCycle_OLD_TIME = t;
+    if (t > theVars->XanCycle_OLD_TIME) {
+            theVars->XanCycle_TIME_N = theVars->XanCycle_TIME_N + 1;
+            theVars->XanCycle_OLD_TIME = t;
         }
-    myVars->XanCycle_Vel.Vva = Vva;	//	The velocity of v to a conversion
-    myVars->XanCycle_Vel.Vaz = Vaz;	//	The rate of A to z
-    myVars->XanCycle_Vel.Vza = Vza;	//	THe rate of z to a
-    myVars->XanCycle_Vel.Vav = Vav;	//	The rate of A to V
-    myVars->XanCycle_Vel.Vvf = Vvf;	//	The rate of V formation
-    myVars->XanCycle_Vel.Vv2ABA = Vv2ABA;	//	The rate of conversion from v to XanCycle_Con.ABA.
-    myVars->XanCycle_Vel.VABAdg = VABAdg;	//	The rate of XanCycle_Con.ABA degradation
+    theVars->XanCycle_Vel.Vva = Vva;	//	The velocity of v to a conversion
+    theVars->XanCycle_Vel.Vaz = Vaz;	//	The rate of A to z
+    theVars->XanCycle_Vel.Vza = Vza;	//	THe rate of z to a
+    theVars->XanCycle_Vel.Vav = Vav;	//	The rate of A to V
+    theVars->XanCycle_Vel.Vvf = Vvf;	//	The rate of V formation
+    theVars->XanCycle_Vel.Vv2ABA = Vv2ABA;	//	The rate of conversion from v to XanCycle_Con.ABA.
+    theVars->XanCycle_Vel.VABAdg = VABAdg;	//	The rate of XanCycle_Con.ABA degradation
 
-    if (myVars->record) {
-        myVars->XanCycle_VEL.insert(myVars->XanCycle_TIME_N, t, myVars->XanCycle_Vel);
+    if (theVars->record) {
+        theVars->XanCycle_VEL.insert(theVars->XanCycle_TIME_N, t, theVars->XanCycle_Vel);
 
-        myVars->XanCycle2OUT.Vx = XanCycle_Con.Vx;
-        myVars->XanCycle2OUT.Ax = XanCycle_Con.Ax;
-        myVars->XanCycle2OUT.Zx = XanCycle_Con.Zx;
-        myVars->XanCycle2OUT.ABA = XanCycle_Con.Vx / (XanCycle_Con.Vx + XanCycle_Con.Ax + XanCycle_Con.Zx);
+        theVars->XanCycle2OUT.Vx = XanCycle_Con.Vx;
+        theVars->XanCycle2OUT.Ax = XanCycle_Con.Ax;
+        theVars->XanCycle2OUT.Zx = XanCycle_Con.Zx;
+        theVars->XanCycle2OUT.ABA = XanCycle_Con.Vx / (XanCycle_Con.Vx + XanCycle_Con.Ax + XanCycle_Con.Zx);
     }
 
 }

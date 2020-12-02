@@ -26,19 +26,19 @@
 
 #include "Variables.hpp"
 
-arr RedoxReg::RedoxReg_mb(double t, RedoxRegCon &RedoxReg_Con, Variables *myVars) {
-    myVars->trDynaPS2RedReg_cal = 1;
+arr RedoxReg::RedoxReg_mb(double t, RedoxRegCon &RedoxReg_Con, Variables *theVars) {
+    theVars->trDynaPS2RedReg_cal = 1;
 
-    RedoxReg_Rate(t, RedoxReg_Con, myVars);
+    RedoxReg_Rate(t, RedoxReg_Con, theVars);
 
-    arr RA_DYDT = RA_mb(t, RedoxReg_Con.RA_con, myVars);
+    arr RA_DYDT = RA_mb(t, RedoxReg_Con.RA_con, theVars);
 
     arr RedoxReg_DYDT;
     RedoxReg_DYDT.reserve(93);
 
     RedoxReg_DYDT.insert(RedoxReg_DYDT.end(), RA_DYDT.begin(), RA_DYDT.end());
 
-    //RedoxReg_DYDT[92] = myVars->RedoxReg_Vel.Vred - myVars->RedoxReg_Vel.Vox;
+    //RedoxReg_DYDT[92] = theVars->RedoxReg_Vel.Vred - theVars->RedoxReg_Vel.Vox;
     RedoxReg_DYDT[92] = 0;
 
     //const double Temp = RedoxReg_DYDT[23];

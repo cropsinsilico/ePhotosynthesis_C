@@ -28,18 +28,18 @@
 
 #include "definitions.hpp"
 
-void Condition(double t, Variables *myVars);
+void Condition(double t, Variables *theVars);
 
-void GenOut(double t, Variables *myVars);
+void GenOut(double t, Variables *theVars);
 
-void IniModelCom(Variables *myVars);
+void IniModelCom(Variables *theVars);
 
-void ParamSet(Variables *myVars);
+void ParamSet(Variables *theVars);
 
-void SYSInitial(Variables *myVars);
+void SYSInitial(Variables *theVars);
 
 void Sim_Ephotosynthesis(bool record);
 
-double TargetFunVal(Variables *myVars);
+double TargetFunVal(Variables *theVars);
 
-void makeFluxTR(Variables *myVars);
+void makeFluxTR(Variables *theVars);

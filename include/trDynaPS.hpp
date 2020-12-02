@@ -77,8 +77,8 @@ public:
 
 class trDynaPS {
 public:
-  trDynaPS(Variables *myVars) { this->myVars = myVars; }
-  static Variables *myVars;
+  trDynaPS(Variables *theVars) { this->theVars = theVars; }
+  static Variables *theVars;
   arr trDynaPS_Drive(size_t ParaNum, double Ratio);
 
   static int trDynaPS_mb(realtype t, N_Vector u, N_Vector u_dot,

@@ -28,8 +28,8 @@
 
 // This is the function to initialize some global variable used in FIBF MODEL
 
-void FIBF_Ini(Variables *myVars) {
+void FIBF_Ini(Variables *theVars) {
 
     const double FIBF_PQT = 8;
-    myVars->FIBF_Pool.PQT = FIBF_PQT;
+    theVars->FIBF_Pool.PQT = FIBF_PQT;
 }

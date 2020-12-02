@@ -28,11 +28,11 @@
 
 // This routine initialze the parameters used for all the routines.
 
-void SYSInitial(Variables *myVars) {
+void SYSInitial(Variables *theVars) {
 
-    myVars->PS12ratio = myVars->input_PSI / myVars->input_PSIIcore;
+    theVars->PS12ratio = theVars->input_PSI / theVars->input_PSIIcore;
 
-    myVars->ChlT2 = myVars->input_PSIIcore * (myVars->PSIIantennaSize + 13 * myVars->input_LHCII);// U and A, PSII and LHCII
-    myVars->ChlT = myVars->PSIIantennaSize * myVars->input_PSIIcore;// U , PSII
-    myVars->ChlPSI = myVars->input_PSI * (myVars->PSIantennaSize + 13 * myVars->input_LHCI);// U and A of PSI, total Chl in PSI
+    theVars->ChlT2 = theVars->input_PSIIcore * (theVars->PSIIantennaSize + 13 * theVars->input_LHCII);// U and A, PSII and LHCII
+    theVars->ChlT = theVars->PSIIantennaSize * theVars->input_PSIIcore;// U , PSII
+    theVars->ChlPSI = theVars->input_PSI * (theVars->PSIantennaSize + 13 * theVars->input_LHCI);// U and A of PSI, total Chl in PSI
 }

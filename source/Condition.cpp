@@ -31,15 +31,15 @@
 // contains two parts. Part a includes the generic (default) conditions and the
 // second part contains the detailed conditions for different time period.
 
-void Condition(double t, Variables *myVars) {
+void Condition(double t, Variables *theVars) {
     // This variable is transfered from PSInitial for modificatin of V16, the rate of ATP synthesis.
-    const double CO2Temp = myVars->TestCa * 0.7;//280;          // CO2 concentation  // ppm
+    const double CO2Temp = theVars->TestCa * 0.7;//280;          // CO2 concentation  // ppm
     const double O2Temp = 0.21;          // O2 concentration  //default is 0.21, i.e. 21//.
 
-    myVars->CO2_cond = CO2Temp / (3 * pow(10, 4));
-    myVars->O2_cond = O2Temp * 1.26;
+    theVars->CO2_cond = CO2Temp / (3 * pow(10, 4));
+    theVars->O2_cond = O2Temp * 1.26;
 
-    const double light = myVars->TestLi * 0.85 * 0.85;// light umol m-2 s-1
+    const double light = theVars->TestLi * 0.85 * 0.85;// light umol m-2 s-1
 
     // Here the time dependent variable is regulated.
 
@@ -50,7 +50,7 @@ void Condition(double t, Variables *myVars) {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // This is an experimental protocol for doing repeatative experiment
 
-    // Tinter = myVars->tglobal / NumberInterval;// --unused
+    // Tinter = theVars->tglobal / NumberInterval;// --unused
 
     // FirstMet = 0;// --unused
 
@@ -120,5 +120,5 @@ void Condition(double t, Variables *myVars) {
     //     light = 1000;
     // end
 
-    myVars->GLight = light;
+    theVars->GLight = light;
 }

@@ -27,7 +27,7 @@
 #include "Variables.hpp"
 const double KI583 = 1.55;
 
-void SUCS::SUCS_Rate(double t, SUCSCon &SUCS_Con, Variables *myVars) {
+void SUCS::SUCS_Rate(double t, SUCSCon &SUCS_Con, Variables *theVars) {
     ////////////////////////////////////////////////////////////
     // Get the auxiliary variables //
     ////////////////////////////////////////////////////////////
@@ -43,11 +43,11 @@ void SUCS::SUCS_Rate(double t, SUCSCon &SUCS_Con, Variables *myVars) {
     const double DHAPc = SUCS_Con.T3Pc * KE501 / (1 + KE501);
 
     // UDP
-    const double UDPc = myVars->SUCS_Pool.UTc - SUCS_Con.UTPc - SUCS_Con.UDPGc;
-    const double ADPc = myVars->SUCS_Pool.ATc - SUCS_Con.ATPc;
+    const double UDPc = theVars->SUCS_Pool.UTc - SUCS_Con.UTPc - SUCS_Con.UDPGc;
+    const double ADPc = theVars->SUCS_Pool.ATc - SUCS_Con.ATPc;
 
     // OP
-    const double PiTc = myVars->SUCS_Pool.PTc - 2 * (SUCS_Con.FBPc + SUCS_Con.F26BPc) - (SUCS_Con.PGAc + SUCS_Con.T3Pc + SUCS_Con.HexPc + SUCS_Con.SUCP + SUCS_Con.UTPc + SUCS_Con.ATPc);
+    const double PiTc = theVars->SUCS_Pool.PTc - 2 * (SUCS_Con.FBPc + SUCS_Con.F26BPc) - (SUCS_Con.PGAc + SUCS_Con.T3Pc + SUCS_Con.HexPc + SUCS_Con.SUCP + SUCS_Con.UTPc + SUCS_Con.ATPc);
     const double Pic = (pow((pow(KE61, 2) + 4 * KE61 * PiTc), 0.5) - KE61) / 2;
     const double OPOPc = PiTc - Pic;
 
@@ -62,72 +62,72 @@ void SUCS::SUCS_Rate(double t, SUCSCon &SUCS_Con, Variables *myVars) {
     const double temp57 = SUCS_Con.SUCP + Km571 * (1 + SUCS_Con.SUC / Ki572);
     const double temp58 = SUCS_Con.F26BPc + Km581 * (1 + F6Pc / KI581) * (1 + SUCS_Con.FBPc / 0.08);
 
-    Km591 = 5 * myVars->SUCRatio[60];
-    Km593 = 0.55 * myVars->SUCRatio[61];
+    Km591 = 5 * theVars->SUCRatio[60];
+    Km593 = 0.55 * theVars->SUCRatio[61];
     const double temp59 = (F6Pc + Km593) * (SUCS_Con.ATPc + Km591 * (1 + ADPc / KI591));// This is the orginal equation
 
-    const double Km_in = 0.6 * myVars->SUCRatio[62];
+    const double Km_in = 0.6 * theVars->SUCRatio[62];
 
     double Kmpga_in;
     double Kmpga_u;
     double Vpga_u;
     double vpga_use;
     double vpga_in;
-    if (!myVars->PSPR_SUCS_com) {
+    if (!theVars->PSPR_SUCS_com) {
         vpga_in = 0;
         vpga_use = 0;
     } else {
-        if (myVars->PS2SUCSV32 == 0) {
+        if (theVars->PS2SUCSV32 == 0) {
             vpga_in = 0;
             vpga_use = 0;
     } else {
-            Vpga_u = 1.05 * myVars->SUCRatio[63];
-            Kmpga_u = 0.6 * myVars->SUCRatio[64];
-            Kmpga_in = 0.6 * myVars->SUCRatio[65];
+            Vpga_u = 1.05 * theVars->SUCRatio[63];
+            Kmpga_u = 0.6 * theVars->SUCRatio[64];
+            Kmpga_in = 0.6 * theVars->SUCRatio[65];
             vpga_use = SUCS_Con.PGAc * Vpga_u / (SUCS_Con.PGAc + Kmpga_u);// WY201803
             vpga_in = Vpga_in * Pic / (Pic + Kmpga_in);// WY201803
         }
     }
 
 
-    if (t > myVars->SUCS_OLD_TIME) {
-        myVars->SUCS_TIME_N = myVars->SUCS_TIME_N + 1;
-        myVars->SUCS_OLD_TIME = t;
+    if (t > theVars->SUCS_OLD_TIME) {
+        theVars->SUCS_TIME_N = theVars->SUCS_TIME_N + 1;
+        theVars->SUCS_OLD_TIME = t;
     }
     ////////////////////////////////////////////////////////////////////////////
     // Assign table
     ////////////////////////////////////////////////////////////////////////////////
-    myVars->SUCS_Vel.v51 = V51 * (GAPc * DHAPc - SUCS_Con.FBPc / KE51) / temp51;//	DHAP+GAP --FBP
-    myVars->SUCS_Vel.v52 = V52 * (SUCS_Con.FBPc - F6Pc * Pic / KE52) / temp52;//	FBP --F6P + Pi
-    myVars->SUCS_Vel.v55 = V55 * (SUCS_Con.UTPc * G1Pc - SUCS_Con.UDPGc * OPOPc / KE55) / temp55;//	G1P+UTP --OPOP+UDPG
-    myVars->SUCS_Vel.v56 = V56 * (F6Pc * SUCS_Con.UDPGc - SUCS_Con.SUCP * UDPc / KE56) / temp56 * 2 * (SUCS_Con.HexPc / (SUCS_Con.HexPc + 2));//	UDPG+F6P--SUCP + UDP
-    myVars->SUCS_Vel.v57 = V57 * (SUCS_Con.SUCP - SUCS_Con.SUC * Pic / KE57) / temp57;//	SUCP--Pi + SUC
-    myVars->SUCS_Vel.v58 = V58 * SUCS_Con.F26BPc / (temp58 * (1 + Pic / KI582) * (1 + F6Pc / KI583));//	F26BP--F6P + Pi
-    myVars->SUCS_Vel.v59 = V59 * (SUCS_Con.ATPc * F6Pc - ADPc * SUCS_Con.F26BPc / KE59) / temp59;//	F6P + ATP --ADP + F26BP
-    myVars->SUCS_Vel.v60 = 0.;//	ATP+UDP --UTP + ADP
-    myVars->SUCS_Vel.v61 = 0.;//	POPO --2PO
-    myVars->SUCS_Vel.v62 = V62 * SUCS_Con.SUC / (SUCS_Con.SUC + Km621);//	SUC SINK
-    myVars->SUCS_Vel.vdhap_in = Vdhap_in * Pic / (Pic + Km_in);//	DHAP IN
-    myVars->SUCS_Vel.vgap_in = Vgap_in * Pic / (Pic + Km_in);//	GAP Export from chloroplast
-    myVars->SUCS_Vel.vpga_in = vpga_in;//	PGA export from chloroplast
-    myVars->SUCS_Vel.vpga_use = vpga_use;//	PGA utilisation in cytosol
-    myVars->SUCS_Vel.vatpf = 0.;//	ATP synthesis rate
+    theVars->SUCS_Vel.v51 = V51 * (GAPc * DHAPc - SUCS_Con.FBPc / KE51) / temp51;//	DHAP+GAP --FBP
+    theVars->SUCS_Vel.v52 = V52 * (SUCS_Con.FBPc - F6Pc * Pic / KE52) / temp52;//	FBP --F6P + Pi
+    theVars->SUCS_Vel.v55 = V55 * (SUCS_Con.UTPc * G1Pc - SUCS_Con.UDPGc * OPOPc / KE55) / temp55;//	G1P+UTP --OPOP+UDPG
+    theVars->SUCS_Vel.v56 = V56 * (F6Pc * SUCS_Con.UDPGc - SUCS_Con.SUCP * UDPc / KE56) / temp56 * 2 * (SUCS_Con.HexPc / (SUCS_Con.HexPc + 2));//	UDPG+F6P--SUCP + UDP
+    theVars->SUCS_Vel.v57 = V57 * (SUCS_Con.SUCP - SUCS_Con.SUC * Pic / KE57) / temp57;//	SUCP--Pi + SUC
+    theVars->SUCS_Vel.v58 = V58 * SUCS_Con.F26BPc / (temp58 * (1 + Pic / KI582) * (1 + F6Pc / KI583));//	F26BP--F6P + Pi
+    theVars->SUCS_Vel.v59 = V59 * (SUCS_Con.ATPc * F6Pc - ADPc * SUCS_Con.F26BPc / KE59) / temp59;//	F6P + ATP --ADP + F26BP
+    theVars->SUCS_Vel.v60 = 0.;//	ATP+UDP --UTP + ADP
+    theVars->SUCS_Vel.v61 = 0.;//	POPO --2PO
+    theVars->SUCS_Vel.v62 = V62 * SUCS_Con.SUC / (SUCS_Con.SUC + Km621);//	SUC SINK
+    theVars->SUCS_Vel.vdhap_in = Vdhap_in * Pic / (Pic + Km_in);//	DHAP IN
+    theVars->SUCS_Vel.vgap_in = Vgap_in * Pic / (Pic + Km_in);//	GAP Export from chloroplast
+    theVars->SUCS_Vel.vpga_in = vpga_in;//	PGA export from chloroplast
+    theVars->SUCS_Vel.vpga_use = vpga_use;//	PGA utilisation in cytosol
+    theVars->SUCS_Vel.vatpf = 0.;//	ATP synthesis rate
 
-    if (myVars->record) {
-        myVars->SUCS_VEL.insert(myVars->SUCS_TIME_N - 1, t, myVars->SUCS_Vel);
-        myVars->SUCS2OUT.T3Pc = SUCS_Con.T3Pc;
-        myVars->SUCS2OUT.FBPc = SUCS_Con.FBPc;
-        myVars->SUCS2OUT.HexPc = SUCS_Con.HexPc;
-        myVars->SUCS2OUT.F26BPc = SUCS_Con.F26BPc;
-        myVars->SUCS2OUT.ATPc = SUCS_Con.ATPc;
-        myVars->SUCS2OUT.ADPc = ADPc;
-        myVars->SUCS2OUT.OPOPc = OPOPc;
-        myVars->SUCS2OUT.UDPGc = SUCS_Con.UDPGc;
-        myVars->SUCS2OUT.UTPc = SUCS_Con.UTPc;
-        myVars->SUCS2OUT.SUCP = SUCS_Con.SUCP;
-        myVars->SUCS2OUT.SUC = SUCS_Con.SUC;
-        myVars->SUCS2OUT.PGAc = SUCS_Con.PGAc;
+    if (theVars->record) {
+        theVars->SUCS_VEL.insert(theVars->SUCS_TIME_N - 1, t, theVars->SUCS_Vel);
+        theVars->SUCS2OUT.T3Pc = SUCS_Con.T3Pc;
+        theVars->SUCS2OUT.FBPc = SUCS_Con.FBPc;
+        theVars->SUCS2OUT.HexPc = SUCS_Con.HexPc;
+        theVars->SUCS2OUT.F26BPc = SUCS_Con.F26BPc;
+        theVars->SUCS2OUT.ATPc = SUCS_Con.ATPc;
+        theVars->SUCS2OUT.ADPc = ADPc;
+        theVars->SUCS2OUT.OPOPc = OPOPc;
+        theVars->SUCS2OUT.UDPGc = SUCS_Con.UDPGc;
+        theVars->SUCS2OUT.UTPc = SUCS_Con.UTPc;
+        theVars->SUCS2OUT.SUCP = SUCS_Con.SUCP;
+        theVars->SUCS2OUT.SUC = SUCS_Con.SUC;
+        theVars->SUCS2OUT.PGAc = SUCS_Con.PGAc;
     }
 
-    myVars->SUCS2PS_Pic = Pic;                // This is the original code.
+    theVars->SUCS2PS_Pic = Pic;                // This is the original code.
 }

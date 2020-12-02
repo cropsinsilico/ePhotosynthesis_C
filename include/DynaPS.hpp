@@ -70,12 +70,12 @@ public:
     XanCycleCon XanCycle_con;
 };
 
-DynaPSCon DynaPS_Init(Variables *myVars);
-arr DynaPSmb(double t, DynaPSCon &DynaPS_con, Variables *myVars);
+DynaPSCon DynaPS_Init(Variables *theVars);
+arr DynaPSmb(double t, DynaPSCon &DynaPS_con, Variables *theVars);
 class DynaPS {
 public:
-    DynaPS(Variables *myVars) { this->myVars = myVars; }
-    static Variables *myVars;
+    DynaPS(Variables *theVars) { this->theVars = theVars; }
+    static Variables *theVars;
     arr DynaPS_Drive(size_t ParaNum, double Ratio);
 
     static int DynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data);

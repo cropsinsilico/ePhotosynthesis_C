@@ -129,9 +129,9 @@ private:
 
 class RuACT {
 public:
-    static RuACTCon RuACT_Ini(Variables *myVars);
+    static RuACTCon RuACT_Ini(Variables *theVars);
 
-    static arr RuACT_Mb(double t, RuACTCon &RuACT_Con, Variables *myVars);
+    static arr RuACT_Mb(double t, RuACTCon &RuACT_Con, Variables *theVars);
 
-    static void RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *myVars);
+    static void RuACT_Rate(double t, RuACTCon &RuACT_Con, Variables *theVars);
 };

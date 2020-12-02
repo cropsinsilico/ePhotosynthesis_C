@@ -26,24 +26,24 @@
 
 #include "Variables.hpp"
 
-double IModelCom(Variables *myVars) {
-    myVars->RuACT_EPS_com = false;
+double IModelCom(Variables *theVars) {
+    theVars->RuACT_EPS_com = false;
 
-    myVars->BF_FI_com = false;
+    theVars->BF_FI_com = false;
 
-    myVars->PR_PS_com = false;
+    theVars->PR_PS_com = false;
 
-    myVars->FIBF_PSPR_com = false;
+    theVars->FIBF_PSPR_com = false;
 
-    myVars->RedoxReg_RA_com = false;
+    theVars->RedoxReg_RA_com = false;
 
-    myVars->XanCycle_BF_com = false;
+    theVars->XanCycle_BF_com = false;
 
-    myVars->RROEA_EPS_com = false;
+    theVars->RROEA_EPS_com = false;
 
-    myVars->PSPR_SUCS_com = false;
+    theVars->PSPR_SUCS_com = false;
 
-    myVars->EPS_SUCS_com = false;
+    theVars->EPS_SUCS_com = false;
 
     const double ModelComb = 1;
     return ModelComb;

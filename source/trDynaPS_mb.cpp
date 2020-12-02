@@ -35,19 +35,19 @@ int trDynaPS::trDynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_dat
     realtype *x = N_VGetArrayPointer(u);
     realtype *dxdt = N_VGetArrayPointer(u_dot);
 
-    myVars->trDynaPS2RedReg_cal = 0;
+    theVars->trDynaPS2RedReg_cal = 0;
 
     trDynaPSCon trDynaPS_con(x);
 
-    Condition(t, myVars);
+    Condition(t, theVars);
     const double light = 1.0;
-    myVars->FI_Param[0] = light;
-    myVars->BF_Param[0] = light;
+    theVars->FI_Param[0] = light;
+    theVars->BF_Param[0] = light;
 
-    myVars->RROEA_Param[1] = 1;
-    arr RROEA_DYDT = RROEA::RROEA_Mb(t, trDynaPS_con.RROEA_con, myVars);
+    theVars->RROEA_Param[1] = 1;
+    arr RROEA_DYDT = RROEA::RROEA_Mb(t, trDynaPS_con.RROEA_con, theVars);
 
-    arr DynaPS_DYDT = DynaPSmb(t, trDynaPS_con.DynaPS_con, myVars);
+    arr DynaPS_DYDT = DynaPSmb(t, trDynaPS_con.DynaPS_con, theVars);
 
     for (size_t index = 0; index < 96; index++)
         dxdt[index] = DynaPS_DYDT[index];
@@ -58,12 +58,12 @@ int trDynaPS::trDynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_dat
 
 
     //////WY201804
-    const double Temp = RROEA_DYDT[8] - myVars->RROEA_Vel.ve2Fd + myVars->BF_Vel.Vbf16 / myVars->AVR + myVars->RROEA_Vel.veFd2Calvin - myVars->BF_Vel.vbfn2 - myVars->BF_Vel.vcet / myVars->AVR;
+    const double Temp = RROEA_DYDT[8] - theVars->RROEA_Vel.ve2Fd + theVars->BF_Vel.Vbf16 / theVars->AVR + theVars->RROEA_Vel.veFd2Calvin - theVars->BF_Vel.vbfn2 - theVars->BF_Vel.vcet / theVars->AVR;
 
-    dxdt[118] = Temp * myVars->AVR;
-    dxdt[23] = Temp * myVars->AVR;
+    dxdt[118] = Temp * theVars->AVR;
+    dxdt[23] = Temp * theVars->AVR;
 
-    GenOut(t, myVars);
+    GenOut(t, theVars);
 
     return 0;
 }

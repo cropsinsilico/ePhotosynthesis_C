@@ -109,6 +109,6 @@ public:
     PRCon PR_con;
 };
 
-PS_PRCon PS_PRIni(Variables *myVars);
+PS_PRCon PS_PRIni(Variables *theVars);
 
-arr PS_PRmb(double t, PS_PRCon &PS_PRs, Variables *myVars);
+arr PS_PRmb(double t, PS_PRCon &PS_PRs, Variables *theVars);

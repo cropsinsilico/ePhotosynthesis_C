@@ -175,12 +175,12 @@ public:
 
 class PS{
 public:
-    static arr PSmb(double t, PSCon &PSs, arr &Param, Variables *myVars);
-    static PSCon PSI(Variables *myVars);
+    static arr PSmb(double t, PSCon &PSs, arr &Param, Variables *theVars);
+    static PSCon PSI(Variables *theVars);
 
-    static PSCon PSInitial(Variables *myVars);
+    static PSCon PSInitial(Variables *theVars);
 
-    static void PSRate(double t, PSCon &PSs, arr &Param, Variables *myVars);
+    static void PSRate(double t, PSCon &PSs, arr &Param, Variables *theVars);
 private:
     static double KA231;
     static double KE11;

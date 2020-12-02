@@ -75,11 +75,11 @@ public:
 
 class RedoxReg{
 public:
-    static RedoxRegCon RedoxReg_Ini(Variables *myVars);
+    static RedoxRegCon RedoxReg_Ini(Variables *theVars);
 
-    static void RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, Variables *myVars);
+    static void RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, Variables *theVars);
 
-    static arr RedoxReg_mb(double t, RedoxRegCon &RedoxReg_Con, Variables *myVars);
+    static arr RedoxReg_mb(double t, RedoxRegCon &RedoxReg_Con, Variables *theVars);
 
     static int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data);
 private:

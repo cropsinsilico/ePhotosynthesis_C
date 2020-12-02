@@ -27,6 +27,7 @@
  *
  **********************************************************************************************************************************************/
 
+// Class to hold the results of the XanCycleRate calculations
 class XanCycleVel {
 public:
     XanCycleVel() {}
@@ -48,6 +49,7 @@ public:
     double VABAdg = 0.;  //  The rate of ABA degradation
 };
 
+// Class to hold the inputs to XanCycle_mb
 class XanCycleCon {
 public:
     XanCycleCon() {}
@@ -87,13 +89,14 @@ private:
     size_t count = 4;
 };
 
+// class for XanCycle code and internal variables
 class XanCycle {
 public:
-    static XanCycleCon XanCycle_Ini(Variables *myVars);
+    static XanCycleCon XanCycle_Ini(Variables *theVars);
 
-    static arr XanCycle_Mb(double t, XanCycleCon &XanCycle_Con, Variables *myVars);
+    static arr XanCycle_Mb(double t, XanCycleCon &XanCycle_Con, Variables *theVars);
 
-    static void XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *myVars);
+    static void XanCycle_Rate(double t, XanCycleCon &XanCycle_Con, Variables *theVars);
 private:
     static double XanCycle_kav;
     static double XanCycle_kaz;

@@ -61,6 +61,6 @@ public:
     FIBFCon FIBF_con;
 };
 
-EPSCon EPS_Ini(Variables *myVars);
+EPSCon EPS_Ini(Variables *theVars);
 
-arr EPS_mb(double t, EPSCon &EPS_Con, Variables *myVars);
+arr EPS_mb(double t, EPSCon &EPS_Con, Variables *theVars);

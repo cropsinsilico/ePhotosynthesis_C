@@ -27,20 +27,20 @@
 #include "globals.hpp"
 #include "Variables.hpp"
 
-arr RuACT::RuACT_Mb(double t, RuACTCon &RuACT_Con, Variables *myVars) {
-    Condition(t, myVars);
-    const double light = myVars->GLight;
+arr RuACT::RuACT_Mb(double t, RuACTCon &RuACT_Con, Variables *theVars) {
+    Condition(t, theVars);
+    const double light = theVars->GLight;
 
-    myVars->RuACT_Param[0] = light;
+    theVars->RuACT_Param[0] = light;
 
-    RuACT_Rate(t, RuACT_Con, myVars);
+    RuACT_Rate(t, RuACT_Con, theVars);
 
-    const double v1 = myVars->RuACT_Vel.v1;	//	v1	The rate of ER activation due to Rubisco activase
-    const double vn1 = myVars->RuACT_Vel.vn1;	//	vn1	The rate of E inactiavtion due to binding of RuBP
-    const double v7 = myVars->RuACT_Vel.v7;	//	v7	The rate of formation of ECMR from ECM by binding of RuBP
-    const double vn7 = myVars->RuACT_Vel.vn7;	//	vn7	The rate of actiavtion of ECMR by Rubisco activase
-    const double v6_1 = myVars->RuACT_Vel.v6_1;	//	v6_1	The rate of RuBP carboxylation
-    const double v6_2 = myVars->RuACT_Vel.v6_2;	//	v6_2	The rate of RuBP oxygenation
+    const double v1 = theVars->RuACT_Vel.v1;	//	v1	The rate of ER activation due to Rubisco activase
+    const double vn1 = theVars->RuACT_Vel.vn1;	//	vn1	The rate of E inactiavtion due to binding of RuBP
+    const double v7 = theVars->RuACT_Vel.v7;	//	v7	The rate of formation of ECMR from ECM by binding of RuBP
+    const double vn7 = theVars->RuACT_Vel.vn7;	//	vn7	The rate of actiavtion of ECMR by Rubisco activase
+    const double v6_1 = theVars->RuACT_Vel.v6_1;	//	v6_1	The rate of RuBP carboxylation
+    const double v6_2 = theVars->RuACT_Vel.v6_2;	//	v6_2	The rate of RuBP oxygenation
 
     arr RuACT_mb = zeros(4);
     RuACT_mb[0] = vn1 - v1;//	ER

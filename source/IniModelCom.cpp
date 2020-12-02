@@ -26,26 +26,26 @@
 
 #include "Variables.hpp"
 
-void IniModelCom(Variables *myVars) {
+void IniModelCom(Variables *theVars) {
 
-    myVars->RuACT_EPS_com = false;
+    theVars->RuACT_EPS_com = false;
 
     // The combination of BF and FI model
-    myVars->BF_FI_com = false;
+    theVars->BF_FI_com = false;
 
     // This is a variable indicating whether the PR model is actually need to be combined with PS or not. If 1 then means combined; 0 means not.
-    myVars->PR_PS_com = false;
+    theVars->PR_PS_com = false;
 
     // 1 means that the overall EPS model is used. 0 means partial model of FIBF is used.
-    myVars->FIBF_PSPR_com = false;
+    theVars->FIBF_PSPR_com = false;
 
-    myVars->RedoxReg_RA_com = false;
+    theVars->RedoxReg_RA_com = false;
 
-    myVars->XanCycle_BF_com = false;
+    theVars->XanCycle_BF_com = false;
 
-    myVars->RROEA_EPS_com = false;
+    theVars->RROEA_EPS_com = false;
 
-    myVars->PSPR_SUCS_com = false;
+    theVars->PSPR_SUCS_com = false;
 
-    myVars->EPS_SUCS_com = false;
+    theVars->EPS_SUCS_com = false;
 }

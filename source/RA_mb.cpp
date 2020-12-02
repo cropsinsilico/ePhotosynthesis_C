@@ -26,9 +26,9 @@
 
 #include "Variables.hpp"
 
-arr RA_mb(double t, RACon &RA_Con, Variables *myVars) {
-    arr EPS_DYDT = EPS_mb(t, RA_Con.EPS_con, myVars);
-    arr RuACT_DYDT = RuACT::RuACT_Mb(t, RA_Con.RuACT_con, myVars);
+arr RA_mb(double t, RACon &RA_Con, Variables *theVars) {
+    arr EPS_DYDT = EPS_mb(t, RA_Con.EPS_con, theVars);
+    arr RuACT_DYDT = RuACT::RuACT_Mb(t, RA_Con.RuACT_con, theVars);
 
     arr RA_DYDT = zeros(92);
 
@@ -39,15 +39,15 @@ arr RA_mb(double t, RACon &RA_Con, Variables *myVars) {
     for (size_t m = 0; m < 4; m++)
         RA_DYDT[m + 88] = RuACT_DYDT[m];
 
-    const double DYDT_RuBP = myVars->RuACT_Vel.v1 + myVars->PS_Vel.v13 - myVars->RuACT_Vel.vn1 + myVars->RuACT_Vel.vn7 - myVars->RuACT_Vel.v7;
+    const double DYDT_RuBP = theVars->RuACT_Vel.v1 + theVars->PS_Vel.v13 - theVars->RuACT_Vel.vn1 + theVars->RuACT_Vel.vn7 - theVars->RuACT_Vel.v7;
     RA_DYDT[52] = DYDT_RuBP;
     RA_DYDT[91] = DYDT_RuBP;
 
-    const double DYDT_PGA = EPS_DYDT[53] - 2 * myVars->PS_Vel.v1 + 2 * myVars->RuACT_Vel.v6_1 - myVars->PR_Vel.v111 + myVars->RuACT_Vel.v6_2;// Originally it is pspr(2), now use EPS_DYDT[53].
+    const double DYDT_PGA = EPS_DYDT[53] - 2 * theVars->PS_Vel.v1 + 2 * theVars->RuACT_Vel.v6_1 - theVars->PR_Vel.v111 + theVars->RuACT_Vel.v6_2;// Originally it is pspr(2), now use EPS_DYDT[53].
     RA_DYDT[53] = DYDT_PGA;
 
 
-    const double DYDT_PGCA = EPS_DYDT[68] - myVars->PR_Vel.v111 + myVars->RuACT_Vel.v6_2;
+    const double DYDT_PGCA = EPS_DYDT[68] - theVars->PR_Vel.v111 + theVars->RuACT_Vel.v6_2;
     RA_DYDT[68] = DYDT_PGCA;
     return RA_DYDT;
 }

@@ -70,22 +70,22 @@ int main(int argc, const char* argv[]) {
 
     readFile(result["evn"].as<std::string>(), inputs);
     readFile(result["atpcost"].as<std::string>(), inputs);
-    Variables myVars;
-    myVars.TestCa = static_cast<double>(stof(inputs.at("CO2"), nullptr));
-    myVars.TestLi = static_cast<double>(stof(inputs.at("PAR"), nullptr));
-    myVars.TestSucPath = stoi(inputs.at("SucPath"), nullptr);
-    myVars.TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
-    myVars.record = record;
-    trDynaPS *myDyna = new trDynaPS(&myVars);
+    Variables theVars;
+    theVars.TestCa = static_cast<double>(stof(inputs.at("CO2"), nullptr));
+    theVars.TestLi = static_cast<double>(stof(inputs.at("PAR"), nullptr));
+    theVars.TestSucPath = stoi(inputs.at("SucPath"), nullptr);
+    theVars.TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
+    theVars.record = record;
+    trDynaPS *myDyna = new trDynaPS(&theVars);
     std::vector<double> ResultRate = myDyna->trDynaPS_Drive(1, 1);
 
     std::ofstream outfile("output.data");
-    outfile << myVars.TestLi << ",  " << ResultRate[0] << ",  ";
+    outfile << theVars.TestLi << ",  " << ResultRate[0] << ",  ";
     outfile << ResultRate[1] << ",  " << ResultRate[2] << ",  " << ResultRate[3] << ",  ";
     outfile << ResultRate[4] << ",  " << ResultRate[5] << ",  " << ResultRate[6] << std::endl;
     outfile.close();
     //800,23.8514,8.04985,0.00395613,1.5763,2.58119,4.16627,8.04976
-    std::cout << 800-myVars.TestLi << ",  " << 23.8514-ResultRate[0] << ",  ";
+    std::cout << 800-theVars.TestLi << ",  " << 23.8514-ResultRate[0] << ",  ";
     std::cout << 8.04985-ResultRate[1] << ",  " << 0.00395613-ResultRate[2] << ",  " << 1.5763-ResultRate[3] << ",  ";
     std::cout << 2.58119-ResultRate[4] << ",  " << 4.16627-ResultRate[5] << ",  " << 8.04976-ResultRate[6] << std::endl;
 

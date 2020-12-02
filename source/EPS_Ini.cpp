@@ -27,38 +27,38 @@
 #include "Variables.hpp"
 #include "EPS.hpp"
 
-EPSCon EPS_Ini(Variables *myVars) {
-    FIBF_Ini(myVars);
-    FICon FI_Con = FI::FI_Ini(myVars);
-    BFCon BF_con = BF::BF_Ini(myVars);
+EPSCon EPS_Ini(Variables *theVars) {
+    FIBF_Ini(theVars);
+    FICon FI_Con = FI::FI_Ini(theVars);
+    BFCon BF_con = BF::BF_Ini(theVars);
     FIBFCon FIBF_con(BF_con, FI_Con);
     //// Step 1 Get the initialization of the variables for BF
 
-    myVars->BF_OLD_TIME = 0;
-    myVars->BF_TIME_N = 1;
+    theVars->BF_OLD_TIME = 0;
+    theVars->BF_TIME_N = 1;
 
     //// Get the initialization of the variables for FI
 
-    myVars->FI_OLD_TIME = 0;
-    myVars->FI_TIME_N = 1;
-    myVars->FI_Pool.PQT = myVars->FIBF_Pool.PQT;
-    myVars->BF_Pool.k_r1 = myVars->FIBF_Pool.PQT;
+    theVars->FI_OLD_TIME = 0;
+    theVars->FI_TIME_N = 1;
+    theVars->FI_Pool.PQT = theVars->FIBF_Pool.PQT;
+    theVars->BF_Pool.k_r1 = theVars->FIBF_Pool.PQT;
 
     // Second, try to get the iniitalzation files for the PSPR model
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //   Global variables used for obtaining flux and concentration data //
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    myVars->PS_OLD_TIME = 0;
-    myVars->PS_TIME_N = 1;
-    myVars->PR_OLD_TIME = 0;
-    myVars->PR_TIME_N = 1;
+    theVars->PS_OLD_TIME = 0;
+    theVars->PS_TIME_N = 1;
+    theVars->PR_OLD_TIME = 0;
+    theVars->PR_TIME_N = 1;
 
     ////////////////////////////////////////////////
     //   Initialation step //
     ////////////////////////////////////////////////
 
-    CMCon CM_con = CMInit(myVars);
+    CMCon CM_con = CMInit(theVars);
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //   Use the initialized variables to construct variables that will be transfered to the Drive file. ////////////
     // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

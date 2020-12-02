@@ -26,12 +26,12 @@
 
 #include "Variables.hpp"
 
-RACon RA_Ini(Variables *myVars) {
-    EPSCon EPS_con = EPS_Ini(myVars);
-    RuACTCon RuACT_con = RuACT::RuACT_Ini(myVars);
+RACon RA_Ini(Variables *theVars) {
+    EPSCon EPS_con = EPS_Ini(theVars);
+    RuACTCon RuACT_con = RuACT::RuACT_Ini(theVars);
 
-    myVars->RuACT_OLD_TIME = 0;
-    myVars->RuACT_TIME_N = 1;
+    theVars->RuACT_OLD_TIME = 0;
+    theVars->RuACT_TIME_N = 1;
 
     // Now get the combined total concentration of different concentration variables.
     RACon RA_con(EPS_con, RuACT_con);

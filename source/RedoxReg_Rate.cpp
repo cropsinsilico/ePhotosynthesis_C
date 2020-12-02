@@ -34,21 +34,21 @@
 #define ONE    RCONST(1.0)
 #define ZERO   RCONST(0.0)
 
-void RedoxReg::RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, Variables *myVars) {
-    const double Thio = myVars->ThioT - RedoxReg_Con.Thion;
+void RedoxReg::RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, Variables *theVars) {
+    const double Thio = theVars->ThioT - RedoxReg_Con.Thion;
 
-    myVars->RedoxReg_MP[0][2] = RedoxReg_Con.Thion / myVars->ThioT;
+    theVars->RedoxReg_MP[0][2] = RedoxReg_Con.Thion / theVars->ThioT;
 
-    double TEMP = myVars->RedoxReg_MP[0][2];
+    double TEMP = theVars->RedoxReg_MP[0][2];
 
-    if (myVars->RROEA_EPS_com)
+    if (theVars->RROEA_EPS_com)
         TEMP = 0.5;
 
-    if (myVars->trDynaPS2RedReg_cal == 1) {
+    if (theVars->trDynaPS2RedReg_cal == 1) {
         UserData *data = alloc_user_data();
         data->coeffs.resize(2);
 
-        data->coeffs[0] = myVars->RedoxReg_MP[0][1] - 0.03 * log10(TEMP / (1 - TEMP));
+        data->coeffs[0] = theVars->RedoxReg_MP[0][1] - 0.03 * log10(TEMP / (1 - TEMP));
 
         N_Vector y, constraints, scaling;
         y = N_VNew_Serial(1);
@@ -67,8 +67,8 @@ void RedoxReg::RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, Variables *myV
 
         for (size_t index = 1; index < 5; index++) {
 
-            NV_Ith_S(y, 0) = myVars->RedoxReg_MP[index][2];
-            data->coeffs[1] = myVars->RedoxReg_MP[index][1];
+            NV_Ith_S(y, 0) = theVars->RedoxReg_MP[index][2];
+            data->coeffs[1] = theVars->RedoxReg_MP[index][1];
             KINSetUserData(kmem, data);
             KINSetConstraints(kmem, constraints);
             KINSetFuncNormTol(kmem, abstol);
@@ -77,17 +77,17 @@ void RedoxReg::RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, Variables *myV
             KINSol(kmem, y, KIN_LINESEARCH, scaling, scaling);
             realtype *retvals = N_VGetArrayPointer(y);
             //pr = fsolve(@RedoxReg_FPercent, RedPercent, optimset('Display', 'off'), RedP, MPE);
-            myVars->RedoxReg_MP[index][2] = retvals[0];
+            theVars->RedoxReg_MP[index][2] = retvals[0];
 
 
-            if (myVars->RedoxReg_MP[index][0] == 6) {
-                myVars->Redox2PS_V6 = RedoxReg_VMAX6 * myVars->RedoxReg_MP[index][2];
-            } else if (myVars->RedoxReg_MP[index][0] == 9) {
-                myVars->Redox2PS_V9 = RedoxReg_VMAX9 * myVars->RedoxReg_MP[index][2];
-            } else if (myVars->RedoxReg_MP[index][0] == 13) {
-                myVars->Redox2PS_V13 = RedoxReg_VMAX13 * myVars->RedoxReg_MP[index][2];
-            } else if (myVars->RedoxReg_MP[index][0] == 16) {
-                myVars->Redox2PS_V16 = RedoxReg_VMAX16 * myVars->RedoxReg_MP[index][2];
+            if (theVars->RedoxReg_MP[index][0] == 6) {
+                theVars->Redox2PS_V6 = RedoxReg_VMAX6 * theVars->RedoxReg_MP[index][2];
+            } else if (theVars->RedoxReg_MP[index][0] == 9) {
+                theVars->Redox2PS_V9 = RedoxReg_VMAX9 * theVars->RedoxReg_MP[index][2];
+            } else if (theVars->RedoxReg_MP[index][0] == 13) {
+                theVars->Redox2PS_V13 = RedoxReg_VMAX13 * theVars->RedoxReg_MP[index][2];
+            } else if (theVars->RedoxReg_MP[index][0] == 16) {
+                theVars->Redox2PS_V16 = RedoxReg_VMAX16 * theVars->RedoxReg_MP[index][2];
             }
         }
         N_VDestroy(y);
@@ -97,17 +97,17 @@ void RedoxReg::RedoxReg_Rate(double t, RedoxRegCon &RedoxReg_Con, Variables *myV
         SUNLinSolFree(LS);
     }
 
-    myVars->RedoxReg_Vel.Vred = RedoxReg_Con.RA_con.EPS_con.FIBF_con.BF_con.Fdn * myVars->Fd_Thio_ET * Thio / myVars->ThioT;
-    myVars->RedoxReg_Vel.Vox = RedoxReg_Con.Thion * myVars->Thio_Oxidation;
+    theVars->RedoxReg_Vel.Vred = RedoxReg_Con.RA_con.EPS_con.FIBF_con.BF_con.Fdn * theVars->Fd_Thio_ET * Thio / theVars->ThioT;
+    theVars->RedoxReg_Vel.Vox = RedoxReg_Con.Thion * theVars->Thio_Oxidation;
 
-    if (myVars->RedoxReg_TIME_N == 0)
-        myVars->RedoxReg_TIME_N = 1;
+    if (theVars->RedoxReg_TIME_N == 0)
+        theVars->RedoxReg_TIME_N = 1;
 
-    if (t > myVars->RedoxReg_TIME_N) {
-        myVars->RedoxReg_TIME_N = myVars->RedoxReg_TIME_N + 1;
-        myVars->RedoxReg_OLD_TIME = t;
+    if (t > theVars->RedoxReg_TIME_N) {
+        theVars->RedoxReg_TIME_N = theVars->RedoxReg_TIME_N + 1;
+        theVars->RedoxReg_OLD_TIME = t;
     }
 
-    if (myVars->record)
-        myVars->RedoxReg_VEL.insert(myVars->RedoxReg_TIME_N - 1, t, myVars->RedoxReg_Vel);
+    if (theVars->record)
+        theVars->RedoxReg_VEL.insert(theVars->RedoxReg_TIME_N - 1, t, theVars->RedoxReg_Vel);
 }

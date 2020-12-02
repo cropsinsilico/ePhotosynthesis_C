@@ -27,11 +27,11 @@
 #include "globals.hpp"
 #include "CM.hpp"
 
-CMCon CMInit(Variables *myVars) {
+CMCon CMInit(Variables *theVars) {
 
-    PS_PRCon PS_PR_con = PS_PRIni(myVars);
+    PS_PRCon PS_PR_con = PS_PRIni(theVars);
 
-    SUCSCon SUCS_Con = SUCS::SUCS_Ini(myVars);
+    SUCSCon SUCS_Con = SUCS::SUCS_Ini(theVars);
 
     CMCon CMs(PS_PR_con, SUCS_Con);
     return CMs;

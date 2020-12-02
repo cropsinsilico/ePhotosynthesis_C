@@ -32,41 +32,41 @@ double RedoxReg::RedoxReg_VMAX16 = 0.;
 double RedoxReg::RedoxReg_VMAX6 = 0.;
 double RedoxReg::RedoxReg_VMAX9 = 0.;
 
-RedoxRegCon RedoxReg::RedoxReg_Ini(Variables *myVars) {
-    myVars->RedoxReg_OLD_TIME = 0;
-    myVars->RedoxReg_TIME_N = 1;
-    RACon RA_con = RA_Ini(myVars);
+RedoxRegCon RedoxReg::RedoxReg_Ini(Variables *theVars) {
+    theVars->RedoxReg_OLD_TIME = 0;
+    theVars->RedoxReg_TIME_N = 1;
+    RACon RA_con = RA_Ini(theVars);
 
     const double Thion = 0.25;     // This is a wild guess
     RedoxRegCon RedoxReg_con(RA_con, Thion);
 
-    RedoxReg_VMAX6 = myVars->V6;
-    RedoxReg_VMAX9 = myVars->V9;
-    RedoxReg_VMAX13 = myVars->V13;
-    RedoxReg_VMAX16 = myVars->V16;
+    RedoxReg_VMAX6 = theVars->V6;
+    RedoxReg_VMAX9 = theVars->V9;
+    RedoxReg_VMAX13 = theVars->V13;
+    RedoxReg_VMAX16 = theVars->V16;
 
     for (int i = 0; i < 5; i++)
-        myVars->RedoxReg_MP.push_back(zeros(3));
-    myVars->RedoxReg_MP[0][0] = 1000;
-    myVars->RedoxReg_MP[0][1] = - 0.3;
-    myVars->RedoxReg_MP[0][2] = 0.5;
+        theVars->RedoxReg_MP.push_back(zeros(3));
+    theVars->RedoxReg_MP[0][0] = 1000;
+    theVars->RedoxReg_MP[0][1] = - 0.3;
+    theVars->RedoxReg_MP[0][2] = 0.5;
 
-    myVars->RedoxReg_MP[1][0] = 6;             // FBPase
-    myVars->RedoxReg_MP[1][1] = - 0.305;
-    myVars->RedoxReg_MP[1][2] = 0.5;
+    theVars->RedoxReg_MP[1][0] = 6;             // FBPase
+    theVars->RedoxReg_MP[1][1] = - 0.305;
+    theVars->RedoxReg_MP[1][2] = 0.5;
 
-    myVars->RedoxReg_MP[2][0] = 9;             // SBPase
-    myVars->RedoxReg_MP[2][1] = - 0.3;
-    myVars->RedoxReg_MP[2][2] = 0.5;
+    theVars->RedoxReg_MP[2][0] = 9;             // SBPase
+    theVars->RedoxReg_MP[2][1] = - 0.3;
+    theVars->RedoxReg_MP[2][2] = 0.5;
 
-    myVars->RedoxReg_MP[3][0] = 13;            // PRK
-    myVars->RedoxReg_MP[3][1] = - 0.295;
-    myVars->RedoxReg_MP[3][2] = 0.5;
+    theVars->RedoxReg_MP[3][0] = 13;            // PRK
+    theVars->RedoxReg_MP[3][1] = - 0.295;
+    theVars->RedoxReg_MP[3][2] = 0.5;
 
-    myVars->RedoxReg_MP[4][0] = 16;            // ATPase
-    myVars->RedoxReg_MP[4][1] = - 0.28;
-    myVars->RedoxReg_MP[4][2] = 0.5;
+    theVars->RedoxReg_MP[4][0] = 16;            // ATPase
+    theVars->RedoxReg_MP[4][1] = - 0.28;
+    theVars->RedoxReg_MP[4][2] = 0.5;
 
-    myVars->BF2RedoxReg_Fdt = myVars->BF_Pool.kU_f;
+    theVars->BF2RedoxReg_Fdt = theVars->BF_Pool.kU_f;
     return RedoxReg_con;
 }

@@ -82,14 +82,14 @@ public:
 struct Variables;
 class CM {
 public:
-    CM(Variables *myVars) {
-        this->myVars = myVars;
+    CM(Variables *theVars) {
+        this->theVars = theVars;
     }
-    static Variables *myVars;
+    static Variables *theVars;
     double CM_Drive2(double pop, double currentPop);
     CMCon CM_Ini();
     static int CM_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
 };
 
-CMCon CMInit(Variables *myVars);
-arr CM_Mb(double t, CMCon &CM_con, Variables *myVars);
+CMCon CMInit(Variables *theVars);
+arr CM_Mb(double t, CMCon &CM_con, Variables *theVars);

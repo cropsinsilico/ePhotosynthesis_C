@@ -61,6 +61,6 @@ public:
     EPSCon EPS_con;
 };
 
-RACon RA_Ini(Variables *myVars);
+RACon RA_Ini(Variables *theVars);
 
-arr RA_mb(double t, RACon &RA_Con, Variables *myVars);
+arr RA_mb(double t, RACon &RA_Con, Variables *theVars);

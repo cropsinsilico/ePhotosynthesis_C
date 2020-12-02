@@ -28,6 +28,6 @@
 
 #include "definitions.hpp"
 
-arr ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, double Light, Variables *myVars);
+arr ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, double Light, Variables *theVars);
 
-void ssPSIni(double t, Variables *myVars);
+void ssPSIni(double t, Variables *theVars);

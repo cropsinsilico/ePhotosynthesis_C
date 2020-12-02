@@ -28,9 +28,9 @@
 #include "trDynaPS.hpp"
 
 trDynaPSCon trDynaPS::trDynaPS_Ini() {
-    DynaPSCon DynaPS_con = DynaPS_Init(myVars);
+    DynaPSCon DynaPS_con = DynaPS_Init(theVars);
 
-    RROEACon RROEA_con = RROEA::RROEA_Ini(myVars);
+    RROEACon RROEA_con = RROEA::RROEA_Ini(theVars);
 
     trDynaPSCon trDynaPS_Con(DynaPS_con, RROEA_con);
     return trDynaPS_Con;
