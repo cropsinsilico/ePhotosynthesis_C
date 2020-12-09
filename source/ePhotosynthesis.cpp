@@ -55,8 +55,8 @@ int main(int argc, const char* argv[]) {
     options.show_positional_help();
     options.add_options()
             ("r,record", "Record output values for all steps (this can significantly slow the program)", cxxopts::value<bool>(record)->default_value("false"))
-            ("e,evn", "The InputEvn.txt file", cxxopts::value<std::string>()->default_value("/home/friedel/crops_in_silico/ODE-FBA/ePhotosynthesis/C++/InputEvn.txt"))
-            ("a,atpcost", "The InputATPCost.txt file", cxxopts::value<std::string>()->default_value("/home/friedel/crops_in_silico/ODE-FBA/ePhotosynthesis/C++/InputATPCost.txt"))
+            ("e,evn", "The InputEvn.txt file", cxxopts::value<std::string>()->default_value("InputEvn.txt"))
+            ("a,atpcost", "The InputATPCost.txt file", cxxopts::value<std::string>()->default_value("InputATPCost.txt"))
             ("h,help", "Produce help message")
             ;
 
@@ -85,9 +85,9 @@ int main(int argc, const char* argv[]) {
     outfile << ResultRate[4] << ",  " << ResultRate[5] << ",  " << ResultRate[6] << std::endl;
     outfile.close();
     //800,23.8514,8.04985,0.00395613,1.5763,2.58119,4.16627,8.04976
-    std::cout << 800-theVars->TestLi << ",  " << 23.8514-ResultRate[0] << ",  ";
-    std::cout << 8.04985-ResultRate[1] << ",  " << 0.00395613-ResultRate[2] << ",  " << 1.5763-ResultRate[3] << ",  ";
-    std::cout << 2.58119-ResultRate[4] << ",  " << 4.16627-ResultRate[5] << ",  " << 8.04976-ResultRate[6] << std::endl;
+    //std::cout << 800-theVars->TestLi << ",  " << 23.8514-ResultRate[0] << ",  ";
+    //std::cout << 8.04985-ResultRate[1] << ",  " << 0.00395613-ResultRate[2] << ",  " << 1.5763-ResultRate[3] << ",  ";
+    //std::cout << 2.58119-ResultRate[4] << ",  " << 4.16627-ResultRate[5] << ",  " << 8.04976-ResultRate[6] << std::endl;
     if (theVars != nullptr) {
         myDyna->theVars = nullptr;
         delete theVars;
