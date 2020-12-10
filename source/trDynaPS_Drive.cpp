@@ -117,7 +117,7 @@ arr trDynaPS::trDynaPS_Drive(size_t ParaNum, double Ratio) {
     if (flag != 0)
         std::cout << "FAIL" << std::endl;
 
-    realtype end_time = 250;
+    realtype end_time = 5000;
     realtype step_length = 1.;
     realtype t = 0;
 
