@@ -63,7 +63,7 @@ int main(int argc, const char* argv[]) {
             ("e,evn", "The InputEvn.txt file", cxxopts::value<std::string>()->default_value("InputEvn.txt"))
             ("a,atpcost", "The InputATPCost.txt file", cxxopts::value<std::string>()->default_value("InputATPCost.txt"))
             ("b,begintime", "The starting time for the calculations, default is 0.0", cxxopts::value<double>(starttime)->default_value("0.0"))
-            ("s,stoptime", "The time to stop calculations, default is 250", cxxopts::value<double>(stoptime)->default_value("250.0"))
+            ("s,stoptime", "The time to stop calculations, default is 250", cxxopts::value<double>(stoptime)->default_value("5000.0"))
             ("z,stepsize", "The step size to use in the calculations, default is 1.0", cxxopts::value<double>(stepsize)->default_value("1.0"))
             ("h,help", "Produce help message")
             ;
