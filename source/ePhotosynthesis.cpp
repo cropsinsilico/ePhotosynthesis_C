@@ -41,6 +41,10 @@ void readFile(const std::string &filename, std::map<std::string, std::string> &m
     std::vector<std::string> tempVec;
     std::string input;
     std::ifstream inputfile(filename);
+    if(inputfile.fail()) {
+        std::cout << "Could not open " << filename << " for reading" << std::endl;
+        exit(EXIT_FAILURE);
+    }
     while (getline(inputfile, input)) {
         if (input.empty())
             return;
