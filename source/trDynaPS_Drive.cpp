@@ -119,6 +119,7 @@ arr trDynaPS::trDynaPS_Drive(size_t ParaNum, double Ratio) {
 
     //realtype end_time = endtime;
     //realtype step_length = 1.;
+
     realtype t = 0;
 
     for (realtype tout = start + step; tout <= endtime; tout += step)
