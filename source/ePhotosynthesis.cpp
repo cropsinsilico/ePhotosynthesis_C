@@ -57,10 +57,14 @@ int main(int argc, const char* argv[]) {
     bool record = false;
     cxxopts::Options options("ePhotosynthesis", "C++ implementation of the matlab original");
     options.show_positional_help();
+    double stoptime, starttime, stepsize;
     options.add_options()
             ("r,record", "Record output values for all steps (this can significantly slow the program)", cxxopts::value<bool>(record)->default_value("false"))
             ("e,evn", "The InputEvn.txt file", cxxopts::value<std::string>()->default_value("InputEvn.txt"))
             ("a,atpcost", "The InputATPCost.txt file", cxxopts::value<std::string>()->default_value("InputATPCost.txt"))
+            ("b,begintime", "The starting time for the calculations, default is 0.0", cxxopts::value<double>(starttime)->default_value("0.0"))
+            ("s,stoptime", "The time to stop calculations, default is 250", cxxopts::value<double>(stoptime)->default_value("250.0"))
+            ("z,stepsize", "The step size to use in the calculations, default is 1.0", cxxopts::value<double>(stepsize)->default_value("1.0"))
             ("h,help", "Produce help message")
             ;
 
@@ -80,13 +84,15 @@ int main(int argc, const char* argv[]) {
     theVars->TestSucPath = stoi(inputs.at("SucPath"), nullptr);
     theVars->TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
     theVars->record = record;
-    trDynaPS *myDyna = new trDynaPS(theVars);
+
+    trDynaPS *myDyna = new trDynaPS(theVars, starttime, stepsize, stoptime);
     std::vector<double> ResultRate = myDyna->trDynaPS_Drive(1, 1);
 
     std::ofstream outfile("output.data");
-    outfile << theVars->TestLi << ",  " << ResultRate[0] << ",  ";
-    outfile << ResultRate[1] << ",  " << ResultRate[2] << ",  " << ResultRate[3] << ",  ";
-    outfile << ResultRate[4] << ",  " << ResultRate[5] << ",  " << ResultRate[6] << std::endl;
+    outfile << "Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate" << std::endl;
+    outfile << theVars->TestLi << "," << ResultRate[0] << ",";
+    outfile << ResultRate[1] << "," << ResultRate[2] << "," << ResultRate[3] << ",";
+    outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << std::endl;
     outfile.close();
     //800,23.8514,8.04985,0.00395613,1.5763,2.58119,4.16627,8.04976
     //std::cout << 800-theVars->TestLi << ",  " << 23.8514-ResultRate[0] << ",  ";

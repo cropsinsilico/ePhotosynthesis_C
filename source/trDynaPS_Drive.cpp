@@ -117,11 +117,11 @@ arr trDynaPS::trDynaPS_Drive(size_t ParaNum, double Ratio) {
     if (flag != 0)
         std::cout << "FAIL" << std::endl;
 
-    realtype end_time = 250;
-    realtype step_length = 1.;
+    //realtype end_time = endtime;
+    //realtype step_length = 1.;
     realtype t = 0;
 
-    for (realtype tout = step_length; tout <= end_time; tout += step_length)
+    for (realtype tout = start + step; tout <= endtime; tout += step)
         flag = CVode(cvode_mem, tout, y, &t, CV_NORMAL);
 
     // call the functions one last time to get the correct values we need
