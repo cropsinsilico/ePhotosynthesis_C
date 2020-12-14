@@ -81,12 +81,19 @@ arr trDynaPS_Mb(const double t, const trDynaPSCon &trDynaPS_con, Variables *theV
 // class for running trDynaPS with an ODE solver
 class trDynaPS {
 public:
-  trDynaPS(Variables *theVars) { this->theVars = theVars; }
-  ~trDynaPS();
-  static Variables *theVars;
-  arr trDynaPS_Drive(size_t ParaNum, double Ratio);
+    trDynaPS(Variables *theVars, const double start, const double step, const double endtime) {
+        this->theVars = theVars;
+        this->start = start;
+        this->step = step;
+        this->endtime = endtime;
+    }
+    ~trDynaPS();
+    static Variables *theVars;
+    arr trDynaPS_Drive(size_t ParaNum, double Ratio);
 
-  static int trDynaPS_mb(realtype t, N_Vector u, N_Vector u_dot,
-                         void *user_data);
-  trDynaPSCon trDynaPS_Ini();
+    static int trDynaPS_mb(realtype t, N_Vector u, N_Vector u_dot,
+                           void *user_data);
+    trDynaPSCon trDynaPS_Ini();
+private:
+    double start, step, endtime;
 };
