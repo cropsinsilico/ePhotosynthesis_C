@@ -54,56 +54,61 @@ void readFile(const std::string &filename, std::map<std::string, std::string> &m
 }
 
 int main(int argc, const char* argv[]) {
-    bool record = false;
-    cxxopts::Options options("ePhotosynthesis", "C++ implementation of the matlab original");
-    options.show_positional_help();
-    double stoptime, starttime, stepsize;
-    options.add_options()
-            ("r,record", "Record output values for all steps (this can significantly slow the program)", cxxopts::value<bool>(record)->default_value("false"))
-            ("e,evn", "The InputEvn.txt file", cxxopts::value<std::string>()->default_value("InputEvn.txt"))
-            ("a,atpcost", "The InputATPCost.txt file", cxxopts::value<std::string>()->default_value("InputATPCost.txt"))
-            ("b,begintime", "The starting time for the calculations, default is 0.0", cxxopts::value<double>(starttime)->default_value("0.0"))
-            ("s,stoptime", "The time to stop calculations, default is 250", cxxopts::value<double>(stoptime)->default_value("5000.0"))
-            ("z,stepsize", "The step size to use in the calculations, default is 1.0", cxxopts::value<double>(stepsize)->default_value("1.0"))
-            ("h,help", "Produce help message")
-            ;
+    try {
+        bool record = false;
+        cxxopts::Options options("ePhotosynthesis", "C++ implementation of the matlab original");
+        options.show_positional_help();
+        double stoptime, starttime, stepsize;
+        options.add_options()
+                ("r,record", "Record output values for all steps (this can significantly slow the program)", cxxopts::value<bool>(record)->default_value("false"))
+                ("e,evn", "The InputEvn.txt file", cxxopts::value<std::string>()->default_value("InputEvn.txt"))
+                ("a,atpcost", "The InputATPCost.txt file", cxxopts::value<std::string>()->default_value("InputATPCost.txt"))
+                ("b,begintime", "The starting time for the calculations, default is 0.0", cxxopts::value<double>(starttime)->default_value("0.0"))
+                ("s,stoptime", "The time to stop calculations, default is 250", cxxopts::value<double>(stoptime)->default_value("5000.0"))
+                ("z,stepsize", "The step size to use in the calculations, default is 1.0", cxxopts::value<double>(stepsize)->default_value("1.0"))
+                ("h,help", "Produce help message")
+                ;
 
-    auto result = options.parse(argc, argv);
+        auto result = options.parse(argc, argv);
 
-    if (result.count("help")) {
-        std::cout << options.help() << std::endl;
+        if (result.count("help")) {
+            std::cout << options.help() << std::endl;
+            return (EXIT_SUCCESS);
+        }
+        std::map<std::string, std::string> inputs;
+
+        readFile(result["evn"].as<std::string>(), inputs);
+        readFile(result["atpcost"].as<std::string>(), inputs);
+        Variables *theVars = new Variables();
+        theVars->TestCa = static_cast<double>(stof(inputs.at("CO2"), nullptr));
+        theVars->TestLi = static_cast<double>(stof(inputs.at("PAR"), nullptr));
+        theVars->TestSucPath = stoi(inputs.at("SucPath"), nullptr);
+        theVars->TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
+        theVars->record = record;
+
+        trDynaPS *myDyna = new trDynaPS(theVars, starttime, stepsize, stoptime);
+        std::vector<double> ResultRate = myDyna->trDynaPS_Drive(1, 1);
+
+        std::ofstream outfile("output.data");
+        outfile << "Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate" << std::endl;
+        outfile << theVars->TestLi << "," << ResultRate[0] << ",";
+        outfile << ResultRate[1] << "," << ResultRate[2] << "," << ResultRate[3] << ",";
+        outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << std::endl;
+        outfile.close();
+        //800,23.8514,8.04985,0.00395613,1.5763,2.58119,4.16627,8.04976
+        //std::cout << 800-theVars->TestLi << ",  " << 23.8514-ResultRate[0] << ",  ";
+        //std::cout << 8.04985-ResultRate[1] << ",  " << 0.00395613-ResultRate[2] << ",  " << 1.5763-ResultRate[3] << ",  ";
+        //std::cout << 2.58119-ResultRate[4] << ",  " << 4.16627-ResultRate[5] << ",  " << 8.04976-ResultRate[6] << std::endl;
+        if (theVars != nullptr) {
+            myDyna->theVars = nullptr;
+            delete theVars;
+        }
+        delete myDyna;
+
         return (EXIT_SUCCESS);
+    } catch (std::exception& e) {
+        std::cout << "An error occurred: " << e.what() << std:: endl;
+        exit(EXIT_FAILURE);
     }
-    std::map<std::string, std::string> inputs;
-
-    readFile(result["evn"].as<std::string>(), inputs);
-    readFile(result["atpcost"].as<std::string>(), inputs);
-    Variables *theVars = new Variables();
-    theVars->TestCa = static_cast<double>(stof(inputs.at("CO2"), nullptr));
-    theVars->TestLi = static_cast<double>(stof(inputs.at("PAR"), nullptr));
-    theVars->TestSucPath = stoi(inputs.at("SucPath"), nullptr);
-    theVars->TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
-    theVars->record = record;
-
-    trDynaPS *myDyna = new trDynaPS(theVars, starttime, stepsize, stoptime);
-    std::vector<double> ResultRate = myDyna->trDynaPS_Drive(1, 1);
-
-    std::ofstream outfile("output.data");
-    outfile << "Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate" << std::endl;
-    outfile << theVars->TestLi << "," << ResultRate[0] << ",";
-    outfile << ResultRate[1] << "," << ResultRate[2] << "," << ResultRate[3] << ",";
-    outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << std::endl;
-    outfile.close();
-    //800,23.8514,8.04985,0.00395613,1.5763,2.58119,4.16627,8.04976
-    //std::cout << 800-theVars->TestLi << ",  " << 23.8514-ResultRate[0] << ",  ";
-    //std::cout << 8.04985-ResultRate[1] << ",  " << 0.00395613-ResultRate[2] << ",  " << 1.5763-ResultRate[3] << ",  ";
-    //std::cout << 2.58119-ResultRate[4] << ",  " << 4.16627-ResultRate[5] << ",  " << 8.04976-ResultRate[6] << std::endl;
-    if (theVars != nullptr) {
-        myDyna->theVars = nullptr;
-        delete theVars;
-    }
-    delete myDyna;
-
-    return (EXIT_SUCCESS);
 }
 
