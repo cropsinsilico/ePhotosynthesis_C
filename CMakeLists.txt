@@ -53,6 +53,8 @@ endif("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
 
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${PROJECT_SOURCE_DIR}/cmake")
 
+find_package(Doxygen)
+option(BUILD_DOCS "Create HTML and PDF API documentation for ePhotosynthesis (requires Doxygen)")
 find_package(Boost 1.36.0 REQUIRED)
 include_directories(ePhotosynthesis ${Boost_INCLUDE_DIRS})
 
@@ -67,3 +69,17 @@ add_executable(ePhotosynthesis ${SOURCES})
 target_link_libraries(ePhotosynthesis ${SUNDIALS_LIBRARIES})
 
 install(TARGETS ePhotosynthesis DESTINATION bin)
+
+if(BUILD_DOCS)
+    if(NOT DOXYGEN_FOUND)
+        message(FATAL_ERROR "Doxygen is needed to build the documentation.")
+    endif()
+    set(doxyfile "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile")
+    message("Building documentation")
+    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/doc)
+    add_custom_target(docs
+        COMMAND ${DOXYGEN_EXECUTABLE} ${doxyfile}
+        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        COMMENT "Generating API documentation with Doxygen"
+        VERBATIM)
+endif()
