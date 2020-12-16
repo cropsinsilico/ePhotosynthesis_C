@@ -27,10 +27,17 @@
  *
  **********************************************************************************************************************************************/
 
-// Class to hold the results of the XanCycleRate calculations
+/**
+ Class to hold the results of the XanCycleRate calculations
+ */
 class XanCycleVel {
 public:
     XanCycleVel() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The XanCycleVel object to copy
+      */
     XanCycleVel(const XanCycleVel &other) {
         Vva = other.Vva;
         Vaz = other.Vaz;
@@ -40,62 +47,115 @@ public:
         Vv2ABA = other.Vv2ABA;
         VABAdg = other.VABAdg;
     }
-    double Vva = 0.;    // The velocity of v to a conversion
-    double Vaz = 0.;    // The rate of A to z
-    double Vza = 0.;    // THe rate of z to a
-    double Vav = 0.;    // The rate of A to V
-    double Vvf = 0.;    // The rate of V formation
-    double Vv2ABA = 0.; // The rate of conversion from v to ABA.
-    double VABAdg = 0.; // The rate of ABA degradation
+    double Vva = 0.;    ///< The velocity of v to a conversion
+    double Vaz = 0.;    ///< The rate of A to z
+    double Vza = 0.;    ///< THe rate of z to a
+    double Vav = 0.;    ///< The rate of A to V
+    double Vvf = 0.;    ///< The rate of V formation
+    double Vv2ABA = 0.; ///< The rate of conversion from v to ABA.
+    double VABAdg = 0.; ///< The rate of ABA degradation
 };
 
-// Class to hold the inputs to XanCycle_mb
+/**
+ Class to hold the inputs to XanCycle_mb
+ */
 class XanCycleCon {
 public:
     XanCycleCon() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The XanCycleCon object to copy
+      */
     XanCycleCon(const XanCycleCon &other) {
         Vx = other.Vx;
         Ax = other.Ax;
         Zx = other.Zx;
         ABA = other.ABA;
     }
+    /**
+      Constructor to create an object from the input vector, starting at the given index
+
+      @param vec Vector to create the object from
+      @param offset The index in vec to start creating the object from
+      */
     XanCycleCon(const arr &vec, const size_t offset = 0) {
         fromArray(vec, offset);
     }
+    /**
+      Copy items from the given vector to the data members
+
+      @param vec The Vector to copy from
+      @param offset The indec in vec to start the copying from
+      */
     void fromArray(const arr &vec, const size_t offset = 0) {
         Vx = vec[offset];
         Ax = vec[offset + 1];
         Zx = vec[offset + 2];
         ABA = vec[offset + 3];
     }
+    /**
+      Convert the object into a vector of doubles
+
+      @return A vector containing the data values from the class
+      */
     arr toArray() {
         arr array = {Vx, Ax, Zx, ABA};
         return array;
     }
+    /**
+      Set all data memebers to 0.
+      */
     void clear() {
         Vx = 0.;
         Ax = 0.;
         Zx = 0.;
         ABA = 0.;
     }
+    /**
+      Get the size of the data vector
+      */
     size_t size() {
         return count;
     }
-    double Vx = 0.;  // The concentration of Violozanthin
-    double Ax = 0.;  // The concentration of Anthrozanthin
-    double Zx = 0.;  // The concentration of Zeaznthin
-    double ABA = 0.; // The concentration of ABA
+    double Vx = 0.;  ///< The concentration of Violozanthin
+    double Ax = 0.;  ///< The concentration of Anthrozanthin
+    double Zx = 0.;  ///< The concentration of Zeaznthin
+    double ABA = 0.; ///< The concentration of ABA
 private:
     size_t count = 4;
 };
 
-// class for XanCycle code and internal variables
+/**
+ Class for XanCycle code and internal variables
+ */
 class XanCycle {
 public:
+    /**
+      Initializer
+
+      @param theVars Pointer to the global variables
+      @return A XanCycleCon object with values set base on the input
+      */
     static XanCycleCon XanCycle_Ini(Variables *theVars);
 
+    /**
+      Calculate the output values based on the inputs
+
+      @param t The current timestamp
+      @param XanCycle_Con XanCycleCon object giving the input parameters
+      @param theVars The global variables
+      @return A vector containing the updated values
+      */
     static arr XanCycle_Mb(const double t, const XanCycleCon &XanCycle_Con, Variables *theVars);
 
+    /**
+      Calculate the Rates of XanCycle based on the inputs
+
+      @param t The current timestamp
+      @param XanCycle_Con XanCycleCon object giving the input parameters
+      @param theVars The global variables
+      */
     static void XanCycle_Rate(const double t, const XanCycleCon &XanCycle_Con, Variables *theVars);
 private:
     static double XanCycle_kav;

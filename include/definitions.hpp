@@ -37,33 +37,88 @@ struct Variables;
 // rename a common data type to make it easier
 typedef std::vector<double> arr;
 
-// initialize an array of 1's
+/**
+  Helper function to initialize a vector of 1's of the given length.
+
+  @param length The size of the vector to return
+  @return A vector of 1's, with the input size.
+  */
 inline arr ones(const size_t length) { return arr(length, 1.); }
 
-// initialize an array of 0's
+/**
+  Helper function to initialize a vector of 0's of the given length.
+
+  @param length The size of the vector to return
+  @return A vector of 0's, with the input size.
+  */
 inline arr zeros(const size_t length) { return arr(length, 0.); }
 
-// template class for tracking intermediate results
+/**
+  Implementation of a storage structure for a time series of data.
+
+  This class stores data in a time based series. The entries are indexed
+  by the step number and contain a timestamp of the current step. Only one
+  datum can be stored for each step, so subsequent additions of data for a
+  given step number will overwrite the data.
+  */
 template <typename T>
 class TimeSeries {
 public:
     TimeSeries() {}
     ~TimeSeries() {}
+    /**
+      Insert data into the storage.
+
+      @param step The step number associated with the data
+      @param time The time associated with the data (0 time is the beginning of the calculations)
+      @tparam input The data to be stored
+      */
     void insert(size_t step, double time, T &input);
 
+    /**
+      Overload of the indexing operator to get the data for a specific step
+
+      @param i The step to return the data for
+      @return The data for the given step
+      */
     T &operator[](size_t i) { return _data[i]; }
 
-    double timestamp(int i = -1) {
+    /**
+      Get the timestamp for the given step
+
+      @param i The step to get the timestamp for, default is -1, which returns the timestamp of the last step
+      @return The timestamp
+      */
+    double timestamp(const int i = -1) {
         if (i < 0)
             return _timestamp[current];
         return _timestamp[i];
     }
 
+    /**
+      Retrieve the data from the last step
+
+      @return The data from the last step
+      */
     T getLastData() { return _data.back(); }
 
+    /**
+      Retrieve the timestamp of the last step
+
+      @return The timestep
+      */
     double getLastTime() { return _timestamp.back(); }
+
+    /**
+      Get the number of steps in the series
+      */
     size_t size() { return _step.size(); }
 
+    /**
+      Write the data to the given stream
+
+      @param[in,out] of The stream to write to
+      */
     void write(std::ofstream &of);
 
 private:

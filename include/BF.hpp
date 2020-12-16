@@ -28,10 +28,17 @@
 
 #include "definitions.hpp"
 
-// class for holding the result of the BF_Rate calculations
+/**
+ Class for holding the result of the BF_Rate calculations
+ */
 class BFVel {
 public:
     BFVel() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The BFVel object to copy
+      */
     BFVel(const BFVel &other) {
         Vbf1 = other.Vbf1;
         Vbf2 = other.Vbf2;
@@ -100,10 +107,17 @@ public:
 
 };
 
-// class for holding BF_RC data
+/**
+ Class for holding BF_RC data
+ */
 class BFRC {
 public:
     BFRC(){}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The BFRC object to copy
+      */
     BFRC(const BFRC &other) {
         K1 = other.K1;
         K2 = other.K2;
@@ -140,46 +154,53 @@ public:
         V2M = other.V2M;
         KE2 = other.KE2;
     }
-    double K1 = 0.;    // The rate constant for formation of ISP.QH2 complex
-    double K2 = 0.;    // The rate constant for ISP.QH2-->QH(semi) + ISPH(red)
-    double K3 = 0.;    // The rate constant for QH. + cytbL --> Q + cytbL- + H+   Unit: s-1
-    double K4 = 0.;    // The rate constant for cytbL- + cytbH --> cytbL + cytbH- Unit: s-1
-    double K5 = 0.;    // The rate constant for CytbH- + Q --> cytbH + Q- Unit: s-1
-    double K6 = 0.;    // The rate constant  for CytbH- + Q- --> cytbH + Q2-      Unit: s-1
-    double K7 = 0.;    // The rate constant for Q binding to Qi site
-    double K8 = 0.;    // The rate constant for ISPH + CytC1 --> ISPH(ox) + CytC1+        Unit: s-1
-    double K9 = 0.;    // The rate constant for the electron transport from cytc1 to cytc2        Unit: s-1
-    double K10 = 0.;   // The rate constant for the electron transport from cytc2 to P700 Unit: s-1
-    double Vmax11 = 0.; // The maximum rate of ATP synthesis       Unit: mmol l-1 s-1
-    double Kqi = 0.;   // The rate constant for uptake of two protons from the stroma to Q2-      s-1
-    double PK = 0.;    // The permeability constant for K Unit: cm s-1
-    double PMg = 0.;   // The permeability constant for Mg        Unit: cm s-1
-    double PCl = 0.;   // The permeability constant for Cl        Unit: cm s-1
-    double Kau = 0.;   // The rate constant for exciton transfer from perpheral antenna to core antenna, see FI   Unit: s-1
-    double Kua = 0.;   // The rate constant for exciton transfer from core antenna to peripheral antenna, SEE FI  Unit: s-1
-    double Kf = 0.;    // The rate constant for fluorescence emission, see the note in FI Unit: s-1
-    double Kd = 0.;    // The rate constant for heat dissipation
-    double KE8 = 0.;   // ISPHr + cytc1 --> ISPHox + cytc1-       Unit: s-1
-    double KE9 = 0.;   // cytc1- + cytc2 --> cytc1 + cytc2-       Unit: s-1
-    double K15 = 0.;   // The rate constant for primary charge separation in PSI  Unit: s-1
-    double K16 = 0.;   // The rate constant for electron tranfer from electron acceptor of PSI to Fd      Unit: s-1
-    double MemCap = 0.; // The membrane capacity
-    double RVA = 0.;   // The ratio of lumen volume to thylakoid membrane area
-    double KBs = 0.;   // The buffer equilibrium constant in stroma
-    double KBl = 0.;   // The buffer equilibrium constant in lumen
-    double KM1ATP = 0.; // The michaelis menton constant for ATP for ATP synthesis
-    double KM1ADP = 0.; // The michaelis menton constant for ATP for ADP synthesis
-    double KM1PI = 0.; // The michaelis menton constant for ATP for PI synthesis
-    double KM2NADP = 0.; // The michaelis menten constant for NADP  Unit: mmol l-1 s-1
-    double KM2NADPH = 0.; // The michaelis menten constant for NADPH Unit: mmol l-1 s-1
-    double V2M = 0.;   // The maximum rate of NADPH formation     Unit: mmol l-1 s-1
-    double KE2 = 0.;   // Equilibrium constant
+    double K1 = 0.;    ///< The rate constant for formation of ISP.QH2 complex
+    double K2 = 0.;    ///< The rate constant for ISP.QH2-->QH(semi) + ISPH(red)
+    double K3 = 0.;    ///< The rate constant for QH. + cytbL --> Q + cytbL- + H+   Unit: s-1
+    double K4 = 0.;    ///< The rate constant for cytbL- + cytbH --> cytbL + cytbH- Unit: s-1
+    double K5 = 0.;    ///< The rate constant for CytbH- + Q --> cytbH + Q- Unit: s-1
+    double K6 = 0.;    ///< The rate constant  for CytbH- + Q- --> cytbH + Q2-      Unit: s-1
+    double K7 = 0.;    ///< The rate constant for Q binding to Qi site
+    double K8 = 0.;    ///< The rate constant for ISPH + CytC1 --> ISPH(ox) + CytC1+        Unit: s-1
+    double K9 = 0.;    ///< The rate constant for the electron transport from cytc1 to cytc2        Unit: s-1
+    double K10 = 0.;   ///< The rate constant for the electron transport from cytc2 to P700 Unit: s-1
+    double Vmax11 = 0.; ///< The maximum rate of ATP synthesis       Unit: mmol l-1 s-1
+    double Kqi = 0.;   ///< The rate constant for uptake of two protons from the stroma to Q2-      s-1
+    double PK = 0.;    ///< The permeability constant for K Unit: cm s-1
+    double PMg = 0.;   ///< The permeability constant for Mg        Unit: cm s-1
+    double PCl = 0.;   ///< The permeability constant for Cl        Unit: cm s-1
+    double Kau = 0.;   ///< The rate constant for exciton transfer from perpheral antenna to core antenna, see FI   Unit: s-1
+    double Kua = 0.;   ///< The rate constant for exciton transfer from core antenna to peripheral antenna, SEE FI  Unit: s-1
+    double Kf = 0.;    ///< The rate constant for fluorescence emission, see the note in FI Unit: s-1
+    double Kd = 0.;    ///< The rate constant for heat dissipation
+    double KE8 = 0.;   ///< ISPHr + cytc1 --> ISPHox + cytc1-       Unit: s-1
+    double KE9 = 0.;   ///< cytc1- + cytc2 --> cytc1 + cytc2-       Unit: s-1
+    double K15 = 0.;   ///< The rate constant for primary charge separation in PSI  Unit: s-1
+    double K16 = 0.;   ///< The rate constant for electron tranfer from electron acceptor of PSI to Fd      Unit: s-1
+    double MemCap = 0.; ///< The membrane capacity
+    double RVA = 0.;   ///< The ratio of lumen volume to thylakoid membrane area
+    double KBs = 0.;   ///< The buffer equilibrium constant in stroma
+    double KBl = 0.;   ///< The buffer equilibrium constant in lumen
+    double KM1ATP = 0.; ///< The michaelis menton constant for ATP for ATP synthesis
+    double KM1ADP = 0.; ///< The michaelis menton constant for ATP for ADP synthesis
+    double KM1PI = 0.; ///< The michaelis menton constant for ATP for PI synthesis
+    double KM2NADP = 0.; ///< The michaelis menten constant for NADP  Unit: mmol l-1 s-1
+    double KM2NADPH = 0.; ///< The michaelis menten constant for NADPH Unit: mmol l-1 s-1
+    double V2M = 0.;   ///< The maximum rate of NADPH formation     Unit: mmol l-1 s-1
+    double KE2 = 0.;   ///< Equilibrium constant
 };
 
-// class for holding BF_Pool data
+/**
+ Class for holding BF_Pool data
+ */
 class BFPool {
 public:
     BFPool() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The BFPool object to copy
+      */
     BFPool(const BFPool &other) {
 
         kA_d = other.kA_d;
@@ -228,10 +249,17 @@ public:
     double k_pq_oxy = 0;
 };
 
-// class for holding the inputs to BF_mb
+/**
+ Class for holding the inputs to BF_mb
+ */
 class BFCon {
 public:
     BFCon() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The BFCon object to copy
+      */
     BFCon(const BFCon &other){
         ISPHr = other.ISPHr;
         cytc1 = other.cytc1;
@@ -264,10 +292,22 @@ public:
         NADPH = other.NADPH;
 
     }
+    /**
+      Constructor to create an object from the input vector, starting at the given index
+
+      @param vec Vector to create the object from
+      @param offset The index in vec to start creating the object from
+      */
     BFCon(const arr &vec, const size_t offset = 0) {
         fromArray(vec, offset);
     }
 
+    /**
+      Copy items from the given vector to the data members
+
+      @param vec The Vector to copy from
+      @param offset The indec in vec to start the copying from
+      */
     void fromArray(const arr &vec, const size_t offset = 0) {
         ISPHr = vec[offset];
         cytc1 = vec[offset + 1];
@@ -299,52 +339,85 @@ public:
         PHl = vec[offset + 27];
         NADPH = vec[offset + 28];
     }
+
+    /**
+      Convert the object into a vector of doubles
+
+      @return A vector containing the data values from the class
+      */
     arr toArray() {
         arr vec = {ISPHr, cytc1, ISPo, ISPoQH2, QHsemi, cytbL, Qi, Q, cytbH, Qn, Qr, QH2, cytc2, P700, ADP, Pi, ATP, Ks, Mgs, Cls, Aip, U, An, Fdn, BFHs, BFHl, PHs, PHl, NADPH};
         return vec;
     }
+
+    /**
+      Get the size of the data vector
+      */
     size_t size() {
         return count;
     }
-    double ISPHr = 0.;   // The reduced ion sulfer protein (ISPH); unit: micromole per m2
-    double cytc1 = 0.;   // The oxidized state of cytc1; unit: micromole per meter square
-    double ISPo = 0.;    // The oxidized ion sulfer protein (ISP); unit: micromole per meter square
-    double ISPoQH2 = 0.; // The complex of oxidized ion sulfer protein and reduced quinone; unit: micromole per meter square
-    double QHsemi = 0.;  // Semiquinone; micromole per meter square
-    double cytbL = 0.;   // The oxidized cytbL; micromole per meter square
-    double Qi = 0.;      // The binding Quinone; micromole per meter square
-    double Q = 0.;       // Quinone; micromole per meter square
-    double cytbH = 0.;   // The oxidized form of cytbH; micromole per meter square
-    double Qn = 0.;      // Q-; unit: micromole per meter square
-    double Qr = 0.;      // The reduced quinone Q2-; micromole per meter square
-    double QH2 = 0.;     // The reduced quinone PQH2; micromole per meter square
-    double cytc2 = 0.;   // oxidized cytc2; micromole per meter square
-    double P700 = 0.;    // The reduced state of P700, including both P700 and excited P700; micromole per meter square
-    double ADP = 0.;     // ADP in stroma, from the earlier photorespiration model; mmol l-1
-    double Pi = 0.;      // Phosphate in stroma, from the photorespiration model; mmol l-1
-    double ATP = 0.;     // ATP in stroma, from the photorespiration model; mmol l-1
-    double Ks = 0.;      // K ions in stroma, mM, from the literature; mmol l-1; 90 might be an default;
-    double Mgs = 0.;     // Mg ions in stroma, mM, from the literature of the ion estimate
-    double Cls = 0.;     // Cl ions in stroma, mM, from the literature of the ion estimate
-    double Aip = 0.;     // The number of photons in peripheral antenna; micromole per meter square
-    double U = 0.;       // The number of photons in core antenna; micromole per meter square
-    double An = 0.;      // The reduced electron acceptor in PSI; micromole per meter square
-    double Fdn = 0.;     // The reduced ferrodoxin; micromole per meter square leaf area
-    double BFHs = 0.;    // The protonated buffer species  and free proton together in stroma; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number.; default 25
-    double BFHl = 0.;    // The protonated buffer species and free proton together in lumen; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number. ; default 5
-    double PHs = 0.;     // The PH value of the stroma
-    double PHl = 0.;     // The PH value of the lumen
-    double NADPH = 0.;   // The NADPH concentration in stroma, Unit: mmol l-1;
+    double ISPHr = 0.;   ///< The reduced ion sulfer protein (ISPH); unit: micromole per m2
+    double cytc1 = 0.;   ///< The oxidized state of cytc1; unit: micromole per meter square
+    double ISPo = 0.;    ///< The oxidized ion sulfer protein (ISP); unit: micromole per meter square
+    double ISPoQH2 = 0.; ///< The complex of oxidized ion sulfer protein and reduced quinone; unit: micromole per meter square
+    double QHsemi = 0.;  ///< Semiquinone; micromole per meter square
+    double cytbL = 0.;   ///< The oxidized cytbL; micromole per meter square
+    double Qi = 0.;      ///< The binding Quinone; micromole per meter square
+    double Q = 0.;       ///< Quinone; micromole per meter square
+    double cytbH = 0.;   ///< The oxidized form of cytbH; micromole per meter square
+    double Qn = 0.;      ///< Q-; unit: micromole per meter square
+    double Qr = 0.;      ///< The reduced quinone Q2-; micromole per meter square
+    double QH2 = 0.;     ///< The reduced quinone PQH2; micromole per meter square
+    double cytc2 = 0.;   ///< oxidized cytc2; micromole per meter square
+    double P700 = 0.;    ///< The reduced state of P700, including both P700 and excited P700; micromole per meter square
+    double ADP = 0.;     ///< ADP in stroma, from the earlier photorespiration model; mmol l-1
+    double Pi = 0.;      ///< Phosphate in stroma, from the photorespiration model; mmol l-1
+    double ATP = 0.;     ///< ATP in stroma, from the photorespiration model; mmol l-1
+    double Ks = 0.;      ///< K ions in stroma, mM, from the literature; mmol l-1; 90 might be an default;
+    double Mgs = 0.;     ///< Mg ions in stroma, mM, from the literature of the ion estimate
+    double Cls = 0.;     ///< Cl ions in stroma, mM, from the literature of the ion estimate
+    double Aip = 0.;     ///< The number of photons in peripheral antenna; micromole per meter square
+    double U = 0.;       ///< The number of photons in core antenna; micromole per meter square
+    double An = 0.;      ///< The reduced electron acceptor in PSI; micromole per meter square
+    double Fdn = 0.;     ///< The reduced ferrodoxin; micromole per meter square leaf area
+    double BFHs = 0.;    ///< The protonated buffer species  and free proton together in stroma; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number.; default 25
+    double BFHl = 0.;    ///< The protonated buffer species and free proton together in lumen; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number. ; default 5
+    double PHs = 0.;     ///< The PH value of the stroma
+    double PHl = 0.;     ///< The PH value of the lumen
+    double NADPH = 0.;   ///< The NADPH concentration in stroma, Unit: mmol l-1;
 private:
     size_t count = 29;
 };
 
-// class for the BF related functions
+/**
+ Class for the BF related functions
+ */
 class BF {
 public:
+    /**
+      Initializer
+
+      @param theVars Pointer to the global variables
+      @return A BFCon object with values set base on the input
+      */
     static BFCon BF_Ini(Variables *theVars);
 
+    /**
+      Calculate the output values based on the inputs
+
+      @param t The current timestamp
+      @param BF_con BFCon object giving the input parameters
+      @param theVars The global variables
+      @return A vector containing the updated values
+      */
     static arr BF_Mb(const double t, const BFCon &BF_con, Variables *theVars);
 
+    /**
+      Calculate the Rates of BF based on the inputs
+
+      @param t The current timestamp
+      @param BF_con BFCon object giving the input parameters
+      @param theVars The global variables
+      */
     static void BF_Rate(const double t, const BFCon &BF_con, Variables *theVars);
 };

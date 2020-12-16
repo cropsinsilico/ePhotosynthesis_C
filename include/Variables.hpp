@@ -38,6 +38,9 @@
 #include "SUCS.hpp"
 #include "FIBF.hpp"
 
+/**
+  Structure to hold global variables
+  */
 struct Variables {
     bool record = false;
     bool BF_FI_com = false;

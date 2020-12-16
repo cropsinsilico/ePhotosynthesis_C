@@ -29,14 +29,42 @@
 #include "definitions.hpp"
 
 // some ungrouped functions
+/**
+  Set some initial global variables
+
+  @param t The current timestamp
+  @param[in,out] theVars The global variables
+  */
 void Condition(double t, Variables *theVars);
 
+/**
+  Generate output
+
+  @param t The current timestamp
+  @param[in,out] theVars The global variables
+  */
 void GenOut(double t, Variables *theVars);
 
+/**
+  Set some initial global variables
+
+  @param t The current timestamp
+  @param[in,out] theVars The global variables
+  */
 void IniModelCom(Variables *theVars);
 
+/**
+  Set parameters
+
+  @param[in,out] theVars The global variables
+  */
 void ParamSet(Variables *theVars);
 
+/**
+  Set some initial global variables
+
+  @param[in,out] theVars The global variables
+  */
 void SYSInitial(Variables *theVars);
 
 double TargetFunVal(Variables *theVars);

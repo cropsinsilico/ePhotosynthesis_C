@@ -28,10 +28,17 @@
 
 #include "definitions.hpp"
 
-// class for holding the results of the FI_Rate calculations
+/**
+ Class for holding the results of the FI_Rate calculations
+ */
 class FIVel {
 public:
     FIVel() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The FIVel object to copy
+      */
     FIVel(const FIVel &other) {
         vA_d = other.vA_d;
         vA_f = other.vA_f;
@@ -92,58 +99,58 @@ public:
         vP680_d = other.vP680_d;
         vP680_f = other.vP680_f;
     }
-    double vA_d = 0.;//	vA_d	The rate of heat dissipation from peripheral antenna
-    double vA_f = 0.;	//	vA_f	The rate of fluorescence emission from peripheral antenna
-    double vA_U = 0.;	//	vA_U	The rate of exciton transfer from peripheral antenna to core antenna in open reaction center
-    double vU_A = 0.;	//	vU_A	The rate of exciton transfer from core antenna to perpheral antenna in open center
-    double vU_f = 0.;	//	vU_f	The rate of fluorescence emission from core antenna
-    double vU_d = 0.;	//	vU_d	The rate of heat dissipation from core antenna
-    double v1 = 0.;	//	v1	The rate of primary charge separation
-    double v_r1 = 0.;//	v_r1	The rate of charge recombination
-    double vS1_S2 = 0.;	//	vS1_S2	The rate of transition from S1 to S2
-    double vS2_S3 = 0.;	//	vS2_S3	The rate of transition from S2 to S3
-    double vS3_S0 = 0.;	//	vS3_S0	The rate of transition from S3 to S0
-    double vS0_S1 = 0.;	//	vS0_S1	The rate of transition from S0 to S1
-    double vz_1 = 0.;	//	vz_1	The rate of P680p reduction
-    double v1z_1 = 0.;	//	v1z_1	The rate of oxidation of S1T by P680pPheon
-    double v2z_1 = 0.;	//	v2z_1	The rate of oxidation of S2T  by P680pPheon
-    double v3z_1 = 0.;	//	v3z_1	The rate of oxidation of S3T  by P680pPheon
-    double v0z_1 = 0.;	//	v0z_1	The rate of oxidation of S0T  by P680pPheon
-    double vz_2 = 0.;	//	vz_2	The rate of P680pPheon reduction
-    double v1z_2 = 0.;	//	v1z_2	The rate of oxidation of S1T by P680pPheo
-    double v2z_2 = 0.;	//	v2z_2	The rate of oxidation of S2T  by P680pPheo
-    double v3z_2 = 0.;	//	v3z_2	The rate of oxidation of S3T  by P680pPheo
-    double v0z_2 = 0.;	//	v0z_2	The rate of oxidation of S0T  by P680pPheo
+    double vA_d = 0.;    ///<  vA_d  The rate of heat dissipation from peripheral antenna
+    double vA_f = 0.;    ///<  vA_f  The rate of fluorescence emission from peripheral antenna
+    double vA_U = 0.;    ///<  vA_U  The rate of exciton transfer from peripheral antenna to core antenna in open reaction center
+    double vU_A = 0.;    ///<  vU_A  The rate of exciton transfer from core antenna to perpheral antenna in open center
+    double vU_f = 0.;    ///<  vU_f  The rate of fluorescence emission from core antenna
+    double vU_d = 0.;    ///<  vU_d  The rate of heat dissipation from core antenna
+    double v1 = 0.;      ///<  v1  The rate of primary charge separation
+    double v_r1 = 0.;    ///<  v_r1  The rate of charge recombination
+    double vS1_S2 = 0.;  ///<  vS1_S2  The rate of transition from S1 to S2
+    double vS2_S3 = 0.;  ///<  vS2_S3  The rate of transition from S2 to S3
+    double vS3_S0 = 0.;  ///<  vS3_S0  The rate of transition from S3 to S0
+    double vS0_S1 = 0.;  ///<  vS0_S1  The rate of transition from S0 to S1
+    double vz_1 = 0.;    ///<  vz_1  The rate of P680p reduction
+    double v1z_1 = 0.;   ///<  v1z_1  The rate of oxidation of S1T by P680pPheon
+    double v2z_1 = 0.;   ///<  v2z_1  The rate of oxidation of S2T  by P680pPheon
+    double v3z_1 = 0.;   ///<  v3z_1  The rate of oxidation of S3T  by P680pPheon
+    double v0z_1 = 0.;   ///<  v0z_1  The rate of oxidation of S0T  by P680pPheon
+    double vz_2 = 0.;    ///<  vz_2  The rate of P680pPheon reduction
+    double v1z_2 = 0.;   ///<  v1z_2  The rate of oxidation of S1T by P680pPheo
+    double v2z_2 = 0.;   ///<  v2z_2  The rate of oxidation of S2T  by P680pPheo
+    double v3z_2 = 0.;   ///<  v3z_2  The rate of oxidation of S3T  by P680pPheo
+    double v0z_2 = 0.;   ///<  v0z_2  The rate of oxidation of S0T  by P680pPheo
     double v1z = 0.;
     double v2z = 0.;
     double v3z = 0.;
     double v0z = 0.;
-    double vAB1 = 0.;//	vAB1	The rate of electron transfer from QA- to QB
-    double vBA1 = 0.;//	vBA1	The rate of electron transfer from QB- to QA
-    double vAB2 = 0.;//	vAB2	The rate of electron transfer from QA- to QB-
-    double vBA2 = 0.;//	vBA2	The rate of electron transfer from QB2- TO QA
-    double v3 = 0.;//	v3	The rate of exchange of QAQBH2 with PQ
-    double v_r3 = 0.;//	v_r3	The rate of exchange of QAQB with PQH2
-    double v3_n = 0.;//	v3_n	The rate of exchange of QAnQBH2 with PQ
-    double v_r3_n = 0.;//	v_r3_n	The rate of exchange of QAnQB with PQH2
-    double v_pq_ox = 0.;//	v_pq_ox	The rate of PQH2 oxidation
-    double Ic = 0.; //	Ic	The incident light on the core antenna
-    double Ia = 0.;//	Ia	The incident light on the peripheral antenna
-    double v2_1 = 0.;//	v2_1	The rate of P680pPheon oxidation
-    double v2_2 = 0.;//	v2_1	The rate of P680pPheon oxidation
-    double v2_00_1 = 0.;//	v2_00_1	The rate of reduction of QAQB by P680pPheon
-    double v2_01_1 = 0.;//	v2_01_1	The rate of reduction of QAQBn by P680pPheon
-    double v2_02_1 = 0.;//	v2_02_1	The rate of reduction of QAQB2n by P680pPheon
-    double v2_00_2 = 0.;//	v2_00_2	The rate of reduction of QAQB by P680Pheon
-    double v2_01_2 = 0.;//	v2_01_2	The rate of reduction of QAQBn by P680Pheon
-    double v2_02_2 = 0.;//	v2_02_2	The rate of reduction of QAQB2n by P680Pheon
-    double vr2_00_1 = 0.;//	vr2_00_1	The reverse reaction of The rate of reduction of QAQB by P680pPheon
-    double vr2_01_1 = 0.;//	vr2_01_1	The reverse reaction of The rate of reduction of QAQBn by P680pPheon
-    double vr2_02_1 = 0.;//	vr2_02_1	The reverse reaction of The rate of reduction of QAQB2n by P680pPheon
+    double vAB1 = 0.;    ///<  vAB1  The rate of electron transfer from QA- to QB
+    double vBA1 = 0.;    ///<  vBA1  The rate of electron transfer from QB- to QA
+    double vAB2 = 0.;    ///<  vAB2  The rate of electron transfer from QA- to QB-
+    double vBA2 = 0.;    ///<  vBA2  The rate of electron transfer from QB2- TO QA
+    double v3 = 0.;      ///<  v3  The rate of exchange of QAQBH2 with PQ
+    double v_r3 = 0.;    ///<  v_r3  The rate of exchange of QAQB with PQH2
+    double v3_n = 0.;    ///<  v3_n  The rate of exchange of QAnQBH2 with PQ
+    double v_r3_n = 0.;  ///<  v_r3_n  The rate of exchange of QAnQB with PQH2
+    double v_pq_ox = 0.; ///<  v_pq_ox  The rate of PQH2 oxidation
+    double Ic = 0.;      ///<  Ic  The incident light on the core antenna
+    double Ia = 0.;      ///<  Ia  The incident light on the peripheral antenna
+    double v2_1 = 0.;    ///<  v2_1  The rate of P680pPheon oxidation
+    double v2_2 = 0.;    ///<  v2_1  The rate of P680pPheon oxidation
+    double v2_00_1 = 0.; ///<  v2_00_1  The rate of reduction of QAQB by P680pPheon
+    double v2_01_1 = 0.; ///<  v2_01_1  The rate of reduction of QAQBn by P680pPheon
+    double v2_02_1 = 0.; ///<  v2_02_1  The rate of reduction of QAQB2n by P680pPheon
+    double v2_00_2 = 0.; ///<  v2_00_2  The rate of reduction of QAQB by P680Pheon
+    double v2_01_2 = 0.; ///<  v2_01_2  The rate of reduction of QAQBn by P680Pheon
+    double v2_02_2 = 0.; ///<  v2_02_2  The rate of reduction of QAQB2n by P680Pheon
+    double vr2_00_1 = 0.;///<  vr2_00_1  The reverse reaction of The rate of reduction of QAQB by P680pPheon
+    double vr2_01_1 = 0.;///<  vr2_01_1  The reverse reaction of The rate of reduction of QAQBn by P680pPheon
+    double vr2_02_1 = 0.;///<  vr2_02_1  The reverse reaction of The rate of reduction of QAQB2n by P680pPheon
     double vr2_1 = 0.;
-    double vr2_00_2 = 0.;//	vr2_00_2	The reverse reaction of The rate of reduction of QAQB by P680Pheon
-    double vr2_01_2 = 0.;//	vr2_01_2	The reverse reaction of The rate of reduction of QAQBn by P680Pheon
-    double vr2_02_2 = 0.;//	vr2_02_2	The reverse reaction of The rate of reduction of QAQB2n by P680Pheon
+    double vr2_00_2 = 0.;///<  vr2_00_2  The reverse reaction of The rate of reduction of QAQB by P680Pheon
+    double vr2_01_2 = 0.;///<  vr2_01_2  The reverse reaction of The rate of reduction of QAQBn by P680Pheon
+    double vr2_02_2 = 0.;///<  vr2_02_2  The reverse reaction of The rate of reduction of QAQB2n by P680Pheon
     double vr2_2 = 0.;
     double vP680qU = 0.;
     double vP680qA = 0.;
@@ -156,58 +163,71 @@ public:
 class FIRC {
 public:
     FIRC() {}
+
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The FIRC object to copy
+      */
     FIRC(const FIRC &other){
-        kA_d = other.kA_d;//	The rate constant of heat dissipation from peripheral antenna	Lazar (1999), 0.25~1 *10^(9)
-        kA_f = other.kA_f;//	The rate constant of fluorescence emission from peripheral antenna	Lazar 1999, with a lifetime of 5 ns at closed reaction center
-        kA_U = other.kA_U;//	The rate constant of exciton transfer from periphral antenna to core antenna	Reference needed, a guess
-        kU_A = other.kU_A;//	The rate constant of exciton transfer from core antenna to peripheral antenna	Reference needed, a guess
-        kU_d = other.kU_d;//	The rate constant of  heat emission from core antenna
-        kU_f = other.kU_f;//	The rate constant of fluorescence emission from core antenna
-        k1 = other.k1;	//	The rate constant of primary charge separation for open reaction center
-        k_r1 = other.k_r1;	//	The rate constant of charge recombination for open reactoin center
-        kz = other.kz;//	The rate constant of the Tyrosine oxidation	Lazar (1999); 3.8~50 * 10^6
-        k12 = other.k12;	//	The rate constant of the S1 to S2 transition	Lazar (1999); 0.667~33.3 * 10^3
-        k23 = other.k23;	//	The rate constant of the S2 to S3 transition	Lazar (1999); 0.667~33.3 * 10^3
-        k30 = other.k30;	//	The rate constant of the S3 to S0 transition	Lazar (1999); 0.667~33.3 * 10^3
-        k01 = other.k01;	//	The rate constant of the S0 to S1 transition	Lazar (1999); 0.667~33.3 * 10^3
-        k2 = other.k2;//	The rate constant of the QA reduction by Pheo-	Lazar (1999); 2~2.3 * 10^9
-        kAB1 = other.kAB1;//	The rate constant of QAQB-->QAQB-	Lazar (1999); 2.5~5 * 10^3
-        kBA1 = other.kBA1;//	The rate constant of the QAQB- -->QAQB	Lazar (1999)
-        kAB2 = other.kAB2;	//	The rate constant of the QAQB- --> QAQB2-	Lazar (1999); 1.25~3.33 * 10^3
-        kBA2 = other.kBA2;	//	The rate constant of the QAQB2- --> QAQB- 	Lazar (1999), or same as kAB2 depend on the equilibium constant
-        k3 = other.k3;//	The rate constant of the exchange of PQ and QBH2	Lazar (1999),0.12~1 for the fast PQ pool,  or 3~8 for the slow recycling PQ pool
-        k_r3 = other.k_r3;	//	The rate constant of the exchange of QB and PQH2	Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
-        k_pq_oxy = other.k_pq_oxy;//	The rate constant of the PQH2 oxidation	Lazar (1999),50~500
+        kA_d = other.kA_d;  //  The rate constant of heat dissipation from peripheral antenna  Lazar (1999), 0.25~1 *10^(9)
+        kA_f = other.kA_f;  //  The rate constant of fluorescence emission from peripheral antenna  Lazar 1999, with a lifetime of 5 ns at closed reaction center
+        kA_U = other.kA_U;  //  The rate constant of exciton transfer from periphral antenna to core antenna  Reference needed, a guess
+        kU_A = other.kU_A;  //  The rate constant of exciton transfer from core antenna to peripheral antenna  Reference needed, a guess
+        kU_d = other.kU_d;  //  The rate constant of  heat emission from core antenna
+        kU_f = other.kU_f;  //  The rate constant of fluorescence emission from core antenna
+        k1 = other.k1;      //  The rate constant of primary charge separation for open reaction center
+        k_r1 = other.k_r1;  //  The rate constant of charge recombination for open reactoin center
+        kz = other.kz;      //  The rate constant of the Tyrosine oxidation  Lazar (1999); 3.8~50 * 10^6
+        k12 = other.k12;    //  The rate constant of the S1 to S2 transition  Lazar (1999); 0.667~33.3 * 10^3
+        k23 = other.k23;    //  The rate constant of the S2 to S3 transition  Lazar (1999); 0.667~33.3 * 10^3
+        k30 = other.k30;    //  The rate constant of the S3 to S0 transition  Lazar (1999); 0.667~33.3 * 10^3
+        k01 = other.k01;    //  The rate constant of the S0 to S1 transition  Lazar (1999); 0.667~33.3 * 10^3
+        k2 = other.k2;      //  The rate constant of the QA reduction by Pheo-  Lazar (1999); 2~2.3 * 10^9
+        kAB1 = other.kAB1;  //  The rate constant of QAQB-->QAQB-  Lazar (1999); 2.5~5 * 10^3
+        kBA1 = other.kBA1;  //  The rate constant of the QAQB- -->QAQB  Lazar (1999)
+        kAB2 = other.kAB2;  //  The rate constant of the QAQB- --> QAQB2-  Lazar (1999); 1.25~3.33 * 10^3
+        kBA2 = other.kBA2;  //  The rate constant of the QAQB2- --> QAQB-   Lazar (1999), or same as kAB2 depend on the equilibium constant
+        k3 = other.k3;      //  The rate constant of the exchange of PQ and QBH2  Lazar (1999),0.12~1 for the fast PQ pool,  or 3~8 for the slow recycling PQ pool
+        k_r3 = other.k_r3;  //  The rate constant of the exchange of QB and PQH2  Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
+        k_pq_oxy = other.k_pq_oxy;//  The rate constant of the PQH2 oxidation  Lazar (1999),50~500
     }
 
-    double kA_d = 0.;  //  The rate constant of heat dissipation from peripheral antenna   Lazar (1999), 0.25~1 *10^(9)
-    double kA_f = 0.;  //  The rate constant of fluorescence emission from peripheral antenna  Lazar 1999, with a lifetime of 5 ns at closed reaction center
-    double kA_U = 0.;  //  The rate constant of exciton transfer from periphral antenna to core antenna    Reference needed, a guess
-    double kU_A = 0.;  //  The rate constant of exciton transfer from core antenna to peripheral antenna   Reference needed, a guess
-    double kU_d = 0.;  //  The rate constant of  heat emission from core antenna
-    double kU_f = 0.;  //  The rate constant of fluorescence emission from core antenna
-    double k1 = 0.;  //  The rate constant of primary charge separation for open reaction center
-    double k_r1 = 0.;  //  The rate constant of charge recombination for open reactoin center
-    double kz = 0.;  //  The rate constant of the Tyrosine oxidation Lazar (1999); 3.8~50 * 10^6
-    double k12 = 0.;  //  The rate constant of the S1 to S2 transition    Lazar (1999); 0.667~33.3 * 10^3
-    double k23 = 0.;  //  The rate constant of the S2 to S3 transition    Lazar (1999); 0.667~33.3 * 10^3
-    double k30 = 0.;  //  The rate constant of the S3 to S0 transition    Lazar (1999); 0.667~33.3 * 10^3
-    double k01 = 0.;  //  The rate constant of the S0 to S1 transition    Lazar (1999); 0.667~33.3 * 10^3
-    double k2 = 0.;  //  The rate constant of the QA reduction by Pheo-  Lazar (1999); 2~2.3 * 10^9
-    double kAB1 = 0.;  //  The rate constant of QAQB-->QAQB-   Lazar (1999); 2.5~5 * 10^3
-    double kBA1 = 0.;  //  The rate constant of the QAQB- -->QAQB  Lazar (1999)
-    double kAB2 = 0.;  //  The rate constant of the QAQB- --> QAQB2-   Lazar (1999); 1.25~3.33 * 10^3
-    double kBA2 = 0.;  //  The rate constant of the QAQB2- --> QAQB-   Lazar (1999), or same as kAB2 depend on the equilibium constant
-    double k3 = 0.;  //  The rate constant of the exchange of PQ and QBH2    Lazar (1999),0.12~1 for the fast PQ pool,  or 3~8 for the slow recycling PQ pool
-    double k_r3 = 0.;  //  The rate constant of the exchange of QB and PQH2    Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
-    double k_pq_oxy = 0.;  //  The rate constant of the PQH2 oxidation Lazar (1999),50~500
+    double kA_d = 0.;  ///<  The rate constant of heat dissipation from peripheral antenna   Lazar (1999), 0.25~1 *10^(9)
+    double kA_f = 0.;  ///<  The rate constant of fluorescence emission from peripheral antenna  Lazar 1999, with a lifetime of 5 ns at closed reaction center
+    double kA_U = 0.;  ///<  The rate constant of exciton transfer from periphral antenna to core antenna    Reference needed, a guess
+    double kU_A = 0.;  ///<  The rate constant of exciton transfer from core antenna to peripheral antenna   Reference needed, a guess
+    double kU_d = 0.;  ///<  The rate constant of  heat emission from core antenna
+    double kU_f = 0.;  ///<  The rate constant of fluorescence emission from core antenna
+    double k1 = 0.;    ///<  The rate constant of primary charge separation for open reaction center
+    double k_r1 = 0.;  ///<  The rate constant of charge recombination for open reactoin center
+    double kz = 0.;    ///<  The rate constant of the Tyrosine oxidation Lazar (1999); 3.8~50 * 10^6
+    double k12 = 0.;   ///<  The rate constant of the S1 to S2 transition    Lazar (1999); 0.667~33.3 * 10^3
+    double k23 = 0.;   ///<  The rate constant of the S2 to S3 transition    Lazar (1999); 0.667~33.3 * 10^3
+    double k30 = 0.;   ///<  The rate constant of the S3 to S0 transition    Lazar (1999); 0.667~33.3 * 10^3
+    double k01 = 0.;   ///<  The rate constant of the S0 to S1 transition    Lazar (1999); 0.667~33.3 * 10^3
+    double k2 = 0.;    ///<  The rate constant of the QA reduction by Pheo-  Lazar (1999); 2~2.3 * 10^9
+    double kAB1 = 0.;  ///<  The rate constant of QAQB-->QAQB-   Lazar (1999); 2.5~5 * 10^3
+    double kBA1 = 0.;  ///<  The rate constant of the QAQB- -->QAQB  Lazar (1999)
+    double kAB2 = 0.;  ///<  The rate constant of the QAQB- --> QAQB2-   Lazar (1999); 1.25~3.33 * 10^3
+    double kBA2 = 0.;  ///<  The rate constant of the QAQB2- --> QAQB-   Lazar (1999), or same as kAB2 depend on the equilibium constant
+    double k3 = 0.;    ///<  The rate constant of the exchange of PQ and QBH2    Lazar (1999),0.12~1 for the fast PQ pool,  or 3~8 for the slow recycling PQ pool
+    double k_r3 = 0.;  ///<  The rate constant of the exchange of QB and PQH2    Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
+    double k_pq_oxy = 0.;  ///<  The rate constant of the PQH2 oxidation Lazar (1999),50~500
 
 };
 
-// class for hoplding FI_Pool data
+/**
+ Class for hoplding FI_Pool data
+ */
 class FIPool {
 public:
     FIPool() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The FIPool object to copy
+      */
     FIPool(const FIPool &other) {
         QBt = other.QBt;
         PQT = other.PQT;
@@ -216,10 +236,17 @@ public:
     double PQT = 0;
 };
 
-// class for holding the inputs to FI_mb
+/**
+ Class for holding the inputs to FI_mb
+ */
 class FICon {
 public:
     FICon() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The FICon object to copy
+      */
     FICon(const FICon &other){
         A = other.A;
         U = other.U;
@@ -245,10 +272,22 @@ public:
         PQn = other.PQn;
     }
 
+    /**
+      Constructor to create an object from the input vector, starting at the given index
+
+      @param vec Vector to create the object from
+      @param offset The index in vec to start creating the object from
+      */
     FICon(const arr &vec, const size_t offset = 0) {
         fromArray(vec, offset);
     }
 
+    /**
+      Copy items from the given vector to the data members
+
+      @param vec The Vector to copy from
+      @param offset The indec in vec to start the copying from
+      */
     void fromArray(const arr &vec, const size_t offset = 0) {
         A = vec[offset];
         U = vec[offset + 1];
@@ -274,43 +313,74 @@ public:
         PQn = vec[offset + 21];
     }
 
+    /**
+      Convert the object into a vector of doubles
+
+      @return A vector containing the data values from the class
+      */
     arr toArray() {
         arr vec = {A, U, P680ePheo, P680pPheon, P680pPheo, P680Pheon, Yz, S1T, S2T, S3T, S0T, S1Tp, S2Tp, S3Tp, S0Tp, QAQB, QAnQB, QAQBn, QAnQBn, QAQB2n, QAnQB2n, PQn};
         return vec;
     }
+    /**
+      Get the size of the data vector
+      */
     size_t size() {
         return count;
     }
-    double A = 0.;          // The concentration of excitons in the peripheral antenna
-    double U = 0.;          // The concentration fo excitons in the core antenna
-    double P680ePheo = 0.;  // QF add
-    double P680pPheon = 0.; // The concentration for the P680+ Pheo-
-    double P680pPheo = 0.;  // The concentration of P680+ Pheo
-    double P680Pheon = 0.;  // The concentration of P680Pheo-
-    double Yz = 0.;         // The concentration of reduced tyrosine// --unused
-    double S1T = 0.;        // The concentration of S1 in combination with reduced tyrosine
-    double S2T = 0.;        // The concentration of S2 in combination with reduced tyrosine
-    double S3T = 0.;        // The concentration of S3 in combination with reduced tyrosine
-    double S0T = 0.;        // The concentration of S0 in combination with reduced tyrosine
-    double S1Tp = 0.;       // The concentration of S1 in combination with oxidized tyrosine
-    double S2Tp = 0.;       // The concentration of S2 in combination with oxidized tyrosine
-    double S3Tp = 0.;       // The concentration of S3 in combination with oxidized tyrosine
-    double S0Tp = 0.;       // The concentration of S0 in combination with oxidized tyrosine
-    double QAQB = 0.;       // The concentration of [QAQB]
-    double QAnQB = 0.;      // The concentration of [QA-QB]
-    double QAQBn = 0.;      // The concentration of [QAQB-]
-    double QAnQBn = 0.;     // The concentration of [QA-QB-]
-    double QAQB2n = 0.;     // The concentration of [QAQB2-]
-    double QAnQB2n = 0.;    // The concentration of [QA-QB2-]
-    double PQn = 0.;        // The concentration of reduced PQ, i.e. PQH2;
+    double A = 0.;          ///< The concentration of excitons in the peripheral antenna
+    double U = 0.;          ///< The concentration fo excitons in the core antenna
+    double P680ePheo = 0.;  ///< QF add
+    double P680pPheon = 0.; ///< The concentration for the P680+ Pheo-
+    double P680pPheo = 0.;  ///< The concentration of P680+ Pheo
+    double P680Pheon = 0.;  ///< The concentration of P680Pheo-
+    double Yz = 0.;         ///< The concentration of reduced tyrosine// --unused
+    double S1T = 0.;        ///< The concentration of S1 in combination with reduced tyrosine
+    double S2T = 0.;        ///< The concentration of S2 in combination with reduced tyrosine
+    double S3T = 0.;        ///< The concentration of S3 in combination with reduced tyrosine
+    double S0T = 0.;        ///< The concentration of S0 in combination with reduced tyrosine
+    double S1Tp = 0.;       ///< The concentration of S1 in combination with oxidized tyrosine
+    double S2Tp = 0.;       ///< The concentration of S2 in combination with oxidized tyrosine
+    double S3Tp = 0.;       ///< The concentration of S3 in combination with oxidized tyrosine
+    double S0Tp = 0.;       ///< The concentration of S0 in combination with oxidized tyrosine
+    double QAQB = 0.;       ///< The concentration of [QAQB]
+    double QAnQB = 0.;      ///< The concentration of [QA-QB]
+    double QAQBn = 0.;      ///< The concentration of [QAQB-]
+    double QAnQBn = 0.;     ///< The concentration of [QA-QB-]
+    double QAQB2n = 0.;     ///< The concentration of [QAQB2-]
+    double QAnQB2n = 0.;    ///< The concentration of [QA-QB2-]
+    double PQn = 0.;        ///< The concentration of reduced PQ, i.e. PQH2;
 private:
     size_t count = 22;
 };
 
-// class for FI related functions
+/**
+ Class for FI related functions
+ */
 class FI {
 public:
+    /**
+      Initialize the variables
+
+      @param theVars The global variables
+      @return A FICon object for input into calculations
+      */
     static FICon FI_Ini(Variables *theVars);
+    /**
+      Calculate the output values based on the inputs
+
+      @param t The current timestamp
+      @param FI_Con FICon object giving the input parameters
+      @param theVars The global variables
+      @return A vector containing the updated values
+      */
     static arr FI_Mb(const double t, const FICon &FI_Con, Variables *theVars);
+    /**
+      Calculate the Rates of FI based on the inputs
+
+      @param t The current timestamp
+      @param FI_Con FICon object giving the input parameters
+      @param theVars The global variables
+      */
     static void FI_Rate(const double t, const FICon &FI_Con, Variables *theVars);
 };

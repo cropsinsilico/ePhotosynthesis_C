@@ -28,10 +28,17 @@
 
 #include "definitions.hpp"
 
-// class for holding the inputs to PS_mb
+/**
+ Class for holding the inputs to PS_mb
+ */
 class PSCon {
 public:
     PSCon() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The PSCon object to copy
+      */
     PSCon(const PSCon &other) {
         RuBP = other.RuBP;
         PGA = other.PGA;
@@ -53,10 +60,22 @@ public:
         _v1 = other._v1;
     }
 
+    /**
+      Constructor to create an object from the input vector, starting at the given index
+
+      @param vec Vector to create the object from
+      @param offset The index in vec to start creating the object from
+      */
     PSCon(const arr &vec, size_t offset = 0) {
         fromArray(vec, offset);
     }
 
+    /**
+      Copy items from the given vector to the data members
+
+      @param vec The Vector to copy from
+      @param offset The indec in vec to start the copying from
+      */
     void fromArray(const arr &vec, size_t offset = 0) {
         RuBP = vec[offset];
         PGA = vec[offset + 1];
@@ -75,10 +94,18 @@ public:
         PenP = vec[offset + 14];
     }
 
+    /**
+      Convert the object into a vector of doubles
+
+      @return A vector containing the data values from the class
+    */
     arr toArray() {
         arr array = {RuBP, PGA, DPGA, T3P, ADPG, FBP, E4P, S7P, SBP, ATP, NADPH, CO2, O2, HexP, PenP};
         return array;
     }
+    /**
+      Get the size of the data vector
+      */
     size_t size() {
         return count;
     }
@@ -104,10 +131,17 @@ private:
     size_t count = 15;
 };
 
-// class for holding the results of PS_Rate calculations
+/**
+ Class for holding the results of PS_Rate calculations
+ */
 class PSVel {
 public:
     PSVel() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The PSVel object to copy
+      */
     PSVel(const PSVel &other) {
         v1 = other.v1;
         v2 = other.v2;
@@ -129,6 +163,11 @@ public:
         v24 = other.v24;
         v25 = other.v25;
     }
+    /**
+      Overloaded time-equal operator to multiply all data mambers by a constant value
+
+      @param val The value to multiply the data members by.
+      */
     PSVel& operator*=(const double val) {
         this->v1 *= val;
         this->v2 *= val;
@@ -173,14 +212,37 @@ public:
 
 };
 
-// class to for PS related functions and common variables
+/**
+ Class to for PS related functions and common variables
+ */
 class PS{
 public:
+    /**
+      Calculate the output values based on the inputs
+
+      @param t The current timestamp
+      @param PSs PSCon object giving the input parameters
+      @param theVars The global variables
+      @return A vector containing the updated values
+      */
     static arr PS_Mb(const double t, const PSCon &PSs, const arr &Param, Variables *theVars);
     static PSCon PSI(Variables *theVars);
 
+    /**
+      Initializer
+
+      @param theVars Pointer to the global variables
+      @return A PSCon object with values set base on the input
+      */
     static PSCon PS_Ini(Variables *theVars);
 
+    /**
+      Calculate the Rates of PS based on the inputs
+
+      @param t The current timestamp
+      @param PSs PSCon object giving the input parameters
+      @param theVars The global variables
+      */
     static void PS_Rate(const double t, const PSCon &PSs, const arr &Param, Variables *theVars);
 private:
     static double KA231;

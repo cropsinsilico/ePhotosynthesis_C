@@ -29,21 +29,46 @@
 #include "PS.hpp"
 #include "PR.hpp"
 
-// class to hold inputs to PS_PR_mb
+/**
+ Class to hold inputs to PS_PR_mb
+ */
 class PS_PRCon {
 public:
     PS_PRCon() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The PS_PRCon object to copy
+      */
     PS_PRCon(const PS_PRCon &other) {
         PS_con = other.PS_con;
         PR_con = other.PR_con;
     }
+    /**
+      Constructor to create an object from the contained classes
+
+      @param sother A PSCon object to incorporate
+      @param rother A PRCon object to incorporate
+      */
     PS_PRCon(const PSCon &sother, const PRCon &rother) {
         PS_con = sother;
         PR_con = rother;
     }
-    PS_PRCon(const std::vector<double> &vec, const size_t offset = 0){
+    /**
+      Constructor to create an object from the input vector, starting at the given index
+
+      @param vec Vector to create the object from
+      @param offset The index in vec to start creating the object from
+      */
+    PS_PRCon(const arr &vec, const size_t offset = 0){
         fromArray(vec, offset);
     }
+    /**
+      Copy items from the given vector to the data members
+
+      @param vec The Vector to copy from
+      @param offset The indec in vec to start the copying from
+      */
     void fromArray(const std::vector<double> &vec, const size_t offset = 0) {
         PS_con.RuBP = vec[offset];
         PS_con.PGA = vec[offset + 1];
@@ -74,6 +99,11 @@ public:
         PR_con.O2 = PS_con.O2;
         PR_con.PGA = PS_con.PGA;
     }
+    /**
+      Convert the object into a vector of doubles
+
+      @return A vector containing the data values from the class
+    */
     arr toArray() {
         arr outvec = {PS_con.RuBP,
                       PS_con.PGA,
@@ -103,6 +133,9 @@ public:
         return outvec;
     }
 
+    /**
+      Get the size of the data vector
+      */
     size_t size() {
         return 24;
     }
@@ -110,6 +143,19 @@ public:
     PRCon PR_con;
 };
 
+/**
+  Initialize the variables
+
+  @param theVars The global variables
+  @return A PS_PRCon object for input into calculations
+  */
 PS_PRCon PS_PR_Ini(Variables *theVars);
 
+/**
+  Calculate the output values based on the inputs
+
+  @param PS_PRs PS_PRCon object giving the input parameters
+  @param theVars The global variables
+  @return A vector containing the updated values
+  */
 arr PS_PR_Mb(const double t, const PS_PRCon &PS_PRs, Variables *theVars);

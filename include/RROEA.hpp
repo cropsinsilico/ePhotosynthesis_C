@@ -28,10 +28,17 @@
 
 #include "definitions.hpp"
 
-// class for holding the results of RROEA_Rate calculations
+/**
+ Class for holding the results of RROEA_Rate calculations
+ */
 class RROEAVel {
 public:
     RROEAVel() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The RROEAVel object to copy
+      */
     RROEAVel(const RROEAVel &other) {
         ve2GAPDH = other.ve2GAPDH;
         ve2FBPase = other.ve2FBPase;
@@ -58,10 +65,17 @@ public:
     double ve2RuACT = 0.;
 };
 
-// class for RROEA_RC data
+/**
+ Class for RROEA_RC data
+ */
 class RROEARC {
 public:
     RROEARC() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The RROEARC object to copy
+      */
     RROEARC(const RROEARC &other) {
         ke2GAPDH = other.ke2GAPDH;
         ke2MDH = other.ke2MDH;
@@ -87,10 +101,17 @@ public:
     double ke2ATPGPP = 0;
 };
 
-// class for RROEA_KE data
+/**
+ Class for RROEA_KE data
+ */
 class RROEAKE {
 public:
     RROEAKE() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The RROEAKE object to copy
+      */
     RROEAKE(const RROEAKE &other) {
 
         KEe2FBPase = other.KEe2FBPase;
@@ -115,10 +136,17 @@ public:
     double KEeFd2Thio = 0;
 };
 
-// class for RROEA_Pool data
+/**
+ Class for RROEA_Pool data
+ */
 class RROEAPool {
 public:
     RROEAPool() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The RROEAPool object to copy
+      */
     RROEAPool(const RROEAPool &other) {
 
         GAPDH = other.GAPDH;
@@ -146,10 +174,17 @@ public:
 };
 
 
-// class for holding the inputs to RROEA_mb
+/**
+ Class for holding the inputs to RROEA_mb
+ */
 class RROEACon {
 public:
     RROEACon() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The RROEACon object to copy
+      */
     RROEACon(const RROEACon &other) {
         GAPDH = other.GAPDH;
         FBPase = other.FBPase;
@@ -163,10 +198,22 @@ public:
         RuACT = other.RuACT;
     }
 
+    /**
+      Constructor to create an object from the input vector, starting at the given index
+
+      @param vec Vector to create the object from
+      @param offset The index in vec to start creating the object from
+      */
     RROEACon(const arr &vec, size_t offset = 0) {
         fromArray(vec, offset);
     }
 
+    /**
+      Copy items from the given vector to the data members
+
+      @param vec The Vector to copy from
+      @param offset The indec in vec to start the copying from
+      */
     void fromArray(const arr &vec, size_t offset = 0) {
         GAPDH = vec[offset];
         FBPase = vec[offset + 1];
@@ -179,37 +226,68 @@ public:
         Fd = vec[offset + 8];
         RuACT = vec[offset + 9];
     }
+    /**
+      Get the size of the data vector
+      */
     size_t size() {
         return count;
     }
 
+    /**
+      Convert the object into a vector of doubles
+
+      @return A vector containing the data values from the class
+      */
     arr toArray() {
         arr array = {GAPDH, FBPase, SBPase, PRK, ATPase, ATPGPP, MDH, Thio, Fd, RuACT};
         return array;
     }
 
-    double GAPDH = 0.;  // The initial concentration of active GAPDH
-    double FBPase = 0.; // The initial concentration of active FBPase
-    double SBPase = 0.; // The initial concentration of active SBPase
-    double PRK = 0.;    // The initial concentration of actove PRK
-    double ATPase = 0.; // The initial concentration of actove ATPase
-    double ATPGPP = 0.; // The initial concentration of actove ATPGPP
-    double MDH = 0.;    // The initial concentration of actove MDH
-    double Thio = 0.;   // The initial concentration of reduced thioredoxin
-    double Fd = 0.;     // The initial concentration of reduced ferrodoxin
-    double RuACT = 0.;  // The initial concentration of active Rubisco activase
+    double GAPDH = 0.;  ///< The initial concentration of active GAPDH
+    double FBPase = 0.; ///< The initial concentration of active FBPase
+    double SBPase = 0.; ///< The initial concentration of active SBPase
+    double PRK = 0.;    ///< The initial concentration of actove PRK
+    double ATPase = 0.; ///< The initial concentration of actove ATPase
+    double ATPGPP = 0.; ///< The initial concentration of actove ATPGPP
+    double MDH = 0.;    ///< The initial concentration of actove MDH
+    double Thio = 0.;   ///< The initial concentration of reduced thioredoxin
+    double Fd = 0.;     ///< The initial concentration of reduced ferrodoxin
+    double RuACT = 0.;  ///< The initial concentration of active Rubisco activase
 
 private:
     size_t count = 10;
 
 };
 
-// class for RROEA related functions
+/**
+ Class for RROEA related functions
+ */
 class RROEA {
 public:
+    /**
+      Initializer
+
+      @param theVars Pointer to the global variables
+      @return A RROEACon object with values set base on the input
+      */
     static RROEACon RROEA_Ini(Variables *theVars);
 
+    /**
+      Calculate the output values based on the inputs
+
+      @param t The current timestamp
+      @param RROEA_Con RROEACon object giving the input parameters
+      @param theVars The global variables
+      @return A vector containing the updated values
+      */
     static arr RROEA_Mb(const double t, const RROEACon &RROEA_Con, Variables *theVars);
 
+    /**
+      Calculate the Rates of RROEA based on the inputs
+
+      @param t The current timestamp
+      @param RROEA_Con RROEACon object giving the input parameters
+      @param theVars The global variables
+      */
     static void RROEA_Rate(const double t, const RROEACon &RROEA_Con, Variables *theVars);
 };

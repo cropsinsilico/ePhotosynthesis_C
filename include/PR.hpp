@@ -28,10 +28,17 @@
 
 #include "definitions.hpp"
 
-// class for holding the inputs to PR_mb
+/**
+ Class for holding the inputs to PR_mb
+ */
 class PRCon {
 public:
     PRCon() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The PRCon object to copy
+      */
     PRCon(const PRCon &other) {
         GCEA = other.GCEA;
         GCA = other.GCA;
@@ -47,9 +54,21 @@ public:
         CO2 = other.CO2;
         O2 = other.O2;
     }
+    /**
+      Constructor to create an object from the input vector, starting at the given index
+
+      @param vec Vector to create the object from
+      @param offset The index in vec to start creating the object from
+      */
     PRCon(const arr vec, size_t offset = 0) {
         fromArray(vec, offset);
     }
+    /**
+      Copy items from the given vector to the data members
+
+      @param vec The Vector to copy from
+      @param offset The indec in vec to start the copying from
+      */
     void fromArray(const arr vec, size_t offset = 0){
         GCEA= vec[offset];
         GCA= vec[offset + 1];
@@ -65,10 +84,18 @@ public:
         CO2= vec[offset + 11];
         O2= vec[offset + 12];
     }
+    /**
+      Convert the object into a vector of doubles
+
+      @return A vector containing the data values from the class
+      */
     arr toArray() {
         arr array = {GCEA, GCA, PGA, PGCA, GCAc, GOAc, SERc, GLYc, HPRc, GCEAc, RUBP, CO2, O2};
         return array;
     }
+    /**
+      Get the size of the data vector
+      */
     size_t size() {
         return count;
     }
@@ -90,10 +117,17 @@ private:
     size_t count = 13;
 };
 
-// class for holding the results of the PR_Rate calculations
+/**
+ Class for holding the result of the PR_Rate calculations
+ */
 class PRVel {
 public:
     PRVel() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The PRVel object to copy
+      */
     PRVel(const PRVel &other) {
         v111 = other.v111;
         v112 = other.v112;
@@ -106,6 +140,12 @@ public:
         v1in = other.v1in;
         v2out = other.v2out;
     }
+    /**
+      Overload of the multiplication-equals operator to multiply all members of
+      the class by a constant
+
+      @param val The constant to multiply all the members by
+      */
     PRVel& operator*=(const double val) {
         this->v111 *= val;
         this->v112 *= val;
@@ -131,13 +171,34 @@ public:
     double v2out = 0.;
 };
 
-// class for grouping PR related functions and common variables
+/**
+  Class for grouping PR related functions and common variables
+  */
 class PR {
 public:
+    /**
+      Initializer
+
+      @param theVars Pointer to the global variables
+      @return A PRCon object with values set base on the input
+      */
     static PRCon PR_Ini(Variables *theVars);
 
+    /**
+      Calculate the output values based on the inputs
+
+      @param PR_con PRCon object giving the input parameters
+      @param theVars The global variables
+      @return A vector containing the updated values
+      */
     static arr PR_Mb(const double t, const PRCon &PR_con, Variables *theVars);
 
+    /**
+      Calculate the Rates of PR based on the inputs
+
+      @param PR_con PRCon object giving the input parameters
+      @param theVars The global variables
+      */
     static void PR_Rate(const double t, const PRCon &PR_con, Variables *theVars);
 private:
     static double KC;

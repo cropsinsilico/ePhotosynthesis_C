@@ -29,25 +29,55 @@
 #include "FIBF.hpp"
 #include "CM.hpp"
 
-// class for holding the inputs to EPS_mb
+/**
+ Class for holding the inputs to EPS_mb
+ */
 class EPSCon {
 public:
     EPSCon() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The EPSCon object to copy
+      */
     EPSCon(const EPSCon &other) {
         CM_con = other.CM_con;
         FIBF_con = other.FIBF_con;
     }
+    /**
+      Constructor to create an object from the contained classes
+
+      @param fother A FIBFCon object to incorporate
+      @param cother A CMCon object to incorporate
+      */
     EPSCon(const FIBFCon &fother, const CMCon &cother) {
         CM_con = cother;
         FIBF_con = fother;
     }
+    /**
+      Constructor to create an object from the input vector, starting at the given index
+
+      @param vec Vector to create the object from
+      @param offset The index in vec to start creating the object from
+      */
     EPSCon(const arr &vec, const size_t offset = 0) {
         fromArray(vec, offset);
     }
+    /**
+      Copy items from the given vector to the data members
+
+      @param vec The Vector to copy from
+      @param offset The indec in vec to start the copying from
+      */
     void fromArray(const arr &vec, const size_t offset = 0) {
         FIBF_con.fromArray(vec, offset);
         CM_con.fromArray(vec, offset + FIBF_con.size());
     }
+    /**
+      Convert the object into a vector of doubles
+
+      @return A vector containing the data values from the class
+      */
     arr toArray() {
         arr fvec = FIBF_con.toArray();
         arr cvec = CM_con.toArray();
@@ -55,6 +85,9 @@ public:
         fvec.insert(fvec.end(), cvec.begin(), cvec.end());
         return fvec;
     }
+    /**
+      Get the size of the data vector
+      */
     size_t size() {
         return CM_con.size() + FIBF_con.size();
     }
@@ -62,6 +95,20 @@ public:
     FIBFCon FIBF_con;
 };
 
+/**
+  Initializer
+
+  @param theVars Pointer to the global variables
+  @return A EPSCon object with values set base on the input
+  */
 EPSCon EPS_Ini(Variables *theVars);
 
+/**
+  Calculate the output values based on the inputs
+
+  @param t The current timestamp
+  @param EPS_Con EPSCon object giving the input parameters
+  @param theVars The global variables
+  @return A vector containing the updated values
+  */
 arr EPS_Mb(const double t, const EPSCon &EPS_Con, Variables *theVars);

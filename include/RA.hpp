@@ -29,25 +29,55 @@
 #include "EPS.hpp"
 #include "RuACT.hpp"
 
-// class for holding input for RA_mb
+/**
+ Class for holding input for RA_mb
+ */
 class RACon {
 public:
     RACon() {}
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The RACon object to copy
+      */
     RACon(const RACon &other) {
         RuACT_con = other.RuACT_con;
         EPS_con = other.EPS_con;
     }
+    /**
+      Constructor to create an object from the contained classes
+
+      @param eother A EPSCon object to incorporate
+      @param rother A RuACTCon object to incorporate
+      */
     RACon(const EPSCon &eother, const RuACTCon &rother) {
         RuACT_con = rother;
         EPS_con = eother;
     }
+    /**
+      Constructor to create an object from the input vector, starting at the given index
+
+      @param vec Vector to create the object from
+      @param offset The index in vec to start creating the object from
+      */
     RACon(const arr &vec, size_t offset = 0){
         fromArray(vec, offset);
     }
+    /**
+      Copy items from the given vector to the data members
+
+      @param vec The Vector to copy from
+      @param offset The indec in vec to start the copying from
+      */
     void fromArray(const arr &vec, size_t offset = 0) {
         EPS_con.fromArray(vec, offset);
         RuACT_con.fromArray(vec, offset + EPS_con.size());
     }
+    /**
+      Convert the object into a vector of doubles
+
+      @return A vector containing the data values from the class
+      */
     arr toArray() {
         arr evec = EPS_con.toArray();
         arr rvec = RuACT_con.toArray();
@@ -55,6 +85,9 @@ public:
         evec.insert(evec.end(), rvec.begin(), rvec.end());
         return evec;
     }
+    /**
+      Get the size of the data vector
+      */
     size_t size() {
         return EPS_con.size() + RuACT_con.size();
     }
@@ -62,6 +95,19 @@ public:
     EPSCon EPS_con;
 };
 
+/**
+  Initialize the variables
+
+  @param theVars The global variables
+  @return A RACon object for input into calculations
+  */
 RACon RA_Ini(Variables *theVars);
 
+/**
+  Calculate the output values based on the inputs
+
+  @param RA_Con RACon object giving the input parameters
+  @param theVars The global variables
+  @return A vector containing the updated values
+  */
 arr RA_Mb(const double t, const RACon &RA_Con, Variables *theVars);
