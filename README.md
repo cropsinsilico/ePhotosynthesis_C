@@ -35,9 +35,11 @@ make docs
 This will build the documentation and put the resulting files in the doc directory.
 
 The ePhotosynthesis executable takes the following arguments:
+```
  -r,--record    Record the output values of all intermediate steps (this can substantially increase the runtime of the code)
  -e,--evn       The InputEvn.txt file, including path
  -a,--atpcost   The InputATPCost.txt file, including path
  -b,--begintime The starting time for the calculations (default is 0)
  -s,--stoptime  The ending time for the calculations (default is 5000)
  -z,--stepsize  The step size for the calculations (default is 1)
+```

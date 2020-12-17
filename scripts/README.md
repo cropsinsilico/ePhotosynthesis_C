@@ -1,9 +1,9 @@
-#Overview
+# Overview
 
 The original Matlab code was converted to C++ using both scripts and manual coding. The [convert.py](convert.py) script was used to
 handle the bulk of the conversion.
 
-##Process
+## Process
 
 The script to do the initial conversion looks for all files in the current directory that have the suffix '.m'. It the makes multiple
 passes through all of the files, gathering information and refining the code. Before the script is run, any files which do plotting
@@ -13,7 +13,8 @@ During the conversion process it was assumed that all variables were double prec
 - The variable was only used in comparisons in `if` statements and was the only thing on its side of the comparator, then it is assumed to be a boolean
 - The variable was only used for counting or as an index, then it is assumed to be a size_t or int
 
-###Automated
+### Automated
+
 During the passes through the code the script does the following:
 - Replace the Matlab comment (%) with the C++ version (//)
 - Remove extraneous spaces (e.g., no spaces before a terminating ';')
@@ -44,7 +45,7 @@ During the passes through the code the script does the following:
 - Write out the C++ files
 - Generate a header with all function signatures and the global data structure
 
-###Manual
+### Manual
 Once the script completes it is unlikely that the code will compile as there will be corner cases which the script did not see due to its
 strict pattern matching parameters. Strict pattern matching was chosen as it would be much less likely to produce broken code when compared to
 overly inclusive pattern matching. The following were done manually afterward:
