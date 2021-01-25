@@ -37,6 +37,15 @@
 #include "trDynaPS.hpp"
 #include "Variables.hpp"
 
+// macros to get options from either the command line (has precedence) or an options file
+#define varSearchD(x) if (result.count(#x) == 0 && inputs.count(#x) > 0) \
+    x = stod(inputs.at(#x), nullptr);
+#define varSearchI(x) if (result.count(#x) == 0 && inputs.count(#x) > 0) \
+    x = stoi(inputs.at(#x), nullptr);
+#define varSearch(x) if (result.count(#x) == 0 && inputs.count(#x) > 0) \
+    x = inputs.at(#x);
+
+
 void readFile(const std::string &filename, std::map<std::string, std::string> &mapper) {
     std::vector<std::string> tempVec;
     std::string input;
@@ -65,35 +74,50 @@ int main(int argc, const char* argv[]) {
         bool record = false;
         cxxopts::Options options("ePhotosynthesis", "C++ implementation of the matlab original");
         options.show_positional_help();
-        double stoptime, starttime, stepsize;
+        std::string evn, atpcost, optionsFile;
+        double stoptime, begintime, stepsize;
         double abstol, reltol;
         DriverType driverChoice;
-        int tempchoice, maxSubSteps;
+        int driver, maxSubSteps;
         options.add_options()
                 ("v,verbose", "Record output values for all steps (this can significantly slow the program).", cxxopts::value<bool>(record)->default_value("false"))
-                ("e,evn", "The InputEvn.txt file.", cxxopts::value<std::string>()->default_value("InputEvn.txt"))
-                ("a,atpcost", "The InputATPCost.txt file.", cxxopts::value<std::string>()->default_value("InputATPCost.txt"))
-                ("b,begintime", "The starting time for the calculations.", cxxopts::value<double>(starttime)->default_value("0.0"))
+                ("e,evn", "The InputEvn.txt file.", cxxopts::value<std::string>(evn)->default_value("InputEvn.txt"))
+                ("a,atpcost", "The InputATPCost.txt file.", cxxopts::value<std::string>(atpcost)->default_value("InputATPCost.txt"))
+                ("b,begintime", "The starting time for the calculations.", cxxopts::value<double>(begintime)->default_value("0.0"))
                 ("s,stoptime", "The time to stop calculations.", cxxopts::value<double>(stoptime)->default_value("5000.0"))
                 ("z,stepsize", "The step size to use in the calculations.", cxxopts::value<double>(stepsize)->default_value("1.0"))
                 ("m,maxSubSteps", "The maximum number of iterations at each time step.", cxxopts::value<int>(maxSubSteps)->default_value("750"))
-                ("d,driver", "The driver to use. Choices are:                            1 - trDynaPS                                         2 - DynaPS                                           3 - CM         ", cxxopts::value<int>(tempchoice)->default_value("1"))
+                ("d,driver", "The driver to use. Choices are:                            1 - trDynaPS                                         2 - DynaPS                                           3 - CM         ", cxxopts::value<int>(driver)->default_value("1"))
                 ("t,abstol", "Absolute tolerance for calculations", cxxopts::value<double>(abstol)->default_value("1e-5"))
                 ("r,reltol", "Relative tolerance for calculations", cxxopts::value<double>(reltol)->default_value("1e-4"))
+                ("o,options", "Name of a text file which specifies any of the above options. Command line arguments have priority.", cxxopts::value<std::string>(optionsFile)->default_value(""))
                 ("h,help", "Produce help message")
                 ;
 
         auto result = options.parse(argc, argv);
-        driverChoice = static_cast<DriverType>(tempchoice);
 
         if (result.count("help")) {
             std::cout << options.help() << std::endl;
             return (EXIT_SUCCESS);
         }
         std::map<std::string, std::string> inputs;
+        if (result.count("options")) {
+            readFile(result["options"].as<std::string>(), inputs);
 
-        readFile(result["evn"].as<std::string>(), inputs);
-        readFile(result["atpcost"].as<std::string>(), inputs);
+            varSearch(evn)
+            varSearch(atpcost)
+            varSearchD(begintime)
+            varSearchD(stoptime)
+            varSearchD(stepsize)
+            varSearchI(maxSubSteps)
+            varSearchI(driver)
+            varSearchD(abstol)
+            varSearchD(reltol)
+        }
+        driverChoice = static_cast<DriverType>(driver);
+
+        readFile(evn, inputs);
+        readFile(atpcost, inputs);
         Variables *theVars = new Variables();
         theVars->TestCa = static_cast<double>(stof(inputs.at("CO2"), nullptr));
         theVars->TestLi = static_cast<double>(stof(inputs.at("PAR"), nullptr));
@@ -101,26 +125,27 @@ int main(int argc, const char* argv[]) {
         theVars->TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
         theVars->record = record;
 
-        Driver *driver;
-        std::vector<double> ResultRate = myDyna->trDynaPS_Drive(1, 1);
+        Driver *maindriver;
+
         switch (driverChoice) {
             case trDynaPS:
-                driver = new trDynaPSDriver(theVars, starttime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
+                maindriver = new trDynaPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
                 break;
             case DynaPS:
-                driver = new DynaPSDrive(theVars, starttime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
+                maindriver = new DynaPSDrive(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
                 break;
             case CM:
-                driver = new CMDriver(theVars, starttime, stepsize, stoptime, maxSubSteps, abstol, reltol);
+                maindriver = new CMDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol);
                 break;
             default:
                 printf("Invalid driver choice given.\n");
                 exit(EXIT_FAILURE);
         }
 
-        std::vector<double> ResultRate = driver->run();
+        std::vector<double> ResultRate = maindriver->run();
 
         std::ofstream outfile("output.data");
+
         switch (driverChoice) {
             case trDynaPS:
                 outfile << "Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate" << std::endl;
@@ -143,14 +168,11 @@ int main(int argc, const char* argv[]) {
         }
         outfile.close();
 
-        //std::cout << 800-theVars->TestLi << ",  " << 23.8514-ResultRate[0] << ",  ";
-        //std::cout << 8.04985-ResultRate[1] << ",  " << 0.00395613-ResultRate[2] << ",  " << 1.5763-ResultRate[3] << ",  ";
-        //std::cout << 2.58119-ResultRate[4] << ",  " << 4.16627-ResultRate[5] << ",  " << 8.04976-ResultRate[6] << std::endl;
         if (theVars != nullptr) {
-            driver->theVars = nullptr;
+            maindriver->theVars = nullptr;
             delete theVars;
         }
-        delete driver;
+        delete maindriver;
 
         return (EXIT_SUCCESS);
     } catch (std::exception& e) {
