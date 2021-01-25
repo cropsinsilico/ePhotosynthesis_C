@@ -25,15 +25,10 @@
  **********************************************************************************************************************************************/
 
 #include "globals.hpp"
-#include <sundials/sundials_math.h>
-#include <cvode/cvode.h>
-#include <sunmatrix/sunmatrix_dense.h>
-#include <sunlinsol/sunlinsol_dense.h>
-#include <cvode/cvode_direct.h>
 #include "Variables.hpp"
 
-Variables *CM::theVars = new Variables();
-double CM::CM_Drive2(double pop, double currentPop) {
+CMDriver::~CMDriver() {}
+void CMDriver::setup() {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //   Global variables used for obtaining flux and concentration data //
@@ -56,7 +51,7 @@ double CM::CM_Drive2(double pop, double currentPop) {
     theVars->PSPR_SUCS_com = true;
 
     CMCon CM_con = CM_Ini();
-    arr CMs = CM_con.toArray();
+    constraints = CM_con.toArray();
     ////////////////////////////////////////////////
     //   Calculation  step //
     ////////////////////////////////////////////////
@@ -65,59 +60,21 @@ double CM::CM_Drive2(double pop, double currentPop) {
     theVars->SUCS_Param[1] = 1;
 
     theVars->PS_PR_Param = 0;
+}
 
-    UserData *data = alloc_user_data();
-    int flag;
-    realtype abstol = 1e-5;
-    realtype reltol = 1e-4;
-    sunindextype N =  static_cast<long>(CMs.size());
-    N_Vector y;
-    y = N_VNew_Serial(N);
-
-    for (size_t i = 0; i < CMs.size(); i++)
-        NV_Ith_S(y, i) =  CMs[i];
-
-    void *cvode_mem = nullptr;
-    cvode_mem = CVodeCreate(CV_BDF);
-    realtype t0 = 0;
-    flag = CVodeInit(cvode_mem, CM_mb, t0, y);
-
-    if (flag != 0)
-        std::cout << "FAIL" << std::endl;
-    flag = CVodeSStolerances(cvode_mem, reltol, abstol);
-    if (flag != 0)
-        std::cout << "FAIL" << std::endl;
-    flag = CVodeSetUserData(cvode_mem, data);
-
-    SUNMatrix A = SUNDenseMatrix(N, N);
-
-    SUNLinearSolver LS = SUNDenseLinearSolver(y, A);
-
-    flag = CVDlsSetLinearSolver(cvode_mem, LS, A);
-    if (flag != 0)
-        std::cout << "FAIL" << std::endl;
-    realtype tout;
-    realtype end_time = 250;
-    realtype step_length = 1.;
-    realtype t = 0;
-
-    for (tout = step_length; tout <= end_time; tout += step_length)
-        flag = CVode(cvode_mem, tout, y, &t, CV_NORMAL);
-
-
+void CMDriver::getResults() {
     //////////////////////////////////////////////
     //   output  step      //
     //////////////////////////////////////////////
+    CMCon CM_int_con(intermediateRes);
 
+    arr temp = CM_Mb(time, CM_int_con, theVars);
     // Reinitialize some values of global variables.
     theVars->PSPR_SUCS_com = false;
     IniModelCom(theVars);
 
     const double CO2AR = TargetFunVal(theVars);
 
-    N_VDestroy(y);
-    CVodeFree(&cvode_mem);
-    SUNLinSolFree(LS);
 
-    return CO2AR;
+    results = {CO2AR};
 }

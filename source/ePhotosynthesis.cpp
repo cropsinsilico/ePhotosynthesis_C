@@ -53,6 +53,13 @@ void readFile(const std::string &filename, std::map<std::string, std::string> &m
     }
 }
 
+enum DriverType {
+    None,
+    trDynaPS,
+    DynaPS,
+    CM
+};
+
 int main(int argc, const char* argv[]) {
     try {
         bool record = false;
@@ -60,6 +67,7 @@ int main(int argc, const char* argv[]) {
         options.show_positional_help();
         double stoptime, starttime, stepsize;
         double abstol, reltol;
+        DriverType driverChoice;
         int tempchoice, maxSubSteps;
         options.add_options()
                 ("v,verbose", "Record output values for all steps (this can significantly slow the program).", cxxopts::value<bool>(record)->default_value("false"))
@@ -69,12 +77,14 @@ int main(int argc, const char* argv[]) {
                 ("s,stoptime", "The time to stop calculations, default is 250", cxxopts::value<double>(stoptime)->default_value("5000.0"))
                 ("z,stepsize", "The step size to use in the calculations, default is 1.0", cxxopts::value<double>(stepsize)->default_value("1.0"))
                 ("m,maxSubSteps", "The maximum number of iterations at each time step.", cxxopts::value<int>(maxSubSteps)->default_value("750"))
+                ("d,driver", "The driver to use. Choices are:                            1 - trDynaPS                                         2 - DynaPS                                           3 - CM         ", cxxopts::value<int>(tempchoice)->default_value("1"))
                 ("t,abstol", "Absolute tolerance for calculations", cxxopts::value<double>(abstol)->default_value("1e-5"))
                 ("r,reltol", "Relative tolerance for calculations", cxxopts::value<double>(reltol)->default_value("1e-4"))
                 ("h,help", "Produce help message")
                 ;
 
         auto result = options.parse(argc, argv);
+        driverChoice = static_cast<DriverType>(tempchoice);
 
         if (result.count("help")) {
             std::cout << options.help() << std::endl;
@@ -91,24 +101,56 @@ int main(int argc, const char* argv[]) {
         theVars->TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
         theVars->record = record;
 
-        trDynaPS *myDyna = new trDynaPS(theVars, starttime, stepsize, stoptime);
+        Driver *driver;
         std::vector<double> ResultRate = myDyna->trDynaPS_Drive(1, 1);
+        switch (driverChoice) {
+            case trDynaPS:
+                driver = new trDynaPSDriver(theVars, starttime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
+                break;
+            case DynaPS:
+                driver = new DynaPSDrive(theVars, starttime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
+                break;
+            case CM:
+                driver = new CMDriver(theVars, starttime, stepsize, stoptime, maxSubSteps, abstol, reltol);
+                break;
+            default:
+                printf("Invalid driver choice given.\n");
+                exit(EXIT_FAILURE);
+        }
+
+        std::vector<double> ResultRate = driver->run();
 
         std::ofstream outfile("output.data");
-        outfile << "Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate" << std::endl;
-        outfile << theVars->TestLi << "," << ResultRate[0] << ",";
-        outfile << ResultRate[1] << "," << ResultRate[2] << "," << ResultRate[3] << ",";
-        outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << std::endl;
+        switch (driverChoice) {
+            case trDynaPS:
+                outfile << "Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate" << std::endl;
+                outfile << theVars->TestLi << "," << ResultRate[0] << ",";
+                outfile << ResultRate[1] << "," << ResultRate[2] << "," << ResultRate[3] << ",";
+                outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << std::endl;
+                break;
+            case DynaPS:
+                outfile << "Light intensity,PSIIabs,PSIabs,Vc,Vo,VPGA,Vsucrose,Vstarch" << std::endl;
+                outfile << theVars->TestLi << "," << ResultRate[0] << ",";
+                outfile << ResultRate[1] << "," << ResultRate[2] << "," << ResultRate[3] << ",";
+                outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << std::endl;
+                break;
+            case CM:
+                outfile << "Light intensity,CO2AR" << std::endl;
+                outfile << theVars->TestLi << ResultRate[0] << std::endl;
+                break;
+            default:
+                break;
+        }
         outfile.close();
-        //800,23.8514,8.04985,0.00395613,1.5763,2.58119,4.16627,8.04976
+
         //std::cout << 800-theVars->TestLi << ",  " << 23.8514-ResultRate[0] << ",  ";
         //std::cout << 8.04985-ResultRate[1] << ",  " << 0.00395613-ResultRate[2] << ",  " << 1.5763-ResultRate[3] << ",  ";
         //std::cout << 2.58119-ResultRate[4] << ",  " << 4.16627-ResultRate[5] << ",  " << 8.04976-ResultRate[6] << std::endl;
         if (theVars != nullptr) {
-            myDyna->theVars = nullptr;
+            driver->theVars = nullptr;
             delete theVars;
         }
-        delete myDyna;
+        delete driver;
 
         return (EXIT_SUCCESS);
     } catch (std::exception& e) {

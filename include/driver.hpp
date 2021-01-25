@@ -30,7 +30,9 @@
 
 #include <nvector/nvector_serial.h>
 #include <sundials/sundials_types.h>
-
+#include "globals.hpp"
+struct Variables;
+class Driver;
 struct UserData {
   std::vector<realtype> coeffs;
 };
@@ -40,3 +42,43 @@ inline UserData *alloc_user_data() {
   data = new UserData();
   return data;
 }
+
+struct CalcData {
+    Driver *drv;
+};
+
+inline CalcData *alloc_calc_data() {
+    CalcData *data;
+    data = new CalcData();
+    return data;
+}
+
+class Driver {
+public:
+    Driver(Variables *theVars, const double start, const double step, const double endtime,
+           const int maxSubSteps, const double atol, const double rtol) {
+        this->theVars = theVars;
+        this->start = start;
+        this->step = step;
+        this->endtime = endtime;
+        this->maxSubSteps = maxSubSteps;
+        this->abstol = atol;
+        this->reltol = rtol;
+    }
+    virtual void setup() = 0;
+    arr run();
+    virtual void getResults() = 0;
+    static int calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
+    virtual arr MB(realtype t, N_Vector u) = 0;
+    virtual ~Driver() = 0;
+    static Variables *theVars;
+protected:
+    realtype abstol;
+    realtype reltol;
+    double start, step, endtime;
+    int maxSubSteps;
+    arr constraints;
+    realtype *intermediateRes;
+    arr results;
+    realtype time;
+};
