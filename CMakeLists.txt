@@ -118,7 +118,7 @@ include_directories("${PROJECT_SOURCE_DIR}/include")
 
 target_link_libraries(EPhotosynthesis ${SUNDIALS_LIBRARIES})
 
-target_link_libraries(EPhotosynthesis boost_regex)
+target_link_libraries(EPhotosynthesis ${Boost_LIBRARIES})
 target_link_libraries(ePhoto EPhotosynthesis)
 
 install(TARGETS EPhotosynthesis DESTINATION lib)

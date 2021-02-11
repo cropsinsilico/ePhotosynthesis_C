@@ -1,0 +1,39 @@
+# ./ePhoto -e ../InputEvn.txt -a ../InputATPCost.txt
+models:
+  name: ePhotosynthesis
+  language: cmake
+  args: [./ePhoto, -d, 1, -a, InputATPCost.txt, -e, InputEvn.txt, -T, 25, -n, InputEnzyme.txt, -g, InputGRNC.txt]
+  target: ePhoto
+  target_language: cpp
+  compiler_flags: [-DCMAKE_BUILD_TYPE=Debug]
+  with_asan: true
+  preserve_cache: true
+  # For single data point
+  # inputs:
+  #   - name: steps
+  #     default_file:
+  #       name: ./InputEvn.txt
+  #       filetype: map
+  #       datatype:
+  #         type: object
+  # outputs:
+  #   - name: output
+  #     default_file:
+  #       name: output_ygg_single.data
+  #       filetype: table
+  #       field_names: Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate  # For series of data points
+  inputs:
+    - name: steps
+      default_file:
+        name: ./InputSteps.txt
+        filetype: table
+        transform:
+          transformtype: map
+        datatype:
+          type: object
+  outputs:
+    - name: output
+      default_file:
+        name: output_ygg_multiple.data
+        filetype: table
+        field_names: Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate

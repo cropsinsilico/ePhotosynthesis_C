@@ -34,10 +34,17 @@
 #include "modules/CM.hpp"
 #include "modules/EPS.hpp"
 #include "modules/PR.hpp"
+#include "modules/BF.hpp"
+#include "modules/FI.hpp"
 #include "drivers/drivers.hpp"
 #include "Variables.hpp"
 
+
 using namespace ePhotosynthesis;
+
+#ifdef WITH_YGGDRASIL
+#include <YggInterface.hpp>
+#endif
 
 // macros to get options from either the command line (has precedence) or an options file
 #define varSearchD(x) if (result.count(#x) == 0 && inputs.count(#x) > 0) \
@@ -46,6 +53,30 @@ using namespace ePhotosynthesis;
     x = stoi(inputs.at(#x), nullptr);
 #define varSearch(x) if (result.count(#x) == 0 && inputs.count(#x) > 0) \
     x = inputs.at(#x);
+
+#define assignInputVarD(src, dst) if (inputs.count(#src) > 0)		\
+    theVars-> dst = static_cast<double>(stof(inputs.at(#src), nullptr));	\
+  else \
+    printf("Input variable \"%s\" not set\n", #src)
+#define assignInputVarI(src, dst) if (inputs.count(#src) > 0)		\
+    theVars-> dst = stoi(inputs.at(#src), nullptr);			\
+  else \
+    printf("Input variable \"%s\" not set\n", #src)
+
+#define setInputVarB(src, mod, dst) if (inputs.count(#src) > 0)		\
+    modules::mod::set ## dst ((bool)(stoi(inputs.at(#src), nullptr)));	\
+  else \
+    printf("Input variable \"%s\" not set\n", #src)
+
+
+#ifdef WITH_YGGDRASIL
+#define assignYggVarD(src, dst) if (new_state.HasMember(#src))		\
+    theVars->dst = new_state[#src].GetScalar<double>()
+#define assignYggVarI(src, dst) if (new_state.HasMember(#src))		\
+    theVars->dst = static_cast<int>(new_state[#src].GetScalar<double>())
+#define setYggVarB(src, mod, dst) if (new_state.HasMember(#src))	\
+    modules::mod::set ## dst ((static_cast<int>(new_state[#src].GetScalar<double>()) == 1))
+#endif // WITH_YGGDRASIL
 
 enum DriverType {
     None,
@@ -62,7 +93,7 @@ int main(int argc, const char* argv[]) {
         bool useC3 = false;
         cxxopts::Options options("ePhotosynthesis", "C++ implementation of the matlab original");
         options.show_positional_help();
-        std::string evn, atpcost, optionsFile, enzymeFile;
+        std::string evn, atpcost, optionsFile, enzymeFile, grnFile;
         double stoptime, begintime, stepsize;
         double abstol, reltol;
         double Tp;
@@ -75,6 +106,8 @@ int main(int argc, const char* argv[]) {
                 ("e,evn", "The InputEvn.txt file.", cxxopts::value<std::string>(evn)->default_value("InputEvn.txt"))
                 ("a,atpcost", "The InputATPCost.txt file.", cxxopts::value<std::string>(atpcost)->default_value("InputATPCost.txt"))
                 ("n,enzyme", "The input enzyme file.", cxxopts::value<std::string>(enzymeFile)->default_value(""))
+	        ("g,grn", "The input genetic regulatory network concentrations.",
+		 cxxopts::value<std::string>(grnFile)->default_value(""))
                 ("b,begintime", "The starting time for the calculations.", cxxopts::value<double>(begintime)->default_value("0.0"))
                 ("s,stoptime", "The time to stop calculations.", cxxopts::value<double>(stoptime)->default_value("5000.0"))
                 ("z,stepsize", "The step size to use in the calculations.", cxxopts::value<double>(stepsize)->default_value("1.0"))
@@ -103,6 +136,8 @@ int main(int argc, const char* argv[]) {
 
             varSearch(evn)
             varSearch(atpcost)
+	    varSearch(enzymeFile)
+	    varSearch(grnFile)
             varSearchD(begintime)
             varSearchD(stoptime)
             varSearchD(stepsize)
@@ -115,15 +150,61 @@ int main(int argc, const char* argv[]) {
 
         readFile(evn, inputs);
         readFile(atpcost, inputs);
-        Variables *theVars = new Variables();
+	SUNContext context;
+	if (SUNContext_Create(NULL, &context) < 0) {
+	  std::cout << "SUNContext_Create failed" << std::endl;
+	  throw std::runtime_error("SUNContext_Create");
+	}
+        Variables *theVars = new Variables(&context);
         if (result.count("enzyme")) {
-            readFile(enzymeFile, theVars->EnzymeAct);
+	    readFile(enzymeFile, theVars->EnzymeAct, true);
         }
-        theVars->CO2_in = static_cast<double>(stof(inputs.at("CO2"), nullptr));
-        theVars->TestLi = static_cast<double>(stof(inputs.at("PAR"), nullptr));
-        if (stoi(inputs.at("SucPath"), nullptr) > 0)
-            modules::CM::setTestSucPath(true);
-        theVars->TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
+
+	assignInputVarD(CO2, CO2_in);
+	assignInputVarD(Air_CO2, CO2_in);
+	assignInputVarD(PAR, TestLi);
+	assignInputVarD(Radiation_PAR, TestLi);
+	assignInputVarD(ATPCost, TestATPCost);
+	assignInputVarI(GRNC, GRNC);
+	setInputVarB(SucPath, CM, TestSucPath);
+
+	// Read the GRN data and assign it into the correct positions based
+	// on the expected order
+	if (result.count("grn")) {
+	  std::map<std::string, double> glymaID_map;
+	  readFile(grnFile, glymaID_map);
+	  double pcfactor = 1.0 / 0.973;
+	  if (inputs.count("ProteinTotalRatio") > 0)
+	    pcfactor = 1.0 / static_cast<double>(stof(inputs.at("ProteinTotalRatio"), nullptr));
+	  size_t i = 0;
+	  for (auto it = glymaID_order.begin(); it != glymaID_order.end(); it ++, i++) {
+	    double iVfactor = 1.0;
+	    try {
+	      if ((i >= 33) && (theVars->GRNC == 0))
+		iVfactor = 1.0;
+	      else
+		iVfactor = pcfactor * glymaID_map.at(*it);
+	    } catch (const std::out_of_range&) {
+	      // Do nothing
+	      printf("GlymaID \"%s\" not present.\n", it->c_str());
+	    }
+	    if (i < 33)
+	      theVars->VfactorCp[i] = iVfactor;
+	    else if (i == 33)
+	      modules::BF::setcATPsyn(iVfactor);
+	    else if (i == 34)
+	      modules::BF::setCPSi(iVfactor);
+	    else if (i == 35)
+	      modules::FI::setcpsii(iVfactor);
+	    else if (i == 36)
+	      modules::BF::setcNADPHsyn(iVfactor);
+	    else {
+	      printf("More GlymaIDs than expected.\n");
+	      exit(EXIT_FAILURE);
+	    }
+	  }
+	}
+
         theVars->record = record;
         theVars->useC3 = useC3;
         theVars->RUBISCOMETHOD = 1;
@@ -140,6 +221,58 @@ int main(int argc, const char* argv[]) {
             std::cout << "This is not a debug build, no debug reporting will be done." << std::endl;
 #endif
         drivers::Driver *maindriver;
+	
+#ifdef WITH_YGGDRASIL
+	int flag = 0;
+	YggAsciiTableOutput* out;
+	Variables *origVars = theVars->deepcopy();
+        switch (driverChoice) {
+	case trDynaPS:
+	  out = new YggAsciiTableOutput("output", "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n");
+	  break;
+	case DynaPS:
+	  out = new YggAsciiTableOutput("output", "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n");
+	  break;
+	case CM:
+	  out = new YggAsciiTableOutput("output", "%f\t%f\n");
+	  break;
+	case EPS:
+	  out = new YggAsciiTableOutput("output", "%f\n");
+	  break;
+	default:
+	  printf("Invalid driver choice given.\n");
+	  exit(EXIT_FAILURE);
+        }
+	YggGenericInput steps("steps");
+	bool first = true;
+	int iteration = 0;
+	while (true) {
+	  std::cout << "ITERATION: " << iteration << std::endl;
+	  if (!first)
+	    theVars = origVars->deepcopy();
+	  rapidjson::Document new_state;
+	  flag = steps.recv(1, &new_state);
+	  if (flag < 0) {
+	    if (first) {
+	      printf("Failed to receive first step.\n");
+	      exit(EXIT_FAILURE);
+	    } else {
+	      printf("End of input\n");
+	      delete theVars;
+	      break;
+	    }
+	  }
+
+	  std::cout << "state = " << new_state << std::endl;
+	  assignYggVarD(CO2, CO2_in);
+	  assignYggVarD(Air_CO2, CO2_in);
+	  assignYggVarD(PAR, TestLi);
+	  assignYggVarD(Radiation_PAR, TestLi);
+	  assignYggVarD(ATPCost, TestATPCost);
+	  assignYggVarI(GRNC, GRNC);
+	  setYggVarB(SucPath, CM, TestSucPath);
+
+#endif
 
         //DEBUG_MESSAGE("TESTING",0)
         switch (driverChoice) {
@@ -167,6 +300,32 @@ int main(int argc, const char* argv[]) {
 
         std::vector<double> ResultRate = maindriver->run();
 
+#ifdef WITH_YGGDRASIL
+        switch (driverChoice) {
+	case trDynaPS:
+	  flag = out->send(8, theVars->TestLi, ResultRate[0], ResultRate[1],
+			   ResultRate[2], ResultRate[3], ResultRate[4],
+			   ResultRate[5], ResultRate[6]);
+	  break;
+	case DynaPS:
+	  flag = out->send(8, theVars->TestLi, ResultRate[0], ResultRate[1],
+			   ResultRate[2], ResultRate[3], ResultRate[4],
+			   ResultRate[5], ResultRate[6]);
+	  break;
+	case CM:
+	  flag = out->send(2, theVars->TestLi, ResultRate[0]);
+	  break;
+	case EPS:
+	  flag = out->send(1, ResultRate[0]);
+	  break;
+	default:
+	  break;
+        }
+	if (flag < 0) {
+	  printf("Error sending output.\n");
+	  exit(EXIT_FAILURE);
+	}
+#else	
         std::ofstream outfile("output.data");
 
         switch (driverChoice) {
@@ -184,7 +343,7 @@ int main(int argc, const char* argv[]) {
                 break;
             case CM:
                 outfile << "Light intensity,CO2AR" << std::endl;
-                outfile << theVars->TestLi << ResultRate[0] << std::endl;
+                outfile << theVars->TestLi << "," << ResultRate[0] << std::endl;
                 break;
             case EPS:
                 outfile << ResultRate[0] << std::endl;
@@ -193,12 +352,24 @@ int main(int argc, const char* argv[]) {
                 break;
         }
         outfile.close();
-
+#endif
+	
         if (theVars != nullptr) {
             maindriver->inputVars = nullptr;
             delete theVars;
         }
         delete maindriver;
+
+#ifdef WITH_YGGDRASIL
+	  first = false;
+	  iteration++;
+	}
+	delete out;
+	if (origVars != nullptr)
+	  delete origVars;
+#endif
+	SUNContext_Free(&context);
+	
         return (EXIT_SUCCESS);
     } catch (std::exception& e) {
         std::cout << "An error occurred: " << e.what() << std:: endl;

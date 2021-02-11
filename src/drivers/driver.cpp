@@ -40,9 +40,28 @@ using namespace ePhotosynthesis::conditions;
 
 bool Driver::showWarnings = false;
 
+Driver::Driver(Variables *theVars, const double startTime, const double stepSize, const double endTime,
+	       const int maxSubsteps, const double atol, const double rtol,
+	       const bool showWarn) {
+  this->context = theVars->context;
+  this->inputVars = theVars;
+  this->start = startTime;
+  this->step = stepSize;
+  initialStep = stepSize;
+  this->endtime = endTime;
+  this->maxSubSteps = maxSubsteps;
+  this->showWarnings = showWarn;
+  abstol = atol;
+  reltol = rtol;
+  maxStep = 20. * step;
+  data = nullptr;
+  origVars = nullptr;
+}
+
 arr Driver::run() {
     origVars = new Variables(inputVars);
     uint count = 0;
+
     while (count < 10){
         maxStep = 20. * step;
 
@@ -50,7 +69,7 @@ arr Driver::run() {
 
         sunindextype N =  static_cast<long>(constraints.size());
         N_Vector y;
-        y = N_VNew_Serial(N);
+        y = N_VNew_Serial(N, *context);
 
         for (std::size_t i = 0; i < constraints.size(); i++)
             NV_Ith_S(y, i) =  constraints[i];
@@ -68,18 +87,18 @@ arr Driver::run() {
 
         data->drv = this;
 
-        SUNMatrix A = SUNDenseMatrix(N, N);
-        SUNNonlinearSolver NLS = SUNNonlinSol_Newton(y);
-        SUNLinearSolver LS = SUNDenseLinearSolver(y, A);
+        SUNMatrix A = SUNDenseMatrix(N, N, *context);
+        SUNNonlinearSolver NLS = SUNNonlinSol_Newton(y, *context);
+        SUNLinearSolver LS = SUNLinSol_Dense(y, A, *context);
 
         try {
             if (CVodeSetNonlinearSolver(cvode_mem, NLS) != CV_SUCCESS) {
                 std::cout << "CVodeSetNonlinearSolver failed" << std::endl;
                 throw std::runtime_error("CVodeSetNonlinearSolver failed");
             }
-            if (CVDlsSetLinearSolver(cvode_mem, LS, A) != CV_SUCCESS) {
-                std::cout << "CVDlsSetLinearSolver failed" << std::endl;
-                throw std::runtime_error("CVDlsSetLinearSolver failed");
+            if (CVodeSetLinearSolver(cvode_mem, LS, A) != CV_SUCCESS) {
+                std::cout << "CVodeSetLinearSolver failed" << std::endl;
+                throw std::runtime_error("CVodeSetLinearSolver failed");
             }
         } catch(...) {
             std::exception_ptr eptr = std::current_exception();

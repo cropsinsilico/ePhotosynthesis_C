@@ -1,0 +1,3 @@
+# Light intensity	Vc	Vo	VPGA	VT3P	Vstarch	Vt_glycerate	Vt_glycolate
+# %f	%f	%f	%f	%f	%f	%f	%f
+800.000000	24.074739	8.125224	0.004409	1.668828	2.498736	4.062612	8.125224

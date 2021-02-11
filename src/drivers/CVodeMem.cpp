@@ -12,7 +12,7 @@ using namespace ePhotosynthesis::drivers;
 void CVodeMem::cvode_mem_init(Driver* driver, realtype t0, N_Vector y) {
     if (!initialized) {
         data = alloc_calc_data();
-        _cvode_mem = CVodeCreate(CV_BDF);
+        _cvode_mem = CVodeCreate(CV_BDF, driver->context[0]);
         if (CVodeInit(_cvode_mem, driver->calculate, t0, y) != CV_SUCCESS) {
             std::cout << "CVodeInit failed" << std::endl;
             throw std::runtime_error("CVodeInit failed");

@@ -54,6 +54,8 @@
 #include "conditions/SUCSCondition.hpp"
 #include "conditions/XanCycleCondition.hpp"
 
+#include <sundials/sundials_context.h>
+
 namespace ePhotosynthesis {
 
 /**
@@ -61,12 +63,20 @@ namespace ePhotosynthesis {
   */
 class Variables {
 public:
-    Variables() {}
+    Variables(SUNContext* ctx = NULL) {
+        context = ctx;
+	if (!ctx) {
+	    std::cout << "SUNContext is NULL" << std::endl;
+	    throw  std::runtime_error("SUNContext is NULL");
+	}
+    }
     Variables(const Variables* other);
     Variables(const Variables& other);
+    Variables* deepcopy() const;
     Variables& operator=(const Variables& other);
     friend std::ostream& operator<<(std::ostream &out, const Variables *in);
 
+    SUNContext* context = NULL;
     bool record = false;
     bool BF_FI_com = false;
     bool EPS_SUCS_com = false;
