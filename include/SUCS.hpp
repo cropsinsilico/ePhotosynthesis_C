@@ -267,8 +267,22 @@ private:
     static double V57;   ///< SUCP--Pi + SUC
     static double V58;   ///< F26BP--F6P + Pi
     static double V59;   ///< F6P + ATP --ADP + F26BP
+    static double V60;
+    static double V61;
     static double V62;   ///< SUC Sink
     static double Vdhap_in; ///< DHAP export from chloroplast
     static double Vgap_in;  ///< GAP export from chloroplast
     static double Vpga_in;  ///< PGA export from chloropalst
+    static double Km592;
+    static double KI592;
+    static double Km601;
+    static double Km602;
+    static double Km603;
+    static double Km604;
+    static double KE60;
+    static double Vfactor51;
+    static double Vfactor52;
+    static double Vfactor56;
+    static double Vfactor57;
+    static double Vfactor59;
 };

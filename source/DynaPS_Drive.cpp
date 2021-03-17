@@ -106,7 +106,7 @@ void DynaPSDrive::setup() {
     theVars->XanCycle_Param[0] = va1;
     theVars->XanCycle_Param[1] = theVars->PS12ratio;
 
-    theVars->RedoxReg_Param = 0; // This parameter is just used here as a future storage tool. NOt used now.
+    theVars->RedoxReg_Param = 0; // This parameter is just used here as a future storage tool. Not used now.
 
     constraints = zeros(120);
     arr temp = DynaPS_con.toArray();

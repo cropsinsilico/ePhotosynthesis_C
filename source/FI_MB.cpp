@@ -37,10 +37,12 @@ arr FI::FI_Mb(const double t, const FICon &FI_Con, Variables *theVars) {
     //////////////////////////////////////////////////////////////////
     //   Calculate the rates first   //
     //////////////////////////////////////////////////////////////////
-    Condition(t, theVars);
-    const double light = theVars->GLight;
-
-    theVars->FI_Param[0] = light;
+    if (theVars->useC3) {
+        theVars->FI_Param[0] = theVars->LI * 30;
+    } else {
+        Condition(t, theVars);
+        theVars->FI_Param[0] = theVars->GLight;
+    }
 
     FI_Rate(t, FI_Con, theVars);
 

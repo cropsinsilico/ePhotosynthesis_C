@@ -35,6 +35,7 @@
 #include "cxxopts.hpp"
 #include "globals.hpp"
 #include "trDynaPS.hpp"
+#include "EPS.hpp"
 #include "Variables.hpp"
 
 // macros to get options from either the command line (has precedence) or an options file
@@ -66,12 +67,14 @@ enum DriverType {
     None,
     trDynaPS,
     DynaPS,
-    CM
+    CM,
+    EPS
 };
 
 int main(int argc, const char* argv[]) {
     try {
         bool record = false;
+        bool useC3 = false;
         cxxopts::Options options("ePhotosynthesis", "C++ implementation of the matlab original");
         options.show_positional_help();
         std::string evn, atpcost, optionsFile;
@@ -87,7 +90,8 @@ int main(int argc, const char* argv[]) {
                 ("s,stoptime", "The time to stop calculations.", cxxopts::value<double>(stoptime)->default_value("5000.0"))
                 ("z,stepsize", "The step size to use in the calculations.", cxxopts::value<double>(stepsize)->default_value("1.0"))
                 ("m,maxSubSteps", "The maximum number of iterations at each time step.", cxxopts::value<int>(maxSubSteps)->default_value("750"))
-                ("d,driver", "The driver to use. Choices are:                            1 - trDynaPS                                         2 - DynaPS                                           3 - CM         ", cxxopts::value<int>(driver)->default_value("1"))
+                ("d,driver", "The driver to use. Choices are:                            1 - trDynaPS                                         2 - DynaPS                                           3 - CM                                           3 - EPS         ", cxxopts::value<int>(driver)->default_value("1"))
+                ("c,c3", "Use the C3 model, automatically set to true for EPS driver", cxxopts::value<bool>(useC3)->default_value("false"))
                 ("t,abstol", "Absolute tolerance for calculations", cxxopts::value<double>(abstol)->default_value("1e-5"))
                 ("r,reltol", "Relative tolerance for calculations", cxxopts::value<double>(reltol)->default_value("1e-4"))
                 ("o,options", "Name of a text file which specifies any of the above options. Command line arguments have priority.", cxxopts::value<std::string>(optionsFile)->default_value(""))
@@ -124,6 +128,7 @@ int main(int argc, const char* argv[]) {
         theVars->TestSucPath = stoi(inputs.at("SucPath"), nullptr);
         theVars->TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
         theVars->record = record;
+        theVars->useC3 = useC3;
 
         Driver *maindriver;
 
@@ -136,6 +141,10 @@ int main(int argc, const char* argv[]) {
                 break;
             case CM:
                 maindriver = new CMDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol);
+                break;
+            case EPS:
+                theVars->useC3 = true;
+                maindriver = new EPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
                 break;
             default:
                 printf("Invalid driver choice given.\n");
@@ -162,6 +171,9 @@ int main(int argc, const char* argv[]) {
             case CM:
                 outfile << "Light intensity,CO2AR" << std::endl;
                 outfile << theVars->TestLi << ResultRate[0] << std::endl;
+                break;
+            case EPS:
+                outfile << ResultRate[0] << std::endl;
                 break;
             default:
                 break;
