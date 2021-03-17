@@ -167,8 +167,6 @@ PSCon PS::PS_Ini(Variables *theVars) {
     PS_con.PenP = 0.25;
 
     if (theVars->useC3) {
-
-
         if (theVars->GRNC == 1 && theVars->CO2_cond > 0) {
             Vfactor1 = theVars->VfactorCp[0];
             Vfactor2 = theVars->VfactorCp[2];
@@ -233,8 +231,8 @@ PSCon PS::PS_Ini(Variables *theVars) {
         KM102   = 0.072 ;       //   Estimate for GAP
         KM103   = 0.46 ;        //   Estimate for S7P                                    // New
         KE10    = 1/0.85 ;      //   The equilibrium constant for this reaction          // New From Laisk or Bassham and Krause 1969 BBA
-        //PsKE11	=	0.4	;	    //	Equilibrium Constant	11	Ri5P<-->Ru5P
-        //PsKE12	=	0.67;		// 	Equilibrium Constant	12	Xu5P<-->Ru5P
+        KE11	=	0.4	;	    //	Equilibrium Constant	11	Ri5P<-->Ru5P
+        KE12	=	0.67;		// 	Equilibrium Constant	12	Xu5P<-->Ru5P
 
         KM131	=	0.05;		    //	Ru5P	13	Ru5P+ATP<->RuBP+ADP
         KM132	=	0.059;		    // 	ATP	13	Ru5P+ATP<->RuBP+ADP
@@ -248,7 +246,8 @@ PSCon PS::PS_Ini(Variables *theVars) {
         KM162	=	0.3;		// 	Pi	16	ADP+Pi<-> ATP
         KM163   =   0.3;        //   ATP 16  ADP+Pi<-> ATP                           // New       Based on Laisk
         KE16    =   5.734;      //   The equilibrium constant for this reaction      // NEW, From Laisk or Bassham and Krause 1969 BBA
-
+        KE21 = 2.3;
+        KE22 = 0.058;
         //PsKE21	=	2.3;		//	Equilibrium constant	21	F6P<->G6P
         //PsKE22	=	0.058;		// 	Equilibrium constant	22	G6P<->G1P
         KM231	=	0.08;		//	G1P	23	G1P+ATP+Gn<->PPi+ADP+Gn+1

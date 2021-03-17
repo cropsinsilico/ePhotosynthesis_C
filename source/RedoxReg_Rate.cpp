@@ -80,13 +80,13 @@ void RedoxReg::RedoxReg_Rate(const double t, const RedoxRegCon &RedoxReg_Con, Va
             theVars->RedoxReg_MP[index][2] = retvals[0];
 
 
-            if (theVars->RedoxReg_MP[index][0] == 6) {
+            if (static_cast<int>(theVars->RedoxReg_MP[index][0]) == 6) {
                 theVars->Redox2PS_V6 = RedoxReg_VMAX6 * theVars->RedoxReg_MP[index][2];
-            } else if (theVars->RedoxReg_MP[index][0] == 9) {
+            } else if (static_cast<int>(theVars->RedoxReg_MP[index][0]) == 9) {
                 theVars->Redox2PS_V9 = RedoxReg_VMAX9 * theVars->RedoxReg_MP[index][2];
-            } else if (theVars->RedoxReg_MP[index][0] == 13) {
+            } else if (static_cast<int>(theVars->RedoxReg_MP[index][0]) == 13) {
                 theVars->Redox2PS_V13 = RedoxReg_VMAX13 * theVars->RedoxReg_MP[index][2];
-            } else if (theVars->RedoxReg_MP[index][0] == 16) {
+            } else if (static_cast<int>(theVars->RedoxReg_MP[index][0]) == 16) {
                 theVars->Redox2PS_V16 = RedoxReg_VMAX16 * theVars->RedoxReg_MP[index][2];
             }
         }

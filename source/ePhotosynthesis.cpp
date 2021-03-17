@@ -90,7 +90,7 @@ int main(int argc, const char* argv[]) {
                 ("s,stoptime", "The time to stop calculations.", cxxopts::value<double>(stoptime)->default_value("5000.0"))
                 ("z,stepsize", "The step size to use in the calculations.", cxxopts::value<double>(stepsize)->default_value("1.0"))
                 ("m,maxSubSteps", "The maximum number of iterations at each time step.", cxxopts::value<int>(maxSubSteps)->default_value("750"))
-                ("d,driver", "The driver to use. Choices are:                            1 - trDynaPS                                         2 - DynaPS                                           3 - CM                                           3 - EPS         ", cxxopts::value<int>(driver)->default_value("1"))
+                ("d,driver", "The driver to use. Choices are:                            1 - trDynaPS                                         2 - DynaPS                                           3 - CM                                               4 - EPS         ", cxxopts::value<int>(driver)->default_value("1"))
                 ("c,c3", "Use the C3 model, automatically set to true for EPS driver", cxxopts::value<bool>(useC3)->default_value("false"))
                 ("t,abstol", "Absolute tolerance for calculations", cxxopts::value<double>(abstol)->default_value("1e-5"))
                 ("r,reltol", "Relative tolerance for calculations", cxxopts::value<double>(reltol)->default_value("1e-4"))

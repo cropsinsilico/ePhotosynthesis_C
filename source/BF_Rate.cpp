@@ -140,7 +140,7 @@ void BF::BF_Rate(const double t, const BFCon &BF_con, Variables *theVars) {
     double JMg;
     double JCl;
     double JK;
-    if (temp == 0) {
+    if (temp == 0.) {
         JK = theVars->BF_RC.PK * (Kl - BF_con.Ks) / 10;     // The flux of K from lumen to stroma; unit: mol/dm2/s; the unit of permeability is: cm s-1; 10 represent the conversion from cm s-1 to dm s-1; Remember that 1 liter is 1 dm3.
         JCl = theVars->BF_RC.PCl * (Cll - BF_con.Cls) / 10; // The flux of Cl from lumen to stroma; unit: mol/dm2/s; unit of permeability is cm s-1; 10 represent the conversion from cm s-1 to dm s-1; remember that 1 liter amount to 1 decimeter cube
         JMg = theVars->BF_RC.PMg * (Mgl - BF_con.Mgs) / 10; // The flux of Mg from lumen to stroma; unit: mol/dm2/s; unit of permeability is cm s-1; 10 represent the conversion of cm s-1 to dm s-1. Remember that 1 liter amount to 1 decimeter cube.

@@ -26,6 +26,9 @@
 
 #include "Variables.hpp"
 
+#define KEe2ATPase 1.
+#define ke2ATPase 1.
+
 void RROEA::RROEA_Rate(const double t, const RROEACon &RROEA_con, Variables *theVars) {
 
     const double GAPDHo = theVars->RROEA_Pool.GAPDH - RROEA_con.GAPDH;
@@ -38,10 +41,6 @@ void RROEA::RROEA_Rate(const double t, const RROEACon &RROEA_con, Variables *the
     const double Thioo = theVars->RROEA_Pool.ThioT - RROEA_con.Thio;
     const double Fdo = theVars->RROEA_Pool.FdT - RROEA_con.Fd;
     const double RuACTo = theVars->RROEA_Pool.RuACTT - RROEA_con.RuACT;
-
-
-    const double KEe2ATPase = 1;
-    const double ke2ATPase = 1;
 
     if (theVars-> RROEA_Param[0] > 500) {
         theVars->RROEA_Vel.ve2Fd = theVars->RROEA_RC.ke2Fd * Fdo;

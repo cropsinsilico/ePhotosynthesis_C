@@ -52,7 +52,7 @@ arr PS_PR_Mb(const double t, const PS_PRCon &PS_PR_con, Variables *theVars) {
     PS_Param[0] = theVars->PS_PR_Param;
     PS_Param[1] = PR2PS_Pgca;
 
-    PS::PS_Rate(t, PS_con, PS_Param, theVars);
+    PS::PS_Rate(t, PS_con, PS_Param, theVars, &PR_con);
 
     arr PR_Param = zeros(2);
     PR_Param[0] = theVars->PS_PR_Param;      // To indicate that the calcualtion is using the combined model

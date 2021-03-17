@@ -43,7 +43,6 @@ void EPSDriver::setup() {
     //   Calculation  step //
     /////////////////////////
     EPSCon EPS_Con = EPS_Init();
-
     int va1 = 0;
 
     theVars->BF_Param[0] = va1;
@@ -84,6 +83,7 @@ void EPSDriver::setup() {
     arr temp = EPS_Con.toArray();
     for (size_t i = 0; i < constraints.size(); i++)
         constraints[i] = temp[i];
+
 }
 
 void EPSDriver::getResults() {

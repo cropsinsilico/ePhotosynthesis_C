@@ -25,6 +25,7 @@
  **********************************************************************************************************************************************/
 
 #include "Variables.hpp"
+#define RegFactor 1.
 
 void PS::PS_Rate(const double t, const PSCon &PS_con, const arr &Param, Variables *theVars, const PRCon *PR_con) {
     double PsPEXT = PS_PEXT;
@@ -34,8 +35,6 @@ void PS::PS_Rate(const double t, const PSCon &PS_con, const arr &Param, Variable
     // Set the value to the local variables: for example: PrKM11
 
     // Initialize the PrVmax of the different reactions based on the global variables Vmax
-    const double RegFactor = 1;
-
     double PsV6 = theVars->V6;            // 6 FBPase FBP<->F6P+OP
     double PsV9 = theVars->V9;            // 9 SBPase SBP<->S7P+OP
     double PsV13 = theVars->V13;          // 13 Ribulosebiphosphate kinase Ru5P+ATP<->RuBP+ADP

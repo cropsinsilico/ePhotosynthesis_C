@@ -88,7 +88,7 @@ public:
       @param x The input pointer to copy from
       */
     void fromArray(realtype *x) {
-        arr vec(87);
+        arr vec(size());
         for (size_t i = 0; i < size(); i++)
             vec[i] = x[i];
         fromArray(vec);
