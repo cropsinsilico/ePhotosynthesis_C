@@ -27,6 +27,8 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
+class PRCon;
+class PR;
 
 /**
  Class for holding the inputs to PS_mb
@@ -243,8 +245,9 @@ public:
       @param PSs PSCon object giving the input parameters
       @param theVars The global variables
       */
-    static void PS_Rate(const double t, const PSCon &PSs, const arr &Param, Variables *theVars);
+    static void PS_Rate(const double t, const PSCon &PSs, const arr &Param, Variables *theVars, const PRCon *prcon = nullptr);
 private:
+    friend PR;
     static double KA231;
     static double KE11;
     static double KE12;
@@ -308,6 +311,7 @@ private:
     static double KVmo;
     static double PS_C_CA;
     static double PS_C_CP;
+    static double PS_C_CN;
     static double PS_PEXT;
     static double V24;
     static double V31;
@@ -316,5 +320,32 @@ private:
     static double V5;
     static double V7;
     static double V8;
-
+    static double V10;
+    static double KA232;
+    static double KA233;
+    static double KI23;
+    static double KM312;
+    static double KE10;
+    static double KM11;
+    static double KM12;
+    static double KM71;
+    static double KM72;
+    static double KM73;
+    static double KM74;
+    static double Vfactor1;
+    static double Vfactor2;
+    static double Vfactor3;
+    static double Vfactor5;
+    static double Vfactor7;
+    static double Vfactor13;
+    static double Vfactor23;
+    static double Vf_T3;
+    static double Vf_T2;
+    static double Vf_T1;
+    static double Vf_T6;
+    static double Vf_T5;
+    static double Vf_T9;
+    static double Vf_T13;
+    static double Vf_T23;
+    static double PsV1;
 };

@@ -32,55 +32,109 @@ BFCon BF::BF_Ini(Variables *theVars) {
 
     const double PMODTEM = 1;
 
-    // ISPHr + cytc1 --> ISPHox + cytc1-
-    double DeltaEm = 0.27 * theVars->BFRatio[22] - 0.31 * theVars->BFRatio[21];
-    double DeltaG = DeltaEm * (-9.649) * pow(10, 4);
-    double RT = 8.314 * 298;
-    const double KE8 = exp(-DeltaG / RT);
+    if (theVars->useC3) {
+        // cATPsyn=1.0447;%1.01866 WY201803
+        // CPSi=1.0131;% 1.0237 WY201803
+        // cNADPHsyn=1.094468408;%1.0388 WY201803
 
-    // cytc1- + cytc2 --> cytc1 + cytc2-
-    DeltaEm = 0.35 * theVars->BFRatio[25] - 0.27 * theVars->BFRatio[22];
-    DeltaG = DeltaEm * (-9.649) * pow(10, 4);
-    RT = 8.314 * 298;
-    const double KE9 = exp(-DeltaG / RT);
 
-    // Assign values to the array for rate constant
+        // ISPHr + cytc1 --> ISPHox + cytc1-
+        double DeltaEm = 0.27 - 0.31;
+        double DeltaG = DeltaEm * (-9.649) * pow(10, 4);
+        double RT = 8.314 * 298;
+        const double KE8 = exp(-DeltaG / RT);
 
-    theVars->BF_RC.K1 = pow(10, 6) * theVars->BFRatio[0];     // The rate constant for formation of ISP.QH2 complex; unit:  per second
-    theVars->BF_RC.K2 = 500 * theVars->BFRatio[1];            // The rate constant for ISP.QH2-->QH(semi) + ISPH(red) ; unit:  per second
-    theVars->BF_RC.K3 = 5 * pow(10, 7) * theVars->BFRatio[2]; // The rate constant for QH. + cytbL --> Q + cytbL- + H+ Unit: s-1
-    theVars->BF_RC.K4 = 5 * pow(10, 7) * theVars->BFRatio[3]; // The rate constant for cytbL- + cytbH --> cytbL + cytbH- Unit: s-1
-    theVars->BF_RC.K5 = 5 * pow(10, 7) * theVars->BFRatio[4]; // The rate constant for CytbH- + Q --> cytbH + Q- Unit: s-1
-    theVars->BF_RC.K6 = 5 * pow(10, 7) * theVars->BFRatio[5]; // The rate constant  for CytbH- + Q- --> cytbH + Q2- Unit: s-1
-    theVars->BF_RC.K7 = pow(10, 4) * theVars->BFRatio[6];     // The rate constant for Q binding to Qi site; which assumed half time as 200 us, following Croft's website Unit: s-1
-    theVars->BF_RC.K8 = 1000 * theVars->BFRatio[7];           // The rate constant for ISPH + CytC1 --> ISPH(ox) + CytC1+ Unit: s-1
-    theVars->BF_RC.K9 = 8.3 * pow(10, 6) * theVars->BFRatio[8]; // The rate constant for the electron transport from cytc1 to cytc2 Unit: s-1
-    theVars->BF_RC.K10 = 8 * pow(10, 8) * theVars->BFRatio[9];  // The rate constant for the electron transport from cytc2 to P700 Unit: s-1
-    theVars->BF_RC.Vmax11 = 6 * theVars->BFRatio[10];         // The maximum rate of ATP synthesis Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
-    theVars->BF_RC.Kqi = pow(10, 3) * theVars->BFRatio[11];   // The rate constant for uptake of two protons from the stroma to Q2- s-1
-    theVars->BF_RC.PK = 3.6 * pow(10, (-8)) * PMODTEM * theVars->BFRatio[12];  // The permeability constant for K Unit: cm s-1
-    theVars->BF_RC.PMg = 3.6 * pow(10, (-8)) * PMODTEM * theVars->BFRatio[13]; // The permeability constant for Mg Unit: cm s-1
-    theVars->BF_RC.PCl = 1.8 * pow(10, (-8)) * PMODTEM * theVars->BFRatio[14]; // The permeability constant for Cl Unit: cm s-1
-    theVars->BF_RC.Kau = pow(10, 10) * theVars->BFRatio[15];     // The rate constant for exciton transfer from perpheral antenna to core antenna, see FI Unit: s-1
-    theVars->BF_RC.Kua = pow(10, 10) * theVars->BFRatio[16];     // The rate constant for exciton transfer from core antenna to peripheral antenna, SEE FI Unit: s-1
-    theVars->BF_RC.Kf = 6.3 * pow(10, 6) * theVars->BFRatio[17]; // The rate constant for fluorescence emission, see the note in FI Unit: s-1
-    theVars->BF_RC.Kd = 2 * pow(10, 8) * theVars->BFRatio[18];   // The rate constant for heat dissipation; see the note for FI Unit: s-1
-    theVars->BF_RC.KE8 = KE8; // ISPHr + cytc1 --> ISPHox + cytc1- Unit: s-1
-    theVars->BF_RC.KE9 = KE9; // cytc1- + cytc2 --> cytc1 + cytc2- Unit: s-1
-    theVars->BF_RC.K15 = pow(10, 10) * theVars->BFRatio[19];     // The rate constant for primary charge separation in PSI Unit: s-1
-    theVars->BF_RC.K16 = pow(10, 5) * theVars->BFRatio[20];      // The rate constant for electron tranfer from electron acceptor of PSI to Fd Unit: s-1
-    theVars->BF_RC.MemCap = 0.6 * pow(10, (-6)) * theVars->BFRatio[26]; // The membrane capacity
-    theVars->BF_RC.RVA = 8 * pow(10, (-10)) * theVars->BFRatio[27];     // The ratio of lumen volume to thylakoid membrane area
-    theVars->BF_RC.KBs = 1.1 * pow(10, (-8)) * theVars->BFRatio[28];    // The buffer equilibrium constant in stroma
-    theVars->BF_RC.KBl = 5.1 * pow(10, (-6)) * theVars->BFRatio[29];    // The buffer equilibrium constant in lumen
-    theVars->BF_RC.KM1ATP = 0.12 * theVars->BFRatio[30];  // The michaelis menton constant for ATP for ATP synthesis
-    theVars->BF_RC.KM1ADP = 0.014 * theVars->BFRatio[31]; // The michaelis menton constant for ATP for ADP synthesis
-    theVars->BF_RC.KM1PI = 0.3 * theVars->BFRatio[32];    // The michaelis menton constant for ATP for PI synthesis
-    theVars->BF_RC.KM2NADP = 0.05 * theVars->BFRatio[33]; // The michaelis menten constant for NADP Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
-    theVars->BF_RC.KM2NADPH = 0.035 * theVars->BFRatio[34]; // The michaelis menten constant for NADPH Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
-    theVars->BF_RC.V2M = 27.8 * theVars->BFRatio[35];     // The maximum rate of NADPH formation Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
-    theVars->BF_RC.KE2 = 495 * theVars->BFRatio[36];      // Equilibrium constatn
+        // cytc1- + cytc2 --> cytc1 + cytc2-
+        DeltaEm = 0.35 - 0.27;
+        DeltaG = DeltaEm * (-9.649) * pow(10, 4);
+        RT = 8.314 * 298;
+        const double KE9 = exp(-DeltaG / RT);
 
+        // Assign values to the array for rate constant
+        theVars->BF_RC.K1 = theVars->BFVmax[0];     // The rate constant for formation of ISP.QH2 complex; unit:  per second
+        theVars->BF_RC.K2 = theVars->BFVmax[1];     // The rate constant for ISP.QH2-->QH(semi) + ISPH(red) ; unit:  per second
+        theVars->BF_RC.K3 = theVars->BFVmax[2];     // The rate constant for QH. + cytbL --> Q + cytbL- + H+ Unit: s-1
+        theVars->BF_RC.K4 = theVars->BFVmax[3];     // The rate constant for cytbL- + cytbH --> cytbL + cytbH- Unit: s-1
+        theVars->BF_RC.K5 = theVars->BFVmax[4];     // The rate constant for CytbH- + Q --> cytbH + Q- Unit: s-1
+        theVars->BF_RC.K6 = theVars->BFVmax[5];     // The rate constant  for CytbH- + Q- --> cytbH + Q2- Unit: s-1
+        theVars->BF_RC.K7 = theVars->BFVmax[6];     // The rate constant for Q binding to Qi site; which assumed half time as 200 us, following Croft's website Unit: s-1
+        theVars->BF_RC.K8 = theVars->BFVmax[7];     // The rate constant for ISPH + CytC1 --> ISPH(ox) + CytC1+ Unit: s-1
+        theVars->BF_RC.K9 = theVars->BFVmax[8];     // The rate constant for the electron transport from cytc1 to cytc2 Unit: s-1
+        theVars->BF_RC.K10 = theVars->BFVmax[9];    // The rate constant for the electron transport from cytc2 to P700 Unit: s-1
+        theVars->BF_RC.Vmax11 = theVars->BFVmax[10] * theVars->cATPsyn;  // The maximum rate of ATP synthesis Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+        theVars->BF_RC.Kqi = pow(10, 3);            // The rate constant for uptake of two protons from the stroma to Q2- s-1
+        theVars->BF_RC.PK = 3.6 * pow(10, (-8)) * PMODTEM;  // The permeability constant for K Unit: cm s-1
+        theVars->BF_RC.PMg = 3.6 * pow(10, (-8)) * PMODTEM; // The permeability constant for Mg Unit: cm s-1
+        theVars->BF_RC.PCl = 1.8 * pow(10, (-8)) * PMODTEM; // The permeability constant for Cl Unit: cm s-1
+        theVars->BF_RC.Kau = theVars->BFVmax[11];   // The rate constant for exciton transfer from perpheral antenna to core antenna, see FI Unit: s-1
+        theVars->BF_RC.Kua = theVars->BFVmax[12];   // The rate constant for exciton transfer from core antenna to peripheral antenna, SEE FI Unit: s-1
+        theVars->BF_RC.Kf = theVars->BFVmax[13];    // The rate constant for fluorescence emission, see the note in FI Unit: s-1
+        theVars->BF_RC.Kd = theVars->BFVmax[14];    // The rate constant for heat dissipation; see the note for FI Unit: s-1
+        theVars->BF_RC.KE8 = KE8;                   // ISPHr + cytc1 --> ISPHox + cytc1- Unit: s-1
+        theVars->BF_RC.KE9 = KE9;                   // cytc1- + cytc2 --> cytc1 + cytc2- Unit: s-1
+        theVars->BF_RC.K15 = theVars->BFVmax[15] * theVars->CPSi;     // The rate constant for primary charge separation in PSI Unit: s-1
+        theVars->BF_RC.K16 = theVars->BFVmax[16];    // The rate constant for electron tranfer from electron acceptor of PSI to Fd Unit: s-1
+        theVars->BF_RC.MemCap = 0.6 * pow(10, (-6)); // The membrane capacity
+        theVars->BF_RC.RVA = 8 * pow(10, (-10));     // The ratio of lumen volume to thylakoid membrane area
+        theVars->BF_RC.KBs = 1.1 * pow(10, (-8));    // The buffer equilibrium constant in stroma
+        theVars->BF_RC.KBl = 5.1 * pow(10, (-6));    // The buffer equilibrium constant in lumen
+        theVars->BF_RC.KM1ATP = 0.12;                // The michaelis menton constant for ATP for ATP synthesis
+        theVars->BF_RC.KM1ADP = 0.014;               // The michaelis menton constant for ATP for ADP synthesis
+        theVars->BF_RC.KM1PI = 0.3;                  // The michaelis menton constant for ATP for PI synthesis
+        theVars->BF_RC.KM2NADP = 0.05;               // The michaelis menten constant for NADP Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+        theVars->BF_RC.KM2NADPH = 0.035;             // The michaelis menten constant for NADPH Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+        theVars->BF_RC.V2M = theVars->BFVmax[17] * theVars->cNADPHsyn;     // The maximum rate of NADPH formation Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+        theVars->BF_RC.KE2 = 495;                    // Equilibrium constatn
+    } else {
+
+
+        // ISPHr + cytc1 --> ISPHox + cytc1-
+        double DeltaEm = 0.27 * theVars->BFRatio[22] - 0.31 * theVars->BFRatio[21];
+        double DeltaG = DeltaEm * (-9.649) * pow(10, 4);
+        double RT = 8.314 * 298;
+        const double KE8 = exp(-DeltaG / RT);
+
+        // cytc1- + cytc2 --> cytc1 + cytc2-
+        DeltaEm = 0.35 * theVars->BFRatio[25] - 0.27 * theVars->BFRatio[22];
+        DeltaG = DeltaEm * (-9.649) * pow(10, 4);
+        RT = 8.314 * 298;
+        const double KE9 = exp(-DeltaG / RT);
+
+        theVars->BF_RC.K1 = pow(10, 6) * theVars->BFRatio[0];     // The rate constant for formation of ISP.QH2 complex; unit:  per second
+        theVars->BF_RC.K2 = 500 * theVars->BFRatio[1];            // The rate constant for ISP.QH2-->QH(semi) + ISPH(red) ; unit:  per second
+        theVars->BF_RC.K3 = 5 * pow(10, 7) * theVars->BFRatio[2]; // The rate constant for QH. + cytbL --> Q + cytbL- + H+ Unit: s-1
+        theVars->BF_RC.K4 = 5 * pow(10, 7) * theVars->BFRatio[3]; // The rate constant for cytbL- + cytbH --> cytbL + cytbH- Unit: s-1
+        theVars->BF_RC.K5 = 5 * pow(10, 7) * theVars->BFRatio[4]; // The rate constant for CytbH- + Q --> cytbH + Q- Unit: s-1
+        theVars->BF_RC.K6 = 5 * pow(10, 7) * theVars->BFRatio[5]; // The rate constant  for CytbH- + Q- --> cytbH + Q2- Unit: s-1
+        theVars->BF_RC.K7 = pow(10, 4) * theVars->BFRatio[6];     // The rate constant for Q binding to Qi site; which assumed half time as 200 us, following Croft's website Unit: s-1
+        theVars->BF_RC.K8 = 1000 * theVars->BFRatio[7];           // The rate constant for ISPH + CytC1 --> ISPH(ox) + CytC1+ Unit: s-1
+        theVars->BF_RC.K9 = 8.3 * pow(10, 6) * theVars->BFRatio[8]; // The rate constant for the electron transport from cytc1 to cytc2 Unit: s-1
+        theVars->BF_RC.K10 = 8 * pow(10, 8) * theVars->BFRatio[9];  // The rate constant for the electron transport from cytc2 to P700 Unit: s-1
+        theVars->BF_RC.Vmax11 = 6 * theVars->BFRatio[10];         // The maximum rate of ATP synthesis Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+        theVars->BF_RC.Kqi = pow(10, 3) * theVars->BFRatio[11];   // The rate constant for uptake of two protons from the stroma to Q2- s-1
+        theVars->BF_RC.PK = 3.6 * pow(10, (-8)) * PMODTEM * theVars->BFRatio[12];  // The permeability constant for K Unit: cm s-1
+        theVars->BF_RC.PMg = 3.6 * pow(10, (-8)) * PMODTEM * theVars->BFRatio[13]; // The permeability constant for Mg Unit: cm s-1
+        theVars->BF_RC.PCl = 1.8 * pow(10, (-8)) * PMODTEM * theVars->BFRatio[14]; // The permeability constant for Cl Unit: cm s-1
+        theVars->BF_RC.Kau = pow(10, 10) * theVars->BFRatio[15];     // The rate constant for exciton transfer from perpheral antenna to core antenna, see FI Unit: s-1
+        theVars->BF_RC.Kua = pow(10, 10) * theVars->BFRatio[16];     // The rate constant for exciton transfer from core antenna to peripheral antenna, SEE FI Unit: s-1
+        theVars->BF_RC.Kf = 6.3 * pow(10, 6) * theVars->BFRatio[17]; // The rate constant for fluorescence emission, see the note in FI Unit: s-1
+        theVars->BF_RC.Kd = 2 * pow(10, 8) * theVars->BFRatio[18];   // The rate constant for heat dissipation; see the note for FI Unit: s-1
+        theVars->BF_RC.KE8 = KE8; // ISPHr + cytc1 --> ISPHox + cytc1- Unit: s-1
+        theVars->BF_RC.KE9 = KE9; // cytc1- + cytc2 --> cytc1 + cytc2- Unit: s-1
+        theVars->BF_RC.K15 = pow(10, 10) * theVars->BFRatio[19];     // The rate constant for primary charge separation in PSI Unit: s-1
+        theVars->BF_RC.K16 = pow(10, 5) * theVars->BFRatio[20];      // The rate constant for electron tranfer from electron acceptor of PSI to Fd Unit: s-1
+        theVars->BF_RC.MemCap = 0.6 * pow(10, (-6)) * theVars->BFRatio[26]; // The membrane capacity
+        theVars->BF_RC.RVA = 8 * pow(10, (-10)) * theVars->BFRatio[27];     // The ratio of lumen volume to thylakoid membrane area
+        theVars->BF_RC.KBs = 1.1 * pow(10, (-8)) * theVars->BFRatio[28];    // The buffer equilibrium constant in stroma
+        theVars->BF_RC.KBl = 5.1 * pow(10, (-6)) * theVars->BFRatio[29];    // The buffer equilibrium constant in lumen
+        theVars->BF_RC.KM1ATP = 0.12 * theVars->BFRatio[30];  // The michaelis menton constant for ATP for ATP synthesis
+        theVars->BF_RC.KM1ADP = 0.014 * theVars->BFRatio[31]; // The michaelis menton constant for ATP for ADP synthesis
+        theVars->BF_RC.KM1PI = 0.3 * theVars->BFRatio[32];    // The michaelis menton constant for ATP for PI synthesis
+        theVars->BF_RC.KM2NADP = 0.05 * theVars->BFRatio[33]; // The michaelis menten constant for NADP Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+        theVars->BF_RC.KM2NADPH = 0.035 * theVars->BFRatio[34]; // The michaelis menten constant for NADPH Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+        theVars->BF_RC.V2M = 27.8 * theVars->BFRatio[35];     // The maximum rate of NADPH formation Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+        theVars->BF_RC.KE2 = 495 * theVars->BFRatio[36];      // Equilibrium constatn
+    }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Initialization of the initial concentration of the different component  //
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -133,20 +187,34 @@ BFCon BF::BF_Ini(Variables *theVars) {
     // The sizes of different pools in the model
 
     // Assign the pools to the global pool variables
+    if (theVars->useC3) {
+        theVars->BF_Pool.kA_d = 1;  // The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
+        theVars->BF_Pool.kA_f = 1;  // The total amount of cytc; Unit: micromole m-2 leaf area
+        theVars->BF_Pool.kA_U = 20; // The total concentration of K in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant.
+        theVars->BF_Pool.kU_A = 10; // The total concentration of Mg in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant.
+        theVars->BF_Pool.kU_d = 2;  // The total concentration of Cl in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant.
+        theVars->BF_Pool.kU_f = 1;  // The total concentration of Ferrodoxin
+        theVars->BF_Pool.k1 = 1;    // The total concentration of the primary electron acceptor of PSI; Unit: micromole m-2 leaf area
+        theVars->BF_Pool.k_r1 = 8;  // The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
+        theVars->BF_Pool.kz = 38;   // The total concentration of buffer in stroma; unit: mmol per liter
+        theVars->BF_Pool.k12 = 38;  // The total concentration of buffer in lumen; unit: mmol per liter
+        theVars->BF_Pool.k23 = 1;   // The total number of P700; unit: micromole m-2 leaf area
+        theVars->BF_Pool.k30 = 1;   //   The total concentration of NADPH in stroma; 1 is an guessed value;
 
-    theVars->BF_Pool.kA_d = 1 * theVars->BFRatio[37];  // The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
-    theVars->BF_Pool.kA_f = 1 * theVars->BFRatio[38];  // The total amount of cytc; Unit: micromole m-2 leaf area
-    theVars->BF_Pool.kA_U = 20 * theVars->BFRatio[39]; // The total concentration of K in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant.
-    theVars->BF_Pool.kU_A = 10 * theVars->BFRatio[40]; // The total concentration of Mg in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant.
-    theVars->BF_Pool.kU_d = 2 * theVars->BFRatio[41];  // The total concentration of Cl in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant.
-    theVars->BF_Pool.kU_f = 1 * theVars->BFRatio[42];  // The total concentration of Ferrodoxin
-    theVars->BF_Pool.k1 = 1 * theVars->BFRatio[43];    // The total concentration of the primary electron acceptor of PSI; Unit: micromole m-2 leaf area
-    theVars->BF_Pool.k_r1 = 8 * theVars->BFRatio[44];  // The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
-    theVars->BF_Pool.kz = 38 * theVars->BFRatio[45];   // The total concentration of buffer in stroma; unit: mmol per liter
-    theVars->BF_Pool.k12 = 38 * theVars->BFRatio[46];  // The total concentration of buffer in lumen; unit: mmol per liter
-    theVars->BF_Pool.k23 = 1 * theVars->BFRatio[47];   // The total number of P700; unit: micromole m-2 leaf area
-    theVars->BF_Pool.k30 = 1 * theVars->BFRatio[48];   //   The total concentration of NADPH in stroma; 1 is an guessed value;
-
+    } else {
+        theVars->BF_Pool.kA_d = 1 * theVars->BFRatio[37];  // The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
+        theVars->BF_Pool.kA_f = 1 * theVars->BFRatio[38];  // The total amount of cytc; Unit: micromole m-2 leaf area
+        theVars->BF_Pool.kA_U = 20 * theVars->BFRatio[39]; // The total concentration of K in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant.
+        theVars->BF_Pool.kU_A = 10 * theVars->BFRatio[40]; // The total concentration of Mg in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant.
+        theVars->BF_Pool.kU_d = 2 * theVars->BFRatio[41];  // The total concentration of Cl in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant.
+        theVars->BF_Pool.kU_f = 1 * theVars->BFRatio[42];  // The total concentration of Ferrodoxin
+        theVars->BF_Pool.k1 = 1 * theVars->BFRatio[43];    // The total concentration of the primary electron acceptor of PSI; Unit: micromole m-2 leaf area
+        theVars->BF_Pool.k_r1 = 8 * theVars->BFRatio[44];  // The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
+        theVars->BF_Pool.kz = 38 * theVars->BFRatio[45];   // The total concentration of buffer in stroma; unit: mmol per liter
+        theVars->BF_Pool.k12 = 38 * theVars->BFRatio[46];  // The total concentration of buffer in lumen; unit: mmol per liter
+        theVars->BF_Pool.k23 = 1 * theVars->BFRatio[47];   // The total number of P700; unit: micromole m-2 leaf area
+        theVars->BF_Pool.k30 = 1 * theVars->BFRatio[48];   //   The total concentration of NADPH in stroma; 1 is an guessed value;
+    }
     theVars->BF2RROEA_Fdn = BF_con.Fdn;
     theVars->BF2RROEA_FdT = theVars->BF_Pool.kU_f;
     return BF_con;

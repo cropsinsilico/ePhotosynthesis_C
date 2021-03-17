@@ -26,7 +26,7 @@
 
 #include "Variables.hpp"
 
-void PS::PS_Rate(const double t, const PSCon &PS_con, const arr &Param, Variables *theVars) {
+void PS::PS_Rate(const double t, const PSCon &PS_con, const arr &Param, Variables *theVars, const PRCon *PR_con) {
     double PsPEXT = PS_PEXT;
 
     // First the physical and chemical constant for all the reactions
@@ -101,7 +101,12 @@ void PS::PS_Rate(const double t, const PSCon &PS_con, const arr &Param, Variable
     const double Xu5P = (PS_con.PenP / KE12) / (1 + 1 / KE11 + 1 / KE12);
 
     const double Pit = PS_C_CP - PS_con.PGA - 2 * PS_con.DPGA - GAP - DHAP - 2 * PS_con.FBP - F6P - PS_con.E4P - 2 * PS_con.SBP - PS_con.S7P - Xu5P - Ri5P - Ru5P - 2 * PS_con.RuBP - G6P - G1P - PS_con.ATP - Param[1];
-    const double Pi = 0.5 * (-KE25 +  pow((KE25 * KE25 + 4 * Pit * KE25), 0.5));
+    double Pi;
+    if (theVars->useC3) {
+        Pi = PS_C_CP - PS_con.PGA - 2*PS_con.DPGA-GAP-DHAP-2*PS_con.FBP-F6P-PS_con.E4P-2*PS_con.SBP-PS_con.S7P-Xu5P-Ri5P-Ru5P-2*PS_con.RuBP-G6P-G1P- PS_con.ATP-PR_con->PGCA;
+    } else {
+        Pi = 0.5 * (-KE25 +  pow((KE25 * KE25 + 4 * Pit * KE25), 0.5));
+    }
     const double OPOP = Pit - Pi;
 
     if (!theVars->RedoxReg_RA_com) {
@@ -164,23 +169,79 @@ void PS::PS_Rate(const double t, const PSCon &PS_con, const arr &Param, Variable
     theVars->PS2BF_Pi = Pi;
 
     //theVars->PS_Vel.v1 = v1;
-    theVars->PS_Vel.v2 = theVars->V2 * PS_con.PGA * PS_con.ATP / ((PS_con.PGA + KM21) * (PS_con.ATP + KM22 * (1 + ADP / KM23)));
-    theVars->PS_Vel.v3 = theVars->V3 * PS_con.DPGA * PS_con.NADPH / ((PS_con.DPGA + KM31a) * (PS_con.NADPH + KM32b));
-    theVars->PS_Vel.v4 = 0;
-    theVars->PS_Vel.v5 = V5 * (GAP * DHAP - PS_con.FBP / KE5) / ((KM51 * KM52) * (1 + GAP / KM51 + DHAP / KM52 + PS_con.FBP / KM53 + GAP * DHAP / (KM51 * KM52)));
-    theVars->PS_Vel.v6 = PsV6 * (PS_con.FBP - F6P * Pi / KE6) / (PS_con.FBP + KM61 * (1 + F6P / KI61 + Pi / KI62));
-    theVars->PS_Vel.v7 = V7 * (F6P * GAP * KE57 - PS_con.E4P * Xu5P) / (Km8p5p * Km5p5p * Den);
-    theVars->PS_Vel.v8 = V8 * (DHAP * PS_con.E4P - PS_con.SBP / KE8) / ((PS_con.E4P + KM82) * (DHAP + KM81));
-    theVars->PS_Vel.v9 = PsV9 * (PS_con.SBP - Pi * PS_con.S7P / KE9) / (PS_con.SBP + KM9 * (1 + Pi / KI9));
-    theVars->PS_Vel.v10 = V7 * (PS_con.S7P * GAP * KE810 - Xu5P * Ri5P) / (Km8p5p * Km5p5p * Den);
-    theVars->PS_Vel.v13 = PsV13 * (PS_con.ATP * Ru5P - ADP * PS_con.RuBP / KE13) / ((PS_con.ATP * (1 + ADP / KI134) + KM132 * (1 + ADP / KI135)) * (Ru5P + KM131 * (1 + PS_con.PGA / KI131 + PS_con.RuBP / KI132 + Pi / KI133)));
-    theVars->PS_Vel.v16 = PsV16 * (ADP * Pi - PS_con.ATP / KE16) / (KM161 * KM162 * (1 + ADP / KM161 + Pi / KM162 + PS_con.ATP / KM163 + ADP * Pi / (KM161 * KM162)));
-    theVars->PS_Vel.v23 = v23num / v23den2;
-    theVars->PS_Vel.v31 = (PsV31 * DHAP / (DHAP + KM311) * PsPEXT / (PsPEXT + KM313)) * ATPreg;
-    theVars->PS_Vel.v32 = (PsV32 * PS_con.PGA / (PS_con.PGA + KM32) * PsPEXT / (PsPEXT + KM313)) * ATPreg;
-    theVars->PS_Vel.v33 = (PsV33 * GAP / (GAP + KM33) * PsPEXT / (PsPEXT + KM313)) * ATPreg;
-    theVars->PS_Vel.v24 = (V24 * (PS_con.ADPG)) / (KM241 * (1 + PS_con.ADPG / KM241));
-    theVars->PS_Vel.v25 = (0.5 * theVars->PSRatio[102] / 100 / 5) * (1 - PS_con.RuBP / MaxCoeff) * PS_con.ATP / (PS_con.ATP + 1);
+    if (theVars->useC3) {
+        const double Ru_Act = -3E-05 * pow(theVars->Tp, 3) + 0.0013*pow(theVars->Tp,2) - 0.0106*theVars->Tp + 0.8839;   //Rubisco activition state
+        PsV1 = theVars->V1*Vfactor1*Vf_T1*Ru_Act*pow(Q10_1,(theVars->Tp - 25) / 10);
+        const double PsV2 = theVars->V2*Vfactor2*Vf_T2*pow(Q10_2, (theVars->Tp-25)/10);
+        const double PsV3 = theVars->V3*Vfactor3*Vf_T3*pow(Q10_3, (theVars->Tp-25)/10);
+        const double PsV5 = V5*Vfactor5*Vf_T5*pow(Q10_5, (theVars->Tp-25)/10);
+        const double PsV6 = theVars->V6*Vf_T6*pow(Q10_6, (theVars->Tp-25)/10);
+        const double PsV7 = V7*Vfactor7	*pow(Q10_7, (theVars->Tp-25)/10);
+        const double PsV8 = V8*Vfactor5*Vf_T5*pow(Q10_8, (theVars->Tp-25)/10);
+        const double PsV9 = theVars->V9*Vf_T9*pow(Q10_9, (theVars->Tp-25)/10);
+        const double PsV10 = V10*Vfactor7*pow(Q10_10, (theVars->Tp-25)/10);
+        const double PsV13 = theVars->V13*Vfactor13*Vf_T13*pow(Q10_13, (theVars->Tp-25)/10);
+        const double PsV23 = theVars->V23*Vfactor23*Vf_T23*pow(Q10_23, (theVars->Tp-25)/10);
+
+        theVars->V1Reg = 1+PS_con.PGA/KI11+PS_con.FBP/KI12+PS_con.SBP/KI13 + Pi/KI14+PS_con.NADPH/KI15;
+        const double I2 = theVars->LI*theVars->alfa*(1-theVars->fc)/2;
+        const double J = (I2+theVars->Jmax-sqrt(pow(I2+theVars->Jmax, 2)-4*theVars->Theta*I2*theVars->Jmax))/(2*theVars->Theta);
+        const double N = 1 + (1+ KM313/PsPEXT)*(Pi/KM312+PS_con.PGA/KM32+GAP/KM33+DHAP/KM311);
+        if (theVars->RUBISCOMETHOD ==2) {
+            tmp = PsV1 * PS_con.RuBP/(PS_con.RuBP+KM13*theVars->V1Reg);
+            theVars->PS_Vel.v1 = tmp*PS_con.CO2/(PS_con.CO2+KM11*(1+PS_con.O2/KM12));
+            if (PS_con.RuBP < PsV1 / 2) {
+                theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con.RuBP/(PsV1/2);
+            }
+
+        } else if (theVars->RUBISCOMETHOD == 1) {
+            theVars->PS_Vel.v1 = PsV1*PS_con.CO2/(PS_con.CO2+KM11*(1+PS_con.O2/KM12));
+            if (PS_con.RuBP < PsV1 / 2) {
+                theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con.RuBP/(PsV1/2);
+            }
+        }
+        theVars->PS_Vel.v2 = PsV2 * PS_con.PGA * PS_con.ATP /((PS_con.PGA + KM21)*(PS_con.ATP+KM22*(1+ADP/KM23)));
+        theVars->PS_Vel.v3 = PsV3 * PS_con.DPGA * PS_con.NADPH/((PS_con.DPGA+KM31a)*(PS_con.NADPH+KM32b));
+        theVars->PS_Vel.v4 = 0;
+        theVars->PS_Vel.v5 = PsV5 * (GAP * DHAP-PS_con.FBP/KE5)/((KM51*KM52)*(1+GAP/KM51+DHAP/KM52+PS_con.FBP/KM53+GAP*DHAP/(KM51*KM52)));
+        theVars->PS_Vel.v6 = PsV6 * (PS_con.FBP-F6P * Pi/KE6)/(PS_con.FBP + KM61*(1+F6P/KI61+Pi/KI62));
+        theVars->PS_Vel.v7 = PsV7 * (F6P*GAP-Xu5P * PS_con.E4P/KE7)/((F6P + KM73*(1+Xu5P/KM71+PS_con.E4P/KM72))*(GAP+KM74));
+        theVars->PS_Vel.v8 = PsV8 * (DHAP *PS_con.E4P-PS_con.SBP/KE8)/((PS_con.E4P+KM82)*(DHAP + KM81));
+        theVars->PS_Vel.v9 = PsV9 * (PS_con.SBP-Pi * PS_con.S7P/KE9) /(PS_con.SBP + KM9*(1+Pi/KI9));
+        theVars->PS_Vel.v10	= PsV10 * (GAP *PS_con.S7P - Ri5P * Xu5P/KE10)/((GAP+KM102*(1+Xu5P/KM101+Ri5P/KM10))*(PS_con.S7P+KM103));
+        theVars->PS_Vel.v13	= PsV13 * (PS_con.ATP * Ru5P-ADP * PS_con.RuBP/KE13)/((PS_con.ATP*(1+ADP/KI134) + KM132*(1+ADP/KI135))*(Ru5P+KM131*(1+PS_con.PGA/KI131+PS_con.RuBP/KI132+Pi/KI133)));
+        theVars->PS_Vel.v16	= std::min(theVars->beta*J,PsV16* (ADP * Pi-PS_con.ATP/KE16)/(KM161*KM162 * (1+ADP/KM161 + Pi/KM162 + PS_con.ATP/KM163 + ADP * Pi /(KM161 * KM162))));
+        theVars->PS_Vel.v23	= PsV23 * G1P *PS_con.ATP /((G1P+KM231)*((1+ADP/KI23)*(PS_con.ATP+KM232)+(KM232*Pi/(KA231*PS_con.PGA+KA232*F6P+KA233*PS_con.FBP)))) * ATPreg;
+        theVars->PS_Vel.v31	= V31 * DHAP/(N*KM311) * ATPreg;
+        theVars->PS_Vel.v32 = V32 * PS_con.PGA/(N*KM32) * ATPreg;
+        theVars->PS_Vel.v33 = V33 * GAP/(N * KM33) * ATPreg;
+        theVars->PS_Vel.Pi = Pi;
+        theVars->PS2EPS_v3 = theVars->PS_Vel.v3;
+        if (theVars->FIBF_PSPR_com) {
+            if (theVars->PS_Vel.v16 == 0.)
+                theVars->PS_Vel.v23 = 0.;
+        } else if (theVars->EPS_ATP_Rate == 0.){
+            theVars->PS_Vel.v23 = 0.;
+        }
+    } else {
+        theVars->PS_Vel.v2 = theVars->V2 * PS_con.PGA * PS_con.ATP / ((PS_con.PGA + KM21) * (PS_con.ATP + KM22 * (1 + ADP / KM23)));
+        theVars->PS_Vel.v3 = theVars->V3 * PS_con.DPGA * PS_con.NADPH / ((PS_con.DPGA + KM31a) * (PS_con.NADPH + KM32b));
+        theVars->PS_Vel.v4 = 0;
+        theVars->PS_Vel.v5 = V5 * (GAP * DHAP - PS_con.FBP / KE5) / ((KM51 * KM52) * (1 + GAP / KM51 + DHAP / KM52 + PS_con.FBP / KM53 + GAP * DHAP / (KM51 * KM52)));
+        theVars->PS_Vel.v6 = PsV6 * (PS_con.FBP - F6P * Pi / KE6) / (PS_con.FBP + KM61 * (1 + F6P / KI61 + Pi / KI62));
+        theVars->PS_Vel.v7 = V7 * (F6P * GAP * KE57 - PS_con.E4P * Xu5P) / (Km8p5p * Km5p5p * Den);
+        theVars->PS_Vel.v8 = V8 * (DHAP * PS_con.E4P - PS_con.SBP / KE8) / ((PS_con.E4P + KM82) * (DHAP + KM81));
+        theVars->PS_Vel.v9 = PsV9 * (PS_con.SBP - Pi * PS_con.S7P / KE9) / (PS_con.SBP + KM9 * (1 + Pi / KI9));
+        theVars->PS_Vel.v10 = V7 * (PS_con.S7P * GAP * KE810 - Xu5P * Ri5P) / (Km8p5p * Km5p5p * Den);
+        theVars->PS_Vel.v13 = PsV13 * (PS_con.ATP * Ru5P - ADP * PS_con.RuBP / KE13) / ((PS_con.ATP * (1 + ADP / KI134) + KM132 * (1 + ADP / KI135)) * (Ru5P + KM131 * (1 + PS_con.PGA / KI131 + PS_con.RuBP / KI132 + Pi / KI133)));
+        theVars->PS_Vel.v16 = PsV16 * (ADP * Pi - PS_con.ATP / KE16) / (KM161 * KM162 * (1 + ADP / KM161 + Pi / KM162 + PS_con.ATP / KM163 + ADP * Pi / (KM161 * KM162)));
+        theVars->PS_Vel.v23 = v23num / v23den2;
+        theVars->PS_Vel.v31 = (PsV31 * DHAP / (DHAP + KM311) * PsPEXT / (PsPEXT + KM313)) * ATPreg;
+        theVars->PS_Vel.v32 = (PsV32 * PS_con.PGA / (PS_con.PGA + KM32) * PsPEXT / (PsPEXT + KM313)) * ATPreg;
+        theVars->PS_Vel.v33 = (PsV33 * GAP / (GAP + KM33) * PsPEXT / (PsPEXT + KM313)) * ATPreg;
+        theVars->PS_Vel.v24 = (V24 * (PS_con.ADPG)) / (KM241 * (1 + PS_con.ADPG / KM241));
+        theVars->PS_Vel.v25 = (0.5 * theVars->PSRatio[102] / 100 / 5) * (1 - PS_con.RuBP / MaxCoeff) * PS_con.ATP / (PS_con.ATP + 1);
+    }
 
     // Getting the information for output as figures.
 

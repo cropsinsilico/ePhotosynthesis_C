@@ -28,6 +28,7 @@
 
 #include "FIBF.hpp"
 #include "CM.hpp"
+#include "driver.hpp"
 
 /**
  Class for holding the inputs to EPS_mb
@@ -43,6 +44,14 @@ public:
     EPSCon(const EPSCon &other) {
         CM_con = other.CM_con;
         FIBF_con = other.FIBF_con;
+    }
+    /**
+      Constructor to create an object from the input pointer
+
+      @param x The pointer to get the data from
+      */
+    EPSCon(realtype *x) {
+        fromArray(x);
     }
     /**
       Constructor to create an object from the contained classes
@@ -72,6 +81,17 @@ public:
     void fromArray(const arr &vec, const size_t offset = 0) {
         FIBF_con.fromArray(vec, offset);
         CM_con.fromArray(vec, offset + FIBF_con.size());
+    }
+    /**
+      Copy items from the given pointer to the data members
+
+      @param x The input pointer to copy from
+      */
+    void fromArray(realtype *x) {
+        arr vec(87);
+        for (size_t i = 0; i < size(); i++)
+            vec[i] = x[i];
+        fromArray(vec);
     }
     /**
       Convert the object into a vector of doubles
@@ -112,3 +132,51 @@ EPSCon EPS_Ini(Variables *theVars);
   @return A vector containing the updated values
   */
 arr EPS_Mb(const double t, const EPSCon &EPS_Con, Variables *theVars);
+
+/**
+ Class for running trDynaPS with an ODE solver
+ */
+class EPSDriver : public Driver {
+public:
+    EPSDriver(Variables *theVars, const double st, const double stp, const double etime,
+              const int maxSteps, const double atol, const double rtol,
+              const size_t para, const double ratio) :
+        Driver(theVars, st, stp, etime, maxSteps, atol, rtol) {
+        ParaNum = para;
+        Ratio = ratio;
+    }
+
+    virtual ~EPSDriver() override;
+
+    /**
+      The driver
+      */
+    void setup() override;
+    void getResults() override;
+    //arr trDynaPS_Drive(size_t ParaNum, double Ratio);
+
+private:
+    /**
+      Calculate the output values based on the inputs
+
+      @param t The time of the current calculation (0 is the beginning of the calculations)
+      @param u The input data parameters for the calculations
+      @param[in,out] u_dot The dxdt values for the input parameters
+      @param[in,out] user_data Pointer to a UserData object for extra parameters
+      @return A vector containing the updated values
+      */
+    arr MB(realtype t, N_Vector u) override;
+    /**
+      Initialize the variables
+
+      @return A trDynaPSCon object for input into calculations
+      */
+    EPSCon EPS_Init();
+
+    double Ca;
+    double Li;
+    double AtpCost;
+    double SucPath;
+    size_t ParaNum;
+    double Ratio;
+};

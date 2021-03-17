@@ -242,4 +242,11 @@ private:
     static double V124;
     static double V131;
     static double V2T;
+    static double Vfactor112;
+    static double Vfactor113;
+    static double Vfactor121;
+    static double Vfactor122;
+    static double Vfactor123;
+    static double Vfactor124;
+    static double Vfactor131;
 };

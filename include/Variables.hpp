@@ -54,6 +54,8 @@ struct Variables {
     bool XanCycle_BF_com = false;
 
     int GP = 0;
+    int GRNC = 0;
+    int GRNT = 0;
     double BF_OLD_TIME = 0;
     size_t BF_TIME_N = 1;
     double FI_OLD_TIME = 0;
@@ -93,6 +95,11 @@ struct Variables {
     const double Thio_Oxidation = 0.1;
     const double VolRatioStCyto = 1;
 
+    double cATPsyn = 0.;
+    double CPSi = 0.;
+    double cNADPHsyn = 0.;
+    double LI = 0.;
+    double cpsii = 0;
 
     double BF2RROEA_FdT = 0.;
     double BF2RROEA_Fdn = 0.;
@@ -122,6 +129,7 @@ struct Variables {
     double PS2RA_ATP = 0.;
     double PS2RA_RuBP_ini = 0.;
     double PS2SUCSV32 = 0.;
+    double PS2EPS_v3 = 0;
     double PSPR_RA_CA = 0.;
     double PsV1 = 0.;
     double RROEA2RuACT_RuAC = 0.;
@@ -151,6 +159,12 @@ struct Variables {
     double kmO2 = 0.;
     double PS_PR_Param = 0;
 
+    double Tp = 0;
+    double alfa = 0;
+    double fc = 0;
+    double Theta = 0;
+    double beta = 0;
+    double Jmax = 0.;
     // Parameters
     arr PR_Param = zeros(2);
     arr BF_Param = zeros(2);
@@ -181,6 +195,14 @@ struct Variables {
     arr SUCRatio = ones(66);
     arr XanRatio = ones(4);
 
+    // Max
+    arr BFVmax = zeros(18);
+    arr FIVmax = zeros(21);
+
+    arr EnzymeAct = zeros(27);
+
+    arr VfactorCp = zeros(33);
+    arr VfactorT = zeros(28);
     // Pool
     BFPool BF_Pool;
     FIBFPool FIBF_Pool;
@@ -217,4 +239,6 @@ struct Variables {
     TimeSeries<RuACTVel> RuACT_VEL = TimeSeries<RuACTVel> ();
     TimeSeries<SUCSVel> SUCS_VEL = TimeSeries<SUCSVel> ();
     TimeSeries<XanCycleVel> XanCycle_VEL = TimeSeries<XanCycleVel> ();
+
+    bool useC3 = false;
 };
