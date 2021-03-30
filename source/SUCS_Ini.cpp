@@ -160,6 +160,10 @@ SUCSCon SUCS::SUCS_Ini(Variables *theVars) {
             V58	= theVars->EnzymeAct.at("V58");
         }
         V59	= theVars->EnzymeAct.at("V59");
+        V60 = 6.1;	//	ATP+UDP --UTP + ADP
+        V61 = 10000;	//	POPO --2PO
+        V62 = 2;	//	SUC Sink        0.2 works.
+
     } else {
         KE501 = 1 / 0.05 * theVars->SUCRatio[15];
         Km511 = 0.02 * theVars->SUCRatio[16];

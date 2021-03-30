@@ -39,6 +39,7 @@ FICon FI::FI_Ini(Variables *theVars) {
     // The rate constant used in the model
     // Reference
     // The rate constant used in the model
+    theVars->cpsii = 1.;
     if (theVars->useC3) {
         theVars->FI_RC.kA_d = theVars->EnzymeAct.at("kA_d");         // The rate constant of heat dissipation from peripheral antenna Lazar (1999), 0.25~1 *10^(9)
         theVars->FI_RC.kA_f = theVars->EnzymeAct.at("kA_f");         // The rate constant of fluorescence emission from peripheral antenna Lazar 1999, with a lifetime of 5 ns at closed reaction center

@@ -153,8 +153,11 @@ PSCon PS::PS_Ini(Variables *theVars) {
     PS_con.PGA = 2.400;
     PS_con.DPGA = 0.0011;
     PS_con.T3P = 0.5;
-    if (!theVars->useC3)
+    if (!theVars->useC3) {
         PS_con.ADPG = 0.005;
+    } else {
+        PS_con.ADPG = 0.;
+    }
     PS_con.FBP = 0.670;
     PS_con.E4P = 0.050;
     PS_con.S7P = 2.000;

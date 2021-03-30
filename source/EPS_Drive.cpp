@@ -31,8 +31,9 @@
 EPSDriver::~EPSDriver() {}
 
 void EPSDriver::setup() {
-    Ca = theVars->TestCa;
-    Li = theVars->TestLi;
+    //Ca = theVars->TestCa;
+    theVars->TestLi /= 30.;
+    //Li = theVars->TestLi;
     AtpCost = theVars->TestATPCost;
     SucPath = theVars->TestSucPath;
 
@@ -45,6 +46,9 @@ void EPSDriver::setup() {
     EPSCon EPS_Con = EPS_Init();
     int va1 = 0;
     theVars->Jmax = theVars->EnzymeAct.at("Jmax");
+    theVars->fc = 0.15;
+    theVars->Theta = 0.7;
+    theVars->beta = 0.7519;
     theVars->BF_Param[0] = va1;
     theVars->BF_Param[1] = theVars->PS12ratio;
 
@@ -82,6 +86,7 @@ void EPSDriver::setup() {
     constraints = zeros(87);
     arr temp = EPS_Con.toArray();
     theVars->Tp = this->Tp;
+    theVars->alfa = 0.85;
     for (size_t i = 0; i < constraints.size(); i++)
         constraints[i] = temp[i];
 

@@ -80,7 +80,7 @@ arr Driver::run() {
 
     for (realtype tout = start + step; tout <= endtime; tout += step)
         if (CVode(cvode_mem, tout, y, &t, CV_NORMAL) != 0) {
-            std::cout << "CVode failed" << std::endl;
+            std::cout << "CVode failed at t=" << tout << std::endl;
             exit(EXIT_FAILURE);
         }
 
