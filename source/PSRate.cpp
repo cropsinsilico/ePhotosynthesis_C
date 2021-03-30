@@ -183,7 +183,7 @@ void PS::PS_Rate(const double t, const PSCon &PS_con, const arr &Param, Variable
         const double PsV23 = theVars->V23*Vfactor23*Vf_T23*pow(Q10_23, (theVars->Tp-25)/10);
 
         theVars->V1Reg = 1+PS_con.PGA/KI11+PS_con.FBP/KI12+PS_con.SBP/KI13 + Pi/KI14+PS_con.NADPH/KI15;
-        const double I2 = theVars->LI*theVars->alfa*(1-theVars->fc)/2;
+        const double I2 = theVars->TestLi*theVars->alfa*(1-theVars->fc)/2;
         const double J = (I2+theVars->Jmax-sqrt(pow(I2+theVars->Jmax, 2)-4*theVars->Theta*I2*theVars->Jmax))/(2*theVars->Theta);
         const double N = 1 + (1+ KM313/PsPEXT)*(Pi/KM312+PS_con.PGA/KM32+GAP/KM33+DHAP/KM311);
         if (theVars->RUBISCOMETHOD ==2) {
@@ -247,7 +247,8 @@ void PS::PS_Rate(const double t, const PSCon &PS_con, const arr &Param, Variable
     if (t > theVars->PS_OLD_TIME) {
             theVars->PS_TIME_N = theVars->PS_TIME_N + 1;
             theVars->PS_OLD_TIME = t;
-        }
+    }
+
     if (theVars->record) {
         theVars->PS_VEL.insert(theVars->PS_TIME_N - 1, t, theVars->PS_Vel);
 

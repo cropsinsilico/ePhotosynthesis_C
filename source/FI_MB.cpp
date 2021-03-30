@@ -38,7 +38,7 @@ arr FI::FI_Mb(const double t, const FICon &FI_Con, Variables *theVars) {
     //   Calculate the rates first   //
     //////////////////////////////////////////////////////////////////
     if (theVars->useC3) {
-        theVars->FI_Param[0] = theVars->LI * 30;
+        theVars->FI_Param[0] = theVars->TestLi * 30;
     } else {
         Condition(t, theVars);
         theVars->FI_Param[0] = theVars->GLight;

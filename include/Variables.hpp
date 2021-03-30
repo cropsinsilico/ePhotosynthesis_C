@@ -98,7 +98,7 @@ struct Variables {
     double cATPsyn = 0.;
     double CPSi = 0.;
     double cNADPHsyn = 0.;
-    double LI = 0.;
+    //double LI = 0.;
     double cpsii = 0;
 
     double BF2RROEA_FdT = 0.;

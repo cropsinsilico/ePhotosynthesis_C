@@ -141,10 +141,11 @@ class EPSDriver : public Driver {
 public:
     EPSDriver(Variables *theVars, const double st, const double stp, const double etime,
               const int maxSteps, const double atol, const double rtol,
-              const size_t para, const double ratio) :
+              const size_t para, const double ratio, const double Tp) :
         Driver(theVars, st, stp, etime, maxSteps, atol, rtol) {
         ParaNum = para;
         Ratio = ratio;
+        this->Tp = Tp;
     }
 
     virtual ~EPSDriver() override;
@@ -174,10 +175,11 @@ private:
       */
     EPSCon EPS_Init();
 
-    double Ca;
-    double Li;
+    //double Ca;
+    //double Li;
     double AtpCost;
     double SucPath;
     size_t ParaNum;
     double Ratio;
+    double Tp;
 };
