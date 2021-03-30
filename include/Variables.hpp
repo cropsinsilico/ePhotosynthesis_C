@@ -202,7 +202,8 @@ struct Variables {
     arr EnzymeAct = zeros(27);
 
     arr VfactorCp = zeros(33);
-    arr VfactorT = zeros(28);
+    arr VfactorT = ones(28);
+
     // Pool
     BFPool BF_Pool;
     FIBFPool FIBF_Pool;
