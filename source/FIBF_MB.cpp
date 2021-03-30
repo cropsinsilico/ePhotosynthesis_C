@@ -87,7 +87,8 @@ arr FIBF_Mb(const double t, const FIBFCon &FIBF_Con, Variables *theVars) {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Calculate the proton generation rate from the model of FI and use that to calculate the lumen PH //            //
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    //std::cout << theVars->FI_Vel;
+    //std::cout << theVars->BF_Vel;
     // one molecular water molecules to release four protons.
     const double Hroe = 4 * theVars->FI_Vel.vS3_S0 / theVars->AVR; // 27 is the conversion of unit from micromole per meter squre leaf area to mmol per liter.
     const double Hvqo1 = theVars->BF_Vel.Vbf8 / theVars->AVR;      // The rate of release of protons into lumen through Qo site
@@ -127,5 +128,14 @@ arr FIBF_Mb(const double t, const FIBFCon &FIBF_Con, Variables *theVars) {
     FIBF_mb[7] = 0;        // Q Quinone in thylakoid membrane in free form
     FIBF_mb[11] = GPQH2_t; // QH2 The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
     FIBF_mb[50] = GPQH2_t; // QH2 The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
+    std::cout << theVars->FI_Vel;
+    std::cout << theVars->BF_Vel;
     return FIBF_mb;
+}
+
+std::ostream& operator<<(std::ostream &out, const FIBFCon &in) {
+    out << "FIBFCon" << std::endl;
+    out << in.FI_con;
+    out << in.BF_con;
+    return out;
 }

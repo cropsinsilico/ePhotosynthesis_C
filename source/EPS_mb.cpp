@@ -32,7 +32,7 @@ arr EPS_Mb(const double t, const EPSCon &EPS_Con, Variables *theVars) {
 
     // Try out one new way of calculating the mass balance equation.
     // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.
-
+    std::cout << EPS_Con;
     //// Step One: Get the initialization of the concentrations for the PSPR model which will be used in the calculation of mb of CM.
     EPSCon EPSc(EPS_Con);
     arr CM_DYDT = CM_Mb(t, EPSc.CM_con, theVars);

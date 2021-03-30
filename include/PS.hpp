@@ -111,6 +111,8 @@ public:
     size_t size() {
         return count;
     }
+    friend std::ostream& operator<<(std::ostream &out, const PSCon &in);
+
     double RuBP = 0.;
     double PGA = 0.;
     double DPGA = 0.;
@@ -192,6 +194,7 @@ public:
         this->v25 *= val;
         return *this;
     }
+    friend std::ostream& operator<<(std::ostream &out, const PSVel &in);
     double v1 = 0.;
     double v2 = 0.;
     double v3 = 0.;

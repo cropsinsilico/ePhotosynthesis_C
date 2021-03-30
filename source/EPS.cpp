@@ -39,3 +39,10 @@ arr EPSDriver::MB(realtype t, N_Vector u) {
     arr dxdt = EPS_Mb(t, EPS_con, theVars);
     return dxdt;
 }
+
+std::ostream& operator<<(std::ostream &out, const EPSCon &in) {
+    out << "EPSCon" << std::endl;
+    out << in.CM_con;
+    out << in.FIBF_con;
+    return out;
+}

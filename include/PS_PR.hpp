@@ -132,6 +132,7 @@ public:
 
         return outvec;
     }
+    friend std::ostream& operator<<(std::ostream &out, const PS_PRCon &in);
 
     /**
       Get the size of the data vector

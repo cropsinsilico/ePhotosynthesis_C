@@ -111,6 +111,7 @@ public:
     size_t size() {
         return CM_con.size() + FIBF_con.size();
     }
+    friend std::ostream& operator<<(std::ostream &out, const EPSCon &in);
     CMCon CM_con;
     FIBFCon FIBF_con;
 };

@@ -120,6 +120,7 @@ public:
     size_t size() {
         return PS_PR_con.size() + SUCS_con.size();
     }
+    friend std::ostream& operator<<(std::ostream &out, const CMCon &in);
     PS_PRCon PS_PR_con;
     SUCSCon SUCS_con;
 };

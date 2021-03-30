@@ -38,3 +38,10 @@ arr CMDriver::MB(realtype t, N_Vector u) {
     arr dxdt = CM_Mb(t, CMs, theVars);
     return dxdt;
 }
+
+std::ostream& operator<<(std::ostream &out, const CMCon &in) {
+    out << "CMCon" << std::endl;
+    out << in.PS_PR_con;
+    out << in.SUCS_con;
+    return out;
+}

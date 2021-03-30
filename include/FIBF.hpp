@@ -115,6 +115,8 @@ public:
     size_t size() {
         return BF_con.size() + FI_con.size() + 1;
     }
+    friend std::ostream& operator<<(std::ostream &out, const FIBFCon &in);
+
     BFCon BF_con;
     FICon FI_con;
     double kd = 0; // The initialization of the initial rate constant for heat dissipation

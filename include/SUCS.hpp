@@ -115,6 +115,8 @@ public:
     size_t size() {
         return count;
     }
+    friend std::ostream& operator<<(std::ostream &out, const SUCSCon &in);
+
     double T3Pc = 0.;
     double FBPc = 0.;
     double HexPc = 0.;
@@ -154,6 +156,8 @@ public:
         vpga_use = other.vpga_use;
         vatpf = other.vatpf;
     }
+    friend std::ostream& operator<<(std::ostream &out, const SUCSVel &in);
+
     double v51 = 0.;  ///< DHAP+GAP --FBP
     double v52 = 0.;  ///< FBP --F6P + Pi
     double v55 = 0.;  ///< G1P+UTP --OPOP+UDPG

@@ -99,6 +99,8 @@ public:
         vP680_d = other.vP680_d;
         vP680_f = other.vP680_f;
     }
+    friend std::ostream& operator<<(std::ostream &out, const FIVel &in);
+
     double vA_d = 0.;    ///<  vA_d  The rate of heat dissipation from peripheral antenna
     double vA_f = 0.;    ///<  vA_f  The rate of fluorescence emission from peripheral antenna
     double vA_U = 0.;    ///<  vA_U  The rate of exciton transfer from peripheral antenna to core antenna in open reaction center
@@ -328,6 +330,8 @@ public:
     size_t size() {
         return count;
     }
+    friend std::ostream& operator<<(std::ostream &out, const FICon &in);
+
     double A = 0.;          ///< The concentration of excitons in the peripheral antenna
     double U = 0.;          ///< The concentration fo excitons in the core antenna
     double P680ePheo = 0.;  ///< QF add

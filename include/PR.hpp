@@ -99,6 +99,8 @@ public:
     size_t size() {
         return count;
     }
+    friend std::ostream& operator<<(std::ostream &out, const PRCon &in);
+
     double GCEA = 0.;
     double GCA = 0.;
     double PGA = 0.;
@@ -159,6 +161,7 @@ public:
         this->v2out *= val;
         return *this;
     }
+    friend std::ostream& operator<<(std::ostream &out, const PRVel &in);
     double v111 = 0.;
     double v112 = 0.;
     double v113 = 0.;

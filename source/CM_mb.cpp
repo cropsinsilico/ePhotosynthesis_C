@@ -48,5 +48,8 @@ arr CM_Mb(const realtype t, const CMCon &CM_con, Variables *theVars) {
 
     SUCS_DYDT[11] = SUCS_DYDT[11] - theVars->SUCS_Vel.vpga_in + theVars->PS_Vel.v32;//	pgaC
     dxdt[34] = SUCS_DYDT[11];
+    std::cout << theVars->SUCS_Vel;
+    std::cout << theVars->PS_Vel;
+    std::cout << theVars->PR_Vel;
     return dxdt;
 }

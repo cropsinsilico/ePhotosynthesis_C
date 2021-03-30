@@ -73,6 +73,8 @@ public:
         vcet = other.vcet;
     }
 
+    friend std::ostream& operator<<(std::ostream &out, const BFVel &in);
+
     double Vbf1 = 0.;
     double Vbf2 = 0.;
     double Vbf3 = 0.;
@@ -356,6 +358,9 @@ public:
     size_t size() {
         return count;
     }
+
+    friend std::ostream& operator<<(std::ostream &out, const BFCon &in);
+
     double ISPHr = 0.;   ///< The reduced ion sulfer protein (ISPH); unit: micromole per m2
     double cytc1 = 0.;   ///< The oxidized state of cytc1; unit: micromole per meter square
     double ISPo = 0.;    ///< The oxidized ion sulfer protein (ISP); unit: micromole per meter square
