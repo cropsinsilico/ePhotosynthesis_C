@@ -127,20 +127,21 @@ PRCon PR::PR_Ini(Variables *theVars) {
 
     if (theVars->useC3) {
         theVars->V1T = 5.;
-        Vfactor112=1;
-        Vfactor113=1;
-        Vfactor121=1;
-        Vfactor122=1;
-        Vfactor123=1;
-        Vfactor131=1;
+        Vfactor112 = 1;
+        Vfactor113 = 1;
+        Vfactor121 = 1;
+        Vfactor122 = 1;
+        Vfactor123 = 1;
+        Vfactor124 = 1;
+        Vfactor131 = 1;
         if (theVars->GRNC == 1 && theVars->CO2_cond > 0) {
-            Vfactor112=theVars->VfactorCp[25];
-            Vfactor113=theVars->VfactorCp[26];
-            Vfactor121=theVars->VfactorCp[28];
-            Vfactor122=theVars->VfactorCp[29];
-            Vfactor123=theVars->VfactorCp[30];
-            Vfactor131=theVars->VfactorCp[32];
-
+            Vfactor112 = theVars->VfactorCp[25];
+            Vfactor113 = theVars->VfactorCp[26];
+            Vfactor121 = theVars->VfactorCp[28];
+            Vfactor122 = theVars->VfactorCp[29];
+            Vfactor123 = theVars->VfactorCp[30];
+            Vfactor131 = theVars->VfactorCp[32];
+            Vfactor124 = theVars->VfactorCp[11];
         }
         // The constant for calculating the glycolate uptake
         V2T = 6;      // The original value is 0.32.
@@ -170,7 +171,7 @@ PRCon PR::PR_Ini(Variables *theVars) {
 
         KM123 = 0.09;       //   Michaelis constant for hydroxylpyruvate;
         KI123 = 12;          // Inhibition constant for hydroxypyruvate;
-        KE123 = 1/(4*10^(-6));  // Guynn, R.W.; Arch. Biochem. Biophys.; 218, 14 (1982).; 1/(4*10^(-6);
+        KE123 = 1/(4*pow(10, -6));  // Guynn, R.W.; Arch. Biochem. Biophys.; 218, 14 (1982).; 1/(4*10^(-6);
 
         KM1241 = 0.15; // Michaelis constant for glyoxylate
         KM1242 = 1.7;  // Michaelis constant for Glu

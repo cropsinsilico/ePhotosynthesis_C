@@ -171,8 +171,8 @@ void BF::BF_Rate(const double t, const BFCon &BF_con, Variables *theVars) {
     const double Temp = theVars->BF_RC.Vmax11 * (ADP * Pi - BF_con.ATP / KE11) / ((theVars->BF_RC.KM1ADP * theVars->BF_RC.KM1PI) * (1 + ADP / theVars->BF_RC.KM1ADP + Pi / theVars->BF_RC.KM1PI + ADP * Pi / (theVars->BF_RC.KM1ADP * theVars->BF_RC.KM1PI))); // Unit: mmol l- s-1; The stroma volume is used as a basis for the volume
     double Vbf11 = Temp;
 
-    if (Vbf11 < 0)
-        Vbf11 = 0;
+    if (Vbf11 < 0.)
+        Vbf11 = 0.;
 
 
     // The EPS_ATP_Rate is used in the overall model for the calculation of the mass balance equation of ATP.

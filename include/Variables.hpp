@@ -196,9 +196,6 @@ struct Variables {
     arr XanRatio = ones(4);
 
     std::map<std::string, double> EnzymeAct;
-    arr BFVmax = zeros(18);
-    arr FIVmax = zeros(21);
-
 
     arr VfactorCp = zeros(33);
     arr VfactorT = ones(28);
