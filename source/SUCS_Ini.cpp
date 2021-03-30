@@ -151,6 +151,15 @@ SUCSCon SUCS::SUCS_Ini(Variables *theVars) {
             Vfactor59=theVars->VfactorCp[24];
 
         }
+        if (theVars->GP == 0) {
+            V51	= theVars->EnzymeAct.at("V51");
+            V52	= theVars->EnzymeAct.at("V52");
+            V55	= theVars->EnzymeAct.at("V55");
+            V56	= theVars->EnzymeAct.at("V56");
+            V57	= theVars->EnzymeAct.at("V57");
+            V58	= theVars->EnzymeAct.at("V58");
+        }
+        V59	= theVars->EnzymeAct.at("V59");
     } else {
         KE501 = 1 / 0.05 * theVars->SUCRatio[15];
         Km511 = 0.02 * theVars->SUCRatio[16];
@@ -234,12 +243,12 @@ SUCSCon SUCS::SUCS_Ini(Variables *theVars) {
     if (theVars->GP == 0) {
         // Unit: mmol l-1 s-1;
         if (theVars->useC3) {
-            V51	= theVars->EnzymeAct[19];
-            V52	= theVars->EnzymeAct[20];
-            V55	= theVars->EnzymeAct[21];
-            V56	= theVars->EnzymeAct[22];
-            V57	= theVars->EnzymeAct[23];
-            V58	= theVars->EnzymeAct[24];
+            V51	= theVars->EnzymeAct.at("V51");
+            V52	= theVars->EnzymeAct.at("V52");
+            V55	= theVars->EnzymeAct.at("V55");
+            V56	= theVars->EnzymeAct.at("V56");
+            V57	= theVars->EnzymeAct.at("V57");
+            V58	= theVars->EnzymeAct.at("V58");
 
         } else {
             V51 = 0.107376831 * SC * theVars->SUCRatio[0]; // DHAP+GAP --FBP          // default 0.5
@@ -251,7 +260,7 @@ SUCSCon SUCS::SUCS_Ini(Variables *theVars) {
         }
     }
     if (theVars->useC3) {
-        V59	= theVars->EnzymeAct[25];
+        V59	= theVars->EnzymeAct.at("V59");
         V60	= 6.1;	//	ATP+UDP --UTP + ADP
         V61	= 10000;	//	POPO --2PO
         V62	= 2;	//	SUC Sink        0.2 works.

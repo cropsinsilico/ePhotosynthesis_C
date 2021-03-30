@@ -44,7 +44,7 @@ void EPSDriver::setup() {
     /////////////////////////
     EPSCon EPS_Con = EPS_Init();
     int va1 = 0;
-
+    theVars->Jmax = theVars->EnzymeAct.at("Jmax");
     theVars->BF_Param[0] = va1;
     theVars->BF_Param[1] = theVars->PS12ratio;
 
@@ -81,6 +81,7 @@ void EPSDriver::setup() {
     theVars->PSPR_SUCS_com = true;   // This is a variable indicating whether the PSPR model is actually need to be combined with SUCS or not. If 1 then means combined; 0 means not.
     constraints = zeros(87);
     arr temp = EPS_Con.toArray();
+    theVars->Tp = this->Tp;
     for (size_t i = 0; i < constraints.size(); i++)
         constraints[i] = temp[i];
 

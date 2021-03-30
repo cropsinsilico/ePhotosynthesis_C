@@ -268,13 +268,13 @@ PRCon PR::PR_Ini(Variables *theVars) {
     if (theVars->GP == 0) {
         if (theVars->useC3) {
             V111 = theVars->V1 * 0.22;
-            V112 = theVars->EnzymeAct[12];
-            V113 = theVars->EnzymeAct[13];
-            V121 = theVars->EnzymeAct[14];
-            V122 = theVars->EnzymeAct[15];
-            V123 = theVars->EnzymeAct[16];
-            V124 = theVars->EnzymeAct[17];
-            V131 = theVars->EnzymeAct[18];
+            V112 = theVars->EnzymeAct.at("V112");
+            V113 = theVars->EnzymeAct.at("V113");
+            V121 = theVars->EnzymeAct.at("V121");
+            V122 = theVars->EnzymeAct.at("V122");
+            V123 = theVars->EnzymeAct.at("V123");
+            V124 = theVars->EnzymeAct.at("V124");
+            V131 = theVars->EnzymeAct.at("V131");
 
         } else {
             if (theVars->PR_PS_com) {

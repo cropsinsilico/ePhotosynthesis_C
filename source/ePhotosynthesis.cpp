@@ -26,6 +26,7 @@
 
 #include <stdlib.h>
 #include <string>
+#include <sstream>
 #include <map>
 #include <vector>
 #include <fstream>
@@ -63,6 +64,24 @@ void readFile(const std::string &filename, std::map<std::string, std::string> &m
     }
 }
 
+void readFile(const std::string &filename, std::map<std::string, double> &mapper) {
+    std::vector<std::string> tempVec;
+    std::string input;
+    std::ifstream inputfile(filename);
+    if(inputfile.fail()) {
+        std::cout << "Could not open " << filename << " for reading" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    while (getline(inputfile, input)) {
+        if (input.empty())
+            return;
+        boost::split(tempVec, input, boost::is_any_of("\t "));
+        double d;
+        std::stringstream ss(tempVec[1]);
+        ss >> d;
+        mapper.insert(std::pair<std::string, double>(tempVec[0], d));
+    }
+}
 enum DriverType {
     None,
     trDynaPS,
@@ -77,15 +96,17 @@ int main(int argc, const char* argv[]) {
         bool useC3 = false;
         cxxopts::Options options("ePhotosynthesis", "C++ implementation of the matlab original");
         options.show_positional_help();
-        std::string evn, atpcost, optionsFile;
+        std::string evn, atpcost, optionsFile, enzymeFile;
         double stoptime, begintime, stepsize;
         double abstol, reltol;
+        double Tp;
         DriverType driverChoice;
         int driver, maxSubSteps;
         options.add_options()
                 ("v,verbose", "Record output values for all steps (this can significantly slow the program).", cxxopts::value<bool>(record)->default_value("false"))
                 ("e,evn", "The InputEvn.txt file.", cxxopts::value<std::string>(evn)->default_value("InputEvn.txt"))
                 ("a,atpcost", "The InputATPCost.txt file.", cxxopts::value<std::string>(atpcost)->default_value("InputATPCost.txt"))
+                ("n,enzyme", "The input enzyme file.", cxxopts::value<std::string>(enzymeFile)->default_value(""))
                 ("b,begintime", "The starting time for the calculations.", cxxopts::value<double>(begintime)->default_value("0.0"))
                 ("s,stoptime", "The time to stop calculations.", cxxopts::value<double>(stoptime)->default_value("5000.0"))
                 ("z,stepsize", "The step size to use in the calculations.", cxxopts::value<double>(stepsize)->default_value("1.0"))
@@ -94,6 +115,7 @@ int main(int argc, const char* argv[]) {
                 ("c,c3", "Use the C3 model, automatically set to true for EPS driver", cxxopts::value<bool>(useC3)->default_value("false"))
                 ("t,abstol", "Absolute tolerance for calculations", cxxopts::value<double>(abstol)->default_value("1e-5"))
                 ("r,reltol", "Relative tolerance for calculations", cxxopts::value<double>(reltol)->default_value("1e-4"))
+                ("T,Tp", "Input Temperature", cxxopts::value<double>(Tp)->default_value("0.0"))
                 ("o,options", "Name of a text file which specifies any of the above options. Command line arguments have priority.", cxxopts::value<std::string>(optionsFile)->default_value(""))
                 ("h,help", "Produce help message")
                 ;
@@ -123,6 +145,9 @@ int main(int argc, const char* argv[]) {
         readFile(evn, inputs);
         readFile(atpcost, inputs);
         Variables *theVars = new Variables();
+        if (result.count("enzyme")) {
+            readFile(enzymeFile, theVars->EnzymeAct);
+        }
         theVars->TestCa = static_cast<double>(stof(inputs.at("CO2"), nullptr));
         theVars->TestLi = static_cast<double>(stof(inputs.at("PAR"), nullptr));
         theVars->TestSucPath = stoi(inputs.at("SucPath"), nullptr);
@@ -144,7 +169,7 @@ int main(int argc, const char* argv[]) {
                 break;
             case EPS:
                 theVars->useC3 = true;
-                maindriver = new EPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
+                maindriver = new EPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1, Tp);
                 break;
             default:
                 printf("Invalid driver choice given.\n");

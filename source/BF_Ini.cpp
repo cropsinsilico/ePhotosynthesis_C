@@ -51,29 +51,29 @@ BFCon BF::BF_Ini(Variables *theVars) {
         const double KE9 = exp(-DeltaG / RT);
 
         // Assign values to the array for rate constant
-        theVars->BF_RC.K1 = theVars->BFVmax[0];     // The rate constant for formation of ISP.QH2 complex; unit:  per second
-        theVars->BF_RC.K2 = theVars->BFVmax[1];     // The rate constant for ISP.QH2-->QH(semi) + ISPH(red) ; unit:  per second
-        theVars->BF_RC.K3 = theVars->BFVmax[2];     // The rate constant for QH. + cytbL --> Q + cytbL- + H+ Unit: s-1
-        theVars->BF_RC.K4 = theVars->BFVmax[3];     // The rate constant for cytbL- + cytbH --> cytbL + cytbH- Unit: s-1
-        theVars->BF_RC.K5 = theVars->BFVmax[4];     // The rate constant for CytbH- + Q --> cytbH + Q- Unit: s-1
-        theVars->BF_RC.K6 = theVars->BFVmax[5];     // The rate constant  for CytbH- + Q- --> cytbH + Q2- Unit: s-1
-        theVars->BF_RC.K7 = theVars->BFVmax[6];     // The rate constant for Q binding to Qi site; which assumed half time as 200 us, following Croft's website Unit: s-1
-        theVars->BF_RC.K8 = theVars->BFVmax[7];     // The rate constant for ISPH + CytC1 --> ISPH(ox) + CytC1+ Unit: s-1
-        theVars->BF_RC.K9 = theVars->BFVmax[8];     // The rate constant for the electron transport from cytc1 to cytc2 Unit: s-1
-        theVars->BF_RC.K10 = theVars->BFVmax[9];    // The rate constant for the electron transport from cytc2 to P700 Unit: s-1
-        theVars->BF_RC.Vmax11 = theVars->BFVmax[10] * theVars->cATPsyn;  // The maximum rate of ATP synthesis Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+        theVars->BF_RC.K1 = theVars->EnzymeAct.at("K1");     // The rate constant for formation of ISP.QH2 complex; unit:  per second
+        theVars->BF_RC.K2 = theVars->EnzymeAct.at("K2");     // The rate constant for ISP.QH2-->QH(semi) + ISPH(red) ; unit:  per second
+        theVars->BF_RC.K3 = theVars->EnzymeAct.at("K3");     // The rate constant for QH. + cytbL --> Q + cytbL- + H+ Unit: s-1
+        theVars->BF_RC.K4 = theVars->EnzymeAct.at("K4");     // The rate constant for cytbL- + cytbH --> cytbL + cytbH- Unit: s-1
+        theVars->BF_RC.K5 = theVars->EnzymeAct.at("K5");     // The rate constant for CytbH- + Q --> cytbH + Q- Unit: s-1
+        theVars->BF_RC.K6 = theVars->EnzymeAct.at("K6");     // The rate constant  for CytbH- + Q- --> cytbH + Q2- Unit: s-1
+        theVars->BF_RC.K7 = theVars->EnzymeAct.at("K7");     // The rate constant for Q binding to Qi site; which assumed half time as 200 us, following Croft's website Unit: s-1
+        theVars->BF_RC.K8 = theVars->EnzymeAct.at("K8");     // The rate constant for ISPH + CytC1 --> ISPH(ox) + CytC1+ Unit: s-1
+        theVars->BF_RC.K9 = theVars->EnzymeAct.at("K9");     // The rate constant for the electron transport from cytc1 to cytc2 Unit: s-1
+        theVars->BF_RC.K10 = theVars->EnzymeAct.at("K10");    // The rate constant for the electron transport from cytc2 to P700 Unit: s-1
+        theVars->BF_RC.Vmax11 = theVars->EnzymeAct.at("Vmax11") * theVars->cATPsyn;  // The maximum rate of ATP synthesis Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
         theVars->BF_RC.Kqi = pow(10, 3);            // The rate constant for uptake of two protons from the stroma to Q2- s-1
         theVars->BF_RC.PK = 3.6 * pow(10, (-8)) * PMODTEM;  // The permeability constant for K Unit: cm s-1
         theVars->BF_RC.PMg = 3.6 * pow(10, (-8)) * PMODTEM; // The permeability constant for Mg Unit: cm s-1
         theVars->BF_RC.PCl = 1.8 * pow(10, (-8)) * PMODTEM; // The permeability constant for Cl Unit: cm s-1
-        theVars->BF_RC.Kau = theVars->BFVmax[11];   // The rate constant for exciton transfer from perpheral antenna to core antenna, see FI Unit: s-1
-        theVars->BF_RC.Kua = theVars->BFVmax[12];   // The rate constant for exciton transfer from core antenna to peripheral antenna, SEE FI Unit: s-1
-        theVars->BF_RC.Kf = theVars->BFVmax[13];    // The rate constant for fluorescence emission, see the note in FI Unit: s-1
-        theVars->BF_RC.Kd = theVars->BFVmax[14];    // The rate constant for heat dissipation; see the note for FI Unit: s-1
+        theVars->BF_RC.Kau = theVars->EnzymeAct.at("Kau");   // The rate constant for exciton transfer from perpheral antenna to core antenna, see FI Unit: s-1
+        theVars->BF_RC.Kua = theVars->EnzymeAct.at("Kua");   // The rate constant for exciton transfer from core antenna to peripheral antenna, SEE FI Unit: s-1
+        theVars->BF_RC.Kf = theVars->EnzymeAct.at("Kf");    // The rate constant for fluorescence emission, see the note in FI Unit: s-1
+        theVars->BF_RC.Kd = theVars->EnzymeAct.at("Kd");    // The rate constant for heat dissipation; see the note for FI Unit: s-1
         theVars->BF_RC.KE8 = KE8;                   // ISPHr + cytc1 --> ISPHox + cytc1- Unit: s-1
         theVars->BF_RC.KE9 = KE9;                   // cytc1- + cytc2 --> cytc1 + cytc2- Unit: s-1
-        theVars->BF_RC.K15 = theVars->BFVmax[15] * theVars->CPSi;     // The rate constant for primary charge separation in PSI Unit: s-1
-        theVars->BF_RC.K16 = theVars->BFVmax[16];    // The rate constant for electron tranfer from electron acceptor of PSI to Fd Unit: s-1
+        theVars->BF_RC.K15 = theVars->EnzymeAct.at("K15") * theVars->CPSi;     // The rate constant for primary charge separation in PSI Unit: s-1
+        theVars->BF_RC.K16 = theVars->EnzymeAct.at("K16");    // The rate constant for electron tranfer from electron acceptor of PSI to Fd Unit: s-1
         theVars->BF_RC.MemCap = 0.6 * pow(10, (-6)); // The membrane capacity
         theVars->BF_RC.RVA = 8 * pow(10, (-10));     // The ratio of lumen volume to thylakoid membrane area
         theVars->BF_RC.KBs = 1.1 * pow(10, (-8));    // The buffer equilibrium constant in stroma
@@ -83,7 +83,7 @@ BFCon BF::BF_Ini(Variables *theVars) {
         theVars->BF_RC.KM1PI = 0.3;                  // The michaelis menton constant for ATP for PI synthesis
         theVars->BF_RC.KM2NADP = 0.05;               // The michaelis menten constant for NADP Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
         theVars->BF_RC.KM2NADPH = 0.035;             // The michaelis menten constant for NADPH Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
-        theVars->BF_RC.V2M = theVars->BFVmax[17] * theVars->cNADPHsyn;     // The maximum rate of NADPH formation Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+        theVars->BF_RC.V2M = theVars->EnzymeAct.at("V2M") * theVars->cNADPHsyn;     // The maximum rate of NADPH formation Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
         theVars->BF_RC.KE2 = 495;                    // Equilibrium constatn
     } else {
 

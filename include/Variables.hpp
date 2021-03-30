@@ -25,7 +25,7 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
+#include <map>
 #include "definitions.hpp"
 #include "FI.hpp"
 #include "BF.hpp"
@@ -195,11 +195,10 @@ struct Variables {
     arr SUCRatio = ones(66);
     arr XanRatio = ones(4);
 
-    // Max
+    std::map<std::string, double> EnzymeAct;
     arr BFVmax = zeros(18);
     arr FIVmax = zeros(21);
 
-    arr EnzymeAct = zeros(27);
 
     arr VfactorCp = zeros(33);
     arr VfactorT = ones(28);

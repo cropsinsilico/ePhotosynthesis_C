@@ -365,18 +365,18 @@ PSCon PS::PS_Ini(Variables *theVars) {
     if (theVars->GP == 0) {
         // Initialize the values of the global variables
         if (theVars->useC3) {
-            theVars->V1 = theVars->EnzymeAct[0];
-            theVars->V2 = theVars->EnzymeAct[1];
-            theVars->V3 = theVars->EnzymeAct[2];
-            V5 = theVars->EnzymeAct[3];
-            theVars->V6 = theVars->EnzymeAct[4];
-            V7 = theVars->EnzymeAct[5];
-            V8 = theVars->EnzymeAct[6];
-            theVars->V9 = theVars->EnzymeAct[7];
-            V10	= theVars->EnzymeAct[8];
-            theVars->V13 = theVars->EnzymeAct[9];
-            theVars->V23 = theVars->EnzymeAct[10];
-            theVars->V16 = theVars->EnzymeAct[11];
+            theVars->V1 = theVars->EnzymeAct.at("V1");
+            theVars->V2 = theVars->EnzymeAct.at("V2");
+            theVars->V3 = theVars->EnzymeAct.at("V3");
+            V5 = theVars->EnzymeAct.at("V5");
+            theVars->V6 = theVars->EnzymeAct.at("V6");
+            V7 = theVars->EnzymeAct.at("V7");
+            V8 = theVars->EnzymeAct.at("V8");
+            theVars->V9 = theVars->EnzymeAct.at("V9");
+            V10	= theVars->EnzymeAct.at("V10");
+            theVars->V13 = theVars->EnzymeAct.at("V13");
+            theVars->V23 = theVars->EnzymeAct.at("V23");
+            theVars->V16 = theVars->EnzymeAct.at("V16");
 
         } else {
             const double SC = 1;        // Scalling coefficient for the stroma volume per mg chl. defualt 2
