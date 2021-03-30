@@ -53,6 +53,7 @@ arr PS_PR_Mb(const double t, const PS_PRCon &PS_PR_con, Variables *theVars) {
     PS_Param[1] = PR2PS_Pgca;
 
     PS::PS_Rate(t, PS_con, PS_Param, theVars, &PR_con);
+    //std::cout << theVars->PS_Vel;
 
     arr PR_Param = zeros(2);
     PR_Param[0] = theVars->PS_PR_Param;      // To indicate that the calcualtion is using the combined model
@@ -65,7 +66,7 @@ arr PS_PR_Mb(const double t, const PS_PRCon &PS_PR_con, Variables *theVars) {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // 5.  Calculation of the mass balance equations ////
     //////////////////////////////////////////////////////////////////////////////////////////////$
-
+    //std::cout << theVars->PR_Vel;
     arr PS_PR_DYDT = zeros(24);
     PS_PR_DYDT[0] = theVars->PS_Vel.v13 - theVars->PS_Vel.v1 - theVars->PR_Vel.v111;
     PS_PR_DYDT[1] = 2 * theVars->PS_Vel.v1 - theVars->PS_Vel.v2 - theVars->PS_Vel.v32 + theVars->PR_Vel.v113 + theVars->PR_Vel.v111;
@@ -94,4 +95,11 @@ arr PS_PR_Mb(const double t, const PS_PRCon &PS_PR_con, Variables *theVars) {
     PS_PR_DYDT[23] = theVars->PS_Vel.v23 - theVars->PS_Vel.v24;
 
     return PS_PR_DYDT;
+}
+
+std::ostream& operator<<(std::ostream &out, const PS_PRCon &in) {
+    out << "PS_PRCon" << std::endl;
+    out << in.PS_con;
+    out << in.PR_con;
+    return out;
 }
