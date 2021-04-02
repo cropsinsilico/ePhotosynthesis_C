@@ -76,12 +76,20 @@ arr PS_PR_Mb(const double t, const PS_PRCon &PS_PR_con, Variables *theVars) {
     PS_PR_DYDT[5] = theVars->PS_Vel.v7 - theVars->PS_Vel.v8;
     PS_PR_DYDT[6] = theVars->PS_Vel.v9 - theVars->PS_Vel.v10;
     PS_PR_DYDT[7] = theVars->PS_Vel.v8 - theVars->PS_Vel.v9;
-    PS_PR_DYDT[8] = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13 - theVars->PR_Vel.v113 - theVars->PS_Vel.v25 - theVars->PR_Vel.v131 - vATPcost;//WY202003 extra ATP cost
+    if (theVars->useC3) {
+        PS_PR_DYDT[8] = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13 - theVars->PR_Vel.v113;
+    } else {
+        PS_PR_DYDT[8] = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13 - theVars->PR_Vel.v113 - theVars->PS_Vel.v25 - theVars->PR_Vel.v131 - vATPcost;//WY202003 extra ATP cost
     //PS_PR_DYDT(9) = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13- theVars->PR_Vel.v113 - theVars->PS_Vel.v25 - theVars->PR_Vel.v124;    //AWY201804
+    }
     PS_PR_DYDT[9] = 0;
     PS_PR_DYDT[10] = 0;
     PS_PR_DYDT[11] = 0;
-    PS_PR_DYDT[12] = theVars->PS_Vel.v6 - theVars->PS_Vel.v7 - theVars->PS_Vel.v23 + theVars->PS_Vel.v25;
+    if (theVars->useC3) {
+        PS_PR_DYDT[12] = theVars->PS_Vel.v6 - theVars->PS_Vel.v7 - theVars->PS_Vel.v23;
+    } else {
+        PS_PR_DYDT[12] = theVars->PS_Vel.v6 - theVars->PS_Vel.v7 - theVars->PS_Vel.v23 + theVars->PS_Vel.v25;
+    }
     PS_PR_DYDT[13] = theVars->PS_Vel.v7 + theVars->PS_Vel.v10 * 2 - theVars->PS_Vel.v13;
     PS_PR_DYDT[14] = theVars->PR_Vel.v1in - theVars->PR_Vel.v113;
     PS_PR_DYDT[15] = theVars->PR_Vel.v112 - theVars->PR_Vel.v2out;

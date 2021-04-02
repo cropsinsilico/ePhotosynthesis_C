@@ -128,8 +128,8 @@ arr FIBF_Mb(const double t, const FIBFCon &FIBF_Con, Variables *theVars) {
     FIBF_mb[7] = 0;        // Q Quinone in thylakoid membrane in free form
     FIBF_mb[11] = GPQH2_t; // QH2 The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
     FIBF_mb[50] = GPQH2_t; // QH2 The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
-    std::cout << theVars->FI_Vel;
-    std::cout << theVars->BF_Vel;
+    //std::cout << theVars->FI_Vel;
+    //std::cout << theVars->BF_Vel;
     return FIBF_mb;
 }
 

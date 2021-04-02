@@ -195,6 +195,7 @@ PSCon PS::PS_Ini(Variables *theVars) {
         //PsKM12_0	=	;		//	O2	1	RuBP+CO2->2PGA  0.28 DEFAUL.
         KM11=0.0097*exp(c_c-dHa_c*1000/(R*(theVars->Tp+273.15)))/272.38;
         KM12=0.244*exp(c_o-dHa_o*1000/(R*(theVars->Tp+273.15)))/165.82;
+        //std::cout << c_o << "  " << dHa_o << "  " << R << "  " << theVars->Tp << "  " << c_c << "  " << dHa_c << std::endl;
         KM13	=	0.02;		// 	RuBP	1	RuBP+CO2->2PGA
         KI11    =   0.84   ;    // PGA
         KI12    =0.04   ;       // FBP
@@ -208,7 +209,7 @@ PSCon PS::PS_Ini(Variables *theVars) {
         KM32b	=	0.1	;	    // 	NADPH	3	DPGA+NADPH <->GAP + OP+NADP
         //KM41	=	2.5	;	    //	DHAP	4	DHAP <->GAP
         //KM42	=	0.68;		// 	GAP	4	DHAP <->GAP
-        //KE4     =   0.05;       //   Using the value from Patterson
+        KE4     =   0.05;       //   Using the value from Patterson
         KM51	=	0.3	;	    //	GAP	5	GAP+DHAP <->FBP
         KM52	=	0.4	;	    // 	DHAP	5	GAP+DHAP <->FBP
         KM53	=	0.02;		//	FBP	5	GAP+DHAP <->FBP     // Original Value: 0.02

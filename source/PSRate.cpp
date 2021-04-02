@@ -80,6 +80,7 @@ void PS::PS_Rate(const double t, const PSCon &PS_con, const arr &Param, Variable
 
     const double DHAP = PS_con.T3P / (1 + KE4);
     const double GAP = KE4 * PS_con.T3P / (1 + KE4);
+    //std::cout << KE4 << "  " << PS_con.T3P << std::endl;
     //////////////////////////////////////////////////
     // DHAP=  T3P*KE4/(1+KE4); ////WY201803
     // GAP =  T3P/(1+KE4);
@@ -100,13 +101,17 @@ void PS::PS_Rate(const double t, const PSCon &PS_con, const arr &Param, Variable
     const double Xu5P = (PS_con.PenP / KE12) / (1 + 1 / KE11 + 1 / KE12);
 
     const double Pit = PS_C_CP - PS_con.PGA - 2 * PS_con.DPGA - GAP - DHAP - 2 * PS_con.FBP - F6P - PS_con.E4P - 2 * PS_con.SBP - PS_con.S7P - Xu5P - Ri5P - Ru5P - 2 * PS_con.RuBP - G6P - G1P - PS_con.ATP - Param[1];
-    double Pi;
+    double Pi, OPOP, Pic, PiTc;
     if (theVars->useC3) {
         Pi = PS_C_CP - PS_con.PGA - 2*PS_con.DPGA-GAP-DHAP-2*PS_con.FBP-F6P-PS_con.E4P-2*PS_con.SBP-PS_con.S7P-Xu5P-Ri5P-Ru5P-2*PS_con.RuBP-G6P-G1P- PS_con.ATP-PR_con->PGCA;
+        PiTc = theVars->SUCS_Pool.PTc - 2 * (theVars->EPS_con->CM_con.SUCS_con.FBPc + theVars->EPS_con->CM_con.SUCS_con.F26BPc) - (theVars->EPS_con->CM_con.SUCS_con.PGAc + theVars->EPS_con->CM_con.SUCS_con.T3Pc + theVars->EPS_con->CM_con.SUCS_con.HexPc + theVars->EPS_con->CM_con.SUCS_con.SUCP + theVars->EPS_con->CM_con.SUCS_con.UTPc + theVars->EPS_con->CM_con.SUCS_con.ATPc);
+        Pic   = (pow(pow(SUCS::KE61, 2.) + 4 * SUCS::KE61 * PiTc, 0.5) - SUCS::KE61)/2;
+        OPOP = PiTc - Pic;
+        PsPEXT = Pic;
     } else {
         Pi = 0.5 * (-KE25 +  pow((KE25 * KE25 + 4 * Pit * KE25), 0.5));
+        OPOP = Pit - Pi;
     }
-    const double OPOP = Pit - Pi;
 
     if (!theVars->RedoxReg_RA_com) {
         ATPreg = PS_con.PGA / 3;
@@ -117,21 +122,6 @@ void PS::PS_Rate(const double t, const PSCon &PS_con, const arr &Param, Variable
     theVars->V1Reg = 1 + PS_con.PGA / KI11 + PS_con.FBP / KI12 + PS_con.SBP / KI13 + Pi / KI14 + PS_con.NADPH / KI15;
 
     //double v1;
-    double tmp;
-    if (theVars->RUBISCOMETHOD == 2) {
-        tmp = theVars->V1 * PS_con.RuBP / (PS_con.RuBP + KM13 * theVars->V1Reg);
-        theVars->PS_Vel.v1 = tmp * theVars->CO2_cond / (theVars->CO2_cond + theVars->KM11 * (1 + theVars->O2_cond / theVars->KM12));
-
-        if (PS_con.RuBP < theVars->V1 / 2.5)
-            theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con.RuBP / (theVars->V1 / 2.5);
-
-
-    } else if (theVars->RUBISCOMETHOD == 1){
-        //fprintf("M1  ");
-        theVars->PS_Vel.v1 = theVars->V1 * theVars->CO2_cond / (theVars->CO2_cond + theVars->KM11 * (1 + theVars->O2_cond / theVars->KM12));
-        if (PS_con.RuBP < theVars->V1 / 2.5)
-            theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con.RuBP / (theVars->V1 / 2.0);// DNF was 2.5 not 2.0
-    }
 
     const double KE57 = 1.005 * 0.1 * theVars->PSRatio[93];
     const double Km8p5p = 0.118 * theVars->PSRatio[94];
@@ -166,6 +156,7 @@ void PS::PS_Rate(const double t, const PSCon &PS_con, const arr &Param, Variable
     theVars->PS2BF_ADP = ADP;
 
     theVars->PS2BF_Pi = Pi;
+    double tmp;
 
     //theVars->PS_Vel.v1 = v1;
     if (theVars->useC3) {
@@ -188,14 +179,14 @@ void PS::PS_Rate(const double t, const PSCon &PS_con, const arr &Param, Variable
         const double N = 1 + (1+ KM313/PsPEXT)*(Pi/KM312+PS_con.PGA/KM32+GAP/KM33+DHAP/KM311);
         if (theVars->RUBISCOMETHOD ==2) {
             tmp = PsV1 * PS_con.RuBP/(PS_con.RuBP+KM13*theVars->V1Reg);
-            theVars->PS_Vel.v1 = tmp*PS_con.CO2/(PS_con.CO2+KM11*(1+PS_con.O2/KM12));
-            if (PS_con.RuBP < PsV1 / 2) {
+            theVars->PS_Vel.v1 = tmp*theVars->CO2_cond/(theVars->CO2_cond+KM11*(1+PS_con.O2/KM12));
+            if (PS_con.RuBP < ( PsV1 / 2)) {
                 theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con.RuBP/(PsV1/2);
             }
 
         } else if (theVars->RUBISCOMETHOD == 1) {
             theVars->PS_Vel.v1 = PsV1*PS_con.CO2/(PS_con.CO2+KM11*(1+PS_con.O2/KM12));
-            if (PS_con.RuBP < PsV1 / 2) {
+            if (PS_con.RuBP < (PsV1 / 2)) {
                 theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con.RuBP/(PsV1/2);
             }
         }
@@ -203,6 +194,7 @@ void PS::PS_Rate(const double t, const PSCon &PS_con, const arr &Param, Variable
         theVars->PS_Vel.v3 = PsV3 * PS_con.DPGA * PS_con.NADPH/((PS_con.DPGA+KM31a)*(PS_con.NADPH+KM32b));
         theVars->PS_Vel.v4 = 0;
         theVars->PS_Vel.v5 = PsV5 * (GAP * DHAP-PS_con.FBP/KE5)/((KM51*KM52)*(1+GAP/KM51+DHAP/KM52+PS_con.FBP/KM53+GAP*DHAP/(KM51*KM52)));
+        //std::cout << theVars->PS_Vel.v5 << "  " << PsV5 << "  " << GAP << "  " << DHAP << "  " << PS_con.FBP << "  " << KE5 << "  " << KM51 << "  " << KM52 << "  " << KM53 << std::endl;
         theVars->PS_Vel.v6 = PsV6 * (PS_con.FBP-F6P * Pi/KE6)/(PS_con.FBP + KM61*(1+F6P/KI61+Pi/KI62));
         theVars->PS_Vel.v7 = PsV7 * (F6P*GAP-Xu5P * PS_con.E4P/KE7)/((F6P + KM73*(1+Xu5P/KM71+PS_con.E4P/KM72))*(GAP+KM74));
         theVars->PS_Vel.v8 = PsV8 * (DHAP *PS_con.E4P-PS_con.SBP/KE8)/((PS_con.E4P+KM82)*(DHAP + KM81));
@@ -216,13 +208,29 @@ void PS::PS_Rate(const double t, const PSCon &PS_con, const arr &Param, Variable
         theVars->PS_Vel.v33 = V33 * GAP/(N * KM33) * ATPreg;
         theVars->PS_Vel.Pi = Pi;
         theVars->PS2EPS_v3 = theVars->PS_Vel.v3;
-        if (theVars->FIBF_PSPR_com) {
+        if (!theVars->FIBF_PSPR_com) {
             if (theVars->PS_Vel.v16 == 0.)
                 theVars->PS_Vel.v23 = 0.;
         } else if (theVars->EPS_ATP_Rate == 0.){
             theVars->PS_Vel.v23 = 0.;
         }
     } else {
+
+        if (theVars->RUBISCOMETHOD == 2) {
+            tmp = theVars->V1 * PS_con.RuBP / (PS_con.RuBP + KM13 * theVars->V1Reg);
+            theVars->PS_Vel.v1 = tmp * theVars->CO2_cond / (theVars->CO2_cond + theVars->KM11 * (1 + theVars->O2_cond / theVars->KM12));
+
+            if (PS_con.RuBP < theVars->V1 / 2.5)
+                theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con.RuBP / (theVars->V1 / 2.5);
+
+
+        } else if (theVars->RUBISCOMETHOD == 1){
+            //fprintf("M1  ");
+            theVars->PS_Vel.v1 = theVars->V1 * theVars->CO2_cond / (theVars->CO2_cond + theVars->KM11 * (1 + theVars->O2_cond / theVars->KM12));
+            if (PS_con.RuBP < theVars->V1 / 2.5)
+                theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con.RuBP / (theVars->V1 / 2.0);// DNF was 2.5 not 2.0
+        }
+
         theVars->PS_Vel.v2 = theVars->V2 * PS_con.PGA * PS_con.ATP / ((PS_con.PGA + KM21) * (PS_con.ATP + KM22 * (1 + ADP / KM23)));
         theVars->PS_Vel.v3 = theVars->V3 * PS_con.DPGA * PS_con.NADPH / ((PS_con.DPGA + KM31a) * (PS_con.NADPH + KM32b));
         theVars->PS_Vel.v4 = 0;

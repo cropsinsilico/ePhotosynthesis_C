@@ -30,9 +30,10 @@
 arr CM_Mb(const realtype t, const CMCon &CM_con, Variables *theVars) {
     arr dxdt;
     dxdt.reserve(36);
-    arr SUCS_DYDT = SUCS::SUCS_Mb(t, CM_con.SUCS_con, theVars);
 
     arr PSPR_DYDT = PS_PR_Mb(t, CM_con.PS_PR_con, theVars);
+
+    arr SUCS_DYDT = SUCS::SUCS_Mb(t, CM_con.SUCS_con, theVars);
 
     dxdt.insert(dxdt.end(), PSPR_DYDT.begin(), PSPR_DYDT.begin() + 23);
     dxdt.insert(dxdt.end(), SUCS_DYDT.begin(), SUCS_DYDT.begin() + 12);
@@ -45,11 +46,11 @@ arr CM_Mb(const realtype t, const CMCon &CM_con, Variables *theVars) {
 
     //	T3Pc WY1905
     dxdt[23] = SUCS_DYDT[0];
-
-    SUCS_DYDT[11] = SUCS_DYDT[11] - theVars->SUCS_Vel.vpga_in + theVars->PS_Vel.v32;//	pgaC
+    if (!theVars->useC3)
+        SUCS_DYDT[11] = SUCS_DYDT[11] - theVars->SUCS_Vel.vpga_in + theVars->PS_Vel.v32;//	pgaC
     dxdt[34] = SUCS_DYDT[11];
-    std::cout << theVars->SUCS_Vel;
-    std::cout << theVars->PS_Vel;
-    std::cout << theVars->PR_Vel;
+    //std::cout << theVars->SUCS_Vel;
+    //std::cout << theVars->PS_Vel;
+    //std::cout << theVars->PR_Vel;
     return dxdt;
 }

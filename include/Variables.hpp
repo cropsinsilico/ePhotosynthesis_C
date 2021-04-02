@@ -77,7 +77,7 @@ struct Variables {
     double XanCycle_OLD_TIME = 0;
     size_t XanCycle_TIME_N = 1;
 
-    const int RUBISCOMETHOD = 1;
+    int RUBISCOMETHOD = 1;
     int TestSucPath = 0.;
     int trDynaPS2RedReg_cal = 0.;
 
@@ -214,6 +214,7 @@ struct Variables {
     RROEARC RROEA_RC;
     RuACTRC RuACT_RC;
 
+    EPSCon *EPS_con = nullptr;
     // OUT
     arr BF2OUT = zeros(5);
     PRCon PR2OUT;

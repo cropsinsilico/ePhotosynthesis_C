@@ -50,8 +50,8 @@ public:
 
       @param x The pointer to get the data from
       */
-    EPSCon(realtype *x) {
-        fromArray(x);
+    EPSCon(realtype *x, const uint adjust = 0) {
+        fromArray(x, adjust);
     }
     /**
       Constructor to create an object from the contained classes
@@ -87,9 +87,9 @@ public:
 
       @param x The input pointer to copy from
       */
-    void fromArray(realtype *x) {
-        arr vec(size());
-        for (size_t i = 0; i < size(); i++)
+    void fromArray(realtype *x, const uint adjust = 0) {
+        arr vec = zeros(size());
+        for (size_t i = 0; i < size() - adjust; i++)
             vec[i] = x[i];
         fromArray(vec);
     }

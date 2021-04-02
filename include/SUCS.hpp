@@ -27,7 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
-
+class PS;
 /**
  Class for holding the inputs for SUCS_mb
  */
@@ -225,6 +225,7 @@ public:
       @param theVars The global variables
       */
     static void SUCS_Rate(const double t, const SUCSCon &SUCS_Con, Variables *theVars);
+    friend PS;
 private:
 
     static double KE501;

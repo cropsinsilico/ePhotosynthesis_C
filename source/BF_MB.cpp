@@ -63,7 +63,9 @@ arr BF::BF_Mb(const double t, const BFCon &BF_con, Variables *theVars) {
     BF_mb[13] = theVars->BF_Vel.Vbf10 - theVars->BF_Vel.Vbf15; // P700 The reduced state of P700, including both P700 and excited P700
     BF_mb[15] = 0;                                             // Pi Phosphate in stroma
     BF_mb[14] = theVars->BF_Vel.VsATP - theVars->BF_Vel.Vbf11; // ADP ADP in stroma
+
     BF_mb[16] = theVars->BF_Vel.Vbf11 - theVars->BF_Vel.VsATP; // ATP ATP in stroma
+
     BF_mb[17] = theVars->BF_Vel.JKc;  // Ks K ions in stroma
     BF_mb[18] = theVars->BF_Vel.JMgc; // Mgs Mg ions in stroma
     BF_mb[19] = theVars->BF_Vel.JClc; // Cls Cl ions in stroma
