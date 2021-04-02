@@ -94,7 +94,10 @@ void EPSDriver::setup() {
 }
 
 void EPSDriver::getResults() {
-    EPSCon eps_int_con(intermediateRes);
+    uint adjust = 0;
+    if (theVars->useC3)
+        adjust = 1;
+    EPSCon eps_int_con(intermediateRes, adjust);
     arr temp = EPS_Mb(time, eps_int_con, theVars);
     results = zeros(1);
     const double Arate = theVars->PS_Vel.v2 - theVars->PR_Vel.v1in * theVars->AVR;

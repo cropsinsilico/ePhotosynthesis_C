@@ -25,6 +25,7 @@
  **********************************************************************************************************************************************/
 
 #include "driver.hpp"
+#include "Variables.hpp"
 #include <sundials/sundials_math.h>
 #include <cvode/cvode.h>
 #include <sunmatrix/sunmatrix_dense.h>
@@ -99,8 +100,10 @@ int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
     realtype *dxdt = N_VGetArrayPointer(u_dot);
     CalcData *data = static_cast<CalcData*>(user_data);
     arr ddxdt = data->drv->MB(t, u);
-
-    for (size_t index = 0; index < ddxdt.size(); index++)
+    uint adjust = 0;
+    if (theVars->useC3)
+        adjust = 1;
+    for (size_t index = 0; index < ddxdt.size() - adjust; index++)
         dxdt[index] = ddxdt[index];
     return 0;
 }

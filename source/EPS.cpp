@@ -42,17 +42,17 @@ arr EPSDriver::MB(realtype t, N_Vector u) {
     }
     EPSCon EPS_con(x, adjust);
 
-    std::cout << std::endl << "INPUT   " << t << "  --   ";
-    for (auto dd : EPS_con.toArray())
-        std::cout << dd << "  ";
-    std::cout << std::endl;
+    //std::cout << std::endl << "INPUT   " << t << "  --   ";
+    //for (auto dd : EPS_con.toArray())
+    //    std::cout << dd << "  ";
+    //std::cout << std::endl;
     arr dxdt = EPS_Mb(t, EPS_con, theVars);
 
-    std::cout << std::endl << "OUTPUT  ";
-    for (auto dd : dxdt) {
-        std::cout << dd << "  ";
-    }
-    std::cout << std::endl;
+    //std::cout << std::endl << "OUTPUT  ";
+    //for (auto dd : dxdt) {
+    //    std::cout << dd << "  ";
+    //}
+    //std::cout << std::endl;
     return dxdt;
 }
 
