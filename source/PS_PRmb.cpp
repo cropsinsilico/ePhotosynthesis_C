@@ -36,7 +36,7 @@ arr PS_PR_Mb(const double t, const PS_PRCon &PS_PR_con, Variables *theVars) {
     PSCon PS_con = PS_PR_con.PS_con;
     PR_con.PGA = PS_con.PGA;
 
-    PR_con.RUBP = PS_con.RuBP;
+    PR_con.RuBP = PS_con.RuBP;
     PR_con.CO2 = PS_con.CO2;
     PR_con.O2 = PS_con.O2;
 

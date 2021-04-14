@@ -63,7 +63,7 @@ std::ostream& operator<<(std::ostream &out, const PRCon &in) {
     out << "  GLYc= " << in.GLYc<< std::endl;
     out << "  HPRc= " << in.HPRc<< std::endl;
     out << "  GCEAc = " << in.GCEAc << std::endl;
-    out << "  RUBP= " << in.RUBP<< std::endl;
+    out << "  RUBP= " << in.RuBP<< std::endl;
     out << "  CO2 = " << in.CO2 << std::endl;
     out << "  O2= " << in.O2<< std::endl;
 

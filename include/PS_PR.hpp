@@ -94,7 +94,7 @@ public:
         PR_con.HPRc = vec[offset + 21];
         PR_con.GCEAc = vec[offset + 22];
         PS_con.ADPG = vec[offset + 23];
-        PR_con.RUBP = PS_con.RuBP;
+        PR_con.RuBP = PS_con.RuBP;
         PR_con.CO2 = PS_con.CO2;
         PR_con.O2 = PS_con.O2;
         PR_con.PGA = PS_con.PGA;

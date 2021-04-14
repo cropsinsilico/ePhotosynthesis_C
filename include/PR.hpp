@@ -50,7 +50,7 @@ public:
         GLYc = other.GLYc;
         HPRc = other.HPRc;
         GCEAc = other.GCEAc;
-        RUBP = other.RUBP;
+        RuBP = other.RuBP;
         CO2 = other.CO2;
         O2 = other.O2;
     }
@@ -80,7 +80,7 @@ public:
         GLYc= vec[offset + 7];
         HPRc= vec[offset + 8];
         GCEAc= vec[offset + 9];
-        RUBP= vec[offset + 10];
+        RuBP= vec[offset + 10];
         CO2= vec[offset + 11];
         O2= vec[offset + 12];
     }
@@ -90,7 +90,7 @@ public:
       @return A vector containing the data values from the class
       */
     arr toArray() {
-        arr array = {GCEA, GCA, PGA, PGCA, GCAc, GOAc, SERc, GLYc, HPRc, GCEAc, RUBP, CO2, O2};
+        arr array = {GCEA, GCA, PGA, PGCA, GCAc, GOAc, SERc, GLYc, HPRc, GCEAc, RuBP, CO2, O2};
         return array;
     }
     /**
@@ -111,7 +111,7 @@ public:
     double GLYc = 0.;
     double HPRc = 0.;
     double GCEAc = 0.;
-    double RUBP = 0.;
+    double RuBP = 0.;
     double CO2 = 0.;
     double O2 = 0.;
     double _v131;
@@ -252,4 +252,10 @@ private:
     static double Vfactor123;
     static double Vfactor124;
     static double Vfactor131;
+    static double Vf_T131;
+    static double Vf_T113;
+    static double Vf_T123;
+    static double Vf_T121;
+    static double Vf_T122;
+    static double Vf_T112;
 };

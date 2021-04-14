@@ -120,7 +120,7 @@ PRCon PR::PR_Ini(Variables *theVars) {
     PR_con.GLYc = 1.8;      // Glycine in cytosol; 1.8 original vlaue
     PR_con.HPRc = 0.0035;   // HydroxylPyruvate; derived from equation 123;
     PR_con.GCEAc = 0.1812;  // Glycerate in cytosol; assume at equilibrium with GCEA initially.
-    PR_con.RUBP = 2.;       // RuBP concentration
+    PR_con.RuBP = 2.;       // RuBP concentration
     PR_con.CO2 = 0.012;     // CO2 concentration(mM)
     PR_con.O2 = 0.264;      // O2 concentration(mM)
 
