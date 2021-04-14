@@ -290,4 +290,9 @@ private:
     static double Vfactor56;
     static double Vfactor57;
     static double Vfactor59;
+    static double Vf_T51;
+    static double Vf_T52;
+    static double Vf_T56;
+    static double Vf_T57;
+    static double Vf_T59;
 };

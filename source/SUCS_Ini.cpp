@@ -88,13 +88,24 @@ double SUCS::Vfactor52 = 0;
 double SUCS::Vfactor56 = 0;
 double SUCS::Vfactor57 = 0;
 double SUCS::Vfactor59 = 0;
-
+double SUCS::Vf_T52=0;
+double SUCS::Vf_T59=0;
+double SUCS::Vf_T57=0;
+double SUCS::Vf_T51=0;
+double SUCS::Vf_T56=0;
 
 SUCSCon SUCS::SUCS_Ini(Variables *theVars) {
     theVars->SUCS_OLD_TIME = 0;
     theVars->SUCS_TIME_N = 1;
-
+    SUCSCon SUCS_Con;
     if (theVars->useC3) {
+
+        Vf_T52=1;
+        Vf_T59=1;
+        Vf_T57=1;
+        Vf_T51=1;
+        Vf_T56=1;
+
         KE501 = 0.05;     //	Equilibrium Constant		50		KE501		0.05		[Bassham, 1869 #832]
         Km511 = 0.02;     //	FBP	4.1.2.13	51		Km511	FBP	0.02	Pisum sativum	(Anderson, Heinrikson et al. 1975)
         Km512 = 0.3;      //	FBP	4.1.2.13	51		Km512	GAP	0.3	Spinacia oleracea	(Iwaki, Wadano et al. 1991)
@@ -144,6 +155,11 @@ SUCSCon SUCS::SUCS_Ini(Variables *theVars) {
         Vfactor56 = 1.;
         Vfactor57 = 1.;
         Vfactor59 = 1.;
+
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // Initialization of the initial concentration of the different component //
+        ///////////////////////////////////////////////////////////////////////////////////////////
+
         if (theVars->GRNC == 1 && theVars->CO2_cond > 0.) {
             Vfactor52=theVars->VfactorCp[19];
             Vfactor56=theVars->VfactorCp[22];
@@ -151,6 +167,14 @@ SUCSCon SUCS::SUCS_Ini(Variables *theVars) {
             Vfactor59=theVars->VfactorCp[24];
 
         }
+        if (theVars->GRNT == 1 && theVars->Tp > 25) {
+            Vf_T52 = theVars->VfactorT[0];
+            Vf_T59 = theVars->VfactorT[12];
+            Vf_T57 = theVars->VfactorT[13];
+            Vf_T51 = theVars->VfactorT[17];
+            Vf_T56 = theVars->VfactorT[27];
+        }
+
         if (theVars->GP == 0) {
             V51	= theVars->EnzymeAct.at("V51");
             V52	= theVars->EnzymeAct.at("V52");
@@ -164,6 +188,28 @@ SUCSCon SUCS::SUCS_Ini(Variables *theVars) {
         V61 = 10000;	//	POPO --2PO
         V62 = 2;	//	SUC Sink        0.2 works.
 
+        // Initialize the leaves of active enzyme in a dark adapted leaves;
+        // mM
+
+        // Assign value to a variable that is transferred to the program
+        SUCS_Con.T3Pc = 2.3;
+        SUCS_Con.FBPc = 2.;
+        SUCS_Con.HexPc = 5.8;
+        SUCS_Con.F26BPc = 7.8 * pow(10, -6);
+        SUCS_Con.ATPc = 0.35;
+        SUCS_Con.ADPc = 0.65;
+        SUCS_Con.UDPGc = 0.57;
+        SUCS_Con.UTPc = 0.75;
+        SUCS_Con.SUCP = 0.;
+        SUCS_Con.SUC = 0.;
+        SUCS_Con.PGAc = 0.;
+
+        //////////////////////////////////////////////////////////////////
+        // Here is some pool values      //
+        //////////////////////////////////////////////////////////////////
+        theVars->SUCS_Pool.ATc = 1.0; // mM
+        theVars->SUCS_Pool.UTc = 1.5; // mM
+        theVars->SUCS_Pool.PTc = 15;  //
     } else {
         KE501 = 1 / 0.05 * theVars->SUCRatio[15];
         Km511 = 0.02 * theVars->SUCRatio[16];
@@ -203,29 +249,11 @@ SUCSCon SUCS::SUCS_Ini(Variables *theVars) {
         KE59 = 590 * theVars->SUCRatio[52];
         KE61 = 1.2 * 107 * theVars->SUCRatio[58];
         Km621 = 5 * theVars->SUCRatio[59];
-    }
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    // Initialization of the initial concentration of the different component //
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    // Initialize the leaves of active enzyme in a dark adapted leaves;
-    // mM
+        // Initialize the leaves of active enzyme in a dark adapted leaves;
+        // mM
 
-    // Assign value to a variable that is transferred to the program
-    SUCSCon SUCS_Con;
-    if (theVars->useC3) {
-        SUCS_Con.T3Pc = 2.3;
-        SUCS_Con.FBPc = 2.;
-        SUCS_Con.HexPc = 5.8;
-        SUCS_Con.F26BPc = 7.8 * pow(10, -6);
-        SUCS_Con.ATPc = 0.35;
-        SUCS_Con.ADPc = 0.65;
-        SUCS_Con.UDPGc = 0.57;
-        SUCS_Con.UTPc = 0.75;
-        SUCS_Con.SUCP = 0.;
-        SUCS_Con.SUC = 0.;
-        SUCS_Con.PGAc = 0.;
-    } else {
+        // Assign value to a variable that is transferred to the program
         SUCS_Con.T3Pc = 2.;
         SUCS_Con.FBPc = 2.;
         SUCS_Con.HexPc = 5.8;
@@ -237,24 +265,17 @@ SUCSCon SUCS::SUCS_Ini(Variables *theVars) {
         SUCS_Con.SUCP = 0.;
         SUCS_Con.SUC = 0.;
         SUCS_Con.PGAc = 0.5;
-    }
 
+        ///////////////////////////////////////////////////////////////////////////////////////////
+        // Initialization of the initial concentration of the different component //
+        ///////////////////////////////////////////////////////////////////////////////////////////
 
-    // The following calculate the total concentration of different enzymes.
-    const double SC = 10;
-    const double SC1 = 1;
+        // The following calculate the total concentration of different enzymes.
+        const double SC = 10;
+        const double SC1 = 1;
 
-    if (theVars->GP == 0) {
-        // Unit: mmol l-1 s-1;
-        if (theVars->useC3) {
-            V51	= theVars->EnzymeAct.at("V51");
-            V52	= theVars->EnzymeAct.at("V52");
-            V55	= theVars->EnzymeAct.at("V55");
-            V56	= theVars->EnzymeAct.at("V56");
-            V57	= theVars->EnzymeAct.at("V57");
-            V58	= theVars->EnzymeAct.at("V58");
-
-        } else {
+        if (theVars->GP == 0) {
+            // Unit: mmol l-1 s-1;
             V51 = 0.107376831 * SC * theVars->SUCRatio[0]; // DHAP+GAP --FBP          // default 0.5
             V52 = 0.063979048 * SC * theVars->SUCRatio[1]; // FBP --F6P + Pi
             V55 = 0.115403205 * SC * theVars->SUCRatio[2]; // G1P+UTP --OPOP+UDPG
@@ -262,14 +283,7 @@ SUCSCon SUCS::SUCS_Ini(Variables *theVars) {
             V57 = 0.55503446 * SC1 * theVars->SUCRatio[4]; // SUCP--Pi + SUC; 0.27 DEFALT
             V58 = 0.016819226 * SC * theVars->SUCRatio[5]; // F26BP--F6P + Pi
         }
-    }
-    if (theVars->useC3) {
-        V59	= theVars->EnzymeAct.at("V59");
-        V60	= 6.1;	//	ATP+UDP --UTP + ADP
-        V61	= 10000;	//	POPO --2PO
-        V62	= 2;	//	SUC Sink        0.2 works.
 
-    } else {
         V59 = 0.03 * SC * theVars->SUCRatio[6];            // F6P + ATP --ADP + F26BP // defalut 0.03  (* 0.3)
         //theVars->V60 = 6.1 * theVars->SUCRatio[7];// ATP+UDP --UTP + ADP
         //theVars->V61 = 10000;         // POPO --2PO   // constant set in globals.hpp
@@ -277,17 +291,10 @@ SUCSCon SUCS::SUCS_Ini(Variables *theVars) {
         Vdhap_in = 1.05 * SC1 * theVars->SUCRatio[9];      // DHAP export from chloroplast
         Vgap_in = 1.05 * SC1 * theVars->SUCRatio[10];      // GAP export from chloroplast
         Vpga_in = 1.05 * SC1 * theVars->SUCRatio[11];      // PGA export from chloropalst
-    }
 
-
-    //////////////////////////////////////////////////////////////////
-    // Here is some pool values      //
-    //////////////////////////////////////////////////////////////////
-    if (theVars->useC3) {
-        theVars->SUCS_Pool.ATc = 1.0; // mM
-        theVars->SUCS_Pool.UTc = 1.5; // mM
-        theVars->SUCS_Pool.PTc = 15;  //
-    } else {
+        //////////////////////////////////////////////////////////////////
+        // Here is some pool values      //
+        //////////////////////////////////////////////////////////////////
         theVars->SUCS_Pool.ATc = 1.0 * theVars->SUCRatio[12]; // mM
         theVars->SUCS_Pool.UTc = 1.5 * theVars->SUCRatio[13]; // mM
         theVars->SUCS_Pool.PTc = 15 * theVars->SUCRatio[14];  //

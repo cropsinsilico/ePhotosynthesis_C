@@ -260,7 +260,6 @@ private:
     static double KE22;
     static double KE23;
     static double KE25;
-    static double KE4;
     static double KE5;
     static double KE6;
     static double KE7;

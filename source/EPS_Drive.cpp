@@ -100,7 +100,7 @@ void EPSDriver::getResults() {
     EPSCon eps_int_con(intermediateRes, adjust);
     arr temp = EPS_Mb(time, eps_int_con, theVars);
     results = zeros(1);
-    const double Arate = theVars->PS_Vel.v2 - theVars->PR_Vel.v1in * theVars->AVR;
+    const double Arate = (theVars->PS_Vel.v1 - theVars->PR_Vel.v131) * theVars->AVR;
     results[0] = Arate;
 }
 

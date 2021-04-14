@@ -25,11 +25,7 @@
  **********************************************************************************************************************************************/
 
 #include "Variables.hpp"
-#define Vf_T51 1
-#define Vf_T57 1
-#define Vf_T52 1
-#define Vf_T56 1
-#define Vf_T59 1
+#define Vmatpf 0.25
 
 
 const double KI583 = 1.55;
@@ -38,39 +34,35 @@ void SUCS::SUCS_Rate(const double t, const SUCSCon &SUCS_Con, Variables *theVars
     ////////////////////////////////////////////////////////////
     // Get the auxiliary variables //
     ////////////////////////////////////////////////////////////
-    double Kmpga_in;
-    double Kmpga_u;
-    double Vpga_u;
-    double vpga_use;
-    double vpga_in;
-    double Pic;
+
+    const double PiTc = theVars->SUCS_Pool.PTc - 2 * (SUCS_Con.FBPc + SUCS_Con.F26BPc) - (SUCS_Con.PGAc + SUCS_Con.T3Pc + SUCS_Con.HexPc + SUCS_Con.SUCP + SUCS_Con.UTPc + SUCS_Con.ATPc);
+    const double Pic = (pow(pow(KE61, 2) + 4 * KE61 * PiTc, 0.5) - KE61) / 2;
+    const double OPOPc = PiTc - Pic;
+
+    // HexP
+    const double TEMP = 1 + KE541 + 1 / KE531;
+
+    const double F6Pc = (SUCS_Con.HexPc / TEMP) / KE531;
+    const double G1Pc = SUCS_Con.HexPc * KE541 / TEMP;
+
+    // T3P
+    const double GAPc = SUCS_Con.T3Pc / (1 + KE501);
+    const double DHAPc = SUCS_Con.T3Pc * KE501 / (1 + KE501);
+
+    // UDP
+    const double UDPc = theVars->SUCS_Pool.UTc - SUCS_Con.UTPc - SUCS_Con.UDPGc;
+    const double ADPc = theVars->SUCS_Pool.ATc - SUCS_Con.ATPc;
 
     if (theVars->useC3) {
-        const double SUCSV51 = V51*Vfactor51*Vf_T51*pow(Q10_51, (theVars->Tp-25)/10);
-        const double SUCSV52 = V52*Vfactor52*Vf_T52*pow(Q10_52, (theVars->Tp-25)/10);
-        const double SUCSV55 = V55*pow(Q10_55, (theVars->Tp-25)/10);
-        const double SUCSV56 = V56*Vfactor56*Vf_T56*pow(Q10_56, (theVars->Tp-25)/10);
-        const double SUCSV57 = V57*Vfactor57*Vf_T57*pow(Q10_57, (theVars->Tp-25)/10);
-        const double SUCSV58 = V58*pow(Q10_58, (theVars->Tp-25)/10);
+        const double SUCSV51 = V51*Vfactor51*Vf_T51 * pow(Q10_51, (theVars->Tp - 25) / 10);//	;		DHAP+GAP --FBP
+        const double SUCSV52 = V52*Vfactor52*Vf_T52 * pow(Q10_52, (theVars->Tp - 25) / 10);//	;		FBP --F6P + Pi
+        const double SUCSV55 = V55 * pow(Q10_55, (theVars->Tp - 25) / 10);//	;		G1P+UTP --OPOP+UDPG
+        const double SUCSV56 = V56*Vfactor56*Vf_T56 * pow(Q10_56, (theVars->Tp - 25) / 10);//	;		UDPG+F6P--SUCP + UDP
+        const double SUCSV57 = V57*Vfactor57*Vf_T57 * pow(Q10_57, (theVars->Tp - 25) / 10);//	;		SUCP--Pi + SUC
+        const double SUCSV58 = V58 * pow(Q10_58, (theVars->Tp - 25) / 10);//	;		F26BP--F6P + Pi
 
-        const double TEMP = 1 + KE541 + 1/KE531;
+        // Calculate the rate equations
 
-        const double G6Pc = SUCS_Con.HexPc /TEMP;
-        const double F6Pc = G6Pc/KE531;
-        const double G1Pc = SUCS_Con.HexPc * KE541 /TEMP;
-
-        // T3P
-        const double GAPc = SUCS_Con.T3Pc /(1 + KE501);
-        const double DHAPc = SUCS_Con.T3Pc * KE501/(1+KE501);
-
-        // UDP
-        const double UDPc = theVars->SUCS_Pool.UTc - SUCS_Con.UTPc - SUCS_Con.UDPGc;
-        const double ADPc = theVars->SUCS_Pool.ATc - SUCS_Con.ATPc;
-        // OP
-        const double PiTc = theVars->SUCS_Pool.PTc - 2 * ( SUCS_Con.FBPc + SUCS_Con.F26BPc) - (SUCS_Con.PGAc + SUCS_Con.T3Pc + SUCS_Con.HexPc + SUCS_Con.SUCP + SUCS_Con.UTPc + SUCS_Con.ATPc);        //   ???? Where the PGA coming from?
-        Pic = (pow(pow(KE61, 2) + 4 * KE61 * PiTc, 0.5) - KE61)/2;
-        const double OPOPc = PiTc - Pic;
-        const double PsPEXT = Pic;
         const double temp51 =Km512 * Km513 * ( 1 + GAPc/Km512 + DHAPc/Km513 + SUCS_Con.FBPc/Km511 + GAPc * DHAPc/(Km512 * Km513));
         theVars->SUCS_Vel.v51 = SUCSV51 * (GAPc * DHAPc - SUCS_Con.FBPc/KE51)/temp51;
         const double Km521AP = Km521 * (1 + SUCS_Con.F26BPc/KI523);
@@ -84,7 +76,7 @@ void SUCS::SUCS_Rate(const double t, const SUCSCon &SUCS_Con, Variables *theVars
         theVars->SUCS_Vel.v56 = SUCSV56 * (F6Pc * SUCS_Con.UDPGc - SUCS_Con.SUCP * UDPc/KE56)/temp56;
 
         const double temp57 = SUCS_Con.SUCP + Km571 * (1 + SUCS_Con.SUC/Ki572);
-        theVars->SUCS_Vel.v57 = SUCSV57 * ( SUCS_Con.SUCP - SUCS_Con.SUC * Pic/KE57)/temp57;
+        theVars->SUCS_Vel.v57 = SUCSV57 * (SUCS_Con.SUCP - SUCS_Con.SUC * Pic/KE57)/temp57;
 
         const double temp58 = Km581 * (1 + SUCS_Con.F26BPc/Km581) * (1 + Pic/KI582) * (1+F6Pc/KI581);
         theVars->SUCS_Vel.v58 = SUCSV58 * SUCS_Con.F26BPc/temp58;
@@ -97,7 +89,7 @@ void SUCS::SUCS_Rate(const double t, const SUCSCon &SUCS_Con, Variables *theVars
 
         theVars->SUCS_Vel.v62 = V62 * SUCS_Con.SUC/(SUCS_Con.SUC + Km621);
 
-        const double Vmatpf  = 0.25;
+
         theVars->SUCS_Vel.vatpf = Vmatpf * ADPc * Pic /((ADPc + 0.014)*(Pic + 0.3));
 
         theVars->SUCS_Vel.vdhap_in = 2 * Pic/(Pic + 2) ;
@@ -108,24 +100,7 @@ void SUCS::SUCS_Rate(const double t, const SUCSCon &SUCS_Con, Variables *theVars
 
 
     } else {
-        // HexP
-        const double TEMP = 1 + KE541 + 1 / KE531;
 
-        const double F6Pc = (SUCS_Con.HexPc / TEMP) / KE531;
-        const double G1Pc = SUCS_Con.HexPc * KE541 / TEMP;
-
-        // T3P
-        const double GAPc = SUCS_Con.T3Pc / (1 + KE501);
-        const double DHAPc = SUCS_Con.T3Pc * KE501 / (1 + KE501);
-
-        // UDP
-        const double UDPc = theVars->SUCS_Pool.UTc - SUCS_Con.UTPc - SUCS_Con.UDPGc;
-        const double ADPc = theVars->SUCS_Pool.ATc - SUCS_Con.ATPc;
-
-        // OP
-        const double PiTc = theVars->SUCS_Pool.PTc - 2 * (SUCS_Con.FBPc + SUCS_Con.F26BPc) - (SUCS_Con.PGAc + SUCS_Con.T3Pc + SUCS_Con.HexPc + SUCS_Con.SUCP + SUCS_Con.UTPc + SUCS_Con.ATPc);
-        Pic = (pow((pow(KE61, 2) + 4 * KE61 * PiTc), 0.5) - KE61) / 2;
-        const double OPOPc = PiTc - Pic;
 
         ////// Calculate the rate equations
 
@@ -144,6 +119,7 @@ void SUCS::SUCS_Rate(const double t, const SUCSCon &SUCS_Con, Variables *theVars
 
         const double Km_in = 0.6 * theVars->SUCRatio[62];
 
+        double vpga_in, vpga_use;
         if (!theVars->PSPR_SUCS_com) {
             vpga_in = 0;
             vpga_use = 0;
@@ -152,9 +128,9 @@ void SUCS::SUCS_Rate(const double t, const SUCSCon &SUCS_Con, Variables *theVars
                 vpga_in = 0;
                 vpga_use = 0;
             } else {
-                Vpga_u = 1.05 * theVars->SUCRatio[63];
-                Kmpga_u = 0.6 * theVars->SUCRatio[64];
-                Kmpga_in = 0.6 * theVars->SUCRatio[65];
+                const double Vpga_u = 1.05 * theVars->SUCRatio[63];
+                const double Kmpga_u = 0.6 * theVars->SUCRatio[64];
+                const double Kmpga_in = 0.6 * theVars->SUCRatio[65];
                 vpga_use = SUCS_Con.PGAc * Vpga_u / (SUCS_Con.PGAc + Kmpga_u);// WY201803
                 vpga_in = Vpga_in * Pic / (Pic + Kmpga_in);// WY201803
             }

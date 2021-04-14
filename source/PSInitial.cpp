@@ -42,7 +42,6 @@ double PS::KE21 = 0.;
 double PS::KE22 = 0.;
 double PS::KE23 = 0.;
 double PS::KE25 = 0.;
-double PS::KE4 = 0.;
 double PS::KE5 = 0.;
 double PS::KE6 = 0.;
 double PS::KE7 = 0.;
@@ -136,17 +135,6 @@ double PS::PsV1 = 0.;
 
 
 PSCon PS::PS_Ini(Variables *theVars) {
-    if (theVars->useC3) {
-        PS_C_CP = 25;    //   Global constant for the total phosphate
-        PS_C_CA = 1.5;   //   Global constant for the total adenylates
-        PS_C_CN = 1.;    //   Global constant for the cytosolic Phosphate concentration;
-    } else {
-        PS_C_CP = 15 * theVars->PSRatio[0];    //   Global constant for the total phosphate
-        PS_C_CA = 1.5 * theVars->PSRatio[1];   //   Global constant for the total adenylates
-        PS_PEXT = 0.5 * theVars->PSRatio[3];   //   Global constant for the cytosolic Phosphate concentration;
-    }
-
-    theVars->PSPR_RA_CA = PS_C_CA;
 
     PSCon PS_con;
     PS_con.RuBP = 2.000;
@@ -155,8 +143,10 @@ PSCon PS::PS_Ini(Variables *theVars) {
     PS_con.T3P = 0.5;
     if (!theVars->useC3) {
         PS_con.ADPG = 0.005;
+        PS_con.O2 = 0.264;
     } else {
         PS_con.ADPG = 0.;
+        PS_con.O2 = 0.21 * 1.26;
     }
     PS_con.FBP = 0.670;
     PS_con.E4P = 0.050;
@@ -165,11 +155,13 @@ PSCon PS::PS_Ini(Variables *theVars) {
     PS_con.ATP = 0.68;
     PS_con.NADPH = 0.21;
     PS_con.CO2 = 0.012;
-    PS_con.O2 = 0.21 * 1.26;
     PS_con.HexP = 2.2;
     PS_con.PenP = 0.25;
 
     if (theVars->useC3) {
+        PS_C_CP = 25;    //   Global constant for the total phosphate
+        PS_C_CA = 1.5;   //   Global constant for the total adenylates
+        PS_C_CN = 1.;    //   Global constant for the cytosolic Phosphate concentration;
         if (theVars->GRNC == 1 && theVars->CO2_cond > 0) {
             Vfactor1 = theVars->VfactorCp[0];
             Vfactor2 = theVars->VfactorCp[2];
@@ -209,7 +201,7 @@ PSCon PS::PS_Ini(Variables *theVars) {
         KM32b	=	0.1	;	    // 	NADPH	3	DPGA+NADPH <->GAP + OP+NADP
         //KM41	=	2.5	;	    //	DHAP	4	DHAP <->GAP
         //KM42	=	0.68;		// 	GAP	4	DHAP <->GAP
-        KE4     =   0.05;       //   Using the value from Patterson
+        theVars->KE4     =   0.05;       //   Using the value from Patterson
         KM51	=	0.3	;	    //	GAP	5	GAP+DHAP <->FBP
         KM52	=	0.4	;	    // 	DHAP	5	GAP+DHAP <->FBP
         KM53	=	0.02;		//	FBP	5	GAP+DHAP <->FBP     // Original Value: 0.02
@@ -267,7 +259,32 @@ PSCon PS::PS_Ini(Variables *theVars) {
         KM32	=	0.25;		// 	PGA	32	PGAi<->PGAo
         KM33	=	0.075;		//	GAP	33	GAPi<->GAPo
 
+        // Initialize the values of the global variables
+
+        if (theVars->GP == 0) {
+            theVars->V1 = theVars->EnzymeAct.at("V1");
+            theVars->V2 = theVars->EnzymeAct.at("V2");
+            theVars->V3 = theVars->EnzymeAct.at("V3");
+            V5 = theVars->EnzymeAct.at("V5");
+            theVars->V6 = theVars->EnzymeAct.at("V6");
+            V7 = theVars->EnzymeAct.at("V7");
+            V8 = theVars->EnzymeAct.at("V8");
+            theVars->V9 = theVars->EnzymeAct.at("V9");
+            V10	= theVars->EnzymeAct.at("V10");
+            theVars->V13 = theVars->EnzymeAct.at("V13");
+            theVars->V23 = theVars->EnzymeAct.at("V23");
+            theVars->V16 = theVars->EnzymeAct.at("V16");
+        }
+
+        V31 = 3.73/3;   // 1.05 *SC  *1.0 ;	%	(Lilley, Chon, Mosbach & Heldt, 1977b)	31	Phosphate translocator	DHAPi<->DHAPo   1.05 defulat
+        V32 = 3.73/3;   //1.05 *SC *1.0;	    %	(Lilley et al., 1977b)	32	Phosphate translocator	PGAi<->PGAo 1.05 default
+        V33 = 3.73/3;   //1.05 *SC * 1.0;	    %	(Lilley et al., 1977b)	33	Phosphate translocator	GAPi<->GAPo 1.05 default
+
     } else {
+        PS_C_CP = 15 * theVars->PSRatio[0];    //   Global constant for the total phosphate
+        PS_C_CA = 1.5 * theVars->PSRatio[1];   //   Global constant for the total adenylates
+        PS_PEXT = 0.5 * theVars->PSRatio[3];   //   Global constant for the cytosolic Phosphate concentration;
+
         // Initialize the constants for the different reactions
         theVars->KM11 = 0.0115 * theVars->PSRatio[19]; //  CO2 1 RuBP+CO2->2PGA
         theVars->KM12 = 0.222 * theVars->PSRatio[20];  // O2 1 RuBP+CO2->2PGA
@@ -286,7 +303,7 @@ PSCon PS::PS_Ini(Variables *theVars) {
         KM31a = 0.004 * theVars->PSRatio[30]; // BPGA 3 DPGA+NADPH <->GAP + OP+NADP
         KM32b = 0.1 * theVars->PSRatio[31];   //  NADPH 3 DPGA+NADPH <->GAP + OP+NADP
 
-        KE4 = 1 / 0.05 * theVars->PSRatio[34]; // Using the value from Patterson
+        theVars->KE4 = 1 / 0.05 * theVars->PSRatio[34]; // Using the value from Patterson
 
         KM51 = 0.3 * theVars->PSRatio[35];  // GAP 5 GAP+DHAP <->FBP
         KM52 = 0.4 * theVars->PSRatio[36];  //  DHAP 5 GAP+DHAP <->FBP
@@ -362,27 +379,12 @@ PSCon PS::PS_Ini(Variables *theVars) {
         KM241 = 0.2 * theVars->PSRatio[89]; //   ADPG    ADPG --> ADP + Gn       Laisk et al 1989
 
         KE25 = 1.2 * 107 * theVars->PSRatio[92];
-    }
 
-    // Initialize the Vmax for different reactions
+        // Initialize the Vmax for different reactions
 
-    if (theVars->GP == 0) {
-        // Initialize the values of the global variables
-        if (theVars->useC3) {
-            theVars->V1 = theVars->EnzymeAct.at("V1");
-            theVars->V2 = theVars->EnzymeAct.at("V2");
-            theVars->V3 = theVars->EnzymeAct.at("V3");
-            V5 = theVars->EnzymeAct.at("V5");
-            theVars->V6 = theVars->EnzymeAct.at("V6");
-            V7 = theVars->EnzymeAct.at("V7");
-            V8 = theVars->EnzymeAct.at("V8");
-            theVars->V9 = theVars->EnzymeAct.at("V9");
-            V10	= theVars->EnzymeAct.at("V10");
-            theVars->V13 = theVars->EnzymeAct.at("V13");
-            theVars->V23 = theVars->EnzymeAct.at("V23");
-            theVars->V16 = theVars->EnzymeAct.at("V16");
+        if (theVars->GP == 0) {
+            // Initialize the values of the global variables
 
-        } else {
             const double SC = 1;        // Scalling coefficient for the stroma volume per mg chl. defualt 2
             const double SC1 = 1;
             const double STOM1 = 1;
@@ -401,13 +403,6 @@ PSCon PS::PS_Ini(Variables *theVars) {
             theVars->V16 = 5.47 * theVars->PSRatio[13];             // (Aflalo & Shavit, 1983, Davenport & McLeod, 1986)
             theVars->V23 = 2 * theVars->PSRatio[14];
         }
-    }
-    if (theVars->useC3) {
-        V31 = 3.73/3;   // 1.05 *SC  *1.0 ;	%	(Lilley, Chon, Mosbach & Heldt, 1977b)	31	Phosphate translocator	DHAPi<->DHAPo   1.05 defulat
-        V32 = 3.73/3;   //1.05 *SC *1.0;	    %	(Lilley et al., 1977b)	32	Phosphate translocator	PGAi<->PGAo 1.05 default
-        V33 = 3.73/3;   //1.05 *SC * 1.0;	    %	(Lilley et al., 1977b)	33	Phosphate translocator	GAPi<->GAPo 1.05 default
-
-    } else {
         V24 = 2 * theVars->PSRatio[15];
         V31 = 1.0 * theVars->PSRatio[16] * 20;
         V32 = 1.0 * theVars->PSRatio[17];
@@ -421,8 +416,8 @@ PSCon PS::PS_Ini(Variables *theVars) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
     theVars->PS2RA_RuBP_ini = PS_con.RuBP;
-
     theVars->PS2BF_ADP = PS_C_CA - PS_con.ATP;
+    theVars->PSPR_RA_CA = PS_C_CA;
 
     return PS_con;
 }

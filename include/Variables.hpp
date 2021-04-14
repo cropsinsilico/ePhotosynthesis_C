@@ -119,6 +119,7 @@ struct Variables {
     double Glight = 0.;
     double KM11 = 0.;
     double KM12 = 0.;
+    double KE4 = 0.;
     double O2_cond = 0.;
     double PS12ratio = 0.;
     double PS2BF_ADP = 0.;
@@ -132,6 +133,9 @@ struct Variables {
     double PS2EPS_v3 = 0;
     double PSPR_RA_CA = 0.;
     double PsV1 = 0.;
+    double Pi;
+    double PiTc;
+
     double RROEA2RuACT_RuAC = 0.;
     double RUBISCOTOTAL = 0.;
     double Redox2PS_V13 = 0.;
@@ -153,6 +157,7 @@ struct Variables {
     double V3 = 0.;
     double V6 = 0.;
     double V9 = 0.;
+    double PS2EPS_V16 = 0.;
     double XanCycle2FIBF_Xstate = 0.;
     double activase = 0.;
     double kmCO2 = 0.;
@@ -165,6 +170,7 @@ struct Variables {
     double Theta = 0;
     double beta = 0;
     double Jmax = 0.;
+
     // Parameters
     arr PR_Param = zeros(2);
     arr BF_Param = zeros(2);

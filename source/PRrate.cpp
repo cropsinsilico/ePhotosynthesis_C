@@ -45,67 +45,60 @@ void PR::PR_Rate(const double t, const PRCon &PR_con, Variables *theVars) {
     // Reaction 131: LS2+Glycine <--> CO2+ AMDHL
 
     // Calculate the reactino inside chloroplast;
-    double ATP;
-    double ADP;
-    double Pi;
+
     if (theVars->useC3) {
-        // Information from PS cycle is transfered back to the PR cycle for calcualtion.
 
-        ADP = theVars->PS2PR_ADP;    ///////////// NEED TO MAKE SURE THESE ARE POPULATED
-        ATP = theVars->PS2PR_ATP;
-        Pi = theVars->PS2PR_Pi;
+        const double PrV112 = V112 * Vfactor112 * Vf_T112 * pow(Q10_112, (theVars->Tp - 25) / 10);
+        const double PrV113 = V113 * Vfactor113 * Vf_T113 * pow(Q10_113, (theVars->Tp - 25) / 10);
+        const double PrV121 = V121 * Vfactor121 * Vf_T121 * pow(Q10_121, (theVars->Tp - 25) / 10);
+        const double PrV122 = V122 * Vfactor122 * Vf_T122 * pow(Q10_122, (theVars->Tp - 25) / 10);
+        const double PrV123 = V123 * Vfactor123 * Vf_T123 * pow(Q10_123, (theVars->Tp - 25) / 10);
+        const double PrV124 = V124 * Vfactor124 * pow(Q10_124, (theVars->Tp - 25) / 10);
+        const double PrV131 = V131 * Vfactor131 * Vf_T131 * pow(Q10_131, (theVars->Tp - 25) / 10);
+        const double PrV111 = PS::PsV1 * 0.24;
 
-
-        if (theVars->PR_PS_com) {
+       if (theVars->PR_PS_com == 1) {
             KC= PS::KM11;
             KO= PS::KM12;
         }
-        V112=V112*Vfactor112*theVars->VfactorT[22]*pow(Q10_112, (theVars->Tp-25)/10);
-        V113=V113*Vfactor113*theVars->VfactorT[6]*pow(Q10_113, (theVars->Tp-25)/10);
-        V121=V121*Vfactor121*theVars->VfactorT[8]*pow(Q10_121, (theVars->Tp-25)/10);
-        V122=V122*Vfactor122*theVars->VfactorT[11]*pow(Q10_122, (theVars->Tp-25)/10);
-        V123=V123*Vfactor123*theVars->VfactorT[7]*pow(Q10_123, (theVars->Tp-25)/10);
-        V124=V124*Vfactor124*pow(Q10_124, (theVars->Tp-25)/10);
-        V131=V131*Vfactor131*theVars->VfactorT[4]*pow(Q10_131, (theVars->Tp-25)/10);
-
-        V111= PS::PsV1* 0.24;
 
         if (theVars->RUBISCOMETHOD == 2) {            // Using michelies and enzyme information
             double PrV111t;
-            if (theVars->PR_PS_com) {       // FOr the combined PS-PR model
-                PrV111t = V111*PR_con.RUBP/(PR_con.RUBP+KR*theVars->V1Reg);
-
+            if (theVars->PR_PS_com == 1) {       // FOr the combined PS-PR model
+                PrV111t = PrV111*PR_con.RuBP / (PR_con.RuBP + KR * theVars->V1Reg);
             } else {                    // For the PR model
-                PrV111t = V111*PR_con.RUBP/(PR_con.RUBP+KR);
+                PrV111t = PrV111*PR_con.RuBP / (PR_con.RuBP + KR);
             }
-            theVars->PR_Vel.v111 = PrV111t * theVars->O2_cond/(theVars->O2_cond+KO*(1+theVars->CO2_cond/KC));
+            theVars->PR_Vel.v111 = PrV111t * theVars->O2_cond / (theVars->O2_cond + KO * (1 + theVars->CO2_cond / KC));
 
         } else if (theVars->RUBISCOMETHOD == 1) {
-            theVars->PR_Vel.v111 = V111 * theVars->O2_cond/(theVars->O2_cond+KO*(1+theVars->CO2_cond/KC));
-            if (PR_con.RUBP < theVars->RUBISCOTOTAL)
-                theVars->PR_Vel.v111 = theVars->PR_Vel.v111 * PR_con.RUBP/theVars->RUBISCOTOTAL;
+            theVars->PR_Vel.v111 = PrV111 * theVars->O2_cond / (theVars->O2_cond + KO * (1 + theVars->CO2_cond / KC));
+            if (PR_con.RuBP < theVars->RUBISCOTOTAL)
+                theVars->PR_Vel.v111 = theVars->PR_Vel.v111 * PR_con.RuBP / theVars->RUBISCOTOTAL;
+
         }
 
-        theVars->PR_Vel.v112 = V112 * PR_con.PGCA /(PR_con.PGCA + KM112*(1+PR_con.GCA/KI1122)*(1+Pi/KI1121));
+        theVars->PR_Vel.v112 = PrV112 * PR_con.PGCA / (PR_con.PGCA + KM112 * (1 + PR_con.GCA / KI1122) * (1 + theVars->Pi / KI1121));
 
-         if (theVars->PR_PS_com) {           // For the combined PS-PR MODEL
-             theVars->PR_Vel.v113 = V113 * (ATP * PR_con.GCEA-ADP * PR_con.PGA/KE113)/((ATP + KM1131*(1 + PR_con.PGA/KI113))*(PR_con.GCEA + KM1132));
+         if (theVars->PR_PS_com == 1) {            // For the combined PS-PR MODEL
+             theVars->PR_Vel.v113 = PrV113 * (theVars->PS2PR_ATP * PR_con.GCEA - theVars->PS2PR_ADP * PR_con.PGA / KE113) / ((theVars->PS2PR_ATP + KM1131 * (1 + PR_con.PGA / KI113)) * (PR_con.GCEA + KM1132));
          } else {
-             theVars->PR_Vel.v113 = V113 * (ATP * PR_con.GCEA-ADP * PR_con.PGA/KE113)/((ATP + KM1131*(1 + 2.5/KI113))*(PR_con.GCEA + KM1132));
+             theVars->PR_Vel.v113 = PrV113 * (theVars->PS2PR_ATP * PR_con.GCEA - theVars->PS2PR_ADP * PR_con.PGA / KE113) / ((theVars->PS2PR_ATP + KM1131 * (1 + 2.5 / KI113)) * (PR_con.GCEA + KM1132));
          }
 
-        theVars->PR_Vel.v121 = V121 * PR_con.GCAc/(PR_con.GCAc + KM121);
+        theVars->PR_Vel.v121 = PrV121 * PR_con.GCAc / (PR_con.GCAc + KM121);
 
-        theVars->PR_Vel.v122 = V122 * (PR_con.GOAc * PR_con.SERc - PR_con.HPRc * PR_con.GLYc/KE122)/((PR_con.GOAc+KM1221)*(PR_con.SERc + KM1222*(1+PR_con.GLYc/KI1221)));
-        theVars->PR_Vel.v123 = V123 * (PR_con.HPRc *NADHc-PR_con.GCEA * NADc/KE123)/(PR_con.HPRc+KM123*(1+PR_con.HPRc/KI123));
-        theVars->PR_Vel.v124 = V124 * (PR_con.GOAc * theVars->GLUc-KGc * PR_con.GLYc/KE124)/((PR_con.GOAc + KM1241)*(theVars->GLUc + KM1242*(1+PR_con.GLYc/KI124)));
+        theVars->PR_Vel.v122 = PrV122 * (PR_con.GOAc * PR_con.SERc - PR_con.HPRc * PR_con.GLYc / KE122) / ((PR_con.GOAc + KM1221) * (PR_con.SERc + KM1222 * (1 + PR_con.GLYc / KI1221)));
+        theVars->PR_Vel.v123 = PrV123 * (PR_con.HPRc * NADHc - PR_con.GCEA * NADc / KE123) / (PR_con.HPRc + KM123 * (1 + PR_con.HPRc / KI123));
+        theVars->PR_Vel.v124 = PrV124 * (PR_con.GOAc * theVars->GLUc-KGc * PR_con.GLYc/KE124)/((PR_con.GOAc + KM1241)*(theVars->GLUc + KM1242 * (1 + PR_con.GLYc / KI124)));
 
-        theVars->PR_Vel.v131 = V131 * PR_con.GLYc/(PR_con.GLYc + KM1311*(1+PR_con.SERc/KI1311));
-        theVars->PR_Vel.v2out = V2T * (PR_con.GCA/(PR_con.GCA + KM1012*(1+PR_con.GCEA/KI1012)) - PR_con.GCAc/(PR_con.GCAc + KM1012*(1+PR_con.GCEAc/KI1012)));   // Competive inhibition
-        theVars->PR_Vel.v1in = theVars->V1T *(PR_con.GCEAc/(PR_con.GCEAc + KM1011 *(1+ PR_con.GCAc/KI1011))-PR_con.GCEA /(PR_con.GCEA + KM1011*(1+PR_con.GCA/KI1011)));  // Competive inhibition
+        theVars->PR_Vel.v131 = PrV131 * PR_con.GLYc/(PR_con.GLYc + KM1311*(1 + PR_con.SERc / KI1311));
+        theVars->PR_Vel.v2out = V2T * (PR_con.GCA/(PR_con.GCA + KM1012*(1 + PR_con.GCEA / KI1012)) - PR_con.GCAc /(PR_con.GCAc + KM1012 * (1 + PR_con.GCEAc / KI1012)));   // Competive inhibition
+        theVars->PR_Vel.v1in = theVars->V1T *(PR_con.GCEAc / (PR_con.GCEAc + KM1011 * (1 + PR_con.GCAc / KI1011)) -PR_con.GCEA /(PR_con.GCEA + KM1011 * (1 + PR_con.GCA / KI1011)));  // Competive inhibition
+
 
     } else {
-        Pi = theVars->PR_Param[1];    // Value from spinach. Assume constant currently.
+        theVars->Pi = theVars->PR_Param[1];    // Value from spinach. Assume constant currently.
 
         // Information from PS cycle is transfered back to the PR cycle for calcualtion.
 
@@ -114,7 +107,7 @@ void PR::PR_Rate(const double t, const PRCon &PR_con, Variables *theVars) {
         if (theVars->PR_PS_com) {
             ADP = theVars->PS2PR_ADP;
             ATP = theVars->PS2PR_ATP;
-            Pi = theVars->PS2PR_Pi;
+            theVars->Pi = theVars->PS2PR_Pi;
         } else {
             ADP = PR_ADP;
             ATP = PR_ATP;
@@ -123,20 +116,20 @@ void PR::PR_Rate(const double t, const PRCon &PR_con, Variables *theVars) {
         double PrV111t;
         if (theVars->RUBISCOMETHOD == 2) {
             if (theVars->PR_PS_com) {
-                PrV111t = V111 * PR_con.RUBP / (PR_con.RUBP + KR * theVars->V1Reg);
+                PrV111t = V111 * PR_con.RuBP / (PR_con.RuBP + KR * theVars->V1Reg);
             } else {
-                PrV111t = V111 * PR_con.RUBP / (PR_con.RUBP + KR);
+                PrV111t = V111 * PR_con.RuBP / (PR_con.RuBP + KR);
             }
             theVars->PR_Vel.v111 = PrV111t * theVars->O2_cond / (theVars->O2_cond + KO * (1 + theVars->CO2_cond / KC));
 
-            if (PR_con.RUBP < theVars->PsV1 / 2.5)
-                theVars->PR_Vel.v111 = theVars->PR_Vel.v111 * (2.5 * PR_con.RUBP / PrV111t);
+            if (PR_con.RuBP < theVars->PsV1 / 2.5)
+                theVars->PR_Vel.v111 = theVars->PR_Vel.v111 * (2.5 * PR_con.RuBP / PrV111t);
 
 
         } else if (theVars->RUBISCOMETHOD == 1){
             theVars->PR_Vel.v111 = V111 * theVars->O2_cond / (theVars->O2_cond + KO * (1 + theVars->CO2_cond / KC));
-            if (PR_con.RUBP < theVars->RUBISCOTOTAL)
-                theVars->PR_Vel.v111 = theVars->PR_Vel.v111 * PR_con.RUBP / theVars->RUBISCOTOTAL;
+            if (PR_con.RuBP < theVars->RUBISCOTOTAL)
+                theVars->PR_Vel.v111 = theVars->PR_Vel.v111 * PR_con.RuBP / theVars->RUBISCOTOTAL;
 
         } else {
             throw std::invalid_argument("Invalid value of RUBISCOMETHOD used");
@@ -160,7 +153,7 @@ void PR::PR_Rate(const double t, const PRCon &PR_con, Variables *theVars) {
             theVars->PR_OLD_TIME = t;
         }
         // The following is used to take the information back to the PRmb routine.
-        theVars->PR_Vel.v112 = V112 * PR_con.PGCA / (PR_con.PGCA + KM112 * (1 + PR_con.GCA / KI1122) * (1 + Pi / KI1121));
+        theVars->PR_Vel.v112 = V112 * PR_con.PGCA / (PR_con.PGCA + KM112 * (1 + PR_con.GCA / KI1122) * (1 + theVars->Pi / KI1121));
         theVars->PR_Vel.v121 = V121 * PR_con.GCAc / (PR_con.GCAc + KM121);
         theVars->PR_Vel.v122 = V122 * (PR_con.GOAc * PR_con.SERc - PR_con.HPRc * PR_con.GLYc / KE122) / ((PR_con.GOAc + KM1221) * (PR_con.SERc + KM1222 * (1 + PR_con.GLYc / KI1221)));
         theVars->PR_Vel.v123 = V123 * (PR_con.HPRc * NADHc - PR_con.GCEAc * NADc / KE123) / ((PR_con.HPRc + KM123 * (1 + PR_con.HPRc / KI123)) * (NADHc + PrKM1232));
@@ -184,7 +177,7 @@ void PR::PR_Rate(const double t, const PRCon &PR_con, Variables *theVars) {
         theVars->PR2OUT.GLYc = PR_con.GLYc;
         theVars->PR2OUT.HPRc = PR_con.HPRc;
         theVars->PR2OUT.GCEAc = PR_con.GCEAc;
-        theVars->PR2OUT.RUBP = PR_con.RUBP;
+        theVars->PR2OUT.RuBP = PR_con.RuBP;
         theVars->PR2OUT._v131 = theVars->PR_Vel.v131;
     }
 }

@@ -91,7 +91,7 @@ void GenOut(double t, Variables *theVars) {
         co2a[28] = theVars->PR2OUT.GLYc;//
         co2a[29] = theVars->PR2OUT.HPRc;//
         co2a[30] = theVars->PR2OUT.GCEAc;//
-        co2a[31] = theVars->PR2OUT.RUBP;//
+        co2a[31] = theVars->PR2OUT.RuBP;//
         co2a[32] = Fdn;//      Fdn
         co2a[33] = PHs;//      PhS
         co2a[34] = PHl;//      PHl

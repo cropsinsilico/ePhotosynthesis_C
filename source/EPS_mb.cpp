@@ -46,7 +46,11 @@ arr EPS_Mb(const double t, const EPSCon &EPS_Con, Variables *theVars) {
     arr EPS_DYDT;
     EPS_DYDT.reserve(96);
     EPS_DYDT.insert(EPS_DYDT.end(), FIBF_DYDT.begin(), FIBF_DYDT.begin() + 52);
-    EPS_DYDT.insert(EPS_DYDT.end(), CM_DYDT.begin(), CM_DYDT.begin() + 36);
+    if (theVars->useC3) {
+        EPS_DYDT.insert(EPS_DYDT.end(), CM_DYDT.begin(), CM_DYDT.begin() + 35);
+    } else {
+        EPS_DYDT.insert(EPS_DYDT.end(), CM_DYDT.begin(), CM_DYDT.begin() + 36);
+    }
 
     if (theVars->useC3) {
         EPS_DYDT[60] = CM_DYDT[8] - theVars->PS_Vel.v16 + theVars->EPS_ATP_Rate;

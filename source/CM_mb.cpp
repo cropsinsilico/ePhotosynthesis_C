@@ -38,19 +38,20 @@ arr CM_Mb(const realtype t, const CMCon &CM_con, Variables *theVars) {
     dxdt.insert(dxdt.end(), PSPR_DYDT.begin(), PSPR_DYDT.begin() + 23);
     dxdt.insert(dxdt.end(), SUCS_DYDT.begin(), SUCS_DYDT.begin() + 12);
 
-    dxdt[35] = PSPR_DYDT[23];
+    if (!theVars->useC3) {
+        dxdt[35] = PSPR_DYDT[23];
 
-    // The rate of import into the cytosol
-    if (theVars->TestSucPath == 1)
-        SUCS_DYDT[0] = SUCS_DYDT[0] + theVars->PS_Vel.v31 + theVars->PS_Vel.v33 - (theVars->SUCS_Vel.vdhap_in + theVars->SUCS_Vel.vgap_in);
+        // The rate of import into the cytosol
+        if (theVars->TestSucPath == 1)
+            SUCS_DYDT[0] = SUCS_DYDT[0] + theVars->PS_Vel.v31 + theVars->PS_Vel.v33 - (theVars->SUCS_Vel.vdhap_in + theVars->SUCS_Vel.vgap_in);
 
-    //	T3Pc WY1905
-    dxdt[23] = SUCS_DYDT[0];
-    if (!theVars->useC3)
+        //	T3Pc WY1905
+        dxdt[23] = SUCS_DYDT[0];
         SUCS_DYDT[11] = SUCS_DYDT[11] - theVars->SUCS_Vel.vpga_in + theVars->PS_Vel.v32;//	pgaC
-    dxdt[34] = SUCS_DYDT[11];
+        dxdt[34] = SUCS_DYDT[11];
     //std::cout << theVars->SUCS_Vel;
     //std::cout << theVars->PS_Vel;
     //std::cout << theVars->PR_Vel;
+    }
     return dxdt;
 }

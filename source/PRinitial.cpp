@@ -80,21 +80,22 @@ double PR::Vfactor122 = 0;
 double PR::Vfactor123 = 0;
 double PR::Vfactor124 = 0;
 double PR::Vfactor131 = 0;
-
+double PR::Vf_T131 = 0;
+double PR::Vf_T113 = 0;
+double PR::Vf_T123 = 0;
+double PR::Vf_T121 = 0;
+double PR::Vf_T122 = 0;
+double PR::Vf_T112 = 0;
 
 PRCon PR::PR_Ini(Variables *theVars) {
     if (theVars->useC3) {
         NADHc = 0.47;
         NADc = 0.4;
-    } else {
-        NADHc = 0.47 * theVars->PRRatio[8];
-        NADc = 0.4 * theVars->PRRatio[9];
-    }
-
-    if (theVars->useC3) {
         theVars->GLUc = 24;
         KGc = 0.4;
     } else {
+        NADHc = 0.47 * theVars->PRRatio[8];
+        NADc = 0.4 * theVars->PRRatio[9];
         theVars->GLUc = 24 * theVars->PRRatio[12];
         KGc = 0.4 * theVars->PRRatio[13];
 
@@ -143,6 +144,33 @@ PRCon PR::PR_Ini(Variables *theVars) {
             Vfactor131 = theVars->VfactorCp[32];
             Vfactor124 = theVars->VfactorCp[11];
         }
+
+        Vf_T131=1;
+        Vf_T113=1;
+        Vf_T123=1;
+        Vf_T121=1;
+        Vf_T122=1;
+        Vf_T112=1;
+
+        if (theVars->GRNT == 1 && theVars->Tp > 25.){
+            Vf_T131 = theVars->VfactorT[4];
+            Vf_T113 = theVars->VfactorT[6];
+            Vf_T123 = theVars->VfactorT[7];
+            Vf_T121 = theVars->VfactorT[8];
+            Vf_T122 = theVars->VfactorT[11];
+            Vf_T112 = theVars->VfactorT[22];
+        }
+
+        if (theVars->GP == 0) {
+            V111 = theVars->V1 * 0.22;
+            V112 = theVars->EnzymeAct.at("V112");
+            V113 = theVars->EnzymeAct.at("V113");
+            V121 = theVars->EnzymeAct.at("V121");
+            V122 = theVars->EnzymeAct.at("V122");
+            V123 = theVars->EnzymeAct.at("V123");
+            V124 = theVars->EnzymeAct.at("V124");
+            V131 = theVars->EnzymeAct.at("V131");
+        }
         // The constant for calculating the glycolate uptake
         V2T = 6;      // The original value is 0.32.
         // Reaction: 111: RUBP+O2<-->PGlycolate + PGA
@@ -180,16 +208,12 @@ PRCon PR::PR_Ini(Variables *theVars) {
         KM1311 = 6;// Michaelis constant for Glycine;
         KI1311 = 4; // Inhibition constant for Serine
 
-
-
         KM1011 = 0.39;
         KI1011 = 0.28;
 
         KM1012 = 0.2;
         KI1012 = 0.22;
 
-        //C = CO2_cond;
-        //O = O2_cond;
 
     } else {
         // To set global information for different reactions
@@ -256,28 +280,8 @@ PRCon PR::PR_Ini(Variables *theVars) {
         V2T = 0.32 * CE * 10 * 2 * theVars->PRRatio[45];
         KM1012 = 0.2 * theVars->PRRatio[46];
         KI1012 = 0.22 * theVars->PRRatio[47];
-    }
-    // Reaction: 111: RUBP+O2<-->PGlycolate + PGA
-    // Reaction: 112: PGlycolate-->Pi+Glycolate;
-    // Reaction 113  : Gcea+ATP<-->ADP + PGA
-    // Reactoin 121; Glycolate +O2<-->H2O2+Glyoxylate
-    // Reaction 122  : Glyoxylate + Serine<--> Hydoxypyruvate + Glycine;
-    // Reaction 123: HydroxylPyruvate + NAD <--> NADH + Glycerate
-    // Reaction 124: Glyoxylate + Glu  <--> KG + Glycine;
-    // Reaction 131: NAD+Glycine <--> CO2+ NADH + NH3
 
-    if (theVars->GP == 0) {
-        if (theVars->useC3) {
-            V111 = theVars->V1 * 0.22;
-            V112 = theVars->EnzymeAct.at("V112");
-            V113 = theVars->EnzymeAct.at("V113");
-            V121 = theVars->EnzymeAct.at("V121");
-            V122 = theVars->EnzymeAct.at("V122");
-            V123 = theVars->EnzymeAct.at("V123");
-            V124 = theVars->EnzymeAct.at("V124");
-            V131 = theVars->EnzymeAct.at("V131");
-
-        } else {
+        if (theVars->GP == 0) {
             if (theVars->PR_PS_com) {
                 V111 = 0.24 * theVars->V1 * theVars->PRRatio[0];
             } else {
@@ -292,6 +296,14 @@ PRCon PR::PR_Ini(Variables *theVars) {
             V131 = 2.494745448 * theVars->PRRatio[7];
         }
     }
+    // Reaction: 111: RUBP+O2<-->PGlycolate + PGA
+    // Reaction: 112: PGlycolate-->Pi+Glycolate;
+    // Reaction 113  : Gcea+ATP<-->ADP + PGA
+    // Reactoin 121; Glycolate +O2<-->H2O2+Glyoxylate
+    // Reaction 122  : Glyoxylate + Serine<--> Hydoxypyruvate + Glycine;
+    // Reaction 123: HydroxylPyruvate + NAD <--> NADH + Glycerate
+    // Reaction 124: Glyoxylate + Glu  <--> KG + Glycine;
+    // Reaction 131: NAD+Glycine <--> CO2+ NADH + NH3
 
     return PR_con;
 }
