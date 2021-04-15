@@ -28,6 +28,7 @@
 
 #include "definitions.hpp"
 
+class trDynaPSCon;
 /**
  Class for holding the results of RROEA_Rate calculations
  */
@@ -179,23 +180,23 @@ public:
  */
 class RROEACon {
 public:
-    RROEACon() {}
+    RROEACon(trDynaPSCon* par = nullptr) : parent(par) {}
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The RROEACon object to copy
       */
-    RROEACon(const RROEACon &other) {
-        GAPDH = other.GAPDH;
-        FBPase = other.FBPase;
-        SBPase = other.SBPase;
-        PRK = other.PRK;
-        ATPase = other.ATPase;
-        ATPGPP = other.ATPGPP;
-        MDH = other.MDH;
-        Thio = other.Thio;
-        Fd = other.Fd;
-        RuACT = other.RuACT;
+    RROEACon(const RROEACon* other) {
+        GAPDH = other->GAPDH;
+        FBPase = other->FBPase;
+        SBPase = other->SBPase;
+        PRK = other->PRK;
+        ATPase = other->ATPase;
+        ATPGPP = other->ATPGPP;
+        MDH = other->MDH;
+        Thio = other->Thio;
+        Fd = other->Fd;
+        RuACT = other->RuACT;
     }
 
     /**
@@ -229,7 +230,7 @@ public:
     /**
       Get the size of the data vector
       */
-    size_t size() {
+    static size_t size() {
         return count;
     }
 
@@ -242,7 +243,7 @@ public:
         arr array = {GAPDH, FBPase, SBPase, PRK, ATPase, ATPGPP, MDH, Thio, Fd, RuACT};
         return array;
     }
-
+    void setParent(trDynaPSCon* par) {parent = par;}
     double GAPDH = 0.;  ///< The initial concentration of active GAPDH
     double FBPase = 0.; ///< The initial concentration of active FBPase
     double SBPase = 0.; ///< The initial concentration of active SBPase
@@ -254,8 +255,9 @@ public:
     double Fd = 0.;     ///< The initial concentration of reduced ferrodoxin
     double RuACT = 0.;  ///< The initial concentration of active Rubisco activase
 
+    trDynaPSCon* parent;
 private:
-    size_t count = 10;
+    static const size_t count;
 
 };
 
@@ -270,7 +272,7 @@ public:
       @param theVars Pointer to the global variables
       @return A RROEACon object with values set base on the input
       */
-    static RROEACon RROEA_Ini(Variables *theVars);
+    static RROEACon* RROEA_Ini(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -280,7 +282,7 @@ public:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr RROEA_Mb(const double t, const RROEACon &RROEA_Con, Variables *theVars);
+    static arr RROEA_Mb(const double t, const RROEACon* RROEA_Con, Variables *theVars);
 
     /**
       Calculate the Rates of RROEA based on the inputs
@@ -289,5 +291,5 @@ public:
       @param RROEA_Con RROEACon object giving the input parameters
       @param theVars The global variables
       */
-    static void RROEA_Rate(const double t, const RROEACon &RROEA_Con, Variables *theVars);
+    static void RROEA_Rate(const double t, const RROEACon* RROEA_Con, Variables *theVars);
 };

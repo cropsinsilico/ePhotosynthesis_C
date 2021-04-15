@@ -53,15 +53,21 @@ class RedoxRegVel {
  */
 class RedoxRegCon {
 public:
-    RedoxRegCon() {}
+    RedoxRegCon() : RA_con(new RACon()) {}
+
+    ~RedoxRegCon() {
+        clear();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The RedoxRegCon object to copy
       */
-    RedoxRegCon(const RedoxRegCon &other) {
-        RA_con = other.RA_con;
-        Thion = other.Thion;
+    RedoxRegCon(const RedoxRegCon* other) {
+        clear();
+        RA_con = other->RA_con;
+        Thion = other->Thion;
+        //RA_con.setParent(this);
     }
     /**
       Constructor to create an object from the contained classes
@@ -69,7 +75,8 @@ public:
       @param rother A RACon object to incorporate
       @param thio
       */
-    RedoxRegCon(const RACon &rother, double thio = 0.) {
+    RedoxRegCon(RACon* rother, double thio = 0.) {
+        clear();
         RA_con = rother;
         Thion = thio;
     }
@@ -90,7 +97,9 @@ public:
       @param offset The indec in vec to start the copying from
       */
     void fromArray(const arr &vec, size_t offset = 0) {
-        RA_con.fromArray(vec, offset);
+        if (RA_con == nullptr)
+            RA_con = new RACon();
+        RA_con->fromArray(vec, offset);
         Thion = vec[offset + 92];
     }
     /**
@@ -99,18 +108,26 @@ public:
       @return A vector containing the data values from the class
     */
     arr toArray() {
-        arr rvec = RA_con.toArray();
+        arr rvec = RA_con->toArray();
         rvec.push_back(Thion);
         return rvec;
     }
     /**
       Get the size of the data vector
       */
-    size_t size() {
-        return RA_con.size() + 1;
+    static size_t size() {
+        return RACon::size() + 1;
     }
-    RACon RA_con;
+    RACon* RA_con = nullptr;
     double Thion = 0;
+
+private:
+    void clear() {
+        if (RA_con != nullptr) {
+            delete RA_con;
+            RA_con = nullptr;
+        }
+    }
 };
 
 /**
@@ -124,7 +141,7 @@ public:
       @param theVars The global variables
       @return A RedoxRegCon object for input into calculations
       */
-    static RedoxRegCon RedoxReg_Ini(Variables *theVars);
+    static RedoxRegCon* RedoxReg_Ini(Variables *theVars);
 
     /**
       Calculate the Rates of RedoxReg based on the inputs
@@ -133,7 +150,7 @@ public:
       @param RedoxReg_Con RedoxRegCon object giving the input parameters
       @param theVars The global variables
       */
-    static void RedoxReg_Rate(const double t, const RedoxRegCon &RedoxReg_Con, Variables *theVars);
+    static void RedoxReg_Rate(const double t, const RedoxRegCon* RedoxReg_Con, Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -143,7 +160,7 @@ public:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr RedoxReg_Mb(const double t, const RedoxRegCon &RedoxReg_Con, Variables *theVars);
+    static arr RedoxReg_Mb(const double t, const RedoxRegCon* RedoxReg_Con, Variables *theVars);
 
     static int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data);
 private:

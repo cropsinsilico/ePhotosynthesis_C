@@ -29,29 +29,29 @@
 
 // This function calculate the mass balance equation for the complete model of the light reactions.
 
-arr FIBF_Mb(const double t, const FIBFCon &FIBF_Con, Variables *theVars) {
+arr FIBF_Mb(const double t, const FIBFCon* FIBF_Con, Variables *theVars) {
 
     // First Get the variables needed for the calcualtion step
-    BFCon BF_con(FIBF_Con.BF_con);
+    BFCon* BF_con = FIBF_Con->BF_con;
 
-    FICon FI_Con(FIBF_Con.FI_con);
+    FICon* FI_Con = FIBF_Con->FI_con;
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////
     //       Calculate auxilary variable, PQ             //
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    const double PQ = theVars->FIBF_Pool.PQT - theVars->FI_Pool.QBt - FI_Con.PQn - BF_con.Qi - BF_con.Qn - BF_con.Qr - BF_con.ISPoQH2 - BF_con.QHsemi;
+    const double PQ = theVars->FIBF_Pool.PQT - theVars->FI_Pool.QBt - FI_Con->PQn - BF_con->Qi - BF_con->Qn - BF_con->Qr - BF_con->ISPoQH2 - BF_con->QHsemi;
 
-    theVars->FIBF2FI_PQa = theVars->FI_Pool.QBt + BF_con.Qi + BF_con.Qn + BF_con.Qr + BF_con.ISPoQH2 + BF_con.QHsemi;
-    BF_con.Q = PQ;
+    theVars->FIBF2FI_PQa = theVars->FI_Pool.QBt + BF_con->Qi + BF_con->Qn + BF_con->Qr + BF_con->ISPoQH2 + BF_con->QHsemi;
+    BF_con->Q = PQ;
 
     theVars->FIBF2FI_PQ = PQ;
 
-    theVars->FI_RC.kA_d = FIBF_Con.kd;
-    theVars->FI_RC.kU_d = FIBF_Con.kd;
+    theVars->FI_RC.kA_d = FIBF_Con->kd;
+    theVars->FI_RC.kU_d = FIBF_Con->kd;
 
-    theVars->BF_RC.Kd = FIBF_Con.kd;
+    theVars->BF_RC.Kd = FIBF_Con->kd;
 
     arr BF_mb = BF::BF_Mb(t, BF_con, theVars);
     arr FI_mb = FI::FI_Mb(t, FI_Con, theVars);
@@ -65,7 +65,7 @@ arr FIBF_Mb(const double t, const FIBFCon &FIBF_Con, Variables *theVars) {
     // Now specially calcualte the mass balance equation for the rate constant of the heat dissipation
 
     //const double PHl = BF_con.PHl;           // Get the PH value of the lumen
-    const double Hl = pow(10, BF_con.PHl);
+    const double Hl = pow(10, BF_con->PHl);
     const double QH = pow(10, (5.5)) / (Hl + pow(10, (5.5)));
 
     const double RC = 0.1;                   // RC is the relaxation constant, which is one term borrowed from Laisk et al., 1997;
@@ -82,7 +82,7 @@ arr FIBF_Mb(const double t, const FIBFCon &FIBF_Con, Variables *theVars) {
             dmax = dmax * theVars->XanCycle2FIBF_Xstate / 0.3;
         }
     }
-    FIBF_mb[51] = RC * (dmax - FIBF_Con.kd);
+    FIBF_mb[51] = RC * (dmax - FIBF_Con->kd);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Calculate the proton generation rate from the model of FI and use that to calculate the lumen PH //            //

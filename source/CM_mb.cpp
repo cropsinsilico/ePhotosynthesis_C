@@ -27,13 +27,13 @@
 #include "Variables.hpp"
 #include "CM.hpp"
 
-arr CM_Mb(const realtype t, const CMCon &CM_con, Variables *theVars) {
+arr CM_Mb(const realtype t, const CMCon* CM_con, Variables *theVars) {
     arr dxdt;
     dxdt.reserve(36);
 
-    arr PSPR_DYDT = PS_PR_Mb(t, CM_con.PS_PR_con, theVars);
+    arr PSPR_DYDT = PS_PR_Mb(t, CM_con->PS_PR_con, theVars);
 
-    arr SUCS_DYDT = SUCS::SUCS_Mb(t, CM_con.SUCS_con, theVars);
+    arr SUCS_DYDT = SUCS::SUCS_Mb(t, CM_con->SUCS_con, theVars);
 
     dxdt.insert(dxdt.end(), PSPR_DYDT.begin(), PSPR_DYDT.begin() + 23);
     dxdt.insert(dxdt.end(), SUCS_DYDT.begin(), SUCS_DYDT.begin() + 12);

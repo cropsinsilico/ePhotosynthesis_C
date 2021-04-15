@@ -64,7 +64,7 @@ void EPSDriver::setup() {
     /////////////////////////
     //   Calculation  step //
     /////////////////////////
-    EPSCon EPS_Con = EPS_Init();
+    EPSCon* EPS_Con = EPS_Init();
 
     int va1 = 0;
     theVars->BF_Param[0] = va1;
@@ -87,17 +87,17 @@ void EPSDriver::setup() {
 
 
     constraints = zeros(87);
-    arr temp = EPS_Con.toArray();
+    arr temp = EPS_Con->toArray();
     for (size_t i = 0; i < constraints.size(); i++)
         constraints[i] = temp[i];
-
+    delete EPS_Con;
 }
 
 void EPSDriver::getResults() {
     uint adjust = 0;
     if (theVars->useC3)
         adjust = 1;
-    EPSCon eps_int_con(intermediateRes, adjust);
+    EPSCon* eps_int_con = new EPSCon(intermediateRes, adjust);
     arr temp = EPS_Mb(time, eps_int_con, theVars);
     results = zeros(1);
     const double Arate = (theVars->PS_Vel.v1 - theVars->PR_Vel.v131) * theVars->AVR;

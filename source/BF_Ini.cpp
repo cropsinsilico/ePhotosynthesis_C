@@ -28,7 +28,9 @@
 #include "Variables.hpp"
 #include "BF.hpp"
 
-BFCon BF::BF_Ini(Variables *theVars) {
+const size_t BFCon::count = 29;
+
+BFCon* BF::BF_Ini(Variables *theVars) {
 
     const double PMODTEM = 1;
 
@@ -148,41 +150,41 @@ BFCon BF::BF_Ini(Variables *theVars) {
 
     //  This is the initialization step for the module of the Q cycle, and ATP synthesis steps
 
-    BFCon BF_con;
-    BF_con.ISPHr = 0.;     // The reduced ion sulfer protein (ISPH)
-    BF_con.cytc1 = 1.;     // The oxidized state of cytc1
-    BF_con.ISPo = 1.;      // The oxidized ion sulfer protein (ISP)
-    BF_con.ISPoQH2 = 0.;   // The complex of oxidized ion sulfer protein and reduced quinone
-    BF_con.QHsemi = 0.;    // Semiquinone
+    BFCon* BF_con = new BFCon();
+    BF_con->ISPHr = 0.;     // The reduced ion sulfer protein (ISPH)
+    BF_con->cytc1 = 1.;     // The oxidized state of cytc1
+    BF_con->ISPo = 1.;      // The oxidized ion sulfer protein (ISP)
+    BF_con->ISPoQH2 = 0.;   // The complex of oxidized ion sulfer protein and reduced quinone
+    BF_con->QHsemi = 0.;    // Semiquinone
 
-    BF_con.cytbL = 1.;     // The oxidized cytbL
-    BF_con.Qi = 0.;        // The binding Quinone
-    BF_con.Q = 1.;         // Quinone
-    BF_con.cytbH = 1.;     // The oxidized form of cytbH
-    BF_con.Qn = 0.;        // Q-
+    BF_con->cytbL = 1.;     // The oxidized cytbL
+    BF_con->Qi = 0.;        // The binding Quinone
+    BF_con->Q = 1.;         // Quinone
+    BF_con->cytbH = 1.;     // The oxidized form of cytbH
+    BF_con->Qn = 0.;        // Q-
 
-    BF_con.Qr = 0.;        // Q2-
-    BF_con.QH2 = 5.;       // QH2
-    BF_con.cytc2 = 1.;     // oxidized cytc2
-    BF_con.P700 = 0.5;     // The reduced state of P700, including both P700 and excited P700
-    BF_con.ADP = 0.82;     // ADP in stroma
+    BF_con->Qr = 0.;        // Q2-
+    BF_con->QH2 = 5.;       // QH2
+    BF_con->cytc2 = 1.;     // oxidized cytc2
+    BF_con->P700 = 0.5;     // The reduced state of P700, including both P700 and excited P700
+    BF_con->ADP = 0.82;     // ADP in stroma
 
-    BF_con.Pi = 0.9;       // Phosphate in stroma
-    BF_con.ATP = 0.68;     // ATP in stroma
-    BF_con.Ks = 10.;       // K ions in stroma
-    BF_con.Mgs = 5.;       // Mg ions in stroma
-    BF_con.Cls = 1.;       // Cl ions in stroma
+    BF_con->Pi = 0.9;       // Phosphate in stroma
+    BF_con->ATP = 0.68;     // ATP in stroma
+    BF_con->Ks = 10.;       // K ions in stroma
+    BF_con->Mgs = 5.;       // Mg ions in stroma
+    BF_con->Cls = 1.;       // Cl ions in stroma
 
-    BF_con.Aip = 0.;       // The number of photons in peripheral antenna
-    BF_con.U = 0.;         // The number of photons in core antenna
-    BF_con.An = 0.;        // The reduced electron acceptor in PSI
-    BF_con.Fdn = 0.3;      // The reduced ferrodoxin
-    BF_con.BFHs = 19.0001; // The total concentration of proton and protonated buffer species in stroma, put in unit: mmol l-1
-    BF_con.BFHl = 19.0001; // The total concentration of proton and protonated buffer species in lumen, unit: mmol l-1
+    BF_con->Aip = 0.;       // The number of photons in peripheral antenna
+    BF_con->U = 0.;         // The number of photons in core antenna
+    BF_con->An = 0.;        // The reduced electron acceptor in PSI
+    BF_con->Fdn = 0.3;      // The reduced ferrodoxin
+    BF_con->BFHs = 19.0001; // The total concentration of proton and protonated buffer species in stroma, put in unit: mmol l-1
+    BF_con->BFHl = 19.0001; // The total concentration of proton and protonated buffer species in lumen, unit: mmol l-1
 
-    BF_con.PHs = 7.;       // The PH value of the stroma
-    BF_con.PHl = 7.;       // The PH value of the lumen
-    BF_con.NADPH = 0.21;   // The NADPH concentration in stroma, Unit: mmol l-1;
+    BF_con->PHs = 7.;       // The PH value of the stroma
+    BF_con->PHl = 7.;       // The PH value of the lumen
+    BF_con->NADPH = 0.21;   // The NADPH concentration in stroma, Unit: mmol l-1;
 
     // Assigning the pool variables
     // The sizes of different pools in the model
@@ -216,7 +218,6 @@ BFCon BF::BF_Ini(Variables *theVars) {
         theVars->BF_Pool.k23 = 1 * theVars->BFRatio[47];   // The total number of P700; unit: micromole m-2 leaf area
         theVars->BF_Pool.k30 = 1 * theVars->BFRatio[48];   //   The total concentration of NADPH in stroma; 1 is an guessed value;
     }
-    theVars->BF2RROEA_Fdn = BF_con.Fdn;
-    theVars->BF2RROEA_FdT = theVars->BF_Pool.kU_f;
+
     return BF_con;
 }

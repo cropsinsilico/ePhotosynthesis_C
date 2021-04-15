@@ -28,6 +28,7 @@
 
 #include "definitions.hpp"
 
+class FIBFCon;
 /**
  Class for holding the result of the BF_Rate calculations
  */
@@ -256,42 +257,42 @@ public:
  */
 class BFCon {
 public:
-    BFCon() {}
+    BFCon(FIBFCon* par = nullptr) : parent(par) {}
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The BFCon object to copy
       */
-    BFCon(const BFCon &other){
-        ISPHr = other.ISPHr;
-        cytc1 = other.cytc1;
-        ISPo = other.ISPo;
-        ISPoQH2 = other.ISPoQH2;
-        QHsemi = other.QHsemi;
-        cytbL = other.cytbL;
-        Qi = other.Qi;
-        Q = other.Q;
-        cytbH = other.cytbH;
-        Qn = other.Qn;
-        Qr = other.Qr;
-        QH2 = other.QH2;
-        cytc2 = other.cytc2;
-        P700 = other.P700;
-        ADP = other.ADP;
-        Pi = other.Pi;
-        ATP = other.ATP;
-        Ks = other.Ks;
-        Mgs = other.Mgs;
-        Cls = other.Cls;
-        Aip = other.Aip;
-        U = other.U;
-        An = other.An;
-        Fdn = other.Fdn;
-        BFHs = other.BFHs;
-        BFHl = other.BFHl;
-        PHs = other.PHs;
-        PHl = other.PHl;
-        NADPH = other.NADPH;
+    BFCon(const BFCon* other){
+        ISPHr = other->ISPHr;
+        cytc1 = other->cytc1;
+        ISPo = other->ISPo;
+        ISPoQH2 = other->ISPoQH2;
+        QHsemi = other->QHsemi;
+        cytbL = other->cytbL;
+        Qi = other->Qi;
+        Q = other->Q;
+        cytbH = other->cytbH;
+        Qn = other->Qn;
+        Qr = other->Qr;
+        QH2 = other->QH2;
+        cytc2 = other->cytc2;
+        P700 = other->P700;
+        ADP = other->ADP;
+        Pi = other->Pi;
+        ATP = other->ATP;
+        Ks = other->Ks;
+        Mgs = other->Mgs;
+        Cls = other->Cls;
+        Aip = other->Aip;
+        U = other->U;
+        An = other->An;
+        Fdn = other->Fdn;
+        BFHs = other->BFHs;
+        BFHl = other->BFHl;
+        PHs = other->PHs;
+        PHl = other->PHl;
+        NADPH = other->NADPH;
 
     }
     /**
@@ -355,10 +356,11 @@ public:
     /**
       Get the size of the data vector
       */
-    size_t size() {
+    static size_t size() {
         return count;
     }
 
+    void setParent(FIBFCon* par) {parent = par;}
     friend std::ostream& operator<<(std::ostream &out, const BFCon &in);
 
     double ISPHr = 0.;   ///< The reduced ion sulfer protein (ISPH); unit: micromole per m2
@@ -390,8 +392,10 @@ public:
     double PHs = 0.;     ///< The PH value of the stroma
     double PHl = 0.;     ///< The PH value of the lumen
     double NADPH = 0.;   ///< The NADPH concentration in stroma, Unit: mmol l-1;
+    FIBFCon* parent;
 private:
-    size_t count = 29;
+    static const size_t count;
+
 };
 
 /**
@@ -405,7 +409,7 @@ public:
       @param theVars Pointer to the global variables
       @return A BFCon object with values set base on the input
       */
-    static BFCon BF_Ini(Variables *theVars);
+    static BFCon* BF_Ini(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -415,7 +419,7 @@ public:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr BF_Mb(const double t, const BFCon &BF_con, Variables *theVars);
+    static arr BF_Mb(const double t, const BFCon* BF_con, Variables *theVars);
 
     /**
       Calculate the Rates of BF based on the inputs
@@ -424,5 +428,5 @@ public:
       @param BF_con BFCon object giving the input parameters
       @param theVars The global variables
       */
-    static void BF_Rate(const double t, const BFCon &BF_con, Variables *theVars);
+    static void BF_Rate(const double t, const BFCon* BF_con, Variables *theVars);
 };

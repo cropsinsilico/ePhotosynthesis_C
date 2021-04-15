@@ -78,15 +78,16 @@ void trDynaPSDriver::setup() {
     theVars->PSPR_SUCS_com = true;
 
     // Next is to initialize the vector.
-    trDynaPSCon trDynaPS_con = trDynaPS_Ini();
+    trDynaPSCon* trDynaPS_con = trDynaPS_Ini();
     ParamSet(theVars);
-    constraints = trDynaPS_con.toArray();
+    constraints = trDynaPS_con->toArray();
+    delete trDynaPS_con;
 
 }
 
 void trDynaPSDriver::getResults() {
     // call the functions one last time to get the correct values we need
-    trDynaPSCon trDynaPS_res(intermediateRes);
+    trDynaPSCon* trDynaPS_res = new trDynaPSCon(intermediateRes);
     arr temp = trDynaPS_Mb(time, trDynaPS_res, theVars);
 
     double CarbonRate = theVars->RuACT_Vel.v6_1 * theVars->AVR;

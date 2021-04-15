@@ -35,15 +35,21 @@
  */
 class trDynaPSCon {
 public:
-    trDynaPSCon() {}
+    trDynaPSCon() : RROEA_con(new RROEACon(this)), DynaPS_con(new DynaPSCon(this)) {}
+    ~trDynaPSCon() {
+        clear();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The trDynaPSCon object to copy
       */
-    trDynaPSCon(const trDynaPSCon &other) {
-        RROEA_con = other.RROEA_con;
-        DynaPS_con = other.DynaPS_con;
+    trDynaPSCon(const trDynaPSCon* other) {
+        clear();
+        RROEA_con = other->RROEA_con;
+        DynaPS_con = other->DynaPS_con;
+        RROEA_con->setParent(this);
+        DynaPS_con->setParent(this);
     }
     /**
       Constructor to create an object from the contained classes
@@ -51,9 +57,12 @@ public:
       @param dother A DynaPSCon object to incorporate
       @param rother A RROEACon object to incorporate
       */
-    trDynaPSCon(const DynaPSCon &dother, const RROEACon &rother) {
+    trDynaPSCon(DynaPSCon* dother, RROEACon* rother) {
+        clear();
         DynaPS_con = dother;
         RROEA_con = rother;
+        RROEA_con->setParent(this);
+        DynaPS_con->setParent(this);
     }
     /**
       Constructor to create an object from the input vector, starting at the given index
@@ -90,8 +99,12 @@ public:
       @param offset The indec in vec to start the copying from
       */
     void fromArray(const arr &vec, size_t offset = 0) {
-        DynaPS_con.fromArray(vec, offset);
-        RROEA_con.fromArray(vec, offset + 110);
+        if (DynaPS_con == nullptr)
+            DynaPS_con = new DynaPSCon(this);
+        DynaPS_con->fromArray(vec, offset);
+        if (RROEA_con == nullptr)
+            RROEA_con = new RROEACon(this);
+        RROEA_con->fromArray(vec, offset + 110);
     }
     /**
       Convert the object into a vector of doubles
@@ -99,8 +112,8 @@ public:
       @return A vector containing the data values from the class
     */
     arr toArray() {
-        arr dyvec = DynaPS_con.toArray();
-        arr rrvec = RROEA_con.toArray();
+        arr dyvec = DynaPS_con->toArray();
+        arr rrvec = RROEA_con->toArray();
         arr vec = zeros(120);
         for (size_t i = 0; i < 96; i++)
             vec[i] = dyvec[i];
@@ -112,11 +125,23 @@ public:
     /**
       Get the size of the data vector
       */
-    size_t size() {
+    static size_t size() {
         return 120; //RROEA_con.size() + DynaPS_con.size();
     }
-    RROEACon RROEA_con;
-    DynaPSCon DynaPS_con;
+    RROEACon* RROEA_con = nullptr;
+    DynaPSCon* DynaPS_con = nullptr;
+
+private:
+    void clear() {
+        if (RROEA_con != nullptr) {
+            delete RROEA_con;
+            RROEA_con = nullptr;
+        }
+        if (DynaPS_con != nullptr) {
+            delete DynaPS_con;
+            DynaPS_con = nullptr;
+        }
+    }
 };
 
 /**
@@ -125,7 +150,7 @@ public:
   @param theVars The global variables
   @return A trDynaPSCon object for input into calculations
   */
-trDynaPSCon trDynaPS_Init(Variables *theVars);
+trDynaPSCon* trDynaPS_Init(Variables *theVars);
 
 /**
   Calculate the output values based on the inputs
@@ -134,7 +159,7 @@ trDynaPSCon trDynaPS_Init(Variables *theVars);
   @param theVars The global variables
   @return A vector containing the updated values
   */
-arr trDynaPS_Mb(const double t, const trDynaPSCon &trDynaPS_con, Variables *theVars);
+arr trDynaPS_Mb(const double t, const trDynaPSCon* trDynaPS_con, Variables *theVars);
 
 /**
  Class for running trDynaPS with an ODE solver
@@ -182,7 +207,7 @@ private:
 
       @return A trDynaPSCon object for input into calculations
       */
-    trDynaPSCon trDynaPS_Ini();
+    trDynaPSCon* trDynaPS_Ini();
 
     size_t ParaNum;
     double Ratio;

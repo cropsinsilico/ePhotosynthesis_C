@@ -101,10 +101,6 @@ struct Variables {
     //double LI = 0.;
     double cpsii = 0;
 
-    double BF2RROEA_FdT = 0.;
-    double BF2RROEA_Fdn = 0.;
-    double BF2RedoxReg_Fdt = 0.;
-    double BF2XanCycle_pHl = 0.;
     double CO2_cond = 0.;
     double ChlPSI = 0.;
     double ChlT = 0.;
@@ -112,7 +108,7 @@ struct Variables {
     double EPS_ATP_Rate = 0.;
     double FIBF2FI_PQ = 0.;
     double FIBF2FI_PQa = 0.;
-    double FIBF_RA_Mg = 0.;
+
     double GLUc = 0.;
     double GLight = 0.;
     double GammaStar = 0.;
@@ -122,21 +118,12 @@ struct Variables {
     double KE4 = 0.;
     double O2_cond = 0.;
     double PS12ratio = 0.;
-    double PS2BF_ADP = 0.;
-    double PS2BF_Pi = 0.;
-    double PS2PR_ADP = 0.;
-    double PS2PR_ATP = 0.;
-    double PS2PR_Pi = 0.;
-    double PS2RA_ATP = 0.;
-    double PS2RA_RuBP_ini = 0.;
-    double PS2SUCSV32 = 0.;
-    double PS2EPS_v3 = 0;
-    double PSPR_RA_CA = 0.;
-    double PsV1 = 0.;
+    double ADP;
+    double ATP;
+
     double Pi;
     double PiTc;
 
-    double RROEA2RuACT_RuAC = 0.;
     double RUBISCOTOTAL = 0.;
     double Redox2PS_V13 = 0.;
     double Redox2PS_V16 = 0.;
@@ -157,7 +144,7 @@ struct Variables {
     double V3 = 0.;
     double V6 = 0.;
     double V9 = 0.;
-    double PS2EPS_V16 = 0.;
+
     double XanCycle2FIBF_Xstate = 0.;
     double activase = 0.;
     double kmCO2 = 0.;
@@ -220,7 +207,6 @@ struct Variables {
     RROEARC RROEA_RC;
     RuACTRC RuACT_RC;
 
-    EPSCon *EPS_con = nullptr;
     // OUT
     arr BF2OUT = zeros(5);
     PRCon PR2OUT;

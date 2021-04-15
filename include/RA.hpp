@@ -28,21 +28,33 @@
 
 #include "EPS.hpp"
 #include "RuACT.hpp"
-
+class DynaPSCon;
 /**
  Class for holding input for RA_mb
  */
 class RACon {
 public:
-    RACon() {}
+    RACon(DynaPSCon* par = nullptr) : RuACT_con(new RuACTCon(this)), EPS_con(new EPSCon(this)), parent(par) {}
+    ~RACon() {
+        if (RuACT_con != nullptr) {
+            delete RuACT_con;
+            RuACT_con = nullptr;
+        }
+        if (EPS_con != nullptr) {
+            delete EPS_con;
+            EPS_con = nullptr;
+        }
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The RACon object to copy
       */
-    RACon(const RACon &other) {
-        RuACT_con = other.RuACT_con;
-        EPS_con = other.EPS_con;
+    RACon(const RACon *other) {
+        RuACT_con = other->RuACT_con;
+        EPS_con = other->EPS_con;
+        RuACT_con->setParent(this);
+        EPS_con->setParent(this);
     }
     /**
       Constructor to create an object from the contained classes
@@ -50,9 +62,11 @@ public:
       @param eother A EPSCon object to incorporate
       @param rother A RuACTCon object to incorporate
       */
-    RACon(const EPSCon &eother, const RuACTCon &rother) {
+    RACon(EPSCon* eother, RuACTCon* rother) {
         RuACT_con = rother;
         EPS_con = eother;
+        RuACT_con->setParent(this);
+        EPS_con->setParent(this);
     }
     /**
       Constructor to create an object from the input vector, starting at the given index
@@ -70,8 +84,12 @@ public:
       @param offset The indec in vec to start the copying from
       */
     void fromArray(const arr &vec, size_t offset = 0) {
-        EPS_con.fromArray(vec, offset);
-        RuACT_con.fromArray(vec, offset + EPS_con.size());
+        if (EPS_con == nullptr)
+            EPS_con = new EPSCon(this);
+        if (RuACT_con == nullptr)
+            RuACT_con = new RuACTCon(this);
+        EPS_con->fromArray(vec, offset);
+        RuACT_con->fromArray(vec, offset + EPS_con->size());
     }
     /**
       Convert the object into a vector of doubles
@@ -79,8 +97,8 @@ public:
       @return A vector containing the data values from the class
       */
     arr toArray() {
-        arr evec = EPS_con.toArray();
-        arr rvec = RuACT_con.toArray();
+        arr evec = EPS_con->toArray();
+        arr rvec = RuACT_con->toArray();
         evec.reserve(size());
         evec.insert(evec.end(), rvec.begin(), rvec.end());
         return evec;
@@ -88,11 +106,15 @@ public:
     /**
       Get the size of the data vector
       */
-    size_t size() {
-        return EPS_con.size() + RuACT_con.size();
+    static size_t size() {
+        return EPSCon::size() + RuACTCon::size();
     }
-    RuACTCon RuACT_con;
-    EPSCon EPS_con;
+
+    void setParent(DynaPSCon* par) {parent = par;}
+    RuACTCon* RuACT_con = nullptr;
+    EPSCon* EPS_con = nullptr;
+
+    DynaPSCon* parent;
 };
 
 /**
@@ -101,7 +123,7 @@ public:
   @param theVars The global variables
   @return A RACon object for input into calculations
   */
-RACon RA_Ini(Variables *theVars);
+RACon* RA_Ini(Variables *theVars);
 
 /**
   Calculate the output values based on the inputs
@@ -110,4 +132,4 @@ RACon RA_Ini(Variables *theVars);
   @param theVars The global variables
   @return A vector containing the updated values
   */
-arr RA_Mb(const double t, const RACon &RA_Con, Variables *theVars);
+arr RA_Mb(const double t, const RACon* RA_Con, Variables *theVars);

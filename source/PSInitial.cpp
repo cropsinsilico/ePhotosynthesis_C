@@ -132,31 +132,32 @@ double PS::Vf_T9 = 1;
 double PS::Vf_T13 = 1;
 double PS::Vf_T23 = 1;
 double PS::PsV1 = 0.;
+const size_t PSCon::count = 15;
 
 
-PSCon PS::PS_Ini(Variables *theVars) {
+PSCon* PS::PS_Ini(Variables *theVars) {
 
-    PSCon PS_con;
-    PS_con.RuBP = 2.000;
-    PS_con.PGA = 2.400;
-    PS_con.DPGA = 0.0011;
-    PS_con.T3P = 0.5;
+    PSCon* PS_con = new PSCon();
+    PS_con->RuBP = 2.000;
+    PS_con->PGA = 2.400;
+    PS_con->DPGA = 0.0011;
+    PS_con->T3P = 0.5;
     if (!theVars->useC3) {
-        PS_con.ADPG = 0.005;
-        PS_con.O2 = 0.264;
+        PS_con->ADPG = 0.005;
+        PS_con->O2 = 0.264;
     } else {
-        PS_con.ADPG = 0.;
-        PS_con.O2 = 0.21 * 1.26;
+        PS_con->ADPG = 0.;
+        PS_con->O2 = 0.21 * 1.26;
     }
-    PS_con.FBP = 0.670;
-    PS_con.E4P = 0.050;
-    PS_con.S7P = 2.000;
-    PS_con.SBP = 0.300;
-    PS_con.ATP = 0.68;
-    PS_con.NADPH = 0.21;
-    PS_con.CO2 = 0.012;
-    PS_con.HexP = 2.2;
-    PS_con.PenP = 0.25;
+    PS_con->FBP = 0.670;
+    PS_con->E4P = 0.050;
+    PS_con->S7P = 2.000;
+    PS_con->SBP = 0.300;
+    PS_con->ATP = 0.68;
+    PS_con->NADPH = 0.21;
+    PS_con->CO2 = 0.012;
+    PS_con->HexP = 2.2;
+    PS_con->PenP = 0.25;
 
     if (theVars->useC3) {
         PS_C_CP = 25;    //   Global constant for the total phosphate
@@ -409,15 +410,12 @@ PSCon PS::PS_Ini(Variables *theVars) {
         V33 = 1.0 * theVars->PSRatio[18] * 20;//WY 2018103
     }
 
-    theVars->PS2SUCSV32 = V32;
-
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     //   Here is the location for transfering variables//
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    theVars->PS2RA_RuBP_ini = PS_con.RuBP;
-    theVars->PS2BF_ADP = PS_C_CA - PS_con.ATP;
-    theVars->PSPR_RA_CA = PS_C_CA;
+
+    theVars->ADP = PS_C_CA - PS_con->ATP;
 
     return PS_con;
 }

@@ -28,19 +28,19 @@
 #include "PS_PR.hpp"
 #include "globals.hpp"
 
-arr PS_PR_Mb(const double t, const PS_PRCon &PS_PR_con, Variables *theVars) {
+arr PS_PR_Mb(const double t, const PS_PRCon* PS_PR_con, Variables *theVars) {
 
     const double vATPcost = theVars->TestATPCost / theVars->AVR;
 
-    PRCon PR_con = PS_PR_con.PR_con;
-    PSCon PS_con = PS_PR_con.PS_con;
-    PR_con.PGA = PS_con.PGA;
+    PRCon* PR_con = PS_PR_con->PR_con;
+    PSCon* PS_con = PS_PR_con->PS_con;
+    PR_con->PGA = PS_con->PGA;
 
-    PR_con.RuBP = PS_con.RuBP;
-    PR_con.CO2 = PS_con.CO2;
-    PR_con.O2 = PS_con.O2;
+    PR_con->RuBP = PS_con->RuBP;
+    PR_con->CO2 = PS_con->CO2;
+    PR_con->O2 = PS_con->O2;
 
-    const double PR2PS_Pgca = PS_PR_con.PR_con.PGCA;  // FOr transfering information between PR to PS.
+    const double PR2PS_Pgca = PS_PR_con->PR_con->PGCA;  // FOr transfering information between PR to PS.
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 2. Add exprimental conditions here; Conditions like light, temperature, CO2, O2 concentration should be added here //
@@ -52,13 +52,13 @@ arr PS_PR_Mb(const double t, const PS_PRCon &PS_PR_con, Variables *theVars) {
     PS_Param[0] = theVars->PS_PR_Param;
     PS_Param[1] = PR2PS_Pgca;
 
-    PS::PS_Rate(t, PS_con, PS_Param, theVars, &PR_con);
+    PS::PS_Rate(t, PS_con, PS_Param, theVars);
     //std::cout << theVars->PS_Vel;
 
     arr PR_Param = zeros(2);
     PR_Param[0] = theVars->PS_PR_Param;      // To indicate that the calcualtion is using the combined model
     // for the PS-PR combined model. 0: Combined model; 1: Separate model
-    PR_Param[1] = theVars->PS2PR_Pi;
+    PR_Param[1] = theVars->Pi;
 
     PR::PR_Rate(t, PR_con, theVars);
 

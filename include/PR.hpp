@@ -27,32 +27,32 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
-
+class PS_PRCon;
 /**
  Class for holding the inputs to PR_mb
  */
 class PRCon {
 public:
-    PRCon() {}
+    PRCon(PS_PRCon* par = nullptr) : parent(par) {}
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The PRCon object to copy
       */
-    PRCon(const PRCon &other) {
-        GCEA = other.GCEA;
-        GCA = other.GCA;
-        PGA = other.PGA;
-        PGCA = other.PGCA;
-        GCAc = other.GCAc;
-        GOAc = other.GOAc;
-        SERc = other.SERc;
-        GLYc = other.GLYc;
-        HPRc = other.HPRc;
-        GCEAc = other.GCEAc;
-        RuBP = other.RuBP;
-        CO2 = other.CO2;
-        O2 = other.O2;
+    PRCon(const PRCon* other) {
+        GCEA = other->GCEA;
+        GCA = other->GCA;
+        PGA = other->PGA;
+        PGCA = other->PGCA;
+        GCAc = other->GCAc;
+        GOAc = other->GOAc;
+        SERc = other->SERc;
+        GLYc = other->GLYc;
+        HPRc = other->HPRc;
+        GCEAc = other->GCEAc;
+        RuBP = other->RuBP;
+        CO2 = other->CO2;
+        O2 = other->O2;
     }
     /**
       Constructor to create an object from the input vector, starting at the given index
@@ -96,9 +96,10 @@ public:
     /**
       Get the size of the data vector
       */
-    size_t size() {
+    static size_t size() {
         return count;
     }
+    void setParent(PS_PRCon* par) {parent = par;}
     friend std::ostream& operator<<(std::ostream &out, const PRCon &in);
 
     double GCEA = 0.;
@@ -115,8 +116,10 @@ public:
     double CO2 = 0.;
     double O2 = 0.;
     double _v131;
+    PS_PRCon* parent;
 private:
-    size_t count = 13;
+    static const size_t count;
+
 };
 
 /**
@@ -185,7 +188,7 @@ public:
       @param theVars Pointer to the global variables
       @return A PRCon object with values set base on the input
       */
-    static PRCon PR_Ini(Variables *theVars);
+    static PRCon* PR_Ini(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -194,7 +197,7 @@ public:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr PR_Mb(const double t, const PRCon &PR_con, Variables *theVars);
+    static arr PR_Mb(const double t, const PRCon* PR_con, Variables *theVars);
 
     /**
       Calculate the Rates of PR based on the inputs
@@ -202,7 +205,7 @@ public:
       @param PR_con PRCon object giving the input parameters
       @param theVars The global variables
       */
-    static void PR_Rate(const double t, const PRCon &PR_con, Variables *theVars);
+    static void PR_Rate(const double t, const PRCon* PR_con, Variables *theVars);
 private:
     static double KC;
     static double KE113;

@@ -27,7 +27,7 @@
 #include "globals.hpp"
 #include "DynaPS.hpp"
 
-DynaPSCon DynaPSDrive::DynaPS_Ini() {
+DynaPSCon* DynaPSDrive::DynaPS_Ini() {
     return DynaPS_Init(theVars);
 }
 
@@ -41,9 +41,10 @@ arr DynaPSDrive::MB(realtype t, N_Vector u) {
     //// Step One: Get the initialization of the concentrations for the RedoxReg model which will be used in the calculation of mb of RedoxReg.
     realtype *x = N_VGetArrayPointer(u);
 
-    DynaPSCon DynaPS_con(x);
+    DynaPSCon* DynaPS_con = new DynaPSCon(x);
 
     arr dxdt = DynaPS_Mb(t, DynaPS_con, theVars);
 
+    delete DynaPS_con;
     return dxdt;
 }

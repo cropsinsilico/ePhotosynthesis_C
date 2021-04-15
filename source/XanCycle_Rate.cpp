@@ -26,18 +26,19 @@
 
 #include "Variables.hpp"
 #include "globals.hpp"
+#include "DynaPS.hpp"
 
 #define VVF 0.
 #define VV2ABA 0.
 #define VABADG 0.
 
-void XanCycle::XanCycle_Rate(const double t, const XanCycleCon &XanCycle_Con, Variables *theVars) {
+void XanCycle::XanCycle_Rate(const double t, const XanCycleCon* XanCycle_Con, Variables *theVars) {
 
     Condition(t, theVars);
 
     double pH;
     if (theVars->XanCycle_BF_com) {
-        pH = theVars->BF2XanCycle_pHl;
+        pH = XanCycle_Con->parent->RA_con->EPS_con->FIBF_con->BF_con->PHl;
     } else {
         pH = 6;
     }
@@ -52,10 +53,10 @@ void XanCycle::XanCycle_Rate(const double t, const XanCycleCon &XanCycle_Con, Va
     }
 
 
-    const double Vva = XanCycle_Con.Vx * XanCycle_kva * RegCof;
-    const double Vaz = XanCycle_Con.Ax * XanCycle_kaz * RegCof;
-    const double Vza = XanCycle_Con.Zx * XanCycle_kza;
-    const double Vav = XanCycle_Con.Ax * XanCycle_kav;
+    const double Vva = XanCycle_Con->Vx * XanCycle_kva * RegCof;
+    const double Vaz = XanCycle_Con->Ax * XanCycle_kaz * RegCof;
+    const double Vza = XanCycle_Con->Zx * XanCycle_kza;
+    const double Vav = XanCycle_Con->Ax * XanCycle_kav;
 
 
     if (t > theVars->XanCycle_OLD_TIME) {
@@ -73,10 +74,10 @@ void XanCycle::XanCycle_Rate(const double t, const XanCycleCon &XanCycle_Con, Va
     if (theVars->record) {
         theVars->XanCycle_VEL.insert(theVars->XanCycle_TIME_N, t, theVars->XanCycle_Vel);
 
-        theVars->XanCycle2OUT.Vx = XanCycle_Con.Vx;
-        theVars->XanCycle2OUT.Ax = XanCycle_Con.Ax;
-        theVars->XanCycle2OUT.Zx = XanCycle_Con.Zx;
-        theVars->XanCycle2OUT.ABA = XanCycle_Con.Vx / (XanCycle_Con.Vx + XanCycle_Con.Ax + XanCycle_Con.Zx);
+        theVars->XanCycle2OUT.Vx = XanCycle_Con->Vx;
+        theVars->XanCycle2OUT.Ax = XanCycle_Con->Ax;
+        theVars->XanCycle2OUT.Zx = XanCycle_Con->Zx;
+        theVars->XanCycle2OUT.ABA = XanCycle_Con->Vx / (XanCycle_Con->Vx + XanCycle_Con->Ax + XanCycle_Con->Zx);
     }
 
 }

@@ -94,10 +94,12 @@ double SUCS::Vf_T57=0;
 double SUCS::Vf_T51=0;
 double SUCS::Vf_T56=0;
 
-SUCSCon SUCS::SUCS_Ini(Variables *theVars) {
+const size_t SUCSCon::count = 12;
+
+SUCSCon* SUCS::SUCS_Ini(Variables *theVars) {
     theVars->SUCS_OLD_TIME = 0;
     theVars->SUCS_TIME_N = 1;
-    SUCSCon SUCS_Con;
+    SUCSCon* SUCS_Con = new SUCSCon();
     if (theVars->useC3) {
 
         Vf_T52=1;
@@ -192,17 +194,17 @@ SUCSCon SUCS::SUCS_Ini(Variables *theVars) {
         // mM
 
         // Assign value to a variable that is transferred to the program
-        SUCS_Con.T3Pc = 2.3;
-        SUCS_Con.FBPc = 2.;
-        SUCS_Con.HexPc = 5.8;
-        SUCS_Con.F26BPc = 7.8 * pow(10, -6);
-        SUCS_Con.ATPc = 0.35;
-        SUCS_Con.ADPc = 0.65;
-        SUCS_Con.UDPGc = 0.57;
-        SUCS_Con.UTPc = 0.75;
-        SUCS_Con.SUCP = 0.;
-        SUCS_Con.SUC = 0.;
-        SUCS_Con.PGAc = 0.;
+        SUCS_Con->T3Pc = 2.3;
+        SUCS_Con->FBPc = 2.;
+        SUCS_Con->HexPc = 5.8;
+        SUCS_Con->F26BPc = 7.8 * pow(10, -6);
+        SUCS_Con->ATPc = 0.35;
+        SUCS_Con->ADPc = 0.65;
+        SUCS_Con->UDPGc = 0.57;
+        SUCS_Con->UTPc = 0.75;
+        SUCS_Con->SUCP = 0.;
+        SUCS_Con->SUC = 0.;
+        SUCS_Con->PGAc = 0.;
 
         //////////////////////////////////////////////////////////////////
         // Here is some pool values      //
@@ -254,17 +256,17 @@ SUCSCon SUCS::SUCS_Ini(Variables *theVars) {
         // mM
 
         // Assign value to a variable that is transferred to the program
-        SUCS_Con.T3Pc = 2.;
-        SUCS_Con.FBPc = 2.;
-        SUCS_Con.HexPc = 5.8;
-        SUCS_Con.F26BPc = 7.8 * pow(10, -6);
-        SUCS_Con.ATPc = 0.4;
-        SUCS_Con.ADPc = 0.4;
-        SUCS_Con.UDPGc = 0.57;
-        SUCS_Con.UTPc = 0.75;
-        SUCS_Con.SUCP = 0.;
-        SUCS_Con.SUC = 0.;
-        SUCS_Con.PGAc = 0.5;
+        SUCS_Con->T3Pc = 2.;
+        SUCS_Con->FBPc = 2.;
+        SUCS_Con->HexPc = 5.8;
+        SUCS_Con->F26BPc = 7.8 * pow(10, -6);
+        SUCS_Con->ATPc = 0.4;
+        SUCS_Con->ADPc = 0.4;
+        SUCS_Con->UDPGc = 0.57;
+        SUCS_Con->UTPc = 0.75;
+        SUCS_Con->SUCP = 0.;
+        SUCS_Con->SUC = 0.;
+        SUCS_Con->PGAc = 0.5;
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // Initialization of the initial concentration of the different component //

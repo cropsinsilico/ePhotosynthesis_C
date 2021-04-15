@@ -28,12 +28,14 @@
 
 #include "definitions.hpp"
 class PS;
+
+class CMCon;
 /**
  Class for holding the inputs for SUCS_mb
  */
 class SUCSCon {
 public:
-    SUCSCon() {}
+    SUCSCon(CMCon* par = nullptr) : parent(par) {}
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -52,6 +54,21 @@ public:
         SUCP = other.SUCP;
         SUC = other.SUC;
         PGAc = other.PGAc;
+    }
+
+    SUCSCon(const SUCSCon *other) {
+        T3Pc = other->T3Pc;
+        FBPc = other->FBPc;
+        HexPc = other->HexPc;
+        F26BPc = other->F26BPc;
+        ATPc = other->ATPc;
+        ADPc = other->ADPc;
+        OPOPc = other->OPOPc;
+        UDPGc = other->UDPGc;
+        UTPc = other->UTPc;
+        SUCP = other->SUCP;
+        SUC = other->SUC;
+        PGAc = other->PGAc;
     }
     /**
       Constructor to create an object from the input vector, starting at the given index
@@ -112,9 +129,11 @@ public:
     /**
       Get the size of the data vector
       */
-    size_t size() {
+    static size_t size() {
         return count;
     }
+
+    void setParent(CMCon* par) {parent = par;}
     friend std::ostream& operator<<(std::ostream &out, const SUCSCon &in);
 
     double T3Pc = 0.;
@@ -129,8 +148,10 @@ public:
     double SUCP = 0.;
     double SUC = 0.;
     double PGAc = 0.;
+    CMCon* parent;
 private:
-    size_t count = 12;
+    static const size_t count;
+
 };
 
 /**
@@ -205,7 +226,7 @@ public:
       @param theVars Pointer to the global variables
       @return A SUCSCon object with values set base on the input
       */
-    static SUCSCon SUCS_Ini(Variables *theVars);
+    static SUCSCon* SUCS_Ini(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -215,7 +236,7 @@ public:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr SUCS_Mb(const double t, const SUCSCon &SUCS_Con, Variables *theVars);
+    static arr SUCS_Mb(const double t, const SUCSCon* SUCS_Con, Variables *theVars);
 
     /**
       Calculate the Rates of SUCS based on the inputs
@@ -224,7 +245,7 @@ public:
       @param SUCS_Con SUCSCon object giving the input parameters
       @param theVars The global variables
       */
-    static void SUCS_Rate(const double t, const SUCSCon &SUCS_Con, Variables *theVars);
+    static void SUCS_Rate(const double t, const SUCSCon* SUCS_Con, Variables *theVars);
     friend PS;
 private:
 

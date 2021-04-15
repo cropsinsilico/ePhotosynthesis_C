@@ -29,39 +29,40 @@
 #include "definitions.hpp"
 class PRCon;
 class PR;
-
+class RuACT;
+class SUCS;
+class PS_PRCon;
 /**
  Class for holding the inputs to PS_mb
  */
 class PSCon {
 public:
-    PSCon() {}
+    PSCon(PS_PRCon* par = nullptr) : parent(par) {}
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The PSCon object to copy
       */
-    PSCon(const PSCon &other) {
-        RuBP = other.RuBP;
-        PGA = other.PGA;
-        DPGA = other.DPGA;
-        T3P = other.T3P;
-        ADPG = other.ADPG;
-        FBP = other.FBP;
-        E4P = other.E4P;
-        S7P = other.S7P;
-        SBP = other.SBP;
-        ATP = other.ATP;
-        NADPH = other.NADPH;
-        CO2 = other.CO2;
-        O2 = other.O2;
-        HexP = other.HexP;
-        PenP = other.PenP;
-        _Pi = other._Pi;
-        _ADP = other._ADP;
-        _v1 = other._v1;
+    PSCon(const PSCon* other) {
+        RuBP = other->RuBP;
+        PGA = other->PGA;
+        DPGA = other->DPGA;
+        T3P = other->T3P;
+        ADPG = other->ADPG;
+        FBP = other->FBP;
+        E4P = other->E4P;
+        S7P = other->S7P;
+        SBP = other->SBP;
+        ATP = other->ATP;
+        NADPH = other->NADPH;
+        CO2 = other->CO2;
+        O2 = other->O2;
+        HexP = other->HexP;
+        PenP = other->PenP;
+        _Pi = other->_Pi;
+        _ADP = other->_ADP;
+        _v1 = other->_v1;
     }
-
     /**
       Constructor to create an object from the input vector, starting at the given index
 
@@ -108,9 +109,11 @@ public:
     /**
       Get the size of the data vector
       */
-    size_t size() {
+    static size_t size() {
         return count;
     }
+
+    void setParent(PS_PRCon* par) {parent = par;}
     friend std::ostream& operator<<(std::ostream &out, const PSCon &in);
 
     double RuBP = 0.;
@@ -131,8 +134,9 @@ public:
     double _Pi = 0.;
     double _ADP = 0.;
     double _v1 = 0.;
+    PS_PRCon* parent;
 private:
-    size_t count = 15;
+    static const size_t count;
 };
 
 /**
@@ -230,8 +234,7 @@ public:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr PS_Mb(const double t, const PSCon &PSs, const arr &Param, Variables *theVars);
-    static PSCon PSI(Variables *theVars);
+    static arr PS_Mb(const double t, const PSCon* PSs, const arr &Param, Variables *theVars);
 
     /**
       Initializer
@@ -239,7 +242,7 @@ public:
       @param theVars Pointer to the global variables
       @return A PSCon object with values set base on the input
       */
-    static PSCon PS_Ini(Variables *theVars);
+    static PSCon* PS_Ini(Variables *theVars);
 
     /**
       Calculate the Rates of PS based on the inputs
@@ -248,9 +251,11 @@ public:
       @param PSs PSCon object giving the input parameters
       @param theVars The global variables
       */
-    static void PS_Rate(const double t, const PSCon &PSs, const arr &Param, Variables *theVars, const PRCon *prcon = nullptr);
+    static void PS_Rate(const double t, const PSCon* PSs, const arr &Param, Variables *theVars);
 private:
     friend PR;
+    friend RuACT;
+    friend SUCS;
     static double KA231;
     static double KE11;
     static double KE12;

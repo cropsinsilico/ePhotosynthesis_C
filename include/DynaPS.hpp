@@ -30,20 +30,27 @@
 #include "XanCycle.hpp"
 #include "driver.hpp"
 
+class trDynaPSCon;
 /**
  Class for holding inputs to DynaPS_mb
  */
 class DynaPSCon {
 public:
-    DynaPSCon() {}
+    DynaPSCon(trDynaPSCon* par = nullptr) : RA_con(new RACon(this)), XanCycle_con(new XanCycleCon(this)), parent(par) {}
+    ~DynaPSCon() {
+        clear();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The DynaPSCon object to copy
       */
-    DynaPSCon(const DynaPSCon &other) {
-        RA_con = other.RA_con;
-        XanCycle_con = other.XanCycle_con;
+    DynaPSCon(const DynaPSCon* other) {
+        clear();
+        RA_con = other->RA_con;
+        XanCycle_con = other->XanCycle_con;
+        RA_con->setParent(this);
+        XanCycle_con->setParent(this);
     }
     /**
       Constructor to create an object from the input pointer
@@ -59,9 +66,12 @@ public:
       @param rother A RACon object to incorporate
       @param xother A XanCycleCon object to incorporate
       */
-    DynaPSCon(const RACon &rother, const XanCycleCon &xother) {
+    DynaPSCon(RACon* rother, XanCycleCon* xother) {
+        clear();
         RA_con = rother;
         XanCycle_con = xother;
+        RA_con->setParent(this);
+        XanCycle_con->setParent(this);
     }
     /**
       Constructor to create an object from the input vector, starting at the given index
@@ -90,8 +100,12 @@ public:
       @param offset The indec in vec to start the copying from
       */
     void fromArray(const arr &vec, size_t offset = 0) {
-            RA_con.fromArray(vec, offset);
-            XanCycle_con.fromArray(vec, offset + RA_con.size());
+        if (RA_con == nullptr)
+            RA_con = new RACon(this);
+        if (XanCycle_con == nullptr)
+            XanCycle_con = new XanCycleCon(this);
+        RA_con->fromArray(vec, offset);
+        XanCycle_con->fromArray(vec, offset + RA_con->size());
     }
     /**
       Convert the object into a vector of doubles
@@ -99,19 +113,34 @@ public:
       @return A vector containing the data values from the class
       */
     arr toArray() {
-        arr rvec = RA_con.toArray();
-        arr xvec = XanCycle_con.toArray();
+        arr rvec = RA_con->toArray();
+        arr xvec = XanCycle_con->toArray();
         rvec.insert(rvec.end(), xvec.begin(), xvec.end());
         return rvec;
     }
+    void setParent(trDynaPSCon* par) {parent = par;}
     /**
       Get the size of the data vector
       */
-    size_t size() {
-        return RA_con.size() + XanCycle_con.size();
+    static size_t size() {
+        return RACon::size() + XanCycleCon::size();
     }
-    RACon RA_con;
-    XanCycleCon XanCycle_con;
+    RACon* RA_con = nullptr;
+    XanCycleCon* XanCycle_con = nullptr;
+
+    trDynaPSCon* parent;
+
+private:
+    void clear() {
+        if (RA_con != nullptr) {
+            delete RA_con;
+            RA_con = nullptr;
+        }
+        if (XanCycle_con != nullptr) {
+            delete XanCycle_con;
+            XanCycle_con = nullptr;
+        }
+    }
 };
 
 /**
@@ -120,7 +149,7 @@ public:
   @param theVars The global variables
   @return A DynaPSCon object for input into calculations
   */
-DynaPSCon DynaPS_Init(Variables *theVars);
+DynaPSCon* DynaPS_Init(Variables *theVars);
 /**
   Calculate the output values based on the inputs
 
@@ -129,7 +158,7 @@ DynaPSCon DynaPS_Init(Variables *theVars);
   @param theVars The global variables
   @return A vector containing the updated values
   */
-arr DynaPS_Mb(const double t, const DynaPSCon &DynaPS_con, Variables *theVars);
+arr DynaPS_Mb(const double t, const DynaPSCon* DynaPS_con, Variables *theVars);
 
 /**
  Class for running DynaPS through an ODE solver
@@ -165,7 +194,7 @@ private:
 
       @return A CMCon object for input into calculations
       */
-    DynaPSCon DynaPS_Ini();
+    DynaPSCon* DynaPS_Ini();
     size_t ParaNum;
     double Ratio;
 };

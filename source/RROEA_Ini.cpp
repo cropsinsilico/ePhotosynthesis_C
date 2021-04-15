@@ -26,7 +26,9 @@
 
 #include "Variables.hpp"
 
-RROEACon RROEA::RROEA_Ini(Variables *theVars) {
+const size_t RROEACon::count = 10;
+
+RROEACon* RROEA::RROEA_Ini(Variables *theVars) {
     theVars->RROEA_OLD_TIME = 0;
     theVars->RROEA_TIME_N = 1;
 
@@ -106,7 +108,7 @@ RROEACon RROEA::RROEA_Ini(Variables *theVars) {
     double FdT = 0.081;
 
     if (theVars->RROEA_EPS_com)
-        FdT = theVars->BF2RROEA_FdT;
+        FdT = theVars->BF_Pool.kU_f;
 
     theVars->RROEA_Pool.GAPDH = theVars->V3 * 1000 * 60 / SA_GAPDH / mw_GAPDH;
     theVars->RROEA_Pool.FBPase = theVars->V6 * 1000 * 60 / SA_FBPase / mw_FBPase;
@@ -124,20 +126,17 @@ RROEACon RROEA::RROEA_Ini(Variables *theVars) {
 
     double Fd = 0.081 * Coeff; // The initial concentraiton of reduced fd
 
-    if (theVars->RROEA_EPS_com)
-        Fd = theVars->BF2RROEA_Fdn;
-
-    RROEACon RROEA_con;
-    RROEA_con.GAPDH = theVars->RROEA_Pool.GAPDH * Coeff;   // The initial concentration of active GAPDH
-    RROEA_con.FBPase = theVars->RROEA_Pool.FBPase * Coeff; // The initial concentration of active FBPase
-    RROEA_con.SBPase = theVars->RROEA_Pool.SBPase * Coeff; // The initial concentration of active SBPase
-    RROEA_con.PRK = theVars->RROEA_Pool.PRK * Coeff;       // The initial concentration of actove PRK
-    RROEA_con.ATPase = theVars->RROEA_Pool.ATPase * Coeff; // The initial concentration of actove ATPase
-    RROEA_con.ATPGPP = theVars->RROEA_Pool.ATPGPP * Coeff; // The initial concentration of actove ATPGPP
-    RROEA_con.MDH = 0;                                     // The initial concentration of actove MDH
-    RROEA_con.Thio = 0.081 * Coeff;                        // The initial concentration of reduced thioredoxin
-    RROEA_con.Fd = Fd;                                     // The initial concentration of reduced ferrodoxin
-    RROEA_con.RuACT = 0.0056 * Coeff;                      // The initial concentration of active Rubisco activase
+    RROEACon* RROEA_con = new RROEACon();
+    RROEA_con->GAPDH = theVars->RROEA_Pool.GAPDH * Coeff;   // The initial concentration of active GAPDH
+    RROEA_con->FBPase = theVars->RROEA_Pool.FBPase * Coeff; // The initial concentration of active FBPase
+    RROEA_con->SBPase = theVars->RROEA_Pool.SBPase * Coeff; // The initial concentration of active SBPase
+    RROEA_con->PRK = theVars->RROEA_Pool.PRK * Coeff;       // The initial concentration of actove PRK
+    RROEA_con->ATPase = theVars->RROEA_Pool.ATPase * Coeff; // The initial concentration of actove ATPase
+    RROEA_con->ATPGPP = theVars->RROEA_Pool.ATPGPP * Coeff; // The initial concentration of actove ATPGPP
+    RROEA_con->MDH = 0;                                     // The initial concentration of actove MDH
+    RROEA_con->Thio = 0.081 * Coeff;                        // The initial concentration of reduced thioredoxin
+    RROEA_con->Fd = Fd;                                     // The initial concentration of reduced ferrodoxin
+    RROEA_con->RuACT = 0.0056 * Coeff;                      // The initial concentration of active Rubisco activase
 
     // Here defines the information for transfer between models
 

@@ -28,7 +28,7 @@
 #include "globals.hpp"
 #include "BF.hpp"
 
-arr BF::BF_Mb(const double t, const BFCon &BF_con, Variables *theVars) {
+arr BF::BF_Mb(const double t, const BFCon* BF_con, Variables *theVars) {
 
     if (theVars->useC3) {
         theVars->BF_Param[0] = theVars->TestLi * 30;

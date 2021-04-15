@@ -23,15 +23,16 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
+#include "Variables.hpp"
 #include "globals.hpp"
 #include "trDynaPS.hpp"
 
-trDynaPSCon trDynaPS_Init(Variables *theVars) {
-    DynaPSCon DynaPS_con = DynaPS_Init(theVars);
+trDynaPSCon* trDynaPS_Init(Variables *theVars) {
+    DynaPSCon* DynaPS_con = DynaPS_Init(theVars);
 
-    RROEACon RROEA_con = RROEA::RROEA_Ini(theVars);
-
-    trDynaPSCon trDynaPS_Con(DynaPS_con, RROEA_con);
+    RROEACon* RROEA_con = RROEA::RROEA_Ini(theVars);
+    if (theVars->RROEA_EPS_com)
+        RROEA_con->Fd = DynaPS_con->RA_con->EPS_con->FIBF_con->BF_con->Fdn;
+    trDynaPSCon* trDynaPS_Con = new trDynaPSCon(DynaPS_con, RROEA_con);
     return trDynaPS_Con;
 }

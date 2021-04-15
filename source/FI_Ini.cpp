@@ -27,11 +27,12 @@
 #include <math.h>
 #include "Variables.hpp"
 
+const size_t FICon::count = 22;
 // This is the routine that initialize the parameters, initial conditions for simulation of fluorescence induction curve.
 // The following information is initialized sequentially 1) Rate constants; 2) Initial concentration ( or conditions); 3) THe maximum
 // concentration of components of photosystems.
 
-FICon FI::FI_Ini(Variables *theVars) {
+FICon* FI::FI_Ini(Variables *theVars) {
     //////////////////////////////////////////////////////////////////////////
     // Initilization of the rate constant //
     ////////////////////////////////////////////////////////////////////////////
@@ -101,29 +102,29 @@ FICon FI::FI_Ini(Variables *theVars) {
 
     // Assign the value to a array
     // This is the program that initialize the major variables used in the fluorescence induction system.In this file, the n represent negative charges, _red represent that the components are associated with the closed reaction center; while _ox represent a system with open reaction center.
-    FICon FI_Con;
-    FI_Con.A = 0;          // The concentration of excitons in the peripheral antenna
-    FI_Con.U = 0;          // The concentration fo excitons in the core antenna
-    FI_Con.P680ePheo = 1;  // The concentration of the P680Pheo
-    FI_Con.P680pPheon = 0; // The concentration for the P680+ Pheo-
-    FI_Con.P680pPheo = 0;  // The concentration of P680+ Pheo
-    FI_Con.P680Pheon = 0;  // The concentration of P680Pheo-
-    FI_Con.Yz = 1;         // The concentration of reduced tyrosine
-    FI_Con.S1T = 0.8;      // The concentration of S1 in combination with reduced tyrosine
-    FI_Con.S2T = 0;        // The concentration of S2 in combination with reduced tyrosine
-    FI_Con.S3T = 0;        // The concentration of S3 in combination with reduced tyrosine
-    FI_Con.S0T = 0.2;      // The concentration of S0 in combination with reduced tyrosine
-    FI_Con.S1Tp = 0;       // The concentration of S1 in combination with oxidized tyrosine
-    FI_Con.S2Tp = 0;       // The concentration of S2 in combination with oxidized tyrosine
-    FI_Con.S3Tp = 0;       // The concentration of S3 in combination with oxidized tyrosine
-    FI_Con.S0Tp = 0;       // The concentration of S0 in combination with oxidized tyrosine
-    FI_Con.QAQB = 1;       // The concentration of [QAQB]
-    FI_Con.QAnQB = 0;      // The concentration of [QA-QB];
-    FI_Con.QAQBn = 0;      // The concentration of [QAQB-]
-    FI_Con.QAnQBn = 0;     // The concentration of [QA-QB-];
-    FI_Con.QAQB2n = 0;     // The concentration of [QAQB2-]
-    FI_Con.QAnQB2n = 0;    // The concentration of [QA-QB2-];
-    FI_Con.PQn = 5;        // The concentration of reduced PQ, i.e. PQH2;
+    FICon* FI_Con = new FICon();
+    FI_Con->A = 0;          // The concentration of excitons in the peripheral antenna
+    FI_Con->U = 0;          // The concentration fo excitons in the core antenna
+    FI_Con->P680ePheo = 1;  // The concentration of the P680Pheo
+    FI_Con->P680pPheon = 0; // The concentration for the P680+ Pheo-
+    FI_Con->P680pPheo = 0;  // The concentration of P680+ Pheo
+    FI_Con->P680Pheon = 0;  // The concentration of P680Pheo-
+    FI_Con->Yz = 1;         // The concentration of reduced tyrosine
+    FI_Con->S1T = 0.8;      // The concentration of S1 in combination with reduced tyrosine
+    FI_Con->S2T = 0;        // The concentration of S2 in combination with reduced tyrosine
+    FI_Con->S3T = 0;        // The concentration of S3 in combination with reduced tyrosine
+    FI_Con->S0T = 0.2;      // The concentration of S0 in combination with reduced tyrosine
+    FI_Con->S1Tp = 0;       // The concentration of S1 in combination with oxidized tyrosine
+    FI_Con->S2Tp = 0;       // The concentration of S2 in combination with oxidized tyrosine
+    FI_Con->S3Tp = 0;       // The concentration of S3 in combination with oxidized tyrosine
+    FI_Con->S0Tp = 0;       // The concentration of S0 in combination with oxidized tyrosine
+    FI_Con->QAQB = 1;       // The concentration of [QAQB]
+    FI_Con->QAnQB = 0;      // The concentration of [QA-QB];
+    FI_Con->QAQBn = 0;      // The concentration of [QAQB-]
+    FI_Con->QAnQBn = 0;     // The concentration of [QA-QB-];
+    FI_Con->QAQB2n = 0;     // The concentration of [QAQB2-]
+    FI_Con->QAnQB2n = 0;    // The concentration of [QA-QB2-];
+    FI_Con->PQn = 5;        // The concentration of reduced PQ, i.e. PQH2;
     if (theVars->useC3) {
         theVars->FI_Pool.QBt = 1; // The total concentration of Qb site;
         theVars->FI_Pool.PQT = 8; // The total concentration of PQ;

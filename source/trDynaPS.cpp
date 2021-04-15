@@ -28,16 +28,16 @@
 #include "trDynaPS.hpp"
 #include "Variables.hpp"
 
-trDynaPSCon trDynaPSDriver::trDynaPS_Ini() {
+trDynaPSCon* trDynaPSDriver::trDynaPS_Ini() {
     return trDynaPS_Init(theVars);
 }
 
 arr trDynaPSDriver::MB(realtype t, N_Vector u) {
     realtype *x = N_VGetArrayPointer(u);
 
-    trDynaPSCon trDynaPS_con(x);
+    trDynaPSCon* trDynaPS_con = new trDynaPSCon(x);
     arr dxdt = trDynaPS_Mb(t, trDynaPS_con, theVars);
-
+    delete trDynaPS_con;
     return dxdt;
 }
 

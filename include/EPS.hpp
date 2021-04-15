@@ -30,21 +30,30 @@
 #include "CM.hpp"
 #include "driver.hpp"
 
+class RACon;
 /**
  Class for holding the inputs to EPS_mb
  */
 class EPSCon {
 public:
-    EPSCon() {}
+    EPSCon(RACon* par = nullptr) : CM_con(new CMCon(this)), FIBF_con(new FIBFCon(this)), parent(par) {}
+
+    ~EPSCon() {
+        clear();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The EPSCon object to copy
       */
-    EPSCon(const EPSCon &other) {
-        CM_con = other.CM_con;
-        FIBF_con = other.FIBF_con;
+    EPSCon(const EPSCon* other) {
+        clear();
+        CM_con = other->CM_con;
+        FIBF_con = other->FIBF_con;
+        CM_con->setParent(this);
+        FIBF_con->setParent(this);
     }
+
     /**
       Constructor to create an object from the input pointer
 
@@ -59,9 +68,12 @@ public:
       @param fother A FIBFCon object to incorporate
       @param cother A CMCon object to incorporate
       */
-    EPSCon(const FIBFCon &fother, const CMCon &cother) {
+    EPSCon(FIBFCon* fother, CMCon* cother) {
+        clear();
         CM_con = cother;
         FIBF_con = fother;
+        CM_con->setParent(this);
+        FIBF_con->setParent(this);
     }
     /**
       Constructor to create an object from the input vector, starting at the given index
@@ -79,8 +91,12 @@ public:
       @param offset The indec in vec to start the copying from
       */
     void fromArray(const arr &vec, const size_t offset = 0) {
-        FIBF_con.fromArray(vec, offset);
-        CM_con.fromArray(vec, offset + FIBF_con.size());
+        if (FIBF_con == nullptr)
+            FIBF_con = new FIBFCon(this);
+        if (CM_con == nullptr)
+            CM_con = new CMCon(this);
+        FIBF_con->fromArray(vec, offset);
+        CM_con->fromArray(vec, offset + FIBF_con->size());
     }
     /**
       Copy items from the given pointer to the data members
@@ -99,8 +115,8 @@ public:
       @return A vector containing the data values from the class
       */
     arr toArray() {
-        arr fvec = FIBF_con.toArray();
-        arr cvec = CM_con.toArray();
+        arr fvec = FIBF_con->toArray();
+        arr cvec = CM_con->toArray();
         fvec.reserve(size());
         fvec.insert(fvec.end(), cvec.begin(), cvec.end());
         return fvec;
@@ -108,12 +124,27 @@ public:
     /**
       Get the size of the data vector
       */
-    size_t size() {
-        return CM_con.size() + FIBF_con.size();
+    static size_t size() {
+        return CMCon::size() + FIBFCon::size();
     }
+
+    void setParent(RACon* par) {parent = par;}
     friend std::ostream& operator<<(std::ostream &out, const EPSCon &in);
-    CMCon CM_con;
-    FIBFCon FIBF_con;
+    CMCon* CM_con = nullptr;
+    FIBFCon* FIBF_con = nullptr;
+    RACon* parent;
+
+private:
+    void clear() {
+        if (CM_con != nullptr) {
+            delete CM_con;
+            CM_con = nullptr;
+        }
+        if (FIBF_con != nullptr) {
+            delete FIBF_con;
+            FIBF_con = nullptr;
+        }
+    }
 };
 
 /**
@@ -122,7 +153,7 @@ public:
   @param theVars Pointer to the global variables
   @return A EPSCon object with values set base on the input
   */
-EPSCon EPS_Ini(Variables *theVars);
+EPSCon* EPS_Ini(Variables *theVars);
 
 /**
   Calculate the output values based on the inputs
@@ -132,7 +163,7 @@ EPSCon EPS_Ini(Variables *theVars);
   @param theVars The global variables
   @return A vector containing the updated values
   */
-arr EPS_Mb(const double t, const EPSCon &EPS_Con, Variables *theVars);
+arr EPS_Mb(const double t, const EPSCon* EPS_Con, Variables *theVars);
 
 /**
  Class for running trDynaPS with an ODE solver
@@ -173,7 +204,7 @@ private:
 
       @return A trDynaPSCon object for input into calculations
       */
-    EPSCon EPS_Init();
+    EPSCon* EPS_Init();
 
     //double Ca;
     //double Li;

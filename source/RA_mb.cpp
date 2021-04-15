@@ -26,9 +26,9 @@
 
 #include "Variables.hpp"
 
-arr RA_Mb(const double t, const RACon &RA_Con, Variables *theVars) {
-    arr EPS_DYDT = EPS_Mb(t, RA_Con.EPS_con, theVars);
-    arr RuACT_DYDT = RuACT::RuACT_Mb(t, RA_Con.RuACT_con, theVars);
+arr RA_Mb(const double t, const RACon* RA_Con, Variables *theVars) {
+    arr EPS_DYDT = EPS_Mb(t, RA_Con->EPS_con, theVars);
+    arr RuACT_DYDT = RuACT::RuACT_Mb(t, RA_Con->RuACT_con, theVars);
 
     arr RA_DYDT = zeros(92);
 

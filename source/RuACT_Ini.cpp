@@ -27,7 +27,9 @@
 #include <math.h>
 #include "Variables.hpp"
 
-RuACTCon RuACT::RuACT_Ini(Variables *theVars) {
+const size_t RuACTCon::count = 4;
+
+RuACTCon* RuACT::RuACT_Ini(Variables *theVars) {
     theVars->activase = 80 * theVars->RacRatio[10];
 
     // The rate constant used in the model
@@ -44,17 +46,13 @@ RuACTCon RuACT::RuACT_Ini(Variables *theVars) {
 
     //factor = 0.224/0.3;
     const double factor = 1;
-    double RuBP = 2;
-
-    if (theVars->RuACT_EPS_com)
-        RuBP = theVars->PS2RA_RuBP_ini;
 
     // Assign value to a variable that is transferred to the program
-    RuACTCon RuACT_Con;
-    RuACT_Con.ER = 0.05 * 4 * factor;  // The concentration of inactive ER
-    RuACT_Con.Eaf = 0.05 * 4 * factor; // The total concentration of E, EC, AND ECM
-    RuACT_Con.ECMR = 0.2 * 4 * factor; // The concentration of ECMR
-    RuACT_Con.RuBP = RuBP;             // The concentration of ECMR
+    RuACTCon* RuACT_Con = new RuACTCon();
+    RuACT_Con->ER = 0.05 * 4 * factor;  // The concentration of inactive ER
+    RuACT_Con->Eaf = 0.05 * 4 * factor; // The total concentration of E, EC, AND ECM
+    RuACT_Con->ECMR = 0.2 * 4 * factor; // The concentration of ECMR
+    RuACT_Con->RuBP = 2.;             // The concentration of ECMR
 
     theVars->RuACT_Pool.ET = 0.3 * 4 * factor * theVars->RacRatio[11]; //  The total concentraiton of E, ER, EC, ECM, ECMR , mM;
     theVars->RuACT_Pool.Rac = 0.0056 * theVars->RacRatio[12];          // The concentration of the activase, mM
