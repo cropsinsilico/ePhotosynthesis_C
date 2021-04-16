@@ -31,7 +31,8 @@
 #include <vector>
 #include <fstream>
 #include <iterator>
-#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string_regex.hpp>
+#include <boost/regex.hpp>
 
 #include "cxxopts.hpp"
 #include "globals.hpp"
@@ -47,6 +48,7 @@
 #define varSearch(x) if (result.count(#x) == 0 && inputs.count(#x) > 0) \
     x = inputs.at(#x);
 
+const boost::regex token("\\s+");
 
 void readFile(const std::string &filename, std::map<std::string, std::string> &mapper) {
     std::vector<std::string> tempVec;
@@ -59,7 +61,7 @@ void readFile(const std::string &filename, std::map<std::string, std::string> &m
     while (getline(inputfile, input)) {
         if (input.empty())
             return;
-        boost::split(tempVec, input, boost::is_any_of("\t "));
+        boost::algorithm::split_regex(tempVec, input, token);
         mapper.insert(std::pair<std::string, std::string>(tempVec[0], tempVec[1]));
     }
 }
@@ -76,7 +78,7 @@ void readFile(const std::string &filename, std::map<std::string, double> &mapper
     while (getline(inputfile, input)) {
         if (input.empty())
             return;
-        boost::split(tempVec, input, boost::is_any_of("\t "));
+        boost::algorithm::split_regex(tempVec, input, token);
         double d;
         std::stringstream ss(tempVec[1]);
         ss >> d;

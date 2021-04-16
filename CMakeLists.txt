@@ -66,6 +66,7 @@ file(GLOB SOURCES "source/*.cpp")
 add_executable(ePhotosynthesis ${SOURCES})
 
 target_link_libraries(ePhotosynthesis ${SUNDIALS_LIBRARIES})
+target_link_libraries(ePhotosynthesis boost_regex)
 
 install(TARGETS ePhotosynthesis DESTINATION bin)
 
