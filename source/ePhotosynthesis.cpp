@@ -40,6 +40,7 @@
 #include "EPS.hpp"
 #include "Variables.hpp"
 
+#define ABSTOL 0.0001
 // macros to get options from either the command line (has precedence) or an options file
 #define varSearchD(x) if (result.count(#x) == 0 && inputs.count(#x) > 0) \
     x = stod(inputs.at(#x), nullptr);
@@ -49,6 +50,23 @@
     x = inputs.at(#x);
 
 const boost::regex token("\\s+");
+
+double compare(const double v1, const double v2) {
+    const double dif = abs(v1 - v2);
+    if (dif == 0.)
+        return 0.;
+    if (v2 == 0. && dif <= ABSTOL) {
+        return 0.;
+    } else if (v1 == 0. && dif <= ABSTOL) {
+        return 0.;
+    } else if (dif <= ABSTOL && abs(v1) <= ABSTOL*100) {
+        return 0.;
+    } else if (v2 != 0. || v1 != 0.) {
+        return abs(100. * (v1 - v2)/std::max(v2, v1));
+    } else {
+        return 100.;
+    }
+}
 
 void readFile(const std::string &filename, std::map<std::string, std::string> &mapper) {
     std::vector<std::string> tempVec;
@@ -100,6 +118,8 @@ int main(int argc, const char* argv[]) {
     try {
         bool record = false;
         bool useC3 = false;
+        bool terminateTest = false;
+        std::string test = "";
         cxxopts::Options options("ePhotosynthesis", "C++ implementation of the matlab original");
         options.show_positional_help();
         std::string evn, atpcost, optionsFile, enzymeFile;
@@ -123,6 +143,8 @@ int main(int argc, const char* argv[]) {
                 ("r,reltol", "Relative tolerance for calculations", cxxopts::value<double>(reltol)->default_value("1e-4"))
                 ("T,Tp", "Input Temperature", cxxopts::value<double>(Tp)->default_value("0.0"))
                 ("o,options", "Name of a text file which specifies any of the above options. Command line arguments have priority.", cxxopts::value<std::string>(optionsFile)->default_value(""))
+                ("q,test", "Testing", cxxopts::value<std::string>(test)->default_value(""))
+                ("x, terminate", "Stop the test on a discrepancy", cxxopts::value<bool>(terminateTest)->default_value("false"))
                 ("h,help", "Produce help message")
                 ;
 
@@ -182,41 +204,151 @@ int main(int argc, const char* argv[]) {
                 exit(EXIT_FAILURE);
         }
 
-        std::vector<double> ResultRate = maindriver->run();
+        if (!test.empty()) {
+            int count = 1;
+            std::ifstream inputfile(test);
+            if(inputfile.fail()) {
+                std::cout << "Could not open " << test << " for reading" << std::endl;
+                exit(EXIT_FAILURE);
+            }
+            maindriver->setup();
 
-        std::ofstream outfile("output.data");
+            std::string input;
+            std::vector<std::string> tempVec;
+            arr inputdata;
+            arr outputdata;
+            while (getline(inputfile, input)) {
+                if (input.empty())
+                    continue;
+                //std::cout << "line " << input << std::endl;
+                boost::algorithm::split_regex(tempVec, input, token);
+                double d;
+                if (tempVec[0].rfind("Input", 0) == 0) {
+                    inputdata.clear();
+                    for (uint i = 1; i < tempVec.size(); i++) {
+                        std::stringstream ss(tempVec[i]);
+                        ss >> d;
+                        inputdata.push_back(d);
+                    }
+                    continue;
+                } else if (tempVec[0].rfind("Result", 0) == 0 || tempVec[0].rfind("Output", 0) == 0) {
+                    outputdata.clear();
+                    for (uint i = 1; i < tempVec.size(); i++) {
+                        std::stringstream ss(tempVec[i]);
+                        ss >> d;
+                        outputdata.push_back(d);
+                    }
+                } else {
+                    continue;
+                }
+                N_Vector y;
+                //std::cout << std::endl << "Inputs: ";
+                maindriver->constraints = inputdata;
+                //for (ulong z = 0; z < maindriver->constraints.size(); z++) {
+                //    std::cout << maindriver->constraints[z];
+                //    if (z < maindriver->constraints.size() - 1)
+                //        std::cout << ", ";
+                //}
+                //std::cout << std::endl;
 
-        switch (driverChoice) {
-            case trDynaPS:
-                outfile << "Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate" << std::endl;
-                outfile << theVars->TestLi << "," << ResultRate[0] << ",";
-                outfile << ResultRate[1] << "," << ResultRate[2] << "," << ResultRate[3] << ",";
-                outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << std::endl;
-                break;
-            case DynaPS:
-                outfile << "Light intensity,PSIIabs,PSIabs,Vc,Vo,VPGA,Vsucrose,Vstarch" << std::endl;
-                outfile << theVars->TestLi << "," << ResultRate[0] << ",";
-                outfile << ResultRate[1] << "," << ResultRate[2] << "," << ResultRate[3] << ",";
-                outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << std::endl;
-                break;
-            case CM:
-                outfile << "Light intensity,CO2AR" << std::endl;
-                outfile << theVars->TestLi << ResultRate[0] << std::endl;
-                break;
-            case EPS:
-                outfile << ResultRate[0] << std::endl;
-                break;
-            default:
-                break;
+                y = N_VNew_Serial(static_cast<long>(maindriver->constraints.size()));
+                for (size_t i = 0; i < maindriver->constraints.size(); i++)
+                    NV_Ith_S(y, i) =  maindriver->constraints[i];
+
+                arr results = maindriver->MB(0,y);
+                std::cout << std::endl << "Results: " << std::endl;
+                std::cout << "  Test run #" << count << ": " << std::endl;
+                bool founddiff = false;
+                for (uint i = 0; i < results.size(); i++) {
+                    double comp = compare(results[i], outputdata[i]);
+                    if (comp > 10.) {
+                        std::cout << "    Output " << i << "/" << i+1 << ": " << outputdata[i] << " " << results[i] << " " << comp << "%" << std::endl;
+                        founddiff = true;
+                    }
+                }
+                if (!founddiff) {
+                    std::cout << "    Results match within threshold " << 2.0 << "%" << std::endl;
+                } else if (terminateTest) {
+                    std::cout << std::endl << "Failed inputs: ";
+                    for (auto val : inputdata) {
+                        std::cout << val << ", ";
+                    }
+                    std::cout << std::endl << std::endl;
+                    std::cout << "Failed results: ";
+                    for (auto val : results) {
+                        std::cout << val << ", ";
+                    }
+                    std::cout << std::endl << std::endl;
+
+                    std::cout << "Expected results: ";
+                    for (auto val : outputdata) {
+                        std::cout << val << ", ";
+                    }
+                    std::cout << std::endl;
+                    N_VDestroy(y);
+
+                    if (theVars != nullptr) {
+                        maindriver->theVars = nullptr;
+                        delete theVars;
+                    }
+                    delete maindriver;
+                    exit(EXIT_SUCCESS);
+                }
+                //for (ulong z = 0; z < results.size(); z++) {
+                //    std::cout << results[z];
+                 //   if (z < results.size() - 1)
+                //        std::cout << ", ";
+                //}
+                //std::cout << std::endl;
+
+                N_VDestroy(y);
+                count++;
+            //for (ulong j = 0; j < maindriver->constraints.size(); j++) {
+            //    maindriver->constraints[j] += 0.001;
+            //}
+            }
+            if (theVars != nullptr) {
+                maindriver->theVars = nullptr;
+                delete theVars;
+            }
+            delete maindriver;
+
+        } else {
+            std::vector<double> ResultRate = maindriver->run();
+
+            std::ofstream outfile("output.data");
+
+            switch (driverChoice) {
+                case trDynaPS:
+                    outfile << "Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate" << std::endl;
+                    outfile << theVars->TestLi << "," << ResultRate[0] << ",";
+                    outfile << ResultRate[1] << "," << ResultRate[2] << "," << ResultRate[3] << ",";
+                    outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << std::endl;
+                    break;
+                case DynaPS:
+                    outfile << "Light intensity,PSIIabs,PSIabs,Vc,Vo,VPGA,Vsucrose,Vstarch" << std::endl;
+                    outfile << theVars->TestLi << "," << ResultRate[0] << ",";
+                    outfile << ResultRate[1] << "," << ResultRate[2] << "," << ResultRate[3] << ",";
+                    outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << std::endl;
+                    break;
+                case CM:
+                    outfile << "Light intensity,CO2AR" << std::endl;
+                    outfile << theVars->TestLi << ResultRate[0] << std::endl;
+                    break;
+                case EPS:
+                    outfile << ResultRate[0] << std::endl;
+                    break;
+                default:
+                    break;
+            }
+            outfile.close();
+
+            if (theVars != nullptr) {
+                maindriver->theVars = nullptr;
+                delete theVars;
+            }
+            delete maindriver;
         }
-        outfile.close();
-
-        if (theVars != nullptr) {
-            maindriver->theVars = nullptr;
-            delete theVars;
-        }
-        delete maindriver;
-
         return (EXIT_SUCCESS);
     } catch (std::exception& e) {
         std::cout << "An error occurred: " << e.what() << std:: endl;
