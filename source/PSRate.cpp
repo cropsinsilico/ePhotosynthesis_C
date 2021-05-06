@@ -95,7 +95,7 @@ void PS::PS_Rate(const double t, const PSCon* PS_con, const arr &Param, Variable
         const double PsV32	=	V32	;	//	32	Phosphate translocator	PGAi<->PGAo
         const double PsV33	=	V33	;	//	33	Phosphate translocator	GAPi<->GAPo
 
-        const double Ru_Act = -pow(3, -5) * pow(theVars->Tp, 3) + 0.0013 * pow(theVars->Tp, 2) - 0.0106 * theVars->Tp + 0.8839; //Rubisco activition state   % SHARED
+        const double Ru_Act = -3. * pow(10., -5) * pow(theVars->Tp, 3) + 0.0013 * pow(theVars->Tp, 2) - 0.0106 * theVars->Tp + 0.8839; //Rubisco activition state   % SHARED
         PsV1 = PsV1_0 * Ru_Act * pow(Q10_1, (theVars->Tp - 25) / 10);                     //   SHARED
         const double PsV2 = PsV2_0 * pow(Q10_2, (theVars->Tp - 25) / 10);
         const double PsV3 = PsV3_0 * pow(Q10_3, (theVars->Tp - 25) / 10);
@@ -124,8 +124,9 @@ void PS::PS_Rate(const double t, const PSCon* PS_con, const arr &Param, Variable
         if (theVars->RUBISCOMETHOD == 2) {
             const double tmp = PsV1 * PS_con->RuBP / (PS_con->RuBP + KM13 * theVars->V1Reg);
             theVars->PS_Vel.v1 = tmp * CO2 / (CO2 + KM11 * (1 + O2 / KM12));
-           if (PS_con->RuBP < PsV1 / 2)
+            if (PS_con->RuBP < PsV1 / 2) {
                 theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con->RuBP / (PsV1 / 2);
+            }
 
         } else if (theVars->RUBISCOMETHOD == 1) {
             theVars->PS_Vel.v1 = PsV1 * CO2 / (CO2 + KM11 * (1 + O2 / KM12));
@@ -143,13 +144,13 @@ void PS::PS_Rate(const double t, const PSCon* PS_con, const arr &Param, Variable
         theVars->PS_Vel.v10 = PsV10 * (GAP * PS_con->S7P - Ri5P * Xu5P / KE10) / ((GAP + KM102 * (1 + Xu5P / KM101 + Ri5P / KM10)) * (PS_con->S7P + KM103));
         theVars->PS_Vel.v13 = PsV13 * (PS_con->ATP * Ru5P - theVars->ADP * PS_con->RuBP / KE13) / ((PS_con->ATP * (1 + theVars->ADP / KI134) + KM132*(1 + theVars->ADP / KI135)) * (Ru5P + KM131 * (1 + PS_con->PGA / KI131 + PS_con->RuBP / KI132 + theVars->Pi / KI133)));
 
-
         const double I2 = theVars->TestLi * theVars->alfa * (1 - theVars->fc) / 2;
         const double J = (I2 + theVars->Jmax - sqrt(pow(I2 + theVars->Jmax, 2) - 4 * theVars->Theta * I2 * theVars->Jmax)) / (2 * theVars->Theta);
         theVars->PS_Vel.v16 = std::min(theVars->beta * J, PsV16 * (theVars->ADP * theVars->Pi - PS_con->ATP / KE16)/(KM161 * KM162 * (1 + theVars->ADP / KM161 + theVars->Pi / KM162 + PS_con->ATP / KM163 + theVars->ADP * theVars->Pi /(KM161 * KM162))));
 
-
         theVars->PS_Vel.v23 = PsV23 * G1P * PS_con->ATP /((G1P + KM231) * ((1 + theVars->ADP / KI23) * (PS_con->ATP + KM232) + (KM232 * theVars->Pi /(KA231 * PS_con->PGA + KA232 * F6P + KA233 * PS_con->FBP))));
+
+        theVars->PS_Vel.v23 = PsV23 * G1P * PS_con->ATP / ((G1P + KM231) * ((1 + theVars->ADP / KI23) * (PS_con->ATP + KM232)+(KM232 * theVars->Pi/(KA231 * PS_con->PGA + KA232 * F6P + KA233 * PS_con->FBP))));
         const double N = 1 + (1 + KM313 / PsPEXT) * (theVars->Pi / KM312 + PS_con->PGA / KM32 + GAP / KM33 + DHAP / KM311);
 
         // The ATP regualtion really is implicit in the light regulation of sucrose synthesis.
@@ -161,8 +162,7 @@ void PS::PS_Rate(const double t, const PSCon* PS_con, const arr &Param, Variable
         theVars->PS_Vel.v31 = theVars->PS_Vel.v31 * ATPreg;
         theVars->PS_Vel.v32 = theVars->PS_Vel.v32 * ATPreg;
         theVars->PS_Vel.v33 = theVars->PS_Vel.v33 * ATPreg;
-
-        if (theVars->FIBF_PSPR_com){    // ModelMethod = 0 means that there is no connection between FIBF and PSPR.
+        if (!theVars->FIBF_PSPR_com){    // ModelMethod = 0 means that there is no connection between FIBF and PSPR.
             if (theVars->PS_Vel.v16 == 0.)    // This assmed that light reguate the export of triose phosphate export. This function should use
                  theVars->PS_Vel.v23 = 0;            // ATP as a signal.
         } else {
