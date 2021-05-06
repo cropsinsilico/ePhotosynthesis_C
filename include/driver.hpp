@@ -72,12 +72,12 @@ public:
     virtual arr MB(realtype t, N_Vector u) = 0;
     virtual ~Driver() = 0;
     static Variables *theVars;
+    arr constraints;
 protected:
     realtype abstol;
     realtype reltol;
     double start, step, endtime;
     int maxSubSteps;
-    arr constraints;
     realtype *intermediateRes;
     arr results;
     realtype time;
