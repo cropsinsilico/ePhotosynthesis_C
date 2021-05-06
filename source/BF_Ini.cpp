@@ -36,6 +36,9 @@ BFCon* BF::BF_Ini(Variables *theVars) {
 
     if (theVars->useC3) {
         theVars->cNADPHsyn = 1.;
+        theVars->CPSi = 1.;
+        theVars->cATPsyn = 1.;
+        theVars->cpsii = 1.;
         // cATPsyn=1.0447;%1.01866 WY201803
         // CPSi=1.0131;% 1.0237 WY201803
         // cNADPHsyn=1.094468408;%1.0388 WY201803
