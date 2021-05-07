@@ -181,3 +181,12 @@ void TimeSeries<T>::write(std::ofstream &of) {
         of << std::endl;
     }
 }
+
+
+inline void report(arr values) {
+    std::cout << values[0] << "  =  ";
+    for (uint i = 1; i < values.size(); i++) {
+        std::cout << values[i] << "  ";
+    }
+    std::cout << std::endl;
+}

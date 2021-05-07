@@ -30,8 +30,6 @@
 
 Variables *Driver::theVars = nullptr;
 
-Driver::~Driver() {}
-
 void trDynaPSDriver::setup() {
 
     if (ParaNum <= 103) {

@@ -182,7 +182,7 @@ public:
         Ratio = ratio;
     }
 
-    virtual ~trDynaPSDriver() override;
+    ~trDynaPSDriver();
 
     /**
       The driver

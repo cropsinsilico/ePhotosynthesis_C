@@ -166,7 +166,7 @@ public:
              const int maxSteps, const double atol, const double rtol) :
         Driver(theVars, st, stp, etime, maxSteps, atol, rtol) {
     }
-    virtual ~CMDriver() override;
+    ~CMDriver();
     /**
       The driver code
       */

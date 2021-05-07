@@ -64,13 +64,14 @@ public:
         this->maxSubSteps = maxSubSteps;
         this->abstol = atol;
         this->reltol = rtol;
+        Driver::refcount++;
     }
     virtual void setup() = 0;
     arr run();
     virtual void getResults() = 0;
     static int calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
     virtual arr MB(realtype t, N_Vector u) = 0;
-    virtual ~Driver() = 0;
+    virtual ~Driver();
     static Variables *theVars;
     arr constraints;
 protected:
@@ -81,4 +82,8 @@ protected:
     realtype *intermediateRes;
     arr results;
     realtype time;
+    static CalcData* data;
+    static void *cvode_mem;
+    static bool initialized;
+    static int refcount;
 };

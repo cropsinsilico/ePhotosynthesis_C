@@ -179,7 +179,7 @@ public:
         this->Tp = Tp;
     }
 
-    virtual ~EPSDriver() override;
+    ~EPSDriver();
 
     /**
       The driver

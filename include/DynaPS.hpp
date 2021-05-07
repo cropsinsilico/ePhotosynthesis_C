@@ -171,7 +171,7 @@ public:
         ParaNum = para;
         Ratio = ratio;
     }
-    virtual ~DynaPSDrive() override;
+    ~DynaPSDrive();
     /**
       The driver code
       */

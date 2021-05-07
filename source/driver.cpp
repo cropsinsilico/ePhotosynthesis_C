@@ -31,12 +31,13 @@
 #include <sunmatrix/sunmatrix_dense.h>
 #include <sunlinsol/sunlinsol_dense.h>
 #include <cvode/cvode_direct.h>
+bool Driver::initialized = false;
+int Driver::refcount = 0;
+CalcData* Driver::data = nullptr;
+void* Driver::cvode_mem = nullptr;
 
 arr Driver::run() {
     setup();
-
-    CalcData *data = alloc_calc_data();
-    data->drv = this;
 
     sunindextype N =  static_cast<long>(constraints.size());
     N_Vector y;
@@ -44,29 +45,40 @@ arr Driver::run() {
 
     for (size_t i = 0; i < constraints.size(); i++)
         NV_Ith_S(y, i) =  constraints[i];
-
-    void *cvode_mem = nullptr;
-    cvode_mem = CVodeCreate(CV_BDF);
     realtype t0 = 0;
-    if (CVodeInit(cvode_mem, calculate, t0, y) != 0) {
-        std::cout << "CVodeInit failed" << std::endl;
-        exit(EXIT_FAILURE);
+
+    if (!Driver::initialized) {
+        data = alloc_calc_data();
+        cvode_mem = CVodeCreate(CV_BDF);
+        if (CVodeInit(cvode_mem, calculate, t0, y) != 0) {
+            std::cout << "CVodeInit failed" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+
+        if (CVodeSStolerances(cvode_mem, reltol, abstol) != 0) {
+            std::cout << "CVodeSStolerances failed" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+
+        if (CVodeSetUserData(cvode_mem, data) != 0) {
+            std::cout << "CVodeSetUserData failed" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+
+        if (CVodeSetMaxNumSteps(cvode_mem, maxSubSteps) != 0) {
+            std::cout << "CVodeSetMaxNumSteps failed" << std::endl;
+            exit(EXIT_FAILURE);
+        }
+        Driver::initialized = true;
+    } else {
+
+        if (CVodeReInit(cvode_mem, t0, y) != 0) {
+            std::cout << "CVodeReInit failed" << std::endl;
+            exit(EXIT_FAILURE);
+        }
     }
 
-    if (CVodeSStolerances(cvode_mem, reltol, abstol) != 0) {
-        std::cout << "CVodeSStolerances failed" << std::endl;
-        exit(EXIT_FAILURE);
-    }
-
-    if (CVodeSetUserData(cvode_mem, data) != 0) {
-        std::cout << "CVodeSetUserData failed" << std::endl;
-        exit(EXIT_FAILURE);
-    }
-
-    if (CVodeSetMaxNumSteps(cvode_mem, maxSubSteps) != 0) {
-        std::cout << "CVodeSetMaxNumSteps failed" << std::endl;
-        exit(EXIT_FAILURE);
-    }
+    data->drv = this;
 
     SUNMatrix A = SUNDenseMatrix(N, N);
 
@@ -88,14 +100,24 @@ arr Driver::run() {
     intermediateRes = N_VGetArrayPointer(y);
     time = t;
     getResults();
-    delete data;
-    N_VDestroy(y);
-    CVodeFree(&cvode_mem);
+
     SUNLinSolFree(LS);
     SUNMatDestroy(A);
+    N_VDestroy(y);
     return results;
 }
 
+Driver::~Driver() {
+    Driver::refcount--;
+    if (Driver::refcount <= 0) {
+        if (data != nullptr)
+            delete data;
+        if (Driver::initialized) {
+            CVodeFree(&cvode_mem);
+            Driver::initialized = false;
+        }
+    }
+}
 int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
     realtype *dxdt = N_VGetArrayPointer(u_dot);
     CalcData *data = static_cast<CalcData*>(user_data);
