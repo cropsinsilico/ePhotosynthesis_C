@@ -182,7 +182,8 @@ int main(int argc, const char* argv[]) {
         theVars->TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
         theVars->record = record;
         theVars->useC3 = useC3;
-        theVars->RUBISCOMETHOD = 2;
+        theVars->RUBISCOMETHOD = 1;
+        theVars->RUBISCOTOTAL = 3;
         Driver *maindriver;
 
         switch (driverChoice) {
