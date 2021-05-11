@@ -27,16 +27,33 @@
  **********************************************************************************************************************************************/
 #include <map>
 #include "definitions.hpp"
-#include "FI.hpp"
-#include "BF.hpp"
-#include "PS.hpp"
-#include "PR.hpp"
-#include "RROEA.hpp"
-#include "RuACT.hpp"
-#include "XanCycle.hpp"
-#include "RedoxReg.hpp"
-#include "SUCS.hpp"
-#include "FIBF.hpp"
+#include "vel/FIVel.hpp"
+#include "vel/BFVel.hpp"
+#include "vel/PSVel.hpp"
+#include "vel/PRVel.hpp"
+#include "vel/RROEAVel.hpp"
+#include "vel/RuACTVel.hpp"
+#include "vel/XanCycleVel.hpp"
+#include "vel/RedoxRegVel.hpp"
+#include "vel/SUCSVel.hpp"
+#include "ke/RROEAKE.hpp"
+
+#include "pool/BFPool.hpp"
+#include "pool/FIBFPool.hpp"
+#include "pool/FIPool.hpp"
+#include "pool/RROEAPool.hpp"
+#include "pool/RuACTPool.hpp"
+#include "pool/SUCSPool.hpp"
+
+#include "rc/BFRC.hpp"
+#include "rc/FIRC.hpp"
+#include "rc/RROEARC.hpp"
+#include "rc/RuACTRC.hpp"
+#include "con/PSCon.hpp"
+#include "con/PRCon.hpp"
+#include "con/SUCSCon.hpp"
+#include "con/XanCycleCon.hpp"
+//#include "vel/FIBF.hpp"
 
 /**
   Structure to hold global variables
