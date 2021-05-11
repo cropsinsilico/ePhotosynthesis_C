@@ -23,9 +23,9 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
+#include <math.h>
 #include "Variables.hpp"
-#include "BF.hpp"
+#include "modules/BF.hpp"
 
 void BF::BF_Rate(const double t, const BFCon* BF_con, Variables *theVars) {
 

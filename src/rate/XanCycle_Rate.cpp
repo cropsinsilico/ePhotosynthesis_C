@@ -26,7 +26,8 @@
 
 #include "Variables.hpp"
 #include "globals.hpp"
-#include "DynaPS.hpp"
+#include "modules/DynaPS.hpp"
+#include "modules/XanCycle.hpp"
 
 #define VVF 0.
 #define VV2ABA 0.

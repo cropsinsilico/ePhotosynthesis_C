@@ -24,25 +24,33 @@
  *
  **********************************************************************************************************************************************/
 
-#include "globals.hpp"
 #include "Variables.hpp"
+#include "modules/RA.hpp"
+#include "modules/EPS.hpp"
+#include "modules/RuACT.hpp"
 
-arr RROEA::RROEA_Mb(const double t, const RROEACon* RROEA_Con, Variables *theVars) {
-    Condition(t, theVars);
-    theVars->RROEA_Param[0] = theVars->GLight;
+arr RA_Mb(const double t, const RACon* RA_Con, Variables *theVars) {
+    arr EPS_DYDT = EPS_Mb(t, RA_Con->EPS_con, theVars);
+    arr RuACT_DYDT = RuACT::RuACT_Mb(t, RA_Con->RuACT_con, theVars);
 
-    RROEA_Rate(t, RROEA_Con, theVars);
+    arr RA_DYDT = zeros(92);
 
-    arr RROEA_mb = zeros(10);
-    RROEA_mb[0] = theVars->RROEA_Vel.ve2GAPDH;  // GAPDH
-    RROEA_mb[1] = theVars->RROEA_Vel.ve2FBPase; // FBPase
-    RROEA_mb[2] = theVars->RROEA_Vel.ve2SBPase; // SBPase
-    RROEA_mb[3] = theVars->RROEA_Vel.ve2PRK;    // PRK
-    RROEA_mb[4] = theVars->RROEA_Vel.ve2ATPase; // ATPase
-    RROEA_mb[5] = theVars->RROEA_Vel.ve2ATPGPP; // ATPGPP
-    RROEA_mb[6] = theVars->RROEA_Vel.ve2MDH;    // MDH
-    RROEA_mb[7] = theVars->RROEA_Vel.veFd2Thio - theVars->RROEA_Vel.ve2GAPDH - theVars->RROEA_Vel.ve2FBPase - theVars->RROEA_Vel.ve2SBPase - theVars->RROEA_Vel.ve2PRK - theVars->RROEA_Vel.ve2ATPGPP - theVars->RROEA_Vel.ve2RuACT; // Thio
-    RROEA_mb[8] = theVars->RROEA_Vel.ve2Fd - theVars->RROEA_Vel.veFd2Thio - theVars->RROEA_Vel.veFd2Calvin; // Fd
-    RROEA_mb[9] = theVars->RROEA_Vel.ve2RuACT;  // RuACT;
-    return RROEA_mb;
+    for (size_t m = 0; m < 88; m++)
+        RA_DYDT[m] = EPS_DYDT[m];
+
+
+    for (size_t m = 0; m < 4; m++)
+        RA_DYDT[m + 88] = RuACT_DYDT[m];
+
+    const double DYDT_RuBP = theVars->RuACT_Vel.v1 + theVars->PS_Vel.v13 - theVars->RuACT_Vel.vn1 + theVars->RuACT_Vel.vn7 - theVars->RuACT_Vel.v7;
+    RA_DYDT[52] = DYDT_RuBP;
+    RA_DYDT[91] = DYDT_RuBP;
+
+    const double DYDT_PGA = EPS_DYDT[53] - 2 * theVars->PS_Vel.v1 + 2 * theVars->RuACT_Vel.v6_1 - theVars->PR_Vel.v111 + theVars->RuACT_Vel.v6_2;// Originally it is pspr(2), now use EPS_DYDT[53].
+    RA_DYDT[53] = DYDT_PGA;
+
+
+    const double DYDT_PGCA = EPS_DYDT[68] - theVars->PR_Vel.v111 + theVars->RuACT_Vel.v6_2;
+    RA_DYDT[68] = DYDT_PGCA;
+    return RA_DYDT;
 }

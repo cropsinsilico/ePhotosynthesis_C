@@ -23,10 +23,32 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
-#include "globals.hpp"
 #include <sundials/sundials_types.h>   /* defs. of realtype, sunindextype */
-#include "RedoxReg.hpp"
+#include <math.h>
+#include "drivers/driver.hpp"
+#include "Variables.hpp"
+#include "modules/RedoxReg.hpp"
+#include "modules/RA.hpp"
+
+arr RedoxReg::RedoxReg_Mb(const double t, const RedoxRegCon* RedoxReg_Con, Variables *theVars) {
+    theVars->trDynaPS2RedReg_cal = 1;
+
+    RedoxReg_Rate(t, RedoxReg_Con, theVars);
+
+    arr RA_DYDT = RA_Mb(t, RedoxReg_Con->RA_con, theVars);
+
+    arr RedoxReg_DYDT;
+    RedoxReg_DYDT.reserve(93);
+
+    RedoxReg_DYDT.insert(RedoxReg_DYDT.end(), RA_DYDT.begin(), RA_DYDT.end());
+
+    //RedoxReg_DYDT[92] = theVars->RedoxReg_Vel.Vred - theVars->RedoxReg_Vel.Vox;
+    RedoxReg_DYDT[92] = 0;
+
+    //const double Temp = RedoxReg_DYDT[23];
+    //RedoxReg_DYDT[23] = Temp;
+    return RedoxReg_DYDT;
+}
 
 int RedoxReg::RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data) {
     realtype *udata = N_VGetArrayPointer(u);

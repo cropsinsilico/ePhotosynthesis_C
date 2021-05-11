@@ -25,40 +25,25 @@
  **********************************************************************************************************************************************/
 
 #include "globals.hpp"
-#include "EPS.hpp"
 #include "Variables.hpp"
+#include "modules/RROEA.hpp"
 
-EPSCon* EPSDriver::EPS_Init() {
-    return EPS_Ini(theVars);
-}
+arr RROEA::RROEA_Mb(const double t, const RROEACon* RROEA_Con, Variables *theVars) {
+    Condition(t, theVars);
+    theVars->RROEA_Param[0] = theVars->GLight;
 
-arr EPSDriver::MB(realtype t, N_Vector u) {
-    //// Step One: Get the initialization of the concentrations for the RedoxReg model which will be used in the calculation of mb of RedoxReg.
-    realtype *x = N_VGetArrayPointer(u);
+    RROEA_Rate(t, RROEA_Con, theVars);
 
-    uint adjust = 0;
-    if (theVars->useC3) {
-        adjust = 1;
-    }
-    EPSCon* EPS_con = new EPSCon(x, adjust);
-
-    //std::cout << std::endl << "INPUT   " << t << "  --   ";
-    //for (auto dd : EPS_con.toArray())
-    //    std::cout << dd << "  ";
-    //std::cout << std::endl;
-    arr dxdt = EPS_Mb(t, EPS_con, theVars);
-    delete EPS_con;
-    //std::cout << std::endl << "OUTPUT  ";
-    //for (auto dd : dxdt) {
-    //    std::cout << dd << "  ";
-    //}
-    //std::cout << std::endl;
-    return dxdt;
-}
-
-std::ostream& operator<<(std::ostream &out, const EPSCon &in) {
-    out << "EPSCon" << std::endl;
-    out << in.CM_con;
-    out << in.FIBF_con;
-    return out;
+    arr RROEA_mb = zeros(10);
+    RROEA_mb[0] = theVars->RROEA_Vel.ve2GAPDH;  // GAPDH
+    RROEA_mb[1] = theVars->RROEA_Vel.ve2FBPase; // FBPase
+    RROEA_mb[2] = theVars->RROEA_Vel.ve2SBPase; // SBPase
+    RROEA_mb[3] = theVars->RROEA_Vel.ve2PRK;    // PRK
+    RROEA_mb[4] = theVars->RROEA_Vel.ve2ATPase; // ATPase
+    RROEA_mb[5] = theVars->RROEA_Vel.ve2ATPGPP; // ATPGPP
+    RROEA_mb[6] = theVars->RROEA_Vel.ve2MDH;    // MDH
+    RROEA_mb[7] = theVars->RROEA_Vel.veFd2Thio - theVars->RROEA_Vel.ve2GAPDH - theVars->RROEA_Vel.ve2FBPase - theVars->RROEA_Vel.ve2SBPase - theVars->RROEA_Vel.ve2PRK - theVars->RROEA_Vel.ve2ATPGPP - theVars->RROEA_Vel.ve2RuACT; // Thio
+    RROEA_mb[8] = theVars->RROEA_Vel.ve2Fd - theVars->RROEA_Vel.veFd2Thio - theVars->RROEA_Vel.veFd2Calvin; // Fd
+    RROEA_mb[9] = theVars->RROEA_Vel.ve2RuACT;  // RuACT;
+    return RROEA_mb;
 }

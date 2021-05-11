@@ -23,9 +23,11 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
+#include <sundials/sundials_types.h>
 #include "Variables.hpp"
-#include "CM.hpp"
+#include "modules/CM.hpp"
+#include "modules/SUCS.hpp"
+#include "modules/PS_PR.hpp"
 
 arr CM_Mb(const realtype t, const CMCon* CM_con, Variables *theVars) {
     arr dxdt;
@@ -49,9 +51,6 @@ arr CM_Mb(const realtype t, const CMCon* CM_con, Variables *theVars) {
         dxdt[23] = SUCS_DYDT[0];
         SUCS_DYDT[11] = SUCS_DYDT[11] - theVars->SUCS_Vel.vpga_in + theVars->PS_Vel.v32;//	pgaC
         dxdt[34] = SUCS_DYDT[11];
-    //std::cout << theVars->SUCS_Vel;
-    //std::cout << theVars->PS_Vel;
-    //std::cout << theVars->PR_Vel;
     }
     return dxdt;
 }

@@ -23,7 +23,7 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
+#include <math.h>
 #include "Variables.hpp"
 
 // Function [light] = condition; This function is used to store all the required

@@ -25,23 +25,17 @@
  **********************************************************************************************************************************************/
 
 #include "globals.hpp"
-#include "trDynaPS.hpp"
-#include "Variables.hpp"
+#include "modules/PS_PR.hpp"
+#include "modules/PS.hpp"
+#include "modules/PR.hpp"
 
-trDynaPSCon* trDynaPSDriver::trDynaPS_Ini() {
-    return trDynaPS_Init(theVars);
-}
+const size_t PS_PRCon::count = 24;
 
-arr trDynaPSDriver::MB(realtype t, N_Vector u) {
-    realtype *x = N_VGetArrayPointer(u);
-
-    trDynaPSCon* trDynaPS_con = new trDynaPSCon(x);
-    arr dxdt = trDynaPS_Mb(t, trDynaPS_con, theVars);
-    delete trDynaPS_con;
-    return dxdt;
-}
-
-trDynaPSDriver::~trDynaPSDriver()  {
-    if (theVars != nullptr)
-        delete theVars;
+PS_PRCon* PS_PR_Ini(Variables *theVars) {
+    PSCon* PS_con = PS::PS_Ini(theVars);
+    PRCon* PR_con = PR::PR_Ini(theVars);
+    //arr PrS = PR_con->toArray();
+    //arr PSs = PS_con->toArray();
+    PS_PRCon* PS_PR_con = new PS_PRCon(PS_con, PR_con);
+    return PS_PR_con;
 }

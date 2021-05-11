@@ -23,8 +23,13 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
+#include <math.h>
 #include "Variables.hpp"
+#include "modules/PS.hpp"
+#include "modules/SUCS.hpp"
+#include "con/PS_PRCon.hpp"
+#include "con/CMCon.hpp"
+
 #define RegFactor 1.
 
 void PS::PS_Rate(const double t, const PSCon* PS_con, const arr &Param, Variables *theVars) {

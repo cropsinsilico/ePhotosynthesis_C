@@ -25,7 +25,11 @@
  **********************************************************************************************************************************************/
 
 #include "Variables.hpp"
-#include "EPS.hpp"
+#include "modules/EPS.hpp"
+#include "modules/FIBF.hpp"
+#include "modules/FI.hpp"
+#include "modules/BF.hpp"
+#include "modules/CM.hpp"
 
 EPSCon* EPS_Ini(Variables *theVars) {
     FIBF_Ini(theVars);

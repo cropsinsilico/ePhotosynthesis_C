@@ -25,24 +25,20 @@
  **********************************************************************************************************************************************/
 
 #include "globals.hpp"
-#include "CM.hpp"
+#include "Variables.hpp"
+#include "modules/XanCycle.hpp"
 
-CMCon* CMDriver::CM_Ini() {
-    return CMInit(theVars);
-}
+arr XanCycle::XanCycle_Mb(const double t, const XanCycleCon* XanCycle_Con, Variables *theVars) {
+    Condition(t, theVars);
 
-arr CMDriver::MB(realtype t, N_Vector u) {
-    realtype *x = N_VGetArrayPointer(u);
+    XanCycle_Rate(t, XanCycle_Con, theVars);
 
-    CMCon* CMs = new CMCon(x);
-    arr dxdt = CM_Mb(t, CMs, theVars);
-    delete CMs;
-    return dxdt;
-}
+    arr XanCycle_mb = zeros(4);
 
-std::ostream& operator<<(std::ostream &out, const CMCon &in) {
-    out << "CMCon" << std::endl;
-    out << in.PS_PR_con;
-    out << in.SUCS_con;
-    return out;
+    XanCycle_mb[0] = theVars->XanCycle_Vel.Vvf + theVars->XanCycle_Vel.Vav - theVars->XanCycle_Vel.Vva - theVars->XanCycle_Vel.Vv2ABA;
+    XanCycle_mb[1] = theVars->XanCycle_Vel.Vva - theVars->XanCycle_Vel.Vav + theVars->XanCycle_Vel.Vza - theVars->XanCycle_Vel.Vaz;
+    XanCycle_mb[2] = theVars->XanCycle_Vel.Vaz - theVars->XanCycle_Vel.Vza;
+    XanCycle_mb[3] = theVars->XanCycle_Vel.Vv2ABA - theVars->XanCycle_Vel.VABAdg;
+
+    return XanCycle_mb;
 }

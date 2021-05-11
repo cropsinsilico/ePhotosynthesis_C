@@ -23,9 +23,11 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
+#include <math.h>
 #include "Variables.hpp"
-#include "FIBF.hpp"
+#include "modules/FIBF.hpp"
+#include "modules/FI.hpp"
+#include "modules/BF.hpp"
 
 // This function calculate the mass balance equation for the complete model of the light reactions.
 

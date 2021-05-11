@@ -25,6 +25,7 @@
  **********************************************************************************************************************************************/
 
 #include "Variables.hpp"
+#include "modules/XanCycle.hpp"
 
 double XanCycle::XanCycle_kav = 0.;
 double XanCycle::XanCycle_kaz = 0.;

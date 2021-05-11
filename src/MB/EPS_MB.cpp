@@ -25,6 +25,9 @@
  **********************************************************************************************************************************************/
 
 #include "Variables.hpp"
+#include "modules/EPS.hpp"
+#include "modules/FIBF.hpp"
+#include "modules/CM.hpp"
 
 // This model includes the mass balance equations for the full model of the light reactions.
 

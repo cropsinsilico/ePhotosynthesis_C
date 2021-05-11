@@ -23,7 +23,7 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
+#include <math.h>
 #include "Variables.hpp"
 
 // This is a function to generate output from the program.

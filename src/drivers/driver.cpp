@@ -24,14 +24,14 @@
  *
  **********************************************************************************************************************************************/
 
-#include "driver.hpp"
+#include "drivers/driver.hpp"
 #include "Variables.hpp"
 #include <sundials/sundials_math.h>
 #include <cvode/cvode.h>
 #include <sunmatrix/sunmatrix_dense.h>
 #include <sunlinsol/sunlinsol_dense.h>
 #include <cvode/cvode_direct.h>
-#include "CVodeMem.hpp"
+#include "drivers/CVodeMem.hpp"
 
 
 arr Driver::run() {

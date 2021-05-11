@@ -3,8 +3,8 @@
 #include <sunlinsol/sunlinsol_dense.h>
 #include <cvode/cvode_direct.h>
 
-#include "CVodeMem.hpp"
-#include "driver.hpp"
+#include "drivers/CVodeMem.hpp"
+#include "drivers/driver.hpp"
 
 void CVodeMem::cvode_mem_init(Driver* driver, realtype t0, N_Vector y) {
     if (!initialized) {

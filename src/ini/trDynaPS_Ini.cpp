@@ -25,7 +25,9 @@
  **********************************************************************************************************************************************/
 #include "Variables.hpp"
 #include "globals.hpp"
-#include "trDynaPS.hpp"
+#include "modules/trDynaPS.hpp"
+#include "modules/DynaPS.hpp"
+#include "modules/RROEA.hpp"
 
 trDynaPSCon* trDynaPS_Init(Variables *theVars) {
     DynaPSCon* DynaPS_con = DynaPS_Init(theVars);

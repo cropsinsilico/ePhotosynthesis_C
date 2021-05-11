@@ -26,6 +26,7 @@
 \
 #include "Variables.hpp"
 #include "globals.hpp"
+#include "modules/PR.hpp"
 
 arr PR::PR_Mb(const double t, const PRCon* PR_con, Variables *theVars) {
     Condition(t, theVars);

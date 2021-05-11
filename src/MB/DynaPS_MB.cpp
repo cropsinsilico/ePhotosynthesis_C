@@ -24,30 +24,38 @@
  *
  **********************************************************************************************************************************************/
 
+#include "globals.hpp"
+#include "modules/DynaPS.hpp"
 #include "Variables.hpp"
+#include "modules/RA.hpp"
+#include "modules/XanCycle.hpp"
 
-arr RA_Mb(const double t, const RACon* RA_Con, Variables *theVars) {
-    arr EPS_DYDT = EPS_Mb(t, RA_Con->EPS_con, theVars);
-    arr RuACT_DYDT = RuACT::RuACT_Mb(t, RA_Con->RuACT_con, theVars);
+// This model includes the mass balance equations for the full model of photosynthesis.
 
-    arr RA_DYDT = zeros(92);
+arr DynaPS_Mb(const double t, const DynaPSCon* DynaPS_con, Variables *theVars) {
 
-    for (size_t m = 0; m < 88; m++)
-        RA_DYDT[m] = EPS_DYDT[m];
+    // Try out one new way of calculating the mass balance equation.
+    // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.
 
+    //// Step One: Get the initialization of the concentrations for the RedoxReg model which will be used in the calculation of mb of RedoxReg.
 
-    for (size_t m = 0; m < 4; m++)
-        RA_DYDT[m + 88] = RuACT_DYDT[m];
+    // This is a sensitivity test to show that the model is stable udner fluctuating light
 
-    const double DYDT_RuBP = theVars->RuACT_Vel.v1 + theVars->PS_Vel.v13 - theVars->RuACT_Vel.vn1 + theVars->RuACT_Vel.vn7 - theVars->RuACT_Vel.v7;
-    RA_DYDT[52] = DYDT_RuBP;
-    RA_DYDT[91] = DYDT_RuBP;
+    const double light = 1;
+    Condition(t, theVars);
 
-    const double DYDT_PGA = EPS_DYDT[53] - 2 * theVars->PS_Vel.v1 + 2 * theVars->RuACT_Vel.v6_1 - theVars->PR_Vel.v111 + theVars->RuACT_Vel.v6_2;// Originally it is pspr(2), now use EPS_DYDT[53].
-    RA_DYDT[53] = DYDT_PGA;
+    theVars->FI_Param[0] = light;
+    theVars->BF_Param[0] = light;
 
+    arr RA_DYDT = RA_Mb(t, DynaPS_con->RA_con, theVars);
+    arr XanCycle_DYDT = XanCycle::XanCycle_Mb(t, DynaPS_con->XanCycle_con, theVars);
 
-    const double DYDT_PGCA = EPS_DYDT[68] - theVars->PR_Vel.v111 + theVars->RuACT_Vel.v6_2;
-    RA_DYDT[68] = DYDT_PGCA;
-    return RA_DYDT;
+    // Here get the rate of Thioredoxin reduction and oxidation and use it to construct the differential equation for both thio and fd.
+
+    arr dxdt;
+    dxdt.reserve(96);
+    dxdt.insert(dxdt.end(), RA_DYDT.begin(), RA_DYDT.begin() + 92);
+    dxdt.insert(dxdt.end(), XanCycle_DYDT.begin(), XanCycle_DYDT.end());
+
+    return dxdt;
 }

@@ -29,6 +29,7 @@
 #include "definitions.hpp"
 #include "RACon.hpp"
 #include "XanCycleCon.hpp"
+#include <sundials/sundials_types.h>
 
 class trDynaPSCon;
 /**

@@ -26,6 +26,7 @@
 
 #include "Variables.hpp"
 #include "globals.hpp"
+#include "modules/FI.hpp"
 
 // This is the routine for calculation of the mass balance equations for the fluorescence induction model
 // This routine is composed of two components;

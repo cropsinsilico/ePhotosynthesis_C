@@ -23,25 +23,37 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
+#include <math.h>
+#include "modules/ssPS.hpp"
 #include "Variables.hpp"
 
-arr RedoxReg::RedoxReg_Mb(const double t, const RedoxRegCon* RedoxReg_Con, Variables *theVars) {
-    theVars->trDynaPS2RedReg_cal = 1;
+arr ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, double Light, Variables *theVars) {
+    ssPSIni(temp, theVars);
 
-    RedoxReg_Rate(t, RedoxReg_Con, theVars);
+    const double Ci = CO2;
+    const double wc = VcmaxT * (Ci - theVars->GammaStar) / (Ci + theVars->kmCO2 * (1 + theVars->O2 / theVars->kmO2));
+    const double wj = JmaxT * (Ci - theVars->GammaStar) / (4.5 * Ci + 10.5 * theVars->GammaStar);
+    const double w = std::min(wc, wj);
 
-    arr RA_DYDT = RA_Mb(t, RedoxReg_Con->RA_con, theVars);
+    const double Vm = 88.6 * pow(10, -3);
+    const double at = 12.6 * Vm;
+    const double p = 2.5 * Vm;
+    const double Vr = Vm * 2.27;
 
-    arr RedoxReg_DYDT;
-    RedoxReg_DYDT.reserve(93);
+    const double tC = at - p * wc / wj;
+    const double tJ = (at - p) * (Vr / Vm - 1) / (wc * Vr / (wj * Vm) - 1);
 
-    RedoxReg_DYDT.insert(RedoxReg_DYDT.end(), RA_DYDT.begin(), RA_DYDT.end());
+    const double To = 1;
+    double ATP;
+    if (wc < wj) {
+        ATP = To + tC;
+    } else {
+        ATP = tJ;
+    }
 
-    //RedoxReg_DYDT[92] = theVars->RedoxReg_Vel.Vred - theVars->RedoxReg_Vel.Vox;
-    RedoxReg_DYDT[92] = 0;
-
-    //const double Temp = RedoxReg_DYDT[23];
-    //RedoxReg_DYDT[23] = Temp;
-    return RedoxReg_DYDT;
+    ATP = ATP / 5 * 1.5;
+    arr rval = zeros(2);
+    rval[0] = ATP;
+    rval[1] = w;
+    return rval;
 }

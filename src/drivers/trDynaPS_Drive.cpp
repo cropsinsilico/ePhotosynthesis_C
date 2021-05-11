@@ -26,7 +26,8 @@
 
 #include "Variables.hpp"
 #include "globals.hpp"
-#include "trDynaPS.hpp"
+#include "drivers/trDynaPS_Driver.hpp"
+#include "modules/trDynaPS.hpp"
 
 Variables *Driver::theVars = nullptr;
 
@@ -108,4 +109,22 @@ void trDynaPSDriver::getResults() {
     }
 
     IniModelCom(theVars);
+}
+
+trDynaPSCon* trDynaPSDriver::trDynaPS_Ini() {
+    return trDynaPS_Init(theVars);
+}
+
+arr trDynaPSDriver::MB(realtype t, N_Vector u) {
+    realtype *x = N_VGetArrayPointer(u);
+
+    trDynaPSCon* trDynaPS_con = new trDynaPSCon(x);
+    arr dxdt = trDynaPS_Mb(t, trDynaPS_con, theVars);
+    delete trDynaPS_con;
+    return dxdt;
+}
+
+trDynaPSDriver::~trDynaPSDriver()  {
+    if (theVars != nullptr)
+        delete theVars;
 }

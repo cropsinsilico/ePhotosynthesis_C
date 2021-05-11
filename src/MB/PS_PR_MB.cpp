@@ -25,7 +25,9 @@
  **********************************************************************************************************************************************/
 
 #include "Variables.hpp"
-#include "PS_PR.hpp"
+#include "modules/PS_PR.hpp"
+#include "modules/PS.hpp"
+#include "modules/PR.hpp"
 #include "globals.hpp"
 
 arr PS_PR_Mb(const double t, const PS_PRCon* PS_PR_con, Variables *theVars) {

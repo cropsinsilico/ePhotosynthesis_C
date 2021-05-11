@@ -23,8 +23,9 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
+#include <math.h>
 #include "Variables.hpp"
+#include "modules/PS.hpp"
 
 #define R 8.314
 #define c_c 38.28

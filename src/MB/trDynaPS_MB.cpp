@@ -24,20 +24,42 @@
  *
  **********************************************************************************************************************************************/
 
-#include "globals.hpp"
 #include "Variables.hpp"
+#include "globals.hpp"
+#include <nvector/nvector_serial.h>    /* access to serial N_Vector       */
+#include "modules/trDynaPS.hpp"
+#include "modules/RROEA.hpp"
+#include "modules/DynaPS.hpp"
 
-arr XanCycle::XanCycle_Mb(const double t, const XanCycleCon* XanCycle_Con, Variables *theVars) {
+// This model includes the mass balance equations for the full model of photosynthesis.
+
+arr trDynaPS_Mb(const double t, const trDynaPSCon* trDynaPS_con, Variables *theVars) {
+    theVars->trDynaPS2RedReg_cal = 0;
+
     Condition(t, theVars);
+    const double light = 1.0;
+    theVars->FI_Param[0] = light;
+    theVars->BF_Param[0] = light;
 
-    XanCycle_Rate(t, XanCycle_Con, theVars);
+    theVars->RROEA_Param[1] = 1;
+    arr RROEA_DYDT = RROEA::RROEA_Mb(t, trDynaPS_con->RROEA_con, theVars);
 
-    arr XanCycle_mb = zeros(4);
+    arr DynaPS_DYDT = DynaPS_Mb(t, trDynaPS_con->DynaPS_con, theVars);
+    arr dxdt = zeros(120);
+    for (size_t index = 0; index < 96; index++)
+        dxdt[index] = DynaPS_DYDT[index];
 
-    XanCycle_mb[0] = theVars->XanCycle_Vel.Vvf + theVars->XanCycle_Vel.Vav - theVars->XanCycle_Vel.Vva - theVars->XanCycle_Vel.Vv2ABA;
-    XanCycle_mb[1] = theVars->XanCycle_Vel.Vva - theVars->XanCycle_Vel.Vav + theVars->XanCycle_Vel.Vza - theVars->XanCycle_Vel.Vaz;
-    XanCycle_mb[2] = theVars->XanCycle_Vel.Vaz - theVars->XanCycle_Vel.Vza;
-    XanCycle_mb[3] = theVars->XanCycle_Vel.Vv2ABA - theVars->XanCycle_Vel.VABAdg;
 
-    return XanCycle_mb;
+    for (size_t index = 0; index < 10; index++)
+        dxdt[index + 110] = RROEA_DYDT[index];
+
+
+    //WY201804
+    const double Temp = RROEA_DYDT[8] - theVars->RROEA_Vel.ve2Fd + theVars->BF_Vel.Vbf16 / theVars->AVR + theVars->RROEA_Vel.veFd2Calvin - theVars->BF_Vel.vbfn2 - theVars->BF_Vel.vcet / theVars->AVR;
+
+    dxdt[118] = Temp * theVars->AVR;
+    dxdt[23] = Temp * theVars->AVR;
+
+    GenOut(t, theVars);
+    return dxdt;
 }

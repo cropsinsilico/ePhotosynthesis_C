@@ -24,7 +24,12 @@
  *
  **********************************************************************************************************************************************/
 #include <stdexcept>
+#include <math.h>
 #include "Variables.hpp"
+#include "modules/PR.hpp"
+#include "modules/PS.hpp"
+#include "con/PS_PRCon.hpp"
+
 #define KI124 2
 void PR::PR_Rate(const double t, const PRCon* PR_con, Variables *theVars) {
     // To set global information for different reactions

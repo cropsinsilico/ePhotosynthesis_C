@@ -25,7 +25,7 @@
  **********************************************************************************************************************************************/
 
 #include "Variables.hpp"
-
+#include <math.h>
 void ssPSIni(const double t, Variables *theVars) {
     const double RT = 0.0083 * (273 + t);
 

@@ -25,7 +25,9 @@
  **********************************************************************************************************************************************/
 
 #include "globals.hpp"
-#include "CM.hpp"
+#include "modules/CM.hpp"
+#include "modules/PS_PR.hpp"
+#include "modules/SUCS.hpp"
 
 CMCon* CMInit(Variables *theVars) {
 

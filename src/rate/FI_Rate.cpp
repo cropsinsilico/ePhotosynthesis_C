@@ -23,8 +23,9 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
+#include <math.h>
 #include "Variables.hpp"
+#include "modules/FI.hpp"
 
 void FI::FI_Rate(const double t, const FICon* FI_Con, Variables *theVars) {
 

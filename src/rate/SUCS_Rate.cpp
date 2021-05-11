@@ -23,8 +23,10 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
+#include <math.h>
 #include "Variables.hpp"
+#include "modules/SUCS.hpp"
+#include "modules/PS.hpp"
 #define Vmatpf 0.25
 
 

@@ -23,8 +23,10 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
+#include <math.h>
 #include "Variables.hpp"
+#include "modules/RedoxReg.hpp"
+#include "drivers/driver.hpp"
 #include <kinsol/kinsol.h>             /* access to KINSOL func., consts. */
 #include <nvector/nvector_serial.h>    /* access to serial N_Vector       */
 #include <sunmatrix/sunmatrix_dense.h> /* access to dense SUNMatrix       */

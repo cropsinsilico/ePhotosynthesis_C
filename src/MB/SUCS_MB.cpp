@@ -26,6 +26,7 @@
 
 #include "globals.hpp"
 #include "Variables.hpp"
+#include "modules/SUCS.hpp"
 
 arr SUCS::SUCS_Mb(const double t, const SUCSCon* SUCS_Con, Variables *theVars) {
     Condition(t, theVars);

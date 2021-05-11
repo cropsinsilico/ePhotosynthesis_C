@@ -36,8 +36,9 @@
 
 #include "cxxopts.hpp"
 #include "globals.hpp"
-#include "trDynaPS.hpp"
-#include "EPS.hpp"
+#include "modules/trDynaPS.hpp"
+#include "modules/EPS.hpp"
+#include "drivers/drivers.hpp"
 #include "Variables.hpp"
 
 #define ABSTOL 0.001
@@ -114,7 +115,7 @@ enum DriverType {
     EPS
 };
 
-#define TESTING 1
+
 #ifdef TESTING
 
 void EPS_run(double begintime, double stoptime, double stepsize, double abstol, double reltol, double Tp, int maxSubSteps)

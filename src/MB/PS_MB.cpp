@@ -26,6 +26,7 @@
 
 #include "Variables.hpp"
 #include "globals.hpp"
+#include "modules/PS.hpp"
 
 arr PS::PS_Mb(const double t, const PSCon* PS_con, const arr &Param, Variables *theVars) {
 

@@ -25,7 +25,7 @@
  **********************************************************************************************************************************************/
 
 #include "Variables.hpp"
-
+#include "modules/FIBF.hpp"
 // This is the function to initialize some global variable used in FIBF MODEL
 
 void FIBF_Ini(Variables *theVars) {

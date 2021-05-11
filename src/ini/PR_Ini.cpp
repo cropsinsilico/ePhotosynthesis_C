@@ -23,8 +23,10 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
+#include <math.h>
 #include "Variables.hpp"
+#include "modules/PR.hpp"
+#include "modules/PS.hpp"
 
 #define KI124 2        // This KI is one guessed.
 #define KM1312 0.075   // Michaelis constant for NAD;

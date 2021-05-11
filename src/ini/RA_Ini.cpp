@@ -25,6 +25,9 @@
  **********************************************************************************************************************************************/
 
 #include "Variables.hpp"
+#include "modules/RA.hpp"
+#include "modules/EPS.hpp"
+#include "modules/RuACT.hpp"
 
 RACon* RA_Ini(Variables *theVars) {
     EPSCon* EPS_con = EPS_Ini(theVars);

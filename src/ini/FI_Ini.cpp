@@ -26,6 +26,7 @@
 
 #include <math.h>
 #include "Variables.hpp"
+#include "modules/FI.hpp"
 
 const size_t FICon::count = 22;
 // This is the routine that initialize the parameters, initial conditions for simulation of fluorescence induction curve.

@@ -25,6 +25,8 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
+#include <sundials/sundials_types.h>   /* defs. of realtype, sunindextype */
+
 #include "PS_PRCon.hpp"
 #include "SUCSCon.hpp"
 

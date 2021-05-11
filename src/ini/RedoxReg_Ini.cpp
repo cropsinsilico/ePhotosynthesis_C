@@ -25,7 +25,8 @@
  **********************************************************************************************************************************************/
 
 #include "Variables.hpp"
-#include "RedoxReg.hpp"
+#include "modules/RedoxReg.hpp"
+#include "modules/RA.hpp"
 
 double RedoxReg::RedoxReg_VMAX13 = 0.;
 double RedoxReg::RedoxReg_VMAX16 = 0.;

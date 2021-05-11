@@ -26,6 +26,7 @@
 
 #include <math.h>
 #include "Variables.hpp"
+#include "modules/RuACT.hpp"
 
 const size_t RuACTCon::count = 4;
 

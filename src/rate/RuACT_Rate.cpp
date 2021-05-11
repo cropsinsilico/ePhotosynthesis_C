@@ -23,10 +23,13 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
+#include <math.h>
 #include "Variables.hpp"
-#include "DynaPS.hpp"
-#include "trDynaPS.hpp"
+#include "modules/DynaPS.hpp"
+#include "modules/trDynaPS.hpp"
+#include "modules/RuACT.hpp"
+#include "modules/PS.hpp"
+
 void RuACT::RuACT_Rate(const double t, const RuACTCon* RuACT_Con, Variables *theVars) {
 
     double C = theVars->RuACT_Pool.C;
