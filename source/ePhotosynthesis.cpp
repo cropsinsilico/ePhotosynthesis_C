@@ -40,7 +40,7 @@
 #include "EPS.hpp"
 #include "Variables.hpp"
 
-#define ABSTOL 0.0001
+#define ABSTOL 0.001
 // macros to get options from either the command line (has precedence) or an options file
 #define varSearchD(x) if (result.count(#x) == 0 && inputs.count(#x) > 0) \
     x = stod(inputs.at(#x), nullptr);
@@ -114,6 +114,58 @@ enum DriverType {
     EPS
 };
 
+#ifdef TESTING
+
+void EPS_run(double begintime, double stoptime, double stepsize, double abstol, double reltol, double Tp, int maxSubSteps)
+{
+    bool record = false;
+    std::string evn="InputEvn.txt";
+    std::string atpcost="InputATPCost.txt";
+    std::string enzymeFile="Einput7.txt";
+    std::map<std::string, std::string> inputs;
+
+    readFile(evn, inputs);
+    readFile(atpcost, inputs);
+    Variables *theVars = new Variables();
+    readFile(enzymeFile, theVars->EnzymeAct);
+    theVars->TestCa = static_cast<double>(stof(inputs.at("CO2"), nullptr));
+    theVars->TestLi = static_cast<double>(stof(inputs.at("PAR"), nullptr));
+    theVars->TestSucPath = stoi(inputs.at("SucPath"), nullptr);
+    theVars->TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
+    theVars->record = record;
+    theVars->useC3 = true;
+    theVars->RUBISCOMETHOD = 1;
+    theVars->RUBISCOTOTAL = 3;
+
+    Driver *maindriver = new EPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1, Tp);
+    std::vector<double> ResultRate = maindriver->run();
+    std::cout<<ResultRate[0]<<std::endl;
+
+    std::ofstream outfile("output.data");
+    outfile << ResultRate[0] << std::endl;
+    if (theVars != nullptr) {
+        maindriver->theVars = nullptr;
+        delete theVars;
+    }
+    delete maindriver;
+}
+
+int main()
+{
+    Driver* dummy = new EPSDriver(nullptr, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    double stoptime=5000.0, begintime=0.0, stepsize=1.0;
+    double abstol=1e-5, reltol=1e-4;
+    double Tp=25.1;
+    int maxSubSteps=2500;
+    for (int i = 0; i < 10; i++) {
+        std::cout << i << std::endl;
+        EPS_run(begintime, stoptime, stepsize, abstol, reltol, Tp, maxSubSteps);
+    }
+    delete dummy;
+    return (0);
+}
+
+#else
 int main(int argc, const char* argv[]) {
     try {
         bool record = false;
@@ -262,7 +314,7 @@ int main(int argc, const char* argv[]) {
                 bool founddiff = false;
                 for (uint i = 0; i < results.size(); i++) {
                     double comp = compare(results[i], outputdata[i]);
-                    if (comp > 10.) {
+                    if (comp > 7.) {
                         std::cout << "    Output " << i << "/" << i+1 << ": " << outputdata[i] << " " << results[i] << " " << comp << "%" << std::endl;
                         founddiff = true;
                     }
@@ -357,3 +409,4 @@ int main(int argc, const char* argv[]) {
     }
 }
 
+#endif

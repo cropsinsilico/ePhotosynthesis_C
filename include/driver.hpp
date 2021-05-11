@@ -33,6 +33,7 @@
 #include "globals.hpp"
 struct Variables;
 class Driver;
+class CVodeMem;
 struct UserData {
   std::vector<realtype> coeffs;
 };
@@ -64,7 +65,7 @@ public:
         this->maxSubSteps = maxSubSteps;
         this->abstol = atol;
         this->reltol = rtol;
-        Driver::refcount++;
+        data = nullptr;
     }
     virtual void setup() = 0;
     arr run();
@@ -75,6 +76,7 @@ public:
     static Variables *theVars;
     arr constraints;
 protected:
+    friend CVodeMem;
     realtype abstol;
     realtype reltol;
     double start, step, endtime;
@@ -82,8 +84,6 @@ protected:
     realtype *intermediateRes;
     arr results;
     realtype time;
-    static CalcData* data;
-    static void *cvode_mem;
-    static bool initialized;
-    static int refcount;
+    CalcData* data;
+    void *cvode_mem;
 };

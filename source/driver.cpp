@@ -31,10 +31,8 @@
 #include <sunmatrix/sunmatrix_dense.h>
 #include <sunlinsol/sunlinsol_dense.h>
 #include <cvode/cvode_direct.h>
-bool Driver::initialized = false;
-int Driver::refcount = 0;
-CalcData* Driver::data = nullptr;
-void* Driver::cvode_mem = nullptr;
+#include "CVodeMem.hpp"
+
 
 arr Driver::run() {
     setup();
@@ -47,36 +45,8 @@ arr Driver::run() {
         NV_Ith_S(y, i) =  constraints[i];
     realtype t0 = 0;
 
-    if (!Driver::initialized) {
-        data = alloc_calc_data();
-        cvode_mem = CVodeCreate(CV_BDF);
-        if (CVodeInit(cvode_mem, calculate, t0, y) != 0) {
-            std::cout << "CVodeInit failed" << std::endl;
-            exit(EXIT_FAILURE);
-        }
-
-        if (CVodeSStolerances(cvode_mem, reltol, abstol) != 0) {
-            std::cout << "CVodeSStolerances failed" << std::endl;
-            exit(EXIT_FAILURE);
-        }
-
-        if (CVodeSetUserData(cvode_mem, data) != 0) {
-            std::cout << "CVodeSetUserData failed" << std::endl;
-            exit(EXIT_FAILURE);
-        }
-
-        if (CVodeSetMaxNumSteps(cvode_mem, maxSubSteps) != 0) {
-            std::cout << "CVodeSetMaxNumSteps failed" << std::endl;
-            exit(EXIT_FAILURE);
-        }
-        Driver::initialized = true;
-    } else {
-
-        if (CVodeReInit(cvode_mem, t0, y) != 0) {
-            std::cout << "CVodeReInit failed" << std::endl;
-            exit(EXIT_FAILURE);
-        }
-    }
+    CVodeMem *cmem = &CVodeMem::create();
+    cmem->cvode_mem_init(this, t0, y);
 
     data->drv = this;
 
@@ -108,16 +78,9 @@ arr Driver::run() {
 }
 
 Driver::~Driver() {
-    Driver::refcount--;
-    if (Driver::refcount <= 0) {
-        if (data != nullptr)
-            delete data;
-        if (Driver::initialized) {
-            CVodeFree(&cvode_mem);
-            Driver::initialized = false;
-        }
-    }
+
 }
+
 int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
     realtype *dxdt = N_VGetArrayPointer(u_dot);
     CalcData *data = static_cast<CalcData*>(user_data);
