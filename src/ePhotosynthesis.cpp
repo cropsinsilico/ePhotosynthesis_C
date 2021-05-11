@@ -114,6 +114,7 @@ enum DriverType {
     EPS
 };
 
+#define TESTING 1
 #ifdef TESTING
 
 void EPS_run(double begintime, double stoptime, double stepsize, double abstol, double reltol, double Tp, int maxSubSteps)
@@ -152,7 +153,6 @@ void EPS_run(double begintime, double stoptime, double stepsize, double abstol, 
 
 int main()
 {
-    Driver* dummy = new EPSDriver(nullptr, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     double stoptime=5000.0, begintime=0.0, stepsize=1.0;
     double abstol=1e-5, reltol=1e-4;
     double Tp=25.1;
@@ -161,7 +161,6 @@ int main()
         std::cout << i << std::endl;
         EPS_run(begintime, stoptime, stepsize, abstol, reltol, Tp, maxSubSteps);
     }
-    delete dummy;
     return (0);
 }
 
