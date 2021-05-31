@@ -31,7 +31,9 @@
 arr BF::BF_Mb(const double t, const BFCon* BF_con, Variables *theVars) {
 
     if (theVars->useC3) {
-        theVars->BF_Param[0] = theVars->TestLi * 30;
+        double alfa=0.7,fc=0.3;
+        double light_scaler = alfa*(1-fc);
+        theVars->BF_Param[0] = theVars->TestLi * 30 *light_scaler;
     } else {
         Condition(t, theVars);
         theVars->BF_Param[0] = theVars->GLight;

@@ -157,6 +157,9 @@ struct Variables {
     double Theta = 0;
     double beta = 0;
     double Jmax = 0.;
+    
+    double alpha1 = 1.205;
+    double alpha2 = 2.06;
 
     // Parameters
     arr PR_Param = zeros(2);

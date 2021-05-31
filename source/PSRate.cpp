@@ -91,9 +91,9 @@ void PS::PS_Rate(const double t, const PSCon* PS_con, const arr &Param, Variable
         double PsV16	=	theVars->V16	;	//	16	ATP synthase	ADP+Pi<->ATP
 
         const double PsV23_0	=	theVars->V23 * Vfactor23 * Vf_T23;//	23	ADP-glucose pyrophosphorylase and	ADPG+Gn<->G(n+1)+ADP
-        const double PsV31	=	V31 ;	//	31	Phosphate translocator	DHAPi<->DHAPo
-        const double PsV32	=	V32	;	//	32	Phosphate translocator	PGAi<->PGAo
-        const double PsV33	=	V33	;	//	33	Phosphate translocator	GAPi<->GAPo
+        const double PsV31	=	V31  * theVars->alpha2;	//	31	Phosphate translocator	DHAPi<->DHAPo
+        const double PsV32	=	V32  * theVars->alpha2;	//	32	Phosphate translocator	PGAi<->PGAo
+        const double PsV33	=	V33  * theVars->alpha2;	//	33	Phosphate translocator	GAPi<->GAPo
 
         const double Ru_Act = -3. * pow(10., -5) * pow(theVars->Tp, 3) + 0.0013 * pow(theVars->Tp, 2) - 0.0106 * theVars->Tp + 0.8839; //Rubisco activition state   % SHARED
         PsV1 = PsV1_0 * Ru_Act * pow(Q10_1, (theVars->Tp - 25) / 10);                     //   SHARED

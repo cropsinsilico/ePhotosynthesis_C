@@ -43,6 +43,18 @@ void EPSDriver::setup() {
     theVars->Tp = this->Tp;
     theVars->alfa = 0.85;
     theVars->Jmax = theVars->EnzymeAct.at("Jmax");
+    theVars->EnzymeAct.at("V1") *= theVars->alpha1;
+    theVars->EnzymeAct.at("V2") *= theVars->alpha2;
+    theVars->EnzymeAct.at("V3") *= theVars->alpha2;
+    theVars->EnzymeAct.at("V5") *= theVars->alpha2;
+    theVars->EnzymeAct.at("V6") *= theVars->alpha2;
+    theVars->EnzymeAct.at("V7") *= theVars->alpha2;
+    theVars->EnzymeAct.at("V8") *= theVars->alpha2;
+    theVars->EnzymeAct.at("V9") *= theVars->alpha2;
+    theVars->EnzymeAct.at("V10") *= theVars->alpha2;
+    theVars->EnzymeAct.at("V13") *= theVars->alpha2;
+    theVars->EnzymeAct.at("V23") *= theVars->alpha2;
+
     theVars->fc = 0.15;
     theVars->Theta = 0.7;
     theVars->beta = 0.7519;
