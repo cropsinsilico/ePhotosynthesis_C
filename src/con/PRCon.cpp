@@ -1,5 +1,3 @@
-#pragma once
-
 /**********************************************************************************************************************************************
  *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
  *
@@ -25,61 +23,46 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-#include "RACon.hpp"
 
-/**
- Class for holding the inputs to RedoxReg_mb
- */
-class RedoxRegCon : public ConBase<RedoxRegCon> {
-public:
-    RedoxRegCon() : RA_con(new RACon()) {}
+#include "con/PRCon.hpp"
 
-    /**
-      Copy constructor that makes a deep copy of the given object
+PRCon::PRCon(const PRCon *other)  {
+    GCEA = other->GCEA;
+    GCA = other->GCA;
+    PGA = other->PGA;
+    PGCA = other->PGCA;
+    GCAc = other->GCAc;
+    GOAc = other->GOAc;
+    SERc = other->SERc;
+    GLYc = other->GLYc;
+    HPRc = other->HPRc;
+    GCEAc = other->GCEAc;
+    RuBP = other->RuBP;
+    CO2 = other->CO2;
+    O2 = other->O2;
+}
 
-      @param other The RedoxRegCon object to copy
-      */
-    RedoxRegCon(const RedoxRegCon* other);
+PRCon::PRCon(const arr vec, size_t offset)  {
+    _fromArray(vec, offset);
+}
 
-    /**
-      Constructor to create an object from the contained classes
+void PRCon::_fromArray(const arr &vec, size_t offset)  {
+    GCEA= vec[offset];
+    GCA= vec[offset + 1];
+    PGA= vec[offset + 2];
+    PGCA= vec[offset + 3];
+    GCAc= vec[offset + 4];
+    GOAc= vec[offset + 5];
+    SERc= vec[offset + 6];
+    GLYc= vec[offset + 7];
+    HPRc= vec[offset + 8];
+    GCEAc= vec[offset + 9];
+    RuBP= vec[offset + 10];
+    CO2= vec[offset + 11];
+    O2= vec[offset + 12];
+}
 
-      @param rother A RACon object to incorporate
-      @param thio
-      */
-    RedoxRegCon(RACon* rother, double thio = 0.);
-
-    /**
-      Constructor to create an object from the input vector, starting at the given index
-
-      @param vec Vector to create the object from
-      @param offset The index in vec to start creating the object from
-      */
-    RedoxRegCon(const arr &vec, size_t offset = 0);
-
-    /**
-      Copy items from the given vector to the data members
-
-      @param vec The Vector to copy from
-      @param offset The indec in vec to start the copying from
-      */
-    void _fromArray(const arr &vec, size_t offset = 0);
-
-    /**
-      Convert the object into a vector of doubles
-
-      @return A vector containing the data values from the class
-    */
-    arr _toArray();
-
-    void _clear();
-
-    /**
-      Get the size of the data vector
-      */
-    static size_t _size() {
-        return RACon::size() + 1;
-    }
-    RACon* RA_con = nullptr;
-    double Thion = 0;
-};
+arr PRCon::_toArray()  {
+    arr array = {GCEA, GCA, PGA, PGCA, GCAc, GOAc, SERc, GLYc, HPRc, GCEAc, RuBP, CO2, O2};
+    return array;
+}

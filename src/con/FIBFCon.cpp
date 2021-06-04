@@ -1,5 +1,3 @@
-#pragma once
-
 /**********************************************************************************************************************************************
  *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
  *
@@ -25,61 +23,58 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-#include "RACon.hpp"
 
-/**
- Class for holding the inputs to RedoxReg_mb
- */
-class RedoxRegCon : public ConBase<RedoxRegCon> {
-public:
-    RedoxRegCon() : RA_con(new RACon()) {}
+#include "con/FIBFCon.hpp"
 
-    /**
-      Copy constructor that makes a deep copy of the given object
+FIBFCon::FIBFCon(const FIBFCon* other) {
+    _clear();
+    BF_con = other->BF_con;
+    FI_con = other->FI_con;
+    BF_con->setParent(this);
+    FI_con->setParent(this);
+    kd = other->kd;
+}
 
-      @param other The RedoxRegCon object to copy
-      */
-    RedoxRegCon(const RedoxRegCon* other);
+FIBFCon::FIBFCon(BFCon* bother, FICon* fother) {
+    _clear();
+    BF_con = bother;
+    FI_con = fother;
+    BF_con->setParent(this);
+    FI_con->setParent(this);
+    kd = pow(10, 8) * 0.5;
+}
 
-    /**
-      Constructor to create an object from the contained classes
+FIBFCon::FIBFCon(const arr &vec, const size_t offset) {
+    _fromArray(vec, offset);
+}
 
-      @param rother A RACon object to incorporate
-      @param thio
-      */
-    RedoxRegCon(RACon* rother, double thio = 0.);
+void FIBFCon::_fromArray(const arr &vec, const size_t offset) {
+    if (BF_con == nullptr)
+        BF_con = new BFCon(this);
+    if (FI_con == nullptr)
+        FI_con = new FICon(this);
+    BF_con->fromArray(vec, offset);
+    FI_con->fromArray(vec, offset + BF_con->size());
+    kd = vec[offset + BF_con->size() + FI_con->size()];
+}
 
-    /**
-      Constructor to create an object from the input vector, starting at the given index
+arr FIBFCon::_toArray() {
+    arr bvec = BF_con->toArray();
+    arr fvec = FI_con->toArray();
+    bvec.reserve(size());
+    bvec.insert(bvec.end(), fvec.begin(), fvec.end());
+    arr fivec = {kd};
+    bvec.insert(bvec.end(), fivec.begin(), fivec.end());
+    return bvec;
+}
 
-      @param vec Vector to create the object from
-      @param offset The index in vec to start creating the object from
-      */
-    RedoxRegCon(const arr &vec, size_t offset = 0);
-
-    /**
-      Copy items from the given vector to the data members
-
-      @param vec The Vector to copy from
-      @param offset The indec in vec to start the copying from
-      */
-    void _fromArray(const arr &vec, size_t offset = 0);
-
-    /**
-      Convert the object into a vector of doubles
-
-      @return A vector containing the data values from the class
-    */
-    arr _toArray();
-
-    void _clear();
-
-    /**
-      Get the size of the data vector
-      */
-    static size_t _size() {
-        return RACon::size() + 1;
+void FIBFCon::_clear() {
+    if (BF_con != nullptr){
+        delete BF_con;
+        BF_con = nullptr;
     }
-    RACon* RA_con = nullptr;
-    double Thion = 0;
-};
+    if (FI_con != nullptr) {
+        delete FI_con;
+        FI_con = nullptr;
+    }
+}

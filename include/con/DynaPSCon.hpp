@@ -26,7 +26,6 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
 #include "RACon.hpp"
 #include "XanCycleCon.hpp"
 #include <sundials/sundials_types.h>
@@ -35,111 +34,68 @@ class trDynaPSCon;
 /**
  Class for holding inputs to DynaPS_mb
  */
-class DynaPSCon {
+class DynaPSCon : public ConBase<DynaPSCon> {
 public:
     DynaPSCon(trDynaPSCon* par = nullptr) : RA_con(new RACon(this)), XanCycle_con(new XanCycleCon(this)), parent(par) {}
-    ~DynaPSCon() {
-        clear();
-    }
+
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The DynaPSCon object to copy
       */
-    DynaPSCon(const DynaPSCon* other) {
-        clear();
-        RA_con = other->RA_con;
-        XanCycle_con = other->XanCycle_con;
-        RA_con->setParent(this);
-        XanCycle_con->setParent(this);
-    }
+    DynaPSCon(const DynaPSCon* other);
+
     /**
       Constructor to create an object from the input pointer
 
       @param x The pointer to get the data from
       */
-    DynaPSCon(realtype *x) {
-        fromArray(x);
-    }
+    DynaPSCon(realtype *x);
+
     /**
       Constructor to create an object from the contained classes
 
       @param rother A RACon object to incorporate
       @param xother A XanCycleCon object to incorporate
       */
-    DynaPSCon(RACon* rother, XanCycleCon* xother) {
-        clear();
-        RA_con = rother;
-        XanCycle_con = xother;
-        RA_con->setParent(this);
-        XanCycle_con->setParent(this);
-    }
+    DynaPSCon(RACon* rother, XanCycleCon* xother);
+
     /**
       Constructor to create an object from the input vector, starting at the given index
 
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    DynaPSCon(const arr &vec, size_t offset = 0){
-            fromArray(vec, offset);
-    }
-    /**
-      Copy items from the given pointer to the data members
+    DynaPSCon(const arr &vec, size_t offset = 0);
 
-      @param x The input pointer to copy from
-      */
-    void fromArray(realtype *x) {
-        arr vec(120);
-        for (size_t i = 0; i < size(); i++)
-            vec[i] = x[i];
-        fromArray(vec);
-    }
     /**
       Copy items from the given vector to the data members
 
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void fromArray(const arr &vec, size_t offset = 0) {
-        if (RA_con == nullptr)
-            RA_con = new RACon(this);
-        if (XanCycle_con == nullptr)
-            XanCycle_con = new XanCycleCon(this);
-        RA_con->fromArray(vec, offset);
-        XanCycle_con->fromArray(vec, offset + RA_con->size());
-    }
+    void _fromArray(const arr &vec, size_t offset = 0);
+
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
       */
-    arr toArray() {
-        arr rvec = RA_con->toArray();
-        arr xvec = XanCycle_con->toArray();
-        rvec.insert(rvec.end(), xvec.begin(), xvec.end());
-        return rvec;
-    }
+    arr _toArray();
+
     void setParent(trDynaPSCon* par) {parent = par;}
     /**
       Get the size of the data vector
       */
-    static size_t size() {
-        return RACon::size() + XanCycleCon::size();
+    static size_t _size() {
+        return 120;
+//return RACon::size() + XanCycleCon::size();
     }
+
     RACon* RA_con = nullptr;
     XanCycleCon* XanCycle_con = nullptr;
 
     trDynaPSCon* parent;
 
-private:
-    void clear() {
-        if (RA_con != nullptr) {
-            delete RA_con;
-            RA_con = nullptr;
-        }
-        if (XanCycle_con != nullptr) {
-            delete XanCycle_con;
-            XanCycle_con = nullptr;
-        }
-    }
+    void _clear();
 };

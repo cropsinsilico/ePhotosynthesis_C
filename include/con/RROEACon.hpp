@@ -26,14 +26,14 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+#include "ConBase.hpp"
 
 class trDynaPSCon;
 
 /**
  Class for holding the inputs to RROEA_mb
  */
-class RROEACon {
+class RROEACon : public ConBase<RROEACon> {
 public:
     RROEACon(trDynaPSCon* par = nullptr) : parent(par) {}
     /**
@@ -41,18 +41,7 @@ public:
 
       @param other The RROEACon object to copy
       */
-    RROEACon(const RROEACon* other) {
-        GAPDH = other->GAPDH;
-        FBPase = other->FBPase;
-        SBPase = other->SBPase;
-        PRK = other->PRK;
-        ATPase = other->ATPase;
-        ATPGPP = other->ATPGPP;
-        MDH = other->MDH;
-        Thio = other->Thio;
-        Fd = other->Fd;
-        RuACT = other->RuACT;
-    }
+    RROEACon(const RROEACon* other);
 
     /**
       Constructor to create an object from the input vector, starting at the given index
@@ -60,9 +49,7 @@ public:
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    RROEACon(const arr &vec, size_t offset = 0) {
-        fromArray(vec, offset);
-    }
+    RROEACon(const arr &vec, size_t offset = 0);
 
     /**
       Copy items from the given vector to the data members
@@ -70,22 +57,11 @@ public:
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void fromArray(const arr &vec, size_t offset = 0) {
-        GAPDH = vec[offset];
-        FBPase = vec[offset + 1];
-        SBPase = vec[offset + 2];
-        PRK = vec[offset + 3];
-        ATPase = vec[offset + 4];
-        ATPGPP = vec[offset + 5];
-        MDH = vec[offset + 6];
-        Thio = vec[offset + 7];
-        Fd = vec[offset + 8];
-        RuACT = vec[offset + 9];
-    }
+    void _fromArray(const arr &vec, size_t offset = 0);
     /**
       Get the size of the data vector
       */
-    static size_t size() {
+    static size_t _size() {
         return count;
     }
 
@@ -94,10 +70,10 @@ public:
 
       @return A vector containing the data values from the class
       */
-    arr toArray() {
-        arr array = {GAPDH, FBPase, SBPase, PRK, ATPase, ATPGPP, MDH, Thio, Fd, RuACT};
-        return array;
-    }
+    arr _toArray();
+
+    void _clear() {}
+
     void setParent(trDynaPSCon* par) {parent = par;}
     double GAPDH = 0.;  ///< The initial concentration of active GAPDH
     double FBPase = 0.; ///< The initial concentration of active FBPase
@@ -113,5 +89,4 @@ public:
     trDynaPSCon* parent;
 private:
     static const size_t count;
-
 };

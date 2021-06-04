@@ -26,13 +26,13 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+#include "ConBase.hpp"
 
 class PS_PRCon;
 /**
  Class for holding the inputs to PR_mb
  */
-class PRCon {
+class PRCon : public ConBase<PRCon> {
 public:
     PRCon(PS_PRCon* par = nullptr) : parent(par) {}
     /**
@@ -40,68 +40,41 @@ public:
 
       @param other The PRCon object to copy
       */
-    PRCon(const PRCon* other) {
-        GCEA = other->GCEA;
-        GCA = other->GCA;
-        PGA = other->PGA;
-        PGCA = other->PGCA;
-        GCAc = other->GCAc;
-        GOAc = other->GOAc;
-        SERc = other->SERc;
-        GLYc = other->GLYc;
-        HPRc = other->HPRc;
-        GCEAc = other->GCEAc;
-        RuBP = other->RuBP;
-        CO2 = other->CO2;
-        O2 = other->O2;
-    }
+    PRCon(const PRCon* other);
+
     /**
       Constructor to create an object from the input vector, starting at the given index
 
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    PRCon(const arr vec, size_t offset = 0) {
-        fromArray(vec, offset);
-    }
+    PRCon(const arr vec, size_t offset = 0);
+
+    void setParent(PS_PRCon* par) {parent = par;}
+    friend std::ostream& operator<<(std::ostream &out, const PRCon &in);
+
     /**
       Copy items from the given vector to the data members
 
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void fromArray(const arr vec, size_t offset = 0){
-        GCEA= vec[offset];
-        GCA= vec[offset + 1];
-        PGA= vec[offset + 2];
-        PGCA= vec[offset + 3];
-        GCAc= vec[offset + 4];
-        GOAc= vec[offset + 5];
-        SERc= vec[offset + 6];
-        GLYc= vec[offset + 7];
-        HPRc= vec[offset + 8];
-        GCEAc= vec[offset + 9];
-        RuBP= vec[offset + 10];
-        CO2= vec[offset + 11];
-        O2= vec[offset + 12];
-    }
+    void _fromArray(const arr &vec, size_t offset = 0);
+
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
       */
-    arr toArray() {
-        arr array = {GCEA, GCA, PGA, PGCA, GCAc, GOAc, SERc, GLYc, HPRc, GCEAc, RuBP, CO2, O2};
-        return array;
-    }
+    arr _toArray();
     /**
       Get the size of the data vector
       */
-    static size_t size() {
+    static size_t _size() {
         return count;
     }
-    void setParent(PS_PRCon* par) {parent = par;}
-    friend std::ostream& operator<<(std::ostream &out, const PRCon &in);
+
+    void _clear() {}
 
     double GCEA = 0.;
     double GCA = 0.;
@@ -120,5 +93,4 @@ public:
     PS_PRCon* parent;
 private:
     static const size_t count;
-
 };

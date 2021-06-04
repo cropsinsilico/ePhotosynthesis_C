@@ -26,14 +26,14 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+#include "ConBase.hpp"
 
 class RACon;
 
 /**
  Class for holding the inputs to RuACT_mb
  */
-class RuACTCon {
+class RuACTCon : public ConBase<RuACTCon> {
 public:
     RuACTCon(RACon *par = nullptr) : parent(par) {}
     /**
@@ -41,48 +41,38 @@ public:
 
       @param other The RuACTCon object to copy
       */
-    RuACTCon(const RuACTCon* other) {
-        ER = other->ER;
-        Eaf = other->Eaf;
-        ECMR = other->ECMR;
-        RuBP = other->RuBP;
-    }
+    RuACTCon(const RuACTCon* other);
+
     /**
       Constructor to create an object from the input vector, starting at the given index
 
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    RuACTCon(const arr vec, size_t offset = 0) {
-        fromArray(vec, offset);
-    }
+    RuACTCon(const arr vec, size_t offset = 0);
+
     /**
       Copy items from the given vector to the data members
 
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void fromArray(const arr vec, size_t offset = 0){
-        ER = vec[offset];
-        Eaf = vec[offset + 1];
-        ECMR = vec[offset + 2];
-        RuBP = vec[offset + 3];
-    }
+    void _fromArray(const arr &vec, size_t offset = 0);
+
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
       */
-    arr toArray() {
-        arr array = {ER, Eaf, ECMR, RuBP};
-        return array;
-    }
+    arr _toArray();
     /**
       Get the size of the data vector
       */
-    static size_t size() {
+    static size_t _size() {
         return count;
     }
+
+    void _clear() {}
 
     void setParent(RACon* par) {parent = par;}
     double ER = 0.;   ///< The concentration of inactive ER
@@ -92,5 +82,4 @@ public:
     RACon* parent;
 private:
     static const size_t count;
-
 };

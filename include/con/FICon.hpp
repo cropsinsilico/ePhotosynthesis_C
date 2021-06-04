@@ -26,14 +26,14 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+#include "ConBase.hpp"
 
 class FIBFCon;
 
 /**
  Class for holding the inputs to FI_mb
  */
-class FICon {
+class FICon : public ConBase<FICon> {
 public:
     FICon(FIBFCon* par = nullptr) : parent(par) {}
     /**
@@ -41,30 +41,7 @@ public:
 
       @param other The FICon object to copy
       */
-    FICon(const FICon* other){
-        A = other->A;
-        U = other->U;
-        P680ePheo = other->P680ePheo;
-        P680pPheon = other->P680pPheon;
-        P680pPheo = other->P680pPheo;
-        P680Pheon = other->P680Pheon;
-        Yz = other->Yz;
-        S1T = other->S1T;
-        S2T = other->S2T;
-        S3T = other->S3T;
-        S0T = other->S0T;
-        S1Tp = other->S1Tp;
-        S2Tp = other->S2Tp;
-        S3Tp = other->S3Tp;
-        S0Tp = other->S0Tp;
-        QAQB = other->QAQB;
-        QAnQB = other->QAnQB;
-        QAQBn = other->QAQBn;
-        QAnQBn = other->QAnQBn;
-        QAQB2n = other->QAQB2n;
-        QAnQB2n = other->QAnQB2n;
-        PQn = other->PQn;
-    }
+    FICon(const FICon* other);
 
     /**
       Constructor to create an object from the input vector, starting at the given index
@@ -72,9 +49,11 @@ public:
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    FICon(const arr &vec, const size_t offset = 0) {
-        fromArray(vec, offset);
-    }
+    FICon(const arr &vec, const size_t offset = 0);
+
+    void setParent(FIBFCon* par) {parent = par;}
+
+    friend std::ostream& operator<<(std::ostream &out, const FICon &in);
 
     /**
       Copy items from the given vector to the data members
@@ -82,49 +61,23 @@ public:
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void fromArray(const arr &vec, const size_t offset = 0) {
-        A = vec[offset];
-        U = vec[offset + 1];
-        P680ePheo = vec[offset + 2];
-        P680pPheon = vec[offset + 3];
-        P680pPheo = vec[offset + 4];
-        P680Pheon = vec[offset + 5];
-        Yz = vec[offset + 6];
-        S1T = vec[offset + 7];
-        S2T = vec[offset + 8];
-        S3T = vec[offset + 9];
-        S0T = vec[offset + 10];
-        S1Tp = vec[offset + 11];
-        S2Tp = vec[offset + 12];
-        S3Tp = vec[offset + 13];
-        S0Tp = vec[offset + 14];
-        QAQB = vec[offset + 15];
-        QAnQB = vec[offset + 16];
-        QAQBn = vec[offset + 17];
-        QAnQBn = vec[offset + 18];
-        QAQB2n = vec[offset + 19];
-        QAnQB2n = vec[offset + 20];
-        PQn = vec[offset + 21];
-    }
+    void _fromArray(const arr &vec, const size_t offset = 0);
 
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
       */
-    arr toArray() {
-        arr vec = {A, U, P680ePheo, P680pPheon, P680pPheo, P680Pheon, Yz, S1T, S2T, S3T, S0T, S1Tp, S2Tp, S3Tp, S0Tp, QAQB, QAnQB, QAQBn, QAnQBn, QAQB2n, QAnQB2n, PQn};
-        return vec;
-    }
+    arr _toArray();
+
     /**
       Get the size of the data vector
       */
-    static size_t size() {
+    static size_t _size() {
         return count;
     }
-    void setParent(FIBFCon* par) {parent = par;}
 
-    friend std::ostream& operator<<(std::ostream &out, const FICon &in);
+    void _clear() {}
 
     double A = 0.;          ///< The concentration of excitons in the peripheral antenna
     double U = 0.;          ///< The concentration fo excitons in the core antenna
@@ -151,5 +104,4 @@ public:
     FIBFCon* parent;
 private:
     static const size_t count;
-
 };

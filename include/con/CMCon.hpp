@@ -30,31 +30,20 @@
 #include "PS_PRCon.hpp"
 #include "SUCSCon.hpp"
 
-#include "definitions.hpp"
-
 class EPSCon;
 /**
  Class for holding the inputs to CM_mb
  */
-class CMCon {
+class CMCon : public ConBase<CMCon> {
 public:
     CMCon(EPSCon* par = nullptr) : PS_PR_con(new PS_PRCon(this)), SUCS_con(new SUCSCon(this)), parent(par) {}
 
-    ~CMCon() {
-        clear();
-    }
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The CMCon object to copy
       */
-    CMCon(const CMCon* other) {
-        clear();
-        PS_PR_con = other->PS_PR_con;
-        SUCS_con = other->SUCS_con;
-        PS_PR_con->setParent(this);
-        SUCS_con->setParent(this);
-    }
+    CMCon(const CMCon* other);
 
     /**
       Constructor to create an object from the input vector, starting at the given index
@@ -62,30 +51,22 @@ public:
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    CMCon(const arr &vec, size_t offset = 0) {
-        fromArray(vec, offset);
-    }
+    CMCon(const arr &vec, size_t offset = 0);
+
     /**
       Constructor to create an object from the input pointer
 
       @param x The pointer to get the data from
       */
-    CMCon(realtype *x) {
-        fromArray(x);
-    }
+    CMCon(realtype *x);
+
     /**
       Constructor to create an object from the contained classes
 
       @param pother A PS_PRCon object to incorporate
       @param sother A SUCSCon object to incorporate
       */
-    CMCon(PS_PRCon* pother, SUCSCon* sother) {
-        clear();
-        PS_PR_con = pother;
-        SUCS_con = sother;
-        PS_PR_con->setParent(this);
-        SUCS_con->setParent(this);
-    }
+    CMCon(PS_PRCon* pother, SUCSCon* sother);
 
     /**
       Copy items from the given vector to the data members
@@ -93,49 +74,30 @@ public:
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void fromArray(const arr &vec, size_t offset = 0) {
-        if (PS_PR_con == nullptr)
-            PS_PR_con = new PS_PRCon(this);
-        if (SUCS_con == nullptr)
-            SUCS_con = new SUCSCon(this);
-        arr pvec(PS_PRCon::size());
-        std::copy(vec.begin() + offset, vec.begin() + PS_PRCon::size() + offset, pvec.begin());
-        pvec[23] = vec[35 + offset];
+    void _fromArray(const arr &vec, size_t offset = 0);
 
-        PS_PR_con->fromArray(pvec);
-        SUCS_con->fromArray(vec, offset + PS_PRCon::size() - 1);
-    }
     /**
       Copy items from the given pointer to the data members
 
       @param x The input pointer to copy from
       */
-    void fromArray(realtype *x) {
-        arr vec(36);
-        for (size_t i = 0; i < size(); i++)
-            vec[i] = x[i];
-        fromArray(vec);
-    }
+    //void fromArray(realtype *x) {
+    //    arr vec(36);
+    //    for (size_t i = 0; i < size(); i++)
+    //        vec[i] = x[i];
+    //    fromArray(vec);
+    //}
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
       */
-    arr toArray() {
-        arr psprvec = PS_PR_con->toArray();
-        arr svec = SUCS_con->toArray();
-        psprvec.reserve(size());
-        double temp = psprvec[23];
-        psprvec.insert(psprvec.end() - 1, svec.begin(), svec.end());
-        psprvec[35] = temp;
-
-        return psprvec;
-    }
+    arr _toArray();
 
     /**
       Get the size of the data vector
       */
-    static size_t size() {
+    static size_t _size() {
         return PS_PRCon::size() + SUCSCon::size();
     }
 
@@ -146,16 +108,7 @@ public:
     SUCSCon* SUCS_con = nullptr;
 
     EPSCon* parent;
-private:
-    void clear() {
-        if (PS_PR_con != nullptr) {
-            delete PS_PR_con;
-            PS_PR_con = nullptr;
-        }
-        if (SUCS_con != nullptr) {
-            delete SUCS_con;
-            SUCS_con = nullptr;
-        }
-    }
+
+    void _clear();
 };
 

@@ -95,7 +95,6 @@ double SUCS::Vf_T57=0;
 double SUCS::Vf_T51=0;
 double SUCS::Vf_T56=0;
 
-const size_t SUCSCon::count = 12;
 
 SUCSCon* SUCS::SUCS_Ini(Variables *theVars) {
     theVars->SUCS_OLD_TIME = 0;

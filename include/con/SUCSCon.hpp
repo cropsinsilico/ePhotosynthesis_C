@@ -26,13 +26,13 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+#include "ConBase.hpp"
 
 class CMCon;
 /**
  Class for holding the inputs for SUCS_mb
  */
-class SUCSCon {
+class SUCSCon : public ConBase<SUCSCon> {
 public:
     SUCSCon(CMCon* par = nullptr) : parent(par) {}
     /**
@@ -40,44 +40,17 @@ public:
 
       @param other The SUCSCon object to copy
       */
-    SUCSCon(const SUCSCon &other) {
-        T3Pc = other.T3Pc;
-        FBPc = other.FBPc;
-        HexPc = other.HexPc;
-        F26BPc = other.F26BPc;
-        ATPc = other.ATPc;
-        ADPc = other.ADPc;
-        OPOPc = other.OPOPc;
-        UDPGc = other.UDPGc;
-        UTPc = other.UTPc;
-        SUCP = other.SUCP;
-        SUC = other.SUC;
-        PGAc = other.PGAc;
-    }
+    SUCSCon(const SUCSCon &other);
 
-    SUCSCon(const SUCSCon *other) {
-        T3Pc = other->T3Pc;
-        FBPc = other->FBPc;
-        HexPc = other->HexPc;
-        F26BPc = other->F26BPc;
-        ATPc = other->ATPc;
-        ADPc = other->ADPc;
-        OPOPc = other->OPOPc;
-        UDPGc = other->UDPGc;
-        UTPc = other->UTPc;
-        SUCP = other->SUCP;
-        SUC = other->SUC;
-        PGAc = other->PGAc;
-    }
+    SUCSCon(const SUCSCon *other);
+
     /**
       Constructor to create an object from the input vector, starting at the given index
 
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    SUCSCon(const arr &vec, const size_t offset = 0) {
-        fromArray(vec, offset);
-    }
+    SUCSCon(const arr &vec, const size_t offset = 0);
 
     /**
       Copy items from the given vector to the data members
@@ -85,50 +58,22 @@ public:
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void fromArray(const arr &vec, const size_t offset = 0) {
-        T3Pc = vec[offset];
-        FBPc = vec[offset + 1];
-        HexPc = vec[offset + 2];
-        F26BPc = vec[offset + 3];
-        ATPc = vec[offset + 4];
-        ADPc = vec[offset + 5];
-        OPOPc = vec[offset + 6];
-        UDPGc = vec[offset + 7];
-        UTPc = vec[offset + 8];
-        SUCP = vec[offset + 9];
-        SUC = vec[offset + 10];
-        PGAc = vec[offset + 11];
-    }
+    void _fromArray(const arr &vec, const size_t offset = 0);
+
     /**
       Set all data members to 0.
       */
-    void clear() {
-        T3Pc = 0.;
-        FBPc = 0.;
-        HexPc = 0.;
-        F26BPc = 0.;
-        ATPc = 0.;
-        ADPc = 0.;
-        OPOPc = 0.;
-        UDPGc = 0.;
-        UTPc = 0.;
-        SUCP = 0.;
-        SUC = 0.;
-        PGAc = 0.;
-    }
+    void _clear();
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
       */
-    arr toArray() {
-        arr vec = {T3Pc, FBPc, HexPc, F26BPc, ATPc, ADPc, OPOPc, UDPGc, UTPc, SUCP, SUC, PGAc};
-        return vec;
-    }
+    arr _toArray();
     /**
       Get the size of the data vector
       */
-    static size_t size() {
+    static size_t _size() {
         return count;
     }
 

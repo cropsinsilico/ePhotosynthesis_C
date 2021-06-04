@@ -24,17 +24,75 @@
  *
  **********************************************************************************************************************************************/
 
-#include "globals.hpp"
-#include "modules/PS_PR.hpp"
-#include "modules/PS.hpp"
-#include "modules/PR.hpp"
+#include "con/SUCSCon.hpp"
 
+const size_t SUCSCon::count = 12;
 
-PS_PRCon* PS_PR_Ini(Variables *theVars) {
-    PSCon* PS_con = PS::PS_Ini(theVars);
-    PRCon* PR_con = PR::PR_Ini(theVars);
-    //arr PrS = PR_con->toArray();
-    //arr PSs = PS_con->toArray();
-    PS_PRCon* PS_PR_con = new PS_PRCon(PS_con, PR_con);
-    return PS_PR_con;
+SUCSCon::SUCSCon(const SUCSCon &other) {
+    T3Pc = other.T3Pc;
+    FBPc = other.FBPc;
+    HexPc = other.HexPc;
+    F26BPc = other.F26BPc;
+    ATPc = other.ATPc;
+    ADPc = other.ADPc;
+    OPOPc = other.OPOPc;
+    UDPGc = other.UDPGc;
+    UTPc = other.UTPc;
+    SUCP = other.SUCP;
+    SUC = other.SUC;
+    PGAc = other.PGAc;
+}
+
+SUCSCon::SUCSCon(const SUCSCon *other) {
+    T3Pc = other->T3Pc;
+    FBPc = other->FBPc;
+    HexPc = other->HexPc;
+    F26BPc = other->F26BPc;
+    ATPc = other->ATPc;
+    ADPc = other->ADPc;
+    OPOPc = other->OPOPc;
+    UDPGc = other->UDPGc;
+    UTPc = other->UTPc;
+    SUCP = other->SUCP;
+    SUC = other->SUC;
+    PGAc = other->PGAc;
+}
+
+SUCSCon::SUCSCon(const arr &vec, const size_t offset) {
+    _fromArray(vec, offset);
+}
+
+void SUCSCon::_fromArray(const arr &vec, const size_t offset) {
+    T3Pc = vec[offset];
+    FBPc = vec[offset + 1];
+    HexPc = vec[offset + 2];
+    F26BPc = vec[offset + 3];
+    ATPc = vec[offset + 4];
+    ADPc = vec[offset + 5];
+    OPOPc = vec[offset + 6];
+    UDPGc = vec[offset + 7];
+    UTPc = vec[offset + 8];
+    SUCP = vec[offset + 9];
+    SUC = vec[offset + 10];
+    PGAc = vec[offset + 11];
+}
+
+void SUCSCon::_clear() {
+    T3Pc = 0.;
+    FBPc = 0.;
+    HexPc = 0.;
+    F26BPc = 0.;
+    ATPc = 0.;
+    ADPc = 0.;
+    OPOPc = 0.;
+    UDPGc = 0.;
+    UTPc = 0.;
+    SUCP = 0.;
+    SUC = 0.;
+    PGAc = 0.;
+}
+
+arr SUCSCon::_toArray() {
+    arr vec = {T3Pc, FBPc, HexPc, F26BPc, ATPc, ADPc, OPOPc, UDPGc, UTPc, SUCP, SUC, PGAc};
+    return vec;
 }

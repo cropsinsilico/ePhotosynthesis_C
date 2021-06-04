@@ -25,61 +25,28 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-#include "RACon.hpp"
 
-/**
- Class for holding the inputs to RedoxReg_mb
- */
-class RedoxRegCon : public ConBase<RedoxRegCon> {
+#include "definitions.hpp"
+#include <stdexcept>
+#include <sundials/sundials_types.h>
+
+template<class T>
+class ConBase {
 public:
-    RedoxRegCon() : RA_con(new RACon()) {}
-
-    /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The RedoxRegCon object to copy
-      */
-    RedoxRegCon(const RedoxRegCon* other);
-
-    /**
-      Constructor to create an object from the contained classes
-
-      @param rother A RACon object to incorporate
-      @param thio
-      */
-    RedoxRegCon(RACon* rother, double thio = 0.);
-
-    /**
-      Constructor to create an object from the input vector, starting at the given index
-
-      @param vec Vector to create the object from
-      @param offset The index in vec to start creating the object from
-      */
-    RedoxRegCon(const arr &vec, size_t offset = 0);
-
-    /**
-      Copy items from the given vector to the data members
-
-      @param vec The Vector to copy from
-      @param offset The indec in vec to start the copying from
-      */
-    void _fromArray(const arr &vec, size_t offset = 0);
-
-    /**
-      Convert the object into a vector of doubles
-
-      @return A vector containing the data values from the class
-    */
-    arr _toArray();
-
-    void _clear();
-
-    /**
-      Get the size of the data vector
-      */
-    static size_t _size() {
-        return RACon::size() + 1;
+    ~ConBase() {}
+    //virtual void fromArray(realtype *x) = 0;
+    void fromArray(const arr &vec, size_t offset = 0) {static_cast<T*>(this)->_fromArray(vec, offset);}
+    arr toArray() {return static_cast<T*>(this)->_toArray();}
+    static size_t size() {return T::_size();}
+    void fromArray(realtype *x) {
+        arr vec(size());
+        for (size_t i = 0; i < size(); i++)
+            vec[i] = x[i];
+        fromArray(vec);
     }
-    RACon* RA_con = nullptr;
-    double Thion = 0;
+    void clear() {static_cast<T*>(this)->_clear();}
+
+protected:
+    ConBase() {}
+
 };

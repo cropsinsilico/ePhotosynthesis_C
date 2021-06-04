@@ -26,7 +26,6 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
 #include "FIBFCon.hpp"
 #include "CMCon.hpp"
 
@@ -34,93 +33,61 @@ class RACon;
 /**
  Class for holding the inputs to EPS_mb
  */
-class EPSCon {
+class EPSCon : public ConBase<EPSCon> {
 public:
     EPSCon(RACon* par = nullptr) : CM_con(new CMCon(this)), FIBF_con(new FIBFCon(this)), parent(par) {}
 
-    ~EPSCon() {
-        clear();
-    }
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The EPSCon object to copy
       */
-    EPSCon(const EPSCon* other) {
-        clear();
-        CM_con = other->CM_con;
-        FIBF_con = other->FIBF_con;
-        CM_con->setParent(this);
-        FIBF_con->setParent(this);
-    }
+    EPSCon(const EPSCon* other);
 
     /**
       Constructor to create an object from the input pointer
 
       @param x The pointer to get the data from
       */
-    EPSCon(realtype *x, const uint adjust = 0) {
-        fromArray(x, adjust);
-    }
+    EPSCon(realtype *x, const uint adjust = 0);
+
     /**
       Constructor to create an object from the contained classes
 
       @param fother A FIBFCon object to incorporate
       @param cother A CMCon object to incorporate
       */
-    EPSCon(FIBFCon* fother, CMCon* cother) {
-        clear();
-        CM_con = cother;
-        FIBF_con = fother;
-        CM_con->setParent(this);
-        FIBF_con->setParent(this);
-    }
+    EPSCon(FIBFCon* fother, CMCon* cother);
+
     /**
       Constructor to create an object from the input vector, starting at the given index
 
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    EPSCon(const arr &vec, const size_t offset = 0) {
-        fromArray(vec, offset);
-    }
+    EPSCon(const arr &vec, const size_t offset = 0);
+
+
+    /**
+      Copy items from the given pointer to the data members
+
+      @param x The input pointer to copy from
+      */
+    void fromArray(realtype *x, const uint adjust = 0);
+
     /**
       Copy items from the given vector to the data members
 
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void fromArray(const arr &vec, const size_t offset = 0) {
-        if (FIBF_con == nullptr)
-            FIBF_con = new FIBFCon(this);
-        if (CM_con == nullptr)
-            CM_con = new CMCon(this);
-        FIBF_con->fromArray(vec, offset);
-        CM_con->fromArray(vec, offset + FIBF_con->size());
-    }
-    /**
-      Copy items from the given pointer to the data members
-
-      @param x The input pointer to copy from
-      */
-    void fromArray(realtype *x, const uint adjust = 0) {
-        arr vec = zeros(size());
-        for (size_t i = 0; i < size() - adjust; i++)
-            vec[i] = x[i];
-        fromArray(vec);
-    }
+    void _fromArray(const arr &vec, const size_t offset = 0);
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
       */
-    arr toArray() {
-        arr fvec = FIBF_con->toArray();
-        arr cvec = CM_con->toArray();
-        fvec.reserve(size());
-        fvec.insert(fvec.end(), cvec.begin(), cvec.end());
-        return fvec;
-    }
+    arr _toArray();
     /**
       Get the size of the data vector
       */
@@ -134,15 +101,5 @@ public:
     FIBFCon* FIBF_con = nullptr;
     RACon* parent;
 
-private:
-    void clear() {
-        if (CM_con != nullptr) {
-            delete CM_con;
-            CM_con = nullptr;
-        }
-        if (FIBF_con != nullptr) {
-            delete FIBF_con;
-            FIBF_con = nullptr;
-        }
-    }
+    void _clear();
 };

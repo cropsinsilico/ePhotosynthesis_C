@@ -26,14 +26,14 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+#include "ConBase.hpp"
 
 class FIBFCon;
 
 /**
  Class for holding the inputs to BF_mb
  */
-class BFCon {
+class BFCon : public ConBase<BFCon> {
 public:
     BFCon(FIBFCon* par = nullptr) : parent(par) {}
     /**
@@ -41,47 +41,14 @@ public:
 
       @param other The BFCon object to copy
       */
-    BFCon(const BFCon* other){
-        ISPHr = other->ISPHr;
-        cytc1 = other->cytc1;
-        ISPo = other->ISPo;
-        ISPoQH2 = other->ISPoQH2;
-        QHsemi = other->QHsemi;
-        cytbL = other->cytbL;
-        Qi = other->Qi;
-        Q = other->Q;
-        cytbH = other->cytbH;
-        Qn = other->Qn;
-        Qr = other->Qr;
-        QH2 = other->QH2;
-        cytc2 = other->cytc2;
-        P700 = other->P700;
-        ADP = other->ADP;
-        Pi = other->Pi;
-        ATP = other->ATP;
-        Ks = other->Ks;
-        Mgs = other->Mgs;
-        Cls = other->Cls;
-        Aip = other->Aip;
-        U = other->U;
-        An = other->An;
-        Fdn = other->Fdn;
-        BFHs = other->BFHs;
-        BFHl = other->BFHl;
-        PHs = other->PHs;
-        PHl = other->PHl;
-        NADPH = other->NADPH;
-
-    }
+    BFCon(const BFCon* other);
     /**
       Constructor to create an object from the input vector, starting at the given index
 
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    BFCon(const arr &vec, const size_t offset = 0) {
-        fromArray(vec, offset);
-    }
+    BFCon(const arr &vec, const size_t offset = 0);
 
     /**
       Copy items from the given vector to the data members
@@ -89,54 +56,22 @@ public:
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void fromArray(const arr &vec, const size_t offset = 0) {
-        ISPHr = vec[offset];
-        cytc1 = vec[offset + 1];
-        ISPo = vec[offset + 2];
-        ISPoQH2 = vec[offset + 3];
-        QHsemi = vec[offset + 4];
-        cytbL = vec[offset + 5];
-        Qi = vec[offset + 6];
-        Q = vec[offset + 7];
-        cytbH = vec[offset + 8];
-        Qn = vec[offset + 9];
-        Qr = vec[offset + 10];
-        QH2 = vec[offset + 11];
-        cytc2 = vec[offset + 12];
-        P700 = vec[offset + 13];
-        ADP = vec[offset + 14];
-        Pi = vec[offset + 15];
-        ATP = vec[offset + 16];
-        Ks = vec[offset + 17];
-        Mgs = vec[offset + 18];
-        Cls = vec[offset + 19];
-        Aip = vec[offset + 20];
-        U = vec[offset + 21];
-        An = vec[offset + 22];
-        Fdn = vec[offset + 23];
-        BFHs = vec[offset + 24];
-        BFHl = vec[offset + 25];
-        PHs = vec[offset + 26];
-        PHl = vec[offset + 27];
-        NADPH = vec[offset + 28];
-    }
-
+    void _fromArray(const arr &vec, const size_t offset = 0);
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
       */
-    arr toArray() {
-        arr vec = {ISPHr, cytc1, ISPo, ISPoQH2, QHsemi, cytbL, Qi, Q, cytbH, Qn, Qr, QH2, cytc2, P700, ADP, Pi, ATP, Ks, Mgs, Cls, Aip, U, An, Fdn, BFHs, BFHl, PHs, PHl, NADPH};
-        return vec;
-    }
+    arr _toArray();
 
     /**
       Get the size of the data vector
       */
-    static size_t size() {
+    static size_t _size() {
         return count;
     }
+
+    void _clear() {}
 
     void setParent(FIBFCon* par) {parent = par;}
     friend std::ostream& operator<<(std::ostream &out, const BFCon &in);
@@ -173,5 +108,4 @@ public:
     FIBFCon* parent;
 private:
     static const size_t count;
-
 };

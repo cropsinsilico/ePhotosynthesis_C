@@ -26,120 +26,72 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
 #include "RROEACon.hpp"
 #include "DynaPSCon.hpp"
 
 /**
  Class for holding inputs to trDynaPS_mb
  */
-class trDynaPSCon {
+class trDynaPSCon : public ConBase<trDynaPSCon> {
 public:
     trDynaPSCon() : RROEA_con(new RROEACon(this)), DynaPS_con(new DynaPSCon(this)) {}
-    ~trDynaPSCon() {
-        clear();
-    }
+
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The trDynaPSCon object to copy
       */
-    trDynaPSCon(const trDynaPSCon* other) {
-        clear();
-        RROEA_con = other->RROEA_con;
-        DynaPS_con = other->DynaPS_con;
-        RROEA_con->setParent(this);
-        DynaPS_con->setParent(this);
-    }
+    trDynaPSCon(const trDynaPSCon* other);
+
     /**
       Constructor to create an object from the contained classes
 
       @param dother A DynaPSCon object to incorporate
       @param rother A RROEACon object to incorporate
       */
-    trDynaPSCon(DynaPSCon* dother, RROEACon* rother) {
-        clear();
-        DynaPS_con = dother;
-        RROEA_con = rother;
-        RROEA_con->setParent(this);
-        DynaPS_con->setParent(this);
-    }
+    trDynaPSCon(DynaPSCon* dother, RROEACon* rother);
+
     /**
       Constructor to create an object from the input vector, starting at the given index
 
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    trDynaPSCon(const arr &vec, size_t offset = 0) {
-        fromArray(vec, offset);
-    }
+    trDynaPSCon(const arr &vec, size_t offset = 0);
+
     /**
       Constructor to create an object from the input pointer
 
       @param x The pointer to get the data from
       */
-    trDynaPSCon(realtype *x) {
-        fromArray(x);
-    }
-    /**
-      Copy items from the given pointer to the data members
+    trDynaPSCon(realtype *x);
 
-      @param x The input pointer to copy from
-      */
-    void fromArray(realtype *x) {
-        arr vec(size());
-        for (size_t i = 0; i < size(); i++)
-            vec[i] = x[i];
-        fromArray(vec);
-    }
     /**
       Copy items from the given vector to the data members
 
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void fromArray(const arr &vec, size_t offset = 0) {
-        if (DynaPS_con == nullptr)
-            DynaPS_con = new DynaPSCon(this);
-        DynaPS_con->fromArray(vec, offset);
-        if (RROEA_con == nullptr)
-            RROEA_con = new RROEACon(this);
-        RROEA_con->fromArray(vec, offset + 110);
-    }
+    void _fromArray(const arr &vec, size_t offset = 0);
+
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
     */
-    arr toArray() {
-        arr dyvec = DynaPS_con->toArray();
-        arr rrvec = RROEA_con->toArray();
-        arr vec = zeros(120);
-        for (size_t i = 0; i < 96; i++)
-            vec[i] = dyvec[i];
-        for (size_t i = 0; i < 10; i++)
-            vec[i+110] = rrvec[i];
-        return vec;
+    arr _toArray();
 
-    }
+    void _clear();
+
     /**
       Get the size of the data vector
       */
-    static size_t size() {
-        return 120; //RROEA_con.size() + DynaPS_con.size();
+    static size_t _size() {
+        return count; //RROEA_con.size() + DynaPS_con.size();
     }
     RROEACon* RROEA_con = nullptr;
     DynaPSCon* DynaPS_con = nullptr;
 
 private:
-    void clear() {
-        if (RROEA_con != nullptr) {
-            delete RROEA_con;
-            RROEA_con = nullptr;
-        }
-        if (DynaPS_con != nullptr) {
-            delete DynaPS_con;
-            DynaPS_con = nullptr;
-        }
-    }
+    static const size_t count;
 };

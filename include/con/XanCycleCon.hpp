@@ -26,14 +26,14 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+#include "ConBase.hpp"
 
 class DynaPSCon;
 
 /**
  Class to hold the inputs to XanCycle_mb
  */
-class XanCycleCon {
+class XanCycleCon : public ConBase<XanCycleCon> {
 public:
     XanCycleCon(DynaPSCon* par = nullptr) : parent(par) {}
     /**
@@ -41,56 +41,41 @@ public:
 
       @param other The XanCycleCon object to copy
       */
-    XanCycleCon(const XanCycleCon* other) {
-        Vx = other->Vx;
-        Ax = other->Ax;
-        Zx = other->Zx;
-        ABA = other->ABA;
-    }
+    XanCycleCon(const XanCycleCon* other);
+
     /**
       Constructor to create an object from the input vector, starting at the given index
 
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    XanCycleCon(const arr &vec, const size_t offset = 0) {
-        fromArray(vec, offset);
-    }
+    XanCycleCon(const arr &vec, const size_t offset = 0);
+
     /**
       Copy items from the given vector to the data members
 
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void fromArray(const arr &vec, const size_t offset = 0) {
-        Vx = vec[offset];
-        Ax = vec[offset + 1];
-        Zx = vec[offset + 2];
-        ABA = vec[offset + 3];
-    }
+    void _fromArray(const arr &vec, const size_t offset = 0);
+
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
       */
-    arr toArray() {
-        arr array = {Vx, Ax, Zx, ABA};
-        return array;
-    }
+    arr _toArray();
+
     /**
       Set all data memebers to 0.
       */
-    void clear() {
-        Vx = 0.;
-        Ax = 0.;
-        Zx = 0.;
-        ABA = 0.;
-    }
+    void _clear();
+
     void setParent(DynaPSCon* par) {parent = par;}
     /**
       Get the size of the data vector
       */
-    static size_t size() {
+    static size_t _size() {
         return count;
     }
     double Vx = 0.;  ///< The concentration of Violozanthin
@@ -100,5 +85,4 @@ public:
     DynaPSCon* parent;
 private:
     static const size_t count;
-
 };

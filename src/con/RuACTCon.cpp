@@ -1,5 +1,3 @@
-#pragma once
-
 /**********************************************************************************************************************************************
  *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
  *
@@ -25,61 +23,28 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-#include "RACon.hpp"
 
-/**
- Class for holding the inputs to RedoxReg_mb
- */
-class RedoxRegCon : public ConBase<RedoxRegCon> {
-public:
-    RedoxRegCon() : RA_con(new RACon()) {}
+#include "con/RuACTCon.hpp"
 
-    /**
-      Copy constructor that makes a deep copy of the given object
+RuACTCon::RuACTCon(const RuACTCon* other) {
+    ER = other->ER;
+    Eaf = other->Eaf;
+    ECMR = other->ECMR;
+    RuBP = other->RuBP;
+}
 
-      @param other The RedoxRegCon object to copy
-      */
-    RedoxRegCon(const RedoxRegCon* other);
+RuACTCon::RuACTCon(const arr vec, size_t offset) {
+    fromArray(vec, offset);
+}
 
-    /**
-      Constructor to create an object from the contained classes
+void RuACTCon::_fromArray(const arr &vec, size_t offset ){
+    ER = vec[offset];
+    Eaf = vec[offset + 1];
+    ECMR = vec[offset + 2];
+    RuBP = vec[offset + 3];
+}
 
-      @param rother A RACon object to incorporate
-      @param thio
-      */
-    RedoxRegCon(RACon* rother, double thio = 0.);
-
-    /**
-      Constructor to create an object from the input vector, starting at the given index
-
-      @param vec Vector to create the object from
-      @param offset The index in vec to start creating the object from
-      */
-    RedoxRegCon(const arr &vec, size_t offset = 0);
-
-    /**
-      Copy items from the given vector to the data members
-
-      @param vec The Vector to copy from
-      @param offset The indec in vec to start the copying from
-      */
-    void _fromArray(const arr &vec, size_t offset = 0);
-
-    /**
-      Convert the object into a vector of doubles
-
-      @return A vector containing the data values from the class
-    */
-    arr _toArray();
-
-    void _clear();
-
-    /**
-      Get the size of the data vector
-      */
-    static size_t _size() {
-        return RACon::size() + 1;
-    }
-    RACon* RA_con = nullptr;
-    double Thion = 0;
-};
+arr RuACTCon::_toArray() {
+    arr array = {ER, Eaf, ECMR, RuBP};
+    return array;
+}

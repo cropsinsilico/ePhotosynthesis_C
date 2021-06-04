@@ -1,5 +1,3 @@
-#pragma once
-
 /**********************************************************************************************************************************************
  *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
  *
@@ -25,61 +23,64 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-#include "RACon.hpp"
 
-/**
- Class for holding the inputs to RedoxReg_mb
- */
-class RedoxRegCon : public ConBase<RedoxRegCon> {
-public:
-    RedoxRegCon() : RA_con(new RACon()) {}
+#include "con/CMCon.hpp"
 
-    /**
-      Copy constructor that makes a deep copy of the given object
+CMCon::CMCon(const CMCon* other) {
+    _clear();
+    PS_PR_con = other->PS_PR_con;
+    SUCS_con = other->SUCS_con;
+    PS_PR_con->setParent(this);
+    SUCS_con->setParent(this);
+}
 
-      @param other The RedoxRegCon object to copy
-      */
-    RedoxRegCon(const RedoxRegCon* other);
+CMCon::CMCon(const arr &vec, size_t offset) {
+    fromArray(vec, offset);
+}
 
-    /**
-      Constructor to create an object from the contained classes
+CMCon::CMCon(realtype *x) {
+    fromArray(x);
+}
 
-      @param rother A RACon object to incorporate
-      @param thio
-      */
-    RedoxRegCon(RACon* rother, double thio = 0.);
+CMCon::CMCon(PS_PRCon* pother, SUCSCon* sother) {
+    _clear();
+    PS_PR_con = pother;
+    SUCS_con = sother;
+    PS_PR_con->setParent(this);
+    SUCS_con->setParent(this);
+}
 
-    /**
-      Constructor to create an object from the input vector, starting at the given index
+void CMCon::_fromArray(const arr &vec, size_t offset) {
+    if (PS_PR_con == nullptr)
+        PS_PR_con = new PS_PRCon(this);
+    if (SUCS_con == nullptr)
+        SUCS_con = new SUCSCon(this);
+    arr pvec(PS_PR_con->size());
+    std::copy(vec.begin() + offset, vec.begin() + PS_PR_con->size() + offset, pvec.begin());
+    pvec[23] = vec[35 + offset];
 
-      @param vec Vector to create the object from
-      @param offset The index in vec to start creating the object from
-      */
-    RedoxRegCon(const arr &vec, size_t offset = 0);
+    PS_PR_con->fromArray(pvec);
+    SUCS_con->fromArray(vec, offset + PS_PR_con->size() - 1);
+}
 
-    /**
-      Copy items from the given vector to the data members
+arr CMCon::_toArray() {
+    arr psprvec = PS_PR_con->toArray();
+    arr svec = SUCS_con->toArray();
+    psprvec.reserve(size());
+    double temp = psprvec[23];
+    psprvec.insert(psprvec.end() - 1, svec.begin(), svec.end());
+    psprvec[35] = temp;
 
-      @param vec The Vector to copy from
-      @param offset The indec in vec to start the copying from
-      */
-    void _fromArray(const arr &vec, size_t offset = 0);
+    return psprvec;
+}
 
-    /**
-      Convert the object into a vector of doubles
-
-      @return A vector containing the data values from the class
-    */
-    arr _toArray();
-
-    void _clear();
-
-    /**
-      Get the size of the data vector
-      */
-    static size_t _size() {
-        return RACon::size() + 1;
+void CMCon::_clear() {
+    if (PS_PR_con != nullptr) {
+        delete PS_PR_con;
+        PS_PR_con = nullptr;
     }
-    RACon* RA_con = nullptr;
-    double Thion = 0;
-};
+    if (SUCS_con != nullptr) {
+        delete SUCS_con;
+        SUCS_con = nullptr;
+    }
+}

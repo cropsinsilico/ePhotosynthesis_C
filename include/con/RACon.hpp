@@ -26,91 +26,63 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
-
 #include "EPSCon.hpp"
 #include "RuACTCon.hpp"
 class DynaPSCon;
+
 /**
  Class for holding input for RA_mb
  */
-class RACon {
+class RACon : public ConBase<RACon> {
 public:
     RACon(DynaPSCon* par = nullptr) : RuACT_con(new RuACTCon(this)), EPS_con(new EPSCon(this)), parent(par) {}
-    ~RACon() {
-        if (RuACT_con != nullptr) {
-            delete RuACT_con;
-            RuACT_con = nullptr;
-        }
-        if (EPS_con != nullptr) {
-            delete EPS_con;
-            EPS_con = nullptr;
-        }
-    }
+
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The RACon object to copy
       */
-    RACon(const RACon *other) {
-        RuACT_con = other->RuACT_con;
-        EPS_con = other->EPS_con;
-        RuACT_con->setParent(this);
-        EPS_con->setParent(this);
-    }
+    RACon(const RACon *other);
+
     /**
       Constructor to create an object from the contained classes
 
       @param eother A EPSCon object to incorporate
       @param rother A RuACTCon object to incorporate
       */
-    RACon(EPSCon* eother, RuACTCon* rother) {
-        RuACT_con = rother;
-        EPS_con = eother;
-        RuACT_con->setParent(this);
-        EPS_con->setParent(this);
-    }
+    RACon(EPSCon* eother, RuACTCon* rother);
+
     /**
       Constructor to create an object from the input vector, starting at the given index
 
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    RACon(const arr &vec, size_t offset = 0){
-        fromArray(vec, offset);
-    }
+    RACon(const arr &vec, size_t offset = 0);
+
     /**
       Copy items from the given vector to the data members
 
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void fromArray(const arr &vec, size_t offset = 0) {
-        if (EPS_con == nullptr)
-            EPS_con = new EPSCon(this);
-        if (RuACT_con == nullptr)
-            RuACT_con = new RuACTCon(this);
-        EPS_con->fromArray(vec, offset);
-        RuACT_con->fromArray(vec, offset + EPS_con->size());
-    }
+    void _fromArray(const arr &vec, size_t offset = 0);
+
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
       */
-    arr toArray() {
-        arr evec = EPS_con->toArray();
-        arr rvec = RuACT_con->toArray();
-        evec.reserve(size());
-        evec.insert(evec.end(), rvec.begin(), rvec.end());
-        return evec;
-    }
+    arr _toArray();
+
     /**
       Get the size of the data vector
       */
-    static size_t size() {
+    static size_t _size() {
         return EPSCon::size() + RuACTCon::size();
     }
+
+    void _clear();
 
     void setParent(DynaPSCon* par) {parent = par;}
     RuACTCon* RuACT_con = nullptr;

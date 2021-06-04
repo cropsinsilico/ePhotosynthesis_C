@@ -26,13 +26,14 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+//#include "definitions.hpp"
+#include "ConBase.hpp"
 class PS_PRCon;
 
 /**
  Class for holding the inputs to PS_mb
  */
-class PSCon {
+class PSCon : public ConBase<PSCon> {
 public:
     PSCon(PS_PRCon* par = nullptr) : parent(par) {}
     /**
@@ -40,75 +41,14 @@ public:
 
       @param other The PSCon object to copy
       */
-    PSCon(const PSCon* other) {
-        RuBP = other->RuBP;
-        PGA = other->PGA;
-        DPGA = other->DPGA;
-        T3P = other->T3P;
-        ADPG = other->ADPG;
-        FBP = other->FBP;
-        E4P = other->E4P;
-        S7P = other->S7P;
-        SBP = other->SBP;
-        ATP = other->ATP;
-        NADPH = other->NADPH;
-        CO2 = other->CO2;
-        O2 = other->O2;
-        HexP = other->HexP;
-        PenP = other->PenP;
-        _Pi = other->_Pi;
-        _ADP = other->_ADP;
-        _v1 = other->_v1;
-    }
+    PSCon(const PSCon* other);
     /**
       Constructor to create an object from the input vector, starting at the given index
 
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    PSCon(const arr &vec, size_t offset = 0) {
-        fromArray(vec, offset);
-    }
-
-    /**
-      Copy items from the given vector to the data members
-
-      @param vec The Vector to copy from
-      @param offset The indec in vec to start the copying from
-      */
-    void fromArray(const arr &vec, size_t offset = 0) {
-        RuBP = vec[offset];
-        PGA = vec[offset + 1];
-        DPGA = vec[offset + 2];
-        T3P = vec[offset + 3];
-        ADPG = vec[offset + 4];
-        FBP = vec[offset + 5];
-        E4P = vec[offset + 6];
-        S7P = vec[offset + 7];
-        SBP = vec[offset + 8];
-        ATP = vec[offset + 9];
-        NADPH = vec[offset + 10];
-        CO2 = vec[offset + 11];
-        O2 = vec[offset + 12];
-        HexP = vec[offset + 13];
-        PenP = vec[offset + 14];
-    }
-
-    /**
-      Convert the object into a vector of doubles
-
-      @return A vector containing the data values from the class
-    */
-    arr toArray() {
-        arr array = {RuBP, PGA, DPGA, T3P, ADPG, FBP, E4P, S7P, SBP, ATP, NADPH, CO2, O2, HexP, PenP};
-        return array;
-    }
-    /**
-      Get the size of the data vector
-      */
-    static size_t size() {
-        return count;
-    }
+    PSCon(const arr &vec, size_t offset = 0);
 
     void setParent(PS_PRCon* par) {parent = par;}
     friend std::ostream& operator<<(std::ostream &out, const PSCon &in);
@@ -132,6 +72,31 @@ public:
     double _ADP = 0.;
     double _v1 = 0.;
     PS_PRCon* parent;
+
+    /**
+      Copy items from the given vector to the data members
+
+      @param vec The Vector to copy from
+      @param offset The indec in vec to start the copying from
+      */
+    void _fromArray(const arr &vec, size_t offset = 0);
+
+    /**
+      Convert the object into a vector of doubles
+
+      @return A vector containing the data values from the class
+    */
+    arr _toArray();
+
+    /**
+      Get the size of the data vector
+      */
+    static size_t _size() {
+        return count;
+    }
+
+    void _clear() {}
+
 private:
     static const size_t count;
 };

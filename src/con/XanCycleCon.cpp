@@ -1,5 +1,3 @@
-#pragma once
-
 /**********************************************************************************************************************************************
  *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
  *
@@ -25,61 +23,35 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-#include "RACon.hpp"
 
-/**
- Class for holding the inputs to RedoxReg_mb
- */
-class RedoxRegCon : public ConBase<RedoxRegCon> {
-public:
-    RedoxRegCon() : RA_con(new RACon()) {}
+#include "con/XanCycleCon.hpp"
 
-    /**
-      Copy constructor that makes a deep copy of the given object
+XanCycleCon::XanCycleCon(const XanCycleCon* other) {
+    Vx = other->Vx;
+    Ax = other->Ax;
+    Zx = other->Zx;
+    ABA = other->ABA;
+}
 
-      @param other The RedoxRegCon object to copy
-      */
-    RedoxRegCon(const RedoxRegCon* other);
+XanCycleCon::XanCycleCon(const arr &vec, const size_t offset) {
+    fromArray(vec, offset);
+}
 
-    /**
-      Constructor to create an object from the contained classes
+void XanCycleCon::_fromArray(const arr &vec, const size_t offset) {
+    Vx = vec[offset];
+    Ax = vec[offset + 1];
+    Zx = vec[offset + 2];
+    ABA = vec[offset + 3];
+}
 
-      @param rother A RACon object to incorporate
-      @param thio
-      */
-    RedoxRegCon(RACon* rother, double thio = 0.);
+arr XanCycleCon::_toArray() {
+    arr array = {Vx, Ax, Zx, ABA};
+    return array;
+}
 
-    /**
-      Constructor to create an object from the input vector, starting at the given index
-
-      @param vec Vector to create the object from
-      @param offset The index in vec to start creating the object from
-      */
-    RedoxRegCon(const arr &vec, size_t offset = 0);
-
-    /**
-      Copy items from the given vector to the data members
-
-      @param vec The Vector to copy from
-      @param offset The indec in vec to start the copying from
-      */
-    void _fromArray(const arr &vec, size_t offset = 0);
-
-    /**
-      Convert the object into a vector of doubles
-
-      @return A vector containing the data values from the class
-    */
-    arr _toArray();
-
-    void _clear();
-
-    /**
-      Get the size of the data vector
-      */
-    static size_t _size() {
-        return RACon::size() + 1;
-    }
-    RACon* RA_con = nullptr;
-    double Thion = 0;
-};
+void XanCycleCon::_clear() {
+    Vx = 0.;
+    Ax = 0.;
+    Zx = 0.;
+    ABA = 0.;
+}
