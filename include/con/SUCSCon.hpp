@@ -32,9 +32,11 @@ class CMCon;
 /**
  Class for holding the inputs for SUCS_mb
  */
-class SUCSCon : public ConBase<SUCSCon> {
+class SUCSCon : public ConBase<SUCSCon, CMCon> {
 public:
-    SUCSCon(CMCon* par = nullptr) : parent(par) {}
+    SUCSCon(CMCon* par = nullptr) {
+        setParent(par);
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -52,6 +54,21 @@ public:
       */
     SUCSCon(const arr &vec, const size_t offset = 0);
 
+    double T3Pc = 0.;
+    double FBPc = 0.;
+    double HexPc = 0.;
+    double F26BPc = 0.;
+    double ATPc = 0.;
+    double ADPc = 0.;
+    double OPOPc = 0.;
+    double UDPGc = 0.;
+    double UTPc = 0.;
+    double SUCP = 0.;
+    double SUC = 0.;
+    double PGAc = 0.;
+
+private:
+    friend ConBase;
     /**
       Copy items from the given vector to the data members
 
@@ -77,23 +94,6 @@ public:
         return count;
     }
 
-    void setParent(CMCon* par) {parent = par;}
-    friend std::ostream& operator<<(std::ostream &out, const SUCSCon &in);
-
-    double T3Pc = 0.;
-    double FBPc = 0.;
-    double HexPc = 0.;
-    double F26BPc = 0.;
-    double ATPc = 0.;
-    double ADPc = 0.;
-    double OPOPc = 0.;
-    double UDPGc = 0.;
-    double UTPc = 0.;
-    double SUCP = 0.;
-    double SUC = 0.;
-    double PGAc = 0.;
-    CMCon* parent;
-private:
     static const size_t count;
 
 };

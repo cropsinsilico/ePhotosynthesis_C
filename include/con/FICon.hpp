@@ -33,9 +33,11 @@ class FIBFCon;
 /**
  Class for holding the inputs to FI_mb
  */
-class FICon : public ConBase<FICon> {
+class FICon : public ConBase<FICon, FIBFCon> {
 public:
-    FICon(FIBFCon* par = nullptr) : parent(par) {}
+    FICon(FIBFCon* par = nullptr) {
+        setParent(par);
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -51,10 +53,31 @@ public:
       */
     FICon(const arr &vec, const size_t offset = 0);
 
-    void setParent(FIBFCon* par) {parent = par;}
+    double A = 0.;          ///< The concentration of excitons in the peripheral antenna
+    double U = 0.;          ///< The concentration fo excitons in the core antenna
+    double P680ePheo = 0.;  ///< QF add
+    double P680pPheon = 0.; ///< The concentration for the P680+ Pheo-
+    double P680pPheo = 0.;  ///< The concentration of P680+ Pheo
+    double P680Pheon = 0.;  ///< The concentration of P680Pheo-
+    double Yz = 0.;         ///< The concentration of reduced tyrosine// --unused
+    double S1T = 0.;        ///< The concentration of S1 in combination with reduced tyrosine
+    double S2T = 0.;        ///< The concentration of S2 in combination with reduced tyrosine
+    double S3T = 0.;        ///< The concentration of S3 in combination with reduced tyrosine
+    double S0T = 0.;        ///< The concentration of S0 in combination with reduced tyrosine
+    double S1Tp = 0.;       ///< The concentration of S1 in combination with oxidized tyrosine
+    double S2Tp = 0.;       ///< The concentration of S2 in combination with oxidized tyrosine
+    double S3Tp = 0.;       ///< The concentration of S3 in combination with oxidized tyrosine
+    double S0Tp = 0.;       ///< The concentration of S0 in combination with oxidized tyrosine
+    double QAQB = 0.;       ///< The concentration of [QAQB]
+    double QAnQB = 0.;      ///< The concentration of [QA-QB]
+    double QAQBn = 0.;      ///< The concentration of [QAQB-]
+    double QAnQBn = 0.;     ///< The concentration of [QA-QB-]
+    double QAQB2n = 0.;     ///< The concentration of [QAQB2-]
+    double QAnQB2n = 0.;    ///< The concentration of [QA-QB2-]
+    double PQn = 0.;        ///< The concentration of reduced PQ, i.e. PQH2;
 
-    friend std::ostream& operator<<(std::ostream &out, const FICon &in);
-
+private:
+    friend ConBase;
     /**
       Copy items from the given vector to the data members
 
@@ -79,29 +102,5 @@ public:
 
     void _clear() {}
 
-    double A = 0.;          ///< The concentration of excitons in the peripheral antenna
-    double U = 0.;          ///< The concentration fo excitons in the core antenna
-    double P680ePheo = 0.;  ///< QF add
-    double P680pPheon = 0.; ///< The concentration for the P680+ Pheo-
-    double P680pPheo = 0.;  ///< The concentration of P680+ Pheo
-    double P680Pheon = 0.;  ///< The concentration of P680Pheo-
-    double Yz = 0.;         ///< The concentration of reduced tyrosine// --unused
-    double S1T = 0.;        ///< The concentration of S1 in combination with reduced tyrosine
-    double S2T = 0.;        ///< The concentration of S2 in combination with reduced tyrosine
-    double S3T = 0.;        ///< The concentration of S3 in combination with reduced tyrosine
-    double S0T = 0.;        ///< The concentration of S0 in combination with reduced tyrosine
-    double S1Tp = 0.;       ///< The concentration of S1 in combination with oxidized tyrosine
-    double S2Tp = 0.;       ///< The concentration of S2 in combination with oxidized tyrosine
-    double S3Tp = 0.;       ///< The concentration of S3 in combination with oxidized tyrosine
-    double S0Tp = 0.;       ///< The concentration of S0 in combination with oxidized tyrosine
-    double QAQB = 0.;       ///< The concentration of [QAQB]
-    double QAnQB = 0.;      ///< The concentration of [QA-QB]
-    double QAQBn = 0.;      ///< The concentration of [QAQB-]
-    double QAnQBn = 0.;     ///< The concentration of [QA-QB-]
-    double QAQB2n = 0.;     ///< The concentration of [QAQB2-]
-    double QAnQB2n = 0.;    ///< The concentration of [QA-QB2-]
-    double PQn = 0.;        ///< The concentration of reduced PQ, i.e. PQH2;
-    FIBFCon* parent;
-private:
     static const size_t count;
 };

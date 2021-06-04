@@ -34,9 +34,11 @@ class EPSCon;
 /**
  Class for holding the inputs to CM_mb
  */
-class CMCon : public ConBase<CMCon> {
+class CMCon : public ConBase<CMCon, EPSCon> {
 public:
-    CMCon(EPSCon* par = nullptr) : PS_PR_con(new PS_PRCon(this)), SUCS_con(new SUCSCon(this)), parent(par) {}
+    CMCon(EPSCon* par = nullptr) : PS_PR_con(new PS_PRCon(this)), SUCS_con(new SUCSCon(this)) {
+        setParent(par);
+    }
 
     /**
       Copy constructor that makes a deep copy of the given object
@@ -68,6 +70,11 @@ public:
       */
     CMCon(PS_PRCon* pother, SUCSCon* sother);
 
+    PS_PRCon* PS_PR_con = nullptr;
+    SUCSCon* SUCS_con = nullptr;
+
+private:
+    friend ConBase;
     /**
       Copy items from the given vector to the data members
 
@@ -76,17 +83,6 @@ public:
       */
     void _fromArray(const arr &vec, size_t offset = 0);
 
-    /**
-      Copy items from the given pointer to the data members
-
-      @param x The input pointer to copy from
-      */
-    //void fromArray(realtype *x) {
-    //    arr vec(36);
-    //    for (size_t i = 0; i < size(); i++)
-    //        vec[i] = x[i];
-    //    fromArray(vec);
-    //}
     /**
       Convert the object into a vector of doubles
 
@@ -100,14 +96,6 @@ public:
     static size_t _size() {
         return PS_PRCon::size() + SUCSCon::size();
     }
-
-    void setParent(EPSCon* par) {parent = par;}
-
-    friend std::ostream& operator<<(std::ostream &out, const CMCon &in);
-    PS_PRCon* PS_PR_con = nullptr;
-    SUCSCon* SUCS_con = nullptr;
-
-    EPSCon* parent;
 
     void _clear();
 };

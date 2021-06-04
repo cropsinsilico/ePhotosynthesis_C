@@ -33,9 +33,11 @@ class CMCon;
 /**
  Class to hold inputs to PS_PR_mb
  */
-class PS_PRCon : public ConBase<PS_PRCon> {
+class PS_PRCon : public ConBase<PS_PRCon, CMCon> {
 public:
-    PS_PRCon(CMCon* par = nullptr) : PS_con(new PSCon(this)), PR_con(new PRCon(this)), parent(par) {}
+    PS_PRCon(CMCon* par = nullptr) : PS_con(new PSCon(this)), PR_con(new PRCon(this)) {
+        setParent(par);
+    }
 
     ~PS_PRCon() {
         _clear();
@@ -63,9 +65,11 @@ public:
       */
     PS_PRCon(const arr &vec, const size_t offset = 0);
 
-    void setParent(CMCon* par) {parent = par;}
-    friend std::ostream& operator<<(std::ostream &out, const PS_PRCon &in);
+    PSCon* PS_con = nullptr;
+    PRCon* PR_con = nullptr;
 
+private:
+    friend ConBase;
     /**
       Copy items from the given vector to the data members
 
@@ -88,11 +92,5 @@ public:
     }
 
     void _clear ();
-
-    PSCon* PS_con = nullptr;
-    PRCon* PR_con = nullptr;
-
-    CMCon* parent;
-private:
     static const size_t count;
 };

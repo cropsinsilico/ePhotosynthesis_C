@@ -61,8 +61,8 @@ void RACon::_fromArray(const arr &vec, size_t offset) {
         EPS_con = new EPSCon(this);
     if (RuACT_con == nullptr)
         RuACT_con = new RuACTCon(this);
-    EPS_con->_fromArray(vec, offset);
-    RuACT_con->_fromArray(vec, offset + EPSCon::size());
+    EPS_con->fromArray(vec, offset);
+    RuACT_con->fromArray(vec, offset + EPSCon::size());
 }
 
 arr RACon::_toArray() {

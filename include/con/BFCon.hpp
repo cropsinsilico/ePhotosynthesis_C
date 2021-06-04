@@ -33,9 +33,11 @@ class FIBFCon;
 /**
  Class for holding the inputs to BF_mb
  */
-class BFCon : public ConBase<BFCon> {
+class BFCon : public ConBase<BFCon, FIBFCon> {
 public:
-    BFCon(FIBFCon* par = nullptr) : parent(par) {}
+    BFCon(FIBFCon* par = nullptr) {
+        setParent(par);
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -49,32 +51,6 @@ public:
       @param offset The index in vec to start creating the object from
       */
     BFCon(const arr &vec, const size_t offset = 0);
-
-    /**
-      Copy items from the given vector to the data members
-
-      @param vec The Vector to copy from
-      @param offset The indec in vec to start the copying from
-      */
-    void _fromArray(const arr &vec, const size_t offset = 0);
-    /**
-      Convert the object into a vector of doubles
-
-      @return A vector containing the data values from the class
-      */
-    arr _toArray();
-
-    /**
-      Get the size of the data vector
-      */
-    static size_t _size() {
-        return count;
-    }
-
-    void _clear() {}
-
-    void setParent(FIBFCon* par) {parent = par;}
-    friend std::ostream& operator<<(std::ostream &out, const BFCon &in);
 
     double ISPHr = 0.;   ///< The reduced ion sulfer protein (ISPH); unit: micromole per m2
     double cytc1 = 0.;   ///< The oxidized state of cytc1; unit: micromole per meter square
@@ -105,7 +81,30 @@ public:
     double PHs = 0.;     ///< The PH value of the stroma
     double PHl = 0.;     ///< The PH value of the lumen
     double NADPH = 0.;   ///< The NADPH concentration in stroma, Unit: mmol l-1;
-    FIBFCon* parent;
+
 private:
+    friend ConBase;
+    /**
+      Copy items from the given vector to the data members
+
+      @param vec The Vector to copy from
+      @param offset The indec in vec to start the copying from
+      */
+    void _fromArray(const arr &vec, const size_t offset = 0);
+    /**
+      Convert the object into a vector of doubles
+
+      @return A vector containing the data values from the class
+      */
+    arr _toArray();
+
+    /**
+      Get the size of the data vector
+      */
+    static size_t _size() {
+        return count;
+    }
+
+    void _clear() {}
     static const size_t count;
 };

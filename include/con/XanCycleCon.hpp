@@ -33,9 +33,11 @@ class DynaPSCon;
 /**
  Class to hold the inputs to XanCycle_mb
  */
-class XanCycleCon : public ConBase<XanCycleCon> {
+class XanCycleCon : public ConBase<XanCycleCon, DynaPSCon> {
 public:
-    XanCycleCon(DynaPSCon* par = nullptr) : parent(par) {}
+    XanCycleCon(DynaPSCon* par = nullptr) {
+        setParent(par);
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -51,6 +53,13 @@ public:
       */
     XanCycleCon(const arr &vec, const size_t offset = 0);
 
+    double Vx = 0.;  ///< The concentration of Violozanthin
+    double Ax = 0.;  ///< The concentration of Anthrozanthin
+    double Zx = 0.;  ///< The concentration of Zeaznthin
+    double ABA = 0.; ///< The concentration of ABA
+
+private:
+    friend ConBase;
     /**
       Copy items from the given vector to the data members
 
@@ -71,18 +80,12 @@ public:
       */
     void _clear();
 
-    void setParent(DynaPSCon* par) {parent = par;}
     /**
       Get the size of the data vector
       */
     static size_t _size() {
         return count;
     }
-    double Vx = 0.;  ///< The concentration of Violozanthin
-    double Ax = 0.;  ///< The concentration of Anthrozanthin
-    double Zx = 0.;  ///< The concentration of Zeaznthin
-    double ABA = 0.; ///< The concentration of ABA
-    DynaPSCon* parent;
-private:
+
     static const size_t count;
 };

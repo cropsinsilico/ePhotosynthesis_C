@@ -33,9 +33,11 @@ class RACon;
 /**
  Class for holding the inputs to RuACT_mb
  */
-class RuACTCon : public ConBase<RuACTCon> {
+class RuACTCon : public ConBase<RuACTCon, RACon> {
 public:
-    RuACTCon(RACon *par = nullptr) : parent(par) {}
+    RuACTCon(RACon *par = nullptr) {
+        setParent(par);
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -51,6 +53,13 @@ public:
       */
     RuACTCon(const arr vec, size_t offset = 0);
 
+    double ER = 0.;   ///< The concentration of inactive ER
+    double Eaf = 0.;  ///< The total concentration of E, EC, AND ECM
+    double ECMR = 0.; ///< The concentration of ECMR
+    double RuBP = 0.; ///< The concentration of ECMR
+
+private:
+    friend ConBase;
     /**
       Copy items from the given vector to the data members
 
@@ -74,12 +83,5 @@ public:
 
     void _clear() {}
 
-    void setParent(RACon* par) {parent = par;}
-    double ER = 0.;   ///< The concentration of inactive ER
-    double Eaf = 0.;  ///< The total concentration of E, EC, AND ECM
-    double ECMR = 0.; ///< The concentration of ECMR
-    double RuBP = 0.; ///< The concentration of ECMR
-    RACon* parent;
-private:
     static const size_t count;
 };

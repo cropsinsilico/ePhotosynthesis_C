@@ -30,7 +30,7 @@
 /**
  Class for holding the inputs to RedoxReg_mb
  */
-class RedoxRegCon : public ConBase<RedoxRegCon> {
+class RedoxRegCon : public ConBase<RedoxRegCon, RedoxRegCon> {
 public:
     RedoxRegCon() : RA_con(new RACon()) {}
 
@@ -57,6 +57,11 @@ public:
       */
     RedoxRegCon(const arr &vec, size_t offset = 0);
 
+    void setParent(RedoxRegCon* par) {}
+    RACon* RA_con = nullptr;
+    double Thion = 0;
+private:
+    friend ConBase;
     /**
       Copy items from the given vector to the data members
 
@@ -80,6 +85,5 @@ public:
     static size_t _size() {
         return RACon::size() + 1;
     }
-    RACon* RA_con = nullptr;
-    double Thion = 0;
+
 };

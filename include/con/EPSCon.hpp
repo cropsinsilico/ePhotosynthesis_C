@@ -33,9 +33,11 @@ class RACon;
 /**
  Class for holding the inputs to EPS_mb
  */
-class EPSCon : public ConBase<EPSCon> {
+class EPSCon : public ConBase<EPSCon, RACon> {
 public:
-    EPSCon(RACon* par = nullptr) : CM_con(new CMCon(this)), FIBF_con(new FIBFCon(this)), parent(par) {}
+    EPSCon(RACon* par = nullptr) : CM_con(new CMCon(this)), FIBF_con(new FIBFCon(this)) {
+        setParent(par);
+    }
 
     /**
       Copy constructor that makes a deep copy of the given object
@@ -67,13 +69,19 @@ public:
       */
     EPSCon(const arr &vec, const size_t offset = 0);
 
-
+    using ConBase::fromArray;
     /**
       Copy items from the given pointer to the data members
 
       @param x The input pointer to copy from
       */
     void fromArray(realtype *x, const uint adjust = 0);
+
+    CMCon* CM_con = nullptr;
+    FIBFCon* FIBF_con = nullptr;
+
+private:
+    friend ConBase;
 
     /**
       Copy items from the given vector to the data members
@@ -91,15 +99,9 @@ public:
     /**
       Get the size of the data vector
       */
-    static size_t size() {
+    static size_t _size() {
         return CMCon::size() + FIBFCon::size();
     }
-
-    void setParent(RACon* par) {parent = par;}
-    friend std::ostream& operator<<(std::ostream &out, const EPSCon &in);
-    CMCon* CM_con = nullptr;
-    FIBFCon* FIBF_con = nullptr;
-    RACon* parent;
 
     void _clear();
 };

@@ -32,9 +32,11 @@ class PS_PRCon;
 /**
  Class for holding the inputs to PR_mb
  */
-class PRCon : public ConBase<PRCon> {
+class PRCon : public ConBase<PRCon, PS_PRCon> {
 public:
-    PRCon(PS_PRCon* par = nullptr) : parent(par) {}
+    PRCon(PS_PRCon* par = nullptr) {
+        setParent(par);
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -50,9 +52,24 @@ public:
       */
     PRCon(const arr vec, size_t offset = 0);
 
-    void setParent(PS_PRCon* par) {parent = par;}
-    friend std::ostream& operator<<(std::ostream &out, const PRCon &in);
 
+    double GCEA = 0.;
+    double GCA = 0.;
+    double PGA = 0.;
+    double PGCA = 0.;
+    double GCAc = 0.;
+    double GOAc = 0.;
+    double SERc = 0.;
+    double GLYc = 0.;
+    double HPRc = 0.;
+    double GCEAc = 0.;
+    double RuBP = 0.;
+    double CO2 = 0.;
+    double O2 = 0.;
+    double _v131;
+
+private:
+    friend ConBase;
     /**
       Copy items from the given vector to the data members
 
@@ -75,22 +92,5 @@ public:
     }
 
     void _clear() {}
-
-    double GCEA = 0.;
-    double GCA = 0.;
-    double PGA = 0.;
-    double PGCA = 0.;
-    double GCAc = 0.;
-    double GOAc = 0.;
-    double SERc = 0.;
-    double GLYc = 0.;
-    double HPRc = 0.;
-    double GCEAc = 0.;
-    double RuBP = 0.;
-    double CO2 = 0.;
-    double O2 = 0.;
-    double _v131;
-    PS_PRCon* parent;
-private:
     static const size_t count;
 };

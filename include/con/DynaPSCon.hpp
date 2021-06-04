@@ -34,9 +34,11 @@ class trDynaPSCon;
 /**
  Class for holding inputs to DynaPS_mb
  */
-class DynaPSCon : public ConBase<DynaPSCon> {
+class DynaPSCon : public ConBase<DynaPSCon, trDynaPSCon> {
 public:
-    DynaPSCon(trDynaPSCon* par = nullptr) : RA_con(new RACon(this)), XanCycle_con(new XanCycleCon(this)), parent(par) {}
+    DynaPSCon(trDynaPSCon* par = nullptr) : RA_con(new RACon(this)), XanCycle_con(new XanCycleCon(this)) {
+        setParent(par);
+    }
 
     /**
       Copy constructor that makes a deep copy of the given object
@@ -68,6 +70,11 @@ public:
       */
     DynaPSCon(const arr &vec, size_t offset = 0);
 
+    RACon* RA_con = nullptr;
+    XanCycleCon* XanCycle_con = nullptr;
+
+private:
+    friend ConBase;
     /**
       Copy items from the given vector to the data members
 
@@ -83,7 +90,6 @@ public:
       */
     arr _toArray();
 
-    void setParent(trDynaPSCon* par) {parent = par;}
     /**
       Get the size of the data vector
       */
@@ -91,11 +97,6 @@ public:
         return 120;
 //return RACon::size() + XanCycleCon::size();
     }
-
-    RACon* RA_con = nullptr;
-    XanCycleCon* XanCycle_con = nullptr;
-
-    trDynaPSCon* parent;
 
     void _clear();
 };

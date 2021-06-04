@@ -32,7 +32,7 @@
 /**
  Class for holding inputs to trDynaPS_mb
  */
-class trDynaPSCon : public ConBase<trDynaPSCon> {
+class trDynaPSCon : public ConBase<trDynaPSCon, trDynaPSCon> {
 public:
     trDynaPSCon() : RROEA_con(new RROEACon(this)), DynaPS_con(new DynaPSCon(this)) {}
 
@@ -66,6 +66,12 @@ public:
       */
     trDynaPSCon(realtype *x);
 
+    RROEACon* RROEA_con = nullptr;
+    DynaPSCon* DynaPS_con = nullptr;
+
+    void setParent(trDynaPSCon* par) {}
+private:
+    friend ConBase;
     /**
       Copy items from the given vector to the data members
 
@@ -89,9 +95,6 @@ public:
     static size_t _size() {
         return count; //RROEA_con.size() + DynaPS_con.size();
     }
-    RROEACon* RROEA_con = nullptr;
-    DynaPSCon* DynaPS_con = nullptr;
 
-private:
     static const size_t count;
 };

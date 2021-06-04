@@ -30,11 +30,11 @@
 #include <stdexcept>
 #include <sundials/sundials_types.h>
 
-template<class T>
+template<class T, class U>
 class ConBase {
 public:
     ~ConBase() {}
-    //virtual void fromArray(realtype *x) = 0;
+
     void fromArray(const arr &vec, size_t offset = 0) {static_cast<T*>(this)->_fromArray(vec, offset);}
     arr toArray() {return static_cast<T*>(this)->_toArray();}
     static size_t size() {return T::_size();}
@@ -45,7 +45,9 @@ public:
         fromArray(vec);
     }
     void clear() {static_cast<T*>(this)->_clear();}
-
+    void setParent(U* par) {parent = par;}
+    friend std::ostream& operator<<(std::ostream &out, const T &in);
+    U* parent;
 protected:
     ConBase() {}
 

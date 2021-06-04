@@ -33,9 +33,11 @@ class PS_PRCon;
 /**
  Class for holding the inputs to PS_mb
  */
-class PSCon : public ConBase<PSCon> {
+class PSCon : public ConBase<PSCon, PS_PRCon> {
 public:
-    PSCon(PS_PRCon* par = nullptr) : parent(par) {}
+    PSCon(PS_PRCon* par = nullptr) {
+        setParent(par);
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -49,9 +51,6 @@ public:
       @param offset The index in vec to start creating the object from
       */
     PSCon(const arr &vec, size_t offset = 0);
-
-    void setParent(PS_PRCon* par) {parent = par;}
-    friend std::ostream& operator<<(std::ostream &out, const PSCon &in);
 
     double RuBP = 0.;
     double PGA = 0.;
@@ -71,8 +70,9 @@ public:
     double _Pi = 0.;
     double _ADP = 0.;
     double _v1 = 0.;
-    PS_PRCon* parent;
 
+private:
+    friend ConBase;
     /**
       Copy items from the given vector to the data members
 
@@ -97,7 +97,6 @@ public:
 
     void _clear() {}
 
-private:
     static const size_t count;
 };
 

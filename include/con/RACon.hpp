@@ -33,9 +33,11 @@ class DynaPSCon;
 /**
  Class for holding input for RA_mb
  */
-class RACon : public ConBase<RACon> {
+class RACon : public ConBase<RACon, DynaPSCon> {
 public:
-    RACon(DynaPSCon* par = nullptr) : RuACT_con(new RuACTCon(this)), EPS_con(new EPSCon(this)), parent(par) {}
+    RACon(DynaPSCon* par = nullptr) : RuACT_con(new RuACTCon(this)), EPS_con(new EPSCon(this)) {
+        setParent(par);
+    }
 
     /**
       Copy constructor that makes a deep copy of the given object
@@ -60,6 +62,11 @@ public:
       */
     RACon(const arr &vec, size_t offset = 0);
 
+    RuACTCon* RuACT_con = nullptr;
+    EPSCon* EPS_con = nullptr;
+
+private:
+    friend ConBase;
     /**
       Copy items from the given vector to the data members
 
@@ -84,9 +91,4 @@ public:
 
     void _clear();
 
-    void setParent(DynaPSCon* par) {parent = par;}
-    RuACTCon* RuACT_con = nullptr;
-    EPSCon* EPS_con = nullptr;
-
-    DynaPSCon* parent;
 };

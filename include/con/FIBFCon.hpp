@@ -36,9 +36,11 @@ class EPSCon;
 /**
  Class for input to FIBF_mb
  */
-class FIBFCon : public ConBase<FIBFCon> {
+class FIBFCon : public ConBase<FIBFCon, EPSCon> {
 public:
-    FIBFCon(EPSCon* par = nullptr) : BF_con(new BFCon(this)), FI_con(new FICon(this)), parent(par) {}
+    FIBFCon(EPSCon* par = nullptr) : BF_con(new BFCon(this)), FI_con(new FICon(this)) {
+        setParent(par);
+    }
     //~FIBFCon() {
     //    clear();
     //}
@@ -65,6 +67,14 @@ public:
       */
     FIBFCon(const arr &vec, const size_t offset = 0);
 
+
+    BFCon* BF_con = nullptr;
+    FICon* FI_con = nullptr;
+
+    double kd = 0; // The initialization of the initial rate constant for heat dissipation
+
+private:
+    friend ConBase;
     /**
       Copy items from the given vector to the data members
 
@@ -86,14 +96,6 @@ public:
         return BFCon::size() + FICon::size() + 1;
     }
     void _clear();
-
-    friend std::ostream& operator<<(std::ostream &out, const FIBFCon &in);
-    void setParent(EPSCon* par) {parent = par;}
-    BFCon* BF_con = nullptr;
-    FICon* FI_con = nullptr;
-    double kd = 0; // The initialization of the initial rate constant for heat dissipation
-
-    EPSCon* parent;
 
 };
 

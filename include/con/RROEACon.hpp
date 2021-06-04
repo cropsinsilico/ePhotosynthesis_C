@@ -33,9 +33,11 @@ class trDynaPSCon;
 /**
  Class for holding the inputs to RROEA_mb
  */
-class RROEACon : public ConBase<RROEACon> {
+class RROEACon : public ConBase<RROEACon, trDynaPSCon> {
 public:
-    RROEACon(trDynaPSCon* par = nullptr) : parent(par) {}
+    RROEACon(trDynaPSCon* par = nullptr) {
+        setParent(par);
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -51,6 +53,19 @@ public:
       */
     RROEACon(const arr &vec, size_t offset = 0);
 
+    double GAPDH = 0.;  ///< The initial concentration of active GAPDH
+    double FBPase = 0.; ///< The initial concentration of active FBPase
+    double SBPase = 0.; ///< The initial concentration of active SBPase
+    double PRK = 0.;    ///< The initial concentration of actove PRK
+    double ATPase = 0.; ///< The initial concentration of actove ATPase
+    double ATPGPP = 0.; ///< The initial concentration of actove ATPGPP
+    double MDH = 0.;    ///< The initial concentration of actove MDH
+    double Thio = 0.;   ///< The initial concentration of reduced thioredoxin
+    double Fd = 0.;     ///< The initial concentration of reduced ferrodoxin
+    double RuACT = 0.;  ///< The initial concentration of active Rubisco activase
+
+private:
+    friend ConBase;
     /**
       Copy items from the given vector to the data members
 
@@ -74,19 +89,5 @@ public:
 
     void _clear() {}
 
-    void setParent(trDynaPSCon* par) {parent = par;}
-    double GAPDH = 0.;  ///< The initial concentration of active GAPDH
-    double FBPase = 0.; ///< The initial concentration of active FBPase
-    double SBPase = 0.; ///< The initial concentration of active SBPase
-    double PRK = 0.;    ///< The initial concentration of actove PRK
-    double ATPase = 0.; ///< The initial concentration of actove ATPase
-    double ATPGPP = 0.; ///< The initial concentration of actove ATPGPP
-    double MDH = 0.;    ///< The initial concentration of actove MDH
-    double Thio = 0.;   ///< The initial concentration of reduced thioredoxin
-    double Fd = 0.;     ///< The initial concentration of reduced ferrodoxin
-    double RuACT = 0.;  ///< The initial concentration of active Rubisco activase
-
-    trDynaPSCon* parent;
-private:
     static const size_t count;
 };
