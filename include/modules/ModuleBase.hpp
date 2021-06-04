@@ -1,3 +1,5 @@
+#pragma once
+
 /**********************************************************************************************************************************************
  *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
  *
@@ -24,38 +26,14 @@
  *
  **********************************************************************************************************************************************/
 
-#include "globals.hpp"
-#include "modules/DynaPS.hpp"
-#include "Variables.hpp"
-#include "modules/RA.hpp"
-#include "modules/XanCycle.hpp"
+#include "definitions.hpp"
 
-// This model includes the mass balance equations for the full model of photosynthesis.
-
-arr DynaPS::_MB(const double t, const DynaPSCon* DynaPS_con, Variables *theVars) {
-
-    // Try out one new way of calculating the mass balance equation.
-    // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.
-
-    //// Step One: Get the initialization of the concentrations for the RedoxReg model which will be used in the calculation of mb of RedoxReg.
-
-    // This is a sensitivity test to show that the model is stable udner fluctuating light
-
-    const double light = 1;
-    Condition(t, theVars);
-
-    theVars->FI_Param[0] = light;
-    theVars->BF_Param[0] = light;
-
-    arr RA_DYDT = RA::MB(t, DynaPS_con->RA_con, theVars);
-    arr XanCycle_DYDT = XanCycle::MB(t, DynaPS_con->XanCycle_con, theVars);
-
-    // Here get the rate of Thioredoxin reduction and oxidation and use it to construct the differential equation for both thio and fd.
-
-    arr dxdt;
-    dxdt.reserve(96);
-    dxdt.insert(dxdt.end(), RA_DYDT.begin(), RA_DYDT.begin() + 92);
-    dxdt.insert(dxdt.end(), XanCycle_DYDT.begin(), XanCycle_DYDT.end());
-
-    return dxdt;
-}
+template<class T, class U>
+class ModuleBase {
+public:
+    static U* init(Variables *theVars) {return T::_init(theVars);}
+    static arr MB(const double t, const U* constraints, Variables *theVars) {return T::_MB(t, constraints, theVars);}
+    static void Rate(const double t, const U* constraints, Variables *theVars) {T::_Rate(t, constraints, theVars);}
+protected:
+    ModuleBase() {}
+};

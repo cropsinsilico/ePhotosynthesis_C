@@ -31,7 +31,7 @@
 
 // This function calculate the mass balance equation for the complete model of the light reactions.
 
-arr FIBF_Mb(const double t, const FIBFCon* FIBF_Con, Variables *theVars) {
+arr FIBF::_MB(const double t, const FIBFCon* FIBF_Con, Variables *theVars) {
 
     // First Get the variables needed for the calcualtion step
     BFCon* BF_con = FIBF_Con->BF_con;
@@ -55,8 +55,8 @@ arr FIBF_Mb(const double t, const FIBFCon* FIBF_Con, Variables *theVars) {
 
     theVars->BF_RC.Kd = FIBF_Con->kd;
 
-    arr BF_mb = BF::BF_Mb(t, BF_con, theVars);
-    arr FI_mb = FI::FI_Mb(t, FI_Con, theVars);
+    arr BF_mb = BF::MB(t, BF_con, theVars);
+    arr FI_mb = FI::MB(t, FI_Con, theVars);
 
     // Assign the value of the calcualted BF_mb and FI_mb to FIBF_MB variable
     arr FIBF_mb;

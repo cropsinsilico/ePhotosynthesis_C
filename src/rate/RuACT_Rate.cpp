@@ -30,7 +30,7 @@
 #include "modules/RuACT.hpp"
 #include "modules/PS.hpp"
 
-void RuACT::RuACT_Rate(const double t, const RuACTCon* RuACT_Con, Variables *theVars) {
+void RuACT::_Rate(const double t, const RuACTCon* RuACT_Con, Variables *theVars) {
 
     double C = theVars->RuACT_Pool.C;
     double O = theVars->RuACT_Pool.O;

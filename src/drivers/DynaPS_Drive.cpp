@@ -120,7 +120,7 @@ void DynaPSDrive::setup() {
 void DynaPSDrive::getResults() {
 
     DynaPSCon* dyna_int_con = new DynaPSCon(intermediateRes);
-    arr temp = DynaPS_Mb(time, dyna_int_con, theVars);
+    arr temp = DynaPS::MB(time, dyna_int_con, theVars);
 
     double PSIIabs = theVars->FI_Vel.vP680_d;
     double PSIabs = theVars->BF_Vel.Vbf11;
@@ -158,7 +158,7 @@ void DynaPSDrive::getResults() {
 }
 
 DynaPSCon* DynaPSDrive::DynaPS_Ini() {
-    return DynaPS_Init(theVars);
+    return DynaPS::init(theVars);
 }
 
 // DynaPS_mb.m  This model includes the mass balance equations for the full model of photosynthesis.
@@ -173,7 +173,7 @@ arr DynaPSDrive::MB(realtype t, N_Vector u) {
 
     DynaPSCon* DynaPS_con = new DynaPSCon(x);
 
-    arr dxdt = DynaPS_Mb(t, DynaPS_con, theVars);
+    arr dxdt = DynaPS::MB(t, DynaPS_con, theVars);
 
     delete DynaPS_con;
     return dxdt;

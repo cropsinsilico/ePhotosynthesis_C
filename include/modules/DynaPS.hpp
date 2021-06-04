@@ -26,15 +26,19 @@
  *
  **********************************************************************************************************************************************/
 
+#include "ModuleBase.hpp"
 #include "con/DynaPSCon.hpp"
 
+class DynaPS : public ModuleBase<DynaPS, DynaPSCon> {
+private:
+    friend ModuleBase;
 /**
   Initialize the variables
 
   @param theVars The global variables
   @return A DynaPSCon object for input into calculations
   */
-DynaPSCon* DynaPS_Init(Variables *theVars);
+    static DynaPSCon* _init(Variables *theVars);
 /**
   Calculate the output values based on the inputs
 
@@ -43,5 +47,10 @@ DynaPSCon* DynaPS_Init(Variables *theVars);
   @param theVars The global variables
   @return A vector containing the updated values
   */
-arr DynaPS_Mb(const double t, const DynaPSCon* DynaPS_con, Variables *theVars);
-
+    static arr _MB(const double t, const DynaPSCon* DynaPS_con, Variables *theVars);
+    static void _Rate(const double t, const DynaPSCon* DynaPS_con, Variables *theVars) {
+        (void)t;
+        (void)DynaPS_con;
+        (void)theVars;
+    }
+};

@@ -134,9 +134,9 @@ double PS::Vf_T13 = 1;
 double PS::Vf_T23 = 1;
 double PS::PsV1 = 0.;
 const size_t PSCon::count = 15;
+arr PS::Param = {0, 0};
 
-
-PSCon* PS::PS_Ini(Variables *theVars) {
+PSCon* PS::_init(Variables *theVars) {
 
     PSCon* PS_con = new PSCon();
     PS_con->RuBP = 2.000;

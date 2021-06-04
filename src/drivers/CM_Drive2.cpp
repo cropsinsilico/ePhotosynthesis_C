@@ -71,7 +71,7 @@ void CMDriver::getResults() {
     //////////////////////////////////////////////
     CMCon* CM_int_con = new CMCon(intermediateRes);
 
-    arr temp = CM_Mb(time, CM_int_con, theVars);
+    arr temp = CM::MB(time, CM_int_con, theVars);
     // Reinitialize some values of global variables.
     theVars->PSPR_SUCS_com = false;
     IniModelCom(theVars);
@@ -83,14 +83,14 @@ void CMDriver::getResults() {
 }
 
 CMCon* CMDriver::CM_Ini() {
-    return CMInit(theVars);
+    return CM::init(theVars);
 }
 
 arr CMDriver::MB(realtype t, N_Vector u) {
     realtype *x = N_VGetArrayPointer(u);
 
     CMCon* CMs = new CMCon(x);
-    arr dxdt = CM_Mb(t, CMs, theVars);
+    arr dxdt = CM::MB(t, CMs, theVars);
     delete CMs;
     return dxdt;
 }

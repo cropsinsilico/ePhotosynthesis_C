@@ -87,7 +87,7 @@ void trDynaPSDriver::setup() {
 void trDynaPSDriver::getResults() {
     // call the functions one last time to get the correct values we need
     trDynaPSCon* trDynaPS_res = new trDynaPSCon(intermediateRes);
-    arr temp = trDynaPS_Mb(time, trDynaPS_res, theVars);
+    arr temp = trDynaPS::MB(time, trDynaPS_res, theVars);
 
     double CarbonRate = theVars->RuACT_Vel.v6_1 * theVars->AVR;
     double VPR = theVars->RuACT_Vel.v6_2 * theVars->AVR;
@@ -112,14 +112,14 @@ void trDynaPSDriver::getResults() {
 }
 
 trDynaPSCon* trDynaPSDriver::trDynaPS_Ini() {
-    return trDynaPS_Init(theVars);
+    return trDynaPS::init(theVars);
 }
 
 arr trDynaPSDriver::MB(realtype t, N_Vector u) {
     realtype *x = N_VGetArrayPointer(u);
 
     trDynaPSCon* trDynaPS_con = new trDynaPSCon(x);
-    arr dxdt = trDynaPS_Mb(t, trDynaPS_con, theVars);
+    arr dxdt = trDynaPS::MB(t, trDynaPS_con, theVars);
     delete trDynaPS_con;
     return dxdt;
 }

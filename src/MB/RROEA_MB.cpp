@@ -28,11 +28,11 @@
 #include "Variables.hpp"
 #include "modules/RROEA.hpp"
 
-arr RROEA::RROEA_Mb(const double t, const RROEACon* RROEA_Con, Variables *theVars) {
+arr RROEA::_MB(const double t, const RROEACon* RROEA_Con, Variables *theVars) {
     Condition(t, theVars);
     theVars->RROEA_Param[0] = theVars->GLight;
 
-    RROEA_Rate(t, RROEA_Con, theVars);
+    Rate(t, RROEA_Con, theVars);
 
     arr RROEA_mb = zeros(10);
     RROEA_mb[0] = theVars->RROEA_Vel.ve2GAPDH;  // GAPDH

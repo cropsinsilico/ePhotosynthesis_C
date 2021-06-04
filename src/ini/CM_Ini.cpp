@@ -29,11 +29,11 @@
 #include "modules/PS_PR.hpp"
 #include "modules/SUCS.hpp"
 
-CMCon* CMInit(Variables *theVars) {
+CMCon* CM::_init(Variables *theVars) {
 
-    PS_PRCon* PS_PR_con = PS_PR_Ini(theVars);
+    PS_PRCon* PS_PR_con = PS_PR::init(theVars);
 
-    SUCSCon* SUCS_Con = SUCS::SUCS_Ini(theVars);
+    SUCSCon* SUCS_Con = SUCS::init(theVars);
 
     CMCon* CMs = new CMCon(PS_PR_con, SUCS_Con);
     return CMs;

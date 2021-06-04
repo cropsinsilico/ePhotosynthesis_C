@@ -90,7 +90,7 @@ double PR::Vf_T122 = 0;
 double PR::Vf_T112 = 0;
 const size_t PRCon::count = 13;
 
-PRCon* PR::PR_Ini(Variables *theVars) {
+PRCon* PR::_init(Variables *theVars) {
     if (theVars->useC3) {
         NADHc = 0.47;
         NADc = 0.4;

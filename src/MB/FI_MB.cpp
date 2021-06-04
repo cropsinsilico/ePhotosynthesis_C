@@ -33,7 +33,7 @@
 // 1) The initialization of the rates that was transfered from the FI_Rate routine
 // 2) The computation of the mass balance equations
 
-arr FI::FI_Mb(const double t, const FICon* FI_Con, Variables *theVars) {
+arr FI::_MB(const double t, const FICon* FI_Con, Variables *theVars) {
 
     //////////////////////////////////////////////////////////////////
     //   Calculate the rates first   //
@@ -45,7 +45,7 @@ arr FI::FI_Mb(const double t, const FICon* FI_Con, Variables *theVars) {
         theVars->FI_Param[0] = theVars->GLight;
     }
 
-    FI_Rate(t, FI_Con, theVars);
+    Rate(t, FI_Con, theVars);
 
     ////////////////////////////////////////////////////////////////
     // Get the mass balance equation //

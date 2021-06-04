@@ -26,21 +26,22 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
+#include "ModuleBase.hpp"
 #include "con/XanCycleCon.hpp"
 
 /**
  Class for XanCycle code and internal variables
  */
-class XanCycle {
-public:
+class XanCycle : public ModuleBase<XanCycle, XanCycleCon> {
+private:
+    friend ModuleBase;
     /**
       Initializer
 
       @param theVars Pointer to the global variables
       @return A XanCycleCon object with values set base on the input
       */
-    static XanCycleCon* XanCycle_Ini(Variables *theVars);
+    static XanCycleCon* _init(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -50,7 +51,7 @@ public:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr XanCycle_Mb(const double t, const XanCycleCon* XanCycle_Con, Variables *theVars);
+    static arr _MB(const double t, const XanCycleCon* XanCycle_Con, Variables *theVars);
 
     /**
       Calculate the Rates of XanCycle based on the inputs
@@ -59,8 +60,8 @@ public:
       @param XanCycle_Con XanCycleCon object giving the input parameters
       @param theVars The global variables
       */
-    static void XanCycle_Rate(const double t, const XanCycleCon* XanCycle_Con, Variables *theVars);
-private:
+    static void _Rate(const double t, const XanCycleCon* XanCycle_Con, Variables *theVars);
+
     static double XanCycle_kav;
     static double XanCycle_kaz;
     static double XanCycle_kva;

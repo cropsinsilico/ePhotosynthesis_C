@@ -26,21 +26,22 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+#include "ModuleBase.hpp"
 #include "con/BFCon.hpp"
 
 /**
  Class for the BF related functions
  */
-class BF {
-public:
+class BF : public ModuleBase<BF, BFCon> {
+private:
+    friend ModuleBase;
     /**
       Initializer
 
       @param theVars Pointer to the global variables
       @return A BFCon object with values set base on the input
       */
-    static BFCon* BF_Ini(Variables *theVars);
+    static BFCon* _init(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -50,7 +51,7 @@ public:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr BF_Mb(const double t, const BFCon* BF_con, Variables *theVars);
+    static arr _MB(const double t, const BFCon* BF_con, Variables *theVars);
 
     /**
       Calculate the Rates of BF based on the inputs
@@ -59,5 +60,5 @@ public:
       @param BF_con BFCon object giving the input parameters
       @param theVars The global variables
       */
-    static void BF_Rate(const double t, const BFCon* BF_con, Variables *theVars);
+    static void _Rate(const double t, const BFCon* BF_con, Variables *theVars);
 };

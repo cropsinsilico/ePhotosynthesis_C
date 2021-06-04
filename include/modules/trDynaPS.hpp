@@ -26,15 +26,19 @@
  *
  **********************************************************************************************************************************************/
 
+#include "ModuleBase.hpp"
 #include "con/trDynaPSCon.hpp"
 
+class trDynaPS : public ModuleBase<trDynaPS, trDynaPSCon> {
+private:
+    friend ModuleBase;
 /**
   Initialize the variables
 
   @param theVars The global variables
   @return A trDynaPSCon object for input into calculations
   */
-trDynaPSCon* trDynaPS_Init(Variables *theVars);
+    static trDynaPSCon* _init(Variables *theVars);
 
 /**
   Calculate the output values based on the inputs
@@ -43,5 +47,10 @@ trDynaPSCon* trDynaPS_Init(Variables *theVars);
   @param theVars The global variables
   @return A vector containing the updated values
   */
-arr trDynaPS_Mb(const double t, const trDynaPSCon* trDynaPS_con, Variables *theVars);
-
+    static arr _MB(const double t, const trDynaPSCon* trDynaPS_con, Variables *theVars);
+    static void _Rate(const double t, const trDynaPSCon* trDynaPS_con, Variables *theVars) {
+        (void)t;
+        (void)trDynaPS_con;
+        (void)theVars;
+    }
+};

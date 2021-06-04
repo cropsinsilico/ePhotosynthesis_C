@@ -28,10 +28,10 @@
 #include "globals.hpp"
 #include "modules/PR.hpp"
 
-arr PR::PR_Mb(const double t, const PRCon* PR_con, Variables *theVars) {
+arr PR::_MB(const double t, const PRCon* PR_con, Variables *theVars) {
     Condition(t, theVars);
 
-    PR_Rate(t, PR_con, theVars);
+    Rate(t, PR_con, theVars);
 
     arr PRdydt = zeros(13);
     PRdydt[0] = theVars->PR_Vel.v1in - theVars->PR_Vel.v113;

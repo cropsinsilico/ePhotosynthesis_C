@@ -28,10 +28,10 @@
 #include "Variables.hpp"
 #include "modules/XanCycle.hpp"
 
-arr XanCycle::XanCycle_Mb(const double t, const XanCycleCon* XanCycle_Con, Variables *theVars) {
+arr XanCycle::_MB(const double t, const XanCycleCon* XanCycle_Con, Variables *theVars) {
     Condition(t, theVars);
 
-    XanCycle_Rate(t, XanCycle_Con, theVars);
+    Rate(t, XanCycle_Con, theVars);
 
     arr XanCycle_mb = zeros(4);
 

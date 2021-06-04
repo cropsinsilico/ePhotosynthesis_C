@@ -33,10 +33,10 @@ double RedoxReg::RedoxReg_VMAX16 = 0.;
 double RedoxReg::RedoxReg_VMAX6 = 0.;
 double RedoxReg::RedoxReg_VMAX9 = 0.;
 
-RedoxRegCon* RedoxReg::RedoxReg_Ini(Variables *theVars) {
+RedoxRegCon* RedoxReg::_init(Variables *theVars) {
     theVars->RedoxReg_OLD_TIME = 0;
     theVars->RedoxReg_TIME_N = 1;
-    RACon* RA_con = RA_Ini(theVars);
+    RACon* RA_con = RA::init(theVars);
 
     const double Thion = 0.25;     // This is a wild guess
     RedoxRegCon* RedoxReg_con = new RedoxRegCon(RA_con, Thion);

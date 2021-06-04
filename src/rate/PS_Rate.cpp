@@ -32,7 +32,7 @@
 
 #define RegFactor 1.
 
-void PS::PS_Rate(const double t, const PSCon* PS_con, const arr &Param, Variables *theVars) {
+void PS::_Rate(const double t, const PSCon* PS_con, Variables *theVars) {
     double PsV6, PsV9, PsV13, PsV16, PsPEXT;
 
 

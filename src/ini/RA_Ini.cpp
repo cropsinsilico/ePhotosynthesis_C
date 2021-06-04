@@ -29,9 +29,9 @@
 #include "modules/EPS.hpp"
 #include "modules/RuACT.hpp"
 
-RACon* RA_Ini(Variables *theVars) {
-    EPSCon* EPS_con = EPS_Ini(theVars);
-    RuACTCon* RuACT_con = RuACT::RuACT_Ini(theVars);
+RACon* RA::_init(Variables *theVars) {
+    EPSCon* EPS_con = EPS::init(theVars);
+    RuACTCon* RuACT_con = RuACT::init(theVars);
 
     if (theVars->RuACT_EPS_com)
         RuACT_con->RuBP = EPS_con->CM_con->PS_PR_con->PS_con->RuBP;

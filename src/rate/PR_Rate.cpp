@@ -31,7 +31,7 @@
 #include "con/PS_PRCon.hpp"
 
 #define KI124 2
-void PR::PR_Rate(const double t, const PRCon* PR_con, Variables *theVars) {
+void PR::_Rate(const double t, const PRCon* PR_con, Variables *theVars) {
     // To set global information for different reactions
 
     // Reaction: 111: RUBP+O2<-->PGlycolate + PGA

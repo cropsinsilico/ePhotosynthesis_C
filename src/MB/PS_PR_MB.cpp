@@ -30,7 +30,7 @@
 #include "modules/PR.hpp"
 #include "globals.hpp"
 
-arr PS_PR_Mb(const double t, const PS_PRCon* PS_PR_con, Variables *theVars) {
+arr PS_PR::_MB(const double t, const PS_PRCon* PS_PR_con, Variables *theVars) {
 
     const double vATPcost = theVars->TestATPCost / theVars->AVR;
 
@@ -54,7 +54,8 @@ arr PS_PR_Mb(const double t, const PS_PRCon* PS_PR_con, Variables *theVars) {
     PS_Param[0] = theVars->PS_PR_Param;
     PS_Param[1] = PR2PS_Pgca;
 
-    PS::PS_Rate(t, PS_con, PS_Param, theVars);
+    PS::setParam(PS_Param);
+    PS::Rate(t, PS_con, theVars);
     //std::cout << theVars->PS_Vel;
 
     arr PR_Param = zeros(2);
@@ -62,7 +63,7 @@ arr PS_PR_Mb(const double t, const PS_PRCon* PS_PR_con, Variables *theVars) {
     // for the PS-PR combined model. 0: Combined model; 1: Separate model
     PR_Param[1] = theVars->Pi;
 
-    PR::PR_Rate(t, PR_con, theVars);
+    PR::Rate(t, PR_con, theVars);
 
     // Assign the rate of reaction that is calculated from the photosynthesis and photorespiration routine.
     ////////////////////////////////////////////////////////////////////////////////////////////////

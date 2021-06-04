@@ -26,20 +26,22 @@
  *
  **********************************************************************************************************************************************/
 
+#include "ModuleBase.hpp"
 #include "con/RuACTCon.hpp"
 
 /**
  Class for RuACT related functions
  */
-class RuACT {
-public:
+class RuACT : public ModuleBase<RuACT, RuACTCon> {
+private:
+    friend ModuleBase;
     /**
       Initializer
 
       @param theVars Pointer to the global variables
       @return A RuACTCon object with values set base on the input
       */
-    static RuACTCon* RuACT_Ini(Variables *theVars);
+    static RuACTCon* _init(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -49,7 +51,7 @@ public:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr RuACT_Mb(const double t, const RuACTCon* RuACT_Con, Variables *theVars);
+    static arr _MB(const double t, const RuACTCon* RuACT_Con, Variables *theVars);
 
     /**
       Calculate the Rates of RuACT based on the inputs
@@ -58,5 +60,5 @@ public:
       @param RuACT_Con RuACTCon object giving the input parameters
       @param theVars The global variables
       */
-    static void RuACT_Rate(const double t, const RuACTCon* RuACT_Con, Variables *theVars);
+    static void _Rate(const double t, const RuACTCon* RuACT_Con, Variables *theVars);
 };

@@ -30,7 +30,7 @@
 
 const size_t BFCon::count = 29;
 
-BFCon* BF::BF_Ini(Variables *theVars) {
+BFCon* BF::_init(Variables *theVars) {
 
     const double PMODTEM = 1;
 

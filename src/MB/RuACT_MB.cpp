@@ -28,13 +28,13 @@
 #include "Variables.hpp"
 #include "modules/RuACT.hpp"
 
-arr RuACT::RuACT_Mb(const double t, const RuACTCon* RuACT_Con, Variables *theVars) {
+arr RuACT::_MB(const double t, const RuACTCon* RuACT_Con, Variables *theVars) {
     Condition(t, theVars);
     const double light = theVars->GLight;
 
     theVars->RuACT_Param[0] = light;
 
-    RuACT_Rate(t, RuACT_Con, theVars);
+    Rate(t, RuACT_Con, theVars);
 
     const double v1 = theVars->RuACT_Vel.v1;     // v1 The rate of ER activation due to Rubisco activase
     const double vn1 = theVars->RuACT_Vel.vn1;   // vn1 The rate of E inactiavtion due to binding of RuBP

@@ -25,21 +25,23 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
+#include "ModuleBase.hpp"
 #include <nvector/nvector_serial.h>
 #include "con/RedoxRegCon.hpp"
 
 /**
  Class for RedoxReg related calculations and common variables
  */
-class RedoxReg{
-public:
+class RedoxReg : public ModuleBase<RedoxReg, RedoxRegCon> {
+private:
+    friend ModuleBase;
     /**
       Initialize the variables
 
       @param theVars The global variables
       @return A RedoxRegCon object for input into calculations
       */
-    static RedoxRegCon* RedoxReg_Ini(Variables *theVars);
+    static RedoxRegCon* _init(Variables *theVars);
 
     /**
       Calculate the Rates of RedoxReg based on the inputs
@@ -48,7 +50,7 @@ public:
       @param RedoxReg_Con RedoxRegCon object giving the input parameters
       @param theVars The global variables
       */
-    static void RedoxReg_Rate(const double t, const RedoxRegCon* RedoxReg_Con, Variables *theVars);
+    static void _Rate(const double t, const RedoxRegCon* RedoxReg_Con, Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -58,7 +60,7 @@ public:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr RedoxReg_Mb(const double t, const RedoxRegCon* RedoxReg_Con, Variables *theVars);
+    static arr _MB(const double t, const RedoxRegCon* RedoxReg_Con, Variables *theVars);
 
     static int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data);
 private:

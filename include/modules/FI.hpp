@@ -26,21 +26,22 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+#include "ModuleBase.hpp"
 #include "con/FIBFCon.hpp"
 
 /**
  Class for FI related functions
  */
-class FI {
-public:
+class FI : public ModuleBase<FI, FICon> {
+private:
+    friend ModuleBase;
     /**
       Initialize the variables
 
       @param theVars The global variables
       @return A FICon object for input into calculations
       */
-    static FICon* FI_Ini(Variables *theVars);
+    static FICon* _init(Variables *theVars);
     /**
       Calculate the output values based on the inputs
 
@@ -49,7 +50,7 @@ public:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr FI_Mb(const double t, const FICon* FI_Con, Variables *theVars);
+    static arr _MB(const double t, const FICon* FI_Con, Variables *theVars);
     /**
       Calculate the Rates of FI based on the inputs
 
@@ -57,5 +58,5 @@ public:
       @param FI_Con FICon object giving the input parameters
       @param theVars The global variables
       */
-    static void FI_Rate(const double t, const FICon* FI_Con, Variables *theVars);
+    static void _Rate(const double t, const FICon* FI_Con, Variables *theVars);
 };

@@ -33,7 +33,7 @@
 #define VV2ABA 0.
 #define VABADG 0.
 
-void XanCycle::XanCycle_Rate(const double t, const XanCycleCon* XanCycle_Con, Variables *theVars) {
+void XanCycle::_Rate(const double t, const XanCycleCon* XanCycle_Con, Variables *theVars) {
 
     Condition(t, theVars);
 

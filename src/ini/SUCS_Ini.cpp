@@ -96,7 +96,7 @@ double SUCS::Vf_T51=0;
 double SUCS::Vf_T56=0;
 
 
-SUCSCon* SUCS::SUCS_Ini(Variables *theVars) {
+SUCSCon* SUCS::_init(Variables *theVars) {
     theVars->SUCS_OLD_TIME = 0;
     theVars->SUCS_TIME_N = 1;
     SUCSCon* SUCS_Con = new SUCSCon();

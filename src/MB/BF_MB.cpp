@@ -28,7 +28,7 @@
 #include "globals.hpp"
 #include "modules/BF.hpp"
 
-arr BF::BF_Mb(const double t, const BFCon* BF_con, Variables *theVars) {
+arr BF::_MB(const double t, const BFCon* BF_con, Variables *theVars) {
 
     if (theVars->useC3) {
         theVars->BF_Param[0] = theVars->TestLi * 30;
@@ -40,7 +40,7 @@ arr BF::BF_Mb(const double t, const BFCon* BF_con, Variables *theVars) {
     //////////////////////////////////////////////////////////////////
     //   Calculate the rates BFrst   //
     //////////////////////////////////////////////////////////////////
-    BF_Rate(t, BF_con, theVars);
+    Rate(t, BF_con, theVars);
 
     ////////////////////////////////////////////////////////////////
     // Get the mass balance equation //

@@ -25,16 +25,19 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
+#include "ModuleBase.hpp"
 #include "con/CMCon.hpp"
 
-/**
+class CM : public ModuleBase<CM, CMCon> {
+private:
+    friend ModuleBase;
+    /**
   Initialize the variables
 
   @param theVars The global variables
   @return A CMCon object for input into calculations
   */
-CMCon* CMInit(Variables *theVars);
+    static CMCon* _init(Variables *theVars);
 /**
   Calculate the output values based on the inputs
 
@@ -43,4 +46,11 @@ CMCon* CMInit(Variables *theVars);
   @param theVars The global variables
   @return A vector containing the updated values
   */
-arr CM_Mb(const double t, const CMCon* CM_con, Variables *theVars);
+    static arr _MB(const double t, const CMCon* CM_con, Variables *theVars);
+
+    static void _Rate(const double t, const CMCon* CM_con, Variables *theVars) {
+        (void)t;
+        (void)CM_con;
+        (void)theVars;
+    }
+};

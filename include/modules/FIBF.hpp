@@ -26,15 +26,18 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+#include "ModuleBase.hpp"
 #include "con/FIBFCon.hpp"
 
-/**
+class FIBF : public ModuleBase<FIBF, FIBFCon> {
+private:
+    friend ModuleBase;
+    /**
   Initialize the variables
 
   @param theVars The global variables
   */
-void FIBF_Ini(Variables *theVars);
+    static FIBFCon* _init(Variables *theVars);
 
 /**
   Calculate the output values based on the inputs
@@ -44,4 +47,11 @@ void FIBF_Ini(Variables *theVars);
   @param theVars The global variables
   @return A vector containing the updated values
   */
-arr FIBF_Mb(const double t, const FIBFCon* FIBF_Con, Variables *theVars);
+    static arr _MB(const double t, const FIBFCon* FIBF_Con, Variables *theVars);
+
+    static void _Rate(const double t, const FIBFCon* FIBF_Con, Variables *theVars) {
+        (void)t;
+        (void)FIBF_Con;
+        (void)theVars;
+    }
+};

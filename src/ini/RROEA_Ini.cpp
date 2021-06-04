@@ -29,7 +29,7 @@
 
 const size_t RROEACon::count = 10;
 
-RROEACon* RROEA::RROEA_Ini(Variables *theVars) {
+RROEACon* RROEA::_init(Variables *theVars) {
     theVars->RROEA_OLD_TIME = 0;
     theVars->RROEA_TIME_N = 1;
 

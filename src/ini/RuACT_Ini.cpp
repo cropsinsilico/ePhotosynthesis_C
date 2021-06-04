@@ -30,7 +30,7 @@
 
 const size_t RuACTCon::count = 4;
 
-RuACTCon* RuACT::RuACT_Ini(Variables *theVars) {
+RuACTCon* RuACT::_init(Variables *theVars) {
     theVars->activase = 80 * theVars->RacRatio[10];
 
     // The rate constant used in the model

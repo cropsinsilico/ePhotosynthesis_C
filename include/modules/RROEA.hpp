@@ -25,21 +25,22 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
+#include "ModuleBase.hpp"
 #include "con/RROEACon.hpp"
 
 /**
  Class for RROEA related functions
  */
-class RROEA {
-public:
+class RROEA : public ModuleBase<RROEA, RROEACon> {
+private:
+    friend ModuleBase;
     /**
       Initializer
 
       @param theVars Pointer to the global variables
       @return A RROEACon object with values set base on the input
       */
-    static RROEACon* RROEA_Ini(Variables *theVars);
+    static RROEACon* _init(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -49,7 +50,7 @@ public:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr RROEA_Mb(const double t, const RROEACon* RROEA_Con, Variables *theVars);
+    static arr _MB(const double t, const RROEACon* RROEA_Con, Variables *theVars);
 
     /**
       Calculate the Rates of RROEA based on the inputs
@@ -58,5 +59,5 @@ public:
       @param RROEA_Con RROEACon object giving the input parameters
       @param theVars The global variables
       */
-    static void RROEA_Rate(const double t, const RROEACon* RROEA_Con, Variables *theVars);
+    static void _Rate(const double t, const RROEACon* RROEA_Con, Variables *theVars);
 };

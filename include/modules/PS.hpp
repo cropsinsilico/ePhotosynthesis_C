@@ -26,7 +26,7 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+#include "ModuleBase.hpp"
 #include "con/PSCon.hpp"
 class PR;
 class RuACT;
@@ -34,8 +34,13 @@ class SUCS;
 /**
  Class to for PS related functions and common variables
  */
-class PS{
+class PS : public ModuleBase<PS, PSCon> {
 public:
+    static void setParam(const arr &param) {
+        Param = param;
+    }
+private:
+    friend ModuleBase;
     /**
       Calculate the output values based on the inputs
 
@@ -44,7 +49,7 @@ public:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr PS_Mb(const double t, const PSCon* PSs, const arr &Param, Variables *theVars);
+    static arr _MB(const double t, const PSCon* PSs, const arr &Param, Variables *theVars);
 
     /**
       Initializer
@@ -52,7 +57,7 @@ public:
       @param theVars Pointer to the global variables
       @return A PSCon object with values set base on the input
       */
-    static PSCon* PS_Ini(Variables *theVars);
+    static PSCon* _init(Variables *theVars);
 
     /**
       Calculate the Rates of PS based on the inputs
@@ -61,8 +66,8 @@ public:
       @param PSs PSCon object giving the input parameters
       @param theVars The global variables
       */
-    static void PS_Rate(const double t, const PSCon* PSs, const arr &Param, Variables *theVars);
-private:
+    static void _Rate(const double t, const PSCon* PSs, Variables *theVars);
+
     friend PR;
     friend RuACT;
     friend SUCS;
@@ -165,4 +170,5 @@ private:
     static double Vf_T13;
     static double Vf_T23;
     static double PsV1;
+    static arr Param;
 };

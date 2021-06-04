@@ -26,15 +26,19 @@
  *
  **********************************************************************************************************************************************/
 
+#include "ModuleBase.hpp"
 #include "con/EPSCon.hpp"
 
-/**
+class EPS : public ModuleBase<EPS, EPSCon> {
+private:
+    friend ModuleBase;
+    /**
   Initializer
 
   @param theVars Pointer to the global variables
   @return A EPSCon object with values set base on the input
   */
-EPSCon* EPS_Ini(Variables *theVars);
+    static EPSCon* _init(Variables *theVars);
 
 /**
   Calculate the output values based on the inputs
@@ -44,5 +48,11 @@ EPSCon* EPS_Ini(Variables *theVars);
   @param theVars The global variables
   @return A vector containing the updated values
   */
-arr EPS_Mb(const double t, const EPSCon* EPS_Con, Variables *theVars);
+    static arr _MB(const double t, const EPSCon* EPS_Con, Variables *theVars);
 
+    static void _Rate(const double t, const EPSCon* EPS_Con, Variables *theVars) {
+        (void)t;
+        (void)EPS_Con;
+        (void)theVars;
+    }
+};

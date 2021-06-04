@@ -31,15 +31,15 @@
 
 // This model includes the mass balance equations for the full model of the light reactions.
 
-arr EPS_Mb(const double t, const EPSCon* EPS_Con, Variables *theVars) {
+arr EPS::_MB(const double t, const EPSCon* EPS_Con, Variables *theVars) {
 
     // Try out one new way of calculating the mass balance equation.
     // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.
     //std::cout << EPS_Con;
     //// Step One: Get the initialization of the concentrations for the PSPR model which will be used in the calculation of mb of CM.
 
-    arr CM_DYDT = CM_Mb(t, EPS_Con->CM_con, theVars);
-    arr FIBF_DYDT = FIBF_Mb(t, EPS_Con->FIBF_con, theVars);
+    arr CM_DYDT = CM::MB(t, EPS_Con->CM_con, theVars);
+    arr FIBF_DYDT = FIBF::MB(t, EPS_Con->FIBF_con, theVars);
 
     // Step III: Calculate the mass balanec equation for the EPS model. This basically need to make sure that the variables
     // used in the mass balance equation should be in exact sequence with the sequence used in the inialization.

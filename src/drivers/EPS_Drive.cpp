@@ -99,14 +99,14 @@ void EPSDriver::getResults() {
     if (theVars->useC3)
         adjust = 1;
     EPSCon* eps_int_con = new EPSCon(intermediateRes, adjust);
-    arr temp = EPS_Mb(time, eps_int_con, theVars);
+    arr temp = EPS::MB(time, eps_int_con, theVars);
     results = zeros(1);
     const double Arate = (theVars->PS_Vel.v1 - theVars->PR_Vel.v131) * theVars->AVR;
     results[0] = Arate;
 }
 
 EPSCon* EPSDriver::EPS_Init() {
-    return EPS_Ini(theVars);
+    return EPS::init(theVars);
 }
 
 arr EPSDriver::MB(realtype t, N_Vector u) {
@@ -123,7 +123,7 @@ arr EPSDriver::MB(realtype t, N_Vector u) {
     //for (auto dd : EPS_con.toArray())
     //    std::cout << dd << "  ";
     //std::cout << std::endl;
-    arr dxdt = EPS_Mb(t, EPS_con, theVars);
+    arr dxdt = EPS::MB(t, EPS_con, theVars);
     delete EPS_con;
     //std::cout << std::endl << "OUTPUT  ";
     //for (auto dd : dxdt) {

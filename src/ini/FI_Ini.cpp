@@ -33,7 +33,7 @@ const size_t FICon::count = 22;
 // The following information is initialized sequentially 1) Rate constants; 2) Initial concentration ( or conditions); 3) THe maximum
 // concentration of components of photosystems.
 
-FICon* FI::FI_Ini(Variables *theVars) {
+FICon* FI::_init(Variables *theVars) {
     //////////////////////////////////////////////////////////////////////////
     // Initilization of the rate constant //
     ////////////////////////////////////////////////////////////////////////////

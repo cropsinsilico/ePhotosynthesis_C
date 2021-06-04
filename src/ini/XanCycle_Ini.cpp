@@ -34,7 +34,7 @@ double XanCycle::XanCycle_kza = 0.;
 
 const size_t XanCycleCon::count = 4;
 
-XanCycleCon* XanCycle::XanCycle_Ini(Variables *theVars) {
+XanCycleCon* XanCycle::_init(Variables *theVars) {
 
     XanCycle_kva = 0.163 / 60 * theVars->XanRatio[0]; // Ruth Frommolt et a; 2001; Planta
     XanCycle_kaz = 0.691 / 60 * theVars->XanRatio[1]; // Ruth Frommolt et a; 2001; Planta

@@ -28,13 +28,13 @@
 #include "Variables.hpp"
 #include "modules/SUCS.hpp"
 
-arr SUCS::SUCS_Mb(const double t, const SUCSCon* SUCS_Con, Variables *theVars) {
+arr SUCS::_MB(const double t, const SUCSCon* SUCS_Con, Variables *theVars) {
     Condition(t, theVars);
 
     theVars->SUCS_Param[0] = theVars->GLight;
 
     //arr SUCS_Vel = zeros(15);
-    SUCS_Rate(t, SUCS_Con, theVars);
+    Rate(t, SUCS_Con, theVars);
 
     ////////////////////////////////////////////////////////////////
     // Get the mass balance equation//

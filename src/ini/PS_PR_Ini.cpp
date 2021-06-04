@@ -30,9 +30,9 @@
 #include "modules/PR.hpp"
 
 
-PS_PRCon* PS_PR_Ini(Variables *theVars) {
-    PSCon* PS_con = PS::PS_Ini(theVars);
-    PRCon* PR_con = PR::PR_Ini(theVars);
+PS_PRCon* PS_PR::_init(Variables *theVars) {
+    PSCon* PS_con = PS::init(theVars);
+    PRCon* PR_con = PR::init(theVars);
     //arr PrS = PR_con->toArray();
     //arr PSs = PS_con->toArray();
     PS_PRCon* PS_PR_con = new PS_PRCon(PS_con, PR_con);

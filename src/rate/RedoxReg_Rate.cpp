@@ -36,7 +36,7 @@
 #define ONE    RCONST(1.0)
 #define ZERO   RCONST(0.0)
 
-void RedoxReg::RedoxReg_Rate(const double t, const RedoxRegCon* RedoxReg_Con, Variables *theVars) {
+void RedoxReg::_Rate(const double t, const RedoxRegCon* RedoxReg_Con, Variables *theVars) {
     const double Thio = theVars->ThioT - RedoxReg_Con->Thion;
 
     theVars->RedoxReg_MP[0][2] = RedoxReg_Con->Thion / theVars->ThioT;
