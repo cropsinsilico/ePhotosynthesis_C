@@ -63,7 +63,8 @@ include_directories(ePhotosynthesis ${SUNDIALS_INCLUDE_DIRS})
 include_directories("${PROJECT_SOURCE_DIR}/include")
 
 file(GLOB SOURCES "source/*.cpp")
-add_executable(ePhotosynthesis ${SOURCES})
+#add_executable(ePhotosynthesis ${SOURCES})
+add_library(ePhotosynthesis SHARED ${SOURCES})
 
 target_link_libraries(ePhotosynthesis ${SUNDIALS_LIBRARIES})
 target_link_libraries(ePhotosynthesis boost_regex)
