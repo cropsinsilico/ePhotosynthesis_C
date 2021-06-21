@@ -77,7 +77,7 @@ void trDynaPSDriver::setup() {
     theVars->PSPR_SUCS_com = true;
 
     // Next is to initialize the vector.
-    trDynaPSCon* trDynaPS_con = trDynaPS_Ini();
+    trDynaPSContainer* trDynaPS_con = trDynaPS_Ini();
     ParamSet(theVars);
     constraints = trDynaPS_con->toArray();
     delete trDynaPS_con;
@@ -86,7 +86,7 @@ void trDynaPSDriver::setup() {
 
 void trDynaPSDriver::getResults() {
     // call the functions one last time to get the correct values we need
-    trDynaPSCon* trDynaPS_res = new trDynaPSCon(intermediateRes);
+    trDynaPSContainer* trDynaPS_res = new trDynaPSContainer(intermediateRes);
     arr temp = trDynaPS::MB(time, trDynaPS_res, theVars);
 
     double CarbonRate = theVars->RuACT_Vel.v6_1 * theVars->AVR;
@@ -111,14 +111,14 @@ void trDynaPSDriver::getResults() {
     IniModelCom(theVars);
 }
 
-trDynaPSCon* trDynaPSDriver::trDynaPS_Ini() {
+trDynaPSContainer* trDynaPSDriver::trDynaPS_Ini() {
     return trDynaPS::init(theVars);
 }
 
 arr trDynaPSDriver::MB(realtype t, N_Vector u) {
     realtype *x = N_VGetArrayPointer(u);
 
-    trDynaPSCon* trDynaPS_con = new trDynaPSCon(x);
+    trDynaPSContainer* trDynaPS_con = new trDynaPSContainer(x);
     arr dxdt = trDynaPS::MB(t, trDynaPS_con, theVars);
     delete trDynaPS_con;
     return dxdt;

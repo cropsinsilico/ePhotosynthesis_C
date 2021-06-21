@@ -65,7 +65,7 @@ void EPSDriver::setup() {
     /////////////////////////
     //   Calculation  step //
     /////////////////////////
-    EPSCon* EPS_Con = EPS_Init();
+    EPSContainer* EPS_Con = EPS_Init();
 
     int va1 = 0;
     theVars->BF_Param[0] = va1;
@@ -98,14 +98,14 @@ void EPSDriver::getResults() {
     uint adjust = 0;
     if (theVars->useC3)
         adjust = 1;
-    EPSCon* eps_int_con = new EPSCon(intermediateRes, adjust);
+    EPSContainer* eps_int_con = new EPSContainer(intermediateRes, adjust);
     arr temp = EPS::MB(time, eps_int_con, theVars);
     results = zeros(1);
     const double Arate = (theVars->PS_Vel.v1 - theVars->PR_Vel.v131) * theVars->AVR;
     results[0] = Arate;
 }
 
-EPSCon* EPSDriver::EPS_Init() {
+EPSContainer* EPSDriver::EPS_Init() {
     return EPS::init(theVars);
 }
 
@@ -117,25 +117,10 @@ arr EPSDriver::MB(realtype t, N_Vector u) {
     if (theVars->useC3) {
         adjust = 1;
     }
-    EPSCon* EPS_con = new EPSCon(x, adjust);
+    EPSContainer* EPS_con = new EPSContainer(x, adjust);
 
-    //std::cout << std::endl << "INPUT   " << t << "  --   ";
-    //for (auto dd : EPS_con.toArray())
-    //    std::cout << dd << "  ";
-    //std::cout << std::endl;
     arr dxdt = EPS::MB(t, EPS_con, theVars);
     delete EPS_con;
-    //std::cout << std::endl << "OUTPUT  ";
-    //for (auto dd : dxdt) {
-    //    std::cout << dd << "  ";
-    //}
-    //std::cout << std::endl;
-    return dxdt;
-}
 
-std::ostream& operator<<(std::ostream &out, const EPSCon &in) {
-    out << "EPSCon" << std::endl;
-    out << in.CM_con;
-    out << in.FIBF_con;
-    return out;
+    return dxdt;
 }
