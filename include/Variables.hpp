@@ -49,10 +49,10 @@
 #include "rc/FIRC.hpp"
 #include "rc/RROEARC.hpp"
 #include "rc/RuACTRC.hpp"
-#include "con/PSCon.hpp"
-#include "con/PRCon.hpp"
-#include "con/SUCSCon.hpp"
-#include "con/XanCycleCon.hpp"
+#include "containers/PSContainer.hpp"
+#include "containers/PRContainer.hpp"
+#include "containers/SUCSContainer.hpp"
+#include "containers/XanCycleContainer.hpp"
 //#include "vel/FIBF.hpp"
 
 /**
@@ -226,10 +226,10 @@ struct Variables {
 
     // OUT
     arr BF2OUT = zeros(5);
-    PRCon PR2OUT;
-    PSCon PS2OUT;
-    SUCSCon SUCS2OUT;
-    XanCycleCon XanCycle2OUT;
+    PRContainer PR2OUT;
+    PSContainer PS2OUT;
+    SUCSContainer SUCS2OUT;
+    XanCycleContainer XanCycle2OUT;
 
     // misc
     arr FluxTR;
@@ -248,4 +248,9 @@ struct Variables {
     TimeSeries<XanCycleVel> XanCycle_VEL = TimeSeries<XanCycleVel> ();
 
     bool useC3 = false;
+#ifdef INCDEBUG
+    Debug::RequestedDebug debuglevel = Debug::None;
+    //ushort offset = 0;
+    //std::map<Module::Module, ushort> debugmap;
+#endif
 };

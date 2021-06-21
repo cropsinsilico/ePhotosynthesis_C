@@ -99,7 +99,6 @@ public:
         vP680_d = other.vP680_d;
         vP680_f = other.vP680_f;
     }
-    friend std::ostream& operator<<(std::ostream &out, const FIVel &in);
 
     double vA_d = 0.;    ///<  vA_d  The rate of heat dissipation from peripheral antenna
     double vA_f = 0.;    ///<  vA_f  The rate of fluorescence emission from peripheral antenna
@@ -159,4 +158,7 @@ public:
     double vU_P680 = 0.;
     double vP680_d = 0.;
     double vP680_f = 0.;
+
+    friend std::ostream& operator<<(std::ostream& out, const FIVel &in);
+    friend std::ostream& operator<<(std::ostream& out, const FIVel *in);
 };

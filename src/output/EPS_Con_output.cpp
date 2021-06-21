@@ -1,5 +1,3 @@
-#pragma once
-
 /**********************************************************************************************************************************************
  *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
  *
@@ -26,25 +24,12 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+#include "containers/EPSContainer.hpp"
 
-/**
- Class for holding the results of RedoxReg_Rate calculations
- */
-class RedoxRegVel {
-  public:
-  RedoxRegVel() {}
-  /**
-    Copy constructor that makes a deep copy of the given object
-
-    @param other The RedoxRegVel object to copy
-    */
-  RedoxRegVel(const RedoxRegVel &other) {
-      Vred = other.Vred;
-      Vox = other.Vox;
-  }
-    double Vred = 0.;
-    double Vox = 0.;
-    friend std::ostream& operator<<(std::ostream& out, const RedoxRegVel &in);
-    friend std::ostream& operator<<(std::ostream& out, const RedoxRegVel *in);
-};
+std::ostream& EPSContainer::_print(std::ostream &out, const uint tab) const {
+    const std::string space(tab * 4, ' ');
+    out << space << "EPSContainer" << std::endl;
+    CM_con->_print(out, tab + 1);
+    FIBF_con->_print(out, tab + 1);
+    return out;
+}

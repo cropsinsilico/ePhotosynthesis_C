@@ -1,5 +1,3 @@
-#pragma once
-
 /**********************************************************************************************************************************************
  *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
  *
@@ -26,25 +24,24 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+#include "containers/SUCSContainer.hpp"
 
-/**
- Class for holding the results of RedoxReg_Rate calculations
- */
-class RedoxRegVel {
-  public:
-  RedoxRegVel() {}
-  /**
-    Copy constructor that makes a deep copy of the given object
+std::ostream& SUCSContainer::_print(std::ostream &out, const uint tab) const {
+    const std::string space(tab * 4, ' ');
+    out << space << "SUCSContainer" << std::endl;
+    out << space << "  T3Pc= " << T3Pc<< std::endl;
+    out << space << "  FBPc= " << FBPc<< std::endl;
+    out << space << "  HexPc = " << HexPc << std::endl;
+    out << space << "  F26BPc= " << F26BPc<< std::endl;
+    out << space << "  ATPc= " << ATPc<< std::endl;
+    out << space << "  ADPc= " << ADPc<< std::endl;
+    out << space << "  OPOPc = " << OPOPc << std::endl;
+    out << space << "  UDPGc = " << UDPGc << std::endl;
+    out << space << "  UTPc= " << UTPc<< std::endl;
+    out << space << "  SUCP= " << SUCP<< std::endl;
+    out << space << "  SUC = " << SUC << std::endl;
+    out << space << "  PGAc= " << PGAc<< std::endl;
 
-    @param other The RedoxRegVel object to copy
-    */
-  RedoxRegVel(const RedoxRegVel &other) {
-      Vred = other.Vred;
-      Vox = other.Vox;
-  }
-    double Vred = 0.;
-    double Vox = 0.;
-    friend std::ostream& operator<<(std::ostream& out, const RedoxRegVel &in);
-    friend std::ostream& operator<<(std::ostream& out, const RedoxRegVel *in);
-};
+    return out;
+}
+

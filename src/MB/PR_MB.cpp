@@ -49,40 +49,6 @@ arr PR::_MB(const double t, const PRContainer* PR_con, Variables *theVars) {
     PRdydt[11] = 0;
     PRdydt[12] = 0;
 
+    DEBUG_DELTA(PRdydt)
     return PRdydt;
-}
-
-std::ostream& operator<<(std::ostream &out, const PRCon &in) {
-    out << "PRCon" << std::endl;
-    out << "  GCEA= " << in.GCEA<< std::endl;
-    out << "  GCA = " << in.GCA << std::endl;
-    out << "  PGA = " << in.PGA << std::endl;
-    out << "  PGCA= " << in.PGCA<< std::endl;
-    out << "  GCAc= " << in.GCAc<< std::endl;
-    out << "  GOAc= " << in.GOAc<< std::endl;
-    out << "  SERc= " << in.SERc<< std::endl;
-    out << "  GLYc= " << in.GLYc<< std::endl;
-    out << "  HPRc= " << in.HPRc<< std::endl;
-    out << "  GCEAc = " << in.GCEAc << std::endl;
-    out << "  RUBP= " << in.RuBP<< std::endl;
-    out << "  CO2 = " << in.CO2 << std::endl;
-    out << "  O2= " << in.O2<< std::endl;
-
-    return out;
-}
-
-std::ostream& operator<<(std::ostream &out, const PRVel &in) {
-    out << "PRVel" << std::endl;
-    out << "  v111 = " << in.v111 << std::endl;
-    out << "  v112 = " << in.v112 << std::endl;
-    out << "  v113 = " << in.v113 << std::endl;
-    out << "  v121 = " << in.v121 << std::endl;
-    out << "  v122 = " << in.v122 << std::endl;
-    out << "  v123 = " << in.v123 << std::endl;
-    out << "  v124 = " << in.v124 << std::endl;
-    out << "  v131 = " << in.v131 << std::endl;
-    out << "  v1in = " << in.v1in << std::endl;
-    out << "  v2out= " << in.v2out<< std::endl;
-
-    return out;
 }

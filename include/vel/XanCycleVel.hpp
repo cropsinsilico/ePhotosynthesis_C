@@ -55,4 +55,7 @@ public:
     double Vvf = 0.;    ///< The rate of V formation
     double Vv2ABA = 0.; ///< The rate of conversion from v to ABA.
     double VABAdg = 0.; ///< The rate of ABA degradation
+
+    friend std::ostream& operator<<(std::ostream& out, const XanCycleVel &in);
+    friend std::ostream& operator<<(std::ostream& out, const XanCycleVel *in);
 };

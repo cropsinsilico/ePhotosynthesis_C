@@ -132,12 +132,6 @@ arr FIBF::_MB(const double t, const FIBFContainer* FIBF_Con, Variables *theVars)
     FIBF_mb[50] = GPQH2_t; // QH2 The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
     //std::cout << theVars->FI_Vel;
     //std::cout << theVars->BF_Vel;
+    DEBUG_DELTA(FIBF_mb)
     return FIBF_mb;
-}
-
-std::ostream& operator<<(std::ostream &out, const FIBFCon &in) {
-    out << "FIBFCon" << std::endl;
-    out << in.FI_con;
-    out << in.BF_con;
-    return out;
 }

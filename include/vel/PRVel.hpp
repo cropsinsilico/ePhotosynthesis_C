@@ -70,7 +70,7 @@ public:
         this->v2out *= val;
         return *this;
     }
-    friend std::ostream& operator<<(std::ostream &out, const PRVel &in);
+
     double v111 = 0.;
     double v112 = 0.;
     double v113 = 0.;
@@ -81,4 +81,7 @@ public:
     double v131 = 0.;
     double v1in = 0.;
     double v2out = 0.;
+
+    friend std::ostream& operator<<(std::ostream& out, const PRVel &in);
+    friend std::ostream& operator<<(std::ostream& out, const PRVel *in);
 };

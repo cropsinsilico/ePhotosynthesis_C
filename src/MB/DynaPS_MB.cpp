@@ -56,6 +56,6 @@ arr DynaPS::_MB(const double t, const DynaPSContainer* DynaPS_con, Variables *th
     dxdt.reserve(96);
     dxdt.insert(dxdt.end(), RA_DYDT.begin(), RA_DYDT.begin() + 92);
     dxdt.insert(dxdt.end(), XanCycle_DYDT.begin(), XanCycle_DYDT.end());
-
+    DEBUG_DELTA(dxdt)
     return dxdt;
 }

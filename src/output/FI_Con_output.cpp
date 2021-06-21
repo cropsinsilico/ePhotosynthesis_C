@@ -1,5 +1,3 @@
-#pragma once
-
 /**********************************************************************************************************************************************
  *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
  *
@@ -26,25 +24,33 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+#include "containers/FIContainer.hpp"
 
-/**
- Class for holding the results of RedoxReg_Rate calculations
- */
-class RedoxRegVel {
-  public:
-  RedoxRegVel() {}
-  /**
-    Copy constructor that makes a deep copy of the given object
+std::ostream& FIContainer::_print(std::ostream &out, const uint tab) const {
+    const std::string space(tab * 4, ' ');
 
-    @param other The RedoxRegVel object to copy
-    */
-  RedoxRegVel(const RedoxRegVel &other) {
-      Vred = other.Vred;
-      Vox = other.Vox;
-  }
-    double Vred = 0.;
-    double Vox = 0.;
-    friend std::ostream& operator<<(std::ostream& out, const RedoxRegVel &in);
-    friend std::ostream& operator<<(std::ostream& out, const RedoxRegVel *in);
-};
+    out << space << "FICon" << std::endl;
+    out << space << "  A = " << A << std::endl;
+    out << space << "  U = " << U << std::endl;
+    out << space << "  P680ePheo = " << P680ePheo << std::endl;
+    out << space << "  P680pPheon = " << P680pPheon<< std::endl;
+    out << space << "  P680pPheo = " << P680pPheo << std::endl;
+    out << space << "  P680Pheon = " << P680Pheon << std::endl;
+    out << space << "  Yz = " << Yz<< std::endl;
+    out << space << "  S1T = " << S1T << std::endl;
+    out << space << "  S2T = " << S2T << std::endl;
+    out << space << "  S3T = " << S3T << std::endl;
+    out << space << "  S0T = " << S0T << std::endl;
+    out << space << "  S1Tp = " << S1Tp<< std::endl;
+    out << space << "  S2Tp = " << S2Tp<< std::endl;
+    out << space << "  S3Tp = " << S3Tp<< std::endl;
+    out << space << "  S0Tp = " << S0Tp<< std::endl;
+    out << space << "  QAQB = " << QAQB<< std::endl;
+    out << space << "  QAnQB = " << QAnQB << std::endl;
+    out << space << "  QAQBn = " << QAQBn << std::endl;
+    out << space << "  QAnQBn = " << QAnQBn<< std::endl;
+    out << space << "  QAQB2n = " << QAQB2n<< std::endl;
+    out << space << "  QAnQB2n = " << QAnQB2n << std::endl;
+    out << space << "  PQn = " << PQn << std::endl;
+    return out;
+}

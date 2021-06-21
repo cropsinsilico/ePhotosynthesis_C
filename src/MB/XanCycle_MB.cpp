@@ -30,7 +30,7 @@
 
 arr XanCycle::_MB(const double t, const XanCycleContainer* XanCycle_Con, Variables *theVars) {
     Condition(t, theVars);
-
+    //DEBUG_MESSAGE(XanCycle_Con)
     Rate(t, XanCycle_Con, theVars);
 
     arr XanCycle_mb = zeros(4);
@@ -39,6 +39,6 @@ arr XanCycle::_MB(const double t, const XanCycleContainer* XanCycle_Con, Variabl
     XanCycle_mb[1] = theVars->XanCycle_Vel.Vva - theVars->XanCycle_Vel.Vav + theVars->XanCycle_Vel.Vza - theVars->XanCycle_Vel.Vaz;
     XanCycle_mb[2] = theVars->XanCycle_Vel.Vaz - theVars->XanCycle_Vel.Vza;
     XanCycle_mb[3] = theVars->XanCycle_Vel.Vv2ABA - theVars->XanCycle_Vel.VABAdg;
-
+    DEBUG_DELTA(XanCycle_mb)
     return XanCycle_mb;
 }

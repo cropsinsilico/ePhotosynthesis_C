@@ -63,5 +63,8 @@ public:
     double veFd2Thio = 0.;
     double veFd2Calvin = 0.;
     double ve2RuACT = 0.;
+
+    friend std::ostream& operator<<(std::ostream& out, const RROEAVel &in);
+    friend std::ostream& operator<<(std::ostream& out, const RROEAVel *in);
 };
 

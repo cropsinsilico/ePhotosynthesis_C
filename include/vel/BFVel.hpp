@@ -73,8 +73,6 @@ public:
         vcet = other.vcet;
     }
 
-    friend std::ostream& operator<<(std::ostream &out, const BFVel &in);
-
     double Vbf1 = 0.;
     double Vbf2 = 0.;
     double Vbf3 = 0.;
@@ -107,4 +105,6 @@ public:
     double VsNADPH = 0.;
     double vcet = 0.;
 
+    friend std::ostream& operator<<(std::ostream& out, const BFVel &in);
+    friend std::ostream& operator<<(std::ostream& out, const BFVel *in);
 };

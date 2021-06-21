@@ -45,5 +45,6 @@ arr RROEA::_MB(const double t, const RROEAContainer* RROEA_Con, Variables *theVa
     RROEA_mb[7] = theVars->RROEA_Vel.veFd2Thio - theVars->RROEA_Vel.ve2GAPDH - theVars->RROEA_Vel.ve2FBPase - theVars->RROEA_Vel.ve2SBPase - theVars->RROEA_Vel.ve2PRK - theVars->RROEA_Vel.ve2ATPGPP - theVars->RROEA_Vel.ve2RuACT; // Thio
     RROEA_mb[8] = theVars->RROEA_Vel.ve2Fd - theVars->RROEA_Vel.veFd2Thio - theVars->RROEA_Vel.veFd2Calvin; // Fd
     RROEA_mb[9] = theVars->RROEA_Vel.ve2RuACT;  // RuACT;
+    DEBUG_DELTA(RROEA_mb)
     return RROEA_mb;
 }

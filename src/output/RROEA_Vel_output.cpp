@@ -1,5 +1,3 @@
-#pragma once
-
 /**********************************************************************************************************************************************
  *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
  *
@@ -26,25 +24,25 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+#include "vel/RROEAVel.hpp"
 
-/**
- Class for holding the results of RedoxReg_Rate calculations
- */
-class RedoxRegVel {
-  public:
-  RedoxRegVel() {}
-  /**
-    Copy constructor that makes a deep copy of the given object
+std::ostream& operator<<(std::ostream& out, const RROEAVel &in) {
+    out << "RROEAVel" << std::endl;
+    out << "  ve2GAPDH = " << in.ve2GAPDH << std::endl;
+    out << "  ve2FBPase = " << in.ve2FBPase << std::endl;
+    out << "  ve2SBPase = " << in.ve2SBPase << std::endl;
+    out << "  ve2PRK = " << in.ve2PRK << std::endl;
+    out << "  ve2ATPase = " << in.ve2ATPase << std::endl;
+    out << "  ve2ATPGPP = " << in.ve2ATPGPP << std::endl;
+    out << "  ve2MDH = " << in.ve2MDH << std::endl;
+    out << "  ve2Fd = " << in.ve2Fd << std::endl;
+    out << "  veFd2Thio = " << in.veFd2Thio << std::endl;
+    out << "  veFd2Calvin = " << in.veFd2Calvin << std::endl;
+    out << "  ve2RuACT = " << in.ve2RuACT << std::endl;
+    return out;
+}
 
-    @param other The RedoxRegVel object to copy
-    */
-  RedoxRegVel(const RedoxRegVel &other) {
-      Vred = other.Vred;
-      Vox = other.Vox;
-  }
-    double Vred = 0.;
-    double Vox = 0.;
-    friend std::ostream& operator<<(std::ostream& out, const RedoxRegVel &in);
-    friend std::ostream& operator<<(std::ostream& out, const RedoxRegVel *in);
-};
+std::ostream& operator<<(std::ostream& out, const RROEAVel *in) {
+    out << *in;
+    return out;
+}

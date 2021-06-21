@@ -52,5 +52,6 @@ arr CM::_MB(const realtype t, const CMContainer* CM_con, Variables *theVars) {
         SUCS_DYDT[11] = SUCS_DYDT[11] - theVars->SUCS_Vel.vpga_in + theVars->PS_Vel.v32;//	pgaC
         dxdt[34] = SUCS_DYDT[11];
     }
+    DEBUG_DELTA(dxdt)
     return dxdt;
 }

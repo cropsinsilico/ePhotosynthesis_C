@@ -180,6 +180,8 @@ int main(int argc, const char* argv[]) {
         double Tp;
         DriverType driverChoice;
         int driver, maxSubSteps;
+        ushort dbglvl;
+        bool debugDelta, debugInternal;
         options.add_options()
                 ("v,verbose", "Record output values for all steps (this can significantly slow the program).", cxxopts::value<bool>(record)->default_value("false"))
                 ("e,evn", "The InputEvn.txt file.", cxxopts::value<std::string>(evn)->default_value("InputEvn.txt"))
@@ -198,6 +200,9 @@ int main(int argc, const char* argv[]) {
                 ("q,test", "Testing", cxxopts::value<std::string>(test)->default_value(""))
                 ("x, terminate", "Stop the test on a discrepancy", cxxopts::value<bool>(terminateTest)->default_value("false"))
                 ("h,help", "Produce help message")
+                ("debug","Debug level", cxxopts::value<ushort>(dbglvl)->default_value("0"))
+                ("debugDelta", "Debug deltas", cxxopts::value<bool>(debugDelta)->default_value("false"))
+                ("debugInternal", "Debug internals", cxxopts::value<bool>(debugInternal)->default_value("false"))
                 ;
 
         auto result = options.parse(argc, argv);
@@ -234,10 +239,21 @@ int main(int argc, const char* argv[]) {
         theVars->TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
         theVars->record = record;
         theVars->useC3 = useC3;
-        theVars->RUBISCOMETHOD = 1;
+        theVars->RUBISCOMETHOD = 2;
         theVars->RUBISCOTOTAL = 3;
+        if (debugDelta)
+            dbglvl += 8;
+        if (debugInternal)
+            dbglvl += 16;
+#ifdef INCDEBUG
+        theVars->debuglevel = static_cast<Debug::RequestedDebug>(dbglvl);
+#else
+        if (dbglvl != 0)
+            std::cout << "This is not a debug build, no debug reporting will be done." << std::endl;
+#endif
         Driver *maindriver;
 
+        //DEBUG_MESSAGE("TESTING",0)
         switch (driverChoice) {
             case trDynaPS:
                 maindriver = new trDynaPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);

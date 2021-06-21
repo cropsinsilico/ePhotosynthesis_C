@@ -201,6 +201,7 @@ void BF::_Rate(const double t, const BFContainer* BF_con, Variables *theVars) {
 
     theVars->BF_Vel.Vbf11  = Vbf11;
 
+    DEBUG_INTERNAL(theVars->BF_Vel)
     if (theVars->record) {
         theVars->BF_VEL.insert(theVars->BF_TIME_N - 1, t, theVars->BF_Vel);
         theVars->BF2OUT[0] = BF_con->Fdn;

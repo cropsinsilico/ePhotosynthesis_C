@@ -1,5 +1,3 @@
-#pragma once
-
 /**********************************************************************************************************************************************
  *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
  *
@@ -26,25 +24,28 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+#include "vel/SUCSVel.hpp"
 
-/**
- Class for holding the results of RedoxReg_Rate calculations
- */
-class RedoxRegVel {
-  public:
-  RedoxRegVel() {}
-  /**
-    Copy constructor that makes a deep copy of the given object
+std::ostream& operator<<(std::ostream& out, const SUCSVel &in) {
+    out << "  v51 = " << in.v51 << std::endl;
+    out << "  v52 = " << in.v52 << std::endl;
+    out << "  v55 = " << in.v55 << std::endl;
+    out << "  v56 = " << in.v56 << std::endl;
+    out << "  v57 = " << in.v57 << std::endl;
+    out << "  v58 = " << in.v58 << std::endl;
+    out << "  v59 = " << in.v59 << std::endl;
+    out << "  v60 = " << in.v60 << std::endl;
+    out << "  v61 = " << in.v61 << std::endl;
+    out << "  v62 = " << in.v62 << std::endl;
+    out << "  vdhap_in = " << in.vdhap_in << std::endl;
+    out << "  vgap_in = " << in.vgap_in << std::endl;
+    out << "  vpga_in = " << in.vpga_in << std::endl;
+    out << "  vpga_use = " << in.vpga_use << std::endl;
+    out << "  vatpf = " << in.vatpf << std::endl;
+    return out;
+}
 
-    @param other The RedoxRegVel object to copy
-    */
-  RedoxRegVel(const RedoxRegVel &other) {
-      Vred = other.Vred;
-      Vox = other.Vox;
-  }
-    double Vred = 0.;
-    double Vox = 0.;
-    friend std::ostream& operator<<(std::ostream& out, const RedoxRegVel &in);
-    friend std::ostream& operator<<(std::ostream& out, const RedoxRegVel *in);
-};
+std::ostream& operator<<(std::ostream& out, const SUCSVel *in) {
+    out << *in;
+    return out;
+}

@@ -87,7 +87,7 @@ public:
         this->v25 *= val;
         return *this;
     }
-    friend std::ostream& operator<<(std::ostream &out, const PSVel &in);
+
     double v1 = 0.;
     double v2 = 0.;
     double v3 = 0.;
@@ -108,4 +108,6 @@ public:
     double v24 = 0.;
     double v25 = 0.;
 
+    friend std::ostream& operator<<(std::ostream& out, const PSVel &in);
+    friend std::ostream& operator<<(std::ostream& out, const PSVel *in);
 };

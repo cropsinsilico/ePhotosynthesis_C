@@ -158,7 +158,7 @@ void FI::_Rate(const double t, const FIContainer* FI_Con, Variables *theVars) {
     theVars->FI_Vel.vS3_S0  = FI_Con->S3Tp * theVars->FI_RC.k30; // vS3_S0 The rate of transition from S3 to S0
     theVars->FI_Vel.vS0_S1  = FI_Con->S0Tp * theVars->FI_RC.k01; // vS0_S1 The rate of transition from S0 to S1
 
-
+    DEBUG_INTERNAL(theVars->FI_Vel)
     if (theVars->record) {
         theVars->FI_VEL.insert(theVars->FI_TIME_N - 1, t, theVars->FI_Vel);
     }

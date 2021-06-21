@@ -109,7 +109,7 @@ void RedoxReg::_Rate(const double t, const RedoxRegContainer* RedoxReg_Con, Vari
         theVars->RedoxReg_TIME_N = theVars->RedoxReg_TIME_N + 1;
         theVars->RedoxReg_OLD_TIME = t;
     }
-
+    DEBUG_INTERNAL(theVars->RedoxReg_Vel)
     if (theVars->record)
         theVars->RedoxReg_VEL.insert(theVars->RedoxReg_TIME_N - 1, t, theVars->RedoxReg_Vel);
 }

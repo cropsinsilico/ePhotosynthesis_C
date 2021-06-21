@@ -51,7 +51,6 @@ public:
         vpga_use = other.vpga_use;
         vatpf = other.vatpf;
     }
-    friend std::ostream& operator<<(std::ostream &out, const SUCSVel &in);
 
     double v51 = 0.;  ///< DHAP+GAP --FBP
     double v52 = 0.;  ///< FBP --F6P + Pi
@@ -69,4 +68,6 @@ public:
     double vpga_use = 0.; ///< PGA utilisation in chloroplast
     double vatpf = 0.;    ///< ATP synthesis rate
 
+    friend std::ostream& operator<<(std::ostream& out, const SUCSVel &in);
+    friend std::ostream& operator<<(std::ostream& out, const SUCSVel *in);
 };

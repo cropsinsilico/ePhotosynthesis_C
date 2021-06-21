@@ -1,5 +1,3 @@
-#pragma once
-
 /**********************************************************************************************************************************************
  *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
  *
@@ -26,25 +24,27 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+#include "containers/PSContainer.hpp"
 
-/**
- Class for holding the results of RedoxReg_Rate calculations
- */
-class RedoxRegVel {
-  public:
-  RedoxRegVel() {}
-  /**
-    Copy constructor that makes a deep copy of the given object
+std::ostream& PSContainer::_print(std::ostream &out, const uint tab) const {
+    const std::string space(tab * 4, ' ');
+    out << space << "PSContainer" << std::endl;
+    out << space << "  RuBP = " << RuBP<< std::endl;
+    out << space << "  PGA = " << PGA << std::endl;
+    out << space << "  DPGA = " << DPGA<< std::endl;
+    out << space << "  T3P = " << T3P << std::endl;
+    out << space << "  ADPG = " << ADPG<< std::endl;
+    out << space << "  FBP = " << FBP << std::endl;
+    out << space << "  E4P = " << E4P << std::endl;
+    out << space << "  S7P = " << S7P << std::endl;
+    out << space << "  SBP = " << SBP << std::endl;
+    out << space << "  ATP = " << ATP << std::endl;
+    out << space << "  NADPH = " << NADPH << std::endl;
+    out << space << "  CO2 = " << CO2 << std::endl;
+    out << space << "  O2 = " << O2<< std::endl;
+    out << space << "  HexP = " << HexP<< std::endl;
+    out << space << "  PenP = " << PenP<< std::endl;
 
-    @param other The RedoxRegVel object to copy
-    */
-  RedoxRegVel(const RedoxRegVel &other) {
-      Vred = other.Vred;
-      Vox = other.Vox;
-  }
-    double Vred = 0.;
-    double Vox = 0.;
-    friend std::ostream& operator<<(std::ostream& out, const RedoxRegVel &in);
-    friend std::ostream& operator<<(std::ostream& out, const RedoxRegVel *in);
-};
+    return out;
+}
+

@@ -64,5 +64,6 @@ arr EPS::_MB(const double t, const EPSContainer* EPS_Con, Variables *theVars) {
     EPS_DYDT[16] = EPS_DYDT[60];
 
     EPS_DYDT[28] = EPS_DYDT[61];
+    DEBUG_DELTA(EPS_DYDT)
     return EPS_DYDT;
 }

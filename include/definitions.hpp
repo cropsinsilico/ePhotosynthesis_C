@@ -59,6 +59,57 @@ struct Variables;
 #define Q10_57 2
 #define Q10_58 2
 
+#ifdef INCDEBUG
+namespace Debug {
+enum DebugLevel : uint {Top = 0x1, Middle = 0x2, Low = 0x4, Delta=0x8, Internal=0x10};
+enum RequestedDebug : uint {None = 0,
+                            TopOnly = 1,
+                            MiddleOnly = 2,
+                            UpperTier = 3,
+                            LowOnly = 4,
+                            LowTop = 5,
+                            LowerTier = 6,
+                            All = 7,
+                            DeltaOnly = 8,
+                            TopDelta = 9,
+                            MiddleDelta = 10,
+                            UpperDelta = 11,
+                            LowDelta = 12,
+                            LowTopDelta = 13,
+                            LowTierDelta = 14,
+                            FullDelta = 15,
+                            InternalOnly = 16,
+                            TopInternal = 17,
+                            MiddleInternal = 18,
+                            UpperInternal = 19,
+                            LowInternal = 20,
+                            LowTopInternal = 21,
+                            LowTierInternal = 22,
+                            FullInternal= 23,
+                            DeltaInternal = 24,
+                            TopAll = 25,
+                            MiddleAll = 26,
+                            UpperAll= 27,
+                            LowAll = 28,
+                            LowTopAll = 29,
+                            LowerTierAll = 30,
+                            Full = 31
+                           };
+}
+
+#define DEBUG_MESSAGE(x) if (x->debugLevel() & theVars->debuglevel) std::cout << (x) << std::endl;
+#define DEBUG_DELTA(x) do { \
+    if (Debug::Delta & theVars->debuglevel) { \
+        std::cout << "  " << #x << std::endl; \
+        for (ulong qq = 0; qq < (x).size(); qq++) \
+            std::cout << "    " << qq << " = " << (x)[qq] << std::endl; \
+    }} while(0);
+#define DEBUG_INTERNAL(x) if (Debug::Internal & theVars->debuglevel) std::cout << (x) << std::endl;
+#else
+#define DEBUG_MESSAGE(x) do{}while(0);
+#define DEBUG_DELTA(x) do{}while(0);
+#define DEBUG_INTERNAL(x) do{}while(0);
+#endif
 // rename a common data type to make it easier
 typedef std::vector<double> arr;
 

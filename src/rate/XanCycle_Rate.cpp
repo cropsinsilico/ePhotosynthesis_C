@@ -72,6 +72,7 @@ void XanCycle::_Rate(const double t, const XanCycleContainer* XanCycle_Con, Vari
     theVars->XanCycle_Vel.Vv2ABA = VV2ABA; // The rate of conversion from v to XanCycle_Con.ABA.
     theVars->XanCycle_Vel.VABAdg = VABADG; // The rate of XanCycle_Con.ABA degradation
 
+    DEBUG_INTERNAL(theVars->XanCycle_Vel)
     if (theVars->record) {
         theVars->XanCycle_VEL.insert(theVars->XanCycle_TIME_N, t, theVars->XanCycle_Vel);
 

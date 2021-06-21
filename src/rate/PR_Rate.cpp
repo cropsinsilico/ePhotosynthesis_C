@@ -166,6 +166,8 @@ void PR::_Rate(const double t, const PRContainer* PR_con, Variables *theVars) {
         theVars->PR_Vel.v1in = theVars->V1T * (PR_con->GCEAc / (PR_con->GCEAc + KM1011 * (1 + PR_con->GCAc / KI1011)) - PR_con->GCEA / (PR_con->GCEA + KM1011 * (1 + PR_con->GCA / KI1011)));// Competive inhibition
         theVars->PR_Vel.v2out = V2T * (PR_con->GCA / (PR_con->GCA + KM1012 * (1 + PR_con->GCEA / KI1012)) - PR_con->GCAc / (PR_con->GCAc + KM1012 * (1 + PR_con->GCEAc / KI1012)));// Competive inhibition
     }
+
+    DEBUG_INTERNAL(theVars->PR_Vel)
     if (theVars->record) {
         theVars->PR_VEL.insert(theVars->PR_TIME_N - 1, t, theVars->PR_Vel);
 

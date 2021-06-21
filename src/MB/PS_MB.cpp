@@ -33,7 +33,7 @@ arr PS::_MB(const double t, const PSContainer* PS_con, Variables *theVars) {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Modifying KM, KI, KE VMAX for different reactions as the regulation//
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+    //DEBUG_MESSAGE(PS_con)
 
     // Regulations first.
     Condition(t, theVars);
@@ -63,51 +63,6 @@ arr PS::_MB(const double t, const PSContainer* PS_con, Variables *theVars) {
     PSdydt[13] = theVars->PS_Vel.v6 - theVars->PS_Vel.v7 - theVars->PS_Vel.v23 + theVars->PS_Vel.v25;
     PSdydt[14] = theVars->PS_Vel.v7 + theVars->PS_Vel.v10 * 2 - theVars->PS_Vel.v13;
 
+    DEBUG_DELTA(PSdydt)
     return PSdydt;
-}
-
-std::ostream& operator<<(std::ostream &out, const PSCon &in) {
-    out << "PSCon" << std::endl;
-    out << "  RuBP= " << in.RuBP<< std::endl;
-    out << "  PGA = " << in.PGA << std::endl;
-    out << "  DPGA= " << in.DPGA<< std::endl;
-    out << "  T3P = " << in.T3P << std::endl;
-    out << "  ADPG= " << in.ADPG<< std::endl;
-    out << "  FBP = " << in.FBP << std::endl;
-    out << "  E4P = " << in.E4P << std::endl;
-    out << "  S7P = " << in.S7P << std::endl;
-    out << "  SBP = " << in.SBP << std::endl;
-    out << "  ATP = " << in.ATP << std::endl;
-    out << "  NADPH = " << in.NADPH << std::endl;
-    out << "  CO2 = " << in.CO2 << std::endl;
-    out << "  O2= " << in.O2<< std::endl;
-    out << "  HexP= " << in.HexP<< std::endl;
-    out << "  PenP= " << in.PenP<< std::endl;
-
-    return out;
-}
-
-std::ostream& operator<<(std::ostream &out, const PSVel &in) {
-    out << "PSVel" << std::endl;
-    out << "  v1 = " << in.v1 << std::endl;
-    out << "  v2 = " << in.v2 << std::endl;
-    out << "  v3 = " << in.v3 << std::endl;
-    out << "  v4 = " << in.v4 << std::endl;
-    out << "  v5 = " << in.v5 << std::endl;
-    out << "  v6 = " << in.v6 << std::endl;
-    out << "  v7 = " << in.v7 << std::endl;
-    out << "  v8 = " << in.v8 << std::endl;
-    out << "  v9 = " << in.v9 << std::endl;
-    out << "  v10= " << in.v10<< std::endl;
-    out << "  v13= " << in.v13<< std::endl;
-    out << "  v16= " << in.v16<< std::endl;
-    out << "  v23= " << in.v23<< std::endl;
-    out << "  v31= " << in.v31<< std::endl;
-    out << "  v32= " << in.v32<< std::endl;
-    out << "  v33= " << in.v33<< std::endl;
-    out << "  Pi = " << in.Pi << std::endl;
-    out << "  v24= " << in.v24<< std::endl;
-    out << "  v25= " << in.v25<< std::endl;
-
-    return out;
 }

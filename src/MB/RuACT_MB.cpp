@@ -48,5 +48,6 @@ arr RuACT::_MB(const double t, const RuACTContainer* RuACT_Con, Variables *theVa
     RuACT_mb[1] = v1 - v7 + vn7 + v6_1 + v6_2 - vn1; // EAF
     RuACT_mb[2] = v7 - vn7 - v6_1 - v6_2;            // ECMR
     RuACT_mb[3] = v6_1 + v6_2 + v1 - vn1 + vn7 - v7; // RuBP
+    DEBUG_DELTA(RuACT_mb)
     return RuACT_mb;
 }

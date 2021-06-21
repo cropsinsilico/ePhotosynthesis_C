@@ -40,10 +40,17 @@ else()
   set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
 endif()
 
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+    message("CMAKE_BUILD_TYPE not defined, defaulting to Release")
+else()
+    message("Doing a ${CMAKE_BUILD_TYPE} build")
+endif()
+
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-
+set(CMAKE_CXX_FLAGS_DEBUG "-g -DINCDEBUG")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
 # Prohibit in-source build
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
   message(FATAL_ERROR "In-source build prohibited.")
@@ -76,6 +83,7 @@ if(BUILD_DOCS)
     endif()
     message("The following documentation can be built:")
     message("   HTML...  Yes")
+    set(EPHOTOROOT ${CMAKE_CURRENT_SOURCE_DIR})
     set(GENERATE_LATEX "NO")
     set(USE_PDFLATEX "NO")
     set(MAKEINDEX_CMD "")

@@ -1,5 +1,3 @@
-#pragma once
-
 /**********************************************************************************************************************************************
  *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
  *
@@ -26,25 +24,21 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+#include "vel/XanCycleVel.hpp"
 
-/**
- Class for holding the results of RedoxReg_Rate calculations
- */
-class RedoxRegVel {
-  public:
-  RedoxRegVel() {}
-  /**
-    Copy constructor that makes a deep copy of the given object
+std::ostream& operator<<(std::ostream& out, const XanCycleVel &in) {
+    out << "XanCycleVel" << std::endl;
+    out << "  Vva = " << in.Vva << std::endl;
+    out << "  Vaz = " << in.Vaz << std::endl;
+    out << "  Vza = " << in.Vza << std::endl;
+    out << "  Vav = " << in.Vav << std::endl;
+    out << "  Vvf = " << in.Vvf << std::endl;
+    out << "  Vv2ABA = " << in.Vv2ABA << std::endl;
+    out << "  VABAdg = " << in.VABAdg << std::endl;
+    return out;
+}
 
-    @param other The RedoxRegVel object to copy
-    */
-  RedoxRegVel(const RedoxRegVel &other) {
-      Vred = other.Vred;
-      Vox = other.Vox;
-  }
-    double Vred = 0.;
-    double Vox = 0.;
-    friend std::ostream& operator<<(std::ostream& out, const RedoxRegVel &in);
-    friend std::ostream& operator<<(std::ostream& out, const RedoxRegVel *in);
-};
+std::ostream& operator<<(std::ostream& out, const XanCycleVel *in) {
+    out << *in << std::endl;
+    return out;
+}

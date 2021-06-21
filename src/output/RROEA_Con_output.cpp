@@ -1,5 +1,3 @@
-#pragma once
-
 /**********************************************************************************************************************************************
  *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
  *
@@ -26,25 +24,22 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
+#include "containers/RROEAContainer.hpp"
 
-/**
- Class for holding the results of RedoxReg_Rate calculations
- */
-class RedoxRegVel {
-  public:
-  RedoxRegVel() {}
-  /**
-    Copy constructor that makes a deep copy of the given object
+std::ostream& RROEAContainer::_print(std::ostream &out, const uint tab) const {
+    const std::string space(tab * 4, ' ');
+    out << space << "RROEAContainer" << std::endl;
+    out << space << "  GAPDH = " << std::endl;
+    out << space << "  FBPase = " << std::endl;
+    out << space << "  SBPase = " << std::endl;
+    out << space << "  PRK = " << std::endl;
+    out << space << "  ATPase = " << std::endl;
+    out << space << "  ATPGPP = " << std::endl;
+    out << space << "  MDH = " << std::endl;
+    out << space << "  Thio = " << std::endl;
+    out << space << "  Fd = " << std::endl;
+    out << space << "  RuACT = " << std::endl;
 
-    @param other The RedoxRegVel object to copy
-    */
-  RedoxRegVel(const RedoxRegVel &other) {
-      Vred = other.Vred;
-      Vox = other.Vox;
-  }
-    double Vred = 0.;
-    double Vox = 0.;
-    friend std::ostream& operator<<(std::ostream& out, const RedoxRegVel &in);
-    friend std::ostream& operator<<(std::ostream& out, const RedoxRegVel *in);
-};
+    return out;
+}
+

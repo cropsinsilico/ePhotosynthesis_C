@@ -61,5 +61,6 @@ arr trDynaPS::_MB(const double t, const trDynaPSContainer* trDynaPS_con, Variabl
     dxdt[23] = Temp * theVars->AVR;
 
     GenOut(t, theVars);
+    DEBUG_DELTA(dxdt)
     return dxdt;
 }

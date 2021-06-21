@@ -34,7 +34,7 @@
 
 void PS::_Rate(const double t, const PSContainer* PS_con, Variables *theVars) {
     double PsV6, PsV9, PsV13, PsV16, PsPEXT;
-
+    //DEBUG_MESSAGE(PS_con, 5)
 
     PsPEXT = PS_PEXT;
 
@@ -72,7 +72,7 @@ void PS::_Rate(const double t, const PSContainer* PS_con, Variables *theVars) {
 
     //theVars->PS_Vel.v1 = v1;
     if (theVars->useC3) {
-        const SUCSCon *SUCS_con = PS_con->parent->parent->SUCS_con;
+        const SUCSContainer *SUCS_con = PS_con->parent->parent->SUCS_con;
 
         theVars->PiTc = theVars->SUCS_Pool.PTc - 2 * (SUCS_con->FBPc + SUCS_con->F26BPc) - (SUCS_con->PGAc + SUCS_con->T3Pc + SUCS_con->HexPc + SUCS_con->SUCP + SUCS_con->UTPc + SUCS_con->ATPc);
         PsPEXT = (pow(pow(SUCS::KE61, 2) + 4 * SUCS::KE61 * theVars->PiTc, 0.5) - SUCS::KE61)/2;   //  SHARED
@@ -255,6 +255,7 @@ void PS::_Rate(const double t, const PSContainer* PS_con, Variables *theVars) {
         theVars->PS_Vel.v25 = (0.5 * theVars->PSRatio[102] / 100 / 5) * (1 - PS_con->RuBP / MaxCoeff) * PS_con->ATP / (PS_con->ATP + 1);
     }
 
+    DEBUG_INTERNAL(theVars->PS_Vel)
     // Getting the information for output as figures.
 
     if (t > theVars->PS_OLD_TIME) {

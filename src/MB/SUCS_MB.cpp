@@ -61,43 +61,6 @@ arr SUCS::_MB(const double t, const SUCSContainer* SUCS_Con, Variables *theVars)
     } else {
         SUCS_mb[11] = theVars->SUCS_Vel.vpga_in - theVars->SUCS_Vel.vpga_use; // pgaC
     }
+    DEBUG_DELTA(SUCS_mb)
     return SUCS_mb;
-}
-
-std::ostream& operator<<(std::ostream &out, const SUCSCon &in) {
-    out << "SUCSCon" << std::endl;
-    out << "  T3Pc= " << in.T3Pc<< std::endl;
-    out << "  FBPc= " << in.FBPc<< std::endl;
-    out << "  HexPc = " << in.HexPc << std::endl;
-    out << "  F26BPc= " << in.F26BPc<< std::endl;
-    out << "  ATPc= " << in.ATPc<< std::endl;
-    out << "  ADPc= " << in.ADPc<< std::endl;
-    out << "  OPOPc = " << in.OPOPc << std::endl;
-    out << "  UDPGc = " << in.UDPGc << std::endl;
-    out << "  UTPc= " << in.UTPc<< std::endl;
-    out << "  SUCP= " << in.SUCP<< std::endl;
-    out << "  SUC = " << in.SUC << std::endl;
-    out << "  PGAc= " << in.PGAc<< std::endl;
-
-    return out;
-}
-
-std::ostream& operator<<(std::ostream &out, const SUCSVel &in) {
-    out << "SUCSVel" << std::endl;
-    out << "  v51= " << in.v51<< std::endl;
-    out << "  v52= " << in.v52<< std::endl;
-    out << "  v55= " << in.v55<< std::endl;
-    out << "  v56= " << in.v56<< std::endl;
-    out << "  v57= " << in.v57<< std::endl;
-    out << "  v58= " << in.v58<< std::endl;
-    out << "  v59= " << in.v59<< std::endl;
-    out << "  v60= " << in.v60<< std::endl;
-    out << "  v61= " << in.v61<< std::endl;
-    out << "  v62= " << in.v62<< std::endl;
-    out << "  vdhap_in = " << in.vdhap_in << std::endl;
-    out << "  vgap_in =" << in.vgap_in<< std::endl;
-    out << "  vpga_in =" << in.vpga_in<< std::endl;
-    out << "  vpga_use = " << in.vpga_use << std::endl;
-    out << "  vatpf= " << in.vatpf<< std::endl;
-    return out;
 }

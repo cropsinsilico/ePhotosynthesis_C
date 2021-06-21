@@ -55,7 +55,7 @@ arr PS_PR::_MB(const double t, const PS_PRContainer* PS_PR_con, Variables *theVa
     PS_Param[1] = PR2PS_Pgca;
 
     PS::setParam(PS_Param);
-    PS::Rate(t, PS_con, theVars);
+    PS::MB(t, PS_con, theVars);
     //std::cout << theVars->PS_Vel;
 
     arr PR_Param = zeros(2);
@@ -63,7 +63,7 @@ arr PS_PR::_MB(const double t, const PS_PRContainer* PS_PR_con, Variables *theVa
     // for the PS-PR combined model. 0: Combined model; 1: Separate model
     PR_Param[1] = theVars->Pi;
 
-    PR::Rate(t, PR_con, theVars);
+    PR::MB(t, PR_con, theVars);
 
     // Assign the rate of reaction that is calculated from the photosynthesis and photorespiration routine.
     ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -105,12 +105,6 @@ arr PS_PR::_MB(const double t, const PS_PRContainer* PS_PR_con, Variables *theVa
     PS_PR_DYDT[22] = theVars->PR_Vel.v123 - theVars->PR_Vel.v1in;
     PS_PR_DYDT[23] = theVars->PS_Vel.v23 - theVars->PS_Vel.v24;
 
+    DEBUG_DELTA(PS_PR_DYDT)
     return PS_PR_DYDT;
-}
-
-std::ostream& operator<<(std::ostream &out, const PS_PRCon &in) {
-    out << "PS_PRCon" << std::endl;
-    out << in.PS_con;
-    out << in.PR_con;
-    return out;
 }

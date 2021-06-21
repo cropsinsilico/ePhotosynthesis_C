@@ -52,5 +52,6 @@ arr RA::_MB(const double t, const RAContainer* RA_Con, Variables *theVars) {
 
     const double DYDT_PGCA = EPS_DYDT[68] - theVars->PR_Vel.v111 + theVars->RuACT_Vel.v6_2;
     RA_DYDT[68] = DYDT_PGCA;
+    DEBUG_DELTA(RA_DYDT)
     return RA_DYDT;
 }

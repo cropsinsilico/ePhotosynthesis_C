@@ -47,6 +47,7 @@ arr RedoxReg::_MB(const double t, const RedoxRegContainer* RedoxReg_Con, Variabl
 
     //const double Temp = RedoxReg_DYDT[23];
     //RedoxReg_DYDT[23] = Temp;
+    DEBUG_DELTA(RedoxReg_DYDT)
     return RedoxReg_DYDT;
 }
 

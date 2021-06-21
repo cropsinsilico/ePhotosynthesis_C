@@ -53,4 +53,6 @@ public:
     double vn7 = 0.;
     double v6_1 = 0.;
     double v6_2 = 0.;
+    friend std::ostream& operator<<(std::ostream& out, const RuACTVel &in);
+    friend std::ostream& operator<<(std::ostream& out, const RuACTVel *in);
 };
