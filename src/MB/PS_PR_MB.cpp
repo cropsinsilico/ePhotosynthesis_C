@@ -30,12 +30,12 @@
 #include "modules/PR.hpp"
 #include "globals.hpp"
 
-arr PS_PR::_MB(const double t, const PS_PRCon* PS_PR_con, Variables *theVars) {
+arr PS_PR::_MB(const double t, const PS_PRContainer* PS_PR_con, Variables *theVars) {
 
     const double vATPcost = theVars->TestATPCost / theVars->AVR;
 
-    PRCon* PR_con = PS_PR_con->PR_con;
-    PSCon* PS_con = PS_PR_con->PS_con;
+    PRContainer* PR_con = PS_PR_con->PR_con;
+    PSContainer* PS_con = PS_PR_con->PS_con;
     PR_con->PGA = PS_con->PGA;
 
     PR_con->RuBP = PS_con->RuBP;

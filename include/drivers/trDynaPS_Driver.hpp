@@ -28,7 +28,7 @@
 
 #include "definitions.hpp"
 #include "driver.hpp"
-#include "con/trDynaPSCon.hpp"
+#include "containers/trDynaPSContainer.hpp"
 
 
 /**
@@ -52,7 +52,7 @@ public:
         Ratio = ratio;
     }
 
-    ~trDynaPSDriver();
+    ~trDynaPSDriver() override;
 
     /**
       The driver
@@ -77,7 +77,7 @@ private:
 
       @return A trDynaPSCon object for input into calculations
       */
-    trDynaPSCon* trDynaPS_Ini();
+    trDynaPSContainer* trDynaPS_Ini();
 
     size_t ParaNum;
     double Ratio;

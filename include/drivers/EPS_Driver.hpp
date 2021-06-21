@@ -28,7 +28,7 @@
 
 #include "definitions.hpp"
 #include "driver.hpp"
-#include "con/EPSCon.hpp"
+#include "containers/EPSContainer.hpp"
 
 /**
  Class for running EPD with an ODE solver
@@ -44,7 +44,7 @@ public:
         this->Tp = Tp;
     }
 
-    ~EPSDriver();
+    ~EPSDriver() override;
 
     /**
       The driver
@@ -69,7 +69,7 @@ private:
 
       @return A trDynaPSCon object for input into calculations
       */
-    EPSCon* EPS_Init();
+    EPSContainer* EPS_Init();
 
     //double Ca;
     //double Li;

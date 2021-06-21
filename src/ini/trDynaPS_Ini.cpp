@@ -29,12 +29,12 @@
 #include "modules/DynaPS.hpp"
 #include "modules/RROEA.hpp"
 
-trDynaPSCon* trDynaPS::_init(Variables *theVars) {
-    DynaPSCon* DynaPS_con = DynaPS::init(theVars);
+trDynaPSContainer* trDynaPS::_init(Variables *theVars) {
+    DynaPSContainer* DynaPS_con = DynaPS::init(theVars);
 
-    RROEACon* RROEA_con = RROEA::init(theVars);
+    RROEAContainer* RROEA_con = RROEA::init(theVars);
     if (theVars->RROEA_EPS_com)
         RROEA_con->Fd = DynaPS_con->RA_con->EPS_con->FIBF_con->BF_con->Fdn;
-    trDynaPSCon* trDynaPS_Con = new trDynaPSCon(DynaPS_con, RROEA_con);
+    trDynaPSContainer* trDynaPS_Con = new trDynaPSContainer(DynaPS_con, RROEA_con);
     return trDynaPS_Con;
 }

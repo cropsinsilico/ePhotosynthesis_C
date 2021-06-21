@@ -27,12 +27,12 @@
  **********************************************************************************************************************************************/
 
 #include "ModuleBase.hpp"
-#include "con/PRCon.hpp"
+#include "containers/PRContainer.hpp"
 
 /**
   Class for grouping PR related functions and common variables
   */
-class PR : public ModuleBase<PR, PRCon> {
+class PR : public ModuleBase<PR, PRContainer> {
 private:
     friend ModuleBase;
     /**
@@ -41,7 +41,7 @@ private:
       @param theVars Pointer to the global variables
       @return A PRCon object with values set base on the input
       */
-    static PRCon* _init(Variables *theVars);
+    static PRContainer* _init(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -50,7 +50,7 @@ private:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr _MB(const double t, const PRCon* PR_con, Variables *theVars);
+    static arr _MB(const double t, const PRContainer* PR_con, Variables *theVars);
 
     /**
       Calculate the Rates of PR based on the inputs
@@ -58,7 +58,7 @@ private:
       @param PR_con PRCon object giving the input parameters
       @param theVars The global variables
       */
-    static void _Rate(const double t, const PRCon* PR_con, Variables *theVars);
+    static void _Rate(const double t, const PRContainer* PR_con, Variables *theVars);
 
     static double KC;
     static double KE113;

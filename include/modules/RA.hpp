@@ -27,9 +27,9 @@
  **********************************************************************************************************************************************/
 
 #include "ModuleBase.hpp"
-#include "con/RACon.hpp"
+#include "containers/RAContainer.hpp"
 
-class RA : public ModuleBase<RA, RACon> {
+class RA : public ModuleBase<RA, RAContainer> {
 private:
     friend ModuleBase;
     /**
@@ -38,7 +38,7 @@ private:
   @param theVars The global variables
   @return A RACon object for input into calculations
   */
-    static RACon* _init(Variables *theVars);
+    static RAContainer* _init(Variables *theVars);
 
 /**
   Calculate the output values based on the inputs
@@ -47,8 +47,8 @@ private:
   @param theVars The global variables
   @return A vector containing the updated values
   */
-    static arr _MB(const double t, const RACon* RA_Con, Variables *theVars);
-    static void _Rate(const double t, const RACon* RA_Con, Variables *theVars) {
+    static arr _MB(const double t, const RAContainer* RA_Con, Variables *theVars);
+    static void _Rate(const double t, const RAContainer* RA_Con, Variables *theVars) {
         (void)t;
         (void)RA_Con;
         (void)theVars;

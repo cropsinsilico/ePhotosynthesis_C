@@ -31,11 +31,11 @@
 #include "modules/BF.hpp"
 #include "modules/CM.hpp"
 
-EPSCon* EPS::_init(Variables *theVars) {
+EPSContainer* EPS::_init(Variables *theVars) {
     FIBF::init(theVars);
-    FICon* FI_Con = FI::init(theVars);
-    BFCon* BF_con = BF::init(theVars);
-    FIBFCon* FIBF_con = new FIBFCon(BF_con, FI_Con);
+    FIContainer* FI_Con = FI::init(theVars);
+    BFContainer* BF_con = BF::init(theVars);
+    FIBFContainer* FIBF_con = new FIBFContainer(BF_con, FI_Con);
     //// Step 1 Get the initialization of the variables for BF
 
     theVars->BF_OLD_TIME = 0;
@@ -62,12 +62,12 @@ EPSCon* EPS::_init(Variables *theVars) {
     //   Initialation step //
     ////////////////////////////////////////////////
 
-    CMCon* CM_con = CM::init(theVars);
+    CMContainer* CM_con = CM::init(theVars);
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //   Use the initialized variables to construct variables that will be transfered to the Drive file. ////////////
     // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    EPSCon* EPS_con = new EPSCon(FIBF_con, CM_con);
+    EPSContainer* EPS_con = new EPSContainer(FIBF_con, CM_con);
 
     return EPS_con;
 }

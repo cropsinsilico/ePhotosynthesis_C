@@ -28,7 +28,7 @@
 #include "globals.hpp"
 #include "modules/PR.hpp"
 
-arr PR::_MB(const double t, const PRCon* PR_con, Variables *theVars) {
+arr PR::_MB(const double t, const PRContainer* PR_con, Variables *theVars) {
     Condition(t, theVars);
 
     Rate(t, PR_con, theVars);

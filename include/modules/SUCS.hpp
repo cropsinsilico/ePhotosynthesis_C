@@ -27,13 +27,13 @@
  **********************************************************************************************************************************************/
 
 #include "ModuleBase.hpp"
-#include "con/SUCSCon.hpp"
+#include "containers/SUCSContainer.hpp"
 class PS;
 
 /**
  Class for SUCS related functions and common variables
  */
-class SUCS : public ModuleBase<SUCS, SUCSCon> {
+class SUCS : public ModuleBase<SUCS, SUCSContainer> {
 private:
     friend ModuleBase;
     /**
@@ -42,7 +42,7 @@ private:
       @param theVars Pointer to the global variables
       @return A SUCSCon object with values set base on the input
       */
-    static SUCSCon* _init(Variables *theVars);
+    static SUCSContainer* _init(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -52,7 +52,7 @@ private:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr _MB(const double t, const SUCSCon* SUCS_Con, Variables *theVars);
+    static arr _MB(const double t, const SUCSContainer* SUCS_Con, Variables *theVars);
 
     /**
       Calculate the Rates of SUCS based on the inputs
@@ -61,7 +61,7 @@ private:
       @param SUCS_Con SUCSCon object giving the input parameters
       @param theVars The global variables
       */
-    static void _Rate(const double t, const SUCSCon* SUCS_Con, Variables *theVars);
+    static void _Rate(const double t, const SUCSContainer* SUCS_Con, Variables *theVars);
     friend PS;
 
     static double KE501;

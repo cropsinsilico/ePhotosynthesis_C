@@ -30,7 +30,7 @@
 #include "modules/RedoxReg.hpp"
 #include "modules/RA.hpp"
 
-arr RedoxReg::_MB(const double t, const RedoxRegCon* RedoxReg_Con, Variables *theVars) {
+arr RedoxReg::_MB(const double t, const RedoxRegContainer* RedoxReg_Con, Variables *theVars) {
     theVars->trDynaPS2RedReg_cal = 1;
 
     Rate(t, RedoxReg_Con, theVars);

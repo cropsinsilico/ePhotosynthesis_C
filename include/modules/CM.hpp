@@ -26,9 +26,9 @@
  *
  **********************************************************************************************************************************************/
 #include "ModuleBase.hpp"
-#include "con/CMCon.hpp"
+#include "containers/CMContainer.hpp"
 
-class CM : public ModuleBase<CM, CMCon> {
+class CM : public ModuleBase<CM, CMContainer> {
 private:
     friend ModuleBase;
     /**
@@ -37,7 +37,7 @@ private:
   @param theVars The global variables
   @return A CMCon object for input into calculations
   */
-    static CMCon* _init(Variables *theVars);
+    static CMContainer* _init(Variables *theVars);
 /**
   Calculate the output values based on the inputs
 
@@ -46,9 +46,9 @@ private:
   @param theVars The global variables
   @return A vector containing the updated values
   */
-    static arr _MB(const double t, const CMCon* CM_con, Variables *theVars);
+    static arr _MB(const double t, const CMContainer* CM_con, Variables *theVars);
 
-    static void _Rate(const double t, const CMCon* CM_con, Variables *theVars) {
+    static void _Rate(const double t, const CMContainer* CM_con, Variables *theVars) {
         (void)t;
         (void)CM_con;
         (void)theVars;

@@ -27,13 +27,16 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
+#include "Variables.hpp"
 
 template<class T, class U>
 class ModuleBase {
 public:
     static U* init(Variables *theVars) {return T::_init(theVars);}
-    static arr MB(const double t, const U* constraints, Variables *theVars) {return T::_MB(t, constraints, theVars);}
-    static void Rate(const double t, const U* constraints, Variables *theVars) {T::_Rate(t, constraints, theVars);}
+    static arr MB(const double t, const U* constraints, Variables *theVars) {
+        DEBUG_MESSAGE(constraints)
+        return T::_MB(t, constraints, theVars);}
 protected:
     ModuleBase() {}
+    static void Rate(const double t, const U* constraints, Variables *theVars) {T::_Rate(t, constraints, theVars);}
 };

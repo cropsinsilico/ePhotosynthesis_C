@@ -29,14 +29,14 @@
 #include "modules/RA.hpp"
 #include "modules/XanCycle.hpp"
 
-DynaPSCon* DynaPS::_init(Variables *theVars) {
+DynaPSContainer* DynaPS::_init(Variables *theVars) {
 
     //////////////////////////////////////////////////////////////////////////////////
     //   Clear up memory for simulation       //
     //////////////////////////////////////////////////////////////////////////////////
 
-    RACon* RA_con = RA::init(theVars);
-    XanCycleCon* XanCycle_con = XanCycle::init(theVars);
-    DynaPSCon* DynaPS_con = new DynaPSCon(RA_con, XanCycle_con);
+    RAContainer* RA_con = RA::init(theVars);
+    XanCycleContainer* XanCycle_con = XanCycle::init(theVars);
+    DynaPSContainer* DynaPS_con = new DynaPSContainer(RA_con, XanCycle_con);
     return DynaPS_con;
 }

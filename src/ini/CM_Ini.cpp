@@ -29,12 +29,12 @@
 #include "modules/PS_PR.hpp"
 #include "modules/SUCS.hpp"
 
-CMCon* CM::_init(Variables *theVars) {
+CMContainer* CM::_init(Variables *theVars) {
 
-    PS_PRCon* PS_PR_con = PS_PR::init(theVars);
+    PS_PRContainer* PS_PR_con = PS_PR::init(theVars);
 
-    SUCSCon* SUCS_Con = SUCS::init(theVars);
+    SUCSContainer* SUCS_Con = SUCS::init(theVars);
 
-    CMCon* CMs = new CMCon(PS_PR_con, SUCS_Con);
+    CMContainer* CMs = new CMContainer(PS_PR_con, SUCS_Con);
     return CMs;
 }

@@ -28,7 +28,7 @@
 #include "Variables.hpp"
 #include "modules/SUCS.hpp"
 
-arr SUCS::_MB(const double t, const SUCSCon* SUCS_Con, Variables *theVars) {
+arr SUCS::_MB(const double t, const SUCSContainer* SUCS_Con, Variables *theVars) {
     Condition(t, theVars);
 
     theVars->SUCS_Param[0] = theVars->GLight;

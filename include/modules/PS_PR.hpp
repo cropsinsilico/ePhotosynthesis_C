@@ -27,8 +27,9 @@
  **********************************************************************************************************************************************/
 
 #include "ModuleBase.hpp"
-#include "con/PS_PRCon.hpp"
-class PS_PR : public ModuleBase<PS_PR, PS_PRCon> {
+#include "containers/PS_PRContainer.hpp"
+
+class PS_PR : public ModuleBase<PS_PR, PS_PRContainer> {
 private:
     friend ModuleBase;
 /**
@@ -37,7 +38,7 @@ private:
   @param theVars The global variables
   @return A PS_PRCon object for input into calculations
   */
-    static PS_PRCon* _init(Variables *theVars);
+    static PS_PRContainer* _init(Variables *theVars);
 
 /**
   Calculate the output values based on the inputs
@@ -46,9 +47,9 @@ private:
   @param theVars The global variables
   @return A vector containing the updated values
   */
-    static arr _MB(const double t, const PS_PRCon* PS_PRs, Variables *theVars);
+    static arr _MB(const double t, const PS_PRContainer* PS_PRs, Variables *theVars);
 
-    static void _Rate(const double t, const PS_PRCon* PS_PRs, Variables *theVars) {
+    static void _Rate(const double t, const PS_PRContainer* PS_PRs, Variables *theVars) {
         (void)t;
         (void)PS_PRs;
         (void)theVars;

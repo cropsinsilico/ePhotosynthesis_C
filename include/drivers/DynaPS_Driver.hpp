@@ -28,7 +28,7 @@
 
 #include "definitions.hpp"
 #include "driver.hpp"
-#include "con/DynaPSCon.hpp"
+#include "containers/DynaPSContainer.hpp"
 
 /**
  Class for running DynaPS through an ODE solver
@@ -41,7 +41,7 @@ public:
         ParaNum = para;
         Ratio = ratio;
     }
-    ~DynaPSDrive();
+    ~DynaPSDrive() override;
     /**
       The driver code
       */
@@ -64,7 +64,7 @@ private:
 
       @return A CMCon object for input into calculations
       */
-    DynaPSCon* DynaPS_Ini();
+    DynaPSContainer* DynaPS_Ini();
     size_t ParaNum;
     double Ratio;
 };

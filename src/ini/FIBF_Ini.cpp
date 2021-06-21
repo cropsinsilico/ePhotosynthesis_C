@@ -28,7 +28,7 @@
 #include "modules/FIBF.hpp"
 // This is the function to initialize some global variable used in FIBF MODEL
 
-FIBFCon* FIBF::_init(Variables *theVars) {
+FIBFContainer* FIBF::_init(Variables *theVars) {
 
     const double FIBF_PQT = 8;
     theVars->FIBF_Pool.PQT = FIBF_PQT;

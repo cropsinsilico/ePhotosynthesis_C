@@ -27,12 +27,12 @@
  **********************************************************************************************************************************************/
 #include "ModuleBase.hpp"
 #include <nvector/nvector_serial.h>
-#include "con/RedoxRegCon.hpp"
+#include "containers/RedoxRegContainer.hpp"
 
 /**
  Class for RedoxReg related calculations and common variables
  */
-class RedoxReg : public ModuleBase<RedoxReg, RedoxRegCon> {
+class RedoxReg : public ModuleBase<RedoxReg, RedoxRegContainer> {
 private:
     friend ModuleBase;
     /**
@@ -41,7 +41,7 @@ private:
       @param theVars The global variables
       @return A RedoxRegCon object for input into calculations
       */
-    static RedoxRegCon* _init(Variables *theVars);
+    static RedoxRegContainer* _init(Variables *theVars);
 
     /**
       Calculate the Rates of RedoxReg based on the inputs
@@ -50,7 +50,7 @@ private:
       @param RedoxReg_Con RedoxRegCon object giving the input parameters
       @param theVars The global variables
       */
-    static void _Rate(const double t, const RedoxRegCon* RedoxReg_Con, Variables *theVars);
+    static void _Rate(const double t, const RedoxRegContainer* RedoxReg_Con, Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -60,7 +60,7 @@ private:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr _MB(const double t, const RedoxRegCon* RedoxReg_Con, Variables *theVars);
+    static arr _MB(const double t, const RedoxRegContainer* RedoxReg_Con, Variables *theVars);
 
     static int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data);
 private:

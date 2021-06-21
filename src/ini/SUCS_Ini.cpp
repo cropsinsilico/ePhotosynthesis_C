@@ -96,10 +96,10 @@ double SUCS::Vf_T51=0;
 double SUCS::Vf_T56=0;
 
 
-SUCSCon* SUCS::_init(Variables *theVars) {
+SUCSContainer* SUCS::_init(Variables *theVars) {
     theVars->SUCS_OLD_TIME = 0;
     theVars->SUCS_TIME_N = 1;
-    SUCSCon* SUCS_Con = new SUCSCon();
+    SUCSContainer* SUCS_Con = new SUCSContainer();
     if (theVars->useC3) {
 
         Vf_T52=1;

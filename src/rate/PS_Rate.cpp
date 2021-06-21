@@ -27,12 +27,12 @@
 #include "Variables.hpp"
 #include "modules/PS.hpp"
 #include "modules/SUCS.hpp"
-#include "con/PS_PRCon.hpp"
-#include "con/CMCon.hpp"
+#include "containers/PS_PRContainer.hpp"
+#include "containers/CMContainer.hpp"
 
 #define RegFactor 1.
 
-void PS::_Rate(const double t, const PSCon* PS_con, Variables *theVars) {
+void PS::_Rate(const double t, const PSContainer* PS_con, Variables *theVars) {
     double PsV6, PsV9, PsV13, PsV16, PsPEXT;
 
 

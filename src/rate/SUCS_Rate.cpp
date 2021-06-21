@@ -32,7 +32,7 @@
 
 const double KI583 = 1.55;
 
-void SUCS::_Rate(const double t, const SUCSCon* SUCS_Con, Variables *theVars) {
+void SUCS::_Rate(const double t, const SUCSContainer* SUCS_Con, Variables *theVars) {
     ////////////////////////////////////////////////////////////
     // Get the auxiliary variables //
     ////////////////////////////////////////////////////////////

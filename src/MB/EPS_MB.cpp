@@ -31,7 +31,7 @@
 
 // This model includes the mass balance equations for the full model of the light reactions.
 
-arr EPS::_MB(const double t, const EPSCon* EPS_Con, Variables *theVars) {
+arr EPS::_MB(const double t, const EPSContainer* EPS_Con, Variables *theVars) {
 
     // Try out one new way of calculating the mass balance equation.
     // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.

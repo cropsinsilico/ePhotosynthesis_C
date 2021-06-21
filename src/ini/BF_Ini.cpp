@@ -28,9 +28,9 @@
 #include "Variables.hpp"
 #include "modules/BF.hpp"
 
-const size_t BFCon::count = 29;
+const size_t BFContainer::count = 29;
 
-BFCon* BF::_init(Variables *theVars) {
+BFContainer* BF::_init(Variables *theVars) {
 
     const double PMODTEM = 1;
 
@@ -153,7 +153,7 @@ BFCon* BF::_init(Variables *theVars) {
 
     //  This is the initialization step for the module of the Q cycle, and ATP synthesis steps
 
-    BFCon* BF_con = new BFCon();
+    BFContainer* BF_con = new BFContainer();
     BF_con->ISPHr = 0.;     // The reduced ion sulfer protein (ISPH)
     BF_con->cytc1 = 1.;     // The oxidized state of cytc1
     BF_con->ISPo = 1.;      // The oxidized ion sulfer protein (ISP)

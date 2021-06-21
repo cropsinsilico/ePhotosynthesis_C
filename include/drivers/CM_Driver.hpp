@@ -28,7 +28,7 @@
 
 #include "definitions.hpp"
 #include "driver.hpp"
-#include "con/CMCon.hpp"
+#include "containers/CMContainer.hpp"
 
 /**
  Class for running the CM calculations in an ODE solver
@@ -39,7 +39,7 @@ public:
              const int maxSteps, const double atol, const double rtol) :
         Driver(theVars, st, stp, etime, maxSteps, atol, rtol) {
     }
-    ~CMDriver();
+    ~CMDriver() override;
     /**
       The driver code
       */
@@ -51,14 +51,12 @@ private:
 
       @return A CMCon object for input into calculations
       */
-    CMCon* CM_Ini();
+    CMContainer* CM_Ini();
     /**
       Calculate the output values based on the inputs
 
       @param t The time of the current calculation (0 is the beginning of the calculations)
       @param u The input data parameters for the calculations
-      @param[in,out] u_dot The dxdt values for the input parameters
-      @param[in,out] user_data Pointer to a UserData object for extra parameters
       @return A vector containing the updated values
       */
     arr MB(realtype t, N_Vector u) override;

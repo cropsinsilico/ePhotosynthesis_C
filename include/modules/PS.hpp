@@ -27,14 +27,14 @@
  **********************************************************************************************************************************************/
 
 #include "ModuleBase.hpp"
-#include "con/PSCon.hpp"
+#include "containers/PSContainer.hpp"
 class PR;
 class RuACT;
 class SUCS;
 /**
  Class to for PS related functions and common variables
  */
-class PS : public ModuleBase<PS, PSCon> {
+class PS : public ModuleBase<PS, PSContainer> {
 public:
     static void setParam(const arr &param) {
         Param = param;
@@ -49,7 +49,7 @@ private:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr _MB(const double t, const PSCon* PSs, const arr &Param, Variables *theVars);
+    static arr _MB(const double t, const PSContainer* PSs, Variables *theVars);
 
     /**
       Initializer
@@ -57,7 +57,7 @@ private:
       @param theVars Pointer to the global variables
       @return A PSCon object with values set base on the input
       */
-    static PSCon* _init(Variables *theVars);
+    static PSContainer* _init(Variables *theVars);
 
     /**
       Calculate the Rates of PS based on the inputs
@@ -66,7 +66,7 @@ private:
       @param PSs PSCon object giving the input parameters
       @param theVars The global variables
       */
-    static void _Rate(const double t, const PSCon* PSs, Variables *theVars);
+    static void _Rate(const double t, const PSContainer* PSs, Variables *theVars);
 
     friend PR;
     friend RuACT;

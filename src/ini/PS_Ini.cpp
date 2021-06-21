@@ -133,12 +133,12 @@ double PS::Vf_T9 = 1;
 double PS::Vf_T13 = 1;
 double PS::Vf_T23 = 1;
 double PS::PsV1 = 0.;
-const size_t PSCon::count = 15;
+const size_t PSContainer::count = 15;
 arr PS::Param = {0, 0};
 
-PSCon* PS::_init(Variables *theVars) {
+PSContainer* PS::_init(Variables *theVars) {
 
-    PSCon* PS_con = new PSCon();
+    PSContainer* PS_con = new PSContainer();
     PS_con->RuBP = 2.000;
     PS_con->PGA = 2.400;
     PS_con->DPGA = 0.0011;

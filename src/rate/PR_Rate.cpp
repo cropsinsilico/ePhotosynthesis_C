@@ -28,10 +28,10 @@
 #include "Variables.hpp"
 #include "modules/PR.hpp"
 #include "modules/PS.hpp"
-#include "con/PS_PRCon.hpp"
+#include "containers/PS_PRContainer.hpp"
 
 #define KI124 2
-void PR::_Rate(const double t, const PRCon* PR_con, Variables *theVars) {
+void PR::_Rate(const double t, const PRContainer* PR_con, Variables *theVars) {
     // To set global information for different reactions
 
     // Reaction: 111: RUBP+O2<-->PGlycolate + PGA
