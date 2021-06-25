@@ -91,5 +91,7 @@ private:
     }
 
     void _clear();
-
+#ifdef INCDEBUG
+    const Debug::DebugLevel _dlevel = Debug::Middle;
+#endif
 };

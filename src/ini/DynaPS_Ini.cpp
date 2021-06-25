@@ -24,10 +24,11 @@
  *
  **********************************************************************************************************************************************/
 
-#include "globals.hpp"
 #include "modules/DynaPS.hpp"
 #include "modules/RA.hpp"
 #include "modules/XanCycle.hpp"
+
+Debug::DebugLevel DynaPSContainer::_dlevel = Debug::Middle;
 
 DynaPSContainer* DynaPS::_init(Variables *theVars) {
 

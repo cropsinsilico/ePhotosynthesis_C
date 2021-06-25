@@ -97,6 +97,8 @@ private:
         return BFContainer::size() + FIContainer::size() + 1;
     }
     void _clear();
-
+#ifdef INCDEBUG
+    const Debug::DebugLevel _dlevel = Debug::Middle;
+#endif
 };
 

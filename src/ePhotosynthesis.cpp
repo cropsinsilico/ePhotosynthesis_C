@@ -24,6 +24,7 @@
  *
  **********************************************************************************************************************************************/
 
+#ifndef BUILD_LIBRARY
 #include <stdlib.h>
 #include <string>
 #include <sstream>
@@ -246,6 +247,7 @@ int main(int argc, const char* argv[]) {
         if (debugInternal)
             dbglvl += 16;
 #ifdef INCDEBUG
+        std::cout << "Setting Debug level " << dbglvl << std::endl;
         theVars->debuglevel = static_cast<Debug::RequestedDebug>(dbglvl);
 #else
         if (dbglvl != 0)
@@ -259,12 +261,15 @@ int main(int argc, const char* argv[]) {
                 maindriver = new trDynaPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
                 break;
             case DynaPS:
+                DynaPSContainer::setTop();
                 maindriver = new DynaPSDrive(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
                 break;
             case CM:
+                CMContainer::setTop();
                 maindriver = new CMDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol);
                 break;
             case EPS:
+                EPSContainer::setTop();
                 theVars->useC3 = true;
                 maindriver = new EPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1, Tp);
                 break;
@@ -426,3 +431,5 @@ int main(int argc, const char* argv[]) {
 }
 
 #endif
+
+#endif // BUILD_LIBRARY

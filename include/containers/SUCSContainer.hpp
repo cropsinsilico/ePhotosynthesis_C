@@ -96,5 +96,7 @@ private:
     }
 
     static const size_t count;
-
+#ifdef INCDEBUG
+    const Debug::DebugLevel _dlevel = Debug::Low;
+#endif
 };

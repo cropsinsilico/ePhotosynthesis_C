@@ -31,6 +31,8 @@
 #include "modules/BF.hpp"
 #include "modules/CM.hpp"
 
+Debug::DebugLevel EPSContainer::_dlevel = Debug::Middle;
+
 EPSContainer* EPS::_init(Variables *theVars) {
     FIBF::init(theVars);
     FIContainer* FI_Con = FI::init(theVars);

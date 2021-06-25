@@ -70,6 +70,8 @@ public:
       */
     DynaPSContainer(const arr &vec, size_t offset = 0);
 
+    static void setTop() {DynaPSContainer::_dlevel = Debug::Top;}
+
     RAContainer* RA_con = nullptr;
     XanCycleContainer* XanCycle_con = nullptr;
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
@@ -99,4 +101,8 @@ private:
 //return RACon::size() + XanCycleCon::size();
     }
     void _clear();
+#ifdef INCDEBUG
+    static Debug::DebugLevel _dlevel;
+#endif
+
 };

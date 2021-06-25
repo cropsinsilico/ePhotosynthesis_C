@@ -24,7 +24,6 @@
  *
  **********************************************************************************************************************************************/
 #include "Variables.hpp"
-#include "globals.hpp"
 #include "modules/trDynaPS.hpp"
 #include "modules/DynaPS.hpp"
 #include "modules/RROEA.hpp"

@@ -24,10 +24,11 @@
  *
  **********************************************************************************************************************************************/
 
-#include "globals.hpp"
 #include "modules/CM.hpp"
 #include "modules/PS_PR.hpp"
 #include "modules/SUCS.hpp"
+
+Debug::DebugLevel CMContainer::_dlevel = Debug::Middle;
 
 CMContainer* CM::_init(Variables *theVars) {
 

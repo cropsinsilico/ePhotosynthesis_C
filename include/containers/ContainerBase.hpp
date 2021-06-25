@@ -54,12 +54,9 @@ public:
         return in->_print(out, 0);
     }
     U* parent;
-    void updateDebugLevel(Debug::DebugLevel lvl) {dlevel = lvl;}
-    Debug::DebugLevel debugLevel() const {return dlevel;}
+#ifdef INCDEBUG
+    Debug::DebugLevel debugLevel() const {return static_cast<const T*>(this)->_dlevel;}
+#endif
 protected:
     ContainerBase() {}
-#ifdef INCDEBUG
-private:
-    Debug::DebugLevel dlevel;
-#endif
 };

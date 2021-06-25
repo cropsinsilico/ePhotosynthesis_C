@@ -87,5 +87,7 @@ private:
     static size_t _size() {
         return RAContainer::size() + 1;
     }
-
+#ifdef INCDEBUG
+    const Debug::DebugLevel _dlevel = Debug::Middle;
+#endif
 };

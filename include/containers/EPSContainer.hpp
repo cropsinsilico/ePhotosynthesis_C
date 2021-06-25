@@ -76,6 +76,7 @@ public:
       @param x The input pointer to copy from
       */
     void fromArray(realtype *x, const uint adjust = 0);
+    static void setTop() {EPSContainer::_dlevel = Debug::Top;}
 
     CMContainer* CM_con = nullptr;
     FIBFContainer* FIBF_con = nullptr;
@@ -105,4 +106,7 @@ private:
     }
 
     void _clear();
+#ifdef INCDEBUG
+    static Debug::DebugLevel _dlevel;
+#endif
 };
