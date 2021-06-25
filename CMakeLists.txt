@@ -40,6 +40,16 @@ else()
   set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
 endif()
 
+option(BUILD_LIBRARY "Build ePhotosynthesis as a library so it can be linked to other code.")
+
+if(NOT BUILD_LIBRARY)
+    set(BUILD_LIBRARY OFF)
+    set(BUILD_FLAGS "")
+else()
+    set(BUILD_LIBRARY ON)
+    set(BUILD_FLAGS " -DBUILD_LIBRARY")
+endif()
+
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
     message("CMAKE_BUILD_TYPE not defined, defaulting to Release")
@@ -47,10 +57,11 @@ else()
     message("Doing a ${CMAKE_BUILD_TYPE} build")
 endif()
 
+
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS_DEBUG "-g -DINCDEBUG")
-set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -DINCDEBUG${BUILD_FLAGS}")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG${BUILD_FLAGS}")
 # Prohibit in-source build
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
   message(FATAL_ERROR "In-source build prohibited.")
@@ -70,12 +81,20 @@ include_directories(ePhotosynthesis ${SUNDIALS_INCLUDE_DIRS})
 include_directories("${PROJECT_SOURCE_DIR}/include")
 
 file(GLOB_RECURSE SOURCES "src/*.cpp")
-add_executable(ePhotosynthesis ${SOURCES})
+if(BUILD_LIBRARY)
+    add_library(ePhotosynthesis SHARED ${SOURCES})
+else()
+    add_executable(ePhotosynthesis ${SOURCES})
+endif()
 
 target_link_libraries(ePhotosynthesis ${SUNDIALS_LIBRARIES})
 target_link_libraries(ePhotosynthesis boost_regex)
 
-install(TARGETS ePhotosynthesis DESTINATION bin)
+if(BUILD_LIBRARY)
+    install(TARGETS ePhotosynthesis DESTINATION lib)
+else()
+    install(TARGETS ePhotosynthesis DESTINATION bin)
+endif()
 
 if(BUILD_DOCS)
     if(NOT DOXYGEN_FOUND)
