@@ -73,7 +73,9 @@ public:
     PS_PRContainer* PS_PR_con = nullptr;
     SUCSContainer* SUCS_con = nullptr;
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
+#ifdef INCDEBUG
     static void setTop() {CMContainer::_dlevel = Debug::Top;}
+#endif
 private:
     friend ContainerBase;
     /**

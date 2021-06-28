@@ -240,7 +240,7 @@ int main(int argc, const char* argv[]) {
         theVars->TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
         theVars->record = record;
         theVars->useC3 = useC3;
-        theVars->RUBISCOMETHOD = 2;
+        theVars->RUBISCOMETHOD = 1;
         theVars->RUBISCOTOTAL = 3;
         if (debugDelta)
             dbglvl += 8;
@@ -261,15 +261,21 @@ int main(int argc, const char* argv[]) {
                 maindriver = new trDynaPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
                 break;
             case DynaPS:
+#ifdef INCDEBUG
                 DynaPSContainer::setTop();
+#endif
                 maindriver = new DynaPSDrive(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
                 break;
             case CM:
+#ifdef INCDEBUG
                 CMContainer::setTop();
+#endif
                 maindriver = new CMDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol);
                 break;
             case EPS:
+#ifdef INCDEBUG
                 EPSContainer::setTop();
+#endif
                 theVars->useC3 = true;
                 maindriver = new EPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1, Tp);
                 break;

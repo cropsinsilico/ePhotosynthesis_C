@@ -27,8 +27,9 @@
 #include "modules/CM.hpp"
 #include "modules/PS_PR.hpp"
 #include "modules/SUCS.hpp"
-
+#ifdef INCDEBUG
 Debug::DebugLevel CMContainer::_dlevel = Debug::Middle;
+#endif
 
 CMContainer* CM::_init(Variables *theVars) {
 

@@ -28,8 +28,9 @@
 #include "modules/RA.hpp"
 #include "modules/XanCycle.hpp"
 
+#ifdef INCDEBUG
 Debug::DebugLevel DynaPSContainer::_dlevel = Debug::Middle;
-
+#endif
 DynaPSContainer* DynaPS::_init(Variables *theVars) {
 
     //////////////////////////////////////////////////////////////////////////////////
