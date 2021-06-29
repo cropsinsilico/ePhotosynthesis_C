@@ -32,9 +32,9 @@ double XanCycle::XanCycle_kaz = 0.;
 double XanCycle::XanCycle_kva = 0.;
 double XanCycle::XanCycle_kza = 0.;
 
-const size_t XanCycleContainer::count = 4;
+const size_t XanCycleCondition::count = 4;
 
-XanCycleContainer* XanCycle::_init(Variables *theVars) {
+XanCycleCondition* XanCycle::_init(Variables *theVars) {
 
     XanCycle_kva = 0.163 / 60 * theVars->XanRatio[0]; // Ruth Frommolt et a; 2001; Planta
     XanCycle_kaz = 0.691 / 60 * theVars->XanRatio[1]; // Ruth Frommolt et a; 2001; Planta
@@ -46,7 +46,7 @@ XanCycleContainer* XanCycle::_init(Variables *theVars) {
     const double Zx = 5;
     const double ABA = 1;
 
-    XanCycleContainer* XanCycle_con = new XanCycleContainer();
+    XanCycleCondition* XanCycle_con = new XanCycleCondition();
     XanCycle_con->Vx = Vx * 0.37;
     XanCycle_con->Ax = Ax * 0.37;
     XanCycle_con->Zx = Zx * 0.37;

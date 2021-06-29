@@ -88,9 +88,9 @@ double PR::Vf_T123 = 0;
 double PR::Vf_T121 = 0;
 double PR::Vf_T122 = 0;
 double PR::Vf_T112 = 0;
-const size_t PRContainer::count = 13;
+const size_t PRCondition::count = 13;
 
-PRContainer* PR::_init(Variables *theVars) {
+PRCondition* PR::_init(Variables *theVars) {
     if (theVars->useC3) {
         NADHc = 0.47;
         NADc = 0.4;
@@ -106,7 +106,7 @@ PRContainer* PR::_init(Variables *theVars) {
         PR_ATP = 0.68 * theVars->PRRatio[15];
     }
 
-    PRContainer* PR_con = new PRContainer();
+    PRCondition* PR_con = new PRCondition();
 
     PR_con->GCEA = 0.1812;   // Glycerate in chloroplast; derived based on V113
     PR_con->GCA = 0.36;      // Derived from radioactive labelling experiment; assuem equal concenatration

@@ -49,10 +49,10 @@
 #include "rc/FIRC.hpp"
 #include "rc/RROEARC.hpp"
 #include "rc/RuACTRC.hpp"
-#include "containers/PSContainer.hpp"
-#include "containers/PRContainer.hpp"
-#include "containers/SUCSContainer.hpp"
-#include "containers/XanCycleContainer.hpp"
+#include "conditions/PSCondition.hpp"
+#include "conditions/PRCondition.hpp"
+#include "conditions/SUCSCondition.hpp"
+#include "conditions/XanCycleCondition.hpp"
 //#include "vel/FIBF.hpp"
 
 /**
@@ -226,10 +226,10 @@ struct Variables {
 
     // OUT
     arr BF2OUT = zeros(5);
-    PRContainer PR2OUT;
-    PSContainer PS2OUT;
-    SUCSContainer SUCS2OUT;
-    XanCycleContainer XanCycle2OUT;
+    PRCondition PR2OUT;
+    PSCondition PS2OUT;
+    SUCSCondition SUCS2OUT;
+    XanCycleCondition XanCycle2OUT;
 
     // misc
     arr FluxTR;

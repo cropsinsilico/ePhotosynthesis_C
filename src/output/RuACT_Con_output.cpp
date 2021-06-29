@@ -24,9 +24,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "containers/RuACTContainer.hpp"
+#include "conditions/RuACTCondition.hpp"
 
-std::ostream& RuACTContainer::_print(std::ostream &out, const uint tab) const {
+std::ostream& RuACTCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "  ER = " << std::endl;
     out << space << "  Eaf = " << std::endl;

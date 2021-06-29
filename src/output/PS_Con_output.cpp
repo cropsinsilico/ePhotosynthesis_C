@@ -24,9 +24,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "containers/PSContainer.hpp"
+#include "conditions/PSCondition.hpp"
 
-std::ostream& PSContainer::_print(std::ostream &out, const uint tab) const {
+std::ostream& PSCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "PSContainer" << std::endl;
     out << space << "  RuBP = " << RuBP<< std::endl;

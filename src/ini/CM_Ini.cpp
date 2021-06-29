@@ -28,15 +28,15 @@
 #include "modules/PS_PR.hpp"
 #include "modules/SUCS.hpp"
 #ifdef INCDEBUG
-Debug::DebugLevel CMContainer::_dlevel = Debug::Middle;
+Debug::DebugLevel CMCondition::_dlevel = Debug::Middle;
 #endif
 
-CMContainer* CM::_init(Variables *theVars) {
+CMCondition* CM::_init(Variables *theVars) {
 
-    PS_PRContainer* PS_PR_con = PS_PR::init(theVars);
+    PS_PRCondition* PS_PR_con = PS_PR::init(theVars);
 
-    SUCSContainer* SUCS_Con = SUCS::init(theVars);
+    SUCSCondition* SUCS_Con = SUCS::init(theVars);
 
-    CMContainer* CMs = new CMContainer(PS_PR_con, SUCS_Con);
+    CMCondition* CMs = new CMCondition(PS_PR_con, SUCS_Con);
     return CMs;
 }

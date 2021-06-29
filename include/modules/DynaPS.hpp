@@ -27,9 +27,9 @@
  **********************************************************************************************************************************************/
 
 #include "ModuleBase.hpp"
-#include "containers/DynaPSContainer.hpp"
+#include "conditions/DynaPSCondition.hpp"
 
-class DynaPS : public ModuleBase<DynaPS, DynaPSContainer> {
+class DynaPS : public ModuleBase<DynaPS, DynaPSCondition> {
 private:
     friend ModuleBase;
 /**
@@ -38,7 +38,7 @@ private:
   @param theVars The global variables
   @return A DynaPSCon object for input into calculations
   */
-    static DynaPSContainer* _init(Variables *theVars);
+    static DynaPSCondition* _init(Variables *theVars);
 /**
   Calculate the output values based on the inputs
 
@@ -47,8 +47,8 @@ private:
   @param theVars The global variables
   @return A vector containing the updated values
   */
-    static arr _MB(const double t, const DynaPSContainer* DynaPS_con, Variables *theVars);
-    static void _Rate(const double t, const DynaPSContainer* DynaPS_con, Variables *theVars) {
+    static arr _MB(const double t, const DynaPSCondition* DynaPS_con, Variables *theVars);
+    static void _Rate(const double t, const DynaPSCondition* DynaPS_con, Variables *theVars) {
         (void)t;
         (void)DynaPS_con;
         (void)theVars;

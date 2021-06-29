@@ -29,16 +29,16 @@
 #include "modules/XanCycle.hpp"
 
 #ifdef INCDEBUG
-Debug::DebugLevel DynaPSContainer::_dlevel = Debug::Middle;
+Debug::DebugLevel DynaPSCondition::_dlevel = Debug::Middle;
 #endif
-DynaPSContainer* DynaPS::_init(Variables *theVars) {
+DynaPSCondition* DynaPS::_init(Variables *theVars) {
 
     //////////////////////////////////////////////////////////////////////////////////
     //   Clear up memory for simulation       //
     //////////////////////////////////////////////////////////////////////////////////
 
-    RAContainer* RA_con = RA::init(theVars);
-    XanCycleContainer* XanCycle_con = XanCycle::init(theVars);
-    DynaPSContainer* DynaPS_con = new DynaPSContainer(RA_con, XanCycle_con);
+    RACondition* RA_con = RA::init(theVars);
+    XanCycleCondition* XanCycle_con = XanCycle::init(theVars);
+    DynaPSCondition* DynaPS_con = new DynaPSCondition(RA_con, XanCycle_con);
     return DynaPS_con;
 }

@@ -65,7 +65,7 @@ void EPSDriver::setup() {
     /////////////////////////
     //   Calculation  step //
     /////////////////////////
-    EPSContainer* EPS_Con = EPS_Init();
+    EPSCondition* EPS_Con = EPS_Init();
 
     int va1 = 0;
     theVars->BF_Param[0] = va1;
@@ -98,14 +98,14 @@ void EPSDriver::getResults() {
     uint adjust = 0;
     if (theVars->useC3)
         adjust = 1;
-    EPSContainer* eps_int_con = new EPSContainer(intermediateRes, adjust);
+    EPSCondition* eps_int_con = new EPSCondition(intermediateRes, adjust);
     arr temp = EPS::MB(time, eps_int_con, theVars);
     results = zeros(1);
     const double Arate = (theVars->PS_Vel.v1 - theVars->PR_Vel.v131) * theVars->AVR;
     results[0] = Arate;
 }
 
-EPSContainer* EPSDriver::EPS_Init() {
+EPSCondition* EPSDriver::EPS_Init() {
     return EPS::init(theVars);
 }
 
@@ -117,7 +117,7 @@ arr EPSDriver::MB(realtype t, N_Vector u) {
     if (theVars->useC3) {
         adjust = 1;
     }
-    EPSContainer* EPS_con = new EPSContainer(x, adjust);
+    EPSCondition* EPS_con = new EPSCondition(x, adjust);
 
     arr dxdt = EPS::MB(t, EPS_con, theVars);
     delete EPS_con;

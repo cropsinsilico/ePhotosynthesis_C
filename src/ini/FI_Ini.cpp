@@ -28,12 +28,12 @@
 #include "Variables.hpp"
 #include "modules/FI.hpp"
 
-const size_t FIContainer::count = 22;
+const size_t FICondition::count = 22;
 // This is the routine that initialize the parameters, initial conditions for simulation of fluorescence induction curve.
 // The following information is initialized sequentially 1) Rate constants; 2) Initial concentration ( or conditions); 3) THe maximum
 // concentration of components of photosystems.
 
-FIContainer* FI::_init(Variables *theVars) {
+FICondition* FI::_init(Variables *theVars) {
     //////////////////////////////////////////////////////////////////////////
     // Initilization of the rate constant //
     ////////////////////////////////////////////////////////////////////////////
@@ -103,7 +103,7 @@ FIContainer* FI::_init(Variables *theVars) {
 
     // Assign the value to a array
     // This is the program that initialize the major variables used in the fluorescence induction system.In this file, the n represent negative charges, _red represent that the components are associated with the closed reaction center; while _ox represent a system with open reaction center.
-    FIContainer* FI_Con = new FIContainer();
+    FICondition* FI_Con = new FICondition();
     FI_Con->A = 0;          // The concentration of excitons in the peripheral antenna
     FI_Con->U = 0;          // The concentration fo excitons in the core antenna
     FI_Con->P680ePheo = 1;  // The concentration of the P680Pheo

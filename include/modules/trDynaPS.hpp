@@ -27,9 +27,9 @@
  **********************************************************************************************************************************************/
 
 #include "ModuleBase.hpp"
-#include "containers/trDynaPSContainer.hpp"
+#include "conditions/trDynaPSCondition.hpp"
 
-class trDynaPS : public ModuleBase<trDynaPS, trDynaPSContainer> {
+class trDynaPS : public ModuleBase<trDynaPS, trDynaPSCondition> {
 private:
     friend ModuleBase;
 /**
@@ -38,7 +38,7 @@ private:
   @param theVars The global variables
   @return A trDynaPSCon object for input into calculations
   */
-    static trDynaPSContainer* _init(Variables *theVars);
+    static trDynaPSCondition* _init(Variables *theVars);
 
 /**
   Calculate the output values based on the inputs
@@ -47,8 +47,8 @@ private:
   @param theVars The global variables
   @return A vector containing the updated values
   */
-    static arr _MB(const double t, const trDynaPSContainer* trDynaPS_con, Variables *theVars);
-    static void _Rate(const double t, const trDynaPSContainer* trDynaPS_con, Variables *theVars) {
+    static arr _MB(const double t, const trDynaPSCondition* trDynaPS_con, Variables *theVars);
+    static void _Rate(const double t, const trDynaPSCondition* trDynaPS_con, Variables *theVars) {
         (void)t;
         (void)trDynaPS_con;
         (void)theVars;

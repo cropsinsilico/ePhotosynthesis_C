@@ -24,9 +24,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "containers/EPSContainer.hpp"
+#include "conditions/EPSCondition.hpp"
 
-std::ostream& EPSContainer::_print(std::ostream &out, const uint tab) const {
+std::ostream& EPSCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "EPSContainer" << std::endl;
     CM_con->_print(out, tab + 1);

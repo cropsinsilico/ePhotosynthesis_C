@@ -29,11 +29,11 @@
 #include "modules/PR.hpp"
 
 
-PS_PRContainer* PS_PR::_init(Variables *theVars) {
-    PSContainer* PS_con = PS::init(theVars);
-    PRContainer* PR_con = PR::init(theVars);
+PS_PRCondition* PS_PR::_init(Variables *theVars) {
+    PSCondition* PS_con = PS::init(theVars);
+    PRCondition* PR_con = PR::init(theVars);
     //arr PrS = PR_con->toArray();
     //arr PSs = PS_con->toArray();
-    PS_PRContainer* PS_PR_con = new PS_PRContainer(PS_con, PR_con);
+    PS_PRCondition* PS_PR_con = new PS_PRCondition(PS_con, PR_con);
     return PS_PR_con;
 }

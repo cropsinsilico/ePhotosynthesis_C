@@ -28,7 +28,7 @@
 #include "globals.hpp"
 #include "modules/PS.hpp"
 
-arr PS::_MB(const double t, const PSContainer* PS_con, Variables *theVars) {
+arr PS::_MB(const double t, const PSCondition* PS_con, Variables *theVars) {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Modifying KM, KI, KE VMAX for different reactions as the regulation//

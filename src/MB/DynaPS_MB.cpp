@@ -32,7 +32,7 @@
 
 // This model includes the mass balance equations for the full model of photosynthesis.
 
-arr DynaPS::_MB(const double t, const DynaPSContainer* DynaPS_con, Variables *theVars) {
+arr DynaPS::_MB(const double t, const DynaPSCondition* DynaPS_con, Variables *theVars) {
 
     // Try out one new way of calculating the mass balance equation.
     // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.

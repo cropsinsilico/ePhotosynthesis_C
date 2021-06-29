@@ -28,7 +28,7 @@
 
 #include "definitions.hpp"
 #include "driver.hpp"
-#include "containers/CMContainer.hpp"
+#include "conditions/CMCondition.hpp"
 
 /**
  Class for running the CM calculations in an ODE solver
@@ -51,7 +51,7 @@ private:
 
       @return A CMCon object for input into calculations
       */
-    CMContainer* CM_Ini();
+    CMCondition* CM_Ini();
     /**
       Calculate the output values based on the inputs
 

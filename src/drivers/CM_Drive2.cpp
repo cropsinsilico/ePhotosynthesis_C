@@ -52,7 +52,7 @@ void CMDriver::setup() {
     // This is a variable indicating whether the PSPR model is actually need to be combined with SUCS or not. If 1 then means combined; 0 means not.
     theVars->PSPR_SUCS_com = true;
 
-    CMContainer* CM_con = CM_Ini();
+    CMCondition* CM_con = CM_Ini();
     constraints = CM_con->toArray();
     delete CM_con;
     ////////////////////////////////////////////////
@@ -69,7 +69,7 @@ void CMDriver::getResults() {
     //////////////////////////////////////////////
     //   output  step      //
     //////////////////////////////////////////////
-    CMContainer* CM_int_con = new CMContainer(intermediateRes);
+    CMCondition* CM_int_con = new CMCondition(intermediateRes);
 
     arr temp = CM::MB(time, CM_int_con, theVars);
     // Reinitialize some values of global variables.
@@ -82,14 +82,14 @@ void CMDriver::getResults() {
     results = {CO2AR};
 }
 
-CMContainer* CMDriver::CM_Ini() {
+CMCondition* CMDriver::CM_Ini() {
     return CM::init(theVars);
 }
 
 arr CMDriver::MB(realtype t, N_Vector u) {
     realtype *x = N_VGetArrayPointer(u);
 
-    CMContainer* CMs = new CMContainer(x);
+    CMCondition* CMs = new CMCondition(x);
     arr dxdt = CM::MB(t, CMs, theVars);
     delete CMs;
     return dxdt;

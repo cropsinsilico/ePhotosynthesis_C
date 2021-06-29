@@ -27,12 +27,12 @@
 #include "Variables.hpp"
 #include "modules/PS.hpp"
 #include "modules/SUCS.hpp"
-#include "containers/PS_PRContainer.hpp"
-#include "containers/CMContainer.hpp"
+#include "conditions/PS_PRCondition.hpp"
+#include "conditions/CMCondition.hpp"
 
 #define RegFactor 1.
 
-void PS::_Rate(const double t, const PSContainer* PS_con, Variables *theVars) {
+void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
     double PsV6, PsV9, PsV13, PsV16, PsPEXT;
     //DEBUG_MESSAGE(PS_con, 5)
 
@@ -72,7 +72,7 @@ void PS::_Rate(const double t, const PSContainer* PS_con, Variables *theVars) {
 
     //theVars->PS_Vel.v1 = v1;
     if (theVars->useC3) {
-        const SUCSContainer *SUCS_con = PS_con->parent->parent->SUCS_con;
+        const SUCSCondition *SUCS_con = PS_con->parent->parent->SUCS_con;
 
         theVars->PiTc = theVars->SUCS_Pool.PTc - 2 * (SUCS_con->FBPc + SUCS_con->F26BPc) - (SUCS_con->PGAc + SUCS_con->T3Pc + SUCS_con->HexPc + SUCS_con->SUCP + SUCS_con->UTPc + SUCS_con->ATPc);
         PsPEXT = (pow(pow(SUCS::KE61, 2) + 4 * SUCS::KE61 * theVars->PiTc, 0.5) - SUCS::KE61)/2;   //  SHARED

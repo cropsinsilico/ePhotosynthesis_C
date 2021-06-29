@@ -24,9 +24,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "containers/RedoxRegContainer.hpp"
+#include "conditions/RedoxRegCondition.hpp"
 
-std::ostream& RedoxRegContainer::_print(std::ostream &out, const uint tab) const {
+std::ostream& RedoxRegCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "RedoxRegContainer" << std::endl;
     RA_con->_print(out, tab + 1);

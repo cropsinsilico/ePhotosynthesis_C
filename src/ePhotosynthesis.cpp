@@ -262,19 +262,19 @@ int main(int argc, const char* argv[]) {
                 break;
             case DynaPS:
 #ifdef INCDEBUG
-                DynaPSContainer::setTop();
+                DynaPSCondition::setTop();
 #endif
                 maindriver = new DynaPSDrive(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
                 break;
             case CM:
 #ifdef INCDEBUG
-                CMContainer::setTop();
+                CMCondition::setTop();
 #endif
                 maindriver = new CMDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol);
                 break;
             case EPS:
 #ifdef INCDEBUG
-                EPSContainer::setTop();
+                EPSCondition::setTop();
 #endif
                 theVars->useC3 = true;
                 maindriver = new EPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1, Tp);

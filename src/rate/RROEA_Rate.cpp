@@ -30,7 +30,7 @@
 #define KEe2ATPase 1.
 #define ke2ATPase 1.
 
-void RROEA::_Rate(const double t, const RROEAContainer* RROEA_con, Variables *theVars) {
+void RROEA::_Rate(const double t, const RROEACondition* RROEA_con, Variables *theVars) {
 
     const double GAPDHo = theVars->RROEA_Pool.GAPDH - RROEA_con->GAPDH;
     const double FBPaseo = theVars->RROEA_Pool.FBPase - RROEA_con->FBPase;

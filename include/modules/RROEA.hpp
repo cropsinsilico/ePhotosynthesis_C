@@ -26,12 +26,12 @@
  *
  **********************************************************************************************************************************************/
 #include "ModuleBase.hpp"
-#include "containers/RROEAContainer.hpp"
+#include "conditions/RROEACondition.hpp"
 
 /**
  Class for RROEA related functions
  */
-class RROEA : public ModuleBase<RROEA, RROEAContainer> {
+class RROEA : public ModuleBase<RROEA, RROEACondition> {
 private:
     friend ModuleBase;
     /**
@@ -40,7 +40,7 @@ private:
       @param theVars Pointer to the global variables
       @return A RROEACon object with values set base on the input
       */
-    static RROEAContainer* _init(Variables *theVars);
+    static RROEACondition* _init(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -50,7 +50,7 @@ private:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr _MB(const double t, const RROEAContainer* RROEA_Con, Variables *theVars);
+    static arr _MB(const double t, const RROEACondition* RROEA_Con, Variables *theVars);
 
     /**
       Calculate the Rates of RROEA based on the inputs
@@ -59,5 +59,5 @@ private:
       @param RROEA_Con RROEACon object giving the input parameters
       @param theVars The global variables
       */
-    static void _Rate(const double t, const RROEAContainer* RROEA_Con, Variables *theVars);
+    static void _Rate(const double t, const RROEACondition* RROEA_Con, Variables *theVars);
 };

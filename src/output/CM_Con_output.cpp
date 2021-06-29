@@ -24,9 +24,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "containers/CMContainer.hpp"
+#include "conditions/CMCondition.hpp"
 
-std::ostream& CMContainer::_print(std::ostream &out, const uint tab) const {
+std::ostream& CMCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "CMContainer" << std::endl;
     PS_PR_con->_print(out, tab + 1);

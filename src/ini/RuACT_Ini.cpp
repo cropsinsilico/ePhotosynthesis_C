@@ -28,9 +28,9 @@
 #include "Variables.hpp"
 #include "modules/RuACT.hpp"
 
-const size_t RuACTContainer::count = 4;
+const size_t RuACTCondition::count = 4;
 
-RuACTContainer* RuACT::_init(Variables *theVars) {
+RuACTCondition* RuACT::_init(Variables *theVars) {
     theVars->activase = 80 * theVars->RacRatio[10];
 
     // The rate constant used in the model
@@ -49,7 +49,7 @@ RuACTContainer* RuACT::_init(Variables *theVars) {
     const double factor = 1;
 
     // Assign value to a variable that is transferred to the program
-    RuACTContainer* RuACT_Con = new RuACTContainer();
+    RuACTCondition* RuACT_Con = new RuACTCondition();
     RuACT_Con->ER = 0.05 * 4 * factor;  // The concentration of inactive ER
     RuACT_Con->Eaf = 0.05 * 4 * factor; // The total concentration of E, EC, AND ECM
     RuACT_Con->ECMR = 0.2 * 4 * factor; // The concentration of ECMR

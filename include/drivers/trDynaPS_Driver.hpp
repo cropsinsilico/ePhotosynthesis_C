@@ -28,7 +28,7 @@
 
 #include "definitions.hpp"
 #include "driver.hpp"
-#include "containers/trDynaPSContainer.hpp"
+#include "conditions/trDynaPSCondition.hpp"
 
 
 /**
@@ -77,7 +77,7 @@ private:
 
       @return A trDynaPSCon object for input into calculations
       */
-    trDynaPSContainer* trDynaPS_Ini();
+    trDynaPSCondition* trDynaPS_Ini();
 
     size_t ParaNum;
     double Ratio;

@@ -24,9 +24,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "containers/SUCSContainer.hpp"
+#include "conditions/SUCSCondition.hpp"
 
-std::ostream& SUCSContainer::_print(std::ostream &out, const uint tab) const {
+std::ostream& SUCSCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "SUCSContainer" << std::endl;
     out << space << "  T3Pc= " << T3Pc<< std::endl;

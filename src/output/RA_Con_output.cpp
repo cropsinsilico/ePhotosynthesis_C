@@ -24,9 +24,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "containers/RAContainer.hpp"
+#include "conditions/RACondition.hpp"
 
-std::ostream& RAContainer::_print(std::ostream &out, const uint tab) const {
+std::ostream& RACondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "RAContainer" << std::endl;
     RuACT_con->_print(out, tab + 1);

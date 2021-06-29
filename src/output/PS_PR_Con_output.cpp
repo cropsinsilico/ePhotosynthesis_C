@@ -24,9 +24,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "containers/PS_PRContainer.hpp"
+#include "conditions/PS_PRCondition.hpp"
 
-std::ostream& PS_PRContainer::_print(std::ostream &out, const uint tab) const {
+std::ostream& PS_PRCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "PS_PRContainer" << std::endl;
     PS_con->_print(out, tab + 1);

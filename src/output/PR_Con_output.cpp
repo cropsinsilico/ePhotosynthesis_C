@@ -24,9 +24,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "containers/PRContainer.hpp"
+#include "conditions/PRCondition.hpp"
 
-std::ostream& PRContainer::_print(std::ostream &out, const uint tab) const {
+std::ostream& PRCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "PRContainer" << std::endl;
     out << space << "  GCEA = " << GCEA<< std::endl;

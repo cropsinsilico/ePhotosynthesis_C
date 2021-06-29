@@ -29,7 +29,7 @@
 #include "modules/EPS.hpp"
 #include "modules/RuACT.hpp"
 
-arr RA::_MB(const double t, const RAContainer* RA_Con, Variables *theVars) {
+arr RA::_MB(const double t, const RACondition* RA_Con, Variables *theVars) {
     arr EPS_DYDT = EPS::MB(t, RA_Con->EPS_con, theVars);
     arr RuACT_DYDT = RuACT::MB(t, RA_Con->RuACT_con, theVars);
 

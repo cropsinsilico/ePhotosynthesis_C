@@ -24,8 +24,8 @@
  *
  **********************************************************************************************************************************************/
 
-#include "containers/BFContainer.hpp"
-std::ostream& BFContainer::_print(std::ostream &out, const uint tab) const {
+#include "conditions/BFCondition.hpp"
+std::ostream& BFCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "BFCon" << std::endl;
     out << space << "  ISPHr = " << ISPHr << std::endl;

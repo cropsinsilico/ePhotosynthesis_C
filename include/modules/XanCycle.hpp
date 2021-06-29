@@ -27,12 +27,12 @@
  *
  **********************************************************************************************************************************************/
 #include "ModuleBase.hpp"
-#include "containers/XanCycleContainer.hpp"
+#include "conditions/XanCycleCondition.hpp"
 
 /**
  Class for XanCycle code and internal variables
  */
-class XanCycle : public ModuleBase<XanCycle, XanCycleContainer> {
+class XanCycle : public ModuleBase<XanCycle, XanCycleCondition> {
 private:
     friend ModuleBase;
     /**
@@ -41,7 +41,7 @@ private:
       @param theVars Pointer to the global variables
       @return A XanCycleCon object with values set base on the input
       */
-    static XanCycleContainer* _init(Variables *theVars);
+    static XanCycleCondition* _init(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -51,7 +51,7 @@ private:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr _MB(const double t, const XanCycleContainer* XanCycle_Con, Variables *theVars);
+    static arr _MB(const double t, const XanCycleCondition* XanCycle_Con, Variables *theVars);
 
     /**
       Calculate the Rates of XanCycle based on the inputs
@@ -60,7 +60,7 @@ private:
       @param XanCycle_Con XanCycleCon object giving the input parameters
       @param theVars The global variables
       */
-    static void _Rate(const double t, const XanCycleContainer* XanCycle_Con, Variables *theVars);
+    static void _Rate(const double t, const XanCycleCondition* XanCycle_Con, Variables *theVars);
 
     static double XanCycle_kav;
     static double XanCycle_kaz;

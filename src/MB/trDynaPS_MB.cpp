@@ -33,7 +33,7 @@
 
 // This model includes the mass balance equations for the full model of photosynthesis.
 
-arr trDynaPS::_MB(const double t, const trDynaPSContainer* trDynaPS_con, Variables *theVars) {
+arr trDynaPS::_MB(const double t, const trDynaPSCondition* trDynaPS_con, Variables *theVars) {
     theVars->trDynaPS2RedReg_cal = 0;
 
     Condition(t, theVars);

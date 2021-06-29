@@ -32,13 +32,13 @@
 #include "modules/CM.hpp"
 
 #ifdef INCDEBUG
-Debug::DebugLevel EPSContainer::_dlevel = Debug::Middle;
+Debug::DebugLevel EPSCondition::_dlevel = Debug::Middle;
 #endif
-EPSContainer* EPS::_init(Variables *theVars) {
+EPSCondition* EPS::_init(Variables *theVars) {
     FIBF::init(theVars);
-    FIContainer* FI_Con = FI::init(theVars);
-    BFContainer* BF_con = BF::init(theVars);
-    FIBFContainer* FIBF_con = new FIBFContainer(BF_con, FI_Con);
+    FICondition* FI_Con = FI::init(theVars);
+    BFCondition* BF_con = BF::init(theVars);
+    FIBFCondition* FIBF_con = new FIBFCondition(BF_con, FI_Con);
     //// Step 1 Get the initialization of the variables for BF
 
     theVars->BF_OLD_TIME = 0;
@@ -65,12 +65,12 @@ EPSContainer* EPS::_init(Variables *theVars) {
     //   Initialation step //
     ////////////////////////////////////////////////
 
-    CMContainer* CM_con = CM::init(theVars);
+    CMCondition* CM_con = CM::init(theVars);
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //   Use the initialized variables to construct variables that will be transfered to the Drive file. ////////////
     // //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    EPSContainer* EPS_con = new EPSContainer(FIBF_con, CM_con);
+    EPSCondition* EPS_con = new EPSCondition(FIBF_con, CM_con);
 
     return EPS_con;
 }

@@ -24,8 +24,8 @@
  *
  **********************************************************************************************************************************************/
 
-#include "containers/DynaPSContainer.hpp"
-std::ostream& DynaPSContainer::_print(std::ostream &out, const uint tab) const {
+#include "conditions/DynaPSCondition.hpp"
+std::ostream& DynaPSCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "DynaPSContainer" << std::endl;
     RA_con->_print(out, tab + 1);

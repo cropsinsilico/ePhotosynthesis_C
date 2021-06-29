@@ -27,9 +27,9 @@
  **********************************************************************************************************************************************/
 
 #include "ModuleBase.hpp"
-#include "containers/EPSContainer.hpp"
+#include "conditions/EPSCondition.hpp"
 
-class EPS : public ModuleBase<EPS, EPSContainer> {
+class EPS : public ModuleBase<EPS, EPSCondition> {
 private:
     friend ModuleBase;
     /**
@@ -38,7 +38,7 @@ private:
   @param theVars Pointer to the global variables
   @return A EPSCon object with values set base on the input
   */
-    static EPSContainer* _init(Variables *theVars);
+    static EPSCondition* _init(Variables *theVars);
 
 /**
   Calculate the output values based on the inputs
@@ -48,9 +48,9 @@ private:
   @param theVars The global variables
   @return A vector containing the updated values
   */
-    static arr _MB(const double t, const EPSContainer* EPS_Con, Variables *theVars);
+    static arr _MB(const double t, const EPSCondition* EPS_Con, Variables *theVars);
 
-    static void _Rate(const double t, const EPSContainer* EPS_Con, Variables *theVars) {
+    static void _Rate(const double t, const EPSCondition* EPS_Con, Variables *theVars) {
         (void)t;
         (void)EPS_Con;
         (void)theVars;

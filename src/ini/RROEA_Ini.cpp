@@ -27,9 +27,9 @@
 #include "Variables.hpp"
 #include "modules/RROEA.hpp"
 
-const size_t RROEAContainer::count = 10;
+const size_t RROEACondition::count = 10;
 
-RROEAContainer* RROEA::_init(Variables *theVars) {
+RROEACondition* RROEA::_init(Variables *theVars) {
     theVars->RROEA_OLD_TIME = 0;
     theVars->RROEA_TIME_N = 1;
 
@@ -127,7 +127,7 @@ RROEAContainer* RROEA::_init(Variables *theVars) {
 
     double Fd = 0.081 * Coeff; // The initial concentraiton of reduced fd
 
-    RROEAContainer* RROEA_con = new RROEAContainer();
+    RROEACondition* RROEA_con = new RROEACondition();
     RROEA_con->GAPDH = theVars->RROEA_Pool.GAPDH * Coeff;   // The initial concentration of active GAPDH
     RROEA_con->FBPase = theVars->RROEA_Pool.FBPase * Coeff; // The initial concentration of active FBPase
     RROEA_con->SBPase = theVars->RROEA_Pool.SBPase * Coeff; // The initial concentration of active SBPase

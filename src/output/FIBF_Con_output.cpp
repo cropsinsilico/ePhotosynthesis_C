@@ -24,9 +24,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "containers/FIBFContainer.hpp"
+#include "conditions/FIBFCondition.hpp"
 
-std::ostream& FIBFContainer::_print(std::ostream &out, const uint tab) const {
+std::ostream& FIBFCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "FIBFContainer" << std::endl;
     BF_con->_print(out, tab + 1);

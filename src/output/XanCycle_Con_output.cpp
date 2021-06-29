@@ -24,9 +24,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "containers/XanCycleContainer.hpp"
+#include "conditions/XanCycleCondition.hpp"
 
-std::ostream& XanCycleContainer::_print(std::ostream &out, const uint tab) const {
+std::ostream& XanCycleCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "XanCycleContainer" << std::endl;
     out << space << "  Vx = " << std::endl;  ///< The concentration of Violozanthin

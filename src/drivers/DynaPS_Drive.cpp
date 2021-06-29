@@ -27,7 +27,7 @@
 #include "Variables.hpp"
 #include "modules/DynaPS.hpp"
 #include "drivers/DynaPS_Driver.hpp"
-#include "containers/DynaPSContainer.hpp"
+#include "conditions/DynaPSCondition.hpp"
 #include "globals.hpp"
 
 DynaPSDrive::~DynaPSDrive() {}
@@ -92,7 +92,7 @@ void DynaPSDrive::setup() {
 
     // Next is to initialize the vector.
 
-    DynaPSContainer* DynaPS_con = DynaPS_Ini();
+    DynaPSCondition* DynaPS_con = DynaPS_Ini();
 
     const double va1 = 0;
     // The ratio of the PSI unit to the PSII unit
@@ -119,7 +119,7 @@ void DynaPSDrive::setup() {
 
 void DynaPSDrive::getResults() {
 
-    DynaPSContainer* dyna_int_con = new DynaPSContainer(intermediateRes);
+    DynaPSCondition* dyna_int_con = new DynaPSCondition(intermediateRes);
     arr temp = DynaPS::MB(time, dyna_int_con, theVars);
 
     double PSIIabs = theVars->FI_Vel.vP680_d;
@@ -157,7 +157,7 @@ void DynaPSDrive::getResults() {
     //save FDC2
 }
 
-DynaPSContainer* DynaPSDrive::DynaPS_Ini() {
+DynaPSCondition* DynaPSDrive::DynaPS_Ini() {
     return DynaPS::init(theVars);
 }
 
@@ -171,7 +171,7 @@ arr DynaPSDrive::MB(realtype t, N_Vector u) {
     //// Step One: Get the initialization of the concentrations for the RedoxReg model which will be used in the calculation of mb of RedoxReg.
     realtype *x = N_VGetArrayPointer(u);
 
-    DynaPSContainer* DynaPS_con = new DynaPSContainer(x);
+    DynaPSCondition* DynaPS_con = new DynaPSCondition(x);
 
     arr dxdt = DynaPS::MB(t, DynaPS_con, theVars);
 

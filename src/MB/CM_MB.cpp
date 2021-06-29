@@ -29,7 +29,7 @@
 #include "modules/SUCS.hpp"
 #include "modules/PS_PR.hpp"
 
-arr CM::_MB(const realtype t, const CMContainer* CM_con, Variables *theVars) {
+arr CM::_MB(const realtype t, const CMCondition* CM_con, Variables *theVars) {
     arr dxdt;
     dxdt.reserve(36);
 

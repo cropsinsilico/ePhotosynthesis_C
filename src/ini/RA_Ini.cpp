@@ -29,9 +29,9 @@
 #include "modules/EPS.hpp"
 #include "modules/RuACT.hpp"
 
-RAContainer* RA::_init(Variables *theVars) {
-    EPSContainer* EPS_con = EPS::init(theVars);
-    RuACTContainer* RuACT_con = RuACT::init(theVars);
+RACondition* RA::_init(Variables *theVars) {
+    EPSCondition* EPS_con = EPS::init(theVars);
+    RuACTCondition* RuACT_con = RuACT::init(theVars);
 
     if (theVars->RuACT_EPS_com)
         RuACT_con->RuBP = EPS_con->CM_con->PS_PR_con->PS_con->RuBP;
@@ -39,6 +39,6 @@ RAContainer* RA::_init(Variables *theVars) {
     theVars->RuACT_TIME_N = 1;
 
     // Now get the combined total concentration of different concentration variables.
-    RAContainer* RA_con = new RAContainer(EPS_con, RuACT_con);
+    RACondition* RA_con = new RACondition(EPS_con, RuACT_con);
     return RA_con;
 }

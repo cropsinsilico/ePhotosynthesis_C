@@ -24,9 +24,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "containers/trDynaPSContainer.hpp"
+#include "conditions/trDynaPSCondition.hpp"
 
-std::ostream& trDynaPSContainer::_print(std::ostream &out, const uint tab) const {
+std::ostream& trDynaPSCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "trDynaPSContainer" << std::endl;
     RROEA_con->_print(out, tab + 1);

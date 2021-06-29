@@ -24,9 +24,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "containers/RROEAContainer.hpp"
+#include "conditions/RROEACondition.hpp"
 
-std::ostream& RROEAContainer::_print(std::ostream &out, const uint tab) const {
+std::ostream& RROEACondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "RROEAContainer" << std::endl;
     out << space << "  GAPDH = " << std::endl;
