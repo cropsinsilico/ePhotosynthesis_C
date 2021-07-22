@@ -27,14 +27,22 @@
 #include "globals.hpp"
 #include "CM.hpp"
 
-CMCon CMDriver::CM_Ini() {
+CMCon* CMDriver::CM_Ini() {
     return CMInit(theVars);
 }
 
 arr CMDriver::MB(realtype t, N_Vector u) {
     realtype *x = N_VGetArrayPointer(u);
 
-    CMCon CMs(x);
+    CMCon* CMs = new CMCon(x);
     arr dxdt = CM_Mb(t, CMs, theVars);
+    delete CMs;
     return dxdt;
+}
+
+std::ostream& operator<<(std::ostream &out, const CMCon &in) {
+    out << "CMCon" << std::endl;
+    out << in.PS_PR_con;
+    out << in.SUCS_con;
+    return out;
 }

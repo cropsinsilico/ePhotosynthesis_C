@@ -28,15 +28,15 @@
 
 // This model includes the mass balance equations for the full model of the light reactions.
 
-arr EPS_Mb(const double t, const EPSCon &EPS_Con, Variables *theVars) {
+arr EPS_Mb(const double t, const EPSCon* EPS_Con, Variables *theVars) {
 
     // Try out one new way of calculating the mass balance equation.
     // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.
-
+    //std::cout << EPS_Con;
     //// Step One: Get the initialization of the concentrations for the PSPR model which will be used in the calculation of mb of CM.
-    EPSCon EPSc(EPS_Con);
-    arr CM_DYDT = CM_Mb(t, EPSc.CM_con, theVars);
-    arr FIBF_DYDT = FIBF_Mb(t, EPSc.FIBF_con, theVars);
+
+    arr CM_DYDT = CM_Mb(t, EPS_Con->CM_con, theVars);
+    arr FIBF_DYDT = FIBF_Mb(t, EPS_Con->FIBF_con, theVars);
 
     // Step III: Calculate the mass balanec equation for the EPS model. This basically need to make sure that the variables
     // used in the mass balance equation should be in exact sequence with the sequence used in the inialization.
@@ -44,12 +44,22 @@ arr EPS_Mb(const double t, const EPSCon &EPS_Con, Variables *theVars) {
     arr EPS_DYDT;
     EPS_DYDT.reserve(96);
     EPS_DYDT.insert(EPS_DYDT.end(), FIBF_DYDT.begin(), FIBF_DYDT.begin() + 52);
-    EPS_DYDT.insert(EPS_DYDT.end(), CM_DYDT.begin(), CM_DYDT.begin() + 36);
+    if (theVars->useC3) {
+        EPS_DYDT.insert(EPS_DYDT.end(), CM_DYDT.begin(), CM_DYDT.begin() + 35);
+    } else {
+        EPS_DYDT.insert(EPS_DYDT.end(), CM_DYDT.begin(), CM_DYDT.begin() + 36);
+    }
 
-    EPS_DYDT[60] = CM_DYDT[8] - theVars->PS_Vel.v16 + theVars->EPS_ATP_Rate - theVars->PR_Vel.v124; //WY 201804
+    if (theVars->useC3) {
+        EPS_DYDT[60] = CM_DYDT[8] - theVars->PS_Vel.v16 + theVars->EPS_ATP_Rate;
+        EPS_DYDT[61] = theVars->BF_Vel.vbfn2/2 - theVars->PS_Vel.v3;// - 1 * PS2EPS_NADPH/(PS2EPS_NADPH + 0.5) ;  // QF changed /2 and ;// - 1 * PS2EPS_NADPH/(PS2EPS_NADPH + 0.5)
+
+    } else {
+        EPS_DYDT[60] = CM_DYDT[8] - theVars->PS_Vel.v16 + theVars->EPS_ATP_Rate - theVars->PR_Vel.v124; //WY 201804
+        EPS_DYDT[61] = theVars->BF_Vel.vbfn2 / 2 - theVars->PS_Vel.v3 - 2 * theVars->PR_Vel.v124; //WY 201804
+    }
     EPS_DYDT[16] = EPS_DYDT[60];
 
-    EPS_DYDT[61] = theVars->BF_Vel.vbfn2 / 2 - theVars->PS_Vel.v3 - 2 * theVars->PR_Vel.v124; //WY 201804
     EPS_DYDT[28] = EPS_DYDT[61];
     return EPS_DYDT;
 }

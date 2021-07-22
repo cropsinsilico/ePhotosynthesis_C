@@ -31,7 +31,7 @@
 
 // This model includes the mass balance equations for the full model of photosynthesis.
 
-arr trDynaPS_Mb(const double t, const trDynaPSCon &trDynaPS_con, Variables *theVars) {
+arr trDynaPS_Mb(const double t, const trDynaPSCon* trDynaPS_con, Variables *theVars) {
     theVars->trDynaPS2RedReg_cal = 0;
 
     Condition(t, theVars);
@@ -40,9 +40,9 @@ arr trDynaPS_Mb(const double t, const trDynaPSCon &trDynaPS_con, Variables *theV
     theVars->BF_Param[0] = light;
 
     theVars->RROEA_Param[1] = 1;
-    arr RROEA_DYDT = RROEA::RROEA_Mb(t, trDynaPS_con.RROEA_con, theVars);
+    arr RROEA_DYDT = RROEA::RROEA_Mb(t, trDynaPS_con->RROEA_con, theVars);
 
-    arr DynaPS_DYDT = DynaPS_Mb(t, trDynaPS_con.DynaPS_con, theVars);
+    arr DynaPS_DYDT = DynaPS_Mb(t, trDynaPS_con->DynaPS_con, theVars);
     arr dxdt = zeros(120);
     for (size_t index = 0; index < 96; index++)
         dxdt[index] = DynaPS_DYDT[index];

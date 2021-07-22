@@ -28,6 +28,7 @@
 
 #include "definitions.hpp"
 
+class FIBFCon;
 /**
  Class for holding the results of the FI_Rate calculations
  */
@@ -99,6 +100,8 @@ public:
         vP680_d = other.vP680_d;
         vP680_f = other.vP680_f;
     }
+    friend std::ostream& operator<<(std::ostream &out, const FIVel &in);
+
     double vA_d = 0.;    ///<  vA_d  The rate of heat dissipation from peripheral antenna
     double vA_f = 0.;    ///<  vA_f  The rate of fluorescence emission from peripheral antenna
     double vA_U = 0.;    ///<  vA_U  The rate of exciton transfer from peripheral antenna to core antenna in open reaction center
@@ -241,35 +244,35 @@ public:
  */
 class FICon {
 public:
-    FICon() {}
+    FICon(FIBFCon* par = nullptr) : parent(par) {}
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The FICon object to copy
       */
-    FICon(const FICon &other){
-        A = other.A;
-        U = other.U;
-        P680ePheo = other.P680ePheo;
-        P680pPheon = other.P680pPheon;
-        P680pPheo = other.P680pPheo;
-        P680Pheon = other.P680Pheon;
-        Yz = other.Yz;
-        S1T = other.S1T;
-        S2T = other.S2T;
-        S3T = other.S3T;
-        S0T = other.S0T;
-        S1Tp = other.S1Tp;
-        S2Tp = other.S2Tp;
-        S3Tp = other.S3Tp;
-        S0Tp = other.S0Tp;
-        QAQB = other.QAQB;
-        QAnQB = other.QAnQB;
-        QAQBn = other.QAQBn;
-        QAnQBn = other.QAnQBn;
-        QAQB2n = other.QAQB2n;
-        QAnQB2n = other.QAnQB2n;
-        PQn = other.PQn;
+    FICon(const FICon* other){
+        A = other->A;
+        U = other->U;
+        P680ePheo = other->P680ePheo;
+        P680pPheon = other->P680pPheon;
+        P680pPheo = other->P680pPheo;
+        P680Pheon = other->P680Pheon;
+        Yz = other->Yz;
+        S1T = other->S1T;
+        S2T = other->S2T;
+        S3T = other->S3T;
+        S0T = other->S0T;
+        S1Tp = other->S1Tp;
+        S2Tp = other->S2Tp;
+        S3Tp = other->S3Tp;
+        S0Tp = other->S0Tp;
+        QAQB = other->QAQB;
+        QAnQB = other->QAnQB;
+        QAQBn = other->QAQBn;
+        QAnQBn = other->QAnQBn;
+        QAQB2n = other->QAQB2n;
+        QAnQB2n = other->QAnQB2n;
+        PQn = other->PQn;
     }
 
     /**
@@ -325,9 +328,13 @@ public:
     /**
       Get the size of the data vector
       */
-    size_t size() {
+    static size_t size() {
         return count;
     }
+    void setParent(FIBFCon* par) {parent = par;}
+
+    friend std::ostream& operator<<(std::ostream &out, const FICon &in);
+
     double A = 0.;          ///< The concentration of excitons in the peripheral antenna
     double U = 0.;          ///< The concentration fo excitons in the core antenna
     double P680ePheo = 0.;  ///< QF add
@@ -350,8 +357,10 @@ public:
     double QAQB2n = 0.;     ///< The concentration of [QAQB2-]
     double QAnQB2n = 0.;    ///< The concentration of [QA-QB2-]
     double PQn = 0.;        ///< The concentration of reduced PQ, i.e. PQH2;
+    FIBFCon* parent;
 private:
-    size_t count = 22;
+    static const size_t count;
+
 };
 
 /**
@@ -365,7 +374,7 @@ public:
       @param theVars The global variables
       @return A FICon object for input into calculations
       */
-    static FICon FI_Ini(Variables *theVars);
+    static FICon* FI_Ini(Variables *theVars);
     /**
       Calculate the output values based on the inputs
 
@@ -374,7 +383,7 @@ public:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr FI_Mb(const double t, const FICon &FI_Con, Variables *theVars);
+    static arr FI_Mb(const double t, const FICon* FI_Con, Variables *theVars);
     /**
       Calculate the Rates of FI based on the inputs
 
@@ -382,5 +391,5 @@ public:
       @param FI_Con FICon object giving the input parameters
       @param theVars The global variables
       */
-    static void FI_Rate(const double t, const FICon &FI_Con, Variables *theVars);
+    static void FI_Rate(const double t, const FICon* FI_Con, Variables *theVars);
 };

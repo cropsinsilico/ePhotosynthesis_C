@@ -25,17 +25,17 @@
  **********************************************************************************************************************************************/
 
 #include "driver.hpp"
+#include "Variables.hpp"
 #include <sundials/sundials_math.h>
 #include <cvode/cvode.h>
 #include <sunmatrix/sunmatrix_dense.h>
 #include <sunlinsol/sunlinsol_dense.h>
 #include <cvode/cvode_direct.h>
+#include "CVodeMem.hpp"
+
 
 arr Driver::run() {
     setup();
-
-    CalcData *data = alloc_calc_data();
-    data->drv = this;
 
     sunindextype N =  static_cast<long>(constraints.size());
     N_Vector y;
@@ -43,29 +43,12 @@ arr Driver::run() {
 
     for (size_t i = 0; i < constraints.size(); i++)
         NV_Ith_S(y, i) =  constraints[i];
-
-    void *cvode_mem = nullptr;
-    cvode_mem = CVodeCreate(CV_BDF);
     realtype t0 = 0;
-    if (CVodeInit(cvode_mem, calculate, t0, y) != 0) {
-        std::cout << "CVodeInit failed" << std::endl;
-        exit(EXIT_FAILURE);
-    }
 
-    if (CVodeSStolerances(cvode_mem, reltol, abstol) != 0) {
-        std::cout << "CVodeSStolerances failed" << std::endl;
-        exit(EXIT_FAILURE);
-    }
+    CVodeMem *cmem = &CVodeMem::create();
+    cmem->cvode_mem_init(this, t0, y);
 
-    if (CVodeSetUserData(cvode_mem, data) != 0) {
-        std::cout << "CVodeSetUserData failed" << std::endl;
-        exit(EXIT_FAILURE);
-    }
-
-    if (CVodeSetMaxNumSteps(cvode_mem, maxSubSteps) != 0) {
-        std::cout << "CVodeSetMaxNumSteps failed" << std::endl;
-        exit(EXIT_FAILURE);
-    }
+    data->drv = this;
 
     SUNMatrix A = SUNDenseMatrix(N, N);
 
@@ -80,27 +63,32 @@ arr Driver::run() {
 
     for (realtype tout = start + step; tout <= endtime; tout += step)
         if (CVode(cvode_mem, tout, y, &t, CV_NORMAL) != 0) {
-            std::cout << "CVode failed" << std::endl;
+            std::cout << "CVode failed at t=" << tout << std::endl;
             exit(EXIT_FAILURE);
         }
 
     intermediateRes = N_VGetArrayPointer(y);
     time = t;
     getResults();
-    delete data;
-    N_VDestroy(y);
-    CVodeFree(&cvode_mem);
+
     SUNLinSolFree(LS);
     SUNMatDestroy(A);
+    N_VDestroy(y);
     return results;
+}
+
+Driver::~Driver() {
+
 }
 
 int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
     realtype *dxdt = N_VGetArrayPointer(u_dot);
     CalcData *data = static_cast<CalcData*>(user_data);
     arr ddxdt = data->drv->MB(t, u);
-
-    for (size_t index = 0; index < ddxdt.size(); index++)
+    uint adjust = 0;
+    if (theVars->useC3)
+        adjust = 1;
+    for (size_t index = 0; index < ddxdt.size() - adjust; index++)
         dxdt[index] = ddxdt[index];
     return 0;
 }

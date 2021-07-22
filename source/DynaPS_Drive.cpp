@@ -90,7 +90,7 @@ void DynaPSDrive::setup() {
 
     // Next is to initialize the vector.
 
-    DynaPSCon DynaPS_con = DynaPS_Ini();
+    DynaPSCon* DynaPS_con = DynaPS_Ini();
 
     const double va1 = 0;
     // The ratio of the PSI unit to the PSII unit
@@ -106,17 +106,18 @@ void DynaPSDrive::setup() {
     theVars->XanCycle_Param[0] = va1;
     theVars->XanCycle_Param[1] = theVars->PS12ratio;
 
-    theVars->RedoxReg_Param = 0; // This parameter is just used here as a future storage tool. NOt used now.
+    theVars->RedoxReg_Param = 0; // This parameter is just used here as a future storage tool. Not used now.
 
     constraints = zeros(120);
-    arr temp = DynaPS_con.toArray();
+    arr temp = DynaPS_con->toArray();
     for (size_t i = 0; i < constraints.size(); i++)
         constraints[i] = temp[i];
+    delete DynaPS_con;
 }
 
 void DynaPSDrive::getResults() {
 
-    DynaPSCon dyna_int_con(intermediateRes);
+    DynaPSCon* dyna_int_con = new DynaPSCon(intermediateRes);
     arr temp = DynaPS_Mb(time, dyna_int_con, theVars);
 
     double PSIIabs = theVars->FI_Vel.vP680_d;

@@ -34,6 +34,31 @@
 // predeclare main global data structure
 struct Variables;
 
+#define Q10_1 1.93
+#define Q10_2 2
+#define Q10_3 2
+#define Q10_5 2
+#define Q10_6 2
+#define Q10_7 2
+#define Q10_8 2
+#define Q10_9 2
+#define Q10_10 2
+#define Q10_13 2
+#define Q10_23 2
+#define Q10_112 1.81
+#define Q10_113 2
+#define Q10_121 2
+#define Q10_122 2.01
+#define Q10_123 2
+#define Q10_124 2
+#define Q10_131 2
+#define Q10_51 2
+#define Q10_52 1.60
+#define Q10_55 2
+#define Q10_56 2
+#define Q10_57 2
+#define Q10_58 2
+
 // rename a common data type to make it easier
 typedef std::vector<double> arr;
 
@@ -155,4 +180,13 @@ void TimeSeries<T>::write(std::ofstream &of) {
             of << "," << e;
         of << std::endl;
     }
+}
+
+
+inline void report(arr values) {
+    std::cout << values[0] << "  =  ";
+    for (uint i = 1; i < values.size(); i++) {
+        std::cout << values[i] << "  ";
+    }
+    std::cout << std::endl;
 }

@@ -25,23 +25,40 @@
  **********************************************************************************************************************************************/
 
 #include "globals.hpp"
-#include "trDynaPS.hpp"
+#include "EPS.hpp"
 #include "Variables.hpp"
 
-trDynaPSCon* trDynaPSDriver::trDynaPS_Ini() {
-    return trDynaPS_Init(theVars);
+EPSCon* EPSDriver::EPS_Init() {
+    return EPS_Ini(theVars);
 }
 
-arr trDynaPSDriver::MB(realtype t, N_Vector u) {
+arr EPSDriver::MB(realtype t, N_Vector u) {
+    //// Step One: Get the initialization of the concentrations for the RedoxReg model which will be used in the calculation of mb of RedoxReg.
     realtype *x = N_VGetArrayPointer(u);
 
-    trDynaPSCon* trDynaPS_con = new trDynaPSCon(x);
-    arr dxdt = trDynaPS_Mb(t, trDynaPS_con, theVars);
-    delete trDynaPS_con;
+    uint adjust = 0;
+    if (theVars->useC3) {
+        adjust = 1;
+    }
+    EPSCon* EPS_con = new EPSCon(x, adjust);
+
+    //std::cout << std::endl << "INPUT   " << t << "  --   ";
+    //for (auto dd : EPS_con.toArray())
+    //    std::cout << dd << "  ";
+    //std::cout << std::endl;
+    arr dxdt = EPS_Mb(t, EPS_con, theVars);
+    delete EPS_con;
+    //std::cout << std::endl << "OUTPUT  ";
+    //for (auto dd : dxdt) {
+    //    std::cout << dd << "  ";
+    //}
+    //std::cout << std::endl;
     return dxdt;
 }
 
-trDynaPSDriver::~trDynaPSDriver()  {
-    if (theVars != nullptr)
-        delete theVars;
+std::ostream& operator<<(std::ostream &out, const EPSCon &in) {
+    out << "EPSCon" << std::endl;
+    out << in.CM_con;
+    out << in.FIBF_con;
+    return out;
 }

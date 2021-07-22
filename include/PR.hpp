@@ -27,32 +27,32 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
-
+class PS_PRCon;
 /**
  Class for holding the inputs to PR_mb
  */
 class PRCon {
 public:
-    PRCon() {}
+    PRCon(PS_PRCon* par = nullptr) : parent(par) {}
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The PRCon object to copy
       */
-    PRCon(const PRCon &other) {
-        GCEA = other.GCEA;
-        GCA = other.GCA;
-        PGA = other.PGA;
-        PGCA = other.PGCA;
-        GCAc = other.GCAc;
-        GOAc = other.GOAc;
-        SERc = other.SERc;
-        GLYc = other.GLYc;
-        HPRc = other.HPRc;
-        GCEAc = other.GCEAc;
-        RUBP = other.RUBP;
-        CO2 = other.CO2;
-        O2 = other.O2;
+    PRCon(const PRCon* other) {
+        GCEA = other->GCEA;
+        GCA = other->GCA;
+        PGA = other->PGA;
+        PGCA = other->PGCA;
+        GCAc = other->GCAc;
+        GOAc = other->GOAc;
+        SERc = other->SERc;
+        GLYc = other->GLYc;
+        HPRc = other->HPRc;
+        GCEAc = other->GCEAc;
+        RuBP = other->RuBP;
+        CO2 = other->CO2;
+        O2 = other->O2;
     }
     /**
       Constructor to create an object from the input vector, starting at the given index
@@ -80,7 +80,7 @@ public:
         GLYc= vec[offset + 7];
         HPRc= vec[offset + 8];
         GCEAc= vec[offset + 9];
-        RUBP= vec[offset + 10];
+        RuBP= vec[offset + 10];
         CO2= vec[offset + 11];
         O2= vec[offset + 12];
     }
@@ -90,15 +90,18 @@ public:
       @return A vector containing the data values from the class
       */
     arr toArray() {
-        arr array = {GCEA, GCA, PGA, PGCA, GCAc, GOAc, SERc, GLYc, HPRc, GCEAc, RUBP, CO2, O2};
+        arr array = {GCEA, GCA, PGA, PGCA, GCAc, GOAc, SERc, GLYc, HPRc, GCEAc, RuBP, CO2, O2};
         return array;
     }
     /**
       Get the size of the data vector
       */
-    size_t size() {
+    static size_t size() {
         return count;
     }
+    void setParent(PS_PRCon* par) {parent = par;}
+    friend std::ostream& operator<<(std::ostream &out, const PRCon &in);
+
     double GCEA = 0.;
     double GCA = 0.;
     double PGA = 0.;
@@ -109,12 +112,14 @@ public:
     double GLYc = 0.;
     double HPRc = 0.;
     double GCEAc = 0.;
-    double RUBP = 0.;
+    double RuBP = 0.;
     double CO2 = 0.;
     double O2 = 0.;
     double _v131;
+    PS_PRCon* parent;
 private:
-    size_t count = 13;
+    static const size_t count;
+
 };
 
 /**
@@ -159,6 +164,7 @@ public:
         this->v2out *= val;
         return *this;
     }
+    friend std::ostream& operator<<(std::ostream &out, const PRVel &in);
     double v111 = 0.;
     double v112 = 0.;
     double v113 = 0.;
@@ -182,7 +188,7 @@ public:
       @param theVars Pointer to the global variables
       @return A PRCon object with values set base on the input
       */
-    static PRCon PR_Ini(Variables *theVars);
+    static PRCon* PR_Ini(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -191,7 +197,7 @@ public:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr PR_Mb(const double t, const PRCon &PR_con, Variables *theVars);
+    static arr PR_Mb(const double t, const PRCon* PR_con, Variables *theVars);
 
     /**
       Calculate the Rates of PR based on the inputs
@@ -199,7 +205,7 @@ public:
       @param PR_con PRCon object giving the input parameters
       @param theVars The global variables
       */
-    static void PR_Rate(const double t, const PRCon &PR_con, Variables *theVars);
+    static void PR_Rate(const double t, const PRCon* PR_con, Variables *theVars);
 private:
     static double KC;
     static double KE113;
@@ -242,4 +248,17 @@ private:
     static double V124;
     static double V131;
     static double V2T;
+    static double Vfactor112;
+    static double Vfactor113;
+    static double Vfactor121;
+    static double Vfactor122;
+    static double Vfactor123;
+    static double Vfactor124;
+    static double Vfactor131;
+    static double Vf_T131;
+    static double Vf_T113;
+    static double Vf_T123;
+    static double Vf_T121;
+    static double Vf_T122;
+    static double Vf_T112;
 };

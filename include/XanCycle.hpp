@@ -26,7 +26,7 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-
+class DynaPSCon;
 /**
  Class to hold the results of the XanCycleRate calculations
  */
@@ -61,17 +61,17 @@ public:
  */
 class XanCycleCon {
 public:
-    XanCycleCon() {}
+    XanCycleCon(DynaPSCon* par = nullptr) : parent(par) {}
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The XanCycleCon object to copy
       */
-    XanCycleCon(const XanCycleCon &other) {
-        Vx = other.Vx;
-        Ax = other.Ax;
-        Zx = other.Zx;
-        ABA = other.ABA;
+    XanCycleCon(const XanCycleCon* other) {
+        Vx = other->Vx;
+        Ax = other->Ax;
+        Zx = other->Zx;
+        ABA = other->ABA;
     }
     /**
       Constructor to create an object from the input vector, starting at the given index
@@ -112,18 +112,21 @@ public:
         Zx = 0.;
         ABA = 0.;
     }
+    void setParent(DynaPSCon* par) {parent = par;}
     /**
       Get the size of the data vector
       */
-    size_t size() {
+    static size_t size() {
         return count;
     }
     double Vx = 0.;  ///< The concentration of Violozanthin
     double Ax = 0.;  ///< The concentration of Anthrozanthin
     double Zx = 0.;  ///< The concentration of Zeaznthin
     double ABA = 0.; ///< The concentration of ABA
+    DynaPSCon* parent;
 private:
-    size_t count = 4;
+    static const size_t count;
+
 };
 
 /**
@@ -137,7 +140,7 @@ public:
       @param theVars Pointer to the global variables
       @return A XanCycleCon object with values set base on the input
       */
-    static XanCycleCon XanCycle_Ini(Variables *theVars);
+    static XanCycleCon* XanCycle_Ini(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -147,7 +150,7 @@ public:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr XanCycle_Mb(const double t, const XanCycleCon &XanCycle_Con, Variables *theVars);
+    static arr XanCycle_Mb(const double t, const XanCycleCon* XanCycle_Con, Variables *theVars);
 
     /**
       Calculate the Rates of XanCycle based on the inputs
@@ -156,7 +159,7 @@ public:
       @param XanCycle_Con XanCycleCon object giving the input parameters
       @param theVars The global variables
       */
-    static void XanCycle_Rate(const double t, const XanCycleCon &XanCycle_Con, Variables *theVars);
+    static void XanCycle_Rate(const double t, const XanCycleCon* XanCycle_Con, Variables *theVars);
 private:
     static double XanCycle_kav;
     static double XanCycle_kaz;

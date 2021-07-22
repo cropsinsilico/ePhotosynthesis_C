@@ -30,6 +30,7 @@
 #include "FI.hpp"
 #include "BF.hpp"
 
+class EPSCon;
 /**
  Class for FIBF_Pool data
  */
@@ -53,16 +54,22 @@ public:
  */
 class FIBFCon {
 public:
-    FIBFCon() {}
+    FIBFCon(EPSCon* par = nullptr) : BF_con(new BFCon(this)), FI_con(new FICon(this)), parent(par) {}
+    ~FIBFCon() {
+        clear();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The FIBFCon object to copy
       */
-    FIBFCon(const FIBFCon &other) {
-        BF_con = other.BF_con;
-        FI_con = other.FI_con;
-        kd = other.kd;
+    FIBFCon(const FIBFCon* other) {
+        clear();
+        BF_con = other->BF_con;
+        FI_con = other->FI_con;
+        BF_con->setParent(this);
+        FI_con->setParent(this);
+        kd = other->kd;
     }
     /**
       Constructor to create an object from the contained classes
@@ -70,9 +77,12 @@ public:
       @param bother A BFCon object to incorporate
       @param fother A FICon object to incorporate
       */
-    FIBFCon(const BFCon &bother, const FICon &fother) {
+    FIBFCon(BFCon* bother, FICon* fother) {
+        clear();
         BF_con = bother;
         FI_con = fother;
+        BF_con->setParent(this);
+        FI_con->setParent(this);
         kd = pow(10, 8) * 0.5;
     }
     /**
@@ -91,9 +101,13 @@ public:
       @param offset The indec in vec to start the copying from
       */
     void fromArray(const arr &vec, const size_t offset = 0) {
-        BF_con.fromArray(vec, offset);
-        FI_con.fromArray(vec, offset + BF_con.size());
-        kd = vec[offset + BF_con.size() + FI_con.size()];
+        if (BF_con == nullptr)
+            BF_con = new BFCon(this);
+        if (FI_con == nullptr)
+            FI_con = new FICon(this);
+        BF_con->fromArray(vec, offset);
+        FI_con->fromArray(vec, offset + BFCon::size());
+        kd = vec[offset + BFCon::size() + FICon::size()];
     }
     /**
       Convert the object into a vector of doubles
@@ -101,8 +115,8 @@ public:
       @return A vector containing the data values from the class
     */
     arr toArray() {
-        arr bvec = BF_con.toArray();
-        arr fvec = FI_con.toArray();
+        arr bvec = BF_con->toArray();
+        arr fvec = FI_con->toArray();
         bvec.reserve(size());
         bvec.insert(bvec.end(), fvec.begin(), fvec.end());
         arr fivec = {kd};
@@ -112,12 +126,28 @@ public:
     /**
       Get the size of the data vector
       */
-    size_t size() {
-        return BF_con.size() + FI_con.size() + 1;
+    static size_t size() {
+        return BFCon::size() + FICon::size() + 1;
     }
-    BFCon BF_con;
-    FICon FI_con;
+    friend std::ostream& operator<<(std::ostream &out, const FIBFCon &in);
+    void setParent(EPSCon* par) {parent = par;}
+    BFCon* BF_con = nullptr;
+    FICon* FI_con = nullptr;
     double kd = 0; // The initialization of the initial rate constant for heat dissipation
+
+    EPSCon* parent;
+
+private:
+    void clear() {
+        if (BF_con != nullptr){
+            delete BF_con;
+            BF_con = nullptr;
+        }
+        if (FI_con != nullptr) {
+            delete FI_con;
+            FI_con = nullptr;
+        }
+    }
 
 };
 
@@ -136,4 +166,4 @@ void FIBF_Ini(Variables *theVars);
   @param theVars The global variables
   @return A vector containing the updated values
   */
-arr FIBF_Mb(const double t, const FIBFCon &FIBF_Con, Variables *theVars);
+arr FIBF_Mb(const double t, const FIBFCon* FIBF_Con, Variables *theVars);

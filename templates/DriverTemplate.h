@@ -1,3 +1,5 @@
+#pragma once
+
 /**********************************************************************************************************************************************
  *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
  *
@@ -24,24 +26,43 @@
  *
  **********************************************************************************************************************************************/
 
-#include "globals.hpp"
-#include "trDynaPS.hpp"
-#include "Variables.hpp"
+#include "driver.hpp"
 
-trDynaPSCon* trDynaPSDriver::trDynaPS_Ini() {
-    return trDynaPS_Init(theVars);
-}
+/**************************************************************************************************
+ * This file provides the template for adding new Driver methods.
+ * Replace DriverTemplate with the name of the new driver and save this file as <new driver_name.hpp>
+ * in the include directory.
+ * The methods described below are required, but others can be added, as well as any internal
+ * class variables.
+ **************************************************************************************************/
+class DriverTemplate : public Driver
+{
+public:
+    /*
+      Constructor, additional variables can be added to the current initialization
+    */
+    DriverTemplate(Variables *theVars, const double st, const double stp, const double etime,
+                   const int maxSteps, const double atol, const double rtol) :
+        Driver(theVars, st, stp, etime, maxSteps, atol, rtol) {
 
-arr trDynaPSDriver::MB(realtype t, N_Vector u) {
-    realtype *x = N_VGetArrayPointer(u);
+    }
+    // Destructor
+    virtual ~DriverTemplate() override;
 
-    trDynaPSCon* trDynaPS_con = new trDynaPSCon(x);
-    arr dxdt = trDynaPS_Mb(t, trDynaPS_con, theVars);
-    delete trDynaPS_con;
-    return dxdt;
-}
+    /*
+       Method to get the inputs for the initial calculation
+    */
+    void setup() override;
 
-trDynaPSDriver::~trDynaPSDriver()  {
-    if (theVars != nullptr)
-        delete theVars;
-}
+    /*
+      Method to get the results and put the in a class variable.
+    */
+    void getResults() override;
+
+private:
+    /*
+      Method to do the calculations, this is the method given to the ODE solver
+    */
+    arr MB(realtype t, N_Vector u) override;
+};
+

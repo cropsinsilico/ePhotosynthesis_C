@@ -28,19 +28,19 @@
 #include "PS_PR.hpp"
 #include "globals.hpp"
 
-arr PS_PR_Mb(const double t, const PS_PRCon &PS_PR_con, Variables *theVars) {
+arr PS_PR_Mb(const double t, const PS_PRCon* PS_PR_con, Variables *theVars) {
 
     const double vATPcost = theVars->TestATPCost / theVars->AVR;
 
-    PRCon PR_con = PS_PR_con.PR_con;
-    PSCon PS_con = PS_PR_con.PS_con;
-    PR_con.PGA = PS_con.PGA;
+    PRCon* PR_con = PS_PR_con->PR_con;
+    PSCon* PS_con = PS_PR_con->PS_con;
+    PR_con->PGA = PS_con->PGA;
 
-    PR_con.RUBP = PS_con.RuBP;
-    PR_con.CO2 = PS_con.CO2;
-    PR_con.O2 = PS_con.O2;
+    PR_con->RuBP = PS_con->RuBP;
+    PR_con->CO2 = PS_con->CO2;
+    PR_con->O2 = PS_con->O2;
 
-    const double PR2PS_Pgca = PS_PR_con.PR_con.PGCA;  // FOr transfering information between PR to PS.
+    const double PR2PS_Pgca = PS_PR_con->PR_con->PGCA;  // FOr transfering information between PR to PS.
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 2. Add exprimental conditions here; Conditions like light, temperature, CO2, O2 concentration should be added here //
@@ -53,11 +53,12 @@ arr PS_PR_Mb(const double t, const PS_PRCon &PS_PR_con, Variables *theVars) {
     PS_Param[1] = PR2PS_Pgca;
 
     PS::PS_Rate(t, PS_con, PS_Param, theVars);
+    //std::cout << theVars->PS_Vel;
 
     arr PR_Param = zeros(2);
     PR_Param[0] = theVars->PS_PR_Param;      // To indicate that the calcualtion is using the combined model
     // for the PS-PR combined model. 0: Combined model; 1: Separate model
-    PR_Param[1] = theVars->PS2PR_Pi;
+    PR_Param[1] = theVars->Pi;
 
     PR::PR_Rate(t, PR_con, theVars);
 
@@ -65,7 +66,7 @@ arr PS_PR_Mb(const double t, const PS_PRCon &PS_PR_con, Variables *theVars) {
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // 5.  Calculation of the mass balance equations ////
     //////////////////////////////////////////////////////////////////////////////////////////////$
-
+    //std::cout << theVars->PR_Vel;
     arr PS_PR_DYDT = zeros(24);
     PS_PR_DYDT[0] = theVars->PS_Vel.v13 - theVars->PS_Vel.v1 - theVars->PR_Vel.v111;
     PS_PR_DYDT[1] = 2 * theVars->PS_Vel.v1 - theVars->PS_Vel.v2 - theVars->PS_Vel.v32 + theVars->PR_Vel.v113 + theVars->PR_Vel.v111;
@@ -75,12 +76,20 @@ arr PS_PR_Mb(const double t, const PS_PRCon &PS_PR_con, Variables *theVars) {
     PS_PR_DYDT[5] = theVars->PS_Vel.v7 - theVars->PS_Vel.v8;
     PS_PR_DYDT[6] = theVars->PS_Vel.v9 - theVars->PS_Vel.v10;
     PS_PR_DYDT[7] = theVars->PS_Vel.v8 - theVars->PS_Vel.v9;
-    PS_PR_DYDT[8] = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13 - theVars->PR_Vel.v113 - theVars->PS_Vel.v25 - theVars->PR_Vel.v131 - vATPcost;//WY202003 extra ATP cost
+    if (theVars->useC3) {
+        PS_PR_DYDT[8] = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13 - theVars->PR_Vel.v113;
+    } else {
+        PS_PR_DYDT[8] = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13 - theVars->PR_Vel.v113 - theVars->PS_Vel.v25 - theVars->PR_Vel.v131 - vATPcost;//WY202003 extra ATP cost
     //PS_PR_DYDT(9) = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13- theVars->PR_Vel.v113 - theVars->PS_Vel.v25 - theVars->PR_Vel.v124;    //AWY201804
+    }
     PS_PR_DYDT[9] = 0;
     PS_PR_DYDT[10] = 0;
     PS_PR_DYDT[11] = 0;
-    PS_PR_DYDT[12] = theVars->PS_Vel.v6 - theVars->PS_Vel.v7 - theVars->PS_Vel.v23 + theVars->PS_Vel.v25;
+    if (theVars->useC3) {
+        PS_PR_DYDT[12] = theVars->PS_Vel.v6 - theVars->PS_Vel.v7 - theVars->PS_Vel.v23;
+    } else {
+        PS_PR_DYDT[12] = theVars->PS_Vel.v6 - theVars->PS_Vel.v7 - theVars->PS_Vel.v23 + theVars->PS_Vel.v25;
+    }
     PS_PR_DYDT[13] = theVars->PS_Vel.v7 + theVars->PS_Vel.v10 * 2 - theVars->PS_Vel.v13;
     PS_PR_DYDT[14] = theVars->PR_Vel.v1in - theVars->PR_Vel.v113;
     PS_PR_DYDT[15] = theVars->PR_Vel.v112 - theVars->PR_Vel.v2out;
@@ -94,4 +103,11 @@ arr PS_PR_Mb(const double t, const PS_PRCon &PS_PR_con, Variables *theVars) {
     PS_PR_DYDT[23] = theVars->PS_Vel.v23 - theVars->PS_Vel.v24;
 
     return PS_PR_DYDT;
+}
+
+std::ostream& operator<<(std::ostream &out, const PS_PRCon &in) {
+    out << "PS_PRCon" << std::endl;
+    out << in.PS_con;
+    out << in.PR_con;
+    return out;
 }

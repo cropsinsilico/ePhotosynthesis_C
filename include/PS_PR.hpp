@@ -29,30 +29,42 @@
 #include "PS.hpp"
 #include "PR.hpp"
 
+class CMCon;
 /**
  Class to hold inputs to PS_PR_mb
  */
 class PS_PRCon {
 public:
-    PS_PRCon() {}
+    PS_PRCon(CMCon* par = nullptr) : PS_con(new PSCon(this)), PR_con(new PRCon(this)), parent(par) {}
+
+    ~PS_PRCon() {
+        clear();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The PS_PRCon object to copy
       */
-    PS_PRCon(const PS_PRCon &other) {
-        PS_con = other.PS_con;
-        PR_con = other.PR_con;
+    PS_PRCon(const PS_PRCon* other) {
+        clear();
+        PS_con = other->PS_con;
+        PR_con = other->PR_con;
+        PS_con->setParent(this);
+        PR_con->setParent(this);
     }
+
     /**
       Constructor to create an object from the contained classes
 
       @param sother A PSCon object to incorporate
       @param rother A PRCon object to incorporate
       */
-    PS_PRCon(const PSCon &sother, const PRCon &rother) {
+    PS_PRCon(PSCon* sother, PRCon* rother) {
+        clear();
         PS_con = sother;
         PR_con = rother;
+        PS_con->setParent(this);
+        PR_con->setParent(this);
     }
     /**
       Constructor to create an object from the input vector, starting at the given index
@@ -70,34 +82,38 @@ public:
       @param offset The indec in vec to start the copying from
       */
     void fromArray(const std::vector<double> &vec, const size_t offset = 0) {
-        PS_con.RuBP = vec[offset];
-        PS_con.PGA = vec[offset + 1];
-        PS_con.DPGA = vec[offset + 2];
-        PS_con.T3P = vec[offset + 3];
-        PS_con.FBP = vec[offset + 4];
-        PS_con.E4P = vec[offset + 5];
-        PS_con.S7P = vec[offset + 6];
-        PS_con.SBP = vec[offset + 7];
-        PS_con.ATP = vec[offset + 8];
-        PS_con.NADPH = vec[offset + 9];
-        PS_con.CO2 = vec[offset + 10];
-        PS_con.O2 = vec[offset + 11];
-        PS_con.HexP = vec[offset + 12];
-        PS_con.PenP = vec[offset + 13];
-        PR_con.GCEA = vec[offset + 14];
-        PR_con.GCA = vec[offset + 15];
-        PR_con.PGCA = vec[offset + 16];
-        PR_con.GCAc = vec[offset + 17];
-        PR_con.GOAc = vec[offset + 18];
-        PR_con.SERc = vec[offset + 19];
-        PR_con.GLYc = vec[offset + 20];
-        PR_con.HPRc = vec[offset + 21];
-        PR_con.GCEAc = vec[offset + 22];
-        PS_con.ADPG = vec[offset + 23];
-        PR_con.RUBP = PS_con.RuBP;
-        PR_con.CO2 = PS_con.CO2;
-        PR_con.O2 = PS_con.O2;
-        PR_con.PGA = PS_con.PGA;
+        if (PS_con == nullptr)
+            PS_con = new PSCon(this);
+        if (PR_con  == nullptr)
+            PR_con = new PRCon(this);
+        PS_con->RuBP = vec[offset];
+        PS_con->PGA = vec[offset + 1];
+        PS_con->DPGA = vec[offset + 2];
+        PS_con->T3P = vec[offset + 3];
+        PS_con->FBP = vec[offset + 4];
+        PS_con->E4P = vec[offset + 5];
+        PS_con->S7P = vec[offset + 6];
+        PS_con->SBP = vec[offset + 7];
+        PS_con->ATP = vec[offset + 8];
+        PS_con->NADPH = vec[offset + 9];
+        PS_con->CO2 = vec[offset + 10];
+        PS_con->O2 = vec[offset + 11];
+        PS_con->HexP = vec[offset + 12];
+        PS_con->PenP = vec[offset + 13];
+        PR_con->GCEA = vec[offset + 14];
+        PR_con->GCA = vec[offset + 15];
+        PR_con->PGCA = vec[offset + 16];
+        PR_con->GCAc = vec[offset + 17];
+        PR_con->GOAc = vec[offset + 18];
+        PR_con->SERc = vec[offset + 19];
+        PR_con->GLYc = vec[offset + 20];
+        PR_con->HPRc = vec[offset + 21];
+        PR_con->GCEAc = vec[offset + 22];
+        PS_con->ADPG = vec[offset + 23];
+        PR_con->RuBP = PS_con->RuBP;
+        PR_con->CO2 = PS_con->CO2;
+        PR_con->O2 = PS_con->O2;
+        PR_con->PGA = PS_con->PGA;
     }
     /**
       Convert the object into a vector of doubles
@@ -105,42 +121,59 @@ public:
       @return A vector containing the data values from the class
     */
     arr toArray() {
-        arr outvec = {PS_con.RuBP,
-                      PS_con.PGA,
-                      PS_con.DPGA,
-                      PS_con.T3P,
-                      PS_con.FBP,
-                      PS_con.E4P,
-                      PS_con.S7P,
-                      PS_con.SBP,
-                      PS_con.ATP,
-                      PS_con.NADPH,
-                      PS_con.CO2,
-                      PS_con.O2,
-                      PS_con.HexP,
-                      PS_con.PenP,
-                      PR_con.GCEA,
-                      PR_con.GCA,
-                      PR_con.PGCA,
-                      PR_con.GCAc,
-                      PR_con.GOAc,
-                      PR_con.SERc,
-                      PR_con.GLYc,
-                      PR_con.HPRc,
-                      PR_con.GCEAc,
-                      PS_con.ADPG};
+        arr outvec = {PS_con->RuBP,
+                      PS_con->PGA,
+                      PS_con->DPGA,
+                      PS_con->T3P,
+                      PS_con->FBP,
+                      PS_con->E4P,
+                      PS_con->S7P,
+                      PS_con->SBP,
+                      PS_con->ATP,
+                      PS_con->NADPH,
+                      PS_con->CO2,
+                      PS_con->O2,
+                      PS_con->HexP,
+                      PS_con->PenP,
+                      PR_con->GCEA,
+                      PR_con->GCA,
+                      PR_con->PGCA,
+                      PR_con->GCAc,
+                      PR_con->GOAc,
+                      PR_con->SERc,
+                      PR_con->GLYc,
+                      PR_con->HPRc,
+                      PR_con->GCEAc,
+                      PS_con->ADPG};
 
         return outvec;
     }
 
+    void setParent(CMCon* par) {parent = par;}
+    friend std::ostream& operator<<(std::ostream &out, const PS_PRCon &in);
+
     /**
       Get the size of the data vector
       */
-    size_t size() {
-        return 24;
+    static size_t size() {
+        return count;
     }
-    PSCon PS_con;
-    PRCon PR_con;
+    PSCon* PS_con = nullptr;
+    PRCon* PR_con = nullptr;
+
+    CMCon* parent;
+private:
+    static const size_t count;
+    void clear () {
+        if (PS_con != nullptr) {
+            delete PS_con;
+            PS_con = nullptr;
+        }
+        if (PR_con != nullptr) {
+            delete PR_con;
+            PR_con = nullptr;
+        }
+    }
 };
 
 /**
@@ -149,7 +182,7 @@ public:
   @param theVars The global variables
   @return A PS_PRCon object for input into calculations
   */
-PS_PRCon PS_PR_Ini(Variables *theVars);
+PS_PRCon* PS_PR_Ini(Variables *theVars);
 
 /**
   Calculate the output values based on the inputs
@@ -158,4 +191,4 @@ PS_PRCon PS_PR_Ini(Variables *theVars);
   @param theVars The global variables
   @return A vector containing the updated values
   */
-arr PS_PR_Mb(const double t, const PS_PRCon &PS_PRs, Variables *theVars);
+arr PS_PR_Mb(const double t, const PS_PRCon* PS_PRs, Variables *theVars);

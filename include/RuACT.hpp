@@ -28,6 +28,7 @@
 
 #include "definitions.hpp"
 
+class RACon;
 /**
  Class for holding the results of RuACT_Rate calculations
  */
@@ -124,17 +125,17 @@ public:
  */
 class RuACTCon {
 public:
-    RuACTCon() {}
+    RuACTCon(RACon *par = nullptr) : parent(par) {}
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The RuACTCon object to copy
       */
-    RuACTCon(const RuACTCon &other) {
-        ER = other.ER;
-        Eaf = other.Eaf;
-        ECMR = other.ECMR;
-        RuBP = other.RuBP;
+    RuACTCon(const RuACTCon* other) {
+        ER = other->ER;
+        Eaf = other->Eaf;
+        ECMR = other->ECMR;
+        RuBP = other->RuBP;
     }
     /**
       Constructor to create an object from the input vector, starting at the given index
@@ -169,15 +170,19 @@ public:
     /**
       Get the size of the data vector
       */
-    size_t size() {
+    static size_t size() {
         return count;
     }
+
+    void setParent(RACon* par) {parent = par;}
     double ER = 0.;   ///< The concentration of inactive ER
     double Eaf = 0.;  ///< The total concentration of E, EC, AND ECM
     double ECMR = 0.; ///< The concentration of ECMR
     double RuBP = 0.; ///< The concentration of ECMR
+    RACon* parent;
 private:
-    size_t count = 4;
+    static const size_t count;
+
 };
 
 /**
@@ -191,7 +196,7 @@ public:
       @param theVars Pointer to the global variables
       @return A RuACTCon object with values set base on the input
       */
-    static RuACTCon RuACT_Ini(Variables *theVars);
+    static RuACTCon* RuACT_Ini(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -201,7 +206,7 @@ public:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr RuACT_Mb(const double t, const RuACTCon &RuACT_Con, Variables *theVars);
+    static arr RuACT_Mb(const double t, const RuACTCon* RuACT_Con, Variables *theVars);
 
     /**
       Calculate the Rates of RuACT based on the inputs
@@ -210,5 +215,5 @@ public:
       @param RuACT_Con RuACTCon object giving the input parameters
       @param theVars The global variables
       */
-    static void RuACT_Rate(const double t, const RuACTCon &RuACT_Con, Variables *theVars);
+    static void RuACT_Rate(const double t, const RuACTCon* RuACT_Con, Variables *theVars);
 };

@@ -27,39 +27,42 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
-
+class PRCon;
+class PR;
+class RuACT;
+class SUCS;
+class PS_PRCon;
 /**
  Class for holding the inputs to PS_mb
  */
 class PSCon {
 public:
-    PSCon() {}
+    PSCon(PS_PRCon* par = nullptr) : parent(par) {}
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The PSCon object to copy
       */
-    PSCon(const PSCon &other) {
-        RuBP = other.RuBP;
-        PGA = other.PGA;
-        DPGA = other.DPGA;
-        T3P = other.T3P;
-        ADPG = other.ADPG;
-        FBP = other.FBP;
-        E4P = other.E4P;
-        S7P = other.S7P;
-        SBP = other.SBP;
-        ATP = other.ATP;
-        NADPH = other.NADPH;
-        CO2 = other.CO2;
-        O2 = other.O2;
-        HexP = other.HexP;
-        PenP = other.PenP;
-        _Pi = other._Pi;
-        _ADP = other._ADP;
-        _v1 = other._v1;
+    PSCon(const PSCon* other) {
+        RuBP = other->RuBP;
+        PGA = other->PGA;
+        DPGA = other->DPGA;
+        T3P = other->T3P;
+        ADPG = other->ADPG;
+        FBP = other->FBP;
+        E4P = other->E4P;
+        S7P = other->S7P;
+        SBP = other->SBP;
+        ATP = other->ATP;
+        NADPH = other->NADPH;
+        CO2 = other->CO2;
+        O2 = other->O2;
+        HexP = other->HexP;
+        PenP = other->PenP;
+        _Pi = other->_Pi;
+        _ADP = other->_ADP;
+        _v1 = other->_v1;
     }
-
     /**
       Constructor to create an object from the input vector, starting at the given index
 
@@ -106,9 +109,13 @@ public:
     /**
       Get the size of the data vector
       */
-    size_t size() {
+    static size_t size() {
         return count;
     }
+
+    void setParent(PS_PRCon* par) {parent = par;}
+    friend std::ostream& operator<<(std::ostream &out, const PSCon &in);
+
     double RuBP = 0.;
     double PGA = 0.;
     double DPGA = 0.;
@@ -127,8 +134,9 @@ public:
     double _Pi = 0.;
     double _ADP = 0.;
     double _v1 = 0.;
+    PS_PRCon* parent;
 private:
-    size_t count = 15;
+    static const size_t count;
 };
 
 /**
@@ -190,6 +198,7 @@ public:
         this->v25 *= val;
         return *this;
     }
+    friend std::ostream& operator<<(std::ostream &out, const PSVel &in);
     double v1 = 0.;
     double v2 = 0.;
     double v3 = 0.;
@@ -225,8 +234,7 @@ public:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr PS_Mb(const double t, const PSCon &PSs, const arr &Param, Variables *theVars);
-    static PSCon PSI(Variables *theVars);
+    static arr PS_Mb(const double t, const PSCon* PSs, const arr &Param, Variables *theVars);
 
     /**
       Initializer
@@ -234,7 +242,7 @@ public:
       @param theVars Pointer to the global variables
       @return A PSCon object with values set base on the input
       */
-    static PSCon PS_Ini(Variables *theVars);
+    static PSCon* PS_Ini(Variables *theVars);
 
     /**
       Calculate the Rates of PS based on the inputs
@@ -243,8 +251,11 @@ public:
       @param PSs PSCon object giving the input parameters
       @param theVars The global variables
       */
-    static void PS_Rate(const double t, const PSCon &PSs, const arr &Param, Variables *theVars);
+    static void PS_Rate(const double t, const PSCon* PSs, const arr &Param, Variables *theVars);
 private:
+    friend PR;
+    friend RuACT;
+    friend SUCS;
     static double KA231;
     static double KE11;
     static double KE12;
@@ -254,7 +265,6 @@ private:
     static double KE22;
     static double KE23;
     static double KE25;
-    static double KE4;
     static double KE5;
     static double KE6;
     static double KE7;
@@ -308,6 +318,7 @@ private:
     static double KVmo;
     static double PS_C_CA;
     static double PS_C_CP;
+    static double PS_C_CN;
     static double PS_PEXT;
     static double V24;
     static double V31;
@@ -316,5 +327,32 @@ private:
     static double V5;
     static double V7;
     static double V8;
-
+    static double V10;
+    static double KA232;
+    static double KA233;
+    static double KI23;
+    static double KM312;
+    static double KE10;
+    static double KM11;
+    static double KM12;
+    static double KM71;
+    static double KM72;
+    static double KM73;
+    static double KM74;
+    static double Vfactor1;
+    static double Vfactor2;
+    static double Vfactor3;
+    static double Vfactor5;
+    static double Vfactor7;
+    static double Vfactor13;
+    static double Vfactor23;
+    static double Vf_T3;
+    static double Vf_T2;
+    static double Vf_T1;
+    static double Vf_T6;
+    static double Vf_T5;
+    static double Vf_T9;
+    static double Vf_T13;
+    static double Vf_T23;
+    static double PsV1;
 };

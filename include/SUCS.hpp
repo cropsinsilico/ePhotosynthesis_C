@@ -27,13 +27,15 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
+class PS;
 
+class CMCon;
 /**
  Class for holding the inputs for SUCS_mb
  */
 class SUCSCon {
 public:
-    SUCSCon() {}
+    SUCSCon(CMCon* par = nullptr) : parent(par) {}
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -52,6 +54,21 @@ public:
         SUCP = other.SUCP;
         SUC = other.SUC;
         PGAc = other.PGAc;
+    }
+
+    SUCSCon(const SUCSCon *other) {
+        T3Pc = other->T3Pc;
+        FBPc = other->FBPc;
+        HexPc = other->HexPc;
+        F26BPc = other->F26BPc;
+        ATPc = other->ATPc;
+        ADPc = other->ADPc;
+        OPOPc = other->OPOPc;
+        UDPGc = other->UDPGc;
+        UTPc = other->UTPc;
+        SUCP = other->SUCP;
+        SUC = other->SUC;
+        PGAc = other->PGAc;
     }
     /**
       Constructor to create an object from the input vector, starting at the given index
@@ -112,9 +129,13 @@ public:
     /**
       Get the size of the data vector
       */
-    size_t size() {
+    static size_t size() {
         return count;
     }
+
+    void setParent(CMCon* par) {parent = par;}
+    friend std::ostream& operator<<(std::ostream &out, const SUCSCon &in);
+
     double T3Pc = 0.;
     double FBPc = 0.;
     double HexPc = 0.;
@@ -127,8 +148,10 @@ public:
     double SUCP = 0.;
     double SUC = 0.;
     double PGAc = 0.;
+    CMCon* parent;
 private:
-    size_t count = 12;
+    static const size_t count;
+
 };
 
 /**
@@ -154,6 +177,8 @@ public:
         vpga_use = other.vpga_use;
         vatpf = other.vatpf;
     }
+    friend std::ostream& operator<<(std::ostream &out, const SUCSVel &in);
+
     double v51 = 0.;  ///< DHAP+GAP --FBP
     double v52 = 0.;  ///< FBP --F6P + Pi
     double v55 = 0.;  ///< G1P+UTP --OPOP+UDPG
@@ -201,7 +226,7 @@ public:
       @param theVars Pointer to the global variables
       @return A SUCSCon object with values set base on the input
       */
-    static SUCSCon SUCS_Ini(Variables *theVars);
+    static SUCSCon* SUCS_Ini(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -211,7 +236,7 @@ public:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr SUCS_Mb(const double t, const SUCSCon &SUCS_Con, Variables *theVars);
+    static arr SUCS_Mb(const double t, const SUCSCon* SUCS_Con, Variables *theVars);
 
     /**
       Calculate the Rates of SUCS based on the inputs
@@ -220,7 +245,8 @@ public:
       @param SUCS_Con SUCSCon object giving the input parameters
       @param theVars The global variables
       */
-    static void SUCS_Rate(const double t, const SUCSCon &SUCS_Con, Variables *theVars);
+    static void SUCS_Rate(const double t, const SUCSCon* SUCS_Con, Variables *theVars);
+    friend PS;
 private:
 
     static double KE501;
@@ -267,8 +293,27 @@ private:
     static double V57;   ///< SUCP--Pi + SUC
     static double V58;   ///< F26BP--F6P + Pi
     static double V59;   ///< F6P + ATP --ADP + F26BP
+    static double V60;
+    static double V61;
     static double V62;   ///< SUC Sink
     static double Vdhap_in; ///< DHAP export from chloroplast
     static double Vgap_in;  ///< GAP export from chloroplast
     static double Vpga_in;  ///< PGA export from chloropalst
+    static double Km592;
+    static double KI592;
+    static double Km601;
+    static double Km602;
+    static double Km603;
+    static double Km604;
+    static double KE60;
+    static double Vfactor51;
+    static double Vfactor52;
+    static double Vfactor56;
+    static double Vfactor57;
+    static double Vfactor59;
+    static double Vf_T51;
+    static double Vf_T52;
+    static double Vf_T56;
+    static double Vf_T57;
+    static double Vf_T59;
 };

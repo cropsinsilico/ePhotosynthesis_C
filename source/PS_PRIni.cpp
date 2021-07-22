@@ -27,11 +27,13 @@
 #include "globals.hpp"
 #include "PS_PR.hpp"
 
-PS_PRCon PS_PR_Ini(Variables *theVars) {
-    PSCon PS_con = PS::PS_Ini(theVars);
-    PRCon PR_con = PR::PR_Ini(theVars);
-    arr PrS = PR_con.toArray();
-    arr PSs = PS_con.toArray();
-    PS_PRCon PS_PR_con(PS_con, PR_con);
+const size_t PS_PRCon::count = 24;
+
+PS_PRCon* PS_PR_Ini(Variables *theVars) {
+    PSCon* PS_con = PS::PS_Ini(theVars);
+    PRCon* PR_con = PR::PR_Ini(theVars);
+    //arr PrS = PR_con->toArray();
+    //arr PSs = PS_con->toArray();
+    PS_PRCon* PS_PR_con = new PS_PRCon(PS_con, PR_con);
     return PS_PR_con;
 }

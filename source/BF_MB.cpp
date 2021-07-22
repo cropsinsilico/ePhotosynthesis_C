@@ -28,10 +28,14 @@
 #include "globals.hpp"
 #include "BF.hpp"
 
-arr BF::BF_Mb(const double t, const BFCon &BF_con, Variables *theVars) {
-    Condition(t, theVars);
+arr BF::BF_Mb(const double t, const BFCon* BF_con, Variables *theVars) {
 
-    theVars->BF_Param[0] = theVars->GLight;
+    if (theVars->useC3) {
+        theVars->BF_Param[0] = theVars->TestLi * 30;
+    } else {
+        Condition(t, theVars);
+        theVars->BF_Param[0] = theVars->GLight;
+    }
 
     //////////////////////////////////////////////////////////////////
     //   Calculate the rates BFrst   //
@@ -59,7 +63,9 @@ arr BF::BF_Mb(const double t, const BFCon &BF_con, Variables *theVars) {
     BF_mb[13] = theVars->BF_Vel.Vbf10 - theVars->BF_Vel.Vbf15; // P700 The reduced state of P700, including both P700 and excited P700
     BF_mb[15] = 0;                                             // Pi Phosphate in stroma
     BF_mb[14] = theVars->BF_Vel.VsATP - theVars->BF_Vel.Vbf11; // ADP ADP in stroma
+
     BF_mb[16] = theVars->BF_Vel.Vbf11 - theVars->BF_Vel.VsATP; // ATP ATP in stroma
+
     BF_mb[17] = theVars->BF_Vel.JKc;  // Ks K ions in stroma
     BF_mb[18] = theVars->BF_Vel.JMgc; // Mgs Mg ions in stroma
     BF_mb[19] = theVars->BF_Vel.JClc; // Cls Cl ions in stroma
@@ -85,4 +91,75 @@ arr BF::BF_Mb(const double t, const BFCon &BF_con, Variables *theVars) {
     BF_mb[27] = -(Hvqo1 + Hvqo2 + Hroe - theVars->HPR * theVars->BF_Vel.Vbf11) / 1000 / 0.015; //   PHl  The changes in PH of lumen, 0.03 is from Curz et al., 2001, Biochemistry.
     BF_mb[28] = theVars->BF_Vel.vbfn2 - theVars->BF_Vel.VsNADPH;
     return BF_mb;
+}
+
+std::ostream& operator<<(std::ostream &out, const BFCon &in) {
+    out << "BFCon" << std::endl;
+    out << "  ISPHr = " << in.ISPHr << std::endl;
+    out << "  cytc1 = " << in.cytc1 << std::endl;
+    out << "  ISPo = " << in.ISPo<< std::endl;
+    out << "  ISPoQH2 = " << in.ISPoQH2 << std::endl;
+    out << "  QHsemi = " << in.QHsemi<< std::endl;
+    out << "  cytbL = " << in.cytbL << std::endl;
+    out << "  Qi = " << in.Qi<< std::endl;
+    out << "  Q = " << in.Q << std::endl;
+    out << "  cytbH = " << in.cytbH << std::endl;
+    out << "  Qn = " << in.Qn<< std::endl;
+    out << "  Qr = " << in.Qr<< std::endl;
+    out << "  QH2 = " << in.QH2 << std::endl;
+    out << "  cytc2 = " << in.cytc2 << std::endl;
+    out << "  P700 = " << in.P700<< std::endl;
+    out << "  ADP = " << in.ADP << std::endl;
+    out << "  Pi = " << in.Pi<< std::endl;
+    out << "  ATP = " << in.ATP << std::endl;
+    out << "  Ks = " << in.Ks<< std::endl;
+    out << "  Mgs = " << in.Mgs << std::endl;
+    out << "  Cls = " << in.Cls << std::endl;
+    out << "  Aip = " << in.Aip << std::endl;
+    out << "  U = " << in.U << std::endl;
+    out << "  An = " << in.An<< std::endl;
+    out << "  Fdn = " << in.Fdn << std::endl;
+    out << "  BFHs = " << in.BFHs<< std::endl;
+    out << "  BFHl = " << in.BFHl<< std::endl;
+    out << "  PHs = " << in.PHs << std::endl;
+    out << "  PHl = " << in.PHl << std::endl;
+    out << "  NADPH = " << in.NADPH << std::endl;
+    return out;
+}
+
+std::ostream& operator<<(std::ostream &out, const BFVel &in) {
+    out << "BFVel" << std::endl;
+    out << "  Vbf1 = " << in.Vbf1 << std::endl;
+    out << "  Vbf2 = " << in.Vbf2 << std::endl;
+    out << "  Vbf3 = " << in.Vbf3 << std::endl;
+    out << "  Vbf4 = " << in.Vbf4 << std::endl;
+    out << "  Vbf5 = " << in.Vbf5 << std::endl;
+    out << "  Vbf6 = " << in.Vbf6 << std::endl;
+    out << "  Vbf7 = " << in.Vbf7 << std::endl;
+    out << "  Vbf8 = " << in.Vbf8 << std::endl;
+    out << "  Vbf9 = " << in.Vbf9 << std::endl;
+    out << "  Vbf10= " << in.Vbf10<< std::endl;
+    out << "  Vbf11= " << in.Vbf11<< std::endl;
+    out << "  Vqi= " << in.Vqi<< std::endl;
+    out << "  Vipc = " << in.Vipc << std::endl;
+    out << "  Vicp = " << in.Vicp << std::endl;
+    out << "  Vinc = " << in.Vinc << std::endl;
+    out << "  Vinp = " << in.Vinp << std::endl;
+    out << "  Vdp= " << in.Vdp<< std::endl;
+    out << "  Vdc= " << in.Vdc<< std::endl;
+    out << "  Vfp= " << in.Vfp<< std::endl;
+    out << "  Vfc= " << in.Vfc<< std::endl;
+    out << "  Vsfd = " << in.Vsfd << std::endl;
+    out << "  VsATP= " << in.VsATP<< std::endl;
+    out << "  VgPQH2 = " << in.VgPQH2 << std::endl;
+    out << "  JKc= " << in.JKc<< std::endl;
+    out << "  JMgc = " << in.JMgc << std::endl;
+    out << "  JClc = " << in.JClc << std::endl;
+    out << "  Vbf15= " << in.Vbf15<< std::endl;
+    out << "  Vbf16= " << in.Vbf16<< std::endl;
+    out << "  vbfn2= " << in.vbfn2<< std::endl;
+    out << "  VsNADPH= " << in.VsNADPH<< std::endl;
+    out << "  vcet = " << in.vcet << std::endl;
+
+    return out;
 }

@@ -27,7 +27,7 @@
 #include "globals.hpp"
 #include "Variables.hpp"
 
-arr XanCycle::XanCycle_Mb(const double t, const XanCycleCon &XanCycle_Con, Variables *theVars) {
+arr XanCycle::XanCycle_Mb(const double t, const XanCycleCon* XanCycle_Con, Variables *theVars) {
     Condition(t, theVars);
 
     XanCycle_Rate(t, XanCycle_Con, theVars);

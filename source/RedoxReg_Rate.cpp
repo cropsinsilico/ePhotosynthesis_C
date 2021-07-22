@@ -34,10 +34,10 @@
 #define ONE    RCONST(1.0)
 #define ZERO   RCONST(0.0)
 
-void RedoxReg::RedoxReg_Rate(const double t, const RedoxRegCon &RedoxReg_Con, Variables *theVars) {
-    const double Thio = theVars->ThioT - RedoxReg_Con.Thion;
+void RedoxReg::RedoxReg_Rate(const double t, const RedoxRegCon* RedoxReg_Con, Variables *theVars) {
+    const double Thio = theVars->ThioT - RedoxReg_Con->Thion;
 
-    theVars->RedoxReg_MP[0][2] = RedoxReg_Con.Thion / theVars->ThioT;
+    theVars->RedoxReg_MP[0][2] = RedoxReg_Con->Thion / theVars->ThioT;
 
     double TEMP = theVars->RedoxReg_MP[0][2];
 
@@ -80,13 +80,13 @@ void RedoxReg::RedoxReg_Rate(const double t, const RedoxRegCon &RedoxReg_Con, Va
             theVars->RedoxReg_MP[index][2] = retvals[0];
 
 
-            if (theVars->RedoxReg_MP[index][0] == 6) {
+            if (static_cast<int>(theVars->RedoxReg_MP[index][0]) == 6) {
                 theVars->Redox2PS_V6 = RedoxReg_VMAX6 * theVars->RedoxReg_MP[index][2];
-            } else if (theVars->RedoxReg_MP[index][0] == 9) {
+            } else if (static_cast<int>(theVars->RedoxReg_MP[index][0]) == 9) {
                 theVars->Redox2PS_V9 = RedoxReg_VMAX9 * theVars->RedoxReg_MP[index][2];
-            } else if (theVars->RedoxReg_MP[index][0] == 13) {
+            } else if (static_cast<int>(theVars->RedoxReg_MP[index][0]) == 13) {
                 theVars->Redox2PS_V13 = RedoxReg_VMAX13 * theVars->RedoxReg_MP[index][2];
-            } else if (theVars->RedoxReg_MP[index][0] == 16) {
+            } else if (static_cast<int>(theVars->RedoxReg_MP[index][0]) == 16) {
                 theVars->Redox2PS_V16 = RedoxReg_VMAX16 * theVars->RedoxReg_MP[index][2];
             }
         }
@@ -97,8 +97,8 @@ void RedoxReg::RedoxReg_Rate(const double t, const RedoxRegCon &RedoxReg_Con, Va
         SUNLinSolFree(LS);
     }
 
-    theVars->RedoxReg_Vel.Vred = RedoxReg_Con.RA_con.EPS_con.FIBF_con.BF_con.Fdn * theVars->Fd_Thio_ET * Thio / theVars->ThioT;
-    theVars->RedoxReg_Vel.Vox = RedoxReg_Con.Thion * theVars->Thio_Oxidation;
+    theVars->RedoxReg_Vel.Vred = RedoxReg_Con->RA_con->EPS_con->FIBF_con->BF_con->Fdn * theVars->Fd_Thio_ET * Thio / theVars->ThioT;
+    theVars->RedoxReg_Vel.Vox = RedoxReg_Con->Thion * theVars->Thio_Oxidation;
 
     if (theVars->RedoxReg_TIME_N == 0)
         theVars->RedoxReg_TIME_N = 1;

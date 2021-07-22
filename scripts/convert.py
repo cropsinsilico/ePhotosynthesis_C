@@ -1472,6 +1472,7 @@ def write(files):
     counter = 0
     # loop over the Files objects
     for f, val in files.items():
+        print(f)
         isDrive = False
         if f in drivers.keys():
             isDrive = True

@@ -30,21 +30,30 @@
 #include "SUCS.hpp"
 #include "driver.hpp"
 
+class EPSCon;
 /**
  Class for holding the inputs to CM_mb
  */
 class CMCon {
 public:
-    CMCon() {}
+    CMCon(EPSCon* par = nullptr) : PS_PR_con(new PS_PRCon(this)), SUCS_con(new SUCSCon(this)), parent(par) {}
+
+    ~CMCon() {
+        clear();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The CMCon object to copy
       */
-    CMCon(const CMCon &other) {
-        PS_PR_con = other.PS_PR_con;
-        SUCS_con = other.SUCS_con;
+    CMCon(const CMCon* other) {
+        clear();
+        PS_PR_con = other->PS_PR_con;
+        SUCS_con = other->SUCS_con;
+        PS_PR_con->setParent(this);
+        SUCS_con->setParent(this);
     }
+
     /**
       Constructor to create an object from the input vector, starting at the given index
 
@@ -68,9 +77,12 @@ public:
       @param pother A PS_PRCon object to incorporate
       @param sother A SUCSCon object to incorporate
       */
-    CMCon(const PS_PRCon &pother, const SUCSCon &sother) {
+    CMCon(PS_PRCon* pother, SUCSCon* sother) {
+        clear();
         PS_PR_con = pother;
         SUCS_con = sother;
+        PS_PR_con->setParent(this);
+        SUCS_con->setParent(this);
     }
 
     /**
@@ -80,12 +92,16 @@ public:
       @param offset The indec in vec to start the copying from
       */
     void fromArray(const arr &vec, size_t offset = 0) {
-        arr pvec(PS_PR_con.size());
-        std::copy(vec.begin() + offset, vec.begin() + PS_PR_con.size() + offset, pvec.begin());
+        if (PS_PR_con == nullptr)
+            PS_PR_con = new PS_PRCon(this);
+        if (SUCS_con == nullptr)
+            SUCS_con = new SUCSCon(this);
+        arr pvec(PS_PRCon::size());
+        std::copy(vec.begin() + offset, vec.begin() + PS_PRCon::size() + offset, pvec.begin());
         pvec[23] = vec[35 + offset];
 
-        PS_PR_con.fromArray(pvec);
-        SUCS_con.fromArray(vec, offset + PS_PR_con.size() - 1);
+        PS_PR_con->fromArray(pvec);
+        SUCS_con->fromArray(vec, offset + PS_PRCon::size() - 1);
     }
     /**
       Copy items from the given pointer to the data members
@@ -104,8 +120,8 @@ public:
       @return A vector containing the data values from the class
       */
     arr toArray() {
-        arr psprvec = PS_PR_con.toArray();
-        arr svec = SUCS_con.toArray();
+        arr psprvec = PS_PR_con->toArray();
+        arr svec = SUCS_con->toArray();
         psprvec.reserve(size());
         double temp = psprvec[23];
         psprvec.insert(psprvec.end() - 1, svec.begin(), svec.end());
@@ -117,11 +133,28 @@ public:
     /**
       Get the size of the data vector
       */
-    size_t size() {
-        return PS_PR_con.size() + SUCS_con.size();
+    static size_t size() {
+        return PS_PRCon::size() + SUCSCon::size();
     }
-    PS_PRCon PS_PR_con;
-    SUCSCon SUCS_con;
+
+    void setParent(EPSCon* par) {parent = par;}
+
+    friend std::ostream& operator<<(std::ostream &out, const CMCon &in);
+    PS_PRCon* PS_PR_con = nullptr;
+    SUCSCon* SUCS_con = nullptr;
+
+    EPSCon* parent;
+private:
+    void clear() {
+        if (PS_PR_con != nullptr) {
+            delete PS_PR_con;
+            PS_PR_con = nullptr;
+        }
+        if (SUCS_con != nullptr) {
+            delete SUCS_con;
+            SUCS_con = nullptr;
+        }
+    }
 };
 
 /**
@@ -133,7 +166,7 @@ public:
              const int maxSteps, const double atol, const double rtol) :
         Driver(theVars, st, stp, etime, maxSteps, atol, rtol) {
     }
-    virtual ~CMDriver() override;
+    ~CMDriver();
     /**
       The driver code
       */
@@ -145,7 +178,7 @@ private:
 
       @return A CMCon object for input into calculations
       */
-    CMCon CM_Ini();
+    CMCon* CM_Ini();
     /**
       Calculate the output values based on the inputs
 
@@ -164,7 +197,7 @@ private:
   @param theVars The global variables
   @return A CMCon object for input into calculations
   */
-CMCon CMInit(Variables *theVars);
+CMCon* CMInit(Variables *theVars);
 /**
   Calculate the output values based on the inputs
 
@@ -173,4 +206,4 @@ CMCon CMInit(Variables *theVars);
   @param theVars The global variables
   @return A vector containing the updated values
   */
-arr CM_Mb(const double t, const CMCon &CM_con, Variables *theVars);
+arr CM_Mb(const double t, const CMCon* CM_con, Variables *theVars);

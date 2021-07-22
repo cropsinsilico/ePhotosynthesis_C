@@ -24,34 +24,45 @@
  *
  **********************************************************************************************************************************************/
 
-#include "Variables.hpp"
-#include "CM.hpp"
+#include "DriverTemplate.h"
 
-arr CM_Mb(const realtype t, const CMCon* CM_con, Variables *theVars) {
-    arr dxdt;
-    dxdt.reserve(36);
+/**************************************************************************************************
+ * This file provides the template for implementing new Driver methods.
+ * Replace DriverTemplate with the name of the new driver and save this file as <new driver_name.cpp>
+ * in the source directory.
+ **************************************************************************************************/
 
-    arr PSPR_DYDT = PS_PR_Mb(t, CM_con->PS_PR_con, theVars);
 
-    arr SUCS_DYDT = SUCS::SUCS_Mb(t, CM_con->SUCS_con, theVars);
+DriverTemplate::~DriverTemplate() {}
 
-    dxdt.insert(dxdt.end(), PSPR_DYDT.begin(), PSPR_DYDT.begin() + 23);
-    dxdt.insert(dxdt.end(), SUCS_DYDT.begin(), SUCS_DYDT.begin() + 12);
+/*
+  This method is used to set up the inputs for the first calculation. The internal pointer theVars
+  will contain some of the global settings. The internal array constraints will contain the initial
+  values for the calculations.
+*/
+void DriverTemplate::setup() {
+    constraints = zeros(0); // set the size of constraints to the size of the input data array
+    // then populate the constraints
+}
 
-    if (!theVars->useC3) {
-        dxdt[35] = PSPR_DYDT[23];
+void DriverTemplate::getResults() {
+    // The internal variables intermediateResults will contain the results from the last calculation run
+    // but this may not be the values needed as the ODE may stop one time step short of the needed
+    // stoping time
 
-        // The rate of import into the cytosol
-        if (theVars->TestSucPath == 1)
-            SUCS_DYDT[0] = SUCS_DYDT[0] + theVars->PS_Vel.v31 + theVars->PS_Vel.v33 - (theVars->SUCS_Vel.vdhap_in + theVars->SUCS_Vel.vgap_in);
+    // Any final results must be stored in the results array
+}
 
-        //	T3Pc WY1905
-        dxdt[23] = SUCS_DYDT[0];
-        SUCS_DYDT[11] = SUCS_DYDT[11] - theVars->SUCS_Vel.vpga_in + theVars->PS_Vel.v32;//	pgaC
-        dxdt[34] = SUCS_DYDT[11];
-    //std::cout << theVars->SUCS_Vel;
-    //std::cout << theVars->PS_Vel;
-    //std::cout << theVars->PR_Vel;
-    }
+/*
+  This method is the one given to the ODE solver
+*/
+arr DriverTemplate::MB(realtype t, N_Vector u) {
+    // convert the input data into an array
+    realtype *x = N_VGetArrayPointer(u);
+
+    // convert the array to an object for input into the calculations
+    // Con con(x);
+    arr dxdt; // = whatever code is being called, typically the function has the signature (t, con, theVars)
+
     return dxdt;
 }
