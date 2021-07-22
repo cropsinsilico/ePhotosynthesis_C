@@ -28,17 +28,24 @@
 #include "Variables.hpp"
 #include "modules/XanCycle.hpp"
 
-arr XanCycle::_MB(const double t, const XanCycleCondition* XanCycle_Con, Variables *theVars) {
+XanCycleCondition* XanCycle::_MB_con(const double t, const XanCycleCondition* XanCycle_Con, Variables *theVars) {
     Condition(t, theVars);
     //DEBUG_MESSAGE(XanCycle_Con)
     Rate(t, XanCycle_Con, theVars);
 
-    arr XanCycle_mb = zeros(4);
+    XanCycleCondition* dydt = new XanCycleCondition();
 
-    XanCycle_mb[0] = theVars->XanCycle_Vel.Vvf + theVars->XanCycle_Vel.Vav - theVars->XanCycle_Vel.Vva - theVars->XanCycle_Vel.Vv2ABA;
-    XanCycle_mb[1] = theVars->XanCycle_Vel.Vva - theVars->XanCycle_Vel.Vav + theVars->XanCycle_Vel.Vza - theVars->XanCycle_Vel.Vaz;
-    XanCycle_mb[2] = theVars->XanCycle_Vel.Vaz - theVars->XanCycle_Vel.Vza;
-    XanCycle_mb[3] = theVars->XanCycle_Vel.Vv2ABA - theVars->XanCycle_Vel.VABAdg;
-    DEBUG_DELTA(XanCycle_mb)
-    return XanCycle_mb;
+    dydt->Vx = theVars->XanCycle_Vel.Vvf + theVars->XanCycle_Vel.Vav - theVars->XanCycle_Vel.Vva - theVars->XanCycle_Vel.Vv2ABA;
+    dydt->Ax = theVars->XanCycle_Vel.Vva - theVars->XanCycle_Vel.Vav + theVars->XanCycle_Vel.Vza - theVars->XanCycle_Vel.Vaz;
+    dydt->Zx = theVars->XanCycle_Vel.Vaz - theVars->XanCycle_Vel.Vza;
+    dydt->ABA = theVars->XanCycle_Vel.Vv2ABA - theVars->XanCycle_Vel.VABAdg;
+    //DEBUG_DELTA(XanCycle_mb)
+    return dydt;
+}
+
+arr XanCycle::_MB(const double t, const XanCycleCondition* XanCycle_Con, Variables *theVars) {
+    XanCycleCondition* dydt = XanCycle::_MB_con(t, XanCycle_Con, theVars);
+    arr tmp = dydt->toArray();
+    delete dydt;
+    return tmp;
 }
