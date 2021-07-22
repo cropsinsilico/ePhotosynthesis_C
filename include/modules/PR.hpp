@@ -51,7 +51,7 @@ private:
       @return A vector containing the updated values
       */
     static arr _MB(const double t, const PRCondition* PR_con, Variables *theVars);
-
+    static PRCondition* _MB_con(const double t, const PRCondition* const PR_con, Variables *theVars);
     /**
       Calculate the Rates of PR based on the inputs
 
