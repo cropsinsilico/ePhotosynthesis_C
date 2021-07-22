@@ -52,6 +52,7 @@ private:
       @return A vector containing the updated values
       */
     static arr _MB(const double t, const BFCondition* BF_con, Variables *theVars);
+    static BFCondition* _MB_con(const double t, const BFCondition* BF_con, Variables *theVars);
 
     /**
       Calculate the Rates of BF based on the inputs
