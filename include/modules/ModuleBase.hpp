@@ -36,6 +36,9 @@ public:
     static arr MB(const double t, const U* constraints, Variables *theVars) {
         DEBUG_MESSAGE(constraints)
         return T::_MB(t, constraints, theVars);}
+    static U* MB_con(const double t, const U* constraints, Variables *theVars) {
+        DEBUG_MESSAGE(constraints)
+        return T::_MB_con(t, constraints, theVars);}
 protected:
     ModuleBase() {}
     static void Rate(const double t, const U* constraints, Variables *theVars) {T::_Rate(t, constraints, theVars);}
