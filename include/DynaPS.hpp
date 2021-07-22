@@ -134,15 +134,22 @@ arr DynaPS_Mb(const double t, const DynaPSCon &DynaPS_con, Variables *theVars);
 /**
  Class for running DynaPS through an ODE solver
  */
-class DynaPS {
+class DynaPSDrive : public Driver {
 public:
-    DynaPS(Variables *theVars) { this->theVars = theVars; }
-    static Variables *theVars;
+    DynaPSDrive(Variables *theVars, const double st, const double stp, const double etime,
+                const int maxSteps, const double atol, const double rtol, const size_t para,
+                const double ratio) : Driver(theVars, st, stp, etime, maxSteps, atol, rtol) {
+        ParaNum = para;
+        Ratio = ratio;
+    }
+    virtual ~DynaPSDrive() override;
     /**
       The driver code
       */
-    arr DynaPS_Drive(size_t ParaNum, double Ratio);
+    void setup() override;
+    void getResults() override;
 
+private:
     /**
       Calculate the output values based on the inputs
 
@@ -152,11 +159,13 @@ public:
       @param[in,out] user_data Pointer to a UserData object for extra parameters
       @return A vector containing the updated values
       */
-    static int DynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
+    arr MB(realtype t, N_Vector u) override;
     /**
       Initialize the variables
 
       @return A CMCon object for input into calculations
       */
     DynaPSCon DynaPS_Ini();
+    size_t ParaNum;
+    double Ratio;
 };

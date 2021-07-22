@@ -139,7 +139,7 @@ arr trDynaPS_Mb(const double t, const trDynaPSCon &trDynaPS_con, Variables *theV
 /**
  Class for running trDynaPS with an ODE solver
  */
-class trDynaPS {
+class trDynaPSDriver : public Driver {
 public:
     /**
       Constructor for the class.
@@ -149,19 +149,24 @@ public:
       @param step The step size for the calculations
       @param endtime The ending time for the calculations
       */
-    trDynaPS(Variables *theVars, const double start, const double step, const double endtime) {
-        this->theVars = theVars;
-        this->start = start;
-        this->step = step;
-        this->endtime = endtime;
+    trDynaPSDriver(Variables *theVars, const double st, const double stp, const double etime,
+                   const int maxSteps, const double atol, const double rtol, const size_t para,
+                   const double ratio) :
+        Driver(theVars, st, stp, etime, maxSteps, atol, rtol) {
+        ParaNum = para;
+        Ratio = ratio;
     }
-    ~trDynaPS();
-    static Variables *theVars;
+
+    virtual ~trDynaPSDriver() override;
+
     /**
       The driver
       */
-    arr trDynaPS_Drive(size_t ParaNum, double Ratio);
+    void setup() override;
+    void getResults() override;
+    //arr trDynaPS_Drive(size_t ParaNum, double Ratio);
 
+private:
     /**
       Calculate the output values based on the inputs
 
@@ -171,14 +176,14 @@ public:
       @param[in,out] user_data Pointer to a UserData object for extra parameters
       @return A vector containing the updated values
       */
-    static int trDynaPS_mb(realtype t, N_Vector u, N_Vector u_dot,
-                           void *user_data);
+    arr MB(realtype t, N_Vector u) override;
     /**
       Initialize the variables
 
       @return A trDynaPSCon object for input into calculations
       */
     trDynaPSCon trDynaPS_Ini();
-private:
-    double start, step, endtime;
+
+    size_t ParaNum;
+    double Ratio;
 };

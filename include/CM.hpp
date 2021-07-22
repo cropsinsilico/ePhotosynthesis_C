@@ -127,16 +127,19 @@ public:
 /**
  Class for running the CM calculations in an ODE solver
  */
-class CM {
+class CMDriver : public Driver {
 public:
-    CM(Variables *theVars) {
-        this->theVars = theVars;
+    CMDriver(Variables *theVars, const double st, const double stp, const double etime,
+             const int maxSteps, const double atol, const double rtol) :
+        Driver(theVars, st, stp, etime, maxSteps, atol, rtol) {
     }
-    static Variables *theVars;
+    virtual ~CMDriver() override;
     /**
       The driver code
       */
-    double CM_Drive2(double pop, double currentPop);
+    void setup() override;
+    void getResults() override;
+private:
     /**
       Initialize the variables
 
@@ -152,7 +155,7 @@ public:
       @param[in,out] user_data Pointer to a UserData object for extra parameters
       @return A vector containing the updated values
       */
-    static int CM_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
+    arr MB(realtype t, N_Vector u) override;
 };
 
 /**

@@ -28,24 +28,20 @@
 #include "trDynaPS.hpp"
 #include "Variables.hpp"
 
-trDynaPSCon trDynaPS::trDynaPS_Ini() {
+trDynaPSCon trDynaPSDriver::trDynaPS_Ini() {
     return trDynaPS_Init(theVars);
 }
 
-int trDynaPS::trDynaPS_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
+arr trDynaPSDriver::MB(realtype t, N_Vector u) {
     realtype *x = N_VGetArrayPointer(u);
-    realtype *dxdt = N_VGetArrayPointer(u_dot);
-
 
     trDynaPSCon trDynaPS_con(x);
-    arr ddxdt = trDynaPS_Mb(t, trDynaPS_con, theVars);
-    for (size_t index = 0; index < 120; index++)
-        dxdt[index] = ddxdt[index];
+    arr dxdt = trDynaPS_Mb(t, trDynaPS_con, theVars);
 
-    return 0;
+    return dxdt;
 }
 
-trDynaPS::~trDynaPS()  {
+trDynaPSDriver::~trDynaPSDriver()  {
     if (theVars != nullptr)
         delete theVars;
 }

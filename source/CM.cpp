@@ -27,17 +27,14 @@
 #include "globals.hpp"
 #include "CM.hpp"
 
-CMCon CM::CM_Ini() {
+CMCon CMDriver::CM_Ini() {
     return CMInit(theVars);
 }
 
-int CM::CM_mb(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
+arr CMDriver::MB(realtype t, N_Vector u) {
     realtype *x = N_VGetArrayPointer(u);
-    realtype *dxdt = N_VGetArrayPointer(u_dot);
 
     CMCon CMs(x);
-    arr ddxdt = CM_Mb(t, CMs, theVars);
-    for (size_t i = 0; i < 36; i++)
-        dxdt[i] = ddxdt[i];
-    return 0;
+    arr dxdt = CM_Mb(t, CMs, theVars);
+    return dxdt;
 }

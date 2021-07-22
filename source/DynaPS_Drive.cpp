@@ -27,15 +27,10 @@
 #include "Variables.hpp"
 #include "DynaPS.hpp"
 #include "globals.hpp"
-#include <sundials/sundials_math.h>
-#include <cvode/cvode.h>
-#include <sunmatrix/sunmatrix_dense.h>
-#include <sunlinsol/sunlinsol_dense.h>
-#include <cvode/cvode_direct.h>
 
-Variables *DynaPS::theVars = new Variables();
+DynaPSDrive::~DynaPSDrive() {}
 
-arr DynaPS::DynaPS_Drive(size_t ParaNum, double Ratio) {
+void DynaPSDrive::setup() {
     // This part include the function to begin the simulation.
 
     // The time information is set in a global variable called tglobal in SYSInitial.
@@ -113,49 +108,16 @@ arr DynaPS::DynaPS_Drive(size_t ParaNum, double Ratio) {
 
     theVars->RedoxReg_Param = 0; // This parameter is just used here as a future storage tool. NOt used now.
 
-    arr DynaPS_Con = zeros(120);
+    constraints = zeros(120);
     arr temp = DynaPS_con.toArray();
-    for (size_t i = 0; i < DynaPS_con.size(); i++)
-        DynaPS_Con[i] = temp[i];
-    UserData *data = alloc_user_data();
-    int flag;
-    realtype abstol = 1e-5;
-    realtype reltol = 1e-4;
-    sunindextype N =  static_cast<long>(DynaPS_Con.size());
-    N_Vector y;
-    y = N_VNew_Serial(N);
+    for (size_t i = 0; i < constraints.size(); i++)
+        constraints[i] = temp[i];
+}
 
-    for (size_t i = 0; i < DynaPS_Con.size(); i++)
-        NV_Ith_S(y, i) =  DynaPS_Con[i];
+void DynaPSDrive::getResults() {
 
-    void *cvode_mem = nullptr;
-    cvode_mem = CVodeCreate(CV_BDF);
-    realtype t0 = 0;
-    flag = CVodeInit(cvode_mem, DynaPS_mb, t0, y);
-
-    if (flag != 0)
-        std::cout << "FAIL" << std::endl;
-    flag = CVodeSStolerances(cvode_mem, reltol, abstol);
-    if (flag != 0)
-        std::cout << "FAIL" << std::endl;
-    flag = CVodeSetUserData(cvode_mem, data);
-
-    SUNMatrix A = SUNDenseMatrix(N, N);
-
-
-    SUNLinearSolver LS = SUNDenseLinearSolver(y, A);
-
-    flag = CVDlsSetLinearSolver(cvode_mem, LS, A);
-    if (flag != 0)
-        std::cout << "FAIL" << std::endl;
-    realtype tout;
-    realtype end_time = 250;
-    realtype step_length = 1.;
-    realtype t = 0;
-
-    for (tout = step_length; tout <= end_time; tout += step_length)
-        flag = CVode(cvode_mem, tout, y, &t, CV_NORMAL);
-
+    DynaPSCon dyna_int_con(intermediateRes);
+    arr temp = DynaPS_Mb(time, dyna_int_con, theVars);
 
     double PSIIabs = theVars->FI_Vel.vP680_d;
     double PSIabs = theVars->BF_Vel.Vbf11;
@@ -165,16 +127,16 @@ arr DynaPS::DynaPS_Drive(size_t ParaNum, double Ratio) {
     double VStarch = (theVars->PS_Vel.v23 - theVars->PS_Vel.v25) * theVars->AVR;
     double Vsucrose = theVars->SUCS_Vel.vdhap_in * theVars->AVR;
 
-    arr Resulta = zeros(7);
-    //Resulta = [0;0;0;0;0;0;0];
-    Resulta[0] = PSIIabs;
-    Resulta[1] = PSIabs;
+    results = zeros(7);
+
+    results[0] = PSIIabs;
+    results[1] = PSIabs;
     //Resulta(3)=PSIabs2(row);
-    Resulta[2] = CarbonRate;
-    Resulta[3] = VPR;
-    Resulta[4] = Vpgasink;
-    Resulta[5] = Vsucrose;
-    Resulta[6] = VStarch;
+    results[2] = CarbonRate;
+    results[3] = VPR;
+    results[4] = Vpgasink;
+    results[5] = Vsucrose;
+    results[6] = VStarch;
 
     if(theVars->record) {
         makeFluxTR(theVars);
@@ -190,10 +152,4 @@ arr DynaPS::DynaPS_Drive(size_t ParaNum, double Ratio) {
 
     IniModelCom(theVars);
     //save FDC2
-
-    N_VDestroy(y);
-    CVodeFree(&cvode_mem);
-    SUNLinSolFree(LS);
-
-    return Resulta;
 }
