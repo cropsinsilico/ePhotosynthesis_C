@@ -33,7 +33,7 @@
 // 1) The initialization of the rates that was transfered from the FI_Rate routine
 // 2) The computation of the mass balance equations
 
-FICondition* FI::_Mb_con(const double t, const FICondition *FI_Con, Variables *theVars) {
+FICondition* FI::_MB_con(const double t, const FICondition *FI_Con, Variables *theVars) {
 
     //////////////////////////////////////////////////////////////////
     //   Calculate the rates first   //
@@ -83,7 +83,7 @@ FICondition* FI::_Mb_con(const double t, const FICondition *FI_Con, Variables *t
 }
 
 arr FI::_MB(const double t, const FICondition *FI_Con, Variables *theVars) {
-    FICondition *dydt = _Mb_con(t, FI_Con, theVars);
+    FICondition *dydt = _MB_con(t, FI_Con, theVars);
     arr tmp = dydt->toArray();
     delete dydt;
     return tmp;
