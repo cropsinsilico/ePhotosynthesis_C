@@ -48,6 +48,7 @@ private:
   @return A vector containing the updated values
   */
     static arr _MB(const double t, const trDynaPSCondition* trDynaPS_con, Variables *theVars);
+    static trDynaPSCondition* _MB_con(const double t, const trDynaPSCondition* trDynaPS_con, Variables *theVars);
     static void _Rate(const double t, const trDynaPSCondition* trDynaPS_con, Variables *theVars) {
         (void)t;
         (void)trDynaPS_con;

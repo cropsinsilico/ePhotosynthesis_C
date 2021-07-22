@@ -33,7 +33,7 @@
 
 // This model includes the mass balance equations for the full model of photosynthesis.
 
-arr trDynaPS::_MB(const double t, const trDynaPSCondition* trDynaPS_con, Variables *theVars) {
+trDynaPSCondition* trDynaPS::_MB_con(const double t, const trDynaPSCondition* trDynaPS_con, Variables *theVars) {
     theVars->trDynaPS2RedReg_cal = 0;
 
     Condition(t, theVars);
@@ -42,25 +42,26 @@ arr trDynaPS::_MB(const double t, const trDynaPSCondition* trDynaPS_con, Variabl
     theVars->BF_Param[0] = light;
 
     theVars->RROEA_Param[1] = 1;
-    arr RROEA_DYDT = RROEA::MB(t, trDynaPS_con->RROEA_con, theVars);
+    RROEACondition* RROEAdydt = RROEA::MB_con(t, trDynaPS_con->RROEA_con, theVars);
 
-    arr DynaPS_DYDT = DynaPS::MB(t, trDynaPS_con->DynaPS_con, theVars);
-    arr dxdt = zeros(120);
-    for (size_t index = 0; index < 96; index++)
-        dxdt[index] = DynaPS_DYDT[index];
-
-
-    for (size_t index = 0; index < 10; index++)
-        dxdt[index + 110] = RROEA_DYDT[index];
+    DynaPSCondition* DynaPSdydt = DynaPS::MB_con(t, trDynaPS_con->DynaPS_con, theVars);
 
 
     //WY201804
-    const double Temp = RROEA_DYDT[8] - theVars->RROEA_Vel.ve2Fd + theVars->BF_Vel.Vbf16 / theVars->AVR + theVars->RROEA_Vel.veFd2Calvin - theVars->BF_Vel.vbfn2 - theVars->BF_Vel.vcet / theVars->AVR;
+    const double Temp = RROEAdydt->Fd - theVars->RROEA_Vel.ve2Fd + theVars->BF_Vel.Vbf16 / theVars->AVR + theVars->RROEA_Vel.veFd2Calvin - theVars->BF_Vel.vbfn2 - theVars->BF_Vel.vcet / theVars->AVR;
 
-    dxdt[118] = Temp * theVars->AVR;
-    dxdt[23] = Temp * theVars->AVR;
+    RROEAdydt->Fd = Temp * theVars->AVR;
+    DynaPSdydt->RA_con->EPS_con->FIBF_con->BF_con->Fdn = Temp * theVars->AVR;
 
     GenOut(t, theVars);
-    DEBUG_DELTA(dxdt)
-    return dxdt;
+    //DEBUG_DELTA(dxdt)
+    trDynaPSCondition* dydt = new trDynaPSCondition(DynaPSdydt, RROEAdydt);
+    return dydt;
+}
+
+arr trDynaPS::_MB(const double t, const trDynaPSCondition* trDynaPS_con, Variables *theVars) {
+    trDynaPSCondition* dydt = _MB_con(t, trDynaPS_con, theVars);
+    arr tmp = dydt->toArray();
+    delete dydt;
+    return tmp;
 }
