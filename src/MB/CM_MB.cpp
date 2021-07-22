@@ -29,29 +29,33 @@
 #include "modules/SUCS.hpp"
 #include "modules/PS_PR.hpp"
 
-arr CM::_MB(const realtype t, const CMCondition* CM_con, Variables *theVars) {
-    arr dxdt;
-    dxdt.reserve(36);
+CMCondition* CM::_MB_con(const realtype t, const CMCondition* CM_con, Variables *theVars) {
 
-    arr PSPR_DYDT = PS_PR::MB(t, CM_con->PS_PR_con, theVars);
+    PS_PRCondition* PSPRdydt = PS_PR::MB_con(t, CM_con->PS_PR_con, theVars);
 
-    arr SUCS_DYDT = SUCS::MB(t, CM_con->SUCS_con, theVars);
-
-    dxdt.insert(dxdt.end(), PSPR_DYDT.begin(), PSPR_DYDT.begin() + 23);
-    dxdt.insert(dxdt.end(), SUCS_DYDT.begin(), SUCS_DYDT.begin() + 12);
+    SUCSCondition* SUCSdydt = SUCS::MB_con(t, CM_con->SUCS_con, theVars);
 
     if (!theVars->useC3) {
-        dxdt[35] = PSPR_DYDT[23];
+        SUCSdydt->PGAc = PSPRdydt->PS_con->ADPG;
 
         // The rate of import into the cytosol
         if (theVars->TestSucPath == 1)
-            SUCS_DYDT[0] = SUCS_DYDT[0] + theVars->PS_Vel.v31 + theVars->PS_Vel.v33 - (theVars->SUCS_Vel.vdhap_in + theVars->SUCS_Vel.vgap_in);
+            SUCSdydt->T3Pc = SUCSdydt->T3Pc + theVars->PS_Vel.v31 + theVars->PS_Vel.v33 - (theVars->SUCS_Vel.vdhap_in + theVars->SUCS_Vel.vgap_in);
 
         //	T3Pc WY1905
-        dxdt[23] = SUCS_DYDT[0];
-        SUCS_DYDT[11] = SUCS_DYDT[11] - theVars->SUCS_Vel.vpga_in + theVars->PS_Vel.v32;//	pgaC
-        dxdt[34] = SUCS_DYDT[11];
+        PSPRdydt->PS_con->ADPG = SUCSdydt->T3Pc;
+        SUCSdydt->PGAc = SUCSdydt->PGAc - theVars->SUCS_Vel.vpga_in + theVars->PS_Vel.v32;//	pgaC
+        SUCSdydt->SUC = SUCSdydt->PGAc;
     }
-    DEBUG_DELTA(dxdt)
-    return dxdt;
+    //DEBUG_DELTA(dxdt)
+    CMCondition *dydt = new CMCondition(PSPRdydt, SUCSdydt);
+
+    return dydt;
+}
+
+arr CM::_MB(const realtype t, const CMCondition *CM_con, Variables *theVars) {
+    CMCondition *dydt = _MB_con(t, CM_con, theVars);
+    arr tmp = dydt->toArray();
+    delete dydt;
+    return tmp;
 }
