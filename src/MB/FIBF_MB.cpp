@@ -31,8 +31,7 @@
 
 // This function calculate the mass balance equation for the complete model of the light reactions.
 
-arr FIBF::_MB(const double t, const FIBFCondition* FIBF_Con, Variables *theVars) {
-
+FIBFCondition* FIBF::_Mb_con(const double t, const FIBFCondition* FIBF_Con, Variables *theVars) {
     // First Get the variables needed for the calcualtion step
     BFCondition* BF_con = FIBF_Con->BF_con;
 
@@ -55,13 +54,12 @@ arr FIBF::_MB(const double t, const FIBFCondition* FIBF_Con, Variables *theVars)
 
     theVars->BF_RC.Kd = FIBF_Con->kd;
 
-    arr BF_mb = BF::MB(t, BF_con, theVars);
-    arr FI_mb = FI::MB(t, FI_Con, theVars);
+    BFCondition* BF_mb = BF::MB_con(t, BF_con, theVars);
+    FICondition* FI_mb = FI::MB_con(t, FI_Con, theVars);
+
 
     // Assign the value of the calcualted BF_mb and FI_mb to FIBF_MB variable
-    arr FIBF_mb;
-    FIBF_mb.insert(FIBF_mb.end(), BF_mb.begin(), BF_mb.end());
-    FIBF_mb.insert(FIBF_mb.end(), FI_mb.begin(), FI_mb.end());
+    FIBFCondition* dydt = new FIBFCondition(BF_mb, FI_mb);
 
 
     // Now specially calcualte the mass balance equation for the rate constant of the heat dissipation
@@ -84,7 +82,7 @@ arr FIBF::_MB(const double t, const FIBFCondition* FIBF_Con, Variables *theVars)
             dmax = dmax * theVars->XanCycle2FIBF_Xstate / 0.3;
         }
     }
-    FIBF_mb[51] = RC * (dmax - FIBF_Con->kd);
+    dydt->kd = RC * (dmax - FIBF_Con->kd);
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Calculate the proton generation rate from the model of FI and use that to calculate the lumen PH //            //
@@ -96,11 +94,8 @@ arr FIBF::_MB(const double t, const FIBFCondition* FIBF_Con, Variables *theVars)
     const double Hvqo1 = theVars->BF_Vel.Vbf8 / theVars->AVR;      // The rate of release of protons into lumen through Qo site
     const double Hvqo2 = theVars->BF_Vel.Vbf3 / theVars->AVR;      // The rate of proton release into lumen through Qo site
 
-    BF_mb[25] = (Hvqo1 + Hvqo2 + Hroe - theVars->HPR * theVars->BF_Vel.Vbf11); // BFHl The proton and protonated buffer species in lumen, similarly, we can only use the buff concentration, but, the proton concentration can not be used here.
-    BF_mb[27] = - (Hvqo1 + Hvqo2 + Hroe - theVars->HPR * theVars->BF_Vel.Vbf11) / 1000 / 0.015;//   PHl  The changes in PH of lumen, 0.03 is from Curz et al., 2001, Biochemistry.
-
-    FIBF_mb[25] = BF_mb[25];
-    FIBF_mb[27] = BF_mb[27];
+    dydt->BF_con->BFHl = (Hvqo1 + Hvqo2 + Hroe - theVars->HPR * theVars->BF_Vel.Vbf11); // BFHl The proton and protonated buffer species in lumen, similarly, we can only use the buff concentration, but, the proton concentration can not be used here.
+    dydt->BF_con->PHl = - (Hvqo1 + Hvqo2 + Hroe - theVars->HPR * theVars->BF_Vel.Vbf11) / 1000 / 0.015;//   PHl  The changes in PH of lumen, 0.03 is from Curz et al., 2001, Biochemistry.
 
     ////////////////////////////////////////////////////////////////////////////////////////////
     //          Calculate the PH of stroma        //
@@ -119,19 +114,24 @@ arr FIBF::_MB(const double t, const FIBFCondition* FIBF_Con, Variables *theVars)
     //const double vbfn2 = theVars->BF_Vel.vbfn2 ;   // The rate of proton consumption by formation of NADPH
     const double Hrqb = vqb / theVars->AVR; // Convert the unit of vqb from micormole per meter square per second to mM s-1; vqb is the rate of QB2- reduction in thylakoid membrane.
 
-    BF_mb[24] = (theVars->HPR * theVars->BF_Vel.Vbf11 - Hrqb - Hvqi - theVars->BF_Vel.vbfn2);  // BFHs The proton and protonated buffer species in stroma. The proton concentration is not used in the MB procedure. The reason is that the proton concentration is buffered and therefore did not changed linerly with the generation of the protons.
-    BF_mb[26] = - (theVars->HPR * theVars->BF_Vel.Vbf11 - Hrqb - Hvqi - theVars->BF_Vel.vbfn2) / 1000 / 0.015;  // PHs, The changes of PH in stoma, 0.03 mol /PH from Laisk et al.
+    dydt->BF_con->BFHs = (theVars->HPR * theVars->BF_Vel.Vbf11 - Hrqb - Hvqi - theVars->BF_Vel.vbfn2);  // BFHs The proton and protonated buffer species in stroma. The proton concentration is not used in the MB procedure. The reason is that the proton concentration is buffered and therefore did not changed linerly with the generation of the protons.
+    dydt->BF_con->PHs = - (theVars->HPR * theVars->BF_Vel.Vbf11 - Hrqb - Hvqi - theVars->BF_Vel.vbfn2) / 1000 / 0.015;  // PHs, The changes of PH in stoma, 0.03 mol /PH from Laisk et al.
 
-    FIBF_mb[24] = BF_mb[24];
-    FIBF_mb[26] = BF_mb[26];
+    //FIBF_mb[24] = BF_mb[24];
+    //FIBF_mb[26] = BF_mb[26];
     //const double Vbf1 = theVars->BF_Vel.Vbf1 ;          // The rate of PQH2 utilization when forming the PQH2.ISP complex
     const double GPQH2_t = GPQH2_qb - theVars->BF_Vel.Vbf1 + theVars->BF_Vel.Vqi / 2;  // This is the total rate of PQH2 generation
 
-    FIBF_mb[7] = 0;        // Q Quinone in thylakoid membrane in free form
-    FIBF_mb[11] = GPQH2_t; // QH2 The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
-    FIBF_mb[50] = GPQH2_t; // QH2 The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
-    //std::cout << theVars->FI_Vel;
-    //std::cout << theVars->BF_Vel;
-    DEBUG_DELTA(FIBF_mb)
-    return FIBF_mb;
+    dydt->BF_con->Q = 0;        // Q Quinone in thylakoid membrane in free form
+    dydt->BF_con->QH2 = GPQH2_t; // QH2 The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
+    dydt->FI_con->PQn = GPQH2_t; // QH2 The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
+    //DEBUG_DELTA(FIBF_mb)
+    return dydt;
+}
+
+arr FIBF::_MB(const double t, const FIBFCondition* FIBF_Con, Variables *theVars) {
+    FIBFCondition* dydt = _Mb_con(t, FIBF_Con, theVars);
+    arr tmp = dydt->toArray();
+    delete dydt;
+    return tmp;
 }

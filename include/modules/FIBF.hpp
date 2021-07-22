@@ -48,7 +48,7 @@ private:
   @return A vector containing the updated values
   */
     static arr _MB(const double t, const FIBFCondition* FIBF_Con, Variables *theVars);
-
+    static FIBFCondition* _Mb_con(const double t, const FIBFCondition* FIBF_Con, Variables *theVars);
     static void _Rate(const double t, const FIBFCondition* FIBF_Con, Variables *theVars) {
         (void)t;
         (void)FIBF_Con;
