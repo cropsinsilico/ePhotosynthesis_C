@@ -52,7 +52,7 @@ private:
       @return A vector containing the updated values
       */
     static arr _MB(const double t, const RuACTCondition* RuACT_Con, Variables *theVars);
-
+    static RuACTCondition* _MB_con(const double t, const RuACTCondition* RuACT_Con, Variables *theVars);
     /**
       Calculate the Rates of RuACT based on the inputs
 
