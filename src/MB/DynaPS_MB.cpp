@@ -32,7 +32,7 @@
 
 // This model includes the mass balance equations for the full model of photosynthesis.
 
-arr DynaPS::_MB(const double t, const DynaPSCondition* DynaPS_con, Variables *theVars) {
+DynaPSCondition* DynaPS::_MB_con(const double t, const DynaPSCondition* DynaPS_con, Variables *theVars) {
 
     // Try out one new way of calculating the mass balance equation.
     // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.
@@ -47,15 +47,18 @@ arr DynaPS::_MB(const double t, const DynaPSCondition* DynaPS_con, Variables *th
     theVars->FI_Param[0] = light;
     theVars->BF_Param[0] = light;
 
-    arr RA_DYDT = RA::MB(t, DynaPS_con->RA_con, theVars);
-    arr XanCycle_DYDT = XanCycle::MB(t, DynaPS_con->XanCycle_con, theVars);
+    RACondition* RAdydt = RA::MB_con(t, DynaPS_con->RA_con, theVars);
+    XanCycleCondition* XanCycledydt = XanCycle::MB_con(t, DynaPS_con->XanCycle_con, theVars);
 
     // Here get the rate of Thioredoxin reduction and oxidation and use it to construct the differential equation for both thio and fd.
+    DynaPSCondition* dydt = new DynaPSCondition(RAdydt, XanCycledydt);
+    //DEBUG_DELTA(dxdt)
+    return dydt;
+}
 
-    arr dxdt;
-    dxdt.reserve(96);
-    dxdt.insert(dxdt.end(), RA_DYDT.begin(), RA_DYDT.begin() + 92);
-    dxdt.insert(dxdt.end(), XanCycle_DYDT.begin(), XanCycle_DYDT.end());
-    DEBUG_DELTA(dxdt)
-    return dxdt;
+arr DynaPS::_MB(const double t, const DynaPSCondition* DynaPS_con, Variables *theVars) {
+    DynaPSCondition* dydt = _MB_con(t, DynaPS_con, theVars);
+    arr tmp = dydt->toArray();
+    delete dydt;
+    return tmp;
 }
