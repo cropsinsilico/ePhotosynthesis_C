@@ -49,6 +49,7 @@ private:
   @return A vector containing the updated values
   */
     static arr _MB(const double t, const EPSCondition* EPS_Con, Variables *theVars);
+    static EPSCondition* _MB_con(const double t, const EPSCondition* EPS_Con, Variables *theVars);
 
     static void _Rate(const double t, const EPSCondition* EPS_Con, Variables *theVars) {
         (void)t;
