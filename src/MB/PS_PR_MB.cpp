@@ -30,7 +30,7 @@
 #include "modules/PR.hpp"
 #include "globals.hpp"
 
-arr PS_PR::_MB(const double t, const PS_PRCondition* PS_PR_con, Variables *theVars) {
+PS_PRCondition* PS_PR::_MB_con(const double t, const PS_PRCondition* PS_PR_con, Variables *theVars) {
 
     const double vATPcost = theVars->TestATPCost / theVars->AVR;
 
@@ -55,7 +55,7 @@ arr PS_PR::_MB(const double t, const PS_PRCondition* PS_PR_con, Variables *theVa
     PS_Param[1] = PR2PS_Pgca;
 
     PS::setParam(PS_Param);
-    PS::MB(t, PS_con, theVars);
+    PSCondition* PSdydt = PS::MB_con(t, PS_con, theVars);
     //std::cout << theVars->PS_Vel;
 
     arr PR_Param = zeros(2);
@@ -63,48 +63,35 @@ arr PS_PR::_MB(const double t, const PS_PRCondition* PS_PR_con, Variables *theVa
     // for the PS-PR combined model. 0: Combined model; 1: Separate model
     PR_Param[1] = theVars->Pi;
 
-    PR::MB(t, PR_con, theVars);
+    PRCondition* PRdydt = PR::MB_con(t, PR_con, theVars);
 
     // Assign the rate of reaction that is calculated from the photosynthesis and photorespiration routine.
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // 5.  Calculation of the mass balance equations ////
     //////////////////////////////////////////////////////////////////////////////////////////////$
     //std::cout << theVars->PR_Vel;
-    arr PS_PR_DYDT = zeros(24);
-    PS_PR_DYDT[0] = theVars->PS_Vel.v13 - theVars->PS_Vel.v1 - theVars->PR_Vel.v111;
-    PS_PR_DYDT[1] = 2 * theVars->PS_Vel.v1 - theVars->PS_Vel.v2 - theVars->PS_Vel.v32 + theVars->PR_Vel.v113 + theVars->PR_Vel.v111;
-    PS_PR_DYDT[2] = theVars->PS_Vel.v2 - theVars->PS_Vel.v3;
-    PS_PR_DYDT[3] = theVars->PS_Vel.v3 - 2 * theVars->PS_Vel.v5 - theVars->PS_Vel.v7 - theVars->PS_Vel.v8 - theVars->PS_Vel.v10 - theVars->PS_Vel.v31 - theVars->PS_Vel.v33;
-    PS_PR_DYDT[4] = theVars->PS_Vel.v5 - theVars->PS_Vel.v6;
-    PS_PR_DYDT[5] = theVars->PS_Vel.v7 - theVars->PS_Vel.v8;
-    PS_PR_DYDT[6] = theVars->PS_Vel.v9 - theVars->PS_Vel.v10;
-    PS_PR_DYDT[7] = theVars->PS_Vel.v8 - theVars->PS_Vel.v9;
-    if (theVars->useC3) {
-        PS_PR_DYDT[8] = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13 - theVars->PR_Vel.v113;
-    } else {
-        PS_PR_DYDT[8] = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13 - theVars->PR_Vel.v113 - theVars->PS_Vel.v25 - theVars->PR_Vel.v131 - vATPcost;//WY202003 extra ATP cost
-    //PS_PR_DYDT(9) = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13- theVars->PR_Vel.v113 - theVars->PS_Vel.v25 - theVars->PR_Vel.v124;    //AWY201804
-    }
-    PS_PR_DYDT[9] = 0;
-    PS_PR_DYDT[10] = 0;
-    PS_PR_DYDT[11] = 0;
-    if (theVars->useC3) {
-        PS_PR_DYDT[12] = theVars->PS_Vel.v6 - theVars->PS_Vel.v7 - theVars->PS_Vel.v23;
-    } else {
-        PS_PR_DYDT[12] = theVars->PS_Vel.v6 - theVars->PS_Vel.v7 - theVars->PS_Vel.v23 + theVars->PS_Vel.v25;
-    }
-    PS_PR_DYDT[13] = theVars->PS_Vel.v7 + theVars->PS_Vel.v10 * 2 - theVars->PS_Vel.v13;
-    PS_PR_DYDT[14] = theVars->PR_Vel.v1in - theVars->PR_Vel.v113;
-    PS_PR_DYDT[15] = theVars->PR_Vel.v112 - theVars->PR_Vel.v2out;
-    PS_PR_DYDT[16] = theVars->PR_Vel.v111 - theVars->PR_Vel.v112;
-    PS_PR_DYDT[17] = theVars->PR_Vel.v2out - theVars->PR_Vel.v121;
-    PS_PR_DYDT[18] = theVars->PR_Vel.v121 - theVars->PR_Vel.v122 - theVars->PR_Vel.v124;
-    PS_PR_DYDT[19] = theVars->PR_Vel.v131 - theVars->PR_Vel.v122;
-    PS_PR_DYDT[20] = theVars->PR_Vel.v122 + theVars->PR_Vel.v124 - 2 * theVars->PR_Vel.v131;
-    PS_PR_DYDT[21] = theVars->PR_Vel.v122 - theVars->PR_Vel.v123;
-    PS_PR_DYDT[22] = theVars->PR_Vel.v123 - theVars->PR_Vel.v1in;
-    PS_PR_DYDT[23] = theVars->PS_Vel.v23 - theVars->PS_Vel.v24;
 
-    DEBUG_DELTA(PS_PR_DYDT)
-    return PS_PR_DYDT;
+    PSdydt->RuBP = theVars->PS_Vel.v13 - theVars->PS_Vel.v1 - theVars->PR_Vel.v111;
+    PSdydt->PGA = 2 * theVars->PS_Vel.v1 - theVars->PS_Vel.v2 - theVars->PS_Vel.v32 + theVars->PR_Vel.v113 + theVars->PR_Vel.v111;
+
+    if (theVars->useC3) {
+        PSdydt->ATP = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13 - theVars->PR_Vel.v113;
+    } else {
+        PSdydt->ATP = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13 - theVars->PR_Vel.v113 - theVars->PS_Vel.v25 - theVars->PR_Vel.v131 - vATPcost;//WY202003 extra ATP cost
+    }
+
+    if (theVars->useC3)
+        PSdydt->HexP = theVars->PS_Vel.v6 - theVars->PS_Vel.v7 - theVars->PS_Vel.v23;
+
+    PS_PRCondition *dydt = new PS_PRCondition(PSdydt, PRdydt);
+    //DEBUG_DELTA(PS_PR_DYDT)
+    return dydt;
 }
+
+arr PS_PR::_MB(const double t, const PS_PRCondition* PS_PRs, Variables *theVars) {
+    PS_PRCondition *dydt = _MB_con(t, PS_PRs, theVars);
+    arr tmp = dydt->toArray();
+    delete dydt;
+    return tmp;
+}
+
