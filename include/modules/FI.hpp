@@ -51,6 +51,7 @@ private:
       @return A vector containing the updated values
       */
     static arr _MB(const double t, const FICondition* FI_Con, Variables *theVars);
+    static FICondition* _Mb_con(const double t, const FICondition* FI_Con, Variables *theVars);
     /**
       Calculate the Rates of FI based on the inputs
 
