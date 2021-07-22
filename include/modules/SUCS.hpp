@@ -53,7 +53,7 @@ private:
       @return A vector containing the updated values
       */
     static arr _MB(const double t, const SUCSCondition* SUCS_Con, Variables *theVars);
-
+    static SUCSCondition* _MB_con(const double t, const SUCSCondition* SUCS_Con, Variables *theVars);
     /**
       Calculate the Rates of SUCS based on the inputs
 
