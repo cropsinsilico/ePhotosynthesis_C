@@ -42,7 +42,7 @@ FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* FIBF_Con, Vari
     //       Calculate auxilary variable, PQ             //
     //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    const double PQ = theVars->FIBF_Pool.PQT - theVars->FI_Pool.QBt - FI_Con->PQn - BF_con->Qi - BF_con->Qn - BF_con->Qr - BF_con->ISPoQH2 - BF_con->QHsemi;
+    const double PQ = theVars->FIBF_Pool.PQT - theVars->FI_Pool.QBt - BF_con->QH2 - BF_con->Qi - BF_con->Qn - BF_con->Qr - BF_con->ISPoQH2 - BF_con->QHsemi;
 
     theVars->FIBF2FI_PQa = theVars->FI_Pool.QBt + BF_con->Qi + BF_con->Qn + BF_con->Qr + BF_con->ISPoQH2 + BF_con->QHsemi;
     BF_con->Q = PQ;
@@ -124,7 +124,6 @@ FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* FIBF_Con, Vari
 
     dydt->BF_con->Q = 0;        // Q Quinone in thylakoid membrane in free form
     dydt->BF_con->QH2 = GPQH2_t; // QH2 The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
-    dydt->FI_con->PQn = GPQH2_t; // QH2 The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
     //DEBUG_DELTA(FIBF_mb)
     return dydt;
 }

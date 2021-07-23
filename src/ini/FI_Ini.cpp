@@ -29,6 +29,8 @@
 #include "modules/FI.hpp"
 
 const size_t FICondition::count = 22;
+bool FICondition::BF_connect = false;
+bool FI::BF_connect = false;
 // This is the routine that initialize the parameters, initial conditions for simulation of fluorescence induction curve.
 // The following information is initialized sequentially 1) Rate constants; 2) Initial concentration ( or conditions); 3) THe maximum
 // concentration of components of photosystems.

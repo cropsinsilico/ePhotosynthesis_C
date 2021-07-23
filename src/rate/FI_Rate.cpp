@@ -34,8 +34,13 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // The rate constant used in the model
-
-    double PQ = theVars->FI_Pool.PQT - FI_Con->PQn - theVars->FIBF2FI_PQa;
+    double PQn;
+    if (FICondition::BF_connect) {
+        PQn = FI_Con->parent->BF_con->QH2;
+    } else {
+        PQn = FI_Con->PQn;
+    }
+    double PQ = theVars->FI_Pool.PQT - PQn - theVars->FIBF2FI_PQa;
 
     if (theVars->BF_FI_com)
         PQ = theVars->FIBF2FI_PQ;
@@ -99,12 +104,12 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
     theVars->FI_Vel.vAB2 = FI_Con->QAnQBn * theVars->FI_RC.kAB2;  // vAB2 The rate of electron transfer from QA- to QB-
     theVars->FI_Vel.vBA2 = FI_Con->QAQB2n * theVars->FI_RC.kBA2;  // vBA2 The rate of electron transfer from QB2- TO QA
     theVars->FI_Vel.v3 = FI_Con->QAQB2n * PQ * theVars->FI_RC.k3 / theVars->FI_Pool.PQT; // v3 The rate of exchange of QAQBH2 with PQ
-    theVars->FI_Vel.v_r3 = FI_Con->QAQB * FI_Con->PQn * theVars->FI_RC.k_r3 / theVars->FI_Pool.PQT; // v_r3 The rate of exchange of FI_Con.QAQB with PQH2
+    theVars->FI_Vel.v_r3 = FI_Con->QAQB * PQn * theVars->FI_RC.k_r3 / theVars->FI_Pool.PQT; // v_r3 The rate of exchange of FI_Con.QAQB with PQH2
 
     theVars->FI_Vel.v3_n = FI_Con->QAnQB2n * PQ * theVars->FI_RC.k3 / theVars->FI_Pool.PQT; // v3_n The rate of exchange of QAnQBH2 with PQ
-    theVars->FI_Vel.v_r3_n = FI_Con->QAnQB * FI_Con->PQn * theVars->FI_RC.k_r3 / theVars->FI_Pool.PQT; // v_r3_n The rate of exchange of FI_Con.QAnQB with PQH2
+    theVars->FI_Vel.v_r3_n = FI_Con->QAnQB * PQn * theVars->FI_RC.k_r3 / theVars->FI_Pool.PQT; // v_r3_n The rate of exchange of FI_Con.QAnQB with PQH2
 
-    theVars->FI_Vel.v_pq_ox = FI_Con->PQn * theVars->FI_RC.k_pq_oxy; // v_pq_ox The rate of PQH2 oxidation
+    theVars->FI_Vel.v_pq_ox = PQn * theVars->FI_RC.k_pq_oxy; // v_pq_ox The rate of PQH2 oxidation
 
     theVars->FI_Vel.v2_1 = FI_Con->P680pPheon * theVars->FI_RC.k2 * q; // v2_1 The rate of FI_Con.P680pPheon oxidation
     theVars->FI_Vel.v2_2 = FI_Con->P680Pheon * theVars->FI_RC.k2 * q;  // v2_1 The rate of FI_Con.P680pPheon oxidation

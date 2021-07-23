@@ -26,11 +26,15 @@
 
 #include "Variables.hpp"
 #include "modules/FIBF.hpp"
+#include "modules/FI.hpp"
+#include "modules/BF.hpp"
 // This is the function to initialize some global variable used in FIBF MODEL
 
 FIBFCondition* FIBF::_init(Variables *theVars) {
 
     const double FIBF_PQT = 8;
     theVars->FIBF_Pool.PQT = FIBF_PQT;
+    BF::setFI_connect(true);
+    FI::setBF_connect(true);
     return nullptr;
 }

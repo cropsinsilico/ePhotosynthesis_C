@@ -76,7 +76,8 @@ FICondition* FI::_MB_con(const double t, const FICondition *FI_Con, Variables *t
     dydt->QAnQBn = theVars->FI_Vel.vBA2 - theVars->FI_Vel.vAB2 + theVars->FI_Vel.v2_01_1 + theVars->FI_Vel.v2_01_2 - theVars->FI_Vel.vr2_01_1 - theVars->FI_Vel.vr2_01_2; // QAnQBn
     dydt->QAQB2n = theVars->FI_Vel.vAB2 - theVars->FI_Vel.vBA2 - theVars->FI_Vel.v3 + theVars->FI_Vel.v_r3 - theVars->FI_Vel.v2_02_1 - theVars->FI_Vel.v2_02_2 + theVars->FI_Vel.vr2_02_1 + theVars->FI_Vel.vr2_02_2; // QAQB2n
     dydt->QAnQB2n = 0 - theVars->FI_Vel.v3_n + theVars->FI_Vel.v_r3_n + theVars->FI_Vel.v2_02_1 + theVars->FI_Vel.v2_02_2 - theVars->FI_Vel.vr2_02_1 - theVars->FI_Vel.vr2_02_2; // QAnQB2n
-    dydt->PQn = theVars->FI_Vel.v3 + theVars->FI_Vel.v3_n - theVars->FI_Vel.v_r3 - theVars->FI_Vel.v_r3_n - theVars->FI_Vel.v_pq_ox; // PQn
+    if (!FICondition::BF_connect)
+        dydt->PQn = theVars->FI_Vel.v3 + theVars->FI_Vel.v3_n - theVars->FI_Vel.v_r3 - theVars->FI_Vel.v_r3_n - theVars->FI_Vel.v_pq_ox; // PQn
 
     //DEBUG_DELTA(FI_mb)
     return dydt;
