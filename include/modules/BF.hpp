@@ -35,7 +35,6 @@
 class BF : public ModuleBase<BF, BFCondition> {
 public:
     static double _Pi;
-    static double Q;
     static void setFI_connect(const bool val) {
         FI_connect = val;
         BFCondition::FI_connect = val;
