@@ -131,4 +131,6 @@ private:
     static double Vf_T56;
     static double Vf_T57;
     static double Vf_T59;
+    static double UTPc;
+    static double ATPc;
 };

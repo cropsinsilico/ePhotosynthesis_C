@@ -50,10 +50,8 @@ SUCSCondition* SUCS::_MB_con(const double t, const SUCSCondition* SUCS_Con, Vari
     dydt->FBPc = theVars->SUCS_Vel.v51 - theVars->SUCS_Vel.v52; // FBPc
     dydt->HexPc = theVars->SUCS_Vel.v52 - theVars->SUCS_Vel.v55 - theVars->SUCS_Vel.v59 + theVars->SUCS_Vel.v58 - theVars->SUCS_Vel.v56;// HexPc
     dydt->F26BPc = theVars->SUCS_Vel.v59 - theVars->SUCS_Vel.v58; // F26BPc
-    dydt->ATPc = 0; //   vatpf - theVars->SUCS_Vel.v59 - v60;   // ATPc
-    dydt->ADPc = 0; // ADPc
     dydt->UDPGc = theVars->SUCS_Vel.v55 - theVars->SUCS_Vel.v56; // UDPGc
-    dydt->UTPc = 0; //  v60 - v55  ;   // UTPc
+    //dydt->UTPc = 0; //  v60 - v55  ;   // UTPc
     dydt->SUCP = theVars->SUCS_Vel.v56 - theVars->SUCS_Vel.v57; // SUCP
     dydt->SUC = theVars->SUCS_Vel.v57 - theVars->SUCS_Vel.v62; // SUC
     if (theVars->useC3) {

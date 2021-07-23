@@ -99,11 +99,7 @@ void GenOut(double t, Variables *theVars) {
         co2a[36] = theVars->SUCS2OUT.FBPc;//
         co2a[37] = theVars->SUCS2OUT.HexPc;//
         co2a[38] = theVars->SUCS2OUT.F26BPc;//
-        co2a[39] = theVars->SUCS2OUT.ATPc;//
-        co2a[40] = theVars->SUCS2OUT.ADPc;//
-        co2a[41] = theVars->SUCS2OUT.OPOPc;//
         co2a[42] = theVars->SUCS2OUT.UDPGc;//
-        co2a[43] = theVars->SUCS2OUT.UTPc;//
         co2a[44] = theVars->SUCS2OUT.SUCP;//
         co2a[45] = theVars->SUCS2OUT.SUC;   //
         co2a[46] = theVars->SUCS2OUT.PGAc;//

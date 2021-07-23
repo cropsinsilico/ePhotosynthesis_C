@@ -58,11 +58,7 @@ public:
     double FBPc = 0.;
     double HexPc = 0.;
     double F26BPc = 0.;
-    double ATPc = 0.;
-    double ADPc = 0.;
-    double OPOPc = 0.;
     double UDPGc = 0.;
-    double UTPc = 0.;
     double SUCP = 0.;
     double SUC = 0.;
     double PGAc = 0.;

@@ -33,11 +33,7 @@ SUCSCondition::SUCSCondition(const SUCSCondition &other) {
     FBPc = other.FBPc;
     HexPc = other.HexPc;
     F26BPc = other.F26BPc;
-    ATPc = other.ATPc;
-    ADPc = other.ADPc;
-    OPOPc = other.OPOPc;
     UDPGc = other.UDPGc;
-    UTPc = other.UTPc;
     SUCP = other.SUCP;
     SUC = other.SUC;
     PGAc = other.PGAc;
@@ -48,11 +44,7 @@ SUCSCondition::SUCSCondition(const SUCSCondition *other) {
     FBPc = other->FBPc;
     HexPc = other->HexPc;
     F26BPc = other->F26BPc;
-    ATPc = other->ATPc;
-    ADPc = other->ADPc;
-    OPOPc = other->OPOPc;
     UDPGc = other->UDPGc;
-    UTPc = other->UTPc;
     SUCP = other->SUCP;
     SUC = other->SUC;
     PGAc = other->PGAc;
@@ -67,14 +59,10 @@ void SUCSCondition::_fromArray(const arr &vec, const size_t offset) {
     FBPc = vec[offset + 1];
     HexPc = vec[offset + 2];
     F26BPc = vec[offset + 3];
-    ATPc = vec[offset + 4];
-    ADPc = vec[offset + 5];
-    OPOPc = vec[offset + 6];
-    UDPGc = vec[offset + 7];
-    UTPc = vec[offset + 8];
-    SUCP = vec[offset + 9];
-    SUC = vec[offset + 10];
-    PGAc = vec[offset + 11];
+    UDPGc = vec[offset + 4];
+    SUCP = vec[offset + 5];
+    SUC = vec[offset + 6];
+    PGAc = vec[offset + 7];
 }
 
 void SUCSCondition::_clear() {
@@ -82,17 +70,13 @@ void SUCSCondition::_clear() {
     FBPc = 0.;
     HexPc = 0.;
     F26BPc = 0.;
-    ATPc = 0.;
-    ADPc = 0.;
-    OPOPc = 0.;
     UDPGc = 0.;
-    UTPc = 0.;
     SUCP = 0.;
     SUC = 0.;
     PGAc = 0.;
 }
 
 arr SUCSCondition::_toArray() {
-    arr vec = {T3Pc, FBPc, HexPc, F26BPc, ATPc, ADPc, OPOPc, UDPGc, UTPc, SUCP, SUC, PGAc};
+    arr vec = {T3Pc, FBPc, HexPc, F26BPc, UDPGc, SUCP, SUC, PGAc};
     return vec;
 }
