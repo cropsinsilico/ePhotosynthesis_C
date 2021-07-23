@@ -37,7 +37,7 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
 
     double ADP = BF_con->ADP; // ADP in stroma
 
-    double Pi = BF_con->Pi; // Phosphate in stroma
+    double Pi = BF::_Pi; // Phosphate in stroma
 
     //////////////////////////////////////////////////////////////
     // Get the auxiliary variables //

@@ -29,6 +29,7 @@
 #include "ConditionBase.hpp"
 
 class FIBFCondition;
+class BF;
 
 /**
  Class for holding the inputs to BF_mb
@@ -67,7 +68,6 @@ public:
     double cytc2 = 0.;   ///< oxidized cytc2; micromole per meter square
     double P700 = 0.;    ///< The reduced state of P700, including both P700 and excited P700; micromole per meter square
     double ADP = 0.;     ///< ADP in stroma, from the earlier photorespiration model; mmol l-1
-    double Pi = 0.;      ///< Phosphate in stroma, from the photorespiration model; mmol l-1
     double ATP = 0.;     ///< ATP in stroma, from the photorespiration model; mmol l-1
     double Ks = 0.;      ///< K ions in stroma, mM, from the literature; mmol l-1; 90 might be an default;
     double Mgs = 0.;     ///< Mg ions in stroma, mM, from the literature of the ion estimate
@@ -84,6 +84,7 @@ public:
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
 private:
     friend ConditionBase;
+    friend BF;
     /**
       Copy items from the given vector to the data members
 
@@ -102,11 +103,14 @@ private:
       Get the size of the data vector
       */
     static size_t _size() {
+        if (FI_connect)
+            return count - 1;
         return count;
     }
 
     void _clear() {}
     static const size_t count;
+    static bool FI_connect;
 #ifdef INCDEBUG
     const Debug::DebugLevel _dlevel = Debug::Low;
 #endif

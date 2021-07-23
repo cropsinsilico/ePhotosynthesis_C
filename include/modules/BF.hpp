@@ -33,6 +33,13 @@
  Class for the BF related functions
  */
 class BF : public ModuleBase<BF, BFCondition> {
+public:
+    static double _Pi;
+    static double Q;
+    static void setFI_connect(const bool val) {
+        FI_connect = val;
+        BFCondition::FI_connect = val;
+    }
 private:
     friend ModuleBase;
     /**
@@ -62,4 +69,5 @@ private:
       @param theVars The global variables
       */
     static void _Rate(const double t, const BFCondition* BF_con, Variables *theVars);
+    static bool FI_connect;
 };

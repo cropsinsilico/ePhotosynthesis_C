@@ -54,14 +54,14 @@ BFCondition* BF::_MB_con(const double t, const BFCondition* BF_con, Variables *t
     dydt->QHsemi = theVars->BF_Vel.Vbf2 - theVars->BF_Vel.Vbf3;    // QHsemi Semiquinone
     dydt->cytbL = theVars->BF_Vel.Vbf4 - theVars->BF_Vel.Vbf3;    // cytbL The oxidized cytbL
     dydt->Qi = theVars->BF_Vel.Vbf7 - theVars->BF_Vel.Vbf5 - theVars->BF_Vel.vcet;   // Qi The quinone bound in the Qi site of cytbf complex  ????
-    dydt->Q = theVars->BF_Vel.Vbf3 - theVars->BF_Vel.Vbf7 - theVars->BF_Vel.VgPQH2; // Q Quinone in thylakoid membrane in free form
+    if (!BFCondition::FI_connect)
+        dydt->Q = theVars->BF_Vel.Vbf3 - theVars->BF_Vel.Vbf7 - theVars->BF_Vel.VgPQH2; // Q Quinone in thylakoid membrane in free form
     dydt->cytbH = theVars->BF_Vel.Vbf6 - theVars->BF_Vel.Vbf4 + theVars->BF_Vel.Vbf5;   // cytbH The oxidized form of cytbH
     dydt->Qn = theVars->BF_Vel.Vbf5 - theVars->BF_Vel.Vbf6 + theVars->BF_Vel.vcet;   // Qn Q-
     dydt->Qr = theVars->BF_Vel.Vbf6 - theVars->BF_Vel.Vqi / 2; // Qr Q2-
     dydt->QH2 = theVars->BF_Vel.Vqi / 2 - theVars->BF_Vel.Vbf1 + theVars->BF_Vel.VgPQH2; // QH2 The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
     dydt->cytc2 = theVars->BF_Vel.Vbf10 - theVars->BF_Vel.Vbf9;  // cytc2 oxidized cytc2
     dydt->P700 = theVars->BF_Vel.Vbf10 - theVars->BF_Vel.Vbf15; // P700 The reduced state of P700, including both P700 and excited P700
-    dydt->Pi = 0;                                             // Pi Phosphate in stroma
     dydt->ADP = theVars->BF_Vel.VsATP - theVars->BF_Vel.Vbf11; // ADP ADP in stroma
     dydt->ATP = theVars->BF_Vel.Vbf11 - theVars->BF_Vel.VsATP; // ATP ATP in stroma
 

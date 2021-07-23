@@ -28,7 +28,10 @@
 #include "Variables.hpp"
 #include "modules/BF.hpp"
 
-const size_t BFCondition::count = 29;
+const size_t BFCondition::count = 28;
+bool BFCondition::FI_connect = false;
+bool BF::FI_connect = false;
+double BF::_Pi = 0.;
 
 BFCondition* BF::_init(Variables *theVars) {
 
@@ -172,7 +175,7 @@ BFCondition* BF::_init(Variables *theVars) {
     BF_con->P700 = 0.5;     // The reduced state of P700, including both P700 and excited P700
     BF_con->ADP = 0.82;     // ADP in stroma
 
-    BF_con->Pi = 0.9;       // Phosphate in stroma
+    BF::_Pi = 0.9;       // Phosphate in stroma
     BF_con->ATP = 0.68;     // ATP in stroma
     BF_con->Ks = 10.;       // K ions in stroma
     BF_con->Mgs = 5.;       // Mg ions in stroma
