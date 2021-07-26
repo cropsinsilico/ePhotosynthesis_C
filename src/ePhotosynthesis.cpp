@@ -416,6 +416,7 @@ int main(int argc, const char* argv[]) {
                     outfile << theVars->TestLi << ResultRate[0] << std::endl;
                     break;
                 case EPS:
+                    std::cout << ResultRate[0] << std::endl;
                     outfile << ResultRate[0] << std::endl;
                     break;
                 default:

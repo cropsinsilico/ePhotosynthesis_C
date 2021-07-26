@@ -34,7 +34,5 @@ FIBFCondition* FIBF::_init(Variables *theVars) {
 
     const double FIBF_PQT = 8;
     theVars->FIBF_Pool.PQT = FIBF_PQT;
-    BF::setFI_connect(true);
-    FI::setBF_connect(true);
     return nullptr;
 }

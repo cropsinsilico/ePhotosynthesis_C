@@ -39,7 +39,7 @@ FICondition* FI::_init(Variables *theVars) {
     //////////////////////////////////////////////////////////////////////////
     // Initilization of the rate constant //
     ////////////////////////////////////////////////////////////////////////////
-
+    FI::setBF_connect(theVars->BF_FI_com);
     // The rate constant used in the model
     // Reference
     // The rate constant used in the model

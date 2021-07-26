@@ -36,7 +36,7 @@ double BF::_Pi = 0.;
 BFCondition* BF::_init(Variables *theVars) {
 
     const double PMODTEM = 1;
-
+    BF::setFI_connect(theVars->BF_FI_com);
     if (theVars->useC3) {
         theVars->cNADPHsyn = 1.;
         theVars->CPSi = 1.;

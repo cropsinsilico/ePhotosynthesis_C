@@ -62,14 +62,14 @@ void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
         const double PrV131 = V131 * Vfactor131 * Vf_T131 * pow(Q10_131, (theVars->Tp - 25) / 10);
         const double PrV111 = PS::PsV1 * 0.24;
 
-       if (theVars->PR_PS_com == 1) {
+       if (theVars->PR_PS_com) {
             KC= PS::KM11;
             KO= PS::KM12;
         }
 
         if (theVars->RUBISCOMETHOD == 2) {            // Using michelies and enzyme information
             double PrV111t;
-            if (theVars->PR_PS_com == 1) {       // FOr the combined PS-PR model
+            if (theVars->PR_PS_com) {       // FOr the combined PS-PR model
                 PrV111t = PrV111*PR_con->RuBP / (PR_con->RuBP + KR * theVars->V1Reg);
             } else {                    // For the PR model
                 PrV111t = PrV111*PR_con->RuBP / (PR_con->RuBP + KR);
@@ -85,7 +85,7 @@ void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
 
         theVars->PR_Vel.v112 = PrV112 * PR_con->PGCA / (PR_con->PGCA + KM112 * (1 + PR_con->GCA / KI1122) * (1 + theVars->Pi / KI1121));
 
-         if (theVars->PR_PS_com == 1) {            // For the combined PS-PR MODEL
+         if (theVars->PR_PS_com) {            // For the combined PS-PR MODEL
              theVars->PR_Vel.v113 = PrV113 * (PR_con->parent->PS_con->ATP * PR_con->GCEA - theVars->ADP * PR_con->PGA / KE113) / ((PR_con->parent->PS_con->ATP + KM1131 * (1 + PR_con->PGA / KI113)) * (PR_con->GCEA + KM1132));
          } else {
              theVars->PR_Vel.v113 = PrV113 * (PR_con->parent->PS_con->ATP * PR_con->GCEA - theVars->ADP * PR_con->PGA / KE113) / ((PR_con->parent->PS_con->ATP + KM1131 * (1 + 2.5 / KI113)) * (PR_con->GCEA + KM1132));

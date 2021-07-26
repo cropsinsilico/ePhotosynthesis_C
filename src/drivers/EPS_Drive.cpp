@@ -47,7 +47,7 @@ void EPSDriver::setup() {
     theVars->fc = 0.15;
     theVars->Theta = 0.7;
     theVars->beta = 0.7519;
-    theVars->BF_FI_com = 1;
+    theVars->BF_FI_com = true;
 
     theVars->PR_PS_com = true;     // This is a variable indicating whether the PR model is actually need to be combined with PS or not. If 1 then means combined; 0 means not.
 

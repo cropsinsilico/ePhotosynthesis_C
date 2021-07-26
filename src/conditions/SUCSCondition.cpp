@@ -26,8 +26,6 @@
 
 #include "conditions/SUCSCondition.hpp"
 
-const size_t SUCSCondition::count = 12;
-
 SUCSCondition::SUCSCondition(const SUCSCondition &other) {
     T3Pc = other.T3Pc;
     FBPc = other.FBPc;

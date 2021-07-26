@@ -35,15 +35,14 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
 
     // The rate constant used in the model
     double PQn;
+    double PQ;
     if (FICondition::BF_connect) {
         PQn = FI_Con->parent->BF_con->QH2;
+        PQ = theVars->FIBF2FI_PQ;
     } else {
         PQn = FI_Con->PQn;
+        PQ = theVars->FI_Pool.PQT - PQn - theVars->FIBF2FI_PQa;
     }
-    double PQ = theVars->FI_Pool.PQT - PQn - theVars->FIBF2FI_PQa;
-
-    if (theVars->BF_FI_com)
-        PQ = theVars->FIBF2FI_PQ;
 
     const double P680PheoT = 1;
 
