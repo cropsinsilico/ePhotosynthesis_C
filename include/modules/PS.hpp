@@ -39,6 +39,8 @@ public:
     static void setParam(const arr &param) {
         Param = param;
     }
+    static double _NADPH;
+
 private:
     friend ModuleBase;
     /**

@@ -57,9 +57,6 @@ PSCondition* PS::_MB_con(const double t, const PSCondition* PS_con, Variables *t
     dydt->S7P = theVars->PS_Vel.v9 - theVars->PS_Vel.v10;
     dydt->SBP = theVars->PS_Vel.v8 - theVars->PS_Vel.v9;
     dydt->ATP = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13 - theVars->PS_Vel.v25;
-    dydt->NADPH = 0;
-    dydt->CO2 = 0;
-    dydt->O2 = 0;
     dydt->HexP = theVars->PS_Vel.v6 - theVars->PS_Vel.v7 - theVars->PS_Vel.v23 + theVars->PS_Vel.v25;
     dydt->PenP = theVars->PS_Vel.v7 + theVars->PS_Vel.v10 * 2 - theVars->PS_Vel.v13;
 

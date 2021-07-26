@@ -46,15 +46,14 @@ EPSCondition* EPS::_MB_con(const double t, const EPSCondition* EPS_Con, Variable
 
     if (theVars->useC3) {
         CMdydt->PS_PR_con->PS_con->ATP = CMdydt->PS_PR_con->PS_con->ATP - theVars->PS_Vel.v16 + theVars->EPS_ATP_Rate;
-        CMdydt->PS_PR_con->PS_con->NADPH = theVars->BF_Vel.vbfn2/2 - theVars->PS_Vel.v3;// - 1 * PS2EPS_NADPH/(PS2EPS_NADPH + 0.5) ;  // QF changed /2 and ;// - 1 * PS2EPS_NADPH/(PS2EPS_NADPH + 0.5)
+        FIBFdydt->BF_con->NADPH = theVars->BF_Vel.vbfn2/2 - theVars->PS_Vel.v3;// - 1 * PS2EPS_NADPH/(PS2EPS_NADPH + 0.5) ;  // QF changed /2 and ;// - 1 * PS2EPS_NADPH/(PS2EPS_NADPH + 0.5)
 
     } else {
         CMdydt->PS_PR_con->PS_con->ATP = CMdydt->PS_PR_con->PS_con->ATP - theVars->PS_Vel.v16 + theVars->EPS_ATP_Rate - theVars->PR_Vel.v124; //WY 201804
-        CMdydt->PS_PR_con->PS_con->NADPH = theVars->BF_Vel.vbfn2 / 2 - theVars->PS_Vel.v3 - 2 * theVars->PR_Vel.v124; //WY 201804
+        FIBFdydt->BF_con->NADPH = theVars->BF_Vel.vbfn2 / 2 - theVars->PS_Vel.v3 - 2 * theVars->PR_Vel.v124; //WY 201804
     }
     FIBFdydt->BF_con->ATP = CMdydt->PS_PR_con->PS_con->ATP;
 
-    FIBFdydt->BF_con->NADPH = CMdydt->PS_PR_con->PS_con->NADPH;
     EPSCondition* dydt = new EPSCondition(FIBFdydt, CMdydt);
     //DEBUG_DELTA(EPS_DYDT)
     return dydt;

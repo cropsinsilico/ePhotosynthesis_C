@@ -31,7 +31,6 @@ std::ostream& PRCondition::_print(std::ostream &out, const uint tab) const {
     out << space << "PRContainer" << std::endl;
     out << space << "  GCEA = " << GCEA<< std::endl;
     out << space << "  GCA = " << GCA << std::endl;
-    out << space << "  PGA = " << PGA << std::endl;
     out << space << "  PGCA = " << PGCA<< std::endl;
     out << space << "  GCAc = " << GCAc<< std::endl;
     out << space << "  GOAc = " << GOAc<< std::endl;
@@ -39,9 +38,8 @@ std::ostream& PRCondition::_print(std::ostream &out, const uint tab) const {
     out << space << "  GLYc = " << GLYc<< std::endl;
     out << space << "  HPRc = " << HPRc<< std::endl;
     out << space << "  GCEAc = " << GCEAc << std::endl;
-    out << space << "  RUBP = " << RuBP<< std::endl;
-    out << space << "  CO2 = " << CO2 << std::endl;
-    out << space << "  O2 = " << O2<< std::endl;
+    if (!PR_PS_com)
+        out << space << "  RUBP = " << RuBP<< std::endl;
     return out;
 }
 

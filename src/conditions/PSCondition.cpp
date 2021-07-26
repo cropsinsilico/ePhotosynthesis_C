@@ -37,9 +37,6 @@ PSCondition::PSCondition(const PSCondition* other)  {
     S7P = other->S7P;
     SBP = other->SBP;
     ATP = other->ATP;
-    NADPH = other->NADPH;
-    CO2 = other->CO2;
-    O2 = other->O2;
     HexP = other->HexP;
     PenP = other->PenP;
     _Pi = other->_Pi;
@@ -62,15 +59,12 @@ void PSCondition::_fromArray(const arr &vec, size_t offset) {
     S7P = vec[offset + 7];
     SBP = vec[offset + 8];
     ATP = vec[offset + 9];
-    NADPH = vec[offset + 10];
-    CO2 = vec[offset + 11];
-    O2 = vec[offset + 12];
-    HexP = vec[offset + 13];
-    PenP = vec[offset + 14];
+    HexP = vec[offset + 10];
+    PenP = vec[offset + 11];
 }
 
 arr PSCondition::_toArray()  {
-    arr array = {RuBP, PGA, DPGA, T3P, ADPG, FBP, E4P, S7P, SBP, ATP, NADPH, CO2, O2, HexP, PenP};
+    arr array = {RuBP, PGA, DPGA, T3P, ADPG, FBP, E4P, S7P, SBP, ATP, HexP, PenP};
     return array;
 }
 

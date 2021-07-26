@@ -36,8 +36,6 @@ PRCondition* PR::_MB_con(const double t, const PRCondition* PR_con, Variables *t
     PRCondition *dydt = new PRCondition();
     dydt->GCEA = theVars->PR_Vel.v1in - theVars->PR_Vel.v113;
     dydt->GCA = theVars->PR_Vel.v112 - theVars->PR_Vel.v2out;
-    //PRdydt[2] = theVars->PR_Vel.v111 + theVars->PR_Vel.v113 - 0.5;
-    dydt->PGA = 0;
     dydt->PGCA = theVars->PR_Vel.v111 - theVars->PR_Vel.v112;
     dydt->GCAc = theVars->PR_Vel.v2out - theVars->PR_Vel.v121;
     dydt->GOAc = theVars->PR_Vel.v121 - theVars->PR_Vel.v122 - theVars->PR_Vel.v124;
@@ -45,9 +43,8 @@ PRCondition* PR::_MB_con(const double t, const PRCondition* PR_con, Variables *t
     dydt->GLYc = theVars->PR_Vel.v122 + theVars->PR_Vel.v124 - 2 * theVars->PR_Vel.v131;
     dydt->HPRc = theVars->PR_Vel.v122 - theVars->PR_Vel.v123;
     dydt->GCEAc = theVars->PR_Vel.v123 - theVars->PR_Vel.v1in;
-    dydt->RuBP = 0.3 - theVars->PR_Vel.v111;
-    dydt->CO2 = 0;
-    dydt->O2 = 0;
+    if (!PR_PS_com)
+        dydt->RuBP = 0.3 - theVars->PR_Vel.v111;
 
     //DEBUG_DELTA(PRdydt)
     return dydt;

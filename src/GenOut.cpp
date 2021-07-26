@@ -25,6 +25,7 @@
  **********************************************************************************************************************************************/
 #include <math.h>
 #include "Variables.hpp"
+#include "modules/PS.hpp"
 
 // This is a function to generate output from the program.
 
@@ -37,8 +38,8 @@ void GenOut(double t, Variables *theVars) {
 
     if (theVars->record) {
         double ATP = theVars->PS2OUT.ATP;
-        double NADPH = theVars->PS2OUT.NADPH;
-        double O2 = theVars->PS2OUT.O2;
+        double NADPH = PS::_NADPH;
+        double O2 = theVars->O2_cond;
         double Fdn = 0;
         double PHs = 0;
         double PHl = 0;
@@ -54,7 +55,7 @@ void GenOut(double t, Variables *theVars) {
         }
 
         arr co2a = zeros(100);
-        co2a[0] = theVars->PS2OUT.CO2 * 3 * pow(10, 4);
+        co2a[0] = theVars->CO2_cond * 3 * pow(10, 4);
         co2a[1] = O2 / 1.26;
         if (theVars->FIBF_PSPR_com) {
             co2a[2] = theVars->GLight;
@@ -83,7 +84,6 @@ void GenOut(double t, Variables *theVars) {
         co2a[20] = theVars->PS2OUT.RuBP;//
         co2a[21] = theVars->PR2OUT.GCEA;//
         co2a[22] = theVars->PR2OUT.GCA;//
-        co2a[23] = theVars->PR2OUT.PGA;//
         co2a[24] = theVars->PR2OUT.PGCA;//
         co2a[25] = theVars->PR2OUT.GCAc;//
         co2a[26] = theVars->PR2OUT.GOAc;//

@@ -27,8 +27,9 @@
 #include "Variables.hpp"
 #include "modules/PS.hpp"
 #include "modules/SUCS.hpp"
-#include "conditions/PS_PRCondition.hpp"
-#include "conditions/CMCondition.hpp"
+//#include "conditions/PS_PRCondition.hpp"
+//#include "conditions/CMCondition.hpp"
+#include "conditions/EPSCondition.hpp"
 
 #define RegFactor 1.
 
@@ -40,6 +41,12 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
 
     if (theVars->PSPR_SUCS_com)
         PsPEXT = theVars->SUCS2PS_Pic;
+    double NADPH;
+    if (theVars->FIBF_PSPR_com) {
+        NADPH = PS_con->parent->parent->parent->FIBF_con->BF_con->NADPH;
+    } else {
+        NADPH = PS::_NADPH;
+    }
 
     // Assuming that the regulation exists no matter there is enzyme regulation or not. ATPReg is
     // used to regulate the TP export and starch synthesis.
@@ -79,7 +86,7 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
 
         theVars->Pi = PS_C_CP - PS_con->PGA - 2 * PS_con->DPGA - GAP - DHAP - 2 * PS_con->FBP - F6P - PS_con->E4P - 2 * PS_con->SBP - PS_con->S7P - Xu5P - Ri5P - Ru5P - 2 * PS_con->RuBP - G6P - G1P - PS_con->ATP - PS_con->parent->PR_con->PGCA;
 
-        theVars->V1Reg = 1 + PS_con->PGA / KI11 + PS_con->FBP / KI12 + PS_con->SBP / KI13 + theVars->Pi / KI14 + PS_con->NADPH / KI15;
+        theVars->V1Reg = 1 + PS_con->PGA / KI11 + PS_con->FBP / KI12 + PS_con->SBP / KI13 + theVars->Pi / KI14 + NADPH / KI15;
 
         const double PsV1_0	=	theVars->V1 * Vfactor1 * Vf_T1	;	//	1	Rubisco	RuBP+CO2<->2PGA
         const double PsV2_0	=	theVars->V2 * Vfactor2 * Vf_T2 ;	//	2	PGA Kinase	PGA+ATP <-> ADP + DPGA
@@ -124,7 +131,7 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
         const double O2 = theVars->O2_cond;
 
 
-        theVars->V1Reg = 1 + PS_con->PGA / KI11 + PS_con->FBP / KI12 + PS_con->SBP / KI13 + theVars->Pi / KI14 + PS_con->NADPH / KI15;   // SHARED
+        theVars->V1Reg = 1 + PS_con->PGA / KI11 + PS_con->FBP / KI12 + PS_con->SBP / KI13 + theVars->Pi / KI14 + NADPH / KI15;   // SHARED
 
         if (theVars->RUBISCOMETHOD == 2) {
             const double tmp = PsV1 * PS_con->RuBP / (PS_con->RuBP + KM13 * theVars->V1Reg);
@@ -140,7 +147,7 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
         }
 
         theVars->PS_Vel.v2 = PsV2 * PS_con->PGA * PS_con->ATP / ((PS_con->PGA + KM21) * (PS_con->ATP + KM22 * (1 + theVars->ADP / KM23)));
-        theVars->PS_Vel.v3 = PsV3 * PS_con->DPGA * PS_con->NADPH / ((PS_con->DPGA + KM31a) * (PS_con->NADPH + KM32b));
+        theVars->PS_Vel.v3 = PsV3 * PS_con->DPGA * NADPH / ((PS_con->DPGA + KM31a) * (NADPH + KM32b));
         theVars->PS_Vel.v5 = PsV5 * (GAP * DHAP - PS_con->FBP / KE5) / ((KM51 * KM52) * (1 + GAP / KM51 + DHAP / KM52 + PS_con->FBP / KM53 + GAP * DHAP / (KM51 * KM52)));
         theVars->PS_Vel.v8 = PsV8 * (DHAP * PS_con->E4P - PS_con->SBP / KE8) / ((PS_con->E4P + KM82) * (DHAP + KM81));
         theVars->PS_Vel.v6 = PsV6 * (PS_con->FBP - F6P * theVars->Pi / KE6) / (PS_con->FBP + KM61 * (1 + F6P / KI61 + theVars->Pi / KI62));
@@ -200,7 +207,7 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
 
         const double MaxCoeff = 5 * theVars->PSRatio[101];
 
-        theVars->V1Reg = 1 + PS_con->PGA / KI11 + PS_con->FBP / KI12 + PS_con->SBP / KI13 + theVars->Pi / KI14 + PS_con->NADPH / KI15;
+        theVars->V1Reg = 1 + PS_con->PGA / KI11 + PS_con->FBP / KI12 + PS_con->SBP / KI13 + theVars->Pi / KI14 + NADPH / KI15;
 
         // Initialize the PrVmax of the different reactions based on the global variables Vmax
         PsV6 = theVars->V6;            // 6 FBPase FBP<->F6P+OP
@@ -237,7 +244,7 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
         }
 
         theVars->PS_Vel.v2 = theVars->V2 * PS_con->PGA * PS_con->ATP / ((PS_con->PGA + KM21) * (PS_con->ATP + KM22 * (1 + theVars->ADP / KM23)));
-        theVars->PS_Vel.v3 = theVars->V3 * PS_con->DPGA * PS_con->NADPH / ((PS_con->DPGA + KM31a) * (PS_con->NADPH + KM32b));
+        theVars->PS_Vel.v3 = theVars->V3 * PS_con->DPGA * NADPH / ((PS_con->DPGA + KM31a) * (NADPH + KM32b));
         theVars->PS_Vel.v4 = 0;
         theVars->PS_Vel.v5 = V5 * (GAP * DHAP - PS_con->FBP / KE5) / ((KM51 * KM52) * (1 + GAP / KM51 + DHAP / KM52 + PS_con->FBP / KM53 + GAP * DHAP / (KM51 * KM52)));
         theVars->PS_Vel.v6 = PsV6 * (PS_con->FBP - F6P * theVars->Pi / KE6) / (PS_con->FBP + KM61 * (1 + F6P / KI61 + theVars->Pi / KI62));
@@ -278,9 +285,6 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
         theVars->PS2OUT.S7P = PS_con->S7P;
         theVars->PS2OUT.SBP = PS_con->SBP;
         theVars->PS2OUT.ATP = PS_con->ATP;
-        theVars->PS2OUT.NADPH = PS_con->NADPH;
-        theVars->PS2OUT.CO2 = theVars->CO2_cond;
-        theVars->PS2OUT.O2 = theVars->O2_cond;
         theVars->PS2OUT.HexP = PS_con->HexP;
         theVars->PS2OUT.PenP = PS_con->PenP;
         theVars->PS2OUT._Pi = theVars->Pi;

@@ -33,6 +33,11 @@
   Class for grouping PR related functions and common variables
   */
 class PR : public ModuleBase<PR, PRCondition> {
+public:
+    static void setPR_PS(const bool val) {
+        PR_PS_com = val;
+        PRCondition::setPR_PS(val);
+    }
 private:
     friend ModuleBase;
     /**
@@ -114,4 +119,6 @@ private:
     static double Vf_T121;
     static double Vf_T122;
     static double Vf_T112;
+    static double PGA;
+    static bool PR_PS_com;
 };

@@ -88,9 +88,13 @@ double PR::Vf_T123 = 0;
 double PR::Vf_T121 = 0;
 double PR::Vf_T122 = 0;
 double PR::Vf_T112 = 0;
-const size_t PRCondition::count = 13;
+double PR::PGA = 0.;
+const size_t PRCondition::count = 10;
+bool PRCondition::PR_PS_com = false;
+bool PR::PR_PS_com = false;
 
 PRCondition* PR::_init(Variables *theVars) {
+    PR::setPR_PS(theVars->PR_PS_com);
     if (theVars->useC3) {
         NADHc = 0.47;
         NADc = 0.4;
@@ -112,9 +116,9 @@ PRCondition* PR::_init(Variables *theVars) {
     PR_con->GCA = 0.36;      // Derived from radioactive labelling experiment; assuem equal concenatration
                             // inside and outshide chloroplast
     if (theVars->useC3) {
-        PR_con->PGA = 2.4;       // PGA in chloroplast;
+        PR::PGA = 2.4;       // PGA in chloroplast;
     } else {
-        PR_con->PGA = 4.3;       // PGA in chloroplast;4.3 is the original value;
+        PR::PGA = 4.3;       // PGA in chloroplast;4.3 is the original value;
     }
     PR_con->PGCA = 0.0029;   // Phosphoglycolate in chloroplast derived based on the Km112; orignal value is : 0.0029;
 
@@ -125,9 +129,6 @@ PRCondition* PR::_init(Variables *theVars) {
     PR_con->HPRc = 0.0035;   // HydroxylPyruvate; derived from equation 123;
     PR_con->GCEAc = 0.1812;  // Glycerate in cytosol; assume at equilibrium with GCEA initially.
     PR_con->RuBP = 2.;       // RuBP concentration
-    PR_con->CO2 = 0.012;     // CO2 concentration(mM)
-    PR_con->O2 = 0.264;      // O2 concentration(mM)
-
 
     if (theVars->useC3) {
         theVars->V1T = 5.;

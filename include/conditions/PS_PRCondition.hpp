@@ -68,9 +68,13 @@ public:
     PSCondition* PS_con = nullptr;
     PRCondition* PR_con = nullptr;
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-
+    //static void setC3(const bool val) {
+    //    useC3 = val;
+    //    PSCondition::setC3(val);
+    //}
 private:
     friend ConditionBase;
+    friend CMCondition;
     /**
       Copy items from the given vector to the data members
 
@@ -89,11 +93,14 @@ private:
       Get the size of the data vector
       */
     static size_t _size() {
+        //if (useC3)
+        //    return count - 1;
         return count;
     }
 
     void _clear ();
     static const size_t count;
+    //static bool useC3;
 #ifdef INCDEBUG
     const Debug::DebugLevel _dlevel = Debug::Middle;
 #endif

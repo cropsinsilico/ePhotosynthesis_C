@@ -133,7 +133,8 @@ double PS::Vf_T9 = 1;
 double PS::Vf_T13 = 1;
 double PS::Vf_T23 = 1;
 double PS::PsV1 = 0.;
-const size_t PSCondition::count = 15;
+double PS::_NADPH = 0.;
+const size_t PSCondition::count = 12;
 arr PS::Param = {0, 0};
 
 PSCondition* PS::_init(Variables *theVars) {
@@ -145,18 +146,15 @@ PSCondition* PS::_init(Variables *theVars) {
     PS_con->T3P = 0.5;
     if (!theVars->useC3) {
         PS_con->ADPG = 0.005;
-        PS_con->O2 = 0.264;
     } else {
         PS_con->ADPG = 0.;
-        PS_con->O2 = 0.21 * 1.26;
     }
     PS_con->FBP = 0.670;
     PS_con->E4P = 0.050;
     PS_con->S7P = 2.000;
     PS_con->SBP = 0.300;
     PS_con->ATP = 0.68;
-    PS_con->NADPH = 0.21;
-    PS_con->CO2 = 0.012;
+    PS::_NADPH = 0.21;
     PS_con->HexP = 2.2;
     PS_con->PenP = 0.25;
 

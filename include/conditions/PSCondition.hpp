@@ -62,9 +62,6 @@ public:
     double S7P = 0.;
     double SBP = 0.;
     double ATP = 0.;
-    double NADPH = 0.;
-    double CO2 = 0.;
-    double O2 = 0.;
     double HexP = 0.;
     double PenP = 0.;
     double _Pi = 0.;

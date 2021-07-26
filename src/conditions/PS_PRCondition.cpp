@@ -26,7 +26,7 @@
 
 #include "conditions/PS_PRCondition.hpp"
 
-const size_t PS_PRCondition::count = 24;
+const size_t PS_PRCondition::count = 21;
 PS_PRCondition::PS_PRCondition(const PS_PRCondition* other) {
     _clear();
     PS_con = other->PS_con;
@@ -62,9 +62,6 @@ void PS_PRCondition::_fromArray(const arr &vec, const size_t offset) {
     PS_con->S7P = vec[offset + counter++];
     PS_con->SBP = vec[offset + counter++];
     PS_con->ATP = vec[offset + counter++];
-    PS_con->NADPH = vec[offset + counter++];
-    PS_con->CO2 = vec[offset + counter++];
-    PS_con->O2 = vec[offset + counter++];
     PS_con->HexP = vec[offset + counter++];
     PS_con->PenP = vec[offset + counter++];
     PR_con->GCEA = vec[offset + counter++];
@@ -78,10 +75,6 @@ void PS_PRCondition::_fromArray(const arr &vec, const size_t offset) {
     PR_con->GCEAc = vec[offset + counter++];
     //if (!useC3)
         PS_con->ADPG = vec[offset + counter++];
-    PR_con->RuBP = PS_con->RuBP;
-    PR_con->CO2 = PS_con->CO2;
-    PR_con->O2 = PS_con->O2;
-    PR_con->PGA = PS_con->PGA;
 }
 
 arr PS_PRCondition::_toArray() {
@@ -119,9 +112,6 @@ arr PS_PRCondition::_toArray() {
                 PS_con->S7P,
                 PS_con->SBP,
                 PS_con->ATP,
-                PS_con->NADPH,
-                PS_con->CO2,
-                PS_con->O2,
                 PS_con->HexP,
                 PS_con->PenP,
                 PR_con->GCEA,

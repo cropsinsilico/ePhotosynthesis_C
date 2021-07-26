@@ -36,11 +36,6 @@ PS_PRCondition* PS_PR::_MB_con(const double t, const PS_PRCondition* PS_PR_con, 
 
     PRCondition* PR_con = PS_PR_con->PR_con;
     PSCondition* PS_con = PS_PR_con->PS_con;
-    PR_con->PGA = PS_con->PGA;
-
-    PR_con->RuBP = PS_con->RuBP;
-    PR_con->CO2 = PS_con->CO2;
-    PR_con->O2 = PS_con->O2;
 
     const double PR2PS_Pgca = PS_PR_con->PR_con->PGCA;  // FOr transfering information between PR to PS.
 
