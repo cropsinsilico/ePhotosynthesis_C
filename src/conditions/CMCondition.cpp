@@ -58,6 +58,7 @@ void CMCondition::_fromArray(const arr &vec, size_t offset) {
     arr pvec(PS_PR_con->size());
     std::copy(vec.begin() + offset, vec.begin() + PS_PR_con->size() + offset, pvec.begin());
     pvec[23] = vec[35 + offset];
+    pvec[23] = vec[size() - 1 + offset];
 
     PS_PR_con->fromArray(pvec);
     SUCS_con->fromArray(vec, offset + PS_PR_con->size() - 1);
@@ -69,7 +70,7 @@ arr CMCondition::_toArray() {
     psprvec.reserve(size());
     double temp = psprvec[23];
     psprvec.insert(psprvec.end() - 1, svec.begin(), svec.end());
-    psprvec[35] = temp;
+        psprvec[size() - 1] = temp;
 
     return psprvec;
 }

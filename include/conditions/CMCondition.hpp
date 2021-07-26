@@ -97,10 +97,13 @@ private:
       Get the size of the data vector
       */
     static size_t _size() {
-        return PS_PRCondition::size() + SUCSCondition::size();
+        if (count == 0)
+            count = PS_PRCondition::size() + SUCSCondition::size();
+        return count;
     }
 
     void _clear();
+    static size_t count;
 #ifdef INCDEBUG
     static Debug::DebugLevel _dlevel;
 #endif

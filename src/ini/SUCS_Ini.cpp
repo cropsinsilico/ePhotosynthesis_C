@@ -96,7 +96,7 @@ double SUCS::Vf_T51=0;
 double SUCS::Vf_T56=0;
 double SUCS::UTPc = 0.;
 double SUCS::ATPc = 0.;
-const size_t SUCSCondition::count = 12;
+const size_t SUCSCondition::count = 8;
 
 SUCSCondition* SUCS::_init(Variables *theVars) {
     theVars->SUCS_OLD_TIME = 0;

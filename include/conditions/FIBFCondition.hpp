@@ -94,9 +94,12 @@ private:
       Get the size of the data vector
       */
     static size_t _size() {
-        return BFCondition::size() + FICondition::size() + 1;
+        if (count == 0)
+            count = BFCondition::size() + FICondition::size() + 1;
+        return count;
     }
     void _clear();
+    static size_t count;
 #ifdef INCDEBUG
     const Debug::DebugLevel _dlevel = Debug::Middle;
 #endif

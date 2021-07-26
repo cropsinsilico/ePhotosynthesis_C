@@ -30,6 +30,8 @@
 #include "modules/BF.hpp"
 // This is the function to initialize some global variable used in FIBF MODEL
 
+size_t FIBFCondition::count = 0;
+
 FIBFCondition* FIBF::_init(Variables *theVars) {
 
     const double FIBF_PQT = 8;

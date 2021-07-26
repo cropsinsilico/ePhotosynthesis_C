@@ -31,6 +31,8 @@
 #include "modules/BF.hpp"
 #include "modules/CM.hpp"
 
+size_t EPSCondition::count = 0;
+
 #ifdef INCDEBUG
 Debug::DebugLevel EPSCondition::_dlevel = Debug::Middle;
 #endif

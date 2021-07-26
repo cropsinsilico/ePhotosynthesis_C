@@ -108,6 +108,7 @@ private:
     }
 
     void _clear();
+    static size_t count;
 #ifdef INCDEBUG
     static Debug::DebugLevel _dlevel;
 #endif

@@ -87,7 +87,7 @@ void EPSDriver::setup() {
     // This is a variable to indicate whether BF is run by itself or together.
 
 
-    constraints = zeros(87);
+    constraints = zeros(EPS_Con->size());
     arr temp = EPS_Con->toArray();
     for (size_t i = 0; i < constraints.size(); i++)
         constraints[i] = temp[i];
