@@ -52,7 +52,6 @@ EPSCondition* EPS::_MB_con(const double t, const EPSCondition* EPS_Con, Variable
         CMdydt->PS_PR_con->PS_con->ATP = CMdydt->PS_PR_con->PS_con->ATP - theVars->PS_Vel.v16 + theVars->EPS_ATP_Rate - theVars->PR_Vel.v124; //WY 201804
         FIBFdydt->BF_con->NADPH = theVars->BF_Vel.vbfn2 / 2 - theVars->PS_Vel.v3 - 2 * theVars->PR_Vel.v124; //WY 201804
     }
-    FIBFdydt->BF_con->ATP = CMdydt->PS_PR_con->PS_con->ATP;
 
     EPSCondition* dydt = new EPSCondition(FIBFdydt, CMdydt);
     //DEBUG_DELTA(EPS_DYDT)

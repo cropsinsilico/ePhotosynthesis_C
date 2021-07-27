@@ -26,6 +26,7 @@
 #include <math.h>
 #include "Variables.hpp"
 #include "modules/BF.hpp"
+#include "modules/EPS.hpp"
 
 void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
 
@@ -36,7 +37,9 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
     //  This is the initialization step for the module of the BF_con.Q cycle, and ATP synthesis steps
 
     double ADP = BF_con->ADP; // ADP in stroma
-
+    double ATP = BF_con->ATP;
+    if (BF::PS_connect)
+        ATP = BF_con->parent->parent->CM_con->PS_PR_con->PS_con->ATP;
     double Pi = BF::_Pi; // Phosphate in stroma
 
     //////////////////////////////////////////////////////////////
@@ -125,7 +128,7 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
 
     const double MaxCO2Rate = 100 * CO2 / (CO2 + 460);
 
-    theVars->BF_Vel.VsATP = MaxCO2Rate * 1.5 / CoeffVol * BF_con->ATP / 1.5;        //(ADP + ATP); // The sink for ATP utilizaiton, 20 represent the of CO2 assimilation, since 1 meter square amount to 27 ml, therefore, the sink capacity should be 20 * 1.5 * 1.5 mmol / 27 l-1 s-1. The 1.5 represents the 1.5 ATP consumption per CO2 fixation.  Unit: mmol l-2 s-1
+    theVars->BF_Vel.VsATP = MaxCO2Rate * 1.5 / CoeffVol * ATP / 1.5;        //(ADP + ATP); // The sink for ATP utilizaiton, 20 represent the of CO2 assimilation, since 1 meter square amount to 27 ml, therefore, the sink capacity should be 20 * 1.5 * 1.5 mmol / 27 l-1 s-1. The 1.5 represents the 1.5 ATP consumption per CO2 fixation.  Unit: mmol l-2 s-1
     theVars->BF_Vel.VsNADPH = MaxCO2Rate / CoeffVol * 1 * BF_con->NADPH / theVars->BF_Pool.k30; // For 6 C6 = 5 C6 + 1C6;
     theVars->BF_Vel.VgPQH2 = BF_con->Q * 800 * RegPHs;                              // Assuming that the rate of generation of PQH2 through QB site only depend on the PQ and PQH2 exchange capacity.
     double NetCharge = Hfs + BF_con->Ks + 2 * BF_con->Mgs - OHs - BF_con->Cls - BFns; // The difference between the positive and negative charge in stroma. It was assumed that the charge is in equilibrium state in the beginning of the model, therefore, the difference in the positive and negative charges reflect the charges forming electrical potential cross the membrane. The unit is mmol l-1.
@@ -167,7 +170,7 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
     const double DeltaG11 = DeltaGo - 2.3 * RT * theVars->HPR * DiffPH + theVars->HPR * MPotential * 9.6 * pow(10, 4);
     const double KE11 = exp(-DeltaG11 / (RT)); // The equilibrium constant of ATP synthesis
 
-    const double Temp = theVars->BF_RC.Vmax11 * (ADP * Pi - BF_con->ATP / KE11) / ((theVars->BF_RC.KM1ADP * theVars->BF_RC.KM1PI) * (1 + ADP / theVars->BF_RC.KM1ADP + Pi / theVars->BF_RC.KM1PI + ADP * Pi / (theVars->BF_RC.KM1ADP * theVars->BF_RC.KM1PI))); // Unit: mmol l- s-1; The stroma volume is used as a basis for the volume
+    const double Temp = theVars->BF_RC.Vmax11 * (ADP * Pi - ATP / KE11) / ((theVars->BF_RC.KM1ADP * theVars->BF_RC.KM1PI) * (1 + ADP / theVars->BF_RC.KM1ADP + Pi / theVars->BF_RC.KM1PI + ADP * Pi / (theVars->BF_RC.KM1ADP * theVars->BF_RC.KM1PI))); // Unit: mmol l- s-1; The stroma volume is used as a basis for the volume
     double Vbf11 = Temp;
 
     if (Vbf11 < 0.)
@@ -208,6 +211,6 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
         theVars->BF2OUT[1] = BF_con->PHs;
         theVars->BF2OUT[2] = BF_con->PHl;
         theVars->BF2OUT[3] = BF_con->NADPH;
-        theVars->BF2OUT[4] = BF_con->ATP;
+        theVars->BF2OUT[4] = ATP;
     }
 }

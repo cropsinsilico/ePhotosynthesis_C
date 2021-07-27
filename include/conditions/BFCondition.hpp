@@ -82,6 +82,7 @@ public:
     double PHl = 0.;     ///< The PH value of the lumen
     double NADPH = 0.;   ///< The NADPH concentration in stroma, Unit: mmol l-1;
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
+    static void setPS_connect(const bool val) {PS_connect = val;}
 private:
     friend ConditionBase;
     friend BF;
@@ -103,14 +104,18 @@ private:
       Get the size of the data vector
       */
     static size_t _size() {
+        size_t c = count;
         if (FI_connect)
-            return count - 1;
-        return count;
+            c--;
+        if (PS_connect)
+            c--;
+        return c;
     }
 
     void _clear() {}
     static const size_t count;
     static bool FI_connect;
+    static bool PS_connect;
 #ifdef INCDEBUG
     const Debug::DebugLevel _dlevel = Debug::Low;
 #endif

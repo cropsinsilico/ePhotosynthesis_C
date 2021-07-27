@@ -44,7 +44,8 @@ std::ostream& BFCondition::_print(std::ostream &out, const uint tab) const {
     out << space << "  cytc2 = " << cytc2 << std::endl;
     out << space << "  P700 = " << P700<< std::endl;
     out << space << "  ADP = " << ADP << std::endl;
-    out << space << "  ATP = " << ATP << std::endl;
+    if (!PS_connect)
+        out << space << "  ATP = " << ATP << std::endl;
     out << space << "  Ks = " << Ks<< std::endl;
     out << space << "  Mgs = " << Mgs << std::endl;
     out << space << "  Cls = " << Cls << std::endl;

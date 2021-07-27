@@ -31,12 +31,16 @@
 const size_t BFCondition::count = 28;
 bool BFCondition::FI_connect = false;
 bool BF::FI_connect = false;
+bool BF::PS_connect = false;
+bool BFCondition::PS_connect = false;
+
 double BF::_Pi = 0.;
 
 BFCondition* BF::_init(Variables *theVars) {
 
     const double PMODTEM = 1;
     BF::setFI_connect(theVars->BF_FI_com);
+    BF::setPS_connect(theVars->FIBF_PSPR_com);
     if (theVars->useC3) {
         theVars->cNADPHsyn = 1.;
         theVars->CPSi = 1.;

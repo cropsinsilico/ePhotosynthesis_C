@@ -63,7 +63,8 @@ BFCondition* BF::_MB_con(const double t, const BFCondition* BF_con, Variables *t
     dydt->cytc2 = theVars->BF_Vel.Vbf10 - theVars->BF_Vel.Vbf9;  // cytc2 oxidized cytc2
     dydt->P700 = theVars->BF_Vel.Vbf10 - theVars->BF_Vel.Vbf15; // P700 The reduced state of P700, including both P700 and excited P700
     dydt->ADP = theVars->BF_Vel.VsATP - theVars->BF_Vel.Vbf11; // ADP ADP in stroma
-    dydt->ATP = theVars->BF_Vel.Vbf11 - theVars->BF_Vel.VsATP; // ATP ATP in stroma
+    if (!PS_connect)
+        dydt->ATP = theVars->BF_Vel.Vbf11 - theVars->BF_Vel.VsATP; // ATP ATP in stroma
 
     dydt->Ks = theVars->BF_Vel.JKc;  // Ks K ions in stroma
     dydt->Mgs = theVars->BF_Vel.JMgc; // Mgs Mg ions in stroma

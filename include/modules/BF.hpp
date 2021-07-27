@@ -39,6 +39,10 @@ public:
         FI_connect = val;
         BFCondition::FI_connect = val;
     }
+    static void setPS_connect(const bool val) {
+        PS_connect = val;
+        BFCondition::setPS_connect(val);
+    }
 private:
     friend ModuleBase;
     /**
@@ -69,4 +73,5 @@ private:
       */
     static void _Rate(const double t, const BFCondition* BF_con, Variables *theVars);
     static bool FI_connect;
+    static bool PS_connect;
 };

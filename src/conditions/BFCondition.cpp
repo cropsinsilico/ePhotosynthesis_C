@@ -34,7 +34,8 @@ BFCondition::BFCondition(const BFCondition* other) {
     QHsemi = other->QHsemi;
     cytbL = other->cytbL;
     Qi = other->Qi;
-    Q = other->Q;
+    if (!FI_connect)
+        Q = other->Q;
     cytbH = other->cytbH;
     Qn = other->Qn;
     Qr = other->Qr;
@@ -42,7 +43,8 @@ BFCondition::BFCondition(const BFCondition* other) {
     cytc2 = other->cytc2;
     P700 = other->P700;
     ADP = other->ADP;
-    ATP = other->ATP;
+    if (!PS_connect)
+        ATP = other->ATP;
     Ks = other->Ks;
     Mgs = other->Mgs;
     Cls = other->Cls;
@@ -79,7 +81,8 @@ void BFCondition::_fromArray(const arr &vec, const size_t offset) {
     cytc2 = vec[offset + count++];
     P700 = vec[offset + count++];
     ADP = vec[offset + count++];
-    ATP = vec[offset + count++];
+    if (!PS_connect)
+        ATP = vec[offset + count++];
     Ks = vec[offset + count++];
     Mgs = vec[offset + count++];
     Cls = vec[offset + count++];
@@ -95,8 +98,14 @@ void BFCondition::_fromArray(const arr &vec, const size_t offset) {
 }
 
 arr BFCondition::_toArray() {
-    if (FI_connect)
-        return {ISPHr, cytc1, ISPo, ISPoQH2, QHsemi, cytbL, Qi, cytbH, Qn, Qr, QH2, cytc2, P700, ADP, ATP, Ks, Mgs, Cls, Aip, U, An, Fdn, BFHs, BFHl, PHs, PHl, NADPH};
-
-    return {ISPHr, cytc1, ISPo, ISPoQH2, QHsemi, cytbL, Qi, Q, cytbH, Qn, Qr, QH2, cytc2, P700, ADP, ATP, Ks, Mgs, Cls, Aip, U, An, Fdn, BFHs, BFHl, PHs, PHl, NADPH};
+    arr output = {ISPHr, cytc1, ISPo, ISPoQH2, QHsemi, cytbL, Qi};
+    arr output2 = {cytbH, Qn, Qr, QH2, cytc2, P700, ADP};
+    arr output3 = {Ks, Mgs, Cls, Aip, U, An, Fdn, BFHs, BFHl, PHs, PHl, NADPH};
+    if (!FI_connect)
+        output.push_back(Q);
+    output.insert(output.end(),output2.begin(), output2.end());
+    if (!PS_connect)
+        output.push_back(ATP);
+    output.insert(output.end(), output3.begin(), output3.end());
+    return output;
 }
