@@ -30,11 +30,6 @@
 #include "conditions/PS_PRCondition.hpp"
 
 class PS_PR : public ModuleBase<PS_PR, PS_PRCondition> {
-public:
-    //static void setC3(const bool val) {
-    //    useC3 = val;
-    //    PS_PRCondition::setC3(val);
-    //}
 private:
     friend ModuleBase;
 /**
@@ -60,5 +55,4 @@ private:
         (void)PS_PRs;
         (void)theVars;
     }
-    //static bool useC3;
 };

@@ -41,6 +41,10 @@ public:
     }
     static double _NADPH;
 
+    static void setC3(const bool val) {
+        useC3 = val;
+        PSCondition::setC3(val);
+    }
 private:
     friend ModuleBase;
     /**
@@ -174,4 +178,5 @@ private:
     static double Vf_T23;
     static double PsV1;
     static arr Param;
+    static bool useC3;
 };

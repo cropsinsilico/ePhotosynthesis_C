@@ -135,10 +135,13 @@ double PS::Vf_T23 = 1;
 double PS::PsV1 = 0.;
 double PS::_NADPH = 0.;
 const size_t PSCondition::count = 12;
+bool PSCondition::useC3 = false;
+bool PS::useC3 = false;
+
 arr PS::Param = {0, 0};
 
 PSCondition* PS::_init(Variables *theVars) {
-
+    setC3(theVars->useC3);
     PSCondition* PS_con = new PSCondition();
     PS_con->RuBP = 2.000;
     PS_con->PGA = 2.400;

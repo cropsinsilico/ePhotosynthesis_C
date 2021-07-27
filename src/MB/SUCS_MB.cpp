@@ -53,8 +53,8 @@ SUCSCondition* SUCS::_MB_con(const double t, const SUCSCondition* SUCS_Con, Vari
     dydt->UDPGc = theVars->SUCS_Vel.v55 - theVars->SUCS_Vel.v56; // UDPGc
     //dydt->UTPc = 0; //  v60 - v55  ;   // UTPc
     dydt->SUCP = theVars->SUCS_Vel.v56 - theVars->SUCS_Vel.v57; // SUCP
-    dydt->SUC = theVars->SUCS_Vel.v57 - theVars->SUCS_Vel.v62; // SUC
-    if (theVars->useC3) {
+    if (useC3) {
+        dydt->SUC = theVars->SUCS_Vel.v57 - theVars->SUCS_Vel.v62; // SUC
         dydt->PGAc = theVars->PS_Vel.v32 - theVars->SUCS_Vel.vpga_use;
     } else {
         dydt->PGAc = theVars->SUCS_Vel.vpga_in - theVars->SUCS_Vel.vpga_use; // pgaC

@@ -61,7 +61,7 @@ void EPSCondition::_fromArray(const arr &vec, const size_t offset) {
 
 void EPSCondition::fromArray(realtype *x, const uint adjust) {
     arr vec = zeros(size());
-    for (size_t i = 0; i < size() - adjust; i++)
+    for (size_t i = 0; i < size(); i++)
         vec[i] = x[i];
     _fromArray(vec);
 }
@@ -69,7 +69,6 @@ void EPSCondition::fromArray(realtype *x, const uint adjust) {
 arr EPSCondition::_toArray() {
     arr fvec = FIBF_con->toArray();
     arr cvec = CM_con->toArray();
-    fvec.reserve(size());
     fvec.insert(fvec.end(), cvec.begin(), cvec.end());
     return fvec;
 }

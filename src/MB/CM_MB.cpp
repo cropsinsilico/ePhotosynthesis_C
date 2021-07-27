@@ -45,7 +45,6 @@ CMCondition* CM::_MB_con(const realtype t, const CMCondition* CM_con, Variables 
         //	T3Pc WY1905
         PSPRdydt->PS_con->ADPG = SUCSdydt->T3Pc;
         SUCSdydt->PGAc = SUCSdydt->PGAc - theVars->SUCS_Vel.vpga_in + theVars->PS_Vel.v32;//	pgaC
-        SUCSdydt->SUC = SUCSdydt->PGAc;
     }
     //DEBUG_DELTA(dxdt)
     CMCondition *dydt = new CMCondition(PSPRdydt, SUCSdydt);
