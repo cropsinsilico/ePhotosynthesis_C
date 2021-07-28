@@ -161,6 +161,7 @@ struct Variables {
     double V3 = 0.;
     double V6 = 0.;
     double V9 = 0.;
+    double PS2BF_Pi = 0.;
 
     double XanCycle2FIBF_Xstate = 0.;
     double activase = 0.;

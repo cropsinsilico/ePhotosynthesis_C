@@ -37,9 +37,16 @@ void SUCS::_Rate(const double t, const SUCSCondition* SUCS_Con, Variables *theVa
     // Get the auxiliary variables //
     ////////////////////////////////////////////////////////////
 
-    const double Pic = (pow(pow(KE61, 2) + 4 * KE61 * theVars->PiTc, 0.5) - KE61) / 2;
-    const double OPOPc = theVars->PiTc - Pic;
+    double Pic, OPOPc;
 
+    if (theVars->useC3) {
+        Pic = (pow(pow(KE61, 2) + 4 * KE61 * theVars->PiTc, 0.5) - KE61) / 2;
+        OPOPc = theVars->PiTc - Pic;
+    } else {
+        const double PiTc = theVars->SUCS_Pool.PTc - 2 * (SUCS_Con->FBPc + SUCS_Con->F26BPc) - (SUCS_Con->PGAc + SUCS_Con->T3Pc + SUCS_Con->HexPc + SUCS_Con->SUCP + SUCS_Con->UTPc + SUCS_Con->ATPc);
+        Pic = (pow(pow(KE61, 2) + 4 * KE61 * PiTc, 0.5) - KE61) / 2;
+        OPOPc = PiTc - Pic;
+    }
     // HexP
     const double TEMP = 1 + KE541 + 1 / KE531;
 

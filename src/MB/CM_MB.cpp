@@ -32,10 +32,16 @@
 arr CM::_MB(const realtype t, const CMCondition* CM_con, Variables *theVars) {
     arr dxdt;
     dxdt.reserve(36);
+    arr PSPR_DYDT;
+    arr SUCS_DYDT;
 
-    arr PSPR_DYDT = PS_PR::MB(t, CM_con->PS_PR_con, theVars);
-
-    arr SUCS_DYDT = SUCS::MB(t, CM_con->SUCS_con, theVars);
+    if (theVars->useC3) {
+        PSPR_DYDT = PS_PR::MB(t, CM_con->PS_PR_con, theVars);
+        SUCS_DYDT = SUCS::MB(t, CM_con->SUCS_con, theVars);
+    } else {
+        SUCS_DYDT = SUCS::MB(t, CM_con->SUCS_con, theVars);
+        PSPR_DYDT = PS_PR::MB(t, CM_con->PS_PR_con, theVars);
+    }
 
     dxdt.insert(dxdt.end(), PSPR_DYDT.begin(), PSPR_DYDT.begin() + 23);
     dxdt.insert(dxdt.end(), SUCS_DYDT.begin(), SUCS_DYDT.begin() + 12);
