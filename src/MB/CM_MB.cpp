@@ -31,9 +31,16 @@
 
 CMCondition* CM::_MB_con(const realtype t, const CMCondition* CM_con, Variables *theVars) {
 
-    PS_PRCondition* PSPRdydt = PS_PR::MB_con(t, CM_con->PS_PR_con, theVars);
+    PS_PRCondition* PSPRdydt;
+    SUCSCondition* SUCSdydt;
 
-    SUCSCondition* SUCSdydt = SUCS::MB_con(t, CM_con->SUCS_con, theVars);
+    if (theVars->useC3) {
+        PSPRdydt = PS_PR::MB_con(t, CM_con->PS_PR_con, theVars);
+        SUCSdydt = SUCS::MB_con(t, CM_con->SUCS_con, theVars);
+    } else {
+        SUCSdydt = SUCS::MB_con(t, CM_con->SUCS_con, theVars);
+        PSPRdydt = PS_PR::MB_con(t, CM_con->PS_PR_con, theVars);
+    }
 
     if (!theVars->useC3) {
         SUCSdydt->PGAc = PSPRdydt->PS_con->ADPG;

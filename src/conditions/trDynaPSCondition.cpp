@@ -26,7 +26,7 @@
 
 #include "conditions/trDynaPSCondition.hpp"
 
-const size_t trDynaPSCondition::count = 120;
+size_t trDynaPSCondition::count = 0;
 
 trDynaPSCondition::trDynaPSCondition(const trDynaPSCondition* other) {
     _clear();
@@ -58,18 +58,14 @@ void trDynaPSCondition::_fromArray(const arr &vec, size_t offset) {
     DynaPS_con->fromArray(vec, offset);
     if (RROEA_con == nullptr)
         RROEA_con = new RROEACondition(this);
-    RROEA_con->fromArray(vec, offset + 110);
+    RROEA_con->fromArray(vec, offset + DynaPS_con->size());
 }
 
 arr trDynaPSCondition::_toArray() {
     arr dyvec = DynaPS_con->toArray();
     arr rrvec = RROEA_con->toArray();
-    arr vec = zeros(120);
-    for (size_t i = 0; i < 96; i++)
-        vec[i] = dyvec[i];
-    for (size_t i = 0; i < 10; i++)
-        vec[i+110] = rrvec[i];
-    return vec;
+    dyvec.insert(dyvec.end(), rrvec.begin(), rrvec.end());
+    return dyvec;
 }
 
 void trDynaPSCondition::_clear() {

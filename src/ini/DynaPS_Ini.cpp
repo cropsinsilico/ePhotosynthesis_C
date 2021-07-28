@@ -28,6 +28,7 @@
 #include "modules/RA.hpp"
 #include "modules/XanCycle.hpp"
 
+size_t DynaPSCondition::count = 0;
 #ifdef INCDEBUG
 Debug::DebugLevel DynaPSCondition::_dlevel = Debug::Middle;
 #endif

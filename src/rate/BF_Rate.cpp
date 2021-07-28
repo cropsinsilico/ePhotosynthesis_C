@@ -62,7 +62,11 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
 
     if (theVars->FIBF_PSPR_com) {
         ADP = theVars->ADP;
-        Pi = theVars->Pi;
+        if (theVars->useC3) {
+            Pi = theVars->Pi;
+        } else {
+            Pi = theVars->PS2BF_Pi;
+        }
     }
 
     const double CoeffVol = theVars->AVR;
