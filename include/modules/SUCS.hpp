@@ -34,11 +34,6 @@ class PS;
  Class for SUCS related functions and common variables
  */
 class SUCS : public ModuleBase<SUCS, SUCSCondition> {
-public:
-    static void setC3(const bool val) {
-        useC3 = val;
-        SUCSCondition::setC3(val);
-    }
 private:
     friend ModuleBase;
     /**
@@ -138,5 +133,4 @@ private:
     static double Vf_T59;
     static double UTPc;
     static double ATPc;
-    static bool useC3;
 };

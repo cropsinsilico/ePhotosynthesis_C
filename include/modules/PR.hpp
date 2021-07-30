@@ -29,6 +29,8 @@
 #include "ModuleBase.hpp"
 #include "conditions/PRCondition.hpp"
 
+class PS_PR;
+
 /**
   Class for grouping PR related functions and common variables
   */
@@ -38,8 +40,13 @@ public:
         PR_PS_com = val;
         PRCondition::setPR_PS(val);
     }
+    static void setRuBP(const bool val) {
+        PR_PS_RuBP = val;
+        PRCondition::setRuBP(val);
+    }
 private:
     friend ModuleBase;
+    friend PS_PR;
     /**
       Initializer
 
@@ -121,4 +128,5 @@ private:
     static double Vf_T112;
     static double PGA;
     static bool PR_PS_com;
+    static bool PR_PS_RuBP;
 };

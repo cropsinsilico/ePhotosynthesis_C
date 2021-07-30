@@ -96,15 +96,12 @@ double SUCS::Vf_T51=0;
 double SUCS::Vf_T56=0;
 double SUCS::UTPc = 0.;
 double SUCS::ATPc = 0.;
-bool SUCS::useC3 = false;
-bool SUCSCondition::useC3 = false;
 const size_t SUCSCondition::count = 8;
 
 SUCSCondition* SUCS::_init(Variables *theVars) {
     theVars->SUCS_OLD_TIME = 0;
     theVars->SUCS_TIME_N = 1;
     SUCSCondition* SUCS_Con = new SUCSCondition();
-    setC3(theVars->useC3);
     SUCS::UTPc = 0.75;
     if (theVars->useC3) {
 

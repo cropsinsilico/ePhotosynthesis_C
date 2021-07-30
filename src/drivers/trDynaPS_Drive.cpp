@@ -95,7 +95,7 @@ void trDynaPSDriver::getResults() {
     double VStarch = (theVars->PS_Vel.v23 - theVars->PS_Vel.v25) * theVars->AVR;
     double Vt3p = (theVars->PS_Vel.v31 + theVars->PS_Vel.v33) * theVars->AVR;
     results = zeros(7);
-
+    std::cout << theVars->AVR << std::endl;
     results[0] = CarbonRate; //Vc
     results[1] = VPR;        //Vo
     results[2] = Vpgasink;   //PGA

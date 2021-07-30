@@ -37,8 +37,6 @@ void SUCS::_Rate(const double t, const SUCSCondition* SUCS_Con, Variables *theVa
     // Get the auxiliary variables //
     ////////////////////////////////////////////////////////////
     double SUC = SUCS_Con->SUC;
-    if (!useC3)
-        SUC = SUCS_Con->PGAc;
     double Pic, OPOPc;
 
     if (theVars->useC3) {
@@ -120,6 +118,7 @@ void SUCS::_Rate(const double t, const SUCSCondition* SUCS_Con, Variables *theVa
         const double temp52 = Km521AP * (1 + SUCS_Con->FBPc / Km521AP + Pic / KI522 + F6Pc / KI521 + Pic * F6Pc / (KI521 * KI522));
         const double temp55 = Km551 * Km552 * (1 + SUCS::UTPc / Km552 + G1Pc / Km551 + SUCS_Con->UDPGc / Km554 + OPOPc / Km553 + SUCS::UTPc * G1Pc / (Km551 * Km552) + SUCS_Con->UDPGc * OPOPc / (Km553 * Km554));
         const double temp56 = (F6Pc + Km561 * (1 + SUCS_Con->FBPc / KI562)) * (SUCS_Con->UDPGc + Km562 * (1 + UDPc / KI561) * (1 + SUCS_Con->SUCP / KI563) * (1 + Pic / KI564) * (1 + SUC / KI565));
+
         const double temp57 = SUCS_Con->SUCP + Km571 * (1 + SUC / Ki572);
         const double temp58 = SUCS_Con->F26BPc + Km581 * (1 + F6Pc / KI581) * (1 + SUCS_Con->FBPc / 0.08);
 
@@ -178,8 +177,7 @@ void SUCS::_Rate(const double t, const SUCSCondition* SUCS_Con, Variables *theVa
         theVars->SUCS2OUT.F26BPc = SUCS_Con->F26BPc;
         theVars->SUCS2OUT.UDPGc = SUCS_Con->UDPGc;
         theVars->SUCS2OUT.SUCP = SUCS_Con->SUCP;
-        if (useC3)
-            theVars->SUCS2OUT.SUC = SUC;
+        theVars->SUCS2OUT.SUC = SUC;
         theVars->SUCS2OUT.PGAc = SUCS_Con->PGAc;
     }
     DEBUG_INTERNAL(theVars->SUCS_Vel)

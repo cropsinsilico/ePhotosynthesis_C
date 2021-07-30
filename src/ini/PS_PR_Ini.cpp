@@ -32,6 +32,7 @@
 PS_PRCondition* PS_PR::_init(Variables *theVars) {
     PSCondition* PS_con = PS::init(theVars);
     PRCondition* PR_con = PR::init(theVars);
+    PR::setRuBP(true);
     //arr PrS = PR_con->toArray();
     //arr PSs = PS_con->toArray();
     PS_PRCondition* PS_PR_con = new PS_PRCondition(PS_con, PR_con);

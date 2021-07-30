@@ -53,12 +53,13 @@ void PRCondition::_fromArray(const arr &vec, size_t offset)  {
     GLYc= vec[offset + 6];
     HPRc= vec[offset + 7];
     GCEAc= vec[offset + 8];
-    if (!PR_PS_com)
+    if (!PR_PS_RuBP)
         RuBP= vec[offset + 9];
 }
 
 arr PRCondition::_toArray()  {
-    if (PR_PS_com)
+    if (PR_PS_RuBP)
         return {GCEA, GCA, PGCA, GCAc, GOAc, SERc, GLYc, HPRc, GCEAc};
+    std::cout << "NOT" << std::endl;
     return {GCEA, GCA, PGCA, GCAc, GOAc, SERc, GLYc, HPRc, GCEAc, RuBP};
 }

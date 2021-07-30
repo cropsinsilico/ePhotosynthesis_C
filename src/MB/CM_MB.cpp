@@ -43,8 +43,6 @@ CMCondition* CM::_MB_con(const realtype t, const CMCondition* CM_con, Variables 
     }
 
     if (!theVars->useC3) {
-        SUCSdydt->PGAc = PSPRdydt->PS_con->ADPG;
-
         // The rate of import into the cytosol
         if (theVars->TestSucPath == 1)
             SUCSdydt->T3Pc = SUCSdydt->T3Pc + theVars->PS_Vel.v31 + theVars->PS_Vel.v33 - (theVars->SUCS_Vel.vdhap_in + theVars->SUCS_Vel.vgap_in);

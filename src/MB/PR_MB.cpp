@@ -45,7 +45,6 @@ PRCondition* PR::_MB_con(const double t, const PRCondition* PR_con, Variables *t
     dydt->GCEAc = theVars->PR_Vel.v123 - theVars->PR_Vel.v1in;
     if (!PR_PS_com)
         dydt->RuBP = 0.3 - theVars->PR_Vel.v111;
-
     //DEBUG_DELTA(PRdydt)
     return dydt;
 }

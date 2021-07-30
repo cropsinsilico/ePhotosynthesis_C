@@ -59,7 +59,7 @@ PSCondition* PS::_MB_con(const double t, const PSCondition* PS_con, Variables *t
     dydt->ATP = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13 - theVars->PS_Vel.v25;
     dydt->HexP = theVars->PS_Vel.v6 - theVars->PS_Vel.v7 - theVars->PS_Vel.v23 + theVars->PS_Vel.v25;
     dydt->PenP = theVars->PS_Vel.v7 + theVars->PS_Vel.v10 * 2 - theVars->PS_Vel.v13;
-
+    std::cout << theVars->PS_Vel << std::endl;
     //DEBUG_DELTA(PSdydt)
     return dydt;
 }

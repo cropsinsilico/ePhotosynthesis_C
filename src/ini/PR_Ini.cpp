@@ -92,6 +92,8 @@ double PR::PGA = 0.;
 const size_t PRCondition::count = 10;
 bool PRCondition::PR_PS_com = false;
 bool PR::PR_PS_com = false;
+bool PRCondition::PR_PS_RuBP = false;
+bool PR::PR_PS_RuBP = false;
 
 PRCondition* PR::_init(Variables *theVars) {
     PR::setPR_PS(theVars->PR_PS_com);
