@@ -51,7 +51,6 @@ PS_PRCondition* PS_PR::_MB_con(const double t, const PS_PRCondition* PS_PR_con, 
 
     PS::setParam(PS_Param);
     PSCondition* PSdydt = PS::MB_con(t, PS_con, theVars);
-    //std::cout << theVars->PS_Vel;
 
     arr PR_Param = zeros(2);
     PR_Param[0] = theVars->PS_PR_Param;      // To indicate that the calcualtion is using the combined model
@@ -64,7 +63,6 @@ PS_PRCondition* PS_PR::_MB_con(const double t, const PS_PRCondition* PS_PR_con, 
     ////////////////////////////////////////////////////////////////////////////////////////////////
     // 5.  Calculation of the mass balance equations ////
     //////////////////////////////////////////////////////////////////////////////////////////////$
-    //std::cout << theVars->PR_Vel;
 
     PSdydt->RuBP = theVars->PS_Vel.v13 - theVars->PS_Vel.v1 - theVars->PR_Vel.v111;
     PSdydt->PGA = 2 * theVars->PS_Vel.v1 - theVars->PS_Vel.v2 - theVars->PS_Vel.v32 + theVars->PR_Vel.v113 + theVars->PR_Vel.v111;

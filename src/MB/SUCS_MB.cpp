@@ -39,7 +39,6 @@ SUCSCondition* SUCS::_MB_con(const double t, const SUCSCondition* SUCS_Con, Vari
     ////////////////////////////////////////////////////////////////
     // Get the mass balance equation//
     ////////////////////////////////////////////////////////////////
-    //std::cout << theVars->SUCS_Vel;
     // The Major Variables
     SUCSCondition *dydt = new SUCSCondition();
     if (theVars->useC3) {

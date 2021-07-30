@@ -35,7 +35,6 @@ EPSCondition* EPS::_MB_con(const double t, const EPSCondition* EPS_Con, Variable
 
     // Try out one new way of calculating the mass balance equation.
     // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.
-    //std::cout << EPS_Con;
     //// Step One: Get the initialization of the concentrations for the PSPR model which will be used in the calculation of mb of CM.
 
     CMCondition* CMdydt = CM::MB_con(t, EPS_Con->CM_con, theVars);

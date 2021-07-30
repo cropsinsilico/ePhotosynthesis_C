@@ -250,13 +250,9 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
         theVars->PS_Vel.v6 = PsV6 * (PS_con->FBP - F6P * theVars->Pi / KE6) / (PS_con->FBP + KM61 * (1 + F6P / KI61 + theVars->Pi / KI62));
 
         theVars->PS_Vel.v7 = V7 * (F6P * GAP * KE57 - PS_con->E4P * Xu5P) / (Km8p5p * Km5p5p * Den);
-        std::cout << V7 << "  " << F6P << "  " << GAP << "  " << KE57 << "  " << PS_con->E4P << "  " << Xu5P << "  " << Km8p5p << "  " << Km5p5p << "  " << Den << std::endl;
         theVars->PS_Vel.v8 = V8 * (DHAP * PS_con->E4P - PS_con->SBP / KE8) / ((PS_con->E4P + KM82) * (DHAP + KM81));
-        std::cout << V8 << "  " << DHAP << "  " << PS_con->E4P << "  " << PS_con->SBP << "  " << KE8 << "  " << PS_con->E4P << "  " << KM82 << "  " << DHAP << "  " << KM81 << std::endl;
         theVars->PS_Vel.v9 = PsV9 * (PS_con->SBP - theVars->Pi * PS_con->S7P / KE9) / (PS_con->SBP + KM9 * (1 + theVars->Pi / KI9));
-        std::cout << PsV9 << "  " << PS_con->SBP << "  " << theVars->Pi << "  " << PS_con->S7P << "  " << KE9 << "  " << PS_con->SBP << "  " << KM9 << "  " << theVars->Pi << "  " << KI9 << std::endl;
         theVars->PS_Vel.v10 = V7 * (PS_con->S7P * GAP * KE810 - Xu5P * Ri5P) / (Km8p5p * Km5p5p * Den);
-        std::cout << V7 << "  " << PS_con->S7P << "  " << GAP << "  " << KE810 << "  " << Xu5P << "  " << Ri5P << "  " << Km8p5p << "  " << Km5p5p << "  " << Den << std::endl;
 
         theVars->PS_Vel.v13 = PsV13 * (PS_con->ATP * Ru5P - theVars->ADP * PS_con->RuBP / KE13) / ((PS_con->ATP * (1 + theVars->ADP / KI134) + KM132 * (1 + theVars->ADP / KI135)) * (Ru5P + KM131 * (1 + PS_con->PGA / KI131 + PS_con->RuBP / KI132 + theVars->Pi / KI133)));
         theVars->PS_Vel.v16 = PsV16 * (theVars->ADP * theVars->Pi - PS_con->ATP / KE16) / (KM161 * KM162 * (1 + theVars->ADP / KM161 + theVars->Pi / KM162 + PS_con->ATP / KM163 + theVars->ADP * theVars->Pi / (KM161 * KM162)));

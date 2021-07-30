@@ -55,8 +55,6 @@ void RuACT::_Rate(const double t, const RuACTCondition* RuACT_Con, Variables *th
     }
     double RatioDT = ADP / ATP;
 
-    std::cout << RatioDT << "  " << ADP << "  " << ATP << std::endl;
-
     const double CA = 1;
     const double CB = theVars->RuACT_RC.Ke3 + theVars->RuACT_RC.Ke2 * theVars->RuACT_RC.Ke3 / C + RuACT_Con->Eaf - MT;
     const double CC = - MT * (theVars->RuACT_RC.Ke3 + theVars->RuACT_RC.Ke2 * theVars->RuACT_RC.Ke3 / C);
@@ -93,14 +91,12 @@ void RuACT::_Rate(const double t, const RuACTCondition* RuACT_Con, Variables *th
         theVars->RuACT_OLD_TIME = t;
     }
 
-    std::cout << RCA << "  " << RuACT_Con->ER << "  " << FATP << "  " << theVars->RuACT_RC.kn1 << "  " << E  << "  " << RuACT_Con->RuBP << "  " << theVars->RuACT_RC.k7 << "  " << RuACT_Con->ECMR << "  " << factor_n7 << "  " << theVars->RuACT_RC.k6 << "  " << C << "  " << theVars->RuACT_RC.kc << "  " << O << "  " << theVars->RuACT_RC.ko << "  " << std::endl;
     theVars->RuACT_Vel.v1 = RCA * RuACT_Con->ER * FATP;
     theVars->RuACT_Vel.vn1 = theVars->RuACT_RC.kn1 * E * RuACT_Con->RuBP;
     theVars->RuACT_Vel.v7 = theVars->RuACT_RC.k7 * ECM * RuACT_Con->RuBP;
     theVars->RuACT_Vel.vn7 = RuACT_Con->ECMR * 0.5 * factor_n7;
     theVars->RuACT_Vel.v6_1 = RuACT_Con->ECMR * theVars->RuACT_RC.k6 * C / (C + theVars->RuACT_RC.kc * (1 + O / theVars->RuACT_RC.ko));
     theVars->RuACT_Vel.v6_2 = RuACT_Con->ECMR * theVars->RuACT_RC.k6 / 3 * O / (O + theVars->RuACT_RC.ko * (1 + C / theVars->RuACT_RC.kc));
-    std::cout << theVars->RuACT_Vel << std::endl;
     DEBUG_INTERNAL(theVars->RuACT_Vel)
     if (theVars->record) {
         theVars->RuACT_VEL.insert(theVars->RuACT_TIME_N - 1, t, theVars->RuACT_Vel);

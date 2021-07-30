@@ -87,8 +87,6 @@ FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* FIBF_Con, Vari
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Calculate the proton generation rate from the model of FI and use that to calculate the lumen PH //            //
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //std::cout << theVars->FI_Vel;
-    //std::cout << theVars->BF_Vel;
     // one molecular water molecules to release four protons.
     const double Hroe = 4 * theVars->FI_Vel.vS3_S0 / theVars->AVR; // 27 is the conversion of unit from micromole per meter squre leaf area to mmol per liter.
     const double Hvqo1 = theVars->BF_Vel.Vbf8 / theVars->AVR;      // The rate of release of protons into lumen through Qo site
