@@ -33,6 +33,11 @@
  Class for RuACT related functions
  */
 class RuACT : public ModuleBase<RuACT, RuACTCondition> {
+public:
+    static void setEPS(const bool val) {
+        EPS_con = val;
+        RuACTCondition::setEPS(val);
+    }
 private:
     friend ModuleBase;
     /**
@@ -61,4 +66,5 @@ private:
       @param theVars The global variables
       */
     static void _Rate(const double t, const RuACTCondition* RuACT_Con, Variables *theVars);
+    static bool EPS_con;
 };

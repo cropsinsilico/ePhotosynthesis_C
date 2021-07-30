@@ -51,7 +51,8 @@ BFCondition::BFCondition(const BFCondition* other) {
     Aip = other->Aip;
     U = other->U;
     An = other->An;
-    Fdn = other->Fdn;
+    if (!RROEA_connect)
+        Fdn = other->Fdn;
     BFHs = other->BFHs;
     BFHl = other->BFHl;
     PHs = other->PHs;
@@ -89,7 +90,8 @@ void BFCondition::_fromArray(const arr &vec, const size_t offset) {
     Aip = vec[offset + count++];
     U = vec[offset + count++];
     An = vec[offset + count++];
-    Fdn = vec[offset + count++];
+    if (!RROEA_connect)
+        Fdn = vec[offset + count++];
     BFHs = vec[offset + count++];
     BFHl = vec[offset + count++];
     PHs = vec[offset + count++];
@@ -100,12 +102,16 @@ void BFCondition::_fromArray(const arr &vec, const size_t offset) {
 arr BFCondition::_toArray() {
     arr output = {ISPHr, cytc1, ISPo, ISPoQH2, QHsemi, cytbL, Qi};
     arr output2 = {cytbH, Qn, Qr, QH2, cytc2, P700, ADP};
-    arr output3 = {Ks, Mgs, Cls, Aip, U, An, Fdn, BFHs, BFHl, PHs, PHl, NADPH};
+    arr output3 = {Ks, Mgs, Cls, Aip, U, An};
+    arr output4 = {BFHs, BFHl, PHs, PHl, NADPH};
     if (!FI_connect)
         output.push_back(Q);
     output.insert(output.end(),output2.begin(), output2.end());
     if (!PS_connect)
         output.push_back(ATP);
     output.insert(output.end(), output3.begin(), output3.end());
+    if (!RROEA_connect)
+        output.push_back(Fdn);
+    output.insert(output.end(), output4.begin(), output4.end());
     return output;
 }

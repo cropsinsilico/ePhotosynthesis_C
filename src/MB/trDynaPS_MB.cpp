@@ -51,7 +51,7 @@ trDynaPSCondition* trDynaPS::_MB_con(const double t, const trDynaPSCondition* tr
     const double Temp = RROEAdydt->Fd - theVars->RROEA_Vel.ve2Fd + theVars->BF_Vel.Vbf16 / theVars->AVR + theVars->RROEA_Vel.veFd2Calvin - theVars->BF_Vel.vbfn2 - theVars->BF_Vel.vcet / theVars->AVR;
 
     RROEAdydt->Fd = Temp * theVars->AVR;
-    DynaPSdydt->RA_con->EPS_con->FIBF_con->BF_con->Fdn = Temp * theVars->AVR;
+    DynaPSdydt->RA_con->EPS_con->FIBF_con->BF_con->Fdn = RROEAdydt->Fd;
 
     GenOut(t, theVars);
     //DEBUG_DELTA(dxdt)

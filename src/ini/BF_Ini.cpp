@@ -33,6 +33,8 @@ bool BFCondition::FI_connect = false;
 bool BF::FI_connect = false;
 bool BF::PS_connect = false;
 bool BFCondition::PS_connect = false;
+bool BF::RROEA_connect = false;
+bool BFCondition::RROEA_connect = false;
 
 double BF::_Pi = 0.;
 
@@ -41,6 +43,7 @@ BFCondition* BF::_init(Variables *theVars) {
     const double PMODTEM = 1;
     BF::setFI_connect(theVars->BF_FI_com);
     BF::setPS_connect(theVars->FIBF_PSPR_com);
+    BF::setRROEA_connect(theVars->RROEA_EPS_com);
     if (theVars->useC3) {
         theVars->cNADPHsyn = 1.;
         theVars->CPSi = 1.;

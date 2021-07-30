@@ -26,7 +26,7 @@
 #include <math.h>
 #include "Variables.hpp"
 #include "modules/BF.hpp"
-#include "modules/EPS.hpp"
+#include "modules/trDynaPS.hpp"
 
 void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
 
@@ -41,7 +41,9 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
     if (BF::PS_connect)
         ATP = BF_con->parent->parent->CM_con->PS_PR_con->PS_con->ATP;
     double Pi = BF::_Pi; // Phosphate in stroma
-
+    double Fdn = BF_con->Fdn;
+    if (BF::RROEA_connect)
+        Fdn = BF_con->parent->parent->parent->parent->parent->RROEA_con->Fd;
     //////////////////////////////////////////////////////////////
     // Get the auxiliary variables //
     //////////////////////////////////////////////////////////////
@@ -53,7 +55,7 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
     const double Kl = theVars->BF_Pool.kA_U - BF_con->Ks;        // The concentration of K in lumen
     const double Mgl = theVars->BF_Pool.kU_A - BF_con->Mgs;      // The concentration of Mg in lumen
     const double Cll = theVars->BF_Pool.kU_d - BF_con->Cls;      // The concentration of Cl in lumen
-    const double Fd = theVars->BF_Pool.kU_f - BF_con->Fdn;       // The conncentration of oxidized Fd in stroma
+    const double Fd = theVars->BF_Pool.kU_f - Fdn;       // The conncentration of oxidized Fd in stroma
     const double A = theVars->BF_Pool.k1 - BF_con->An;           // The concentration of oxidized electron acceptor in PSI
     const double QST = theVars->BF_Pool.kA_d;                    // Assuming that the total number of cytochrome is equal to the total number of quinone binding site;
     const double QSe = QST - BF_con->Qi - BF_con->Qn - BF_con->Qr;
@@ -184,9 +186,9 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
     // The EPS_ATP_Rate is used in the overall model for the calculation of the mass balance equation of ATP.
     theVars->EPS_ATP_Rate = Vbf11;
 
-    theVars->BF_Vel.vbfn2 = 2 * theVars->BF_RC.V2M * (BF_con->Fdn * NADP / theVars->BF_Pool.kU_f - Fd * BF_con->NADPH / (theVars->BF_Pool.kU_f * theVars->BF_RC.KE2)) / (theVars->BF_RC.KM2NADP * (1 + NADP / theVars->BF_RC.KM2NADP + BF_con->NADPH / theVars->BF_RC.KM2NADPH)); // mmol/l/s  //QF add 2*
+    theVars->BF_Vel.vbfn2 = 2 * theVars->BF_RC.V2M * (Fdn * NADP / theVars->BF_Pool.kU_f - Fd * BF_con->NADPH / (theVars->BF_Pool.kU_f * theVars->BF_RC.KE2)) / (theVars->BF_RC.KM2NADP * (1 + NADP / theVars->BF_RC.KM2NADP + BF_con->NADPH / theVars->BF_RC.KM2NADPH)); // mmol/l/s  //QF add 2*
 
-    theVars->BF_Vel.vcet = theVars->BF_RC.V2M * BF_con->Qi * BF_con->Fdn / theVars->BF_Pool.kU_f * CoeffVol;
+    theVars->BF_Vel.vcet = theVars->BF_RC.V2M * BF_con->Qi * Fdn / theVars->BF_Pool.kU_f * CoeffVol;
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -211,7 +213,7 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
     DEBUG_INTERNAL(theVars->BF_Vel)
     if (theVars->record) {
         theVars->BF_VEL.insert(theVars->BF_TIME_N - 1, t, theVars->BF_Vel);
-        theVars->BF2OUT[0] = BF_con->Fdn;
+        theVars->BF2OUT[0] = Fdn;
         theVars->BF2OUT[1] = BF_con->PHs;
         theVars->BF2OUT[2] = BF_con->PHl;
         theVars->BF2OUT[3] = BF_con->NADPH;

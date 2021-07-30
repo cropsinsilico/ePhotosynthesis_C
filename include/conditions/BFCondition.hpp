@@ -83,6 +83,8 @@ public:
     double NADPH = 0.;   ///< The NADPH concentration in stroma, Unit: mmol l-1;
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
     static void setPS_connect(const bool val) {PS_connect = val;}
+    static void setRROEA_connect(const bool val) {RROEA_connect = val;}
+    static void setFI_connect(const bool val) {FI_connect = val;}
 private:
     friend ConditionBase;
     friend BF;
@@ -109,6 +111,8 @@ private:
             c--;
         if (PS_connect)
             c--;
+        if (RROEA_connect)
+            c--;
         return c;
     }
 
@@ -116,6 +120,7 @@ private:
     static const size_t count;
     static bool FI_connect;
     static bool PS_connect;
+    static bool RROEA_connect;
 #ifdef INCDEBUG
     const Debug::DebugLevel _dlevel = Debug::Low;
 #endif

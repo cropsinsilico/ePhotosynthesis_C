@@ -37,11 +37,15 @@ public:
     static double _Pi;
     static void setFI_connect(const bool val) {
         FI_connect = val;
-        BFCondition::FI_connect = val;
+        BFCondition::setFI_connect(val);
     }
     static void setPS_connect(const bool val) {
         PS_connect = val;
         BFCondition::setPS_connect(val);
+    }
+    static void setRROEA_connect(const bool val) {
+        RROEA_connect = val;
+        BFCondition::setRROEA_connect(val);
     }
 private:
     friend ModuleBase;
@@ -74,4 +78,5 @@ private:
     static void _Rate(const double t, const BFCondition* BF_con, Variables *theVars);
     static bool FI_connect;
     static bool PS_connect;
+    static bool RROEA_connect;
 };

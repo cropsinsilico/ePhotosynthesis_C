@@ -30,7 +30,8 @@ RuACTCondition::RuACTCondition(const RuACTCondition* other) {
     ER = other->ER;
     Eaf = other->Eaf;
     ECMR = other->ECMR;
-    RuBP = other->RuBP;
+    if (!EPS_con)
+        RuBP = other->RuBP;
 }
 
 RuACTCondition::RuACTCondition(const arr vec, size_t offset) {
@@ -41,10 +42,12 @@ void RuACTCondition::_fromArray(const arr &vec, size_t offset ){
     ER = vec[offset];
     Eaf = vec[offset + 1];
     ECMR = vec[offset + 2];
-    RuBP = vec[offset + 3];
+    if (!EPS_con)
+        RuBP = vec[offset + 3];
 }
 
 arr RuACTCondition::_toArray() {
-    arr array = {ER, Eaf, ECMR, RuBP};
-    return array;
+    if (EPS_con)
+        return {ER, Eaf, ECMR};
+    return {ER, Eaf, ECMR, RuBP};
 }

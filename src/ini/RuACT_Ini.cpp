@@ -28,9 +28,12 @@
 #include "Variables.hpp"
 #include "modules/RuACT.hpp"
 
-const size_t RuACTCondition::count = 4;
+bool RuACT::EPS_con = false;
+bool RuACTCondition::EPS_con = false;
+size_t RuACTCondition::count = 4;
 
 RuACTCondition* RuACT::_init(Variables *theVars) {
+    RuACT::setEPS(theVars->RuACT_EPS_com);
     theVars->activase = 80 * theVars->RacRatio[10];
 
     // The rate constant used in the model

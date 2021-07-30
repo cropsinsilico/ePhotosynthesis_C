@@ -47,7 +47,8 @@ RuACTCondition* RuACT::_MB_con(const double t, const RuACTCondition* RuACT_Con, 
     dydt->ER = vn1 - v1;                          // ER
     dydt->Eaf = v1 - v7 + vn7 + v6_1 + v6_2 - vn1; // EAF
     dydt->ECMR = v7 - vn7 - v6_1 - v6_2;            // ECMR
-    dydt->RuBP = v6_1 + v6_2 + v1 - vn1 + vn7 - v7; // RuBP
+    if (!theVars->RuACT_EPS_com)
+        dydt->RuBP = v6_1 + v6_2 + v1 - vn1 + vn7 - v7; // RuBP
     //DEBUG_DELTA(RuACT_mb)
     return dydt;
 }

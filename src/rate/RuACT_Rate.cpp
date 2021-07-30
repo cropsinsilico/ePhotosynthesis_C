@@ -35,17 +35,16 @@ void RuACT::_Rate(const double t, const RuACTCondition* RuACT_Con, Variables *th
     double C = theVars->RuACT_Pool.C;
     double O = theVars->RuACT_Pool.O;
     double MT = theVars->RuACT_Pool.M;
-
-    if (theVars->RROEA_EPS_com) {
-        theVars->activase = RuACT_Con->parent->parent->parent->RROEA_con->RuACT * 14364;
-    }
-
+    double RuBP;
     double ADP;
     double ATP;
     if (!theVars->RuACT_EPS_com) {
         ATP = 1.45;
         ADP = 1.5 - ATP;
+        RuBP = RuACT_Con->RuBP;
     } else {
+        theVars->activase = RuACT_Con->parent->parent->parent->RROEA_con->RuACT * 14364;
+        RuBP = RuACT_Con->parent->EPS_con->CM_con->PS_PR_con->PS_con->RuBP;
         C = theVars->CO2_cond;
         O = theVars->O2_cond;
 
@@ -92,8 +91,8 @@ void RuACT::_Rate(const double t, const RuACTCondition* RuACT_Con, Variables *th
     }
 
     theVars->RuACT_Vel.v1 = RCA * RuACT_Con->ER * FATP;
-    theVars->RuACT_Vel.vn1 = theVars->RuACT_RC.kn1 * E * RuACT_Con->RuBP;
-    theVars->RuACT_Vel.v7 = theVars->RuACT_RC.k7 * ECM * RuACT_Con->RuBP;
+    theVars->RuACT_Vel.vn1 = theVars->RuACT_RC.kn1 * E * RuBP;
+    theVars->RuACT_Vel.v7 = theVars->RuACT_RC.k7 * ECM * RuBP;
     theVars->RuACT_Vel.vn7 = RuACT_Con->ECMR * 0.5 * factor_n7;
     theVars->RuACT_Vel.v6_1 = RuACT_Con->ECMR * theVars->RuACT_RC.k6 * C / (C + theVars->RuACT_RC.kc * (1 + O / theVars->RuACT_RC.ko));
     theVars->RuACT_Vel.v6_2 = RuACT_Con->ECMR * theVars->RuACT_RC.k6 / 3 * O / (O + theVars->RuACT_RC.ko * (1 + C / theVars->RuACT_RC.kc));

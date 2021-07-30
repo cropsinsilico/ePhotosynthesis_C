@@ -33,16 +33,13 @@ RACondition* RA::_MB_con(const double t, const RACondition* RA_Con, Variables *t
     EPSCondition* EPSdydt = EPS::MB_con(t, RA_Con->EPS_con, theVars);
     RuACTCondition* RuACTdydt = RuACT::MB_con(t, RA_Con->RuACT_con, theVars);
 
-    const double DYDT_RuBP = theVars->RuACT_Vel.v1 + theVars->PS_Vel.v13 - theVars->RuACT_Vel.vn1 + theVars->RuACT_Vel.vn7 - theVars->RuACT_Vel.v7;
-    EPSdydt->CM_con->PS_PR_con->PS_con->RuBP = DYDT_RuBP;
-    RuACTdydt->RuBP = DYDT_RuBP;
+    EPSdydt->CM_con->PS_PR_con->PS_con->RuBP = theVars->RuACT_Vel.v1 + theVars->PS_Vel.v13 - theVars->RuACT_Vel.vn1 + theVars->RuACT_Vel.vn7 - theVars->RuACT_Vel.v7;
+    //RuACTdydt->RuBP = DYDT_RuBP;
 
-    const double DYDT_PGA = EPSdydt->CM_con->PS_PR_con->PS_con->PGA - 2 * theVars->PS_Vel.v1 + 2 * theVars->RuACT_Vel.v6_1 - theVars->PR_Vel.v111 + theVars->RuACT_Vel.v6_2;// Originally it is pspr(2), now use EPS_DYDT[53].
-    EPSdydt->CM_con->PS_PR_con->PS_con->PGA = DYDT_PGA;
+    EPSdydt->CM_con->PS_PR_con->PS_con->PGA = EPSdydt->CM_con->PS_PR_con->PS_con->PGA - 2 * theVars->PS_Vel.v1 + 2 * theVars->RuACT_Vel.v6_1 - theVars->PR_Vel.v111 + theVars->RuACT_Vel.v6_2;// Originally it is pspr(2), now use EPS_DYDT[53].
 
+    EPSdydt->CM_con->PS_PR_con->PR_con->PGCA = EPSdydt->CM_con->PS_PR_con->PR_con->PGCA - theVars->PR_Vel.v111 + theVars->RuACT_Vel.v6_2;
 
-    const double DYDT_PGCA = EPSdydt->CM_con->PS_PR_con->PR_con->PGCA - theVars->PR_Vel.v111 + theVars->RuACT_Vel.v6_2;
-    EPSdydt->CM_con->PS_PR_con->PR_con->PGCA = DYDT_PGCA;
     //DEBUG_DELTA(RA_DYDT)
     RACondition* dydt = new RACondition(EPSdydt, RuACTdydt);
     return dydt;

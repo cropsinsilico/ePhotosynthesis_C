@@ -73,8 +73,8 @@ BFCondition* BF::_MB_con(const double t, const BFCondition* BF_con, Variables *t
     dydt->Aip = theVars->BF_Vel.Vicp + theVars->BF_Vel.Vinp - theVars->BF_Vel.Vipc - theVars->BF_Vel.Vdp - theVars->BF_Vel.Vfp; // Aip The number of photons in peripheral antenna
     dydt->U = theVars->BF_Vel.Vipc + theVars->BF_Vel.Vinc - theVars->BF_Vel.Vicp - theVars->BF_Vel.Vdc - theVars->BF_Vel.Vfc; // Ui The number of photons in core antenna
     dydt->An = theVars->BF_Vel.Vbf15 - theVars->BF_Vel.Vbf16; // An: the reduced electron acceptor in PSI
-
-    dydt->Fdn = theVars->BF_Vel.Vbf16 / 2 - theVars->BF_Vel.vbfn2 / 2 * theVars->AVR - theVars->BF_Vel.vcet / 2;
+    if (!RROEA_connect)
+        dydt->Fdn = theVars->BF_Vel.Vbf16 / 2 - theVars->BF_Vel.vbfn2 / 2 * theVars->AVR - theVars->BF_Vel.vcet / 2;
 
     const double vqb = theVars->BF_Vel.VgPQH2 * 2; // The rate of quinone protonation
     const double roe = theVars->BF_Vel.VgPQH2 * 2; // The rate of proton generation from oxygen evolution complex
