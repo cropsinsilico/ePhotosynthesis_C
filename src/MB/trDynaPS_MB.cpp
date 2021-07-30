@@ -30,11 +30,11 @@
 #include "modules/trDynaPS.hpp"
 #include "modules/RROEA.hpp"
 #include "modules/DynaPS.hpp"
-
+#include "modules/RedoxReg.hpp"
 // This model includes the mass balance equations for the full model of photosynthesis.
 
 trDynaPSCondition* trDynaPS::_MB_con(const double t, const trDynaPSCondition* trDynaPS_con, Variables *theVars) {
-    theVars->trDynaPS2RedReg_cal = 0;
+    RedoxReg::settrDynaPS2RedReg_cal(false);
 
     Condition(t, theVars);
     const double light = 1.0;

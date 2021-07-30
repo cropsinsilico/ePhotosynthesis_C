@@ -33,6 +33,8 @@
  Class for RedoxReg related calculations and common variables
  */
 class RedoxReg : public ModuleBase<RedoxReg, RedoxRegCondition> {
+public:
+    static void settrDynaPS2RedReg_cal(const bool val) {trDynaPS2RedReg_cal = val;}
 private:
     friend ModuleBase;
     /**
@@ -63,9 +65,15 @@ private:
     static arr _MB(const double t, const RedoxRegCondition* RedoxReg_Con, Variables *theVars);
 
     static int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data);
-private:
+
     static double RedoxReg_VMAX13;
     static double RedoxReg_VMAX16;
     static double RedoxReg_VMAX6;
     static double RedoxReg_VMAX9;
+    static bool trDynaPS2RedReg_cal;
+    static double TIME;
+    static size_t N;
+    static const double Fd_Thio_ET;
+    static const double ThioT;
+    static const double Thio_Oxidation;
 };

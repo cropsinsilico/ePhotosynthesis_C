@@ -29,10 +29,16 @@
 // This routine initialze the parameters used for all the routines.
 
 void SYSInitial(Variables *theVars) {
+    const double input_LHCI = 6.;
+    const double input_LHCII = 13.;
+    const double input_PSI = 1;
+    const double input_PSIIcore = 1;
+    const double PSIIantennaSize = 37;
+    const double PSIantennaSize = 95;
 
-    theVars->PS12ratio = theVars->input_PSI / theVars->input_PSIIcore;
+    theVars->PS12ratio = input_PSI / input_PSIIcore;
 
-    theVars->ChlT2 = theVars->input_PSIIcore * (theVars->PSIIantennaSize + 13 * theVars->input_LHCII); // U and A, PSII and LHCII
-    theVars->ChlT = theVars->PSIIantennaSize * theVars->input_PSIIcore;  // U , PSII
-    theVars->ChlPSI = theVars->input_PSI * (theVars->PSIantennaSize + 13 * theVars->input_LHCI);       // U and A of PSI, total Chl in PSI
+    theVars->ChlT2 = input_PSIIcore * (PSIIantennaSize + 13 * input_LHCII); // U and A, PSII and LHCII
+    theVars->ChlT = PSIIantennaSize * input_PSIIcore;  // U , PSII
+    theVars->ChlPSI = input_PSI * (PSIantennaSize + 13 * input_LHCI);       // U and A of PSI, total Chl in PSI
 }

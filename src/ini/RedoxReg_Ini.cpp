@@ -32,10 +32,17 @@ double RedoxReg::RedoxReg_VMAX13 = 0.;
 double RedoxReg::RedoxReg_VMAX16 = 0.;
 double RedoxReg::RedoxReg_VMAX6 = 0.;
 double RedoxReg::RedoxReg_VMAX9 = 0.;
-
+double RedoxRegCondition::V13 = 0.;
+double RedoxRegCondition::V16 = 0.;
+double RedoxRegCondition::V6 = 0.;
+double RedoxRegCondition::V9 = 0.;
+double RedoxReg::TIME = 0.;
+size_t RedoxReg::N = 1;
+bool RedoxReg::trDynaPS2RedReg_cal = false;
+const double RedoxReg::Fd_Thio_ET = 500.;
+const double RedoxReg::ThioT = 0.5;
+const double RedoxReg::Thio_Oxidation = 0.1;
 RedoxRegCondition* RedoxReg::_init(Variables *theVars) {
-    theVars->RedoxReg_OLD_TIME = 0;
-    theVars->RedoxReg_TIME_N = 1;
     RACondition* RA_con = RA::init(theVars);
 
     const double Thion = 0.25;     // This is a wild guess

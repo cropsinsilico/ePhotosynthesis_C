@@ -196,23 +196,19 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
     ////////////////////////////////////////////////////////////////////////////////
 
 
-    ////////////////////////////////////////////////////////////////////////////////
-    //   Part V Output of Velocity for plot //
-    ////////////////////////////////////////////////////////////////////////////////
-
-    if (theVars->BF_TIME_N == 0)
-        theVars->BF_TIME_N = 1;
-
-    if (t > theVars->BF_OLD_TIME) {
-        theVars->BF_TIME_N = theVars->BF_TIME_N + 1;
-        theVars->BF_OLD_TIME = t;
-    }
 
     theVars->BF_Vel.Vbf11  = Vbf11;
 
     DEBUG_INTERNAL(theVars->BF_Vel)
     if (theVars->record) {
-        theVars->BF_VEL.insert(theVars->BF_TIME_N - 1, t, theVars->BF_Vel);
+        ////////////////////////////////////////////////////////////////////////////////
+        //   Part V Output of Velocity for plot //
+        ////////////////////////////////////////////////////////////////////////////////
+        if (t > BF::TIME) {
+            BF::N++;
+            BF::TIME = t;
+        }
+        theVars->BF_VEL.insert(BF::N - 1, t, theVars->BF_Vel);
         theVars->BF2OUT[0] = Fdn;
         theVars->BF2OUT[1] = BF_con->PHs;
         theVars->BF2OUT[2] = BF_con->PHl;

@@ -67,5 +67,7 @@ private:
     static double XanCycle_kaz;
     static double XanCycle_kva;
     static double XanCycle_kza;
+    static double TIME;
+    static size_t N;
 };
 

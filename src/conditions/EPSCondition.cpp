@@ -34,8 +34,8 @@ EPSCondition::EPSCondition(const EPSCondition* other) {
     FIBF_con->setParent(this);
 }
 
-EPSCondition::EPSCondition(realtype *x, const uint adjust) {
-    fromArray(x, adjust);
+EPSCondition::EPSCondition(realtype *x) {
+    fromArray(x);
 }
 
 EPSCondition::EPSCondition(FIBFCondition* fother, CMCondition* cother) {
@@ -57,13 +57,6 @@ void EPSCondition::_fromArray(const arr &vec, const size_t offset) {
         CM_con = new CMCondition(this);
     FIBF_con->fromArray(vec, offset);
     CM_con->fromArray(vec, offset + FIBF_con->size());
-}
-
-void EPSCondition::fromArray(realtype *x, const uint adjust) {
-    arr vec = zeros(size());
-    for (size_t i = 0; i < size(); i++)
-        vec[i] = x[i];
-    _fromArray(vec);
 }
 
 arr EPSCondition::_toArray() {

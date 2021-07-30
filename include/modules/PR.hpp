@@ -129,4 +129,6 @@ private:
     static double PGA;
     static bool PR_PS_com;
     static bool PR_PS_RuBP;
+    static double TIME;
+    static size_t N;
 };

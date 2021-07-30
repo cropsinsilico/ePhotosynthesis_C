@@ -30,6 +30,9 @@
 
 bool RuACT::EPS_con = false;
 bool RuACTCondition::EPS_con = false;
+double RuACT::TIME = 0.;
+size_t RuACT::N = 1;
+
 size_t RuACTCondition::count = 4;
 
 RuACTCondition* RuACT::_init(Variables *theVars) {

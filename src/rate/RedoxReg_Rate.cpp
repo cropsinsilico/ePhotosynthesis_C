@@ -37,16 +37,16 @@
 #define ZERO   RCONST(0.0)
 
 void RedoxReg::_Rate(const double t, const RedoxRegCondition* RedoxReg_Con, Variables *theVars) {
-    const double Thio = theVars->ThioT - RedoxReg_Con->Thion;
+    const double Thio = ThioT - RedoxReg_Con->Thion;
 
-    theVars->RedoxReg_MP[0][2] = RedoxReg_Con->Thion / theVars->ThioT;
+    theVars->RedoxReg_MP[0][2] = RedoxReg_Con->Thion / ThioT;
 
     double TEMP = theVars->RedoxReg_MP[0][2];
 
     if (theVars->RROEA_EPS_com)
         TEMP = 0.5;
 
-    if (theVars->trDynaPS2RedReg_cal == 1) {
+    if (trDynaPS2RedReg_cal) {
         UserData *data = alloc_user_data();
         data->coeffs.resize(2);
 
@@ -83,13 +83,13 @@ void RedoxReg::_Rate(const double t, const RedoxRegCondition* RedoxReg_Con, Vari
 
 
             if (static_cast<int>(theVars->RedoxReg_MP[index][0]) == 6) {
-                theVars->Redox2PS_V6 = RedoxReg_VMAX6 * theVars->RedoxReg_MP[index][2];
+                RedoxRegCondition::v6(RedoxReg_VMAX6 * theVars->RedoxReg_MP[index][2]);
             } else if (static_cast<int>(theVars->RedoxReg_MP[index][0]) == 9) {
-                theVars->Redox2PS_V9 = RedoxReg_VMAX9 * theVars->RedoxReg_MP[index][2];
+                RedoxRegCondition::v9(RedoxReg_VMAX9 * theVars->RedoxReg_MP[index][2]);
             } else if (static_cast<int>(theVars->RedoxReg_MP[index][0]) == 13) {
-                theVars->Redox2PS_V13 = RedoxReg_VMAX13 * theVars->RedoxReg_MP[index][2];
+                RedoxRegCondition::v13(RedoxReg_VMAX13 * theVars->RedoxReg_MP[index][2]);
             } else if (static_cast<int>(theVars->RedoxReg_MP[index][0]) == 16) {
-                theVars->Redox2PS_V16 = RedoxReg_VMAX16 * theVars->RedoxReg_MP[index][2];
+                RedoxRegCondition::v16(RedoxReg_VMAX16 * theVars->RedoxReg_MP[index][2]);
             }
         }
         N_VDestroy(y);
@@ -99,17 +99,16 @@ void RedoxReg::_Rate(const double t, const RedoxRegCondition* RedoxReg_Con, Vari
         SUNLinSolFree(LS);
     }
 
-    theVars->RedoxReg_Vel.Vred = RedoxReg_Con->RA_con->EPS_con->FIBF_con->BF_con->Fdn * theVars->Fd_Thio_ET * Thio / theVars->ThioT;
-    theVars->RedoxReg_Vel.Vox = RedoxReg_Con->Thion * theVars->Thio_Oxidation;
+    theVars->RedoxReg_Vel.Vred = RedoxReg_Con->RA_con->EPS_con->FIBF_con->BF_con->Fdn * Fd_Thio_ET * Thio / ThioT;
+    theVars->RedoxReg_Vel.Vox = RedoxReg_Con->Thion * Thio_Oxidation;
 
-    if (theVars->RedoxReg_TIME_N == 0)
-        theVars->RedoxReg_TIME_N = 1;
-
-    if (t > theVars->RedoxReg_TIME_N) {
-        theVars->RedoxReg_TIME_N = theVars->RedoxReg_TIME_N + 1;
-        theVars->RedoxReg_OLD_TIME = t;
-    }
     DEBUG_INTERNAL(theVars->RedoxReg_Vel)
-    if (theVars->record)
-        theVars->RedoxReg_VEL.insert(theVars->RedoxReg_TIME_N - 1, t, theVars->RedoxReg_Vel);
+    if (theVars->record) {
+        if (t > RedoxReg::TIME) {
+            RedoxReg::N++;
+            RedoxReg::TIME = t;
+        }
+
+        theVars->RedoxReg_VEL.insert(RedoxReg::N - 1, t, theVars->RedoxReg_Vel);
+    }
 }

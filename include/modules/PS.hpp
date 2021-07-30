@@ -45,6 +45,7 @@ public:
         useC3 = val;
         PSCondition::setC3(val);
     }
+    static size_t getN() {return N;}
 private:
     friend ModuleBase;
     /**
@@ -179,4 +180,6 @@ private:
     static double PsV1;
     static arr Param;
     static bool useC3;
+    static double TIME;
+    static size_t N;
 };

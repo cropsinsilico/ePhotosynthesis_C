@@ -35,6 +35,8 @@ bool BF::PS_connect = false;
 bool BFCondition::PS_connect = false;
 bool BF::RROEA_connect = false;
 bool BFCondition::RROEA_connect = false;
+double BF::TIME = 0.;
+size_t BF::N = 1;
 
 double BF::_Pi = 0.;
 

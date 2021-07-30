@@ -30,6 +30,7 @@
 //#include "conditions/PS_PRCondition.hpp"
 //#include "conditions/CMCondition.hpp"
 #include "conditions/EPSCondition.hpp"
+#include "conditions/RedoxRegCondition.hpp"
 
 #define RegFactor 1.
 
@@ -120,11 +121,14 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
         double PsV13= PsV13_0 * pow(Q10_13, (theVars->Tp - 25) / 10);
         const double PsV23 = PsV23_0 * pow(Q10_23, (theVars->Tp - 25) / 10);
 
+        // First here is one way of the redox regulation, assuming the regulation is instataneous.
+        // in case that there are more work using the equilibrium of Thio with enzyme
+        // as a way to regulate enzyme activities.
         if (theVars->RedoxReg_RA_com) {
-            PsV6 =  theVars->Redox2PS_V6;
-            PsV9 =  theVars->Redox2PS_V9;
-            PsV13 =  theVars->Redox2PS_V13;
-            PsV16 =  theVars->Redox2PS_V16;
+            PsV6 = RedoxRegCondition::v6();
+            PsV9 = RedoxRegCondition::v9();
+            PsV13 = RedoxRegCondition::v13();
+            PsV16 = RedoxRegCondition::v16();
         }
 
         const double CO2 = theVars->CO2_cond;
@@ -222,10 +226,10 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
         // in case that there are more work using the equilibrium of Thio with enzyme
         // as a way to regulate enzyme activities.
         if (theVars->RedoxReg_RA_com) {
-            PsV6 = theVars->Redox2PS_V6;
-            PsV9 = theVars->Redox2PS_V9;
-            PsV13 = theVars->Redox2PS_V13;
-            PsV16 = theVars->Redox2PS_V16;
+            PsV6 = RedoxRegCondition::v6();
+            PsV9 = RedoxRegCondition::v9();
+            PsV13 = RedoxRegCondition::v13();
+            PsV16 = RedoxRegCondition::v16();
         }
 
         if (theVars->RUBISCOMETHOD == 2) {
@@ -267,13 +271,13 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
     DEBUG_INTERNAL(theVars->PS_Vel)
     // Getting the information for output as figures.
 
-    if (t > theVars->PS_OLD_TIME) {
-            theVars->PS_TIME_N = theVars->PS_TIME_N + 1;
-            theVars->PS_OLD_TIME = t;
-    }
 
     if (theVars->record) {
-        theVars->PS_VEL.insert(theVars->PS_TIME_N - 1, t, theVars->PS_Vel);
+        if (t > PS::TIME) {
+            PS::N++;
+            PS::TIME = t;
+        }
+        theVars->PS_VEL.insert(PS::N - 1, t, theVars->PS_Vel);
 
         // Transfer the variables for output
 

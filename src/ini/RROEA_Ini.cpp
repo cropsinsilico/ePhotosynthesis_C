@@ -27,11 +27,11 @@
 #include "Variables.hpp"
 #include "modules/RROEA.hpp"
 
+double RROEA::TIME = 0.;
+size_t RROEA::N = 1;
 const size_t RROEACondition::count = 10;
 
 RROEACondition* RROEA::_init(Variables *theVars) {
-    theVars->RROEA_OLD_TIME = 0;
-    theVars->RROEA_TIME_N = 1;
 
     double Coeff = 1;
 

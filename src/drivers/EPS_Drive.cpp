@@ -36,7 +36,6 @@ void EPSDriver::setup() {
     theVars->TestLi /= 30.;
     //Li = theVars->TestLi;
     AtpCost = theVars->TestATPCost;
-    SucPath = theVars->TestSucPath;
     IniModelCom(theVars);        // Initialize the structure of the model, i.e. Is this model separate or combined with others.
 
     SYSInitial(theVars);
@@ -95,10 +94,7 @@ void EPSDriver::setup() {
 }
 
 void EPSDriver::getResults() {
-    uint adjust = 0;
-    if (theVars->useC3)
-        adjust = 1;
-    EPSCondition* eps_int_con = new EPSCondition(intermediateRes, adjust);
+    EPSCondition* eps_int_con = new EPSCondition(intermediateRes);
     arr temp = EPS::MB(time, eps_int_con, theVars);
     results = zeros(1);
     const double Arate = (theVars->PS_Vel.v1 - theVars->PR_Vel.v131) * theVars->AVR;
@@ -110,14 +106,10 @@ EPSCondition* EPSDriver::EPS_Init() {
 }
 
 arr EPSDriver::MB(realtype t, N_Vector u) {
-    //// Step One: Get the initialization of the concentrations for the RedoxReg model which will be used in the calculation of mb of RedoxReg.
+    // Step One: Get the initialization of the concentrations for the RedoxReg model which will be used in the calculation of mb of RedoxReg.
     realtype *x = N_VGetArrayPointer(u);
 
-    uint adjust = 0;
-    if (theVars->useC3) {
-        adjust = 1;
-    }
-    EPSCondition* EPS_con = new EPSCondition(x, adjust);
+    EPSCondition* EPS_con = new EPSCondition(x);
 
     arr dxdt = EPS::MB(t, EPS_con, theVars);
     delete EPS_con;

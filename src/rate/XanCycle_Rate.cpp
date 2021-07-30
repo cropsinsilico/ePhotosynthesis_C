@@ -60,10 +60,6 @@ void XanCycle::_Rate(const double t, const XanCycleCondition* XanCycle_Con, Vari
     const double Vav = XanCycle_Con->Ax * XanCycle_kav;
 
 
-    if (t > theVars->XanCycle_OLD_TIME) {
-            theVars->XanCycle_TIME_N = theVars->XanCycle_TIME_N + 1;
-            theVars->XanCycle_OLD_TIME = t;
-        }
     theVars->XanCycle_Vel.Vva = Vva; // The velocity of v to a conversion
     theVars->XanCycle_Vel.Vaz = Vaz; // The rate of A to z
     theVars->XanCycle_Vel.Vza = Vza; // THe rate of z to a
@@ -74,7 +70,12 @@ void XanCycle::_Rate(const double t, const XanCycleCondition* XanCycle_Con, Vari
 
     DEBUG_INTERNAL(theVars->XanCycle_Vel)
     if (theVars->record) {
-        theVars->XanCycle_VEL.insert(theVars->XanCycle_TIME_N, t, theVars->XanCycle_Vel);
+        if (t > XanCycle::TIME) {
+            XanCycle::N++;
+            XanCycle::TIME = t;
+        }
+
+        theVars->XanCycle_VEL.insert(XanCycle::N, t, theVars->XanCycle_Vel);
 
         theVars->XanCycle2OUT.Vx = XanCycle_Con->Vx;
         theVars->XanCycle2OUT.Ax = XanCycle_Con->Ax;

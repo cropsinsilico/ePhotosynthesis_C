@@ -29,6 +29,8 @@
 #include "conditions/CMCondition.hpp"
 
 class CM : public ModuleBase<CM, CMCondition> {
+public:
+    static void setTestSucPath(const bool val) {TestSucPath = val;}
 private:
     friend ModuleBase;
     /**
@@ -54,4 +56,5 @@ private:
         (void)CM_con;
         (void)theVars;
     }
+    static bool TestSucPath;
 };

@@ -144,14 +144,6 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
     //////  FOR TESITNG  ////
     //const double f = vA_f + vU_f;
     ////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////
-    //   Part V Output of Velocity for plot          //
-    //////////////////////////////////////////////////////////////////////////////////////////////////
-
-    if (t > theVars->FI_OLD_TIME) {
-        theVars->FI_TIME_N = theVars->FI_TIME_N + 1;
-        theVars->FI_OLD_TIME = t;
-    }
 
     ////////////////////////////////////////////////////////////////////////////
     // Assign table
@@ -164,6 +156,15 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
 
     DEBUG_INTERNAL(theVars->FI_Vel)
     if (theVars->record) {
-        theVars->FI_VEL.insert(theVars->FI_TIME_N - 1, t, theVars->FI_Vel);
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+        //   Part V Output of Velocity for plot          //
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+
+        if (t > FI::TIME) {
+            FI::N++;
+            FI::TIME = t;
+        }
+
+        theVars->FI_VEL.insert(FI::N - 1, t, theVars->FI_Vel);
     }
 }

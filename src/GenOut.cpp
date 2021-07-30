@@ -113,7 +113,7 @@ void GenOut(double t, Variables *theVars) {
 
 
         co2a[99] = t;
-        theVars->CO2A.insert(theVars->PS_TIME_N - 1, t, co2a);
+        theVars->CO2A.insert(PS::getN() - 1, t, co2a);
     }
 }
 

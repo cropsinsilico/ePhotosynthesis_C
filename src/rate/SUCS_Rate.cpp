@@ -146,10 +146,6 @@ void SUCS::_Rate(const double t, const SUCSCondition* SUCS_Con, Variables *theVa
         }
 
 
-        if (t > theVars->SUCS_OLD_TIME) {
-            theVars->SUCS_TIME_N = theVars->SUCS_TIME_N + 1;
-            theVars->SUCS_OLD_TIME = t;
-        }
         ////////////////////////////////////////////////////////////////////////////
         // Assign table
         ////////////////////////////////////////////////////////////////////////////////
@@ -170,7 +166,11 @@ void SUCS::_Rate(const double t, const SUCSCondition* SUCS_Con, Variables *theVa
         theVars->SUCS_Vel.vatpf = 0.;          // ATP synthesis rate
     }
     if (theVars->record) {
-        theVars->SUCS_VEL.insert(theVars->SUCS_TIME_N - 1, t, theVars->SUCS_Vel);
+        if (t > SUCS::TIME) {
+            SUCS::N++;
+            SUCS::TIME = t;
+        }
+        theVars->SUCS_VEL.insert(SUCS::N - 1, t, theVars->SUCS_Vel);
         theVars->SUCS2OUT.T3Pc = SUCS_Con->T3Pc;
         theVars->SUCS2OUT.FBPc = SUCS_Con->FBPc;
         theVars->SUCS2OUT.HexPc = SUCS_Con->HexPc;

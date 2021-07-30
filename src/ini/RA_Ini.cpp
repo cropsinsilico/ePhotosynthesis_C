@@ -35,8 +35,6 @@ RACondition* RA::_init(Variables *theVars) {
 
     if (theVars->RuACT_EPS_com)
         RuACT_con->RuBP = EPS_con->CM_con->PS_PR_con->PS_con->RuBP;
-    theVars->RuACT_OLD_TIME = 0;
-    theVars->RuACT_TIME_N = 1;
 
     // Now get the combined total concentration of different concentration variables.
     RACondition* RA_con = new RACondition(EPS_con, RuACT_con);

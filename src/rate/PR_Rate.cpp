@@ -158,10 +158,6 @@ void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
 
         const double PrKM1232 = 0.5;
 
-        if (t > theVars->PR_OLD_TIME) {
-            theVars->PR_TIME_N = theVars->PR_TIME_N + 1;
-            theVars->PR_OLD_TIME = t;
-        }
         // The following is used to take the information back to the PRmb routine.
         theVars->PR_Vel.v112 = V112 * PR_con->PGCA / (PR_con->PGCA + KM112 * (1 + PR_con->GCA / KI1122) * (1 + theVars->Pi / KI1121));
         theVars->PR_Vel.v121 = V121 * PR_con->GCAc / (PR_con->GCAc + KM121);
@@ -175,7 +171,12 @@ void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
 
     DEBUG_INTERNAL(theVars->PR_Vel)
     if (theVars->record) {
-        theVars->PR_VEL.insert(theVars->PR_TIME_N - 1, t, theVars->PR_Vel);
+        if (t > PR::TIME) {
+            PR::N++;
+            PR::TIME = t;
+        }
+
+        theVars->PR_VEL.insert(PR::N - 1, t, theVars->PR_Vel);
 
         // here is some parameters we need to output
 

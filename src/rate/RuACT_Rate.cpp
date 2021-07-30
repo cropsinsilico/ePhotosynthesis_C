@@ -85,11 +85,6 @@ void RuACT::_Rate(const double t, const RuACTCondition* RuACT_Con, Variables *th
 
     const double factor_n7 = 1;
 
-    if (t > theVars->RuACT_OLD_TIME) {
-        theVars->RuACT_TIME_N = theVars->RuACT_TIME_N + 1;
-        theVars->RuACT_OLD_TIME = t;
-    }
-
     theVars->RuACT_Vel.v1 = RCA * RuACT_Con->ER * FATP;
     theVars->RuACT_Vel.vn1 = theVars->RuACT_RC.kn1 * E * RuBP;
     theVars->RuACT_Vel.v7 = theVars->RuACT_RC.k7 * ECM * RuBP;
@@ -98,6 +93,10 @@ void RuACT::_Rate(const double t, const RuACTCondition* RuACT_Con, Variables *th
     theVars->RuACT_Vel.v6_2 = RuACT_Con->ECMR * theVars->RuACT_RC.k6 / 3 * O / (O + theVars->RuACT_RC.ko * (1 + C / theVars->RuACT_RC.kc));
     DEBUG_INTERNAL(theVars->RuACT_Vel)
     if (theVars->record) {
-        theVars->RuACT_VEL.insert(theVars->RuACT_TIME_N - 1, t, theVars->RuACT_Vel);
+        if (t > RuACT::TIME) {
+            RuACT::N++;
+            RuACT::TIME = t;
+        }
+        theVars->RuACT_VEL.insert(RuACT::N - 1, t, theVars->RuACT_Vel);
     }
 }

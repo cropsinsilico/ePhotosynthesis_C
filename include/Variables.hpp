@@ -73,45 +73,14 @@ struct Variables {
     int GP = 0;
     int GRNC = 0;
     int GRNT = 0;
-    double BF_OLD_TIME = 0;
-    size_t BF_TIME_N = 1;
-    double FI_OLD_TIME = 0;
-    size_t FI_TIME_N = 1;
-    double PR_OLD_TIME = 0;
-    size_t PR_TIME_N = 1;
-    double PS_OLD_TIME = 0;
-    size_t PS_TIME_N = 1;
-    double PS_PR_OLDTIME = 0;
-    size_t PS_PR_TIME_N = 1;
-    double RROEA_OLD_TIME = 0;
-    size_t RROEA_TIME_N = 1;
-    double RedoxReg_OLD_TIME = 0;
-    size_t RedoxReg_TIME_N = 1;
-    double RuACT_OLD_TIME = 0;
-    size_t RuACT_TIME_N = 1;
-    double SUCS_OLD_TIME = 0;
-    size_t SUCS_TIME_N = 1;
-    double XanCycle_OLD_TIME = 0;
-    size_t XanCycle_TIME_N = 1;
 
     int RUBISCOMETHOD = 1;
-    int TestSucPath = 0.;
-    int trDynaPS2RedReg_cal = 0.;
 
     const double AVR = 30;
-    const double Fd_Thio_ET = 500;
     const double HPR = 4.66;
-    const double input_LHCI = 6;
-    const double input_LHCII = 13;
-    const double input_PSI = 1;
-    const double input_PSIIcore = 1;
     const double O2 = 210;
-    const double PSIIantennaSize = 37;
-    const double PSIantennaSize = 95;
-    const double ThioT = 0.5;
-    const double Thio_Oxidation = 0.1;
     const double VolRatioStCyto = 1;
-
+////
     double cATPsyn = 0.;
     double CPSi = 0.;
     double cNADPHsyn = 0.;
@@ -142,11 +111,6 @@ struct Variables {
     double PiTc;
 
     double RUBISCOTOTAL = 0.;
-    double Redox2PS_V13 = 0.;
-    double Redox2PS_V16 = 0.;
-    double Redox2PS_V6 = 0.;
-    double Redox2PS_V9 = 0.;
-    double RedoxReg_Param = 0;
     double SUCS2PS_Pic = 0.;
     double TestATPCost = 0.;
     double TestCa = 0.;
@@ -250,7 +214,5 @@ struct Variables {
     bool useC3 = false;
 #ifdef INCDEBUG
     Debug::RequestedDebug debuglevel = Debug::None;
-    //ushort offset = 0;
-    //std::map<Module::Module, ushort> debugmap;
 #endif
 };

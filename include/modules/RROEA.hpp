@@ -61,4 +61,6 @@ private:
       @param theVars The global variables
       */
     static void _Rate(const double t, const RROEACondition* RROEA_Con, Variables *theVars);
+    static double TIME;
+    static size_t N;
 };

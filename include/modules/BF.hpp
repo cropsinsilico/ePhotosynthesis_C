@@ -79,4 +79,6 @@ private:
     static bool FI_connect;
     static bool PS_connect;
     static bool RROEA_connect;
+    static double TIME;
+    static size_t N;
 };

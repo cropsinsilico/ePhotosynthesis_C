@@ -55,4 +55,6 @@ private:
         (void)PS_PRs;
         (void)theVars;
     }
+    static double TIME;
+    static size_t N;
 };

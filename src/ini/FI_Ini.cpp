@@ -28,6 +28,8 @@
 #include "Variables.hpp"
 #include "modules/FI.hpp"
 
+double FI::TIME = 0.;
+size_t FI::N = 1;
 const size_t FICondition::count = 22;
 bool FICondition::BF_connect = false;
 bool FI::BF_connect = false;

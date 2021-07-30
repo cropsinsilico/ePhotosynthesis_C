@@ -51,7 +51,7 @@ public:
 
       @param x The pointer to get the data from
       */
-    EPSCondition(realtype *x, const uint adjust = 0);
+    EPSCondition(realtype *x);
 
     /**
       Constructor to create an object from the contained classes
@@ -69,13 +69,6 @@ public:
       */
     EPSCondition(const arr &vec, const size_t offset = 0);
 
-    using ConditionBase::fromArray;
-    /**
-      Copy items from the given pointer to the data members
-
-      @param x The input pointer to copy from
-      */
-    void fromArray(realtype *x, const uint adjust = 0);
 #ifdef INCDEBUG
     static void setTop() {EPSCondition::_dlevel = Debug::Top;}
 #endif

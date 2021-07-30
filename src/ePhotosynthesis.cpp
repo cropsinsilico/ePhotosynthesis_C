@@ -38,6 +38,7 @@
 #include "cxxopts.hpp"
 #include "globals.hpp"
 #include "modules/trDynaPS.hpp"
+#include "modules/CM.hpp"
 #include "modules/EPS.hpp"
 #include "drivers/drivers.hpp"
 #include "Variables.hpp"
@@ -236,7 +237,8 @@ int main(int argc, const char* argv[]) {
         }
         theVars->TestCa = static_cast<double>(stof(inputs.at("CO2"), nullptr));
         theVars->TestLi = static_cast<double>(stof(inputs.at("PAR"), nullptr));
-        theVars->TestSucPath = stoi(inputs.at("SucPath"), nullptr);
+        if (stoi(inputs.at("SucPath"), nullptr) > 0)
+            CM::setTestSucPath(true);
         theVars->TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
         theVars->record = record;
         theVars->useC3 = useC3;

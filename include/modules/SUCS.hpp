@@ -133,4 +133,6 @@ private:
     static double Vf_T59;
     static double UTPc;
     static double ATPc;
+    static double TIME;
+    static size_t N;
 };
