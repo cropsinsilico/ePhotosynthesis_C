@@ -24,6 +24,10 @@ void CVodeMem::cvode_mem_init(Driver* driver, realtype t0, N_Vector y) {
             std::cout << "CVodeSetUserData failed" << std::endl;
             exit(EXIT_FAILURE);
         }
+        if (CVodeSetMaxStep(_cvode_mem, driver->maxStep) != 0) {
+            std::cout << "CVodeSetMaxStep failed" << std::endl;
+            exit(EXIT_FAILURE);
+        }
 
         if (CVodeSetMaxNumSteps(_cvode_mem, driver->maxSubSteps) != 0) {
             std::cout << "CVodeSetMaxNumSteps failed" << std::endl;

@@ -57,7 +57,14 @@
 /**
   Structure to hold global variables
   */
-struct Variables {
+class Variables {
+public:
+    Variables() {}
+    Variables(const Variables* other);
+    Variables(const Variables& other);
+    Variables& operator=(const Variables& other);
+    Variables& operator=(const Variables* other);
+
     bool record = false;
     bool BF_FI_com = false;
     bool EPS_SUCS_com = false;
@@ -78,15 +85,15 @@ struct Variables {
     const double AVR = 30;
     const double HPR = 4.66;
     const double O2 = 210;
-////
+
     double CO2_cond = 0.;
 
     double GLight = 0.;
     double O2_cond = 0.;
     double PS12ratio = 0.;
-    double ADP;
+    double ADP = 0.;
 
-    double Pi;
+    double Pi = 0.;
 
     double TestATPCost = 0.;
     double CO2_in = 0.;

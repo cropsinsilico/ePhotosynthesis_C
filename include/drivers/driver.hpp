@@ -31,7 +31,7 @@
 #include <nvector/nvector_serial.h>
 #include <sundials/sundials_types.h>
 #include "globals.hpp"
-struct Variables;
+class Variables;
 class Driver;
 class CVodeMem;
 struct UserData {
@@ -61,11 +61,14 @@ public:
         this->theVars = theVars;
         this->start = start;
         this->step = step;
+        initialStep = step;
         this->endtime = endtime;
         this->maxSubSteps = maxSubSteps;
-        this->abstol = atol;
-        this->reltol = rtol;
+        abstol = atol;
+        reltol = rtol;
+        maxStep = 20. * step;
         data = nullptr;
+        origVars = nullptr;
     }
     virtual void setup() = 0;
     arr run();
@@ -75,15 +78,20 @@ public:
     virtual ~Driver();
     static Variables *theVars;
     arr constraints;
+
 protected:
     friend CVodeMem;
     realtype abstol;
     realtype reltol;
     double start, step, endtime;
+    double initialStep;
     int maxSubSteps;
     realtype *intermediateRes;
     arr results;
     realtype time;
     CalcData* data;
+    double maxStep;
     void *cvode_mem;
+private:
+    Variables* origVars;
 };

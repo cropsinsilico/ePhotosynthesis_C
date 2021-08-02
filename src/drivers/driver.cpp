@@ -35,50 +35,67 @@
 
 
 arr Driver::run() {
-    setup();
+    origVars = new Variables(theVars);
+    uint count = 0;
+    while (count < 5){
+        setup();
 
-    sunindextype N =  static_cast<long>(constraints.size());
-    N_Vector y;
-    y = N_VNew_Serial(N);
+        sunindextype N =  static_cast<long>(constraints.size());
+        N_Vector y;
+        y = N_VNew_Serial(N);
 
-    for (size_t i = 0; i < constraints.size(); i++)
-        NV_Ith_S(y, i) =  constraints[i];
-    realtype t0 = 0;
+        for (size_t i = 0; i < constraints.size(); i++)
+            NV_Ith_S(y, i) =  constraints[i];
+        realtype t0 = 0;
 
-    CVodeMem *cmem = &CVodeMem::create();
-    cmem->cvode_mem_init(this, t0, y);
+        CVodeMem *cmem = &CVodeMem::create();
+        cmem->cvode_mem_init(this, t0, y);
 
-    data->drv = this;
+        data->drv = this;
 
-    SUNMatrix A = SUNDenseMatrix(N, N);
+        SUNMatrix A = SUNDenseMatrix(N, N);
 
-    SUNLinearSolver LS = SUNDenseLinearSolver(y, A);
+        SUNLinearSolver LS = SUNDenseLinearSolver(y, A);
 
-    if (CVDlsSetLinearSolver(cvode_mem, LS, A) != 0) {
-        std::cout << "CVDlsSetLinearSolver failed" << std::endl;
-        exit(EXIT_FAILURE);
-    }
-
-    realtype t = 0;
-
-    for (realtype tout = start + step; tout <= endtime; tout += step)
-        if (CVode(cvode_mem, tout, y, &t, CV_NORMAL) != 0) {
-            std::cout << "CVode failed at t=" << tout << std::endl;
+        if (CVDlsSetLinearSolver(cvode_mem, LS, A) != 0) {
+            std::cout << "CVDlsSetLinearSolver failed" << std::endl;
             exit(EXIT_FAILURE);
         }
 
-    intermediateRes = N_VGetArrayPointer(y);
-    time = t;
-    getResults();
+        realtype t = 0;
+        bool runOK = true;
+        realtype tout = start + step;
+        while (tout <= endtime) {
+        //for (realtype tout = start + step; tout <= endtime; tout += step)
+            if (CVode(cvode_mem, tout, y, &t, CV_NORMAL) != 0) {
+                std::cout << "CVode failed at t=" << tout << std::endl;
+                //exit(EXIT_FAILURE);
+                runOK = false;
+            }
+            tout += step;
+        }
+        if (runOK) {
+            intermediateRes = N_VGetArrayPointer(y);
+            time = t;
+            getResults();
+        }
 
-    SUNLinSolFree(LS);
-    SUNMatDestroy(A);
-    N_VDestroy(y);
-    return results;
+        SUNLinSolFree(LS);
+        SUNMatDestroy(A);
+        N_VDestroy(y);
+        if (runOK)
+            return results;
+
+        theVars = origVars;
+        count++;
+        step = initialStep / (count + 1);
+    }
+    exit(EXIT_FAILURE);
 }
 
 Driver::~Driver() {
-
+    if (origVars != nullptr)
+        delete origVars;
 }
 
 int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
