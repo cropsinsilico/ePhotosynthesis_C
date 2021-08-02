@@ -53,7 +53,6 @@
 #include "conditions/PRCondition.hpp"
 #include "conditions/SUCSCondition.hpp"
 #include "conditions/XanCycleCondition.hpp"
-//#include "vel/FIBF.hpp"
 
 /**
   Structure to hold global variables
@@ -90,31 +89,12 @@ struct Variables {
     double Pi;
 
     double TestATPCost = 0.;
-    double TestCa = 0.;
+    double CO2_in = 0.;
     double TestLi = 0.;
-    double V1 = 0.;
-    double V13 = 0.;
-    double V16 = 0.;
-    double V1Reg = 0.;
-    double V1T = 0.;
-    double V2 = 0.;
-    double V23 = 0.;
-    double V3 = 0.;
-    double V6 = 0.;
-    double V9 = 0.;
     double PS2BF_Pi = 0.;
-    double XanCycle2FIBF_Xstate = 0.;
-    double activase = 0.;
-    double kmCO2 = 0.;
-    double kmO2 = 0.;
     double PS_PR_Param = 0;
 
     double Tp = 0;
-    double alfa = 0;
-    double fc = 0;
-    double Theta = 0;
-    double beta = 0;
-    double Jmax = 0.;
 
     // Parameters
     arr PR_Param = zeros(2);

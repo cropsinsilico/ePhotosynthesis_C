@@ -30,6 +30,7 @@
 
 bool RuACT::EPS_con = false;
 bool RuACTCondition::EPS_con = false;
+double RuACT::activase = 0.;
 double RuACT::TIME = 0.;
 size_t RuACT::N = 1;
 
@@ -37,7 +38,7 @@ size_t RuACTCondition::count = 4;
 
 RuACTCondition* RuACT::_init(Variables *theVars) {
     RuACT::setEPS(theVars->RuACT_EPS_com);
-    theVars->activase = 80 * theVars->RacRatio[10];
+    activase = 80 * theVars->RacRatio[10];
 
     // The rate constant used in the model
     theVars->RuACT_RC.k1 = 0.006 * theVars->RacRatio[0];                // The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco theVars->activase content or activity;

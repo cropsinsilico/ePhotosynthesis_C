@@ -76,7 +76,7 @@ void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
         if (theVars->RUBISCOMETHOD == 2) {            // Using michelies and enzyme information
             double PrV111t;
             if (theVars->PR_PS_com) {       // FOr the combined PS-PR model
-                PrV111t = PrV111*RuBP / (RuBP + KR * theVars->V1Reg);
+                PrV111t = PrV111*RuBP / (RuBP + KR * PS::V1Reg);
             } else {                    // For the PR model
                 PrV111t = PrV111*RuBP / (RuBP + KR);
             }
@@ -105,7 +105,7 @@ void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
 
         theVars->PR_Vel.v131 = PrV131 * PR_con->GLYc/(PR_con->GLYc + KM1311*(1 + PR_con->SERc / KI1311));
         theVars->PR_Vel.v2out = V2T * (PR_con->GCA/(PR_con->GCA + KM1012*(1 + PR_con->GCEA / KI1012)) - PR_con->GCAc /(PR_con->GCAc + KM1012 * (1 + PR_con->GCEAc / KI1012)));   // Competive inhibition
-        theVars->PR_Vel.v1in = theVars->V1T *(PR_con->GCEAc / (PR_con->GCEAc + KM1011 * (1 + PR_con->GCAc / KI1011)) -PR_con->GCEA /(PR_con->GCEA + KM1011 * (1 + PR_con->GCA / KI1011)));  // Competive inhibition
+        theVars->PR_Vel.v1in = V1T *(PR_con->GCEAc / (PR_con->GCEAc + KM1011 * (1 + PR_con->GCAc / KI1011)) -PR_con->GCEA /(PR_con->GCEA + KM1011 * (1 + PR_con->GCA / KI1011)));  // Competive inhibition
 
 
     } else {
@@ -126,7 +126,7 @@ void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
         double PrV111t;
         if (theVars->RUBISCOMETHOD == 2) {
             if (theVars->PR_PS_com) {
-                PrV111t = V111 * RuBP / (RuBP + KR * theVars->V1Reg);
+                PrV111t = V111 * RuBP / (RuBP + KR * PS::V1Reg);
             } else {
                 PrV111t = V111 * RuBP / (RuBP + KR);
             }
@@ -165,7 +165,7 @@ void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
         theVars->PR_Vel.v123 = V123 * (PR_con->HPRc * NADHc - PR_con->GCEAc * NADc / KE123) / ((PR_con->HPRc + KM123 * (1 + PR_con->HPRc / KI123)) * (NADHc + PrKM1232));
         theVars->PR_Vel.v124 = V124 * (PR_con->GOAc * GLUc - KGc * PR_con->GLYc / KE124) / ((PR_con->GOAc + KM1241) * (GLUc + KM1242 * (1 + PR_con->GLYc / KI1221)));
         theVars->PR_Vel.v131 = V131 * PR_con->GLYc / (PR_con->GLYc + KM1311 * (1 + PR_con->SERc / KI1311));
-        theVars->PR_Vel.v1in = theVars->V1T * (PR_con->GCEAc / (PR_con->GCEAc + KM1011 * (1 + PR_con->GCAc / KI1011)) - PR_con->GCEA / (PR_con->GCEA + KM1011 * (1 + PR_con->GCA / KI1011)));// Competive inhibition
+        theVars->PR_Vel.v1in = V1T * (PR_con->GCEAc / (PR_con->GCEAc + KM1011 * (1 + PR_con->GCAc / KI1011)) - PR_con->GCEA / (PR_con->GCEA + KM1011 * (1 + PR_con->GCA / KI1011)));// Competive inhibition
         theVars->PR_Vel.v2out = V2T * (PR_con->GCA / (PR_con->GCA + KM1012 * (1 + PR_con->GCEA / KI1012)) - PR_con->GCAc / (PR_con->GCAc + KM1012 * (1 + PR_con->GCEAc / KI1012)));// Competive inhibition
     }
 

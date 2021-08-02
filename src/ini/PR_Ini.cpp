@@ -92,6 +92,7 @@ double PR::PGA = 0.;
 double PR::TIME = 0.;
 double PR::GLUc = 0.;
 double PR::RUBISCOTOTAL = 0.;
+double PR::V1T = 0.;
 size_t PR::N = 1;
 const size_t PRCondition::count = 10;
 bool PRCondition::PR_PS_com = false;
@@ -137,7 +138,7 @@ PRCondition* PR::_init(Variables *theVars) {
     PR_con->RuBP = 2.;       // RuBP concentration
 
     if (theVars->useC3) {
-        theVars->V1T = 5.;
+        V1T = 5.;
         Vfactor112 = 1;
         Vfactor113 = 1;
         Vfactor121 = 1;
@@ -172,7 +173,7 @@ PRCondition* PR::_init(Variables *theVars) {
         }
 
         if (theVars->GP == 0) {
-            V111 = theVars->V1 * 0.22;
+            V111 = PS::V1 * 0.22;
             V112 = theVars->EnzymeAct.at("V112");
             V113 = theVars->EnzymeAct.at("V113");
             V121 = theVars->EnzymeAct.at("V121");
@@ -282,7 +283,7 @@ PRCondition* PR::_init(Variables *theVars) {
         KI1311 = 4 * theVars->PRRatio[39];  // Inhibition constant for Serine
 
         // The consant for calculating the glycerate uptake.
-        theVars->V1T = 0.25 * CE * 20 * theVars->PRRatio[42];
+        V1T = 0.25 * CE * 20 * theVars->PRRatio[42];
         KM1011 = 0.39 * theVars->PRRatio[43];
         KI1011 = 0.28 * theVars->PRRatio[44];
 
@@ -293,7 +294,7 @@ PRCondition* PR::_init(Variables *theVars) {
 
         if (theVars->GP == 0) {
             if (theVars->PR_PS_com) {
-                V111 = 0.24 * theVars->V1 * theVars->PRRatio[0];
+                V111 = 0.24 * PS::V1 * theVars->PRRatio[0];
             } else {
                 V111 = 3.7 * 0.24 * 1;
             }

@@ -48,6 +48,17 @@ public:
     }
     static size_t getN() {return N;}
     SET_GET(PiTc)
+    SET_GET(V3)
+    SET_GET(V6)
+    SET_GET(V9)
+    SET_GET(V13)
+    SET_GET(V16)
+    SET_GET(V23)
+    SET_GET(alfa)
+    SET_GET(fc)
+    SET_GET(Theta)
+    SET_GET(beta)
+    SET_GET(Jmax)
 private:
     friend ModuleBase;
     /**
@@ -150,10 +161,13 @@ private:
     static double V31;
     static double V32;
     static double V33;
+    static double V1;
+    static double V2;
     static double V5;
     static double V7;
     static double V8;
     static double V10;
+    static double V1Reg;
     static double KA232;
     static double KA233;
     static double KI23;
@@ -181,6 +195,7 @@ private:
     static double Vf_T13;
     static double Vf_T23;
     static double PsV1;
+
     static arr Param;
     static bool useC3;
     static double TIME;

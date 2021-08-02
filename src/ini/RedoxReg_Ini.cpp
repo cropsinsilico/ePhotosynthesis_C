@@ -27,6 +27,7 @@
 #include "Variables.hpp"
 #include "modules/RedoxReg.hpp"
 #include "modules/RA.hpp"
+#include "modules/PS.hpp"
 
 double RedoxReg::RedoxReg_VMAX13 = 0.;
 double RedoxReg::RedoxReg_VMAX16 = 0.;
@@ -48,10 +49,10 @@ RedoxRegCondition* RedoxReg::_init(Variables *theVars) {
     const double Thion = 0.25;     // This is a wild guess
     RedoxRegCondition* RedoxReg_con = new RedoxRegCondition(RA_con, Thion);
 
-    RedoxReg_VMAX6 = theVars->V6;
-    RedoxReg_VMAX9 = theVars->V9;
-    RedoxReg_VMAX13 = theVars->V13;
-    RedoxReg_VMAX16 = theVars->V16;
+    RedoxReg_VMAX6 = PS::getV6();
+    RedoxReg_VMAX9 = PS::getV9();
+    RedoxReg_VMAX13 = PS::getV13();
+    RedoxReg_VMAX16 = PS::getV16();
 
     for (int i = 0; i < 5; i++)
         theVars->RedoxReg_MP.push_back(zeros(3));

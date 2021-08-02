@@ -28,11 +28,12 @@
  **********************************************************************************************************************************************/
 #include "ModuleBase.hpp"
 #include "conditions/XanCycleCondition.hpp"
-
+#include "definitions.hpp"
 /**
  Class for XanCycle code and internal variables
  */
 class XanCycle : public ModuleBase<XanCycle, XanCycleCondition> {
+    SET_GET(XanCycle2FIBF_Xstate)
 private:
     friend ModuleBase;
     /**

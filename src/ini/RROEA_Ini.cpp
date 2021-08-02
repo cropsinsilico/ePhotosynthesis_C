@@ -26,6 +26,7 @@
 
 #include "Variables.hpp"
 #include "modules/RROEA.hpp"
+#include "modules/PS.hpp"
 
 double RROEA::TIME = 0.;
 size_t RROEA::N = 1;
@@ -77,12 +78,12 @@ RROEACondition* RROEA::_init(Variables *theVars) {
         fc16 = 1;
         SC = 1;
 
-        theVars->V3 = 5.04 * SC;       // (Harris & Koniger, 1997) 3 GAP dehydragenase DPGA+NADPH <->GAP + OP+NADP
-        theVars->V6 = 1.155 * SC;      // (Harris & Koniger, 1997) 6 FBPase FBP<->F6P+OP    1.155
-        theVars->V9 = 0.168 * SC * FC; // (Harris & Koniger, 1997) 9 SBPase SBP<->S7P+OP    0.168 as original value; 0.4168 was its value.
-        theVars->V13 = 8.0094 * SC;    // (Harris & Koniger, 1997) 13 Ribulosebiphosphate kinase Ru5P+ATP<->RuBP+ADP
-        theVars->V16 = 3 * SC * fc16;  // (Aflalo & Shavit, 1983, Davenport & McLeod, 1986) 16 ATP synthase ADP+Pi<->ATP    1.47
-        theVars->V23 = 1.68 * SC * FC; // (Latzko, Steup & Schachtele, 1981) 23 ADP-glucose pyrophosphorylase and ADPG+Gn<->G(n+1)+ADP 0.18
+        PS::setV3(5.04 * SC);       // (Harris & Koniger, 1997) 3 GAP dehydragenase DPGA+NADPH <->GAP + OP+NADP
+        PS::setV6(1.155 * SC);      // (Harris & Koniger, 1997) 6 FBPase FBP<->F6P+OP    1.155
+        PS::setV9(0.168 * SC * FC); // (Harris & Koniger, 1997) 9 SBPase SBP<->S7P+OP    0.168 as original value; 0.4168 was its value.
+        PS::setV13(8.0094 * SC);    // (Harris & Koniger, 1997) 13 Ribulosebiphosphate kinase Ru5P+ATP<->RuBP+ADP
+        PS::setV16(3 * SC * fc16);  // (Aflalo & Shavit, 1983, Davenport & McLeod, 1986) 16 ATP synthase ADP+Pi<->ATP    1.47
+        PS::setV23(1.68 * SC * FC); // (Latzko, Steup & Schachtele, 1981) 23 ADP-glucose pyrophosphorylase and ADPG+Gn<->G(n+1)+ADP 0.18
     }
 
 
@@ -111,12 +112,12 @@ RROEACondition* RROEA::_init(Variables *theVars) {
     if (theVars->RROEA_EPS_com)
         FdT = theVars->BF_Pool.kU_f;
 
-    theVars->RROEA_Pool.GAPDH = theVars->V3 * 1000 * 60 / SA_GAPDH / mw_GAPDH;
-    theVars->RROEA_Pool.FBPase = theVars->V6 * 1000 * 60 / SA_FBPase / mw_FBPase;
-    theVars->RROEA_Pool.SBPase = theVars->V9 * 1000 * 60 / SA_SBPase / mw_SBPase;
-    theVars->RROEA_Pool.PRK = theVars->V13 * 1000 * 60 / SA_PRK / mw_PRK;
-    theVars->RROEA_Pool.ATPase = theVars->V16 * 1000 * 60 / SA_ATPase / mw_ATPase;
-    theVars->RROEA_Pool.ATPGPP = theVars->V23 * 1000 * 60 / SA_ATPGPP / mw_ATPGPP;
+    theVars->RROEA_Pool.GAPDH = PS::getV3() * 1000 * 60 / SA_GAPDH / mw_GAPDH;
+    theVars->RROEA_Pool.FBPase = PS::getV6() * 1000 * 60 / SA_FBPase / mw_FBPase;
+    theVars->RROEA_Pool.SBPase = PS::getV9() * 1000 * 60 / SA_SBPase / mw_SBPase;
+    theVars->RROEA_Pool.PRK = PS::getV13() * 1000 * 60 / SA_PRK / mw_PRK;
+    theVars->RROEA_Pool.ATPase = PS::getV16() * 1000 * 60 / SA_ATPase / mw_ATPase;
+    theVars->RROEA_Pool.ATPGPP = PS::getV23() * 1000 * 60 / SA_ATPGPP / mw_ATPGPP;
     theVars->RROEA_Pool.MDH = MDH_Vmax * 1000 * 60 / SA_MDH / mw_MDH;
     theVars->RROEA_Pool.ThioT = 0.081;
     theVars->RROEA_Pool.FdT = FdT;

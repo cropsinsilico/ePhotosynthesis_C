@@ -31,6 +31,7 @@ double XanCycle::XanCycle_kav = 0.;
 double XanCycle::XanCycle_kaz = 0.;
 double XanCycle::XanCycle_kva = 0.;
 double XanCycle::XanCycle_kza = 0.;
+double XanCycle::XanCycle2FIBF_Xstate = 0.;
 double XanCycle::TIME = 0.;
 size_t XanCycle::N = 1;
 
@@ -54,7 +55,7 @@ XanCycleCondition* XanCycle::_init(Variables *theVars) {
     XanCycle_con->Zx = Zx * 0.37;
     XanCycle_con->ABA = ABA;
 
-    theVars->XanCycle2FIBF_Xstate = Zx / (Ax + Vx + Zx);
+    XanCycle2FIBF_Xstate = Zx / (Ax + Vx + Zx);
 
     return XanCycle_con;
 }

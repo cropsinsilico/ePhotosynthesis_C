@@ -87,26 +87,26 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
 
         theVars->Pi = PS_C_CP - PS_con->PGA - 2 * PS_con->DPGA - GAP - DHAP - 2 * PS_con->FBP - F6P - PS_con->E4P - 2 * PS_con->SBP - PS_con->S7P - Xu5P - Ri5P - Ru5P - 2 * PS_con->RuBP - G6P - G1P - PS_con->ATP - PS_con->parent->PR_con->PGCA;
 
-        theVars->V1Reg = 1 + PS_con->PGA / KI11 + PS_con->FBP / KI12 + PS_con->SBP / KI13 + theVars->Pi / KI14 + NADPH / KI15;
+        //V1Reg = 1 + PS_con->PGA / KI11 + PS_con->FBP / KI12 + PS_con->SBP / KI13 + theVars->Pi / KI14 + NADPH / KI15;
 
-        const double PsV1_0	=	theVars->V1 * Vfactor1 * Vf_T1	;	//	1	Rubisco	RuBP+CO2<->2PGA
-        const double PsV2_0	=	theVars->V2 * Vfactor2 * Vf_T2 ;	//	2	PGA Kinase	PGA+ATP <-> ADP + DPGA
-        const double PsV3_0	=	theVars->V3 * Vfactor3 * Vf_T3	;	//	3	GAP dehydragenase	DPGA+NADPH <->GAP + OP+NADP
+        const double PsV1_0	= V1 * Vfactor1 * Vf_T1	;	//	1	Rubisco	RuBP+CO2<->2PGA
+        const double PsV2_0	= V2 * Vfactor2 * Vf_T2 ;	//	2	PGA Kinase	PGA+ATP <-> ADP + DPGA
+        const double PsV3_0	= V3 * Vfactor3 * Vf_T3	;	//	3	GAP dehydragenase	DPGA+NADPH <->GAP + OP+NADP
 
-        const double PsV5_0	=	V5 * Vfactor5 * Vf_T5;	//	5	Aldolase	GAP+DHAP <->FBP
-        const double PsV6_0	=	theVars->V6 * Vf_T6	;	//	6	FBPase	FBP<->F6P+OP
-        const double PsV7_0	=	V7 * Vfactor7	;	//	7	Transketolase	F6P+GAP<->E4P+Xu5P
-        const double PsV8_0	=	V8 * Vfactor5 * Vf_T5	;	//	8	Aldolase	E4P+DHAP<->SBP
-        const double PsV9_0	=	theVars->V9 * Vf_T9	;	//	9	SBPase	SBP<->S7P+OP
-        const double PsV10_0	=	V10 * Vfactor7	;	//	10	Transketolase	S7P+GAP<->Ri5P+Xu5P
+        const double PsV5_0	= V5 * Vfactor5 * Vf_T5;	//	5	Aldolase	GAP+DHAP <->FBP
+        const double PsV6_0	= V6 * Vf_T6	;	//	6	FBPase	FBP<->F6P+OP
+        const double PsV7_0	= V7 * Vfactor7	;	//	7	Transketolase	F6P+GAP<->E4P+Xu5P
+        const double PsV8_0	= V8 * Vfactor5 * Vf_T5	;	//	8	Aldolase	E4P+DHAP<->SBP
+        const double PsV9_0	= V9 * Vf_T9	;	//	9	SBPase	SBP<->S7P+OP
+        const double PsV10_0 = V10 * Vfactor7	;	//	10	Transketolase	S7P+GAP<->Ri5P+Xu5P
 
-        const double PsV13_0	=	theVars->V13 * Vfactor13 * Vf_T13;	//	13	Ribulosebiphosphate kinase	Ru5P+ATP<->RuBP+ADP
-        double PsV16	=	theVars->V16	;	//	16	ATP synthase	ADP+Pi<->ATP
+        const double PsV13_0 = V13 * Vfactor13 * Vf_T13;	//	13	Ribulosebiphosphate kinase	Ru5P+ATP<->RuBP+ADP
+        double PsV16 = V16	;	//	16	ATP synthase	ADP+Pi<->ATP
 
-        const double PsV23_0	=	theVars->V23 * Vfactor23 * Vf_T23;//	23	ADP-glucose pyrophosphorylase and	ADPG+Gn<->G(n+1)+ADP
-        const double PsV31	=	V31 ;	//	31	Phosphate translocator	DHAPi<->DHAPo
-        const double PsV32	=	V32	;	//	32	Phosphate translocator	PGAi<->PGAo
-        const double PsV33	=	V33	;	//	33	Phosphate translocator	GAPi<->GAPo
+        const double PsV23_0 = V23 * Vfactor23 * Vf_T23;//	23	ADP-glucose pyrophosphorylase and	ADPG+Gn<->G(n+1)+ADP
+        const double PsV31 = V31 ;	//	31	Phosphate translocator	DHAPi<->DHAPo
+        const double PsV32 = V32	;	//	32	Phosphate translocator	PGAi<->PGAo
+        const double PsV33 = V33	;	//	33	Phosphate translocator	GAPi<->GAPo
 
         const double Ru_Act = -3. * pow(10., -5) * pow(theVars->Tp, 3) + 0.0013 * pow(theVars->Tp, 2) - 0.0106 * theVars->Tp + 0.8839; //Rubisco activition state   % SHARED
         PsV1 = PsV1_0 * Ru_Act * pow(Q10_1, (theVars->Tp - 25) / 10);                     //   SHARED
@@ -135,10 +135,10 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
         const double O2 = theVars->O2_cond;
 
 
-        theVars->V1Reg = 1 + PS_con->PGA / KI11 + PS_con->FBP / KI12 + PS_con->SBP / KI13 + theVars->Pi / KI14 + NADPH / KI15;   // SHARED
+        V1Reg = 1 + PS_con->PGA / KI11 + PS_con->FBP / KI12 + PS_con->SBP / KI13 + theVars->Pi / KI14 + NADPH / KI15;   // SHARED
 
         if (theVars->RUBISCOMETHOD == 2) {
-            const double tmp = PsV1 * PS_con->RuBP / (PS_con->RuBP + KM13 * theVars->V1Reg);
+            const double tmp = PsV1 * PS_con->RuBP / (PS_con->RuBP + KM13 * V1Reg);
             theVars->PS_Vel.v1 = tmp * CO2 / (CO2 + KM11 * (1 + O2 / KM12));
             if (PS_con->RuBP < PsV1 / 2) {
                 theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con->RuBP / (PsV1 / 2);
@@ -160,9 +160,9 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
         theVars->PS_Vel.v10 = PsV10 * (GAP * PS_con->S7P - Ri5P * Xu5P / KE10) / ((GAP + KM102 * (1 + Xu5P / KM101 + Ri5P / KM10)) * (PS_con->S7P + KM103));
         theVars->PS_Vel.v13 = PsV13 * (PS_con->ATP * Ru5P - theVars->ADP * PS_con->RuBP / KE13) / ((PS_con->ATP * (1 + theVars->ADP / KI134) + KM132*(1 + theVars->ADP / KI135)) * (Ru5P + KM131 * (1 + PS_con->PGA / KI131 + PS_con->RuBP / KI132 + theVars->Pi / KI133)));
 
-        const double I2 = theVars->TestLi * theVars->alfa * (1 - theVars->fc) / 2;
-        const double J = (I2 + theVars->Jmax - sqrt(pow(I2 + theVars->Jmax, 2) - 4 * theVars->Theta * I2 * theVars->Jmax)) / (2 * theVars->Theta);
-        theVars->PS_Vel.v16 = std::min(theVars->beta * J, PsV16 * (theVars->ADP * theVars->Pi - PS_con->ATP / KE16)/(KM161 * KM162 * (1 + theVars->ADP / KM161 + theVars->Pi / KM162 + PS_con->ATP / KM163 + theVars->ADP * theVars->Pi /(KM161 * KM162))));
+        const double I2 = theVars->TestLi * alfa * (1 - fc) / 2;
+        const double J = (I2 + Jmax - sqrt(pow(I2 + Jmax, 2) - 4 * Theta * I2 * Jmax)) / (2 * Theta);
+        theVars->PS_Vel.v16 = std::min(beta * J, PsV16 * (theVars->ADP * theVars->Pi - PS_con->ATP / KE16)/(KM161 * KM162 * (1 + theVars->ADP / KM161 + theVars->Pi / KM162 + PS_con->ATP / KM163 + theVars->ADP * theVars->Pi /(KM161 * KM162))));
 
         theVars->PS_Vel.v23 = PsV23 * G1P * PS_con->ATP /((G1P + KM231) * ((1 + theVars->ADP / KI23) * (PS_con->ATP + KM232) + (KM232 * theVars->Pi /(KA231 * PS_con->PGA + KA232 * F6P + KA233 * PS_con->FBP))));
 
@@ -202,7 +202,7 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
         const double Km8gap = 0.09 * theVars->PSRatio[100];
         const double Den = 1 + (1 + GAP / Km5gap) * (F6P / Km8f6p + PS_con->S7P / Km8s7p) + GAP / Km8gap + 1 / Km8p5p * (Xu5P * (1 + PS_con->E4P * Ri5P / Km5p5p) + PS_con->E4P + Ri5P);
 
-        const double Va = KVmo + theVars->V23 * (PS_con->PGA / (KA231 * (1 + PS_con->PGA / KA231)));
+        const double Va = KVmo + V23 * (PS_con->PGA / (KA231 * (1 + PS_con->PGA / KA231)));
         const double v23num = Va * (PS_con->ATP * G1P - PS_con->ADPG * OPOP / KE23);// The reason we set this here is to assume that we can obtain a reverse reaction here. However, a more realistic
         // way to achieve the homeostasis might be to allow starch breakdown and allow regulation of SBPase and FBPase.
 
@@ -211,13 +211,13 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
 
         const double MaxCoeff = 5 * theVars->PSRatio[101];
 
-        theVars->V1Reg = 1 + PS_con->PGA / KI11 + PS_con->FBP / KI12 + PS_con->SBP / KI13 + theVars->Pi / KI14 + NADPH / KI15;
+        V1Reg = 1 + PS_con->PGA / KI11 + PS_con->FBP / KI12 + PS_con->SBP / KI13 + theVars->Pi / KI14 + NADPH / KI15;
 
         // Initialize the PrVmax of the different reactions based on the global variables Vmax
-        PsV6 = theVars->V6;            // 6 FBPase FBP<->F6P+OP
-        PsV9 = theVars->V9;            // 9 SBPase SBP<->S7P+OP
-        PsV13 = theVars->V13;          // 13 Ribulosebiphosphate kinase Ru5P+ATP<->RuBP+ADP
-        PsV16 = theVars->V16;          // 16 ATP synthase ADP+Pi<->ATP
+        PsV6 = V6;            // 6 FBPase FBP<->F6P+OP
+        PsV9 = V9;            // 9 SBPase SBP<->S7P+OP
+        PsV13 = V13;          // 13 Ribulosebiphosphate kinase Ru5P+ATP<->RuBP+ADP
+        PsV16 = V16;          // 16 ATP synthase ADP+Pi<->ATP
         const double PsV31 = V31 * RegFactor; // 31 Phosphate translocator DHAPi<->DHAPo
         const double PsV32 = V32 * RegFactor; // 32 Phosphate translocator PGAi<->PGAo
         const double PsV33 = V33 * RegFactor; // 33 Phosphate translocator GAPi<->GAPo
@@ -233,22 +233,22 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
         }
 
         if (theVars->RUBISCOMETHOD == 2) {
-            const double tmp = theVars->V1 * PS_con->RuBP / (PS_con->RuBP + KM13 * theVars->V1Reg);
+            const double tmp = V1 * PS_con->RuBP / (PS_con->RuBP + KM13 * V1Reg);
             theVars->PS_Vel.v1 = tmp * theVars->CO2_cond / (theVars->CO2_cond + KM11 * (1 + theVars->O2_cond / KM12));
 
-            if (PS_con->RuBP < theVars->V1 / 2.5)
-                theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con->RuBP / (theVars->V1 / 2.5);
+            if (PS_con->RuBP < V1 / 2.5)
+                theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con->RuBP / (V1 / 2.5);
 
 
         } else if (theVars->RUBISCOMETHOD == 1){
             //fprintf("M1  ");
-            theVars->PS_Vel.v1 = theVars->V1 * theVars->CO2_cond / (theVars->CO2_cond + KM11 * (1 + theVars->O2_cond / KM12));
-            if (PS_con->RuBP < theVars->V1 / 2.5)
-                theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con->RuBP / (theVars->V1 / 2.0);// DNF was 2.5 not 2.0
+            theVars->PS_Vel.v1 = V1 * theVars->CO2_cond / (theVars->CO2_cond + KM11 * (1 + theVars->O2_cond / KM12));
+            if (PS_con->RuBP < V1 / 2.5)
+                theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con->RuBP / (V1 / 2.0);// DNF was 2.5 not 2.0
         }
 
-        theVars->PS_Vel.v2 = theVars->V2 * PS_con->PGA * PS_con->ATP / ((PS_con->PGA + KM21) * (PS_con->ATP + KM22 * (1 + theVars->ADP / KM23)));
-        theVars->PS_Vel.v3 = theVars->V3 * PS_con->DPGA * NADPH / ((PS_con->DPGA + KM31a) * (NADPH + KM32b));
+        theVars->PS_Vel.v2 = V2 * PS_con->PGA * PS_con->ATP / ((PS_con->PGA + KM21) * (PS_con->ATP + KM22 * (1 + theVars->ADP / KM23)));
+        theVars->PS_Vel.v3 = V3 * PS_con->DPGA * NADPH / ((PS_con->DPGA + KM31a) * (NADPH + KM32b));
         theVars->PS_Vel.v4 = 0;
         theVars->PS_Vel.v5 = V5 * (GAP * DHAP - PS_con->FBP / KE5) / ((KM51 * KM52) * (1 + GAP / KM51 + DHAP / KM52 + PS_con->FBP / KM53 + GAP * DHAP / (KM51 * KM52)));
         theVars->PS_Vel.v6 = PsV6 * (PS_con->FBP - F6P * theVars->Pi / KE6) / (PS_con->FBP + KM61 * (1 + F6P / KI61 + theVars->Pi / KI62));

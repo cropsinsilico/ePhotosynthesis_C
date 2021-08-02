@@ -29,11 +29,12 @@
 #include "modules/ssPS.hpp"
 
 double ssPS::GammaStar = 0.;
-
+double ssPS::kmO2 = 0.;
+double ssPS::kmCO2 = 0.;
 void ssPS::ssPSIni(const double t, Variables *theVars) {
     const double RT = 0.0083 * (273 + t);
 
     GammaStar = exp(19.02 - 37.83 / RT);
-    theVars->kmCO2 = exp(38.05 - 79.43 / RT);
-    theVars->kmO2 = exp(20.30 - 36.38 / RT);
+    kmCO2 = exp(38.05 - 79.43 / RT);
+    kmO2 = exp(20.30 - 36.38 / RT);
 }

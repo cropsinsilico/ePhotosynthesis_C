@@ -31,7 +31,7 @@ arr ssPS::ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, Variable
     ssPSIni(temp, theVars);
 
     const double Ci = CO2;
-    const double wc = VcmaxT * (Ci - GammaStar) / (Ci + theVars->kmCO2 * (1 + theVars->O2 / theVars->kmO2));
+    const double wc = VcmaxT * (Ci - GammaStar) / (Ci + kmCO2 * (1 + theVars->O2 / kmO2));
     const double wj = JmaxT * (Ci - GammaStar) / (4.5 * Ci + 10.5 * GammaStar);
     const double w = std::min(wc, wj);
 

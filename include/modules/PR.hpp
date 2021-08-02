@@ -128,6 +128,7 @@ private:
     static double Vf_T121;
     static double Vf_T122;
     static double Vf_T112;
+    static double V1T;
     static double PGA;
     static bool PR_PS_com;
     static bool PR_PS_RuBP;

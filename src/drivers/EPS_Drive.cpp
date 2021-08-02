@@ -28,6 +28,7 @@
 #include "globals.hpp"
 #include "drivers/EPS_Driver.hpp"
 #include "modules/EPS.hpp"
+#include "modules/PS.hpp"
 
 EPSDriver::~EPSDriver() {}
 
@@ -41,11 +42,11 @@ void EPSDriver::setup() {
     SYSInitial(theVars);
     //time = tglobal;
     theVars->Tp = this->Tp;
-    theVars->alfa = 0.85;
-    theVars->Jmax = theVars->EnzymeAct.at("Jmax");
-    theVars->fc = 0.15;
-    theVars->Theta = 0.7;
-    theVars->beta = 0.7519;
+    PS::setalfa(0.85);
+    PS::setJmax(theVars->EnzymeAct.at("Jmax"));
+    PS::setfc(0.15);
+    PS::setTheta(0.7);
+    PS::setbeta(0.7519);
     theVars->BF_FI_com = true;
 
     theVars->PR_PS_com = true;     // This is a variable indicating whether the PR model is actually need to be combined with PS or not. If 1 then means combined; 0 means not.

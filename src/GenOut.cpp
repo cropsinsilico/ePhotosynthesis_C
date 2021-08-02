@@ -60,7 +60,7 @@ void GenOut(double t, Variables *theVars) {
         if (theVars->FIBF_PSPR_com) {
             co2a[2] = theVars->GLight;
         } else {
-            co2a[2] = theVars->V16;
+            co2a[2] = PS::getV16();
         }
         co2a[3] = theVars->XanCycle2OUT.ABA;
         co2a[4] = ATP;

@@ -28,6 +28,7 @@
 #include "modules/FIBF.hpp"
 #include "modules/FI.hpp"
 #include "modules/BF.hpp"
+#include "modules/XanCycle.hpp"
 
 // This function calculate the mass balance equation for the complete model of the light reactions.
 
@@ -78,8 +79,8 @@ FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* FIBF_Con, Vari
     double dmax = 5 * pow(10, 8) * QH;
 
     if (theVars->XanCycle_BF_com) {
-        if (theVars->XanCycle2FIBF_Xstate > 0.3) {
-            dmax = dmax * theVars->XanCycle2FIBF_Xstate / 0.3;
+        if (XanCycle::getXanCycle2FIBF_Xstate() > 0.3) {
+            dmax = dmax * XanCycle::getXanCycle2FIBF_Xstate() / 0.3;
         }
     }
     dydt->kd = RC * (dmax - FIBF_Con->kd);

@@ -67,6 +67,7 @@ private:
       */
     static void _Rate(const double t, const RuACTCondition* RuACT_Con, Variables *theVars);
     static bool EPS_con;
+    static double activase;
     static double TIME;
     static size_t N;
 };

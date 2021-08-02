@@ -102,6 +102,14 @@ double PS::V24 = 0.;
 double PS::V31 = 0.;
 double PS::V32 = 0.;
 double PS::V33 = 0.;
+double PS::V2 = 0.;
+double PS::V3 = 0.;
+double PS::V6 = 0.;
+double PS::V9 = 0.;
+double PS::V13 = 0.;
+double PS::V16 = 0.;
+double PS::V23 = 0.;
+double PS::V1 = 0.;
 double PS::V5 = 0.;
 double PS::V7 = 0.;
 double PS::V8 = 0.;
@@ -136,7 +144,14 @@ double PS::Vf_T23 = 1;
 double PS::PsV1 = 0.;
 double PS::_NADPH = 0.;
 double PS::PiTc = 0.;
+double PS::V1Reg = 0.;
 double PS::TIME = 0.;
+double PS::alfa = 0;
+double PS::fc = 0;
+double PS::Theta = 0;
+double PS::beta = 0;
+double PS::Jmax = 0.;
+
 size_t PS::N = 1;
 const size_t PSCondition::count = 12;
 bool PSCondition::useC3 = false;
@@ -269,18 +284,18 @@ PSCondition* PS::_init(Variables *theVars) {
         // Initialize the values of the global variables
 
         if (theVars->GP == 0) {
-            theVars->V1 = theVars->EnzymeAct.at("V1");
-            theVars->V2 = theVars->EnzymeAct.at("V2");
-            theVars->V3 = theVars->EnzymeAct.at("V3");
+            V1 = theVars->EnzymeAct.at("V1");
+            V2 = theVars->EnzymeAct.at("V2");
+            V3 = theVars->EnzymeAct.at("V3");
             V5 = theVars->EnzymeAct.at("V5");
-            theVars->V6 = theVars->EnzymeAct.at("V6");
+            V6 = theVars->EnzymeAct.at("V6");
             V7 = theVars->EnzymeAct.at("V7");
             V8 = theVars->EnzymeAct.at("V8");
-            theVars->V9 = theVars->EnzymeAct.at("V9");
+            V9 = theVars->EnzymeAct.at("V9");
             V10	= theVars->EnzymeAct.at("V10");
-            theVars->V13 = theVars->EnzymeAct.at("V13");
-            theVars->V23 = theVars->EnzymeAct.at("V23");
-            theVars->V16 = theVars->EnzymeAct.at("V16");
+            V13 = theVars->EnzymeAct.at("V13");
+            V23 = theVars->EnzymeAct.at("V23");
+            V16 = theVars->EnzymeAct.at("V16");
         }
 
         V31 = 3.73/3;   // 1.05 *SC  *1.0 ;	%	(Lilley, Chon, Mosbach & Heldt, 1977b)	31	Phosphate translocator	DHAPi<->DHAPo   1.05 defulat
@@ -397,18 +412,18 @@ PSCondition* PS::_init(Variables *theVars) {
             const double STOM1 = 1;
             const double STOM2 = 1;
 
-            theVars->V1 = 2.93 * SC1 / STOM1 * theVars->PSRatio[4]; // (Harris & Koniger, 1997)
-            theVars->V2 = 30.15 * SC * STOM2 * theVars->PSRatio[5]; // (Harris & Koniger, 1997)
-            theVars->V3 = 4.04 * SC * STOM2 * theVars->PSRatio[6];  // 1.57*SC     ; // (Harris & Koniger, 1997)
+            V1 = 2.93 * SC1 / STOM1 * theVars->PSRatio[4]; // (Harris & Koniger, 1997)
+            V2 = 30.15 * SC * STOM2 * theVars->PSRatio[5]; // (Harris & Koniger, 1997)
+            V3 = 4.04 * SC * STOM2 * theVars->PSRatio[6];  // 1.57*SC     ; // (Harris & Koniger, 1997)
             V5 = 1.22 * SC * theVars->PSRatio[7];                   // (Harris & Koniger, 1997)
-            theVars->V6 = 0.734 * SC / STOM1 * theVars->PSRatio[8]; // (Harris & Koniger, 1997)
+            V6 = 0.734 * SC / STOM1 * theVars->PSRatio[8]; // (Harris & Koniger, 1997)
             V7 = 3.12 * SC * 4 * theVars->PSRatio[9];               // (Harris & Koniger, 1997)
             V8 = 1.22 * SC * theVars->PSRatio[10];                  // (Harris & Koniger, 1997)
-            theVars->V9 = 0.32 * 3 * theVars->PSRatio[11]; // 0.17*SC *FC ; // (Harris & Koniger, 1997) *3.
+            V9 = 0.32 * 3 * theVars->PSRatio[11]; // 0.17*SC *FC ; // (Harris & Koniger, 1997) *3.
             //theVars->V10 = theVars->V7; // (Harris & Koniger, 1997)
-            theVars->V13 = 10.81 * SC1 * theVars->PSRatio[12];      // (Harris & Koniger, 1997)
-            theVars->V16 = 5.47 * theVars->PSRatio[13];             // (Aflalo & Shavit, 1983, Davenport & McLeod, 1986)
-            theVars->V23 = 2 * theVars->PSRatio[14];
+            V13 = 10.81 * SC1 * theVars->PSRatio[12];      // (Harris & Koniger, 1997)
+            V16 = 5.47 * theVars->PSRatio[13];             // (Aflalo & Shavit, 1983, Davenport & McLeod, 1986)
+            V23 = 2 * theVars->PSRatio[14];
         }
         V24 = 2 * theVars->PSRatio[15];
         V31 = 1.0 * theVars->PSRatio[16] * 20;

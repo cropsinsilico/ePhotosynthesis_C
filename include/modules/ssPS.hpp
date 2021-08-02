@@ -44,4 +44,6 @@ public:
     static void ssPSIni(const double t, Variables *theVars);
 private:
     static double GammaStar;
+    static double kmO2;
+    static double kmCO2;
 };
