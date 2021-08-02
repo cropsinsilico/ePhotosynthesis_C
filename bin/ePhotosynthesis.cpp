@@ -24,7 +24,6 @@
  *
  **********************************************************************************************************************************************/
 
-#ifndef BUILD_LIBRARY
 #include <stdlib.h>
 #include <string>
 #include <sstream>
@@ -389,6 +388,3 @@ int main(int argc, const char* argv[]) {
         exit(EXIT_FAILURE);
     }
 }
-
-
-#endif // BUILD_LIBRARY
