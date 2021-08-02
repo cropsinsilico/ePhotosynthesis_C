@@ -26,6 +26,7 @@
 
 #include "Variables.hpp"
 
+const double VolRatioStCyto = 1.;
 double TargetFunVal(Variables *theVars) {
     if (!theVars->record)
         return 0.;
@@ -38,7 +39,7 @@ double TargetFunVal(Variables *theVars) {
 
     //PSVEL = PS_VEL';// --unused
     double ratio;
-    if (theVars->VolRatioStCyto == 1) {
+    if (VolRatioStCyto == 1.) {
         ratio = PSVCOEFF;
     } else {
         ratio = PSVCOEFF * 4 / 9;

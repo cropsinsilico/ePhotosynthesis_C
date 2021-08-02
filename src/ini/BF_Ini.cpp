@@ -36,6 +36,9 @@ bool BFCondition::PS_connect = false;
 bool BF::RROEA_connect = false;
 bool BFCondition::RROEA_connect = false;
 double BF::TIME = 0.;
+double BF::cATPsyn = 0.;
+double BF::CPSi = 0.;
+double BF::cNADPHsyn = 0.;
 size_t BF::N = 1;
 
 double BF::_Pi = 0.;
@@ -47,10 +50,9 @@ BFCondition* BF::_init(Variables *theVars) {
     BF::setPS_connect(theVars->FIBF_PSPR_com);
     BF::setRROEA_connect(theVars->RROEA_EPS_com);
     if (theVars->useC3) {
-        theVars->cNADPHsyn = 1.;
-        theVars->CPSi = 1.;
-        theVars->cATPsyn = 1.;
-        theVars->cpsii = 1.;
+        cNADPHsyn = 1.;
+        CPSi = 1.;
+        cATPsyn = 1.;
         // cATPsyn=1.0447;%1.01866 WY201803
         // CPSi=1.0131;% 1.0237 WY201803
         // cNADPHsyn=1.094468408;%1.0388 WY201803
@@ -79,7 +81,7 @@ BFCondition* BF::_init(Variables *theVars) {
         theVars->BF_RC.K8 = theVars->EnzymeAct.at("K8");     // The rate constant for ISPH + CytC1 --> ISPH(ox) + CytC1+ Unit: s-1
         theVars->BF_RC.K9 = theVars->EnzymeAct.at("K9");     // The rate constant for the electron transport from cytc1 to cytc2 Unit: s-1
         theVars->BF_RC.K10 = theVars->EnzymeAct.at("K10");    // The rate constant for the electron transport from cytc2 to P700 Unit: s-1
-        theVars->BF_RC.Vmax11 = theVars->EnzymeAct.at("Vmax11") * theVars->cATPsyn;  // The maximum rate of ATP synthesis Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+        theVars->BF_RC.Vmax11 = theVars->EnzymeAct.at("Vmax11") * cATPsyn;  // The maximum rate of ATP synthesis Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
         theVars->BF_RC.Kqi = pow(10, 3);            // The rate constant for uptake of two protons from the stroma to Q2- s-1
         theVars->BF_RC.PK = 3.6 * pow(10, (-8)) * PMODTEM;  // The permeability constant for K Unit: cm s-1
         theVars->BF_RC.PMg = 3.6 * pow(10, (-8)) * PMODTEM; // The permeability constant for Mg Unit: cm s-1
@@ -90,7 +92,7 @@ BFCondition* BF::_init(Variables *theVars) {
         theVars->BF_RC.Kd = theVars->EnzymeAct.at("Kd");    // The rate constant for heat dissipation; see the note for FI Unit: s-1
         theVars->BF_RC.KE8 = KE8;                   // ISPHr + cytc1 --> ISPHox + cytc1- Unit: s-1
         theVars->BF_RC.KE9 = KE9;                   // cytc1- + cytc2 --> cytc1 + cytc2- Unit: s-1
-        theVars->BF_RC.K15 = theVars->EnzymeAct.at("K15") * theVars->CPSi;     // The rate constant for primary charge separation in PSI Unit: s-1
+        theVars->BF_RC.K15 = theVars->EnzymeAct.at("K15") * CPSi;     // The rate constant for primary charge separation in PSI Unit: s-1
         theVars->BF_RC.K16 = theVars->EnzymeAct.at("K16");    // The rate constant for electron tranfer from electron acceptor of PSI to Fd Unit: s-1
         theVars->BF_RC.MemCap = 0.6 * pow(10, (-6)); // The membrane capacity
         theVars->BF_RC.RVA = 8 * pow(10, (-10));     // The ratio of lumen volume to thylakoid membrane area
@@ -101,7 +103,7 @@ BFCondition* BF::_init(Variables *theVars) {
         theVars->BF_RC.KM1PI = 0.3;                  // The michaelis menton constant for ATP for PI synthesis
         theVars->BF_RC.KM2NADP = 0.05;               // The michaelis menten constant for NADP Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
         theVars->BF_RC.KM2NADPH = 0.035;             // The michaelis menten constant for NADPH Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
-        theVars->BF_RC.V2M = theVars->EnzymeAct.at("V2M") * theVars->cNADPHsyn;     // The maximum rate of NADPH formation Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+        theVars->BF_RC.V2M = theVars->EnzymeAct.at("V2M") * cNADPHsyn;     // The maximum rate of NADPH formation Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
         theVars->BF_RC.KE2 = 495;                    // Equilibrium constatn
     } else {
 

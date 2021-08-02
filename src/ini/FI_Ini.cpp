@@ -31,6 +31,7 @@
 double FI::TIME = 0.;
 size_t FI::N = 1;
 const size_t FICondition::count = 22;
+double FI::cpsii = 0.;
 bool FICondition::BF_connect = false;
 bool FI::BF_connect = false;
 // This is the routine that initialize the parameters, initial conditions for simulation of fluorescence induction curve.
@@ -45,15 +46,15 @@ FICondition* FI::_init(Variables *theVars) {
     // The rate constant used in the model
     // Reference
     // The rate constant used in the model
-    theVars->cpsii = 1.;
     if (theVars->useC3) {
+        cpsii = 1.;
         theVars->FI_RC.kA_d = theVars->EnzymeAct.at("kA_d");         // The rate constant of heat dissipation from peripheral antenna Lazar (1999), 0.25~1 *10^(9)
         theVars->FI_RC.kA_f = theVars->EnzymeAct.at("kA_f");         // The rate constant of fluorescence emission from peripheral antenna Lazar 1999, with a lifetime of 5 ns at closed reaction center
         theVars->FI_RC.kA_U = theVars->EnzymeAct.at("kA_U");         // The rate constant of exciton transfer from periphral antenna to core antenna Reference needed, a guess
         theVars->FI_RC.kU_A = theVars->EnzymeAct.at("kU_A");         // The rate constant of exciton transfer from core antenna to peripheral antenna Reference needed, a guess
         theVars->FI_RC.kU_d = theVars->EnzymeAct.at("kU_d");         // The rate constant of  heat emission from core antenna
         theVars->FI_RC.kU_f = theVars->EnzymeAct.at("kU_f");         // The rate constant of fluorescence emission from core antenna
-        theVars->FI_RC.k1 = theVars->EnzymeAct.at("k1") * theVars->cpsii;        // WY201803  The rate constant of primary charge separation for open reaction center
+        theVars->FI_RC.k1 = theVars->EnzymeAct.at("k1") * cpsii;        // WY201803  The rate constant of primary charge separation for open reaction center
         theVars->FI_RC.k_r1 = theVars->EnzymeAct.at("k_r1");         // The rate constant of charge recombination for open reactoin center
         theVars->FI_RC.kz = theVars->EnzymeAct.at("kz");           // The rate constant of the Tyrosine oxidation Lazar (1999); 3.8~50 * 10^6
         theVars->FI_RC.k12 = theVars->EnzymeAct.at("k12");          // The rate constant of the S1 to S2 transition Lazar (1999); 0.667~33.3 * 10^3

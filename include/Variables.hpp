@@ -79,14 +79,7 @@ struct Variables {
     const double AVR = 30;
     const double HPR = 4.66;
     const double O2 = 210;
-    const double VolRatioStCyto = 1;
 ////
-    double cATPsyn = 0.;
-    double CPSi = 0.;
-    double cNADPHsyn = 0.;
-    //double LI = 0.;
-    double cpsii = 0;
-
     double CO2_cond = 0.;
     double ChlPSI = 0.;
     double ChlT = 0.;

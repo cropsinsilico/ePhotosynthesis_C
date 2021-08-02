@@ -76,6 +76,9 @@ private:
       @param theVars The global variables
       */
     static void _Rate(const double t, const BFCondition* BF_con, Variables *theVars);
+    static double cATPsyn;
+    static double CPSi;
+    static double cNADPHsyn;
     static bool FI_connect;
     static bool PS_connect;
     static bool RROEA_connect;

@@ -65,6 +65,7 @@ private:
       @param theVars The global variables
       */
     static void _Rate(const double t, const FICondition* FI_Con, Variables *theVars);
+    static double cpsii;
     static bool BF_connect;
     static double TIME;
     static size_t N;
