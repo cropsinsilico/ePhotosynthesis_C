@@ -44,10 +44,10 @@ FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* FIBF_Con, Vari
 
     const double PQ = theVars->FIBF_Pool.PQT - theVars->FI_Pool.QBt - BF_con->QH2 - BF_con->Qi - BF_con->Qn - BF_con->Qr - BF_con->ISPoQH2 - BF_con->QHsemi;
 
-    theVars->FIBF2FI_PQa = theVars->FI_Pool.QBt + BF_con->Qi + BF_con->Qn + BF_con->Qr + BF_con->ISPoQH2 + BF_con->QHsemi;
+    FIBF2FI_PQa = theVars->FI_Pool.QBt + BF_con->Qi + BF_con->Qn + BF_con->Qr + BF_con->ISPoQH2 + BF_con->QHsemi;
     BF_con->Q = PQ;
 
-    theVars->FIBF2FI_PQ = PQ;
+    FIBF2FI_PQ = PQ;
 
     theVars->FI_RC.kA_d = FIBF_Con->kd;
     theVars->FI_RC.kU_d = FIBF_Con->kd;

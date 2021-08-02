@@ -28,12 +28,14 @@
 
 #include "ModuleBase.hpp"
 #include "conditions/SUCSCondition.hpp"
+#include "definitions.hpp"
 class PS;
 
 /**
  Class for SUCS related functions and common variables
  */
 class SUCS : public ModuleBase<SUCS, SUCSCondition> {
+    SET_GET(SUCS2PS_Pic)
 private:
     friend ModuleBase;
     /**

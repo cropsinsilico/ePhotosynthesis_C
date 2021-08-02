@@ -43,6 +43,7 @@ double PS::KE21 = 0.;
 double PS::KE22 = 0.;
 double PS::KE23 = 0.;
 double PS::KE25 = 0.;
+double PS::KE4 = 0.;
 double PS::KE5 = 0.;
 double PS::KE6 = 0.;
 double PS::KE7 = 0.;
@@ -134,6 +135,7 @@ double PS::Vf_T13 = 1;
 double PS::Vf_T23 = 1;
 double PS::PsV1 = 0.;
 double PS::_NADPH = 0.;
+double PS::PiTc = 0.;
 double PS::TIME = 0.;
 size_t PS::N = 1;
 const size_t PSCondition::count = 12;
@@ -206,7 +208,7 @@ PSCondition* PS::_init(Variables *theVars) {
         KM32b	=	0.1	;	    // 	NADPH	3	DPGA+NADPH <->GAP + OP+NADP
         //KM41	=	2.5	;	    //	DHAP	4	DHAP <->GAP
         //KM42	=	0.68;		// 	GAP	4	DHAP <->GAP
-        theVars->KE4     =   0.05;       //   Using the value from Patterson
+        KE4     =   0.05;       //   Using the value from Patterson
         KM51	=	0.3	;	    //	GAP	5	GAP+DHAP <->FBP
         KM52	=	0.4	;	    // 	DHAP	5	GAP+DHAP <->FBP
         KM53	=	0.02;		//	FBP	5	GAP+DHAP <->FBP     // Original Value: 0.02
@@ -291,8 +293,8 @@ PSCondition* PS::_init(Variables *theVars) {
         PS_PEXT = 0.5 * theVars->PSRatio[3];   //   Global constant for the cytosolic Phosphate concentration;
 
         // Initialize the constants for the different reactions
-        theVars->KM11 = 0.0115 * theVars->PSRatio[19]; //  CO2 1 RuBP+CO2->2PGA
-        theVars->KM12 = 0.222 * theVars->PSRatio[20];  // O2 1 RuBP+CO2->2PGA
+        KM11 = 0.0115 * theVars->PSRatio[19]; //  CO2 1 RuBP+CO2->2PGA
+        KM12 = 0.222 * theVars->PSRatio[20];  // O2 1 RuBP+CO2->2PGA
         KM13 = 0.02 * theVars->PSRatio[21];            //  RuBP 1 RuBP+CO2->2PGA
 
         KI11 = 0.84 * theVars->PSRatio[22];  // PGA
@@ -308,7 +310,7 @@ PSCondition* PS::_init(Variables *theVars) {
         KM31a = 0.004 * theVars->PSRatio[30]; // BPGA 3 DPGA+NADPH <->GAP + OP+NADP
         KM32b = 0.1 * theVars->PSRatio[31];   //  NADPH 3 DPGA+NADPH <->GAP + OP+NADP
 
-        theVars->KE4 = 1 / 0.05 * theVars->PSRatio[34]; // Using the value from Patterson
+        KE4 = 1 / 0.05 * theVars->PSRatio[34]; // Using the value from Patterson
 
         KM51 = 0.3 * theVars->PSRatio[35];  // GAP 5 GAP+DHAP <->FBP
         KM52 = 0.4 * theVars->PSRatio[36];  //  DHAP 5 GAP+DHAP <->FBP

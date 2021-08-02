@@ -28,6 +28,7 @@
 #include "modules/EPS.hpp"
 #include "modules/FIBF.hpp"
 #include "modules/CM.hpp"
+#include "modules/BF.hpp"
 
 // This model includes the mass balance equations for the full model of the light reactions.
 
@@ -44,11 +45,11 @@ EPSCondition* EPS::_MB_con(const double t, const EPSCondition* EPS_Con, Variable
     // used in the mass balance equation should be in exact sequence with the sequence used in the inialization.
 
     if (theVars->useC3) {
-        CMdydt->PS_PR_con->PS_con->ATP = CMdydt->PS_PR_con->PS_con->ATP - theVars->PS_Vel.v16 + theVars->EPS_ATP_Rate;
+        CMdydt->PS_PR_con->PS_con->ATP = CMdydt->PS_PR_con->PS_con->ATP - theVars->PS_Vel.v16 + BF::getEPS_ATP_Rate();
         FIBFdydt->BF_con->NADPH = theVars->BF_Vel.vbfn2/2 - theVars->PS_Vel.v3;// - 1 * PS2EPS_NADPH/(PS2EPS_NADPH + 0.5) ;  // QF changed /2 and ;// - 1 * PS2EPS_NADPH/(PS2EPS_NADPH + 0.5)
 
     } else {
-        CMdydt->PS_PR_con->PS_con->ATP = CMdydt->PS_PR_con->PS_con->ATP - theVars->PS_Vel.v16 + theVars->EPS_ATP_Rate - theVars->PR_Vel.v124; //WY 201804
+        CMdydt->PS_PR_con->PS_con->ATP = CMdydt->PS_PR_con->PS_con->ATP - theVars->PS_Vel.v16 + BF::getEPS_ATP_Rate() - theVars->PR_Vel.v124; //WY 201804
         FIBFdydt->BF_con->NADPH = theVars->BF_Vel.vbfn2 / 2 - theVars->PS_Vel.v3 - 2 * theVars->PR_Vel.v124; //WY 201804
     }
 

@@ -26,6 +26,7 @@
 #include <math.h>
 #include "Variables.hpp"
 #include "modules/FI.hpp"
+#include "modules/FIBF.hpp"
 
 void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
 
@@ -38,10 +39,10 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
     double PQ;
     if (FICondition::BF_connect) {
         PQn = FI_Con->parent->BF_con->QH2;
-        PQ = theVars->FIBF2FI_PQ;
+        PQ = FIBF::getFIBF2FI_PQ();
     } else {
         PQn = FI_Con->PQn;
-        PQ = theVars->FI_Pool.PQT - PQn - theVars->FIBF2FI_PQa;
+        PQ = theVars->FI_Pool.PQT - PQn - FIBF::getFIBF2FI_PQa();
     }
 
     const double P680PheoT = 1;
@@ -51,9 +52,9 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
     //const double It = theVars->FI_Param[0]; // It The total incident light intensity
 
     // rate: FI_Con.U -> U*
-    theVars->FI_Vel.Ic = theVars->FI_Param[0] * theVars->ChlT / (theVars->ChlT2 + theVars->ChlPSI); // Ic The incident light on the core antenna; theVars->ChlT is defined in upper lines as the total amount of Chl in one U.
+    theVars->FI_Vel.Ic = theVars->FI_Param[0] * FIBF::getChlT() / (FIBF::getChlT2() + FIBF::getChlPSI()); // Ic The incident light on the core antenna; theVars->ChlT is defined in upper lines as the total amount of Chl in one U.
     // rate: FI_Con.A -> A*
-    theVars->FI_Vel.Ia = theVars->FI_Param[0] * (theVars->ChlT2 - theVars->ChlT) / (theVars->ChlT2 + theVars->ChlPSI); // Ia The incident light on the peripheral antenna
+    theVars->FI_Vel.Ia = theVars->FI_Param[0] * (FIBF::getChlT2() - FIBF::getChlT()) / (FIBF::getChlT2() + FIBF::getChlPSI()); // Ia The incident light on the peripheral antenna
 
     //////////////////////////////////////////////////////////////////////////////////////////
     // Calculate the rate of different reactions //

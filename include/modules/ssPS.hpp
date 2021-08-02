@@ -27,15 +27,21 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
-/**
+
+class ssPS {
+public:
+    /**
   Run the calculations
   */
-arr ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, double Light, Variables *theVars);
+    static arr ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, Variables *theVars);
 
-/**
+    /**
   Initialize the calculations
 
   @param t The current time
   @param[in,out] theVars The global variables
   */
-void ssPSIni(const double t, Variables *theVars);
+    static void ssPSIni(const double t, Variables *theVars);
+private:
+    static double GammaStar;
+};

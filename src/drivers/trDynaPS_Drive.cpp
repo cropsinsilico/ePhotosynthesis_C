@@ -50,9 +50,6 @@ void trDynaPSDriver::setup() {
     }
     SYSInitial(theVars);
 
-    // Indicate in the beginning there is no ATP synthesis activity.
-    theVars->EPS_ATP_Rate = 0;
-
     IniModelCom(theVars);        // Initialize the structure of the model, i.e. Is this model separate or combined with others.
 
     // The combination of BF and FI model

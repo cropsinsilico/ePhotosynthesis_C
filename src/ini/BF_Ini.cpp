@@ -39,6 +39,7 @@ double BF::TIME = 0.;
 double BF::cATPsyn = 0.;
 double BF::CPSi = 0.;
 double BF::cNADPHsyn = 0.;
+double BF::EPS_ATP_Rate = 0.;
 size_t BF::N = 1;
 
 double BF::_Pi = 0.;
@@ -49,6 +50,8 @@ BFCondition* BF::_init(Variables *theVars) {
     BF::setFI_connect(theVars->BF_FI_com);
     BF::setPS_connect(theVars->FIBF_PSPR_com);
     BF::setRROEA_connect(theVars->RROEA_EPS_com);
+    // Indicate in the beginning there is no ATP synthesis activity.
+    EPS_ATP_Rate = 0.;
     if (theVars->useC3) {
         cNADPHsyn = 1.;
         CPSi = 1.;

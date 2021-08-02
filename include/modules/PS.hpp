@@ -28,6 +28,7 @@
 
 #include "ModuleBase.hpp"
 #include "conditions/PSCondition.hpp"
+#include "definitions.hpp"
 class PR;
 class RuACT;
 class SUCS;
@@ -46,6 +47,7 @@ public:
         PSCondition::setC3(val);
     }
     static size_t getN() {return N;}
+    SET_GET(PiTc)
 private:
     friend ModuleBase;
     /**
@@ -88,6 +90,7 @@ private:
     static double KE22;
     static double KE23;
     static double KE25;
+    static double KE4;
     static double KE5;
     static double KE6;
     static double KE7;

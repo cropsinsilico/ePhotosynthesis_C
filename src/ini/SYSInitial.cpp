@@ -25,6 +25,7 @@
  **********************************************************************************************************************************************/
 
 #include "Variables.hpp"
+#include "modules/FIBF.hpp"
 
 // This routine initialze the parameters used for all the routines.
 
@@ -38,7 +39,7 @@ void SYSInitial(Variables *theVars) {
 
     theVars->PS12ratio = input_PSI / input_PSIIcore;
 
-    theVars->ChlT2 = input_PSIIcore * (PSIIantennaSize + 13 * input_LHCII); // U and A, PSII and LHCII
-    theVars->ChlT = PSIIantennaSize * input_PSIIcore;  // U , PSII
-    theVars->ChlPSI = input_PSI * (PSIantennaSize + 13 * input_LHCI);       // U and A of PSI, total Chl in PSI
+    FIBF::setChlT2(input_PSIIcore * (PSIIantennaSize + 13 * input_LHCII)); // U and A, PSII and LHCII
+    FIBF::setChlT(PSIIantennaSize * input_PSIIcore);  // U , PSII
+    FIBF::setChlPSI(input_PSI * (PSIantennaSize + 13 * input_LHCI));       // U and A of PSI, total Chl in PSI
 }

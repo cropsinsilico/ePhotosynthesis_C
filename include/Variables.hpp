@@ -81,30 +81,14 @@ struct Variables {
     const double O2 = 210;
 ////
     double CO2_cond = 0.;
-    double ChlPSI = 0.;
-    double ChlT = 0.;
-    double ChlT2 = 0.;
-    double EPS_ATP_Rate = 0.;
-    double FIBF2FI_PQ = 0.;
-    double FIBF2FI_PQa = 0.;
 
-    double GLUc = 0.;
     double GLight = 0.;
-    double GammaStar = 0.;
-    double Glight = 0.;
-    double KM11 = 0.;
-    double KM12 = 0.;
-    double KE4 = 0.;
     double O2_cond = 0.;
     double PS12ratio = 0.;
     double ADP;
-    double ATP;
 
     double Pi;
-    double PiTc;
 
-    double RUBISCOTOTAL = 0.;
-    double SUCS2PS_Pic = 0.;
     double TestATPCost = 0.;
     double TestCa = 0.;
     double TestLi = 0.;

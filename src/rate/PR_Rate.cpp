@@ -84,8 +84,8 @@ void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
 
         } else if (theVars->RUBISCOMETHOD == 1) {
             theVars->PR_Vel.v111 = PrV111 * theVars->O2_cond / (theVars->O2_cond + KO * (1 + theVars->CO2_cond / KC));
-            if (RuBP < theVars->RUBISCOTOTAL)
-                theVars->PR_Vel.v111 = theVars->PR_Vel.v111 * RuBP / theVars->RUBISCOTOTAL;
+            if (RuBP < RUBISCOTOTAL)
+                theVars->PR_Vel.v111 = theVars->PR_Vel.v111 * RuBP / RUBISCOTOTAL;
 
         }
 
@@ -101,7 +101,7 @@ void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
 
         theVars->PR_Vel.v122 = PrV122 * (PR_con->GOAc * PR_con->SERc - PR_con->HPRc * PR_con->GLYc / KE122) / ((PR_con->GOAc + KM1221) * (PR_con->SERc + KM1222 * (1 + PR_con->GLYc / KI1221)));
         theVars->PR_Vel.v123 = PrV123 * (PR_con->HPRc * NADHc - PR_con->GCEA * NADc / KE123) / (PR_con->HPRc + KM123 * (1 + PR_con->HPRc / KI123));
-        theVars->PR_Vel.v124 = PrV124 * (PR_con->GOAc * theVars->GLUc-KGc * PR_con->GLYc/KE124)/((PR_con->GOAc + KM1241)*(theVars->GLUc + KM1242 * (1 + PR_con->GLYc / KI124)));
+        theVars->PR_Vel.v124 = PrV124 * (PR_con->GOAc * GLUc-KGc * PR_con->GLYc/KE124)/((PR_con->GOAc + KM1241)*(GLUc + KM1242 * (1 + PR_con->GLYc / KI124)));
 
         theVars->PR_Vel.v131 = PrV131 * PR_con->GLYc/(PR_con->GLYc + KM1311*(1 + PR_con->SERc / KI1311));
         theVars->PR_Vel.v2out = V2T * (PR_con->GCA/(PR_con->GCA + KM1012*(1 + PR_con->GCEA / KI1012)) - PR_con->GCAc /(PR_con->GCAc + KM1012 * (1 + PR_con->GCEAc / KI1012)));   // Competive inhibition
@@ -138,8 +138,8 @@ void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
 
         } else if (theVars->RUBISCOMETHOD == 1){
             theVars->PR_Vel.v111 = V111 * theVars->O2_cond / (theVars->O2_cond + KO * (1 + theVars->CO2_cond / KC));
-            if (RuBP < theVars->RUBISCOTOTAL)
-                theVars->PR_Vel.v111 = theVars->PR_Vel.v111 * RuBP / theVars->RUBISCOTOTAL;
+            if (RuBP < RUBISCOTOTAL)
+                theVars->PR_Vel.v111 = theVars->PR_Vel.v111 * RuBP / RUBISCOTOTAL;
 
         } else {
             throw std::invalid_argument("Invalid value of RUBISCOMETHOD used");
@@ -163,7 +163,7 @@ void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
         theVars->PR_Vel.v121 = V121 * PR_con->GCAc / (PR_con->GCAc + KM121);
         theVars->PR_Vel.v122 = V122 * (PR_con->GOAc * PR_con->SERc - PR_con->HPRc * PR_con->GLYc / KE122) / ((PR_con->GOAc + KM1221) * (PR_con->SERc + KM1222 * (1 + PR_con->GLYc / KI1221)));
         theVars->PR_Vel.v123 = V123 * (PR_con->HPRc * NADHc - PR_con->GCEAc * NADc / KE123) / ((PR_con->HPRc + KM123 * (1 + PR_con->HPRc / KI123)) * (NADHc + PrKM1232));
-        theVars->PR_Vel.v124 = V124 * (PR_con->GOAc * theVars->GLUc - KGc * PR_con->GLYc / KE124) / ((PR_con->GOAc + KM1241) * (theVars->GLUc + KM1242 * (1 + PR_con->GLYc / KI1221)));
+        theVars->PR_Vel.v124 = V124 * (PR_con->GOAc * GLUc - KGc * PR_con->GLYc / KE124) / ((PR_con->GOAc + KM1241) * (GLUc + KM1242 * (1 + PR_con->GLYc / KI1221)));
         theVars->PR_Vel.v131 = V131 * PR_con->GLYc / (PR_con->GLYc + KM1311 * (1 + PR_con->SERc / KI1311));
         theVars->PR_Vel.v1in = theVars->V1T * (PR_con->GCEAc / (PR_con->GCEAc + KM1011 * (1 + PR_con->GCAc / KI1011)) - PR_con->GCEA / (PR_con->GCEA + KM1011 * (1 + PR_con->GCA / KI1011)));// Competive inhibition
         theVars->PR_Vel.v2out = V2T * (PR_con->GCA / (PR_con->GCA + KM1012 * (1 + PR_con->GCEA / KI1012)) - PR_con->GCAc / (PR_con->GCAc + KM1012 * (1 + PR_con->GCEAc / KI1012)));// Competive inhibition

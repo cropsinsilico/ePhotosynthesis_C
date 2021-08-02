@@ -28,6 +28,7 @@
 
 #include "ModuleBase.hpp"
 #include "conditions/PRCondition.hpp"
+#include "definitions.hpp"
 
 class PS_PR;
 
@@ -44,6 +45,7 @@ public:
         PR_PS_RuBP = val;
         PRCondition::setRuBP(val);
     }
+    SET_GET(RUBISCOTOTAL)
 private:
     friend ModuleBase;
     friend PS_PR;
@@ -129,6 +131,7 @@ private:
     static double PGA;
     static bool PR_PS_com;
     static bool PR_PS_RuBP;
+    static double GLUc;
     static double TIME;
     static size_t N;
 };

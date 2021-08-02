@@ -90,6 +90,8 @@ double PR::Vf_T122 = 0;
 double PR::Vf_T112 = 0;
 double PR::PGA = 0.;
 double PR::TIME = 0.;
+double PR::GLUc = 0.;
+double PR::RUBISCOTOTAL = 0.;
 size_t PR::N = 1;
 const size_t PRCondition::count = 10;
 bool PRCondition::PR_PS_com = false;
@@ -102,12 +104,12 @@ PRCondition* PR::_init(Variables *theVars) {
     if (theVars->useC3) {
         NADHc = 0.47;
         NADc = 0.4;
-        theVars->GLUc = 24;
+        GLUc = 24.;
         KGc = 0.4;
     } else {
         NADHc = 0.47 * theVars->PRRatio[8];
         NADc = 0.4 * theVars->PRRatio[9];
-        theVars->GLUc = 24 * theVars->PRRatio[12];
+        GLUc = 24. * theVars->PRRatio[12];
         KGc = 0.4 * theVars->PRRatio[13];
 
         PR_ADP = 0.82 * theVars->PRRatio[14];
@@ -235,8 +237,8 @@ PRCondition* PR::_init(Variables *theVars) {
         KC = 0.0115 * theVars->PRRatio[17]; // Michaelis constant for CO2
 
         if (theVars->PR_PS_com) {
-            KC = theVars->KM11;
-            KO = theVars->KM12;
+            KC = PS::KM11;
+            KO = PS::KM12;
         }
 
         KR = 0.02 * theVars->PRRatio[18]; // Michaelis constant for RUBP

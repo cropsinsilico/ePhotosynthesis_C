@@ -31,6 +31,7 @@
 //#include "conditions/CMCondition.hpp"
 #include "conditions/EPSCondition.hpp"
 #include "conditions/RedoxRegCondition.hpp"
+#include "modules/BF.hpp"
 
 #define RegFactor 1.
 
@@ -41,7 +42,7 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
     PsPEXT = PS_PEXT;
 
     if (theVars->PSPR_SUCS_com)
-        PsPEXT = theVars->SUCS2PS_Pic;
+        PsPEXT = SUCS::getSUCS2PS_Pic();
     double NADPH;
     if (theVars->FIBF_PSPR_com) {
         NADPH = PS_con->parent->parent->parent->FIBF_con->BF_con->NADPH;
@@ -53,16 +54,13 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
     // used to regulate the TP export and starch synthesis.
     // Now Calculate the concentration of the auxiliary variables.
 
-    const double DHAP = PS_con->T3P / (1 + theVars->KE4);
-    const double GAP = theVars->KE4 * PS_con->T3P / (1 + theVars->KE4);
+    const double DHAP = PS_con->T3P / (1 + KE4);
+    const double GAP = KE4 * PS_con->T3P / (1 + KE4);
     //////////////////////////////////////////////////
     // DHAP=  T3P*KE4/(1+KE4); ////WY201803
     // GAP =  T3P/(1+KE4);
     //////////////////////////////////////////////////////////////////////
 
-    double ATPreg = DHAP / 3; // If there is no regulation of enzyme activity, some forcing needed to be added.
-    if (ATPreg > 1)
-        ATPreg = 1;
 
     theVars->ADP = PS_C_CA - PS_con->ATP;
     const double F6P = (PS_con->HexP / KE21) / (1 + 1 / KE21 + KE22);
@@ -71,6 +69,8 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
     const double Ru5P = PS_con->PenP / (1 + 1 / KE11 + 1 / KE12);
     const double Ri5P = (PS_con->PenP / KE11) / (1 + 1 / KE11 + 1 / KE12);
     const double Xu5P = (PS_con->PenP / KE12) / (1 + 1 / KE11 + 1 / KE12);
+
+    double ATPreg;
 
     if (!theVars->RedoxReg_RA_com) {
         ATPreg = PS_con->PGA / 3;
@@ -82,8 +82,8 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
     if (theVars->useC3) {
         const SUCSCondition *SUCS_con = PS_con->parent->parent->SUCS_con;
 
-        theVars->PiTc = theVars->SUCS_Pool.PTc - 2 * (SUCS_con->FBPc + SUCS_con->F26BPc) - (SUCS_con->PGAc + SUCS_con->T3Pc + SUCS_con->HexPc + SUCS_con->SUCP + SUCS::UTPc + SUCS::ATPc);
-        PsPEXT = (pow(pow(SUCS::KE61, 2) + 4 * SUCS::KE61 * theVars->PiTc, 0.5) - SUCS::KE61)/2;   //  SHARED
+        PiTc = theVars->SUCS_Pool.PTc - 2 * (SUCS_con->FBPc + SUCS_con->F26BPc) - (SUCS_con->PGAc + SUCS_con->T3Pc + SUCS_con->HexPc + SUCS_con->SUCP + SUCS::UTPc + SUCS::ATPc);
+        PsPEXT = (pow(pow(SUCS::KE61, 2) + 4 * SUCS::KE61 * PiTc, 0.5) - SUCS::KE61)/2;   //  SHARED
 
         theVars->Pi = PS_C_CP - PS_con->PGA - 2 * PS_con->DPGA - GAP - DHAP - 2 * PS_con->FBP - F6P - PS_con->E4P - 2 * PS_con->SBP - PS_con->S7P - Xu5P - Ri5P - Ru5P - 2 * PS_con->RuBP - G6P - G1P - PS_con->ATP - PS_con->parent->PR_con->PGCA;
 
@@ -182,7 +182,7 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
             if (theVars->PS_Vel.v16 == 0.)    // This assmed that light reguate the export of triose phosphate export. This function should use
                  theVars->PS_Vel.v23 = 0;            // ATP as a signal.
         } else {
-            if (theVars->EPS_ATP_Rate == 0.)
+            if (BF::getEPS_ATP_Rate() == 0.)
                  theVars->PS_Vel.v23 = 0;
         }
         // Notice the series PS2CM is used both in the CM model and the FPSReg model and thereafter.
@@ -234,7 +234,7 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
 
         if (theVars->RUBISCOMETHOD == 2) {
             const double tmp = theVars->V1 * PS_con->RuBP / (PS_con->RuBP + KM13 * theVars->V1Reg);
-            theVars->PS_Vel.v1 = tmp * theVars->CO2_cond / (theVars->CO2_cond + theVars->KM11 * (1 + theVars->O2_cond / theVars->KM12));
+            theVars->PS_Vel.v1 = tmp * theVars->CO2_cond / (theVars->CO2_cond + KM11 * (1 + theVars->O2_cond / KM12));
 
             if (PS_con->RuBP < theVars->V1 / 2.5)
                 theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con->RuBP / (theVars->V1 / 2.5);
@@ -242,7 +242,7 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
 
         } else if (theVars->RUBISCOMETHOD == 1){
             //fprintf("M1  ");
-            theVars->PS_Vel.v1 = theVars->V1 * theVars->CO2_cond / (theVars->CO2_cond + theVars->KM11 * (1 + theVars->O2_cond / theVars->KM12));
+            theVars->PS_Vel.v1 = theVars->V1 * theVars->CO2_cond / (theVars->CO2_cond + KM11 * (1 + theVars->O2_cond / KM12));
             if (PS_con->RuBP < theVars->V1 / 2.5)
                 theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con->RuBP / (theVars->V1 / 2.0);// DNF was 2.5 not 2.0
         }

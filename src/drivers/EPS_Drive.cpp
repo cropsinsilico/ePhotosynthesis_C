@@ -53,9 +53,7 @@ void EPSDriver::setup() {
 
     theVars->FIBF_PSPR_com = true;     //true means that the overall EPS model is used. false means partial model is used.
 
-    /////theVars->ATPActive = 0;
-
-    theVars->EPS_ATP_Rate = 0;   // Indicate in the beginning there is no ATP synthesis activity.
+    //theVars->ATPActive = 0;
 
     theVars->EPS_SUCS_com = true;
 

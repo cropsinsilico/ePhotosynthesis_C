@@ -96,6 +96,7 @@ double SUCS::Vf_T51=0;
 double SUCS::Vf_T56=0;
 double SUCS::UTPc = 0.;
 double SUCS::ATPc = 0.;
+double SUCS::SUCS2PS_Pic = 0.;
 double SUCS::TIME = 0.;
 size_t SUCS::N = 1;
 

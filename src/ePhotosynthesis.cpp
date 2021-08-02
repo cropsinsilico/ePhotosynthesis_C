@@ -40,6 +40,7 @@
 #include "modules/trDynaPS.hpp"
 #include "modules/CM.hpp"
 #include "modules/EPS.hpp"
+#include "modules/PR.hpp"
 #include "drivers/drivers.hpp"
 #include "Variables.hpp"
 
@@ -139,7 +140,7 @@ void EPS_run(double begintime, double stoptime, double stepsize, double abstol, 
     theVars->record = record;
     theVars->useC3 = true;
     theVars->RUBISCOMETHOD = 1;
-    theVars->RUBISCOTOTAL = 3;
+    PR::setRUBISCOTOTAL(3);
 
     Driver *maindriver = new EPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1, Tp);
     std::vector<double> ResultRate = maindriver->run();
@@ -243,7 +244,7 @@ int main(int argc, const char* argv[]) {
         theVars->record = record;
         theVars->useC3 = useC3;
         theVars->RUBISCOMETHOD = 1;
-        theVars->RUBISCOTOTAL = 3;
+        PR::setRUBISCOTOTAL(3);
         if (debugDelta)
             dbglvl += 8;
         if (debugInternal)

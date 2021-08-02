@@ -27,6 +27,7 @@
 #include "Variables.hpp"
 #include "modules/BF.hpp"
 #include "modules/trDynaPS.hpp"
+#include "modules/FIBF.hpp"
 
 void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
 
@@ -119,8 +120,8 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
 
     // Iin is the total absorbed light
 
-    theVars->BF_Vel.Vinc = Iin * theVars->ChlPSI / (theVars->ChlT2 + theVars->ChlPSI) * 95 / 184;  // PPFD absorbed by core antenna of PSI    Unit: micromole m-2 leaf area per second
-    theVars->BF_Vel.Vinp = Iin * theVars->ChlPSI / (theVars->ChlT2 + theVars->ChlPSI) * 105 / 184; // PPFD absorbed by peripheral antenna of PSI  Unit: micromole m-2 leaf area per second
+    theVars->BF_Vel.Vinc = Iin * FIBF::getChlPSI() / (FIBF::getChlT2() + FIBF::getChlPSI()) * 95 / 184;  // PPFD absorbed by core antenna of PSI    Unit: micromole m-2 leaf area per second
+    theVars->BF_Vel.Vinp = Iin * FIBF::getChlPSI() / (FIBF::getChlT2() + FIBF::getChlPSI()) * 105 / 184; // PPFD absorbed by peripheral antenna of PSI  Unit: micromole m-2 leaf area per second
 
     theVars->BF_Vel.Vdp = BF_con->Aip * theVars->BF_RC.Kd; // The rate of heat dissipation from peripheral antenna Unit: micromole m-2 leaf area per second
     theVars->BF_Vel.Vdc = BF_con->U * theVars->BF_RC.Kd;   // The rate heat dissipation from core antenna Unit: micromole m-2 leaf area per second
@@ -184,7 +185,7 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
 
 
     // The EPS_ATP_Rate is used in the overall model for the calculation of the mass balance equation of ATP.
-    theVars->EPS_ATP_Rate = Vbf11;
+    EPS_ATP_Rate = Vbf11;
 
     theVars->BF_Vel.vbfn2 = 2 * theVars->BF_RC.V2M * (Fdn * NADP / theVars->BF_Pool.kU_f - Fd * BF_con->NADPH / (theVars->BF_Pool.kU_f * theVars->BF_RC.KE2)) / (theVars->BF_RC.KM2NADP * (1 + NADP / theVars->BF_RC.KM2NADP + BF_con->NADPH / theVars->BF_RC.KM2NADPH)); // mmol/l/s  //QF add 2*
 

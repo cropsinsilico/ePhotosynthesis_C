@@ -40,8 +40,8 @@ void SUCS::_Rate(const double t, const SUCSCondition* SUCS_Con, Variables *theVa
     double Pic, OPOPc;
 
     if (theVars->useC3) {
-        Pic = (pow(pow(KE61, 2) + 4 * KE61 * theVars->PiTc, 0.5) - KE61) / 2;
-        OPOPc = theVars->PiTc - Pic;
+        Pic = (pow(pow(KE61, 2) + 4 * KE61 * PS::getPiTc(), 0.5) - KE61) / 2;
+        OPOPc = PS::getPiTc() - Pic;
     } else {
         const double PiTc = theVars->SUCS_Pool.PTc - 2 * (SUCS_Con->FBPc + SUCS_Con->F26BPc) - (SUCS_Con->PGAc + SUCS_Con->T3Pc + SUCS_Con->HexPc + SUCS_Con->SUCP + SUCS::UTPc + SUCS::ATPc);
         Pic = (pow(pow(KE61, 2) + 4 * KE61 * PiTc, 0.5) - KE61) / 2;
@@ -181,5 +181,5 @@ void SUCS::_Rate(const double t, const SUCSCondition* SUCS_Con, Variables *theVa
         theVars->SUCS2OUT.PGAc = SUCS_Con->PGAc;
     }
     DEBUG_INTERNAL(theVars->SUCS_Vel)
-    theVars->SUCS2PS_Pic = Pic;                // This is the original code.
+    SUCS2PS_Pic = Pic;                // This is the original code.
 }

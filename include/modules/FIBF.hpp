@@ -28,8 +28,14 @@
 
 #include "ModuleBase.hpp"
 #include "conditions/FIBFCondition.hpp"
+#include "definitions.hpp"
 
 class FIBF : public ModuleBase<FIBF, FIBFCondition> {
+    SET_GET(ChlPSI)
+    SET_GET(ChlT)
+    SET_GET(ChlT2)
+    SET_GET(FIBF2FI_PQ)
+    SET_GET(FIBF2FI_PQa)
 private:
     friend ModuleBase;
     /**
