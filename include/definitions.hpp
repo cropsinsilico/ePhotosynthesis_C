@@ -32,7 +32,7 @@
 #include <fstream>
 
 // predeclare main global data structure
-struct Variables;
+class Variables;
 
 #define Q10_1 1.93
 #define Q10_2 2
