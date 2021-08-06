@@ -118,7 +118,7 @@ void GenOut(double t, Variables *theVars) {
 }
 
 void makeFluxTR(Variables *theVars) {
-    theVars->FluxTR = zeros(120);
+    theVars->FluxTR = zeros(142);
     theVars->FluxTR[0] = theVars->RuACT_VEL.getLastData().v6_1;//PS
     theVars->FluxTR[1] = theVars->RuACT_VEL.getLastData().v6_2;//PR
     theVars->FluxTR[2] = theVars->PS_VEL.getLastData().v2;// v2

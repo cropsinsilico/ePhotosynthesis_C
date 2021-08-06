@@ -65,8 +65,3 @@ Variables& Variables::operator=(const Variables &other) {
     useC3 = other.useC3;
     return *this;
 }
-
-Variables& Variables::operator=(const Variables *other) {
-    *this = *other;
-    return *this;
-}
