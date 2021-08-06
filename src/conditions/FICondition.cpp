@@ -48,7 +48,8 @@ FICondition::FICondition(const FICondition* other) {
     QAnQBn = other->QAnQBn;
     QAQB2n = other->QAQB2n;
     QAnQB2n = other->QAnQB2n;
-    PQn = other->PQn;
+    if (!FICondition::BF_connect)
+        PQn = other->PQn;
 }
 
 FICondition::FICondition(const arr &vec, const size_t offset) {

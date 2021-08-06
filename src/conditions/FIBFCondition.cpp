@@ -77,4 +77,5 @@ void FIBFCondition::_clear() {
         delete FI_con;
         FI_con = nullptr;
     }
+    count = 0.;
 }

@@ -39,11 +39,11 @@ class PR : public ModuleBase<PR, PRCondition> {
 public:
     static void setPR_PS(const bool val) {
         PR_PS_com = val;
-        PRCondition::setPR_PS(val);
+        PRCondition::setPS_connect(val);
     }
     static void setRuBP(const bool val) {
         PR_PS_RuBP = val;
-        PRCondition::setRuBP(val);
+        PRCondition::setPS_RuBP(val);
     }
     SET_GET(RUBISCOTOTAL)
 private:

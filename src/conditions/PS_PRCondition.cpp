@@ -72,4 +72,5 @@ void PS_PRCondition::_clear() {
         delete PR_con;
         PR_con = nullptr;
     }
+    count = 0;
 }

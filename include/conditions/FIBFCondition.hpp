@@ -41,9 +41,9 @@ public:
     FIBFCondition(EPSCondition* par = nullptr) : BF_con(new BFCondition(this)), FI_con(new FICondition(this)) {
         setParent(par);
     }
-    //~FIBFCon() {
-    //    clear();
-    //}
+    ~FIBFCondition() {
+        _clear();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 

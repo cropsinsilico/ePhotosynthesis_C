@@ -95,9 +95,9 @@ double PR::RUBISCOTOTAL = 0.;
 double PR::V1T = 0.;
 size_t PR::N = 1;
 const size_t PRCondition::count = 10;
-bool PRCondition::PR_PS_com = false;
+bool PRCondition::PS_connect = false;
 bool PR::PR_PS_com = false;
-bool PRCondition::PR_PS_RuBP = false;
+bool PRCondition::PS_RuBP = false;
 bool PR::PR_PS_RuBP = false;
 
 PRCondition* PR::_init(Variables *theVars) {
