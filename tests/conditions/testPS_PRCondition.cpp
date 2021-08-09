@@ -22,12 +22,12 @@ TEST_F(PS_PRConditionTest, ConstructorTest) {
     EXPECT_DOUBLE_EQ(pspr.PR_con->HPRc, pspr1.PR_con->HPRc);
     EXPECT_DOUBLE_EQ(pspr.PS_con->E4P, pspr1.PS_con->E4P);
 
-    PSCondition psc;
-    psc.HexP = 1.5e-4;
-    PRCondition prc;
-    prc.SERc = 2.3e-3;
+    PSCondition* psc = new PSCondition();
+    psc->HexP = 1.5e-4;
+    PRCondition* prc = new PRCondition();
+    prc->SERc = 2.3e-3;
 
-    PS_PRCondition pspr2(&psc, &prc);
+    PS_PRCondition pspr2(psc, prc);
     EXPECT_DOUBLE_EQ(1.5e-4, pspr2.PS_con->HexP);
     EXPECT_DOUBLE_EQ(2.3e-3, pspr2.PR_con->SERc);
 }

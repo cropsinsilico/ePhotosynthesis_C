@@ -23,15 +23,15 @@ TEST_F(FIBFConditionTest, InitializeTest) {
     EXPECT_DOUBLE_EQ(fc.kd, fc1.kd);
     EXPECT_DOUBLE_EQ(fc.FI_con->QAnQB, fc1.FI_con->QAnQB);
 
-    FICondition fic;
-    fic.P680Pheon = 162.4;
+//    FICondition fic;
+//    fic.P680Pheon = 162.4;
 
-    BFCondition bfc;
-    bfc.An = 0.558;
+//    BFCondition bfc;
+//    bfc.An = 0.558;
 
-    FIBFCondition fc2(&bfc, &fic);
-    EXPECT_DOUBLE_EQ(fc2.FI_con->P680Pheon, 162.4);
-    EXPECT_DOUBLE_EQ(fc2.BF_con->An, 0.558);
+//    FIBFCondition fc2(&bfc, &fic);
+//    EXPECT_DOUBLE_EQ(fc2.FI_con->P680Pheon, 162.4);
+//    EXPECT_DOUBLE_EQ(fc2.BF_con->An, 0.558);
 }
 
 TEST_F(FIBFConditionTest, ArrayTest) {

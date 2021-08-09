@@ -28,8 +28,10 @@
 
 FIBFCondition::FIBFCondition(const FIBFCondition* other) {
     _clear();
-    BF_con = other->BF_con;
-    FI_con = other->FI_con;
+    std::cout << "COPYING" << std::endl;
+    BF_con = new BFCondition(other->BF_con);
+    std::cout << "Done" << std::endl;
+    FI_con = new FICondition(other->FI_con);
     BF_con->setParent(this);
     FI_con->setParent(this);
     kd = other->kd;

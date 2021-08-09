@@ -30,8 +30,8 @@ size_t trDynaPSCondition::count = 0;
 
 trDynaPSCondition::trDynaPSCondition(const trDynaPSCondition* other) {
     _clear();
-    RROEA_con = other->RROEA_con;
-    DynaPS_con = other->DynaPS_con;
+    RROEA_con = new RROEACondition(other->RROEA_con);
+    DynaPS_con = new DynaPSCondition(other->DynaPS_con);
     RROEA_con->setParent(this);
     DynaPS_con->setParent(this);
 }
