@@ -25,6 +25,11 @@
  **********************************************************************************************************************************************/
 #include <math.h>
 #include "Variables.hpp"
+#include "globals.hpp"
+#include <boost/algorithm/string_regex.hpp>
+#include <boost/regex.hpp>
+
+const boost::regex token("\\s+");
 
 // Function [light] = condition; This function is used to store all the required
 // environmental variables, such as light, CO2, O2, humidity as such. This function
@@ -122,4 +127,43 @@ void Condition(double t, Variables *theVars) {
     // }
 
     theVars->GLight = light;
+}
+
+void readFile(const std::string &filename, std::map<std::string, std::string> &mapper) {
+    std::vector<std::string> tempVec;
+    std::string input;
+    std::ifstream inputfile(filename);
+    if(inputfile.fail()) {
+        std::cout << "Could not open " << filename << " for reading" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    while (getline(inputfile, input)) {
+        if (input.empty())
+            return;
+        boost::algorithm::split_regex(tempVec, input, token);
+        mapper.insert(std::pair<std::string, std::string>(tempVec[0], tempVec[1]));
+    }
+}
+
+void readFile(const std::string &filename, std::map<std::string, double> &mapper) {
+    std::vector<std::string> tempVec;
+    std::string input;
+    std::ifstream inputfile(filename);
+    if(inputfile.fail()) {
+        std::cout << "Could not open " << filename << " for reading" << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    int count = 0;
+    while (getline(inputfile, input)) {
+        if (input.empty())
+            return;
+        boost::algorithm::split_regex(tempVec, input, token);
+        double d;
+        std::stringstream ss(tempVec[1]);
+        ss >> d;
+        if (count < 27)
+            d /= 30.;
+        count++;
+        mapper.insert(std::pair<std::string, double>(tempVec[0], d));
+    }
 }

@@ -27,6 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
+#include <map>
 
 // some ungrouped functions
 /**
@@ -70,3 +71,6 @@ void SYSInitial(Variables *theVars);
 double TargetFunVal(Variables *theVars);
 
 void makeFluxTR(Variables *theVars);
+
+void readFile(const std::string &filename, std::map<std::string, std::string> &mapper);
+void readFile(const std::string &filename, std::map<std::string, double> &mapper);
