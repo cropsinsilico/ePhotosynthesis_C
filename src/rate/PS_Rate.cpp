@@ -108,18 +108,18 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
         const double PsV32 = V32	;	//	32	Phosphate translocator	PGAi<->PGAo
         const double PsV33 = V33	;	//	33	Phosphate translocator	GAPi<->GAPo
 
-        const double Ru_Act = -3. * pow(10., -5) * pow(theVars->Tp, 3) + 0.0013 * pow(theVars->Tp, 2) - 0.0106 * theVars->Tp + 0.8839; //Rubisco activition state   % SHARED
-        PsV1 = PsV1_0 * Ru_Act * pow(Q10_1, (theVars->Tp - 25) / 10);                     //   SHARED
-        const double PsV2 = PsV2_0 * pow(Q10_2, (theVars->Tp - 25) / 10);
-        const double PsV3 = PsV3_0 * pow(Q10_3, (theVars->Tp - 25) / 10);
-        const double PsV5 = PsV5_0 * pow(Q10_5, (theVars->Tp - 25) / 10);
-        double PsV6 = PsV6_0 * pow(Q10_6, (theVars->Tp - 25) / 10);
-        const double PsV7 = PsV7_0 * pow(Q10_7, (theVars->Tp - 25) / 10);
-        const double PsV8 = PsV8_0 * pow(Q10_8, (theVars->Tp - 25) / 10);
-        double PsV9 = PsV9_0 * pow(Q10_9, (theVars->Tp - 25) / 10);
-        const double PsV10 = PsV10_0 * pow(Q10_10, (theVars->Tp - 25) / 10);
-        double PsV13= PsV13_0 * pow(Q10_13, (theVars->Tp - 25) / 10);
-        const double PsV23 = PsV23_0 * pow(Q10_23, (theVars->Tp - 25) / 10);
+        const double Ru_Act = -3. * pow(10., -5.) * pow(theVars->Tp, 3.) + 0.0013 * pow(theVars->Tp, 2.) - 0.0106 * theVars->Tp + 0.8839; //Rubisco activition state   % SHARED
+        PsV1 = PsV1_0 * Ru_Act * pow(Q10_1, (theVars->Tp - 25.) / 10.);                     //   SHARED
+        const double PsV2 = PsV2_0 * pow(Q10_2, (theVars->Tp - 25.) / 10.);
+        const double PsV3 = PsV3_0 * pow(Q10_3, (theVars->Tp - 25.) / 10.);
+        const double PsV5 = PsV5_0 * pow(Q10_5, (theVars->Tp - 25.) / 10.);
+        double PsV6 = PsV6_0 * pow(Q10_6, (theVars->Tp - 25.) / 10.);
+        const double PsV7 = PsV7_0 * pow(Q10_7, (theVars->Tp - 25.) / 10.);
+        const double PsV8 = PsV8_0 * pow(Q10_8, (theVars->Tp - 25.) / 10.);
+        double PsV9 = PsV9_0 * pow(Q10_9, (theVars->Tp - 25.) / 10.);
+        const double PsV10 = PsV10_0 * pow(Q10_10, (theVars->Tp - 25.) / 10.);
+        double PsV13= PsV13_0 * pow(Q10_13, (theVars->Tp - 25.) / 10.);
+        const double PsV23 = PsV23_0 * pow(Q10_23, (theVars->Tp - 25.) / 10.);
 
         // First here is one way of the redox regulation, assuming the regulation is instataneous.
         // in case that there are more work using the equilibrium of Thio with enzyme
@@ -139,20 +139,20 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
 
         if (theVars->RUBISCOMETHOD == 2) {
             const double tmp = PsV1 * PS_con->RuBP / (PS_con->RuBP + KM13 * V1Reg);
-            theVars->PS_Vel.v1 = tmp * CO2 / (CO2 + KM11 * (1 + O2 / KM12));
-            if (PS_con->RuBP < PsV1 / 2) {
+            theVars->PS_Vel.v1 = tmp * CO2 / (CO2 + KM11 * (1. + O2 / KM12));
+            if (PS_con->RuBP < PsV1 / 2.) {
                 theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con->RuBP / (PsV1 / 2);
             }
 
         } else if (theVars->RUBISCOMETHOD == 1) {
-            theVars->PS_Vel.v1 = PsV1 * CO2 / (CO2 + KM11 * (1 + O2 / KM12));
-            if (PS_con->RuBP < PsV1 / 2)
+            theVars->PS_Vel.v1 = PsV1 * CO2 / (CO2 + KM11 * (1. + O2 / KM12));
+            if (PS_con->RuBP < PsV1 / 2.)
                 theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con->RuBP / (PsV1 / 2);
         }
 
-        theVars->PS_Vel.v2 = PsV2 * PS_con->PGA * PS_con->ATP / ((PS_con->PGA + KM21) * (PS_con->ATP + KM22 * (1 + theVars->ADP / KM23)));
+        theVars->PS_Vel.v2 = PsV2 * PS_con->PGA * PS_con->ATP / ((PS_con->PGA + KM21) * (PS_con->ATP + KM22 * (1. + theVars->ADP / KM23)));
         theVars->PS_Vel.v3 = PsV3 * PS_con->DPGA * NADPH / ((PS_con->DPGA + KM31a) * (NADPH + KM32b));
-        theVars->PS_Vel.v5 = PsV5 * (GAP * DHAP - PS_con->FBP / KE5) / ((KM51 * KM52) * (1 + GAP / KM51 + DHAP / KM52 + PS_con->FBP / KM53 + GAP * DHAP / (KM51 * KM52)));
+        theVars->PS_Vel.v5 = PsV5 * (GAP * DHAP - PS_con->FBP / KE5) / ((KM51 * KM52) * (1. + GAP / KM51 + DHAP / KM52 + PS_con->FBP / KM53 + GAP * DHAP / (KM51 * KM52)));
         theVars->PS_Vel.v8 = PsV8 * (DHAP * PS_con->E4P - PS_con->SBP / KE8) / ((PS_con->E4P + KM82) * (DHAP + KM81));
         theVars->PS_Vel.v6 = PsV6 * (PS_con->FBP - F6P * theVars->Pi / KE6) / (PS_con->FBP + KM61 * (1 + F6P / KI61 + theVars->Pi / KI62));
         theVars->PS_Vel.v7 = PsV7 * (F6P * GAP - Xu5P * PS_con->E4P / KE7) / ((F6P + KM73 * (1 + Xu5P / KM71 + PS_con->E4P / KM72)) * (GAP + KM74));

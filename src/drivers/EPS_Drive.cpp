@@ -97,6 +97,7 @@ void EPSDriver::getResults() {
     arr temp = EPS::MB(time, eps_int_con, theVars);
     results = zeros(1);
     const double Arate = (theVars->PS_Vel.v1 - theVars->PR_Vel.v131) * theVars->AVR;
+    delete eps_int_con;
     results[0] = Arate;
 }
 
