@@ -62,16 +62,13 @@ public:
     double S7P = 0.;
     double SBP = 0.;
     double ATP = 0.;
-    double NADPH = 0.;
-    double CO2 = 0.;
-    double O2 = 0.;
     double HexP = 0.;
     double PenP = 0.;
     double _Pi = 0.;
     double _ADP = 0.;
     double _v1 = 0.;
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-
+    static void setC3(const bool val) {useC3 = val;}
 private:
     friend ConditionBase;
     /**
@@ -93,12 +90,15 @@ private:
       Get the size of the data vector
       */
     static size_t _size() {
+        if (useC3)
+            return count - 1;
         return count;
     }
 
     void _clear() {}
 
     static const size_t count;
+    static bool useC3;
 #ifdef INCDEBUG
     const Debug::DebugLevel _dlevel = Debug::Low;
 #endif

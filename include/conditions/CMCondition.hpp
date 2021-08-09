@@ -39,7 +39,9 @@ public:
     CMCondition(EPSCondition* par = nullptr) : PS_PR_con(new PS_PRCondition(this)), SUCS_con(new SUCSCondition(this)) {
         setParent(par);
     }
-
+    ~CMCondition() {
+        _clear();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -97,10 +99,13 @@ private:
       Get the size of the data vector
       */
     static size_t _size() {
-        return PS_PRCondition::size() + SUCSCondition::size();
+        if (count == 0)
+            count = PS_PRCondition::size() + SUCSCondition::size();
+        return count;
     }
 
     void _clear();
+    static size_t count;
 #ifdef INCDEBUG
     static Debug::DebugLevel _dlevel;
 #endif

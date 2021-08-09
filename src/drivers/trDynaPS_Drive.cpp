@@ -50,9 +50,6 @@ void trDynaPSDriver::setup() {
     }
     SYSInitial(theVars);
 
-    // Indicate in the beginning there is no ATP synthesis activity.
-    theVars->EPS_ATP_Rate = 0;
-
     IniModelCom(theVars);        // Initialize the structure of the model, i.e. Is this model separate or combined with others.
 
     // The combination of BF and FI model
@@ -95,7 +92,6 @@ void trDynaPSDriver::getResults() {
     double VStarch = (theVars->PS_Vel.v23 - theVars->PS_Vel.v25) * theVars->AVR;
     double Vt3p = (theVars->PS_Vel.v31 + theVars->PS_Vel.v33) * theVars->AVR;
     results = zeros(7);
-
     results[0] = CarbonRate; //Vc
     results[1] = VPR;        //Vo
     results[2] = Vpgasink;   //PGA
@@ -107,7 +103,7 @@ void trDynaPSDriver::getResults() {
     if(theVars->record) {
         makeFluxTR(theVars);
     }
-
+    delete trDynaPS_res;
     IniModelCom(theVars);
 }
 

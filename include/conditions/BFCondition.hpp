@@ -29,6 +29,7 @@
 #include "ConditionBase.hpp"
 
 class FIBFCondition;
+class BF;
 
 /**
  Class for holding the inputs to BF_mb
@@ -67,7 +68,6 @@ public:
     double cytc2 = 0.;   ///< oxidized cytc2; micromole per meter square
     double P700 = 0.;    ///< The reduced state of P700, including both P700 and excited P700; micromole per meter square
     double ADP = 0.;     ///< ADP in stroma, from the earlier photorespiration model; mmol l-1
-    double Pi = 0.;      ///< Phosphate in stroma, from the photorespiration model; mmol l-1
     double ATP = 0.;     ///< ATP in stroma, from the photorespiration model; mmol l-1
     double Ks = 0.;      ///< K ions in stroma, mM, from the literature; mmol l-1; 90 might be an default;
     double Mgs = 0.;     ///< Mg ions in stroma, mM, from the literature of the ion estimate
@@ -82,8 +82,12 @@ public:
     double PHl = 0.;     ///< The PH value of the lumen
     double NADPH = 0.;   ///< The NADPH concentration in stroma, Unit: mmol l-1;
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
+    static void setPS_connect(const bool val) {PS_connect = val;}
+    static void setRROEA_connect(const bool val) {RROEA_connect = val;}
+    static void setFI_connect(const bool val) {FI_connect = val;}
 private:
     friend ConditionBase;
+    friend BF;
     /**
       Copy items from the given vector to the data members
 
@@ -102,11 +106,21 @@ private:
       Get the size of the data vector
       */
     static size_t _size() {
-        return count;
+        size_t c = count;
+        if (FI_connect)
+            c--;
+        if (PS_connect)
+            c--;
+        if (RROEA_connect)
+            c--;
+        return c;
     }
 
     void _clear() {}
     static const size_t count;
+    static bool FI_connect;
+    static bool PS_connect;
+    static bool RROEA_connect;
 #ifdef INCDEBUG
     const Debug::DebugLevel _dlevel = Debug::Low;
 #endif

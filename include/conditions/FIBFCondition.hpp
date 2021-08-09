@@ -41,9 +41,9 @@ public:
     FIBFCondition(EPSCondition* par = nullptr) : BF_con(new BFCondition(this)), FI_con(new FICondition(this)) {
         setParent(par);
     }
-    //~FIBFCon() {
-    //    clear();
-    //}
+    ~FIBFCondition() {
+        _clear();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -94,9 +94,12 @@ private:
       Get the size of the data vector
       */
     static size_t _size() {
-        return BFCondition::size() + FICondition::size() + 1;
+        if (count == 0)
+            count = BFCondition::size() + FICondition::size() + 1;
+        return count;
     }
     void _clear();
+    static size_t count;
 #ifdef INCDEBUG
     const Debug::DebugLevel _dlevel = Debug::Middle;
 #endif

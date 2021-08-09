@@ -31,6 +31,8 @@
 #include "modules/BF.hpp"
 #include "modules/CM.hpp"
 
+size_t EPSCondition::count = 0;
+
 #ifdef INCDEBUG
 Debug::DebugLevel EPSCondition::_dlevel = Debug::Middle;
 #endif
@@ -40,14 +42,8 @@ EPSCondition* EPS::_init(Variables *theVars) {
     BFCondition* BF_con = BF::init(theVars);
     FIBFCondition* FIBF_con = new FIBFCondition(BF_con, FI_Con);
     //// Step 1 Get the initialization of the variables for BF
-
-    theVars->BF_OLD_TIME = 0;
-    theVars->BF_TIME_N = 1;
-
     //// Get the initialization of the variables for FI
 
-    theVars->FI_OLD_TIME = 0;
-    theVars->FI_TIME_N = 1;
     theVars->FI_Pool.PQT = theVars->FIBF_Pool.PQT;
     theVars->BF_Pool.k_r1 = theVars->FIBF_Pool.PQT;
 
@@ -56,10 +52,6 @@ EPSCondition* EPS::_init(Variables *theVars) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     //   Global variables used for obtaining flux and concentration data //
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    theVars->PS_OLD_TIME = 0;
-    theVars->PS_TIME_N = 1;
-    theVars->PR_OLD_TIME = 0;
-    theVars->PR_TIME_N = 1;
 
     ////////////////////////////////////////////////
     //   Initialation step //

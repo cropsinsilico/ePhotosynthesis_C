@@ -39,9 +39,6 @@ std::ostream& PSCondition::_print(std::ostream &out, const uint tab) const {
     out << space << "  S7P = " << S7P << std::endl;
     out << space << "  SBP = " << SBP << std::endl;
     out << space << "  ATP = " << ATP << std::endl;
-    out << space << "  NADPH = " << NADPH << std::endl;
-    out << space << "  CO2 = " << CO2 << std::endl;
-    out << space << "  O2 = " << O2<< std::endl;
     out << space << "  HexP = " << HexP<< std::endl;
     out << space << "  PenP = " << PenP<< std::endl;
 

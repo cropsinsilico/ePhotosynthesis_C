@@ -28,23 +28,30 @@
 #include "Variables.hpp"
 #include "modules/RROEA.hpp"
 
-arr RROEA::_MB(const double t, const RROEACondition* RROEA_Con, Variables *theVars) {
+RROEACondition* RROEA::_MB_con(const double t, const RROEACondition* RROEA_Con, Variables *theVars) {
     Condition(t, theVars);
     theVars->RROEA_Param[0] = theVars->GLight;
 
     Rate(t, RROEA_Con, theVars);
 
-    arr RROEA_mb = zeros(10);
-    RROEA_mb[0] = theVars->RROEA_Vel.ve2GAPDH;  // GAPDH
-    RROEA_mb[1] = theVars->RROEA_Vel.ve2FBPase; // FBPase
-    RROEA_mb[2] = theVars->RROEA_Vel.ve2SBPase; // SBPase
-    RROEA_mb[3] = theVars->RROEA_Vel.ve2PRK;    // PRK
-    RROEA_mb[4] = theVars->RROEA_Vel.ve2ATPase; // ATPase
-    RROEA_mb[5] = theVars->RROEA_Vel.ve2ATPGPP; // ATPGPP
-    RROEA_mb[6] = theVars->RROEA_Vel.ve2MDH;    // MDH
-    RROEA_mb[7] = theVars->RROEA_Vel.veFd2Thio - theVars->RROEA_Vel.ve2GAPDH - theVars->RROEA_Vel.ve2FBPase - theVars->RROEA_Vel.ve2SBPase - theVars->RROEA_Vel.ve2PRK - theVars->RROEA_Vel.ve2ATPGPP - theVars->RROEA_Vel.ve2RuACT; // Thio
-    RROEA_mb[8] = theVars->RROEA_Vel.ve2Fd - theVars->RROEA_Vel.veFd2Thio - theVars->RROEA_Vel.veFd2Calvin; // Fd
-    RROEA_mb[9] = theVars->RROEA_Vel.ve2RuACT;  // RuACT;
-    DEBUG_DELTA(RROEA_mb)
-    return RROEA_mb;
+    RROEACondition* dydt = new RROEACondition();
+    dydt->GAPDH = theVars->RROEA_Vel.ve2GAPDH;  // GAPDH
+    dydt->FBPase = theVars->RROEA_Vel.ve2FBPase; // FBPase
+    dydt->SBPase = theVars->RROEA_Vel.ve2SBPase; // SBPase
+    dydt->PRK = theVars->RROEA_Vel.ve2PRK;    // PRK
+    dydt->ATPase = theVars->RROEA_Vel.ve2ATPase; // ATPase
+    dydt->ATPGPP = theVars->RROEA_Vel.ve2ATPGPP; // ATPGPP
+    dydt->MDH = theVars->RROEA_Vel.ve2MDH;    // MDH
+    dydt->Thio = theVars->RROEA_Vel.veFd2Thio - theVars->RROEA_Vel.ve2GAPDH - theVars->RROEA_Vel.ve2FBPase - theVars->RROEA_Vel.ve2SBPase - theVars->RROEA_Vel.ve2PRK - theVars->RROEA_Vel.ve2ATPGPP - theVars->RROEA_Vel.ve2RuACT; // Thio
+    dydt->Fd = theVars->RROEA_Vel.ve2Fd - theVars->RROEA_Vel.veFd2Thio - theVars->RROEA_Vel.veFd2Calvin; // Fd
+    dydt->RuACT = theVars->RROEA_Vel.ve2RuACT;  // RuACT;
+    //DEBUG_DELTA(dydt->)
+    return dydt;
+}
+
+arr RROEA::_MB(const double t, const RROEACondition* RROEA_Con, Variables *theVars) {
+    RROEACondition* dydt = _MB_con(t, RROEA_Con, theVars);
+    arr tmp = dydt->toArray();
+    delete dydt;
+    return tmp;
 }

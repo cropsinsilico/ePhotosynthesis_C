@@ -28,42 +28,39 @@
 #include "modules/EPS.hpp"
 #include "modules/FIBF.hpp"
 #include "modules/CM.hpp"
+#include "modules/BF.hpp"
 
 // This model includes the mass balance equations for the full model of the light reactions.
 
-arr EPS::_MB(const double t, const EPSCondition* EPS_Con, Variables *theVars) {
+EPSCondition* EPS::_MB_con(const double t, const EPSCondition* EPS_Con, Variables *theVars) {
 
     // Try out one new way of calculating the mass balance equation.
     // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.
-    //std::cout << EPS_Con;
     //// Step One: Get the initialization of the concentrations for the PSPR model which will be used in the calculation of mb of CM.
 
-    arr CM_DYDT = CM::MB(t, EPS_Con->CM_con, theVars);
-    arr FIBF_DYDT = FIBF::MB(t, EPS_Con->FIBF_con, theVars);
+    CMCondition* CMdydt = CM::MB_con(t, EPS_Con->CM_con, theVars);
+    FIBFCondition* FIBFdydt = FIBF::MB_con(t, EPS_Con->FIBF_con, theVars);
 
     // Step III: Calculate the mass balanec equation for the EPS model. This basically need to make sure that the variables
     // used in the mass balance equation should be in exact sequence with the sequence used in the inialization.
 
-    arr EPS_DYDT;
-    EPS_DYDT.reserve(96);
-    EPS_DYDT.insert(EPS_DYDT.end(), FIBF_DYDT.begin(), FIBF_DYDT.begin() + 52);
     if (theVars->useC3) {
-        EPS_DYDT.insert(EPS_DYDT.end(), CM_DYDT.begin(), CM_DYDT.begin() + 35);
-    } else {
-        EPS_DYDT.insert(EPS_DYDT.end(), CM_DYDT.begin(), CM_DYDT.begin() + 36);
-    }
-
-    if (theVars->useC3) {
-        EPS_DYDT[60] = CM_DYDT[8] - theVars->PS_Vel.v16 + theVars->EPS_ATP_Rate;
-        EPS_DYDT[61] = theVars->BF_Vel.vbfn2/2 - theVars->PS_Vel.v3;// - 1 * PS2EPS_NADPH/(PS2EPS_NADPH + 0.5) ;  // QF changed /2 and ;// - 1 * PS2EPS_NADPH/(PS2EPS_NADPH + 0.5)
+        CMdydt->PS_PR_con->PS_con->ATP = CMdydt->PS_PR_con->PS_con->ATP - theVars->PS_Vel.v16 + BF::getEPS_ATP_Rate();
+        FIBFdydt->BF_con->NADPH = theVars->BF_Vel.vbfn2/2 - theVars->PS_Vel.v3;// - 1 * PS2EPS_NADPH/(PS2EPS_NADPH + 0.5) ;  // QF changed /2 and ;// - 1 * PS2EPS_NADPH/(PS2EPS_NADPH + 0.5)
 
     } else {
-        EPS_DYDT[60] = CM_DYDT[8] - theVars->PS_Vel.v16 + theVars->EPS_ATP_Rate - theVars->PR_Vel.v124; //WY 201804
-        EPS_DYDT[61] = theVars->BF_Vel.vbfn2 / 2 - theVars->PS_Vel.v3 - 2 * theVars->PR_Vel.v124; //WY 201804
+        CMdydt->PS_PR_con->PS_con->ATP = CMdydt->PS_PR_con->PS_con->ATP - theVars->PS_Vel.v16 + BF::getEPS_ATP_Rate() - theVars->PR_Vel.v124; //WY 201804
+        FIBFdydt->BF_con->NADPH = theVars->BF_Vel.vbfn2 / 2 - theVars->PS_Vel.v3 - 2 * theVars->PR_Vel.v124; //WY 201804
     }
-    EPS_DYDT[16] = EPS_DYDT[60];
 
-    EPS_DYDT[28] = EPS_DYDT[61];
-    DEBUG_DELTA(EPS_DYDT)
-    return EPS_DYDT;
+    EPSCondition* dydt = new EPSCondition(FIBFdydt, CMdydt);
+    //DEBUG_DELTA(EPS_DYDT)
+    return dydt;
+}
+
+arr EPS::_MB(const double t, const EPSCondition* EPS_Con, Variables *theVars) {
+    EPSCondition* dydt = _MB_con(t, EPS_Con, theVars);
+    arr tmp = dydt->toArray();
+    delete dydt;
+    return tmp;
 }

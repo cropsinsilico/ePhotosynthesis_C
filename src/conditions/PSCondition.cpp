@@ -31,15 +31,13 @@ PSCondition::PSCondition(const PSCondition* other)  {
     PGA = other->PGA;
     DPGA = other->DPGA;
     T3P = other->T3P;
-    ADPG = other->ADPG;
+    if (!useC3)
+        ADPG = other->ADPG;
     FBP = other->FBP;
     E4P = other->E4P;
     S7P = other->S7P;
     SBP = other->SBP;
     ATP = other->ATP;
-    NADPH = other->NADPH;
-    CO2 = other->CO2;
-    O2 = other->O2;
     HexP = other->HexP;
     PenP = other->PenP;
     _Pi = other->_Pi;
@@ -52,25 +50,25 @@ PSCondition::PSCondition(const arr &vec, size_t offset) {
 }
 
 void PSCondition::_fromArray(const arr &vec, size_t offset) {
-    RuBP = vec[offset];
-    PGA = vec[offset + 1];
-    DPGA = vec[offset + 2];
-    T3P = vec[offset + 3];
-    ADPG = vec[offset + 4];
-    FBP = vec[offset + 5];
-    E4P = vec[offset + 6];
-    S7P = vec[offset + 7];
-    SBP = vec[offset + 8];
-    ATP = vec[offset + 9];
-    NADPH = vec[offset + 10];
-    CO2 = vec[offset + 11];
-    O2 = vec[offset + 12];
-    HexP = vec[offset + 13];
-    PenP = vec[offset + 14];
+    size_t current = 0;
+    RuBP = vec[offset + current++];
+    PGA = vec[offset + current++];
+    DPGA = vec[offset + current++];
+    T3P = vec[offset + current++];
+    if (!useC3)
+        ADPG = vec[offset + current++];
+    FBP = vec[offset + current++];
+    E4P = vec[offset + current++];
+    S7P = vec[offset + current++];
+    SBP = vec[offset + current++];
+    ATP = vec[offset + current++];
+    HexP = vec[offset + current++];
+    PenP = vec[offset + current++];
 }
 
 arr PSCondition::_toArray()  {
-    arr array = {RuBP, PGA, DPGA, T3P, ADPG, FBP, E4P, S7P, SBP, ATP, NADPH, CO2, O2, HexP, PenP};
-    return array;
+    if (useC3)
+        return {RuBP, PGA, DPGA, T3P, FBP, E4P, S7P, SBP, ATP, HexP, PenP};
+    return {RuBP, PGA, DPGA, T3P, ADPG, FBP, E4P, S7P, SBP, ATP, HexP, PenP};
 }
 

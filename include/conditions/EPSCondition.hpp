@@ -38,7 +38,9 @@ public:
     EPSCondition(RACondition* par = nullptr) : CM_con(new CMCondition(this)), FIBF_con(new FIBFCondition(this)) {
         setParent(par);
     }
-
+    ~EPSCondition() {
+        _clear();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -51,7 +53,7 @@ public:
 
       @param x The pointer to get the data from
       */
-    EPSCondition(realtype *x, const uint adjust = 0);
+    EPSCondition(realtype *x);
 
     /**
       Constructor to create an object from the contained classes
@@ -69,13 +71,6 @@ public:
       */
     EPSCondition(const arr &vec, const size_t offset = 0);
 
-    using ConditionBase::fromArray;
-    /**
-      Copy items from the given pointer to the data members
-
-      @param x The input pointer to copy from
-      */
-    void fromArray(realtype *x, const uint adjust = 0);
 #ifdef INCDEBUG
     static void setTop() {EPSCondition::_dlevel = Debug::Top;}
 #endif
@@ -108,6 +103,7 @@ private:
     }
 
     void _clear();
+    static size_t count;
 #ifdef INCDEBUG
     static Debug::DebugLevel _dlevel;
 #endif

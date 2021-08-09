@@ -88,18 +88,29 @@ double PR::Vf_T123 = 0;
 double PR::Vf_T121 = 0;
 double PR::Vf_T122 = 0;
 double PR::Vf_T112 = 0;
-const size_t PRCondition::count = 13;
+double PR::PGA = 0.;
+double PR::TIME = 0.;
+double PR::GLUc = 0.;
+double PR::RUBISCOTOTAL = 0.;
+double PR::V1T = 0.;
+size_t PR::N = 1;
+const size_t PRCondition::count = 10;
+bool PRCondition::PR_PS_com = false;
+bool PR::PR_PS_com = false;
+bool PRCondition::PR_PS_RuBP = false;
+bool PR::PR_PS_RuBP = false;
 
 PRCondition* PR::_init(Variables *theVars) {
+    PR::setPR_PS(theVars->PR_PS_com);
     if (theVars->useC3) {
         NADHc = 0.47;
         NADc = 0.4;
-        theVars->GLUc = 24;
+        GLUc = 24.;
         KGc = 0.4;
     } else {
         NADHc = 0.47 * theVars->PRRatio[8];
         NADc = 0.4 * theVars->PRRatio[9];
-        theVars->GLUc = 24 * theVars->PRRatio[12];
+        GLUc = 24. * theVars->PRRatio[12];
         KGc = 0.4 * theVars->PRRatio[13];
 
         PR_ADP = 0.82 * theVars->PRRatio[14];
@@ -112,9 +123,9 @@ PRCondition* PR::_init(Variables *theVars) {
     PR_con->GCA = 0.36;      // Derived from radioactive labelling experiment; assuem equal concenatration
                             // inside and outshide chloroplast
     if (theVars->useC3) {
-        PR_con->PGA = 2.4;       // PGA in chloroplast;
+        PR::PGA = 2.4;       // PGA in chloroplast;
     } else {
-        PR_con->PGA = 4.3;       // PGA in chloroplast;4.3 is the original value;
+        PR::PGA = 4.3;       // PGA in chloroplast;4.3 is the original value;
     }
     PR_con->PGCA = 0.0029;   // Phosphoglycolate in chloroplast derived based on the Km112; orignal value is : 0.0029;
 
@@ -125,12 +136,9 @@ PRCondition* PR::_init(Variables *theVars) {
     PR_con->HPRc = 0.0035;   // HydroxylPyruvate; derived from equation 123;
     PR_con->GCEAc = 0.1812;  // Glycerate in cytosol; assume at equilibrium with GCEA initially.
     PR_con->RuBP = 2.;       // RuBP concentration
-    PR_con->CO2 = 0.012;     // CO2 concentration(mM)
-    PR_con->O2 = 0.264;      // O2 concentration(mM)
-
 
     if (theVars->useC3) {
-        theVars->V1T = 5.;
+        V1T = 5.;
         Vfactor112 = 1;
         Vfactor113 = 1;
         Vfactor121 = 1;
@@ -165,7 +173,7 @@ PRCondition* PR::_init(Variables *theVars) {
         }
 
         if (theVars->GP == 0) {
-            V111 = theVars->V1 * 0.22;
+            V111 = PS::V1 * 0.22;
             V112 = theVars->EnzymeAct.at("V112");
             V113 = theVars->EnzymeAct.at("V113");
             V121 = theVars->EnzymeAct.at("V121");
@@ -230,8 +238,8 @@ PRCondition* PR::_init(Variables *theVars) {
         KC = 0.0115 * theVars->PRRatio[17]; // Michaelis constant for CO2
 
         if (theVars->PR_PS_com) {
-            KC = theVars->KM11;
-            KO = theVars->KM12;
+            KC = PS::KM11;
+            KO = PS::KM12;
         }
 
         KR = 0.02 * theVars->PRRatio[18]; // Michaelis constant for RUBP
@@ -275,7 +283,7 @@ PRCondition* PR::_init(Variables *theVars) {
         KI1311 = 4 * theVars->PRRatio[39];  // Inhibition constant for Serine
 
         // The consant for calculating the glycerate uptake.
-        theVars->V1T = 0.25 * CE * 20 * theVars->PRRatio[42];
+        V1T = 0.25 * CE * 20 * theVars->PRRatio[42];
         KM1011 = 0.39 * theVars->PRRatio[43];
         KI1011 = 0.28 * theVars->PRRatio[44];
 
@@ -286,7 +294,7 @@ PRCondition* PR::_init(Variables *theVars) {
 
         if (theVars->GP == 0) {
             if (theVars->PR_PS_com) {
-                V111 = 0.24 * theVars->V1 * theVars->PRRatio[0];
+                V111 = 0.24 * PS::V1 * theVars->PRRatio[0];
             } else {
                 V111 = 3.7 * 0.24 * 1;
             }

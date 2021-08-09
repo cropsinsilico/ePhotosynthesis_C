@@ -33,6 +33,11 @@
  Class for FI related functions
  */
 class FI : public ModuleBase<FI, FICondition> {
+public:
+    static void setBF_connect(const bool val) {
+        BF_connect = val;
+        FICondition::setBF_connect(val);
+    }
 private:
     friend ModuleBase;
     /**
@@ -51,6 +56,7 @@ private:
       @return A vector containing the updated values
       */
     static arr _MB(const double t, const FICondition* FI_Con, Variables *theVars);
+    static FICondition* _MB_con(const double t, const FICondition* FI_Con, Variables *theVars);
     /**
       Calculate the Rates of FI based on the inputs
 
@@ -59,4 +65,8 @@ private:
       @param theVars The global variables
       */
     static void _Rate(const double t, const FICondition* FI_Con, Variables *theVars);
+    static double cpsii;
+    static bool BF_connect;
+    static double TIME;
+    static size_t N;
 };

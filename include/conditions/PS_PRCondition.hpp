@@ -68,9 +68,9 @@ public:
     PSCondition* PS_con = nullptr;
     PRCondition* PR_con = nullptr;
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-
 private:
     friend ConditionBase;
+    friend CMCondition;
     /**
       Copy items from the given vector to the data members
 
@@ -89,11 +89,13 @@ private:
       Get the size of the data vector
       */
     static size_t _size() {
+        if (count == 0)
+            count = PSCondition::size() + PRCondition::size();
         return count;
     }
 
     void _clear ();
-    static const size_t count;
+    static size_t count;
 #ifdef INCDEBUG
     const Debug::DebugLevel _dlevel = Debug::Middle;
 #endif

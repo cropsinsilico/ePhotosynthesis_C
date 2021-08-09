@@ -28,11 +28,12 @@
  **********************************************************************************************************************************************/
 #include "ModuleBase.hpp"
 #include "conditions/XanCycleCondition.hpp"
-
+#include "definitions.hpp"
 /**
  Class for XanCycle code and internal variables
  */
 class XanCycle : public ModuleBase<XanCycle, XanCycleCondition> {
+    SET_GET(XanCycle2FIBF_Xstate)
 private:
     friend ModuleBase;
     /**
@@ -52,6 +53,7 @@ private:
       @return A vector containing the updated values
       */
     static arr _MB(const double t, const XanCycleCondition* XanCycle_Con, Variables *theVars);
+    static XanCycleCondition* _MB_con(const double t, const XanCycleCondition* XanCycle_Con, Variables *theVars);
 
     /**
       Calculate the Rates of XanCycle based on the inputs
@@ -66,5 +68,7 @@ private:
     static double XanCycle_kaz;
     static double XanCycle_kva;
     static double XanCycle_kza;
+    static double TIME;
+    static size_t N;
 };
 

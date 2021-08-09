@@ -28,8 +28,14 @@
 
 #include "ModuleBase.hpp"
 #include "conditions/FIBFCondition.hpp"
+#include "definitions.hpp"
 
 class FIBF : public ModuleBase<FIBF, FIBFCondition> {
+    SET_GET(ChlPSI)
+    SET_GET(ChlT)
+    SET_GET(ChlT2)
+    SET_GET(FIBF2FI_PQ)
+    SET_GET(FIBF2FI_PQa)
 private:
     friend ModuleBase;
     /**
@@ -48,7 +54,7 @@ private:
   @return A vector containing the updated values
   */
     static arr _MB(const double t, const FIBFCondition* FIBF_Con, Variables *theVars);
-
+    static FIBFCondition* _MB_con(const double t, const FIBFCondition* FIBF_Con, Variables *theVars);
     static void _Rate(const double t, const FIBFCondition* FIBF_Con, Variables *theVars) {
         (void)t;
         (void)FIBF_Con;

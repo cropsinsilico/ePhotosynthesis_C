@@ -26,18 +26,12 @@
 
 #include "conditions/SUCSCondition.hpp"
 
-const size_t SUCSCondition::count = 12;
-
 SUCSCondition::SUCSCondition(const SUCSCondition &other) {
     T3Pc = other.T3Pc;
     FBPc = other.FBPc;
     HexPc = other.HexPc;
     F26BPc = other.F26BPc;
-    ATPc = other.ATPc;
-    ADPc = other.ADPc;
-    OPOPc = other.OPOPc;
     UDPGc = other.UDPGc;
-    UTPc = other.UTPc;
     SUCP = other.SUCP;
     SUC = other.SUC;
     PGAc = other.PGAc;
@@ -48,11 +42,7 @@ SUCSCondition::SUCSCondition(const SUCSCondition *other) {
     FBPc = other->FBPc;
     HexPc = other->HexPc;
     F26BPc = other->F26BPc;
-    ATPc = other->ATPc;
-    ADPc = other->ADPc;
-    OPOPc = other->OPOPc;
     UDPGc = other->UDPGc;
-    UTPc = other->UTPc;
     SUCP = other->SUCP;
     SUC = other->SUC;
     PGAc = other->PGAc;
@@ -63,18 +53,15 @@ SUCSCondition::SUCSCondition(const arr &vec, const size_t offset) {
 }
 
 void SUCSCondition::_fromArray(const arr &vec, const size_t offset) {
-    T3Pc = vec[offset];
-    FBPc = vec[offset + 1];
-    HexPc = vec[offset + 2];
-    F26BPc = vec[offset + 3];
-    ATPc = vec[offset + 4];
-    ADPc = vec[offset + 5];
-    OPOPc = vec[offset + 6];
-    UDPGc = vec[offset + 7];
-    UTPc = vec[offset + 8];
-    SUCP = vec[offset + 9];
-    SUC = vec[offset + 10];
-    PGAc = vec[offset + 11];
+    size_t current = 0;
+    T3Pc = vec[offset + current++];
+    FBPc = vec[offset + current++];
+    HexPc = vec[offset + current++];
+    F26BPc = vec[offset + current++];
+    UDPGc = vec[offset + current++];
+    SUCP = vec[offset + current++];
+    SUC = vec[offset + current++];
+    PGAc = vec[offset + current++];
 }
 
 void SUCSCondition::_clear() {
@@ -82,17 +69,12 @@ void SUCSCondition::_clear() {
     FBPc = 0.;
     HexPc = 0.;
     F26BPc = 0.;
-    ATPc = 0.;
-    ADPc = 0.;
-    OPOPc = 0.;
     UDPGc = 0.;
-    UTPc = 0.;
     SUCP = 0.;
     SUC = 0.;
     PGAc = 0.;
 }
 
 arr SUCSCondition::_toArray() {
-    arr vec = {T3Pc, FBPc, HexPc, F26BPc, ATPc, ADPc, OPOPc, UDPGc, UTPc, SUCP, SUC, PGAc};
-    return vec;
+    return {T3Pc, FBPc, HexPc, F26BPc, UDPGc, SUCP, SUC, PGAc};
 }

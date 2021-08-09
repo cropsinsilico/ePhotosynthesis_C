@@ -58,7 +58,7 @@ public:
     double ECMR = 0.; ///< The concentration of ECMR
     double RuBP = 0.; ///< The concentration of ECMR
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-
+    static void setEPS(const bool val) {EPS_con = val;}
 private:
     friend ConditionBase;
     /**
@@ -79,12 +79,14 @@ private:
       Get the size of the data vector
       */
     static size_t _size() {
+        if (EPS_con)
+            return count - 1;
         return count;
     }
 
     void _clear() {}
-
-    static const size_t count;
+    static bool EPS_con;
+    static size_t count;
 #ifdef INCDEBUG
     const Debug::DebugLevel _dlevel = Debug::Low;
 #endif

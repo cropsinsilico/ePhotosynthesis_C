@@ -28,27 +28,30 @@
 #include "globals.hpp"
 #include "modules/PR.hpp"
 
-arr PR::_MB(const double t, const PRCondition* PR_con, Variables *theVars) {
+PRCondition* PR::_MB_con(const double t, const PRCondition* PR_con, Variables *theVars) {
     Condition(t, theVars);
 
     Rate(t, PR_con, theVars);
 
-    arr PRdydt = zeros(13);
-    PRdydt[0] = theVars->PR_Vel.v1in - theVars->PR_Vel.v113;
-    PRdydt[1] = theVars->PR_Vel.v112 - theVars->PR_Vel.v2out;
-    PRdydt[2] = theVars->PR_Vel.v111 + theVars->PR_Vel.v113 - 0.5;
-    PRdydt[2] = 0;
-    PRdydt[3] = theVars->PR_Vel.v111 - theVars->PR_Vel.v112;
-    PRdydt[4] = theVars->PR_Vel.v2out - theVars->PR_Vel.v121;
-    PRdydt[5] = theVars->PR_Vel.v121 - theVars->PR_Vel.v122 - theVars->PR_Vel.v124;
-    PRdydt[6] = theVars->PR_Vel.v131 - theVars->PR_Vel.v122;
-    PRdydt[7] = theVars->PR_Vel.v122 + theVars->PR_Vel.v124 - 2 * theVars->PR_Vel.v131;
-    PRdydt[8] = theVars->PR_Vel.v122 - theVars->PR_Vel.v123;
-    PRdydt[9] = theVars->PR_Vel.v123 - theVars->PR_Vel.v1in;
-    PRdydt[10] = 0.3 - theVars->PR_Vel.v111;
-    PRdydt[11] = 0;
-    PRdydt[12] = 0;
+    PRCondition *dydt = new PRCondition();
+    dydt->GCEA = theVars->PR_Vel.v1in - theVars->PR_Vel.v113;
+    dydt->GCA = theVars->PR_Vel.v112 - theVars->PR_Vel.v2out;
+    dydt->PGCA = theVars->PR_Vel.v111 - theVars->PR_Vel.v112;
+    dydt->GCAc = theVars->PR_Vel.v2out - theVars->PR_Vel.v121;
+    dydt->GOAc = theVars->PR_Vel.v121 - theVars->PR_Vel.v122 - theVars->PR_Vel.v124;
+    dydt->SERc = theVars->PR_Vel.v131 - theVars->PR_Vel.v122;
+    dydt->GLYc = theVars->PR_Vel.v122 + theVars->PR_Vel.v124 - 2 * theVars->PR_Vel.v131;
+    dydt->HPRc = theVars->PR_Vel.v122 - theVars->PR_Vel.v123;
+    dydt->GCEAc = theVars->PR_Vel.v123 - theVars->PR_Vel.v1in;
+    if (!PR_PS_com)
+        dydt->RuBP = 0.3 - theVars->PR_Vel.v111;
+    //DEBUG_DELTA(PRdydt)
+    return dydt;
+}
 
-    DEBUG_DELTA(PRdydt)
-    return PRdydt;
+arr PR::_MB(const double t, const PRCondition* const PR_con, Variables *theVars) {
+    PRCondition* dydt = _MB_con(t, PR_con, theVars);
+    arr dydtarr = dydt->toArray();
+    delete dydt;
+    return dydtarr;
 }

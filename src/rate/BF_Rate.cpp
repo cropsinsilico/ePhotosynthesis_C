@@ -26,6 +26,8 @@
 #include <math.h>
 #include "Variables.hpp"
 #include "modules/BF.hpp"
+#include "modules/trDynaPS.hpp"
+#include "modules/FIBF.hpp"
 
 void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
 
@@ -36,9 +38,13 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
     //  This is the initialization step for the module of the BF_con.Q cycle, and ATP synthesis steps
 
     double ADP = BF_con->ADP; // ADP in stroma
-
-    double Pi = BF_con->Pi; // Phosphate in stroma
-
+    double ATP = BF_con->ATP;
+    if (BF::PS_connect)
+        ATP = BF_con->parent->parent->CM_con->PS_PR_con->PS_con->ATP;
+    double Pi = BF::_Pi; // Phosphate in stroma
+    double Fdn = BF_con->Fdn;
+    if (BF::RROEA_connect)
+        Fdn = BF_con->parent->parent->parent->parent->parent->RROEA_con->Fd;
     //////////////////////////////////////////////////////////////
     // Get the auxiliary variables //
     //////////////////////////////////////////////////////////////
@@ -50,7 +56,7 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
     const double Kl = theVars->BF_Pool.kA_U - BF_con->Ks;        // The concentration of K in lumen
     const double Mgl = theVars->BF_Pool.kU_A - BF_con->Mgs;      // The concentration of Mg in lumen
     const double Cll = theVars->BF_Pool.kU_d - BF_con->Cls;      // The concentration of Cl in lumen
-    const double Fd = theVars->BF_Pool.kU_f - BF_con->Fdn;       // The conncentration of oxidized Fd in stroma
+    const double Fd = theVars->BF_Pool.kU_f - Fdn;       // The conncentration of oxidized Fd in stroma
     const double A = theVars->BF_Pool.k1 - BF_con->An;           // The concentration of oxidized electron acceptor in PSI
     const double QST = theVars->BF_Pool.kA_d;                    // Assuming that the total number of cytochrome is equal to the total number of quinone binding site;
     const double QSe = QST - BF_con->Qi - BF_con->Qn - BF_con->Qr;
@@ -59,7 +65,11 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
 
     if (theVars->FIBF_PSPR_com) {
         ADP = theVars->ADP;
-        Pi = theVars->PS2BF_Pi;
+        if (theVars->useC3) {
+            Pi = theVars->Pi;
+        } else {
+            Pi = theVars->PS2BF_Pi;
+        }
     }
 
     const double CoeffVol = theVars->AVR;
@@ -110,8 +120,8 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
 
     // Iin is the total absorbed light
 
-    theVars->BF_Vel.Vinc = Iin * theVars->ChlPSI / (theVars->ChlT2 + theVars->ChlPSI) * 95 / 184;  // PPFD absorbed by core antenna of PSI    Unit: micromole m-2 leaf area per second
-    theVars->BF_Vel.Vinp = Iin * theVars->ChlPSI / (theVars->ChlT2 + theVars->ChlPSI) * 105 / 184; // PPFD absorbed by peripheral antenna of PSI  Unit: micromole m-2 leaf area per second
+    theVars->BF_Vel.Vinc = Iin * FIBF::getChlPSI() / (FIBF::getChlT2() + FIBF::getChlPSI()) * 95 / 184;  // PPFD absorbed by core antenna of PSI    Unit: micromole m-2 leaf area per second
+    theVars->BF_Vel.Vinp = Iin * FIBF::getChlPSI() / (FIBF::getChlT2() + FIBF::getChlPSI()) * 105 / 184; // PPFD absorbed by peripheral antenna of PSI  Unit: micromole m-2 leaf area per second
 
     theVars->BF_Vel.Vdp = BF_con->Aip * theVars->BF_RC.Kd; // The rate of heat dissipation from peripheral antenna Unit: micromole m-2 leaf area per second
     theVars->BF_Vel.Vdc = BF_con->U * theVars->BF_RC.Kd;   // The rate heat dissipation from core antenna Unit: micromole m-2 leaf area per second
@@ -125,7 +135,7 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
 
     const double MaxCO2Rate = 100 * CO2 / (CO2 + 460);
 
-    theVars->BF_Vel.VsATP = MaxCO2Rate * 1.5 / CoeffVol * BF_con->ATP / 1.5;        //(ADP + ATP); // The sink for ATP utilizaiton, 20 represent the of CO2 assimilation, since 1 meter square amount to 27 ml, therefore, the sink capacity should be 20 * 1.5 * 1.5 mmol / 27 l-1 s-1. The 1.5 represents the 1.5 ATP consumption per CO2 fixation.  Unit: mmol l-2 s-1
+    theVars->BF_Vel.VsATP = MaxCO2Rate * 1.5 / CoeffVol * ATP / 1.5;        //(ADP + ATP); // The sink for ATP utilizaiton, 20 represent the of CO2 assimilation, since 1 meter square amount to 27 ml, therefore, the sink capacity should be 20 * 1.5 * 1.5 mmol / 27 l-1 s-1. The 1.5 represents the 1.5 ATP consumption per CO2 fixation.  Unit: mmol l-2 s-1
     theVars->BF_Vel.VsNADPH = MaxCO2Rate / CoeffVol * 1 * BF_con->NADPH / theVars->BF_Pool.k30; // For 6 C6 = 5 C6 + 1C6;
     theVars->BF_Vel.VgPQH2 = BF_con->Q * 800 * RegPHs;                              // Assuming that the rate of generation of PQH2 through QB site only depend on the PQ and PQH2 exchange capacity.
     double NetCharge = Hfs + BF_con->Ks + 2 * BF_con->Mgs - OHs - BF_con->Cls - BFns; // The difference between the positive and negative charge in stroma. It was assumed that the charge is in equilibrium state in the beginning of the model, therefore, the difference in the positive and negative charges reflect the charges forming electrical potential cross the membrane. The unit is mmol l-1.
@@ -167,7 +177,7 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
     const double DeltaG11 = DeltaGo - 2.3 * RT * theVars->HPR * DiffPH + theVars->HPR * MPotential * 9.6 * pow(10, 4);
     const double KE11 = exp(-DeltaG11 / (RT)); // The equilibrium constant of ATP synthesis
 
-    const double Temp = theVars->BF_RC.Vmax11 * (ADP * Pi - BF_con->ATP / KE11) / ((theVars->BF_RC.KM1ADP * theVars->BF_RC.KM1PI) * (1 + ADP / theVars->BF_RC.KM1ADP + Pi / theVars->BF_RC.KM1PI + ADP * Pi / (theVars->BF_RC.KM1ADP * theVars->BF_RC.KM1PI))); // Unit: mmol l- s-1; The stroma volume is used as a basis for the volume
+    const double Temp = theVars->BF_RC.Vmax11 * (ADP * Pi - ATP / KE11) / ((theVars->BF_RC.KM1ADP * theVars->BF_RC.KM1PI) * (1 + ADP / theVars->BF_RC.KM1ADP + Pi / theVars->BF_RC.KM1PI + ADP * Pi / (theVars->BF_RC.KM1ADP * theVars->BF_RC.KM1PI))); // Unit: mmol l- s-1; The stroma volume is used as a basis for the volume
     double Vbf11 = Temp;
 
     if (Vbf11 < 0.)
@@ -175,11 +185,11 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
 
 
     // The EPS_ATP_Rate is used in the overall model for the calculation of the mass balance equation of ATP.
-    theVars->EPS_ATP_Rate = Vbf11;
+    EPS_ATP_Rate = Vbf11;
 
-    theVars->BF_Vel.vbfn2 = 2 * theVars->BF_RC.V2M * (BF_con->Fdn * NADP / theVars->BF_Pool.kU_f - Fd * BF_con->NADPH / (theVars->BF_Pool.kU_f * theVars->BF_RC.KE2)) / (theVars->BF_RC.KM2NADP * (1 + NADP / theVars->BF_RC.KM2NADP + BF_con->NADPH / theVars->BF_RC.KM2NADPH)); // mmol/l/s  //QF add 2*
+    theVars->BF_Vel.vbfn2 = 2 * theVars->BF_RC.V2M * (Fdn * NADP / theVars->BF_Pool.kU_f - Fd * BF_con->NADPH / (theVars->BF_Pool.kU_f * theVars->BF_RC.KE2)) / (theVars->BF_RC.KM2NADP * (1 + NADP / theVars->BF_RC.KM2NADP + BF_con->NADPH / theVars->BF_RC.KM2NADPH)); // mmol/l/s  //QF add 2*
 
-    theVars->BF_Vel.vcet = theVars->BF_RC.V2M * BF_con->Qi * BF_con->Fdn / theVars->BF_Pool.kU_f * CoeffVol;
+    theVars->BF_Vel.vcet = theVars->BF_RC.V2M * BF_con->Qi * Fdn / theVars->BF_Pool.kU_f * CoeffVol;
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -187,27 +197,23 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
     ////////////////////////////////////////////////////////////////////////////////
 
 
-    ////////////////////////////////////////////////////////////////////////////////
-    //   Part V Output of Velocity for plot //
-    ////////////////////////////////////////////////////////////////////////////////
-
-    if (theVars->BF_TIME_N == 0)
-        theVars->BF_TIME_N = 1;
-
-    if (t > theVars->BF_OLD_TIME) {
-        theVars->BF_TIME_N = theVars->BF_TIME_N + 1;
-        theVars->BF_OLD_TIME = t;
-    }
 
     theVars->BF_Vel.Vbf11  = Vbf11;
 
     DEBUG_INTERNAL(theVars->BF_Vel)
     if (theVars->record) {
-        theVars->BF_VEL.insert(theVars->BF_TIME_N - 1, t, theVars->BF_Vel);
-        theVars->BF2OUT[0] = BF_con->Fdn;
+        ////////////////////////////////////////////////////////////////////////////////
+        //   Part V Output of Velocity for plot //
+        ////////////////////////////////////////////////////////////////////////////////
+        if (t > BF::TIME) {
+            BF::N++;
+            BF::TIME = t;
+        }
+        theVars->BF_VEL.insert(BF::N - 1, t, theVars->BF_Vel);
+        theVars->BF2OUT[0] = Fdn;
         theVars->BF2OUT[1] = BF_con->PHs;
         theVars->BF2OUT[2] = BF_con->PHl;
         theVars->BF2OUT[3] = BF_con->NADPH;
-        theVars->BF2OUT[4] = BF_con->ATP;
+        theVars->BF2OUT[4] = ATP;
     }
 }

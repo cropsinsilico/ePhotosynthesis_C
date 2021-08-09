@@ -33,11 +33,7 @@ std::ostream& SUCSCondition::_print(std::ostream &out, const uint tab) const {
     out << space << "  FBPc= " << FBPc<< std::endl;
     out << space << "  HexPc = " << HexPc << std::endl;
     out << space << "  F26BPc= " << F26BPc<< std::endl;
-    out << space << "  ATPc= " << ATPc<< std::endl;
-    out << space << "  ADPc= " << ADPc<< std::endl;
-    out << space << "  OPOPc = " << OPOPc << std::endl;
     out << space << "  UDPGc = " << UDPGc << std::endl;
-    out << space << "  UTPc= " << UTPc<< std::endl;
     out << space << "  SUCP= " << SUCP<< std::endl;
     out << space << "  SUC = " << SUC << std::endl;
     out << space << "  PGAc= " << PGAc<< std::endl;

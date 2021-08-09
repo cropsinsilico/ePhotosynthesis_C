@@ -29,29 +29,25 @@
 #include "modules/EPS.hpp"
 #include "modules/RuACT.hpp"
 
+RACondition* RA::_MB_con(const double t, const RACondition* RA_Con, Variables *theVars) {
+    EPSCondition* EPSdydt = EPS::MB_con(t, RA_Con->EPS_con, theVars);
+    RuACTCondition* RuACTdydt = RuACT::MB_con(t, RA_Con->RuACT_con, theVars);
+
+    EPSdydt->CM_con->PS_PR_con->PS_con->RuBP = theVars->RuACT_Vel.v1 + theVars->PS_Vel.v13 - theVars->RuACT_Vel.vn1 + theVars->RuACT_Vel.vn7 - theVars->RuACT_Vel.v7;
+    //RuACTdydt->RuBP = DYDT_RuBP;
+
+    EPSdydt->CM_con->PS_PR_con->PS_con->PGA = EPSdydt->CM_con->PS_PR_con->PS_con->PGA - 2 * theVars->PS_Vel.v1 + 2 * theVars->RuACT_Vel.v6_1 - theVars->PR_Vel.v111 + theVars->RuACT_Vel.v6_2;// Originally it is pspr(2), now use EPS_DYDT[53].
+
+    EPSdydt->CM_con->PS_PR_con->PR_con->PGCA = EPSdydt->CM_con->PS_PR_con->PR_con->PGCA - theVars->PR_Vel.v111 + theVars->RuACT_Vel.v6_2;
+
+    //DEBUG_DELTA(RA_DYDT)
+    RACondition* dydt = new RACondition(EPSdydt, RuACTdydt);
+    return dydt;
+}
+
 arr RA::_MB(const double t, const RACondition* RA_Con, Variables *theVars) {
-    arr EPS_DYDT = EPS::MB(t, RA_Con->EPS_con, theVars);
-    arr RuACT_DYDT = RuACT::MB(t, RA_Con->RuACT_con, theVars);
-
-    arr RA_DYDT = zeros(92);
-
-    for (size_t m = 0; m < 88; m++)
-        RA_DYDT[m] = EPS_DYDT[m];
-
-
-    for (size_t m = 0; m < 4; m++)
-        RA_DYDT[m + 88] = RuACT_DYDT[m];
-
-    const double DYDT_RuBP = theVars->RuACT_Vel.v1 + theVars->PS_Vel.v13 - theVars->RuACT_Vel.vn1 + theVars->RuACT_Vel.vn7 - theVars->RuACT_Vel.v7;
-    RA_DYDT[52] = DYDT_RuBP;
-    RA_DYDT[91] = DYDT_RuBP;
-
-    const double DYDT_PGA = EPS_DYDT[53] - 2 * theVars->PS_Vel.v1 + 2 * theVars->RuACT_Vel.v6_1 - theVars->PR_Vel.v111 + theVars->RuACT_Vel.v6_2;// Originally it is pspr(2), now use EPS_DYDT[53].
-    RA_DYDT[53] = DYDT_PGA;
-
-
-    const double DYDT_PGCA = EPS_DYDT[68] - theVars->PR_Vel.v111 + theVars->RuACT_Vel.v6_2;
-    RA_DYDT[68] = DYDT_PGCA;
-    DEBUG_DELTA(RA_DYDT)
-    return RA_DYDT;
+    RACondition* dydt = _MB_con(t, RA_Con, theVars);
+    arr tmp = dydt->toArray();
+    delete dydt;
+    return tmp;
 }

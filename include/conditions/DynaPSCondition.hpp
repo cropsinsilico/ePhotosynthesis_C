@@ -98,10 +98,12 @@ private:
       Get the size of the data vector
       */
     static size_t _size() {
-        return 120;
-//return RACon::size() + XanCycleCon::size();
+        if (count == 0)
+            count = RACondition::size() + XanCycleCondition::size();
+        return count;
     }
     void _clear();
+    static size_t count;
 #ifdef INCDEBUG
     static Debug::DebugLevel _dlevel;
 #endif

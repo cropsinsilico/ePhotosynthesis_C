@@ -32,7 +32,7 @@
 #include <fstream>
 
 // predeclare main global data structure
-struct Variables;
+class Variables;
 
 #define Q10_1 1.93
 #define Q10_2 2
@@ -110,6 +110,12 @@ enum RequestedDebug : uint {None = 0,
 #define DEBUG_DELTA(x) do{}while(0);
 #define DEBUG_INTERNAL(x) do{}while(0);
 #endif
+
+#define SET_GET(NAME) public:\
+    static double get ## NAME() {return NAME;}\
+    static void set ## NAME(const double val) {NAME = val;}\
+    private:\
+        static double NAME;
 // rename a common data type to make it easier
 typedef std::vector<double> arr;
 

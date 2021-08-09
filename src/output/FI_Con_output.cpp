@@ -51,6 +51,7 @@ std::ostream& FICondition::_print(std::ostream &out, const uint tab) const {
     out << space << "  QAnQBn = " << QAnQBn<< std::endl;
     out << space << "  QAQB2n = " << QAQB2n<< std::endl;
     out << space << "  QAnQB2n = " << QAnQB2n << std::endl;
-    out << space << "  PQn = " << PQn << std::endl;
+    if (!FICondition::BF_connect)
+        out << space << "  PQn = " << PQn << std::endl;
     return out;
 }

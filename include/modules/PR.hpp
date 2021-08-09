@@ -28,13 +28,27 @@
 
 #include "ModuleBase.hpp"
 #include "conditions/PRCondition.hpp"
+#include "definitions.hpp"
+
+class PS_PR;
 
 /**
   Class for grouping PR related functions and common variables
   */
 class PR : public ModuleBase<PR, PRCondition> {
+public:
+    static void setPR_PS(const bool val) {
+        PR_PS_com = val;
+        PRCondition::setPR_PS(val);
+    }
+    static void setRuBP(const bool val) {
+        PR_PS_RuBP = val;
+        PRCondition::setRuBP(val);
+    }
+    SET_GET(RUBISCOTOTAL)
 private:
     friend ModuleBase;
+    friend PS_PR;
     /**
       Initializer
 
@@ -51,7 +65,7 @@ private:
       @return A vector containing the updated values
       */
     static arr _MB(const double t, const PRCondition* PR_con, Variables *theVars);
-
+    static PRCondition* _MB_con(const double t, const PRCondition* const PR_con, Variables *theVars);
     /**
       Calculate the Rates of PR based on the inputs
 
@@ -114,4 +128,11 @@ private:
     static double Vf_T121;
     static double Vf_T122;
     static double Vf_T112;
+    static double V1T;
+    static double PGA;
+    static bool PR_PS_com;
+    static bool PR_PS_RuBP;
+    static double GLUc;
+    static double TIME;
+    static size_t N;
 };

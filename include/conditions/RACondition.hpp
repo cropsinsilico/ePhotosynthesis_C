@@ -38,7 +38,9 @@ public:
     RACondition(DynaPSCondition* par = nullptr) : RuACT_con(new RuACTCondition(this)), EPS_con(new EPSCondition(this)) {
         setParent(par);
     }
-
+    ~RACondition() {
+        _clear();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 

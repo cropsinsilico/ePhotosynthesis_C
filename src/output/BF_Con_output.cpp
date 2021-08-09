@@ -35,7 +35,8 @@ std::ostream& BFCondition::_print(std::ostream &out, const uint tab) const {
     out << space << "  QHsemi = " << QHsemi<< std::endl;
     out << space << "  cytbL = " << cytbL << std::endl;
     out << space << "  Qi = " << Qi<< std::endl;
-    out << space << "  Q = " << Q << std::endl;
+    if (!BFCondition::FI_connect)
+        out << space << "  Q = " << Q << std::endl;
     out << space << "  cytbH = " << cytbH << std::endl;
     out << space << "  Qn = " << Qn<< std::endl;
     out << space << "  Qr = " << Qr<< std::endl;
@@ -43,8 +44,8 @@ std::ostream& BFCondition::_print(std::ostream &out, const uint tab) const {
     out << space << "  cytc2 = " << cytc2 << std::endl;
     out << space << "  P700 = " << P700<< std::endl;
     out << space << "  ADP = " << ADP << std::endl;
-    out << space << "  Pi = " << Pi<< std::endl;
-    out << space << "  ATP = " << ATP << std::endl;
+    if (!PS_connect)
+        out << space << "  ATP = " << ATP << std::endl;
     out << space << "  Ks = " << Ks<< std::endl;
     out << space << "  Mgs = " << Mgs << std::endl;
     out << space << "  Cls = " << Cls << std::endl;

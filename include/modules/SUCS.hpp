@@ -28,12 +28,14 @@
 
 #include "ModuleBase.hpp"
 #include "conditions/SUCSCondition.hpp"
+#include "definitions.hpp"
 class PS;
 
 /**
  Class for SUCS related functions and common variables
  */
 class SUCS : public ModuleBase<SUCS, SUCSCondition> {
+    SET_GET(SUCS2PS_Pic)
 private:
     friend ModuleBase;
     /**
@@ -53,7 +55,7 @@ private:
       @return A vector containing the updated values
       */
     static arr _MB(const double t, const SUCSCondition* SUCS_Con, Variables *theVars);
-
+    static SUCSCondition* _MB_con(const double t, const SUCSCondition* SUCS_Con, Variables *theVars);
     /**
       Calculate the Rates of SUCS based on the inputs
 
@@ -131,4 +133,8 @@ private:
     static double Vf_T56;
     static double Vf_T57;
     static double Vf_T59;
+    static double UTPc;
+    static double ATPc;
+    static double TIME;
+    static size_t N;
 };

@@ -27,6 +27,8 @@
 #include "modules/CM.hpp"
 #include "modules/PS_PR.hpp"
 #include "modules/SUCS.hpp"
+size_t CMCondition::count = 0;
+bool CM::TestSucPath = false;
 #ifdef INCDEBUG
 Debug::DebugLevel CMCondition::_dlevel = Debug::Middle;
 #endif

@@ -56,31 +56,34 @@ FICondition::FICondition(const arr &vec, const size_t offset) {
 }
 
 void FICondition::_fromArray(const arr &vec, const size_t offset) {
-     A = vec[offset];
-     U = vec[offset + 1];
-     P680ePheo = vec[offset + 2];
-     P680pPheon = vec[offset + 3];
-     P680pPheo = vec[offset + 4];
-     P680Pheon = vec[offset + 5];
-     Yz = vec[offset + 6];
-     S1T = vec[offset + 7];
-     S2T = vec[offset + 8];
-     S3T = vec[offset + 9];
-     S0T = vec[offset + 10];
-     S1Tp = vec[offset + 11];
-     S2Tp = vec[offset + 12];
-     S3Tp = vec[offset + 13];
-     S0Tp = vec[offset + 14];
-     QAQB = vec[offset + 15];
-     QAnQB = vec[offset + 16];
-     QAQBn = vec[offset + 17];
-     QAnQBn = vec[offset + 18];
-     QAQB2n = vec[offset + 19];
-     QAnQB2n = vec[offset + 20];
-     PQn = vec[offset + 21];
+    size_t count = 0;
+     A = vec[offset + count++];
+     U = vec[offset + count++];
+     P680ePheo = vec[offset + count++];
+     P680pPheon = vec[offset + count++];
+     P680pPheo = vec[offset + count++];
+     P680Pheon = vec[offset + count++];
+     Yz = vec[offset + count++];
+     S1T = vec[offset + count++];
+     S2T = vec[offset + count++];
+     S3T = vec[offset + count++];
+     S0T = vec[offset + count++];
+     S1Tp = vec[offset + count++];
+     S2Tp = vec[offset + count++];
+     S3Tp = vec[offset + count++];
+     S0Tp = vec[offset + count++];
+     QAQB = vec[offset + count++];
+     QAnQB = vec[offset + count++];
+     QAQBn = vec[offset + count++];
+     QAnQBn = vec[offset + count++];
+     QAQB2n = vec[offset + count++];
+     QAnQB2n = vec[offset + count++];
+     if (!FICondition::BF_connect)
+         PQn = vec[offset + count++];
  }
 
 arr FICondition::_toArray() {
-    arr vec = {A, U, P680ePheo, P680pPheon, P680pPheo, P680Pheon, Yz, S1T, S2T, S3T, S0T, S1Tp, S2Tp, S3Tp, S0Tp, QAQB, QAnQB, QAQBn, QAnQBn, QAQB2n, QAnQB2n, PQn};
-    return vec;
+    if (FICondition::BF_connect)
+        return {A, U, P680ePheo, P680pPheon, P680pPheo, P680Pheon, Yz, S1T, S2T, S3T, S0T, S1Tp, S2Tp, S3Tp, S0Tp, QAQB, QAnQB, QAQBn, QAnQBn, QAQB2n, QAnQB2n};
+    return {A, U, P680ePheo, P680pPheon, P680pPheo, P680Pheon, Yz, S1T, S2T, S3T, S0T, S1Tp, S2Tp, S3Tp, S0Tp, QAQB, QAnQB, QAQBn, QAnQBn, QAQB2n, QAnQB2n, PQn};
 }

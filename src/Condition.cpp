@@ -33,7 +33,7 @@
 
 void Condition(double t, Variables *theVars) {
     // This variable is transfered from PSInitial for modificatin of V16, the rate of ATP synthesis.
-    double CO2Temp = theVars->TestCa;//280;          // CO2 concentation  // ppm
+    double CO2Temp = theVars->CO2_in;//280;          // CO2 concentation  // ppm
     if (!theVars->useC3)
         CO2Temp *= 0.7;
     const double O2Temp = 0.21;          // O2 concentration  //default is 0.21, i.e. 21//.

@@ -94,12 +94,17 @@ double SUCS::Vf_T59=0;
 double SUCS::Vf_T57=0;
 double SUCS::Vf_T51=0;
 double SUCS::Vf_T56=0;
+double SUCS::UTPc = 0.;
+double SUCS::ATPc = 0.;
+double SUCS::SUCS2PS_Pic = 0.;
+double SUCS::TIME = 0.;
+size_t SUCS::N = 1;
 
+const size_t SUCSCondition::count = 8;
 
 SUCSCondition* SUCS::_init(Variables *theVars) {
-    theVars->SUCS_OLD_TIME = 0;
-    theVars->SUCS_TIME_N = 1;
     SUCSCondition* SUCS_Con = new SUCSCondition();
+    SUCS::UTPc = 0.75;
     if (theVars->useC3) {
 
         Vf_T52=1;
@@ -198,10 +203,9 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
         SUCS_Con->FBPc = 2.;
         SUCS_Con->HexPc = 5.8;
         SUCS_Con->F26BPc = 7.8 * pow(10, -6);
-        SUCS_Con->ATPc = 0.35;
-        SUCS_Con->ADPc = 0.65;
+        SUCS::ATPc = 0.35;
         SUCS_Con->UDPGc = 0.57;
-        SUCS_Con->UTPc = 0.75;
+        //SUCS_Con->UTPc = 0.75;
         SUCS_Con->SUCP = 0.;
         SUCS_Con->SUC = 0.;
         SUCS_Con->PGAc = 0.;
@@ -260,10 +264,9 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
         SUCS_Con->FBPc = 2.;
         SUCS_Con->HexPc = 5.8;
         SUCS_Con->F26BPc = 7.8 * pow(10, -6);
-        SUCS_Con->ATPc = 0.4;
-        SUCS_Con->ADPc = 0.4;
+        SUCS::ATPc = 0.4;
         SUCS_Con->UDPGc = 0.57;
-        SUCS_Con->UTPc = 0.75;
+        //SUCS_Con->UTPc = 0.75;
         SUCS_Con->SUCP = 0.;
         SUCS_Con->SUC = 0.;
         SUCS_Con->PGAc = 0.5;
@@ -301,6 +304,5 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
         theVars->SUCS_Pool.UTc = 1.5 * theVars->SUCRatio[13]; // mM
         theVars->SUCS_Pool.PTc = 15 * theVars->SUCRatio[14];  //
     }
-
     return SUCS_Con;
 }

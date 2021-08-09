@@ -29,7 +29,7 @@
 #include "ConditionBase.hpp"
 
 class FIBFCondition;
-
+class FI;
 /**
  Class for holding the inputs to FI_mb
  */
@@ -77,8 +77,10 @@ public:
     double PQn = 0.;        ///< The concentration of reduced PQ, i.e. PQH2;
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
 
+    static void setBF_connect(const bool val) {BF_connect = val;}
 private:
     friend ConditionBase;
+    friend FI;
     /**
       Copy items from the given vector to the data members
 
@@ -98,12 +100,15 @@ private:
       Get the size of the data vector
       */
     static size_t _size() {
+        if (BF_connect)
+            return count - 1;
         return count;
     }
 
     void _clear() {}
 
     static const size_t count;
+    static bool BF_connect;
 #ifdef INCDEBUG
     const Debug::DebugLevel _dlevel = Debug::Low;
 #endif

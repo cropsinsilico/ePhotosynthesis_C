@@ -24,7 +24,6 @@
  *
  **********************************************************************************************************************************************/
 
-#ifndef BUILD_LIBRARY
 #include <stdlib.h>
 #include <string>
 #include <sstream>
@@ -38,7 +37,9 @@
 #include "cxxopts.hpp"
 #include "globals.hpp"
 #include "modules/trDynaPS.hpp"
+#include "modules/CM.hpp"
 #include "modules/EPS.hpp"
+#include "modules/PR.hpp"
 #include "drivers/drivers.hpp"
 #include "Variables.hpp"
 
@@ -117,56 +118,6 @@ enum DriverType {
 };
 
 
-#ifdef TESTING
-
-void EPS_run(double begintime, double stoptime, double stepsize, double abstol, double reltol, double Tp, int maxSubSteps)
-{
-    bool record = false;
-    std::string evn="InputEvn.txt";
-    std::string atpcost="InputATPCost.txt";
-    std::string enzymeFile="Einput7.txt";
-    std::map<std::string, std::string> inputs;
-
-    readFile(evn, inputs);
-    readFile(atpcost, inputs);
-    Variables *theVars = new Variables();
-    readFile(enzymeFile, theVars->EnzymeAct);
-    theVars->TestCa = static_cast<double>(stof(inputs.at("CO2"), nullptr));
-    theVars->TestLi = static_cast<double>(stof(inputs.at("PAR"), nullptr));
-    theVars->TestSucPath = stoi(inputs.at("SucPath"), nullptr);
-    theVars->TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
-    theVars->record = record;
-    theVars->useC3 = true;
-    theVars->RUBISCOMETHOD = 1;
-    theVars->RUBISCOTOTAL = 3;
-
-    Driver *maindriver = new EPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1, Tp);
-    std::vector<double> ResultRate = maindriver->run();
-    std::cout<<ResultRate[0]<<std::endl;
-
-    std::ofstream outfile("output.data");
-    outfile << ResultRate[0] << std::endl;
-    if (theVars != nullptr) {
-        maindriver->theVars = nullptr;
-        delete theVars;
-    }
-    delete maindriver;
-}
-
-int main()
-{
-    double stoptime=5000.0, begintime=0.0, stepsize=1.0;
-    double abstol=1e-5, reltol=1e-4;
-    double Tp=25.1;
-    int maxSubSteps=2500;
-    for (int i = 0; i < 10; i++) {
-        std::cout << i << std::endl;
-        EPS_run(begintime, stoptime, stepsize, abstol, reltol, Tp, maxSubSteps);
-    }
-    return (0);
-}
-
-#else
 int main(int argc, const char* argv[]) {
     try {
         bool record = false;
@@ -234,14 +185,15 @@ int main(int argc, const char* argv[]) {
         if (result.count("enzyme")) {
             readFile(enzymeFile, theVars->EnzymeAct);
         }
-        theVars->TestCa = static_cast<double>(stof(inputs.at("CO2"), nullptr));
+        theVars->CO2_in = static_cast<double>(stof(inputs.at("CO2"), nullptr));
         theVars->TestLi = static_cast<double>(stof(inputs.at("PAR"), nullptr));
-        theVars->TestSucPath = stoi(inputs.at("SucPath"), nullptr);
+        if (stoi(inputs.at("SucPath"), nullptr) > 0)
+            CM::setTestSucPath(true);
         theVars->TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
         theVars->record = record;
         theVars->useC3 = useC3;
         theVars->RUBISCOMETHOD = 1;
-        theVars->RUBISCOTOTAL = 3;
+        PR::setRUBISCOTOTAL(3);
         if (debugDelta)
             dbglvl += 8;
         if (debugInternal)
@@ -416,6 +368,7 @@ int main(int argc, const char* argv[]) {
                     outfile << theVars->TestLi << ResultRate[0] << std::endl;
                     break;
                 case EPS:
+                    std::cout << ResultRate[0] << std::endl;
                     outfile << ResultRate[0] << std::endl;
                     break;
                 default:
@@ -435,7 +388,3 @@ int main(int argc, const char* argv[]) {
         exit(EXIT_FAILURE);
     }
 }
-
-#endif
-
-#endif // BUILD_LIBRARY

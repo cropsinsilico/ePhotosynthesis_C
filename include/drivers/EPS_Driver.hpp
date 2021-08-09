@@ -74,7 +74,6 @@ private:
     //double Ca;
     //double Li;
     double AtpCost;
-    double SucPath;
     size_t ParaNum;
     double Ratio;
     double Tp;

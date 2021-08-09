@@ -26,7 +26,16 @@
 
 #include "Variables.hpp"
 #include "modules/FIBF.hpp"
+#include "modules/FI.hpp"
+#include "modules/BF.hpp"
 // This is the function to initialize some global variable used in FIBF MODEL
+
+size_t FIBFCondition::count = 0;
+double FIBF::ChlPSI = 0.;
+double FIBF::ChlT = 0.;
+double FIBF::ChlT2 = 0.;
+double FIBF::FIBF2FI_PQ = 0.;
+double FIBF::FIBF2FI_PQa = 0.;
 
 FIBFCondition* FIBF::_init(Variables *theVars) {
 

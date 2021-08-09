@@ -43,6 +43,7 @@ double PS::KE21 = 0.;
 double PS::KE22 = 0.;
 double PS::KE23 = 0.;
 double PS::KE25 = 0.;
+double PS::KE4 = 0.;
 double PS::KE5 = 0.;
 double PS::KE6 = 0.;
 double PS::KE7 = 0.;
@@ -101,6 +102,14 @@ double PS::V24 = 0.;
 double PS::V31 = 0.;
 double PS::V32 = 0.;
 double PS::V33 = 0.;
+double PS::V2 = 0.;
+double PS::V3 = 0.;
+double PS::V6 = 0.;
+double PS::V9 = 0.;
+double PS::V13 = 0.;
+double PS::V16 = 0.;
+double PS::V23 = 0.;
+double PS::V1 = 0.;
 double PS::V5 = 0.;
 double PS::V7 = 0.;
 double PS::V8 = 0.;
@@ -133,11 +142,25 @@ double PS::Vf_T9 = 1;
 double PS::Vf_T13 = 1;
 double PS::Vf_T23 = 1;
 double PS::PsV1 = 0.;
-const size_t PSCondition::count = 15;
+double PS::_NADPH = 0.;
+double PS::PiTc = 0.;
+double PS::V1Reg = 0.;
+double PS::TIME = 0.;
+double PS::alfa = 0;
+double PS::fc = 0;
+double PS::Theta = 0;
+double PS::beta = 0;
+double PS::Jmax = 0.;
+
+size_t PS::N = 1;
+const size_t PSCondition::count = 12;
+bool PSCondition::useC3 = false;
+bool PS::useC3 = false;
+
 arr PS::Param = {0, 0};
 
 PSCondition* PS::_init(Variables *theVars) {
-
+    setC3(theVars->useC3);
     PSCondition* PS_con = new PSCondition();
     PS_con->RuBP = 2.000;
     PS_con->PGA = 2.400;
@@ -145,18 +168,15 @@ PSCondition* PS::_init(Variables *theVars) {
     PS_con->T3P = 0.5;
     if (!theVars->useC3) {
         PS_con->ADPG = 0.005;
-        PS_con->O2 = 0.264;
     } else {
         PS_con->ADPG = 0.;
-        PS_con->O2 = 0.21 * 1.26;
     }
     PS_con->FBP = 0.670;
     PS_con->E4P = 0.050;
     PS_con->S7P = 2.000;
     PS_con->SBP = 0.300;
     PS_con->ATP = 0.68;
-    PS_con->NADPH = 0.21;
-    PS_con->CO2 = 0.012;
+    PS::_NADPH = 0.21;
     PS_con->HexP = 2.2;
     PS_con->PenP = 0.25;
 
@@ -203,7 +223,7 @@ PSCondition* PS::_init(Variables *theVars) {
         KM32b	=	0.1	;	    // 	NADPH	3	DPGA+NADPH <->GAP + OP+NADP
         //KM41	=	2.5	;	    //	DHAP	4	DHAP <->GAP
         //KM42	=	0.68;		// 	GAP	4	DHAP <->GAP
-        theVars->KE4     =   0.05;       //   Using the value from Patterson
+        KE4     =   0.05;       //   Using the value from Patterson
         KM51	=	0.3	;	    //	GAP	5	GAP+DHAP <->FBP
         KM52	=	0.4	;	    // 	DHAP	5	GAP+DHAP <->FBP
         KM53	=	0.02;		//	FBP	5	GAP+DHAP <->FBP     // Original Value: 0.02
@@ -264,18 +284,18 @@ PSCondition* PS::_init(Variables *theVars) {
         // Initialize the values of the global variables
 
         if (theVars->GP == 0) {
-            theVars->V1 = theVars->EnzymeAct.at("V1");
-            theVars->V2 = theVars->EnzymeAct.at("V2");
-            theVars->V3 = theVars->EnzymeAct.at("V3");
+            V1 = theVars->EnzymeAct.at("V1");
+            V2 = theVars->EnzymeAct.at("V2");
+            V3 = theVars->EnzymeAct.at("V3");
             V5 = theVars->EnzymeAct.at("V5");
-            theVars->V6 = theVars->EnzymeAct.at("V6");
+            V6 = theVars->EnzymeAct.at("V6");
             V7 = theVars->EnzymeAct.at("V7");
             V8 = theVars->EnzymeAct.at("V8");
-            theVars->V9 = theVars->EnzymeAct.at("V9");
+            V9 = theVars->EnzymeAct.at("V9");
             V10	= theVars->EnzymeAct.at("V10");
-            theVars->V13 = theVars->EnzymeAct.at("V13");
-            theVars->V23 = theVars->EnzymeAct.at("V23");
-            theVars->V16 = theVars->EnzymeAct.at("V16");
+            V13 = theVars->EnzymeAct.at("V13");
+            V23 = theVars->EnzymeAct.at("V23");
+            V16 = theVars->EnzymeAct.at("V16");
         }
 
         V31 = 3.73/3;   // 1.05 *SC  *1.0 ;	%	(Lilley, Chon, Mosbach & Heldt, 1977b)	31	Phosphate translocator	DHAPi<->DHAPo   1.05 defulat
@@ -288,8 +308,8 @@ PSCondition* PS::_init(Variables *theVars) {
         PS_PEXT = 0.5 * theVars->PSRatio[3];   //   Global constant for the cytosolic Phosphate concentration;
 
         // Initialize the constants for the different reactions
-        theVars->KM11 = 0.0115 * theVars->PSRatio[19]; //  CO2 1 RuBP+CO2->2PGA
-        theVars->KM12 = 0.222 * theVars->PSRatio[20];  // O2 1 RuBP+CO2->2PGA
+        KM11 = 0.0115 * theVars->PSRatio[19]; //  CO2 1 RuBP+CO2->2PGA
+        KM12 = 0.222 * theVars->PSRatio[20];  // O2 1 RuBP+CO2->2PGA
         KM13 = 0.02 * theVars->PSRatio[21];            //  RuBP 1 RuBP+CO2->2PGA
 
         KI11 = 0.84 * theVars->PSRatio[22];  // PGA
@@ -305,7 +325,7 @@ PSCondition* PS::_init(Variables *theVars) {
         KM31a = 0.004 * theVars->PSRatio[30]; // BPGA 3 DPGA+NADPH <->GAP + OP+NADP
         KM32b = 0.1 * theVars->PSRatio[31];   //  NADPH 3 DPGA+NADPH <->GAP + OP+NADP
 
-        theVars->KE4 = 1 / 0.05 * theVars->PSRatio[34]; // Using the value from Patterson
+        KE4 = 1 / 0.05 * theVars->PSRatio[34]; // Using the value from Patterson
 
         KM51 = 0.3 * theVars->PSRatio[35];  // GAP 5 GAP+DHAP <->FBP
         KM52 = 0.4 * theVars->PSRatio[36];  //  DHAP 5 GAP+DHAP <->FBP
@@ -392,18 +412,18 @@ PSCondition* PS::_init(Variables *theVars) {
             const double STOM1 = 1;
             const double STOM2 = 1;
 
-            theVars->V1 = 2.93 * SC1 / STOM1 * theVars->PSRatio[4]; // (Harris & Koniger, 1997)
-            theVars->V2 = 30.15 * SC * STOM2 * theVars->PSRatio[5]; // (Harris & Koniger, 1997)
-            theVars->V3 = 4.04 * SC * STOM2 * theVars->PSRatio[6];  // 1.57*SC     ; // (Harris & Koniger, 1997)
+            V1 = 2.93 * SC1 / STOM1 * theVars->PSRatio[4]; // (Harris & Koniger, 1997)
+            V2 = 30.15 * SC * STOM2 * theVars->PSRatio[5]; // (Harris & Koniger, 1997)
+            V3 = 4.04 * SC * STOM2 * theVars->PSRatio[6];  // 1.57*SC     ; // (Harris & Koniger, 1997)
             V5 = 1.22 * SC * theVars->PSRatio[7];                   // (Harris & Koniger, 1997)
-            theVars->V6 = 0.734 * SC / STOM1 * theVars->PSRatio[8]; // (Harris & Koniger, 1997)
+            V6 = 0.734 * SC / STOM1 * theVars->PSRatio[8]; // (Harris & Koniger, 1997)
             V7 = 3.12 * SC * 4 * theVars->PSRatio[9];               // (Harris & Koniger, 1997)
             V8 = 1.22 * SC * theVars->PSRatio[10];                  // (Harris & Koniger, 1997)
-            theVars->V9 = 0.32 * 3 * theVars->PSRatio[11]; // 0.17*SC *FC ; // (Harris & Koniger, 1997) *3.
+            V9 = 0.32 * 3 * theVars->PSRatio[11]; // 0.17*SC *FC ; // (Harris & Koniger, 1997) *3.
             //theVars->V10 = theVars->V7; // (Harris & Koniger, 1997)
-            theVars->V13 = 10.81 * SC1 * theVars->PSRatio[12];      // (Harris & Koniger, 1997)
-            theVars->V16 = 5.47 * theVars->PSRatio[13];             // (Aflalo & Shavit, 1983, Davenport & McLeod, 1986)
-            theVars->V23 = 2 * theVars->PSRatio[14];
+            V13 = 10.81 * SC1 * theVars->PSRatio[12];      // (Harris & Koniger, 1997)
+            V16 = 5.47 * theVars->PSRatio[13];             // (Aflalo & Shavit, 1983, Davenport & McLeod, 1986)
+            V23 = 2 * theVars->PSRatio[14];
         }
         V24 = 2 * theVars->PSRatio[15];
         V31 = 1.0 * theVars->PSRatio[16] * 20;

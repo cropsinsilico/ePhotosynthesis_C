@@ -49,10 +49,6 @@ void RROEA::_Rate(const double t, const RROEACondition* RROEA_con, Variables *th
         theVars->RROEA_Vel.ve2Fd = theVars->RROEA_RC.ke2Fd * theVars-> RROEA_Param[0] / 500 * Fdo;
     }
 
-    if (t > theVars->RROEA_OLD_TIME) {
-            theVars->RROEA_TIME_N = theVars->RROEA_TIME_N + 1;
-            theVars->RROEA_OLD_TIME = t;
-        }
     theVars->RROEA_Vel.ve2GAPDH = theVars->RROEA_RC.ke2GAPDH * (RROEA_con->Thio * GAPDHo - Thioo * RROEA_con->GAPDH / theVars->RROEA_KE.KEe2GAPDH);
     theVars->RROEA_Vel.ve2FBPase = theVars->RROEA_RC.ke2FBPase * (RROEA_con->Thio * FBPaseo - Thioo * RROEA_con->FBPase / theVars->RROEA_KE.KEe2FBPase);
     theVars->RROEA_Vel.ve2SBPase = theVars->RROEA_RC.ke2SBPase * (RROEA_con->Thio * SBPaseo - Thioo * RROEA_con->SBPase / theVars->RROEA_KE.KEe2SBPase);
@@ -66,6 +62,11 @@ void RROEA::_Rate(const double t, const RROEACondition* RROEA_con, Variables *th
 
     DEBUG_INTERNAL(theVars->RROEA_Vel)
     if (theVars->record) {
-        theVars->RROEA_VEL.insert(theVars->RROEA_TIME_N - 1, t, theVars->RROEA_Vel);
+        if (t > RROEA::TIME) {
+            RROEA::N++;
+            RROEA::TIME = t;
+        }
+
+        theVars->RROEA_VEL.insert(RROEA::N - 1, t, theVars->RROEA_Vel);
     }
 }

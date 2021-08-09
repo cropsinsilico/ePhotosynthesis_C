@@ -27,24 +27,32 @@
 #include "Variables.hpp"
 #include "modules/RedoxReg.hpp"
 #include "modules/RA.hpp"
+#include "modules/PS.hpp"
 
 double RedoxReg::RedoxReg_VMAX13 = 0.;
 double RedoxReg::RedoxReg_VMAX16 = 0.;
 double RedoxReg::RedoxReg_VMAX6 = 0.;
 double RedoxReg::RedoxReg_VMAX9 = 0.;
-
+double RedoxRegCondition::V13 = 0.;
+double RedoxRegCondition::V16 = 0.;
+double RedoxRegCondition::V6 = 0.;
+double RedoxRegCondition::V9 = 0.;
+double RedoxReg::TIME = 0.;
+size_t RedoxReg::N = 1;
+bool RedoxReg::trDynaPS2RedReg_cal = false;
+const double RedoxReg::Fd_Thio_ET = 500.;
+const double RedoxReg::ThioT = 0.5;
+const double RedoxReg::Thio_Oxidation = 0.1;
 RedoxRegCondition* RedoxReg::_init(Variables *theVars) {
-    theVars->RedoxReg_OLD_TIME = 0;
-    theVars->RedoxReg_TIME_N = 1;
     RACondition* RA_con = RA::init(theVars);
 
     const double Thion = 0.25;     // This is a wild guess
     RedoxRegCondition* RedoxReg_con = new RedoxRegCondition(RA_con, Thion);
 
-    RedoxReg_VMAX6 = theVars->V6;
-    RedoxReg_VMAX9 = theVars->V9;
-    RedoxReg_VMAX13 = theVars->V13;
-    RedoxReg_VMAX16 = theVars->V16;
+    RedoxReg_VMAX6 = PS::getV6();
+    RedoxReg_VMAX9 = PS::getV9();
+    RedoxReg_VMAX13 = PS::getV13();
+    RedoxReg_VMAX16 = PS::getV16();
 
     for (int i = 0; i < 5; i++)
         theVars->RedoxReg_MP.push_back(zeros(3));

@@ -48,10 +48,13 @@ private:
   @return A vector containing the updated values
   */
     static arr _MB(const double t, const PS_PRCondition* PS_PRs, Variables *theVars);
+    static PS_PRCondition* _MB_con(const double t, const PS_PRCondition* PS_PRs, Variables *theVars);
 
     static void _Rate(const double t, const PS_PRCondition* PS_PRs, Variables *theVars) {
         (void)t;
         (void)PS_PRs;
         (void)theVars;
     }
+    static double TIME;
+    static size_t N;
 };

@@ -29,7 +29,6 @@
 PRCondition::PRCondition(const PRCondition* other)  {
     GCEA = other->GCEA;
     GCA = other->GCA;
-    PGA = other->PGA;
     PGCA = other->PGCA;
     GCAc = other->GCAc;
     GOAc = other->GOAc;
@@ -38,8 +37,6 @@ PRCondition::PRCondition(const PRCondition* other)  {
     HPRc = other->HPRc;
     GCEAc = other->GCEAc;
     RuBP = other->RuBP;
-    CO2 = other->CO2;
-    O2 = other->O2;
 }
 
 PRCondition::PRCondition(const arr vec, size_t offset)  {
@@ -49,20 +46,19 @@ PRCondition::PRCondition(const arr vec, size_t offset)  {
 void PRCondition::_fromArray(const arr &vec, size_t offset)  {
     GCEA= vec[offset];
     GCA= vec[offset + 1];
-    PGA= vec[offset + 2];
-    PGCA= vec[offset + 3];
-    GCAc= vec[offset + 4];
-    GOAc= vec[offset + 5];
-    SERc= vec[offset + 6];
-    GLYc= vec[offset + 7];
-    HPRc= vec[offset + 8];
-    GCEAc= vec[offset + 9];
-    RuBP= vec[offset + 10];
-    CO2= vec[offset + 11];
-    O2= vec[offset + 12];
+    PGCA= vec[offset + 2];
+    GCAc= vec[offset + 3];
+    GOAc= vec[offset + 4];
+    SERc= vec[offset + 5];
+    GLYc= vec[offset + 6];
+    HPRc= vec[offset + 7];
+    GCEAc= vec[offset + 8];
+    if (!PR_PS_RuBP)
+        RuBP= vec[offset + 9];
 }
 
 arr PRCondition::_toArray()  {
-    arr array = {GCEA, GCA, PGA, PGCA, GCAc, GOAc, SERc, GLYc, HPRc, GCEAc, RuBP, CO2, O2};
-    return array;
+    if (PR_PS_RuBP)
+        return {GCEA, GCA, PGCA, GCAc, GOAc, SERc, GLYc, HPRc, GCEAc};
+    return {GCEA, GCA, PGCA, GCAc, GOAc, SERc, GLYc, HPRc, GCEAc, RuBP};
 }

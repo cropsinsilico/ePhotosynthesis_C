@@ -28,7 +28,7 @@
 #include "Variables.hpp"
 #include "modules/RuACT.hpp"
 
-arr RuACT::_MB(const double t, const RuACTCondition* RuACT_Con, Variables *theVars) {
+RuACTCondition* RuACT::_MB_con(const double t, const RuACTCondition* RuACT_Con, Variables *theVars) {
     Condition(t, theVars);
     const double light = theVars->GLight;
 
@@ -43,11 +43,19 @@ arr RuACT::_MB(const double t, const RuACTCondition* RuACT_Con, Variables *theVa
     const double v6_1 = theVars->RuACT_Vel.v6_1; // v6_1 The rate of RuBP carboxylation
     const double v6_2 = theVars->RuACT_Vel.v6_2; // v6_2 The rate of RuBP oxygenation
 
-    arr RuACT_mb = zeros(4);
-    RuACT_mb[0] = vn1 - v1;                          // ER
-    RuACT_mb[1] = v1 - v7 + vn7 + v6_1 + v6_2 - vn1; // EAF
-    RuACT_mb[2] = v7 - vn7 - v6_1 - v6_2;            // ECMR
-    RuACT_mb[3] = v6_1 + v6_2 + v1 - vn1 + vn7 - v7; // RuBP
-    DEBUG_DELTA(RuACT_mb)
-    return RuACT_mb;
+    RuACTCondition* dydt = new RuACTCondition();
+    dydt->ER = vn1 - v1;                          // ER
+    dydt->Eaf = v1 - v7 + vn7 + v6_1 + v6_2 - vn1; // EAF
+    dydt->ECMR = v7 - vn7 - v6_1 - v6_2;            // ECMR
+    if (!theVars->RuACT_EPS_com)
+        dydt->RuBP = v6_1 + v6_2 + v1 - vn1 + vn7 - v7; // RuBP
+    //DEBUG_DELTA(RuACT_mb)
+    return dydt;
+}
+
+arr RuACT::_MB(const double t, const RuACTCondition* RuACT_Con, Variables *theVars) {
+    RuACTCondition* dydt = _MB_con(t, RuACT_Con, theVars);
+    arr tmp = dydt->toArray();
+    delete dydt;
+    return tmp;
 }

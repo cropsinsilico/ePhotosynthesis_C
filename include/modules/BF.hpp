@@ -27,12 +27,28 @@
  **********************************************************************************************************************************************/
 
 #include "ModuleBase.hpp"
+#include "definitions.hpp"
 #include "conditions/BFCondition.hpp"
 
 /**
  Class for the BF related functions
  */
 class BF : public ModuleBase<BF, BFCondition> {
+public:
+    static double _Pi;
+    static void setFI_connect(const bool val) {
+        FI_connect = val;
+        BFCondition::setFI_connect(val);
+    }
+    static void setPS_connect(const bool val) {
+        PS_connect = val;
+        BFCondition::setPS_connect(val);
+    }
+    static void setRROEA_connect(const bool val) {
+        RROEA_connect = val;
+        BFCondition::setRROEA_connect(val);
+    }
+    SET_GET(EPS_ATP_Rate)
 private:
     friend ModuleBase;
     /**
@@ -52,6 +68,7 @@ private:
       @return A vector containing the updated values
       */
     static arr _MB(const double t, const BFCondition* BF_con, Variables *theVars);
+    static BFCondition* _MB_con(const double t, const BFCondition* BF_con, Variables *theVars);
 
     /**
       Calculate the Rates of BF based on the inputs
@@ -61,4 +78,13 @@ private:
       @param theVars The global variables
       */
     static void _Rate(const double t, const BFCondition* BF_con, Variables *theVars);
+
+    static bool FI_connect;
+    static bool PS_connect;
+    static bool RROEA_connect;
+    static double cATPsyn;
+    static double CPSi;
+    static double cNADPHsyn;
+    static double TIME;
+    static size_t N;
 };

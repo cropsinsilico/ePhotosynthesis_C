@@ -36,6 +36,9 @@ class trDynaPSCondition : public ConditionBase<trDynaPSCondition, trDynaPSCondit
 public:
     trDynaPSCondition() : RROEA_con(new RROEACondition(this)), DynaPS_con(new DynaPSCondition(this)) {}
 
+    ~trDynaPSCondition() {
+        _clear();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -97,10 +100,12 @@ private:
       Get the size of the data vector
       */
     static size_t _size() {
-        return count; //RROEA_con.size() + DynaPS_con.size();
+        if (count == 0)
+            count = RROEACondition::size() + DynaPSCondition::size();
+        return count;
     }
 
-    static const size_t count;
+    static size_t count;
 #ifdef INCDEBUG
     const Debug::DebugLevel _dlevel = Debug::Top;
 #endif

@@ -55,7 +55,4 @@ void ParamSet(Variables *theVars) {
     theVars->RROEA_Param = zeros(2);
     theVars->RROEA_Param[0] = va1;
     theVars->RROEA_Param[1] = theVars->PS12ratio;
-
-    theVars->RedoxReg_Param = 0;
-
 }

@@ -29,6 +29,8 @@
 #include "conditions/CMCondition.hpp"
 
 class CM : public ModuleBase<CM, CMCondition> {
+public:
+    static void setTestSucPath(const bool val) {TestSucPath = val;}
 private:
     friend ModuleBase;
     /**
@@ -47,10 +49,12 @@ private:
   @return A vector containing the updated values
   */
     static arr _MB(const double t, const CMCondition* CM_con, Variables *theVars);
+    static CMCondition* _MB_con(const double t, const CMCondition* CM_con, Variables *theVars);
 
     static void _Rate(const double t, const CMCondition* CM_con, Variables *theVars) {
         (void)t;
         (void)CM_con;
         (void)theVars;
     }
+    static bool TestSucPath;
 };

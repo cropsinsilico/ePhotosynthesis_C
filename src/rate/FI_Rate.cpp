@@ -26,6 +26,7 @@
 #include <math.h>
 #include "Variables.hpp"
 #include "modules/FI.hpp"
+#include "modules/FIBF.hpp"
 
 void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
 
@@ -34,11 +35,15 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // The rate constant used in the model
-
-    double PQ = theVars->FI_Pool.PQT - FI_Con->PQn - theVars->FIBF2FI_PQa;
-
-    if (theVars->BF_FI_com)
-        PQ = theVars->FIBF2FI_PQ;
+    double PQn;
+    double PQ;
+    if (FICondition::BF_connect) {
+        PQn = FI_Con->parent->BF_con->QH2;
+        PQ = FIBF::getFIBF2FI_PQ();
+    } else {
+        PQn = FI_Con->PQn;
+        PQ = theVars->FI_Pool.PQT - PQn - FIBF::getFIBF2FI_PQa();
+    }
 
     const double P680PheoT = 1;
 
@@ -47,9 +52,9 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
     //const double It = theVars->FI_Param[0]; // It The total incident light intensity
 
     // rate: FI_Con.U -> U*
-    theVars->FI_Vel.Ic = theVars->FI_Param[0] * theVars->ChlT / (theVars->ChlT2 + theVars->ChlPSI); // Ic The incident light on the core antenna; theVars->ChlT is defined in upper lines as the total amount of Chl in one U.
+    theVars->FI_Vel.Ic = theVars->FI_Param[0] * FIBF::getChlT() / (FIBF::getChlT2() + FIBF::getChlPSI()); // Ic The incident light on the core antenna; theVars->ChlT is defined in upper lines as the total amount of Chl in one U.
     // rate: FI_Con.A -> A*
-    theVars->FI_Vel.Ia = theVars->FI_Param[0] * (theVars->ChlT2 - theVars->ChlT) / (theVars->ChlT2 + theVars->ChlPSI); // Ia The incident light on the peripheral antenna
+    theVars->FI_Vel.Ia = theVars->FI_Param[0] * (FIBF::getChlT2() - FIBF::getChlT()) / (FIBF::getChlT2() + FIBF::getChlPSI()); // Ia The incident light on the peripheral antenna
 
     //////////////////////////////////////////////////////////////////////////////////////////
     // Calculate the rate of different reactions //
@@ -99,12 +104,12 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
     theVars->FI_Vel.vAB2 = FI_Con->QAnQBn * theVars->FI_RC.kAB2;  // vAB2 The rate of electron transfer from QA- to QB-
     theVars->FI_Vel.vBA2 = FI_Con->QAQB2n * theVars->FI_RC.kBA2;  // vBA2 The rate of electron transfer from QB2- TO QA
     theVars->FI_Vel.v3 = FI_Con->QAQB2n * PQ * theVars->FI_RC.k3 / theVars->FI_Pool.PQT; // v3 The rate of exchange of QAQBH2 with PQ
-    theVars->FI_Vel.v_r3 = FI_Con->QAQB * FI_Con->PQn * theVars->FI_RC.k_r3 / theVars->FI_Pool.PQT; // v_r3 The rate of exchange of FI_Con.QAQB with PQH2
+    theVars->FI_Vel.v_r3 = FI_Con->QAQB * PQn * theVars->FI_RC.k_r3 / theVars->FI_Pool.PQT; // v_r3 The rate of exchange of FI_Con.QAQB with PQH2
 
     theVars->FI_Vel.v3_n = FI_Con->QAnQB2n * PQ * theVars->FI_RC.k3 / theVars->FI_Pool.PQT; // v3_n The rate of exchange of QAnQBH2 with PQ
-    theVars->FI_Vel.v_r3_n = FI_Con->QAnQB * FI_Con->PQn * theVars->FI_RC.k_r3 / theVars->FI_Pool.PQT; // v_r3_n The rate of exchange of FI_Con.QAnQB with PQH2
+    theVars->FI_Vel.v_r3_n = FI_Con->QAnQB * PQn * theVars->FI_RC.k_r3 / theVars->FI_Pool.PQT; // v_r3_n The rate of exchange of FI_Con.QAnQB with PQH2
 
-    theVars->FI_Vel.v_pq_ox = FI_Con->PQn * theVars->FI_RC.k_pq_oxy; // v_pq_ox The rate of PQH2 oxidation
+    theVars->FI_Vel.v_pq_ox = PQn * theVars->FI_RC.k_pq_oxy; // v_pq_ox The rate of PQH2 oxidation
 
     theVars->FI_Vel.v2_1 = FI_Con->P680pPheon * theVars->FI_RC.k2 * q; // v2_1 The rate of FI_Con.P680pPheon oxidation
     theVars->FI_Vel.v2_2 = FI_Con->P680Pheon * theVars->FI_RC.k2 * q;  // v2_1 The rate of FI_Con.P680pPheon oxidation
@@ -140,14 +145,6 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
     //////  FOR TESITNG  ////
     //const double f = vA_f + vU_f;
     ////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////////////////////////////////
-    //   Part V Output of Velocity for plot          //
-    //////////////////////////////////////////////////////////////////////////////////////////////////
-
-    if (t > theVars->FI_OLD_TIME) {
-        theVars->FI_TIME_N = theVars->FI_TIME_N + 1;
-        theVars->FI_OLD_TIME = t;
-    }
 
     ////////////////////////////////////////////////////////////////////////////
     // Assign table
@@ -160,6 +157,15 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
 
     DEBUG_INTERNAL(theVars->FI_Vel)
     if (theVars->record) {
-        theVars->FI_VEL.insert(theVars->FI_TIME_N - 1, t, theVars->FI_Vel);
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+        //   Part V Output of Velocity for plot          //
+        //////////////////////////////////////////////////////////////////////////////////////////////////
+
+        if (t > FI::TIME) {
+            FI::N++;
+            FI::TIME = t;
+        }
+
+        theVars->FI_VEL.insert(FI::N - 1, t, theVars->FI_Vel);
     }
 }
