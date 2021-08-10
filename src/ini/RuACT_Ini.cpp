@@ -29,7 +29,7 @@
 #include "modules/RuACT.hpp"
 
 bool RuACT::EPS_con = false;
-bool RuACTCondition::EPS_con = false;
+bool RuACTCondition::EPS_connect = false;
 double RuACT::activase = 0.;
 double RuACT::TIME = 0.;
 size_t RuACT::N = 1;

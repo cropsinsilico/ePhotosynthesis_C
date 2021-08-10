@@ -36,7 +36,7 @@ class RuACT : public ModuleBase<RuACT, RuACTCondition> {
 public:
     static void setEPS(const bool val) {
         EPS_con = val;
-        RuACTCondition::setEPS(val);
+        RuACTCondition::setEPS_connect(val);
     }
 private:
     friend ModuleBase;

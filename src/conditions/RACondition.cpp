@@ -26,16 +26,26 @@
 
 #include "conditions/RACondition.hpp"
 
+size_t RACondition::count = 0;
+
 RACondition::RACondition(const RACondition* other) {
-    RuACT_con = other->RuACT_con;
-    EPS_con = other->EPS_con;
+    RuACT_con = new RuACTCondition(other->RuACT_con);
+    EPS_con = new EPSCondition(other->EPS_con);
     RuACT_con->setParent(this);
     EPS_con->setParent(this);
 }
 
 RACondition::RACondition(EPSCondition* eother, RuACTCondition* rother) {
-    RuACT_con = rother;
-    EPS_con = eother;
+    if (rother->parent == nullptr) {
+        RuACT_con = rother;
+    } else {
+        RuACT_con = new RuACTCondition(rother);
+    }
+    if (eother->parent == nullptr) {
+        EPS_con = eother;
+    } else {
+        EPS_con = new EPSCondition(eother);
+    }
     RuACT_con->setParent(this);
     EPS_con->setParent(this);
 }
@@ -54,6 +64,7 @@ void RACondition::_clear() {
         delete EPS_con;
         EPS_con = nullptr;
     }
+    count = 0;
 }
 
 void RACondition::_fromArray(const arr &vec, size_t offset) {

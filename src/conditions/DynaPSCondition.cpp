@@ -28,8 +28,8 @@
 
 DynaPSCondition::DynaPSCondition(const DynaPSCondition* other) {
     _clear();
-    RA_con = other->RA_con;
-    XanCycle_con = other->XanCycle_con;
+    RA_con = new RACondition(other->RA_con);
+    XanCycle_con = new XanCycleCondition(other->XanCycle_con);
     RA_con->setParent(this);
     XanCycle_con->setParent(this);
 }
@@ -40,8 +40,16 @@ DynaPSCondition::DynaPSCondition(realtype *x) {
 
 DynaPSCondition::DynaPSCondition(RACondition* rother, XanCycleCondition* xother) {
     _clear();
-    RA_con = rother;
-    XanCycle_con = xother;
+    if (rother->parent == nullptr) {
+        RA_con = rother;
+    } else {
+        RA_con = new RACondition(rother);
+    }
+    if (xother->parent == nullptr) {
+        XanCycle_con = xother;
+    } else {
+        XanCycle_con = new XanCycleCondition(xother);
+    }
     RA_con->setParent(this);
     XanCycle_con->setParent(this);
 }
@@ -75,4 +83,5 @@ void DynaPSCondition::_clear() {
         delete XanCycle_con;
         XanCycle_con = nullptr;
     }
+    count = 0;
 }

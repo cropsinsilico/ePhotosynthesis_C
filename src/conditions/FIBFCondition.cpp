@@ -28,9 +28,7 @@
 
 FIBFCondition::FIBFCondition(const FIBFCondition* other) {
     _clear();
-    std::cout << "COPYING" << std::endl;
     BF_con = new BFCondition(other->BF_con);
-    std::cout << "Done" << std::endl;
     FI_con = new FICondition(other->FI_con);
     BF_con->setParent(this);
     FI_con->setParent(this);
@@ -39,8 +37,16 @@ FIBFCondition::FIBFCondition(const FIBFCondition* other) {
 
 FIBFCondition::FIBFCondition(BFCondition* bother, FICondition* fother) {
     _clear();
-    BF_con = bother;
-    FI_con = fother;
+    if (bother->parent == nullptr) {
+        BF_con = bother;
+    } else {
+        BF_con = new BFCondition(bother);
+    }
+    if (fother->parent == nullptr) {
+        FI_con = fother;
+    } else {
+        FI_con = new FICondition(fother);
+    }
     BF_con->setParent(this);
     FI_con->setParent(this);
     kd = pow(10, 8) * 0.5;

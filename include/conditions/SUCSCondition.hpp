@@ -42,8 +42,6 @@ public:
 
       @param other The SUCSCon object to copy
       */
-    SUCSCondition(const SUCSCondition &other);
-
     SUCSCondition(const SUCSCondition *other);
 
     /**

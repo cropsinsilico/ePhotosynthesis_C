@@ -89,10 +89,13 @@ private:
       Get the size of the data vector
       */
     static size_t _size() {
-        return EPSCondition::size() + RuACTCondition::size();
+        if (count == 0)
+            count = EPSCondition::size() + RuACTCondition::size();
+        return count;
     }
 
     void _clear();
+    static size_t count;
 #ifdef INCDEBUG
     const Debug::DebugLevel _dlevel = Debug::Middle;
 #endif

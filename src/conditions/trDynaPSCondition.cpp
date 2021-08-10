@@ -38,8 +38,16 @@ trDynaPSCondition::trDynaPSCondition(const trDynaPSCondition* other) {
 
 trDynaPSCondition::trDynaPSCondition(DynaPSCondition* dother, RROEACondition* rother) {
     _clear();
-    DynaPS_con = dother;
-    RROEA_con = rother;
+    if (dother->parent == nullptr) {
+        DynaPS_con = dother;
+    } else {
+        DynaPS_con = new DynaPSCondition(dother);
+    }
+    if (rother->parent == nullptr) {
+        RROEA_con = rother;
+    } else {
+        RROEA_con = new RROEACondition(rother);
+    }
     RROEA_con->setParent(this);
     DynaPS_con->setParent(this);
 }
@@ -77,4 +85,5 @@ void trDynaPSCondition::_clear() {
         delete DynaPS_con;
         DynaPS_con = nullptr;
     }
+    count = 0;
 }
