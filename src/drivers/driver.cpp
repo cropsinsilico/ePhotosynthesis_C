@@ -39,6 +39,8 @@ arr Driver::run() {
     origVars = new Variables(theVars);
     uint count = 0;
     while (count < 5){
+        maxStep = 20. * step;
+
         setup();
 
         sunindextype N =  static_cast<long>(constraints.size());
