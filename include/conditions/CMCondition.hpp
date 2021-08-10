@@ -39,7 +39,9 @@ public:
     CMCondition(EPSCondition* par = nullptr) : PS_PR_con(new PS_PRCondition(this)), SUCS_con(new SUCSCondition(this)) {
         setParent(par);
     }
-
+    ~CMCondition() {
+        _clear();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 

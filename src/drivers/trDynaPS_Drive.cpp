@@ -103,7 +103,7 @@ void trDynaPSDriver::getResults() {
     if(theVars->record) {
         makeFluxTR(theVars);
     }
-
+    delete trDynaPS_res;
     IniModelCom(theVars);
 }
 

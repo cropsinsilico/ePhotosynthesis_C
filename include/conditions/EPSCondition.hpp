@@ -38,7 +38,9 @@ public:
     EPSCondition(RACondition* par = nullptr) : CM_con(new CMCondition(this)), FIBF_con(new FIBFCondition(this)) {
         setParent(par);
     }
-
+    ~EPSCondition() {
+        _clear();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 

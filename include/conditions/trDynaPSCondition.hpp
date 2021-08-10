@@ -36,6 +36,9 @@ class trDynaPSCondition : public ConditionBase<trDynaPSCondition, trDynaPSCondit
 public:
     trDynaPSCondition() : RROEA_con(new RROEACondition(this)), DynaPS_con(new DynaPSCondition(this)) {}
 
+    ~trDynaPSCondition() {
+        _clear();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 

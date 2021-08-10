@@ -30,6 +30,7 @@
 #include <cvode/cvode.h>
 #include <sunmatrix/sunmatrix_dense.h>
 #include <sunlinsol/sunlinsol_dense.h>
+#include <sunnonlinsol/sunnonlinsol_newton.h>
 #include <cvode/cvode_direct.h>
 #include "drivers/CVodeMem.hpp"
 
@@ -38,6 +39,8 @@ arr Driver::run() {
     origVars = new Variables(theVars);
     uint count = 0;
     while (count < 5){
+        maxStep = 20. * step;
+
         setup();
 
         sunindextype N =  static_cast<long>(constraints.size());
@@ -54,9 +57,13 @@ arr Driver::run() {
         data->drv = this;
 
         SUNMatrix A = SUNDenseMatrix(N, N);
-
+        SUNNonlinearSolver NLS = SUNNonlinSol_Newton(y);
         SUNLinearSolver LS = SUNDenseLinearSolver(y, A);
 
+        if (CVodeSetNonlinearSolver(cvode_mem, NLS) != 0) {
+            std::cout << "CVodeSetNonlinearSolver failed" << std::endl;
+            exit(EXIT_FAILURE);
+        }
         if (CVDlsSetLinearSolver(cvode_mem, LS, A) != 0) {
             std::cout << "CVDlsSetLinearSolver failed" << std::endl;
             exit(EXIT_FAILURE);
@@ -71,6 +78,7 @@ arr Driver::run() {
                 std::cout << "CVode failed at t=" << tout << std::endl;
                 //exit(EXIT_FAILURE);
                 runOK = false;
+                break;
             }
             tout += step;
         }
@@ -80,6 +88,7 @@ arr Driver::run() {
             getResults();
         }
 
+        SUNNonlinSolFree(NLS);
         SUNLinSolFree(LS);
         SUNMatDestroy(A);
         N_VDestroy(y);
@@ -89,6 +98,7 @@ arr Driver::run() {
         theVars = origVars;
         count++;
         step = initialStep / (count + 1);
+        std::cout << "Retrying with smaller step size: " << step << std::endl;
     }
     exit(EXIT_FAILURE);
 }

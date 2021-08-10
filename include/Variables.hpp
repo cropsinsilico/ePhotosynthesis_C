@@ -81,9 +81,9 @@ public:
 
     int RUBISCOMETHOD = 1;
 
-    const double AVR = 30;
+    const double AVR = 30.;
     const double HPR = 4.66;
-    const double O2 = 210;
+    const double O2 = 210.;
 
     double CO2_cond = 0.;
 
@@ -100,7 +100,7 @@ public:
     double PS2BF_Pi = 0.;
     double PS_PR_Param = 0;
 
-    double Tp = 0;
+    double Tp = 0.;
 
     // Parameters
     arr PR_Param = zeros(2);
