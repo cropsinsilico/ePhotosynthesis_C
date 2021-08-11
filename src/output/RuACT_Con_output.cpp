@@ -28,10 +28,11 @@
 
 std::ostream& RuACTCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
-    out << space << "  ER = " << std::endl;
-    out << space << "  Eaf = " << std::endl;
-    out << space << "  ECMR = " << std::endl;
-    out << space << "  RuBP = " << std::endl;
+    out << space << "  ER = " << ER << std::endl;
+    out << space << "  Eaf = " << Eaf << std::endl;
+    out << space << "  ECMR = " << ECMR << std::endl;
+    if (!EPS_connect)
+        out << space << "  RuBP = " << RuBP << std::endl;
     return out;
 }
 

@@ -134,12 +134,12 @@ void readFile(const std::string &filename, std::map<std::string, std::string> &m
     std::string input;
     std::ifstream inputfile(filename);
     if(inputfile.fail()) {
-        std::cout << "Could not open " << filename << " for reading" << std::endl;
-        exit(EXIT_FAILURE);
+        std::string errmsg = "Could not open " + filename + " for reading";
+        throw std::runtime_error(errmsg);
     }
     while (getline(inputfile, input)) {
         if (input.empty())
-            return;
+            continue;
         boost::algorithm::split_regex(tempVec, input, token);
         mapper.insert(std::pair<std::string, std::string>(tempVec[0], tempVec[1]));
     }
@@ -150,13 +150,13 @@ void readFile(const std::string &filename, std::map<std::string, double> &mapper
     std::string input;
     std::ifstream inputfile(filename);
     if(inputfile.fail()) {
-        std::cout << "Could not open " << filename << " for reading" << std::endl;
-        exit(EXIT_FAILURE);
+        std::string errmsg = "Could not open " + filename + " for reading";
+        throw std::runtime_error(errmsg);
     }
     int count = 0;
     while (getline(inputfile, input)) {
         if (input.empty())
-            return;
+            continue;
         boost::algorithm::split_regex(tempVec, input, token);
         double d;
         std::stringstream ss(tempVec[1]);

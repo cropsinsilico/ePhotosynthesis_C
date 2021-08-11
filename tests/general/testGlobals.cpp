@@ -2,6 +2,9 @@
 #include "VariableFramework.hpp"
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
+#include <stdio.h>
+#include <fstream>
+#include <map>
 
 using ::testing::ElementsAre;
 
@@ -45,6 +48,40 @@ TEST_F(ConditionTest, TestGeneral) {
 
 }
 
+TEST_F(ConditionTest, TestReadFile) {
+    std::string filename(tmpnam(nullptr));
+    std::ofstream temp1;
+    temp1.open(filename);
+    temp1 << "CO2  150" << std::endl;
+    temp1 << "PAR\t850" << std::endl << std::endl;
+    temp1 << "SucPath     1" << std::endl;
+    temp1.close();
+
+    std::map<std::string, std::string> map1;
+    readFile(filename, map1);
+    EXPECT_EQ("150", map1.at("CO2"));
+    EXPECT_EQ("850", map1.at("PAR"));
+    EXPECT_EQ("1", map1.at("SucPath"));
+    remove(filename.c_str());
+    EXPECT_THROW(readFile(filename, map1), std::runtime_error);
+
+    std::string filename2(tmpnam(nullptr));
+    temp1.open(filename2);
+    for (int i = 0; i <= 35; i++) {
+        temp1 << i << "  " << i << std::endl << std::endl;
+    }
+    temp1.close();
+    std::map<std::string, double> map2;
+    readFile(filename2, map2);
+    for (int i = 0; i < 27; i++) {
+        EXPECT_DOUBLE_EQ(map2.at(std::to_string(i)), i/30.);
+    }
+    for (int i = 27; i <= 35; i++) {
+        EXPECT_DOUBLE_EQ(map2.at(std::to_string(i)), i);
+    }
+    remove(filename2.c_str());
+    EXPECT_THROW(readFile(filename2, map2), std::runtime_error);
+}
 class ParamSetTest : public VariableFramework {
 
 };

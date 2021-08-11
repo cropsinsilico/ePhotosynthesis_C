@@ -61,15 +61,10 @@ public:
     RACondition* RA_con = nullptr;
     double Thion = 0;
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-    static double v6() {return V6;}
-    static double v9() {return V9;}
-    static double v13() {return V13;}
-    static double v16() {return V16;}
-    static void v6(const double val) {V6 = val;}
-    static void v9(const double val) {V9 = val;}
-    static void v13(const double val) {V13 = val;}
-    static void v16(const double val) {V16 = val;}
-
+    SET_GET(V6);
+    SET_GET(V9);
+    SET_GET(V13);
+    SET_GET(V16);
 private:
     friend ConditionBase;
     /**
@@ -95,10 +90,6 @@ private:
     static size_t _size() {
         return RACondition::size() + 1;
     }
-    static double V6;
-    static double V9;
-    static double V13;
-    static double V16;
 #ifdef INCDEBUG
     const Debug::DebugLevel _dlevel = Debug::Middle;
 #endif
