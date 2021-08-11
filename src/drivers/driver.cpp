@@ -34,6 +34,7 @@
 #include <cvode/cvode_direct.h>
 #include "drivers/CVodeMem.hpp"
 
+bool Driver::showWarnings = false;
 
 arr Driver::run() {
     origVars = new Variables(theVars);
@@ -60,11 +61,11 @@ arr Driver::run() {
         SUNNonlinearSolver NLS = SUNNonlinSol_Newton(y);
         SUNLinearSolver LS = SUNDenseLinearSolver(y, A);
 
-        if (CVodeSetNonlinearSolver(cvode_mem, NLS) != 0) {
+        if (CVodeSetNonlinearSolver(cvode_mem, NLS) != CV_SUCCESS) {
             std::cout << "CVodeSetNonlinearSolver failed" << std::endl;
             exit(EXIT_FAILURE);
         }
-        if (CVDlsSetLinearSolver(cvode_mem, LS, A) != 0) {
+        if (CVDlsSetLinearSolver(cvode_mem, LS, A) != CV_SUCCESS) {
             std::cout << "CVDlsSetLinearSolver failed" << std::endl;
             exit(EXIT_FAILURE);
         }
@@ -74,7 +75,7 @@ arr Driver::run() {
         realtype tout = start + step;
         while (tout <= endtime) {
         //for (realtype tout = start + step; tout <= endtime; tout += step)
-            if (CVode(cvode_mem, tout, y, &t, CV_NORMAL) != 0) {
+            if (CVode(cvode_mem, tout, y, &t, CV_NORMAL) != CV_SUCCESS) {
                 std::cout << "CVode failed at t=" << tout << std::endl;
                 //exit(EXIT_FAILURE);
                 runOK = false;

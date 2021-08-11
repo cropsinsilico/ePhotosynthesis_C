@@ -37,7 +37,7 @@ class DynaPSDrive : public Driver {
 public:
     DynaPSDrive(Variables *theVars, const double st, const double stp, const double etime,
                 const int maxSteps, const double atol, const double rtol, const size_t para,
-                const double ratio) : Driver(theVars, st, stp, etime, maxSteps, atol, rtol) {
+                const double ratio, const bool showWarnings = false) : Driver(theVars, st, stp, etime, maxSteps, atol, rtol, showWarnings) {
         ParaNum = para;
         Ratio = ratio;
     }
