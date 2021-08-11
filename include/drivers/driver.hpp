@@ -57,13 +57,14 @@ inline CalcData *alloc_calc_data() {
 class Driver {
 public:
     Driver(Variables *theVars, const double start, const double step, const double endtime,
-           const int maxSubSteps, const double atol, const double rtol) {
+           const int maxSubSteps, const double atol, const double rtol, const bool showWarnings = false) {
         this->theVars = theVars;
         this->start = start;
         this->step = step;
         initialStep = step;
         this->endtime = endtime;
         this->maxSubSteps = maxSubSteps;
+        this->showWarnings = showWarnings;
         abstol = atol;
         reltol = rtol;
         maxStep = 20. * step;
@@ -92,6 +93,7 @@ protected:
     CalcData* data;
     double maxStep;
     void *cvode_mem;
+    static bool showWarnings;
 private:
     Variables* origVars;
 };

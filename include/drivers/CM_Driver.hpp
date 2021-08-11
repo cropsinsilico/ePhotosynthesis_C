@@ -36,8 +36,8 @@
 class CMDriver : public Driver {
 public:
     CMDriver(Variables *theVars, const double st, const double stp, const double etime,
-             const int maxSteps, const double atol, const double rtol) :
-        Driver(theVars, st, stp, etime, maxSteps, atol, rtol) {
+             const int maxSteps, const double atol, const double rtol, const bool showWarnings = false) :
+        Driver(theVars, st, stp, etime, maxSteps, atol, rtol, showWarnings) {
     }
     ~CMDriver() override;
     /**
