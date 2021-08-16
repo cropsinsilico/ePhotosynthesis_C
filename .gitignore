@@ -57,3 +57,6 @@ build/
 CMakeLists.txt.user
 
 Doxyfile
+
+doc/html
+doc/latex

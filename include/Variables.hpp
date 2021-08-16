@@ -27,21 +27,44 @@
  **********************************************************************************************************************************************/
 #include <map>
 #include "definitions.hpp"
-#include "FI.hpp"
-#include "BF.hpp"
-#include "PS.hpp"
-#include "PR.hpp"
-#include "RROEA.hpp"
-#include "RuACT.hpp"
-#include "XanCycle.hpp"
-#include "RedoxReg.hpp"
-#include "SUCS.hpp"
-#include "FIBF.hpp"
+#include "vel/FIVel.hpp"
+#include "vel/BFVel.hpp"
+#include "vel/PSVel.hpp"
+#include "vel/PRVel.hpp"
+#include "vel/RROEAVel.hpp"
+#include "vel/RuACTVel.hpp"
+#include "vel/XanCycleVel.hpp"
+#include "vel/RedoxRegVel.hpp"
+#include "vel/SUCSVel.hpp"
+#include "ke/RROEAKE.hpp"
+
+#include "pool/BFPool.hpp"
+#include "pool/FIBFPool.hpp"
+#include "pool/FIPool.hpp"
+#include "pool/RROEAPool.hpp"
+#include "pool/RuACTPool.hpp"
+#include "pool/SUCSPool.hpp"
+
+#include "rc/BFRC.hpp"
+#include "rc/FIRC.hpp"
+#include "rc/RROEARC.hpp"
+#include "rc/RuACTRC.hpp"
+#include "conditions/PSCondition.hpp"
+#include "conditions/PRCondition.hpp"
+#include "conditions/SUCSCondition.hpp"
+#include "conditions/XanCycleCondition.hpp"
 
 /**
   Structure to hold global variables
   */
-struct Variables {
+class Variables {
+public:
+    Variables() {}
+    Variables(const Variables* other);
+    Variables(const Variables& other);
+    Variables& operator=(const Variables& other);
+    Variables& operator=(const Variables* other);
+
     bool record = false;
     bool BF_FI_com = false;
     bool EPS_SUCS_com = false;
@@ -56,99 +79,26 @@ struct Variables {
     int GP = 0;
     int GRNC = 0;
     int GRNT = 0;
-    double BF_OLD_TIME = 0;
-    size_t BF_TIME_N = 1;
-    double FI_OLD_TIME = 0;
-    size_t FI_TIME_N = 1;
-    double PR_OLD_TIME = 0;
-    size_t PR_TIME_N = 1;
-    double PS_OLD_TIME = 0;
-    size_t PS_TIME_N = 1;
-    double PS_PR_OLDTIME = 0;
-    size_t PS_PR_TIME_N = 1;
-    double RROEA_OLD_TIME = 0;
-    size_t RROEA_TIME_N = 1;
-    double RedoxReg_OLD_TIME = 0;
-    size_t RedoxReg_TIME_N = 1;
-    double RuACT_OLD_TIME = 0;
-    size_t RuACT_TIME_N = 1;
-    double SUCS_OLD_TIME = 0;
-    size_t SUCS_TIME_N = 1;
-    double XanCycle_OLD_TIME = 0;
-    size_t XanCycle_TIME_N = 1;
 
     int RUBISCOMETHOD = 1;
-    int TestSucPath = 0.;
-    int trDynaPS2RedReg_cal = 0.;
 
-    const double AVR = 30;
-    const double Fd_Thio_ET = 500;
+    const double AVR = 30.;
     const double HPR = 4.66;
-    const double input_LHCI = 6;
-    const double input_LHCII = 13;
-    const double input_PSI = 1;
-    const double input_PSIIcore = 1;
-    const double O2 = 210;
-    const double PSIIantennaSize = 37;
-    const double PSIantennaSize = 95;
-    const double ThioT = 0.5;
-    const double Thio_Oxidation = 0.1;
-    const double VolRatioStCyto = 1;
-
-    double cATPsyn = 0.;
-    double CPSi = 0.;
-    double cNADPHsyn = 0.;
-    //double LI = 0.;
-    double cpsii = 0;
+    const double O2 = 210.;
 
     double CO2_cond = 0.;
-    double ChlPSI = 0.;
-    double ChlT = 0.;
-    double ChlT2 = 0.;
-    double EPS_ATP_Rate = 0.;
-    double FIBF2FI_PQ = 0.;
-    double FIBF2FI_PQa = 0.;
 
-    double GLUc = 0.;
     double GLight = 0.;
-    double GammaStar = 0.;
-    double Glight = 0.;
-    double KM11 = 0.;
-    double KM12 = 0.;
-    double KE4 = 0.;
     double O2_cond = 0.;
     double PS12ratio = 0.;
-    double ADP;
-    double ATP;
+    double ADP = 0.;
 
-    double Pi;
-    double PiTc;
+    double Pi = 0.;
 
-    double RUBISCOTOTAL = 0.;
-    double Redox2PS_V13 = 0.;
-    double Redox2PS_V16 = 0.;
-    double Redox2PS_V6 = 0.;
-    double Redox2PS_V9 = 0.;
-    double RedoxReg_Param = 0;
-    double SUCS2PS_Pic = 0.;
     double TestATPCost = 0.;
-    double TestCa = 0.;
+    double CO2_in = 0.;
     double TestLi = 0.;
-    double V1 = 0.;
-    double V13 = 0.;
-    double V16 = 0.;
-    double V1Reg = 0.;
-    double V1T = 0.;
-    double V2 = 0.;
-    double V23 = 0.;
-    double V3 = 0.;
-    double V6 = 0.;
-    double V9 = 0.;
-
-    double XanCycle2FIBF_Xstate = 0.;
-    double activase = 0.;
-    double kmCO2 = 0.;
-    double kmO2 = 0.;
+    double PS2BF_Pi = 0.;
     double PS_PR_Param = 0;
 
     double Tp = 0;
@@ -212,10 +162,10 @@ struct Variables {
 
     // OUT
     arr BF2OUT = zeros(5);
-    PRCon PR2OUT;
-    PSCon PS2OUT;
-    SUCSCon SUCS2OUT;
-    XanCycleCon XanCycle2OUT;
+    PRCondition PR2OUT;
+    PSCondition PS2OUT;
+    SUCSCondition SUCS2OUT;
+    XanCycleCondition XanCycle2OUT;
 
     // misc
     arr FluxTR;
@@ -234,4 +184,7 @@ struct Variables {
     TimeSeries<XanCycleVel> XanCycle_VEL = TimeSeries<XanCycleVel> ();
 
     bool useC3 = false;
+#ifdef INCDEBUG
+    Debug::RequestedDebug debuglevel = Debug::None;
+#endif
 };

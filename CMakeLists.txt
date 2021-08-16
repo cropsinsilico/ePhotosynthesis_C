@@ -24,7 +24,7 @@
 
 cmake_minimum_required(VERSION 3.5)
 
-project(ePhotosynthesis LANGUAGES CXX)
+project(ePhotosynthesisProject LANGUAGES CXX)
 
 set(PACKAGE_NAME "ePhotosynthesis")
 set(PACKAGE_STRING "ePhotosynthesis 1.0.0")
@@ -40,10 +40,18 @@ else()
   set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
 endif()
 
+if(NOT CMAKE_BUILD_TYPE)
+    set(CMAKE_BUILD_TYPE Release)
+    message("CMAKE_BUILD_TYPE not defined, defaulting to Release")
+else()
+    message("Doing a ${CMAKE_BUILD_TYPE} build")
+endif()
+
+
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-
+set(CMAKE_CXX_FLAGS_DEBUG "-g") #"-DINCDEBUG${BUILD_FLAGS}")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG${BUILD_FLAGS}")
 # Prohibit in-source build
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
   message(FATAL_ERROR "In-source build prohibited.")
@@ -55,19 +63,23 @@ find_package(Doxygen)
 find_package(LATEX COMPONENTS PDFLATEX MAKEINDEX)
 option(BUILD_DOCS "Create HTML and PDF API documentation for ePhotosynthesis (requires Doxygen)")
 find_package(Boost 1.36.0 REQUIRED)
-include_directories(ePhotosynthesis ${Boost_INCLUDE_DIRS})
+include_directories(${Boost_INCLUDE_DIRS})
 
 find_package(Sundials REQUIRED)
-include_directories(ePhotosynthesis ${SUNDIALS_INCLUDE_DIRS})
+include_directories(${SUNDIALS_INCLUDE_DIRS})
 
 include_directories("${PROJECT_SOURCE_DIR}/include")
 
-file(GLOB SOURCES "source/*.cpp")
-add_library(ePhotosynthesis SHARED ${SOURCES})
+file(GLOB_RECURSE SOURCES "src/*.cpp")
 
-target_link_libraries(ePhotosynthesis ${SUNDIALS_LIBRARIES})
-target_link_libraries(ePhotosynthesis boost_regex)
+add_library(EPhotosynthesis SHARED ${SOURCES})
+add_executable(ePhotosynthesis bin/ePhotosynthesis.cpp)
 
+target_link_libraries(EPhotosynthesis ${SUNDIALS_LIBRARIES})
+target_link_libraries(EPhotosynthesis boost_regex)
+target_link_libraries(ePhotosynthesis EPhotosynthesis)
+
+install(TARGETS EPhotosynthesis DESTINATION lib)
 install(TARGETS ePhotosynthesis DESTINATION bin)
 
 if(BUILD_DOCS)
@@ -76,6 +88,7 @@ if(BUILD_DOCS)
     endif()
     message("The following documentation can be built:")
     message("   HTML...  Yes")
+    set(EPHOTOROOT ${CMAKE_CURRENT_SOURCE_DIR})
     set(GENERATE_LATEX "NO")
     set(USE_PDFLATEX "NO")
     set(MAKEINDEX_CMD "")
