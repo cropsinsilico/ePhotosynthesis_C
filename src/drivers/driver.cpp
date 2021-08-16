@@ -39,7 +39,7 @@ bool Driver::showWarnings = false;
 arr Driver::run() {
     origVars = new Variables(theVars);
     uint count = 0;
-    while (count < 5){
+    while (count < 10){
         maxStep = 20. * step;
 
         setup();
