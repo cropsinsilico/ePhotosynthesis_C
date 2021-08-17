@@ -96,12 +96,12 @@ double PR::V1T = 0.;
 size_t PR::N = 1;
 const size_t PRCondition::count = 10;
 bool PRCondition::PS_connect = false;
-bool PR::PR_PS_com = false;
+bool PR::PS_connect = false;
 bool PRCondition::PS_RuBP = false;
-bool PR::PR_PS_RuBP = false;
+bool PR::PS_RuBP = false;
 
 PRCondition* PR::_init(Variables *theVars) {
-    PR::setPR_PS(theVars->PR_PS_com);
+    PR::setPS_connect(theVars->PR_PS_com);
     if (theVars->useC3) {
         NADHc = 0.47;
         NADc = 0.4;
