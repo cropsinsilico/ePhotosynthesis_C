@@ -33,15 +33,15 @@
 /**
  Class for running DynaPS through an ODE solver
  */
-class DynaPSDrive : public Driver {
+class DynaPSDriver : public Driver {
 public:
-    DynaPSDrive(Variables *theVars, const double st, const double stp, const double etime,
+    DynaPSDriver(Variables *theVars, const double st, const double stp, const double etime,
                 const int maxSteps, const double atol, const double rtol, const size_t para,
                 const double ratio, const bool showWarnings = false) : Driver(theVars, st, stp, etime, maxSteps, atol, rtol, showWarnings) {
         ParaNum = para;
         Ratio = ratio;
     }
-    ~DynaPSDrive() override;
+    ~DynaPSDriver() override;
     /**
       The driver code
       */
@@ -49,6 +49,10 @@ public:
     void getResults() override;
 
 private:
+#ifdef TESTING
+    friend class DynaPSDriverTest;
+#endif
+
     /**
       Calculate the output values based on the inputs
 
