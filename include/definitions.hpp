@@ -123,6 +123,15 @@ enum RequestedDebug : uint {None = 0,
     private:\
         static bool NAME;
 
+#define SET_GET_BOOL_MODULE(NAME, CON) public:\
+    static bool get ## NAME() {return NAME;}\
+    static void set ## NAME(const bool val) {\
+        NAME = val;\
+        CON ## Condition::set ## NAME(val);\
+    }\
+    private:\
+        static bool NAME;
+
 // rename a common data type to make it easier
 typedef std::vector<double> arr;
 
