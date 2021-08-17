@@ -2,6 +2,7 @@
 #include "VariableFramework.hpp"
 #include "gtest/gtest.h"
 #include "gmock/gmock.h"
+#include "modules/FIBF.hpp"
 #include <stdio.h>
 #include <fstream>
 #include <map>
@@ -183,4 +184,37 @@ TEST_F(GenOutTest, makeFluxTR) {
     makeFluxTR(theVars);
     EXPECT_NE(0, theVars->FluxTR.size());
 }
+
+class GeneralTest : public VariableFramework {
+
+};
+
+TEST_F(GeneralTest, SYSIniTest) {
+    FIBF::setChlPSI(0.);
+    FIBF::setChlT(0.);
+    FIBF::setChlT2(0.);
+    double chlt2 = FIBF::getChlT2();
+    double chlt = FIBF::getChlT();
+    double chlp = FIBF::getChlPSI();
+    double ps12 = theVars->PS12ratio;
+
+    SYSInitial(theVars);
+    EXPECT_NE(chlt2, FIBF::getChlT2());
+    EXPECT_NE(chlt, FIBF::getChlT());
+    EXPECT_NE(chlp, FIBF::getChlPSI());
+    EXPECT_NE(ps12, theVars->PS12ratio);
+    FIBF::setChlPSI(0.);
+    FIBF::setChlT(0.);
+    FIBF::setChlT2(0.);
+    theVars->PS12ratio = 0.;
 }
+
+TEST_F(GeneralTest, IniModelComTest) {
+    theVars->PR_PS_com = true;
+    theVars->XanCycle_BF_com = true;
+    IniModelCom(theVars);
+    EXPECT_FALSE(theVars->PR_PS_com);
+    EXPECT_FALSE(theVars->XanCycle_BF_com);
+}
+}
+
