@@ -101,7 +101,7 @@ arr Driver::run() {
         step = initialStep / (count + 1);
         std::cout << "Retrying with smaller step size: " << step << std::endl;
     }
-    exit(EXIT_FAILURE);
+    throw std::runtime_error("No valid solution found");
 }
 
 Driver::~Driver() {
@@ -113,10 +113,7 @@ int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
     realtype *dxdt = N_VGetArrayPointer(u_dot);
     CalcData *data = static_cast<CalcData*>(user_data);
     arr ddxdt = data->drv->MB(t, u);
-    uint adjust = 0;
-    if (theVars->useC3)
-        adjust = 1;
-    for (size_t index = 0; index < ddxdt.size() - adjust; index++)
+    for (size_t index = 0; index < ddxdt.size(); index++)
         dxdt[index] = ddxdt[index];
     return 0;
 }
