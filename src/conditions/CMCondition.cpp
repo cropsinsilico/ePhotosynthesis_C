@@ -28,8 +28,8 @@
 
 CMCondition::CMCondition(const CMCondition* other) {
     _clear();
-    PS_PR_con = other->PS_PR_con;
-    SUCS_con = other->SUCS_con;
+    PS_PR_con = new PS_PRCondition(other->PS_PR_con);
+    SUCS_con = new SUCSCondition(other->SUCS_con);
     PS_PR_con->setParent(this);
     SUCS_con->setParent(this);
 }
@@ -44,8 +44,16 @@ CMCondition::CMCondition(realtype *x) {
 
 CMCondition::CMCondition(PS_PRCondition* pother, SUCSCondition* sother) {
     _clear();
-    PS_PR_con = pother;
-    SUCS_con = sother;
+    if (pother->parent == nullptr) {
+        PS_PR_con = pother;
+    } else {
+        PS_PR_con = new PS_PRCondition(pother);
+    }
+    if (sother->parent == nullptr) {
+        SUCS_con = sother;
+    } else {
+        SUCS_con = new SUCSCondition(sother);
+    }
     PS_PR_con->setParent(this);
     SUCS_con->setParent(this);
 }
@@ -76,4 +84,5 @@ void CMCondition::_clear() {
         delete SUCS_con;
         SUCS_con = nullptr;
     }
+    count = 0;
 }

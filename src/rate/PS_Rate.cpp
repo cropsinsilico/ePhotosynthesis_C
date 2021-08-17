@@ -125,10 +125,10 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
         // in case that there are more work using the equilibrium of Thio with enzyme
         // as a way to regulate enzyme activities.
         if (theVars->RedoxReg_RA_com) {
-            PsV6 = RedoxRegCondition::v6();
-            PsV9 = RedoxRegCondition::v9();
-            PsV13 = RedoxRegCondition::v13();
-            PsV16 = RedoxRegCondition::v16();
+            PsV6 = RedoxRegCondition::getV6();
+            PsV9 = RedoxRegCondition::getV9();
+            PsV13 = RedoxRegCondition::getV13();
+            PsV16 = RedoxRegCondition::getV16();
         }
 
         const double CO2 = theVars->CO2_cond;
@@ -226,10 +226,10 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
         // in case that there are more work using the equilibrium of Thio with enzyme
         // as a way to regulate enzyme activities.
         if (theVars->RedoxReg_RA_com) {
-            PsV6 = RedoxRegCondition::v6();
-            PsV9 = RedoxRegCondition::v9();
-            PsV13 = RedoxRegCondition::v13();
-            PsV16 = RedoxRegCondition::v16();
+            PsV6 = RedoxRegCondition::getV6();
+            PsV9 = RedoxRegCondition::getV9();
+            PsV13 = RedoxRegCondition::getV13();
+            PsV16 = RedoxRegCondition::getV16();
         }
 
         if (theVars->RUBISCOMETHOD == 2) {

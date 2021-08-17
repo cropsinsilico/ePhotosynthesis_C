@@ -46,6 +46,10 @@ public:
     void setup() override;
     void getResults() override;
 private:
+#ifdef TESTING
+    friend class CMDriverTest;
+#endif
+
     /**
       Initialize the variables
 

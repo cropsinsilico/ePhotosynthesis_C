@@ -54,6 +54,10 @@ public:
     //arr trDynaPS_Drive(size_t ParaNum, double Ratio);
 
 private:
+#ifdef TESTING
+    friend class EPSDriverTest;
+#endif
+
     /**
       Calculate the output values based on the inputs
 

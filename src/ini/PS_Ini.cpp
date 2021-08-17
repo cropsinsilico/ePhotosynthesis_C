@@ -154,7 +154,7 @@ double PS::Jmax = 0.;
 
 size_t PS::N = 1;
 const size_t PSCondition::count = 12;
-bool PSCondition::useC3 = false;
+bool PSCondition::C3 = false;
 bool PS::useC3 = false;
 
 arr PS::Param = {0, 0};

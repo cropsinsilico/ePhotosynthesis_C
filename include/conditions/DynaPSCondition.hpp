@@ -40,6 +40,9 @@ public:
         setParent(par);
     }
 
+    ~DynaPSCondition() {
+        _clear();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 

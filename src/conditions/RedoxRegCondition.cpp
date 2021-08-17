@@ -28,14 +28,19 @@
 
 RedoxRegCondition::RedoxRegCondition(const RedoxRegCondition* other) {
     _clear();
-    RA_con = other->RA_con;
+    RA_con = new RACondition(other->RA_con);
     Thion = other->Thion;
     //RA_con.setParent(this);
 }
 
 RedoxRegCondition::RedoxRegCondition(RACondition* rother, double thio) {
     _clear();
-    RA_con = rother;
+    if (rother->parent == nullptr) {
+        RA_con = rother;
+    } else {
+        RA_con = new RACondition(rother);
+    }
+    //RA_con->setParent(this);
     Thion = thio;
 }
 
@@ -47,7 +52,7 @@ void RedoxRegCondition::_fromArray(const arr &vec, size_t offset) {
     if (RA_con == nullptr)
         RA_con = new RACondition();
     RA_con->fromArray(vec, offset);
-    Thion = vec[offset + 92];
+    Thion = vec[offset + RACondition::size()];
 }
 
 arr RedoxRegCondition::_toArray() {

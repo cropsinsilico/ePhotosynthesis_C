@@ -30,9 +30,9 @@
 #include "conditions/DynaPSCondition.hpp"
 #include "globals.hpp"
 
-DynaPSDrive::~DynaPSDrive() {}
+DynaPSDriver::~DynaPSDriver() {}
 
-void DynaPSDrive::setup() {
+void DynaPSDriver::setup() {
     // This part include the function to begin the simulation.
 
     // The time information is set in a global variable called tglobal in SYSInitial.
@@ -73,7 +73,7 @@ void DynaPSDrive::setup() {
     theVars->FIBF_PSPR_com = true;
 
     // A global variable to indicate whether the RuACT is run by itself or combined with others.
-    theVars->RuACT_EPS_com = true;        // Since this is run within this program, it is combinbed, therefore, it is assigned value true, otherwise, assign value false.
+    theVars->RuACT_EPS_com = false;        // Since this is run within this program, it is combinbed, therefore, it is assigned value true, otherwise, assign value false.
 
     // This is the connection between Redox and RA.
     theVars->RedoxReg_RA_com = false;        // This means that the connection is not provided there.
@@ -109,9 +109,10 @@ void DynaPSDrive::setup() {
     delete DynaPS_con;
 }
 
-void DynaPSDrive::getResults() {
+void DynaPSDriver::getResults() {
 
     DynaPSCondition* dyna_int_con = new DynaPSCondition(intermediateRes);
+
     arr temp = DynaPS::MB(time, dyna_int_con, theVars);
 
     double PSIIabs = theVars->FI_Vel.vP680_d;
@@ -149,13 +150,13 @@ void DynaPSDrive::getResults() {
     //save FDC2
 }
 
-DynaPSCondition* DynaPSDrive::DynaPS_Ini() {
+DynaPSCondition* DynaPSDriver::DynaPS_Ini() {
     return DynaPS::init(theVars);
 }
 
 // DynaPS_mb.m  This model includes the mass balance equations for the full model of photosynthesis.
 
-arr DynaPSDrive::MB(realtype t, N_Vector u) {
+arr DynaPSDriver::MB(realtype t, N_Vector u) {
 
     // Try out one new way of calculating the mass balance equation.
     // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.

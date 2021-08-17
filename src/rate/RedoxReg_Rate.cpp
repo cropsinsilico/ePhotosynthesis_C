@@ -83,13 +83,13 @@ void RedoxReg::_Rate(const double t, const RedoxRegCondition* RedoxReg_Con, Vari
 
 
             if (static_cast<int>(theVars->RedoxReg_MP[index][0]) == 6) {
-                RedoxRegCondition::v6(RedoxReg_VMAX6 * theVars->RedoxReg_MP[index][2]);
+                RedoxRegCondition::setV6(RedoxReg_VMAX6 * theVars->RedoxReg_MP[index][2]);
             } else if (static_cast<int>(theVars->RedoxReg_MP[index][0]) == 9) {
-                RedoxRegCondition::v9(RedoxReg_VMAX9 * theVars->RedoxReg_MP[index][2]);
+                RedoxRegCondition::setV9(RedoxReg_VMAX9 * theVars->RedoxReg_MP[index][2]);
             } else if (static_cast<int>(theVars->RedoxReg_MP[index][0]) == 13) {
-                RedoxRegCondition::v13(RedoxReg_VMAX13 * theVars->RedoxReg_MP[index][2]);
+                RedoxRegCondition::setV13(RedoxReg_VMAX13 * theVars->RedoxReg_MP[index][2]);
             } else if (static_cast<int>(theVars->RedoxReg_MP[index][0]) == 16) {
-                RedoxRegCondition::v16(RedoxReg_VMAX16 * theVars->RedoxReg_MP[index][2]);
+                RedoxRegCondition::setV16(RedoxReg_VMAX16 * theVars->RedoxReg_MP[index][2]);
             }
         }
         N_VDestroy(y);

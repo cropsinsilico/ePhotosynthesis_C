@@ -37,17 +37,12 @@ class PS_PR;
   */
 class PR : public ModuleBase<PR, PRCondition> {
 public:
-    static void setPR_PS(const bool val) {
-        PR_PS_com = val;
-        PRCondition::setPR_PS(val);
-    }
-    static void setRuBP(const bool val) {
-        PR_PS_RuBP = val;
-        PRCondition::setRuBP(val);
-    }
+    SET_GET_BOOL_MODULE(PS_connect, PR)
+    SET_GET_BOOL_MODULE(PS_RuBP, PR)
     SET_GET(RUBISCOTOTAL)
 private:
     friend ModuleBase;
+    friend class PRModuleTest;
     friend PS_PR;
     /**
       Initializer
@@ -130,8 +125,6 @@ private:
     static double Vf_T112;
     static double V1T;
     static double PGA;
-    static bool PR_PS_com;
-    static bool PR_PS_RuBP;
     static double GLUc;
     static double TIME;
     static size_t N;

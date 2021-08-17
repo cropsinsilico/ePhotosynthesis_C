@@ -29,10 +29,13 @@
 #include "conditions/CMCondition.hpp"
 
 class CM : public ModuleBase<CM, CMCondition> {
-public:
-    static void setTestSucPath(const bool val) {TestSucPath = val;}
+    SET_GET_BOOL(TestSucPath)
 private:
     friend ModuleBase;
+#ifdef TESTING
+    friend class CMModuleTest;
+#endif
+
     /**
   Initialize the variables
 
@@ -56,5 +59,4 @@ private:
         (void)CM_con;
         (void)theVars;
     }
-    static bool TestSucPath;
 };

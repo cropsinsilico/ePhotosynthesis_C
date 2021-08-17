@@ -29,16 +29,24 @@
 size_t PS_PRCondition::count = 0;
 PS_PRCondition::PS_PRCondition(const PS_PRCondition* other) {
     _clear();
-    PS_con = other->PS_con;
-    PR_con = other->PR_con;
+    PS_con = new PSCondition(other->PS_con);
+    PR_con = new PRCondition(other->PR_con);
     PS_con->setParent(this);
     PR_con->setParent(this);
 }
 
 PS_PRCondition::PS_PRCondition(PSCondition* sother, PRCondition* rother) {
     _clear();
-    PS_con = sother;
-    PR_con = rother;
+    if (sother->parent == nullptr) {
+        PS_con = sother;
+    } else {
+        PS_con = new PSCondition(sother);
+    }
+    if (rother->parent == nullptr) {
+        PR_con = rother;
+    } else {
+        PR_con = new PRCondition(rother);
+    }
     PS_con->setParent(this);
     PR_con->setParent(this);
 }
@@ -72,4 +80,5 @@ void PS_PRCondition::_clear() {
         delete PR_con;
         PR_con = nullptr;
     }
+    count = 0;
 }

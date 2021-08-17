@@ -119,8 +119,3 @@ arr trDynaPSDriver::MB(realtype t, N_Vector u) {
     delete trDynaPS_con;
     return dxdt;
 }
-
-trDynaPSDriver::~trDynaPSDriver()  {
-    if (theVars != nullptr)
-        delete theVars;
-}

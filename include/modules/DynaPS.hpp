@@ -32,6 +32,10 @@
 class DynaPS : public ModuleBase<DynaPS, DynaPSCondition> {
 private:
     friend ModuleBase;
+#ifdef TESTING
+    friend class DynaPSModuleTest;
+#endif
+
 /**
   Initialize the variables
 

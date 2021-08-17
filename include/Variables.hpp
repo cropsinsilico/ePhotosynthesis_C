@@ -63,7 +63,6 @@ public:
     Variables(const Variables* other);
     Variables(const Variables& other);
     Variables& operator=(const Variables& other);
-    Variables& operator=(const Variables* other);
 
     bool record = false;
     bool BF_FI_com = false;
@@ -163,7 +162,7 @@ public:
     XanCycleCondition XanCycle2OUT;
 
     // misc
-    arr FluxTR;
+    arr FluxTR = {};
     RROEAKE RROEA_KE;
 
     TimeSeries<BFVel> BF_VEL = TimeSeries<BFVel>();

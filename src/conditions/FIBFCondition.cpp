@@ -28,8 +28,8 @@
 
 FIBFCondition::FIBFCondition(const FIBFCondition* other) {
     _clear();
-    BF_con = other->BF_con;
-    FI_con = other->FI_con;
+    BF_con = new BFCondition(other->BF_con);
+    FI_con = new FICondition(other->FI_con);
     BF_con->setParent(this);
     FI_con->setParent(this);
     kd = other->kd;
@@ -37,8 +37,16 @@ FIBFCondition::FIBFCondition(const FIBFCondition* other) {
 
 FIBFCondition::FIBFCondition(BFCondition* bother, FICondition* fother) {
     _clear();
-    BF_con = bother;
-    FI_con = fother;
+    if (bother->parent == nullptr) {
+        BF_con = bother;
+    } else {
+        BF_con = new BFCondition(bother);
+    }
+    if (fother->parent == nullptr) {
+        FI_con = fother;
+    } else {
+        FI_con = new FICondition(fother);
+    }
     BF_con->setParent(this);
     FI_con->setParent(this);
     kd = pow(10, 8) * 0.5;
@@ -77,4 +85,5 @@ void FIBFCondition::_clear() {
         delete FI_con;
         FI_con = nullptr;
     }
+    count = 0.;
 }

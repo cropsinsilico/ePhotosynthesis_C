@@ -38,7 +38,7 @@ std::ostream& PRCondition::_print(std::ostream &out, const uint tab) const {
     out << space << "  GLYc = " << GLYc<< std::endl;
     out << space << "  HPRc = " << HPRc<< std::endl;
     out << space << "  GCEAc = " << GCEAc << std::endl;
-    if (!PR_PS_com)
+    if (!PS_connect)
         out << space << "  RUBP = " << RuBP<< std::endl;
     return out;
 }

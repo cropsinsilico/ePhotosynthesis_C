@@ -51,7 +51,7 @@ void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
 
     // Calculate the reactino inside chloroplast;
     double RuBP;
-    if (PR_PS_RuBP) {
+    if (PS_RuBP) {
         RuBP = PR_con->parent->PS_con->RuBP;
     } else {
         RuBP = PR_con->RuBP;
@@ -192,7 +192,7 @@ void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
         theVars->PR2OUT.GLYc = PR_con->GLYc;
         theVars->PR2OUT.HPRc = PR_con->HPRc;
         theVars->PR2OUT.GCEAc = PR_con->GCEAc;
-        if (!PR_PS_RuBP)
+        if (!PS_RuBP)
             theVars->PR2OUT.RuBP = RuBP;
         theVars->PR2OUT._v131 = theVars->PR_Vel.v131;
     }

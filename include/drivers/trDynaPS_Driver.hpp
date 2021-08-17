@@ -52,8 +52,6 @@ public:
         Ratio = ratio;
     }
 
-    ~trDynaPSDriver() override;
-
     /**
       The driver
       */
@@ -62,6 +60,10 @@ public:
     //arr trDynaPS_Drive(size_t ParaNum, double Ratio);
 
 private:
+#ifdef TESTING
+    friend class trDynaPSDriverTest;
+#endif
+
     /**
       Calculate the output values based on the inputs
 

@@ -34,12 +34,13 @@
  */
 class FI : public ModuleBase<FI, FICondition> {
 public:
-    static void setBF_connect(const bool val) {
-        BF_connect = val;
-        FICondition::setBF_connect(val);
-    }
+    SET_GET_BOOL_MODULE(BF_connect, FI);
 private:
     friend ModuleBase;
+#ifdef TESTING
+    friend class FIModuleTest;
+#endif
+
     /**
       Initialize the variables
 
@@ -66,7 +67,6 @@ private:
       */
     static void _Rate(const double t, const FICondition* FI_Con, Variables *theVars);
     static double cpsii;
-    static bool BF_connect;
     static double TIME;
     static size_t N;
 };

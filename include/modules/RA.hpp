@@ -32,6 +32,10 @@
 class RA : public ModuleBase<RA, RACondition> {
 private:
     friend ModuleBase;
+#ifdef TESTING
+    friend class RAModuleTest;
+#endif
+
     /**
   Initialize the variables
 

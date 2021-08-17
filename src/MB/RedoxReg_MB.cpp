@@ -30,25 +30,20 @@
 #include "modules/RedoxReg.hpp"
 #include "modules/RA.hpp"
 
-arr RedoxReg::_MB(const double t, const RedoxRegCondition* RedoxReg_Con, Variables *theVars) {
+RedoxRegCondition* RedoxReg::_MB_con(const double t, const RedoxRegCondition* RedoxReg_Con, Variables *theVars) {
     trDynaPS2RedReg_cal = true;
 
     Rate(t, RedoxReg_Con, theVars);
 
-    arr RA_DYDT = RA::MB(t, RedoxReg_Con->RA_con, theVars);
+    RACondition* RAdydt = RA::MB_con(t, RedoxReg_Con->RA_con, theVars);
 
-    arr RedoxReg_DYDT;
-    RedoxReg_DYDT.reserve(93);
-
-    RedoxReg_DYDT.insert(RedoxReg_DYDT.end(), RA_DYDT.begin(), RA_DYDT.end());
-
+    RedoxRegCondition* RedoxRegdydt = new RedoxRegCondition(RAdydt, 0.);
     //RedoxReg_DYDT[92] = theVars->RedoxReg_Vel.Vred - theVars->RedoxReg_Vel.Vox;
-    RedoxReg_DYDT[92] = 0;
 
     //const double Temp = RedoxReg_DYDT[23];
     //RedoxReg_DYDT[23] = Temp;
-    DEBUG_DELTA(RedoxReg_DYDT)
-    return RedoxReg_DYDT;
+    //DEBUG_DELTA(RedoxReg_DYDT)
+    return RedoxRegdydt;
 }
 
 int RedoxReg::RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data) {
@@ -61,4 +56,11 @@ int RedoxReg::RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data) {
     realtype x = udata[0];
     fdata[0] = Etr - (Em - 0.03 * log10(x / (1 - x)));
     return 0;
+}
+
+arr RedoxReg::_MB(const double t, const RedoxRegCondition* RedoxReg_Con, Variables *theVars) {
+    RedoxRegCondition* dydt = _MB_con(t, RedoxReg_Con, theVars);
+    arr tmp = dydt->toArray();
+    delete dydt;
+    return tmp;
 }

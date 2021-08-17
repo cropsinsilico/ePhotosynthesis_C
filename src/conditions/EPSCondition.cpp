@@ -28,8 +28,8 @@
 
 EPSCondition::EPSCondition(const EPSCondition* other) {
     _clear();
-    CM_con = other->CM_con;
-    FIBF_con = other->FIBF_con;
+    CM_con = new CMCondition(other->CM_con);
+    FIBF_con = new FIBFCondition(other->FIBF_con);
     CM_con->setParent(this);
     FIBF_con->setParent(this);
 }
@@ -40,8 +40,16 @@ EPSCondition::EPSCondition(realtype *x) {
 
 EPSCondition::EPSCondition(FIBFCondition* fother, CMCondition* cother) {
     _clear();
-    CM_con = cother;
-    FIBF_con = fother;
+    if (cother->parent == nullptr) {
+        CM_con = cother;
+    } else {
+        CM_con = new CMCondition(cother);
+    }
+    if (fother->parent == nullptr) {
+        FIBF_con = fother;
+    } else {
+        FIBF_con = new FIBFCondition(fother);
+    }
     CM_con->setParent(this);
     FIBF_con->setParent(this);
 }
@@ -75,4 +83,5 @@ void EPSCondition::_clear() {
         delete FIBF_con;
         FIBF_con = nullptr;
     }
+    count = 0;
 }

@@ -26,17 +26,6 @@
 
 #include "conditions/SUCSCondition.hpp"
 
-SUCSCondition::SUCSCondition(const SUCSCondition &other) {
-    T3Pc = other.T3Pc;
-    FBPc = other.FBPc;
-    HexPc = other.HexPc;
-    F26BPc = other.F26BPc;
-    UDPGc = other.UDPGc;
-    SUCP = other.SUCP;
-    SUC = other.SUC;
-    PGAc = other.PGAc;
-}
-
 SUCSCondition::SUCSCondition(const SUCSCondition *other) {
     T3Pc = other->T3Pc;
     FBPc = other->FBPc;

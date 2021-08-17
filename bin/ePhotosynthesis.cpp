@@ -152,7 +152,7 @@ int main(int argc, const char* argv[]) {
 #ifdef INCDEBUG
                 DynaPSCondition::setTop();
 #endif
-                maindriver = new DynaPSDrive(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
+                maindriver = new DynaPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
                 break;
             case CM:
 #ifdef INCDEBUG

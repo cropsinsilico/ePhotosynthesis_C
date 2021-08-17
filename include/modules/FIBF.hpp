@@ -38,6 +38,10 @@ class FIBF : public ModuleBase<FIBF, FIBFCondition> {
     SET_GET(FIBF2FI_PQa)
 private:
     friend ModuleBase;
+#ifdef TESTING
+    friend class FIBFModuleTest;
+#endif
+
     /**
   Initialize the variables
 

@@ -65,8 +65,8 @@ public:
     double RuBP = 0.;
     double _v131;
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-    static void setPR_PS(const bool val) {PR_PS_com = val;}
-    static void setRuBP(const bool val) {PR_PS_RuBP = val;}
+    SET_GET_BOOL(PS_connect)
+    SET_GET_BOOL(PS_RuBP)
 private:
     friend ConditionBase;
     /**
@@ -87,15 +87,13 @@ private:
       Get the size of the data vector
       */
     static size_t _size() {
-        if (PR_PS_RuBP)
+        if (PS_RuBP)
             return count - 1;
         return count;
     }
 
     void _clear() {}
     static const size_t count;
-    static bool PR_PS_com;
-    static bool PR_PS_RuBP;
 #ifdef INCDEBUG
     const Debug::DebugLevel _dlevel = Debug::Low;
 #endif

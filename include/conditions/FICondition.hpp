@@ -77,7 +77,7 @@ public:
     double PQn = 0.;        ///< The concentration of reduced PQ, i.e. PQH2;
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
 
-    static void setBF_connect(const bool val) {BF_connect = val;}
+    SET_GET_BOOL(BF_connect)
 private:
     friend ConditionBase;
     friend FI;
@@ -108,7 +108,6 @@ private:
     void _clear() {}
 
     static const size_t count;
-    static bool BF_connect;
 #ifdef INCDEBUG
     const Debug::DebugLevel _dlevel = Debug::Low;
 #endif

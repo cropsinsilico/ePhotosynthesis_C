@@ -68,7 +68,7 @@ public:
     double _ADP = 0.;
     double _v1 = 0.;
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-    static void setC3(const bool val) {useC3 = val;}
+    SET_GET_BOOL(C3)
 private:
     friend ConditionBase;
     /**
@@ -90,7 +90,7 @@ private:
       Get the size of the data vector
       */
     static size_t _size() {
-        if (useC3)
+        if (C3)
             return count - 1;
         return count;
     }
@@ -98,7 +98,6 @@ private:
     void _clear() {}
 
     static const size_t count;
-    static bool useC3;
 #ifdef INCDEBUG
     const Debug::DebugLevel _dlevel = Debug::Low;
 #endif

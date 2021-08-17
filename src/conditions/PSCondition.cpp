@@ -31,7 +31,7 @@ PSCondition::PSCondition(const PSCondition* other)  {
     PGA = other->PGA;
     DPGA = other->DPGA;
     T3P = other->T3P;
-    if (!useC3)
+    if (!C3)
         ADPG = other->ADPG;
     FBP = other->FBP;
     E4P = other->E4P;
@@ -55,7 +55,7 @@ void PSCondition::_fromArray(const arr &vec, size_t offset) {
     PGA = vec[offset + current++];
     DPGA = vec[offset + current++];
     T3P = vec[offset + current++];
-    if (!useC3)
+    if (!C3)
         ADPG = vec[offset + current++];
     FBP = vec[offset + current++];
     E4P = vec[offset + current++];
@@ -67,7 +67,7 @@ void PSCondition::_fromArray(const arr &vec, size_t offset) {
 }
 
 arr PSCondition::_toArray()  {
-    if (useC3)
+    if (C3)
         return {RuBP, PGA, DPGA, T3P, FBP, E4P, S7P, SBP, ATP, HexP, PenP};
     return {RuBP, PGA, DPGA, T3P, ADPG, FBP, E4P, S7P, SBP, ATP, HexP, PenP};
 }
