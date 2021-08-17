@@ -32,6 +32,10 @@
 class EPS : public ModuleBase<EPS, EPSCondition> {
 private:
     friend ModuleBase;
+#ifdef TESTING
+    friend class EPSModuleTest;
+#endif
+
     /**
   Initializer
 

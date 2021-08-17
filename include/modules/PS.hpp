@@ -61,6 +61,7 @@ public:
     SET_GET(Jmax)
 private:
     friend ModuleBase;
+    friend class PSModuleTest;
     /**
       Calculate the output values based on the inputs
 

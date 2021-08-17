@@ -36,6 +36,7 @@ class XanCycle : public ModuleBase<XanCycle, XanCycleCondition> {
     SET_GET(XanCycle2FIBF_Xstate)
 private:
     friend ModuleBase;
+    friend class XanCycleModuleTest;
     /**
       Initializer
 

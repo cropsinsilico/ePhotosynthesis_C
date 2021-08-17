@@ -32,6 +32,10 @@
 class trDynaPS : public ModuleBase<trDynaPS, trDynaPSCondition> {
 private:
     friend ModuleBase;
+#ifdef TESTING
+    friend class trDynaPSModuleTest;
+#endif
+
 /**
   Initialize the variables
 

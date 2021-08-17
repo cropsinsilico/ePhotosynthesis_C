@@ -38,6 +38,7 @@ class SUCS : public ModuleBase<SUCS, SUCSCondition> {
     SET_GET(SUCS2PS_Pic)
 private:
     friend ModuleBase;
+    friend class SUCSModuleTest;
     /**
       Initializer
 

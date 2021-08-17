@@ -32,6 +32,7 @@
 class PS_PR : public ModuleBase<PS_PR, PS_PRCondition> {
 private:
     friend ModuleBase;
+    friend class PS_PRModuleTest;
 /**
   Initialize the variables
 

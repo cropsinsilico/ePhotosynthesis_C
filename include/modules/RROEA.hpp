@@ -34,6 +34,7 @@
 class RROEA : public ModuleBase<RROEA, RROEACondition> {
 private:
     friend ModuleBase;
+    friend class RROEAModuleTest;
     /**
       Initializer
 
