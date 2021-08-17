@@ -39,7 +39,9 @@ FICondition* FI::_MB_con(const double t, const FICondition *FI_Con, Variables *t
     //   Calculate the rates first   //
     //////////////////////////////////////////////////////////////////
     if (theVars->useC3) {
-        theVars->FI_Param[0] = theVars->TestLi * 30;
+        double alfa=0.7,fc=0.3;
+        double light_scaler = alfa*(1-fc);
+        theVars->FI_Param[0] = theVars->TestLi * 30 * light_scaler;
     } else {
         Condition(t, theVars);
         theVars->FI_Param[0] = theVars->GLight;

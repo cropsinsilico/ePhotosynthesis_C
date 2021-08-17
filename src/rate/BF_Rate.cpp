@@ -120,8 +120,8 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
 
     // Iin is the total absorbed light
 
-    theVars->BF_Vel.Vinc = Iin * FIBF::getChlPSI() / (FIBF::getChlT2() + FIBF::getChlPSI()) * 95 / 184;  // PPFD absorbed by core antenna of PSI    Unit: micromole m-2 leaf area per second
-    theVars->BF_Vel.Vinp = Iin * FIBF::getChlPSI() / (FIBF::getChlT2() + FIBF::getChlPSI()) * 105 / 184; // PPFD absorbed by peripheral antenna of PSI  Unit: micromole m-2 leaf area per second
+    theVars->BF_Vel.Vinc = Iin * FIBF::getChlPSI() / (FIBF::getChlT2() + FIBF::getChlPSI()) * 95 / 200;  // PPFD absorbed by core antenna of PSI    Unit: micromole m-2 leaf area per second
+    theVars->BF_Vel.Vinp = Iin * FIBF::getChlPSI() / (FIBF::getChlT2() + FIBF::getChlPSI()) * 105 / 200; // PPFD absorbed by peripheral antenna of PSI  Unit: micromole m-2 leaf area per second
 
     theVars->BF_Vel.Vdp = BF_con->Aip * theVars->BF_RC.Kd; // The rate of heat dissipation from peripheral antenna Unit: micromole m-2 leaf area per second
     theVars->BF_Vel.Vdc = BF_con->U * theVars->BF_RC.Kd;   // The rate heat dissipation from core antenna Unit: micromole m-2 leaf area per second

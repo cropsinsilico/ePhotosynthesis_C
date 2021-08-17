@@ -48,6 +48,17 @@ void EPSDriver::setup() {
     PS::setTheta(0.7);
     PS::setbeta(0.7519);
     theVars->BF_FI_com = true;
+    theVars->EnzymeAct.at("V1") *= theVars->alpha1;
+    theVars->EnzymeAct.at("V2") *= theVars->alpha2;
+    theVars->EnzymeAct.at("V3") *= theVars->alpha2;
+    theVars->EnzymeAct.at("V5") *= theVars->alpha2;
+    theVars->EnzymeAct.at("V6") *= theVars->alpha2;
+    theVars->EnzymeAct.at("V7") *= theVars->alpha2;
+    theVars->EnzymeAct.at("V8") *= theVars->alpha2;
+    theVars->EnzymeAct.at("V9") *= theVars->alpha2;
+    theVars->EnzymeAct.at("V10") *= theVars->alpha2;
+    theVars->EnzymeAct.at("V13") *= theVars->alpha2;
+    theVars->EnzymeAct.at("V23") *= theVars->alpha2;
 
     theVars->PR_PS_com = true;     // This is a variable indicating whether the PR model is actually need to be combined with PS or not. If 1 then means combined; 0 means not.
 
