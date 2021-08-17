@@ -31,9 +31,7 @@
 BFCondition* BF::_MB_con(const double t, const BFCondition* BF_con, Variables *theVars) {
 
     if (theVars->useC3) {
-        double alfa=0.7,fc=0.3;
-        double light_scaler = alfa*(1-fc);
-        theVars->BF_Param[0] = theVars->TestLi * 30 *light_scaler;
+        theVars->BF_Param[0] = theVars->lightParam;
     } else {
         Condition(t, theVars);
         theVars->BF_Param[0] = theVars->GLight;

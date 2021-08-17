@@ -42,9 +42,9 @@ void EPSDriver::setup() {
     SYSInitial(theVars);
     //time = tglobal;
     theVars->Tp = this->Tp;
-    PS::setalfa(0.85);
+    theVars->alfa = 0.85;
     PS::setJmax(theVars->EnzymeAct.at("Jmax"));
-    PS::setfc(0.15);
+    theVars->fc = 0.15;
     PS::setTheta(0.7);
     PS::setbeta(0.7519);
     theVars->BF_FI_com = true;

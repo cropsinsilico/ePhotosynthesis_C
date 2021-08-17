@@ -48,6 +48,10 @@ FICondition* FI::_init(Variables *theVars) {
     // The rate constant used in the model
     if (theVars->useC3) {
         cpsii = 1.;
+        if (theVars->lightParam == 0.) {
+            const double light_scaler = theVars->alfa * (1 - theVars->fc);
+            theVars->lightParam = theVars->TestLi * 30 * light_scaler;
+        }
         theVars->FI_RC.kA_d = theVars->EnzymeAct.at("kA_d");         // The rate constant of heat dissipation from peripheral antenna Lazar (1999), 0.25~1 *10^(9)
         theVars->FI_RC.kA_f = theVars->EnzymeAct.at("kA_f");         // The rate constant of fluorescence emission from peripheral antenna Lazar 1999, with a lifetime of 5 ns at closed reaction center
         theVars->FI_RC.kA_U = theVars->EnzymeAct.at("kA_U");         // The rate constant of exciton transfer from periphral antenna to core antenna Reference needed, a guess

@@ -160,7 +160,7 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
         theVars->PS_Vel.v10 = PsV10 * (GAP * PS_con->S7P - Ri5P * Xu5P / KE10) / ((GAP + KM102 * (1 + Xu5P / KM101 + Ri5P / KM10)) * (PS_con->S7P + KM103));
         theVars->PS_Vel.v13 = PsV13 * (PS_con->ATP * Ru5P - theVars->ADP * PS_con->RuBP / KE13) / ((PS_con->ATP * (1 + theVars->ADP / KI134) + KM132*(1 + theVars->ADP / KI135)) * (Ru5P + KM131 * (1 + PS_con->PGA / KI131 + PS_con->RuBP / KI132 + theVars->Pi / KI133)));
 
-        const double I2 = theVars->TestLi * alfa * (1 - fc) / 2;
+        const double I2 = theVars->TestLi * theVars->alfa * (1 - theVars->fc) / 2;
         const double J = (I2 + Jmax - sqrt(pow(I2 + Jmax, 2) - 4 * Theta * I2 * Jmax)) / (2 * Theta);
         theVars->PS_Vel.v16 = std::min(beta * J, PsV16 * (theVars->ADP * theVars->Pi - PS_con->ATP / KE16)/(KM161 * KM162 * (1 + theVars->ADP / KM161 + theVars->Pi / KM162 + PS_con->ATP / KM163 + theVars->ADP * theVars->Pi /(KM161 * KM162))));
 

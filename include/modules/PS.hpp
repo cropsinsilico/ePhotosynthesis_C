@@ -54,8 +54,6 @@ public:
     SET_GET(V13)
     SET_GET(V16)
     SET_GET(V23)
-    SET_GET(alfa)
-    SET_GET(fc)
     SET_GET(Theta)
     SET_GET(beta)
     SET_GET(Jmax)

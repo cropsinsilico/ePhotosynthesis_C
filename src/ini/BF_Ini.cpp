@@ -59,7 +59,10 @@ BFCondition* BF::_init(Variables *theVars) {
         // cATPsyn=1.0447;%1.01866 WY201803
         // CPSi=1.0131;% 1.0237 WY201803
         // cNADPHsyn=1.094468408;%1.0388 WY201803
-
+        if (theVars->lightParam == 0.) {
+            const double light_scaler = theVars->alfa * (1 - theVars->fc);
+            theVars->lightParam = theVars->TestLi * 30 * light_scaler;
+        }
 
         // ISPHr + cytc1 --> ISPHox + cytc1-
         double DeltaEm = 0.27 - 0.31;

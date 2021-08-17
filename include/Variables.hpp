@@ -101,9 +101,11 @@ public:
     double PS_PR_Param = 0;
 
     double Tp = 0;
-
-    double alpha1 = 1.205;
-    double alpha2 = 2.06;
+    double alfa = 0.;
+    double fc = 0.;
+    double lightParam = 0.;
+    const double alpha1 = 1.205;
+    const double alpha2 = 2.06;
 
     // Parameters
     arr PR_Param = zeros(2);
