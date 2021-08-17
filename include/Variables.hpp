@@ -102,12 +102,7 @@ public:
     double PS_PR_Param = 0;
 
     double Tp = 0;
-    double alfa = 0;
-    double fc = 0;
-    double Theta = 0;
-    double beta = 0;
-    double Jmax = 0.;
-    
+
     double alpha1 = 1.205;
     double alpha2 = 2.06;
 
