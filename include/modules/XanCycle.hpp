@@ -65,10 +65,10 @@ private:
       */
     static void _Rate(const double t, const XanCycleCondition* XanCycle_Con, Variables *theVars);
 
-    static double XanCycle_kav;
-    static double XanCycle_kaz;
-    static double XanCycle_kva;
-    static double XanCycle_kza;
+    static double kav;
+    static double kaz;
+    static double kva;
+    static double kza;
     static double TIME;
     static size_t N;
 };

@@ -27,10 +27,10 @@
 #include "Variables.hpp"
 #include "modules/XanCycle.hpp"
 
-double XanCycle::XanCycle_kav = 0.;
-double XanCycle::XanCycle_kaz = 0.;
-double XanCycle::XanCycle_kva = 0.;
-double XanCycle::XanCycle_kza = 0.;
+double XanCycle::kav = 0.;
+double XanCycle::kaz = 0.;
+double XanCycle::kva = 0.;
+double XanCycle::kza = 0.;
 double XanCycle::XanCycle2FIBF_Xstate = 0.;
 double XanCycle::TIME = 0.;
 size_t XanCycle::N = 1;
@@ -39,10 +39,10 @@ const size_t XanCycleCondition::count = 4;
 
 XanCycleCondition* XanCycle::_init(Variables *theVars) {
 
-    XanCycle_kva = 0.163 / 60 * theVars->XanRatio[0]; // Ruth Frommolt et a; 2001; Planta
-    XanCycle_kaz = 0.691 / 60 * theVars->XanRatio[1]; // Ruth Frommolt et a; 2001; Planta
-    XanCycle_kza = 0.119 / 60 * theVars->XanRatio[2]; // Ruth Frommolt et a; 2001; Planta
-    XanCycle_kav = 0.119 / 60 * theVars->XanRatio[3]; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
+    XanCycle::kva = 0.163 / 60 * theVars->XanRatio[0]; // Ruth Frommolt et a; 2001; Planta
+    XanCycle::kaz = 0.691 / 60 * theVars->XanRatio[1]; // Ruth Frommolt et a; 2001; Planta
+    XanCycle::kza = 0.119 / 60 * theVars->XanRatio[2]; // Ruth Frommolt et a; 2001; Planta
+    XanCycle::kav = 0.119 / 60 * theVars->XanRatio[3]; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
 
     const double Vx = 160;
     const double Ax = 10;
@@ -55,7 +55,7 @@ XanCycleCondition* XanCycle::_init(Variables *theVars) {
     XanCycle_con->Zx = Zx * 0.37;
     XanCycle_con->ABA = ABA;
 
-    XanCycle2FIBF_Xstate = Zx / (Ax + Vx + Zx);
+    XanCycle::XanCycle2FIBF_Xstate = Zx / (Ax + Vx + Zx);
 
     return XanCycle_con;
 }

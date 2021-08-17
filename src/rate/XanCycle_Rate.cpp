@@ -54,10 +54,10 @@ void XanCycle::_Rate(const double t, const XanCycleCondition* XanCycle_Con, Vari
     }
 
 
-    const double Vva = XanCycle_Con->Vx * XanCycle_kva * RegCof;
-    const double Vaz = XanCycle_Con->Ax * XanCycle_kaz * RegCof;
-    const double Vza = XanCycle_Con->Zx * XanCycle_kza;
-    const double Vav = XanCycle_Con->Ax * XanCycle_kav;
+    const double Vva = XanCycle_Con->Vx * XanCycle::kva * RegCof;
+    const double Vaz = XanCycle_Con->Ax * XanCycle::kaz * RegCof;
+    const double Vza = XanCycle_Con->Zx * XanCycle::kza;
+    const double Vav = XanCycle_Con->Ax * XanCycle::kav;
 
 
     theVars->XanCycle_Vel.Vva = Vva; // The velocity of v to a conversion

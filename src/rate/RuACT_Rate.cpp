@@ -43,7 +43,7 @@ void RuACT::_Rate(const double t, const RuACTCondition* RuACT_Con, Variables *th
         ADP = 1.5 - ATP;
         RuBP = RuACT_Con->RuBP;
     } else {
-        activase = RuACT_Con->parent->parent->parent->RROEA_con->RuACT * 14364;
+        RuACT::activase = RuACT_Con->parent->parent->parent->RROEA_con->RuACT * 14364;
         RuBP = RuACT_Con->parent->EPS_con->CM_con->PS_PR_con->PS_con->RuBP;
         C = theVars->CO2_cond;
         O = theVars->O2_cond;
@@ -65,10 +65,10 @@ void RuACT::_Rate(const double t, const RuACTCondition* RuACT_Con, Variables *th
 
     double LT;
     double RCA;
-    if (activase < pow(10, -6)) {
+    if (RuACT::activase < pow(10, -6)) {
         RCA = 0;
     } else {
-        LT = 216.9 / activase; // The lifetime of the activation; UNIT: MIN;
+        LT = 216.9 / RuACT::activase; // The lifetime of the activation; UNIT: MIN;
         RCA = 1 / (LT * 60);            // The rate constant of the activation reaction
     }
 

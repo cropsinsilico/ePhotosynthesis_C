@@ -185,7 +185,7 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
 
 
     // The EPS_ATP_Rate is used in the overall model for the calculation of the mass balance equation of ATP.
-    EPS_ATP_Rate = Vbf11;
+    BF::EPS_ATP_Rate = Vbf11;
 
     theVars->BF_Vel.vbfn2 = 2 * theVars->BF_RC.V2M * (Fdn * NADP / theVars->BF_Pool.kU_f - Fd * BF_con->NADPH / (theVars->BF_Pool.kU_f * theVars->BF_RC.KE2)) / (theVars->BF_RC.KM2NADP * (1 + NADP / theVars->BF_RC.KM2NADP + BF_con->NADPH / theVars->BF_RC.KM2NADPH)); // mmol/l/s  //QF add 2*
 

@@ -43,7 +43,7 @@ PRCondition* PR::_MB_con(const double t, const PRCondition* PR_con, Variables *t
     dydt->GLYc = theVars->PR_Vel.v122 + theVars->PR_Vel.v124 - 2 * theVars->PR_Vel.v131;
     dydt->HPRc = theVars->PR_Vel.v122 - theVars->PR_Vel.v123;
     dydt->GCEAc = theVars->PR_Vel.v123 - theVars->PR_Vel.v1in;
-    if (!PS_connect)
+    if (!PR::PS_connect)
         dydt->RuBP = 0.3 - theVars->PR_Vel.v111;
     //DEBUG_DELTA(PRdydt)
     return dydt;

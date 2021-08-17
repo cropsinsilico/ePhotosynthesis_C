@@ -47,7 +47,7 @@ FICondition* FI::_init(Variables *theVars) {
     // Reference
     // The rate constant used in the model
     if (theVars->useC3) {
-        cpsii = 1.;
+        FI::cpsii = 1.;
         if (theVars->lightParam == 0.) {
             const double light_scaler = theVars->alfa * (1 - theVars->fc);
             theVars->lightParam = theVars->TestLi * 30 * light_scaler;
@@ -58,7 +58,7 @@ FICondition* FI::_init(Variables *theVars) {
         theVars->FI_RC.kU_A = theVars->EnzymeAct.at("kU_A");         // The rate constant of exciton transfer from core antenna to peripheral antenna Reference needed, a guess
         theVars->FI_RC.kU_d = theVars->EnzymeAct.at("kU_d");         // The rate constant of  heat emission from core antenna
         theVars->FI_RC.kU_f = theVars->EnzymeAct.at("kU_f");         // The rate constant of fluorescence emission from core antenna
-        theVars->FI_RC.k1 = theVars->EnzymeAct.at("k1") * cpsii;        // WY201803  The rate constant of primary charge separation for open reaction center
+        theVars->FI_RC.k1 = theVars->EnzymeAct.at("k1") * FI::cpsii;        // WY201803  The rate constant of primary charge separation for open reaction center
         theVars->FI_RC.k_r1 = theVars->EnzymeAct.at("k_r1");         // The rate constant of charge recombination for open reactoin center
         theVars->FI_RC.kz = theVars->EnzymeAct.at("kz");           // The rate constant of the Tyrosine oxidation Lazar (1999); 3.8~50 * 10^6
         theVars->FI_RC.k12 = theVars->EnzymeAct.at("k12");          // The rate constant of the S1 to S2 transition Lazar (1999); 0.667~33.3 * 10^3

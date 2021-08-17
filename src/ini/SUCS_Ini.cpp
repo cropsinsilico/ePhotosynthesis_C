@@ -107,93 +107,93 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
     SUCS::UTPc = 0.75;
     if (theVars->useC3) {
 
-        Vf_T52=1;
-        Vf_T59=1;
-        Vf_T57=1;
-        Vf_T51=1;
-        Vf_T56=1;
+        SUCS::Vf_T52=1;
+        SUCS::Vf_T59=1;
+        SUCS::Vf_T57=1;
+        SUCS::Vf_T51=1;
+        SUCS::Vf_T56=1;
 
-        KE501 = 0.05;     //	Equilibrium Constant		50		KE501		0.05		[Bassham, 1869 #832]
-        Km511 = 0.02;     //	FBP	4.1.2.13	51		Km511	FBP	0.02	Pisum sativum	(Anderson, Heinrikson et al. 1975)
-        Km512 = 0.3;      //	FBP	4.1.2.13	51		Km512	GAP	0.3	Spinacia oleracea	(Iwaki, Wadano et al. 1991)
-        Km513 = 0.4;      //	FBP	4.1.2.13	51		Km513	DHAP	0.4	Spinacia oleracea	(Iwaki, Wadano et al. 1991)
-        KE51 = 12;        //  Based on Thomas et al 1997 Biochem Journal. The fifth citation in the paper.
-        Km521 = 0.0025;   //	FBPase[1]	3.1.3.11	52		Km521	FBP	0.0025	Pisum sativum	(Jang, Lee et al. 2003)
-        KI521 = 0.7;      //	FBPase	3.1.3.11	52		KI521	F6P	0.7		[Heldt, 1983 #841]
-        KI522 = 12;       //	FBPase	3.1.3.11	52		KI522	Pi	12	Pisum sativum	(Charles & Halliwell 1997)
-        KI523 = 7*pow(10, -5); //	FBPase	3.1.3.11	52		KI523	F26BP	7*10^(-5)	Pisum sativum <Com>	{Jang, 2003 #2523}
-        KE52 = 6663;      //	FBPase	3.1.3.11	52		KE52			6663	[Bassham, 1869 #832]
-        KE531 = 2.3;      //	Equilibrium Constant	5.3.1.9	53		KE531		2.3[2]		[Bassham, 1869 #832]
-        KE541 = 0.0584;   //	Equilibrium Constant	5.4.2.2	54	G1P G6P	KE541	G1P G6P	0.0584		[Bassham, 1869 #832]
-        Km551 = 0.14;     //	UGPase	2.7.7.9	55		Km551	G1P	0.14	Solanum tuberosum	(Nakano, Omura et al. 1989)
-        Km552 = 0.1;      //	UDPase	2.7.7.9	55		Km552	UTP	0.1	Solanum tuberosum	(Nakano, Omura et al. 1989)
-        Km553 = 0.11;     //	UGPase	2.7.7.9	55		Km553	OPOP	0.11	Solanum tuberosum	(Nakano, Omura et al. 1989)
-        Km554 = 0.12;     //	UGPase	2.7.7.9	55		Km554	UDPGlu	0.12	Solanum tuberosum	(Nakano, Omura et al. 1989)
-        KE55 = 0.31;      //	UGPase	2.7.7.9	55		KE55	Equi	0.31		Lunn and Rees 1990
-        Km561 = 0.8;      //	SPase	2.4.1.14	56		Km561	D-F6P	0.8	Pisum sativum	(Lunn and Ap Rees 1990)
-        Km562 = 2.4;      //	Spase	2.4.1.14	56		Km562	UDP-glucose	2.4	Pisum sativum	(Lunn and Ap Rees 1990)
-        KI561 = 0.7;      //				Inhibitor	KI561	UDP	0.7	Spinacia oleracea	(Harbron, Foyer et al. 1981)
-        KI562 = 0.8;      //	Sucrose Synthesase			Inhibitor	KI562	FBP	0.8	Spinacia oleracea	(Harbron, Foyer et al. 1981)
-        KI563 = 0.4;      //				Inhibitor	KI563	SUCP	0.4	Spinacia oleracea	(Harbron, Foyer et al. 1981)
-        KI564 = 11;       //		2.4.1.14	56	Inhibitor	KI564	Pi	11	Spinacia oleracea	(Harbron, Foyer et al. 1981)
-        KI565 = 50;       //		2.4.1.14	56	Inhibitor	KI565	Sucrose	50	Spinacia oleracea	{Salerno, 1978 #2525}
-        KE56 = 10;        //					KE56		10	Pisum sativum	Lunn and Rees, 1990
-        Km571 = 0.35;     //	SPP	3.1.3.24	57.1		Km571	SUCP	0.35	Pisum sativum	(Whitaker 1984)
-        Ki572 = 80;       //	SPP	3.1.3.24	57.2		Ki572	SUC	80	Daucus carota	(Whitaker 1984)
-        KE57 = 780;       //	SPP	3.1.3.24	57.2		KE57	Equili	780		Lunn and Rees 1990
-        Km581 = 0.032;    //	F26BPa	3.1.3.46	58		Km581	F26BP	0.032	Spinacia oleracea	(Macdonald, Chou et al. 1989)
-        KI581 = 0.1;      //	F26BPa	3.1.3.46	58		KI581	F6P	0.1	Arabidopsis thaliana	(Villadsen and Nielsen 2001)
-        KI582 = 0.5;      //	F26BPa	3.1.3.46	58		KI582	OP	0.5	Arabidopsis thaliana	(Villadsen and Nielsen 2001)
-        Km591 = 0.5;      //	6PF2K	2.7.1.105	59		Km591	ATP	0.5	Spinacia oleracea	(Walker and Huber 1987)
-        Km593 = 0.5;      //	6PF2K	2.7.1.105	59		Km593	F6P	0.5	Spinacia oleracea	(Walker and Huber 1987)
-        KI591 = 0.16;     //			59		KI591	ADP	0.16	Rattus norvegicus	(Kretschmer and Hofmann 1984)
-        KE61 = 1.2*107;   //	Pyrophosphate hydrolysis				KE61		1.2*107		{Flodgaard, 1974 #2521}
-        Km621 = 5;        //	Vsink			Notice: pH dependent	Km621	Sucrose	5		{Weschke, 2000 #2522}
-        KE59 = 590;       //	6PF2K	2.7.1.105	59		KE59		590		Cornish-Bowden, 1997
-        Km592 = 0.021;    //	6PF2K	2.7.1.105	59		Km592	F26BP	0.021	Sparus aurate	(Garcia de Frutos and Baanante 1995)
-        KI592 = 0.7;      //	6PF2K	2.7.1.105	59		KI592	DHAP	0.7	Spinacia oleracea	{Markham, 2002 #2524}
-        Km601 = 0.042;    //	Nucleoside Diphosphate Kinase	2.7.4.6	60	NI	Km601	ADP	0.042	Rat	Kamura and Shimada 1988
-        Km602 = 1.66;     //	Nucleoside Diphosphate Kinase	2.7.4.6	60	NI	Km602	ATP	1.66	Rat	Kamura and Shimada 1988
-        Km603 = 0.28;     //	Nucleoside Diphosphate Kinase	2.7.4.6	60	NI	Km603	UDP	0.28	Saccharomyces cerevisiae	{Jong, 1991 #2518}
-        Km604 = 16;       //	Nucleoside Diphosphate Kinase	2.7.4.6	60	NI	Km604	UTP	16	Rattus norvegicus	{Fukuchi, 1994 #2519}
-        KE60 = 16;        //	Nucleoside Diphosphate Kinase	2.7.4.6	60	NI	KE60		16	1.04	{Lynn, 1978 #2520}
-        Vfactor51 = 1.;
-        Vfactor52 = 1.;
-        Vfactor56 = 1.;
-        Vfactor57 = 1.;
-        Vfactor59 = 1.;
+        SUCS::KE501 = 0.05;     //	Equilibrium Constant		50		KE501		0.05		[Bassham, 1869 #832]
+        SUCS::Km511 = 0.02;     //	FBP	4.1.2.13	51		Km511	FBP	0.02	Pisum sativum	(Anderson, Heinrikson et al. 1975)
+        SUCS::Km512 = 0.3;      //	FBP	4.1.2.13	51		Km512	GAP	0.3	Spinacia oleracea	(Iwaki, Wadano et al. 1991)
+        SUCS::Km513 = 0.4;      //	FBP	4.1.2.13	51		Km513	DHAP	0.4	Spinacia oleracea	(Iwaki, Wadano et al. 1991)
+        SUCS::KE51 = 12;        //  Based on Thomas et al 1997 Biochem Journal. The fifth citation in the paper.
+        SUCS::Km521 = 0.0025;   //	FBPase[1]	3.1.3.11	52		Km521	FBP	0.0025	Pisum sativum	(Jang, Lee et al. 2003)
+        SUCS::KI521 = 0.7;      //	FBPase	3.1.3.11	52		KI521	F6P	0.7		[Heldt, 1983 #841]
+        SUCS::KI522 = 12;       //	FBPase	3.1.3.11	52		KI522	Pi	12	Pisum sativum	(Charles & Halliwell 1997)
+        SUCS::KI523 = 7*pow(10, -5); //	FBPase	3.1.3.11	52		KI523	F26BP	7*10^(-5)	Pisum sativum <Com>	{Jang, 2003 #2523}
+        SUCS::KE52 = 6663;      //	FBPase	3.1.3.11	52		KE52			6663	[Bassham, 1869 #832]
+        SUCS::KE531 = 2.3;      //	Equilibrium Constant	5.3.1.9	53		KE531		2.3[2]		[Bassham, 1869 #832]
+        SUCS::KE541 = 0.0584;   //	Equilibrium Constant	5.4.2.2	54	G1P G6P	KE541	G1P G6P	0.0584		[Bassham, 1869 #832]
+        SUCS::Km551 = 0.14;     //	UGPase	2.7.7.9	55		Km551	G1P	0.14	Solanum tuberosum	(Nakano, Omura et al. 1989)
+        SUCS::Km552 = 0.1;      //	UDPase	2.7.7.9	55		Km552	UTP	0.1	Solanum tuberosum	(Nakano, Omura et al. 1989)
+        SUCS::Km553 = 0.11;     //	UGPase	2.7.7.9	55		Km553	OPOP	0.11	Solanum tuberosum	(Nakano, Omura et al. 1989)
+        SUCS::Km554 = 0.12;     //	UGPase	2.7.7.9	55		Km554	UDPGlu	0.12	Solanum tuberosum	(Nakano, Omura et al. 1989)
+        SUCS::KE55 = 0.31;      //	UGPase	2.7.7.9	55		KE55	Equi	0.31		Lunn and Rees 1990
+        SUCS::Km561 = 0.8;      //	SPase	2.4.1.14	56		Km561	D-F6P	0.8	Pisum sativum	(Lunn and Ap Rees 1990)
+        SUCS::Km562 = 2.4;      //	Spase	2.4.1.14	56		Km562	UDP-glucose	2.4	Pisum sativum	(Lunn and Ap Rees 1990)
+        SUCS::KI561 = 0.7;      //				Inhibitor	KI561	UDP	0.7	Spinacia oleracea	(Harbron, Foyer et al. 1981)
+        SUCS::KI562 = 0.8;      //	Sucrose Synthesase			Inhibitor	KI562	FBP	0.8	Spinacia oleracea	(Harbron, Foyer et al. 1981)
+        SUCS::KI563 = 0.4;      //				Inhibitor	KI563	SUCP	0.4	Spinacia oleracea	(Harbron, Foyer et al. 1981)
+        SUCS::KI564 = 11;       //		2.4.1.14	56	Inhibitor	KI564	Pi	11	Spinacia oleracea	(Harbron, Foyer et al. 1981)
+        SUCS::KI565 = 50;       //		2.4.1.14	56	Inhibitor	KI565	Sucrose	50	Spinacia oleracea	{Salerno, 1978 #2525}
+        SUCS::KE56 = 10;        //					KE56		10	Pisum sativum	Lunn and Rees, 1990
+        SUCS::Km571 = 0.35;     //	SPP	3.1.3.24	57.1		Km571	SUCP	0.35	Pisum sativum	(Whitaker 1984)
+        SUCS::Ki572 = 80;       //	SPP	3.1.3.24	57.2		Ki572	SUC	80	Daucus carota	(Whitaker 1984)
+        SUCS::KE57 = 780;       //	SPP	3.1.3.24	57.2		KE57	Equili	780		Lunn and Rees 1990
+        SUCS::Km581 = 0.032;    //	F26BPa	3.1.3.46	58		Km581	F26BP	0.032	Spinacia oleracea	(Macdonald, Chou et al. 1989)
+        SUCS::KI581 = 0.1;      //	F26BPa	3.1.3.46	58		KI581	F6P	0.1	Arabidopsis thaliana	(Villadsen and Nielsen 2001)
+        SUCS::KI582 = 0.5;      //	F26BPa	3.1.3.46	58		KI582	OP	0.5	Arabidopsis thaliana	(Villadsen and Nielsen 2001)
+        SUCS::Km591 = 0.5;      //	6PF2K	2.7.1.105	59		Km591	ATP	0.5	Spinacia oleracea	(Walker and Huber 1987)
+        SUCS::Km593 = 0.5;      //	6PF2K	2.7.1.105	59		Km593	F6P	0.5	Spinacia oleracea	(Walker and Huber 1987)
+        SUCS::KI591 = 0.16;     //			59		KI591	ADP	0.16	Rattus norvegicus	(Kretschmer and Hofmann 1984)
+        SUCS::KE61 = 1.2*107;   //	Pyrophosphate hydrolysis				KE61		1.2*107		{Flodgaard, 1974 #2521}
+        SUCS::Km621 = 5;        //	Vsink			Notice: pH dependent	Km621	Sucrose	5		{Weschke, 2000 #2522}
+        SUCS::KE59 = 590;       //	6PF2K	2.7.1.105	59		KE59		590		Cornish-Bowden, 1997
+        SUCS::Km592 = 0.021;    //	6PF2K	2.7.1.105	59		Km592	F26BP	0.021	Sparus aurate	(Garcia de Frutos and Baanante 1995)
+        SUCS::KI592 = 0.7;      //	6PF2K	2.7.1.105	59		KI592	DHAP	0.7	Spinacia oleracea	{Markham, 2002 #2524}
+        SUCS::Km601 = 0.042;    //	Nucleoside Diphosphate Kinase	2.7.4.6	60	NI	Km601	ADP	0.042	Rat	Kamura and Shimada 1988
+        SUCS::Km602 = 1.66;     //	Nucleoside Diphosphate Kinase	2.7.4.6	60	NI	Km602	ATP	1.66	Rat	Kamura and Shimada 1988
+        SUCS::Km603 = 0.28;     //	Nucleoside Diphosphate Kinase	2.7.4.6	60	NI	Km603	UDP	0.28	Saccharomyces cerevisiae	{Jong, 1991 #2518}
+        SUCS::Km604 = 16;       //	Nucleoside Diphosphate Kinase	2.7.4.6	60	NI	Km604	UTP	16	Rattus norvegicus	{Fukuchi, 1994 #2519}
+        SUCS::KE60 = 16;        //	Nucleoside Diphosphate Kinase	2.7.4.6	60	NI	KE60		16	1.04	{Lynn, 1978 #2520}
+        SUCS::Vfactor51 = 1.;
+        SUCS::Vfactor52 = 1.;
+        SUCS::Vfactor56 = 1.;
+        SUCS::Vfactor57 = 1.;
+        SUCS::Vfactor59 = 1.;
 
         ///////////////////////////////////////////////////////////////////////////////////////////
         // Initialization of the initial concentration of the different component //
         ///////////////////////////////////////////////////////////////////////////////////////////
 
         if (theVars->GRNC == 1 && theVars->CO2_cond > 0.) {
-            Vfactor52=theVars->VfactorCp[19];
-            Vfactor56=theVars->VfactorCp[22];
-            Vfactor57=theVars->VfactorCp[23];
-            Vfactor59=theVars->VfactorCp[24];
+            SUCS::Vfactor52 = theVars->VfactorCp[19];
+            SUCS::Vfactor56 = theVars->VfactorCp[22];
+            SUCS::Vfactor57 = theVars->VfactorCp[23];
+            SUCS::Vfactor59 = theVars->VfactorCp[24];
 
         }
         if (theVars->GRNT == 1 && theVars->Tp > 25) {
-            Vf_T52 = theVars->VfactorT[0];
-            Vf_T59 = theVars->VfactorT[12];
-            Vf_T57 = theVars->VfactorT[13];
-            Vf_T51 = theVars->VfactorT[17];
-            Vf_T56 = theVars->VfactorT[27];
+            SUCS::Vf_T52 = theVars->VfactorT[0];
+            SUCS::Vf_T59 = theVars->VfactorT[12];
+            SUCS::Vf_T57 = theVars->VfactorT[13];
+            SUCS::Vf_T51 = theVars->VfactorT[17];
+            SUCS::Vf_T56 = theVars->VfactorT[27];
         }
 
         if (theVars->GP == 0) {
-            V51	= theVars->EnzymeAct.at("V51");
-            V52	= theVars->EnzymeAct.at("V52");
-            V55	= theVars->EnzymeAct.at("V55");
-            V56	= theVars->EnzymeAct.at("V56");
-            V57	= theVars->EnzymeAct.at("V57");
-            V58	= theVars->EnzymeAct.at("V58");
+            SUCS::V51	= theVars->EnzymeAct.at("V51");
+            SUCS::V52	= theVars->EnzymeAct.at("V52");
+            SUCS::V55	= theVars->EnzymeAct.at("V55");
+            SUCS::V56	= theVars->EnzymeAct.at("V56");
+            SUCS::V57	= theVars->EnzymeAct.at("V57");
+            SUCS::V58	= theVars->EnzymeAct.at("V58");
         }
-        V59	= theVars->EnzymeAct.at("V59");
-        V60 = 6.1;	//	ATP+UDP --UTP + ADP
-        V61 = 10000;	//	POPO --2PO
-        V62 = 2;	//	SUC Sink        0.2 works.
+        SUCS::V59	= theVars->EnzymeAct.at("V59");
+        SUCS::V60 = 6.1;	//	ATP+UDP --UTP + ADP
+        SUCS::V61 = 10000;	//	POPO --2PO
+        SUCS::V62 = 2;	//	SUC Sink        0.2 works.
 
         // Initialize the leaves of active enzyme in a dark adapted leaves;
         // mM
@@ -217,44 +217,44 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
         theVars->SUCS_Pool.UTc = 1.5; // mM
         theVars->SUCS_Pool.PTc = 15;  //
     } else {
-        KE501 = 1 / 0.05 * theVars->SUCRatio[15];
-        Km511 = 0.02 * theVars->SUCRatio[16];
-        Km512 = 0.3 * theVars->SUCRatio[17];
-        Km513 = 0.4 * theVars->SUCRatio[18];
-        KE51 = 12 * theVars->SUCRatio[19];
+        SUCS::KE501 = 1 / 0.05 * theVars->SUCRatio[15];
+        SUCS::Km511 = 0.02 * theVars->SUCRatio[16];
+        SUCS::Km512 = 0.3 * theVars->SUCRatio[17];
+        SUCS::Km513 = 0.4 * theVars->SUCRatio[18];
+        SUCS::KE51 = 12 * theVars->SUCRatio[19];
         //theVars->Km514 = 0.014 * theVars->SUCRatio[20];  // --unused
-        Km521 = 0.0025 * theVars->SUCRatio[21];
-        KI521 = 0.7 * theVars->SUCRatio[22];
-        KI522 = 12 * theVars->SUCRatio[23];
-        KI523 = 7 * pow(10, (-5)) * theVars->SUCRatio[24];
-        KE52 = 6663 * theVars->SUCRatio[25];
-        KE531 = 2.3 * theVars->SUCRatio[26];
-        KE541 = 0.0584 * theVars->SUCRatio[27];
-        Km551 = 0.14 * theVars->SUCRatio[28];
-        Km552 = 0.1 * theVars->SUCRatio[29];
-        Km553 = 0.11 * theVars->SUCRatio[30];
-        Km554 = 0.12 * theVars->SUCRatio[31];
-        KE55 = 0.31 * theVars->SUCRatio[32];
-        Km561 = 0.8 * theVars->SUCRatio[33];
-        Km562 = 2.4 * theVars->SUCRatio[34];
-        KI561 = 0.7 * theVars->SUCRatio[35];
-        KI562 = 0.8 * theVars->SUCRatio[36];
-        KI563 = 0.4 * theVars->SUCRatio[37];
-        KI564 = 11 * theVars->SUCRatio[38];
-        KI565 = 50 * theVars->SUCRatio[39];
-        KE56 = 10 * theVars->SUCRatio[40];
-        Km571 = 0.35 * theVars->SUCRatio[41];
-        Ki572 = 10 * theVars->SUCRatio[42];
-        KE57 = 780 * theVars->SUCRatio[43];
-        Km581 = 0.032 * theVars->SUCRatio[44];
-        KI581 = 0.1 * theVars->SUCRatio[45];
-        KI582 = 0.5 * theVars->SUCRatio[46];
-        Km591 = 0.5 * theVars->SUCRatio[47];
-        Km593 = 0.5 * theVars->SUCRatio[49];
-        KI591 = 0.16 * theVars->SUCRatio[50];
-        KE59 = 590 * theVars->SUCRatio[52];
-        KE61 = 1.2 * 107 * theVars->SUCRatio[58];
-        Km621 = 5 * theVars->SUCRatio[59];
+        SUCS::Km521 = 0.0025 * theVars->SUCRatio[21];
+        SUCS::KI521 = 0.7 * theVars->SUCRatio[22];
+        SUCS::KI522 = 12 * theVars->SUCRatio[23];
+        SUCS::KI523 = 7 * pow(10, (-5)) * theVars->SUCRatio[24];
+        SUCS::KE52 = 6663 * theVars->SUCRatio[25];
+        SUCS::KE531 = 2.3 * theVars->SUCRatio[26];
+        SUCS::KE541 = 0.0584 * theVars->SUCRatio[27];
+        SUCS::Km551 = 0.14 * theVars->SUCRatio[28];
+        SUCS::Km552 = 0.1 * theVars->SUCRatio[29];
+        SUCS::Km553 = 0.11 * theVars->SUCRatio[30];
+        SUCS::Km554 = 0.12 * theVars->SUCRatio[31];
+        SUCS::KE55 = 0.31 * theVars->SUCRatio[32];
+        SUCS::Km561 = 0.8 * theVars->SUCRatio[33];
+        SUCS::Km562 = 2.4 * theVars->SUCRatio[34];
+        SUCS::KI561 = 0.7 * theVars->SUCRatio[35];
+        SUCS::KI562 = 0.8 * theVars->SUCRatio[36];
+        SUCS::KI563 = 0.4 * theVars->SUCRatio[37];
+        SUCS::KI564 = 11 * theVars->SUCRatio[38];
+        SUCS::KI565 = 50 * theVars->SUCRatio[39];
+        SUCS::KE56 = 10 * theVars->SUCRatio[40];
+        SUCS::Km571 = 0.35 * theVars->SUCRatio[41];
+        SUCS::Ki572 = 10 * theVars->SUCRatio[42];
+        SUCS::KE57 = 780 * theVars->SUCRatio[43];
+        SUCS::Km581 = 0.032 * theVars->SUCRatio[44];
+        SUCS::KI581 = 0.1 * theVars->SUCRatio[45];
+        SUCS::KI582 = 0.5 * theVars->SUCRatio[46];
+        SUCS::Km591 = 0.5 * theVars->SUCRatio[47];
+        SUCS::Km593 = 0.5 * theVars->SUCRatio[49];
+        SUCS::KI591 = 0.16 * theVars->SUCRatio[50];
+        SUCS::KE59 = 590 * theVars->SUCRatio[52];
+        SUCS::KE61 = 1.2 * 107 * theVars->SUCRatio[58];
+        SUCS::Km621 = 5 * theVars->SUCRatio[59];
 
         // Initialize the leaves of active enzyme in a dark adapted leaves;
         // mM
@@ -281,21 +281,21 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
 
         if (theVars->GP == 0) {
             // Unit: mmol l-1 s-1;
-            V51 = 0.107376831 * SC * theVars->SUCRatio[0]; // DHAP+GAP --FBP          // default 0.5
-            V52 = 0.063979048 * SC * theVars->SUCRatio[1]; // FBP --F6P + Pi
-            V55 = 0.115403205 * SC * theVars->SUCRatio[2]; // G1P+UTP --OPOP+UDPG
-            V56 = 0.055503446 * SC * theVars->SUCRatio[3]; // UDPG+F6P--SUCP + UDP
-            V57 = 0.55503446 * SC1 * theVars->SUCRatio[4]; // SUCP--Pi + SUC; 0.27 DEFALT
-            V58 = 0.016819226 * SC * theVars->SUCRatio[5]; // F26BP--F6P + Pi
+            SUCS::V51 = 0.107376831 * SC * theVars->SUCRatio[0]; // DHAP+GAP --FBP          // default 0.5
+            SUCS::V52 = 0.063979048 * SC * theVars->SUCRatio[1]; // FBP --F6P + Pi
+            SUCS::V55 = 0.115403205 * SC * theVars->SUCRatio[2]; // G1P+UTP --OPOP+UDPG
+            SUCS::V56 = 0.055503446 * SC * theVars->SUCRatio[3]; // UDPG+F6P--SUCP + UDP
+            SUCS::V57 = 0.55503446 * SC1 * theVars->SUCRatio[4]; // SUCP--Pi + SUC; 0.27 DEFALT
+            SUCS::V58 = 0.016819226 * SC * theVars->SUCRatio[5]; // F26BP--F6P + Pi
         }
 
-        V59 = 0.03 * SC * theVars->SUCRatio[6];            // F6P + ATP --ADP + F26BP // defalut 0.03  (* 0.3)
+        SUCS::V59 = 0.03 * SC * theVars->SUCRatio[6];            // F6P + ATP --ADP + F26BP // defalut 0.03  (* 0.3)
         //theVars->V60 = 6.1 * theVars->SUCRatio[7];// ATP+UDP --UTP + ADP
         //theVars->V61 = 10000;         // POPO --2PO   // constant set in globals.hpp
-        V62 = 2 * SC1 * theVars->SUCRatio[8];              // SUC Sink        0.9 works.
-        Vdhap_in = 1.05 * SC1 * theVars->SUCRatio[9];      // DHAP export from chloroplast
-        Vgap_in = 1.05 * SC1 * theVars->SUCRatio[10];      // GAP export from chloroplast
-        Vpga_in = 1.05 * SC1 * theVars->SUCRatio[11];      // PGA export from chloropalst
+        SUCS::V62 = 2 * SC1 * theVars->SUCRatio[8];              // SUC Sink        0.9 works.
+        SUCS::Vdhap_in = 1.05 * SC1 * theVars->SUCRatio[9];      // DHAP export from chloroplast
+        SUCS::Vgap_in = 1.05 * SC1 * theVars->SUCRatio[10];      // GAP export from chloroplast
+        SUCS::Vpga_in = 1.05 * SC1 * theVars->SUCRatio[11];      // PGA export from chloropalst
 
         //////////////////////////////////////////////////////////////////
         // Here is some pool values      //
