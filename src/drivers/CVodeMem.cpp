@@ -12,41 +12,41 @@ void CVodeMem::cvode_mem_init(Driver* driver, realtype t0, N_Vector y) {
         _cvode_mem = CVodeCreate(CV_BDF);
         if (CVodeInit(_cvode_mem, driver->calculate, t0, y) != CV_SUCCESS) {
             std::cout << "CVodeInit failed" << std::endl;
-            exit(EXIT_FAILURE);
+            throw std::runtime_error("CVodeInit failed");
         }
 
         if (CVodeSStolerances(_cvode_mem, driver->reltol, driver->abstol) != CV_SUCCESS) {
             std::cout << "CVodeSStolerances failed" << std::endl;
-            exit(EXIT_FAILURE);
+            throw std::runtime_error("CVodeSStolerances failed");
         }
 
         if (CVodeSetUserData(_cvode_mem, data) != CV_SUCCESS) {
             std::cout << "CVodeSetUserData failed" << std::endl;
-            exit(EXIT_FAILURE);
+            throw std::runtime_error("CVodeSetUserData failed");
         }
         if (CVodeSetMaxStep(_cvode_mem, driver->maxStep) != CV_SUCCESS) {
             std::cout << "CVodeSetMaxStep failed" << std::endl;
-            exit(EXIT_FAILURE);
+            throw std::runtime_error("CVodeSetMaxStep failed");
         }
         if (!driver->showWarnings) {
             if (CVodeSetMaxHnilWarns(_cvode_mem, -1) != CV_SUCCESS) {
                 std::cout << "CVodeSetMaxHnilWarns failed" << std::endl;
-                exit(EXIT_FAILURE);
+                throw std::runtime_error("CVodeSetMaxHnilWarns failed");
             }
             if (CVodeSetNoInactiveRootWarn(_cvode_mem) != CV_SUCCESS) {
                 std::cout << "CVodeSetNoInactiveRootWarn failed" << std::endl;
-                exit(EXIT_FAILURE);
+                throw std::runtime_error("CVodeSetNoInactiveRootWarn failed");
             }
         }
         if (CVodeSetMaxNumSteps(_cvode_mem, driver->maxSubSteps) != CV_SUCCESS) {
             std::cout << "CVodeSetMaxNumSteps failed" << std::endl;
-            exit(EXIT_FAILURE);
+            throw std::runtime_error("CVodeSetMaxNumSteps failed");
         }
         initialized = true;
     } else {
         if (CVodeReInit(_cvode_mem, t0, y) != CV_SUCCESS) {
             std::cout << "CVodeReInit failed" << std::endl;
-            exit(EXIT_FAILURE);
+            throw std::runtime_error("CVodeReInit failed");
         }
     }
     driver->data = data;

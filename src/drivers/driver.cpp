@@ -52,8 +52,15 @@ arr Driver::run() {
             NV_Ith_S(y, i) =  constraints[i];
         realtype t0 = 0;
 
-        CVodeMem *cmem = &CVodeMem::create();
-        cmem->cvode_mem_init(this, t0, y);
+        CVodeMem *cmem;
+        try {
+            cmem = &CVodeMem::create();
+            cmem->cvode_mem_init(this, t0, y);
+        } catch(...) {
+            std::exception_ptr eptr = std::current_exception();
+            N_VDestroy(y);
+            std::rethrow_exception(eptr);
+        }
 
         data->drv = this;
 
@@ -61,23 +68,30 @@ arr Driver::run() {
         SUNNonlinearSolver NLS = SUNNonlinSol_Newton(y);
         SUNLinearSolver LS = SUNDenseLinearSolver(y, A);
 
-        if (CVodeSetNonlinearSolver(cvode_mem, NLS) != CV_SUCCESS) {
-            std::cout << "CVodeSetNonlinearSolver failed" << std::endl;
-            exit(EXIT_FAILURE);
-        }
-        if (CVDlsSetLinearSolver(cvode_mem, LS, A) != CV_SUCCESS) {
-            std::cout << "CVDlsSetLinearSolver failed" << std::endl;
-            exit(EXIT_FAILURE);
+        try {
+            if (CVodeSetNonlinearSolver(cvode_mem, NLS) != CV_SUCCESS) {
+                std::cout << "CVodeSetNonlinearSolver failed" << std::endl;
+                throw std::runtime_error("CVodeSetNonlinearSolver failed");
+            }
+            if (CVDlsSetLinearSolver(cvode_mem, LS, A) != CV_SUCCESS) {
+                std::cout << "CVDlsSetLinearSolver failed" << std::endl;
+                throw std::runtime_error("CVDlsSetLinearSolver failed");
+            }
+        } catch(...) {
+            std::exception_ptr eptr = std::current_exception();
+            SUNNonlinSolFree(NLS);
+            SUNLinSolFree(LS);
+            SUNMatDestroy(A);
+            N_VDestroy(y);
+            std::rethrow_exception(eptr);
         }
 
         realtype t = 0;
         bool runOK = true;
         realtype tout = start + step;
         while (tout <= endtime) {
-        //for (realtype tout = start + step; tout <= endtime; tout += step)
             if (CVode(cvode_mem, tout, y, &t, CV_NORMAL) != CV_SUCCESS) {
                 std::cout << "CVode failed at t=" << tout << std::endl;
-                //exit(EXIT_FAILURE);
                 runOK = false;
                 break;
             }
