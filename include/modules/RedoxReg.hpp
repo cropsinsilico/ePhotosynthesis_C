@@ -81,10 +81,10 @@ private:
 
     static int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data);
 
-    static double RedoxReg_VMAX13;
-    static double RedoxReg_VMAX16;
-    static double RedoxReg_VMAX6;
-    static double RedoxReg_VMAX9;
+    SET_GET(RedoxReg_VMAX13);
+    SET_GET(RedoxReg_VMAX16);
+    SET_GET(RedoxReg_VMAX6);
+    SET_GET(RedoxReg_VMAX9);
     static double TIME;
     static size_t N;
     static const double Fd_Thio_ET;

@@ -82,9 +82,9 @@ private:
       */
     static void _Rate(const double t, const conditions::BFCondition* BF_con, Variables *theVars);
 
-    static double cATPsyn;
-    static double CPSi;
-    static double cNADPHsyn;
+    SET_GET(cATPsyn)
+    SET_GET(CPSi)
+    SET_GET(cNADPHsyn)
     static double TIME;
     static size_t N;
 };

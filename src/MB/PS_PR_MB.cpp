@@ -40,7 +40,7 @@ PS_PRCondition* PS_PR::_MB_con(const double t, const PS_PRCondition* PS_PR_con, 
 
     PRCondition* PR_con = PS_PR_con->PR_con;
     PSCondition* PS_con = PS_PR_con->PS_con;
-    PR::PGA = PS_con->PGA;
+    PR::setPGA(PS_con->PGA);
     const double PR2PS_Pgca = PS_PR_con->PR_con->PGCA;  // FOr transfering information between PR to PS.
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

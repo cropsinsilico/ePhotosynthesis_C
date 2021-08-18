@@ -176,7 +176,7 @@ PRCondition* PR::_init(Variables *theVars) {
         }
 
         if (theVars->GP == 0) {
-            PR::V111 = PS::V1 * 0.22;
+            PR::V111 = PS::getV1() * 0.22;
             PR::V112 = theVars->EnzymeAct.at("V112");
             PR::V113 = theVars->EnzymeAct.at("V113");
             PR::V121 = theVars->EnzymeAct.at("V121");
@@ -188,8 +188,8 @@ PRCondition* PR::_init(Variables *theVars) {
         // The constant for calculating the glycolate uptake
         PR::V2T = 6;      // The original value is 0.32.
         // Reaction: 111: RUBP+O2<-->PGlycolate + PGA
-        PR::KO = PS::KM12;           // Michaelis constant for O2
-        PR::KC = PS::KM11;          // Michaelis constant for CO2
+        PR::KO = PS::getKM12();           // Michaelis constant for O2
+        PR::KC = PS::getKM11();          // Michaelis constant for CO2
         PR::KR = 0.02;           // Michaelis constant for RUBP
 
         // Reaction: 112: PGlycolate-->Pi+Glycolate;
@@ -241,8 +241,8 @@ PRCondition* PR::_init(Variables *theVars) {
         PR::KC = 0.0115 * theVars->PRRatio[17]; // Michaelis constant for CO2
 
         if (theVars->PR_PS_com) {
-            PR::KC = PS::KM11;
-            PR::KO = PS::KM12;
+            PR::KC = PS::getKM11();
+            PR::KO = PS::getKM12();
         }
 
         PR::KR = 0.02 * theVars->PRRatio[18]; // Michaelis constant for RUBP
@@ -297,7 +297,7 @@ PRCondition* PR::_init(Variables *theVars) {
 
         if (theVars->GP == 0) {
             if (theVars->PR_PS_com) {
-                V111 = 0.24 * PS::V1 * theVars->PRRatio[0];
+                V111 = 0.24 * PS::getV1() * theVars->PRRatio[0];
             } else {
                 V111 = 3.7 * 0.24 * 1;
             }

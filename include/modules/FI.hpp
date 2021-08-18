@@ -76,7 +76,7 @@ private:
       @param theVars The global variables
       */
     static void _Rate(const double t, const conditions::FICondition* FI_Con, Variables *theVars);
-    static double cpsii;
+    SET_GET(cpsii)
     static double TIME;
     static size_t N;
 };

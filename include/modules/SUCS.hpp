@@ -77,77 +77,75 @@ private:
       */
     static void _Rate(const double t, const conditions::SUCSCondition* SUCS_Con,
                       Variables *theVars);
-    friend class PS;
-
-    static double KE501;
-    static double KE51;
-    static double KE52;
-    static double KE531;
-    static double KE541;
-    static double KE55;
-    static double KE56;
-    static double KE57;
-    static double KE59;
-    static double KE61;
-    static double KI521;
-    static double KI522;
-    static double KI523;
-    static double KI561;
-    static double KI562;
-    static double KI563;
-    static double KI564;
-    static double KI565;
-    static double KI581;
-    static double KI582;
-    static double KI591;
-    static double Ki572;
-    static double Km511;
-    static double Km512;
-    static double Km513;
-    static double Km521;
-    static double Km551;
-    static double Km552;
-    static double Km553;
-    static double Km554;
-    static double Km561;
-    static double Km562;
-    static double Km571;
-    static double Km581;
-    static double Km591;
-    static double Km593;
-    static double Km621;
-    static double V51;   ///< DHAP+GAP --FBP
-    static double V52;   ///< FBP --F6P + Pi
-    static double V55;   ///< G1P+UTP --OPOP+UDPG
-    static double V56;   ///< UDPG+F6P--SUCP + UDP
-    static double V57;   ///< SUCP--Pi + SUC
-    static double V58;   ///< F26BP--F6P + Pi
-    static double V59;   ///< F6P + ATP --ADP + F26BP
-    static double V60;
-    static double V61;
-    static double V62;   ///< SUC Sink
-    static double Vdhap_in; ///< DHAP export from chloroplast
-    static double Vgap_in;  ///< GAP export from chloroplast
-    static double Vpga_in;  ///< PGA export from chloropalst
-    static double Km592;
-    static double KI592;
-    static double Km601;
-    static double Km602;
-    static double Km603;
-    static double Km604;
-    static double KE60;
-    static double Vfactor51;
-    static double Vfactor52;
-    static double Vfactor56;
-    static double Vfactor57;
-    static double Vfactor59;
-    static double Vf_T51;
-    static double Vf_T52;
-    static double Vf_T56;
-    static double Vf_T57;
-    static double Vf_T59;
-    static double UTPc;
-    static double ATPc;
+    SET_GET(KE501)
+    SET_GET(KE51)
+    SET_GET(KE52)
+    SET_GET(KE531)
+    SET_GET(KE541)
+    SET_GET(KE55)
+    SET_GET(KE56)
+    SET_GET(KE57)
+    SET_GET(KE59)
+    SET_GET(KE61)
+    SET_GET(KI521)
+    SET_GET(KI522)
+    SET_GET(KI523)
+    SET_GET(KI561)
+    SET_GET(KI562)
+    SET_GET(KI563)
+    SET_GET(KI564)
+    SET_GET(KI565)
+    SET_GET(KI581)
+    SET_GET(KI582)
+    SET_GET(KI591)
+    SET_GET(Ki572)
+    SET_GET(Km511)
+    SET_GET(Km512)
+    SET_GET(Km513)
+    SET_GET(Km521)
+    SET_GET(Km551)
+    SET_GET(Km552)
+    SET_GET(Km553)
+    SET_GET(Km554)
+    SET_GET(Km561)
+    SET_GET(Km562)
+    SET_GET(Km571)
+    SET_GET(Km581)
+    SET_GET(Km591)
+    SET_GET(Km593)
+    SET_GET(Km621)
+    SET_GET(V51)   ///< DHAP+GAP --FBP
+    SET_GET(V52)   ///< FBP --F6P + Pi
+    SET_GET(V55)   ///< G1P+UTP --OPOP+UDPG
+    SET_GET(V56)   ///< UDPG+F6P--SUCP + UDP
+    SET_GET(V57)   ///< SUCP--Pi + SUC
+    SET_GET(V58)   ///< F26BP--F6P + Pi
+    SET_GET(V59)   ///< F6P + ATP --ADP + F26BP
+    SET_GET(V60)
+    SET_GET(V61)
+    SET_GET(V62)   ///< SUC Sink
+    SET_GET(Vdhap_in) ///< DHAP export from chloroplast
+    SET_GET(Vgap_in)  ///< GAP export from chloroplast
+    SET_GET(Vpga_in)  ///< PGA export from chloropalst
+    SET_GET(Km592)
+    SET_GET(KI592)
+    SET_GET(Km601)
+    SET_GET(Km602)
+    SET_GET(Km603)
+    SET_GET(Km604)
+    SET_GET(KE60)
+    SET_GET(Vfactor51)
+    SET_GET(Vfactor52)
+    SET_GET(Vfactor56)
+    SET_GET(Vfactor57)
+    SET_GET(Vfactor59)
+    SET_GET(Vf_T51)
+    SET_GET(Vf_T52)
+    SET_GET(Vf_T56)
+    SET_GET(Vf_T57)
+    SET_GET(Vf_T59)
+    SET_GET(UTPc)
+    SET_GET(ATPc)
     static double TIME;
     static size_t N;
 };

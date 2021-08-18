@@ -54,7 +54,7 @@ void RuACT::_Rate(const double t, const RuACTCondition* RuACT_Con, Variables *th
 
         MT = RuACT_Con->parent->EPS_con->FIBF_con->BF_con->Mgs;
         ATP = RuACT_Con->parent->EPS_con->CM_con->PS_PR_con->PS_con->ATP;
-        ADP = PS::PS_C_CA - ATP;
+        ADP = PS::getPS_C_CA() - ATP;
     }
     double RatioDT = ADP / ATP;
 

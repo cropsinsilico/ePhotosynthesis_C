@@ -80,10 +80,10 @@ private:
     static void _Rate(const double t, const conditions::XanCycleCondition* XanCycle_Con,
                       Variables *theVars);
 
-    static double kav;
-    static double kaz;
-    static double kva;
-    static double kza;
+    SET_GET(kav)
+    SET_GET(kaz)
+    SET_GET(kva)
+    SET_GET(kza)
     static double TIME;
     static size_t N;
 };

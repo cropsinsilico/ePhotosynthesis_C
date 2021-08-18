@@ -76,7 +76,7 @@ private:
       */
     static void _Rate(const double t, const conditions::RuACTCondition* RuACT_Con,
                       Variables *theVars);
-    static double activase;
+    SET_GET(activase)
     static double TIME;
     static size_t N;
 };

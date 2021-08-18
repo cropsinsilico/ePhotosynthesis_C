@@ -39,16 +39,16 @@ class FIBFModuleTest;
 namespace modules {
 
 class FIBF : public ModuleBase<FIBF, conditions::FIBFCondition> {
-    SET_GET(ChlPSI)
-    SET_GET(ChlT)
-    SET_GET(ChlT2)
-    SET_GET(FIBF2FI_PQ)
-    SET_GET(FIBF2FI_PQa)
 private:
     friend ModuleBase;
 #ifdef TESTING
     friend class test::FIBFModuleTest;
 #endif
+    SET_GET(ChlPSI)
+    SET_GET(ChlT)
+    SET_GET(ChlT2)
+    SET_GET(FIBF2FI_PQ)
+    SET_GET(FIBF2FI_PQa)
 
     /**
   Initialize the variables
