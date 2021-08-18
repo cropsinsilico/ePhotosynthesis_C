@@ -28,6 +28,9 @@
 
 #include "definitions.hpp"
 
+namespace ePhotosynthesis {
+namespace pool {
+
 /**
  Class for RuACT_Pool data
  */
@@ -55,3 +58,5 @@ public:
     double M = 0;
 };
 
+}  // namespace pool
+}  // namespace ePhotosynthesis

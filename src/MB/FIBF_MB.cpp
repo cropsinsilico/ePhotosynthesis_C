@@ -32,6 +32,10 @@
 
 // This function calculate the mass balance equation for the complete model of the light reactions.
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* FIBF_Con, Variables *theVars) {
     // First Get the variables needed for the calcualtion step
     BFCondition* BF_con = FIBF_Con->BF_con;

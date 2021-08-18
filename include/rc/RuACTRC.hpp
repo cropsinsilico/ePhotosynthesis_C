@@ -28,6 +28,9 @@
 
 #include "definitions.hpp"
 
+namespace ePhotosynthesis {
+namespace RC {
+
 /**
  Class for RuACT_RC data
  */
@@ -64,3 +67,6 @@ public:
     double k7 = 0;  ///< The rate constant for ecm to ecmr
     double kr = 0;
 };
+
+}  // namespace RC
+}  // namespace ePhotosynthesis

@@ -30,7 +30,15 @@
 #include "conditions/FIBFCondition.hpp"
 #include "definitions.hpp"
 
-class FIBF : public ModuleBase<FIBF, FIBFCondition> {
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class FIBFModuleTest;
+}
+#endif
+namespace modules {
+
+class FIBF : public ModuleBase<FIBF, conditions::FIBFCondition> {
     SET_GET(ChlPSI)
     SET_GET(ChlT)
     SET_GET(ChlT2)
@@ -39,7 +47,7 @@ class FIBF : public ModuleBase<FIBF, FIBFCondition> {
 private:
     friend ModuleBase;
 #ifdef TESTING
-    friend class FIBFModuleTest;
+    friend class test::FIBFModuleTest;
 #endif
 
     /**
@@ -47,7 +55,7 @@ private:
 
   @param theVars The global variables
   */
-    static FIBFCondition* _init(Variables *theVars);
+    static conditions::FIBFCondition* _init(Variables *theVars);
 
 /**
   Calculate the output values based on the inputs
@@ -57,11 +65,17 @@ private:
   @param theVars The global variables
   @return A vector containing the updated values
   */
-    static arr _MB(const double t, const FIBFCondition* FIBF_Con, Variables *theVars);
-    static FIBFCondition* _MB_con(const double t, const FIBFCondition* FIBF_Con, Variables *theVars);
-    static void _Rate(const double t, const FIBFCondition* FIBF_Con, Variables *theVars) {
+    static arr _MB(const double t, const conditions::FIBFCondition* FIBF_Con, Variables *theVars);
+    static conditions::FIBFCondition* _MB_con(const double t,
+                                              const conditions::FIBFCondition* FIBF_Con,
+                                              Variables *theVars);
+    static void _Rate(const double t, const conditions::FIBFCondition* FIBF_Con,
+                      Variables *theVars) {
         (void)t;
         (void)FIBF_Con;
         (void)theVars;
     }
 };
+
+}  // namespace modules
+}  // namespace ePhotosynthesis

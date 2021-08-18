@@ -1,5 +1,11 @@
 #include "PSModuleFramework.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::test;
+using namespace ePhotosynthesis::conditions;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::vel;
+
 namespace {
 TEST_F(PSModuleTest, InitTest) {
 

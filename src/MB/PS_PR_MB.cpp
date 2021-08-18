@@ -30,6 +30,10 @@
 #include "modules/PR.hpp"
 #include "globals.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 PS_PRCondition* PS_PR::_MB_con(const double t, const PS_PRCondition* PS_PR_con, Variables *theVars) {
 
     const double vATPcost = theVars->TestATPCost / theVars->AVR;

@@ -26,6 +26,9 @@
 
 #include "conditions/RedoxRegCondition.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+
 RedoxRegCondition::RedoxRegCondition(const RedoxRegCondition* other) {
     _clear();
     RA_con = new RACondition(other->RA_con);

@@ -8,6 +8,10 @@
 #include <map>
 
 using ::testing::ElementsAre;
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::test;
+using namespace ePhotosynthesis::vel;
+using namespace ePhotosynthesis::modules;
 
 namespace {
 

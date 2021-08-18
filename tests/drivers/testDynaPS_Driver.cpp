@@ -1,6 +1,11 @@
 #include "VariableFramework.hpp"
 #include "drivers/DynaPS_Driver.hpp"
 
+using namespace ePhotosynthesis::conditions;
+using namespace ePhotosynthesis::drivers;
+
+namespace ePhotosynthesis {
+namespace test {
 class DynaPSDriverTest : public VariableFramework {
 protected:
     void TearDown() override {
@@ -70,3 +75,6 @@ TEST_F(DynaPSDriverTest, MBTest) {
     N_VDestroy(y);
 }
 }
+
+}  // namespace test
+}  // namespace ePhotosynthesis

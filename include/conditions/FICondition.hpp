@@ -28,8 +28,14 @@
 
 #include "ConditionBase.hpp"
 
-class FIBFCondition;
+namespace ePhotosynthesis {
+namespace modules {
 class FI;
+}
+namespace conditions {
+
+class FIBFCondition;
+
 /**
  Class for holding the inputs to FI_mb
  */
@@ -80,7 +86,7 @@ public:
     SET_GET_BOOL(BF_connect)
 private:
     friend ConditionBase;
-    friend FI;
+    friend modules::FI;
     /**
       Copy items from the given vector to the data members
 
@@ -112,3 +118,6 @@ private:
     const Debug::DebugLevel _dlevel = Debug::Low;
 #endif
 };
+
+}  // namespace conditions
+}  // namespace ePhotosynthesis

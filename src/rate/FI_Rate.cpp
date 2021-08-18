@@ -28,6 +28,10 @@
 #include "modules/FI.hpp"
 #include "modules/FIBF.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

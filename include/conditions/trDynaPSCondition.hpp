@@ -29,6 +29,9 @@
 #include "RROEACondition.hpp"
 #include "DynaPSCondition.hpp"
 
+namespace ePhotosynthesis {
+namespace conditions {
+
 /**
  Class for holding inputs to trDynaPS_mb
  */
@@ -110,3 +113,6 @@ private:
     const Debug::DebugLevel _dlevel = Debug::Top;
 #endif
 };
+
+}  // namespace conditions
+}  // namespace ePhotosynthesis

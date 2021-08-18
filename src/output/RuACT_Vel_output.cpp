@@ -26,6 +26,8 @@
 
 #include "vel/RuACTVel.hpp"
 
+using namespace ePhotosynthesis::vel;
+
 std::ostream& operator<<(std::ostream& out, const RuACTVel &in) {
     out << "RuACTVel" << std::endl;
     out << "  v1 = " << in.v1 << std::endl;
@@ -34,10 +36,5 @@ std::ostream& operator<<(std::ostream& out, const RuACTVel &in) {
     out << "  vn7 = " << in.vn7 << std::endl;
     out << "  v6_1 = " << in.v6_1 << std::endl;
     out << "  v6_2 = " << in.v6_2 << std::endl;
-    return out;
-}
-
-std::ostream& operator<<(std::ostream& out, const RuACTVel *in) {
-    out << *in;
     return out;
 }

@@ -33,6 +33,9 @@
 #define KI1312 0.015   // Inhibition constant for NADH;    Since in the current program, we assume that P protein limit the
                        // rate of the overall glycin decarboxylase; the KI1312 and
                        // KM1312 were not used.
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
 
 double PR::KC = 0.;
 double PR::KE113 = 0.;

@@ -28,6 +28,10 @@
 #include "globals.hpp"
 #include "modules/BF.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 BFCondition* BF::_MB_con(const double t, const BFCondition* BF_con, Variables *theVars) {
 
     if (theVars->useC3) {

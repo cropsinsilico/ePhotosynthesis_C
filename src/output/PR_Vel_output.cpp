@@ -26,6 +26,8 @@
 
 #include "vel/PRVel.hpp"
 
+using namespace ePhotosynthesis::vel;
+
 std::ostream& operator<<(std::ostream &out, const PRVel &in) {
     out << "PRVel" << std::endl;
     out << "  v111 = " << in.v111 << std::endl;
@@ -40,9 +42,3 @@ std::ostream& operator<<(std::ostream &out, const PRVel &in) {
     out << "  v2out = " << in.v2out << std::endl;
     return out;
 }
-
-std::ostream& operator<<(std::ostream &out, const PRVel* in) {
-    out << *in;
-    return out;
-}
-

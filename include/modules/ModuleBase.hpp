@@ -29,6 +29,9 @@
 #include "definitions.hpp"
 #include "Variables.hpp"
 
+namespace ePhotosynthesis {
+namespace modules {
+
 template<class T, class U>
 class ModuleBase {
 public:
@@ -41,5 +44,10 @@ public:
         return T::_MB_con(t, constraints, theVars);}
 protected:
     ModuleBase() {}
-    static void Rate(const double t, const U* constraints, Variables *theVars) {T::_Rate(t, constraints, theVars);}
+    static void Rate(const double t, const U* constraints, Variables *theVars) {
+        T::_Rate(t, constraints, theVars);
+    }
 };
+
+}  // namespace modules
+}  // namespace ePhotosynthesis

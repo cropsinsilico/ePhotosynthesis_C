@@ -29,6 +29,8 @@
 #include "definitions.hpp"
 #include <map>
 
+namespace ePhotosynthesis {
+
 // some ungrouped functions
 /**
   Set some initial global variables
@@ -74,3 +76,5 @@ void makeFluxTR(Variables *theVars);
 
 void readFile(const std::string &filename, std::map<std::string, std::string> &mapper);
 void readFile(const std::string &filename, std::map<std::string, double> &mapper);
+
+}  // namespace ePhotosynthesis

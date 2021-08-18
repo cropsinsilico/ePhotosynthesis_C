@@ -1,13 +1,15 @@
 #include "VariableFramework.hpp"
 #include "modules/BF.hpp"
 
+namespace ePhotosynthesis {
+namespace test {
 
 class BFModuleTest : public virtual VariableFramework {
 protected:
     void SetUp() override {
-        BF::setFI_connect(false);
-        BF::setPS_connect(false);
-        BF::setRROEA_connect(false);
+        modules::BF::setFI_connect(false);
+        modules::BF::setPS_connect(false);
+        modules::BF::setRROEA_connect(false);
         VariableFramework::SetUp();
         theVars->CO2_in = 500.;
         theVars->TestLi = 14.;
@@ -16,14 +18,18 @@ protected:
         std::vector<double> ratio(50, 1.5);
         theVars->BFRatio = ratio;
     }
-    void Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
-        BF::_Rate(t, BF_con, theVars);
+    void Rate(const double t, const conditions::BFCondition* BF_con, Variables *theVars) {
+        modules::BF::_Rate(t, BF_con, theVars);
     }
-    BFCondition* MB_con(const double t, const BFCondition* BF_con, Variables* theVars) {
-        return BF::_MB_con(t, BF_con, theVars);
+    conditions::BFCondition* MB_con(const double t, const conditions::BFCondition* BF_con,
+                                    Variables* theVars) {
+        return modules::BF::_MB_con(t, BF_con, theVars);
     }
-    arr MB(const double t, const BFCondition* BF_con, Variables* theVars) {
-        return BF::_MB(t, BF_con, theVars);
+    arr MB(const double t, const conditions::BFCondition* BF_con, Variables* theVars) {
+        return modules::BF::_MB(t, BF_con, theVars);
     }
 
 };
+
+}  // namespace test
+}  // namspace ePhotosynthesis

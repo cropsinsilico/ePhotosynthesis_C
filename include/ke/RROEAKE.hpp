@@ -28,6 +28,9 @@
 
 #include "definitions.hpp"
 
+namespace ePhotosynthesis {
+namespace KE {
+
 /**
  Class for RROEA_KE data
  */
@@ -62,3 +65,6 @@ public:
     double KEe2ATPGPP = 0;
     double KEeFd2Thio = 0;
 };
+
+}  // namespace KE
+}  // namespace ePhotosynthesis

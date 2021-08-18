@@ -26,6 +26,8 @@
 
 #include "conditions/RROEACondition.hpp"
 
+using namespace ePhotosynthesis::conditions;
+
 std::ostream& RROEACondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "RROEAContainer" << std::endl;

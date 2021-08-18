@@ -28,6 +28,10 @@
 #include "Variables.hpp"
 #include "modules/BF.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 const size_t BFCondition::count = 28;
 bool BFCondition::FI_connect = false;
 bool BF::FI_connect = false;

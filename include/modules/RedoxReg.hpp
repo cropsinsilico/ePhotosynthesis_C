@@ -29,21 +29,31 @@
 #include <nvector/nvector_serial.h>
 #include "conditions/RedoxRegCondition.hpp"
 
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class RedoxRegModuleTest;
+}
+#endif
+namespace modules {
+
 /**
  Class for RedoxReg related calculations and common variables
  */
-class RedoxReg : public ModuleBase<RedoxReg, RedoxRegCondition> {
+class RedoxReg : public ModuleBase<RedoxReg, conditions::RedoxRegCondition> {
     SET_GET_BOOL(trDynaPS2RedReg_cal)
 private:
     friend ModuleBase;
-    friend class RedoxRegModuleTest;
+#ifdef TESTING
+    friend class test::RedoxRegModuleTest;
+#endif
     /**
       Initialize the variables
 
       @param theVars The global variables
       @return A RedoxRegCon object for input into calculations
       */
-    static RedoxRegCondition* _init(Variables *theVars);
+    static conditions::RedoxRegCondition* _init(Variables *theVars);
 
     /**
       Calculate the Rates of RedoxReg based on the inputs
@@ -52,7 +62,8 @@ private:
       @param RedoxReg_Con RedoxRegCon object giving the input parameters
       @param theVars The global variables
       */
-    static void _Rate(const double t, const RedoxRegCondition* RedoxReg_Con, Variables *theVars);
+    static void _Rate(const double t, const conditions::RedoxRegCondition* RedoxReg_Con,
+                      Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -62,8 +73,11 @@ private:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr _MB(const double t, const RedoxRegCondition* RedoxReg_Con, Variables *theVars);
-    static RedoxRegCondition* _MB_con(const double t, const RedoxRegCondition* RedoxReg_Con, Variables *theVars);
+    static arr _MB(const double t, const conditions::RedoxRegCondition* RedoxReg_Con,
+                   Variables *theVars);
+    static conditions::RedoxRegCondition* _MB_con(const double t,
+                                                  const conditions::RedoxRegCondition* RedoxReg_Con,
+                                                  Variables *theVars);
 
     static int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data);
 
@@ -77,3 +91,6 @@ private:
     static const double ThioT;
     static const double Thio_Oxidation;
 };
+
+}  // namespace modules
+}  // namespace ePhotosynthesis

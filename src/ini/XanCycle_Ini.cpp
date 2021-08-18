@@ -27,6 +27,10 @@
 #include "Variables.hpp"
 #include "modules/XanCycle.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 double XanCycle::kav = 0.;
 double XanCycle::kaz = 0.;
 double XanCycle::kva = 0.;

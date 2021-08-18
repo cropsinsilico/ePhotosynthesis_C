@@ -28,6 +28,9 @@
 
 #include "definitions.hpp"
 
+namespace ePhotosynthesis {
+namespace vel {
+
 /**
  Class for holding the results of the FI_Rate calculations
  */
@@ -160,5 +163,7 @@ public:
     double vP680_f = 0.;
 
     friend std::ostream& operator<<(std::ostream& out, const FIVel &in);
-    friend std::ostream& operator<<(std::ostream& out, const FIVel *in);
 };
+
+}  // namespace vel
+}  // namespace ePhotosynthesis

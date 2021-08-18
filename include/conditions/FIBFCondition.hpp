@@ -31,6 +31,9 @@
 #include "FICondition.hpp"
 #include "BFCondition.hpp"
 
+namespace ePhotosynthesis {
+namespace conditions {
+
 class EPSCondition;
 
 /**
@@ -105,3 +108,5 @@ private:
 #endif
 };
 
+}  // namespace conditions
+}  // namespace ePhotosynthesis

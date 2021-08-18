@@ -30,20 +30,28 @@
 #include "definitions.hpp"
 #include "conditions/BFCondition.hpp"
 
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class BFModuleTest;
+}
+#endif
+namespace modules {
+
 /**
  Class for the BF related functions
  */
-class BF : public ModuleBase<BF, BFCondition> {
+class BF : public ModuleBase<BF, conditions::BFCondition> {
 public:
     static double _Pi;
     SET_GET(EPS_ATP_Rate)
-    SET_GET_BOOL_MODULE(FI_connect, BF)
-    SET_GET_BOOL_MODULE(PS_connect, BF)
-    SET_GET_BOOL_MODULE(RROEA_connect, BF)
+    SET_GET_BOOL_MODULE(FI_connect, conditions::BF)
+    SET_GET_BOOL_MODULE(PS_connect, conditions::BF)
+    SET_GET_BOOL_MODULE(RROEA_connect, conditions::BF)
 private:
     friend ModuleBase;
 #ifdef TESTING
-    friend class BFModuleTest;
+    friend class test::BFModuleTest;
 #endif
     /**
       Initializer
@@ -51,7 +59,7 @@ private:
       @param theVars Pointer to the global variables
       @return A BFCon object with values set base on the input
       */
-    static BFCondition* _init(Variables *theVars);
+    static conditions::BFCondition* _init(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -61,8 +69,9 @@ private:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr _MB(const double t, const BFCondition* BF_con, Variables *theVars);
-    static BFCondition* _MB_con(const double t, const BFCondition* BF_con, Variables *theVars);
+    static arr _MB(const double t, const conditions::BFCondition* BF_con, Variables *theVars);
+    static conditions::BFCondition* _MB_con(const double t, const conditions::BFCondition* BF_con,
+                                            Variables *theVars);
 
     /**
       Calculate the Rates of BF based on the inputs
@@ -71,7 +80,7 @@ private:
       @param BF_con BFCon object giving the input parameters
       @param theVars The global variables
       */
-    static void _Rate(const double t, const BFCondition* BF_con, Variables *theVars);
+    static void _Rate(const double t, const conditions::BFCondition* BF_con, Variables *theVars);
 
     static double cATPsyn;
     static double CPSi;
@@ -79,3 +88,6 @@ private:
     static double TIME;
     static size_t N;
 };
+
+}  // namespace modules
+}  // namespace ePhotosynthesis

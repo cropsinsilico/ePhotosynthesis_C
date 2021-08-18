@@ -29,6 +29,10 @@
 #include "modules/RA.hpp"
 #include "modules/PS.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 double RedoxReg::RedoxReg_VMAX13 = 0.;
 double RedoxReg::RedoxReg_VMAX16 = 0.;
 double RedoxReg::RedoxReg_VMAX6 = 0.;

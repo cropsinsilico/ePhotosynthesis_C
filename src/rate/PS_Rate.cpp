@@ -33,6 +33,10 @@
 
 #define RegFactor 1.
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
     double PsV6, PsV9, PsV13, PsV16, PsPEXT;
 

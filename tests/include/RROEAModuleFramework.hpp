@@ -1,6 +1,8 @@
 #include "VariableFramework.hpp"
 #include "modules/RROEA.hpp"
 
+namespace ePhotosynthesis {
+namespace test {
 
 class RROEAModuleTest : public virtual VariableFramework {
 protected:
@@ -13,14 +15,18 @@ protected:
         std::vector<double> ratio(50, 1.5);
     }
 
-    void Rate(const double t, const RROEACondition* RROEA_con, Variables *theVars) {
-        RROEA::_Rate(t, RROEA_con, theVars);
+    void Rate(const double t, const conditions::RROEACondition* RROEA_con, Variables *theVars) {
+        modules::RROEA::_Rate(t, RROEA_con, theVars);
     }
-    RROEACondition* MB_con(const double t, const RROEACondition* RROEA_con, Variables* theVars) {
-        return RROEA::_MB_con(t, RROEA_con, theVars);
+    conditions::RROEACondition* MB_con(const double t, const conditions::RROEACondition* RROEA_con,
+                                       Variables* theVars) {
+        return modules::RROEA::_MB_con(t, RROEA_con, theVars);
     }
-    arr MB(const double t, const RROEACondition* RROEA_con, Variables* theVars) {
-        return RROEA::_MB(t, RROEA_con, theVars);
+    arr MB(const double t, const conditions::RROEACondition* RROEA_con, Variables* theVars) {
+        return modules::RROEA::_MB(t, RROEA_con, theVars);
     }
 
 };
+
+}  // namespace test
+}  // namspace ePhotosynthesis

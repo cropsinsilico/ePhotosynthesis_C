@@ -30,6 +30,13 @@
 #include "driver.hpp"
 #include "conditions/trDynaPSCondition.hpp"
 
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class trDynaPSDriverTest;
+}
+#endif
+namespace drivers {
 
 /**
  Class for running trDynaPS with an ODE solver
@@ -61,7 +68,7 @@ public:
 
 private:
 #ifdef TESTING
-    friend class trDynaPSDriverTest;
+    friend class test::trDynaPSDriverTest;
 #endif
 
     /**
@@ -79,8 +86,11 @@ private:
 
       @return A trDynaPSCon object for input into calculations
       */
-    trDynaPSCondition* trDynaPS_Ini();
+    conditions::trDynaPSCondition* trDynaPS_Ini();
 
     size_t ParaNum;
     double Ratio;
 };
+
+}  // namespace drivers
+}  // namespace ePhotosynthesis

@@ -26,6 +26,8 @@
 
 #include "conditions/CMCondition.hpp"
 
+using namespace ePhotosynthesis::conditions;
+
 std::ostream& CMCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "CMContainer" << std::endl;

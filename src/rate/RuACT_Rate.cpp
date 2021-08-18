@@ -30,6 +30,10 @@
 #include "modules/RuACT.hpp"
 #include "modules/PS.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 void RuACT::_Rate(const double t, const RuACTCondition* RuACT_Con, Variables *theVars) {
 
     double C = theVars->RuACT_Pool.C;

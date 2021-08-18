@@ -28,6 +28,9 @@
 
 #include "definitions.hpp"
 
+namespace ePhotosynthesis {
+namespace RC {
+
 // class for holding FIRC data
 class FIRC {
 public:
@@ -86,3 +89,5 @@ public:
 
 };
 
+}  // namespace RC
+}  // namespace ePhotosynthesis

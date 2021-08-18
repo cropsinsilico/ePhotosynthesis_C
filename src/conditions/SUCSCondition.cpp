@@ -26,6 +26,9 @@
 
 #include "conditions/SUCSCondition.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+
 SUCSCondition::SUCSCondition(const SUCSCondition *other) {
     T3Pc = other->T3Pc;
     FBPc = other->FBPc;

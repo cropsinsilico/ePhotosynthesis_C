@@ -26,6 +26,9 @@
 
 #include "conditions/DynaPSCondition.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+
 DynaPSCondition::DynaPSCondition(const DynaPSCondition* other) {
     _clear();
     RA_con = new RACondition(other->RA_con);

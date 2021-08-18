@@ -28,6 +28,10 @@
 
 #include "EPSCondition.hpp"
 #include "RuACTCondition.hpp"
+
+namespace ePhotosynthesis {
+namespace conditions {
+
 class DynaPSCondition;
 
 /**
@@ -100,3 +104,6 @@ private:
     const Debug::DebugLevel _dlevel = Debug::Middle;
 #endif
 };
+
+}  // namespace conditions
+}  // namespace ePhotosynthesis

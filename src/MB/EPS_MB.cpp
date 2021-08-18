@@ -32,6 +32,10 @@
 
 // This model includes the mass balance equations for the full model of the light reactions.
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 EPSCondition* EPS::_MB_con(const double t, const EPSCondition* EPS_Con, Variables *theVars) {
 
     // Try out one new way of calculating the mass balance equation.

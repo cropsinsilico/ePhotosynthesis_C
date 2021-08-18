@@ -29,6 +29,11 @@
 #include "drivers/CM_Driver.hpp"
 #include "modules/CM.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::drivers;
+using namespace ePhotosynthesis::conditions;
+
 CMDriver::~CMDriver() {}
 void CMDriver::setup() {
 

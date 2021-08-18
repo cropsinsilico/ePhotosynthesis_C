@@ -26,6 +26,8 @@
 
 #include "vel/BFVel.hpp"
 
+using namespace ePhotosynthesis::vel;
+
 std::ostream& operator<<(std::ostream &out, const BFVel &in) {
     out << "BFVel" << std::endl;
     out << "  Vbf1 = " << in.Vbf1 << std::endl;
@@ -60,10 +62,5 @@ std::ostream& operator<<(std::ostream &out, const BFVel &in) {
     out << "  VsNADPH= " << in.VsNADPH<< std::endl;
     out << "  vcet = " << in.vcet << std::endl;
 
-    return out;
-}
-
-std::ostream& operator<<(std::ostream &out, const BFVel *in) {
-    out << *in;
     return out;
 }

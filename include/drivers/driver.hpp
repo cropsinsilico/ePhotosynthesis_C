@@ -31,7 +31,11 @@
 #include <nvector/nvector_serial.h>
 #include <sundials/sundials_types.h>
 #include "globals.hpp"
+
+namespace ePhotosynthesis {
 class Variables;
+namespace drivers {
+
 class Driver;
 class CVodeMem;
 struct UserData {
@@ -97,3 +101,6 @@ protected:
 private:
     Variables* origVars;
 };
+
+}  // namespace drivers
+}  // namespace ePhotosynthesis

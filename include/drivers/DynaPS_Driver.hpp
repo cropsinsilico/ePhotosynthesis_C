@@ -30,6 +30,14 @@
 #include "driver.hpp"
 #include "conditions/DynaPSCondition.hpp"
 
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class DynaPSDriverTest;
+}
+#endif
+namespace drivers {
+
 /**
  Class for running DynaPS through an ODE solver
  */
@@ -50,7 +58,7 @@ public:
 
 private:
 #ifdef TESTING
-    friend class DynaPSDriverTest;
+    friend class test::DynaPSDriverTest;
 #endif
 
     /**
@@ -68,7 +76,10 @@ private:
 
       @return A CMCon object for input into calculations
       */
-    DynaPSCondition* DynaPS_Ini();
+    conditions::DynaPSCondition* DynaPS_Ini();
     size_t ParaNum;
     double Ratio;
 };
+
+}  // namespace drivers
+}  // namespace ePhotosynthesis

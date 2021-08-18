@@ -27,6 +27,9 @@
  **********************************************************************************************************************************************/
 #include "RACondition.hpp"
 
+namespace ePhotosynthesis {
+namespace conditions {
+
 /**
  Class for holding the inputs to RedoxReg_mb
  */
@@ -94,3 +97,6 @@ private:
     const Debug::DebugLevel _dlevel = Debug::Middle;
 #endif
 };
+
+}  // namespace conditions
+}  // namespace ePhotosynthesis

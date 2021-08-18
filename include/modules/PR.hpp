@@ -30,27 +30,35 @@
 #include "conditions/PRCondition.hpp"
 #include "definitions.hpp"
 
-class PS_PR;
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class PRModuleTest;
+}
+#endif
+namespace modules {
 
 /**
   Class for grouping PR related functions and common variables
   */
-class PR : public ModuleBase<PR, PRCondition> {
+class PR : public ModuleBase<PR, conditions::PRCondition> {
 public:
-    SET_GET_BOOL_MODULE(PS_connect, PR)
-    SET_GET_BOOL_MODULE(PS_RuBP, PR)
+    SET_GET_BOOL_MODULE(PS_connect, conditions::PR)
+    SET_GET_BOOL_MODULE(PS_RuBP, conditions::PR)
     SET_GET(RUBISCOTOTAL)
 private:
     friend ModuleBase;
-    friend class PRModuleTest;
-    friend PS_PR;
+    friend class PS_PR;
+#ifdef TESTING
+    friend class test::PRModuleTest;
+#endif
     /**
       Initializer
 
       @param theVars Pointer to the global variables
       @return A PRCon object with values set base on the input
       */
-    static PRCondition* _init(Variables *theVars);
+    static conditions::PRCondition* _init(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -59,15 +67,17 @@ private:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr _MB(const double t, const PRCondition* PR_con, Variables *theVars);
-    static PRCondition* _MB_con(const double t, const PRCondition* const PR_con, Variables *theVars);
+    static arr _MB(const double t, const conditions::PRCondition* PR_con, Variables *theVars);
+    static conditions::PRCondition* _MB_con(const double t,
+                                            const conditions::PRCondition* const PR_con,
+                                            Variables *theVars);
     /**
       Calculate the Rates of PR based on the inputs
 
       @param PR_con PRCon object giving the input parameters
       @param theVars The global variables
       */
-    static void _Rate(const double t, const PRCondition* PR_con, Variables *theVars);
+    static void _Rate(const double t, const conditions::PRCondition* PR_con, Variables *theVars);
 
     static double KC;
     static double KE113;
@@ -129,3 +139,6 @@ private:
     static double TIME;
     static size_t N;
 };
+
+}  // namespace modules
+}  // namespace ePhotosynthesis

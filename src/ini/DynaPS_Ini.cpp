@@ -28,6 +28,10 @@
 #include "modules/RA.hpp"
 #include "modules/XanCycle.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 size_t DynaPSCondition::count = 0;
 #ifdef INCDEBUG
 Debug::DebugLevel DynaPSCondition::_dlevel = Debug::Middle;

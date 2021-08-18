@@ -27,6 +27,10 @@
 #include "modules/ssPS.hpp"
 #include "Variables.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 arr ssPS::ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, Variables *theVars) {
     ssPSIni(temp, theVars);
 

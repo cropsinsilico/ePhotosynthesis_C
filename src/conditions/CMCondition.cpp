@@ -26,6 +26,9 @@
 
 #include "conditions/CMCondition.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+
 CMCondition::CMCondition(const CMCondition* other) {
     _clear();
     PS_PR_con = new PS_PRCondition(other->PS_PR_con);

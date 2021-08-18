@@ -28,6 +28,9 @@
 
 #include "ConditionBase.hpp"
 
+namespace ePhotosynthesis {
+namespace conditions {
+
 class CMCondition;
 /**
  Class for holding the inputs for SUCS_mb
@@ -93,3 +96,6 @@ private:
     const Debug::DebugLevel _dlevel = Debug::Low;
 #endif
 };
+
+}  // namespace conditions
+}  // namespace ePhotosynthesis

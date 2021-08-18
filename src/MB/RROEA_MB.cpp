@@ -28,6 +28,10 @@
 #include "Variables.hpp"
 #include "modules/RROEA.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 RROEACondition* RROEA::_MB_con(const double t, const RROEACondition* RROEA_Con, Variables *theVars) {
     Condition(t, theVars);
     theVars->RROEA_Param[0] = theVars->GLight;

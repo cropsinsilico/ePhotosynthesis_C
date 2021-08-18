@@ -26,6 +26,8 @@
 
 #include "vel/XanCycleVel.hpp"
 
+using namespace ePhotosynthesis::vel;
+
 std::ostream& operator<<(std::ostream& out, const XanCycleVel &in) {
     out << "XanCycleVel" << std::endl;
     out << "  Vva = " << in.Vva << std::endl;
@@ -35,10 +37,5 @@ std::ostream& operator<<(std::ostream& out, const XanCycleVel &in) {
     out << "  Vvf = " << in.Vvf << std::endl;
     out << "  Vv2ABA = " << in.Vv2ABA << std::endl;
     out << "  VABAdg = " << in.VABAdg << std::endl;
-    return out;
-}
-
-std::ostream& operator<<(std::ostream& out, const XanCycleVel *in) {
-    out << *in << std::endl;
     return out;
 }

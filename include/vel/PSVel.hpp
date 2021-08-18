@@ -28,6 +28,9 @@
 
 #include "definitions.hpp"
 
+namespace ePhotosynthesis {
+namespace vel {
+
 /**
  Class for holding the results of PS_Rate calculations
  */
@@ -109,5 +112,7 @@ public:
     double v25 = 0.;
 
     friend std::ostream& operator<<(std::ostream& out, const PSVel &in);
-    friend std::ostream& operator<<(std::ostream& out, const PSVel *in);
 };
+
+}  // namespace vel
+}  // namespace ePhotosynthesis

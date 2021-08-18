@@ -25,6 +25,8 @@
  **********************************************************************************************************************************************/
 
 #include "conditions/XanCycleCondition.hpp"
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
 
 XanCycleCondition::XanCycleCondition(const XanCycleCondition* other) {
     Vx = other->Vx;

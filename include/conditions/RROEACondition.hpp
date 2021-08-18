@@ -28,6 +28,9 @@
 
 #include "ConditionBase.hpp"
 
+namespace ePhotosynthesis {
+namespace conditions {
+
 class trDynaPSCondition;
 
 /**
@@ -95,3 +98,6 @@ private:
     const Debug::DebugLevel _dlevel = Debug::Low;
 #endif
 };
+
+}  // namespace conditions
+}  // namespace ePhotosynthesis

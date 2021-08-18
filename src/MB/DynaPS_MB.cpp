@@ -32,6 +32,10 @@
 
 // This model includes the mass balance equations for the full model of photosynthesis.
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 DynaPSCondition* DynaPS::_MB_con(const double t, const DynaPSCondition* DynaPS_con, Variables *theVars) {
 
     // Try out one new way of calculating the mass balance equation.

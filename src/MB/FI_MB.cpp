@@ -33,6 +33,10 @@
 // 1) The initialization of the rates that was transfered from the FI_Rate routine
 // 2) The computation of the mass balance equations
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 FICondition* FI::_MB_con(const double t, const FICondition *FI_Con, Variables *theVars) {
 
     //////////////////////////////////////////////////////////////////

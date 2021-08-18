@@ -30,6 +30,9 @@
 #include <stdexcept>
 #include <sundials/sundials_types.h>
 
+namespace ePhotosynthesis {
+namespace conditions {
+
 template<class T, class U>
 class ConditionBase {
 public:
@@ -60,3 +63,6 @@ public:
 protected:
     ConditionBase() {}
 };
+
+}  // namespace conditions
+}  // namespace ePhotosynthesis

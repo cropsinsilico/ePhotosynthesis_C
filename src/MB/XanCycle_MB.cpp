@@ -28,6 +28,10 @@
 #include "Variables.hpp"
 #include "modules/XanCycle.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 XanCycleCondition* XanCycle::_MB_con(const double t, const XanCycleCondition* XanCycle_Con, Variables *theVars) {
     Condition(t, theVars);
     //DEBUG_MESSAGE(XanCycle_Con)

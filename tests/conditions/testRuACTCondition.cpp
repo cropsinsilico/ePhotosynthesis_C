@@ -4,6 +4,10 @@
 
 namespace {
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+using namespace ePhotosynthesis::test;
+
 class RuACTConditionTest : public VariableFramework {
 protected:
     void SetUp() override {

@@ -29,23 +29,32 @@
 #include "ModuleBase.hpp"
 #include "conditions/SUCSCondition.hpp"
 #include "definitions.hpp"
-class PS;
+
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class SUCSModuleTest;
+}
+#endif
+namespace modules {
 
 /**
  Class for SUCS related functions and common variables
  */
-class SUCS : public ModuleBase<SUCS, SUCSCondition> {
+class SUCS : public ModuleBase<SUCS, conditions::SUCSCondition> {
     SET_GET(SUCS2PS_Pic)
 private:
     friend ModuleBase;
-    friend class SUCSModuleTest;
+#ifdef TESTING
+    friend class test::SUCSModuleTest;
+#endif
     /**
       Initializer
 
       @param theVars Pointer to the global variables
       @return A SUCSCon object with values set base on the input
       */
-    static SUCSCondition* _init(Variables *theVars);
+    static conditions::SUCSCondition* _init(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -55,8 +64,10 @@ private:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr _MB(const double t, const SUCSCondition* SUCS_Con, Variables *theVars);
-    static SUCSCondition* _MB_con(const double t, const SUCSCondition* SUCS_Con, Variables *theVars);
+    static arr _MB(const double t, const conditions::SUCSCondition* SUCS_Con, Variables *theVars);
+    static conditions::SUCSCondition* _MB_con(const double t,
+                                              const conditions::SUCSCondition* SUCS_Con,
+                                              Variables *theVars);
     /**
       Calculate the Rates of SUCS based on the inputs
 
@@ -64,8 +75,9 @@ private:
       @param SUCS_Con SUCSCon object giving the input parameters
       @param theVars The global variables
       */
-    static void _Rate(const double t, const SUCSCondition* SUCS_Con, Variables *theVars);
-    friend PS;
+    static void _Rate(const double t, const conditions::SUCSCondition* SUCS_Con,
+                      Variables *theVars);
+    friend class PS;
 
     static double KE501;
     static double KE51;
@@ -139,3 +151,6 @@ private:
     static double TIME;
     static size_t N;
 };
+
+}  // namespace modules
+}  // namespace ePhotosynthesis

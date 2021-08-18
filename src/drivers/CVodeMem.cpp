@@ -6,6 +6,9 @@
 #include "drivers/CVodeMem.hpp"
 #include "drivers/driver.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::drivers;
+
 void CVodeMem::cvode_mem_init(Driver* driver, realtype t0, N_Vector y) {
     if (!initialized) {
         data = alloc_calc_data();

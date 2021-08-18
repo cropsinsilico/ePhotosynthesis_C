@@ -30,6 +30,9 @@
 #include "XanCycleCondition.hpp"
 #include <sundials/sundials_types.h>
 
+namespace ePhotosynthesis {
+namespace conditions {
+
 class trDynaPSCondition;
 /**
  Class for holding inputs to DynaPS_mb
@@ -112,3 +115,6 @@ private:
 #endif
 
 };
+
+}  // namespace conditions
+}  // namespace ePhotosynthesis

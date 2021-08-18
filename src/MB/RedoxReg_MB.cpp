@@ -30,6 +30,11 @@
 #include "modules/RedoxReg.hpp"
 #include "modules/RA.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+using namespace ePhotosynthesis::drivers;
+
 RedoxRegCondition* RedoxReg::_MB_con(const double t, const RedoxRegCondition* RedoxReg_Con, Variables *theVars) {
     trDynaPS2RedReg_cal = true;
 

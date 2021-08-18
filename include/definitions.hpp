@@ -31,6 +31,8 @@
 #include <algorithm>
 #include <fstream>
 
+namespace ePhotosynthesis {
+
 // predeclare main global data structure
 class Variables;
 
@@ -263,3 +265,5 @@ inline void report(arr values) {
     }
     std::cout << std::endl;
 }
+
+}  // namespace ePhotosynthesis

@@ -28,6 +28,9 @@
 
 #include "definitions.hpp"
 
+namespace ePhotosynthesis {
+namespace pool {
+
 /**
  Class for SUCS_Pool data
  */
@@ -45,3 +48,6 @@ public:
     double UTc = 0;
     double PTc = 0;
 };
+
+}  // namespace pool
+}  // namespace ePhotosynthesis

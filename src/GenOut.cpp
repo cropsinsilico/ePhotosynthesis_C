@@ -26,10 +26,13 @@
 #include <math.h>
 #include "Variables.hpp"
 #include "modules/PS.hpp"
+#include "globals.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
 // This is a function to generate output from the program.
 
-void GenOut(double t, Variables *theVars) {
+void ePhotosynthesis::GenOut(double t, Variables *theVars) {
     if (!theVars->EPS_SUCS_com)
         theVars->SUCS2OUT.clear();
 
@@ -117,7 +120,7 @@ void GenOut(double t, Variables *theVars) {
     }
 }
 
-void makeFluxTR(Variables *theVars) {
+void ePhotosynthesis::makeFluxTR(Variables *theVars) {
     theVars->FluxTR = zeros(142);
     theVars->FluxTR[0] = theVars->RuACT_VEL.getLastData().v6_1;//PS
     theVars->FluxTR[1] = theVars->RuACT_VEL.getLastData().v6_2;//PR

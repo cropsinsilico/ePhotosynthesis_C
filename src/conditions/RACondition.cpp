@@ -26,6 +26,9 @@
 
 #include "conditions/RACondition.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+
 size_t RACondition::count = 0;
 
 RACondition::RACondition(const RACondition* other) {

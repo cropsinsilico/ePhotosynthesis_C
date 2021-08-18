@@ -29,7 +29,12 @@
 #include "drivers/trDynaPS_Driver.hpp"
 #include "modules/trDynaPS.hpp"
 
-Variables *Driver::theVars = nullptr;
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::drivers;
+using namespace ePhotosynthesis::conditions;
+
+Variables* Driver::theVars = nullptr;
 
 void trDynaPSDriver::setup() {
 

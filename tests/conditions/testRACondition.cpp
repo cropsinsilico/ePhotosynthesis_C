@@ -4,6 +4,10 @@
 #include <nvector/nvector_serial.h>
 
 namespace {
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+using namespace ePhotosynthesis::test;
+
 class RAConditionTest : public VariableFramework {
 };
 

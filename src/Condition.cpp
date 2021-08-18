@@ -35,8 +35,10 @@ const boost::regex token("\\s+");
 // environmental variables, such as light, CO2, O2, humidity as such. This function
 // contains two parts. Part a includes the generic (default) conditions and the
 // second part contains the detailed conditions for different time period.
+using namespace ePhotosynthesis;
 
-void Condition(double t, Variables *theVars) {
+void ePhotosynthesis::Condition(double t, Variables *theVars) {
+    (void)t;
     // This variable is transfered from PSInitial for modificatin of V16, the rate of ATP synthesis.
     double CO2Temp = theVars->CO2_in;//280;          // CO2 concentation  // ppm
     if (!theVars->useC3)
@@ -129,7 +131,7 @@ void Condition(double t, Variables *theVars) {
     theVars->GLight = light;
 }
 
-void readFile(const std::string &filename, std::map<std::string, std::string> &mapper) {
+void ePhotosynthesis::readFile(const std::string &filename, std::map<std::string, std::string> &mapper) {
     std::vector<std::string> tempVec;
     std::string input;
     std::ifstream inputfile(filename);
@@ -145,7 +147,7 @@ void readFile(const std::string &filename, std::map<std::string, std::string> &m
     }
 }
 
-void readFile(const std::string &filename, std::map<std::string, double> &mapper) {
+void ePhotosynthesis::readFile(const std::string &filename, std::map<std::string, double> &mapper) {
     std::vector<std::string> tempVec;
     std::string input;
     std::ifstream inputfile(filename);

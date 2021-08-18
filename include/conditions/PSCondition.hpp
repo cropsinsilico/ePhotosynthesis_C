@@ -28,6 +28,10 @@
 
 //#include "definitions.hpp"
 #include "ConditionBase.hpp"
+
+namespace ePhotosynthesis {
+namespace conditions {
+
 class PS_PRCondition;
 
 /**
@@ -102,3 +106,6 @@ private:
     const Debug::DebugLevel _dlevel = Debug::Low;
 #endif
 };
+
+}  // namespace conditions
+}  // namespace ePhotosynthesis

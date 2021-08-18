@@ -29,6 +29,9 @@
 #include "FIBFCondition.hpp"
 #include "CMCondition.hpp"
 
+namespace ePhotosynthesis {
+namespace conditions {
+
 class RACondition;
 /**
  Class for holding the inputs to EPS_mb
@@ -108,3 +111,6 @@ private:
     static Debug::DebugLevel _dlevel;
 #endif
 };
+
+}  // namespace conditions
+}  // namespace ePhotosynthesis

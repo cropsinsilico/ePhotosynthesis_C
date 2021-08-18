@@ -26,6 +26,8 @@
 
 #include "vel/FIVel.hpp"
 
+using namespace ePhotosynthesis::vel;
+
 std::ostream& operator<<(std::ostream &out, const FIVel &in) {
     out << "FIVel" << std::endl;
     out << "  vA_d = " << in.vA_d << std::endl;
@@ -86,10 +88,5 @@ std::ostream& operator<<(std::ostream &out, const FIVel &in) {
     out << "  vU_P680 = " << in.vU_P680 << std::endl;
     out << "  vP680_d = " << in.vP680_d << std::endl;
     out << "  vP680_f = " << in.vP680_f << std::endl;
-    return out;
-}
-
-std::ostream& operator<<(std::ostream &out, const FIVel* in) {
-    out << *in;
     return out;
 }

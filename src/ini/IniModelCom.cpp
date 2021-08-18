@@ -25,8 +25,11 @@
  **********************************************************************************************************************************************/
 
 #include "Variables.hpp"
+#include "globals.hpp"
 
-void IniModelCom(Variables *theVars) {
+using namespace ePhotosynthesis;
+
+void ePhotosynthesis::IniModelCom(Variables *theVars) {
 
     theVars->RuACT_EPS_com = false;
 

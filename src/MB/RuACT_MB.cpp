@@ -28,6 +28,10 @@
 #include "Variables.hpp"
 #include "modules/RuACT.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 RuACTCondition* RuACT::_MB_con(const double t, const RuACTCondition* RuACT_Con, Variables *theVars) {
     Condition(t, theVars);
     const double light = theVars->GLight;

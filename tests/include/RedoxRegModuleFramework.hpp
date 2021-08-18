@@ -1,6 +1,8 @@
 #include "VariableFramework.hpp"
 #include "modules/RedoxReg.hpp"
 
+namespace ePhotosynthesis {
+namespace test {
 
 class RedoxRegModuleTest : public VariableFramework {
 protected:
@@ -13,14 +15,20 @@ protected:
         std::vector<double> ratio(50, 1.5);
     }
 
-    void Rate(const double t, const RedoxRegCondition* RedoxReg_con, Variables *theVars) {
-        RedoxReg::_Rate(t, RedoxReg_con, theVars);
+    void Rate(const double t, const conditions::RedoxRegCondition* RedoxReg_con,
+              Variables *theVars) {
+        modules::RedoxReg::_Rate(t, RedoxReg_con, theVars);
     }
-    RedoxRegCondition* MB_con(const double t, const RedoxRegCondition* RedoxReg_con, Variables* theVars) {
-        return RedoxReg::_MB_con(t, RedoxReg_con, theVars);
+    conditions::RedoxRegCondition* MB_con(const double t,
+                                          const conditions::RedoxRegCondition* RedoxReg_con,
+                                          Variables* theVars) {
+        return modules::RedoxReg::_MB_con(t, RedoxReg_con, theVars);
     }
-    arr MB(const double t, const RedoxRegCondition* RedoxReg_con, Variables* theVars) {
-        return RedoxReg::_MB(t, RedoxReg_con, theVars);
+    arr MB(const double t, const conditions::RedoxRegCondition* RedoxReg_con, Variables* theVars) {
+        return modules::RedoxReg::_MB(t, RedoxReg_con, theVars);
     }
 
 };
+
+}  // namespace test
+}  // namspace ePhotosynthesis

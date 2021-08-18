@@ -30,6 +30,11 @@
 #include "modules/EPS.hpp"
 #include "modules/PS.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::drivers;
+using namespace ePhotosynthesis::conditions;
+
 EPSDriver::~EPSDriver() {}
 
 void EPSDriver::setup() {

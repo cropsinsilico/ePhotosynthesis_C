@@ -26,6 +26,9 @@
 
 #include "conditions/FICondition.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+
 FICondition::FICondition(const FICondition* other) {
     A = other->A;
     U = other->U;

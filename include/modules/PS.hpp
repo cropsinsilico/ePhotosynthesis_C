@@ -29,13 +29,19 @@
 #include "ModuleBase.hpp"
 #include "conditions/PSCondition.hpp"
 #include "definitions.hpp"
-class PR;
-class RuACT;
-class SUCS;
+
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class PSModuleTest;
+}
+#endif
+namespace modules {
+
 /**
  Class to for PS related functions and common variables
  */
-class PS : public ModuleBase<PS, PSCondition> {
+class PS : public ModuleBase<PS, conditions::PSCondition> {
 public:
     static void setParam(const arr &param) {
         Param = param;
@@ -44,7 +50,7 @@ public:
 
     static void setC3(const bool val) {
         useC3 = val;
-        PSCondition::setC3(val);
+        conditions::PSCondition::setC3(val);
     }
     static size_t getN() {return N;}
     SET_GET(PiTc)
@@ -59,7 +65,9 @@ public:
     SET_GET(Jmax)
 private:
     friend ModuleBase;
-    friend class PSModuleTest;
+#ifdef TESTING
+    friend class test::PSModuleTest;
+#endif
     /**
       Calculate the output values based on the inputs
 
@@ -68,8 +76,9 @@ private:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr _MB(const double t, const PSCondition* PSs, Variables *theVars);
-    static PSCondition* _MB_con(const double t, const PSCondition* PSs, Variables *theVars);
+    static arr _MB(const double t, const conditions::PSCondition* PSs, Variables *theVars);
+    static conditions::PSCondition* _MB_con(const double t, const conditions::PSCondition* PSs,
+                                            Variables *theVars);
 
     /**
       Initializer
@@ -77,7 +86,7 @@ private:
       @param theVars Pointer to the global variables
       @return A PSCon object with values set base on the input
       */
-    static PSCondition* _init(Variables *theVars);
+    static conditions::PSCondition* _init(Variables *theVars);
 
     /**
       Calculate the Rates of PS based on the inputs
@@ -86,11 +95,11 @@ private:
       @param PSs PSCon object giving the input parameters
       @param theVars The global variables
       */
-    static void _Rate(const double t, const PSCondition* PSs, Variables *theVars);
+    static void _Rate(const double t, const conditions::PSCondition* PSs, Variables *theVars);
 
-    friend PR;
-    friend RuACT;
-    friend SUCS;
+    friend class PR;
+    friend class RuACT;
+    friend class SUCS;
     static double KA231;
     static double KE11;
     static double KE12;
@@ -200,3 +209,6 @@ private:
     static double TIME;
     static size_t N;
 };
+
+}  // namespace modules
+}  // namespace ePhotosynthesis

@@ -30,6 +30,9 @@
 #include "PS_PRCondition.hpp"
 #include "SUCSCondition.hpp"
 
+namespace ePhotosynthesis {
+namespace conditions {
+
 class EPSCondition;
 /**
  Class for holding the inputs to CM_mb
@@ -111,3 +114,5 @@ private:
 #endif
 };
 
+}  // namespace conditions
+}  // namespace ePhotosynthesis

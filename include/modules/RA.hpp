@@ -29,11 +29,19 @@
 #include "ModuleBase.hpp"
 #include "conditions/RACondition.hpp"
 
-class RA : public ModuleBase<RA, RACondition> {
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class RAModuleTest;
+}
+#endif
+namespace modules {
+
+class RA : public ModuleBase<RA, conditions::RACondition> {
 private:
     friend ModuleBase;
 #ifdef TESTING
-    friend class RAModuleTest;
+    friend class test::RAModuleTest;
 #endif
 
     /**
@@ -42,7 +50,7 @@ private:
   @param theVars The global variables
   @return A RACon object for input into calculations
   */
-    static RACondition* _init(Variables *theVars);
+    static conditions::RACondition* _init(Variables *theVars);
 
 /**
   Calculate the output values based on the inputs
@@ -51,11 +59,15 @@ private:
   @param theVars The global variables
   @return A vector containing the updated values
   */
-    static arr _MB(const double t, const RACondition* RA_Con, Variables *theVars);
-    static RACondition* _MB_con(const double t, const RACondition* RA_Con, Variables *theVars);
-    static void _Rate(const double t, const RACondition* RA_Con, Variables *theVars) {
+    static arr _MB(const double t, const conditions::RACondition* RA_Con, Variables *theVars);
+    static conditions::RACondition* _MB_con(const double t, const conditions::RACondition* RA_Con,
+                                            Variables *theVars);
+    static void _Rate(const double t, const conditions::RACondition* RA_Con, Variables *theVars) {
         (void)t;
         (void)RA_Con;
         (void)theVars;
     }
 };
+
+}  // namespace modules
+}  // namespace ePhotosynthesis

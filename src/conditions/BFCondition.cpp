@@ -26,6 +26,9 @@
 
 #include "conditions/BFCondition.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+
 BFCondition::BFCondition(const BFCondition* other) {
     ISPHr = other->ISPHr;
     cytc1 = other->cytc1;

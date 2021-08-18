@@ -31,6 +31,10 @@
 #include "conditions/PS_PRCondition.hpp"
 
 #define KI124 2
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
     // To set global information for different reactions
 

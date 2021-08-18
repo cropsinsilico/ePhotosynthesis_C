@@ -29,6 +29,10 @@
 #include "modules/EPS.hpp"
 #include "modules/RuACT.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 RACondition* RA::_init(Variables *theVars) {
     EPSCondition* EPS_con = EPS::init(theVars);
     RuACTCondition* RuACT_con = RuACT::init(theVars);

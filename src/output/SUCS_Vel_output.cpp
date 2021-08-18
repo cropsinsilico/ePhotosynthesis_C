@@ -26,7 +26,7 @@
 
 #include "vel/SUCSVel.hpp"
 
-std::ostream& operator<<(std::ostream& out, const SUCSVel &in) {
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::vel::SUCSVel &in) {
     out << "  v51 = " << in.v51 << std::endl;
     out << "  v52 = " << in.v52 << std::endl;
     out << "  v55 = " << in.v55 << std::endl;
@@ -42,10 +42,5 @@ std::ostream& operator<<(std::ostream& out, const SUCSVel &in) {
     out << "  vpga_in = " << in.vpga_in << std::endl;
     out << "  vpga_use = " << in.vpga_use << std::endl;
     out << "  vatpf = " << in.vatpf << std::endl;
-    return out;
-}
-
-std::ostream& operator<<(std::ostream& out, const SUCSVel *in) {
-    out << *in;
     return out;
 }

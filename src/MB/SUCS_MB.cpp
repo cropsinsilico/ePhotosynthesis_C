@@ -28,6 +28,10 @@
 #include "Variables.hpp"
 #include "modules/SUCS.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 SUCSCondition* SUCS::_MB_con(const double t, const SUCSCondition* SUCS_Con, Variables *theVars) {
     Condition(t, theVars);
 

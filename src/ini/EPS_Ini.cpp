@@ -31,6 +31,10 @@
 #include "modules/BF.hpp"
 #include "modules/CM.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 size_t EPSCondition::count = 0;
 
 #ifdef INCDEBUG

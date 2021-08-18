@@ -1,5 +1,9 @@
 #include "VariableFramework.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::test;
+using namespace ePhotosynthesis::vel;
+
 namespace {
 
 TEST_F(VariableFramework, Sizes) {

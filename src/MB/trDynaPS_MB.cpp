@@ -33,6 +33,10 @@
 #include "modules/RedoxReg.hpp"
 // This model includes the mass balance equations for the full model of photosynthesis.
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 trDynaPSCondition* trDynaPS::_MB_con(const double t, const trDynaPSCondition* trDynaPS_con, Variables *theVars) {
     RedoxReg::settrDynaPS2RedReg_cal(false);
 

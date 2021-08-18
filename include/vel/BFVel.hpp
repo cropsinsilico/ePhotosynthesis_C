@@ -28,6 +28,9 @@
 
 #include "definitions.hpp"
 
+namespace ePhotosynthesis {
+namespace vel {
+
 /**
  Class for holding the result of the BF_Rate calculations
  */
@@ -106,5 +109,7 @@ public:
     double vcet = 0.;
 
     friend std::ostream& operator<<(std::ostream& out, const BFVel &in);
-    friend std::ostream& operator<<(std::ostream& out, const BFVel *in);
 };
+
+}  // namespace vel
+}  // namespace ePhotosynthesis

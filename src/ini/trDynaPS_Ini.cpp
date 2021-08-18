@@ -28,6 +28,10 @@
 #include "modules/DynaPS.hpp"
 #include "modules/RROEA.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 trDynaPSCondition* trDynaPS::_init(Variables *theVars) {
     DynaPSCondition* DynaPS_con = DynaPS::init(theVars);
 

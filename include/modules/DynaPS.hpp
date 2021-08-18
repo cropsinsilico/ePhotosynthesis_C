@@ -29,11 +29,19 @@
 #include "ModuleBase.hpp"
 #include "conditions/DynaPSCondition.hpp"
 
-class DynaPS : public ModuleBase<DynaPS, DynaPSCondition> {
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class DynaPSModuleTest;
+}
+#endif
+namespace modules {
+
+class DynaPS : public ModuleBase<DynaPS, conditions::DynaPSCondition> {
 private:
     friend ModuleBase;
 #ifdef TESTING
-    friend class DynaPSModuleTest;
+    friend class test::DynaPSModuleTest;
 #endif
 
 /**
@@ -42,7 +50,7 @@ private:
   @param theVars The global variables
   @return A DynaPSCon object for input into calculations
   */
-    static DynaPSCondition* _init(Variables *theVars);
+    static conditions::DynaPSCondition* _init(Variables *theVars);
 /**
   Calculate the output values based on the inputs
 
@@ -51,12 +59,19 @@ private:
   @param theVars The global variables
   @return A vector containing the updated values
   */
-    static arr _MB(const double t, const DynaPSCondition* DynaPS_con, Variables *theVars);
-    static DynaPSCondition* _MB_con(const double t, const DynaPSCondition* DynaPS_con, Variables *theVars);
+    static arr _MB(const double t, const conditions::DynaPSCondition* DynaPS_con,
+                   Variables *theVars);
+    static conditions::DynaPSCondition* _MB_con(const double t,
+                                                const conditions::DynaPSCondition* DynaPS_con,
+                                                Variables *theVars);
 
-    static void _Rate(const double t, const DynaPSCondition* DynaPS_con, Variables *theVars) {
+    static void _Rate(const double t, const conditions::DynaPSCondition* DynaPS_con,
+                      Variables *theVars) {
         (void)t;
         (void)DynaPS_con;
         (void)theVars;
     }
 };
+
+}  // namespace modules
+}  // namespace ePhotosynthesis

@@ -28,6 +28,10 @@
 #include "globals.hpp"
 #include "modules/PS.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 PSCondition* PS::_MB_con(const double t, const PSCondition* PS_con, Variables *theVars) {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -29,6 +29,10 @@
 #include "modules/SUCS.hpp"
 #include "modules/PS_PR.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 CMCondition* CM::_MB_con(const realtype t, const CMCondition* CM_con, Variables *theVars) {
 
     PS_PRCondition* PSPRdydt;

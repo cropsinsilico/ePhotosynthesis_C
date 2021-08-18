@@ -36,6 +36,10 @@
 #define ONE    RCONST(1.0)
 #define ZERO   RCONST(0.0)
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 void RedoxReg::_Rate(const double t, const RedoxRegCondition* RedoxReg_Con, Variables *theVars) {
     const double Thio = ThioT - RedoxReg_Con->Thion;
 
@@ -47,7 +51,7 @@ void RedoxReg::_Rate(const double t, const RedoxRegCondition* RedoxReg_Con, Vari
         TEMP = 0.5;
 
     if (trDynaPS2RedReg_cal) {
-        UserData *data = alloc_user_data();
+        drivers::UserData *data = drivers::alloc_user_data();
         data->coeffs.resize(2);
 
         data->coeffs[0] = theVars->RedoxReg_MP[0][1] - 0.03 * log10(TEMP / (1 - TEMP));

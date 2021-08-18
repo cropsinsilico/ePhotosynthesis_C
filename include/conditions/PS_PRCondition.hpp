@@ -29,6 +29,9 @@
 #include "PSCondition.hpp"
 #include "PRCondition.hpp"
 
+namespace ePhotosynthesis {
+namespace conditions {
+
 class CMCondition;
 /**
  Class to hold inputs to PS_PR_mb
@@ -100,3 +103,6 @@ private:
     const Debug::DebugLevel _dlevel = Debug::Middle;
 #endif
 };
+
+}  // namespace conditions
+}  // namespace ePhotosynthesis

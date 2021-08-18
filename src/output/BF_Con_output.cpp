@@ -25,6 +25,8 @@
  **********************************************************************************************************************************************/
 
 #include "conditions/BFCondition.hpp"
+using namespace ePhotosynthesis::conditions;
+
 std::ostream& BFCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "BFCon" << std::endl;

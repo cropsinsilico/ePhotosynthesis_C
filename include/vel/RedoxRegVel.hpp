@@ -28,6 +28,9 @@
 
 #include "definitions.hpp"
 
+namespace ePhotosynthesis {
+namespace vel {
+
 /**
  Class for holding the results of RedoxReg_Rate calculations
  */
@@ -46,5 +49,7 @@ class RedoxRegVel {
     double Vred = 0.;
     double Vox = 0.;
     friend std::ostream& operator<<(std::ostream& out, const RedoxRegVel &in);
-    friend std::ostream& operator<<(std::ostream& out, const RedoxRegVel *in);
 };
+
+}  // namespace vel
+}  // namespace ePhotosynthesis

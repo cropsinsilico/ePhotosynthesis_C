@@ -26,6 +26,9 @@
 
 #include "conditions/EPSCondition.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+
 EPSCondition::EPSCondition(const EPSCondition* other) {
     _clear();
     CM_con = new CMCondition(other->CM_con);

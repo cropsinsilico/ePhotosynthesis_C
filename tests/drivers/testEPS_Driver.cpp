@@ -1,6 +1,11 @@
 #include "VariableFramework.hpp"
 #include "drivers/EPS_Driver.hpp"
 
+using namespace ePhotosynthesis::conditions;
+using namespace ePhotosynthesis::drivers;
+
+namespace ePhotosynthesis {
+namespace test {
 class EPSDriverTest : public VariableFramework {
 protected:
     void SetUp() override {
@@ -71,3 +76,6 @@ TEST_F(EPSDriverTest, MBTest) {
     N_VDestroy(y);
 }
 }
+
+}  // namespace test
+}  // namespace ePhotosynthesis

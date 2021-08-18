@@ -28,6 +28,9 @@
 
 #include "definitions.hpp"
 
+namespace ePhotosynthesis {
+namespace pool {
+
 /**
  Class for RROEA_Pool data
  */
@@ -65,3 +68,5 @@ public:
     double RuACTT = 0;
 };
 
+}  // namespace pool
+}  // namespace ePhotosynthesis
