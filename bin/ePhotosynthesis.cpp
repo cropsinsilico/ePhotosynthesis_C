@@ -58,8 +58,6 @@ int main(int argc, const char* argv[]) {
     try {
         bool record = false;
         bool useC3 = false;
-        bool terminateTest = false;
-        std::string test = "";
         cxxopts::Options options("ePhotosynthesis", "C++ implementation of the matlab original");
         options.show_positional_help();
         std::string evn, atpcost, optionsFile, enzymeFile;
@@ -85,8 +83,6 @@ int main(int argc, const char* argv[]) {
                 ("r,reltol", "Relative tolerance for calculations", cxxopts::value<double>(reltol)->default_value("1e-4"))
                 ("T,Tp", "Input Temperature", cxxopts::value<double>(Tp)->default_value("0.0"))
                 ("o,options", "Name of a text file which specifies any of the above options. Command line arguments have priority.", cxxopts::value<std::string>(optionsFile)->default_value(""))
-                ("q,test", "Testing", cxxopts::value<std::string>(test)->default_value(""))
-                ("x, terminate", "Stop the test on a discrepancy", cxxopts::value<bool>(terminateTest)->default_value("false"))
                 ("h,help", "Produce help message")
                 ("debug","Debug level", cxxopts::value<ushort>(dbglvl)->default_value("0"))
                 ("debugDelta", "Debug deltas", cxxopts::value<bool>(debugDelta)->default_value("false"))
