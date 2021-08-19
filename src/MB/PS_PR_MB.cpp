@@ -35,6 +35,9 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 PS_PRCondition* PS_PR::_MB_con(const double t, const PS_PRCondition* PS_PR_con, Variables *theVars) {
+#ifdef INCDEBUG
+    DEBUG_MESSAGE(PS_PR_con)
+#endif
 
     const double vATPcost = theVars->TestATPCost / theVars->AVR;
 
@@ -81,7 +84,9 @@ PS_PRCondition* PS_PR::_MB_con(const double t, const PS_PRCondition* PS_PR_con, 
         PSdydt->HexP = theVars->PS_Vel.v6 - theVars->PS_Vel.v7 - theVars->PS_Vel.v23;
 
     PS_PRCondition *dydt = new PS_PRCondition(PSdydt, PRdydt);
-    //DEBUG_DELTA(PS_PR_DYDT)
+#ifdef INCDEBUG
+    DEBUG_INTERNAL(dydt)
+#endif
     return dydt;
 }
 

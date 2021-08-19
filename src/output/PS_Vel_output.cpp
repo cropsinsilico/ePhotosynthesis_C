@@ -26,7 +26,8 @@
 
 #include "vel/PSVel.hpp"
 
-using namespace ePhotosynthesis::vel;
+namespace ePhotosynthesis {
+namespace vel {
 
 std::ostream& operator<<(std::ostream &out, const PSVel &in) {
     out << "PSVel" << std::endl;
@@ -51,3 +52,6 @@ std::ostream& operator<<(std::ostream &out, const PSVel &in) {
     out << "  v25 = " << in.v25 << std::endl;
     return out;
 }
+
+}  // namespace vel
+}  // namespace ePhotosynthesis

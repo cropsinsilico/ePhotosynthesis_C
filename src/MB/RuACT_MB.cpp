@@ -33,6 +33,10 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 RuACTCondition* RuACT::_MB_con(const double t, const RuACTCondition* RuACT_Con, Variables *theVars) {
+#ifdef INCDEBUG
+    DEBUG_MESSAGE(RuACT_Con)
+#endif
+
     Condition(t, theVars);
     const double light = theVars->GLight;
 
@@ -53,7 +57,9 @@ RuACTCondition* RuACT::_MB_con(const double t, const RuACTCondition* RuACT_Con, 
     dydt->ECMR = v7 - vn7 - v6_1 - v6_2;            // ECMR
     if (!theVars->RuACT_EPS_com)
         dydt->RuBP = v6_1 + v6_2 + v1 - vn1 + vn7 - v7; // RuBP
-    //DEBUG_DELTA(RuACT_mb)
+#ifdef INCDEBUG
+    DEBUG_INTERNAL(dydt)
+#endif
     return dydt;
 }
 

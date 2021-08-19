@@ -33,6 +33,10 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 RROEACondition* RROEA::_MB_con(const double t, const RROEACondition* RROEA_Con, Variables *theVars) {
+#ifdef INCDEBUG
+    DEBUG_MESSAGE(RROEA_Con)
+#endif
+
     Condition(t, theVars);
     theVars->RROEA_Param[0] = theVars->GLight;
 
@@ -49,7 +53,9 @@ RROEACondition* RROEA::_MB_con(const double t, const RROEACondition* RROEA_Con, 
     dydt->Thio = theVars->RROEA_Vel.veFd2Thio - theVars->RROEA_Vel.ve2GAPDH - theVars->RROEA_Vel.ve2FBPase - theVars->RROEA_Vel.ve2SBPase - theVars->RROEA_Vel.ve2PRK - theVars->RROEA_Vel.ve2ATPGPP - theVars->RROEA_Vel.ve2RuACT; // Thio
     dydt->Fd = theVars->RROEA_Vel.ve2Fd - theVars->RROEA_Vel.veFd2Thio - theVars->RROEA_Vel.veFd2Calvin; // Fd
     dydt->RuACT = theVars->RROEA_Vel.ve2RuACT;  // RuACT;
-    //DEBUG_DELTA(dydt->)
+#ifdef INCDEBUG
+    DEBUG_INTERNAL(dydt)
+#endif
     return dydt;
 }
 

@@ -33,11 +33,14 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 SUCSCondition* SUCS::_MB_con(const double t, const SUCSCondition* SUCS_Con, Variables *theVars) {
+#ifdef INCDEBUG
+    DEBUG_MESSAGE(SUCS_Con)
+#endif
+
     Condition(t, theVars);
 
     theVars->SUCS_Param[0] = theVars->GLight;
 
-    //arr SUCS_Vel = zeros(15);
     Rate(t, SUCS_Con, theVars);
 
     ////////////////////////////////////////////////////////////////
@@ -62,7 +65,9 @@ SUCSCondition* SUCS::_MB_con(const double t, const SUCSCondition* SUCS_Con, Vari
     } else {
         dydt->PGAc = theVars->SUCS_Vel.vpga_in - theVars->SUCS_Vel.vpga_use; // pgaC
     }
-    //DEBUG_DELTA(SUCS_mb)
+#ifdef INCDEBUG
+    DEBUG_INTERNAL(dydt)
+#endif
     return dydt;
 }
 

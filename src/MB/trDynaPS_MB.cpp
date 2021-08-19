@@ -38,6 +38,10 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 trDynaPSCondition* trDynaPS::_MB_con(const double t, const trDynaPSCondition* trDynaPS_con, Variables *theVars) {
+#ifdef INCDEBUG
+    DEBUG_MESSAGE(trDynaPS_con)
+#endif
+
     RedoxReg::settrDynaPS2RedReg_cal(false);
 
     Condition(t, theVars);
@@ -58,8 +62,10 @@ trDynaPSCondition* trDynaPS::_MB_con(const double t, const trDynaPSCondition* tr
     DynaPSdydt->RA_con->EPS_con->FIBF_con->BF_con->Fdn = RROEAdydt->Fd;
 
     GenOut(t, theVars);
-    //DEBUG_DELTA(dxdt)
     trDynaPSCondition* dydt = new trDynaPSCondition(DynaPSdydt, RROEAdydt);
+#ifdef INCDEBUG
+    DEBUG_INTERNAL(dydt)
+#endif
     return dydt;
 }
 

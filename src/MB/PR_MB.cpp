@@ -33,6 +33,10 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 PRCondition* PR::_MB_con(const double t, const PRCondition* PR_con, Variables *theVars) {
+#ifdef INCDEBUG
+    DEBUG_MESSAGE(PR_con)
+#endif
+
     Condition(t, theVars);
 
     Rate(t, PR_con, theVars);
@@ -49,7 +53,9 @@ PRCondition* PR::_MB_con(const double t, const PRCondition* PR_con, Variables *t
     dydt->GCEAc = theVars->PR_Vel.v123 - theVars->PR_Vel.v1in;
     if (!PR::PS_connect)
         dydt->RuBP = 0.3 - theVars->PR_Vel.v111;
-    //DEBUG_DELTA(PRdydt)
+#ifdef INCDEBUG
+    DEBUG_INTERNAL(dydt)
+#endif
     return dydt;
 }
 

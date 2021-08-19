@@ -26,7 +26,10 @@
 
 #include "vel/SUCSVel.hpp"
 
-std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::vel::SUCSVel &in) {
+namespace ePhotosynthesis {
+namespace vel {
+
+std::ostream& operator<<(std::ostream& out, const SUCSVel &in) {
     out << "  v51 = " << in.v51 << std::endl;
     out << "  v52 = " << in.v52 << std::endl;
     out << "  v55 = " << in.v55 << std::endl;
@@ -44,3 +47,6 @@ std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::vel::SUCSVel 
     out << "  vatpf = " << in.vatpf << std::endl;
     return out;
 }
+
+}  // namespace vel
+}  // namespace ePhotosynthesis

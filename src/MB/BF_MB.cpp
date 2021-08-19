@@ -33,6 +33,9 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 BFCondition* BF::_MB_con(const double t, const BFCondition* BF_con, Variables *theVars) {
+#ifdef INCDEBUG
+    DEBUG_MESSAGE(BF_con)
+#endif
 
     if (theVars->useC3) {
         theVars->BF_Param[0] = theVars->lightParam;
@@ -94,7 +97,9 @@ BFCondition* BF::_MB_con(const double t, const BFCondition* BF_con, Variables *t
     dydt->PHs = -(theVars->HPR * theVars->BF_Vel.Vbf11 - Hrqb - Hvqi - theVars->BF_Vel.vbfn2) / 1000 / 0.015; // PHs, The changes of PH in stoma, 0.03 mol /PH from Laisk et al.
     dydt->PHl = -(Hvqo1 + Hvqo2 + Hroe - theVars->HPR * theVars->BF_Vel.Vbf11) / 1000 / 0.015; //   PHl  The changes in PH of lumen, 0.03 is from Curz et al., 2001, Biochemistry.
     dydt->NADPH = theVars->BF_Vel.vbfn2 - theVars->BF_Vel.VsNADPH;
-    //DEBUG_DELTA(dydt->)
+#ifdef INCDEBUG
+    DEBUG_INTERNAL(dydt)
+#endif
     return dydt;
 }
 

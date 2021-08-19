@@ -26,7 +26,8 @@
 
 #include "vel/RedoxRegVel.hpp"
 
-using namespace ePhotosynthesis::vel;
+namespace ePhotosynthesis {
+namespace vel {
 
 std::ostream& operator<<(std::ostream& out, const RedoxRegVel &in) {
     out << "RedoxRegVel" << std::endl;
@@ -34,3 +35,6 @@ std::ostream& operator<<(std::ostream& out, const RedoxRegVel &in) {
     out << "  Vox = " << in.Vox << std::endl;
     return out;
 }
+
+}  // namespace vel
+}  // namespace ePhotosynthesis

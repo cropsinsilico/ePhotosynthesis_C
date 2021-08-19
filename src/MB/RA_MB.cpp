@@ -34,18 +34,23 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 RACondition* RA::_MB_con(const double t, const RACondition* RA_Con, Variables *theVars) {
+#ifdef INCDEBUG
+    DEBUG_MESSAGE(RA_Con)
+#endif
+
     EPSCondition* EPSdydt = EPS::MB_con(t, RA_Con->EPS_con, theVars);
     RuACTCondition* RuACTdydt = RuACT::MB_con(t, RA_Con->RuACT_con, theVars);
 
     EPSdydt->CM_con->PS_PR_con->PS_con->RuBP = theVars->RuACT_Vel.v1 + theVars->PS_Vel.v13 - theVars->RuACT_Vel.vn1 + theVars->RuACT_Vel.vn7 - theVars->RuACT_Vel.v7;
-    //RuACTdydt->RuBP = DYDT_RuBP;
 
     EPSdydt->CM_con->PS_PR_con->PS_con->PGA = EPSdydt->CM_con->PS_PR_con->PS_con->PGA - 2 * theVars->PS_Vel.v1 + 2 * theVars->RuACT_Vel.v6_1 - theVars->PR_Vel.v111 + theVars->RuACT_Vel.v6_2;// Originally it is pspr(2), now use EPS_DYDT[53].
 
     EPSdydt->CM_con->PS_PR_con->PR_con->PGCA = EPSdydt->CM_con->PS_PR_con->PR_con->PGCA - theVars->PR_Vel.v111 + theVars->RuACT_Vel.v6_2;
 
-    //DEBUG_DELTA(RA_DYDT)
     RACondition* dydt = new RACondition(EPSdydt, RuACTdydt);
+#ifdef INCDEBUG
+    DEBUG_INTERNAL(dydt)
+#endif
     return dydt;
 }
 

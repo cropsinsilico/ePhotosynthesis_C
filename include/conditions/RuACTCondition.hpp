@@ -90,7 +90,7 @@ private:
     void _clear() {}
     static size_t count;
 #ifdef INCDEBUG
-    const Debug::DebugLevel _dlevel = Debug::Low;
+    const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif
 };
 

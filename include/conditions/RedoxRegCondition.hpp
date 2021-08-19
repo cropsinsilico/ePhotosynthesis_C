@@ -94,7 +94,7 @@ private:
         return RACondition::size() + 1;
     }
 #ifdef INCDEBUG
-    const Debug::DebugLevel _dlevel = Debug::Middle;
+    const static Debug::DebugLevel _dlevel = Debug::Middle;
 #endif
 };
 

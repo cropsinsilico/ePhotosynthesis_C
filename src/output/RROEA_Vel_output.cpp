@@ -26,7 +26,8 @@
 
 #include "vel/RROEAVel.hpp"
 
-using namespace ePhotosynthesis::vel;
+namespace ePhotosynthesis {
+namespace vel {
 
 std::ostream& operator<<(std::ostream& out, const RROEAVel &in) {
     out << "RROEAVel" << std::endl;
@@ -43,3 +44,6 @@ std::ostream& operator<<(std::ostream& out, const RROEAVel &in) {
     out << "  ve2RuACT = " << in.ve2RuACT << std::endl;
     return out;
 }
+
+}  // namespace vel
+}  // namespace ePhotosynthesis

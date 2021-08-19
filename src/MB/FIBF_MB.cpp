@@ -38,6 +38,10 @@ using namespace ePhotosynthesis::conditions;
 
 FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* FIBF_Con, Variables *theVars) {
     // First Get the variables needed for the calcualtion step
+#ifdef INCDEBUG
+    DEBUG_MESSAGE(FIBF_Con)
+#endif
+
     BFCondition* BF_con = FIBF_Con->BF_con;
 
     FICondition* FI_Con = FIBF_Con->FI_con;
@@ -120,14 +124,13 @@ FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* FIBF_Con, Vari
     dydt->BF_con->BFHs = (theVars->HPR * theVars->BF_Vel.Vbf11 - Hrqb - Hvqi - theVars->BF_Vel.vbfn2);  // BFHs The proton and protonated buffer species in stroma. The proton concentration is not used in the MB procedure. The reason is that the proton concentration is buffered and therefore did not changed linerly with the generation of the protons.
     dydt->BF_con->PHs = - (theVars->HPR * theVars->BF_Vel.Vbf11 - Hrqb - Hvqi - theVars->BF_Vel.vbfn2) / 1000 / 0.015;  // PHs, The changes of PH in stoma, 0.03 mol /PH from Laisk et al.
 
-    //FIBF_mb[24] = BF_mb[24];
-    //FIBF_mb[26] = BF_mb[26];
-    //const double Vbf1 = theVars->BF_Vel.Vbf1 ;          // The rate of PQH2 utilization when forming the PQH2.ISP complex
     const double GPQH2_t = GPQH2_qb - theVars->BF_Vel.Vbf1 + theVars->BF_Vel.Vqi / 2;  // This is the total rate of PQH2 generation
 
     dydt->BF_con->Q = 0;        // Q Quinone in thylakoid membrane in free form
     dydt->BF_con->QH2 = GPQH2_t; // QH2 The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
-    //DEBUG_DELTA(FIBF_mb)
+#ifdef INCDEBUG
+    DEBUG_INTERNAL(dydt)
+#endif
     return dydt;
 }
 

@@ -110,7 +110,7 @@ private:
 
     static size_t count;
 #ifdef INCDEBUG
-    const Debug::DebugLevel _dlevel = Debug::Top;
+    const static Debug::DebugLevel _dlevel = Debug::Top;
 #endif
 };
 
