@@ -33,9 +33,6 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 SUCSCondition* SUCS::_MB_con(const double t, const SUCSCondition* SUCS_Con, Variables *theVars) {
-#ifdef INCDEBUG
-    DEBUG_MESSAGE(SUCS_Con)
-#endif
 
     Condition(t, theVars);
 

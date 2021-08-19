@@ -95,7 +95,9 @@ void RuACT::_Rate(const double t, const RuACTCondition* RuACT_Con, Variables *th
     theVars->RuACT_Vel.vn7 = RuACT_Con->ECMR * 0.5 * factor_n7;
     theVars->RuACT_Vel.v6_1 = RuACT_Con->ECMR * theVars->RuACT_RC.k6 * C / (C + theVars->RuACT_RC.kc * (1 + O / theVars->RuACT_RC.ko));
     theVars->RuACT_Vel.v6_2 = RuACT_Con->ECMR * theVars->RuACT_RC.k6 / 3 * O / (O + theVars->RuACT_RC.ko * (1 + C / theVars->RuACT_RC.kc));
+#ifdef INCDEBUG
     DEBUG_INTERNAL(theVars->RuACT_Vel)
+#endif
     if (theVars->record) {
         if (t > RuACT::TIME) {
             RuACT::N++;

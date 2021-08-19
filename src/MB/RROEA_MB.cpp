@@ -33,9 +33,6 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 RROEACondition* RROEA::_MB_con(const double t, const RROEACondition* RROEA_Con, Variables *theVars) {
-#ifdef INCDEBUG
-    DEBUG_MESSAGE(RROEA_Con)
-#endif
 
     Condition(t, theVars);
     theVars->RROEA_Param[0] = theVars->GLight;

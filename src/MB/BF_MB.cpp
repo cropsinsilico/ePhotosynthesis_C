@@ -33,9 +33,6 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 BFCondition* BF::_MB_con(const double t, const BFCondition* BF_con, Variables *theVars) {
-#ifdef INCDEBUG
-    DEBUG_MESSAGE(BF_con)
-#endif
 
     if (theVars->useC3) {
         theVars->BF_Param[0] = theVars->lightParam;

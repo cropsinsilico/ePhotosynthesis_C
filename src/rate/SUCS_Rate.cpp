@@ -184,6 +184,8 @@ void SUCS::_Rate(const double t, const SUCSCondition* SUCS_Con, Variables *theVa
         theVars->SUCS2OUT.SUC = SUC;
         theVars->SUCS2OUT.PGAc = SUCS_Con->PGAc;
     }
+#ifdef INCDEBUG
     DEBUG_INTERNAL(theVars->SUCS_Vel)
+#endif
     SUCS::SUCS2PS_Pic = Pic;                // This is the original code.
 }

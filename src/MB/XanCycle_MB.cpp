@@ -34,9 +34,6 @@ using namespace ePhotosynthesis::conditions;
 
 XanCycleCondition* XanCycle::_MB_con(const double t, const XanCycleCondition* XanCycle_Con, Variables *theVars) {
     Condition(t, theVars);
-#ifdef INCDEBUG
-    DEBUG_MESSAGE(XanCycle_Con)
-#endif
     Rate(t, XanCycle_Con, theVars);
 
     XanCycleCondition* dydt = new XanCycleCondition();

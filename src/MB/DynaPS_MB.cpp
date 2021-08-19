@@ -44,9 +44,6 @@ DynaPSCondition* DynaPS::_MB_con(const double t, const DynaPSCondition* DynaPS_c
     //// Step One: Get the initialization of the concentrations for the RedoxReg model which will be used in the calculation of mb of RedoxReg.
 
     // This is a sensitivity test to show that the model is stable udner fluctuating light
-#ifdef INCDEBUG
-    DEBUG_MESSAGE(DynaPS_con)
-#endif
 
     const double light = 1;
     Condition(t, theVars);

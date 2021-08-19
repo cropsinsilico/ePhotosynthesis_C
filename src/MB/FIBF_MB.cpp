@@ -38,9 +38,6 @@ using namespace ePhotosynthesis::conditions;
 
 FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* FIBF_Con, Variables *theVars) {
     // First Get the variables needed for the calcualtion step
-#ifdef INCDEBUG
-    DEBUG_MESSAGE(FIBF_Con)
-#endif
 
     BFCondition* BF_con = FIBF_Con->BF_con;
 

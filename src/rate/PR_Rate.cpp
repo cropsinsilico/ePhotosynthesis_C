@@ -176,7 +176,9 @@ void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
         theVars->PR_Vel.v2out = PR::V2T * (PR_con->GCA / (PR_con->GCA + PR::KM1012 * (1 + PR_con->GCEA / PR::KI1012)) - PR_con->GCAc / (PR_con->GCAc + PR::KM1012 * (1 + PR_con->GCEAc / PR::KI1012)));// Competive inhibition
     }
 
+#ifdef INCDEBUG
     DEBUG_INTERNAL(theVars->PR_Vel)
+#endif
     if (theVars->record) {
         if (t > PR::TIME) {
             PR::N++;

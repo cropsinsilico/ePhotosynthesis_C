@@ -64,7 +64,9 @@ void RROEA::_Rate(const double t, const RROEACondition* RROEA_con, Variables *th
     theVars->RROEA_Vel.veFd2Calvin = RROEA_con->Fd * theVars->RROEA_RC.keFd2Calvin * (RROEA_con->FBPase / theVars->RROEA_Pool.FBPase);
     theVars->RROEA_Vel.ve2RuACT = theVars->RROEA_RC.ke2RubACT * (RROEA_con->Thio * RuACTo - Thioo * RROEA_con->RuACT / theVars->RROEA_KE.KEe2RuACT);
 
+#ifdef INCDEBUG
     DEBUG_INTERNAL(theVars->RROEA_Vel)
+#endif
     if (theVars->record) {
         if (t > RROEA::TIME) {
             RROEA::N++;

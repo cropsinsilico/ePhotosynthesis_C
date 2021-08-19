@@ -38,9 +38,6 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 trDynaPSCondition* trDynaPS::_MB_con(const double t, const trDynaPSCondition* trDynaPS_con, Variables *theVars) {
-#ifdef INCDEBUG
-    DEBUG_MESSAGE(trDynaPS_con)
-#endif
 
     RedoxReg::settrDynaPS2RedReg_cal(false);
 

@@ -36,9 +36,6 @@ using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::drivers;
 
 RedoxRegCondition* RedoxReg::_MB_con(const double t, const RedoxRegCondition* RedoxReg_Con, Variables *theVars) {
-#ifdef INCDEBUG
-    DEBUG_MESSAGE(RedoxReg_Con)
-#endif
 
     trDynaPS2RedReg_cal = true;
 
