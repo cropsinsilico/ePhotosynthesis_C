@@ -28,8 +28,12 @@
 
 #include "ConditionBase.hpp"
 
-class FIBFCondition;
+namespace ePhotosynthesis {
+namespace modules {
 class BF;
+}
+namespace conditions {
+class FIBFCondition;
 
 /**
  Class for holding the inputs to BF_mb
@@ -85,12 +89,10 @@ public:
     SET_GET_BOOL(PS_connect)
     SET_GET_BOOL(RROEA_connect)
     SET_GET_BOOL(FI_connect)
-    //static void setPS_connect(const bool val) {PS_connect = val;}
-    //static void setRROEA_connect(const bool val) {RROEA_connect = val;}
-    //static void setFI_connect(const bool val) {FI_connect = val;}
+
 private:
     friend ConditionBase;
-    friend BF;
+    friend class modules::BF;
     /**
       Copy items from the given vector to the data members
 
@@ -122,6 +124,9 @@ private:
     void _clear() {}
     static const size_t count;
 #ifdef INCDEBUG
-    const Debug::DebugLevel _dlevel = Debug::Low;
+    const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif
 };
+
+}  // namespace conditions
+}  // namespace ePhotosynthesis

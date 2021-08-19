@@ -30,20 +30,28 @@
 #include "modules/RedoxReg.hpp"
 #include "modules/RA.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+using namespace ePhotosynthesis::drivers;
+
 RedoxRegCondition* RedoxReg::_MB_con(const double t, const RedoxRegCondition* RedoxReg_Con, Variables *theVars) {
+#ifdef INCDEBUG
+    DEBUG_MESSAGE(RedoxReg_Con)
+#endif
+
     trDynaPS2RedReg_cal = true;
 
     Rate(t, RedoxReg_Con, theVars);
 
     RACondition* RAdydt = RA::MB_con(t, RedoxReg_Con->RA_con, theVars);
 
-    RedoxRegCondition* RedoxRegdydt = new RedoxRegCondition(RAdydt, 0.);
-    //RedoxReg_DYDT[92] = theVars->RedoxReg_Vel.Vred - theVars->RedoxReg_Vel.Vox;
+    RedoxRegCondition* dydt = new RedoxRegCondition(RAdydt, 0.);
 
-    //const double Temp = RedoxReg_DYDT[23];
-    //RedoxReg_DYDT[23] = Temp;
-    //DEBUG_DELTA(RedoxReg_DYDT)
-    return RedoxRegdydt;
+#ifdef INCDEBUG
+    DEBUG_INTERNAL(dydt)
+#endif
+    return dydt;
 }
 
 int RedoxReg::RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data) {

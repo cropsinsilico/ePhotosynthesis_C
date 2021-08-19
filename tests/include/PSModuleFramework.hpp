@@ -1,11 +1,13 @@
 #include "VariableFramework.hpp"
 #include "modules/PS.hpp"
 
+namespace ePhotosynthesis {
+namespace test {
 
 class PSModuleTest : public virtual VariableFramework {
 protected:
     void SetUp() override {
-        PS::setC3(false);
+        modules::PS::setC3(false);
         VariableFramework::SetUp();
         theVars->CO2_in = 500.;
         theVars->TestLi = 14.;
@@ -17,14 +19,18 @@ protected:
         theVars->VfactorT = ratio;
     }
 
-    void Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
-        PS::_Rate(t, PS_con, theVars);
+    void Rate(const double t, const conditions::PSCondition* PS_con, Variables *theVars) {
+        modules::PS::_Rate(t, PS_con, theVars);
     }
-    PSCondition* MB_con(const double t, const PSCondition* PS_con, Variables* theVars) {
-        return PS::_MB_con(t, PS_con, theVars);
+    conditions::PSCondition* MB_con(const double t, const conditions::PSCondition* PS_con,
+                                    Variables* theVars) {
+        return modules::PS::_MB_con(t, PS_con, theVars);
     }
-    arr MB(const double t, const PSCondition* PS_con, Variables* theVars) {
-        return PS::_MB(t, PS_con, theVars);
+    arr MB(const double t, const conditions::PSCondition* PS_con, Variables* theVars) {
+        return modules::PS::_MB(t, PS_con, theVars);
     }
 
 };
+
+}  // namespace test
+}  // namspace ePhotosynthesis

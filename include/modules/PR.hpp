@@ -30,27 +30,34 @@
 #include "conditions/PRCondition.hpp"
 #include "definitions.hpp"
 
-class PS_PR;
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class PRModuleTest;
+}
+#endif
+namespace modules {
 
 /**
   Class for grouping PR related functions and common variables
   */
-class PR : public ModuleBase<PR, PRCondition> {
+class PR : public ModuleBase<PR, conditions::PRCondition> {
 public:
-    SET_GET_BOOL_MODULE(PS_connect, PR)
-    SET_GET_BOOL_MODULE(PS_RuBP, PR)
+    SET_GET_BOOL_MODULE(PS_connect, conditions::PR)
+    SET_GET_BOOL_MODULE(PS_RuBP, conditions::PR)
     SET_GET(RUBISCOTOTAL)
 private:
     friend ModuleBase;
-    friend class PRModuleTest;
-    friend PS_PR;
+#ifdef TESTING
+    friend class test::PRModuleTest;
+#endif
     /**
       Initializer
 
       @param theVars Pointer to the global variables
       @return A PRCon object with values set base on the input
       */
-    static PRCondition* _init(Variables *theVars);
+    static conditions::PRCondition* _init(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -59,73 +66,78 @@ private:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr _MB(const double t, const PRCondition* PR_con, Variables *theVars);
-    static PRCondition* _MB_con(const double t, const PRCondition* const PR_con, Variables *theVars);
+    static arr _MB(const double t, const conditions::PRCondition* PR_con, Variables *theVars);
+    static conditions::PRCondition* _MB_con(const double t,
+                                            const conditions::PRCondition* const PR_con,
+                                            Variables *theVars);
     /**
       Calculate the Rates of PR based on the inputs
 
       @param PR_con PRCon object giving the input parameters
       @param theVars The global variables
       */
-    static void _Rate(const double t, const PRCondition* PR_con, Variables *theVars);
+    static void _Rate(const double t, const conditions::PRCondition* PR_con, Variables *theVars);
 
-    static double KC;
-    static double KE113;
-    static double KE122;
-    static double KE123;
-    static double KE124;
-    static double KGc;
-    static double KI1011;
-    static double KI1012;
-    static double KI1121;
-    static double KI1122;
-    static double KI113;
-    static double KI1221;
-    static double KI123;
-    static double KI1311;
-    static double KM1011;
-    static double KM1012;
-    static double KM112;
-    static double KM1131;
-    static double KM1132;
-    static double KM121;
-    static double KM1221;
-    static double KM1222;
-    static double KM123;
-    static double KM1241;
-    static double KM1242;
-    static double KM1311;
-    static double KO;
-    static double KR;
-    static double NADHc;
-    static double NADc;
-    static double PR_ADP;
-    static double PR_ATP;
-    static double V111;
-    static double V112;
-    static double V113;
-    static double V121;
-    static double V122;
-    static double V123;
-    static double V124;
-    static double V131;
-    static double V2T;
-    static double Vfactor112;
-    static double Vfactor113;
-    static double Vfactor121;
-    static double Vfactor122;
-    static double Vfactor123;
-    static double Vfactor124;
-    static double Vfactor131;
-    static double Vf_T131;
-    static double Vf_T113;
-    static double Vf_T123;
-    static double Vf_T121;
-    static double Vf_T122;
-    static double Vf_T112;
-    static double V1T;
-    static double PGA;
-    static double GLUc;
+    SET_GET(KC)
+    SET_GET(KE113)
+    SET_GET(KE122)
+    SET_GET(KE123)
+    SET_GET(KE124)
+    SET_GET(KGc)
+    SET_GET(KI1011)
+    SET_GET(KI1012)
+    SET_GET(KI1121)
+    SET_GET(KI1122)
+    SET_GET(KI113)
+    SET_GET(KI1221)
+    SET_GET(KI123)
+    SET_GET(KI1311)
+    SET_GET(KM1011)
+    SET_GET(KM1012)
+    SET_GET(KM112)
+    SET_GET(KM1131)
+    SET_GET(KM1132)
+    SET_GET(KM121)
+    SET_GET(KM1221)
+    SET_GET(KM1222)
+    SET_GET(KM123)
+    SET_GET(KM1241)
+    SET_GET(KM1242)
+    SET_GET(KM1311)
+    SET_GET(KO)
+    SET_GET(KR)
+    SET_GET(NADHc)
+    SET_GET(NADc)
+    SET_GET(PR_ADP)
+    SET_GET(PR_ATP)
+    SET_GET(V111)
+    SET_GET(V112)
+    SET_GET(V113)
+    SET_GET(V121)
+    SET_GET(V122)
+    SET_GET(V123)
+    SET_GET(V124)
+    SET_GET(V131)
+    SET_GET(V2T)
+    SET_GET(Vfactor112)
+    SET_GET(Vfactor113)
+    SET_GET(Vfactor121)
+    SET_GET(Vfactor122)
+    SET_GET(Vfactor123)
+    SET_GET(Vfactor124)
+    SET_GET(Vfactor131)
+    SET_GET(Vf_T131)
+    SET_GET(Vf_T113)
+    SET_GET(Vf_T123)
+    SET_GET(Vf_T121)
+    SET_GET(Vf_T122)
+    SET_GET(Vf_T112)
+    SET_GET(V1T)
+    SET_GET(PGA)
+    SET_GET(GLUc)
     static double TIME;
     static size_t N;
 };
+
+}  // namespace modules
+}  // namespace ePhotosynthesis

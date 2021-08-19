@@ -30,6 +30,11 @@
 #include "conditions/DynaPSCondition.hpp"
 #include "globals.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::drivers;
+using namespace ePhotosynthesis::conditions;
+
 DynaPSDriver::~DynaPSDriver() {}
 
 void DynaPSDriver::setup() {

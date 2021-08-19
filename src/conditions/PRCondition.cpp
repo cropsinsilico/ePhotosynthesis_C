@@ -26,6 +26,9 @@
 
 #include "conditions/PRCondition.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+
 PRCondition::PRCondition(const PRCondition* other)  {
     GCEA = other->GCEA;
     GCA = other->GCA;

@@ -29,11 +29,19 @@
 #include "ModuleBase.hpp"
 #include "conditions/EPSCondition.hpp"
 
-class EPS : public ModuleBase<EPS, EPSCondition> {
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class EPSModuleTest;
+}
+#endif
+namespace modules {
+
+class EPS : public ModuleBase<EPS, conditions::EPSCondition> {
 private:
     friend ModuleBase;
 #ifdef TESTING
-    friend class EPSModuleTest;
+    friend class test::EPSModuleTest;
 #endif
 
     /**
@@ -42,7 +50,7 @@ private:
   @param theVars Pointer to the global variables
   @return A EPSCon object with values set base on the input
   */
-    static EPSCondition* _init(Variables *theVars);
+    static conditions::EPSCondition* _init(Variables *theVars);
 
 /**
   Calculate the output values based on the inputs
@@ -52,12 +60,17 @@ private:
   @param theVars The global variables
   @return A vector containing the updated values
   */
-    static arr _MB(const double t, const EPSCondition* EPS_Con, Variables *theVars);
-    static EPSCondition* _MB_con(const double t, const EPSCondition* EPS_Con, Variables *theVars);
+    static arr _MB(const double t, const conditions::EPSCondition* EPS_Con, Variables *theVars);
+    static conditions::EPSCondition* _MB_con(const double t,
+                                             const conditions::EPSCondition* EPS_Con,
+                                             Variables *theVars);
 
-    static void _Rate(const double t, const EPSCondition* EPS_Con, Variables *theVars) {
+    static void _Rate(const double t, const conditions::EPSCondition* EPS_Con, Variables *theVars) {
         (void)t;
         (void)EPS_Con;
         (void)theVars;
     }
 };
+
+}  // namespace modules
+}  // namespace ePhotosynthesis

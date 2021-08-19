@@ -26,6 +26,9 @@
 
 #include "conditions/FIBFCondition.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+
 FIBFCondition::FIBFCondition(const FIBFCondition* other) {
     _clear();
     BF_con = new BFCondition(other->BF_con);

@@ -26,6 +26,8 @@
 
 #include "conditions/RedoxRegCondition.hpp"
 
+using namespace ePhotosynthesis::conditions;
+
 std::ostream& RedoxRegCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "RedoxRegContainer" << std::endl;

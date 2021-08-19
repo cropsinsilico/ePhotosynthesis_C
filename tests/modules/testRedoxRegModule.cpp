@@ -1,6 +1,12 @@
 #include <sundials/sundials_types.h>   /* defs. of realtype, sunindextype */
 #include "RedoxRegModuleFramework.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::test;
+using namespace ePhotosynthesis::conditions;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::vel;
+
 namespace {
 TEST_F(RedoxRegModuleTest, InitTest) {
 

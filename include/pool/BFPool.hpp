@@ -28,6 +28,9 @@
 
 #include "definitions.hpp"
 
+namespace ePhotosynthesis {
+namespace pool {
+
 /**
  Class for holding BF_Pool data
  */
@@ -86,3 +89,6 @@ public:
     double k_r3 = 0;
     double k_pq_oxy = 0;
 };
+
+}  // namespace pool
+}  // namespace ePhotosynthesis

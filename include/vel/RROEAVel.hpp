@@ -28,6 +28,9 @@
 
 #include "definitions.hpp"
 
+namespace ePhotosynthesis {
+namespace vel {
+
 /**
  Class for holding the results of RROEA_Rate calculations
  */
@@ -65,6 +68,7 @@ public:
     double ve2RuACT = 0.;
 
     friend std::ostream& operator<<(std::ostream& out, const RROEAVel &in);
-    friend std::ostream& operator<<(std::ostream& out, const RROEAVel *in);
 };
 
+}  // namespace vel
+}  // namespace ePhotosynthesis

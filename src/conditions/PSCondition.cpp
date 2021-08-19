@@ -26,6 +26,9 @@
 
 #include "conditions/PSCondition.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+
 PSCondition::PSCondition(const PSCondition* other)  {
     RuBP = other->RuBP;
     PGA = other->PGA;

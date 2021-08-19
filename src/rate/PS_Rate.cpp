@@ -33,6 +33,10 @@
 
 #define RegFactor 1.
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
     double PsV6, PsV9, PsV13, PsV16, PsPEXT;
 
@@ -79,8 +83,8 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
     if (theVars->useC3) {
         const SUCSCondition *SUCS_con = PS_con->parent->parent->SUCS_con;
 
-        PS::PiTc = theVars->SUCS_Pool.PTc - 2 * (SUCS_con->FBPc + SUCS_con->F26BPc) - (SUCS_con->PGAc + SUCS_con->T3Pc + SUCS_con->HexPc + SUCS_con->SUCP + SUCS::UTPc + SUCS::ATPc);
-        PsPEXT = (pow(pow(SUCS::KE61, 2) + 4 * SUCS::KE61 * PS::PiTc, 0.5) - SUCS::KE61)/2;   //  SHARED
+        PS::PiTc = theVars->SUCS_Pool.PTc - 2 * (SUCS_con->FBPc + SUCS_con->F26BPc) - (SUCS_con->PGAc + SUCS_con->T3Pc + SUCS_con->HexPc + SUCS_con->SUCP + SUCS::getUTPc() + SUCS::getATPc());
+        PsPEXT = (pow(pow(SUCS::getKE61(), 2) + 4 * SUCS::getKE61() * PS::PiTc, 0.5) - SUCS::getKE61())/2;   //  SHARED
 
         theVars->Pi = PS::PS_C_CP - PS_con->PGA - 2 * PS_con->DPGA - GAP - DHAP - 2 * PS_con->FBP - F6P - PS_con->E4P - 2 * PS_con->SBP - PS_con->S7P - Xu5P - Ri5P - Ru5P - 2 * PS_con->RuBP - G6P - G1P - PS_con->ATP - PS_con->parent->PR_con->PGCA;
 

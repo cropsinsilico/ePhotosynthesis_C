@@ -32,6 +32,10 @@
 
 const double KI583 = 1.55;
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 void SUCS::_Rate(const double t, const SUCSCondition* SUCS_Con, Variables *theVars) {
     ////////////////////////////////////////////////////////////
     // Get the auxiliary variables //
@@ -133,7 +137,7 @@ void SUCS::_Rate(const double t, const SUCSCondition* SUCS_Con, Variables *theVa
             vpga_in = 0;
             vpga_use = 0;
         } else {
-            if (PS::V32 == 0.) {
+            if (PS::getV32() == 0.) {
                 vpga_in = 0;
                 vpga_use = 0;
             } else {

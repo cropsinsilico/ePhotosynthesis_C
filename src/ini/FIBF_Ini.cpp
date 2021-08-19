@@ -30,6 +30,10 @@
 #include "modules/BF.hpp"
 // This is the function to initialize some global variable used in FIBF MODEL
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 size_t FIBFCondition::count = 0;
 double FIBF::ChlPSI = 0.;
 double FIBF::ChlT = 0.;

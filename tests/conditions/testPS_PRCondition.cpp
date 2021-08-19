@@ -3,6 +3,10 @@
 #include "conditions/PS_PRCondition.hpp"
 
 namespace {
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+using namespace ePhotosynthesis::test;
+
 class PS_PRConditionTest : public VariableFramework {
 protected:
     void SetUp() override {

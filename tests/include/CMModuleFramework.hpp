@@ -2,19 +2,26 @@
 #include "SUCSModuleFramework.hpp"
 #include "modules/CM.hpp"
 
+namespace ePhotosynthesis {
+namespace test {
+
 class CMModuleTest : public virtual PS_PRModuleTest, public virtual SUCSModuleTest {
 protected:
     void SetUp() override {
         PS_PRModuleTest::SetUp();
         SUCSModuleTest::SetUp();
-        CM::setTestSucPath(false);
+        modules::CM::setTestSucPath(false);
     }
 
-    CMCondition* MB_con(const double t, const CMCondition* CM_con, Variables* theVars) {
-        return CM::_MB_con(t, CM_con, theVars);
+    conditions::CMCondition* MB_con(const double t, const conditions::CMCondition* CM_con,
+                                    Variables* theVars) {
+        return modules::CM::_MB_con(t, CM_con, theVars);
     }
-    arr MB(const double t, const CMCondition* CM_con, Variables* theVars) {
-        return CM::_MB(t, CM_con, theVars);
+    arr MB(const double t, const conditions::CMCondition* CM_con, Variables* theVars) {
+        return modules::CM::_MB(t, CM_con, theVars);
     }
 
 };
+
+}  // namespace test
+}  // namspace ePhotosynthesis

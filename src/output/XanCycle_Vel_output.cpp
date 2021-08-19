@@ -26,6 +26,9 @@
 
 #include "vel/XanCycleVel.hpp"
 
+namespace ePhotosynthesis {
+namespace vel {
+
 std::ostream& operator<<(std::ostream& out, const XanCycleVel &in) {
     out << "XanCycleVel" << std::endl;
     out << "  Vva = " << in.Vva << std::endl;
@@ -38,7 +41,5 @@ std::ostream& operator<<(std::ostream& out, const XanCycleVel &in) {
     return out;
 }
 
-std::ostream& operator<<(std::ostream& out, const XanCycleVel *in) {
-    out << *in << std::endl;
-    return out;
-}
+}  // namespace vel
+}  // namespace ePhotosynthesis

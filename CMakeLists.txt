@@ -42,8 +42,7 @@ endif()
 
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_FLAGS_DEBUG "-g ${BUILD_FLAGS}")
-#set(CMAKE_CXX_FLAGS_DEBUG "-g -DINCDEBUG${BUILD_FLAGS}")
+set(CMAKE_CXX_FLAGS_DEBUG "-g -DINCDEBUG${BUILD_FLAGS}")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG${BUILD_FLAGS}")
 # Prohibit in-source build
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
@@ -98,14 +97,14 @@ include_directories("${PROJECT_SOURCE_DIR}/include")
 file(GLOB_RECURSE SOURCES "src/*.cpp")
 
 add_library(EPhotosynthesis SHARED ${SOURCES})
-add_executable(ePhotosynthesis bin/ePhotosynthesis.cpp)
+add_executable(ePhoto bin/ePhotosynthesis.cpp)
 
 target_link_libraries(EPhotosynthesis ${SUNDIALS_LIBRARIES})
 target_link_libraries(EPhotosynthesis boost_regex)
-target_link_libraries(ePhotosynthesis EPhotosynthesis)
+target_link_libraries(ePhoto EPhotosynthesis)
 
 install(TARGETS EPhotosynthesis DESTINATION lib)
-install(TARGETS ePhotosynthesis DESTINATION bin)
+install(TARGETS ePhoto DESTINATION bin)
 
 if(BUILD_DOCS)
     if(NOT DOXYGEN_FOUND)

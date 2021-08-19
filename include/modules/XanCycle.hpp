@@ -29,21 +29,32 @@
 #include "ModuleBase.hpp"
 #include "conditions/XanCycleCondition.hpp"
 #include "definitions.hpp"
+
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class XanCycleModuleTest;
+}
+#endif
+namespace modules {
+
 /**
  Class for XanCycle code and internal variables
  */
-class XanCycle : public ModuleBase<XanCycle, XanCycleCondition> {
+class XanCycle : public ModuleBase<XanCycle, conditions::XanCycleCondition> {
     SET_GET(XanCycle2FIBF_Xstate)
 private:
     friend ModuleBase;
-    friend class XanCycleModuleTest;
+#ifdef TESTING
+    friend class test::XanCycleModuleTest;
+#endif
     /**
       Initializer
 
       @param theVars Pointer to the global variables
       @return A XanCycleCon object with values set base on the input
       */
-    static XanCycleCondition* _init(Variables *theVars);
+    static conditions::XanCycleCondition* _init(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -53,8 +64,11 @@ private:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr _MB(const double t, const XanCycleCondition* XanCycle_Con, Variables *theVars);
-    static XanCycleCondition* _MB_con(const double t, const XanCycleCondition* XanCycle_Con, Variables *theVars);
+    static arr _MB(const double t, const conditions::XanCycleCondition* XanCycle_Con,
+                   Variables *theVars);
+    static conditions::XanCycleCondition* _MB_con(const double t,
+                                                  const conditions::XanCycleCondition* XanCycle_Con,
+                                                  Variables *theVars);
 
     /**
       Calculate the Rates of XanCycle based on the inputs
@@ -63,13 +77,16 @@ private:
       @param XanCycle_Con XanCycleCon object giving the input parameters
       @param theVars The global variables
       */
-    static void _Rate(const double t, const XanCycleCondition* XanCycle_Con, Variables *theVars);
+    static void _Rate(const double t, const conditions::XanCycleCondition* XanCycle_Con,
+                      Variables *theVars);
 
-    static double kav;
-    static double kaz;
-    static double kva;
-    static double kza;
+    SET_GET(kav)
+    SET_GET(kaz)
+    SET_GET(kva)
+    SET_GET(kza)
     static double TIME;
     static size_t N;
 };
 
+}  // namespace modules
+}  // namespace ePhotosynthesis

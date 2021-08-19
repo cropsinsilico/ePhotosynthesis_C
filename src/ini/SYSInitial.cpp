@@ -26,10 +26,15 @@
 
 #include "Variables.hpp"
 #include "modules/FIBF.hpp"
+#include "globals.hpp"
 
 // This routine initialze the parameters used for all the routines.
 
-void SYSInitial(Variables *theVars) {
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
+void ePhotosynthesis::SYSInitial(Variables *theVars) {
     const double input_LHCI = 6.;
     const double input_LHCII = 13.;
     const double input_PSI = 1;

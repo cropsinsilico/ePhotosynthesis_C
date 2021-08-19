@@ -28,6 +28,10 @@
 
 #include "EPSCondition.hpp"
 #include "RuACTCondition.hpp"
+
+namespace ePhotosynthesis {
+namespace conditions {
+
 class DynaPSCondition;
 
 /**
@@ -97,6 +101,9 @@ private:
     void _clear();
     static size_t count;
 #ifdef INCDEBUG
-    const Debug::DebugLevel _dlevel = Debug::Middle;
+    const static Debug::DebugLevel _dlevel = Debug::Middle;
 #endif
 };
+
+}  // namespace conditions
+}  // namespace ePhotosynthesis

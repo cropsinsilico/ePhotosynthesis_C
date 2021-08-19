@@ -30,6 +30,14 @@
 #include "driver.hpp"
 #include "conditions/DynaPSCondition.hpp"
 
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class DynaPSDriverTest;
+}
+#endif
+namespace drivers {
+
 /**
  Class for running DynaPS through an ODE solver
  */
@@ -38,6 +46,10 @@ public:
     DynaPSDriver(Variables *theVars, const double st, const double stp, const double etime,
                 const int maxSteps, const double atol, const double rtol, const size_t para,
                 const double ratio, const bool showWarnings = false) : Driver(theVars, st, stp, etime, maxSteps, atol, rtol, showWarnings) {
+#ifdef INCDEBUG
+                ePhotosynthesis::conditions::DynaPSCondition::setTop();
+#endif
+
         ParaNum = para;
         Ratio = ratio;
     }
@@ -50,7 +62,7 @@ public:
 
 private:
 #ifdef TESTING
-    friend class DynaPSDriverTest;
+    friend class test::DynaPSDriverTest;
 #endif
 
     /**
@@ -68,7 +80,10 @@ private:
 
       @return A CMCon object for input into calculations
       */
-    DynaPSCondition* DynaPS_Ini();
+    conditions::DynaPSCondition* DynaPS_Ini();
     size_t ParaNum;
     double Ratio;
 };
+
+}  // namespace drivers
+}  // namespace ePhotosynthesis

@@ -26,6 +26,9 @@
 
 #include "vel/PRVel.hpp"
 
+namespace ePhotosynthesis {
+namespace vel {
+
 std::ostream& operator<<(std::ostream &out, const PRVel &in) {
     out << "PRVel" << std::endl;
     out << "  v111 = " << in.v111 << std::endl;
@@ -41,8 +44,5 @@ std::ostream& operator<<(std::ostream &out, const PRVel &in) {
     return out;
 }
 
-std::ostream& operator<<(std::ostream &out, const PRVel* in) {
-    out << *in;
-    return out;
-}
-
+}  // namespace vel
+}  // namespace ePhotosynthesis

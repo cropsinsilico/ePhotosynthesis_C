@@ -26,6 +26,9 @@
 
 #include "conditions/PS_PRCondition.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+
 size_t PS_PRCondition::count = 0;
 PS_PRCondition::PS_PRCondition(const PS_PRCondition* other) {
     _clear();

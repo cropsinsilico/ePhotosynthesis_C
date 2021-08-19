@@ -27,6 +27,10 @@
 #include "Variables.hpp"
 #include "modules/SUCS.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 double SUCS::KE501 = 0.;
 double SUCS::KE51 = 0.;
 double SUCS::KE52 = 0.;

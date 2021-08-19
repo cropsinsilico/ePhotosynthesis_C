@@ -26,6 +26,8 @@
 
 #include "conditions/XanCycleCondition.hpp"
 
+using namespace ePhotosynthesis::conditions;
+
 std::ostream& XanCycleCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "XanCycleContainer" << std::endl;

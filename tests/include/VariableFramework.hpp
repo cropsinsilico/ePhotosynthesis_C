@@ -1,9 +1,10 @@
 #pragma once
+
 #include <random>
+#include <map>
+#include "gtest/gtest.h"
 #include "Variables.hpp"
 #include "globals.hpp"
-#include "gtest/gtest.h"
-#include <map>
 
 #define COMPARE(x, y) EXPECT_EQ(x.size(), y.size());\
     for (size_t i = 0; i < x.size(); i++) \
@@ -16,6 +17,8 @@
             diff = true;\
     EXPECT_TRUE(diff);}
 
+namespace ePhotosynthesis {
+namespace test {
 
 const std::map<std::string, double> Emap = {{"V1", 120},
 {"V2", 1241.24},
@@ -112,4 +115,22 @@ inline arr get_random(const size_t size) {
         values.emplace_back(dis(e));
     return values;
 }
+
+template<class T, class U, class V, class W>
+class CombinedTest : public virtual T, public virtual U {
+protected:
+    void SetUp() override {
+        T::SetUp();
+        U::SetUp();
+    }
+
+    V* MB_con(const double t, const V* conditions, Variables* theVars) {
+        return W::_MB_con(t, conditions, theVars);
+    }
+    arr MB(const double t, const V* conditions, Variables* theVars) {
+        return W::_MB(t, conditions, theVars);
+    }
+};
+}  // namespace test
+}  // namspace ePhotosynthesis
 

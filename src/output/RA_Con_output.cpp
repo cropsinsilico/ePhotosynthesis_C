@@ -26,6 +26,8 @@
 
 #include "conditions/RACondition.hpp"
 
+using namespace ePhotosynthesis::conditions;
+
 std::ostream& RACondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "RAContainer" << std::endl;

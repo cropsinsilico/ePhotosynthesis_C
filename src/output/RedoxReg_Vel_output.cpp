@@ -26,6 +26,9 @@
 
 #include "vel/RedoxRegVel.hpp"
 
+namespace ePhotosynthesis {
+namespace vel {
+
 std::ostream& operator<<(std::ostream& out, const RedoxRegVel &in) {
     out << "RedoxRegVel" << std::endl;
     out << "  Vred = " << in.Vred << std::endl;
@@ -33,7 +36,5 @@ std::ostream& operator<<(std::ostream& out, const RedoxRegVel &in) {
     return out;
 }
 
-std::ostream& operator<<(std::ostream& out, const RedoxRegVel *in) {
-    out << *in;
-    return out;
-}
+}  // namespace vel
+}  // namespace ePhotosynthesis

@@ -29,11 +29,19 @@
 #include "ModuleBase.hpp"
 #include "conditions/trDynaPSCondition.hpp"
 
-class trDynaPS : public ModuleBase<trDynaPS, trDynaPSCondition> {
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class trDynaPSModuleTest;
+}
+#endif
+namespace modules {
+
+class trDynaPS : public ModuleBase<trDynaPS, conditions::trDynaPSCondition> {
 private:
     friend ModuleBase;
 #ifdef TESTING
-    friend class trDynaPSModuleTest;
+    friend class test::trDynaPSModuleTest;
 #endif
 
 /**
@@ -42,7 +50,7 @@ private:
   @param theVars The global variables
   @return A trDynaPSCon object for input into calculations
   */
-    static trDynaPSCondition* _init(Variables *theVars);
+    static conditions::trDynaPSCondition* _init(Variables *theVars);
 
 /**
   Calculate the output values based on the inputs
@@ -51,11 +59,18 @@ private:
   @param theVars The global variables
   @return A vector containing the updated values
   */
-    static arr _MB(const double t, const trDynaPSCondition* trDynaPS_con, Variables *theVars);
-    static trDynaPSCondition* _MB_con(const double t, const trDynaPSCondition* trDynaPS_con, Variables *theVars);
-    static void _Rate(const double t, const trDynaPSCondition* trDynaPS_con, Variables *theVars) {
+    static arr _MB(const double t, const conditions::trDynaPSCondition* trDynaPS_con,
+                   Variables *theVars);
+    static conditions::trDynaPSCondition* _MB_con(const double t,
+                                                  const conditions::trDynaPSCondition* trDynaPS_con,
+                                                  Variables *theVars);
+    static void _Rate(const double t, const conditions::trDynaPSCondition* trDynaPS_con,
+                      Variables *theVars) {
         (void)t;
         (void)trDynaPS_con;
         (void)theVars;
     }
 };
+
+}  // namespace modules
+}  // namespace ePhotosynthesis

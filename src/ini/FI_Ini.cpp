@@ -28,6 +28,10 @@
 #include "Variables.hpp"
 #include "modules/FI.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 double FI::TIME = 0.;
 size_t FI::N = 1;
 const size_t FICondition::count = 22;

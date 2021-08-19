@@ -28,6 +28,10 @@
 #include "modules/PS.hpp"
 #include "modules/PR.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 
 PS_PRCondition* PS_PR::_init(Variables *theVars) {
     PSCondition* PS_con = PS::init(theVars);

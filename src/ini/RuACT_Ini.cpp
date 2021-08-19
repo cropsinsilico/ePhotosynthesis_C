@@ -28,6 +28,10 @@
 #include "Variables.hpp"
 #include "modules/RuACT.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 bool RuACT::EPS_connect = false;
 bool RuACTCondition::EPS_connect = false;
 double RuACT::activase = 0.;

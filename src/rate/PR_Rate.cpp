@@ -31,6 +31,10 @@
 #include "conditions/PS_PRCondition.hpp"
 
 #define KI124 2
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
     // To set global information for different reactions
 
@@ -66,17 +70,17 @@ void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
         const double PrV123 = PR::V123 * PR::Vfactor123 * PR::Vf_T123 * pow(Q10_123, (theVars->Tp - 25) / 10);
         const double PrV124 = PR::V124 * PR::Vfactor124 * pow(Q10_124, (theVars->Tp - 25) / 10);
         const double PrV131 = PR::V131 * PR::Vfactor131 * PR::Vf_T131 * pow(Q10_131, (theVars->Tp - 25) / 10);
-        const double PrV111 = PS::PsV1 * 0.24;
+        const double PrV111 = PS::getPsV1() * 0.24;
 
        if (theVars->PR_PS_com) {
-            PR::KC= PS::KM11;
-            PR::KO= PS::KM12;
+            PR::KC= PS::getKM11();
+            PR::KO= PS::getKM12();
         }
 
         if (theVars->RUBISCOMETHOD == 2) {            // Using michelies and enzyme information
             double PrV111t;
             if (theVars->PR_PS_com) {       // FOr the combined PS-PR model
-                PrV111t = PrV111*RuBP / (RuBP + PR::KR * PS::V1Reg);
+                PrV111t = PrV111*RuBP / (RuBP + PR::KR * PS::getV1Reg());
             } else {                    // For the PR model
                 PrV111t = PrV111*RuBP / (RuBP + PR::KR);
             }
@@ -129,13 +133,13 @@ void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
         double PrV111t;
         if (theVars->RUBISCOMETHOD == 2) {
             if (theVars->PR_PS_com) {
-                PrV111t = PR::V111 * RuBP / (RuBP + PR::KR * PS::V1Reg);
+                PrV111t = PR::V111 * RuBP / (RuBP + PR::KR * PS::getV1Reg());
             } else {
                 PrV111t = PR::V111 * RuBP / (RuBP + PR::KR);
             }
             theVars->PR_Vel.v111 = PrV111t * theVars->O2_cond / (theVars->O2_cond + PR::KO * (1 + theVars->CO2_cond / PR::KC));
 
-            if (RuBP < PS::PsV1 / 2.5)
+            if (RuBP < PS::getPsV1() / 2.5)
                 theVars->PR_Vel.v111 = theVars->PR_Vel.v111 * (2.5 * RuBP / PrV111t);
 
 

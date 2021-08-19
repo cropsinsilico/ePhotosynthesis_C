@@ -2,6 +2,12 @@
 #include "drivers/trDynaPS_Driver.hpp"
 #include "modules/PR.hpp"
 
+using namespace ePhotosynthesis::conditions;
+using namespace ePhotosynthesis::drivers;
+using namespace ePhotosynthesis::modules;
+
+namespace ePhotosynthesis {
+namespace test {
 class trDynaPSDriverTest : public VariableFramework {
 protected:
     void TearDown() override {
@@ -93,3 +99,6 @@ TEST_F(trDynaPSDriverTest, FullTest) {
     DIFF(comp, res)
 }
 }
+
+}  // namespace test
+}  // namespace ePhotosynthesis

@@ -26,6 +26,9 @@
 
 #include "conditions/RuACTCondition.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+
 RuACTCondition::RuACTCondition(const RuACTCondition* other) {
     ER = other->ER;
     Eaf = other->Eaf;

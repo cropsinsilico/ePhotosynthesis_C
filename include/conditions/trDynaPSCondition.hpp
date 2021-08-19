@@ -29,6 +29,9 @@
 #include "RROEACondition.hpp"
 #include "DynaPSCondition.hpp"
 
+namespace ePhotosynthesis {
+namespace conditions {
+
 /**
  Class for holding inputs to trDynaPS_mb
  */
@@ -107,6 +110,9 @@ private:
 
     static size_t count;
 #ifdef INCDEBUG
-    const Debug::DebugLevel _dlevel = Debug::Top;
+    const static Debug::DebugLevel _dlevel = Debug::Top;
 #endif
 };
+
+}  // namespace conditions
+}  // namespace ePhotosynthesis

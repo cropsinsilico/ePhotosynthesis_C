@@ -33,6 +33,10 @@
 #define c_o 14.68
 #define dHa_o 23.72
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 
 double PS::KA231 = 0.;
 double PS::KE11 = 0.;

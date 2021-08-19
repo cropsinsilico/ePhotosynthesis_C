@@ -4,6 +4,10 @@
 
 
 namespace {
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+using namespace ePhotosynthesis::test;
+
 class FIBFConditionTest : public VariableFramework {
     void SetUp() override {
         FICondition::setBF_connect(false);

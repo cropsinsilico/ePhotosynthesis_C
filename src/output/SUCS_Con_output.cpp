@@ -26,6 +26,8 @@
 
 #include "conditions/SUCSCondition.hpp"
 
+using namespace ePhotosynthesis::conditions;
+
 std::ostream& SUCSCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "SUCSContainer" << std::endl;

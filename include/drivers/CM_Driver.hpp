@@ -30,6 +30,14 @@
 #include "driver.hpp"
 #include "conditions/CMCondition.hpp"
 
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class CMDriverTest;
+}
+#endif
+namespace drivers {
+
 /**
  Class for running the CM calculations in an ODE solver
  */
@@ -38,6 +46,10 @@ public:
     CMDriver(Variables *theVars, const double st, const double stp, const double etime,
              const int maxSteps, const double atol, const double rtol, const bool showWarnings = false) :
         Driver(theVars, st, stp, etime, maxSteps, atol, rtol, showWarnings) {
+#ifdef INCDEBUG
+                ePhotosynthesis::conditions::CMCondition::setTop();
+#endif
+
     }
     ~CMDriver() override;
     /**
@@ -47,7 +59,7 @@ public:
     void getResults() override;
 private:
 #ifdef TESTING
-    friend class CMDriverTest;
+    friend class test::CMDriverTest;
 #endif
 
     /**
@@ -55,7 +67,7 @@ private:
 
       @return A CMCon object for input into calculations
       */
-    CMCondition* CM_Ini();
+    conditions::CMCondition* CM_Ini();
     /**
       Calculate the output values based on the inputs
 
@@ -65,3 +77,6 @@ private:
       */
     arr MB(realtype t, N_Vector u) override;
 };
+
+}  // namespace drivers
+}  // namespace ePhotosynthesis

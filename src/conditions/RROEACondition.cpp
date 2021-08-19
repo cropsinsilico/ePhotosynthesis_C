@@ -26,6 +26,9 @@
 
 #include "conditions/RROEACondition.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+
 RROEACondition::RROEACondition(const RROEACondition* other) {
     GAPDH = other->GAPDH;
     FBPase = other->FBPase;

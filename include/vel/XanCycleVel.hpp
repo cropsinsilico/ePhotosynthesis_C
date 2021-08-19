@@ -28,6 +28,9 @@
 
 #include "definitions.hpp"
 
+namespace ePhotosynthesis {
+namespace vel {
+
 /**
  Class to hold the results of the XanCycleRate calculations
  */
@@ -57,5 +60,7 @@ public:
     double VABAdg = 0.; ///< The rate of ABA degradation
 
     friend std::ostream& operator<<(std::ostream& out, const XanCycleVel &in);
-    friend std::ostream& operator<<(std::ostream& out, const XanCycleVel *in);
 };
+
+}  // namespace vel
+}  // namespace ePhotosynthesis

@@ -30,6 +30,14 @@
 #include "driver.hpp"
 #include "conditions/EPSCondition.hpp"
 
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class EPSDriverTest;
+}
+#endif
+namespace drivers {
+
 /**
  Class for running EPD with an ODE solver
  */
@@ -39,6 +47,9 @@ public:
               const int maxSteps, const double atol, const double rtol,
               const size_t para, const double ratio, const double Tp, const bool showWarnings = false) :
         Driver(theVars, st, stp, etime, maxSteps, atol, rtol, showWarnings) {
+#ifdef INCDEBUG
+                ePhotosynthesis::conditions::EPSCondition::setTop();
+#endif
         ParaNum = para;
         Ratio = ratio;
         this->Tp = Tp;
@@ -55,7 +66,7 @@ public:
 
 private:
 #ifdef TESTING
-    friend class EPSDriverTest;
+    friend class test::EPSDriverTest;
 #endif
 
     /**
@@ -73,7 +84,7 @@ private:
 
       @return A trDynaPSCon object for input into calculations
       */
-    EPSCondition* EPS_Init();
+    conditions::EPSCondition* EPS_Init();
 
     //double Ca;
     //double Li;
@@ -82,3 +93,6 @@ private:
     double Ratio;
     double Tp;
 };
+
+}  // namespace drivers
+}  // namespace ePhotosynthesis

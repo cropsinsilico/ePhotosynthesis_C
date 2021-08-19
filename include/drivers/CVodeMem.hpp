@@ -1,5 +1,9 @@
 #pragma once
 #include <cvode/cvode_direct.h>
+
+namespace ePhotosynthesis {
+namespace drivers {
+
 class Driver;
 class CalcData;
 
@@ -26,3 +30,6 @@ private:
     void* _cvode_mem;
     CalcData* data;
 };
+
+}  // namespace drivers
+}  // namespace ePhotosynthesis

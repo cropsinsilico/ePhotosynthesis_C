@@ -28,12 +28,18 @@
 #include "globals.hpp"
 #include "modules/PS.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 PSCondition* PS::_MB_con(const double t, const PSCondition* PS_con, Variables *theVars) {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Modifying KM, KI, KE VMAX for different reactions as the regulation//
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //DEBUG_MESSAGE(PS_con)
+#ifdef INCDEBUG
+    DEBUG_MESSAGE(PS_con)
+#endif
 
     // Regulations first.
     Condition(t, theVars);
@@ -59,7 +65,9 @@ PSCondition* PS::_MB_con(const double t, const PSCondition* PS_con, Variables *t
     dydt->ATP = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13 - theVars->PS_Vel.v25;
     dydt->HexP = theVars->PS_Vel.v6 - theVars->PS_Vel.v7 - theVars->PS_Vel.v23 + theVars->PS_Vel.v25;
     dydt->PenP = theVars->PS_Vel.v7 + theVars->PS_Vel.v10 * 2 - theVars->PS_Vel.v13;
-    //DEBUG_DELTA(PSdydt)
+#ifdef INCDEBUG
+    DEBUG_INTERNAL(dydt)
+#endif
     return dydt;
 }
 

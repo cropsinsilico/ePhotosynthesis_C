@@ -37,6 +37,8 @@
 #include "drivers/drivers.hpp"
 #include "Variables.hpp"
 
+using namespace ePhotosynthesis;
+
 // macros to get options from either the command line (has precedence) or an options file
 #define varSearchD(x) if (result.count(#x) == 0 && inputs.count(#x) > 0) \
     x = stod(inputs.at(#x), nullptr);
@@ -120,12 +122,12 @@ int main(int argc, const char* argv[]) {
         theVars->CO2_in = static_cast<double>(stof(inputs.at("CO2"), nullptr));
         theVars->TestLi = static_cast<double>(stof(inputs.at("PAR"), nullptr));
         if (stoi(inputs.at("SucPath"), nullptr) > 0)
-            CM::setTestSucPath(true);
+            modules::CM::setTestSucPath(true);
         theVars->TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
         theVars->record = record;
         theVars->useC3 = useC3;
         theVars->RUBISCOMETHOD = 1;
-        PR::setRUBISCOTOTAL(3);
+        modules::PR::setRUBISCOTOTAL(3);
         if (debugDelta)
             dbglvl += 8;
         if (debugInternal)
@@ -137,31 +139,22 @@ int main(int argc, const char* argv[]) {
         if (dbglvl != 0)
             std::cout << "This is not a debug build, no debug reporting will be done." << std::endl;
 #endif
-        Driver *maindriver;
+        drivers::Driver *maindriver;
 
         //DEBUG_MESSAGE("TESTING",0)
         switch (driverChoice) {
             case trDynaPS:
-                maindriver = new trDynaPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
+                maindriver = new drivers::trDynaPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
                 break;
             case DynaPS:
-#ifdef INCDEBUG
-                DynaPSCondition::setTop();
-#endif
-                maindriver = new DynaPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
+                maindriver = new drivers::DynaPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
                 break;
             case CM:
-#ifdef INCDEBUG
-                CMCondition::setTop();
-#endif
-                maindriver = new CMDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol);
+                maindriver = new drivers::CMDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol);
                 break;
             case EPS:
-#ifdef INCDEBUG
-                EPSCondition::setTop();
-#endif
                 theVars->useC3 = true;
-                maindriver = new EPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1, Tp);
+                maindriver = new drivers::EPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1, Tp);
                 break;
             default:
                 printf("Invalid driver choice given.\n");

@@ -28,6 +28,9 @@
 
 #include "definitions.hpp"
 
+namespace ePhotosynthesis {
+namespace vel {
+
 /**
  Class for holding the result of the PR_Rate calculations
  */
@@ -83,5 +86,7 @@ public:
     double v2out = 0.;
 
     friend std::ostream& operator<<(std::ostream& out, const PRVel &in);
-    friend std::ostream& operator<<(std::ostream& out, const PRVel *in);
 };
+
+}  // namespace vel
+}  // namespace ePhotosynthesis

@@ -26,6 +26,8 @@
 
 #include "conditions/FIBFCondition.hpp"
 
+using namespace ePhotosynthesis::conditions;
+
 std::ostream& FIBFCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "FIBFContainer" << std::endl;

@@ -28,6 +28,9 @@
 
 #include "definitions.hpp"
 
+namespace ePhotosynthesis {
+namespace modules {
+
 class ssPS {
 public:
     /**
@@ -47,3 +50,6 @@ private:
     static double kmO2;
     static double kmCO2;
 };
+
+}  // namespace modules
+}  // namespace ePhotosynthesis

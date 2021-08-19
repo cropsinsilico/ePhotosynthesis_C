@@ -29,7 +29,14 @@
 #include "modules/SUCS.hpp"
 #include "modules/PS_PR.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 CMCondition* CM::_MB_con(const realtype t, const CMCondition* CM_con, Variables *theVars) {
+#ifdef INCDEBUG
+    DEBUG_MESSAGE(CM_con)
+#endif
 
     PS_PRCondition* PSPRdydt;
     SUCSCondition* SUCSdydt;
@@ -50,9 +57,11 @@ CMCondition* CM::_MB_con(const realtype t, const CMCondition* CM_con, Variables 
         //	T3Pc WY1905
         SUCSdydt->PGAc = SUCSdydt->PGAc - theVars->SUCS_Vel.vpga_in + theVars->PS_Vel.v32;//	pgaC
     }
-    //DEBUG_DELTA(dxdt)
-    CMCondition *dydt = new CMCondition(PSPRdydt, SUCSdydt);
 
+    CMCondition *dydt = new CMCondition(PSPRdydt, SUCSdydt);
+#ifdef INCDEBUG
+    DEBUG_INTERNAL(dydt)
+#endif
     return dydt;
 }
 

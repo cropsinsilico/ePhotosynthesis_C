@@ -29,17 +29,27 @@
 #include "ModuleBase.hpp"
 #include "conditions/PS_PRCondition.hpp"
 
-class PS_PR : public ModuleBase<PS_PR, PS_PRCondition> {
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class PS_PRModuleTest;
+}
+#endif
+namespace modules {
+
+class PS_PR : public ModuleBase<PS_PR, conditions::PS_PRCondition> {
 private:
     friend ModuleBase;
-    friend class PS_PRModuleTest;
+#ifdef TESTING
+    friend class test::PS_PRModuleTest;
+#endif
 /**
   Initialize the variables
 
   @param theVars The global variables
   @return A PS_PRCon object for input into calculations
   */
-    static PS_PRCondition* _init(Variables *theVars);
+    static conditions::PS_PRCondition* _init(Variables *theVars);
 
 /**
   Calculate the output values based on the inputs
@@ -48,10 +58,12 @@ private:
   @param theVars The global variables
   @return A vector containing the updated values
   */
-    static arr _MB(const double t, const PS_PRCondition* PS_PRs, Variables *theVars);
-    static PS_PRCondition* _MB_con(const double t, const PS_PRCondition* PS_PRs, Variables *theVars);
+    static arr _MB(const double t, const conditions::PS_PRCondition* PS_PRs, Variables *theVars);
+    static conditions::PS_PRCondition* _MB_con(const double t,
+                                               const conditions::PS_PRCondition* PS_PRs,
+                                               Variables *theVars);
 
-    static void _Rate(const double t, const PS_PRCondition* PS_PRs, Variables *theVars) {
+    static void _Rate(const double t, const conditions::PS_PRCondition* PS_PRs, Variables *theVars) {
         (void)t;
         (void)PS_PRs;
         (void)theVars;
@@ -59,3 +71,6 @@ private:
     static double TIME;
     static size_t N;
 };
+
+}  // namespace modules
+}  // namespace ePhotosynthesis

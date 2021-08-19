@@ -28,6 +28,9 @@
 
 #include "definitions.hpp"
 
+namespace ePhotosynthesis {
+namespace vel {
+
 /**
  Class for holding the results of SUCS_Rate calculations
  */
@@ -69,5 +72,7 @@ public:
     double vatpf = 0.;    ///< ATP synthesis rate
 
     friend std::ostream& operator<<(std::ostream& out, const SUCSVel &in);
-    friend std::ostream& operator<<(std::ostream& out, const SUCSVel *in);
 };
+
+}  // namespace vel
+}  // namespace ePhotosynthesis

@@ -28,6 +28,10 @@
 #include "modules/RROEA.hpp"
 #include "modules/PS.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 double RROEA::TIME = 0.;
 size_t RROEA::N = 1;
 const size_t RROEACondition::count = 10;

@@ -27,6 +27,11 @@
 #include "modules/CM.hpp"
 #include "modules/PS_PR.hpp"
 #include "modules/SUCS.hpp"
+
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 size_t CMCondition::count = 0;
 bool CM::TestSucPath = false;
 #ifdef INCDEBUG

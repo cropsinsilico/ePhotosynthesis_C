@@ -25,9 +25,12 @@
  **********************************************************************************************************************************************/
 
 #include "Variables.hpp"
+#include "globals.hpp"
+
+using namespace ePhotosynthesis;
 
 const bool VolRatioStCyto = true;
-double TargetFunVal(Variables *theVars) {
+double ePhotosynthesis::TargetFunVal(Variables *theVars) {
     if (!theVars->record)
         return 0.;
 

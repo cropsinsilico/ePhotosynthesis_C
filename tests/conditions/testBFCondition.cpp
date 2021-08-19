@@ -3,6 +3,9 @@
 #include "conditions/BFCondition.hpp"
 
 namespace {
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+using namespace ePhotosynthesis::test;
 
 class BFConditionTest : public VariableFramework {
 protected:

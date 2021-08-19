@@ -29,21 +29,31 @@
 #include "ModuleBase.hpp"
 #include "conditions/RuACTCondition.hpp"
 
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class RuACTModuleTest;
+}
+#endif
+namespace modules {
+
 /**
  Class for RuACT related functions
  */
-class RuACT : public ModuleBase<RuACT, RuACTCondition> {
-    SET_GET_BOOL_MODULE(EPS_connect, RuACT)
+class RuACT : public ModuleBase<RuACT, conditions::RuACTCondition> {
+    SET_GET_BOOL_MODULE(EPS_connect, conditions::RuACT)
 private:
     friend ModuleBase;
-    friend class RuACTModuleTest;
+#ifdef TESTING
+    friend class test::RuACTModuleTest;
+#endif
     /**
       Initializer
 
       @param theVars Pointer to the global variables
       @return A RuACTCon object with values set base on the input
       */
-    static RuACTCondition* _init(Variables *theVars);
+    static conditions::RuACTCondition* _init(Variables *theVars);
 
     /**
       Calculate the output values based on the inputs
@@ -53,8 +63,10 @@ private:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr _MB(const double t, const RuACTCondition* RuACT_Con, Variables *theVars);
-    static RuACTCondition* _MB_con(const double t, const RuACTCondition* RuACT_Con, Variables *theVars);
+    static arr _MB(const double t, const conditions::RuACTCondition* RuACT_Con, Variables *theVars);
+    static conditions::RuACTCondition* _MB_con(const double t,
+                                               const conditions::RuACTCondition* RuACT_Con,
+                                               Variables *theVars);
     /**
       Calculate the Rates of RuACT based on the inputs
 
@@ -62,8 +74,12 @@ private:
       @param RuACT_Con RuACTCon object giving the input parameters
       @param theVars The global variables
       */
-    static void _Rate(const double t, const RuACTCondition* RuACT_Con, Variables *theVars);
-    static double activase;
+    static void _Rate(const double t, const conditions::RuACTCondition* RuACT_Con,
+                      Variables *theVars);
+    SET_GET(activase)
     static double TIME;
     static size_t N;
 };
+
+}  // namespace modules
+}  // namespace ePhotosynthesis

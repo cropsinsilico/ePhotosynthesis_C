@@ -25,8 +25,10 @@
  **********************************************************************************************************************************************/
 
 #include "Variables.hpp"
+#include "globals.hpp"
 
-void ParamSet(Variables *theVars) {
+using namespace ePhotosynthesis;
+void ePhotosynthesis::ParamSet(Variables *theVars) {
 
     const double va1 = 0;
 

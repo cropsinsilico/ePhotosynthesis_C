@@ -28,6 +28,9 @@
 
 #include "definitions.hpp"
 
+namespace ePhotosynthesis {
+namespace pool {
+
 /**
  Class for FIBF_Pool data
  */
@@ -45,3 +48,6 @@ public:
   }
   double PQT;
 };
+
+}  // namespace pool
+}  // namespace ePhotosynthesis

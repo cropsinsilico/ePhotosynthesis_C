@@ -54,6 +54,8 @@
 #include "conditions/SUCSCondition.hpp"
 #include "conditions/XanCycleCondition.hpp"
 
+namespace ePhotosynthesis {
+
 /**
   Structure to hold global variables
   */
@@ -118,15 +120,15 @@ public:
     arr XanCycle_Param = zeros(2);
 
     // Vel
-    BFVel BF_Vel;
-    FIVel FI_Vel;
-    PRVel PR_Vel;
-    PSVel PS_Vel;
-    RROEAVel RROEA_Vel;
-    RedoxRegVel RedoxReg_Vel;
-    RuACTVel RuACT_Vel;
-    SUCSVel SUCS_Vel;
-    XanCycleVel XanCycle_Vel;
+    vel::BFVel BF_Vel;
+    vel::FIVel FI_Vel;
+    vel::PRVel PR_Vel;
+    vel::PSVel PS_Vel;
+    vel::RROEAVel RROEA_Vel;
+    vel::RedoxRegVel RedoxReg_Vel;
+    vel::RuACTVel RuACT_Vel;
+    vel::SUCSVel SUCS_Vel;
+    vel::XanCycleVel XanCycle_Vel;
 
     // Ratio
     arr BFRatio = ones(49);
@@ -143,44 +145,46 @@ public:
     arr VfactorT = ones(28);
 
     // Pool
-    BFPool BF_Pool;
-    FIBFPool FIBF_Pool;
-    FIPool FI_Pool;
-    RROEAPool RROEA_Pool;
-    RuACTPool RuACT_Pool;
-    SUCSPool SUCS_Pool;
+    pool::BFPool BF_Pool;
+    pool::FIBFPool FIBF_Pool;
+    pool::FIPool FI_Pool;
+    pool::RROEAPool RROEA_Pool;
+    pool::RuACTPool RuACT_Pool;
+    pool::SUCSPool SUCS_Pool;
 
     // RC
-    BFRC BF_RC;
-    FIRC FI_RC;
-    RROEARC RROEA_RC;
-    RuACTRC RuACT_RC;
+    RC::BFRC BF_RC;
+    RC::FIRC FI_RC;
+    RC::RROEARC RROEA_RC;
+    RC::RuACTRC RuACT_RC;
 
     // OUT
     arr BF2OUT = zeros(5);
-    PRCondition PR2OUT;
-    PSCondition PS2OUT;
-    SUCSCondition SUCS2OUT;
-    XanCycleCondition XanCycle2OUT;
+    conditions::PRCondition PR2OUT;
+    conditions::PSCondition PS2OUT;
+    conditions::SUCSCondition SUCS2OUT;
+    conditions::XanCycleCondition XanCycle2OUT;
 
     // misc
     arr FluxTR = {};
-    RROEAKE RROEA_KE;
+    KE::RROEAKE RROEA_KE;
 
-    TimeSeries<BFVel> BF_VEL = TimeSeries<BFVel>();
+    TimeSeries<vel::BFVel> BF_VEL = TimeSeries<vel::BFVel>();
     TimeSeries<std::vector<double> > CO2A = TimeSeries<std::vector<double> > ();
-    TimeSeries<FIVel> FI_VEL = TimeSeries<FIVel> ();
-    TimeSeries<PRVel> PR_VEL = TimeSeries<PRVel> ();
-    TimeSeries<PSVel> PS_VEL = TimeSeries<PSVel> ();
-    TimeSeries<RROEAVel> RROEA_VEL = TimeSeries<RROEAVel> ();
+    TimeSeries<vel::FIVel> FI_VEL = TimeSeries<vel::FIVel> ();
+    TimeSeries<vel::PRVel> PR_VEL = TimeSeries<vel::PRVel> ();
+    TimeSeries<vel::PSVel> PS_VEL = TimeSeries<vel::PSVel> ();
+    TimeSeries<vel::RROEAVel> RROEA_VEL = TimeSeries<vel::RROEAVel> ();
     std::vector<arr> RedoxReg_MP;
-    TimeSeries<RedoxRegVel> RedoxReg_VEL = TimeSeries<RedoxRegVel> ();
-    TimeSeries<RuACTVel> RuACT_VEL = TimeSeries<RuACTVel> ();
-    TimeSeries<SUCSVel> SUCS_VEL = TimeSeries<SUCSVel> ();
-    TimeSeries<XanCycleVel> XanCycle_VEL = TimeSeries<XanCycleVel> ();
+    TimeSeries<vel::RedoxRegVel> RedoxReg_VEL = TimeSeries<vel::RedoxRegVel> ();
+    TimeSeries<vel::RuACTVel> RuACT_VEL = TimeSeries<vel::RuACTVel> ();
+    TimeSeries<vel::SUCSVel> SUCS_VEL = TimeSeries<vel::SUCSVel> ();
+    TimeSeries<vel::XanCycleVel> XanCycle_VEL = TimeSeries<vel::XanCycleVel> ();
 
     bool useC3 = false;
 #ifdef INCDEBUG
     Debug::RequestedDebug debuglevel = Debug::None;
 #endif
 };
+
+}  // namespace ePhotosynthesis

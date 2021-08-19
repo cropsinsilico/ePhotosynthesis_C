@@ -31,6 +31,8 @@
 #include <algorithm>
 #include <fstream>
 
+namespace ePhotosynthesis {
+
 // predeclare main global data structure
 class Variables;
 
@@ -98,17 +100,7 @@ enum RequestedDebug : uint {None = 0,
 }
 
 #define DEBUG_MESSAGE(x) if (x->debugLevel() & theVars->debuglevel) std::cout << (x) << std::endl;
-#define DEBUG_DELTA(x) do { \
-    if (Debug::Delta & theVars->debuglevel) { \
-        std::cout << "  " << #x << std::endl; \
-        for (ulong qq = 0; qq < (x).size(); qq++) \
-            std::cout << "    " << qq << " = " << (x)[qq] << std::endl; \
-    }} while(0);
 #define DEBUG_INTERNAL(x) if (Debug::Internal & theVars->debuglevel) std::cout << (x) << std::endl;
-#else
-#define DEBUG_MESSAGE(x) do{}while(0);
-#define DEBUG_DELTA(x) do{}while(0);
-#define DEBUG_INTERNAL(x) do{}while(0);
 #endif
 
 #define SET_GET(NAME) public:\
@@ -263,3 +255,5 @@ inline void report(arr values) {
     }
     std::cout << std::endl;
 }
+
+}  // namespace ePhotosynthesis

@@ -28,6 +28,10 @@
 #include <math.h>
 #include "modules/ssPS.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 double ssPS::GammaStar = 0.;
 double ssPS::kmO2 = 0.;
 double ssPS::kmCO2 = 0.;

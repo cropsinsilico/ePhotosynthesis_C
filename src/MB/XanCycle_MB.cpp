@@ -28,9 +28,15 @@
 #include "Variables.hpp"
 #include "modules/XanCycle.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 XanCycleCondition* XanCycle::_MB_con(const double t, const XanCycleCondition* XanCycle_Con, Variables *theVars) {
     Condition(t, theVars);
-    //DEBUG_MESSAGE(XanCycle_Con)
+#ifdef INCDEBUG
+    DEBUG_MESSAGE(XanCycle_Con)
+#endif
     Rate(t, XanCycle_Con, theVars);
 
     XanCycleCondition* dydt = new XanCycleCondition();
@@ -39,7 +45,9 @@ XanCycleCondition* XanCycle::_MB_con(const double t, const XanCycleCondition* Xa
     dydt->Ax = theVars->XanCycle_Vel.Vva - theVars->XanCycle_Vel.Vav + theVars->XanCycle_Vel.Vza - theVars->XanCycle_Vel.Vaz;
     dydt->Zx = theVars->XanCycle_Vel.Vaz - theVars->XanCycle_Vel.Vza;
     dydt->ABA = theVars->XanCycle_Vel.Vv2ABA - theVars->XanCycle_Vel.VABAdg;
-    //DEBUG_DELTA(XanCycle_mb)
+#ifdef INCDEBUG
+    DEBUG_INTERNAL(dydt)
+#endif
     return dydt;
 }
 

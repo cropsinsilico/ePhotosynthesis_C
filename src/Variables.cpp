@@ -1,5 +1,7 @@
 #include "Variables.hpp"
 
+using namespace ePhotosynthesis;
+
 Variables::Variables(const Variables& other) : Variables() {
     *this = other;
 }

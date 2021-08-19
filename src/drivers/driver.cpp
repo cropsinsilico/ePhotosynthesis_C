@@ -34,6 +34,10 @@
 #include <cvode/cvode_direct.h>
 #include "drivers/CVodeMem.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::drivers;
+using namespace ePhotosynthesis::conditions;
+
 bool Driver::showWarnings = false;
 
 arr Driver::run() {

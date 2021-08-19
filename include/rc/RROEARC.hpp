@@ -28,6 +28,9 @@
 
 #include "definitions.hpp"
 
+namespace ePhotosynthesis {
+namespace RC {
+
 /**
  Class for RROEA_RC data
  */
@@ -63,3 +66,6 @@ public:
     double keFd2Calvin = 0;
     double ke2ATPGPP = 0;
 };
+
+}  // namespace RC
+}  // namespace ePhotosynthesis

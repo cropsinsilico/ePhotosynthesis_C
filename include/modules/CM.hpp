@@ -28,12 +28,20 @@
 #include "ModuleBase.hpp"
 #include "conditions/CMCondition.hpp"
 
-class CM : public ModuleBase<CM, CMCondition> {
+namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class CMModuleTest;
+}
+#endif
+namespace modules {
+
+class CM : public ModuleBase<CM, conditions::CMCondition> {
     SET_GET_BOOL(TestSucPath)
 private:
     friend ModuleBase;
 #ifdef TESTING
-    friend class CMModuleTest;
+    friend class test::CMModuleTest;
 #endif
 
     /**
@@ -42,7 +50,7 @@ private:
   @param theVars The global variables
   @return A CMCon object for input into calculations
   */
-    static CMCondition* _init(Variables *theVars);
+    static conditions::CMCondition* _init(Variables *theVars);
 /**
   Calculate the output values based on the inputs
 
@@ -51,12 +59,16 @@ private:
   @param theVars The global variables
   @return A vector containing the updated values
   */
-    static arr _MB(const double t, const CMCondition* CM_con, Variables *theVars);
-    static CMCondition* _MB_con(const double t, const CMCondition* CM_con, Variables *theVars);
+    static arr _MB(const double t, const conditions::CMCondition* CM_con, Variables *theVars);
+    static conditions::CMCondition* _MB_con(const double t, const conditions::CMCondition* CM_con,
+                                            Variables *theVars);
 
-    static void _Rate(const double t, const CMCondition* CM_con, Variables *theVars) {
+    static void _Rate(const double t, const conditions::CMCondition* CM_con, Variables *theVars) {
         (void)t;
         (void)CM_con;
         (void)theVars;
     }
 };
+
+}  // namespace modules
+}  // namespace ePhotosynthesis

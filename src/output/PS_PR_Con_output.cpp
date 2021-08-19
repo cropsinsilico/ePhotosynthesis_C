@@ -26,6 +26,8 @@
 
 #include "conditions/PS_PRCondition.hpp"
 
+using namespace ePhotosynthesis::conditions;
+
 std::ostream& PS_PRCondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
     out << space << "PS_PRContainer" << std::endl;

@@ -26,6 +26,8 @@
 
 #include "conditions/FICondition.hpp"
 
+using namespace ePhotosynthesis::conditions;
+
 std::ostream& FICondition::_print(std::ostream &out, const uint tab) const {
     const std::string space(tab * 4, ' ');
 

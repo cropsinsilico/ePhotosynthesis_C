@@ -26,6 +26,9 @@
 
 #include "vel/FIVel.hpp"
 
+namespace ePhotosynthesis {
+namespace vel {
+
 std::ostream& operator<<(std::ostream &out, const FIVel &in) {
     out << "FIVel" << std::endl;
     out << "  vA_d = " << in.vA_d << std::endl;
@@ -89,7 +92,5 @@ std::ostream& operator<<(std::ostream &out, const FIVel &in) {
     return out;
 }
 
-std::ostream& operator<<(std::ostream &out, const FIVel* in) {
-    out << *in;
-    return out;
-}
+}  // namespace vel
+}  // namespace ePhotosynthesis

@@ -28,6 +28,9 @@
 
 #include "definitions.hpp"
 
+namespace ePhotosynthesis {
+namespace RC {
+
 /**
  Class for holding BF_RC data
  */
@@ -111,3 +114,5 @@ public:
     double KE2 = 0.;   ///< Equilibrium constant
 };
 
+}  // namespace RC
+}  // namespace ePhotosynthesis

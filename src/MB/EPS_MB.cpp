@@ -32,7 +32,14 @@
 
 // This model includes the mass balance equations for the full model of the light reactions.
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
 EPSCondition* EPS::_MB_con(const double t, const EPSCondition* EPS_Con, Variables *theVars) {
+#ifdef INCDEBUG
+    DEBUG_MESSAGE(EPS_Con)
+#endif
 
     // Try out one new way of calculating the mass balance equation.
     // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.
@@ -54,7 +61,9 @@ EPSCondition* EPS::_MB_con(const double t, const EPSCondition* EPS_Con, Variable
     }
 
     EPSCondition* dydt = new EPSCondition(FIBFdydt, CMdydt);
-    //DEBUG_DELTA(EPS_DYDT)
+#ifdef INCDEBUG
+    DEBUG_INTERNAL(dydt)
+#endif
     return dydt;
 }
 

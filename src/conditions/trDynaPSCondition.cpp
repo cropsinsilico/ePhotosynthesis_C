@@ -26,6 +26,9 @@
 
 #include "conditions/trDynaPSCondition.hpp"
 
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::conditions;
+
 size_t trDynaPSCondition::count = 0;
 
 trDynaPSCondition::trDynaPSCondition(const trDynaPSCondition* other) {
