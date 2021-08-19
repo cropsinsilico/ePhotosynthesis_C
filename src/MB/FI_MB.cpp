@@ -38,9 +38,6 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 FICondition* FI::_MB_con(const double t, const FICondition *FI_Con, Variables *theVars) {
-#ifdef INCDEBUG
-    DEBUG_MESSAGE(FI_Con)
-#endif
 
     //////////////////////////////////////////////////////////////////
     //   Calculate the rates first   //

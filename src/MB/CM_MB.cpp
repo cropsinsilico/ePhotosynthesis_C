@@ -34,9 +34,6 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 CMCondition* CM::_MB_con(const realtype t, const CMCondition* CM_con, Variables *theVars) {
-#ifdef INCDEBUG
-    DEBUG_MESSAGE(CM_con)
-#endif
 
     PS_PRCondition* PSPRdydt;
     SUCSCondition* SUCSdydt;

@@ -204,7 +204,9 @@ void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
 
     theVars->BF_Vel.Vbf11  = Vbf11;
 
+#ifdef INCDEBUG
     DEBUG_INTERNAL(theVars->BF_Vel)
+#endif
     if (theVars->record) {
         ////////////////////////////////////////////////////////////////////////////////
         //   Part V Output of Velocity for plot //

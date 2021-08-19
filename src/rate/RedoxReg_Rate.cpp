@@ -106,7 +106,9 @@ void RedoxReg::_Rate(const double t, const RedoxRegCondition* RedoxReg_Con, Vari
     theVars->RedoxReg_Vel.Vred = RedoxReg_Con->RA_con->EPS_con->FIBF_con->BF_con->Fdn * Fd_Thio_ET * Thio / ThioT;
     theVars->RedoxReg_Vel.Vox = RedoxReg_Con->Thion * Thio_Oxidation;
 
+#ifdef INCDEBUG
     DEBUG_INTERNAL(theVars->RedoxReg_Vel)
+#endif
     if (theVars->record) {
         if (t > RedoxReg::TIME) {
             RedoxReg::N++;

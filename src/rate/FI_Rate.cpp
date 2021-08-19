@@ -159,7 +159,9 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
     theVars->FI_Vel.vS3_S0  = FI_Con->S3Tp * theVars->FI_RC.k30; // vS3_S0 The rate of transition from S3 to S0
     theVars->FI_Vel.vS0_S1  = FI_Con->S0Tp * theVars->FI_RC.k01; // vS0_S1 The rate of transition from S0 to S1
 
+#ifdef INCDEBUG
     DEBUG_INTERNAL(theVars->FI_Vel)
+#endif
     if (theVars->record) {
         //////////////////////////////////////////////////////////////////////////////////////////////////
         //   Part V Output of Velocity for plot          //

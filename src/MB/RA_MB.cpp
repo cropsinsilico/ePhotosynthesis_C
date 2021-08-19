@@ -34,9 +34,6 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 RACondition* RA::_MB_con(const double t, const RACondition* RA_Con, Variables *theVars) {
-#ifdef INCDEBUG
-    DEBUG_MESSAGE(RA_Con)
-#endif
 
     EPSCondition* EPSdydt = EPS::MB_con(t, RA_Con->EPS_con, theVars);
     RuACTCondition* RuACTdydt = RuACT::MB_con(t, RA_Con->RuACT_con, theVars);

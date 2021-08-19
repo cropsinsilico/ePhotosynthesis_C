@@ -269,7 +269,9 @@ void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
         theVars->PS_Vel.v25 = (0.5 * theVars->PSRatio[102] / 100 / 5) * (1 - PS_con->RuBP / MaxCoeff) * PS_con->ATP / (PS_con->ATP + 1);
     }
     theVars->PS2BF_Pi = theVars->Pi;
+#ifdef INCDEBUG
     DEBUG_INTERNAL(theVars->PS_Vel)
+#endif
     // Getting the information for output as figures.
 
 

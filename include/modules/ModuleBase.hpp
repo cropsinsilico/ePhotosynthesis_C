@@ -37,10 +37,14 @@ class ModuleBase {
 public:
     static U* init(Variables *theVars) {return T::_init(theVars);}
     static arr MB(const double t, const U* constraints, Variables *theVars) {
+#ifdef INCDEBUG
         DEBUG_MESSAGE(constraints)
+#endif
         return T::_MB(t, constraints, theVars);}
     static U* MB_con(const double t, const U* constraints, Variables *theVars) {
+#ifdef INCDEBUG
         DEBUG_MESSAGE(constraints)
+#endif
         return T::_MB_con(t, constraints, theVars);}
 protected:
     ModuleBase() {}

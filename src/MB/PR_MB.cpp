@@ -33,10 +33,6 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 PRCondition* PR::_MB_con(const double t, const PRCondition* PR_con, Variables *theVars) {
-#ifdef INCDEBUG
-    DEBUG_MESSAGE(PR_con)
-#endif
-
     Condition(t, theVars);
 
     Rate(t, PR_con, theVars);
