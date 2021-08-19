@@ -33,9 +33,9 @@
 namespace ePhotosynthesis {
 #ifdef TESTING
 namespace test {
-#endif
 class CMDriverTest;
 }
+#endif
 namespace drivers {
 
 /**
