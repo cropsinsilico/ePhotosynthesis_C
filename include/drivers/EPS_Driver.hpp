@@ -47,6 +47,9 @@ public:
               const int maxSteps, const double atol, const double rtol,
               const size_t para, const double ratio, const double Tp, const bool showWarnings = false) :
         Driver(theVars, st, stp, etime, maxSteps, atol, rtol, showWarnings) {
+#ifdef INCDEBUG
+                ePhotosynthesis::conditions::EPSCondition::setTop();
+#endif
         ParaNum = para;
         Ratio = ratio;
         this->Tp = Tp;

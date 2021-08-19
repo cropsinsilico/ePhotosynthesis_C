@@ -147,21 +147,12 @@ int main(int argc, const char* argv[]) {
                 maindriver = new drivers::trDynaPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
                 break;
             case DynaPS:
-#ifdef INCDEBUG
-                DynaPSCondition::setTop();
-#endif
                 maindriver = new drivers::DynaPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
                 break;
             case CM:
-#ifdef INCDEBUG
-                CMCondition::setTop();
-#endif
                 maindriver = new drivers::CMDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol);
                 break;
             case EPS:
-#ifdef INCDEBUG
-                EPSCondition::setTop();
-#endif
                 theVars->useC3 = true;
                 maindriver = new drivers::EPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1, Tp);
                 break;
