@@ -38,15 +38,14 @@ class SUCSPool {
 public:
     SUCSPool() {}
     SUCSPool(const SUCSPool &other) {
-
         ATc = other.ATc;
         UTc = other.UTc;
         PTc = other.PTc;
-}
+    }
 
-    double ATc = 0;
-    double UTc = 0;
-    double PTc = 0;
+    double ATc = 0.;
+    double UTc = 0.;
+    double PTc = 0.;
 };
 
 }  // namespace pool

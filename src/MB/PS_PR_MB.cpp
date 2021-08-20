@@ -43,9 +43,9 @@ PS_PRCondition* PS_PR::_MB_con(const double t, const PS_PRCondition* PS_PR_con, 
     PR::setPGA(PS_con->PGA);
     const double PR2PS_Pgca = PS_PR_con->PR_con->PGCA;  // FOr transfering information between PR to PS.
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
     // 2. Add exprimental conditions here; Conditions like light, temperature, CO2, O2 concentration should be added here //
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
 
     Condition(t, theVars);
 
@@ -69,12 +69,16 @@ PS_PRCondition* PS_PR::_MB_con(const double t, const PS_PRCondition* PS_PR_con, 
     //////////////////////////////////////////////////////////////////////////////////////////////$
 
     PSdydt->RuBP = theVars->PS_Vel.v13 - theVars->PS_Vel.v1 - theVars->PR_Vel.v111;
-    PSdydt->PGA = 2 * theVars->PS_Vel.v1 - theVars->PS_Vel.v2 - theVars->PS_Vel.v32 + theVars->PR_Vel.v113 + theVars->PR_Vel.v111;
+    PSdydt->PGA = 2 * theVars->PS_Vel.v1 - theVars->PS_Vel.v2 - theVars->PS_Vel.v32 +
+                  theVars->PR_Vel.v113 + theVars->PR_Vel.v111;
 
     if (theVars->useC3) {
-        PSdydt->ATP = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13 - theVars->PR_Vel.v113;
+        PSdydt->ATP = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 -
+                      theVars->PS_Vel.v13 - theVars->PR_Vel.v113;
     } else {
-        PSdydt->ATP = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13 - theVars->PR_Vel.v113 - theVars->PS_Vel.v25 - theVars->PR_Vel.v131 - vATPcost;//WY202003 extra ATP cost
+        PSdydt->ATP = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 -
+                      theVars->PS_Vel.v13 - theVars->PR_Vel.v113 - theVars->PS_Vel.v25 -
+                      theVars->PR_Vel.v131 - vATPcost;//WY202003 extra ATP cost
     }
 
     if (theVars->useC3)

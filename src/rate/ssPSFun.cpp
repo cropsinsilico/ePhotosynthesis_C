@@ -35,19 +35,19 @@ arr ssPS::ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, Variable
     ssPSIni(temp, theVars);
 
     const double Ci = CO2;
-    const double wc = VcmaxT * (Ci - GammaStar) / (Ci + kmCO2 * (1 + theVars->O2 / kmO2));
+    const double wc = VcmaxT * (Ci - GammaStar) / (Ci + kmCO2 * (1. + theVars->O2 / kmO2));
     const double wj = JmaxT * (Ci - GammaStar) / (4.5 * Ci + 10.5 * GammaStar);
     const double w = std::min(wc, wj);
 
-    const double Vm = 88.6 * pow(10, -3);
+    const double Vm = 88.6 * pow(10., -3.);
     const double at = 12.6 * Vm;
     const double p = 2.5 * Vm;
     const double Vr = Vm * 2.27;
 
     const double tC = at - p * wc / wj;
-    const double tJ = (at - p) * (Vr / Vm - 1) / (wc * Vr / (wj * Vm) - 1);
+    const double tJ = (at - p) * (Vr / Vm - 1.) / (wc * Vr / (wj * Vm) - 1.);
 
-    const double To = 1;
+    const double To = 1.;
     double ATP;
     if (wc < wj) {
         ATP = To + tC;
@@ -55,7 +55,7 @@ arr ssPS::ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, Variable
         ATP = tJ;
     }
 
-    ATP = ATP / 5 * 1.5;
+    ATP = ATP / 5. * 1.5;
     arr rval = zeros(2);
     rval[0] = ATP;
     rval[1] = w;

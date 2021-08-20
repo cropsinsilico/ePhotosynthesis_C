@@ -166,7 +166,7 @@ arr DynaPSDriver::MB(realtype t, N_Vector u) {
     // Try out one new way of calculating the mass balance equation.
     // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.
 
-    //// Step One: Get the initialization of the concentrations for the RedoxReg model which will be used in the calculation of mb of RedoxReg.
+    // Step One: Get the initialization of the concentrations for the RedoxReg model which will be used in the calculation of mb of RedoxReg.
     realtype *x = N_VGetArrayPointer(u);
 
     DynaPSCondition* DynaPS_con = new DynaPSCondition(x);

@@ -59,13 +59,19 @@ FICondition* FI::_MB_con(const double t, const FICondition *FI_Con, Variables *t
     // One problem need to be taken care of is the variables needed to transfer from FI_CalV to FI_mb
     // The Major Variables
     FICondition* dydt = new FICondition();
-    dydt->A = theVars->FI_Vel.Ia - theVars->FI_Vel.vA_f - theVars->FI_Vel.vA_d - theVars->FI_Vel.vA_U + theVars->FI_Vel.vU_A; // A 6
-    dydt->U = theVars->FI_Vel.Ic + theVars->FI_Vel.vA_U - theVars->FI_Vel.vU_A - theVars->FI_Vel.vU_f - theVars->FI_Vel.vU_d - theVars->FI_Vel.v1 + theVars->FI_Vel.v_r1 - theVars->FI_Vel.vP680qU; // U
-    dydt->P680ePheo = theVars->FI_Vel.vU_P680 + theVars->FI_Vel.v_r1 - theVars->FI_Vel.v1 - theVars->FI_Vel.vP680_d; // P680ePheo QF add
-    dydt->P680pPheon = theVars->FI_Vel.v1 - theVars->FI_Vel.v_r1 - theVars->FI_Vel.vz_1 - theVars->FI_Vel.v2_1 + theVars->FI_Vel.vr2_1; // P680pPheon
+    dydt->A = theVars->FI_Vel.Ia - theVars->FI_Vel.vA_f - theVars->FI_Vel.vA_d -
+              theVars->FI_Vel.vA_U + theVars->FI_Vel.vU_A; // A 6
+    dydt->U = theVars->FI_Vel.Ic + theVars->FI_Vel.vA_U - theVars->FI_Vel.vU_A -
+              theVars->FI_Vel.vU_f - theVars->FI_Vel.vU_d - theVars->FI_Vel.v1 +
+              theVars->FI_Vel.v_r1 - theVars->FI_Vel.vP680qU; // U
+    dydt->P680ePheo = theVars->FI_Vel.vU_P680 + theVars->FI_Vel.v_r1 - theVars->FI_Vel.v1 -
+                      theVars->FI_Vel.vP680_d; // P680ePheo QF add
+    dydt->P680pPheon = theVars->FI_Vel.v1 - theVars->FI_Vel.v_r1 - theVars->FI_Vel.vz_1 -
+                       theVars->FI_Vel.v2_1 + theVars->FI_Vel.vr2_1; // P680pPheon
     dydt->P680pPheo = theVars->FI_Vel.v2_1 - theVars->FI_Vel.vr2_1 - theVars->FI_Vel.vz_2; // P680pPheo
     dydt->P680Pheon = theVars->FI_Vel.vz_1 - theVars->FI_Vel.v2_2 + theVars->FI_Vel.vr2_2; // P680Pheon
-    dydt->Yz = theVars->FI_Vel.vS1_S2 + theVars->FI_Vel.vS2_S3 + theVars->FI_Vel.vS3_S0 + theVars->FI_Vel.vS0_S1 - theVars->FI_Vel.vz_1 - theVars->FI_Vel.vz_2; // Yz
+    dydt->Yz = theVars->FI_Vel.vS1_S2 + theVars->FI_Vel.vS2_S3 + theVars->FI_Vel.vS3_S0 +
+               theVars->FI_Vel.vS0_S1 - theVars->FI_Vel.vz_1 - theVars->FI_Vel.vz_2; // Yz
     dydt->S1T = theVars->FI_Vel.vS0_S1 - theVars->FI_Vel.v1z;  // S1T
     dydt->S2T = theVars->FI_Vel.vS1_S2 - theVars->FI_Vel.v2z;  // S2T
     dydt->S3T = theVars->FI_Vel.vS2_S3 - theVars->FI_Vel.v3z;  // S3T
@@ -74,14 +80,22 @@ FICondition* FI::_MB_con(const double t, const FICondition *FI_Con, Variables *t
     dydt->S2Tp = theVars->FI_Vel.v2z - theVars->FI_Vel.vS2_S3; // S2Tp
     dydt->S3Tp = theVars->FI_Vel.v3z - theVars->FI_Vel.vS3_S0; // S3Tp
     dydt->S0Tp = theVars->FI_Vel.v0z - theVars->FI_Vel.vS0_S1; // S0Tp
-    dydt->QAQB = theVars->FI_Vel.v3 - theVars->FI_Vel.v_r3 - theVars->FI_Vel.v2_00_1 - theVars->FI_Vel.v2_00_2 + theVars->FI_Vel.vr2_00_1 + theVars->FI_Vel.vr2_00_2; // QAQB
-    dydt->QAnQB = theVars->FI_Vel.v2_00_1 + theVars->FI_Vel.v2_00_2 - theVars->FI_Vel.vr2_00_1 - theVars->FI_Vel.vr2_00_2 - theVars->FI_Vel.vAB1 + theVars->FI_Vel.vBA1 + theVars->FI_Vel.v3_n - theVars->FI_Vel.v_r3_n; // QAnQB
-    dydt->QAQBn = theVars->FI_Vel.vAB1 - theVars->FI_Vel.vBA1 - theVars->FI_Vel.v2_01_1 - theVars->FI_Vel.v2_01_2 + theVars->FI_Vel.vr2_01_1 + theVars->FI_Vel.vr2_01_2; // QAQBn
-    dydt->QAnQBn = theVars->FI_Vel.vBA2 - theVars->FI_Vel.vAB2 + theVars->FI_Vel.v2_01_1 + theVars->FI_Vel.v2_01_2 - theVars->FI_Vel.vr2_01_1 - theVars->FI_Vel.vr2_01_2; // QAnQBn
-    dydt->QAQB2n = theVars->FI_Vel.vAB2 - theVars->FI_Vel.vBA2 - theVars->FI_Vel.v3 + theVars->FI_Vel.v_r3 - theVars->FI_Vel.v2_02_1 - theVars->FI_Vel.v2_02_2 + theVars->FI_Vel.vr2_02_1 + theVars->FI_Vel.vr2_02_2; // QAQB2n
-    dydt->QAnQB2n = 0 - theVars->FI_Vel.v3_n + theVars->FI_Vel.v_r3_n + theVars->FI_Vel.v2_02_1 + theVars->FI_Vel.v2_02_2 - theVars->FI_Vel.vr2_02_1 - theVars->FI_Vel.vr2_02_2; // QAnQB2n
+    dydt->QAQB = theVars->FI_Vel.v3 - theVars->FI_Vel.v_r3 - theVars->FI_Vel.v2_00_1 -
+                 theVars->FI_Vel.v2_00_2 + theVars->FI_Vel.vr2_00_1 + theVars->FI_Vel.vr2_00_2; // QAQB
+    dydt->QAnQB = theVars->FI_Vel.v2_00_1 + theVars->FI_Vel.v2_00_2 - theVars->FI_Vel.vr2_00_1 -
+                  theVars->FI_Vel.vr2_00_2 - theVars->FI_Vel.vAB1 + theVars->FI_Vel.vBA1 + theVars->FI_Vel.v3_n - theVars->FI_Vel.v_r3_n; // QAnQB
+    dydt->QAQBn = theVars->FI_Vel.vAB1 - theVars->FI_Vel.vBA1 - theVars->FI_Vel.v2_01_1 -
+                  theVars->FI_Vel.v2_01_2 + theVars->FI_Vel.vr2_01_1 + theVars->FI_Vel.vr2_01_2; // QAQBn
+    dydt->QAnQBn = theVars->FI_Vel.vBA2 - theVars->FI_Vel.vAB2 + theVars->FI_Vel.v2_01_1 +
+                   theVars->FI_Vel.v2_01_2 - theVars->FI_Vel.vr2_01_1 - theVars->FI_Vel.vr2_01_2; // QAnQBn
+    dydt->QAQB2n = theVars->FI_Vel.vAB2 - theVars->FI_Vel.vBA2 - theVars->FI_Vel.v3 +
+                   theVars->FI_Vel.v_r3 - theVars->FI_Vel.v2_02_1 - theVars->FI_Vel.v2_02_2 +
+                   theVars->FI_Vel.vr2_02_1 + theVars->FI_Vel.vr2_02_2; // QAQB2n
+    dydt->QAnQB2n = 0. - theVars->FI_Vel.v3_n + theVars->FI_Vel.v_r3_n + theVars->FI_Vel.v2_02_1 +
+                    theVars->FI_Vel.v2_02_2 - theVars->FI_Vel.vr2_02_1 - theVars->FI_Vel.vr2_02_2; // QAnQB2n
     if (!FICondition::BF_connect)
-        dydt->PQn = theVars->FI_Vel.v3 + theVars->FI_Vel.v3_n - theVars->FI_Vel.v_r3 - theVars->FI_Vel.v_r3_n - theVars->FI_Vel.v_pq_ox; // PQn
+        dydt->PQn = theVars->FI_Vel.v3 + theVars->FI_Vel.v3_n - theVars->FI_Vel.v_r3 -
+                    theVars->FI_Vel.v_r3_n - theVars->FI_Vel.v_pq_ox; // PQn
 
 #ifdef INCDEBUG
     DEBUG_INTERNAL(dydt)

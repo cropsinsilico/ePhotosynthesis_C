@@ -60,23 +60,23 @@ RedoxRegCondition* RedoxReg::_init(Variables *theVars) {
 
     for (int i = 0; i < 5; i++)
         theVars->RedoxReg_MP.push_back(zeros(3));
-    theVars->RedoxReg_MP[0][0] = 1000;
+    theVars->RedoxReg_MP[0][0] = 1000.;
     theVars->RedoxReg_MP[0][1] = - 0.3;
     theVars->RedoxReg_MP[0][2] = 0.5;
 
-    theVars->RedoxReg_MP[1][0] = 6;             // FBPase
+    theVars->RedoxReg_MP[1][0] = 6.;             // FBPase
     theVars->RedoxReg_MP[1][1] = - 0.305;
     theVars->RedoxReg_MP[1][2] = 0.5;
 
-    theVars->RedoxReg_MP[2][0] = 9;             // SBPase
+    theVars->RedoxReg_MP[2][0] = 9.;             // SBPase
     theVars->RedoxReg_MP[2][1] = - 0.3;
     theVars->RedoxReg_MP[2][2] = 0.5;
 
-    theVars->RedoxReg_MP[3][0] = 13;            // PRK
+    theVars->RedoxReg_MP[3][0] = 13.;            // PRK
     theVars->RedoxReg_MP[3][1] = - 0.295;
     theVars->RedoxReg_MP[3][2] = 0.5;
 
-    theVars->RedoxReg_MP[4][0] = 16;            // ATPase
+    theVars->RedoxReg_MP[4][0] = 16.;            // ATPase
     theVars->RedoxReg_MP[4][1] = - 0.28;
     theVars->RedoxReg_MP[4][2] = 0.5;
 

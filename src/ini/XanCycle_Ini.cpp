@@ -27,6 +27,11 @@
 #include "Variables.hpp"
 #include "modules/XanCycle.hpp"
 
+const double Vx_ = 160.;
+const double Ax_ = 10.;
+const double Zx_ = 5.;
+const double ABA_ = 1.;
+
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
@@ -43,23 +48,18 @@ const size_t XanCycleCondition::count = 4;
 
 XanCycleCondition* XanCycle::_init(Variables *theVars) {
 
-    XanCycle::kva = 0.163 / 60 * theVars->XanRatio[0]; // Ruth Frommolt et a; 2001; Planta
-    XanCycle::kaz = 0.691 / 60 * theVars->XanRatio[1]; // Ruth Frommolt et a; 2001; Planta
-    XanCycle::kza = 0.119 / 60 * theVars->XanRatio[2]; // Ruth Frommolt et a; 2001; Planta
-    XanCycle::kav = 0.119 / 60 * theVars->XanRatio[3]; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
-
-    const double Vx = 160;
-    const double Ax = 10;
-    const double Zx = 5;
-    const double ABA = 1;
+    XanCycle::kva = 0.163 / 60. * theVars->XanRatio[0]; // Ruth Frommolt et a; 2001; Planta
+    XanCycle::kaz = 0.691 / 60. * theVars->XanRatio[1]; // Ruth Frommolt et a; 2001; Planta
+    XanCycle::kza = 0.119 / 60. * theVars->XanRatio[2]; // Ruth Frommolt et a; 2001; Planta
+    XanCycle::kav = 0.119 / 60. * theVars->XanRatio[3]; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
 
     XanCycleCondition* XanCycle_con = new XanCycleCondition();
-    XanCycle_con->Vx = Vx * 0.37;
-    XanCycle_con->Ax = Ax * 0.37;
-    XanCycle_con->Zx = Zx * 0.37;
-    XanCycle_con->ABA = ABA;
+    XanCycle_con->Vx = Vx_ * 0.37;
+    XanCycle_con->Ax = Ax_ * 0.37;
+    XanCycle_con->Zx = Zx_ * 0.37;
+    XanCycle_con->ABA = ABA_;
 
-    XanCycle::XanCycle2FIBF_Xstate = Zx / (Ax + Vx + Zx);
+    XanCycle::XanCycle2FIBF_Xstate = Zx_ / (Ax_ + Vx_ + Zx_);
 
     return XanCycle_con;
 }

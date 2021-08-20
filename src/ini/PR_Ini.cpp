@@ -78,25 +78,34 @@ double PR::V123 = 0.;
 double PR::V124 = 0.;
 double PR::V131 = 0.;
 double PR::V2T = 0.;
-double PR::Vfactor112 = 0;
-double PR::Vfactor113 = 0;
-double PR::Vfactor121 = 0;
-double PR::Vfactor122 = 0;
-double PR::Vfactor123 = 0;
-double PR::Vfactor124 = 0;
-double PR::Vfactor131 = 0;
-double PR::Vf_T131 = 0;
-double PR::Vf_T113 = 0;
-double PR::Vf_T123 = 0;
-double PR::Vf_T121 = 0;
-double PR::Vf_T122 = 0;
-double PR::Vf_T112 = 0;
+double PR::Vfactor112 = 0.;
+double PR::Vfactor113 = 0.;
+double PR::Vfactor121 = 0.;
+double PR::Vfactor122 = 0.;
+double PR::Vfactor123 = 0.;
+double PR::Vfactor124 = 0.;
+double PR::Vfactor131 = 0.;
+double PR::Vf_T131 = 0.;
+double PR::Vf_T113 = 0.;
+double PR::Vf_T123 = 0.;
+double PR::Vf_T121 = 0.;
+double PR::Vf_T122 = 0.;
+double PR::Vf_T112 = 0.;
 double PR::PGA = 0.;
 double PR::TIME = 0.;
 double PR::GLUc = 0.;
 double PR::RUBISCOTOTAL = 0.;
 double PR::V1T = 0.;
 size_t PR::N = 1;
+
+double PR::PrV112 = 0.;
+double PR::PrV113 = 0.;
+double PR::PrV121 = 0.;
+double PR::PrV122 = 0.;
+double PR::PrV123 = 0.;
+double PR::PrV124 = 0.;
+double PR::PrV131 = 0.;
+
 const size_t PRCondition::count = 10;
 bool PRCondition::PS_connect = false;
 bool PR::PS_connect = false;
@@ -142,13 +151,13 @@ PRCondition* PR::_init(Variables *theVars) {
 
     if (theVars->useC3) {
         PR::V1T = 5.;
-        PR::Vfactor112 = 1;
-        PR::Vfactor113 = 1;
-        PR::Vfactor121 = 1;
-        PR::Vfactor122 = 1;
-        PR::Vfactor123 = 1;
-        PR::Vfactor124 = 1;
-        PR::Vfactor131 = 1;
+        PR::Vfactor112 = 1.;
+        PR::Vfactor113 = 1.;
+        PR::Vfactor121 = 1.;
+        PR::Vfactor122 = 1.;
+        PR::Vfactor123 = 1.;
+        PR::Vfactor124 = 1.;
+        PR::Vfactor131 = 1.;
         if (theVars->GRNC == 1 && theVars->CO2_cond > 0) {
             PR::Vfactor112 = theVars->VfactorCp[25];
             PR::Vfactor113 = theVars->VfactorCp[26];
@@ -159,12 +168,12 @@ PRCondition* PR::_init(Variables *theVars) {
             PR::Vfactor124 = theVars->VfactorCp[11];
         }
 
-        PR::Vf_T131=1;
-        PR::Vf_T113=1;
-        PR::Vf_T123=1;
-        PR::Vf_T121=1;
-        PR::Vf_T122=1;
-        PR::Vf_T112=1;
+        PR::Vf_T131 = 1.;
+        PR::Vf_T113 = 1.;
+        PR::Vf_T123 = 1.;
+        PR::Vf_T121 = 1.;
+        PR::Vf_T122 = 1.;
+        PR::Vf_T112 = 1.;
 
         if (theVars->GRNT == 1 && theVars->Tp > 25.){
             PR::Vf_T131 = theVars->VfactorT[4];
@@ -186,54 +195,62 @@ PRCondition* PR::_init(Variables *theVars) {
             PR::V131 = theVars->EnzymeAct.at("V131");
         }
         // The constant for calculating the glycolate uptake
-        PR::V2T = 6;      // The original value is 0.32.
+        PR::V2T = 6.;            // The original value is 0.32.
         // Reaction: 111: RUBP+O2<-->PGlycolate + PGA
-        PR::KO = PS::getKM12();           // Michaelis constant for O2
-        PR::KC = PS::getKM11();          // Michaelis constant for CO2
+        PR::KO = PS::getKM12();  // Michaelis constant for O2
+        PR::KC = PS::getKM11();  // Michaelis constant for CO2
         PR::KR = 0.02;           // Michaelis constant for RUBP
 
         // Reaction: 112: PGlycolate-->Pi+Glycolate;
         PR::KM112 = 0.026;   // Km112 for PGlycolate;
-        PR::KI1122 = 94;     // Inhibition constant for Glycolate;
+        PR::KI1122 = 94.;    // Inhibition constant for Glycolate;
         PR::KI1121 = 2.55;   // The competitive Pi inhibition for PGlycolate
 
         // Reaction 113  : Gcea+ATP<-->ADP + PGA
-        PR::KM1131 = 0.21;  // Km for ATP;
-        PR::KM1132 = 0.25;  // Km for Gcea;
-        PR::KI113 = 0.36;   // Ki for ATP BY pga;  %%%%%%%%%%%%%%%%%%%%%%%%% Competitive inhibition for ATP; in original paper it is 0.36;
-        PR::KE113 = 300;     // New       Kleczkowski et al . 1985 Archives of Biochemistry and Biophysics
+        PR::KM1131 = 0.21;   // Km for ATP;
+        PR::KM1132 = 0.25;   // Km for Gcea;
+        PR::KI113 = 0.36;    // Ki for ATP BY pga;  %%%%%%%%%%%%%%%%%%%%%%%%% Competitive inhibition for ATP; in original paper it is 0.36;
+        PR::KE113 = 300.;    // New       Kleczkowski et al . 1985 Archives of Biochemistry and Biophysics
 
         // To set global information for different reactions
-        PR::KM121 = 0.1;//Glycolate +O2<-->H2O2+Glyoxylate
+        PR::KM121 = 0.1;     //Glycolate +O2<-->H2O2+Glyoxylate
 
-        PR::KM1221 = 0.15; // Michaelis constant for glyoxylate;
-        PR::KM1222 = 2.7;  // Michaelis constant for serinie;
-        PR::KI1221 = 33;   // Inhibition constant for Glycine;
-        PR::KE122 = 0.24;  //  New: Guynn, R.W.; Arch. Biochem. Biophys.; 218, 14 (1982).; 0.24. At 25 degree.
+        PR::KM1221 = 0.15;   // Michaelis constant for glyoxylate;
+        PR::KM1222 = 2.7;    // Michaelis constant for serinie;
+        PR::KI1221 = 33.;    // Inhibition constant for Glycine;
+        PR::KE122 = 0.24;    //  New: Guynn, R.W.; Arch. Biochem. Biophys.; 218, 14 (1982).; 0.24. At 25 degree.
 
-        PR::KM123 = 0.09;       //   Michaelis constant for hydroxylpyruvate;
-        PR::KI123 = 12;          // Inhibition constant for hydroxypyruvate;
-        PR::KE123 = 1/(4*pow(10, -6));  // Guynn, R.W.; Arch. Biochem. Biophys.; 218, 14 (1982).; 1/(4*10^(-6);
+        PR::KM123 = 0.09;    //   Michaelis constant for hydroxylpyruvate;
+        PR::KI123 = 12.;     // Inhibition constant for hydroxypyruvate;
+        PR::KE123 = 1. / (4. * pow(10., -6.));  // Guynn, R.W.; Arch. Biochem. Biophys.; 218, 14 (1982).; 1/(4*10^(-6);
 
-        PR::KM1241 = 0.15; // Michaelis constant for glyoxylate
-        PR::KM1242 = 1.7;  // Michaelis constant for Glu
-        PR::KE124 = 607;   // New       Cooper, A.J.L.; Meister, A.; Biochemistry; 11, 661 (1972).; K 607.
+        PR::KM1241 = 0.15;   // Michaelis constant for glyoxylate
+        PR::KM1242 = 1.7;    // Michaelis constant for Glu
+        PR::KE124 = 607.;    // New       Cooper, A.J.L.; Meister, A.; Biochemistry; 11, 661 (1972).; K 607.
 
-        PR::KM1311 = 6;// Michaelis constant for Glycine;
-        PR::KI1311 = 4; // Inhibition constant for Serine
+        PR::KM1311 = 6.;     // Michaelis constant for Glycine;
+        PR::KI1311 = 4.;     // Inhibition constant for Serine
 
         PR::KM1011 = 0.39;
         PR::KI1011 = 0.28;
 
         PR::KM1012 = 0.2;
         PR::KI1012 = 0.22;
+        const double tempRatio = (theVars->Tp - 25.) / 10.;
 
+        PR::PrV112 = PR::V112 * PR::Vfactor112 * PR::Vf_T112 * pow(Q10_112, tempRatio);
+        PR::PrV113 = PR::V113 * PR::Vfactor113 * PR::Vf_T113 * pow(Q10_113, tempRatio);
+        PR::PrV121 = PR::V121 * PR::Vfactor121 * PR::Vf_T121 * pow(Q10_121, tempRatio);
+        PR::PrV122 = PR::V122 * PR::Vfactor122 * PR::Vf_T122 * pow(Q10_122, tempRatio);
+        PR::PrV123 = PR::V123 * PR::Vfactor123 * PR::Vf_T123 * pow(Q10_123, tempRatio);
+        PR::PrV124 = PR::V124 * PR::Vfactor124 * pow(Q10_124, tempRatio);
+        PR::PrV131 = PR::V131 * PR::Vfactor131 * PR::Vf_T131 * pow(Q10_131, tempRatio);
 
     } else {
         // To set global information for different reactions
         // Reaction: 110: RuBP + CO2 <--> 2PGA
 
-        const double CE = 1; // This is the coefficient for calibrating the volume effect // Default is 4.
+        const double CE = 1.; // This is the coefficient for calibrating the volume effect // Default is 4.
 
         // Reaction: 111: RUBP+O2<-->PGlycolate + PGA
 
@@ -250,7 +267,7 @@ PRCondition* PR::_init(Variables *theVars) {
         // Reaction: 112: PGlycolate-->Pi+Glycolate;
 
         PR::KM112 = 0.026 * theVars->PRRatio[19]; // Km112 for PGlycolate;
-        PR::KI1122 = 94 * theVars->PRRatio[20];   // Inhibition constant for Glycolate;
+        PR::KI1122 = 94. * theVars->PRRatio[20];  // Inhibition constant for Glycolate;
         PR::KI1121 = 2.55 * theVars->PRRatio[21]; // The competitive Pi inhibition for PGlycolate
 
 
@@ -258,7 +275,7 @@ PRCondition* PR::_init(Variables *theVars) {
         PR::KM1131 = 0.21 * theVars->PRRatio[22]; // Km for ATP;
         PR::KM1132 = 0.25 * theVars->PRRatio[23]; // Km for Gcea;
         PR::KI113 = 0.36 * theVars->PRRatio[24];  // Competitive inhibition for ATP; in original paper it is 0.36;
-        PR::KE113 = 300 * theVars->PRRatio[25];   // New       Kleczkowski et al . 1985 Archives of Biochemistry and Biophysics  300, as default
+        PR::KE113 = 300. * theVars->PRRatio[25];  // New       Kleczkowski et al . 1985 Archives of Biochemistry and Biophysics  300, as default
 
 
         // Reactoin 121; Glycolate +O2<-->H2O2+Glyoxylate
@@ -267,31 +284,31 @@ PRCondition* PR::_init(Variables *theVars) {
         // Reaction 122  : Glyoxylate + Serine<--> Hydoxypyruvate + Glycine;
         PR::KM1221 = 0.15 * theVars->PRRatio[27]; // Michaelis constant for glyoxylate;
         PR::KM1222 = 2.7 * theVars->PRRatio[28];  // Michaelis constant for serinie;
-        PR::KI1221 = 33 * theVars->PRRatio[29];   // Inhibition constant for Glycine;
+        PR::KI1221 = 33. * theVars->PRRatio[29];  // Inhibition constant for Glycine;
         PR::KE122 = 0.24 * theVars->PRRatio[30];  //  New: Guynn, R.W.; Arch. Biochem. Biophys.; 218, 14 (1982).; 0.24. At 25 degree.
 
         // Reaction 123: HydroxylPyruvate + NAD <--> NADH + Glycerate
 
         PR::KM123 = 0.09 * theVars->PRRatio[31];  //   Michaelis constant for hydroxylpyruvate;
-        PR::KI123 = 12 * theVars->PRRatio[32];    // Inhibition constant for hydroxypyruvate;
-        PR::KE123 = 1 / (4 * pow(10, (-6))) * theVars->PRRatio[33];
+        PR::KI123 = 12. * theVars->PRRatio[32];   // Inhibition constant for hydroxypyruvate;
+        PR::KE123 = 1. / (4. * pow(10., -6.)) * theVars->PRRatio[33];
 
         // Reaction 124: Glyoxylate + Glu  <--> KG + Glycine;
         PR::KM1241 = 0.15 * theVars->PRRatio[34]; // Michaelis constant for glyoxylate
         PR::KM1242 = 1.7 * theVars->PRRatio[35];  // Michaelis constant for Glu
-        PR::KE124 = 607 * theVars->PRRatio[37];   // New       Cooper, A.J.L.; Meister, A.; Biochemistry; 11, 661 (1972).; K' 607.
+        PR::KE124 = 607. * theVars->PRRatio[37];  // New       Cooper, A.J.L.; Meister, A.; Biochemistry; 11, 661 (1972).; K' 607.
 
         // Reaction 131: NAD+Glycine <--> CO2+ NADH + NH3
-        PR::KM1311 = 6 * theVars->PRRatio[38];  // Michaelis constant for Glycine;
-        PR::KI1311 = 4 * theVars->PRRatio[39];  // Inhibition constant for Serine
+        PR::KM1311 = 6. * theVars->PRRatio[38];  // Michaelis constant for Glycine;
+        PR::KI1311 = 4. * theVars->PRRatio[39];  // Inhibition constant for Serine
 
         // The consant for calculating the glycerate uptake.
-        PR::V1T = 0.25 * CE * 20 * theVars->PRRatio[42];
+        PR::V1T = 0.25 * CE * 20. * theVars->PRRatio[42];
         PR::KM1011 = 0.39 * theVars->PRRatio[43];
         PR::KI1011 = 0.28 * theVars->PRRatio[44];
 
         // The constant for calculating the glycolate output
-        PR::V2T = 0.32 * CE * 10 * 2 * theVars->PRRatio[45];
+        PR::V2T = 0.32 * CE * 10. * 2. * theVars->PRRatio[45];
         PR::KM1012 = 0.2 * theVars->PRRatio[46];
         PR::KI1012 = 0.22 * theVars->PRRatio[47];
 
@@ -299,12 +316,12 @@ PRCondition* PR::_init(Variables *theVars) {
             if (theVars->PR_PS_com) {
                 V111 = 0.24 * PS::getV1() * theVars->PRRatio[0];
             } else {
-                V111 = 3.7 * 0.24 * 1;
+                V111 = 3.7 * 0.24 * 1.;
             }
             PR::V112 = 52.41992121 * theVars->PRRatio[1];
             PR::V113 = 5.715787563 * theVars->PRRatio[2];
             PR::V121 = 1.456108923 * theVars->PRRatio[3];
-            PR::V122 = 3.306190845 * 3 * theVars->PRRatio[4];
+            PR::V122 = 3.306190845 * 3. * theVars->PRRatio[4];
             PR::V123 = 10.00978112 * theVars->PRRatio[5];
             PR::V124 = 2.745819515 * theVars->PRRatio[6];
             PR::V131 = 2.494745448 * theVars->PRRatio[7];

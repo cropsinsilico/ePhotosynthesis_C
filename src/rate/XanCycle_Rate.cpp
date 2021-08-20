@@ -45,29 +45,22 @@ void XanCycle::_Rate(const double t, const XanCycleCondition* XanCycle_Con, Vari
     if (theVars->XanCycle_BF_com) {
         pH = XanCycle_Con->parent->RA_con->EPS_con->FIBF_con->BF_con->PHl;
     } else {
-        pH = 6;
+        pH = 6.;
     }
 
     double RegCof;
     if (pH <= 5.8) {
-        RegCof = 1;
+        RegCof = 1.;
     } else if (pH > 5.8 && pH < 6.5){
         RegCof = (6.5 - pH) / 0.7;
     } else {
-        RegCof = 0;
+        RegCof = 0.;
     }
 
-
-    const double Vva = XanCycle_Con->Vx * XanCycle::kva * RegCof;
-    const double Vaz = XanCycle_Con->Ax * XanCycle::kaz * RegCof;
-    const double Vza = XanCycle_Con->Zx * XanCycle::kza;
-    const double Vav = XanCycle_Con->Ax * XanCycle::kav;
-
-
-    theVars->XanCycle_Vel.Vva = Vva; // The velocity of v to a conversion
-    theVars->XanCycle_Vel.Vaz = Vaz; // The rate of A to z
-    theVars->XanCycle_Vel.Vza = Vza; // THe rate of z to a
-    theVars->XanCycle_Vel.Vav = Vav; // The rate of A to V
+    theVars->XanCycle_Vel.Vva = XanCycle_Con->Vx * XanCycle::kva * RegCof; // The velocity of v to a conversion
+    theVars->XanCycle_Vel.Vaz = XanCycle_Con->Ax * XanCycle::kaz * RegCof; // The rate of A to z
+    theVars->XanCycle_Vel.Vza = XanCycle_Con->Zx * XanCycle::kza; // THe rate of z to a
+    theVars->XanCycle_Vel.Vav = XanCycle_Con->Ax * XanCycle::kav; // The rate of A to V
     theVars->XanCycle_Vel.Vvf = VVF; // The rate of V formation
     theVars->XanCycle_Vel.Vv2ABA = VV2ABA; // The rate of conversion from v to XanCycle_Con.ABA.
     theVars->XanCycle_Vel.VABAdg = VABADG; // The rate of XanCycle_Con.ABA degradation
@@ -86,7 +79,8 @@ void XanCycle::_Rate(const double t, const XanCycleCondition* XanCycle_Con, Vari
         theVars->XanCycle2OUT.Vx = XanCycle_Con->Vx;
         theVars->XanCycle2OUT.Ax = XanCycle_Con->Ax;
         theVars->XanCycle2OUT.Zx = XanCycle_Con->Zx;
-        theVars->XanCycle2OUT.ABA = XanCycle_Con->Vx / (XanCycle_Con->Vx + XanCycle_Con->Ax + XanCycle_Con->Zx);
+        theVars->XanCycle2OUT.ABA = XanCycle_Con->Vx / (XanCycle_Con->Vx + XanCycle_Con->Ax +
+                                                        XanCycle_Con->Zx);
     }
 
 }

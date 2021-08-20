@@ -40,16 +40,20 @@ RROEACondition* RROEA::_MB_con(const double t, const RROEACondition* RROEA_Con, 
     Rate(t, RROEA_Con, theVars);
 
     RROEACondition* dydt = new RROEACondition();
-    dydt->GAPDH = theVars->RROEA_Vel.ve2GAPDH;  // GAPDH
+    dydt->GAPDH = theVars->RROEA_Vel.ve2GAPDH;   // GAPDH
     dydt->FBPase = theVars->RROEA_Vel.ve2FBPase; // FBPase
     dydt->SBPase = theVars->RROEA_Vel.ve2SBPase; // SBPase
-    dydt->PRK = theVars->RROEA_Vel.ve2PRK;    // PRK
+    dydt->PRK = theVars->RROEA_Vel.ve2PRK;       // PRK
     dydt->ATPase = theVars->RROEA_Vel.ve2ATPase; // ATPase
     dydt->ATPGPP = theVars->RROEA_Vel.ve2ATPGPP; // ATPGPP
-    dydt->MDH = theVars->RROEA_Vel.ve2MDH;    // MDH
-    dydt->Thio = theVars->RROEA_Vel.veFd2Thio - theVars->RROEA_Vel.ve2GAPDH - theVars->RROEA_Vel.ve2FBPase - theVars->RROEA_Vel.ve2SBPase - theVars->RROEA_Vel.ve2PRK - theVars->RROEA_Vel.ve2ATPGPP - theVars->RROEA_Vel.ve2RuACT; // Thio
-    dydt->Fd = theVars->RROEA_Vel.ve2Fd - theVars->RROEA_Vel.veFd2Thio - theVars->RROEA_Vel.veFd2Calvin; // Fd
-    dydt->RuACT = theVars->RROEA_Vel.ve2RuACT;  // RuACT;
+    dydt->MDH = theVars->RROEA_Vel.ve2MDH;       // MDH
+    dydt->Thio = theVars->RROEA_Vel.veFd2Thio - theVars->RROEA_Vel.ve2GAPDH -
+                 theVars->RROEA_Vel.ve2FBPase - theVars->RROEA_Vel.ve2SBPase -
+                 theVars->RROEA_Vel.ve2PRK - theVars->RROEA_Vel.ve2ATPGPP -
+                 theVars->RROEA_Vel.ve2RuACT;    // Thio
+    dydt->Fd = theVars->RROEA_Vel.ve2Fd - theVars->RROEA_Vel.veFd2Thio -
+               theVars->RROEA_Vel.veFd2Calvin;   // Fd
+    dydt->RuACT = theVars->RROEA_Vel.ve2RuACT;   // RuACT;
 #ifdef INCDEBUG
     DEBUG_INTERNAL(dydt)
 #endif

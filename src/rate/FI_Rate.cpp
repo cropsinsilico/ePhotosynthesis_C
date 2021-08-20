@@ -28,6 +28,9 @@
 #include "modules/FI.hpp"
 #include "modules/FIBF.hpp"
 
+#define KE 1000000
+#define P680PheoT 1
+
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
@@ -49,38 +52,46 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
         PQ = theVars->FI_Pool.PQT - PQn - FIBF::getFIBF2FI_PQa();
     }
 
-    const double P680PheoT = 1;
-
-    const double P680Pheo = P680PheoT - FI_Con->P680pPheo - FI_Con->P680Pheon - FI_Con->P680pPheon - FI_Con->P680ePheo; //QF add  '- P680ePheo'
+    const double P680Pheo = P680PheoT - FI_Con->P680pPheo - FI_Con->P680Pheon - FI_Con->P680pPheon -
+                            FI_Con->P680ePheo; //QF add  '- P680ePheo'
 
     //const double It = theVars->FI_Param[0]; // It The total incident light intensity
 
     // rate: FI_Con.U -> U*
-    theVars->FI_Vel.Ic = theVars->FI_Param[0] * FIBF::getChlT() / (FIBF::getChlT2() + FIBF::getChlPSI()); // Ic The incident light on the core antenna; theVars->ChlT is defined in upper lines as the total amount of Chl in one U.
+    theVars->FI_Vel.Ic = theVars->FI_Param[0] * FIBF::getChlT() / (FIBF::getChlT2() +
+                                                                   FIBF::getChlPSI()); // Ic The incident light on the core antenna; theVars->ChlT is defined in upper lines as the total amount of Chl in one U.
     // rate: FI_Con.A -> A*
-    theVars->FI_Vel.Ia = theVars->FI_Param[0] * (FIBF::getChlT2() - FIBF::getChlT()) / (FIBF::getChlT2() + FIBF::getChlPSI()); // Ia The incident light on the peripheral antenna
+    theVars->FI_Vel.Ia = theVars->FI_Param[0] * (FIBF::getChlT2() - FIBF::getChlT()) /
+                         (FIBF::getChlT2() + FIBF::getChlPSI()); // Ia The incident light on the peripheral antenna
 
     //////////////////////////////////////////////////////////////////////////////////////////
     // Calculate the rate of different reactions //
     ////////////////////////////////////////////////////////////////////////////////////////////
 
-    const double q = (FI_Con->QAQB + FI_Con->QAQBn + FI_Con->QAQB2n) / (FI_Con->QAQB + FI_Con->QAQBn + FI_Con->QAQB2n + FI_Con->QAnQB + FI_Con->QAnQBn + FI_Con->QAnQB2n);
+    const double q = (FI_Con->QAQB + FI_Con->QAQBn + FI_Con->QAQB2n) / (FI_Con->QAQB + FI_Con->QAQBn +
+                                                                        FI_Con->QAQB2n + FI_Con->QAnQB +
+                                                                        FI_Con->QAnQBn + FI_Con->QAnQB2n);
     theVars->FI_Vel.vA_d  = FI_Con->A * theVars->FI_RC.kA_d; // vA_d The rate of heat dissipation from peripheral antenna
     theVars->FI_Vel.vA_f  = FI_Con->A * theVars->FI_RC.kA_f; // vA_f The rate of fluorescence emission from peripheral antenna
     theVars->FI_Vel.vA_U  = FI_Con->A * theVars->FI_RC.kA_U; // vA_U The rate of exciton transfer from peripheral antenna to core antenna in open reaction center
     theVars->FI_Vel.vU_A  = FI_Con->U * theVars->FI_RC.kU_A; // vU_A The rate of exciton transfer from core antenna to perpheral antenna in open center
     theVars->FI_Vel.vU_f  = FI_Con->U * theVars->FI_RC.kU_f; // vU_f The rate of fluorescence emission from core antenna
-    theVars->FI_Vel.vU_d  = FI_Con->U * theVars->FI_RC.kU_d * (1 - q); // vU_d The rate of heat dissipation from core antenna
+    theVars->FI_Vel.vU_d  = FI_Con->U * theVars->FI_RC.kU_d * (1. - q); // vU_d The rate of heat dissipation from core antenna
 
-    const double P = 1;
+    const double P = 1.;
 
     // energy flow:
-    theVars->FI_Vel.vU_P680 = theVars->FI_Vel.Ic + theVars->FI_Vel.vA_U - theVars->FI_Vel.vU_A - theVars->FI_Vel.vU_f - theVars->FI_Vel.vU_d;//QF add  , total energy coming to P680 and == the rate of P680 -> P680*, except f and d, energy is transport to P680 reaction center
-    theVars->FI_Vel.vP680_d = FI_Con->P680ePheo * theVars->FI_RC.kU_d * (1 - q);
-    theVars->FI_Vel.v1  = FI_Con->P680ePheo * theVars->FI_RC.k1 * q + FI_Con->P680ePheo * P * (1 - q) * theVars->FI_RC.k1 / 6.2 + FI_Con->P680ePheo * (1 - P) * (1 - q) * theVars->FI_RC.k1; // v1 The rate of primary charge separation
+    theVars->FI_Vel.vU_P680 = theVars->FI_Vel.Ic + theVars->FI_Vel.vA_U - theVars->FI_Vel.vU_A -
+                              theVars->FI_Vel.vU_f - theVars->FI_Vel.vU_d;//QF add  , total energy coming to P680 and == the rate of P680 -> P680*, except f and d, energy is transport to P680 reaction center
+    theVars->FI_Vel.vP680_d = FI_Con->P680ePheo * theVars->FI_RC.kU_d * (1. - q);
+    theVars->FI_Vel.v1  = FI_Con->P680ePheo * theVars->FI_RC.k1 * q + FI_Con->P680ePheo * P *
+                          (1. - q) * theVars->FI_RC.k1 / 6.2 + FI_Con->P680ePheo * (1. - P) *
+                          (1. - q) * theVars->FI_RC.k1; // v1 The rate of primary charge separation
 
-    theVars->FI_Vel.v_r1  = FI_Con->P680pPheon * theVars->FI_RC.k_r1 * q + FI_Con->P680pPheon * (1 - q) * theVars->FI_RC.k_r1 * 3; // v_r1 The rate of charge recombination
-    theVars->FI_Vel.vP680_f = theVars->FI_Vel.vU_P680 - (theVars->FI_Vel.v1 - theVars->FI_Vel.v_r1) - theVars->FI_Vel.vP680_d;
+    theVars->FI_Vel.v_r1  = FI_Con->P680pPheon * theVars->FI_RC.k_r1 * q + FI_Con->P680pPheon *
+                            (1. - q) * theVars->FI_RC.k_r1 * 3.; // v_r1 The rate of charge recombination
+    theVars->FI_Vel.vP680_f = theVars->FI_Vel.vU_P680 - (theVars->FI_Vel.v1 - theVars->FI_Vel.v_r1) -
+                              theVars->FI_Vel.vP680_d;
 
     double Coeff = FI_Con->P680pPheon / P680PheoT;
     theVars->FI_Vel.v1z_1  = FI_Con->S1T * theVars->FI_RC.kz * Coeff; // v1z_1 The rate of oxidation of FI_Con.S1T by P680pPheon
@@ -88,7 +99,8 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
     theVars->FI_Vel.v3z_1  = FI_Con->S3T * theVars->FI_RC.kz * Coeff; // v3z_1 The rate of oxidation of FI_Con.S3T  by P680pPheon
     theVars->FI_Vel.v0z_1  = FI_Con->S0T * theVars->FI_RC.kz * Coeff; // v0z_1 The rate of oxidation of FI_Con.S0T  by P680pPheon
 
-    theVars->FI_Vel.vz_1 = theVars->FI_Vel.v1z_1 + theVars->FI_Vel.v2z_1 + theVars->FI_Vel.v3z_1 + theVars->FI_Vel.v0z_1; // vz_1 The rate of FI_Con.P680pPheon reduction
+    theVars->FI_Vel.vz_1 = theVars->FI_Vel.v1z_1 + theVars->FI_Vel.v2z_1 + theVars->FI_Vel.v3z_1 +
+                           theVars->FI_Vel.v0z_1; // vz_1 The rate of FI_Con.P680pPheon reduction
 
     Coeff = FI_Con->P680pPheo / P680PheoT;
 
@@ -96,7 +108,8 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
     theVars->FI_Vel.v2z_2 = FI_Con->S2T * theVars->FI_RC.kz * Coeff; // v2z_2 The rate of oxidation of FI_Con.S2T  by P680pPheo
     theVars->FI_Vel.v3z_2 = FI_Con->S3T * theVars->FI_RC.kz * Coeff; // v3z_2 The rate of oxidation of FI_Con.S3T  by P680pPheo
     theVars->FI_Vel.v0z_2 = FI_Con->S0T * theVars->FI_RC.kz * Coeff; // v0z_2 The rate of oxidation of FI_Con.S0T  by P680pPheo
-    theVars->FI_Vel.vz_2 = theVars->FI_Vel.v1z_2 + theVars->FI_Vel.v2z_2 + theVars->FI_Vel.v3z_2 + theVars->FI_Vel.v0z_2; // vz_2 The rate of FI_Con.P680pPheo reduction
+    theVars->FI_Vel.vz_2 = theVars->FI_Vel.v1z_2 + theVars->FI_Vel.v2z_2 + theVars->FI_Vel.v3z_2 +
+                           theVars->FI_Vel.v0z_2; // vz_2 The rate of FI_Con.P680pPheo reduction
 
     theVars->FI_Vel.v1z = theVars->FI_Vel.v1z_1 + theVars->FI_Vel.v1z_2;
     theVars->FI_Vel.v2z = theVars->FI_Vel.v2z_1 + theVars->FI_Vel.v2z_2;
@@ -129,7 +142,6 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
     theVars->FI_Vel.v2_01_2 = theVars->FI_Vel.v2_2 * b; // v2_01_2 The rate of reduction of FI_Con.QAQBn by P680Pheon
     theVars->FI_Vel.v2_02_2 = theVars->FI_Vel.v2_2 * c; // v2_02_2 The rate of reduction of FI_Con.QAQB2n by P680Pheon
 
-    const double KE = 1000000;
     const double Coeff1 = FI_Con->P680pPheo / P680PheoT;
     theVars->FI_Vel.vr2_00_1 = FI_Con->QAnQB * theVars->FI_RC.k2 / KE * Coeff1;   // vr2_00_1 The reverse reaction of The rate of reduction of FI_Con.QAQB by P680pPheon
     theVars->FI_Vel.vr2_01_1 = FI_Con->QAnQBn * theVars->FI_RC.k2 / KE * Coeff1;  // vr2_01_1 The reverse reaction of The rate of reduction of FI_Con.QAQBn by P680pPheon
@@ -142,8 +154,12 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
     theVars->FI_Vel.vr2_02_2 = FI_Con->QAnQB2n * theVars->FI_RC.k2 / KE * Coeff2;// vr2_02_2 The reverse reaction of The rate of reduction of FI_Con.QAQB2n by P680Pheon
     theVars->FI_Vel.vr2_2 = theVars->FI_Vel.vr2_00_2 + theVars->FI_Vel.vr2_01_2 + theVars->FI_Vel.vr2_02_2;// vr2_2
 
-    theVars->FI_Vel.vP680qU = pow(10, 9) * FI_Con->U * (FI_Con->P680pPheo + FI_Con->P680pPheon) + FI_Con->U * 0.15 * (theVars->FI_RC.kU_f + theVars->FI_RC.kU_d) * PQ / theVars->FI_Pool.PQT;
-    theVars->FI_Vel.vP680qA = pow(10, 9) * FI_Con->A * (FI_Con->P680pPheo + FI_Con->P680pPheon) + FI_Con->A * 0.15 * (theVars->FI_RC.kA_f + theVars->FI_RC.kA_d) * PQ / theVars->FI_Pool.PQT;
+    theVars->FI_Vel.vP680qU = pow(10., 9.) * FI_Con->U * (FI_Con->P680pPheo + FI_Con->P680pPheon) +
+                              FI_Con->U * 0.15 * (theVars->FI_RC.kU_f + theVars->FI_RC.kU_d) * PQ /
+                              theVars->FI_Pool.PQT;
+    theVars->FI_Vel.vP680qA = pow(10., 9.) * FI_Con->A * (FI_Con->P680pPheo + FI_Con->P680pPheon) +
+                              FI_Con->A * 0.15 * (theVars->FI_RC.kA_f + theVars->FI_RC.kA_d) * PQ /
+                              theVars->FI_Pool.PQT;
 
     ////////////////////////////////////////
     //////  FOR TESITNG  ////

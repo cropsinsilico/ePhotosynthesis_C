@@ -51,13 +51,13 @@ public:
         Vv2ABA = other.Vv2ABA;
         VABAdg = other.VABAdg;
     }
-    double Vva = 0.;    ///< The velocity of v to a conversion
-    double Vaz = 0.;    ///< The rate of A to z
-    double Vza = 0.;    ///< THe rate of z to a
-    double Vav = 0.;    ///< The rate of A to V
-    double Vvf = 0.;    ///< The rate of V formation
-    double Vv2ABA = 0.; ///< The rate of conversion from v to ABA.
-    double VABAdg = 0.; ///< The rate of ABA degradation
+    double Vva = 0.;    // The velocity of v to a conversion
+    double Vaz = 0.;    // The rate of A to z
+    double Vza = 0.;    // THe rate of z to a
+    double Vav = 0.;    // The rate of A to V
+    double Vvf = 0.;    // The rate of V formation
+    double Vv2ABA = 0.; // The rate of conversion from v to ABA.
+    double VABAdg = 0.; // The rate of ABA degradation
 
     friend std::ostream& operator<<(std::ostream& out, const XanCycleVel &in);
 };

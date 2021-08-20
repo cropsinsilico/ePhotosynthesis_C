@@ -53,17 +53,17 @@ BFCondition* BF::_MB_con(const double t, const BFCondition* BF_con, Variables *t
 
     dydt->ISPHr = theVars->BF_Vel.Vbf2 - theVars->BF_Vel.Vbf8;    // ISPHr The reduced ion sulfer protein (ISPH)
     dydt->cytc1 = theVars->BF_Vel.Vbf9 - theVars->BF_Vel.Vbf8;    // cytc1 The oxidized state of cytc1
-    dydt->ISPo = theVars->BF_Vel.Vbf8 - theVars->BF_Vel.Vbf1;    // ISPo The oxidized ion sulfer protein (ISP)
-    dydt->ISPoQH2 = theVars->BF_Vel.Vbf1 - theVars->BF_Vel.Vbf2;    // ISPoQH2 The complex of oxidized ion sulfer protein and reduced quinone
-    dydt->QHsemi = theVars->BF_Vel.Vbf2 - theVars->BF_Vel.Vbf3;    // QHsemi Semiquinone
+    dydt->ISPo = theVars->BF_Vel.Vbf8 - theVars->BF_Vel.Vbf1;     // ISPo The oxidized ion sulfer protein (ISP)
+    dydt->ISPoQH2 = theVars->BF_Vel.Vbf1 - theVars->BF_Vel.Vbf2;  // ISPoQH2 The complex of oxidized ion sulfer protein and reduced quinone
+    dydt->QHsemi = theVars->BF_Vel.Vbf2 - theVars->BF_Vel.Vbf3;   // QHsemi Semiquinone
     dydt->cytbL = theVars->BF_Vel.Vbf4 - theVars->BF_Vel.Vbf3;    // cytbL The oxidized cytbL
     dydt->Qi = theVars->BF_Vel.Vbf7 - theVars->BF_Vel.Vbf5 - theVars->BF_Vel.vcet;   // Qi The quinone bound in the Qi site of cytbf complex  ????
     if (!BFCondition::FI_connect)
         dydt->Q = theVars->BF_Vel.Vbf3 - theVars->BF_Vel.Vbf7 - theVars->BF_Vel.VgPQH2; // Q Quinone in thylakoid membrane in free form
     dydt->cytbH = theVars->BF_Vel.Vbf6 - theVars->BF_Vel.Vbf4 + theVars->BF_Vel.Vbf5;   // cytbH The oxidized form of cytbH
     dydt->Qn = theVars->BF_Vel.Vbf5 - theVars->BF_Vel.Vbf6 + theVars->BF_Vel.vcet;   // Qn Q-
-    dydt->Qr = theVars->BF_Vel.Vbf6 - theVars->BF_Vel.Vqi / 2; // Qr Q2-
-    dydt->QH2 = theVars->BF_Vel.Vqi / 2 - theVars->BF_Vel.Vbf1 + theVars->BF_Vel.VgPQH2; // QH2 The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
+    dydt->Qr = theVars->BF_Vel.Vbf6 - theVars->BF_Vel.Vqi / 2.;   // Qr Q2-
+    dydt->QH2 = theVars->BF_Vel.Vqi / 2. - theVars->BF_Vel.Vbf1 + theVars->BF_Vel.VgPQH2; // QH2 The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
     dydt->cytc2 = theVars->BF_Vel.Vbf10 - theVars->BF_Vel.Vbf9;  // cytc2 oxidized cytc2
     dydt->P700 = theVars->BF_Vel.Vbf10 - theVars->BF_Vel.Vbf15; // P700 The reduced state of P700, including both P700 and excited P700
     dydt->ADP = theVars->BF_Vel.VsATP - theVars->BF_Vel.Vbf11; // ADP ADP in stroma
@@ -74,14 +74,17 @@ BFCondition* BF::_MB_con(const double t, const BFCondition* BF_con, Variables *t
     dydt->Mgs = theVars->BF_Vel.JMgc; // Mgs Mg ions in stroma
     dydt->Cls = theVars->BF_Vel.JClc; // Cls Cl ions in stroma
 
-    dydt->Aip = theVars->BF_Vel.Vicp + theVars->BF_Vel.Vinp - theVars->BF_Vel.Vipc - theVars->BF_Vel.Vdp - theVars->BF_Vel.Vfp; // Aip The number of photons in peripheral antenna
-    dydt->U = theVars->BF_Vel.Vipc + theVars->BF_Vel.Vinc - theVars->BF_Vel.Vicp - theVars->BF_Vel.Vdc - theVars->BF_Vel.Vfc; // Ui The number of photons in core antenna
+    dydt->Aip = theVars->BF_Vel.Vicp + theVars->BF_Vel.Vinp - theVars->BF_Vel.Vipc -
+                theVars->BF_Vel.Vdp - theVars->BF_Vel.Vfp; // Aip The number of photons in peripheral antenna
+    dydt->U = theVars->BF_Vel.Vipc + theVars->BF_Vel.Vinc - theVars->BF_Vel.Vicp -
+              theVars->BF_Vel.Vdc - theVars->BF_Vel.Vfc; // Ui The number of photons in core antenna
     dydt->An = theVars->BF_Vel.Vbf15 - theVars->BF_Vel.Vbf16; // An: the reduced electron acceptor in PSI
     if (!BF::RROEA_connect)
-        dydt->Fdn = theVars->BF_Vel.Vbf16 / 2 - theVars->BF_Vel.vbfn2 / 2 * theVars->AVR - theVars->BF_Vel.vcet / 2;
+        dydt->Fdn = theVars->BF_Vel.Vbf16 / 2. - theVars->BF_Vel.vbfn2 / 2. * theVars->AVR -
+                    theVars->BF_Vel.vcet / 2.;
 
-    const double vqb = theVars->BF_Vel.VgPQH2 * 2; // The rate of quinone protonation
-    const double roe = theVars->BF_Vel.VgPQH2 * 2; // The rate of proton generation from oxygen evolution complex
+    const double vqb = theVars->BF_Vel.VgPQH2 * 2.; // The rate of quinone protonation
+    const double roe = theVars->BF_Vel.VgPQH2 * 2.; // The rate of proton generation from oxygen evolution complex
 
     const double Hroe = roe / theVars->AVR; // Convert the unit of rate of oxygen evolution (roe) from micormole per meter square per second to mM s-1
     const double Hrqb = vqb / theVars->AVR; // Convert the unit of vqb from micormole per meter square per second to mM s-1; vqb is the rate of QB2- reduction in thylakoid membrane.
@@ -91,8 +94,8 @@ BFCondition* BF::_MB_con(const double t, const BFCondition* BF_con, Variables *t
 
     dydt->BFHs = (theVars->HPR * theVars->BF_Vel.Vbf11 - Hrqb - Hvqi - theVars->BF_Vel.vbfn2);  // BFHs The proton and protonated buffer species in stroma. The proton concentration is not used in the MB procedure. The reason is that the proton concentration is buffered and therefore did not changed linerly with the generation of the protons.
     dydt->BFHl = (Hvqo1 + Hvqo2 + Hroe - theVars->HPR * theVars->BF_Vel.Vbf11);                 // BFHl The proton and protonated buffer species in lumen, similarly, we can only use the buff concentration, but, the proton concentration can not be used here.
-    dydt->PHs = -(theVars->HPR * theVars->BF_Vel.Vbf11 - Hrqb - Hvqi - theVars->BF_Vel.vbfn2) / 1000 / 0.015; // PHs, The changes of PH in stoma, 0.03 mol /PH from Laisk et al.
-    dydt->PHl = -(Hvqo1 + Hvqo2 + Hroe - theVars->HPR * theVars->BF_Vel.Vbf11) / 1000 / 0.015; //   PHl  The changes in PH of lumen, 0.03 is from Curz et al., 2001, Biochemistry.
+    dydt->PHs = -(theVars->HPR * theVars->BF_Vel.Vbf11 - Hrqb - Hvqi - theVars->BF_Vel.vbfn2) / 1000. / 0.015; // PHs, The changes of PH in stoma, 0.03 mol /PH from Laisk et al.
+    dydt->PHl = -(Hvqo1 + Hvqo2 + Hroe - theVars->HPR * theVars->BF_Vel.Vbf11) / 1000. / 0.015; //   PHl  The changes in PH of lumen, 0.03 is from Curz et al., 2001, Biochemistry.
     dydt->NADPH = theVars->BF_Vel.vbfn2 - theVars->BF_Vel.VsNADPH;
 #ifdef INCDEBUG
     DEBUG_INTERNAL(dydt)

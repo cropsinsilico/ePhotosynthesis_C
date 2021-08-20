@@ -47,22 +47,35 @@ void RROEA::_Rate(const double t, const RROEACondition* RROEA_con, Variables *th
     const double Fdo = theVars->RROEA_Pool.FdT - RROEA_con->Fd;
     const double RuACTo = theVars->RROEA_Pool.RuACTT - RROEA_con->RuACT;
 
-    if (theVars-> RROEA_Param[0] > 500) {
+    if (theVars-> RROEA_Param[0] > 500.) {
         theVars->RROEA_Vel.ve2Fd = theVars->RROEA_RC.ke2Fd * Fdo;
     } else {
-        theVars->RROEA_Vel.ve2Fd = theVars->RROEA_RC.ke2Fd * theVars-> RROEA_Param[0] / 500 * Fdo;
+        theVars->RROEA_Vel.ve2Fd = theVars->RROEA_RC.ke2Fd * theVars-> RROEA_Param[0] / 500. * Fdo;
     }
 
-    theVars->RROEA_Vel.ve2GAPDH = theVars->RROEA_RC.ke2GAPDH * (RROEA_con->Thio * GAPDHo - Thioo * RROEA_con->GAPDH / theVars->RROEA_KE.KEe2GAPDH);
-    theVars->RROEA_Vel.ve2FBPase = theVars->RROEA_RC.ke2FBPase * (RROEA_con->Thio * FBPaseo - Thioo * RROEA_con->FBPase / theVars->RROEA_KE.KEe2FBPase);
-    theVars->RROEA_Vel.ve2SBPase = theVars->RROEA_RC.ke2SBPase * (RROEA_con->Thio * SBPaseo - Thioo * RROEA_con->SBPase / theVars->RROEA_KE.KEe2SBPase);
-    theVars->RROEA_Vel.ve2PRK = theVars->RROEA_RC.ke2PRK * (RROEA_con->Thio * PRKo - Thioo * RROEA_con->PRK / theVars->RROEA_KE.KEe2PRK);
-    theVars->RROEA_Vel.ve2ATPase = ke2ATPase * (RROEA_con->Thio * ATPaseo - Thioo * RROEA_con->ATPase / KEe2ATPase);
-    theVars->RROEA_Vel.ve2ATPGPP = theVars->RROEA_RC.ke2ATPGPP * (RROEA_con->Thio * ATPGPPo - Thioo * RROEA_con->ATPGPP / theVars->RROEA_KE.KEe2ATPGPP);
-    theVars->RROEA_Vel.ve2MDH = theVars->RROEA_RC.ke2MDH * (RROEA_con->Thio * MDHo - Thioo * RROEA_con->MDH / theVars->RROEA_KE.KEe2MDH) - RROEA_con->MDH;
-    theVars->RROEA_Vel.veFd2Thio = theVars->RROEA_RC.keFd2Thio * (RROEA_con->Fd * Thioo - RROEA_con->Thio * Fdo / theVars->RROEA_KE.KEeFd2Thio);
-    theVars->RROEA_Vel.veFd2Calvin = RROEA_con->Fd * theVars->RROEA_RC.keFd2Calvin * (RROEA_con->FBPase / theVars->RROEA_Pool.FBPase);
-    theVars->RROEA_Vel.ve2RuACT = theVars->RROEA_RC.ke2RubACT * (RROEA_con->Thio * RuACTo - Thioo * RROEA_con->RuACT / theVars->RROEA_KE.KEe2RuACT);
+    theVars->RROEA_Vel.ve2GAPDH = theVars->RROEA_RC.ke2GAPDH * (RROEA_con->Thio * GAPDHo - Thioo *
+                                                                RROEA_con->GAPDH / theVars->RROEA_KE.KEe2GAPDH);
+    theVars->RROEA_Vel.ve2FBPase = theVars->RROEA_RC.ke2FBPase * (RROEA_con->Thio * FBPaseo - Thioo *
+                                                                  RROEA_con->FBPase / theVars->RROEA_KE.KEe2FBPase);
+    theVars->RROEA_Vel.ve2SBPase = theVars->RROEA_RC.ke2SBPase * (RROEA_con->Thio * SBPaseo - Thioo *
+                                                                  RROEA_con->SBPase / theVars->RROEA_KE.KEe2SBPase);
+    theVars->RROEA_Vel.ve2PRK = theVars->RROEA_RC.ke2PRK * (RROEA_con->Thio * PRKo - Thioo *
+                                                            RROEA_con->PRK / theVars->RROEA_KE.KEe2PRK);
+    theVars->RROEA_Vel.ve2ATPase = ke2ATPase * (RROEA_con->Thio * ATPaseo - Thioo *
+                                                RROEA_con->ATPase / KEe2ATPase);
+    theVars->RROEA_Vel.ve2ATPGPP = theVars->RROEA_RC.ke2ATPGPP * (RROEA_con->Thio * ATPGPPo -
+                                                                  Thioo * RROEA_con->ATPGPP /
+                                                                  theVars->RROEA_KE.KEe2ATPGPP);
+    theVars->RROEA_Vel.ve2MDH = theVars->RROEA_RC.ke2MDH * (RROEA_con->Thio * MDHo - Thioo *
+                                                            RROEA_con->MDH / theVars->RROEA_KE.KEe2MDH) -
+                                RROEA_con->MDH;
+    theVars->RROEA_Vel.veFd2Thio = theVars->RROEA_RC.keFd2Thio * (RROEA_con->Fd * Thioo -
+                                                                  RROEA_con->Thio * Fdo /
+                                                                  theVars->RROEA_KE.KEeFd2Thio);
+    theVars->RROEA_Vel.veFd2Calvin = RROEA_con->Fd * theVars->RROEA_RC.keFd2Calvin *
+                                     (RROEA_con->FBPase / theVars->RROEA_Pool.FBPase);
+    theVars->RROEA_Vel.ve2RuACT = theVars->RROEA_RC.ke2RubACT * (RROEA_con->Thio * RuACTo - Thioo *
+                                                                 RROEA_con->RuACT / theVars->RROEA_KE.KEe2RuACT);
 
 #ifdef INCDEBUG
     DEBUG_INTERNAL(theVars->RROEA_Vel)

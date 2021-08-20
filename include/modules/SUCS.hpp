@@ -146,6 +146,14 @@ private:
     SET_GET(Vf_T59)
     SET_GET(UTPc)
     SET_GET(ATPc)
+    static double KE5Ratio;
+    static double ADPc;
+    static double SUCSV51;
+    static double SUCSV52;
+    static double SUCSV55;
+    static double SUCSV56;
+    static double SUCSV57;
+    static double SUCSV58;
     static double TIME;
     static size_t N;
 };

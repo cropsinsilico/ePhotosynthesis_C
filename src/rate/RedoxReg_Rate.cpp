@@ -54,7 +54,7 @@ void RedoxReg::_Rate(const double t, const RedoxRegCondition* RedoxReg_Con, Vari
         drivers::UserData *data = drivers::alloc_user_data();
         data->coeffs.resize(2);
 
-        data->coeffs[0] = theVars->RedoxReg_MP[0][1] - 0.03 * log10(TEMP / (1 - TEMP));
+        data->coeffs[0] = theVars->RedoxReg_MP[0][1] - 0.03 * log10(TEMP / (1. - TEMP));
 
         N_Vector y, constraints, scaling;
         y = N_VNew_Serial(1);

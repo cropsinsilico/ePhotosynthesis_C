@@ -144,17 +144,21 @@ int main(int argc, const char* argv[]) {
         //DEBUG_MESSAGE("TESTING",0)
         switch (driverChoice) {
             case trDynaPS:
-                maindriver = new drivers::trDynaPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
+                maindriver = new drivers::trDynaPSDriver(theVars, begintime, stepsize, stoptime,
+                                                         maxSubSteps, abstol, reltol, 1, 1);
                 break;
             case DynaPS:
-                maindriver = new drivers::DynaPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1);
+                maindriver = new drivers::DynaPSDriver(theVars, begintime, stepsize, stoptime,
+                                                       maxSubSteps, abstol, reltol, 1, 1);
                 break;
             case CM:
-                maindriver = new drivers::CMDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol);
+                maindriver = new drivers::CMDriver(theVars, begintime, stepsize, stoptime,
+                                                   maxSubSteps, abstol, reltol);
                 break;
             case EPS:
                 theVars->useC3 = true;
-                maindriver = new drivers::EPSDriver(theVars, begintime, stepsize, stoptime, maxSubSteps, abstol, reltol, 1, 1, Tp);
+                maindriver = new drivers::EPSDriver(theVars, begintime, stepsize, stoptime,
+                                                    maxSubSteps, abstol, reltol, 1, 1, Tp);
                 break;
             default:
                 printf("Invalid driver choice given.\n");

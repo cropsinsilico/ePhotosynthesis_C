@@ -48,10 +48,12 @@ SUCSCondition* SUCS::_MB_con(const double t, const SUCSCondition* SUCS_Con, Vari
     if (theVars->useC3) {
         dydt->T3Pc = theVars->PS_Vel.v31 + theVars->PS_Vel.v33 - 2 * theVars->SUCS_Vel.v51; // T3Pc
     } else {
-        dydt->T3Pc = theVars->SUCS_Vel.vdhap_in + theVars->SUCS_Vel.vgap_in - 2 * theVars->SUCS_Vel.v51; // T3Pc
+        dydt->T3Pc = theVars->SUCS_Vel.vdhap_in + theVars->SUCS_Vel.vgap_in -
+                     2. * theVars->SUCS_Vel.v51; // T3Pc
     }
     dydt->FBPc = theVars->SUCS_Vel.v51 - theVars->SUCS_Vel.v52; // FBPc
-    dydt->HexPc = theVars->SUCS_Vel.v52 - theVars->SUCS_Vel.v55 - theVars->SUCS_Vel.v59 + theVars->SUCS_Vel.v58 - theVars->SUCS_Vel.v56;// HexPc
+    dydt->HexPc = theVars->SUCS_Vel.v52 - theVars->SUCS_Vel.v55 - theVars->SUCS_Vel.v59 +
+                  theVars->SUCS_Vel.v58 - theVars->SUCS_Vel.v56;// HexPc
     dydt->F26BPc = theVars->SUCS_Vel.v59 - theVars->SUCS_Vel.v58; // F26BPc
     dydt->UDPGc = theVars->SUCS_Vel.v55 - theVars->SUCS_Vel.v56; // UDPGc
     //dydt->UTPc = 0; //  v60 - v55  ;   // UTPc

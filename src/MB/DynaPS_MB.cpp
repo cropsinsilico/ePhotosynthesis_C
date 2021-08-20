@@ -45,7 +45,7 @@ DynaPSCondition* DynaPS::_MB_con(const double t, const DynaPSCondition* DynaPS_c
 
     // This is a sensitivity test to show that the model is stable udner fluctuating light
 
-    const double light = 1;
+    const double light = 1.;
     Condition(t, theVars);
 
     theVars->FI_Param[0] = light;

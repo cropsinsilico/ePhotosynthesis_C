@@ -38,8 +38,10 @@ XanCycleCondition* XanCycle::_MB_con(const double t, const XanCycleCondition* Xa
 
     XanCycleCondition* dydt = new XanCycleCondition();
 
-    dydt->Vx = theVars->XanCycle_Vel.Vvf + theVars->XanCycle_Vel.Vav - theVars->XanCycle_Vel.Vva - theVars->XanCycle_Vel.Vv2ABA;
-    dydt->Ax = theVars->XanCycle_Vel.Vva - theVars->XanCycle_Vel.Vav + theVars->XanCycle_Vel.Vza - theVars->XanCycle_Vel.Vaz;
+    dydt->Vx = theVars->XanCycle_Vel.Vvf + theVars->XanCycle_Vel.Vav - theVars->XanCycle_Vel.Vva -
+               theVars->XanCycle_Vel.Vv2ABA;
+    dydt->Ax = theVars->XanCycle_Vel.Vva - theVars->XanCycle_Vel.Vav + theVars->XanCycle_Vel.Vza -
+               theVars->XanCycle_Vel.Vaz;
     dydt->Zx = theVars->XanCycle_Vel.Vaz - theVars->XanCycle_Vel.Vza;
     dydt->ABA = theVars->XanCycle_Vel.Vv2ABA - theVars->XanCycle_Vel.VABAdg;
 #ifdef INCDEBUG

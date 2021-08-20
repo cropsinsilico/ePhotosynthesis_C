@@ -55,16 +55,16 @@ public:
         ke2ATPGPP = other.ke2ATPGPP;
     }
 
-    double ke2GAPDH = 0;
-    double ke2MDH = 0;
-    double ke2FBPase = 0;
-    double ke2SBPase = 0;
-    double ke2PRK = 0;
-    double ke2RubACT = 0;
-    double ke2Fd = 0;
-    double keFd2Thio = 0;
-    double keFd2Calvin = 0;
-    double ke2ATPGPP = 0;
+    double ke2GAPDH = 0.;
+    double ke2MDH = 0.;
+    double ke2FBPase = 0.;
+    double ke2SBPase = 0.;
+    double ke2PRK = 0.;
+    double ke2RubACT = 0.;
+    double ke2Fd = 0.;
+    double keFd2Thio = 0.;
+    double keFd2Calvin = 0.;
+    double ke2ATPGPP = 0.;
 };
 
 }  // namespace RC

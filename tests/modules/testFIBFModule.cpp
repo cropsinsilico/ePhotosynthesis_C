@@ -12,7 +12,7 @@ namespace {
 
 TEST_F(FIBFModuleTest, InitTest) {
     FIBFCondition* fibfc = FIBF::init(BFModuleTest::theVars);
-    EXPECT_TRUE(fibfc == nullptr);
+    EXPECT_FALSE(fibfc == nullptr);
 }
 
 TEST_F(FIBFModuleTest, MBTest) {
