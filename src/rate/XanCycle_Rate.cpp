@@ -57,17 +57,10 @@ void XanCycle::_Rate(const double t, const XanCycleCondition* XanCycle_Con, Vari
         RegCof = 0;
     }
 
-
-    const double Vva = XanCycle_Con->Vx * XanCycle::kva * RegCof;
-    const double Vaz = XanCycle_Con->Ax * XanCycle::kaz * RegCof;
-    const double Vza = XanCycle_Con->Zx * XanCycle::kza;
-    const double Vav = XanCycle_Con->Ax * XanCycle::kav;
-
-
-    theVars->XanCycle_Vel.Vva = Vva; // The velocity of v to a conversion
-    theVars->XanCycle_Vel.Vaz = Vaz; // The rate of A to z
-    theVars->XanCycle_Vel.Vza = Vza; // THe rate of z to a
-    theVars->XanCycle_Vel.Vav = Vav; // The rate of A to V
+    theVars->XanCycle_Vel.Vva = XanCycle_Con->Vx * XanCycle::kva * RegCof; // The velocity of v to a conversion
+    theVars->XanCycle_Vel.Vaz = XanCycle_Con->Ax * XanCycle::kaz * RegCof; // The rate of A to z
+    theVars->XanCycle_Vel.Vza = XanCycle_Con->Zx * XanCycle::kza; // THe rate of z to a
+    theVars->XanCycle_Vel.Vav = XanCycle_Con->Ax * XanCycle::kav; // The rate of A to V
     theVars->XanCycle_Vel.Vvf = VVF; // The rate of V formation
     theVars->XanCycle_Vel.Vv2ABA = VV2ABA; // The rate of conversion from v to XanCycle_Con.ABA.
     theVars->XanCycle_Vel.VABAdg = VABADG; // The rate of XanCycle_Con.ABA degradation

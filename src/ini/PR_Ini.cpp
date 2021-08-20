@@ -97,6 +97,15 @@ double PR::GLUc = 0.;
 double PR::RUBISCOTOTAL = 0.;
 double PR::V1T = 0.;
 size_t PR::N = 1;
+
+double PR::PrV112 = 0.;
+double PR::PrV113 = 0.;
+double PR::PrV121 = 0.;
+double PR::PrV122 = 0.;
+double PR::PrV123 = 0.;
+double PR::PrV124 = 0.;
+double PR::PrV131 = 0.;
+
 const size_t PRCondition::count = 10;
 bool PRCondition::PS_connect = false;
 bool PR::PS_connect = false;
@@ -228,6 +237,13 @@ PRCondition* PR::_init(Variables *theVars) {
         PR::KM1012 = 0.2;
         PR::KI1012 = 0.22;
 
+        PR::PrV112 = PR::V112 * PR::Vfactor112 * PR::Vf_T112 * pow(Q10_112, (theVars->Tp - 25) / 10);
+        PR::PrV113 = PR::V113 * PR::Vfactor113 * PR::Vf_T113 * pow(Q10_113, (theVars->Tp - 25) / 10);
+        PR::PrV121 = PR::V121 * PR::Vfactor121 * PR::Vf_T121 * pow(Q10_121, (theVars->Tp - 25) / 10);
+        PR::PrV122 = PR::V122 * PR::Vfactor122 * PR::Vf_T122 * pow(Q10_122, (theVars->Tp - 25) / 10);
+        PR::PrV123 = PR::V123 * PR::Vfactor123 * PR::Vf_T123 * pow(Q10_123, (theVars->Tp - 25) / 10);
+        PR::PrV124 = PR::V124 * PR::Vfactor124 * pow(Q10_124, (theVars->Tp - 25) / 10);
+        PR::PrV131 = PR::V131 * PR::Vfactor131 * PR::Vf_T131 * pow(Q10_131, (theVars->Tp - 25) / 10);
 
     } else {
         // To set global information for different reactions

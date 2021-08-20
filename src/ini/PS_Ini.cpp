@@ -32,6 +32,7 @@
 #define dHa_c 80.99
 #define c_o 14.68
 #define dHa_o 23.72
+#define RegFactor 1.
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
@@ -153,6 +154,45 @@ double PS::TIME = 0.;
 double PS::Theta = 0;
 double PS::beta = 0;
 double PS::Jmax = 0.;
+double PS::KE1Ratio = 0.;
+double PS::KE2Ratio = 0.;
+double PS::PsV1_0 = 0.;
+double PS::PsV2_0 = 0.;
+double PS::PsV3_0 = 0.;
+double PS::PsV5_0 = 0.;
+double PS::PsV6_0 = 0.;
+double PS::PsV7_0 = 0.;
+double PS::PsV8_0 = 0.;
+double PS::PsV9_0 = 0.;
+double PS::PsV10_0 = 0.;
+double PS::PsV13_0 = 0.;
+double PS::PsV16 = 0.;
+double PS::PsV23_0 = 0.;
+double PS::PsV31 = 0.;
+double PS::PsV32 = 0.;
+double PS::PsV33 = 0.;
+double PS::Ru_Act = 0.;
+double PS::PsV2 = 0.;
+double PS::PsV3 = 0.;
+double PS::PsV5 = 0.;
+double PS::PsV6 = 0.;
+double PS::PsV7 = 0.;
+double PS::PsV8 = 0.;
+double PS::PsV9 = 0.;
+double PS::PsV10 = 0.;
+double PS::PsV13 = 0.;
+double PS::PsV23 = 0.;
+double PS::I2 = 0.;
+double PS::J = 0.;
+double PS::KE57 = 0.;
+double PS::Km8p5p = 0.;
+double PS::Km5p5p = 0.;
+double PS::KE810 = 0.;
+double PS::Km5gap = 0.;
+double PS::Km8f6p = 0.;
+double PS::Km8s7p = 0.;
+double PS::Km8gap = 0.;
+double PS::MaxCoeff = 0.;
 
 size_t PS::N = 1;
 const size_t PSCondition::count = 12;
@@ -303,6 +343,40 @@ PSCondition* PS::_init(Variables *theVars) {
         PS::V32 = 3.73 / 3;   //1.05 *SC *1.0;	    %	(Lilley et al., 1977b)	32	Phosphate translocator	PGAi<->PGAo 1.05 default
         PS::V33 = 3.73 / 3;   //1.05 *SC * 1.0;	    %	(Lilley et al., 1977b)	33	Phosphate translocator	GAPi<->GAPo 1.05 default
 
+        PS::PsV1_0 = PS::V1 * PS::Vfactor1 * PS::Vf_T1 ;   //  1   Rubisco RuBP+CO2<->2PGA
+        PS::PsV2_0 = PS::V2 * PS::Vfactor2 * PS::Vf_T2 ;   //  2   PGA Kinase  PGA+ATP <-> ADP + DPGA
+        PS::PsV3_0 = PS::V3 * PS::Vfactor3 * PS::Vf_T3 ;   //  3   GAP dehydragenase   DPGA+NADPH <->GAP + OP+NADP
+
+        PS::PsV5_0 = PS::V5 * PS::Vfactor5 * PS::Vf_T5;    //  5   Aldolase    GAP+DHAP <->FBP
+        PS::PsV6_0 = PS::V6 * PS::Vf_T6    ;   //  6   FBPase  FBP<->F6P+OP
+        PS::PsV7_0 = PS::V7 * PS::Vfactor7 ;   //  7   Transketolase   F6P+GAP<->E4P+Xu5P
+        PS::PsV8_0 = PS::V8 * PS::Vfactor5 * PS::Vf_T5 ;   //  8   Aldolase    E4P+DHAP<->SBP
+        PS::PsV9_0 = PS::V9 * PS::Vf_T9    ;   //  9   SBPase  SBP<->S7P+OP
+        PS::PsV10_0 = PS::V10 * PS::Vfactor7   ;   //  10  Transketolase   S7P+GAP<->Ri5P+Xu5P
+
+        PS::PsV13_0 = PS::V13 * PS::Vfactor13 * PS::Vf_T13;    //  13  Ribulosebiphosphate kinase  Ru5P+ATP<->RuBP+ADP
+        PS::PsV16 = PS::V16  ;   //  16  ATP synthase    ADP+Pi<->ATP
+
+        PS::PsV23_0 = PS::V23 * PS::Vfactor23 * PS::Vf_T23;//  23  ADP-glucose pyrophosphorylase and   ADPG+Gn<->G(n+1)+ADP
+        PS::PsV31  =   PS::V31  * theVars->alpha2; //  31  Phosphate translocator  DHAPi<->DHAPo
+        PS::PsV32  =   PS::V32  * theVars->alpha2; //  32  Phosphate translocator  PGAi<->PGAo
+        PS::PsV33  =   PS::V33  * theVars->alpha2; //  33  Phosphate translocator  GAPi<->GAPo
+        PS::Ru_Act = -3. * pow(10., -5.) * pow(theVars->Tp, 3.) + 0.0013 * pow(theVars->Tp, 2.) - 0.0106 * theVars->Tp + 0.8839; //Rubisco activition state   % SHARED
+        PS::PsV1 = PS::PsV1_0 * PS::Ru_Act * pow(Q10_1, (theVars->Tp - 25.) / 10.);                     //   SHARED
+        PS::PsV2 = PS::PsV2_0 * pow(Q10_2, (theVars->Tp - 25.) / 10.);
+        PS::PsV3 = PS::PsV3_0 * pow(Q10_3, (theVars->Tp - 25.) / 10.);
+        PS::PsV5 = PS::PsV5_0 * pow(Q10_5, (theVars->Tp - 25.) / 10.);
+        PS::PsV6 = PS::PsV6_0 * pow(Q10_6, (theVars->Tp - 25.) / 10.);
+        PS::PsV7 = PS::PsV7_0 * pow(Q10_7, (theVars->Tp - 25.) / 10.);
+        PS::PsV8 = PS::PsV8_0 * pow(Q10_8, (theVars->Tp - 25.) / 10.);
+        PS::PsV9 = PS::PsV9_0 * pow(Q10_9, (theVars->Tp - 25.) / 10.);
+        PS::PsV10 = PS::PsV10_0 * pow(Q10_10, (theVars->Tp - 25.) / 10.);
+        PS::PsV13= PS::PsV13_0 * pow(Q10_13, (theVars->Tp - 25.) / 10.);
+        PS::PsV23 = PS::PsV23_0 * pow(Q10_23, (theVars->Tp - 25.) / 10.);
+        PS::I2 = theVars->TestLi * theVars->alfa * (1 - theVars->fc) / 2;
+        PS::J = (I2 + PS::Jmax - sqrt(pow(I2 + PS::Jmax, 2) - 4 * PS::Theta * I2 * PS::Jmax)) / (2 * PS::Theta);
+
+
     } else {
         PS::PS_C_CP = 15 * theVars->PSRatio[0];    //   Global constant for the total phosphate
         PS::PS_C_CA = 1.5 * theVars->PSRatio[1];   //   Global constant for the total adenylates
@@ -430,6 +504,19 @@ PSCondition* PS::_init(Variables *theVars) {
         PS::V31 = 1.0 * theVars->PSRatio[16] * 20;
         PS::V32 = 1.0 * theVars->PSRatio[17];
         PS::V33 = 1.0 * theVars->PSRatio[18] * 20;//WY 2018103
+        PS::KE57 = 1.005 * 0.1 * theVars->PSRatio[93];
+        PS::Km8p5p = 0.118 * theVars->PSRatio[94];
+        PS::Km5p5p = 0.616 * theVars->PSRatio[95];
+        PS::KE810 = 0.8446 * theVars->PSRatio[96];
+        PS::Km5gap = 0.2727 * theVars->PSRatio[97];
+        PS::Km8f6p = 0.5443 * theVars->PSRatio[98];
+        PS::Km8s7p = 0.01576 * theVars->PSRatio[99];
+        PS::Km8gap = 0.09 * theVars->PSRatio[100];
+        PS::MaxCoeff = 5 * theVars->PSRatio[101];
+        PS::PsV31 = PS::V31 * RegFactor; // 31 Phosphate translocator DHAPi<->DHAPo
+        PS::PsV32 = PS::V32 * RegFactor; // 32 Phosphate translocator PGAi<->PGAo
+        PS::PsV33 = PS::V33 * RegFactor; // 33 Phosphate translocator GAPi<->GAPo
+
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -438,6 +525,7 @@ PSCondition* PS::_init(Variables *theVars) {
 
 
     theVars->ADP = PS::PS_C_CA - PS_con->ATP;
-
+    PS::KE2Ratio = (1 + 1 / PS::KE21 + PS::KE22);
+    PS::KE1Ratio = (1 + 1 / PS::KE11 + 1 / PS::KE12);
     return PS_con;
 }

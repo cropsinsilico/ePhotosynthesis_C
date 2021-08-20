@@ -28,6 +28,9 @@
 #include "modules/FI.hpp"
 #include "modules/FIBF.hpp"
 
+#define KE 1000000
+#define P680PheoT 1
+
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
@@ -48,8 +51,6 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
         PQn = FI_Con->PQn;
         PQ = theVars->FI_Pool.PQT - PQn - FIBF::getFIBF2FI_PQa();
     }
-
-    const double P680PheoT = 1;
 
     const double P680Pheo = P680PheoT - FI_Con->P680pPheo - FI_Con->P680Pheon - FI_Con->P680pPheon - FI_Con->P680ePheo; //QF add  '- P680ePheo'
 
@@ -129,7 +130,6 @@ void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
     theVars->FI_Vel.v2_01_2 = theVars->FI_Vel.v2_2 * b; // v2_01_2 The rate of reduction of FI_Con.QAQBn by P680Pheon
     theVars->FI_Vel.v2_02_2 = theVars->FI_Vel.v2_2 * c; // v2_02_2 The rate of reduction of FI_Con.QAQB2n by P680Pheon
 
-    const double KE = 1000000;
     const double Coeff1 = FI_Con->P680pPheo / P680PheoT;
     theVars->FI_Vel.vr2_00_1 = FI_Con->QAnQB * theVars->FI_RC.k2 / KE * Coeff1;   // vr2_00_1 The reverse reaction of The rate of reduction of FI_Con.QAQB by P680pPheon
     theVars->FI_Vel.vr2_01_1 = FI_Con->QAnQBn * theVars->FI_RC.k2 / KE * Coeff1;  // vr2_01_1 The reverse reaction of The rate of reduction of FI_Con.QAQBn by P680pPheon

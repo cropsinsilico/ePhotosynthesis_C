@@ -202,6 +202,46 @@ private:
     SET_GET(Vf_T23)
     SET_GET(PsV1)
 
+    static double KE1Ratio;
+    static double KE2Ratio;
+    static double PsV1_0;
+    static double PsV2_0;
+    static double PsV3_0;
+    static double PsV5_0;
+    static double PsV6_0;
+    static double PsV7_0;
+    static double PsV8_0;
+    static double PsV9_0;
+    static double PsV10_0;
+    static double PsV13_0;
+    static double PsV16;
+    static double PsV23_0;
+    static double PsV31;
+    static double PsV32;
+    static double PsV33;
+    static double Ru_Act;
+    static double PsV2;
+    static double PsV3;
+    static double PsV5;
+    static double PsV6;
+    static double PsV7;
+    static double PsV8;
+    static double PsV9;
+    static double PsV10;
+    static double PsV13;
+    static double PsV23;
+    static double I2;
+    static double J;
+    static double KE57;
+    static double Km8p5p;
+    static double Km5p5p;
+    static double KE810;
+    static double Km5gap;
+    static double Km8f6p;
+    static double Km8s7p;
+    static double Km8gap;
+    static double MaxCoeff;
+
     static arr Param;
     static bool useC3;
     static double TIME;

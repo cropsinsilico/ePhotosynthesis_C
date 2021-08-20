@@ -135,6 +135,15 @@ private:
     SET_GET(V1T)
     SET_GET(PGA)
     SET_GET(GLUc)
+
+    static double PrV112;
+    static double PrV113;
+    static double PrV121;
+    static double PrV122;
+    static double PrV123;
+    static double PrV124;
+    static double PrV131;
+
     static double TIME;
     static size_t N;
 };

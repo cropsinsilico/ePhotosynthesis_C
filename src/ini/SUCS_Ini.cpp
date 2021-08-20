@@ -102,6 +102,14 @@ double SUCS::UTPc = 0.;
 double SUCS::ATPc = 0.;
 double SUCS::SUCS2PS_Pic = 0.;
 double SUCS::TIME = 0.;
+double SUCS::KE5Ratio = 0.;
+double SUCS::ADPc = 0.;
+double SUCS::SUCSV51 = 0.;
+double SUCS::SUCSV52 = 0.;
+double SUCS::SUCSV55 = 0.;
+double SUCS::SUCSV56 = 0.;
+double SUCS::SUCSV57 = 0.;
+double SUCS::SUCSV58 = 0.;
 size_t SUCS::N = 1;
 
 const size_t SUCSCondition::count = 8;
@@ -198,6 +206,13 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
         SUCS::V60 = 6.1;	//	ATP+UDP --UTP + ADP
         SUCS::V61 = 10000;	//	POPO --2PO
         SUCS::V62 = 2;	//	SUC Sink        0.2 works.
+
+        SUCS::SUCSV51 = SUCS::V51 * SUCS::Vfactor51 * SUCS::Vf_T51 * pow(Q10_51, (theVars->Tp - 25.) / 10.);//	;		DHAP+GAP --FBP
+        SUCS::SUCSV52 = SUCS::V52 * SUCS::Vfactor52 * SUCS::Vf_T52 * pow(Q10_52, (theVars->Tp - 25.) / 10.);//	;		FBP --F6P + Pi
+        SUCS::SUCSV55 = SUCS::V55 * pow(Q10_55, (theVars->Tp - 25) / 10);//	;		G1P+UTP --OPOP+UDPG
+        SUCS::SUCSV56 = SUCS::V56 * SUCS::Vfactor56 * SUCS::Vf_T56 * pow(Q10_56, (theVars->Tp - 25.) / 10.);//	;		UDPG+F6P--SUCP + UDP
+        SUCS::SUCSV57 = SUCS::V57 * SUCS::Vfactor57 * SUCS::Vf_T57 * pow(Q10_57, (theVars->Tp - 25.) / 10.);//	;		SUCP--Pi + SUC
+        SUCS::SUCSV58 = SUCS::V58 * pow(Q10_58, (theVars->Tp - 25) / 10);//	;		F26BP--F6P + Pi
 
         // Initialize the leaves of active enzyme in a dark adapted leaves;
         // mM
@@ -308,5 +323,7 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
         theVars->SUCS_Pool.UTc = 1.5 * theVars->SUCRatio[13]; // mM
         theVars->SUCS_Pool.PTc = 15 * theVars->SUCRatio[14];  //
     }
+    SUCS::KE5Ratio = 1 + SUCS::KE541 + 1 / SUCS::KE531;
+    SUCS::ADPc = theVars->SUCS_Pool.ATc - SUCS::ATPc;
     return SUCS_Con;
 }

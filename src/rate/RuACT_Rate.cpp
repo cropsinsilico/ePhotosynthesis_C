@@ -30,6 +30,7 @@
 #include "modules/RuACT.hpp"
 #include "modules/PS.hpp"
 
+#define CA 1.
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
@@ -58,7 +59,6 @@ void RuACT::_Rate(const double t, const RuACTCondition* RuACT_Con, Variables *th
     }
     double RatioDT = ADP / ATP;
 
-    const double CA = 1;
     const double CB = theVars->RuACT_RC.Ke3 + theVars->RuACT_RC.Ke2 * theVars->RuACT_RC.Ke3 / C + RuACT_Con->Eaf - MT;
     const double CC = - MT * (theVars->RuACT_RC.Ke3 + theVars->RuACT_RC.Ke2 * theVars->RuACT_RC.Ke3 / C);
 
