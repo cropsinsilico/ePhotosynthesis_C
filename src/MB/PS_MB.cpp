@@ -34,9 +34,9 @@ using namespace ePhotosynthesis::conditions;
 
 PSCondition* PS::_MB_con(const double t, const PSCondition* PS_con, Variables *theVars) {
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
     // Modifying KM, KI, KE VMAX for different reactions as the regulation//
-    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////
 
     // Regulations first.
     Condition(t, theVars);
@@ -53,13 +53,15 @@ PSCondition* PS::_MB_con(const double t, const PSCondition* PS_con, Variables *t
     dydt->RuBP = theVars->PS_Vel.v13 - theVars->PS_Vel.v1;
     dydt->PGA = 2 * theVars->PS_Vel.v1 - theVars->PS_Vel.v2 - theVars->PS_Vel.v32;
     dydt->DPGA = theVars->PS_Vel.v2 - theVars->PS_Vel.v3;
-    dydt->T3P = theVars->PS_Vel.v3 - 2 * theVars->PS_Vel.v5 - theVars->PS_Vel.v7 - theVars->PS_Vel.v8 - theVars->PS_Vel.v10 - theVars->PS_Vel.v31 - theVars->PS_Vel.v33;
+    dydt->T3P = theVars->PS_Vel.v3 - 2 * theVars->PS_Vel.v5 - theVars->PS_Vel.v7 -
+                theVars->PS_Vel.v8 - theVars->PS_Vel.v10 - theVars->PS_Vel.v31 - theVars->PS_Vel.v33;
     dydt->ADPG = theVars->PS_Vel.v23 - theVars->PS_Vel.v24;
     dydt->FBP = theVars->PS_Vel.v5 - theVars->PS_Vel.v6;
     dydt->E4P = theVars->PS_Vel.v7 - theVars->PS_Vel.v8;
     dydt->S7P = theVars->PS_Vel.v9 - theVars->PS_Vel.v10;
     dydt->SBP = theVars->PS_Vel.v8 - theVars->PS_Vel.v9;
-    dydt->ATP = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13 - theVars->PS_Vel.v25;
+    dydt->ATP = theVars->PS_Vel.v16 - theVars->PS_Vel.v2 - theVars->PS_Vel.v23 - theVars->PS_Vel.v13 -
+                theVars->PS_Vel.v25;
     dydt->HexP = theVars->PS_Vel.v6 - theVars->PS_Vel.v7 - theVars->PS_Vel.v23 + theVars->PS_Vel.v25;
     dydt->PenP = theVars->PS_Vel.v7 + theVars->PS_Vel.v10 * 2 - theVars->PS_Vel.v13;
 #ifdef INCDEBUG

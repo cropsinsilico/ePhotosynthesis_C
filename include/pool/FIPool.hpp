@@ -46,8 +46,8 @@ public:
         QBt = other.QBt;
         PQT = other.PQT;
     }
-    double QBt = 0;
-    double PQT = 0;
+    double QBt = 0.;
+    double PQT = 0.;
 };
 
 }  // namespace pool

@@ -67,27 +67,27 @@ public:
         k_pq_oxy = other.k_pq_oxy;
     }
 
-    double kA_d = 0;
-    double kA_f = 0;
-    double kA_U = 0;
-    double kU_A = 0;
-    double kU_d = 0;
-    double kU_f = 0;
-    double k1 = 0;
-    double k_r1 = 0;
-    double kz = 0;
-    double k12 = 0;
-    double k23 = 0;
-    double k30 = 0;
-    double k01 = 0;
-    double k2 = 0;
-    double kAB1 = 0;
-    double kBA1 = 0;
-    double kAB2 = 0;
-    double kBA2 = 0;
-    double k3 = 0;
-    double k_r3 = 0;
-    double k_pq_oxy = 0;
+    double kA_d = 0.;
+    double kA_f = 0.;
+    double kA_U = 0.;
+    double kU_A = 0.;
+    double kU_d = 0.;
+    double kU_f = 0.;
+    double k1 = 0.;
+    double k_r1 = 0.;
+    double kz = 0.;
+    double k12 = 0.;
+    double k23 = 0.;
+    double k30 = 0.;
+    double k01 = 0.;
+    double k2 = 0.;
+    double kAB1 = 0.;
+    double kBA1 = 0.;
+    double kAB2 = 0.;
+    double kBA2 = 0.;
+    double k3 = 0.;
+    double k_r3 = 0.;
+    double k_pq_oxy = 0.;
 };
 
 }  // namespace pool

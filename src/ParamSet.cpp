@@ -30,7 +30,7 @@
 using namespace ePhotosynthesis;
 void ePhotosynthesis::ParamSet(Variables *theVars) {
 
-    const double va1 = 0;
+    const double va1 = 0.;
 
     theVars->BF_Param = zeros(2);
     theVars->BF_Param[0] = va1;
@@ -40,7 +40,7 @@ void ePhotosynthesis::ParamSet(Variables *theVars) {
     theVars->FI_Param[0] = va1;
     theVars->FI_Param[1] = theVars->PS12ratio;
 
-    theVars->PS_PR_Param = 0;
+    theVars->PS_PR_Param = 0.;
 
     theVars->SUCS_Param = zeros(2);
 

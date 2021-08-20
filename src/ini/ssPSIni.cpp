@@ -36,7 +36,7 @@ double ssPS::GammaStar = 0.;
 double ssPS::kmO2 = 0.;
 double ssPS::kmCO2 = 0.;
 void ssPS::ssPSIni(const double t, Variables *theVars) {
-    const double RT = 0.0083 * (273 + t);
+    const double RT = 0.0083 * (273. + t);
 
     GammaStar = exp(19.02 - 37.83 / RT);
     kmCO2 = exp(38.05 - 79.43 / RT);

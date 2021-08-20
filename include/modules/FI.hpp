@@ -42,7 +42,7 @@ namespace modules {
  */
 class FI : public ModuleBase<FI, conditions::FICondition> {
 public:
-    SET_GET_BOOL_MODULE(BF_connect, conditions::FI);
+    SET_GET_BOOL_MODULE(BF_connect, conditions::FI)
 private:
     friend ModuleBase;
 #ifdef TESTING

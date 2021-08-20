@@ -46,14 +46,16 @@ trDynaPSCondition* trDynaPS::_MB_con(const double t, const trDynaPSCondition* tr
     theVars->FI_Param[0] = light;
     theVars->BF_Param[0] = light;
 
-    theVars->RROEA_Param[1] = 1;
+    theVars->RROEA_Param[1] = 1.;
     RROEACondition* RROEAdydt = RROEA::MB_con(t, trDynaPS_con->RROEA_con, theVars);
 
     DynaPSCondition* DynaPSdydt = DynaPS::MB_con(t, trDynaPS_con->DynaPS_con, theVars);
 
 
     //WY201804
-    const double Temp = RROEAdydt->Fd - theVars->RROEA_Vel.ve2Fd + theVars->BF_Vel.Vbf16 / theVars->AVR + theVars->RROEA_Vel.veFd2Calvin - theVars->BF_Vel.vbfn2 - theVars->BF_Vel.vcet / theVars->AVR;
+    const double Temp = RROEAdydt->Fd - theVars->RROEA_Vel.ve2Fd + theVars->BF_Vel.Vbf16 /
+                        theVars->AVR + theVars->RROEA_Vel.veFd2Calvin - theVars->BF_Vel.vbfn2 -
+                        theVars->BF_Vel.vcet / theVars->AVR;
 
     RROEAdydt->Fd = Temp * theVars->AVR;
     DynaPSdydt->RA_con->EPS_con->FIBF_con->BF_con->Fdn = RROEAdydt->Fd;

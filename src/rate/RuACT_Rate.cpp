@@ -48,7 +48,7 @@ void RuACT::_Rate(const double t, const RuACTCondition* RuACT_Con, Variables *th
         ADP = 1.5 - ATP;
         RuBP = RuACT_Con->RuBP;
     } else {
-        RuACT::activase = RuACT_Con->parent->parent->parent->RROEA_con->RuACT * 14364;
+        RuACT::activase = RuACT_Con->parent->parent->parent->RROEA_con->RuACT * 14364.;
         RuBP = RuACT_Con->parent->EPS_con->CM_con->PS_PR_con->PS_con->RuBP;
         C = theVars->CO2_cond;
         O = theVars->O2_cond;
@@ -59,42 +59,45 @@ void RuACT::_Rate(const double t, const RuACTCondition* RuACT_Con, Variables *th
     }
     double RatioDT = ADP / ATP;
 
-    const double CB = theVars->RuACT_RC.Ke3 + theVars->RuACT_RC.Ke2 * theVars->RuACT_RC.Ke3 / C + RuACT_Con->Eaf - MT;
+    const double CB = theVars->RuACT_RC.Ke3 + theVars->RuACT_RC.Ke2 * theVars->RuACT_RC.Ke3 / C +
+                      RuACT_Con->Eaf - MT;
     const double CC = - MT * (theVars->RuACT_RC.Ke3 + theVars->RuACT_RC.Ke2 * theVars->RuACT_RC.Ke3 / C);
 
-    const double M = (-CB + pow(( pow(CB, 2) - 4 * CA * CC), 0.5)) / (2 * CA);
-    const double EC = RuACT_Con->Eaf *  pow((1 + theVars->RuACT_RC.Ke2 / C + M / theVars->RuACT_RC.Ke3), -1);
+    const double M = (-CB + pow((pow(CB, 2.) - 4. * CA * CC), 0.5)) / (2. * CA);
+    const double EC = RuACT_Con->Eaf *  pow((1 + theVars->RuACT_RC.Ke2 / C + M / theVars->RuACT_RC.Ke3), -1.);
     const double E = EC / C * theVars->RuACT_RC.Ke2;
     const double ECM = EC * M / theVars->RuACT_RC.Ke3;
 
     double LT;
     double RCA;
-    if (RuACT::activase < pow(10, -6)) {
-        RCA = 0;
+    if (RuACT::activase < pow(10., -6.)) {
+        RCA = 0.;
     } else {
         LT = 216.9 / RuACT::activase; // The lifetime of the activation; UNIT: MIN;
-        RCA = 1 / (LT * 60);            // The rate constant of the activation reaction
+        RCA = 1. / (LT * 60.);            // The rate constant of the activation reaction
     }
 
-    if (RatioDT > 3) {
-        RatioDT = 3;
+    if (RatioDT > 3.) {
+        RatioDT = 3.;
     } else if (RatioDT < 0.25){
-        RatioDT = 0;
+        RatioDT = 0.;
     }
 
-    double FATP = 1 - RatioDT / 3;
+    double FATP = 1. - RatioDT / 3.;
 
     if (FATP < 0.6)
         FATP = 0.6;
 
-    const double factor_n7 = 1;
+    const double factor_n7 = 1.;
 
     theVars->RuACT_Vel.v1 = RCA * RuACT_Con->ER * FATP;
     theVars->RuACT_Vel.vn1 = theVars->RuACT_RC.kn1 * E * RuBP;
     theVars->RuACT_Vel.v7 = theVars->RuACT_RC.k7 * ECM * RuBP;
     theVars->RuACT_Vel.vn7 = RuACT_Con->ECMR * 0.5 * factor_n7;
-    theVars->RuACT_Vel.v6_1 = RuACT_Con->ECMR * theVars->RuACT_RC.k6 * C / (C + theVars->RuACT_RC.kc * (1 + O / theVars->RuACT_RC.ko));
-    theVars->RuACT_Vel.v6_2 = RuACT_Con->ECMR * theVars->RuACT_RC.k6 / 3 * O / (O + theVars->RuACT_RC.ko * (1 + C / theVars->RuACT_RC.kc));
+    theVars->RuACT_Vel.v6_1 = RuACT_Con->ECMR * theVars->RuACT_RC.k6 * C /
+                              (C + theVars->RuACT_RC.kc * (1. + O / theVars->RuACT_RC.ko));
+    theVars->RuACT_Vel.v6_2 = RuACT_Con->ECMR * theVars->RuACT_RC.k6 / 3. * O /
+                              (O + theVars->RuACT_RC.ko * (1. + C / theVars->RuACT_RC.kc));
 #ifdef INCDEBUG
     DEBUG_INTERNAL(theVars->RuACT_Vel)
 #endif

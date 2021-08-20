@@ -35,7 +35,7 @@ double ePhotosynthesis::TargetFunVal(Variables *theVars) {
         return 0.;
 
 
-    const double PSVCOEFF = 30;
+    const double PSVCOEFF = 30.;
 
     for (size_t i = 0; i < theVars->PS_VEL.size(); i++)
         theVars->PS_VEL[i] *= PSVCOEFF;
@@ -45,7 +45,7 @@ double ePhotosynthesis::TargetFunVal(Variables *theVars) {
     if (VolRatioStCyto) {
         ratio = PSVCOEFF;
     } else {
-        ratio = PSVCOEFF * 4 / 9;
+        ratio = PSVCOEFF * 4. / 9.;
     }
     for (size_t i = 0; i < theVars->PR_VEL.size(); i++)
         theVars->PR_VEL[i] *= ratio;

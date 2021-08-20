@@ -46,7 +46,7 @@ public:
   FIBFPool(const FIBFPool &other) {
       PQT = other.PQT;
   }
-  double PQT;
+  double PQT = 0.;
 };
 
 }  // namespace pool

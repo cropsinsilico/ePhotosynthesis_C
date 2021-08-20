@@ -55,15 +55,15 @@ public:
         KEeFd2Thio = other.KEeFd2Thio;
     }
 
-    double KEe2FBPase = 0;
-    double KEe2SBPase = 0;
-    double KEe2PRK = 0;
-    double KEe2ATPase = 0;
-    double KEe2RuACT = 0;
-    double KEe2GAPDH = 0;
-    double KEe2MDH = 0;
-    double KEe2ATPGPP = 0;
-    double KEeFd2Thio = 0;
+    double KEe2FBPase = 0.;
+    double KEe2SBPase = 0.;
+    double KEe2PRK = 0.;
+    double KEe2ATPase = 0.;
+    double KEe2RuACT = 0.;
+    double KEe2GAPDH = 0.;
+    double KEe2MDH = 0.;
+    double KEe2ATPGPP = 0.;
+    double KEeFd2Thio = 0.;
 };
 
 }  // namespace KE

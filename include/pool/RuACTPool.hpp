@@ -49,13 +49,13 @@ public:
         C = other.C;
         O = other.O;
         M = other.M;
-}
+    }
 
-    double ET = 0;
-    double Rac = 0;
-    double C = 0;
-    double O = 0;
-    double M = 0;
+    double ET = 0.;
+    double Rac = 0.;
+    double C = 0.;
+    double O = 0.;
+    double M = 0.;
 };
 
 }  // namespace pool

@@ -44,7 +44,8 @@ namespace drivers {
 class CMDriver : public Driver {
 public:
     CMDriver(Variables *theVars, const double st, const double stp, const double etime,
-             const int maxSteps, const double atol, const double rtol, const bool showWarnings = false) :
+             const int maxSteps, const double atol, const double rtol,
+             const bool showWarnings = false) :
         Driver(theVars, st, stp, etime, maxSteps, atol, rtol, showWarnings) {
 #ifdef INCDEBUG
                 ePhotosynthesis::conditions::CMCondition::setTop();

@@ -27,6 +27,12 @@
 #include "Variables.hpp"
 #include "modules/FIBF.hpp"
 #include "globals.hpp"
+const double input_LHCI = 6.;
+const double input_LHCII = 13.;
+const double input_PSI = 1.;
+const double input_PSIIcore = 1.;
+const double PSIIantennaSize = 37.;
+const double PSIantennaSize = 95.;
 
 // This routine initialze the parameters used for all the routines.
 
@@ -35,12 +41,6 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 void ePhotosynthesis::SYSInitial(Variables *theVars) {
-    const double input_LHCI = 6.;
-    const double input_LHCII = 13.;
-    const double input_PSI = 1;
-    const double input_PSIIcore = 1;
-    const double PSIIantennaSize = 37;
-    const double PSIantennaSize = 95;
 
     theVars->PS12ratio = input_PSI / input_PSIIcore;
 

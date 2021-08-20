@@ -43,7 +43,13 @@ double FIBF::FIBF2FI_PQa = 0.;
 
 FIBFCondition* FIBF::_init(Variables *theVars) {
 
-    const double FIBF_PQT = 8;
+    const double FIBF_PQT = 8.;
     theVars->FIBF_Pool.PQT = FIBF_PQT;
-    return nullptr;
+    FICondition* FI_Con = FI::init(theVars);
+    BFCondition* BF_con = BF::init(theVars);
+    FIBFCondition* FIBF_con = new FIBFCondition(BF_con, FI_Con);
+    theVars->FI_Pool.PQT = theVars->FIBF_Pool.PQT;
+    theVars->BF_Pool.k_r1 = theVars->FIBF_Pool.PQT;
+
+    return FIBF_con;
 }

@@ -61,7 +61,8 @@ inline CalcData *alloc_calc_data() {
 class Driver {
 public:
     Driver(Variables *theVars, const double start, const double step, const double endtime,
-           const int maxSubSteps, const double atol, const double rtol, const bool showWarnings = false) {
+           const int maxSubSteps, const double atol, const double rtol,
+           const bool showWarnings = false) {
         this->theVars = theVars;
         this->start = start;
         this->step = step;

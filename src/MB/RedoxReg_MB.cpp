@@ -35,7 +35,8 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::drivers;
 
-RedoxRegCondition* RedoxReg::_MB_con(const double t, const RedoxRegCondition* RedoxReg_Con, Variables *theVars) {
+RedoxRegCondition* RedoxReg::_MB_con(const double t, const RedoxRegCondition* RedoxReg_Con,
+                                     Variables *theVars) {
 
     trDynaPS2RedReg_cal = true;
 
@@ -59,7 +60,7 @@ int RedoxReg::RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data) {
     double Etr = data->coeffs[0];
     double Em = data->coeffs[1];
     realtype x = udata[0];
-    fdata[0] = Etr - (Em - 0.03 * log10(x / (1 - x)));
+    fdata[0] = Etr - (Em - 0.03 * log10(x / (1. - x)));
     return 0;
 }
 

@@ -45,16 +45,16 @@ void XanCycle::_Rate(const double t, const XanCycleCondition* XanCycle_Con, Vari
     if (theVars->XanCycle_BF_com) {
         pH = XanCycle_Con->parent->RA_con->EPS_con->FIBF_con->BF_con->PHl;
     } else {
-        pH = 6;
+        pH = 6.;
     }
 
     double RegCof;
     if (pH <= 5.8) {
-        RegCof = 1;
+        RegCof = 1.;
     } else if (pH > 5.8 && pH < 6.5){
         RegCof = (6.5 - pH) / 0.7;
     } else {
-        RegCof = 0;
+        RegCof = 0.;
     }
 
     theVars->XanCycle_Vel.Vva = XanCycle_Con->Vx * XanCycle::kva * RegCof; // The velocity of v to a conversion
@@ -79,7 +79,8 @@ void XanCycle::_Rate(const double t, const XanCycleCondition* XanCycle_Con, Vari
         theVars->XanCycle2OUT.Vx = XanCycle_Con->Vx;
         theVars->XanCycle2OUT.Ax = XanCycle_Con->Ax;
         theVars->XanCycle2OUT.Zx = XanCycle_Con->Zx;
-        theVars->XanCycle2OUT.ABA = XanCycle_Con->Vx / (XanCycle_Con->Vx + XanCycle_Con->Ax + XanCycle_Con->Zx);
+        theVars->XanCycle2OUT.ABA = XanCycle_Con->Vx / (XanCycle_Con->Vx + XanCycle_Con->Ax +
+                                                        XanCycle_Con->Zx);
     }
 
 }

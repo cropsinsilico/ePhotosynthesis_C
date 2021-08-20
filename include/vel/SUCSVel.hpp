@@ -55,21 +55,21 @@ public:
         vatpf = other.vatpf;
     }
 
-    double v51 = 0.;  ///< DHAP+GAP --FBP
-    double v52 = 0.;  ///< FBP --F6P + Pi
-    double v55 = 0.;  ///< G1P+UTP --OPOP+UDPG
-    double v56 = 0.;  ///< UDPG+F6P--SUCP + UDP
-    double v57 = 0.;  ///< SUCP--Pi + SUC
-    double v58 = 0.;  ///< F26BP--F6P + Pi
-    double v59 = 0.;  ///< F6P + ATP --ADP + F26BP
-    double v60 = 0.;  ///< ATP+UDP --UTP + ADP
-    double v61 = 0.;  ///< POPO --2PO
-    double v62 = 0.;  ///< SUC SINK
-    double vdhap_in = 0.; ///< DHAP IN
-    double vgap_in = 0.;  ///< GAP Export from chloroplast
-    double vpga_in = 0.;  ///< PGA export from chloroplast
-    double vpga_use = 0.; ///< PGA utilisation in chloroplast
-    double vatpf = 0.;    ///< ATP synthesis rate
+    double v51 = 0.;  // DHAP+GAP --FBP
+    double v52 = 0.;  // FBP --F6P + Pi
+    double v55 = 0.;  // G1P+UTP --OPOP+UDPG
+    double v56 = 0.;  // UDPG+F6P--SUCP + UDP
+    double v57 = 0.;  // SUCP--Pi + SUC
+    double v58 = 0.;  // F26BP--F6P + Pi
+    double v59 = 0.;  // F6P + ATP --ADP + F26BP
+    double v60 = 0.;  // ATP+UDP --UTP + ADP
+    double v61 = 0.;  // POPO --2PO
+    double v62 = 0.;  // SUC SINK
+    double vdhap_in = 0.; // DHAP IN
+    double vgap_in = 0.;  // GAP Export from chloroplast
+    double vpga_in = 0.;  // PGA export from chloroplast
+    double vpga_use = 0.; // PGA utilisation in chloroplast
+    double vatpf = 0.;    // ATP synthesis rate
 
     friend std::ostream& operator<<(std::ostream& out, const SUCSVel &in);
 };

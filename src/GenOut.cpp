@@ -58,7 +58,7 @@ void ePhotosynthesis::GenOut(double t, Variables *theVars) {
         }
 
         arr co2a = zeros(100);
-        co2a[0] = theVars->CO2_cond * 3 * pow(10, 4);
+        co2a[0] = theVars->CO2_cond * 3. * pow(10., 4.);
         co2a[1] = O2 / 1.26;
         if (theVars->FIBF_PSPR_com) {
             co2a[2] = theVars->GLight;
@@ -271,6 +271,6 @@ void ePhotosynthesis::makeFluxTR(Variables *theVars) {
     for (size_t x = 0; x < 36; x++)
         theVars->FluxTR[x] = theVars->FluxTR[x] * theVars->AVR;
     theVars->FluxTR[46] = theVars->FluxTR[46] * theVars->AVR;
-    theVars->FluxTR[64] = theVars->FluxTR[64] * theVars->AVR / 2;
+    theVars->FluxTR[64] = theVars->FluxTR[64] * theVars->AVR / 2.;
 
 }

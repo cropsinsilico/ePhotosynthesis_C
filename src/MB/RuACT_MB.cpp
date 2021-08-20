@@ -49,9 +49,9 @@ RuACTCondition* RuACT::_MB_con(const double t, const RuACTCondition* RuACT_Con, 
     const double v6_2 = theVars->RuACT_Vel.v6_2; // v6_2 The rate of RuBP oxygenation
 
     RuACTCondition* dydt = new RuACTCondition();
-    dydt->ER = vn1 - v1;                          // ER
+    dydt->ER = vn1 - v1;                           // ER
     dydt->Eaf = v1 - v7 + vn7 + v6_1 + v6_2 - vn1; // EAF
-    dydt->ECMR = v7 - vn7 - v6_1 - v6_2;            // ECMR
+    dydt->ECMR = v7 - vn7 - v6_1 - v6_2;           // ECMR
     if (!theVars->RuACT_EPS_com)
         dydt->RuBP = v6_1 + v6_2 + v1 - vn1 + vn7 - v7; // RuBP
 #ifdef INCDEBUG

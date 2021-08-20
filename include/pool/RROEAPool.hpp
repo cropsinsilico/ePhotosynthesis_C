@@ -56,16 +56,16 @@ public:
         RuACTT = other.RuACTT;
     }
 
-    double GAPDH = 0;
-    double FBPase = 0;
-    double SBPase = 0;
-    double PRK = 0;
-    double ATPase = 0;
-    double ATPGPP = 0;
-    double MDH = 0;
-    double ThioT = 0;
-    double FdT = 0;
-    double RuACTT = 0;
+    double GAPDH = 0.;
+    double FBPase = 0.;
+    double SBPase = 0.;
+    double PRK = 0.;
+    double ATPase = 0.;
+    double ATPGPP = 0.;
+    double MDH = 0.;
+    double ThioT = 0.;
+    double FdT = 0.;
+    double RuACTT = 0.;
 };
 
 }  // namespace pool
