@@ -29,7 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-RROEACondition::RROEACondition(const RROEACondition* other) {
+RROEACondition::RROEACondition(const RROEACondition* const other) {
     GAPDH = other->GAPDH;
     FBPase = other->FBPase;
     SBPase = other->SBPase;
@@ -42,11 +42,11 @@ RROEACondition::RROEACondition(const RROEACondition* other) {
     RuACT = other->RuACT;
 }
 
-RROEACondition:: RROEACondition(const arr &vec, size_t offset) {
-    _fromArray(vec, offset);
+RROEACondition:: RROEACondition(const arr &vec, const std::size_t offset) {
+    fromArray(vec, offset);
 }
 
-void RROEACondition::_fromArray(const arr &vec, size_t offset) {
+void RROEACondition::_fromArray(const arr &vec, const std::size_t offset) {
     GAPDH = vec[offset];
     FBPase = vec[offset + 1];
     SBPase = vec[offset + 2];
@@ -59,7 +59,7 @@ void RROEACondition::_fromArray(const arr &vec, size_t offset) {
     RuACT = vec[offset + 9];
 }
 
-arr RROEACondition::_toArray() {
+arr RROEACondition::_toArray() const {
     arr array = {GAPDH, FBPase, SBPase, PRK, ATPase, ATPGPP, MDH, Thio, Fd, RuACT};
     return array;
 }

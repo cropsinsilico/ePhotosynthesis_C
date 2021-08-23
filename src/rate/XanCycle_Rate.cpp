@@ -37,7 +37,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-void XanCycle::_Rate(const double t, const XanCycleCondition* XanCycle_Con, Variables *theVars) {
+void XanCycle::_Rate(const double t, const XanCycleCondition* const XanCycle_Con, Variables *theVars) {
 
     Condition(t, theVars);
 

@@ -32,7 +32,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-BFCondition* BF::_MB_con(const double t, const BFCondition* BF_con, Variables *theVars) {
+BFCondition* BF::_MB_con(const double t, const BFCondition* const BF_con, Variables *theVars) {
 
     if (theVars->useC3) {
         theVars->BF_Param[0] = theVars->lightParam;
@@ -103,7 +103,7 @@ BFCondition* BF::_MB_con(const double t, const BFCondition* BF_con, Variables *t
     return dydt;
 }
 
-arr BF::_MB(const double t, const BFCondition *BF_con, Variables *theVars) {
+arr BF::_MB(const double t, const BFCondition* const BF_con, Variables *theVars) {
     BFCondition* dydt = _MB_con(t, BF_con, theVars);
     arr tmp = dydt->toArray();
     delete dydt;

@@ -36,14 +36,14 @@ namespace conditions {
 template<class T, class U>
 class ConditionBase {
 public:
-    ~ConditionBase() {}
+    virtual ~ConditionBase() {}
 
-    void fromArray(const arr &vec, size_t offset = 0) {static_cast<T*>(this)->_fromArray(vec, offset);}
+    void fromArray(const arr &vec, const std::size_t offset = 0) {static_cast<T*>(this)->_fromArray(vec, offset);}
     arr toArray() {return static_cast<T*>(this)->_toArray();}
-    static size_t size() {return T::_size();}
+    static std::size_t size() {return T::_size();}
     void fromArray(realtype *x) {
         arr vec(size());
-        for (size_t i = 0; i < size(); i++)
+        for (std::size_t i = 0; i < size(); i++)
             vec[i] = x[i];
         fromArray(vec);
     }
@@ -53,7 +53,7 @@ public:
     friend std::ostream& operator<<(std::ostream &out, const T &in) {
         return static_cast<T*>(in)->_print(out, 0);
     }
-    friend std::ostream& operator<<(std::ostream &out, const T* in) {
+    friend std::ostream& operator<<(std::ostream &out, const T* const in) {
         return in->_print(out, 0);
     }
     U* parent;
@@ -62,6 +62,9 @@ public:
 #endif
 protected:
     ConditionBase() {}
+    virtual arr _toArray() const = 0;
+    virtual void _clear() = 0;
+    virtual void _fromArray(const arr &vec, const std::size_t offset = 0) = 0;
 };
 
 }  // namespace conditions

@@ -28,6 +28,9 @@
 #include "RACondition.hpp"
 
 namespace ePhotosynthesis {
+namespace modules {
+class RedoxReg;
+}
 namespace conditions {
 
 /**
@@ -42,7 +45,7 @@ public:
 
       @param other The RedoxRegCon object to copy
       */
-    RedoxRegCondition(const RedoxRegCondition* other);
+    RedoxRegCondition(const RedoxRegCondition* const other);
 
     /**
       Constructor to create an object from the contained classes
@@ -58,40 +61,47 @@ public:
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    RedoxRegCondition(const arr &vec, size_t offset = 0);
+    RedoxRegCondition(const arr &vec, const std::size_t offset = 0);
 
-    void setParent(RedoxRegCondition* par) {}
+    void setParent(RedoxRegCondition* par) {(void)par;}
     RACondition* RA_con = nullptr;
     double Thion = 0;
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-    SET_GET(V6);
-    SET_GET(V9);
-    SET_GET(V13);
-    SET_GET(V16);
+    SET_GET(V6)
+    SET_GET(V9)
+    SET_GET(V13)
+    SET_GET(V16)
 private:
     friend ConditionBase;
+    friend class modules::RedoxReg;
     /**
       Copy items from the given vector to the data members
 
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void _fromArray(const arr &vec, size_t offset = 0);
+    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
 
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
     */
-    arr _toArray();
+    arr _toArray() const override;
 
-    void _clear();
+    void _clear() override;
 
     /**
       Get the size of the data vector
       */
-    static size_t _size() {
+    static std::size_t _size() {
         return RACondition::size() + 1;
+    }
+    static void reset() {
+        V6 = 0.;
+        V9 = 0.;
+        V13 = 0.;
+        V16 = 0.;
     }
 #ifdef INCDEBUG
     const static Debug::DebugLevel _dlevel = Debug::Middle;

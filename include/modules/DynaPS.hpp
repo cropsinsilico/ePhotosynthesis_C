@@ -35,11 +35,16 @@ namespace test {
 class DynaPSModuleTest;
 }
 #endif
+namespace drivers {
+class DynaPSDriver;
+}
 namespace modules {
-
+class trDynaPS;
 class DynaPS : public ModuleBase<DynaPS, conditions::DynaPSCondition> {
 private:
     friend ModuleBase;
+    friend class modules::trDynaPS;
+    friend class drivers::DynaPSDriver;
 #ifdef TESTING
     friend class test::DynaPSModuleTest;
 #endif
@@ -59,18 +64,19 @@ private:
   @param theVars The global variables
   @return A vector containing the updated values
   */
-    static arr _MB(const double t, const conditions::DynaPSCondition* DynaPS_con,
+    static arr _MB(const double t, const conditions::DynaPSCondition* const DynaPS_con,
                    Variables *theVars);
     static conditions::DynaPSCondition* _MB_con(const double t,
-                                                const conditions::DynaPSCondition* DynaPS_con,
+                                                const conditions::DynaPSCondition* const DynaPS_con,
                                                 Variables *theVars);
 
-    static void _Rate(const double t, const conditions::DynaPSCondition* DynaPS_con,
+    static void _Rate(const double t, const conditions::DynaPSCondition* const DynaPS_con,
                       Variables *theVars) {
         (void)t;
         (void)DynaPS_con;
         (void)theVars;
     }
+    static void _reset();
 };
 
 }  // namespace modules

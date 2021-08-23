@@ -35,7 +35,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-void PR::_Rate(const double t, const PRCondition* PR_con, Variables *theVars) {
+void PR::_Rate(const double t, const PRCondition* const PR_con, Variables *theVars) {
     // To set global information for different reactions
 
     // Reaction: 111: RUBP+O2<-->PGlycolate + PGA

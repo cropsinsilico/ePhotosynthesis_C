@@ -35,11 +35,16 @@ namespace test {
 class EPSModuleTest;
 }
 #endif
+namespace drivers {
+class EPSDriver;
+}
 namespace modules {
-
+class RA;
 class EPS : public ModuleBase<EPS, conditions::EPSCondition> {
 private:
     friend ModuleBase;
+    friend class modules::RA;
+    friend class drivers::EPSDriver;
 #ifdef TESTING
     friend class test::EPSModuleTest;
 #endif
@@ -60,16 +65,17 @@ private:
   @param theVars The global variables
   @return A vector containing the updated values
   */
-    static arr _MB(const double t, const conditions::EPSCondition* EPS_Con, Variables *theVars);
+    static arr _MB(const double t, const conditions::EPSCondition* const EPS_Con, Variables *theVars);
     static conditions::EPSCondition* _MB_con(const double t,
-                                             const conditions::EPSCondition* EPS_Con,
+                                             const conditions::EPSCondition* const EPS_Con,
                                              Variables *theVars);
 
-    static void _Rate(const double t, const conditions::EPSCondition* EPS_Con, Variables *theVars) {
+    static void _Rate(const double t, const conditions::EPSCondition* const EPS_Con, Variables *theVars) {
         (void)t;
         (void)EPS_Con;
         (void)theVars;
     }
+    static void _reset();
 };
 
 }  // namespace modules

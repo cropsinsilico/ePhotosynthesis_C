@@ -29,15 +29,14 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-CMCondition::CMCondition(const CMCondition* other) {
-    _clear();
+CMCondition::CMCondition(const CMCondition* const other) {
     PS_PR_con = new PS_PRCondition(other->PS_PR_con);
     SUCS_con = new SUCSCondition(other->SUCS_con);
     PS_PR_con->setParent(this);
     SUCS_con->setParent(this);
 }
 
-CMCondition::CMCondition(const arr &vec, size_t offset) {
+CMCondition::CMCondition(const arr &vec, const std::size_t offset) {
     fromArray(vec, offset);
 }
 
@@ -46,7 +45,6 @@ CMCondition::CMCondition(realtype *x) {
 }
 
 CMCondition::CMCondition(PS_PRCondition* pother, SUCSCondition* sother) {
-    _clear();
     if (pother->parent == nullptr) {
         PS_PR_con = pother;
     } else {
@@ -61,7 +59,7 @@ CMCondition::CMCondition(PS_PRCondition* pother, SUCSCondition* sother) {
     SUCS_con->setParent(this);
 }
 
-void CMCondition::_fromArray(const arr &vec, size_t offset) {
+void CMCondition::_fromArray(const arr &vec, const std::size_t offset) {
     if (PS_PR_con == nullptr)
         PS_PR_con = new PS_PRCondition(this);
     if (SUCS_con == nullptr)
@@ -71,7 +69,7 @@ void CMCondition::_fromArray(const arr &vec, size_t offset) {
     SUCS_con->fromArray(vec, offset + PS_PR_con->size());
 }
 
-arr CMCondition::_toArray() {
+arr CMCondition::_toArray() const {
     arr psprvec = PS_PR_con->toArray();
     arr svec = SUCS_con->toArray();
     psprvec.insert(psprvec.end(), svec.begin(), svec.end());
@@ -87,5 +85,4 @@ void CMCondition::_clear() {
         delete SUCS_con;
         SUCS_con = nullptr;
     }
-    count = 0;
 }

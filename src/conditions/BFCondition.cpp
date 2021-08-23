@@ -29,7 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-BFCondition::BFCondition(const BFCondition* other) {
+BFCondition::BFCondition(const BFCondition* const other) {
     ISPHr = other->ISPHr;
     cytc1 = other->cytc1;
     ISPo = other->ISPo;
@@ -63,12 +63,12 @@ BFCondition::BFCondition(const BFCondition* other) {
     NADPH = other->NADPH;
 }
 
-BFCondition::BFCondition(const arr &vec, const size_t offset) {
+BFCondition::BFCondition(const arr &vec, const std::size_t offset) {
     fromArray(vec, offset);
 }
 
-void BFCondition::_fromArray(const arr &vec, const size_t offset) {
-    size_t count = 0;
+void BFCondition::_fromArray(const arr &vec, const std::size_t offset) {
+    std::size_t count = 0;
     ISPHr = vec[offset + count++];
     cytc1 = vec[offset + count++];
     ISPo = vec[offset + count++];
@@ -102,7 +102,7 @@ void BFCondition::_fromArray(const arr &vec, const size_t offset) {
     NADPH = vec[offset + count++];
 }
 
-arr BFCondition::_toArray() {
+arr BFCondition::_toArray() const {
     arr output = {ISPHr, cytc1, ISPo, ISPoQH2, QHsemi, cytbL, Qi};
     arr output2 = {cytbH, Qn, Qr, QH2, cytc2, P700, ADP};
     arr output3 = {Ks, Mgs, Cls, Aip, U, An};

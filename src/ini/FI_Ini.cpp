@@ -33,8 +33,8 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 double FI::TIME = 0.;
-size_t FI::N = 1;
-const size_t FICondition::count = 22;
+std::size_t FI::N = 1;
+const std::size_t FICondition::count = 22;
 double FI::cpsii = 0.;
 bool FICondition::BF_connect = false;
 bool FI::BF_connect = false;

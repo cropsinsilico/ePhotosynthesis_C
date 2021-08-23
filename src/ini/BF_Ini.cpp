@@ -34,7 +34,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-const size_t BFCondition::count = 28;
+const std::size_t BFCondition::count = 28;
 bool BFCondition::FI_connect = false;
 bool BF::FI_connect = false;
 bool BF::PS_connect = false;
@@ -46,7 +46,7 @@ double BF::cATPsyn = 0.;
 double BF::CPSi = 0.;
 double BF::cNADPHsyn = 0.;
 double BF::EPS_ATP_Rate = 0.;
-size_t BF::N = 1;
+std::size_t BF::N = 1;
 
 double BF::_Pi = 0.;
 

@@ -30,6 +30,9 @@
 #include "RuACTCondition.hpp"
 
 namespace ePhotosynthesis {
+namespace modules {
+class RA;
+}
 namespace conditions {
 
 class DynaPSCondition;
@@ -42,7 +45,7 @@ public:
     RACondition(DynaPSCondition* par = nullptr) : RuACT_con(new RuACTCondition(this)), EPS_con(new EPSCondition(this)) {
         setParent(par);
     }
-    ~RACondition() {
+    ~RACondition() override {
         _clear();
     }
     /**
@@ -66,7 +69,7 @@ public:
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    RACondition(const arr &vec, size_t offset = 0);
+    RACondition(const arr &vec, const std::size_t offset = 0);
 
     RuACTCondition* RuACT_con = nullptr;
     EPSCondition* EPS_con = nullptr;
@@ -74,32 +77,36 @@ public:
 
 private:
     friend ConditionBase;
+    friend class modules::RA;
     /**
       Copy items from the given vector to the data members
 
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void _fromArray(const arr &vec, size_t offset = 0);
+    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
 
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
       */
-    arr _toArray();
+    arr _toArray() const override;
 
     /**
       Get the size of the data vector
       */
-    static size_t _size() {
+    static std::size_t _size() {
         if (count == 0)
             count = EPSCondition::size() + RuACTCondition::size();
         return count;
     }
 
-    void _clear();
-    static size_t count;
+    void _clear() override;
+    static std::size_t count;
+    static void reset() {
+        count = 0;
+    }
 #ifdef INCDEBUG
     const static Debug::DebugLevel _dlevel = Debug::Middle;
 #endif

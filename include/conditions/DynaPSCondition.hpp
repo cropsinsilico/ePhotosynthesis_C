@@ -31,6 +31,9 @@
 #include <sundials/sundials_types.h>
 
 namespace ePhotosynthesis {
+namespace modules {
+class DynaPS;
+}
 namespace conditions {
 
 class trDynaPSCondition;
@@ -43,7 +46,7 @@ public:
         setParent(par);
     }
 
-    ~DynaPSCondition() {
+    ~DynaPSCondition() override {
         _clear();
     }
     /**
@@ -51,7 +54,7 @@ public:
 
       @param other The DynaPSCon object to copy
       */
-    DynaPSCondition(const DynaPSCondition* other);
+    DynaPSCondition(const DynaPSCondition* const other);
 
     /**
       Constructor to create an object from the input pointer
@@ -74,7 +77,7 @@ public:
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    DynaPSCondition(const arr &vec, size_t offset = 0);
+    DynaPSCondition(const arr &vec, const std::size_t offset = 0);
 
 #ifdef INCDEBUG
     static void setTop() {DynaPSCondition::_dlevel = Debug::Top;}
@@ -85,31 +88,35 @@ public:
 
 private:
     friend ConditionBase;
+    friend class modules::DynaPS;
     /**
       Copy items from the given vector to the data members
 
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void _fromArray(const arr &vec, size_t offset = 0);
+    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
 
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
       */
-    arr _toArray();
+    arr _toArray() const override;
 
     /**
       Get the size of the data vector
       */
-    static size_t _size() {
+    static std::size_t _size() {
         if (count == 0)
             count = RACondition::size() + XanCycleCondition::size();
         return count;
     }
-    void _clear();
-    static size_t count;
+    void _clear() override;
+    static void reset() {
+        count = 0;
+    }
+    static std::size_t count;
 #ifdef INCDEBUG
     static Debug::DebugLevel _dlevel;
 #endif

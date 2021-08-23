@@ -30,6 +30,9 @@
 #include "PRCondition.hpp"
 
 namespace ePhotosynthesis {
+namespace modules {
+class PS_PR;
+}
 namespace conditions {
 
 class CMCondition;
@@ -50,7 +53,7 @@ public:
 
       @param other The PS_PRCon object to copy
       */
-    PS_PRCondition(const PS_PRCondition* other);
+    PS_PRCondition(const PS_PRCondition* const other);
 
     /**
       Constructor to create an object from the contained classes
@@ -66,39 +69,43 @@ public:
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    PS_PRCondition(const arr &vec, const size_t offset = 0);
+    PS_PRCondition(const arr &vec, const std::size_t offset = 0);
 
     PSCondition* PS_con = nullptr;
     PRCondition* PR_con = nullptr;
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
 private:
     friend ConditionBase;
-    friend CMCondition;
+    //friend CMCondition;
+    friend class modules::PS_PR;
     /**
       Copy items from the given vector to the data members
 
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void _fromArray(const arr &vec, const size_t offset = 0);
+    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
     */
-    arr _toArray();
+    arr _toArray() const override;
 
     /**
       Get the size of the data vector
       */
-    static size_t _size() {
+    static std::size_t _size() {
         if (count == 0)
             count = PSCondition::size() + PRCondition::size();
         return count;
     }
 
-    void _clear ();
-    static size_t count;
+    void _clear() override;
+    static void reset() {
+        count = 0;
+    }
+    static std::size_t count;
 #ifdef INCDEBUG
     const static Debug::DebugLevel _dlevel = Debug::Middle;
 #endif

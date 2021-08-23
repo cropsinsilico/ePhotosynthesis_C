@@ -37,10 +37,12 @@ class FIBFModuleTest;
 }
 #endif
 namespace modules {
+class EPS;
 
 class FIBF : public ModuleBase<FIBF, conditions::FIBFCondition> {
 private:
     friend ModuleBase;
+    friend class modules::EPS;
 #ifdef TESTING
     friend class test::FIBFModuleTest;
 #endif
@@ -65,16 +67,17 @@ private:
   @param theVars The global variables
   @return A vector containing the updated values
   */
-    static arr _MB(const double t, const conditions::FIBFCondition* FIBF_Con, Variables *theVars);
+    static arr _MB(const double t, const conditions::FIBFCondition* const FIBF_Con, Variables *theVars);
     static conditions::FIBFCondition* _MB_con(const double t,
-                                              const conditions::FIBFCondition* FIBF_Con,
+                                              const conditions::FIBFCondition* const FIBF_Con,
                                               Variables *theVars);
-    static void _Rate(const double t, const conditions::FIBFCondition* FIBF_Con,
+    static void _Rate(const double t, const conditions::FIBFCondition* const FIBF_Con,
                       Variables *theVars) {
         (void)t;
         (void)FIBF_Con;
         (void)theVars;
     }
+    static void _reset();
 };
 
 }  // namespace modules

@@ -37,7 +37,7 @@ class PSModuleTest;
 }
 #endif
 namespace modules {
-
+class PS_PR;
 /**
  Class to for PS related functions and common variables
  */
@@ -46,15 +46,11 @@ public:
     static void setParam(const arr &param) {
         Param = param;
     }
-    static double _NADPH;
 
-    static void setC3(const bool val) {
-        useC3 = val;
-        conditions::PSCondition::setC3(val);
-    }
-    static size_t getN() {return N;}
+    static std::size_t getN() {return N;}
 private:
     friend ModuleBase;
+    friend class modules::PS_PR;
 #ifdef TESTING
     friend class test::PSModuleTest;
 #endif
@@ -66,8 +62,8 @@ private:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr _MB(const double t, const conditions::PSCondition* PSs, Variables *theVars);
-    static conditions::PSCondition* _MB_con(const double t, const conditions::PSCondition* PSs,
+    static arr _MB(const double t, const conditions::PSCondition* const PSs, Variables *theVars);
+    static conditions::PSCondition* _MB_con(const double t, const conditions::PSCondition* const PSs,
                                             Variables *theVars);
 
     /**
@@ -85,8 +81,9 @@ private:
       @param PSs PSCon object giving the input parameters
       @param theVars The global variables
       */
-    static void _Rate(const double t, const conditions::PSCondition* PSs, Variables *theVars);
+    static void _Rate(const double t, const conditions::PSCondition* const PSs, Variables *theVars);
 
+    static void _reset();
     SET_GET(PiTc)
     SET_GET(V1)
     SET_GET(KM12)
@@ -201,6 +198,8 @@ private:
     SET_GET(Vf_T13)
     SET_GET(Vf_T23)
     SET_GET(PsV1)
+    SET_GET_BOOL_MODULE(C3, conditions::PS)
+    SET_GET(_NADPH)
 
     static double KE1Ratio;
     static double KE2Ratio;
@@ -243,9 +242,8 @@ private:
     static double MaxCoeff;
 
     static arr Param;
-    static bool useC3;
     static double TIME;
-    static size_t N;
+    static std::size_t N;
 };
 
 }  // namespace modules

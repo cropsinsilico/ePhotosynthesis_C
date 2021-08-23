@@ -42,9 +42,9 @@ double XanCycle::kva = 0.;
 double XanCycle::kza = 0.;
 double XanCycle::XanCycle2FIBF_Xstate = 0.;
 double XanCycle::TIME = 0.;
-size_t XanCycle::N = 1;
+std::size_t XanCycle::N = 1;
 
-const size_t XanCycleCondition::count = 4;
+const std::size_t XanCycleCondition::count = 4;
 
 XanCycleCondition* XanCycle::_init(Variables *theVars) {
 

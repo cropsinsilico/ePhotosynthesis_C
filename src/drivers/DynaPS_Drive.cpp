@@ -35,7 +35,9 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::drivers;
 using namespace ePhotosynthesis::conditions;
 
-DynaPSDriver::~DynaPSDriver() {}
+DynaPSDriver::~DynaPSDriver() {
+    modules::DynaPS::_reset();
+}
 
 void DynaPSDriver::setup() {
     // This part include the function to begin the simulation.

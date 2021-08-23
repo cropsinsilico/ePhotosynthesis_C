@@ -36,10 +36,11 @@ class RAModuleTest;
 }
 #endif
 namespace modules {
-
+class DynaPS;
 class RA : public ModuleBase<RA, conditions::RACondition> {
 private:
     friend ModuleBase;
+    friend class modules::DynaPS;
 #ifdef TESTING
     friend class test::RAModuleTest;
 #endif
@@ -59,14 +60,15 @@ private:
   @param theVars The global variables
   @return A vector containing the updated values
   */
-    static arr _MB(const double t, const conditions::RACondition* RA_Con, Variables *theVars);
-    static conditions::RACondition* _MB_con(const double t, const conditions::RACondition* RA_Con,
+    static arr _MB(const double t, const conditions::RACondition* const RA_Con, Variables *theVars);
+    static conditions::RACondition* _MB_con(const double t, const conditions::RACondition* const RA_Con,
                                             Variables *theVars);
-    static void _Rate(const double t, const conditions::RACondition* RA_Con, Variables *theVars) {
+    static void _Rate(const double t, const conditions::RACondition* const RA_Con, Variables *theVars) {
         (void)t;
         (void)RA_Con;
         (void)theVars;
     }
+    static void _reset();
 };
 
 }  // namespace modules

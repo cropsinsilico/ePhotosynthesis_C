@@ -37,7 +37,7 @@ double ePhotosynthesis::TargetFunVal(Variables *theVars) {
 
     const double PSVCOEFF = 30.;
 
-    for (size_t i = 0; i < theVars->PS_VEL.size(); i++)
+    for (std::size_t i = 0; i < theVars->PS_VEL.size(); i++)
         theVars->PS_VEL[i] *= PSVCOEFF;
 
     //PSVEL = PS_VEL';// --unused
@@ -47,7 +47,7 @@ double ePhotosynthesis::TargetFunVal(Variables *theVars) {
     } else {
         ratio = PSVCOEFF * 4. / 9.;
     }
-    for (size_t i = 0; i < theVars->PR_VEL.size(); i++)
+    for (std::size_t i = 0; i < theVars->PR_VEL.size(); i++)
         theVars->PR_VEL[i] *= ratio;
 
     const double a = theVars->PS_VEL.getLastData().v1;

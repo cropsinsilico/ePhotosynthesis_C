@@ -37,14 +37,14 @@ class XanCycleModuleTest;
 }
 #endif
 namespace modules {
-
+class DynaPS;
 /**
  Class for XanCycle code and internal variables
  */
 class XanCycle : public ModuleBase<XanCycle, conditions::XanCycleCondition> {
-    SET_GET(XanCycle2FIBF_Xstate)
 private:
     friend ModuleBase;
+    friend class modules::DynaPS;
 #ifdef TESTING
     friend class test::XanCycleModuleTest;
 #endif
@@ -80,12 +80,24 @@ private:
     static void _Rate(const double t, const conditions::XanCycleCondition* XanCycle_Con,
                       Variables *theVars);
 
+    static void _reset() {
+        kav = 0.;
+        kaz = 0.;
+        kva = 0.;
+        kza = 0.;
+        TIME = 0.;
+        N = 1;
+        conditions::XanCycleCondition::reset();
+    }
+
     SET_GET(kav)
     SET_GET(kaz)
     SET_GET(kva)
     SET_GET(kza)
+    SET_GET(XanCycle2FIBF_Xstate)
+
     static double TIME;
-    static size_t N;
+    static std::size_t N;
 };
 
 }  // namespace modules

@@ -29,7 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-FICondition::FICondition(const FICondition* other) {
+FICondition::FICondition(const FICondition* const other) {
     A = other->A;
     U = other->U;
     P680ePheo = other->P680ePheo;
@@ -55,38 +55,38 @@ FICondition::FICondition(const FICondition* other) {
         PQn = other->PQn;
 }
 
-FICondition::FICondition(const arr &vec, const size_t offset) {
-    _fromArray(vec, offset);
+FICondition::FICondition(const arr &vec, const std::size_t offset) {
+    fromArray(vec, offset);
 }
 
-void FICondition::_fromArray(const arr &vec, const size_t offset) {
-    size_t count = 0;
-     A = vec[offset + count++];
-     U = vec[offset + count++];
-     P680ePheo = vec[offset + count++];
-     P680pPheon = vec[offset + count++];
-     P680pPheo = vec[offset + count++];
-     P680Pheon = vec[offset + count++];
-     Yz = vec[offset + count++];
-     S1T = vec[offset + count++];
-     S2T = vec[offset + count++];
-     S3T = vec[offset + count++];
-     S0T = vec[offset + count++];
-     S1Tp = vec[offset + count++];
-     S2Tp = vec[offset + count++];
-     S3Tp = vec[offset + count++];
-     S0Tp = vec[offset + count++];
-     QAQB = vec[offset + count++];
-     QAnQB = vec[offset + count++];
-     QAQBn = vec[offset + count++];
-     QAnQBn = vec[offset + count++];
-     QAQB2n = vec[offset + count++];
-     QAnQB2n = vec[offset + count++];
-     if (!FICondition::BF_connect)
-         PQn = vec[offset + count++];
- }
+void FICondition::_fromArray(const arr &vec, const std::size_t offset) {
+    std::size_t count = 0;
+    A = vec[offset + count++];
+    U = vec[offset + count++];
+    P680ePheo = vec[offset + count++];
+    P680pPheon = vec[offset + count++];
+    P680pPheo = vec[offset + count++];
+    P680Pheon = vec[offset + count++];
+    Yz = vec[offset + count++];
+    S1T = vec[offset + count++];
+    S2T = vec[offset + count++];
+    S3T = vec[offset + count++];
+    S0T = vec[offset + count++];
+    S1Tp = vec[offset + count++];
+    S2Tp = vec[offset + count++];
+    S3Tp = vec[offset + count++];
+    S0Tp = vec[offset + count++];
+    QAQB = vec[offset + count++];
+    QAnQB = vec[offset + count++];
+    QAQBn = vec[offset + count++];
+    QAnQBn = vec[offset + count++];
+    QAQB2n = vec[offset + count++];
+    QAnQB2n = vec[offset + count++];
+    if (!FICondition::BF_connect)
+        PQn = vec[offset + count++];
+}
 
-arr FICondition::_toArray() {
+arr FICondition::_toArray() const {
     if (FICondition::BF_connect)
         return {A, U, P680ePheo, P680pPheon, P680pPheo, P680Pheon, Yz, S1T, S2T, S3T, S0T, S1Tp,
                     S2Tp, S3Tp, S0Tp, QAQB, QAnQB, QAQBn, QAnQBn, QAQB2n, QAnQB2n};

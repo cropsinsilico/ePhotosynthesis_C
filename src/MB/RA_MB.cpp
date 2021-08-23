@@ -33,7 +33,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-RACondition* RA::_MB_con(const double t, const RACondition* RA_Con, Variables *theVars) {
+RACondition* RA::_MB_con(const double t, const RACondition* const RA_Con, Variables *theVars) {
 
     EPSCondition* EPSdydt = EPS::MB_con(t, RA_Con->EPS_con, theVars);
     RuACTCondition* RuACTdydt = RuACT::MB_con(t, RA_Con->RuACT_con, theVars);
@@ -56,7 +56,7 @@ RACondition* RA::_MB_con(const double t, const RACondition* RA_Con, Variables *t
     return dydt;
 }
 
-arr RA::_MB(const double t, const RACondition* RA_Con, Variables *theVars) {
+arr RA::_MB(const double t, const RACondition* const RA_Con, Variables *theVars) {
     RACondition* dydt = _MB_con(t, RA_Con, theVars);
     arr tmp = dydt->toArray();
     delete dydt;

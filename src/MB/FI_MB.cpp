@@ -37,7 +37,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-FICondition* FI::_MB_con(const double t, const FICondition *FI_Con, Variables *theVars) {
+FICondition* FI::_MB_con(const double t, const FICondition* const FI_Con, Variables *theVars) {
 
     //////////////////////////////////////////////////////////////////
     //   Calculate the rates first   //
@@ -103,7 +103,7 @@ FICondition* FI::_MB_con(const double t, const FICondition *FI_Con, Variables *t
     return dydt;
 }
 
-arr FI::_MB(const double t, const FICondition *FI_Con, Variables *theVars) {
+arr FI::_MB(const double t, const FICondition* const FI_Con, Variables *theVars) {
     FICondition *dydt = _MB_con(t, FI_Con, theVars);
     arr tmp = dydt->toArray();
     delete dydt;

@@ -58,7 +58,7 @@ public:
         ParaNum = para;
         Ratio = ratio;
     }
-
+    ~trDynaPSDriver() override;
     /**
       The driver
       */

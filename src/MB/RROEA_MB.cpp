@@ -32,7 +32,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-RROEACondition* RROEA::_MB_con(const double t, const RROEACondition* RROEA_Con, Variables *theVars) {
+RROEACondition* RROEA::_MB_con(const double t, const RROEACondition* const RROEA_Con, Variables *theVars) {
 
     Condition(t, theVars);
     theVars->RROEA_Param[0] = theVars->GLight;
@@ -60,7 +60,7 @@ RROEACondition* RROEA::_MB_con(const double t, const RROEACondition* RROEA_Con, 
     return dydt;
 }
 
-arr RROEA::_MB(const double t, const RROEACondition* RROEA_Con, Variables *theVars) {
+arr RROEA::_MB(const double t, const RROEACondition* const RROEA_Con, Variables *theVars) {
     RROEACondition* dydt = _MB_con(t, RROEA_Con, theVars);
     arr tmp = dydt->toArray();
     delete dydt;

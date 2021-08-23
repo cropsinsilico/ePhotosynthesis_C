@@ -49,7 +49,7 @@ public:
 
       @param other The FICon object to copy
       */
-    FICondition(const FICondition* other);
+    FICondition(const FICondition* const other);
 
     /**
       Constructor to create an object from the input vector, starting at the given index
@@ -57,7 +57,7 @@ public:
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    FICondition(const arr &vec, const size_t offset = 0);
+    FICondition(const arr &vec, const std::size_t offset = 0);
 
     double A = 0.;          ///< The concentration of excitons in the peripheral antenna
     double U = 0.;          ///< The concentration fo excitons in the core antenna
@@ -93,27 +93,29 @@ private:
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void _fromArray(const arr &vec, const size_t offset = 0);
+    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
 
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
       */
-    arr _toArray();
+    arr _toArray() const override;
 
     /**
       Get the size of the data vector
       */
-    static size_t _size() {
+    static std::size_t _size() {
         if (BF_connect)
             return count - 1;
         return count;
     }
 
-    void _clear() {}
-
-    static const size_t count;
+    void _clear() override {}
+    static void reset(){
+        BF_connect = false;
+    }
+    static const std::size_t count;
 #ifdef INCDEBUG
     const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif

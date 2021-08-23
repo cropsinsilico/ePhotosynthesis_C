@@ -29,8 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-FIBFCondition::FIBFCondition(const FIBFCondition* other) {
-    _clear();
+FIBFCondition::FIBFCondition(const FIBFCondition* const other) {
     BF_con = new BFCondition(other->BF_con);
     FI_con = new FICondition(other->FI_con);
     BF_con->setParent(this);
@@ -39,7 +38,6 @@ FIBFCondition::FIBFCondition(const FIBFCondition* other) {
 }
 
 FIBFCondition::FIBFCondition(BFCondition* bother, FICondition* fother) {
-    _clear();
     if (bother->parent == nullptr) {
         BF_con = bother;
     } else {
@@ -55,11 +53,11 @@ FIBFCondition::FIBFCondition(BFCondition* bother, FICondition* fother) {
     kd = pow(10, 8) * 0.5;
 }
 
-FIBFCondition::FIBFCondition(const arr &vec, const size_t offset) {
-    _fromArray(vec, offset);
+FIBFCondition::FIBFCondition(const arr &vec, const std::size_t offset) {
+    fromArray(vec, offset);
 }
 
-void FIBFCondition::_fromArray(const arr &vec, const size_t offset) {
+void FIBFCondition::_fromArray(const arr &vec, const std::size_t offset) {
     if (BF_con == nullptr)
         BF_con = new BFCondition(this);
     if (FI_con == nullptr)
@@ -69,7 +67,7 @@ void FIBFCondition::_fromArray(const arr &vec, const size_t offset) {
     kd = vec[offset + BF_con->size() + FI_con->size()];
 }
 
-arr FIBFCondition::_toArray() {
+arr FIBFCondition::_toArray() const {
     arr bvec = BF_con->toArray();
     arr fvec = FI_con->toArray();
     bvec.reserve(size());
@@ -88,5 +86,4 @@ void FIBFCondition::_clear() {
         delete FI_con;
         FI_con = nullptr;
     }
-    count = 0.;
 }

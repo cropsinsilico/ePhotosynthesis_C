@@ -29,8 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-DynaPSCondition::DynaPSCondition(const DynaPSCondition* other) {
-    _clear();
+DynaPSCondition::DynaPSCondition(const DynaPSCondition* const other) {
     RA_con = new RACondition(other->RA_con);
     XanCycle_con = new XanCycleCondition(other->XanCycle_con);
     RA_con->setParent(this);
@@ -42,7 +41,6 @@ DynaPSCondition::DynaPSCondition(realtype *x) {
 }
 
 DynaPSCondition::DynaPSCondition(RACondition* rother, XanCycleCondition* xother) {
-    _clear();
     if (rother->parent == nullptr) {
         RA_con = rother;
     } else {
@@ -57,18 +55,18 @@ DynaPSCondition::DynaPSCondition(RACondition* rother, XanCycleCondition* xother)
     XanCycle_con->setParent(this);
 }
 
-DynaPSCondition::DynaPSCondition(const arr &vec, size_t offset){
-    _fromArray(vec, offset);
+DynaPSCondition::DynaPSCondition(const arr &vec, const std::size_t offset){
+    fromArray(vec, offset);
 }
 
-arr DynaPSCondition::_toArray() {
+arr DynaPSCondition::_toArray() const {
     arr rvec = RA_con->toArray();
     arr xvec = XanCycle_con->toArray();
     rvec.insert(rvec.end(), xvec.begin(), xvec.end());
     return rvec;
 }
 
-void DynaPSCondition::_fromArray(const arr &vec, size_t offset) {
+void DynaPSCondition::_fromArray(const arr &vec, const std::size_t offset) {
     if (RA_con == nullptr)
         RA_con = new RACondition(this);
     if (XanCycle_con == nullptr)
@@ -86,5 +84,4 @@ void DynaPSCondition::_clear() {
         delete XanCycle_con;
         XanCycle_con = nullptr;
     }
-    count = 0;
 }

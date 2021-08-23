@@ -34,7 +34,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-PS_PRCondition* PS_PR::_MB_con(const double t, const PS_PRCondition* PS_PR_con, Variables *theVars) {
+PS_PRCondition* PS_PR::_MB_con(const double t, const PS_PRCondition* const PS_PR_con, Variables *theVars) {
 
     const double vATPcost = theVars->TestATPCost / theVars->AVR;
 
@@ -91,7 +91,7 @@ PS_PRCondition* PS_PR::_MB_con(const double t, const PS_PRCondition* PS_PR_con, 
     return dydt;
 }
 
-arr PS_PR::_MB(const double t, const PS_PRCondition* PS_PRs, Variables *theVars) {
+arr PS_PR::_MB(const double t, const PS_PRCondition* const PS_PRs, Variables *theVars) {
     PS_PRCondition *dydt = _MB_con(t, PS_PRs, theVars);
     arr tmp = dydt->toArray();
     delete dydt;

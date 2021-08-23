@@ -40,7 +40,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-void RedoxReg::_Rate(const double t, const RedoxRegCondition* RedoxReg_Con, Variables *theVars) {
+void RedoxReg::_Rate(const double t, const RedoxRegCondition* const RedoxReg_Con, Variables *theVars) {
     const double Thio = ThioT - RedoxReg_Con->Thion;
 
     theVars->RedoxReg_MP[0][2] = RedoxReg_Con->Thion / ThioT;
@@ -71,7 +71,7 @@ void RedoxReg::_Rate(const double t, const RedoxRegCondition* RedoxReg_Con, Vari
         SUNLinearSolver LS = SUNDenseLinearSolver(y, A);
         KINSetLinearSolver(kmem, LS, A);
 
-        for (size_t index = 1; index < 5; index++) {
+        for (std::size_t index = 1; index < 5; index++) {
 
             NV_Ith_S(y, 0) = theVars->RedoxReg_MP[index][2];
             data->coeffs[1] = theVars->RedoxReg_MP[index][1];

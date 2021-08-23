@@ -35,7 +35,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-void SUCS::_Rate(const double t, const SUCSCondition* SUCS_Con, Variables *theVars) {
+void SUCS::_Rate(const double t, const SUCSCondition* const SUCS_Con, Variables *theVars) {
     ////////////////////////////////////////////////////////////
     // Get the auxiliary variables //
     ////////////////////////////////////////////////////////////

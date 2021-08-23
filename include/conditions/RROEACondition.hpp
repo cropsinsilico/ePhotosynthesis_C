@@ -29,6 +29,9 @@
 #include "ConditionBase.hpp"
 
 namespace ePhotosynthesis {
+namespace modules {
+class RROEA;
+}
 namespace conditions {
 
 class trDynaPSCondition;
@@ -46,7 +49,7 @@ public:
 
       @param other The RROEACon object to copy
       */
-    RROEACondition(const RROEACondition* other);
+    RROEACondition(const RROEACondition* const other);
 
     /**
       Constructor to create an object from the input vector, starting at the given index
@@ -54,7 +57,7 @@ public:
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    RROEACondition(const arr &vec, size_t offset = 0);
+    RROEACondition(const arr &vec, const std::size_t offset = 0);
 
     double GAPDH = 0.;  ///< The initial concentration of active GAPDH
     double FBPase = 0.; ///< The initial concentration of active FBPase
@@ -70,17 +73,18 @@ public:
 
 private:
     friend ConditionBase;
+    friend class modules::RROEA;
     /**
       Copy items from the given vector to the data members
 
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void _fromArray(const arr &vec, size_t offset = 0);
+    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
     /**
       Get the size of the data vector
       */
-    static size_t _size() {
+    static std::size_t _size() {
         return count;
     }
 
@@ -89,11 +93,11 @@ private:
 
       @return A vector containing the data values from the class
       */
-    arr _toArray();
+    arr _toArray() const override;
 
-    void _clear() {}
-
-    static const size_t count;
+    void _clear() override {}
+    static void reset() {}
+    static const std::size_t count;
 #ifdef INCDEBUG
     const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif

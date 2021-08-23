@@ -133,7 +133,7 @@ typedef std::vector<double> arr;
   @param length The size of the vector to return
   @return A vector of 1's, with the input size.
   */
-inline arr ones(const size_t length) { return arr(length, 1.); }
+inline arr ones(const std::size_t length) { return arr(length, 1.); }
 
 /**
   Helper function to initialize a vector of 0's of the given length.
@@ -141,7 +141,7 @@ inline arr ones(const size_t length) { return arr(length, 1.); }
   @param length The size of the vector to return
   @return A vector of 0's, with the input size.
   */
-inline arr zeros(const size_t length) { return arr(length, 0.); }
+inline arr zeros(const std::size_t length) { return arr(length, 0.); }
 
 /**
   Implementation of a storage structure for a time series of data.
@@ -163,7 +163,7 @@ public:
       @param time The time associated with the data (0 time is the beginning of the calculations)
       @tparam input The data to be stored
       */
-    void insert(size_t step, double time, T &input);
+    void insert(std::size_t step, double time, T &input);
 
     /**
       Overload of the indexing operator to get the data for a specific step
@@ -171,7 +171,7 @@ public:
       @param i The step to return the data for
       @return The data for the given step
       */
-    T &operator[](size_t i) { return _data[i]; }
+    T &operator[](std::size_t i) { return _data[i]; }
 
     /**
       Get the timestamp for the given step
@@ -202,7 +202,7 @@ public:
     /**
       Get the number of steps in the series
       */
-    size_t size() { return _step.size(); }
+    std::size_t size() { return _step.size(); }
 
     /**
       Write the data to the given stream
@@ -212,7 +212,7 @@ public:
     void write(std::ofstream &of);
 
 private:
-    size_t current = 0;
+    std::size_t current = 0;
     std::vector<T> _data;            // a vector of the accumulated data
     std::vector<int> _step;          // the step number for each entry
     std::vector<double> _timestamp;  // the timestamp for each entry
@@ -222,7 +222,7 @@ private:
 // If step already exists then replace the existing entry, otherwise
 // add the new data to the vector
 template <typename T>
-void TimeSeries<T>::insert(size_t step, double time, T &input) {
+void TimeSeries<T>::insert(std::size_t step, double time, T &input) {
     std::vector<int>::iterator it = std::find(_step.begin(), _step.end(), step);
     T vec(input);
     if (it == _step.end()) {
@@ -239,7 +239,7 @@ void TimeSeries<T>::insert(size_t step, double time, T &input) {
 // write the contents of the class to the stream
 template <typename T>
 void TimeSeries<T>::write(std::ofstream &of) {
-    for (size_t i = 0; i < _step.size(); i++) {
+    for (std::size_t i = 0; i < _step.size(); i++) {
         of << _timestamp[i];
         for (const auto &e : _data[i])
             of << "," << e;

@@ -30,6 +30,9 @@
 #include "ConditionBase.hpp"
 
 namespace ePhotosynthesis {
+namespace modules {
+class PS;
+}
 namespace conditions {
 
 class PS_PRCondition;
@@ -47,14 +50,14 @@ public:
 
       @param other The PSCon object to copy
       */
-    PSCondition(const PSCondition* other);
+    PSCondition(const PSCondition* const other);
     /**
       Constructor to create an object from the input vector, starting at the given index
 
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    PSCondition(const arr &vec, size_t offset = 0);
+    PSCondition(const arr &vec, const std::size_t offset = 0);
 
     double RuBP = 0.;
     double PGA = 0.;
@@ -75,33 +78,36 @@ public:
     SET_GET_BOOL(C3)
 private:
     friend ConditionBase;
+    friend class modules::PS;
     /**
       Copy items from the given vector to the data members
 
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void _fromArray(const arr &vec, size_t offset = 0);
+    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
 
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
     */
-    arr _toArray();
+    arr _toArray() const override;
 
     /**
       Get the size of the data vector
       */
-    static size_t _size() {
+    static std::size_t _size() {
         if (C3)
             return count - 1;
         return count;
     }
 
-    void _clear() {}
-
-    static const size_t count;
+    void _clear() override {}
+    static void reset() {
+        C3 = false;
+    }
+    static const std::size_t count;
 #ifdef INCDEBUG
     const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif

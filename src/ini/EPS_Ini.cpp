@@ -35,7 +35,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-size_t EPSCondition::count = 0;
+std::size_t EPSCondition::count = 0;
 
 #ifdef INCDEBUG
 Debug::DebugLevel EPSCondition::_dlevel = Debug::Middle;
@@ -54,4 +54,10 @@ EPSCondition* EPS::_init(Variables *theVars) {
     EPSCondition* EPS_con = new EPSCondition(FIBF_con, CM_con);
 
     return EPS_con;
+}
+
+void EPS::_reset() {
+    FIBF::_reset();
+    CM::_reset();
+    conditions::EPSCondition::reset();
 }

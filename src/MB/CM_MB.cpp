@@ -33,7 +33,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-CMCondition* CM::_MB_con(const realtype t, const CMCondition* CM_con, Variables *theVars) {
+CMCondition* CM::_MB_con(const realtype t, const CMCondition* const CM_con, Variables *theVars) {
 
     PS_PRCondition* PSPRdydt;
     SUCSCondition* SUCSdydt;
@@ -63,7 +63,7 @@ CMCondition* CM::_MB_con(const realtype t, const CMCondition* CM_con, Variables 
     return dydt;
 }
 
-arr CM::_MB(const realtype t, const CMCondition *CM_con, Variables *theVars) {
+arr CM::_MB(const realtype t, const CMCondition* const CM_con, Variables *theVars) {
     CMCondition *dydt = _MB_con(t, CM_con, theVars);
     arr tmp = dydt->toArray();
     delete dydt;

@@ -29,8 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-EPSCondition::EPSCondition(const EPSCondition* other) {
-    _clear();
+EPSCondition::EPSCondition(const EPSCondition* const other) {
     CM_con = new CMCondition(other->CM_con);
     FIBF_con = new FIBFCondition(other->FIBF_con);
     CM_con->setParent(this);
@@ -42,7 +41,6 @@ EPSCondition::EPSCondition(realtype *x) {
 }
 
 EPSCondition::EPSCondition(FIBFCondition* fother, CMCondition* cother) {
-    _clear();
     if (cother->parent == nullptr) {
         CM_con = cother;
     } else {
@@ -57,11 +55,11 @@ EPSCondition::EPSCondition(FIBFCondition* fother, CMCondition* cother) {
     FIBF_con->setParent(this);
 }
 
-EPSCondition::EPSCondition(const arr &vec, const size_t offset) {
-    _fromArray(vec, offset);
+EPSCondition::EPSCondition(const arr &vec, const std::size_t offset) {
+    fromArray(vec, offset);
 }
 
-void EPSCondition::_fromArray(const arr &vec, const size_t offset) {
+void EPSCondition::_fromArray(const arr &vec, const std::size_t offset) {
     if (FIBF_con == nullptr)
         FIBF_con = new FIBFCondition(this);
     if (CM_con == nullptr)
@@ -70,7 +68,7 @@ void EPSCondition::_fromArray(const arr &vec, const size_t offset) {
     CM_con->fromArray(vec, offset + FIBF_con->size());
 }
 
-arr EPSCondition::_toArray() {
+arr EPSCondition::_toArray() const {
     arr fvec = FIBF_con->toArray();
     arr cvec = CM_con->toArray();
     fvec.insert(fvec.end(), cvec.begin(), cvec.end());

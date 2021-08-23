@@ -35,7 +35,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-void PS::_Rate(const double t, const PSCondition* PS_con, Variables *theVars) {
+void PS::_Rate(const double t, const PSCondition* const PS_con, Variables *theVars) {
     double PsPEXT;
 
     PsPEXT = PS::PS_PEXT;

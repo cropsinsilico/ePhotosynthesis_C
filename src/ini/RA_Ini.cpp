@@ -44,3 +44,9 @@ RACondition* RA::_init(Variables *theVars) {
     RACondition* RA_con = new RACondition(EPS_con, RuACT_con);
     return RA_con;
 }
+
+void RA::_reset() {
+    EPS::_reset();
+    RuACT::_reset();
+    conditions::RACondition::reset();
+}

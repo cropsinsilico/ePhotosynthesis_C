@@ -96,7 +96,7 @@ double PR::TIME = 0.;
 double PR::GLUc = 0.;
 double PR::RUBISCOTOTAL = 0.;
 double PR::V1T = 0.;
-size_t PR::N = 1;
+std::size_t PR::N = 1;
 
 double PR::PrV112 = 0.;
 double PR::PrV113 = 0.;
@@ -106,7 +106,7 @@ double PR::PrV123 = 0.;
 double PR::PrV124 = 0.;
 double PR::PrV131 = 0.;
 
-const size_t PRCondition::count = 10;
+const std::size_t PRCondition::count = 10;
 bool PRCondition::PS_connect = false;
 bool PR::PS_connect = false;
 bool PRCondition::PS_RuBP = false;
@@ -337,4 +337,79 @@ PRCondition* PR::_init(Variables *theVars) {
     // Reaction 131: NAD+Glycine <--> CO2+ NADH + NH3
 
     return PR_con;
+}
+
+void PR::_reset() {
+    PR::KC = 0.;
+    PR::KE113 = 0.;
+    PR::KE122 = 0.;
+    PR::KE123 = 0.;
+    PR::KE124 = 0.;
+    PR::KGc = 0.;
+    PR::KI1011 = 0.;
+    PR::KI1012 = 0.;
+    PR::KI1121 = 0.;
+    PR::KI1122 = 0.;
+    PR::KI113 = 0.;
+    PR::KI1221 = 0.;
+    PR::KI123 = 0.;
+    PR::KI1311 = 0.;
+    PR::KM1011 = 0.;
+    PR::KM1012 = 0.;
+    PR::KM112 = 0.;
+    PR::KM1131 = 0.;
+    PR::KM1132 = 0.;
+    PR::KM121 = 0.;
+    PR::KM1221 = 0.;
+    PR::KM1222 = 0.;
+    PR::KM123 = 0.;
+    PR::KM1241 = 0.;
+    PR::KM1242 = 0.;
+    PR::KM1311 = 0.;
+    PR::KO = 0.;
+    PR::KR = 0.;
+    PR::NADHc = 0.;
+    PR::NADc = 0.;
+    PR::PR_ADP = 0.;
+    PR::PR_ATP = 0.;
+    PR::V111 = 0.;
+    PR::V112 = 0.;
+    PR::V113 = 0.;
+    PR::V121 = 0.;
+    PR::V122 = 0.;
+    PR::V123 = 0.;
+    PR::V124 = 0.;
+    PR::V131 = 0.;
+    PR::V2T = 0.;
+    PR::Vfactor112 = 0.;
+    PR::Vfactor113 = 0.;
+    PR::Vfactor121 = 0.;
+    PR::Vfactor122 = 0.;
+    PR::Vfactor123 = 0.;
+    PR::Vfactor124 = 0.;
+    PR::Vfactor131 = 0.;
+    PR::Vf_T131 = 0.;
+    PR::Vf_T113 = 0.;
+    PR::Vf_T123 = 0.;
+    PR::Vf_T121 = 0.;
+    PR::Vf_T122 = 0.;
+    PR::Vf_T112 = 0.;
+    PR::V1T = 0.;
+    PR::PGA = 0.;
+    PR::GLUc = 0.;
+    setPS_connect(false);
+    setPS_RuBP(false);
+    PR::RUBISCOTOTAL = 0.;
+
+    PR::PrV112 = 0.;
+    PR::PrV113 = 0.;
+    PR::PrV121 = 0.;
+    PR::PrV122 = 0.;
+    PR::PrV123 = 0.;
+    PR::PrV124 = 0.;
+    PR::PrV131 = 0.;
+
+    PR::TIME = 0.;
+    PR::N = 1;
+    conditions::PRCondition::reset();
 }

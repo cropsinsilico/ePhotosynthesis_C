@@ -36,10 +36,11 @@ class PS_PRModuleTest;
 }
 #endif
 namespace modules {
-
+class CM;
 class PS_PR : public ModuleBase<PS_PR, conditions::PS_PRCondition> {
 private:
     friend ModuleBase;
+    friend class modules::CM;
 #ifdef TESTING
     friend class test::PS_PRModuleTest;
 #endif
@@ -58,18 +59,17 @@ private:
   @param theVars The global variables
   @return A vector containing the updated values
   */
-    static arr _MB(const double t, const conditions::PS_PRCondition* PS_PRs, Variables *theVars);
+    static arr _MB(const double t, const conditions::PS_PRCondition* const PS_PRs, Variables *theVars);
     static conditions::PS_PRCondition* _MB_con(const double t,
-                                               const conditions::PS_PRCondition* PS_PRs,
+                                               const conditions::PS_PRCondition* const PS_PRs,
                                                Variables *theVars);
 
-    static void _Rate(const double t, const conditions::PS_PRCondition* PS_PRs, Variables *theVars) {
+    static void _Rate(const double t, const conditions::PS_PRCondition* const PS_PRs, Variables *theVars) {
         (void)t;
         (void)PS_PRs;
         (void)theVars;
     }
-    static double TIME;
-    static size_t N;
+    static void _reset();
 };
 
 }  // namespace modules

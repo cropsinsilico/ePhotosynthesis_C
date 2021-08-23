@@ -34,7 +34,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-size_t FIBFCondition::count = 0;
+std::size_t FIBFCondition::count = 0;
 double FIBF::ChlPSI = 0.;
 double FIBF::ChlT = 0.;
 double FIBF::ChlT2 = 0.;
@@ -52,4 +52,14 @@ FIBFCondition* FIBF::_init(Variables *theVars) {
     theVars->BF_Pool.k_r1 = theVars->FIBF_Pool.PQT;
 
     return FIBF_con;
+}
+
+void FIBF::_reset()  {
+    ChlPSI = 0.;
+    ChlT = 0.;
+    ChlT2 = 0.;
+    FIBF2FI_PQ = 0.;
+    FIBF2FI_PQa = 0.;
+    FI::_reset();
+    BF::_reset();
 }

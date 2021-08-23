@@ -28,25 +28,25 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-XanCycleCondition::XanCycleCondition(const XanCycleCondition* other) {
+XanCycleCondition::XanCycleCondition(const XanCycleCondition* const other) {
     Vx = other->Vx;
     Ax = other->Ax;
     Zx = other->Zx;
     ABA = other->ABA;
 }
 
-XanCycleCondition::XanCycleCondition(const arr &vec, const size_t offset) {
+XanCycleCondition::XanCycleCondition(const arr &vec, const std::size_t offset) {
     fromArray(vec, offset);
 }
 
-void XanCycleCondition::_fromArray(const arr &vec, const size_t offset) {
+void XanCycleCondition::_fromArray(const arr &vec, const std::size_t offset) {
     Vx = vec[offset];
     Ax = vec[offset + 1];
     Zx = vec[offset + 2];
     ABA = vec[offset + 3];
 }
 
-arr XanCycleCondition::_toArray() {
+arr XanCycleCondition::_toArray() const {
     arr array = {Vx, Ax, Zx, ABA};
     return array;
 }

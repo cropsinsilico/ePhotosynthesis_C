@@ -30,6 +30,9 @@
 #include "DynaPSCondition.hpp"
 
 namespace ePhotosynthesis {
+namespace modules {
+class trDynaPS;
+}
 namespace conditions {
 
 /**
@@ -39,7 +42,7 @@ class trDynaPSCondition : public ConditionBase<trDynaPSCondition, trDynaPSCondit
 public:
     trDynaPSCondition() : RROEA_con(new RROEACondition(this)), DynaPS_con(new DynaPSCondition(this)) {}
 
-    ~trDynaPSCondition() {
+    ~trDynaPSCondition() override {
         _clear();
     }
     /**
@@ -47,7 +50,7 @@ public:
 
       @param other The trDynaPSCon object to copy
       */
-    trDynaPSCondition(const trDynaPSCondition* other);
+    trDynaPSCondition(const trDynaPSCondition* const other);
 
     /**
       Constructor to create an object from the contained classes
@@ -63,7 +66,7 @@ public:
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    trDynaPSCondition(const arr &vec, size_t offset = 0);
+    trDynaPSCondition(const arr &vec, const std::size_t offset = 0);
 
     /**
       Constructor to create an object from the input pointer
@@ -82,33 +85,36 @@ public:
 
 private:
     friend ConditionBase;
+    friend class modules::trDynaPS;
     /**
       Copy items from the given vector to the data members
 
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void _fromArray(const arr &vec, size_t offset = 0);
+    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
 
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
     */
-    arr _toArray();
+    arr _toArray() const override;
 
-    void _clear();
+    void _clear() override;
 
     /**
       Get the size of the data vector
       */
-    static size_t _size() {
+    static std::size_t _size() {
         if (count == 0)
             count = RROEACondition::size() + DynaPSCondition::size();
         return count;
     }
-
-    static size_t count;
+    static void reset() {
+        count = 0;
+    }
+    static std::size_t count;
 #ifdef INCDEBUG
     const static Debug::DebugLevel _dlevel = Debug::Top;
 #endif

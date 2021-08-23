@@ -48,14 +48,14 @@ public:
 
       @param other The BFCon object to copy
       */
-    BFCondition(const BFCondition* other);
+    BFCondition(const BFCondition* const other);
     /**
       Constructor to create an object from the input vector, starting at the given index
 
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    BFCondition(const arr &vec, const size_t offset = 0);
+    BFCondition(const arr &vec, const std::size_t offset = 0);
 
     double ISPHr = 0.;   ///< The reduced ion sulfer protein (ISPH); unit: micromole per m2
     double cytc1 = 0.;   ///< The oxidized state of cytc1; unit: micromole per meter square
@@ -99,19 +99,19 @@ private:
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void _fromArray(const arr &vec, const size_t offset = 0);
+    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
       */
-    arr _toArray();
+    arr _toArray() const override;
 
     /**
       Get the size of the data vector
       */
-    static size_t _size() {
-        size_t c = count;
+    static std::size_t _size() {
+        std::size_t c = count;
         if (FI_connect)
             c--;
         if (PS_connect)
@@ -121,8 +121,13 @@ private:
         return c;
     }
 
-    void _clear() {}
-    static const size_t count;
+    void _clear() override {}
+    static void reset() {
+        PS_connect = false;
+        RROEA_connect = false;
+        FI_connect = false;
+    }
+    static const std::size_t count;
 #ifdef INCDEBUG
     const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif

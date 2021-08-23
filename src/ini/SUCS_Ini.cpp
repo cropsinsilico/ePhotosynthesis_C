@@ -110,9 +110,9 @@ double SUCS::SUCSV55 = 0.;
 double SUCS::SUCSV56 = 0.;
 double SUCS::SUCSV57 = 0.;
 double SUCS::SUCSV58 = 0.;
-size_t SUCS::N = 1;
+std::size_t SUCS::N = 1;
 
-const size_t SUCSCondition::count = 8;
+const std::size_t SUCSCondition::count = 8;
 
 SUCSCondition* SUCS::_init(Variables *theVars) {
     SUCSCondition* SUCS_Con = new SUCSCondition();
@@ -330,4 +330,90 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
     SUCS::KE5Ratio = 1. + SUCS::KE541 + 1. / SUCS::KE531;
     SUCS::ADPc = theVars->SUCS_Pool.ATc - SUCS::ATPc;
     return SUCS_Con;
+}
+
+void SUCS::_reset() {
+    SUCS::KE501 = 0.;
+    SUCS::KE51 = 0.;
+    SUCS::KE52 = 0.;
+    SUCS::KE531 = 0.;
+    SUCS::KE541 = 0.;
+    SUCS::KE55 = 0.;
+    SUCS::KE56 = 0.;
+    SUCS::KE57 = 0.;
+    SUCS::KE59 = 0.;
+    SUCS::KE61 = 0.;
+    SUCS::KI521 = 0.;
+    SUCS::KI522 = 0.;
+    SUCS::KI523 = 0.;
+    SUCS::KI561 = 0.;
+    SUCS::KI562 = 0.;
+    SUCS::KI563 = 0.;
+    SUCS::KI564 = 0.;
+    SUCS::KI565 = 0.;
+    SUCS::KI581 = 0.;
+    SUCS::KI582 = 0.;
+    SUCS::KI591 = 0.;
+    SUCS::Ki572 = 0.;
+    SUCS::Km511 = 0.;
+    SUCS::Km512 = 0.;
+    SUCS::Km513 = 0.;
+    SUCS::Km521 = 0.;
+    SUCS::Km551 = 0.;
+    SUCS::Km552 = 0.;
+    SUCS::Km553 = 0.;
+    SUCS::Km554 = 0.;
+    SUCS::Km561 = 0.;
+    SUCS::Km562 = 0.;
+    SUCS::Km571 = 0.;
+    SUCS::Km581 = 0.;
+    SUCS::Km591 = 0.;
+    SUCS::Km593 = 0.;
+    SUCS::Km621 = 0.;
+    SUCS::V51 = 0.;
+    SUCS::V52 = 0.;
+    SUCS::V55 = 0.;
+    SUCS::V56 = 0.;
+    SUCS::V57 = 0.;
+    SUCS::V58 = 0.;
+    SUCS::V59 = 0.;
+    SUCS::V60 = 0.;
+    SUCS::V61 = 0.;
+    SUCS::V62 = 0.;
+    SUCS::Vdhap_in = 0.;
+    SUCS::Vgap_in = 0.;
+    SUCS::Vpga_in = 0.;
+    SUCS::Km592 = 0.;
+    SUCS::KI592 = 0.;
+    SUCS::Km601 = 0.;
+    SUCS::Km602 = 0.;
+    SUCS::Km603 = 0.;
+    SUCS::Km604 = 0.;
+    SUCS::KE60 = 0.;
+    SUCS::Vfactor51 = 0.;
+    SUCS::Vfactor52 = 0.;
+    SUCS::Vfactor56 = 0.;
+    SUCS::Vfactor57 = 0.;
+    SUCS::Vfactor59 = 0.;
+    SUCS::Vf_T51 = 0.;
+    SUCS::Vf_T52 = 0.;
+    SUCS::Vf_T56 = 0.;
+    SUCS::Vf_T57 = 0.;
+    SUCS::Vf_T59 = 0.;
+    SUCS::UTPc = 0.;
+    SUCS::ATPc = 0.;
+
+    SUCS::SUCS2PS_Pic = 0.;
+
+    SUCS::KE5Ratio = 0.;
+    SUCS::ADPc = 0.;
+    SUCS::SUCSV51 = 0.;
+    SUCS::SUCSV52 = 0.;
+    SUCS::SUCSV55 = 0.;
+    SUCS::SUCSV56 = 0.;
+    SUCS::SUCSV57 = 0.;
+    SUCS::SUCSV58 = 0.;
+    SUCS::TIME = 0.;
+    SUCS::N = 0;
+    conditions::SUCSCondition::reset();
 }

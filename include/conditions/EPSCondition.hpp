@@ -30,6 +30,9 @@
 #include "CMCondition.hpp"
 
 namespace ePhotosynthesis {
+namespace modules {
+class EPS;
+}
 namespace conditions {
 
 class RACondition;
@@ -41,7 +44,7 @@ public:
     EPSCondition(RACondition* par = nullptr) : CM_con(new CMCondition(this)), FIBF_con(new FIBFCondition(this)) {
         setParent(par);
     }
-    ~EPSCondition() {
+    ~EPSCondition() override {
         _clear();
     }
     /**
@@ -49,7 +52,7 @@ public:
 
       @param other The EPSCon object to copy
       */
-    EPSCondition(const EPSCondition* other);
+    EPSCondition(const EPSCondition* const other);
 
     /**
       Constructor to create an object from the input pointer
@@ -72,7 +75,7 @@ public:
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    EPSCondition(const arr &vec, const size_t offset = 0);
+    EPSCondition(const arr &vec, const std::size_t offset = 0);
 
 #ifdef INCDEBUG
     static void setTop() {EPSCondition::_dlevel = Debug::Top;}
@@ -84,29 +87,31 @@ public:
 
 private:
     friend ConditionBase;
-
+    friend class modules::EPS;
     /**
       Copy items from the given vector to the data members
 
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void _fromArray(const arr &vec, const size_t offset = 0);
+    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
       */
-    arr _toArray();
+    arr _toArray() const override;
     /**
       Get the size of the data vector
       */
-    static size_t _size() {
+    static std::size_t _size() {
         return CMCondition::size() + FIBFCondition::size();
     }
-
-    void _clear();
-    static size_t count;
+    static void reset() {
+        count = 0;
+    }
+    void _clear() override;
+    static std::size_t count;
 #ifdef INCDEBUG
     static Debug::DebugLevel _dlevel;
 #endif

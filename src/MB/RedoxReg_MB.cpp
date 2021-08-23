@@ -35,7 +35,7 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::drivers;
 
-RedoxRegCondition* RedoxReg::_MB_con(const double t, const RedoxRegCondition* RedoxReg_Con,
+RedoxRegCondition* RedoxReg::_MB_con(const double t, const RedoxRegCondition* const RedoxReg_Con,
                                      Variables *theVars) {
 
     trDynaPS2RedReg_cal = true;
@@ -64,7 +64,7 @@ int RedoxReg::RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data) {
     return 0;
 }
 
-arr RedoxReg::_MB(const double t, const RedoxRegCondition* RedoxReg_Con, Variables *theVars) {
+arr RedoxReg::_MB(const double t, const RedoxRegCondition* const RedoxReg_Con, Variables *theVars) {
     RedoxRegCondition* dydt = _MB_con(t, RedoxReg_Con, theVars);
     arr tmp = dydt->toArray();
     delete dydt;

@@ -34,12 +34,16 @@ namespace test {
 class CMModuleTest;
 }
 #endif
+namespace drivers {
+class CMDriver;
+}
 namespace modules {
-
+class EPS;
 class CM : public ModuleBase<CM, conditions::CMCondition> {
-    SET_GET_BOOL(TestSucPath)
 private:
     friend ModuleBase;
+    friend class modules::EPS;
+    friend class drivers::CMDriver;
 #ifdef TESTING
     friend class test::CMModuleTest;
 #endif
@@ -59,15 +63,18 @@ private:
   @param theVars The global variables
   @return A vector containing the updated values
   */
-    static arr _MB(const double t, const conditions::CMCondition* CM_con, Variables *theVars);
-    static conditions::CMCondition* _MB_con(const double t, const conditions::CMCondition* CM_con,
+    static arr _MB(const double t, const conditions::CMCondition* const CM_con, Variables *theVars);
+    static conditions::CMCondition* _MB_con(const double t, const conditions::CMCondition* const CM_con,
                                             Variables *theVars);
 
-    static void _Rate(const double t, const conditions::CMCondition* CM_con, Variables *theVars) {
+    static void _Rate(const double t, const conditions::CMCondition* const CM_con, Variables *theVars) {
         (void)t;
         (void)CM_con;
         (void)theVars;
     }
+    static void _reset();
+    SET_GET_BOOL(TestSucPath)
+
 };
 
 }  // namespace modules

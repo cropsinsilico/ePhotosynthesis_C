@@ -29,9 +29,9 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-size_t RACondition::count = 0;
+std::size_t RACondition::count = 0;
 
-RACondition::RACondition(const RACondition* other) {
+RACondition::RACondition(const RACondition* const other) {
     RuACT_con = new RuACTCondition(other->RuACT_con);
     EPS_con = new EPSCondition(other->EPS_con);
     RuACT_con->setParent(this);
@@ -53,8 +53,8 @@ RACondition::RACondition(EPSCondition* eother, RuACTCondition* rother) {
     EPS_con->setParent(this);
 }
 
-RACondition::RACondition(const arr &vec, size_t offset){
-    _fromArray(vec, offset);
+RACondition::RACondition(const arr &vec, const std::size_t offset) {
+    fromArray(vec, offset);
 }
 
 
@@ -70,7 +70,7 @@ void RACondition::_clear() {
     count = 0;
 }
 
-void RACondition::_fromArray(const arr &vec, size_t offset) {
+void RACondition::_fromArray(const arr &vec, const std::size_t offset) {
     if (EPS_con == nullptr)
         EPS_con = new EPSCondition(this);
     if (RuACT_con == nullptr)
@@ -79,7 +79,7 @@ void RACondition::_fromArray(const arr &vec, size_t offset) {
     RuACT_con->fromArray(vec, offset + EPSCondition::size());
 }
 
-arr RACondition::_toArray() {
+arr RACondition::_toArray() const {
     arr evec = EPS_con->toArray();
     arr rvec = RuACT_con->toArray();
     evec.reserve(size());

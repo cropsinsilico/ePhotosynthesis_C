@@ -31,6 +31,9 @@
 #include "SUCSCondition.hpp"
 
 namespace ePhotosynthesis {
+namespace modules {
+class CM;
+}
 namespace conditions {
 
 class EPSCondition;
@@ -50,7 +53,7 @@ public:
 
       @param other The CMCon object to copy
       */
-    CMCondition(const CMCondition* other);
+    CMCondition(const CMCondition* const other);
 
     /**
       Constructor to create an object from the input vector, starting at the given index
@@ -58,7 +61,7 @@ public:
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    CMCondition(const arr &vec, size_t offset = 0);
+    CMCondition(const arr &vec, const std::size_t offset = 0);
 
     /**
       Constructor to create an object from the input pointer
@@ -83,32 +86,36 @@ public:
 #endif
 private:
     friend ConditionBase;
+    friend class modules::CM;
     /**
       Copy items from the given vector to the data members
 
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void _fromArray(const arr &vec, size_t offset = 0);
+    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
 
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
       */
-    arr _toArray();
+    arr _toArray() const override;
 
     /**
       Get the size of the data vector
       */
-    static size_t _size() {
+    static std::size_t _size() {
         if (count == 0)
             count = PS_PRCondition::size() + SUCSCondition::size();
         return count;
     }
 
-    void _clear();
-    static size_t count;
+    void _clear() override;
+    static void reset() {
+        count = 0;
+    }
+    static std::size_t count;
 #ifdef INCDEBUG
     static Debug::DebugLevel _dlevel;
 #endif

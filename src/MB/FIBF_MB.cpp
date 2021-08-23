@@ -36,7 +36,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* FIBF_Con, Variables *theVars) {
+FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* const FIBF_Con, Variables *theVars) {
     // First Get the variables needed for the calcualtion step
 
     BFCondition* BF_con = FIBF_Con->BF_con;
@@ -135,7 +135,7 @@ FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* FIBF_Con, Vari
     return dydt;
 }
 
-arr FIBF::_MB(const double t, const FIBFCondition* FIBF_Con, Variables *theVars) {
+arr FIBF::_MB(const double t, const FIBFCondition* const FIBF_Con, Variables *theVars) {
     FIBFCondition* dydt = _MB_con(t, FIBF_Con, theVars);
     arr tmp = dydt->toArray();
     delete dydt;

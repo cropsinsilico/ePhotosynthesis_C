@@ -29,7 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-PRCondition::PRCondition(const PRCondition* other)  {
+PRCondition::PRCondition(const PRCondition* const other)  {
     GCEA = other->GCEA;
     GCA = other->GCA;
     PGCA = other->PGCA;
@@ -43,11 +43,11 @@ PRCondition::PRCondition(const PRCondition* other)  {
         RuBP = other->RuBP;
 }
 
-PRCondition::PRCondition(const arr vec, size_t offset)  {
-    _fromArray(vec, offset);
+PRCondition::PRCondition(const arr vec, const std::size_t offset)  {
+    fromArray(vec, offset);
 }
 
-void PRCondition::_fromArray(const arr &vec, size_t offset)  {
+void PRCondition::_fromArray(const arr &vec, const std::size_t offset)  {
     GCEA= vec[offset];
     GCA= vec[offset + 1];
     PGCA= vec[offset + 2];
@@ -61,7 +61,7 @@ void PRCondition::_fromArray(const arr &vec, size_t offset)  {
         RuBP= vec[offset + 9];
 }
 
-arr PRCondition::_toArray()  {
+arr PRCondition::_toArray() const {
     if (PS_RuBP)
         return {GCEA, GCA, PGCA, GCAc, GOAc, SERc, GLYc, HPRc, GCEAc};
     return {GCEA, GCA, PGCA, GCAc, GOAc, SERc, GLYc, HPRc, GCEAc, RuBP};

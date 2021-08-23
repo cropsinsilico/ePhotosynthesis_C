@@ -29,6 +29,9 @@
 #include "ConditionBase.hpp"
 
 namespace ePhotosynthesis {
+namespace modules {
+class XanCycle;
+}
 namespace conditions {
 
 class DynaPSCondition;
@@ -46,7 +49,7 @@ public:
 
       @param other The XanCycleCon object to copy
       */
-    XanCycleCondition(const XanCycleCondition* other);
+    XanCycleCondition(const XanCycleCondition* const other);
 
     /**
       Constructor to create an object from the input vector, starting at the given index
@@ -54,7 +57,7 @@ public:
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    XanCycleCondition(const arr &vec, const size_t offset = 0);
+    XanCycleCondition(const arr &vec, const std::size_t offset = 0);
 
     double Vx = 0.;  ///< The concentration of Violozanthin
     double Ax = 0.;  ///< The concentration of Anthrozanthin
@@ -64,34 +67,35 @@ public:
 
 private:
     friend ConditionBase;
+    friend class modules::XanCycle;
     /**
       Copy items from the given vector to the data members
 
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void _fromArray(const arr &vec, const size_t offset = 0);
+    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
 
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
       */
-    arr _toArray();
+    arr _toArray() const override;
 
     /**
       Set all data memebers to 0.
       */
-    void _clear();
+    void _clear() override;
 
     /**
       Get the size of the data vector
       */
-    static size_t _size() {
+    static std::size_t _size() {
         return count;
     }
-
-    static const size_t count;
+    static void reset() {}
+    static const std::size_t count;
 #ifdef INCDEBUG
     const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif

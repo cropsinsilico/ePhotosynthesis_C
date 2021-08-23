@@ -46,6 +46,9 @@ public:
         DEBUG_MESSAGE(constraints)
 #endif
         return T::_MB_con(t, constraints, theVars);}
+    static void reset() {
+        T::_reset();
+    }
 protected:
     ModuleBase() {}
     static void Rate(const double t, const U* constraints, Variables *theVars) {

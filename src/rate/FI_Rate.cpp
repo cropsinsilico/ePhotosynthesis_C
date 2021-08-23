@@ -35,7 +35,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-void FI::_Rate(const double t, const FICondition* FI_Con, Variables *theVars) {
+void FI::_Rate(const double t, const FICondition* const FI_Con, Variables *theVars) {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Step 1 Get the rate constant and the initial concentrations //

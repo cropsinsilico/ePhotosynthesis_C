@@ -36,9 +36,9 @@ bool RuACT::EPS_connect = false;
 bool RuACTCondition::EPS_connect = false;
 double RuACT::activase = 0.;
 double RuACT::TIME = 0.;
-size_t RuACT::N = 1;
+std::size_t RuACT::N = 1;
 
-size_t RuACTCondition::count = 4;
+const std::size_t RuACTCondition::count = 4;
 
 RuACTCondition* RuACT::_init(Variables *theVars) {
     RuACT::setEPS_connect(theVars->RuACT_EPS_com);

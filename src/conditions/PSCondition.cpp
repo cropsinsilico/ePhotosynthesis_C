@@ -29,7 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-PSCondition::PSCondition(const PSCondition* other)  {
+PSCondition::PSCondition(const PSCondition* const other)  {
     RuBP = other->RuBP;
     PGA = other->PGA;
     DPGA = other->DPGA;
@@ -48,12 +48,12 @@ PSCondition::PSCondition(const PSCondition* other)  {
     _v1 = other->_v1;
 }
 
-PSCondition::PSCondition(const arr &vec, size_t offset) {
-    _fromArray(vec, offset);
+PSCondition::PSCondition(const arr &vec, const std::size_t offset) {
+    fromArray(vec, offset);
 }
 
-void PSCondition::_fromArray(const arr &vec, size_t offset) {
-    size_t current = 0;
+void PSCondition::_fromArray(const arr &vec, const std::size_t offset) {
+    std::size_t current = 0;
     RuBP = vec[offset + current++];
     PGA = vec[offset + current++];
     DPGA = vec[offset + current++];
@@ -69,7 +69,7 @@ void PSCondition::_fromArray(const arr &vec, size_t offset) {
     PenP = vec[offset + current++];
 }
 
-arr PSCondition::_toArray()  {
+arr PSCondition::_toArray() const {
     if (C3)
         return {RuBP, PGA, DPGA, T3P, FBP, E4P, S7P, SBP, ATP, HexP, PenP};
     return {RuBP, PGA, DPGA, T3P, ADPG, FBP, E4P, S7P, SBP, ATP, HexP, PenP};

@@ -29,7 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-SUCSCondition::SUCSCondition(const SUCSCondition *other) {
+SUCSCondition::SUCSCondition(const SUCSCondition* const other) {
     T3Pc = other->T3Pc;
     FBPc = other->FBPc;
     HexPc = other->HexPc;
@@ -40,12 +40,12 @@ SUCSCondition::SUCSCondition(const SUCSCondition *other) {
     PGAc = other->PGAc;
 }
 
-SUCSCondition::SUCSCondition(const arr &vec, const size_t offset) {
-    _fromArray(vec, offset);
+SUCSCondition::SUCSCondition(const arr &vec, const std::size_t offset) {
+    fromArray(vec, offset);
 }
 
-void SUCSCondition::_fromArray(const arr &vec, const size_t offset) {
-    size_t current = 0;
+void SUCSCondition::_fromArray(const arr &vec, const std::size_t offset) {
+    std::size_t current = 0;
     T3Pc = vec[offset + current++];
     FBPc = vec[offset + current++];
     HexPc = vec[offset + current++];
@@ -67,6 +67,6 @@ void SUCSCondition::_clear() {
     PGAc = 0.;
 }
 
-arr SUCSCondition::_toArray() {
+arr SUCSCondition::_toArray() const {
     return {T3Pc, FBPc, HexPc, F26BPc, UDPGc, SUCP, SUC, PGAc};
 }

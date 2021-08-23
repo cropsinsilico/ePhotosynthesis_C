@@ -40,3 +40,9 @@ PS_PRCondition* PS_PR::_init(Variables *theVars) {
     PS_PRCondition* PS_PR_con = new PS_PRCondition(PS_con, PR_con);
     return PS_PR_con;
 }
+
+void PS_PR::_reset() {
+    PS::_reset();
+    PR::_reset();
+    conditions::PS_PRCondition::reset();
+}

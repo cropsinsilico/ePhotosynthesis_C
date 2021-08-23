@@ -35,11 +35,15 @@ namespace test {
 class trDynaPSModuleTest;
 }
 #endif
+namespace drivers {
+class trDynaPSDriver;
+}
 namespace modules {
 
 class trDynaPS : public ModuleBase<trDynaPS, conditions::trDynaPSCondition> {
 private:
     friend ModuleBase;
+    friend drivers::trDynaPSDriver;
 #ifdef TESTING
     friend class test::trDynaPSModuleTest;
 #endif
@@ -70,6 +74,7 @@ private:
         (void)trDynaPS_con;
         (void)theVars;
     }
+    static void _reset();
 };
 
 }  // namespace modules

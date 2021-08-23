@@ -41,13 +41,11 @@ void ePhotosynthesis::GenOut(double t, Variables *theVars) {
 
     if (theVars->record) {
         double ATP = theVars->PS2OUT.ATP;
-        double NADPH = PS::_NADPH;
+        double NADPH = PS::get_NADPH();
         double O2 = theVars->O2_cond;
         double Fdn = 0;
         double PHs = 0;
         double PHl = 0;
-
-        O2 = theVars->O2_cond;
 
         if (theVars->FIBF_PSPR_com) {
             Fdn = theVars->BF2OUT[0];
@@ -268,7 +266,7 @@ void ePhotosynthesis::makeFluxTR(Variables *theVars) {
     theVars->FluxTR[139] = theVars->RROEA_VEL.getLastData().veFd2Thio;
     theVars->FluxTR[140] = theVars->RROEA_VEL.getLastData().veFd2Calvin;
     theVars->FluxTR[141] = theVars->RROEA_VEL.getLastData().ve2RuACT;
-    for (size_t x = 0; x < 36; x++)
+    for (std::size_t x = 0; x < 36; x++)
         theVars->FluxTR[x] = theVars->FluxTR[x] * theVars->AVR;
     theVars->FluxTR[46] = theVars->FluxTR[46] * theVars->AVR;
     theVars->FluxTR[64] = theVars->FluxTR[64] * theVars->AVR / 2.;

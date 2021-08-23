@@ -29,15 +29,13 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-RedoxRegCondition::RedoxRegCondition(const RedoxRegCondition* other) {
-    _clear();
+RedoxRegCondition::RedoxRegCondition(const RedoxRegCondition* const other) {
     RA_con = new RACondition(other->RA_con);
     Thion = other->Thion;
     //RA_con.setParent(this);
 }
 
 RedoxRegCondition::RedoxRegCondition(RACondition* rother, double thio) {
-    _clear();
     if (rother->parent == nullptr) {
         RA_con = rother;
     } else {
@@ -47,18 +45,18 @@ RedoxRegCondition::RedoxRegCondition(RACondition* rother, double thio) {
     Thion = thio;
 }
 
-RedoxRegCondition::RedoxRegCondition(const arr &vec, size_t offset) {
+RedoxRegCondition::RedoxRegCondition(const arr &vec, const std::size_t offset) {
     fromArray(vec, offset);
 }
 
-void RedoxRegCondition::_fromArray(const arr &vec, size_t offset) {
+void RedoxRegCondition::_fromArray(const arr &vec, const std::size_t offset) {
     if (RA_con == nullptr)
         RA_con = new RACondition();
     RA_con->fromArray(vec, offset);
     Thion = vec[offset + RACondition::size()];
 }
 
-arr RedoxRegCondition::_toArray() {
+arr RedoxRegCondition::_toArray() const {
     arr rvec = RA_con->toArray();
     rvec.push_back(Thion);
     return rvec;

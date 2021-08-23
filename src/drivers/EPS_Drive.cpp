@@ -35,7 +35,9 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::drivers;
 using namespace ePhotosynthesis::conditions;
 
-EPSDriver::~EPSDriver() {}
+EPSDriver::~EPSDriver() {
+    modules::EPS::_reset();
+}
 
 void EPSDriver::setup() {
     //Ca = theVars->TestCa;
@@ -101,10 +103,7 @@ void EPSDriver::setup() {
     // This is a variable to indicate whether BF is run by itself or together.
 
 
-    constraints = zeros(EPS_Con->size());
-    arr temp = EPS_Con->toArray();
-    for (size_t i = 0; i < constraints.size(); i++)
-        constraints[i] = temp[i];
+    constraints = EPS_Con->toArray();
     delete EPS_Con;
 }
 

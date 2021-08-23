@@ -32,7 +32,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-RuACTCondition* RuACT::_MB_con(const double t, const RuACTCondition* RuACT_Con, Variables *theVars) {
+RuACTCondition* RuACT::_MB_con(const double t, const RuACTCondition* const RuACT_Con, Variables *theVars) {
 
     Condition(t, theVars);
     const double light = theVars->GLight;
@@ -60,7 +60,7 @@ RuACTCondition* RuACT::_MB_con(const double t, const RuACTCondition* RuACT_Con, 
     return dydt;
 }
 
-arr RuACT::_MB(const double t, const RuACTCondition* RuACT_Con, Variables *theVars) {
+arr RuACT::_MB(const double t, const RuACTCondition* const RuACT_Con, Variables *theVars) {
     RuACTCondition* dydt = _MB_con(t, RuACT_Con, theVars);
     arr tmp = dydt->toArray();
     delete dydt;

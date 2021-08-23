@@ -35,13 +35,14 @@ class RROEAModuleTest;
 }
 #endif
 namespace modules {
-
+class trDynaPS;
 /**
  Class for RROEA related functions
  */
 class RROEA : public ModuleBase<RROEA, conditions::RROEACondition> {
 private:
     friend ModuleBase;
+    friend class modules::trDynaPS;
 #ifdef TESTING
     friend class test::RROEAModuleTest;
 #endif
@@ -61,9 +62,9 @@ private:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr _MB(const double t, const conditions::RROEACondition* RROEA_Con, Variables *theVars);
+    static arr _MB(const double t, const conditions::RROEACondition* const RROEA_Con, Variables *theVars);
     static conditions::RROEACondition* _MB_con(const double t,
-                                               const conditions::RROEACondition* RROEA_Con,
+                                               const conditions::RROEACondition* const RROEA_Con,
                                                Variables *theVars);
 
     /**
@@ -73,10 +74,16 @@ private:
       @param RROEA_Con RROEACon object giving the input parameters
       @param theVars The global variables
       */
-    static void _Rate(const double t, const conditions::RROEACondition* RROEA_Con,
+    static void _Rate(const double t, const conditions::RROEACondition* const RROEA_Con,
                       Variables *theVars);
+
+    static void _reset() {
+        TIME = 0.;
+        N = 1;
+        conditions::RROEACondition::reset();
+    }
     static double TIME;
-    static size_t N;
+    static std::size_t N;
 };
 
 }  // namespace modules

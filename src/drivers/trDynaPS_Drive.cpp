@@ -36,6 +36,9 @@ using namespace ePhotosynthesis::conditions;
 
 Variables* Driver::theVars = nullptr;
 
+trDynaPSDriver::~trDynaPSDriver() {
+    trDynaPS::reset();
+}
 void trDynaPSDriver::setup() {
 
     if (ParaNum <= 103) {

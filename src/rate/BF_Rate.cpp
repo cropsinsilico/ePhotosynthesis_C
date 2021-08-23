@@ -36,7 +36,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-void BF::_Rate(const double t, const BFCondition* BF_con, Variables *theVars) {
+void BF::_Rate(const double t, const BFCondition* const BF_con, Variables *theVars) {
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Step II get the concentration of differnet component //

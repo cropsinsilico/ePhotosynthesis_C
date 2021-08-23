@@ -29,7 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-RuACTCondition::RuACTCondition(const RuACTCondition* other) {
+RuACTCondition::RuACTCondition(const RuACTCondition* const other) {
     ER = other->ER;
     Eaf = other->Eaf;
     ECMR = other->ECMR;
@@ -37,11 +37,11 @@ RuACTCondition::RuACTCondition(const RuACTCondition* other) {
         RuBP = other->RuBP;
 }
 
-RuACTCondition::RuACTCondition(const arr vec, size_t offset) {
+RuACTCondition::RuACTCondition(const arr vec, const std::size_t offset) {
     fromArray(vec, offset);
 }
 
-void RuACTCondition::_fromArray(const arr &vec, size_t offset ){
+void RuACTCondition::_fromArray(const arr &vec, const std::size_t offset ){
     ER = vec[offset];
     Eaf = vec[offset + 1];
     ECMR = vec[offset + 2];
@@ -49,7 +49,7 @@ void RuACTCondition::_fromArray(const arr &vec, size_t offset ){
         RuBP = vec[offset + 3];
 }
 
-arr RuACTCondition::_toArray() {
+arr RuACTCondition::_toArray() const {
     if (EPS_connect)
         return {ER, Eaf, ECMR};
     return {ER, Eaf, ECMR, RuBP};

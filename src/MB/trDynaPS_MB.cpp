@@ -37,7 +37,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-trDynaPSCondition* trDynaPS::_MB_con(const double t, const trDynaPSCondition* trDynaPS_con, Variables *theVars) {
+trDynaPSCondition* trDynaPS::_MB_con(const double t, const trDynaPSCondition* const trDynaPS_con, Variables *theVars) {
 
     RedoxReg::settrDynaPS2RedReg_cal(false);
 
@@ -68,7 +68,7 @@ trDynaPSCondition* trDynaPS::_MB_con(const double t, const trDynaPSCondition* tr
     return dydt;
 }
 
-arr trDynaPS::_MB(const double t, const trDynaPSCondition* trDynaPS_con, Variables *theVars) {
+arr trDynaPS::_MB(const double t, const trDynaPSCondition* const trDynaPS_con, Variables *theVars) {
     trDynaPSCondition* dydt = _MB_con(t, trDynaPS_con, theVars);
     arr tmp = dydt->toArray();
     delete dydt;

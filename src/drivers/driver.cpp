@@ -52,7 +52,7 @@ arr Driver::run() {
         N_Vector y;
         y = N_VNew_Serial(N);
 
-        for (size_t i = 0; i < constraints.size(); i++)
+        for (std::size_t i = 0; i < constraints.size(); i++)
             NV_Ith_S(y, i) =  constraints[i];
         realtype t0 = 0;
 
@@ -131,7 +131,7 @@ int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
     realtype *dxdt = N_VGetArrayPointer(u_dot);
     CalcData *data = static_cast<CalcData*>(user_data);
     arr ddxdt = data->drv->MB(t, u);
-    for (size_t index = 0; index < ddxdt.size(); index++)
+    for (std::size_t index = 0; index < ddxdt.size(); index++)
         dxdt[index] = ddxdt[index];
     return 0;
 }

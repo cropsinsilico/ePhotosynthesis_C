@@ -45,6 +45,7 @@ public:
     SET_GET_BOOL_MODULE(BF_connect, conditions::FI)
 private:
     friend ModuleBase;
+    friend class modules::FIBF;
 #ifdef TESTING
     friend class test::FIModuleTest;
 #endif
@@ -64,7 +65,7 @@ private:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr _MB(const double t, const conditions::FICondition* FI_Con, Variables *theVars);
+    static arr _MB(const double t, const conditions::FICondition* const FI_Con, Variables *theVars);
     static conditions::FICondition* _MB_con(const double t,
                                             const conditions::FICondition* FI_Con,
                                             Variables *theVars);
@@ -75,10 +76,17 @@ private:
       @param FI_Con FICon object giving the input parameters
       @param theVars The global variables
       */
-    static void _Rate(const double t, const conditions::FICondition* FI_Con, Variables *theVars);
+    static void _Rate(const double t, const conditions::FICondition* const FI_Con, Variables *theVars);
     SET_GET(cpsii)
+    static void _reset() {
+        BF_connect = false;
+        cpsii = 0.;
+        N = 1;
+        TIME = 0.;
+        conditions::FICondition::reset();
+    }
     static double TIME;
-    static size_t N;
+    static std::size_t N;
 };
 
 }  // namespace modules

@@ -33,8 +33,8 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 double RROEA::TIME = 0.;
-size_t RROEA::N = 1;
-const size_t RROEACondition::count = 10;
+std::size_t RROEA::N = 1;
+const std::size_t RROEACondition::count = 10;
 
 RROEACondition* RROEA::_init(Variables *theVars) {
 

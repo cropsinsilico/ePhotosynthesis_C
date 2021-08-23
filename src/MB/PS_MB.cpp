@@ -32,7 +32,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-PSCondition* PS::_MB_con(const double t, const PSCondition* PS_con, Variables *theVars) {
+PSCondition* PS::_MB_con(const double t, const PSCondition* const PS_con, Variables *theVars) {
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     // Modifying KM, KI, KE VMAX for different reactions as the regulation//
@@ -70,7 +70,7 @@ PSCondition* PS::_MB_con(const double t, const PSCondition* PS_con, Variables *t
     return dydt;
 }
 
-arr PS::_MB(const double t, const PSCondition* PS_con, Variables *theVars) {
+arr PS::_MB(const double t, const PSCondition* const PS_con, Variables *theVars) {
     PSCondition *dydt = _MB_con(t, PS_con, theVars);
     arr dydtarr = dydt->toArray();
     delete dydt;

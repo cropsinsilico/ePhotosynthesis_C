@@ -32,7 +32,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-XanCycleCondition* XanCycle::_MB_con(const double t, const XanCycleCondition* XanCycle_Con, Variables *theVars) {
+XanCycleCondition* XanCycle::_MB_con(const double t, const XanCycleCondition* const XanCycle_Con, Variables *theVars) {
     Condition(t, theVars);
     Rate(t, XanCycle_Con, theVars);
 
@@ -50,7 +50,7 @@ XanCycleCondition* XanCycle::_MB_con(const double t, const XanCycleCondition* Xa
     return dydt;
 }
 
-arr XanCycle::_MB(const double t, const XanCycleCondition* XanCycle_Con, Variables *theVars) {
+arr XanCycle::_MB(const double t, const XanCycleCondition* const XanCycle_Con, Variables *theVars) {
     XanCycleCondition* dydt = XanCycle::_MB_con(t, XanCycle_Con, theVars);
     arr tmp = dydt->toArray();
     delete dydt;

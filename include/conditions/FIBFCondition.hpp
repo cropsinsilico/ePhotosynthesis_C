@@ -32,6 +32,9 @@
 #include "BFCondition.hpp"
 
 namespace ePhotosynthesis {
+namespace modules {
+class FIBF;
+}
 namespace conditions {
 
 class EPSCondition;
@@ -44,7 +47,7 @@ public:
     FIBFCondition(EPSCondition* par = nullptr) : BF_con(new BFCondition(this)), FI_con(new FICondition(this)) {
         setParent(par);
     }
-    ~FIBFCondition() {
+    ~FIBFCondition() override {
         _clear();
     }
     /**
@@ -52,7 +55,7 @@ public:
 
       @param other The FIBFCon object to copy
       */
-    FIBFCondition(const FIBFCondition* other);
+    FIBFCondition(const FIBFCondition* const other);
 
     /**
       Constructor to create an object from the contained classes
@@ -68,7 +71,7 @@ public:
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    FIBFCondition(const arr &vec, const size_t offset = 0);
+    FIBFCondition(const arr &vec, const std::size_t offset = 0);
 
 
     BFCondition* BF_con = nullptr;
@@ -79,30 +82,34 @@ public:
 
 private:
     friend ConditionBase;
+    friend class modules::FIBF;
     /**
       Copy items from the given vector to the data members
 
       @param vec The Vector to copy from
       @param offset The indec in vec to start the copying from
       */
-    void _fromArray(const arr &vec, const size_t offset = 0);
+    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
 
     /**
       Convert the object into a vector of doubles
 
       @return A vector containing the data values from the class
     */
-    arr _toArray();
+    arr _toArray() const override;
     /**
       Get the size of the data vector
       */
-    static size_t _size() {
+    static std::size_t _size() {
         if (count == 0)
             count = BFCondition::size() + FICondition::size() + 1;
         return count;
     }
-    void _clear();
-    static size_t count;
+    void _clear() override;
+    static std::size_t count;
+    static void reset() {
+        count = 0;
+    }
 #ifdef INCDEBUG
     const static Debug::DebugLevel _dlevel = Debug::Middle;
 #endif

@@ -32,7 +32,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-SUCSCondition* SUCS::_MB_con(const double t, const SUCSCondition* SUCS_Con, Variables *theVars) {
+SUCSCondition* SUCS::_MB_con(const double t, const SUCSCondition* const SUCS_Con, Variables *theVars) {
 
     Condition(t, theVars);
 
@@ -70,7 +70,7 @@ SUCSCondition* SUCS::_MB_con(const double t, const SUCSCondition* SUCS_Con, Vari
     return dydt;
 }
 
-arr SUCS::_MB(const double t, const SUCSCondition *SUCS_Con, Variables *theVars) {
+arr SUCS::_MB(const double t, const SUCSCondition* const SUCS_Con, Variables *theVars) {
     SUCSCondition* dydt = _MB_con(t, SUCS_Con, theVars);
     arr tmp = dydt->toArray();
     delete dydt;

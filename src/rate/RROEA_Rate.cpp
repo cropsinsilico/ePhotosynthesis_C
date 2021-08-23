@@ -34,7 +34,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-void RROEA::_Rate(const double t, const RROEACondition* RROEA_con, Variables *theVars) {
+void RROEA::_Rate(const double t, const RROEACondition* const RROEA_con, Variables *theVars) {
 
     const double GAPDHo = theVars->RROEA_Pool.GAPDH - RROEA_con->GAPDH;
     const double FBPaseo = theVars->RROEA_Pool.FBPase - RROEA_con->FBPase;

@@ -29,9 +29,8 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-size_t PS_PRCondition::count = 0;
-PS_PRCondition::PS_PRCondition(const PS_PRCondition* other) {
-    _clear();
+std::size_t PS_PRCondition::count = 0;
+PS_PRCondition::PS_PRCondition(const PS_PRCondition* const other) {
     PS_con = new PSCondition(other->PS_con);
     PR_con = new PRCondition(other->PR_con);
     PS_con->setParent(this);
@@ -39,7 +38,6 @@ PS_PRCondition::PS_PRCondition(const PS_PRCondition* other) {
 }
 
 PS_PRCondition::PS_PRCondition(PSCondition* sother, PRCondition* rother) {
-    _clear();
     if (sother->parent == nullptr) {
         PS_con = sother;
     } else {
@@ -54,11 +52,11 @@ PS_PRCondition::PS_PRCondition(PSCondition* sother, PRCondition* rother) {
     PR_con->setParent(this);
 }
 
-PS_PRCondition::PS_PRCondition(const arr &vec, const size_t offset) {
-    _fromArray(vec, offset);
+PS_PRCondition::PS_PRCondition(const arr &vec, const std::size_t offset) {
+    fromArray(vec, offset);
 }
 
-void PS_PRCondition::_fromArray(const arr &vec, const size_t offset) {
+void PS_PRCondition::_fromArray(const arr &vec, const std::size_t offset) {
     if (PS_con == nullptr)
         PS_con = new PSCondition(this);
     if (PR_con  == nullptr)
@@ -67,7 +65,7 @@ void PS_PRCondition::_fromArray(const arr &vec, const size_t offset) {
     PR_con->fromArray(vec, offset + PS_con->size());
 }
 
-arr PS_PRCondition::_toArray() {
+arr PS_PRCondition::_toArray() const {
     arr psvec = PS_con->toArray();
     arr prvec = PR_con->toArray();
     psvec.insert(psvec.end(), prvec.begin(), prvec.end());
@@ -83,5 +81,4 @@ void PS_PRCondition::_clear() {
         delete PR_con;
         PR_con = nullptr;
     }
-    count = 0;
 }

@@ -37,14 +37,14 @@ class SUCSModuleTest;
 }
 #endif
 namespace modules {
-
+class CM;
 /**
  Class for SUCS related functions and common variables
  */
 class SUCS : public ModuleBase<SUCS, conditions::SUCSCondition> {
-    SET_GET(SUCS2PS_Pic)
 private:
     friend ModuleBase;
+    friend class modules::CM;
 #ifdef TESTING
     friend class test::SUCSModuleTest;
 #endif
@@ -64,9 +64,9 @@ private:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr _MB(const double t, const conditions::SUCSCondition* SUCS_Con, Variables *theVars);
+    static arr _MB(const double t, const conditions::SUCSCondition* const SUCS_Con, Variables *theVars);
     static conditions::SUCSCondition* _MB_con(const double t,
-                                              const conditions::SUCSCondition* SUCS_Con,
+                                              const conditions::SUCSCondition* const SUCS_Con,
                                               Variables *theVars);
     /**
       Calculate the Rates of SUCS based on the inputs
@@ -75,8 +75,9 @@ private:
       @param SUCS_Con SUCSCon object giving the input parameters
       @param theVars The global variables
       */
-    static void _Rate(const double t, const conditions::SUCSCondition* SUCS_Con,
+    static void _Rate(const double t, const conditions::SUCSCondition* const SUCS_Con,
                       Variables *theVars);
+    static void _reset();
     SET_GET(KE501)
     SET_GET(KE51)
     SET_GET(KE52)
@@ -146,6 +147,9 @@ private:
     SET_GET(Vf_T59)
     SET_GET(UTPc)
     SET_GET(ATPc)
+
+    SET_GET(SUCS2PS_Pic)
+
     static double KE5Ratio;
     static double ADPc;
     static double SUCSV51;
@@ -155,7 +159,7 @@ private:
     static double SUCSV57;
     static double SUCSV58;
     static double TIME;
-    static size_t N;
+    static std::size_t N;
 };
 
 }  // namespace modules

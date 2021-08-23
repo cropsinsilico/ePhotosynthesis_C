@@ -81,12 +81,21 @@ private:
 
     static int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data);
 
+    static void _reset() {
+        RedoxReg_VMAX13 = 0.;
+        RedoxReg_VMAX16 = 0.;
+        RedoxReg_VMAX6 = 0.;
+        RedoxReg_VMAX9 = 0.;
+        TIME = 0.;
+        N = 1;
+        conditions::RedoxRegCondition::reset();
+    }
     SET_GET(RedoxReg_VMAX13)
     SET_GET(RedoxReg_VMAX16)
     SET_GET(RedoxReg_VMAX6)
     SET_GET(RedoxReg_VMAX9)
     static double TIME;
-    static size_t N;
+    static std::size_t N;
     static const double Fd_Thio_ET;
     static const double ThioT;
     static const double Thio_Oxidation;

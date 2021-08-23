@@ -37,17 +37,14 @@ class PRModuleTest;
 }
 #endif
 namespace modules {
-
+class PS_PR;
 /**
   Class for grouping PR related functions and common variables
   */
 class PR : public ModuleBase<PR, conditions::PRCondition> {
-public:
-    SET_GET_BOOL_MODULE(PS_connect, conditions::PR)
-    SET_GET_BOOL_MODULE(PS_RuBP, conditions::PR)
-    SET_GET(RUBISCOTOTAL)
 private:
     friend ModuleBase;
+    friend class modules::PS_PR;
 #ifdef TESTING
     friend class test::PRModuleTest;
 #endif
@@ -66,7 +63,7 @@ private:
       @param theVars The global variables
       @return A vector containing the updated values
       */
-    static arr _MB(const double t, const conditions::PRCondition* PR_con, Variables *theVars);
+    static arr _MB(const double t, const conditions::PRCondition* const PR_con, Variables *theVars);
     static conditions::PRCondition* _MB_con(const double t,
                                             const conditions::PRCondition* const PR_con,
                                             Variables *theVars);
@@ -76,8 +73,9 @@ private:
       @param PR_con PRCon object giving the input parameters
       @param theVars The global variables
       */
-    static void _Rate(const double t, const conditions::PRCondition* PR_con, Variables *theVars);
+    static void _Rate(const double t, const conditions::PRCondition* const PR_con, Variables *theVars);
 
+    static void _reset();
     SET_GET(KC)
     SET_GET(KE113)
     SET_GET(KE122)
@@ -135,6 +133,9 @@ private:
     SET_GET(V1T)
     SET_GET(PGA)
     SET_GET(GLUc)
+    SET_GET_BOOL_MODULE(PS_connect, conditions::PR)
+    SET_GET_BOOL_MODULE(PS_RuBP, conditions::PR)
+    SET_GET(RUBISCOTOTAL)
 
     static double PrV112;
     static double PrV113;
@@ -145,7 +146,7 @@ private:
     static double PrV131;
 
     static double TIME;
-    static size_t N;
+    static std::size_t N;
 };
 
 }  // namespace modules

@@ -41,3 +41,9 @@ trDynaPSCondition* trDynaPS::_init(Variables *theVars) {
     trDynaPSCondition* trDynaPS_Con = new trDynaPSCondition(DynaPS_con, RROEA_con);
     return trDynaPS_Con;
 }
+
+void trDynaPS::_reset() {
+    DynaPS::_reset();
+    RROEA::_reset();
+    conditions::trDynaPSCondition::reset();
+}
