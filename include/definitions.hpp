@@ -103,18 +103,23 @@ enum RequestedDebug : uint {None = 0,
 #define DEBUG_INTERNAL(x) if (Debug::Internal & theVars->debuglevel) std::cout << (x) << std::endl;
 #endif
 
+//! [SET_GET]
 #define SET_GET(NAME) public:\
     static double get ## NAME() {return NAME;}\
     static void set ## NAME(const double val) {NAME = val;}\
     private:\
         static double NAME;
+//! [SET_GET]
 
+//! [SET_GET_BOOL]
 #define SET_GET_BOOL(NAME) public:\
     static bool get ## NAME() {return NAME;}\
     static void set ## NAME(const bool val) {NAME = val;}\
     private:\
         static bool NAME;
+//! [SET_GET_BOOL]
 
+//! [SET_GET_BOOL_MODULE]
 #define SET_GET_BOOL_MODULE(NAME, CON) public:\
     static bool get ## NAME() {return NAME;}\
     static void set ## NAME(const bool val) {\
@@ -123,6 +128,7 @@ enum RequestedDebug : uint {None = 0,
     }\
     private:\
         static bool NAME;
+//! [SET_GET_BOOL_MODULE]
 
 // rename a common data type to make it easier
 typedef std::vector<double> arr;

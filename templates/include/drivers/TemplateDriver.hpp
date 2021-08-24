@@ -1,28 +1,33 @@
 #pragma once
 
+#include "definitions.hpp"
 #include "drivers/driver.hpp"
-#include "containers/ContainerTemplate.hpp"
+#include "conditions/TemplateCondition.hpp"
 
 /** ************************************************************************************************
  * This file provides the template for adding new Driver methods.
- * Replace DriverTemplate with the name of the new driver and save this file as <new_driver_name>.hpp
+ * Replace Template with the name of the new driver and save this file as <new_driver_name>.hpp
  * in the include/drivers directory.
  * The methods described below are required, but others can be added, as well as any internal
  * class variables.
  ************************************************************************************************* */
-class DriverTemplate : public Driver
-{
+namespace ePhotosynthesis {
+namespace drivers {
+class TemplateDriver : public Driver {
 public:
     /*
       Constructor, additional variables can be added to the current initialization
     */
-    DriverTemplate(Variables *theVars, const double st, const double stp, const double etime,
-                   const int maxSteps, const double atol, const double rtol) :
-        Driver(theVars, st, stp, etime, maxSteps, atol, rtol) {
-
+    TemplateDriver(Variables *theVars, const double st, const double stp, const double etime,
+                   const int maxSteps, const double atol, const double rtol,
+                   const bool showWarnings = false) :
+        Driver(theVars, st, stp, etime, maxSteps, atol, rtol, showWarnings) {
+#ifdef INCDEBUG
+        ePhotosynthesis::conditions::TemplateCondition::setTop();
+#endif
     }
     // Destructor
-    ~DriverTemplate() override;
+    ~TemplateDriver() override;
 
     /*
        Method to get the inputs for the initial calculation
@@ -44,6 +49,8 @@ private:
       Most drivers call a function to initialize the variables. If none is needed
       then remove the below signature. Otherwise rename the function as needed.
     */
-    ContainerTemplate* Init();
+    TemplateCondition* Init();
 };
 
+}  // namespace drivers
+}  // namespace ePhotosynthesis
