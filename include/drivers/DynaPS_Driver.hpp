@@ -44,7 +44,7 @@ namespace drivers {
 class DynaPSDriver : public Driver {
 public:
     DynaPSDriver(Variables *theVars, const double st, const double stp, const double etime,
-                const int maxSteps, const double atol, const double rtol, const size_t para,
+                const int maxSteps, const double atol, const double rtol, const std::size_t para,
                 const double ratio, const bool showWarnings = false) : Driver(theVars, st, stp,
                                                                               etime, maxSteps, atol,
                                                                               rtol, showWarnings) {
@@ -83,7 +83,7 @@ private:
       @return A CMCon object for input into calculations
       */
     conditions::DynaPSCondition* DynaPS_Ini();
-    size_t ParaNum;
+    std::size_t ParaNum;
     double Ratio;
 };
 

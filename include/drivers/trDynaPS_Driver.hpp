@@ -52,7 +52,7 @@ public:
       @param endtime The ending time for the calculations
       */
     trDynaPSDriver(Variables *theVars, const double st, const double stp, const double etime,
-                   const int maxSteps, const double atol, const double rtol, const size_t para,
+                   const int maxSteps, const double atol, const double rtol, const std::size_t para,
                    const double ratio, const bool showWarnings = false) :
         Driver(theVars, st, stp, etime, maxSteps, atol, rtol, showWarnings) {
         ParaNum = para;
@@ -88,7 +88,7 @@ private:
       */
     conditions::trDynaPSCondition* trDynaPS_Ini();
 
-    size_t ParaNum;
+    std::size_t ParaNum;
     double Ratio;
 };
 

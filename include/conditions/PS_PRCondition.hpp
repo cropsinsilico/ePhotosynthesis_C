@@ -45,7 +45,7 @@ public:
         setParent(par);
     }
 
-    ~PS_PRCondition() {
+    ~PS_PRCondition() override {
         _clear();
     }
     /**
