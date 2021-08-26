@@ -56,7 +56,7 @@ public:
     friend std::ostream& operator<<(std::ostream &out, const T* const in) {
         return in->_print(out, 0);
     }
-    U* parent;
+    U* parent = nullptr;  // The parent Condition instance.
 #ifdef INCDEBUG
     Debug::DebugLevel debugLevel() const {return static_cast<const T*>(this)->_dlevel;}
 #endif
