@@ -195,7 +195,7 @@ int main(int argc, const char* argv[]) {
         outfile.close();
 
         if (theVars != nullptr) {
-            maindriver->theVars = nullptr;
+            maindriver->inputVars = nullptr;
             delete theVars;
         }
         delete maindriver;

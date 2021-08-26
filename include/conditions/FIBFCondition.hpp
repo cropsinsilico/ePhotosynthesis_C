@@ -53,15 +53,15 @@ public:
     /**
       Copy constructor that makes a deep copy of the given object
 
-      @param other The FIBFCon object to copy
+      @param other The FIBFCondition object to copy
       */
     FIBFCondition(const FIBFCondition* const other);
 
     /**
       Constructor to create an object from the contained classes
 
-      @param bother A BFCon object to incorporate
-      @param fother A FICon object to incorporate
+      @param bother A BFCondition object to incorporate
+      @param fother A FICondition object to incorporate
       */
     FIBFCondition(BFCondition* bother, FICondition* fother);
 
@@ -74,39 +74,53 @@ public:
     FIBFCondition(const arr &vec, const std::size_t offset = 0);
 
 
-    BFCondition* BF_con = nullptr;
-    FICondition* FI_con = nullptr;
+    BFCondition* BF_con = nullptr;  // child Condition
+    FICondition* FI_con = nullptr;  // child Condition
 
     double kd = 0; // The initialization of the initial rate constant for heat dissipation
+    /**
+      Write the contents of the instance to the output stream.
+
+      \param out output stream to write to.
+      \param tab The level of indentation to use.
+      \returns The output stream
+      */
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
 
 private:
     friend ConditionBase;
     friend class modules::FIBF;
     /**
-      Copy items from the given vector to the data members
-
-      @param vec The Vector to copy from
-      @param offset The indec in vec to start the copying from
+      \copydoc ConditionBase::_fromArray
       */
     void _fromArray(const arr &vec, const std::size_t offset = 0) override;
 
     /**
-      Convert the object into a vector of doubles
-
-      @return A vector containing the data values from the class
-    */
+      \copydoc ConditionBase::_toArray
+      */
     arr _toArray() const override;
+
     /**
       Get the size of the data vector
+
+      \returns The size of the serialized vector.
       */
     static std::size_t _size() {
         if (count == 0)
             count = BFCondition::size() + FICondition::size() + 1;
         return count;
     }
+
+    /**
+      \copydoc ConditionBase::_clear
+      */
     void _clear() override;
-    static std::size_t count;
+
+    static std::size_t count;   // size of the current serialized output
+
+    /**
+      Reset any static data members to their initial state
+      */
     static void reset() {
         count = 0;
     }

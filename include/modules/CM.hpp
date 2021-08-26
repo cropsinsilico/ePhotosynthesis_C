@@ -39,6 +39,9 @@ class CMDriver;
 }
 namespace modules {
 class EPS;
+/**
+Class for the CM Module functions.
+  */
 class CM : public ModuleBase<CM, conditions::CMCondition> {
 private:
     friend ModuleBase;
@@ -49,32 +52,53 @@ private:
 #endif
 
     /**
-  Initialize the variables
+      Initialize the variables
 
-  @param theVars The global variables
-  @return A CMCon object for input into calculations
-  */
+      \param theVars The global variables
+      \return A CMCondition object for input into calculations
+      */
     static conditions::CMCondition* _init(Variables *theVars);
-/**
-  Calculate the output values based on the inputs
 
-  @param t The current timestamp
-  @param CM_con CMCon object giving the input parameters
-  @param theVars The global variables
-  @return A vector containing the updated values
-  */
+    /**
+      Function to calculate the dy/dt values for the CMCondition at the given time stamp.
+
+      \param t The current timestamp
+      \param CM_con CMCondition object giving the input parameters
+      \param theVars The global variables
+      \return A vector containing the dy/dt values for this time stamp.
+      */
     static arr _MB(const double t, const conditions::CMCondition* const CM_con, Variables *theVars);
+
+    /**
+      Function to calculate the dy/dt values for the CMCondition at the given time stamp.
+
+      \param t The current timestamp
+      \param CM_con CMCondition object giving the input parameters
+      \param theVars The global variables
+      \return A CMCondition instance containing the dy/dt values for this time stamp.
+      */
     static conditions::CMCondition* _MB_con(const double t, const conditions::CMCondition* const CM_con,
                                             Variables *theVars);
+
+    /**
+      Calculate the Rates of CM based on the input CMCondition.
+
+      \param t The current timestamp
+      \param CM_con CMCondition object giving the input parameters
+      \param theVars The global variables
+      */
 
     static void _Rate(const double t, const conditions::CMCondition* const CM_con, Variables *theVars) {
         (void)t;
         (void)CM_con;
         (void)theVars;
     }
+
+    /**
+      Reset the static member variables to their default values.
+      */
     static void _reset();
     SET_GET_BOOL(TestSucPath)
-
 };
 
 }  // namespace modules

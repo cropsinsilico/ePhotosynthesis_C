@@ -40,6 +40,10 @@ class EPSDriver;
 }
 namespace modules {
 class RA;
+
+/**
+ Class for the EPS Module functions.
+ */
 class EPS : public ModuleBase<EPS, conditions::EPSCondition> {
 private:
     friend ModuleBase;
@@ -50,31 +54,51 @@ private:
 #endif
 
     /**
-  Initializer
+      Function to set the initial state of the EPSCondition class.
 
-  @param theVars Pointer to the global variables
-  @return A EPSCon object with values set base on the input
-  */
+      \param theVars Pointer to the global variables
+      \return A EPSCondition object with values set based on the input
+      */
     static conditions::EPSCondition* _init(Variables *theVars);
 
-/**
-  Calculate the output values based on the inputs
+    /**
+      Function to calculate the dy/dt values for the EPSCondition at the given time stamp.
 
-  @param t The current timestamp
-  @param EPS_Con EPSCon object giving the input parameters
-  @param theVars The global variables
-  @return A vector containing the updated values
-  */
+      \param t The current timestamp
+      \param EPS_Con EPSCondition object giving the input parameters
+      \param theVars The global variables
+      \return A vector containing the dy/dt values for this time stamp.
+      */
     static arr _MB(const double t, const conditions::EPSCondition* const EPS_Con, Variables *theVars);
+
+    /**
+      Function to calculate the dy/dt values for the EPSCondition at the given time stamp.
+
+      \param t The current timestamp
+      \param EPS_Con EPSCondition object giving the input parameters
+      \param theVars The global variables
+      \return A EPSCondition instance containing the dy/dt values for this time stamp.
+      */
     static conditions::EPSCondition* _MB_con(const double t,
                                              const conditions::EPSCondition* const EPS_Con,
                                              Variables *theVars);
 
+    /**
+      Calculate the Rates of EPS based on the input EPSCondition.
+
+      \param t The current timestamp
+      \param EPS_Con EPSCondition object giving the input parameters
+      \param theVars The global variables
+      */
     static void _Rate(const double t, const conditions::EPSCondition* const EPS_Con, Variables *theVars) {
         (void)t;
         (void)EPS_Con;
         (void)theVars;
     }
+
+    /**
+      Reset the static member variables to their default values.
+      */
     static void _reset();
 };
 

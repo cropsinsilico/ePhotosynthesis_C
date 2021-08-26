@@ -43,10 +43,20 @@ class PS_PR;
  */
 class PS : public ModuleBase<PS, conditions::PSCondition> {
 public:
+    /**
+      Set the initial parameters.
+
+      \param param The initial parameters.
+      */
     static void setParam(const arr &param) {
         Param = param;
     }
 
+    /**
+      Get the current size of the PS TimeSeries.
+
+      \returns The current size of the TimeSeries.
+      */
     static std::size_t getN() {return N;}
 private:
     friend ModuleBase;
@@ -55,34 +65,46 @@ private:
     friend class test::PSModuleTest;
 #endif
     /**
-      Calculate the output values based on the inputs
+      Function to calculate the dy/dt values for the PSCondition at the given time stamp.
 
-      @param t The current timestamp
-      @param PSs PSCon object giving the input parameters
-      @param theVars The global variables
-      @return A vector containing the updated values
+      \param t The current timestamp
+      \param PSs PSCondition object giving the input parameters
+      \param theVars The global variables
+      \return A vector containing the dy/dt values for this time stamp.
       */
     static arr _MB(const double t, const conditions::PSCondition* const PSs, Variables *theVars);
+
+    /**
+      Function to calculate the dy/dt values for the PSCondition at the given time stamp.
+
+      \param t The current timestamp
+      \param PSs PSCondition object giving the input parameters
+      \param theVars The global variables
+      \return A PSCondition instance containing the dy/dt values for this time stamp.
+      */
     static conditions::PSCondition* _MB_con(const double t, const conditions::PSCondition* const PSs,
                                             Variables *theVars);
 
     /**
-      Initializer
+      Function to set the initial state of the PSCondition class.
 
-      @param theVars Pointer to the global variables
-      @return A PSCon object with values set base on the input
+      \param theVars Pointer to the global variables
+      \return A PSCondition object with values set based on the input
       */
     static conditions::PSCondition* _init(Variables *theVars);
 
     /**
-      Calculate the Rates of PS based on the inputs
+      Calculate the Rates of PS based on the input PSCondition.
 
-      @param t The current timestamp
-      @param PSs PSCon object giving the input parameters
-      @param theVars The global variables
+      \param t The current timestamp
+      \param PSs PSCondition object giving the input parameters
+      \param theVars The global variables
       */
     static void _Rate(const double t, const conditions::PSCondition* const PSs, Variables *theVars);
 
+    /**
+      Reset the static member variables to their default values.
+      */
     static void _reset();
     SET_GET(PiTc)
     SET_GET(V1)
@@ -242,8 +264,8 @@ private:
     static double MaxCoeff;
 
     static arr Param;
-    static double TIME;
-    static std::size_t N;
+    static double TIME;    // The timestamp of the most recent call to _Rate
+    static std::size_t N;  // The current size of the PS TimeSeries
 };
 
 }  // namespace modules

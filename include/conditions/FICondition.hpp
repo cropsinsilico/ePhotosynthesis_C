@@ -47,7 +47,7 @@ public:
     /**
       Copy constructor that makes a deep copy of the given object
 
-      @param other The FICon object to copy
+      @param other The FICondition object to copy
       */
     FICondition(const FICondition* const other);
 
@@ -81,6 +81,14 @@ public:
     double QAQB2n = 0.;     ///< The concentration of [QAQB2-]
     double QAnQB2n = 0.;    ///< The concentration of [QA-QB2-]
     double PQn = 0.;        ///< The concentration of reduced PQ, i.e. PQH2;
+
+    /**
+      Write the contents of the instance to the output stream.
+
+      \param out output stream to write to.
+      \param tab The level of indentation to use.
+      \returns The output stream
+      */
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
 
     SET_GET_BOOL(BF_connect)
@@ -88,22 +96,19 @@ private:
     friend ConditionBase;
     friend modules::FI;
     /**
-      Copy items from the given vector to the data members
-
-      @param vec The Vector to copy from
-      @param offset The indec in vec to start the copying from
+      \copydoc ConditionBase::_fromArray
       */
     void _fromArray(const arr &vec, const std::size_t offset = 0) override;
 
     /**
-      Convert the object into a vector of doubles
-
-      @return A vector containing the data values from the class
+      \copydoc ConditionBase::_toArray
       */
     arr _toArray() const override;
 
     /**
       Get the size of the data vector
+
+      \returns The size of the serialized vector.
       */
     static std::size_t _size() {
         if (BF_connect)
@@ -111,11 +116,20 @@ private:
         return count;
     }
 
+    /**
+      \copydoc ConditionBase::_clear
+      */
     void _clear() override {}
+
+    /**
+      Reset any static data members to their initial state
+      */
     static void reset(){
         BF_connect = false;
     }
-    static const std::size_t count;
+
+    static const std::size_t count;  // size of the current serialized output
+
 #ifdef INCDEBUG
     const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif

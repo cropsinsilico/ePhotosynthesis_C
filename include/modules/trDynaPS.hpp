@@ -48,32 +48,54 @@ private:
     friend class test::trDynaPSModuleTest;
 #endif
 
-/**
-  Initialize the variables
+    /**
+      Function to set the initial state of the trDynaPSCondition class.
 
-  @param theVars The global variables
-  @return A trDynaPSCon object for input into calculations
-  */
+      \param theVars Pointer to the global variables
+      \return A trDynaPSCondition object with values set based on the input
+      */
     static conditions::trDynaPSCondition* _init(Variables *theVars);
 
-/**
-  Calculate the output values based on the inputs
+    /**
+      Function to calculate the dy/dt values for the trDynaPSCondition at the given time stamp.
 
-  @param trDynaPS_con trDynaPSCon object giving the input parameters
-  @param theVars The global variables
-  @return A vector containing the updated values
-  */
+      \param t The current timestamp
+      \param trDynaPS_con trDynaPSCondition object giving the input parameters
+      \param theVars The global variables
+      \return A vector containing the dy/dt values for this time stamp.
+      */
     static arr _MB(const double t, const conditions::trDynaPSCondition* trDynaPS_con,
                    Variables *theVars);
+
+    /**
+      Function to calculate the dy/dt values for the trDynaPSCondition at the given time stamp.
+
+      \param t The current timestamp
+      \param trDynaPS_con trDynaPSCondition object giving the input parameters
+      \param theVars The global variables
+      \return A trDynaPSCondition instance containing the dy/dt values for this time stamp.
+      */
     static conditions::trDynaPSCondition* _MB_con(const double t,
                                                   const conditions::trDynaPSCondition* trDynaPS_con,
                                                   Variables *theVars);
+
+    /**
+      Calculate the Rates of trDynaPS based on the input trDynaPSCondition.
+
+      \param t The current timestamp
+      \param trDynaPS_con trDynaPSCondition object giving the input parameters
+      \param theVars The global variables
+      */
     static void _Rate(const double t, const conditions::trDynaPSCondition* trDynaPS_con,
                       Variables *theVars) {
         (void)t;
         (void)trDynaPS_con;
         (void)theVars;
     }
+
+    /**
+      Reset the static member variables to their default values.
+      */
     static void _reset();
 };
 

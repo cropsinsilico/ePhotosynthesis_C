@@ -46,7 +46,7 @@ public:
     /**
       Copy constructor that makes a deep copy of the given object
 
-      @param other The PRCon object to copy
+      @param other The PRCondition object to copy
       */
     PRCondition(const PRCondition* const other);
 
@@ -70,6 +70,14 @@ public:
     double GCEAc = 0.;
     double RuBP = 0.;
     double _v131;
+
+    /**
+      Write the contents of the instance to the output stream.
+
+      \param out output stream to write to.
+      \param tab The level of indentation to use.
+      \returns The output stream
+      */
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
     SET_GET_BOOL(PS_connect)
     SET_GET_BOOL(PS_RuBP)
@@ -77,21 +85,19 @@ private:
     friend ConditionBase;
     friend class modules::PR;
     /**
-      Copy items from the given vector to the data members
-
-      @param vec The Vector to copy from
-      @param offset The indec in vec to start the copying from
+      \copydoc ConditionBase::_fromArray
       */
     void _fromArray(const arr &vec, const std::size_t offset = 0) override;
 
     /**
-      Convert the object into a vector of doubles
-
-      @return A vector containing the data values from the class
+      \copydoc ConditionBase::_toArray
       */
     arr _toArray() const override;
+
     /**
       Get the size of the data vector
+
+      \returns The size of the serialized vector.
       */
     static std::size_t _size() {
         if (PS_RuBP)
@@ -99,12 +105,19 @@ private:
         return count;
     }
 
+    /**
+      \copydoc ConditionBase::_clear
+      */
     void _clear() override {}
+
+    /**
+      Reset any static data members to their initial state
+      */
     static void reset() {
         PS_connect = false;
         PS_RuBP = false;
     }
-    static const std::size_t count;
+    static const std::size_t count;  // size of the current serialized output
 #ifdef INCDEBUG
     const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif

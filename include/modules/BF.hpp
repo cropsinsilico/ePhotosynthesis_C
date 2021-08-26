@@ -39,7 +39,7 @@ class BFModuleTest;
 namespace modules {
 class FIBF;
 /**
- Class for the BF related functions
+ Class for the BF Module functions.
  */
 class BF : public ModuleBase<BF, conditions::BFCondition> {
 public:
@@ -55,39 +55,52 @@ private:
     friend class test::BFModuleTest;
 #endif
     /**
-      Initializer
+      Function to set the initial state of the BFCondition class.
 
-      @param theVars Pointer to the global variables
-      @return A BFCon object with values set base on the input
+      \param theVars Pointer to the global variables
+      \return A BFCondition object with values set based on the input
       */
     static conditions::BFCondition* _init(Variables *theVars);
 
     /**
-      Calculate the output values based on the inputs
+      Function to calculate the dy/dt values for the BFCondition at the given time stamp.
 
-      @param t The current timestamp
-      @param BF_con BFCon object giving the input parameters
-      @param theVars The global variables
-      @return A vector containing the updated values
+      \param t The current timestamp
+      \param BF_con BFCondition object giving the input parameters
+      \param theVars The global variables
+      \return A vector containing the dy/dt values for this time stamp.
       */
     static arr _MB(const double t, const conditions::BFCondition* const BF_con, Variables *theVars);
+
+    /**
+      Function to calculate the dy/dt values for the BFCondition at the given time stamp.
+
+      \param t The current timestamp
+      \param BF_con BFCondition object giving the input parameters
+      \param theVars The global variables
+      \return A BFCondition instance containing the dy/dt values for this time stamp.
+      */
     static conditions::BFCondition* _MB_con(const double t, const conditions::BFCondition* const BF_con,
                                             Variables *theVars);
 
     /**
-      Calculate the Rates of BF based on the inputs
+      Calculate the Rates of BF based on the input BFCondition.
 
-      @param t The current timestamp
-      @param BF_con BFCon object giving the input parameters
-      @param theVars The global variables
+      \param t The current timestamp
+      \param BF_con BFCondition object giving the input parameters
+      \param theVars The global variables
       */
     static void _Rate(const double t, const conditions::BFCondition* const BF_con, Variables *theVars);
 
     SET_GET(cATPsyn)
     SET_GET(CPSi)
     SET_GET(cNADPHsyn)
-    static double TIME;
-    static std::size_t N;
+    static double TIME;    // The timestamp of the most recent call to _Rate
+    static std::size_t N;  // The current size of the BF TimeSeries
+
+    /**
+      Reset the static member variables to their default values.
+      */
     static void _reset() {
         cATPsyn = 0.;
         CPSi = 0.;

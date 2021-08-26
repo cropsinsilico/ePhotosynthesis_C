@@ -41,7 +41,7 @@ using namespace ePhotosynthesis::conditions;
 bool Driver::showWarnings = false;
 
 arr Driver::run() {
-    origVars = new Variables(theVars);
+    origVars = new Variables(inputVars);
     uint count = 0;
     while (count < 10){
         maxStep = 20. * step;
@@ -54,7 +54,7 @@ arr Driver::run() {
 
         for (std::size_t i = 0; i < constraints.size(); i++)
             NV_Ith_S(y, i) =  constraints[i];
-        realtype t0 = 0;
+        realtype t0 = start;
 
         CVodeMem *cmem;
         try {
@@ -114,7 +114,7 @@ arr Driver::run() {
         if (runOK)
             return results;
 
-        theVars = origVars;
+        inputVars = origVars;
         count++;
         step = initialStep / (count + 1);
         std::cout << "Retrying with smaller step size: " << step << std::endl;

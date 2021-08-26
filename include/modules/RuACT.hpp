@@ -49,34 +49,47 @@ private:
     friend class test::RuACTModuleTest;
 #endif
     /**
-      Initializer
+      Function to set the initial state of the RuACTCondition class.
 
-      @param theVars Pointer to the global variables
-      @return A RuACTCon object with values set base on the input
+      \param theVars Pointer to the global variables
+      \return A RuACTCondition object with values set based on the input
       */
     static conditions::RuACTCondition* _init(Variables *theVars);
 
     /**
-      Calculate the output values based on the inputs
+      Function to calculate the dy/dt values for the RuACTCondition at the given time stamp.
 
-      @param t The current timestamp
-      @param RuACT_Con RuACTCon object giving the input parameters
-      @param theVars The global variables
-      @return A vector containing the updated values
+      \param t The current timestamp
+      \param RuACT_Con RuACTCondition object giving the input parameters
+      \param theVars The global variables
+      \return A vector containing the dy/dt values for this time stamp.
       */
     static arr _MB(const double t, const conditions::RuACTCondition* const RuACT_Con, Variables *theVars);
+
+    /**
+      Function to calculate the dy/dt values for the RuACTCondition at the given time stamp.
+
+      \param t The current timestamp
+      \param RuACT_Con RuACTCondition object giving the input parameters
+      \param theVars The global variables
+      \return A RuACTCondition instance containing the dy/dt values for this time stamp.
+      */
     static conditions::RuACTCondition* _MB_con(const double t,
                                                const conditions::RuACTCondition* const RuACT_Con,
                                                Variables *theVars);
     /**
-      Calculate the Rates of RuACT based on the inputs
+      Calculate the Rates of RuACT based on the input RuACTCondition.
 
-      @param t The current timestamp
-      @param RuACT_Con RuACTCon object giving the input parameters
-      @param theVars The global variables
+      \param t The current timestamp
+      \param RuACT_Con RuACTCondition object giving the input parameters
+      \param theVars The global variables
       */
     static void _Rate(const double t, const conditions::RuACTCondition* const RuACT_Con,
                       Variables *theVars);
+
+    /**
+      Reset the static member variables to their default values.
+      */
     static void _reset() {
         activase = 0.;
         TIME = 0.;
@@ -84,8 +97,8 @@ private:
         conditions::RuACTCondition::reset();
     }
     SET_GET(activase)
-    static double TIME;
-    static std::size_t N;
+    static double TIME;    // The timestamp of the most recent call to _Rate
+    static std::size_t N;  // The current size of the RuACT TimeSeries
 };
 
 }  // namespace modules

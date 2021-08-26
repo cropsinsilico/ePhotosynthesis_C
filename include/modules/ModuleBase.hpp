@@ -32,27 +32,71 @@
 namespace ePhotosynthesis {
 namespace modules {
 
+/**
+  This template class provides a common set of static funtions for every Module subclass. This makes
+  calling the underlying functions more straight forward.
+
+  \tparam T The class type to work with
+  \tparam U The condition class associated with this Module
+  */
 template<class T, class U>
 class ModuleBase {
 public:
+    /**
+      Common, public interface for the private init function.
+
+      \param theVars The main Variables instance.
+      \returns A pointer to the associated Condition class.
+      */
     static U* init(Variables *theVars) {return T::_init(theVars);}
-    static arr MB(const double t, const U* constraints, Variables *theVars) {
+
+    /**
+      Common, public interface for the private differential calculation function
+
+      \param t The current timestamp.
+      \param condition The input Condition class.
+      \param theVars The main Variables instance.
+      \returns A vector of doubles containing the dy/dt values for each member of the input Condition.
+      */
+    static arr MB(const double t, const U* condition, Variables *theVars) {
 #ifdef INCDEBUG
-        DEBUG_MESSAGE(constraints)
+        DEBUG_MESSAGE(condition)
 #endif
-        return T::_MB(t, constraints, theVars);}
-    static U* MB_con(const double t, const U* constraints, Variables *theVars) {
+        return T::_MB(t, condition, theVars);}
+
+    /**
+      Common, public interface for the private differential calculation function
+
+      \param t The current timestamp.
+      \param condition The input Condition class.
+      \param theVars The main Variables instance.
+      \returns A pointer to an associated Condition class containing the dy/dt values for each member of the input Condition.
+      */
+    static U* MB_con(const double t, const U* condition, Variables *theVars) {
 #ifdef INCDEBUG
-        DEBUG_MESSAGE(constraints)
+        DEBUG_MESSAGE(condition)
 #endif
-        return T::_MB_con(t, constraints, theVars);}
+        return T::_MB_con(t, condition, theVars);}
+
+    /**
+      Common, public interface for the private function which resets any static Module parameters
+      to their default values.
+      */
     static void reset() {
         T::_reset();
     }
 protected:
     ModuleBase() {}
-    static void Rate(const double t, const U* constraints, Variables *theVars) {
-        T::_Rate(t, constraints, theVars);
+
+    /**
+      Common interface for the private rate calculation function.
+
+      \param t The current timestamp.
+      \param condition The input Condition class.
+      \param theVars The main Variables instance.
+      */
+    static void Rate(const double t, const U* condition, Variables *theVars) {
+        T::_Rate(t, condition, theVars);
     }
 };
 

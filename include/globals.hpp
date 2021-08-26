@@ -51,7 +51,6 @@ void GenOut(double t, Variables *theVars);
 /**
   Set some initial global variables
 
-  @param t The current timestamp
   @param[in,out] theVars The global variables
   */
 void IniModelCom(Variables *theVars);
@@ -74,7 +73,26 @@ double TargetFunVal(Variables *theVars);
 
 void makeFluxTR(Variables *theVars);
 
+/**
+  Overloaded utility function to read a text file and convert it to a map. The input text file
+  must be formatted with key/value pairs, one pair per line, and white space between
+  the key and value. This overloaded version works where the values are std::string type.
+
+  @param filename The name of the file to open and read.
+  @param[in, out] mapper The std::map to put the contents of the file into
+  @exception std::runtime_error If the opening of the file fails.
+  */
 void readFile(const std::string &filename, std::map<std::string, std::string> &mapper);
+
+/**
+  Overloaded utility function to read a text file and convert it to a map. The input text file
+  must be formatted with key/value pairs, one pair per line, and white space between
+  the key and value. This overloaded version works where the values are double type.
+
+  @param filename The name of the file to open and read.
+  @param[in, out] mapper The std::map to put the contents of the file into
+  @exception std::runtime_error If the opening of the file fails.
+  */
 void readFile(const std::string &filename, std::map<std::string, double> &mapper);
 
 }  // namespace ePhotosynthesis

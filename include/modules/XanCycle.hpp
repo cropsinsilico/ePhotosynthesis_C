@@ -49,37 +49,49 @@ private:
     friend class test::XanCycleModuleTest;
 #endif
     /**
-      Initializer
+      Function to set the initial state of the XanCycleCondition class.
 
-      @param theVars Pointer to the global variables
-      @return A XanCycleCon object with values set base on the input
+      \param theVars Pointer to the global variables
+      \return A XanCycleCondition object with values set based on the input
       */
     static conditions::XanCycleCondition* _init(Variables *theVars);
 
     /**
-      Calculate the output values based on the inputs
+      Function to calculate the dy/dt values for the XanCycleCondition at the given time stamp.
 
-      @param t The current timestamp
-      @param XanCycle_Con XanCycleCon object giving the input parameters
-      @param theVars The global variables
-      @return A vector containing the updated values
+      \param t The current timestamp
+      \param XanCycle_Con XanCycleCondition object giving the input parameters
+      \param theVars The global variables
+      \return A vector containing the dy/dt values for this time stamp.
       */
     static arr _MB(const double t, const conditions::XanCycleCondition* XanCycle_Con,
                    Variables *theVars);
+
+    /**
+      Function to calculate the dy/dt values for the XanCycleCondition at the given time stamp.
+
+      \param t The current timestamp
+      \param XanCycle_Con XanCycleCondition object giving the input parameters
+      \param theVars The global variables
+      \return A XanCycleCondition instance containing the dy/dt values for this time stamp.
+      */
     static conditions::XanCycleCondition* _MB_con(const double t,
                                                   const conditions::XanCycleCondition* XanCycle_Con,
                                                   Variables *theVars);
 
     /**
-      Calculate the Rates of XanCycle based on the inputs
+      Calculate the Rates of XanCycle based on the input XanCycleCondition.
 
-      @param t The current timestamp
-      @param XanCycle_Con XanCycleCon object giving the input parameters
-      @param theVars The global variables
+      \param t The current timestamp
+      \param XanCycle_Con XanCycleCondition object giving the input parameters
+      \param theVars The global variables
       */
     static void _Rate(const double t, const conditions::XanCycleCondition* XanCycle_Con,
                       Variables *theVars);
 
+    /**
+      Reset the static member variables to their default values.
+      */
     static void _reset() {
         kav = 0.;
         kaz = 0.;
@@ -96,8 +108,8 @@ private:
     SET_GET(kza)
     SET_GET(XanCycle2FIBF_Xstate)
 
-    static double TIME;
-    static std::size_t N;
+    static double TIME;    // The timestamp of the most recent call to _Rate
+    static std::size_t N;  // The current size of the XanCycle TimeSeries
 };
 
 }  // namespace modules

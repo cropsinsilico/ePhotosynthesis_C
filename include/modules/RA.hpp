@@ -37,6 +37,10 @@ class RAModuleTest;
 #endif
 namespace modules {
 class DynaPS;
+
+/**
+ Class for the RA Module functions.
+ */
 class RA : public ModuleBase<RA, conditions::RACondition> {
 private:
     friend ModuleBase;
@@ -46,28 +50,50 @@ private:
 #endif
 
     /**
-  Initialize the variables
+      Function to set the initial state of the RACondition class.
 
-  @param theVars The global variables
-  @return A RACon object for input into calculations
-  */
+      \param theVars Pointer to the global variables
+      \return A RACondition object with values set based on the input
+      */
     static conditions::RACondition* _init(Variables *theVars);
 
-/**
-  Calculate the output values based on the inputs
+    /**
+      Function to calculate the dy/dt values for the RACondition at the given time stamp.
 
-  @param RA_Con RACon object giving the input parameters
-  @param theVars The global variables
-  @return A vector containing the updated values
-  */
+      \param t The current timestamp
+      \param RA_Con RACondition object giving the input parameters
+      \param theVars The global variables
+      \return A vector containing the dy/dt values for this time stamp.
+      */
     static arr _MB(const double t, const conditions::RACondition* const RA_Con, Variables *theVars);
+
+    /**
+      Function to calculate the dy/dt values for the RACondition at the given time stamp.
+
+      \param t The current timestamp
+      \param RA_Con RACondition object giving the input parameters
+      \param theVars The global variables
+      \return A RACondition instance containing the dy/dt values for this time stamp.
+      */
     static conditions::RACondition* _MB_con(const double t, const conditions::RACondition* const RA_Con,
                                             Variables *theVars);
+
+    /**
+      Calculate the Rates of RA based on the input RACondition.
+
+      \param t The current timestamp
+      \param RA_Con RACondition object giving the input parameters
+      \param theVars The global variables
+      */
     static void _Rate(const double t, const conditions::RACondition* const RA_Con, Variables *theVars) {
         (void)t;
         (void)RA_Con;
         (void)theVars;
     }
+
+    /**
+      Reset the static member variables to their default values.
+      */
     static void _reset();
 };
 

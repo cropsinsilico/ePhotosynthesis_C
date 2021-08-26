@@ -43,11 +43,18 @@ namespace drivers {
  */
 class EPSDriver : public Driver {
 public:
-    EPSDriver(Variables *theVars, const double st, const double stp, const double etime,
-              const int maxSteps, const double atol, const double rtol,
+    /**
+      \copydoc drivers::Driver::Driver
+      \param para Input parameters
+      \param ratio Input ratio.
+      \param Tp The initial temperature.
+      */
+
+    EPSDriver(Variables *theVars, const double startTime, const double stepSize, const double endTime,
+              const int maxSubsteps, const double atol, const double rtol,
               const std::size_t para, const double ratio, const double Tp,
-              const bool showWarnings = false) :
-        Driver(theVars, st, stp, etime, maxSteps, atol, rtol, showWarnings) {
+              const bool showWarn = false) :
+        Driver(theVars, startTime, stepSize, endTime, maxSubsteps, atol, rtol, showWarn) {
 #ifdef INCDEBUG
                 ePhotosynthesis::conditions::EPSCondition::setTop();
 #endif
@@ -59,9 +66,13 @@ public:
     ~EPSDriver() override;
 
     /**
-      The driver
+      \copydoc drivers::Driver::setup
       */
     void setup() override;
+
+    /**
+      \copydoc drivers::Driver::getResults
+      */
     void getResults() override;
     //arr trDynaPS_Drive(size_t ParaNum, double Ratio);
 
@@ -71,19 +82,14 @@ private:
 #endif
 
     /**
-      Calculate the output values based on the inputs
-
-      @param t The time of the current calculation (0 is the beginning of the calculations)
-      @param u The input data parameters for the calculations
-      @param[in,out] u_dot The dxdt values for the input parameters
-      @param[in,out] user_data Pointer to a UserData object for extra parameters
-      @return A vector containing the updated values
+      \copydoc drivers::Driver::MB
       */
     arr MB(realtype t, N_Vector u) override;
+
     /**
       Initialize the variables
 
-      @return A trDynaPSCon object for input into calculations
+      @return An EPSCondition object for input into calculations
       */
     conditions::EPSCondition* EPS_Init();
 

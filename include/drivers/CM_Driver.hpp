@@ -43,20 +43,28 @@ namespace drivers {
  */
 class CMDriver : public Driver {
 public:
-    CMDriver(Variables *theVars, const double st, const double stp, const double etime,
-             const int maxSteps, const double atol, const double rtol,
-             const bool showWarnings = false) :
-        Driver(theVars, st, stp, etime, maxSteps, atol, rtol, showWarnings) {
+    /**
+      \copydoc drivers::Driver::Driver
+      */
+    CMDriver(Variables *theVars, const double startTime, const double stepSize, const double endTime,
+             const int maxSubsteps, const double atol, const double rtol,
+             const bool showWarn = false) :
+        Driver(theVars, startTime, stepSize, endTime, maxSubsteps, atol, rtol, showWarn) {
 #ifdef INCDEBUG
                 ePhotosynthesis::conditions::CMCondition::setTop();
 #endif
 
     }
     ~CMDriver() override;
+
     /**
-      The driver code
+      \copydoc drivers::Driver::setup
       */
     void setup() override;
+
+    /**
+      \copydoc drivers::Driver::getResults
+      */
     void getResults() override;
 private:
 #ifdef TESTING
@@ -66,15 +74,12 @@ private:
     /**
       Initialize the variables
 
-      @return A CMCon object for input into calculations
+      @return A CMCondition object for input into calculations
       */
     conditions::CMCondition* CM_Ini();
-    /**
-      Calculate the output values based on the inputs
 
-      @param t The time of the current calculation (0 is the beginning of the calculations)
-      @param u The input data parameters for the calculations
-      @return A vector containing the updated values
+    /**
+      \copydoc drivers::Driver::MB
       */
     arr MB(realtype t, N_Vector u) override;
 };

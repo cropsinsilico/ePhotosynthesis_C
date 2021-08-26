@@ -37,6 +37,10 @@ class PS_PRModuleTest;
 #endif
 namespace modules {
 class CM;
+
+/**
+ Class for the PS_PR Module functions.
+ */
 class PS_PR : public ModuleBase<PS_PR, conditions::PS_PRCondition> {
 private:
     friend ModuleBase;
@@ -44,31 +48,52 @@ private:
 #ifdef TESTING
     friend class test::PS_PRModuleTest;
 #endif
-/**
-  Initialize the variables
+    /**
+      Function to set the initial state of the PS_PRCondition class.
 
-  @param theVars The global variables
-  @return A PS_PRCon object for input into calculations
-  */
+      \param theVars Pointer to the global variables
+      \return A PS_PRCondition object with values set based on the input
+      */
     static conditions::PS_PRCondition* _init(Variables *theVars);
 
-/**
-  Calculate the output values based on the inputs
+    /**
+      Function to calculate the dy/dt values for the PS_PRCondition at the given time stamp.
 
-  @param PS_PRs PS_PRCon object giving the input parameters
-  @param theVars The global variables
-  @return A vector containing the updated values
-  */
+      \param t The current timestamp
+      \param PS_PRs PS_PRCondition object giving the input parameters
+      \param theVars The global variables
+      \return A vector containing the dy/dt values for this time stamp.
+      */
     static arr _MB(const double t, const conditions::PS_PRCondition* const PS_PRs, Variables *theVars);
+
+    /**
+      Function to calculate the dy/dt values for the PS_PRCondition at the given time stamp.
+
+      \param t The current timestamp
+      \param PS_PRs PS_PRCondition object giving the input parameters
+      \param theVars The global variables
+      \return A PS_PRCondition instance containing the dy/dt values for this time stamp.
+      */
     static conditions::PS_PRCondition* _MB_con(const double t,
                                                const conditions::PS_PRCondition* const PS_PRs,
                                                Variables *theVars);
 
+    /**
+      Calculate the Rates of PS_PR based on the input PS_PRCondition.
+
+      \param t The current timestamp
+      \param PS_PRs PS_PRCondition object giving the input parameters
+      \param theVars The global variables
+      */
     static void _Rate(const double t, const conditions::PS_PRCondition* const PS_PRs, Variables *theVars) {
         (void)t;
         (void)PS_PRs;
         (void)theVars;
     }
+
+    /**
+      Reset the static member variables to their default values.
+      */
     static void _reset();
 };
 

@@ -51,7 +51,7 @@ public:
     /**
       Copy constructor that makes a deep copy of the given object
 
-      @param other The CMCon object to copy
+      @param other The CMCondition object to copy
       */
     CMCondition(const CMCondition* const other);
 
@@ -73,13 +73,21 @@ public:
     /**
       Constructor to create an object from the contained classes
 
-      @param pother A PS_PRCon object to incorporate
-      @param sother A SUCSCon object to incorporate
+      @param pother A PS_PRCondition object to incorporate
+      @param sother A SUCSCondition object to incorporate
       */
     CMCondition(PS_PRCondition* pother, SUCSCondition* sother);
 
-    PS_PRCondition* PS_PR_con = nullptr;
-    SUCSCondition* SUCS_con = nullptr;
+    PS_PRCondition* PS_PR_con = nullptr;   // child Condition
+    SUCSCondition* SUCS_con = nullptr;     // child Condition
+
+    /**
+      Write the contents of the instance to the output stream.
+
+      \param out output stream to write to.
+      \param tab The level of indentation to use.
+      \returns The output stream
+      */
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
 #ifdef INCDEBUG
     static void setTop() {CMCondition::_dlevel = Debug::Top;}
@@ -88,22 +96,19 @@ private:
     friend ConditionBase;
     friend class modules::CM;
     /**
-      Copy items from the given vector to the data members
-
-      @param vec The Vector to copy from
-      @param offset The indec in vec to start the copying from
+      \copydoc ConditionBase::_fromArray
       */
     void _fromArray(const arr &vec, const std::size_t offset = 0) override;
 
     /**
-      Convert the object into a vector of doubles
-
-      @return A vector containing the data values from the class
+      \copydoc ConditionBase::_toArray
       */
     arr _toArray() const override;
 
     /**
       Get the size of the data vector
+
+      \returns The size of the serialized vector.
       */
     static std::size_t _size() {
         if (count == 0)
@@ -111,11 +116,19 @@ private:
         return count;
     }
 
+    /**
+      \copydoc ConditionBase::_clear
+      */
     void _clear() override;
+
+    /**
+      Reset any static data members to their initial state
+      */
     static void reset() {
         count = 0;
     }
-    static std::size_t count;
+
+    static std::size_t count;  // size of the current serialized output
 #ifdef INCDEBUG
     static Debug::DebugLevel _dlevel;
 #endif

@@ -38,59 +38,127 @@ namespace drivers {
 
 class Driver;
 class CVodeMem;
+
+/**
+  Data structure for passing parameters to the ODE solver
+  */
 struct UserData {
   std::vector<realtype> coeffs;
 };
 
+/**
+  Create an instance of UserData
+
+  \returns New instance of the UserData structure.
+  */
 inline UserData *alloc_user_data() {
-  UserData *data;
-  data = new UserData();
-  return data;
+  return new UserData();
 }
 
+/**
+  Structure for passing a driver to the ODE routines
+  */
 struct CalcData {
     Driver *drv;
 };
 
+/**
+  Create an instance of CalcData.
+
+  \returns New instance of the CalcData structure.
+  */
 inline CalcData *alloc_calc_data() {
-    CalcData *data;
-    data = new CalcData();
-    return data;
+    return new CalcData();
 }
 
+/**
+  Base class for all drivers. These classes handle taking the input data, feeding it to the ODE solver,
+  iterating until the solver reaches its stopping time or fails, and returning the results.
+  */
 class Driver {
 public:
-    Driver(Variables *theVars, const double start, const double step, const double endtime,
-           const int maxSubSteps, const double atol, const double rtol,
-           const bool showWarnings = false) {
-        this->theVars = theVars;
-        this->start = start;
-        this->step = step;
-        initialStep = step;
-        this->endtime = endtime;
-        this->maxSubSteps = maxSubSteps;
-        this->showWarnings = showWarnings;
+    /**
+      This sets up initial values for the class.
+
+      \param[in, out] theVars Instance of the Variables class, which holds global scope variables and
+             intermediate results.
+      \param startTime The timestamp to start the solver at. Typically this is 0.
+      \param stepSize The optimal step size for the solver to use.
+      \param endTime The timestamp to end the calculations.
+      \param maxSubsteps The maximum number of sub-iterations to make between steps.
+      \param atol The absolute tolerance the ODE solver should use.
+      \param rtol The relative tolerance the ODE solver should use.
+      \param showWarn Whether or not to send solver warnings to stdout. If `true` then all
+             warning messages are sent. If `false`, the default, warning messages are not sent,
+             reducing clutter in production output.
+      */
+    Driver(Variables *theVars, const double startTime, const double stepSize, const double endTime,
+           const int maxSubsteps, const double atol, const double rtol,
+           const bool showWarn = false) {
+        this->inputVars = theVars;
+        this->start = startTime;
+        this->step = stepSize;
+        initialStep = stepSize;
+        this->endtime = endTime;
+        this->maxSubSteps = maxSubsteps;
+        this->showWarnings = showWarn;
         abstol = atol;
         reltol = rtol;
         maxStep = 20. * step;
         data = nullptr;
         origVars = nullptr;
     }
+
+    /**
+      Generate the initial parameter Condition class for the solver to use.
+      */
     virtual void setup() = 0;
+
+    /**
+      Run the ODE solver and return the results.
+
+      \return `std::vector<double>` containg the results of the computations.
+      \exception std::runtime_error General failure.
+      */
     arr run();
+
+    /**
+      Runs the solver one more time on the intermediate results to get the solution at the end time
+      stamp.
+      */
     virtual void getResults() = 0;
+
+    /**
+      Does the computations and generates the results for each step or sub-step in the solver.
+      A pointer to this function is passed to the ODE solver. The API of the function cannot change
+      as it is dictated by the solver.
+
+      \param t The current timestamp.
+      \param u The inputs
+      \param u_dot[out] Pointer to the resulting dy/dt values.
+      \param user_data Any user supplied data.
+      */
     static int calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
+
+    /**
+      Wrapper for the underlying Module MB function. Takes the inputs and converts them to the
+      appropriate Condition class.
+
+      \param t The current timestamp.
+      \param u A specialized data vector containgin the inputs which are converted to a Condition class.
+      \returns dy/dt values for the step.
+      */
     virtual arr MB(realtype t, N_Vector u) = 0;
     virtual ~Driver();
-    static Variables *theVars;
-    arr constraints;
+    static Variables *inputVars;  // the instance of Variables to use for all calculations.
+    arr constraints;   // serialized version of the Condition class being used.
 
 protected:
     friend CVodeMem;
-    realtype abstol;
-    realtype reltol;
-    double start, step, endtime;
-    double initialStep;
+    realtype abstol;            // absolute tolerance
+    realtype reltol;            // relative tolerance
+    double start, step, endtime; // time stuff
+    double initialStep;         // used to store the initial step size
     int maxSubSteps;
     realtype *intermediateRes;
     arr results;
@@ -100,6 +168,7 @@ protected:
     void *cvode_mem;
     static bool showWarnings;
 private:
+    Driver() {}
     Variables* origVars;
 };
 

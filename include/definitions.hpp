@@ -35,6 +35,12 @@ namespace ePhotosynthesis {
 
 // predeclare main global data structure
 class Variables;
+/**
+  The common flat data structure in this code.
+
+  @typedef std::vector<double> arr
+  */
+typedef std::vector<double> arr;  // Shortcut for std::vector<double>
 
 #define Q10_1 1.93
 #define Q10_2 2.
@@ -103,9 +109,24 @@ enum RequestedDebug : uint {None = 0,
 #define DEBUG_INTERNAL(x) if (Debug::Internal & theVars->debuglevel) std::cout << (x) << std::endl;
 #endif
 
+/**
+  @def SET_GET(NAME)
+  Creates a *static double* private data member and public setter and getter functions for a class
+  */
+/**
+  @def SET_GET_BOOL(NAME)
+  Creates a *static boolean* private data member and public setter and getter functions for a class
+  */
+/**
+  @def SET_GET_BOOL_MODULE(NAME)
+  Creates a *static boolean* private data member and public setter and getter functions for a module class
+  */
+
 //! [SET_GET]
 #define SET_GET(NAME) public:\
+    /** Get the value of NAME \returns The current value */\
     static double get ## NAME() {return NAME;}\
+    /** Set the value of NAME \param val The value to set NAME to */\
     static void set ## NAME(const double val) {NAME = val;}\
     private:\
         static double NAME;
@@ -113,7 +134,9 @@ enum RequestedDebug : uint {None = 0,
 
 //! [SET_GET_BOOL]
 #define SET_GET_BOOL(NAME) public:\
+    /** Get the value of NAME \returns The current value */\
     static bool get ## NAME() {return NAME;}\
+    /** Set the value of NAME \param val The value to set NAME to */\
     static void set ## NAME(const bool val) {NAME = val;}\
     private:\
         static bool NAME;
@@ -121,7 +144,9 @@ enum RequestedDebug : uint {None = 0,
 
 //! [SET_GET_BOOL_MODULE]
 #define SET_GET_BOOL_MODULE(NAME, CON) public:\
+    /** Get the value of NAME \returns The current value */\
     static bool get ## NAME() {return NAME;}\
+    /** Set the value of NAME in this and the CON ## Condition class. \param val The value to set NAME to */\
     static void set ## NAME(const bool val) {\
         NAME = val;\
         CON ## Condition::set ## NAME(val);\
@@ -129,9 +154,6 @@ enum RequestedDebug : uint {None = 0,
     private:\
         static bool NAME;
 //! [SET_GET_BOOL_MODULE]
-
-// rename a common data type to make it easier
-typedef std::vector<double> arr;
 
 /**
   Helper function to initialize a vector of 1's of the given length.

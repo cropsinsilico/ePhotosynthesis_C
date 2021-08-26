@@ -49,34 +49,47 @@ private:
     friend class test::SUCSModuleTest;
 #endif
     /**
-      Initializer
+      Function to set the initial state of the SUCSCondition class.
 
-      @param theVars Pointer to the global variables
-      @return A SUCSCon object with values set base on the input
+      \param theVars Pointer to the global variables
+      \return A SUCSCondition object with values set based on the input
       */
     static conditions::SUCSCondition* _init(Variables *theVars);
 
     /**
-      Calculate the output values based on the inputs
+      Function to calculate the dy/dt values for the SUCSCondition at the given time stamp.
 
-      @param t The current timestamp
-      @param SUCS_Con SUCSCon object giving the input parameters
-      @param theVars The global variables
-      @return A vector containing the updated values
+      \param t The current timestamp
+      \param SUCS_Con SUCSCondition object giving the input parameters
+      \param theVars The global variables
+      \return A vector containing the dy/dt values for this time stamp.
       */
     static arr _MB(const double t, const conditions::SUCSCondition* const SUCS_Con, Variables *theVars);
+
+    /**
+      Function to calculate the dy/dt values for the SUCSCondition at the given time stamp.
+
+      \param t The current timestamp
+      \param SUCS_Con SUCSCondition object giving the input parameters
+      \param theVars The global variables
+      \return A SUCSCondition instance containing the dy/dt values for this time stamp.
+      */
     static conditions::SUCSCondition* _MB_con(const double t,
                                               const conditions::SUCSCondition* const SUCS_Con,
                                               Variables *theVars);
     /**
-      Calculate the Rates of SUCS based on the inputs
+      Calculate the Rates of SUCS based on the input SUCSCondition.
 
-      @param t The current timestamp
-      @param SUCS_Con SUCSCon object giving the input parameters
-      @param theVars The global variables
+      \param t The current timestamp
+      \param SUCS_Con SUCSCondition object giving the input parameters
+      \param theVars The global variables
       */
     static void _Rate(const double t, const conditions::SUCSCondition* const SUCS_Con,
                       Variables *theVars);
+
+    /**
+      Reset the static member variables to their default values.
+      */
     static void _reset();
     SET_GET(KE501)
     SET_GET(KE51)
@@ -158,8 +171,8 @@ private:
     static double SUCSV56;
     static double SUCSV57;
     static double SUCSV58;
-    static double TIME;
-    static std::size_t N;
+    static double TIME;    // The timestamp of the most recent call to _Rate
+    static std::size_t N;  // The current size of the SUCS TimeSeries
 };
 
 }  // namespace modules

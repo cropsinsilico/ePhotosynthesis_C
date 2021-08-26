@@ -69,35 +69,49 @@ public:
     double Thio = 0.;   ///< The initial concentration of reduced thioredoxin
     double Fd = 0.;     ///< The initial concentration of reduced ferrodoxin
     double RuACT = 0.;  ///< The initial concentration of active Rubisco activase
+
+    /**
+      Write the contents of the instance to the output stream.
+
+      \param out output stream to write to.
+      \param tab The level of indentation to use.
+      \returns The output stream
+      */
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
 
 private:
     friend ConditionBase;
     friend class modules::RROEA;
     /**
-      Copy items from the given vector to the data members
-
-      @param vec The Vector to copy from
-      @param offset The indec in vec to start the copying from
+      \copydoc ConditionBase::_fromArray
       */
     void _fromArray(const arr &vec, const std::size_t offset = 0) override;
+
     /**
       Get the size of the data vector
+
+      \returns The size of the serialized vector.
       */
     static std::size_t _size() {
         return count;
     }
 
     /**
-      Convert the object into a vector of doubles
-
-      @return A vector containing the data values from the class
+      \copydoc ConditionBase::_toArray
       */
     arr _toArray() const override;
 
+    /**
+      \copydoc ConditionBase::_clear
+      */
     void _clear() override {}
+
+    /**
+      Reset any static data members to their initial state
+      */
     static void reset() {}
-    static const std::size_t count;
+
+    static const std::size_t count; // size of the current serialized output
 #ifdef INCDEBUG
     const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif

@@ -41,42 +41,42 @@ EPSDriver::~EPSDriver() {
 
 void EPSDriver::setup() {
     //Ca = theVars->TestCa;
-    theVars->TestLi /= 30.;
+    inputVars->TestLi /= 30.;
     //Li = theVars->TestLi;
-    AtpCost = theVars->TestATPCost;
-    IniModelCom(theVars);        // Initialize the structure of the model, i.e. Is this model separate or combined with others.
+    AtpCost = inputVars->TestATPCost;
+    IniModelCom(inputVars);        // Initialize the structure of the model, i.e. Is this model separate or combined with others.
 
-    SYSInitial(theVars);
+    SYSInitial(inputVars);
     //time = tglobal;
-    theVars->Tp = this->Tp;
-    theVars->alfa = 0.85;
-    PS::setJmax(theVars->EnzymeAct.at("Jmax"));
-    theVars->fc = 0.15;
+    inputVars->Tp = this->Tp;
+    inputVars->alfa = 0.85;
+    PS::setJmax(inputVars->EnzymeAct.at("Jmax"));
+    inputVars->fc = 0.15;
     PS::setTheta(0.7);
     PS::setbeta(0.7519);
-    theVars->BF_FI_com = true;
-    theVars->EnzymeAct.at("V1") *= theVars->alpha1;
-    theVars->EnzymeAct.at("V2") *= theVars->alpha2;
-    theVars->EnzymeAct.at("V3") *= theVars->alpha2;
-    theVars->EnzymeAct.at("V5") *= theVars->alpha2;
-    theVars->EnzymeAct.at("V6") *= theVars->alpha2;
-    theVars->EnzymeAct.at("V7") *= theVars->alpha2;
-    theVars->EnzymeAct.at("V8") *= theVars->alpha2;
-    theVars->EnzymeAct.at("V9") *= theVars->alpha2;
-    theVars->EnzymeAct.at("V10") *= theVars->alpha2;
-    theVars->EnzymeAct.at("V13") *= theVars->alpha2;
-    theVars->EnzymeAct.at("V23") *= theVars->alpha2;
+    inputVars->BF_FI_com = true;
+    inputVars->EnzymeAct.at("V1") *= inputVars->alpha1;
+    inputVars->EnzymeAct.at("V2") *= inputVars->alpha2;
+    inputVars->EnzymeAct.at("V3") *= inputVars->alpha2;
+    inputVars->EnzymeAct.at("V5") *= inputVars->alpha2;
+    inputVars->EnzymeAct.at("V6") *= inputVars->alpha2;
+    inputVars->EnzymeAct.at("V7") *= inputVars->alpha2;
+    inputVars->EnzymeAct.at("V8") *= inputVars->alpha2;
+    inputVars->EnzymeAct.at("V9") *= inputVars->alpha2;
+    inputVars->EnzymeAct.at("V10") *= inputVars->alpha2;
+    inputVars->EnzymeAct.at("V13") *= inputVars->alpha2;
+    inputVars->EnzymeAct.at("V23") *= inputVars->alpha2;
 
-    theVars->PR_PS_com = true;     // This is a variable indicating whether the PR model is actually need to be combined with PS or not. If 1 then means combined; 0 means not.
+    inputVars->PR_PS_com = true;     // This is a variable indicating whether the PR model is actually need to be combined with PS or not. If 1 then means combined; 0 means not.
 
 
-    theVars->FIBF_PSPR_com = true;     //true means that the overall EPS model is used. false means partial model is used.
+    inputVars->FIBF_PSPR_com = true;     //true means that the overall EPS model is used. false means partial model is used.
 
     //theVars->ATPActive = 0;
 
-    theVars->EPS_SUCS_com = true;
+    inputVars->EPS_SUCS_com = true;
 
-    theVars->PSPR_SUCS_com = true;   // This is a variable indicating whether the PSPR model is actually need to be combined with SUCS or not. If 1 then means combined; 0 means not.
+    inputVars->PSPR_SUCS_com = true;   // This is a variable indicating whether the PSPR model is actually need to be combined with SUCS or not. If 1 then means combined; 0 means not.
 
     /////////////////////////
     //   Calculation  step //
@@ -84,13 +84,13 @@ void EPSDriver::setup() {
     EPSCondition* EPS_Con = EPS_Init();
 
     int va1 = 0;
-    theVars->BF_Param[0] = va1;
-    theVars->BF_Param[1] = theVars->PS12ratio;
+    inputVars->BF_Param[0] = va1;
+    inputVars->BF_Param[1] = inputVars->PS12ratio;
 
-    theVars->FI_Param[0] = va1;
-    theVars->FI_Param[1] = theVars->PS12ratio;
+    inputVars->FI_Param[0] = va1;
+    inputVars->FI_Param[1] = inputVars->PS12ratio;
 
-    theVars->PS_PR_Param = 0;
+    inputVars->PS_PR_Param = 0;
 ///////theVars->Sucs_Param = 0;
     // Get the initial variables for SUCS.
 
@@ -109,15 +109,15 @@ void EPSDriver::setup() {
 
 void EPSDriver::getResults() {
     EPSCondition* eps_int_con = new EPSCondition(intermediateRes);
-    arr temp = EPS::MB(time, eps_int_con, theVars);
+    arr temp = EPS::MB(time, eps_int_con, inputVars);
     results = zeros(1);
-    const double Arate = (theVars->PS_Vel.v1 - theVars->PR_Vel.v131) * theVars->AVR;
+    const double Arate = (inputVars->PS_Vel.v1 - inputVars->PR_Vel.v131) * inputVars->AVR;
     delete eps_int_con;
     results[0] = Arate;
 }
 
 EPSCondition* EPSDriver::EPS_Init() {
-    return EPS::init(theVars);
+    return EPS::init(inputVars);
 }
 
 arr EPSDriver::MB(realtype t, N_Vector u) {
@@ -126,7 +126,7 @@ arr EPSDriver::MB(realtype t, N_Vector u) {
 
     EPSCondition* EPS_con = new EPSCondition(x);
 
-    arr dxdt = EPS::MB(t, EPS_con, theVars);
+    arr dxdt = EPS::MB(t, EPS_con, inputVars);
     delete EPS_con;
 
     return dxdt;

@@ -51,33 +51,47 @@ private:
 #endif
 
     /**
-      Initialize the variables
+      Function to set the initial state of the FICondition class.
 
-      @param theVars The global variables
-      @return A FICon object for input into calculations
+      \param theVars Pointer to the global variables
+      \return A FICondition object with values set based on the input
       */
     static conditions::FICondition* _init(Variables *theVars);
-    /**
-      Calculate the output values based on the inputs
 
-      @param t The current timestamp
-      @param FI_Con FICon object giving the input parameters
-      @param theVars The global variables
-      @return A vector containing the updated values
+    /**
+      Function to calculate the dy/dt values for the FICondition at the given time stamp.
+
+      \param t The current timestamp
+      \param FI_Con FICondition object giving the input parameters
+      \param theVars The global variables
+      \return A vector containing the dy/dt values for this time stamp.
       */
     static arr _MB(const double t, const conditions::FICondition* const FI_Con, Variables *theVars);
+
+    /**
+      Function to calculate the dy/dt values for the FICondition at the given time stamp.
+
+      \param t The current timestamp
+      \param FI_Con FICondition object giving the input parameters
+      \param theVars The global variables
+      \return A FICondition instance containing the dy/dt values for this time stamp.
+      */
     static conditions::FICondition* _MB_con(const double t,
                                             const conditions::FICondition* FI_Con,
                                             Variables *theVars);
     /**
-      Calculate the Rates of FI based on the inputs
+      Calculate the Rates of FI based on the input FICondition.
 
-      @param t The current timestamp
-      @param FI_Con FICon object giving the input parameters
-      @param theVars The global variables
+      \param t The current timestamp
+      \param FI_Con FICondition object giving the input parameters
+      \param theVars The global variables
       */
     static void _Rate(const double t, const conditions::FICondition* const FI_Con, Variables *theVars);
     SET_GET(cpsii)
+
+    /**
+      Reset the static member variables to their default values.
+      */
     static void _reset() {
         BF_connect = false;
         cpsii = 0.;
@@ -85,8 +99,8 @@ private:
         TIME = 0.;
         conditions::FICondition::reset();
     }
-    static double TIME;
-    static std::size_t N;
+    static double TIME;    // The timestamp of the most recent call to _Rate
+    static std::size_t N;  // The current size of the FI TimeSeries
 };
 
 }  // namespace modules

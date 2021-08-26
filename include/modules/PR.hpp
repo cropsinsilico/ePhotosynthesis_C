@@ -49,32 +49,46 @@ private:
     friend class test::PRModuleTest;
 #endif
     /**
-      Initializer
+      Function to set the initial state of the PRCondition class.
 
-      @param theVars Pointer to the global variables
-      @return A PRCon object with values set base on the input
+      \param theVars Pointer to the global variables
+      \return A PRCondition object with values set based on the input
       */
     static conditions::PRCondition* _init(Variables *theVars);
 
     /**
-      Calculate the output values based on the inputs
+      Function to calculate the dy/dt values for the PRCondition at the given time stamp.
 
-      @param PR_con PRCon object giving the input parameters
-      @param theVars The global variables
-      @return A vector containing the updated values
+      \param t The current timestamp
+      \param PR_con PRCondition object giving the input parameters
+      \param theVars The global variables
+      \return A vector containing the dy/dt values for this time stamp.
       */
     static arr _MB(const double t, const conditions::PRCondition* const PR_con, Variables *theVars);
+
+    /**
+      Function to calculate the dy/dt values for the PRCondition at the given time stamp.
+
+      \param t The current timestamp
+      \param PR_con PRCondition object giving the input parameters
+      \param theVars The global variables
+      \return A PRCondition instance containing the dy/dt values for this time stamp.
+      */
     static conditions::PRCondition* _MB_con(const double t,
                                             const conditions::PRCondition* const PR_con,
                                             Variables *theVars);
     /**
-      Calculate the Rates of PR based on the inputs
+      Calculate the Rates of PR based on the input PRCondition.
 
-      @param PR_con PRCon object giving the input parameters
-      @param theVars The global variables
+      \param t The current timestamp
+      \param PR_con PRCondition object giving the input parameters
+      \param theVars The global variables
       */
     static void _Rate(const double t, const conditions::PRCondition* const PR_con, Variables *theVars);
 
+    /**
+      Reset the static member variables to their default values.
+      */
     static void _reset();
     SET_GET(KC)
     SET_GET(KE113)
@@ -145,8 +159,8 @@ private:
     static double PrV124;
     static double PrV131;
 
-    static double TIME;
-    static std::size_t N;
+    static double TIME;    // The timestamp of the most recent call to _Rate
+    static std::size_t N;  // The current size of the PR TimeSeries
 };
 
 }  // namespace modules

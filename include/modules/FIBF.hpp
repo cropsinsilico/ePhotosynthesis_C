@@ -39,6 +39,9 @@ class FIBFModuleTest;
 namespace modules {
 class EPS;
 
+/**
+ Class for the FIBF Module functions.
+ */
 class FIBF : public ModuleBase<FIBF, conditions::FIBFCondition> {
 private:
     friend ModuleBase;
@@ -53,30 +56,52 @@ private:
     SET_GET(FIBF2FI_PQa)
 
     /**
-  Initialize the variables
+      Function to set the initial state of the FIBFCondition class.
 
-  @param theVars The global variables
-  */
+      \param theVars Pointer to the global variables
+      \return A FIBFCondition object with values set based on the input
+      */
     static conditions::FIBFCondition* _init(Variables *theVars);
 
-/**
-  Calculate the output values based on the inputs
+    /**
+      Function to calculate the dy/dt values for the FIBFCondition at the given time stamp.
 
-  @param t The current timestamp
-  @param FIBF_Con FIBFCon object giving the input parameters
-  @param theVars The global variables
-  @return A vector containing the updated values
-  */
+      \param t The current timestamp
+      \param FIBF_Con FIBFCondition object giving the input parameters
+      \param theVars The global variables
+      \return A vector containing the dy/dt values for this time stamp.
+      */
     static arr _MB(const double t, const conditions::FIBFCondition* const FIBF_Con, Variables *theVars);
+
+    /**
+      Function to calculate the dy/dt values for the FIBFCondition at the given time stamp.
+
+      \param t The current timestamp
+      \param FIBF_Con FIBFCondition object giving the input parameters
+      \param theVars The global variables
+      \return A FIBFCondition instance containing the dy/dt values for this time stamp.
+      */
     static conditions::FIBFCondition* _MB_con(const double t,
                                               const conditions::FIBFCondition* const FIBF_Con,
                                               Variables *theVars);
+
+    /**
+      Calculate the Rates of FIBF based on the input FIBFCondition.
+
+      \param t The current timestamp
+      \param FIBF_Con FIBFCondition object giving the input parameters
+      \param theVars The global variables
+      */
     static void _Rate(const double t, const conditions::FIBFCondition* const FIBF_Con,
                       Variables *theVars) {
         (void)t;
         (void)FIBF_Con;
         (void)theVars;
     }
+
+    /**
+      Reset the static member variables to their default values.
+      */
     static void _reset();
 };
 
