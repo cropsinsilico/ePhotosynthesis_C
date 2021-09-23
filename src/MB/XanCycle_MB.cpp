@@ -45,7 +45,7 @@ XanCycleCondition* XanCycle::_MB_con(const double t, const XanCycleCondition* co
     dydt->Zx = theVars->XanCycle_Vel.Vaz - theVars->XanCycle_Vel.Vza;
     dydt->ABA = theVars->XanCycle_Vel.Vv2ABA - theVars->XanCycle_Vel.VABAdg;
 #ifdef INCDEBUG
-    DEBUG_INTERNAL(dydt)
+    DEBUG_DELTA(dydt)
 #endif
     return dydt;
 }

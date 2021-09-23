@@ -65,7 +65,7 @@ PSCondition* PS::_MB_con(const double t, const PSCondition* const PS_con, Variab
     dydt->HexP = theVars->PS_Vel.v6 - theVars->PS_Vel.v7 - theVars->PS_Vel.v23 + theVars->PS_Vel.v25;
     dydt->PenP = theVars->PS_Vel.v7 + theVars->PS_Vel.v10 * 2 - theVars->PS_Vel.v13;
 #ifdef INCDEBUG
-    DEBUG_INTERNAL(dydt)
+    DEBUG_DELTA(dydt)
 #endif
     return dydt;
 }

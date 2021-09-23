@@ -67,3 +67,135 @@ Variables& Variables::operator=(const Variables &other) {
     useC3 = other.useC3;
     return *this;
 }
+
+std::ostream& ePhotosynthesis::operator<<(std::ostream &out, const Variables *in) {
+    out << "record = " << in->record << std::endl;
+    out << "BF_FI_com = " << in->BF_FI_com << std::endl;
+    out << "EPS_SUCS_com = " << in->EPS_SUCS_com << std::endl;
+    out << "FIBF_PSPR_com = " << in->FIBF_PSPR_com << std::endl;
+    out << "PR_PS_com = " << in->PR_PS_com << std::endl;
+    out << "PSPR_SUCS_com = " << in->PSPR_SUCS_com << std::endl;
+    out << "RROEA_EPS_com = " << in->RROEA_EPS_com << std::endl;
+    out << "RedoxReg_RA_com = " << in->RedoxReg_RA_com << std::endl;
+    out << "RuACT_EPS_com = " << in->RuACT_EPS_com << std::endl;
+    out << "XanCycle_BF_com = " << in->XanCycle_BF_com << std::endl;
+
+    out << "GP = " << in->GP << std::endl;
+    out << "GRNC = " << in->GRNC << std::endl;
+    out << "GRNT = " << in->GRNT << std::endl;
+
+    out << "RUBISCOMETHOD = " << in->RUBISCOMETHOD << std::endl;
+
+    out << "CO2_cond = " << in->CO2_cond << std::endl;
+
+    out << "GLight = " << in->GLight << std::endl;
+    out << "O2_cond = " << in->O2_cond << std::endl;
+    out << "PS12ratio = " << in->PS12ratio << std::endl;
+    out << "ADP = " << in->ADP << std::endl;
+
+    out << "Pi = " << in->Pi << std::endl;
+
+    out << "TestATPCost = " << in->TestATPCost << std::endl;
+    out << "CO2_in = " << in->CO2_in << std::endl;
+    out << "TestLi = " << in->TestLi << std::endl;
+    out << "PS2BF_Pi = " << in->PS2BF_Pi << std::endl;
+    out << "PS_PR_Param = " << in->PS_PR_Param << std::endl;
+
+    out << "Tp = " << in->Tp << std::endl;
+    out << "alfa = " << in->alfa << std::endl;
+    out << "fc = " << in->fc << std::endl;
+    out << "lightParam = " << in->lightParam << std::endl;
+
+    // Parameters
+    out << "PR_Param = ";
+for (auto i : in->PR_Param)
+    out << i << ", ";
+out << std::endl;
+    out << "BF_Param = ";
+for (auto i : in->BF_Param)
+    out << i << ", ";
+out << std::endl;
+    out << "FI_PARAM = ";
+for (auto i : in->FI_PARAM)
+    out << i << ", ";
+out << std::endl;
+    out << "FI_Param = ";
+for (auto i : in->FI_Param)
+    out << i << ", ";
+out << std::endl;
+    out << "RROEA_Param = ";
+for (auto i : in->RROEA_Param)
+    out << i << ", ";
+out << std::endl;
+    out << "RuACT_Param = ";
+for (auto i : in->RuACT_Param)
+    out << i << ", ";
+out << std::endl;
+    out << "SUCS_Param = ";
+for (auto i : in->SUCS_Param)
+    out << i << ", ";
+out << std::endl;
+    out << "XanCycle_Param = ";
+for (auto i : in->XanCycle_Param)
+    out << i << ", ";
+out << std::endl;
+
+    // Vel
+    out << in->BF_Vel;
+    out << in->FI_Vel;
+    out << in->PR_Vel;
+    out << in->PS_Vel;
+    out << in->RROEA_Vel;
+    out << in->RedoxReg_Vel;
+    out << in->RuACT_Vel;
+    out << in->SUCS_Vel;
+    out << in->XanCycle_Vel;
+
+    // Ratio
+    out << "BFRatio = ";
+for (auto i : in->BFRatio)
+    out << i << ", ";
+out << std::endl;
+    out << "FIRatio = ";
+for (auto i : in->FIRatio)
+    out << i << ", ";
+out << std::endl;
+    out << "PRRatio = ";
+for (auto i : in->PRRatio)
+    out << i << ", ";
+out << std::endl;
+    out << "PSRatio = ";
+for (auto i : in->PSRatio)
+    out << i << ", ";
+out << std::endl;
+    out << "RacRatio = ";
+for (auto i : in->RacRatio)
+    out << i << ", ";
+out << std::endl;
+    out << "SUCRatio = ";
+for (auto i : in->SUCRatio)
+    out << i << ", ";
+out << std::endl;
+    out << "XanRatio = ";
+for (auto i : in->XanRatio)
+    out << i << ", ";
+out << std::endl;
+
+    out << "VfactorCp = ";
+for (auto i : in->VfactorCp)
+    out << i << ", ";
+out << std::endl;
+    out << "VfactorT = ";
+for (auto i : in->VfactorT)
+    out << i << ", ";
+out << std::endl;
+
+    // misc
+    out << "FluxTR = ";
+for (auto i : in->FluxTR)
+    out << i << ", ";
+out << std::endl;
+
+    out << "useC3 = " << in->useC3 << std::endl;
+    return out;
+}

@@ -50,7 +50,7 @@ PRCondition* PR::_MB_con(const double t, const PRCondition* const PR_con, Variab
     if (!PR::PS_connect)
         dydt->RuBP = 0.3 - theVars->PR_Vel.v111;
 #ifdef INCDEBUG
-    DEBUG_INTERNAL(dydt)
+    DEBUG_DELTA(dydt)
 #endif
     return dydt;
 }

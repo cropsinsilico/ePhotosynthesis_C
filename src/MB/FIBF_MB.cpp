@@ -130,7 +130,7 @@ FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* const FIBF_Con
     dydt->BF_con->Q = 0;        // Q Quinone in thylakoid membrane in free form
     dydt->BF_con->QH2 = GPQH2_t; // QH2 The PQH2 concentration; the coefficient 2 represent the fact that 2 protons were taken up by one Q2-.
 #ifdef INCDEBUG
-    DEBUG_INTERNAL(dydt)
+    DEBUG_DELTA(dydt)
 #endif
     return dydt;
 }

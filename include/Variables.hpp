@@ -65,6 +65,7 @@ public:
     Variables(const Variables* other);
     Variables(const Variables& other);
     Variables& operator=(const Variables& other);
+    friend std::ostream& operator<<(std::ostream &out, const Variables *in);
 
     bool record = false;
     bool BF_FI_com = false;

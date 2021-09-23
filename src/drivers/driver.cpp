@@ -93,9 +93,9 @@ arr Driver::run() {
         realtype t = 0;
         bool runOK = true;
         realtype tout = start + step;
-        while (tout <= endtime) {
+        while (t <= endtime) {
             if (CVode(cvode_mem, tout, y, &t, CV_NORMAL) != CV_SUCCESS) {
-                std::cout << "CVode failed at t=" << tout << std::endl;
+                std::cout << "CVode failed at t=" << tout << "  " << t << std::endl;
                 runOK = false;
                 break;
             }
@@ -115,6 +115,7 @@ arr Driver::run() {
             return results;
 
         inputVars = origVars;
+
         count++;
         step = initialStep / (count + 1);
         std::cout << "Retrying with smaller step size: " << step << std::endl;

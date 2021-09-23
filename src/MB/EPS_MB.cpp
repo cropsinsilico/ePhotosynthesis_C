@@ -58,7 +58,7 @@ EPSCondition* EPS::_MB_con(const double t, const EPSCondition* const EPS_Con, Va
 
     EPSCondition* dydt = new EPSCondition(FIBFdydt, CMdydt);
 #ifdef INCDEBUG
-    DEBUG_INTERNAL(dydt)
+    DEBUG_DELTA(dydt)
 #endif
     return dydt;
 }
