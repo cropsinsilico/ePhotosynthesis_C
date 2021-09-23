@@ -55,7 +55,7 @@ RuACTCondition* RuACT::_MB_con(const double t, const RuACTCondition* const RuACT
     if (!theVars->RuACT_EPS_com)
         dydt->RuBP = v6_1 + v6_2 + v1 - vn1 + vn7 - v7; // RuBP
 #ifdef INCDEBUG
-    DEBUG_INTERNAL(dydt)
+    DEBUG_DELTA(dydt)
 #endif
     return dydt;
 }

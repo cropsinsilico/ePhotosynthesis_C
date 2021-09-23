@@ -47,7 +47,7 @@ RedoxRegCondition* RedoxReg::_MB_con(const double t, const RedoxRegCondition* co
     RedoxRegCondition* dydt = new RedoxRegCondition(RAdydt, 0.);
 
 #ifdef INCDEBUG
-    DEBUG_INTERNAL(dydt)
+    DEBUG_DELTA(dydt)
 #endif
     return dydt;
 }

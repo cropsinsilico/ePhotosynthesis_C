@@ -57,7 +57,7 @@ DynaPSCondition* DynaPS::_MB_con(const double t, const DynaPSCondition* const Dy
     // Here get the rate of Thioredoxin reduction and oxidation and use it to construct the differential equation for both thio and fd.
     DynaPSCondition* dydt = new DynaPSCondition(RAdydt, XanCycledydt);
 #ifdef INCDEBUG
-    DEBUG_INTERNAL(dydt)
+    DEBUG_DELTA(dydt)
 #endif
     return dydt;
 }

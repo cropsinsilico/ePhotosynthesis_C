@@ -65,7 +65,7 @@ SUCSCondition* SUCS::_MB_con(const double t, const SUCSCondition* const SUCS_Con
         dydt->PGAc = theVars->SUCS_Vel.vpga_in - theVars->SUCS_Vel.vpga_use; // pgaC
     }
 #ifdef INCDEBUG
-    DEBUG_INTERNAL(dydt)
+    DEBUG_DELTA(dydt)
 #endif
     return dydt;
 }

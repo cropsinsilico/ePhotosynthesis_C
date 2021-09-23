@@ -55,7 +55,7 @@ RROEACondition* RROEA::_MB_con(const double t, const RROEACondition* const RROEA
                theVars->RROEA_Vel.veFd2Calvin;   // Fd
     dydt->RuACT = theVars->RROEA_Vel.ve2RuACT;   // RuACT;
 #ifdef INCDEBUG
-    DEBUG_INTERNAL(dydt)
+    DEBUG_DELTA(dydt)
 #endif
     return dydt;
 }

@@ -86,7 +86,7 @@ PS_PRCondition* PS_PR::_MB_con(const double t, const PS_PRCondition* const PS_PR
 
     PS_PRCondition *dydt = new PS_PRCondition(PSdydt, PRdydt);
 #ifdef INCDEBUG
-    DEBUG_INTERNAL(dydt)
+    DEBUG_DELTA(dydt)
 #endif
     return dydt;
 }

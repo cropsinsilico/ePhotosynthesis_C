@@ -51,7 +51,7 @@ RACondition* RA::_MB_con(const double t, const RACondition* const RA_Con, Variab
 
     RACondition* dydt = new RACondition(EPSdydt, RuACTdydt);
 #ifdef INCDEBUG
-    DEBUG_INTERNAL(dydt)
+    DEBUG_DELTA(dydt)
 #endif
     return dydt;
 }
