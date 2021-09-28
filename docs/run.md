@@ -1,4 +1,4 @@
-@page running Running
+@page running Running the Binary
 
 
 The ePhotosynthesis binary can be run from the command line with no command line options provided the default values are correct for you situation.

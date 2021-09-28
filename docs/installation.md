@@ -1,6 +1,6 @@
 @page install Installation
 
-The ePhotosynthesis code builds two components. The first is a stand alone library (libEPhotosynthesis.so, may have other nomenclature depending on OS) which contains all of the functionality of the code. The second is a binary (ePhoto) that can be used as a command line interface to the library.
+The ePhotosynthesis code builds several components. The first is a stand alone library (libEPhotosynthesis.so, may have other nomenclature depending on OS) which contains all of the functionality of the code. The second is a binary (ePhoto) that can be used as a command line interface to the library. The third, optional, component is a Python callable library (pyPhotosynthesis.so) which contains the same code as libEPhotosynthesis.so with additional Python hooks into the Driver classes.
 
 - - -
 - - -
@@ -20,7 +20,7 @@ The following packages are required to build the ePhotosynthesis code:
 - [Sundials](https://computing.llnl.gov/projects/sundials)
 - [Doxygen](https://www.doxygen.nl/index.html) only required for building documentation
 - [GoogleTest](https://github.com/google/googletest) only required if you plan to run the internal tests
-
+- [Python3](https://www.python.org/) only required if you plan to build the Python module. Version 3.5 or newer.
 - - -
 - - -
 
@@ -53,6 +53,7 @@ The build can be asked to do specific things, or look for packages in non-standa
 | <b><center>Build Types</center></b> |||
 | `CMAKE_BUILD_TYPE` | `Release`, `Debug` | What type of build to do. \b `Release` will build a compact version that is best for production. \b `Debug` will build a larger output which includes debugging info and the ability to print out the intermediate data. Default is \b `Release`. |
 | `BUILD_DOCS` | `ON`, `OFF` | Whether to enable the building of the documentation. This requires Doxygen and other packages depending on the output type. Default is \b `OFF`. |
+| `BUILD_PYTHON` | `ON`, `OFF` | Whether to build the Python version of the library (requires Python3 and boost_python). Default is \b `OFF`.
 | `BUILD_TESTS` | `ON`, `OFF` | Whether to build the test code (\b `ON`) or not (\b `OFF`). If this is \b `ON`, then the `CMAKE_BUILD_TYPE` will be forced to \b `Debug`. Default is \b `OFF`. |
 | `TEST_COVERAGE` | `ON`, `OFF` | Whether to build the line and function coverage code (\b `ON`). This option is only expected to work with gcc and will output a set of html pages detailing the test coverage of each file. If set to \b `ON`, it will also turn `BUILD_TEST` to \b `ON`. Default is \b `OFF`.|
 | <b><center>Boost</center></b> |||

@@ -372,3 +372,16 @@ Line # | Notes
 36-43  | Set the code to do one last run
 48-50  | Initialize the module.
 54-65  | Convert the input `N_Vector` to a C type, create a Conditions class from this, run the differential calculator, and return the results.
+
+@subsection pythondrive Exposing the New Driver in Python
+
+In order for the newly created driver to be used in Python, a new entry in src/python/wrappers.cpp needs to be made. In the python::exportDrivers() function add a new entry as follows:
+
+\code{.cpp}
+bp::class_<drivers::XYZ, bp::bases<DriverWrap>, boost::noncopyable>("XYZ", bp::init<Variables*, double, double, double, int, double, double, bool>()[bp::with_custodian_and_ward_postcall<0,2>()])
+            .def("run", &drivers::XYZ::run)
+            .def("setup", &drivers::XYZ::setup)
+            .def("getResults", &drivers::XYZ::getResults);
+\endcode
+
+In the above code replace `XYZ` with the name of the new Driver class. Additionally, the call signature of the Python class will need to match that of the class constructor, so additional entries (`int`, `bool`, `double`) may be needed.
