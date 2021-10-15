@@ -129,6 +129,9 @@ public:
         return in->_print(out, 0);
     }
     U* parent = nullptr;  // The parent Condition instance.
+
+    virtual std::ostream& _print(std::ostream &out, const uint tab = 0) const = 0;
+
 #ifdef INCDEBUG
     Debug::DebugLevel debugLevel() const {return static_cast<const T*>(this)->_dlevel;}
 #endif
