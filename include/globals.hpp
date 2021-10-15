@@ -95,4 +95,5 @@ void readFile(const std::string &filename, std::map<std::string, std::string> &m
   */
 void readFile(const std::string &filename, std::map<std::string, double> &mapper);
 
+void readFile(const std::string &filename, std::map<std::string, double> &mapper, const uint column);
 }  // namespace ePhotosynthesis

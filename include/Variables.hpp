@@ -36,6 +36,9 @@
 #include "vel/XanCycleVel.hpp"
 #include "vel/RedoxRegVel.hpp"
 #include "vel/SUCSVel.hpp"
+#include "vel/LeafVel.hpp"
+#include "vel/AEVel.hpp"
+#include "vel/EnzymeVel.hpp"
 #include "ke/RROEAKE.hpp"
 
 #include "pool/BFPool.hpp"
@@ -77,6 +80,10 @@ public:
     bool RedoxReg_RA_com = false;
     bool RuACT_EPS_com = false;
     bool XanCycle_BF_com = false;
+    bool Para_mata = false;
+    bool GsResponse = false;
+    bool kdcon = false;
+    bool EAPPDK = false;
 
     int GP = 0;
     int GRNC = 0;
@@ -104,9 +111,27 @@ public:
     double PS_PR_Param = 0;
 
     double Tp = 0;
+    double Radiation_PARo = 0.;
+    double Radiation_NIR = 0.;
+    double Radiation_LW = 0.;
     double alfa = 0.;
+    double CI = 0.;
+    double Wind = 0.;
     double fc = 0.;
     double lightParam = 0.;
+    double BallBerryInterceptC4 = 0.;
+    double BallBerrySlopeC4 = 0.;
+    double WeatherRH = 0.;
+    double kd = 0.;
+    double ki = 0.;
+    double taoRub = 0.;
+    double Vpmax = 0.;
+    double Vcmax = 0.;
+    double FactorVP = 0.;
+    double FactorVC = 0.;
+    double vrpd = 0.;
+    double MRd = 0.;
+    double PPDKRP = 0.;
     const double alpha1 = 1.205;
     const double alpha2 = 2.06;
 
@@ -119,7 +144,9 @@ public:
     arr RuACT_Param = zeros(2);
     arr SUCS_Param = zeros(2);
     arr XanCycle_Param = zeros(2);
+    arr Velocity_s = zeros(58);
 
+    arr TempFactor = zeros(9);
     // Vel
     vel::BFVel BF_Vel;
     vel::FIVel FI_Vel;
@@ -130,6 +157,9 @@ public:
     vel::RuACTVel RuACT_Vel;
     vel::SUCSVel SUCS_Vel;
     vel::XanCycleVel XanCycle_Vel;
+    vel::LeafVel Leaf_Vel;
+    vel::AEVel AE_Vel;
+    vel::EnzymeVel Enzyme_Vel;
 
     // Ratio
     arr BFRatio = ones(49);
@@ -181,6 +211,9 @@ public:
     TimeSeries<vel::RuACTVel> RuACT_VEL = TimeSeries<vel::RuACTVel> ();
     TimeSeries<vel::SUCSVel> SUCS_VEL = TimeSeries<vel::SUCSVel> ();
     TimeSeries<vel::XanCycleVel> XanCycle_VEL = TimeSeries<vel::XanCycleVel> ();
+    TimeSeries<vel::LeafVel> Leaf_VEL = TimeSeries<vel::LeafVel> ();
+    TimeSeries<vel::AEVel> AE_VEL = TimeSeries<vel::AEVel> ();
+    TimeSeries<vel::EnzymeVel> Enzyme_VEL = TimeSeries<vel::EnzymeVel> ();
 
     bool useC3 = false;
 #ifdef INCDEBUG

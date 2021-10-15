@@ -67,6 +67,8 @@ typedef std::vector<double> arr;  // Shortcut for std::vector<double>
 #define Q10_57 2.
 #define Q10_58 2.
 
+//Convert W m^{-2} to u moles m^{-2} s^{-1}
+#define CONVERT (1E6 / (2.35E5))
 #ifdef INCDEBUG
 namespace Debug {
 enum DebugLevel : uint {Top = 0x1, Middle = 0x2, Low = 0x4, Delta=0x8, Internal=0x10};

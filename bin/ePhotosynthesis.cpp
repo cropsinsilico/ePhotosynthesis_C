@@ -52,7 +52,8 @@ enum DriverType {
     trDynaPS,
     DynaPS,
     CM,
-    EPS
+    EPS,
+    C4
 };
 
 
@@ -62,12 +63,12 @@ int main(int argc, const char* argv[]) {
         bool useC3 = false;
         cxxopts::Options options("ePhotosynthesis", "C++ implementation of the matlab original");
         options.show_positional_help();
-        std::string evn, atpcost, optionsFile, enzymeFile;
+        std::string evn, atpcost, optionsFile, enzymeFile, paramFile;
         double stoptime, begintime, stepsize;
         double abstol, reltol;
         double Tp;
         DriverType driverChoice;
-        int driver, maxSubSteps;
+        int driver, maxSubSteps, species;
         ushort dbglvl;
         bool debugDelta, debugInternal;
         options.add_options()
@@ -75,6 +76,8 @@ int main(int argc, const char* argv[]) {
                 ("e,evn", "The InputEvn.txt file.", cxxopts::value<std::string>(evn)->default_value("InputEvn.txt"))
                 ("a,atpcost", "The InputATPCost.txt file.", cxxopts::value<std::string>(atpcost)->default_value("InputATPCost.txt"))
                 ("n,enzyme", "The input enzyme file.", cxxopts::value<std::string>(enzymeFile)->default_value(""))
+                ("p, paramFile", "The input parameter file for the C4 model", cxxopts::value<std::string>(paramFile)->default_value(""))
+                ("x, species", "The species for the C4 model", cxxopts::value(species)->default_value("3"))
                 ("b,begintime", "The starting time for the calculations.", cxxopts::value<double>(begintime)->default_value("0.0"))
                 ("s,stoptime", "The time to stop calculations.", cxxopts::value<double>(stoptime)->default_value("5000.0"))
                 ("z,stepsize", "The step size to use in the calculations.", cxxopts::value<double>(stepsize)->default_value("1.0"))
@@ -114,16 +117,66 @@ int main(int argc, const char* argv[]) {
         driverChoice = static_cast<DriverType>(driver);
 
         readFile(evn, inputs);
-        readFile(atpcost, inputs);
+        if (driverChoice != C4)
+            readFile(atpcost, inputs);
         Variables *theVars = new Variables();
         if (result.count("enzyme")) {
             readFile(enzymeFile, theVars->EnzymeAct);
         }
-        theVars->CO2_in = static_cast<double>(stof(inputs.at("CO2"), nullptr));
-        theVars->TestLi = static_cast<double>(stof(inputs.at("PAR"), nullptr));
-        if (stoi(inputs.at("SucPath"), nullptr) > 0)
-            modules::CM::setTestSucPath(true);
-        theVars->TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
+
+        for (auto const& mp : inputs) {
+            //std::cout << mp.first << " = " << mp.second << std::endl;
+            if (mp.first == "CO2" || mp.first == "CO2_air") {
+                theVars->CO2_in = static_cast<double>(stof(mp.second, nullptr));
+            } else if(mp.first == "Temperature") {
+                theVars->Tp = static_cast<double>(stof(mp.second, nullptr));
+            } else if(mp.first == "O2" || mp.first == "O2_air") {
+                theVars->O2_cond = static_cast<double>(stof(mp.second, nullptr));
+            } else if (mp.first == "RH") {
+                theVars->WeatherRH = static_cast<double>(stof(mp.second, nullptr));
+            } else if (mp.first == "Radiation_NIR") {
+                theVars->Radiation_NIR = static_cast<double>(stof(mp.second, nullptr));
+            } else if (mp.first == "Radiation_PAR" || mp.first == "PAR") {
+                theVars->TestLi = static_cast<double>(stof(mp.second, nullptr));
+            } else if (mp.first == "Radiation_LW") {
+                theVars->Radiation_LW = static_cast<double>(stof(mp.second, nullptr));
+            } else if (mp.first == "SucPath" && static_cast<double>(stof(mp.second, nullptr)) > 0.) {
+                modules::CM::setTestSucPath(true);
+            } else if (mp.first == "ATPCost") {
+                theVars->TestATPCost = stoi(mp.second, nullptr);
+            }
+        }
+        if (driverChoice == C4) {
+            std::map<std::string, double> parameters;
+            readFile(paramFile, parameters, species);
+            //1Maize	2sorghum	3sugarcane
+            for (auto const& mp : parameters) {
+                if (mp.first == "slope") {
+                    theVars->BallBerrySlopeC4 = mp.second;
+                } else if (mp.first == "intercept") {
+                    theVars->BallBerryInterceptC4 = mp.second * 1.6;
+                } else if (mp.first == "ki") {
+                    theVars->ki = mp.second;
+                } else if (mp.first == "kd") {
+                    theVars->kd = mp.second;
+                } else if (mp.first == "Vpmax") {
+                    theVars->Vpmax = mp.second;
+                } else if (mp.first == "Vcmax") {
+                    theVars->Vcmax = mp.second;
+                } else if (mp.first == "taoRubisco") {
+                    theVars->taoRub = mp.second;
+                } else if (mp.first == "FactorVP") {
+                    theVars->FactorVP = mp.second;
+                } else if (mp.first == "FactorVC") {
+                    theVars ->FactorVC = mp.second;
+                } else if (mp.first == "RP") {
+                    theVars->PPDKRP = mp.second;
+                } else if (mp.first == "Rd") {
+                    theVars->MRd = abs(mp.second);
+                }
+            }
+        }
+
         theVars->record = record;
         theVars->useC3 = useC3;
         theVars->RUBISCOMETHOD = 1;
@@ -160,6 +213,11 @@ int main(int argc, const char* argv[]) {
                 maindriver = new drivers::EPSDriver(theVars, begintime, stepsize, stoptime,
                                                     maxSubSteps, abstol, reltol, 1, 1, Tp);
                 break;
+            case C4:
+                maindriver = new drivers::RAC4leafMetaDriver(theVars, begintime, stepsize,
+                                                             stoptime, maxSubSteps, abstol,
+                                                             reltol);
+                break;
             default:
                 printf("Invalid driver choice given.\n");
                 exit(EXIT_FAILURE);
@@ -189,6 +247,9 @@ int main(int argc, const char* argv[]) {
             case EPS:
                 outfile << ResultRate[0] << std::endl;
                 break;
+            case C4:
+                outfile << ResultRate[0] << std::endl;
+                std::cout << ResultRate[0] << std::endl;
             default:
                 break;
         }

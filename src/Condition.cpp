@@ -159,11 +159,36 @@ void ePhotosynthesis::readFile(const std::string &filename, std::map<std::string
         if (input.empty())
             continue;
         boost::algorithm::split_regex(tempVec, input, token);
+        if (count == 0 && tempVec[0] == "Parameters")
+            continue;
         double d;
         std::stringstream ss(tempVec[1]);
         ss >> d;
         if (count < 27)
             d /= 30.;
+        count++;
+        mapper.insert(std::pair<std::string, double>(tempVec[0], d));
+    }
+}
+
+void ePhotosynthesis::readFile(const std::string &filename, std::map<std::string, double> &mapper, const uint column) {
+    std::vector<std::string> tempVec;
+    std::string input;
+    std::ifstream inputfile(filename);
+    if(inputfile.fail()) {
+        std::string errmsg = "Could not open " + filename + " for reading";
+        throw std::runtime_error(errmsg);
+    }
+    int count = 0;
+    while (getline(inputfile, input)) {
+        if (input.empty())
+            continue;
+        boost::algorithm::split_regex(tempVec, input, token);
+        if (count == 0 && tempVec[0] == "Parameters")
+            continue;
+        double d;
+        std::stringstream ss(tempVec[column]);
+        ss >> d;
         count++;
         mapper.insert(std::pair<std::string, double>(tempVec[0], d));
     }
