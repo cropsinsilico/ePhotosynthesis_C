@@ -519,10 +519,11 @@ void Enzyme::_Rate(const double t, const conditions::EnzymeCondition *const Enzy
     theVars->Enzyme_Vel.vATPM = std::min(Vm_ATPM, ETRa) * (Mchl_ADP * Mchl_Pi - Enzyme_con->Mchl_ATP / (Ke_ATPM)) / (KmADP_ATPM * KmPi_ATPM * (1 + Mchl_ADP / KmADP_ATPM + Mchl_Pi / KmPi_ATPM + Enzyme_con->Mchl_ATP / KmATP_ATPM + Mchl_ADP * Mchl_Pi / (KmADP_ATPM * KmPi_ATPM)));
     theVars->Enzyme_Vel.vNADPHM = std::min(Vm_NADPHM, ETRn) * (Mchl_NADP - Enzyme_con->Mchl_NADPH / Ke_NADPHM) / (KmNADP_NADPHM * (1 + Mchl_NADP / KmNADP_NADPHM + Enzyme_con->Mchl_NADPH / KmNADPH_NADPHM));
     // //WY202003
-    // vATPM=min(Vm_ATPM*(Mchl_ADP*Mchl_Pi-Enzyme_con->Mchl_ATP/(Ke_ATPM))/(KmADP_ATPM*KmPi_ATPM*(1+Mchl_ADP/KmADP_ATPM+Mchl_Pi/KmPi_ATPM+Enzyme_con->Mchl_ATP/KmATP_ATPM+Mchl_ADP*Mchl_Pi/(KmADP_ATPM*KmPi_ATPM))),ETRa);
-    const double vNADPHM = std::min(Vm_NADPHM * (Mchl_NADP - Enzyme_con->Mchl_NADPH / Ke_NADPHM) / (KmNADP_NADPHM * (1 + Mchl_NADP / KmNADP_NADPHM + Enzyme_con->Mchl_NADPH / KmNADPH_NADPHM)), ETRn);
 
-    theVars->Enzyme_Vel.vO2_Mchl = vNADPHM / 2;
+    // vATPM=min(Vm_ATPM*(Mchl_ADP*Mchl_Pi-Enzyme_con->Mchl_ATP/(Ke_ATPM))/(KmADP_ATPM*KmPi_ATPM*(1+Mchl_ADP/KmADP_ATPM+Mchl_Pi/KmPi_ATPM+Enzyme_con->Mchl_ATP/KmATP_ATPM+Mchl_ADP*Mchl_Pi/(KmADP_ATPM*KmPi_ATPM))),ETRa);
+    //const double vNADPHM = std::min(Vm_NADPHM * (Mchl_NADP - Enzyme_con->Mchl_NADPH / Ke_NADPHM) / (KmNADP_NADPHM * (1 + Mchl_NADP / KmNADP_NADPHM + Enzyme_con->Mchl_NADPH / KmNADPH_NADPHM)), ETRn);
+
+    theVars->Enzyme_Vel.vO2_Mchl = theVars->Enzyme_Vel.vNADPHM / 2;
 
     const double ETRab = G * ((F * (1 - U) * (1 - X) * I + (1 - V) * (1 - Y) * Jmax - sqrt( pow((F * (1 - U) * (1 - X) * I + (1 - V) * (1 - Y) * Jmax), 2) - 4 * Q * F * (1 - U) * (1 - X) * I * (1 - V) * (1 - Y) * Jmax)) / (2 * Q));
     const double ETRabl = D * ((F / 2 * U * (1 - X) * I + V * (1 - Y) * Jmax - sqrt( pow((F / 2 * U * (1 - X) * I + V * (1 - Y) * Jmax), 2) - 4 * Q * F / 2 * U * (1 - X) * I * V * (1 - Y) * Jmax)) / (2 * Q));
@@ -531,9 +532,9 @@ void Enzyme::_Rate(const double t, const conditions::EnzymeCondition *const Enzy
     theVars->Enzyme_Vel.vATPB = std::min(Vm_ATPB, ETRab + ETRabl) * (Bchl_ADP * Bchl_Pi - Enzyme_con->Bchl_ATP / Ke_ATPB) / (KmADP_ATPB * KmPi_ATPB * (1 + Bchl_ADP / KmADP_ATPB + Bchl_Pi / KmPi_ATPB + Enzyme_con->Bchl_ATP / KmATP_ATPB + Bchl_ADP * Bchl_Pi / (KmADP_ATPB * KmPi_ATPB)));
     theVars->Enzyme_Vel.vNADPHB = std::min(Vm_NADPHB, ETRnbl) * (Bchl_NADP - Enzyme_con->Bchl_NADPH / Ke_NADPHB) / (KmNADP_NADPHB * (1 + Bchl_NADP / KmNADP_NADPHB + Enzyme_con->Bchl_NADPH / KmNADPH_NADPHB));
     // vATPB=min(Vm_ATPB*(Bchl_ADP*Bchl_Pi-Enzyme_con->Bchl_ATP/Ke_ATPB)/(KmADP_ATPB*KmPi_ATPB*(1+Bchl_ADP/KmADP_ATPB+Bchl_Pi/KmPi_ATPB+Enzyme_con->Bchl_ATP/KmATP_ATPB+Bchl_ADP*Bchl_Pi/(KmADP_ATPB*KmPi_ATPB))),ETRab+ETRabl);
-    const double vNADPHB = std::min(Vm_NADPHB * (Bchl_NADP - Enzyme_con->Bchl_NADPH / Ke_NADPHB) / (KmNADP_NADPHB * (1 + Bchl_NADP / KmNADP_NADPHB + Enzyme_con->Bchl_NADPH / KmNADPH_NADPHB)), ETRnbl);
+    //theVars->Enzyme_Vel.vNADPHB = std::min(Vm_NADPHB * (Bchl_NADP - Enzyme_con->Bchl_NADPH / Ke_NADPHB) / (KmNADP_NADPHB * (1 + Bchl_NADP / KmNADP_NADPHB + Enzyme_con->Bchl_NADPH / KmNADPH_NADPHB)), ETRnbl);
 
-    theVars->Enzyme_Vel.vO2_Bchl = vNADPHB / 2;
+    theVars->Enzyme_Vel.vO2_Bchl = theVars->Enzyme_Vel.vNADPHB / 2;
     //Transport 17
     const double Km_OAA_M = 0.053;
     const double Kimal_OAA_M = 7.5;
