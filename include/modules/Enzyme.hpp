@@ -104,7 +104,7 @@ private:
     SET_GET(Bchl_CP)
     SET_GET(vNAE)
     SET_GET(V6sen)
-    static int pathway_option;
+    SET_GET_INT(pathway_option)
     ////// 0=Normol NADP-ME type
     ////// 1=Asp+Mal transport and MDH type
     ////// 2=Asp+Mal and PCK type

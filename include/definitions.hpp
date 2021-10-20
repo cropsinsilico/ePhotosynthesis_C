@@ -135,6 +135,16 @@ enum RequestedDebug : uint {None = 0,
         static double NAME;
 //! [SET_GET]
 
+//! [SET_GET]
+#define SET_GET_INT(NAME) public:\
+    /** Get the value of NAME \returns The current value */\
+    static int get ## NAME() {return NAME;}\
+    /** Set the value of NAME \param val The value to set NAME to */\
+    static void set ## NAME(const int val) {NAME = val;}\
+    private:\
+        static int NAME;
+//! [SET_GET]
+
 //! [SET_GET_BOOL]
 #define SET_GET_BOOL(NAME) public:\
     /** Get the value of NAME \returns The current value */\

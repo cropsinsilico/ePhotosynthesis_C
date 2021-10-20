@@ -34,6 +34,7 @@
 #include "modules/CM.hpp"
 #include "modules/EPS.hpp"
 #include "modules/PR.hpp"
+#include "modules/Enzyme.hpp"
 #include "drivers/drivers.hpp"
 #include "Variables.hpp"
 
@@ -68,7 +69,8 @@ int main(int argc, const char* argv[]) {
         double abstol, reltol;
         double Tp;
         DriverType driverChoice;
-        int driver, maxSubSteps, species;
+        int driver, maxSubSteps, pathway;
+        uint species;
         ushort dbglvl;
         bool debugDelta, debugInternal;
         options.add_options()
@@ -76,14 +78,15 @@ int main(int argc, const char* argv[]) {
                 ("e,evn", "The InputEvn.txt file.", cxxopts::value<std::string>(evn)->default_value("InputEvn.txt"))
                 ("a,atpcost", "The InputATPCost.txt file.", cxxopts::value<std::string>(atpcost)->default_value("InputATPCost.txt"))
                 ("n,enzyme", "The input enzyme file.", cxxopts::value<std::string>(enzymeFile)->default_value(""))
-                ("p, paramFile", "The input parameter file for the C4 model", cxxopts::value<std::string>(paramFile)->default_value(""))
-                ("x, species", "The species for the C4 model", cxxopts::value(species)->default_value("3"))
+                ("p,paramFile", "The input parameter file for the C4 model", cxxopts::value<std::string>(paramFile)->default_value(""))
+                ("x,species", "The species for the C4 model", cxxopts::value<uint>(species)->default_value("3"))
                 ("b,begintime", "The starting time for the calculations.", cxxopts::value<double>(begintime)->default_value("0.0"))
                 ("s,stoptime", "The time to stop calculations.", cxxopts::value<double>(stoptime)->default_value("5000.0"))
                 ("z,stepsize", "The step size to use in the calculations.", cxxopts::value<double>(stepsize)->default_value("1.0"))
                 ("m,maxSubSteps", "The maximum number of iterations at each time step.", cxxopts::value<int>(maxSubSteps)->default_value("750"))
-                ("d,driver", "The driver to use. Choices are:                            1 - trDynaPS                                         2 - DynaPS                                           3 - CM                                               4 - EPS         ", cxxopts::value<int>(driver)->default_value("1"))
+                ("d,driver", "The driver to use. Choices are:                            1 - trDynaPS                                         2 - DynaPS                                           3 - CM                                               4 - EPS                                             5 - C4         ", cxxopts::value<int>(driver)->default_value("1"))
                 ("c,c3", "Use the C3 model, automatically set to true for EPS driver", cxxopts::value<bool>(useC3)->default_value("false"))
+                ("w,pathway", "The pathway option to use for the C4 driver", cxxopts::value<int>(pathway)->default_value("0"))
                 ("t,abstol", "Absolute tolerance for calculations", cxxopts::value<double>(abstol)->default_value("1e-5"))
                 ("r,reltol", "Relative tolerance for calculations", cxxopts::value<double>(reltol)->default_value("1e-4"))
                 ("T,Tp", "Input Temperature", cxxopts::value<double>(Tp)->default_value("0.0"))
@@ -149,6 +152,7 @@ int main(int argc, const char* argv[]) {
         if (driverChoice == C4) {
             std::map<std::string, double> parameters;
             readFile(paramFile, parameters, species);
+            modules::Enzyme::setpathway_option(pathway);
             //1Maize	2sorghum	3sugarcane
             for (auto const& mp : parameters) {
                 if (mp.first == "slope") {
