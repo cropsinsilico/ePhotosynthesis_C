@@ -249,7 +249,8 @@ int main(int argc, const char* argv[]) {
                 break;
             case C4:
                 outfile << ResultRate[0] << std::endl;
-                std::cout << ResultRate[0] << std::endl;
+                //std::cout << ResultRate[0] << std::endl;
+                break;
             default:
                 break;
         }

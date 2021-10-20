@@ -14,7 +14,7 @@ RAC4leafMetaCondition* RAC4leafMeta::_init(Variables *theVars) {
     EnzymeCondition* Enzyme_con = Enzyme::_init(theVars);
     AECondition* AE_con = AE::_init(theVars);
 
-    theVars->TempFactor = Leaf::TempResponseEnzymes(Leaf_con->Tleaf);
+
 
     RAC4leafMetaCondition* RAC4LeafMeta_con = new RAC4leafMetaCondition(Leaf_con, Enzyme_con, AE_con);
     //arr RuACTInis = zeros(0);

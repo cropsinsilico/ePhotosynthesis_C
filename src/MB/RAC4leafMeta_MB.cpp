@@ -24,7 +24,7 @@ RAC4leafMetaCondition* RAC4leafMeta::_MB_con(const double t, const RAC4leafMetaC
 
     if (t >= t00)
         theVars->TestLi = theVars->Radiation_PARo / CONVERT * Jsen;
-
+    theVars->TempFactor = Leaf::TempResponseEnzymes(RAC_con->Leaf_con->Tleaf);
     // if t>=t00+1800&&t<t00+3600
     //     theVars->TestLi = 200/Convert*Jsen;
     // end
