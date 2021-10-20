@@ -26,6 +26,7 @@ const double Mchl_TotalNADPMDH = 0.00006;
 EnzymeCondition* Enzyme::_MB_con(const double t, const EnzymeCondition* Enzyme_con, Variables *theVars) {
 
     Rate(t, Enzyme_con, theVars);
+    vNAE = 0.;
 
     const double Delta_MC_CO2 = (theVars->Enzyme_Vel.vinf - theVars->Enzyme_Vel.v1 + theVars->Enzyme_Vel.vleak + theVars->vrpd) / VolMC;
     const double Delta_MC_HCO3 = (theVars->Enzyme_Vel.v1 - theVars->Enzyme_Vel.v2) / VolMC;
