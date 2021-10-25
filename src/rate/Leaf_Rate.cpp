@@ -1,3 +1,29 @@
+/**********************************************************************************************************************************************
+ *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
+ *
+ * CAS-MPG Partner Institute for Computational Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
+ * China Institute of Genomic Biology and Department of Plant Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
+ * University of Illinois at Urbana Champaign
+ * Global Change and Photosynthesis Research Unit, USDA/ARS, 1406 Institute of Genomic Biology, Urbana, IL 61801, USA.
+ *
+ * Converted from Matlab to C++ by Douglas N. Friedel, National Center for Supercomputing Applications (2020)
+ *
+ *   This file is part of e-photosynthesis.
+ *
+ *    e-photosynthesis is free software; you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation;
+ *
+ *    e-photosynthesis is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License (GPL)
+ *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **********************************************************************************************************************************************/
+
 #include <math.h>
 #include "Variables.hpp"
 #include "modules/Leaf.hpp"
@@ -8,16 +34,16 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-const double PhotosynthesQ10 = 2;
+const double PhotosynthesQ10 = 2.;
 const double Rd25 = 0.6;//For steasy state model
 const double Boltzman = 5.6697e-8;// Stefan-Boltzmann constant W m^{-2} K^{-4}
 const double LatentHeatVaporization = 44000.0;//J mole^{-1}
 const double Pressure = 101325.0; // Standard atmospheric pressure Pa
 const double ConstantsCp = 29.3;
 
-const double VmaxC4 = 160; //For steady-state photosynthesis model
+const double VmaxC4 = 160.; //For steady-state photosynthesis model
 const double gm = 3.;
-const double Sc = 3 * pow(10, 4);
+const double Sc = 3. * std::pow(10., 4.);
 const double CForced = 4.322 / 1000.0;
 const double CFree = 1.6361 / 1000.0;
 const double LeafDimension = 0.028; //Leaf width/needle diameter m
@@ -38,37 +64,37 @@ void Leaf::_Rate(const double t, const LeafCondition* const Leaf_con, Variables 
     double Eb = Leaf_con->Eb;
 
     if (!theVars->Para_mata) {
-        const double Q10Temperature = pow(PhotosynthesQ10, (Leaf_con->Tleaf - 25.0) / 10.0);
-        const double Rd = Rd25 * Q10Temperature / (1.0 + exp(1.3 * (Leaf_con->Tleaf - 55.0)));
+        const double Q10Temperature = std::pow(PhotosynthesQ10, (Leaf_con->Tleaf - 25.0) / 10.0);
+        const double Rd = Rd25 * Q10Temperature / (1.0 + std::exp(1.3 * (Leaf_con->Tleaf - 55.0)));
         const double ThetaC4 = 0.83;//curvature parameter
         const double BetaC4 = 0.93;//curvature parameter
         const double kC4 = 0.7;// initial slope of photosynthetic CO2 response
-        const double kiC4 = kC4 * pow(2, (Leaf_con->Tleaf - 25) / 10);
+        const double kiC4 = kC4 * std::pow(2., (Leaf_con->Tleaf - 25.) / 10.);
         //myVars.VmaxC4=45;//umol m-2 s-1 maximum rubisco capacity
-        const double VmaxiC4 = VmaxC4 * pow(2, ((Leaf_con->Tleaf - 25) / 10)) / ((1 + exp(0.3 * (13 - Leaf_con->Tleaf))) * (1 + exp(0.3 * (Leaf_con->Tleaf - 36))));
+        const double VmaxiC4 = VmaxC4 * std::pow(2., ((Leaf_con->Tleaf - 25.) / 10.)) / ((1. + std::exp(0.3 * (13. - Leaf_con->Tleaf))) * (1. + std::exp(0.3 * (Leaf_con->Tleaf - 36.))));
         const double Ji = 0.05 * CONVERT * theVars->TestLi;//alpha*ar*f*Qp;
-        const double Jc = Leaf_con->Ci * pow(10, -6) * Pressure * kiC4 * pow(10, 6) / Pressure;
+        const double Jc = Leaf_con->Ci * std::pow(10., -6.) * Pressure * kiC4 * std::pow(10., 6.) / Pressure;
         const double Je = VmaxiC4;
         //Ax=[Ji Jc Je];
-        const double M = (Je + Ji - sqrt( pow((Je + Ji), 2) - 4 * ThetaC4 * Je * Ji)) / (2 * ThetaC4);
-        const double GrossAssimilation = (M + Jc - sqrt( pow((M + Jc), 2) - 4 * BetaC4 * M * Jc)) / (2 * BetaC4);
+        const double M = (Je + Ji - std::sqrt(std::pow((Je + Ji), 2.) - 4. * ThetaC4 * Je * Ji)) / (2. * ThetaC4);
+        const double GrossAssimilation = (M + Jc - std::sqrt(std::pow((M + Jc), 2.) - 4. * BetaC4 * M * Jc)) / (2. * BetaC4);
         NetAssimilation = GrossAssimilation - Rd;
         //end
     } else {
-        const double vinf = gm * Sc * pow(10, (-3)) * (Leaf_con->Ci / (3 * pow(10, 4)) - Leaf_con->parent->Enzyme_con->MC_CO2);
-        NetAssimilation = vinf * 1000;
+        const double vinf = gm * Sc * std::pow(10., -3.) * (Leaf_con->Ci / (3. * std::pow(10., 4.)) - Leaf_con->parent->Enzyme_con->MC_CO2);
+        NetAssimilation = vinf * 1000.;
     }
     const double LeafTemperatureKelvin = Leaf_con->Tleaf + 273.15;//Leaf temperature K
     const double TemperatureKelvin = theVars->Tp + 273.15;// Air temperature K
-    const double ESatweather = 0.611 * exp(17.502 * theVars->Tp / (theVars->Tp + 240.97));//Vapor pressure kPa
-    const double ESaturation = 0.611 * exp(17.502 * Leaf_con->Tleaf / (Leaf_con->Tleaf + 240.97));//Vapor pressure kPa
+    const double ESatweather = 0.611 * std::exp(17.502 * theVars->Tp / (theVars->Tp + 240.97));//Vapor pressure kPa
+    const double ESaturation = 0.611 * std::exp(17.502 * Leaf_con->Tleaf / (Leaf_con->Tleaf + 240.97));//Vapor pressure kPa
 
     const double Ea = theVars->WeatherRH * ESatweather;//Vapor pressure kPa
 
-    const double TDifference = (LeafTemperatureKelvin / (1.0 - 0.378 * Eb / Pressure)) - (TemperatureKelvin / (1.0 - 0.378 * Ea * 1000 / Pressure));
+    const double TDifference = (LeafTemperatureKelvin / (1.0 - 0.378 * Eb / Pressure)) - (TemperatureKelvin / (1.0 - 0.378 * Ea * 1000. / Pressure));
 
-    const double GbForced = CForced * pow(TemperatureKelvin, 0.56) * sqrt((TemperatureKelvin + 120.0) * (theVars->Wind / LeafDimension / Pressure));
-    const double GbFree = CFree * pow(LeafTemperatureKelvin, 0.56) * sqrt((LeafTemperatureKelvin + 120.0) / Pressure) *  pow((abs(TDifference) / LeafDimension), 0.25);
+    const double GbForced = CForced * std::pow(TemperatureKelvin, 0.56) * std::sqrt((TemperatureKelvin + 120.0) * (theVars->Wind / LeafDimension / Pressure));
+    const double GbFree = CFree * std::pow(LeafTemperatureKelvin, 0.56) * std::sqrt((LeafTemperatureKelvin + 120.0) / Pressure) *  std::pow((std::abs(TDifference) / LeafDimension), 0.25);
 
     double Gbw, Cb;
     if (GbFree >= GbForced) {
@@ -87,14 +113,13 @@ void Leaf::_Rate(const double t, const LeafCondition* const Leaf_con, Variables 
     const double c = 1.104;
     const double PhiLeaf = 0.;//Mpa
     const double gsxsen = 1.;
-    const double WaterStressFactor = a * exp(-b * PhiLeaf) + c;
+    const double WaterStressFactor = a * std::exp(-b * PhiLeaf) + c;
 
     Gsw0 = gsxsen * Gsw0 * WaterStressFactor;//Apply water stress factor
     double Gs0 = Gsw0 / 1.6;
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     //if gs response time is 0
-    if (Gs0 < 0)
-        Gs0 = 0;
+    Gs0 = std::max(Gs0, 0.);
 
     //if gs response time is not O
     double vgs;
@@ -103,8 +128,8 @@ void Leaf::_Rate(const double t, const LeafCondition* const Leaf_con, Variables 
 
     if (theVars->GsResponse) {
         if (kdcon) {
-            kd_Gs = 1 / (theVars->kd / 60);
-            ki_Gs = 1 / (theVars->ki / 60);
+            kd_Gs = 1. / (theVars->kd / 60.);
+            ki_Gs = 1. / (theVars->ki / 60.);
         } else {
             //kd_Gs = 1 / ((theVars->kd + myVars.ainter * I) / 60);
             //ki_Gs = 1 / (theVars->ki / 60);
@@ -119,7 +144,7 @@ void Leaf::_Rate(const double t, const LeafCondition* const Leaf_con, Variables 
     } else {
         Gs = Gs0;
         Gsw = Gsw0;
-        vgs = 0;
+        vgs = 0.;
     }
 
     Cb = theVars->CO2_in - NetAssimilation / Gb;
@@ -129,21 +154,21 @@ void Leaf::_Rate(const double t, const LeafCondition* const Leaf_con, Variables 
 
     theVars->Leaf_Vel.vCO2b = Gb * (theVars->CO2_in - Cb);
     theVars->Leaf_Vel.vCO2s = Gs * (Cb - Leaf_con->Ci);
-    theVars->Leaf_Vel.vH2Ob = Gbw * (Eb - Ea) / (Pressure / 1000.0) * pow(10, 6.0);
-    theVars->Leaf_Vel.vH2Os = Gsw * (ESaturation - Eb) / (Pressure / 1000.0) * pow(10, 6.0);
+    theVars->Leaf_Vel.vH2Ob = Gbw * (Eb - Ea) / (Pressure / 1000.0) * std::pow(10., 6.0);
+    theVars->Leaf_Vel.vH2Os = Gsw * (ESaturation - Eb) / (Pressure / 1000.0) * std::pow(10., 6.0);
     theVars->Leaf_Vel.vCO2total = Gctotal * (theVars->CO2_in - Leaf_con->Ci);
 
-    const double vH2Ototal = Gwtotal * (ESaturation - Ea) / (Pressure / 1000.0) * pow(10, 6.0);
+    const double vH2Ototal = Gwtotal * (ESaturation - Ea) / (Pressure / 1000.0) * std::pow(10., 6.0);
 
     const double LeafEnergyFluxMe = 0.506 * NetAssimilation;//Energy in biochemical reactions W/m2
 
     if (theVars->Radiation_LW == 0.)
-        theVars->Radiation_LW = LWFactor * Epsilon * Boltzman *  pow((273.15 + theVars->Tp), 4);
+        theVars->Radiation_LW = LWFactor * Epsilon * Boltzman *  std::pow((273.15 + theVars->Tp), 4.);
 
     const double SensibleHeat = HFactor * ConstantsCp * 0.924 * Gbw * (Leaf_con->Tleaf - theVars->Tp);
 
-    const double Emission = LWFactor * Epsilon * Boltzman *  pow((273.15 + Leaf_con->Tleaf), 4.0);
-    const double LatentHeat = LEFactor * vH2Ototal / pow(10, 6.0) * LatentHeatVaporization;
+    const double Emission = LWFactor * Epsilon * Boltzman * std::pow((273.15 + Leaf_con->Tleaf), 4.0);
+    const double LatentHeat = LEFactor * vH2Ototal / std::pow(10., 6.0) * LatentHeatVaporization;
 
     theVars->Leaf_Vel.EnergyBalanceResidual = theVars->TestLi * Abs + theVars->Radiation_NIR + theVars->Radiation_LW - Emission - SensibleHeat - LatentHeat - LeafEnergyFluxMe;
 

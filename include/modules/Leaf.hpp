@@ -90,7 +90,7 @@ private:
       Reset the static member variables to their default values.
       */
     static void _reset();
-    static arr TempResponseEnzymes(const double Temp_Leaf);
+    static void TempResponseEnzymes(Variables *theVars, const double Temp_Leaf);
     SET_GET(vinf)
 
     static double TIME;    // The timestamp of the most recent call to _Rate

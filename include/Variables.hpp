@@ -40,6 +40,7 @@
 #include "vel/AEVel.hpp"
 #include "vel/EnzymeVel.hpp"
 #include "ke/RROEAKE.hpp"
+#include "vel/TempCorr.hpp"
 
 #include "pool/BFPool.hpp"
 #include "pool/FIBFPool.hpp"
@@ -144,9 +145,8 @@ public:
     arr RuACT_Param = zeros(2);
     arr SUCS_Param = zeros(2);
     arr XanCycle_Param = zeros(2);
-    arr Velocity_s = zeros(58);
 
-    arr TempFactor = zeros(9);
+    TempCorr TempFactor = TempCorr();
     // Vel
     vel::BFVel BF_Vel;
     vel::FIVel FI_Vel;

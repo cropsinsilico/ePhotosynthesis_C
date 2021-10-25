@@ -1,3 +1,5 @@
+#pragma once
+
 /**********************************************************************************************************************************************
  *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
  *
@@ -24,26 +26,66 @@
  *
  **********************************************************************************************************************************************/
 
-#include "vel/AEVel.hpp"
-
 namespace ePhotosynthesis {
-namespace vel {
-std::ostream& operator<<(std::ostream &out, const AEVel &in) {
-    out << "AEVel" << std::endl;
-    out << "  vATPsynthase_Act_Mchl = " << in.vATPsynthase_Act_Mchl << std::endl;
-    out << "  vNADPMDH_Act = " << in.vNADPMDH_Act << std::endl;
-    out << "  vGAPDH_Act_Mchl = " << in.vGAPDH_Act_Mchl << std::endl;
-    out << "  vATPsynthase_Act_Bchl = " << in.vATPsynthase_Act_Bchl << std::endl;
-    out << "  vPEPC_Act = " << in.vPEPC_Act << std::endl;
-    out << "  ActRubisco0 = " << in.ActRubisco0 << std::endl;
-    out << "  vRubisco_Act = " << in.vRubisco_Act << std::endl;
-    out << "  vGAPDH_Act_Bchl = " << in.vGAPDH_Act_Bchl << std::endl;
-    out << "  vFBPase_Act = " << in.vFBPase_Act << std::endl;
-    out << "  vSBPase_Act = " << in.vSBPase_Act << std::endl;
-    out << "  vPRK_Act = " << in.vPRK_Act << std::endl;
-    out << "  vRCA_Act = " << in.vRCA_Act << std::endl;
-
-    return out;
-}
-}
+class Velocity_s {
+public:
+    double Vm_1 = 0.;
+    double Vm_2 = 0.;
+    double Vm_3 = 0.;
+    double Vm_4 = 0.;
+    double Vm_5 = 0.;
+    double Vm_6 = 0.;
+    double Vm_78 = 0.;
+    double Vm_8 = 0.;
+    double Vm_10 = 0.;
+    double Vm_11 = 0.;
+    double Vm_12 = 0.;
+    double Vm_13 = 0.;
+    double Vm_14 = 0.;
+    double Vm_15 = 0.;
+    double Vm_18 = 0.;
+    double Vm_78Mchl = 0.;
+    double Vm_8Mchl = 0.;
+    double Vm_Starch = 0.;
+    double Vm_PGASink = 0.;
+    double Vm_Suc1 = 0.;
+    double Vm_Suc2 = 0.;
+    double Vm_Suc7 = 0.;
+    double Vm_Suc8 = 0.;
+    double Vm_Suc9 = 0.;
+    double Vm_Suc10 = 0.;
+    double Vm_Suc3 = 0.;
+    double Vm_Suc4 = 0.;
+    //double 0.;%Radiation_PAR*Convert/1000;
+    double Jmax = 0.;
+    double Vm_ATPM = 0.;
+    double Vm_NADPHM = 0.;
+    double Vm_ATPB = 0.;
+    double Vm_NADPHB = 0.;
+    double Vm_PR1 = 0.;
+    double Vm_PR2 = 0.;
+    double Vm_PR3 = 0.;
+    double Vm_PR4 = 0.;
+    double Vm_PR5 = 0.;
+    double Vm_PR6 = 0.;
+    double Vm_PR7 = 0.;
+    double Vm_PR8 = 0.;
+    double VTgca_PR9 = 0.;
+    double VTgcea_PR10 = 0.;
+    double Vm_62 = 0.;
+    double Vtp_Bchl = 0.;
+    double Vtp_Mchl = 0.;
+    double Vm_Sta1 = 0.;
+    double Vm_Sta2 = 0.;
+    double Vm_Sta3 = 0.;
+    double Vm_OAA_M = 0.;
+    double Vm_PYR_B = 0.;
+    double Vm_PYR_M = 0.;
+    double Vm_PEP_M = 0.;
+    double Pmal = 0.;
+    double Ppyr = 0.;
+    double Pco2 = 0.;
+    double Pc3p = 0.;
+    double Pco2_B = 0.;
+};
 }

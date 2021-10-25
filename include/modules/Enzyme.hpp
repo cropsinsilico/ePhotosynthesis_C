@@ -29,6 +29,8 @@
 #include "ModuleBase.hpp"
 #include "conditions/EnzymeCondition.hpp"
 #include "definitions.hpp"
+#include "vel/Velocity_s.hpp"
+#include "ke/KValue.hpp"
 
 namespace ePhotosynthesis {
 #ifdef TESTING
@@ -105,6 +107,8 @@ private:
     SET_GET(vNAE)
     SET_GET(V6sen)
     SET_GET_INT(pathway_option)
+    static ePhotosynthesis::Velocity_s Vel_s;
+    static KValue KVal;
     ////// 0=Normol NADP-ME type
     ////// 1=Asp+Mal transport and MDH type
     ////// 2=Asp+Mal and PCK type
@@ -114,8 +118,6 @@ private:
     ////// 7 NAD-ME type
     ////// 8 NAD-ME+PCK type
 
-
-    static std::vector<arr> KValue;
     static double TIME;    // The timestamp of the most recent call to _Rate
     static std::size_t N;  // The current size of the Enzyme TimeSeries
 };

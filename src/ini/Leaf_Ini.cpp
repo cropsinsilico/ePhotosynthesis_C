@@ -1,3 +1,29 @@
+/**********************************************************************************************************************************************
+ *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
+ *
+ * CAS-MPG Partner Institute for Computational Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
+ * China Institute of Genomic Biology and Department of Plant Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
+ * University of Illinois at Urbana Champaign
+ * Global Change and Photosynthesis Research Unit, USDA/ARS, 1406 Institute of Genomic Biology, Urbana, IL 61801, USA.
+ *
+ * Converted from Matlab to C++ by Douglas N. Friedel, National Center for Supercomputing Applications (2020)
+ *
+ *   This file is part of e-photosynthesis.
+ *
+ *    e-photosynthesis is free software; you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation;
+ *
+ *    e-photosynthesis is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License (GPL)
+ *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **********************************************************************************************************************************************/
+
 #include <math.h>
 #include "Variables.hpp"
 #include "modules/Leaf.hpp"
@@ -11,68 +37,58 @@ double Leaf::TIME = 0.;
 std::size_t Leaf::N = 1;
 
 const double R = 8.3144598;// m2 kg s-2 K-1 mol-1
-const double Ea_KCA = 40.9 * 1000;
-const double dS_KCA = 0.21 * 1000;
-const double Hd_KCA = 64.5 * 51000;
-const double Ea_Vpmax = 94.8 * 1000;
-const double dS_Vpmax = 0.25 * 1000;
-const double Hd_Vpmax = 73.3 * 1000;
-const double Ea_PPDK = 58.1 * 1000;
-const double Ea_Vcmax = 78 * 1000;
-const double Ea_Kc = 64.2 * 1000;
-const double Ea_Ko = 10.5 * 1000;
+const double Ea_KCA = 40.9 * 1000.;
+const double dS_KCA = 0.21 * 1000.;
+const double Hd_KCA = 64.5 * 51000.;
+const double Ea_Vpmax = 94.8 * 1000.;
+const double dS_Vpmax = 0.25 * 1000.;
+const double Hd_Vpmax = 73.3 * 1000.;
+const double Ea_PPDK = 58.1 * 1000.;
+const double Ea_Vcmax = 78. * 1000.;
+const double Ea_Kc = 64.2 * 1000.;
+const double Ea_Ko = 10.5 * 1000.;
 // Vm_OC_25 = 0.18;// --unused
-const double Ea_Vm_OC = 55.3 * 1000;
+const double Ea_Vm_OC = 55.3 * 1000.;
 //Ea_Jmax=43.1*1000;//grow at 25oc Bernacchi 2003
-const double Ea_Jmax = 41 * 1000;//grow at 28oc //// linear correlation between GrowTemp and Ea Bernacchi 2003
+const double Ea_Jmax = 41. * 1000.;//grow at 28oc //// linear correlation between GrowTemp and Ea Bernacchi 2003
 //Ea_Jmax=77900;Hd_Jmax=191929;dS_Jmax=627;//MASSAD 2007
-const double Q10 = 2;
+const double Q10 = 2.;
+const double Sc25 = 3. * std::pow(10., 4.);
+const double So25 = 81.58;//kpa L /mmol
+//Henry's law constant for CO2 and O2
+const double C_CO2 = 2400.;
+const double C_O2 = 1700.;
 
-arr Leaf::TempResponseEnzymes(const double Temp_leaf) {
+
+void Leaf::TempResponseEnzymes(Variables *theVars, const double Temp_leaf) {
     //WY Temp response 202001
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // //Tempreature response of enzymes
 
-
-    const double TempCorr_V1 = exp(Ea_KCA * (Temp_leaf + 273.15 - 298.15) / (298.15 * R * (Temp_leaf + 273.15))) * (1. + exp((298.15 * dS_KCA - Hd_KCA) / (298.15 * R))) / (1. + exp(((Temp_leaf + 273.15) * dS_KCA - Hd_KCA) / ((Temp_leaf + 273.15) * R)));
-    const double TempCorr_V2 = exp(Ea_Vpmax * ((Temp_leaf + 273.15) - 298.15) / (298.15 * R * (Temp_leaf + 273.15))) * (1. + exp((298.15 * dS_Vpmax - Hd_Vpmax) / (298.15 * R))) / (1. + exp(((Temp_leaf + 273.15) * dS_Vpmax - Hd_Vpmax) / ((Temp_leaf + 273.15) * R)));
-    const double TempCorr_V5 = exp(Ea_PPDK * ((Temp_leaf + 273.15) - 298.15) / (298.15 * R * (Temp_leaf + 273.15)));
-    const double TempCorr_V6 = exp(Ea_Vcmax * ((Temp_leaf + 273.15) - 298.15) / (298.15 * R * (Temp_leaf + 273.15)));
-    double TempCorr_KmCO2_6 = exp(Ea_Kc * ((Temp_leaf + 273.15) - 298.15) / (298.15 * R * (Temp_leaf + 273.15)));
-    double TempCorr_KmO2_6 = exp(Ea_Ko * ((Temp_leaf + 273.15) - 298.15) / (298.15 * R * (Temp_leaf + 273.15)));
-    const double TempCorr_Vm_OC = exp(Ea_Vm_OC * ((Temp_leaf + 273.15) - 298.15) / (298.15 * R * (Temp_leaf + 273.15)));
-    const double TempCorr_Jmax = exp(Ea_Jmax * ((Temp_leaf + 273.15) - 298.15) / (298.15 * R * (Temp_leaf + 273.15)));
     //TempCorr_Jmax=exp(Ea_Jmax*(Temp_leaf+273.15-298.15)/(298.15*R*(Temp_leaf+273.15)))*(1+exp((298.15*dS_Jmax-Hd_Jmax)/(298.15*R)))/(1+exp(((Temp_leaf+273.15)*dS_Jmax-Hd_Jmax)/((Temp_leaf+273.15)*R)));
-    // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    const double Sc25 = 3. * pow(10, 4);
-    const double So25 = 81.58;//kpa L /mmol
-    //Henry's law constant for CO2 and O2
-    const double C_CO2 = 2400.;
-    const double C_O2 = 1700.;
-    const double kH_CO2 = 1. / Sc25 * exp(C_CO2 * (1. / (Temp_leaf + 273.15) - 1. / 298.));
-    const double kH_O2 = 1. / So25 * exp(C_O2 * (1. / (Temp_leaf + 273.15) - 1. / 298.));
-    const double Sc = 1. / kH_CO2;
-    const double So = 1. / kH_O2;
-    TempCorr_KmCO2_6 = TempCorr_KmCO2_6 * Sc25 / Sc;
-    TempCorr_KmO2_6 = TempCorr_KmO2_6 * So25 / So;
+    // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const double Sc = 1. / (1. / Sc25 * std::exp(C_CO2 * (1. / (Temp_leaf + 273.15) - 1. / 298.)));
+    const double So = 1. / (1. / So25 * std::exp(C_O2 * (1. / (Temp_leaf + 273.15) - 1. / 298.)));
+
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-
     ////// ME and MDH and other enzymes
-    const double TempCorr_Vm_Enz = pow(Q10, (Temp_leaf - 25) / 10);
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    arr TempCorr = zeros(9);
-    TempCorr[0] = TempCorr_V1;
-    TempCorr[1] = TempCorr_V2;
-    TempCorr[2] = TempCorr_V5;
-    TempCorr[3] = TempCorr_V6;
-    TempCorr[4] = TempCorr_KmCO2_6;
-    TempCorr[5] = TempCorr_KmO2_6;
-    TempCorr[6] = TempCorr_Vm_OC;
-    TempCorr[7] = TempCorr_Jmax;
-    TempCorr[8] = TempCorr_Vm_Enz;
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    theVars->TempFactor.clear();
+    theVars->TempFactor.V1 = std::exp(Ea_KCA * (Temp_leaf + 273.15 - 298.15) / (298.15 * R * (Temp_leaf + 273.15))) *
+                  (1. + std::exp((298.15 * dS_KCA - Hd_KCA) / (298.15 * R))) /
+                  (1. + std::exp(((Temp_leaf + 273.15) * dS_KCA - Hd_KCA) / ((Temp_leaf + 273.15) * R)));
+    theVars->TempFactor.V2 = std::exp(Ea_Vpmax * ((Temp_leaf + 273.15) - 298.15) / (298.15 * R * (Temp_leaf + 273.15))) *
+                  (1. + std::exp((298.15 * dS_Vpmax - Hd_Vpmax) / (298.15 * R))) /
+                  (1. + std::exp(((Temp_leaf + 273.15) * dS_Vpmax - Hd_Vpmax) / ((Temp_leaf + 273.15) * R)));
+    theVars->TempFactor.V5 = std::exp(Ea_PPDK * ((Temp_leaf + 273.15) - 298.15) / (298.15 * R * (Temp_leaf + 273.15)));
+    theVars->TempFactor.V6 = std::exp(Ea_Vcmax * ((Temp_leaf + 273.15) - 298.15) / (298.15 * R * (Temp_leaf + 273.15)));
+    theVars->TempFactor.KmCO2_6 = std::exp(Ea_Kc * ((Temp_leaf + 273.15) - 298.15) / (298.15 * R * (Temp_leaf + 273.15))) * Sc25 / Sc;
+    theVars->TempFactor.KmO2_6 = std::exp(Ea_Ko * ((Temp_leaf + 273.15) - 298.15) / (298.15 * R * (Temp_leaf + 273.15))) * So25 / So;
+    theVars->TempFactor.Vm_OC = std::exp(Ea_Vm_OC * ((Temp_leaf + 273.15) - 298.15) / (298.15 * R * (Temp_leaf + 273.15)));
+    theVars->TempFactor.Jmax = std::exp(Ea_Jmax * ((Temp_leaf + 273.15) - 298.15) / (298.15 * R * (Temp_leaf + 273.15)));
+    theVars->TempFactor.Vm_Enz = pow(Q10, (Temp_leaf - 25.) / 10.);
 
     //Chl_O2a=Chl_O2*kH_O2;//WY2018
     //Chl_O2=Chl_O2*kH_O2;
@@ -129,10 +145,6 @@ arr Leaf::TempResponseEnzymes(const double Temp_leaf) {
     // SUCSV58=SUCSV58_0*Q10_58^((Tleaf-25)/10);
     //
     // PrV111= PsV1* 0.24;
-
-
-
-    return TempCorr;
 }
 LeafCondition* Leaf::_init(Variables* theVars) {
 

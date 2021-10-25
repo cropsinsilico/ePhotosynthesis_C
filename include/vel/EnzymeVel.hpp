@@ -32,7 +32,7 @@ namespace ePhotosynthesis {
 namespace vel {
 
 /**
- Class for holding the result of the BF_Rate calculations
+ Class for holding the result of the Enzyme_Rate calculations
  */
 class EnzymeVel {
 public:
@@ -40,7 +40,7 @@ public:
     /**
       Copy constructor that makes a deep copy of the given object
 
-      @param other The BFVel object to copy
+      @param other The EnzymeVel object to copy
       */
     EnzymeVel(const EnzymeVel &other) {
         v1 = other.v1;

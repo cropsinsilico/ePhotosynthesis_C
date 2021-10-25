@@ -32,7 +32,7 @@ namespace ePhotosynthesis {
 namespace vel {
 
 /**
- Class for holding the result of the BF_Rate calculations
+ Class for holding the result of the Leaf_Rate calculations
  */
 class LeafVel {
 public:
@@ -40,7 +40,7 @@ public:
     /**
       Copy constructor that makes a deep copy of the given object
 
-      @param other The BFVel object to copy
+      @param other The LeafVel object to copy
       */
     LeafVel(const LeafVel &other) {
         NetAssimilation = other.NetAssimilation;
