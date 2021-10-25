@@ -3,6 +3,7 @@
 #include "Variables.hpp"
 #include "modules/CM.hpp"
 #include "modules/PR.hpp"
+#include "modules/Enzyme.hpp"
 #include "drivers/drivers.hpp"
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
@@ -25,6 +26,10 @@ BOOST_PYTHON_MODULE(pyPhotosynthesis) {
             .def_readwrite("RedoxReg_RA_com", &Variables::RedoxReg_RA_com)
             .def_readwrite("RuACT_EPS_com", &Variables::RuACT_EPS_com)
             .def_readwrite("XanCycle_BF_com", &Variables::XanCycle_BF_com)
+            .def_readwrite("Para_mata", &Variables::Para_mata)
+            .def_readwrite("GsResponse", &Variables::GsResponse)
+            .def_readwrite("kdcon", &Variables::kdcon)
+            .def_readwrite("EAPPDK", &Variables::EAPPDK)
             .def_readwrite("GP", &Variables::GP)
             .def_readwrite("GRNC", &Variables::GRNC)
             .def_readwrite("GRNT", &Variables::GRNT)
@@ -44,9 +49,27 @@ BOOST_PYTHON_MODULE(pyPhotosynthesis) {
             .def_readwrite("PS2BF_Pi", &Variables::PS2BF_Pi)
             .def_readwrite("PS_PR_Param", &Variables::PS_PR_Param)
             .def_readwrite("Tp", &Variables::Tp)
+            .def_readwrite("Radiation_PARo", &Variables::Radiation_PARo)
+            .def_readwrite("Radiation_NIR", &Variables::Radiation_NIR)
+            .def_readwrite("Radiation_LW", &Variables::Radiation_LW)
             .def_readwrite("alfa", &Variables::alfa)
+            .def_readwrite("CI", &Variables::CI)
+            .def_readwrite("Wind", &Variables::Wind)
             .def_readwrite("fc", &Variables::fc)
             .def_readwrite("lightParam", &Variables::lightParam)
+            .def_readwrite("BallBerryInterceptC4", &Variables::BallBerryInterceptC4)
+            .def_readwrite("BallBerrySlopeC4", &Variables::BallBerrySlopeC4)
+            .def_readwrite("WeatherRH", &Variables::WeatherRH)
+            .def_readwrite("kd", &Variables::kd)
+            .def_readwrite("ki", &Variables::ki)
+            .def_readwrite("taoRub", &Variables::taoRub)
+            .def_readwrite("Vpmax", &Variables::Vpmax)
+            .def_readwrite("Vcmax", &Variables::Vcmax)
+            .def_readwrite("FactorVP", &Variables::FactorVP)
+            .def_readwrite("FactorVC", &Variables::FactorVC)
+            .def_readwrite("vrpd", &Variables::vrpd)
+            .def_readwrite("MRd", &Variables::MRd)
+            .def_readwrite("PPDKRP", &Variables::PPDKRP)
             .def_readonly("alpha1", &Variables::alpha1)
             .def_readonly("alpha2", &Variables::alpha2)
             .def_readwrite("PR_Param", &Variables::PR_Param)
@@ -104,6 +127,10 @@ BOOST_PYTHON_MODULE(pyPhotosynthesis) {
             .def_readwrite("RuACT_VEL", &Variables::RuACT_VEL)
             .def_readwrite("SUCS_VEL", &Variables::SUCS_VEL)
             .def_readwrite("XanCycle_VEL", &Variables::XanCycle_VEL)
+            .def_readwrite("Leaf_Vel", &Variables::Leaf_Vel)
+            .def_readwrite("AE_Vel", &Variables::AE_Vel)
+            .def_readwrite("Enzyme_Vel", &Variables::Enzyme_Vel)
+            .def_readwrite("TempFactor", &Variables::TempFactor)
             .def_readwrite("useC3", &Variables::useC3);
     python::exportModules();
     python::exportDrivers();
@@ -119,6 +146,9 @@ void python::exportModules() {
     bp::class_<modules::PR>("PR", bp::no_init)
             .def("setRUBISCOTOTAL", &modules::PR::setRUBISCOTOTAL)
             .staticmethod("setRUBISCOTOTAL");
+    bp::class_<modules::Enzyme>("Enzyme", bp::no_init)
+            .def("setpathway_option", & modules::Enzyme::setpathway_option)
+            .staticmethod("setpathway_option");
 }
 
 void python::exportDrivers() {
@@ -148,7 +178,10 @@ void python::exportDrivers() {
             .def("run", &drivers::CMDriver::run)
             .def("setup", &drivers::CMDriver::setup)
             .def("getResults", &drivers::CMDriver::getResults);
-
+    bp::class_<drivers::RAC4leafMetaDriver, bp::bases<DriverWrap>, boost::noncopyable>("RAC4leafMetaDriver", bp::init<Variables*, double, double, double, int, double, double, bool>()[bp::with_custodian_and_ward_postcall<0,2>()])
+            .def("run", &drivers::RAC4leafMetaDriver::run)
+            .def("setup", &drivers::RAC4leafMetaDriver::setup)
+            .def("getResults", &drivers::RAC4leafMetaDriver::getResults);
 }
 
 #endif
