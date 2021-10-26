@@ -14,6 +14,7 @@ The ePhotosynthesis binary can be run from the command line with no command line
 | `-a, --atpcost` | File name | `InputATPCost.txt` | The `InputATPCost.txt` file. |
 | `-e, --evn` | File name | `InputEvn.txt` | The `InputEvn.txt` file. |
 | `-n, --enzyme` | File name | | The input enzyme file. Only needed if driver 4 is used. |
+| `-p, --paramFile` | File name | | The input parameter file for the C4 model. |
 | <b><center>Module Control</center></b> ||||
 | `-d, --driver` | Int | `1` | The driver to use. Choices are:<br>1 - trDynaPS_Drive<br>2 - DynaPS_Drive<br>3 - CM_Drive<br>4 - EPS_Drive |
 | `-c, --c3` | | | Use the C3 model, automatically set to true for EPS driver. |
@@ -26,6 +27,8 @@ The ePhotosynthesis binary can be run from the command line with no command line
 | `-r, --reltol` | Double | `1e-4` | Relative tolerance for calculations. |
 | `-s, --stoptime` | Double | `5000.0` | The time to stop calculations. |
 | `-t, --abstol` | Double | `1e-5` | Absolute tolerance for calculations. |
+| `-w, --pathway` | Int | `0` | The pathway option to use for the C4 driver. Choices are:<br> 0 - Normol NADP-ME type<br> 1 - Asp+Mal transport and MDH type<br> 2 - Asp+Mal and PCK type<br> 3 - Asp+Mal and PCK+MDH type<br> 4 - Asp and PCK only type<br> 6 - DiT2 mutant<br> 7 - NAD-ME type<br> 8 - NAD-ME+PCK type |
+| `-x, --species` | Int | `3` | The species for the C4 model. Choices are:<br> 1 - Maize<br> 2 - sorghum<br> 3 - sugarcane
 | <b><center>Other</center></b> ||||
 | `-o, --options` | File name | | Name of a text file which specifies any of these options. Command line arguments have priority. (see @ref options_file for details) |
 | `--debug` | Int | `0` | Debug level. (see @ref debugging for details) |
