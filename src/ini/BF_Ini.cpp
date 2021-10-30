@@ -65,7 +65,7 @@ BFCondition* BF::_init(Variables *theVars) {
         // CPSi=1.0131;% 1.0237 WY201803
         // cNADPHsyn=1.094468408;%1.0388 WY201803
         if (theVars->lightParam == 0.) {
-            const double light_scaler = theVars->alfa * (1. - theVars->fc);
+            const double light_scaler = theVars->alfa * (1. - theVars->fc)/2.;
             theVars->lightParam = theVars->TestLi * 30. * light_scaler;
         }
 

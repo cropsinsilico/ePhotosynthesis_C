@@ -52,7 +52,7 @@ void EPSDriver::setup() {
     inputVars->alfa = 0.85;
     PS::setJmax(inputVars->EnzymeAct.at("Jmax"));
     inputVars->fc = 0.15;
-    PS::setTheta(0.7);
+    PS::setTheta(0.95);
     PS::setbeta(0.7519);
     inputVars->BF_FI_com = true;
     inputVars->EnzymeAct.at("V1") *= inputVars->alpha1;
