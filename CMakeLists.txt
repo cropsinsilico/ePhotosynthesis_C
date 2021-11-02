@@ -87,6 +87,9 @@ endif(NOT TEST_COVERAGE)
 
 if(BUILD_TESTS)
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DTESTING")
+    file(GLOB_RECURSE TEST_SOURCE "tests/*.cpp")
+else()
+    set(TEST_SOURCE "")
 endif()
 
 if(NOT CMAKE_BUILD_TYPE)
