@@ -34,12 +34,22 @@ namespace ePhotosynthesis {
 namespace drivers {
 class RAC4leafMetaDriver;
 }
+#ifdef TESTING
+namespace test {
+class RAC4leafMetaModuleTest;
+}
+#endif
+
 namespace modules {
 
 class RAC4leafMeta : public ModuleBase<RAC4leafMeta, conditions::RAC4leafMetaCondition> {
 private:
     friend ModuleBase;
     friend drivers::RAC4leafMetaDriver;
+#ifdef TESTING
+    friend class test::RAC4leafMetaModuleTest;
+#endif
+
     /**
       Function to set the initial state of the trDynaPSCondition class.
 

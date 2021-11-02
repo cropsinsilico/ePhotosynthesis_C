@@ -31,6 +31,12 @@
 #include "conditions/RAC4leafMetaCondition.hpp"
 
 namespace ePhotosynthesis {
+#ifdef TESTING
+namespace test {
+class RAC4leafMetaDriverTest;
+}
+#endif
+
 namespace drivers {
 
 class RAC4leafMetaDriver : public Driver {
@@ -52,6 +58,10 @@ public:
     void getResults() override;
 
 private:
+#ifdef TESTING
+    friend class test::RAC4leafMetaDriverTest;
+#endif
+
     /**
       \copydoc drivers::Driver::MB
       */
