@@ -126,7 +126,9 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {
+    static void _reset() {
+        RACondition::reset();
+        XanCycleCondition::reset();
         count = 0;
     }
     static std::size_t count;  // size of the current serialized output

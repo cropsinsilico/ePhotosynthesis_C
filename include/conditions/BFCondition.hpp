@@ -135,7 +135,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {
+    static void _reset() {
         PS_connect = false;
         RROEA_connect = false;
         FI_connect = false;

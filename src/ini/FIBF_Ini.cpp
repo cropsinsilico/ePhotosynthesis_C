@@ -60,6 +60,7 @@ void FIBF::_reset()  {
     ChlT2 = 0.;
     FIBF2FI_PQ = 0.;
     FIBF2FI_PQa = 0.;
+    FIBFCondition::reset();
     FI::_reset();
     BF::_reset();
 }

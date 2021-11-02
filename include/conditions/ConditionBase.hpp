@@ -132,6 +132,9 @@ public:
 
     virtual std::ostream& _print(std::ostream &out, const uint tab = 0) const = 0;
 
+    static void reset() {
+        T::_reset();
+    }
 #ifdef INCDEBUG
     Debug::DebugLevel debugLevel() const {return static_cast<const T*>(this)->_dlevel;}
 #endif

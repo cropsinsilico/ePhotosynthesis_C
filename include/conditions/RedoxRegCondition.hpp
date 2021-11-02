@@ -111,7 +111,8 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {
+    static void _reset() {
+        RACondition::reset();
         V6 = 0.;
         V9 = 0.;
         V13 = 0.;

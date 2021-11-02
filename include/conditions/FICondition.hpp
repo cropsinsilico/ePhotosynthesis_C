@@ -124,7 +124,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset(){
+    static void _reset(){
         BF_connect = false;
     }
 

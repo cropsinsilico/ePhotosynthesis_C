@@ -109,7 +109,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {}
+    static void _reset() {}
 
     static const std::size_t count; // size of the current serialized output
 #ifdef INCDEBUG

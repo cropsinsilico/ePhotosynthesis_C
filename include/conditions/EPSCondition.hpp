@@ -112,13 +112,17 @@ private:
       \returns The size of the serialized vector.
       */
     static std::size_t _size() {
-        return CMCondition::size() + FIBFCondition::size();
+        if (count == 0)
+            count = CMCondition::size() + FIBFCondition::size();
+        return count;
     }
 
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {
+    static void _reset() {
+        CMCondition::reset();
+        FIBFCondition::reset();
         count = 0;
     }
     /**

@@ -113,7 +113,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {
+    static void _reset() {
         PS_connect = false;
         PS_RuBP = false;
     }

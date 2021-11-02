@@ -33,6 +33,12 @@ namespace ePhotosynthesis {
 namespace modules {
 class trDynaPS;
 }
+#ifdef TESTING
+namespace test {
+class trDynaPSConditionTest;
+}
+#endif
+
 namespace conditions {
 
 /**
@@ -94,6 +100,10 @@ public:
 private:
     friend ConditionBase;
     friend class modules::trDynaPS;
+#ifdef TESTING
+    friend class test::trDynaPSConditionTest;
+#endif
+
     /**
       \copydoc ConditionBase::_fromArray
       */
@@ -123,7 +133,9 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {
+    static void _reset() {
+        RROEACondition::reset();
+        DynaPSCondition::reset();
         count = 0;
     }
 
