@@ -38,9 +38,9 @@ class RAC4leafMetaCondition;
 /**
  Class for holding the inputs to BF_mb
  */
-class EnzymeCondition : public ConditionBase<EnzymeCondition, RAC4leafMetaCondition> {
+class LeafCondition : public ConditionBase<LeafCondition, RAC4leafMetaCondition> {
 public:
-    EnzymeCondition(RAC4leafMetaCondition* par = nullptr) {
+    LeafCondition(RAC4leafMetaCondition* par = nullptr) {
         setParent(par);
     }
     /**
@@ -48,104 +48,22 @@ public:
 
       @param other The BFCondition object to copy
       */
-    EnzymeCondition(const EnzymeCondition* const other);
+    LeafCondition(const LeafCondition* const other);
     /**
       Constructor to create an object from the input vector, starting at the given index
 
       @param vec Vector to create the object from
       @param offset The index in vec to start creating the object from
       */
-    EnzymeCondition(const arr &vec, const std::size_t offset = 0);
+    LeafCondition(const arr &vec, const std::size_t offset = 0);
 
-    double MC_HCO3 = 0.;
-    double MC_OAA = 0.;
-    double MC_PEP = 0.;
-    double MC_Malate = 0.;
-    double MC_Pyruvate = 0.;
-    double MC_PGA = 0.;
-    double MC_FBP = 0.;
-    double MC_UDPG = 0.;
-    double MC_SUCP = 0.;
-    double MC_SUC = 0.;
-    double MC_F26BP = 0.;
-    double MC_ATP = 0.;
-    double MC_T3P = 0.;
-    double MC_HexP = 0.;
-    double MC_Sucrose = 0.;
-    double Mchl_OAA = 0.;
-    double Mchl_Malate = 0.;
-    double Mchl_PEP = 0.;
-    double Mchl_Pyruvate = 0.;
-    double Mchl_NADPH = 0.;
-    double Mchl_ATP = 0.;
-    double Mchl_PGA = 0.;
-    double Mchl_DPGA = 0.;
-    double Mchl_T3P = 0.;
-    double BSC_T3P = 0.;
-    double BSC_PGA = 0.;
-    double BSC_Malate = 0.;
-    double BSC_Pyruvate = 0.;
-    double BSC_CO2 = 0.;
-    double Bchl_CO2 = 0.;
-    double Bchl_RuBP = 0.;
-    double Bchl_PGA = 0.;
-    double Bchl_DPGA = 0.;
-    double Bchl_ATP = 0.;
-    double Bchl_NADPH = 0.;
-    double Bchl_SBP = 0.;
-    double Bchl_S7P = 0.;
-    double Bchl_FBP = 0.;
-    double Bchl_E4P = 0.;
-    double Bchl_Starch = 0.;
-    double Bchl_Rubisco = 0.;
-    double Bchl_T3P = 0.;
-    double Bchl_HexP = 0.;
-    double Bchl_Pent = 0.;
-    double Bchl_Malate = 0.;
-    double Bchl_Pyruvate = 0.;
-    double Bchl_PGCA = 0.;
-    double Bchl_GCA = 0.;
-    double Bchl_GCEA = 0.;
-    double Bper_GCA = 0.;
-    double Bper_GOA = 0.;
-    double Bper_GLY = 0.;
-    double Bper_SER = 0.;
-    double Bper_HPR = 0.;
-    double Bper_GCEA = 0.;
-    double MC_CO2 = 0.;
-    double Bchl_PPi = 0.;
-    double Bchl_ADPG = 0.;
-
-    double MC_Glu = 0.;
-    double MC_OxoG = 0.;
-    double MC_Asp = 0.;
-    double MC_Ala = 0.;
-
-    double BSC_OxoG = 0.;
-    double BSC_Glu = 0.;
-    double BSC_Asp = 0.;
-    double BSC_Ala = 0.;
-    double BSC_OAA = 0.;
-    double BSC_PEP = 0.;
-    double BSC_ATP = 0.;
-    double Bchl_OAA = 0.;
-    double MC_O2 = 0.;
-    double Mchl_O2 = 0.;
-    double BSC_O2 = 0.;
-    double Bchl_O2 = 0.;
-    double Bchl_PEP = 0.; //WY PPDK in BS
-    double Mchl_GCEA = 0.;
-    double Bmito_OAA = 0.;
-    double Bmito_MAL = 0.;
-    double Bmito_PYR = 0.;
-    double Bmito_CO2 = 0.;
-    double Bmito_NADH = 0.;
-    double Bchl_Asp = 0.;
-    double Bchl_Ala = 0.;
-    double Mchl_Asp = 0.;
-    double Mchl_Ala = 0.;
-    double E_PPDK_Mchl = 0.;
-    double EP_PPDK_Mchl = 0.;
+    double Ci = 0.;
+    double Cb = 0.;
+    double Eb = 0.;
+    double Gs = 0.;
+    double Tleaf = 0.;
+    double H2Oou = 0.;
+    double CO2in = 0.;
 
     /**
       Write the contents of the instance to the output stream.
@@ -186,7 +104,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {}
+    static void _reset() {}
     static const std::size_t count;  // The Maximum size of the serialized vector.
 #ifdef INCDEBUG
     const static Debug::DebugLevel _dlevel = Debug::Low;

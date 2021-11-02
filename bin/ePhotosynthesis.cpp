@@ -34,7 +34,7 @@
 #include "modules/CM.hpp"
 #include "modules/EPS.hpp"
 #include "modules/PR.hpp"
-#include "modules/Enzyme.hpp"
+#include "modules/Enzyme_C4.hpp"
 #include "drivers/drivers.hpp"
 #include "Variables.hpp"
 

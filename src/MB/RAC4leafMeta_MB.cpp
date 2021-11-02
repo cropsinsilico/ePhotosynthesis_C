@@ -27,9 +27,9 @@
 #include "Variables.hpp"
 #include "globals.hpp"
 #include "modules/RAC4leafMeta.hpp"
-#include "modules/Leaf.hpp"
-#include "modules/AE.hpp"
-#include "modules/Enzyme.hpp"
+#include "modules/Leaf_C4.hpp"
+#include "modules/AE_C4.hpp"
+#include "modules/Enzyme_C4.hpp"
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;

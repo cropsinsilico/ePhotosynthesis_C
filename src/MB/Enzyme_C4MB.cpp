@@ -25,7 +25,7 @@
  **********************************************************************************************************************************************/
 #include "Variables.hpp"
 #include "globals.hpp"
-#include "modules/Enzyme.hpp"
+#include "modules/Enzyme_C4.hpp"
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
@@ -232,4 +232,11 @@ EnzymeCondition* Enzyme::_MB_con(const double t, const EnzymeCondition* Enzyme_c
     dydt->EP_PPDK_Mchl = (theVars->Enzyme_Vel.vEA_PPDKRP_I - theVars->Enzyme_Vel.vEA_PPDKRP_A) / VolMchl;
 
     return dydt;
+}
+
+arr Enzyme::_MB(const double t, const EnzymeCondition* const Enzyme_con, Variables *theVars) {
+    EnzymeCondition* dydt = _MB_con(t, Enzyme_con, theVars);
+    arr tmp = dydt->toArray();
+    delete dydt;
+    return tmp;
 }

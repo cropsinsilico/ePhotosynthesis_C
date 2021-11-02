@@ -24,38 +24,22 @@
  *
  **********************************************************************************************************************************************/
 
-#include "conditions/LeafCondition.hpp"
-
-using namespace ePhotosynthesis;
+#include "conditions/AE_C4Condition.hpp"
 using namespace ePhotosynthesis::conditions;
 
-const std::size_t LeafCondition::count = 7;
-
-LeafCondition::LeafCondition(const LeafCondition* const other) {
-    Ci = other->Ci;
-    Cb = other->Cb;
-    Eb = other->Eb;
-    Gs = other->Gs;
-    Tleaf = other->Tleaf;
-    H2Oou = other->H2Oou;
-    CO2in = other->CO2in;
-}
-
-LeafCondition::LeafCondition(const arr &vec, const std::size_t offset) {
-    fromArray(vec, offset);
-}
-
-void LeafCondition::_fromArray(const arr &vec, const std::size_t offset) {
-    std::size_t counter = 0;
-    Ci = vec[offset + counter++];
-    Cb = vec[offset + counter++];
-    Eb = vec[offset + counter++];
-    Gs = vec[offset + counter++];
-    Tleaf = vec[offset + counter++];
-    H2Oou = vec[offset + counter++];
-    CO2in = vec[offset + counter++];
-}
-
-arr LeafCondition::_toArray() const {
-    return {Ci, Cb, Eb, Gs, Tleaf, H2Oou, CO2in};
+std::ostream& AECondition::_print(std::ostream &out, const uint tab) const {
+    const std::string space(tab * 4, ' ');
+    out << space << "AECondition" << std::endl;
+    out << space << "  Mchl_ActATPsynthase = " << Mchl_ActATPsynthase << std::endl;
+    out << space << "  Mchl_ActGAPDH = " << Mchl_ActGAPDH << std::endl;
+    out << space << "  Mchl_ActNADPMDH = " << Mchl_ActNADPMDH << std::endl;
+    out << space << "  Bchl_ActATPsynthase = " << Bchl_ActATPsynthase << std::endl;
+    out << space << "  Bchl_ActPEPC = " << Bchl_ActPEPC << std::endl;
+    out << space << "  Bchl_ActGAPDH = " << Bchl_ActGAPDH << std::endl;
+    out << space << "  Bchl_ActFBPase = " << Bchl_ActFBPase << std::endl;
+    out << space << "  Bchl_ActSBPase = " << Bchl_ActSBPase << std::endl;
+    out << space << "  Bchl_ActPRK = " << Bchl_ActPRK << std::endl;
+    out << space << "  Bchl_ActRubisco = " << Bchl_ActRubisco << std::endl;
+    out << space << "  Bchl_ActRCA = " << Bchl_ActRCA << std::endl;
+    return out;
 }

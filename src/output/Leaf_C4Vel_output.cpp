@@ -24,33 +24,28 @@
  *
  **********************************************************************************************************************************************/
 
-#include "Variables.hpp"
-#include "globals.hpp"
-#include "modules/AE.hpp"
+#include "vel/Leaf_C4Vel.hpp"
 
-using namespace ePhotosynthesis;
-using namespace ePhotosynthesis::modules;
-using namespace ePhotosynthesis::conditions;
+namespace ePhotosynthesis {
+namespace vel {
+std::ostream& operator<<(std::ostream &out, const LeafVel &in) {
+    out << "LeafVel" << std::endl;
+    out << "  NetAssimilation = " << in.NetAssimilation << std::endl;
+    out << "  vCO2b = " << in.vCO2b << std::endl;
+    out << "  vCO2s = " << in.vCO2s << std::endl;
+    out << "  vH2Ob = " << in.vH2Ob << std::endl;
+    out << "  vH2Os = " << in.vH2Os << std::endl;
+    out << "  EnergyBalanceResidual = " << in.EnergyBalanceResidual << std::endl;
+    out << "  vCO2total = " << in.vCO2total << std::endl;
+    out << "  vH2Ototal = " << in.vH2Ototal << std::endl;
+    out << "  vgs = " << in.vgs << std::endl;
+    out << "  vleak = " << in.vleak << std::endl;
+    out << "  Gs = " << in.Gs << std::endl;
+    out << "  Cb = " << in.Cb << std::endl;
+    out << "  Ci = " << in.Ci << std::endl;
+    out << "  Gbw = " << in.Gbw << std::endl;
+    return out;
+}
 
-AECondition* AE::_MB_con(const double t, const AECondition* AE_con, Variables *theVars) {
-
-
-    //arr LM_v = RAC4LeafMetaVel(t, LM_con, myVars);
-    Rate(t, AE_con, theVars);
-
-    AECondition* dydt = new AECondition();
-
-    dydt->Mchl_ActATPsynthase = theVars->AE_Vel.vATPsynthase_Act_Mchl;
-    dydt->Mchl_ActGAPDH = theVars->AE_Vel.vGAPDH_Act_Mchl;
-    dydt->Mchl_ActNADPMDH = theVars->AE_Vel.vNADPMDH_Act;
-    dydt->Bchl_ActATPsynthase = theVars->AE_Vel.vATPsynthase_Act_Bchl;
-    dydt->Bchl_ActPEPC = theVars->AE_Vel.vPEPC_Act;
-    dydt->Bchl_ActGAPDH = theVars->AE_Vel.vGAPDH_Act_Bchl;
-    dydt->Bchl_ActFBPase = theVars->AE_Vel.vFBPase_Act;
-    dydt->Bchl_ActSBPase = theVars->AE_Vel.vSBPase_Act;
-    dydt->Bchl_ActPRK = theVars->AE_Vel.vPRK_Act;
-    dydt->Bchl_ActRubisco = theVars->AE_Vel.vRubisco_Act;
-    dydt->Bchl_ActRCA = theVars->AE_Vel.vRCA_Act;
-
-    return dydt;
+}
 }

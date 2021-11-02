@@ -24,37 +24,48 @@
  *
  **********************************************************************************************************************************************/
 
-#include "Variables.hpp"
-#include "modules/AE.hpp"
+#include "conditions/AE_C4Condition.hpp"
 
 using namespace ePhotosynthesis;
-using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
+const std::size_t AECondition::count = 11;
 
-double AE::TIME = 0.;
-std::size_t AE::N = 1;
-
-AECondition* AE::_init(Variables *theVars) {
-
-    AECondition* AE_con = new AECondition();
-
-    //Initial value
-
-    AE_con->Mchl_ActATPsynthase = 0.;
-    AE_con->Mchl_ActGAPDH = 0.;
-    AE_con->Mchl_ActNADPMDH = 0.;
-    AE_con->Bchl_ActATPsynthase = 3.;
-    AE_con->Bchl_ActPEPC = 0.05;
-    AE_con->Bchl_ActGAPDH = 0.3;
-    AE_con->Bchl_ActFBPase = 0.3;
-    AE_con->Bchl_ActSBPase = 0.3;
-    AE_con->Bchl_ActPRK = 0.3;
-    AE_con->Bchl_ActRubisco = 0.1;
-    AE_con->Bchl_ActRCA = 0.05;
-
-    return AE_con;
+AECondition::AECondition(const AECondition* const other) {
+    Mchl_ActATPsynthase = other->Mchl_ActATPsynthase;
+    Mchl_ActGAPDH = other->Mchl_ActGAPDH;
+    Mchl_ActNADPMDH = other->Mchl_ActNADPMDH;
+    Bchl_ActATPsynthase = other->Bchl_ActATPsynthase;
+    Bchl_ActPEPC = other->Bchl_ActPEPC;
+    Bchl_ActGAPDH = other->Bchl_ActGAPDH;
+    Bchl_ActFBPase = other->Bchl_ActFBPase;
+    Bchl_ActSBPase = other->Bchl_ActSBPase;
+    Bchl_ActPRK = other->Bchl_ActPRK;
+    Bchl_ActRubisco = other->Bchl_ActRubisco;
+    Bchl_ActRCA = other->Bchl_ActRCA;
 }
 
-void AE::_reset() {
+AECondition::AECondition(const arr &vec, const std::size_t offset) {
+    fromArray(vec, offset);
+}
 
+void AECondition::_fromArray(const arr &vec, const std::size_t offset) {
+    std::size_t counter = 0;
+    Mchl_ActATPsynthase = vec[offset + counter++];
+    Mchl_ActGAPDH = vec[offset + counter++];
+    Mchl_ActNADPMDH = vec[offset + counter++];
+    Bchl_ActATPsynthase = vec[offset + counter++];
+    Bchl_ActPEPC = vec[offset + counter++];
+    Bchl_ActGAPDH = vec[offset + counter++];
+    Bchl_ActFBPase = vec[offset + counter++];
+    Bchl_ActSBPase = vec[offset + counter++];
+    Bchl_ActPRK = vec[offset + counter++];
+    Bchl_ActRubisco = vec[offset + counter++];
+    Bchl_ActRCA = vec[offset + counter++];
+}
+
+arr AECondition::_toArray() const {
+    return {Mchl_ActATPsynthase, Mchl_ActGAPDH, Mchl_ActNADPMDH,
+                Bchl_ActATPsynthase, Bchl_ActPEPC, Bchl_ActGAPDH,
+                Bchl_ActFBPase, Bchl_ActSBPase, Bchl_ActPRK,
+                Bchl_ActRubisco, Bchl_ActRCA};
 }

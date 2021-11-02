@@ -24,22 +24,40 @@
  *
  **********************************************************************************************************************************************/
 
-#include "conditions/AECondition.hpp"
+#include "Variables.hpp"
+#include "globals.hpp"
+#include "modules/AE_C4.hpp"
+
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-std::ostream& AECondition::_print(std::ostream &out, const uint tab) const {
-    const std::string space(tab * 4, ' ');
-    out << space << "AECondition" << std::endl;
-    out << space << "  Mchl_ActATPsynthase = " << Mchl_ActATPsynthase << std::endl;
-    out << space << "  Mchl_ActGAPDH = " << Mchl_ActGAPDH << std::endl;
-    out << space << "  Mchl_ActNADPMDH = " << Mchl_ActNADPMDH << std::endl;
-    out << space << "  Bchl_ActATPsynthase = " << Bchl_ActATPsynthase << std::endl;
-    out << space << "  Bchl_ActPEPC = " << Bchl_ActPEPC << std::endl;
-    out << space << "  Bchl_ActGAPDH = " << Bchl_ActGAPDH << std::endl;
-    out << space << "  Bchl_ActFBPase = " << Bchl_ActFBPase << std::endl;
-    out << space << "  Bchl_ActSBPase = " << Bchl_ActSBPase << std::endl;
-    out << space << "  Bchl_ActPRK = " << Bchl_ActPRK << std::endl;
-    out << space << "  Bchl_ActRubisco = " << Bchl_ActRubisco << std::endl;
-    out << space << "  Bchl_ActRCA = " << Bchl_ActRCA << std::endl;
-    return out;
+AECondition* AE::_MB_con(const double t, const AECondition* AE_con, Variables *theVars) {
+
+
+    //arr LM_v = RAC4LeafMetaVel(t, LM_con, myVars);
+    Rate(t, AE_con, theVars);
+
+    AECondition* dydt = new AECondition();
+
+    dydt->Mchl_ActATPsynthase = theVars->AE_Vel.vATPsynthase_Act_Mchl;
+    dydt->Mchl_ActGAPDH = theVars->AE_Vel.vGAPDH_Act_Mchl;
+    dydt->Mchl_ActNADPMDH = theVars->AE_Vel.vNADPMDH_Act;
+    dydt->Bchl_ActATPsynthase = theVars->AE_Vel.vATPsynthase_Act_Bchl;
+    dydt->Bchl_ActPEPC = theVars->AE_Vel.vPEPC_Act;
+    dydt->Bchl_ActGAPDH = theVars->AE_Vel.vGAPDH_Act_Bchl;
+    dydt->Bchl_ActFBPase = theVars->AE_Vel.vFBPase_Act;
+    dydt->Bchl_ActSBPase = theVars->AE_Vel.vSBPase_Act;
+    dydt->Bchl_ActPRK = theVars->AE_Vel.vPRK_Act;
+    dydt->Bchl_ActRubisco = theVars->AE_Vel.vRubisco_Act;
+    dydt->Bchl_ActRCA = theVars->AE_Vel.vRCA_Act;
+
+    return dydt;
+}
+
+arr AE::_MB(const double t, const AECondition* const AE_con, Variables *theVars) {
+    AECondition* dydt = _MB_con(t, AE_con, theVars);
+    arr tmp = dydt->toArray();
+    delete dydt;
+    return tmp;
 }

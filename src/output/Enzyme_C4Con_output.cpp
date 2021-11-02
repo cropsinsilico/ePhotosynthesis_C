@@ -24,7 +24,7 @@
  *
  **********************************************************************************************************************************************/
 
-#include "conditions/EnzymeCondition.hpp"
+#include "conditions/Enzyme_C4Condition.hpp"
 using namespace ePhotosynthesis::conditions;
 
 std::ostream& EnzymeCondition::_print(std::ostream &out, const uint tab) const {

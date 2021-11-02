@@ -27,7 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "ModuleBase.hpp"
-#include "conditions/AECondition.hpp"
+#include "conditions/AE_C4Condition.hpp"
 #include "definitions.hpp"
 
 namespace ePhotosynthesis {
@@ -45,9 +45,9 @@ class AE : public ModuleBase<AE, conditions::AECondition> {
 private:
     friend ModuleBase;
     friend class modules::RAC4leafMeta;
-//#ifdef TESTING
-//    friend class test::AEModuleTest;
-//#endif
+#ifdef TESTING
+    friend class test::AEModuleTest;
+#endif
     /**
       Function to set the initial state of the AECondition class.
 

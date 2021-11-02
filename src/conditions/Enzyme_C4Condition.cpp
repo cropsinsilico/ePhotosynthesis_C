@@ -24,7 +24,7 @@
  *
  **********************************************************************************************************************************************/
 
-#include "conditions/EnzymeCondition.hpp"
+#include "conditions/Enzyme_C4Condition.hpp"
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;

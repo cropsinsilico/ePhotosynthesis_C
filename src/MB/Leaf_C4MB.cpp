@@ -24,28 +24,43 @@
  *
  **********************************************************************************************************************************************/
 
-#include "vel/LeafVel.hpp"
+#include <math.h>
+#include "Variables.hpp"
+#include "globals.hpp"
+#include "modules/Leaf_C4.hpp"
 
-namespace ePhotosynthesis {
-namespace vel {
-std::ostream& operator<<(std::ostream &out, const LeafVel &in) {
-    out << "LeafVel" << std::endl;
-    out << "  NetAssimilation = " << in.NetAssimilation << std::endl;
-    out << "  vCO2b = " << in.vCO2b << std::endl;
-    out << "  vCO2s = " << in.vCO2s << std::endl;
-    out << "  vH2Ob = " << in.vH2Ob << std::endl;
-    out << "  vH2Os = " << in.vH2Os << std::endl;
-    out << "  EnergyBalanceResidual = " << in.EnergyBalanceResidual << std::endl;
-    out << "  vCO2total = " << in.vCO2total << std::endl;
-    out << "  vH2Ototal = " << in.vH2Ototal << std::endl;
-    out << "  vgs = " << in.vgs << std::endl;
-    out << "  vleak = " << in.vleak << std::endl;
-    out << "  Gs = " << in.Gs << std::endl;
-    out << "  Cb = " << in.Cb << std::endl;
-    out << "  Ci = " << in.Ci << std::endl;
-    out << "  Gbw = " << in.Gbw << std::endl;
-    return out;
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
+
+const double Cpwater = 4.184;//Jg-1c-1
+const double Vandp = 198.;//gm-2 leaf thickness 200um leaf density 0.7*10^3kg m-3
+//leaf volume leaf thickness 200um~0.2L
+//bundary layer
+//leaf air space 20//
+const double Vol_airspace = 0.04;//L
+
+LeafCondition* Leaf::_MB_con(const double t, const LeafCondition* Leaf_con, Variables *theVars) {
+
+    Rate(t, Leaf_con, theVars);
+
+    const double Molar_Volume = 22.4 / 273. * (theVars->Tp + 273.);
+
+    LeafCondition* dydt = new LeafCondition();
+    dydt->Ci = (theVars->Leaf_Vel.vCO2total - theVars->Leaf_Vel.NetAssimilation) / (Vol_airspace / Molar_Volume);
+    dydt->Cb = 0.;
+    dydt->Eb = 0.;
+    dydt->Gs = theVars->Leaf_Vel.vgs;
+    dydt->Tleaf = theVars->Leaf_Vel.EnergyBalanceResidual / Cpwater / Vandp;
+    dydt->H2Oou = theVars->Leaf_Vel.vH2Ototal / pow(10., 6.);
+    dydt->CO2in = theVars->Leaf_Vel.vCO2total / pow(10., 6.);
+
+    return dydt;
 }
 
-}
+arr Leaf::_MB(const double t, const LeafCondition* const Leaf_con, Variables *theVars) {
+    LeafCondition* dydt = _MB_con(t, Leaf_con, theVars);
+    arr tmp = dydt->toArray();
+    delete dydt;
+    return tmp;
 }

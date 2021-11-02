@@ -24,26 +24,37 @@
  *
  **********************************************************************************************************************************************/
 
-#include "vel/AEVel.hpp"
+#include "Variables.hpp"
+#include "modules/AE_C4.hpp"
 
-namespace ePhotosynthesis {
-namespace vel {
-std::ostream& operator<<(std::ostream &out, const AEVel &in) {
-    out << "AEVel" << std::endl;
-    out << "  vATPsynthase_Act_Mchl = " << in.vATPsynthase_Act_Mchl << std::endl;
-    out << "  vNADPMDH_Act = " << in.vNADPMDH_Act << std::endl;
-    out << "  vGAPDH_Act_Mchl = " << in.vGAPDH_Act_Mchl << std::endl;
-    out << "  vATPsynthase_Act_Bchl = " << in.vATPsynthase_Act_Bchl << std::endl;
-    out << "  vPEPC_Act = " << in.vPEPC_Act << std::endl;
-    out << "  ActRubisco0 = " << in.ActRubisco0 << std::endl;
-    out << "  vRubisco_Act = " << in.vRubisco_Act << std::endl;
-    out << "  vGAPDH_Act_Bchl = " << in.vGAPDH_Act_Bchl << std::endl;
-    out << "  vFBPase_Act = " << in.vFBPase_Act << std::endl;
-    out << "  vSBPase_Act = " << in.vSBPase_Act << std::endl;
-    out << "  vPRK_Act = " << in.vPRK_Act << std::endl;
-    out << "  vRCA_Act = " << in.vRCA_Act << std::endl;
+using namespace ePhotosynthesis;
+using namespace ePhotosynthesis::modules;
+using namespace ePhotosynthesis::conditions;
 
-    return out;
+double AE::TIME = 0.;
+std::size_t AE::N = 1;
+
+AECondition* AE::_init(Variables *theVars) {
+
+    AECondition* AE_con = new AECondition();
+
+    //Initial value
+
+    AE_con->Mchl_ActATPsynthase = 0.;
+    AE_con->Mchl_ActGAPDH = 0.;
+    AE_con->Mchl_ActNADPMDH = 0.;
+    AE_con->Bchl_ActATPsynthase = 3.;
+    AE_con->Bchl_ActPEPC = 0.05;
+    AE_con->Bchl_ActGAPDH = 0.3;
+    AE_con->Bchl_ActFBPase = 0.3;
+    AE_con->Bchl_ActSBPase = 0.3;
+    AE_con->Bchl_ActPRK = 0.3;
+    AE_con->Bchl_ActRubisco = 0.1;
+    AE_con->Bchl_ActRCA = 0.05;
+
+    return AE_con;
 }
-}
+
+void AE::_reset() {
+
 }

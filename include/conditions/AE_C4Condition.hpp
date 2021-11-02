@@ -107,7 +107,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {}
+    static void _reset() {}
     static const std::size_t count;  // The Maximum size of the serialized vector.
 #ifdef INCDEBUG
     const static Debug::DebugLevel _dlevel = Debug::Low;

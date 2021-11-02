@@ -27,99 +27,75 @@
  **********************************************************************************************************************************************/
 
 #include "ModuleBase.hpp"
-#include "conditions/EnzymeCondition.hpp"
+#include "conditions/Leaf_C4Condition.hpp"
 #include "definitions.hpp"
-#include "vel/Velocity_s.hpp"
-#include "ke/KValue.hpp"
 
 namespace ePhotosynthesis {
 #ifdef TESTING
 namespace test {
-class EnzymeModuleTest;
+class LeafModuleTest;
 }
 #endif
 namespace modules {
 class RAC4leafMeta;
 /**
-  Class for grouping Enzyme related functions and common variables
+  Class for grouping Leaf related functions and common variables
   */
-class Enzyme : public ModuleBase<Enzyme, conditions::EnzymeCondition> {
+class Leaf : public ModuleBase<Leaf, conditions::LeafCondition> {
+public:
+    static void TempResponseEnzymes(Variables *theVars, const double Temp_Leaf);
 private:
     friend ModuleBase;
     friend class modules::RAC4leafMeta;
 #ifdef TESTING
-    friend class test::EnzymeModuleTest;
+    friend class test::LeafModuleTest;
 #endif
     /**
-      Function to set the initial state of the EnzymeCondition class.
+      Function to set the initial state of the LeafCondition class.
 
       \param theVars Pointer to the global variables
-      \return A EnzymeCondition object with values set based on the input
+      \return A LeafCondition object with values set based on the input
       */
-    static conditions::EnzymeCondition* _init(Variables *theVars);
+    static conditions::LeafCondition* _init(Variables *theVars);
 
     /**
-      Function to calculate the dy/dt values for the EnzymeCondition at the given time stamp.
+      Function to calculate the dy/dt values for the LeafCondition at the given time stamp.
 
       \param t The current timestamp
-      \param Enzyme_con EnzymeCondition object giving the input parameters
+      \param Leaf_con LeafCondition object giving the input parameters
       \param theVars The global variables
       \return A vector containing the dy/dt values for this time stamp.
       */
-    static arr _MB(const double t, const conditions::EnzymeCondition* const Enzyme_con, Variables *theVars);
+    static arr _MB(const double t, const conditions::LeafCondition* const Leaf_con, Variables *theVars);
 
     /**
-      Function to calculate the dy/dt values for the EnzymeCondition at the given time stamp.
+      Function to calculate the dy/dt values for the LeafCondition at the given time stamp.
 
       \param t The current timestamp
-      \param Enzyme_con EnzymeCondition object giving the input parameters
+      \param Leaf_con LeafCondition object giving the input parameters
       \param theVars The global variables
-      \return A EnzymeCondition instance containing the dy/dt values for this time stamp.
+      \return A LeafCondition instance containing the dy/dt values for this time stamp.
       */
-    static conditions::EnzymeCondition* _MB_con(const double t,
-                                            const conditions::EnzymeCondition* const Enzyme_con,
+    static conditions::LeafCondition* _MB_con(const double t,
+                                            const conditions::LeafCondition* constLeaf_con,
                                             Variables *theVars);
     /**
-      Calculate the Rates of Enzyme based on the input EnzymeCondition.
+      Calculate the Rates of Leaf based on the input LeafCondition.
 
       \param t The current timestamp
-      \param Enzyme_con EnzymeCondition object giving the input parameters
+      \param Leaf_con LeafCondition object giving the input parameters
       \param theVars The global variables
       */
-    static void _Rate(const double t, const conditions::EnzymeCondition* const Enzyme_con, Variables *theVars);
+    static void _Rate(const double t, const conditions::LeafCondition* const Leaf_con, Variables *theVars);
 
     /**
       Reset the static member variables to their default values.
       */
     static void _reset();
-    SET_GET(Bchl_CA)
-    SET_GET(Bchl_CN)
-    SET_GET(MC_CU)
-    SET_GET(MC_CA)
-    SET_GET(Mchl_CA)
-    SET_GET(Mchl_CN)
-    SET_GET(MC_UTP)
-    SET_GET(Bper_GLU)
-    SET_GET(Bper_KG)
-    SET_GET(Bper_NADH)
-    SET_GET(Bper_NAD)
-    SET_GET(Bchl_CP)
-    SET_GET(vNAE)
-    SET_GET(V6sen)
-    SET_GET_INT(pathway_option)
-    static ePhotosynthesis::Velocity_s Vel_s;
-    static KValue KVal;
-    ////// 0=Normol NADP-ME type
-    ////// 1=Asp+Mal transport and MDH type
-    ////// 2=Asp+Mal and PCK type
-    ////// 3 Asp+Mal and PCK+MDH type
-    ////// 4 Asp and PCK only type
-    ////// 6 DiT2 mutant
-    ////// 7 NAD-ME type
-    ////// 8 NAD-ME+PCK type
+    SET_GET(vinf)
 
     static double TIME;    // The timestamp of the most recent call to _Rate
-    static std::size_t N;  // The current size of the Enzyme TimeSeries
+    static std::size_t N;  // The current size of the Leaf TimeSeries
 };
 
 }  // namespace modules

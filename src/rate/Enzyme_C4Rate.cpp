@@ -26,8 +26,8 @@
 
 #include <math.h>
 #include "Variables.hpp"
-#include "modules/Enzyme.hpp"
-#include "conditions/EnzymeCondition.hpp"
+#include "modules/Enzyme_C4.hpp"
+#include "conditions/Enzyme_C4Condition.hpp"
 #include "conditions/RAC4leafMetaCondition.hpp"
 #include "ke/KValue.hpp"
 #include "vel/Velocity_s.hpp"

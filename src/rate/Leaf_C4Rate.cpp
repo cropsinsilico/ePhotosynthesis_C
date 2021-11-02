@@ -26,8 +26,8 @@
 
 #include <math.h>
 #include "Variables.hpp"
-#include "modules/Leaf.hpp"
-#include "conditions/LeafCondition.hpp"
+#include "modules/Leaf_C4.hpp"
+#include "conditions/Leaf_C4Condition.hpp"
 #include "conditions/RAC4leafMetaCondition.hpp"
 
 using namespace ePhotosynthesis;

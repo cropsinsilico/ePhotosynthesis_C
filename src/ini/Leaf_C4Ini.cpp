@@ -26,7 +26,7 @@
 
 #include <math.h>
 #include "Variables.hpp"
-#include "modules/Leaf.hpp"
+#include "modules/Leaf_C4.hpp"
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
@@ -89,7 +89,6 @@ void Leaf::TempResponseEnzymes(Variables *theVars, const double Temp_leaf) {
     theVars->TempFactor.Vm_OC = std::exp(Ea_Vm_OC * ((Temp_leaf + 273.15) - 298.15) / (298.15 * R * (Temp_leaf + 273.15)));
     theVars->TempFactor.Jmax = std::exp(Ea_Jmax * ((Temp_leaf + 273.15) - 298.15) / (298.15 * R * (Temp_leaf + 273.15)));
     theVars->TempFactor.Vm_Enz = pow(Q10, (Temp_leaf - 25.) / 10.);
-
     //Chl_O2a=Chl_O2*kH_O2;//WY2018
     //Chl_O2=Chl_O2*kH_O2;
     // //other enzymes

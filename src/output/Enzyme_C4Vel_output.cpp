@@ -24,7 +24,7 @@
  *
  **********************************************************************************************************************************************/
 
-#include "vel/EnzymeVel.hpp"
+#include "vel/Enzyme_C4Vel.hpp"
 
 namespace ePhotosynthesis {
 namespace vel {

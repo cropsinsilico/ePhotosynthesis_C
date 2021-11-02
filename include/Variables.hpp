@@ -36,9 +36,9 @@
 #include "vel/XanCycleVel.hpp"
 #include "vel/RedoxRegVel.hpp"
 #include "vel/SUCSVel.hpp"
-#include "vel/LeafVel.hpp"
-#include "vel/AEVel.hpp"
-#include "vel/EnzymeVel.hpp"
+#include "vel/Leaf_C4Vel.hpp"
+#include "vel/AE_C4Vel.hpp"
+#include "vel/Enzyme_C4Vel.hpp"
 #include "ke/RROEAKE.hpp"
 #include "vel/TempCorr.hpp"
 

@@ -26,7 +26,7 @@
 
 #include <math.h>
 #include "Variables.hpp"
-#include "modules/Enzyme.hpp"
+#include "modules/Enzyme_C4.hpp"
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;

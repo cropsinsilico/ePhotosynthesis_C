@@ -26,8 +26,8 @@
 
 #include <math.h>
 #include "Variables.hpp"
-#include "modules/AE.hpp"
-#include "conditions/AECondition.hpp"
+#include "modules/AE_C4.hpp"
+#include "conditions/AE_C4Condition.hpp"
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;

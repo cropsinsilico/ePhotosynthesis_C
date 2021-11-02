@@ -27,9 +27,9 @@
  **********************************************************************************************************************************************/
 
 #include "ConditionBase.hpp"
-#include "LeafCondition.hpp"
-#include "EnzymeCondition.hpp"
-#include "AECondition.hpp"
+#include "Leaf_C4Condition.hpp"
+#include "Enzyme_C4Condition.hpp"
+#include "AE_C4Condition.hpp"
 
 namespace ePhotosynthesis {
 namespace modules {

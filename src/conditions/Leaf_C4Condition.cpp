@@ -24,48 +24,38 @@
  *
  **********************************************************************************************************************************************/
 
-#include "conditions/AECondition.hpp"
+#include "conditions/Leaf_C4Condition.hpp"
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
-const std::size_t AECondition::count = 11;
 
-AECondition::AECondition(const AECondition* const other) {
-    Mchl_ActATPsynthase = other->Mchl_ActATPsynthase;
-    Mchl_ActGAPDH = other->Mchl_ActGAPDH;
-    Mchl_ActNADPMDH = other->Mchl_ActNADPMDH;
-    Bchl_ActATPsynthase = other->Bchl_ActATPsynthase;
-    Bchl_ActPEPC = other->Bchl_ActPEPC;
-    Bchl_ActGAPDH = other->Bchl_ActGAPDH;
-    Bchl_ActFBPase = other->Bchl_ActFBPase;
-    Bchl_ActSBPase = other->Bchl_ActSBPase;
-    Bchl_ActPRK = other->Bchl_ActPRK;
-    Bchl_ActRubisco = other->Bchl_ActRubisco;
-    Bchl_ActRCA = other->Bchl_ActRCA;
+const std::size_t LeafCondition::count = 7;
+
+LeafCondition::LeafCondition(const LeafCondition* const other) {
+    Ci = other->Ci;
+    Cb = other->Cb;
+    Eb = other->Eb;
+    Gs = other->Gs;
+    Tleaf = other->Tleaf;
+    H2Oou = other->H2Oou;
+    CO2in = other->CO2in;
 }
 
-AECondition::AECondition(const arr &vec, const std::size_t offset) {
+LeafCondition::LeafCondition(const arr &vec, const std::size_t offset) {
     fromArray(vec, offset);
 }
 
-void AECondition::_fromArray(const arr &vec, const std::size_t offset) {
+void LeafCondition::_fromArray(const arr &vec, const std::size_t offset) {
     std::size_t counter = 0;
-    Mchl_ActATPsynthase = vec[offset + counter++];
-    Mchl_ActGAPDH = vec[offset + counter++];
-    Mchl_ActNADPMDH = vec[offset + counter++];
-    Bchl_ActATPsynthase = vec[offset + counter++];
-    Bchl_ActPEPC = vec[offset + counter++];
-    Bchl_ActGAPDH = vec[offset + counter++];
-    Bchl_ActFBPase = vec[offset + counter++];
-    Bchl_ActSBPase = vec[offset + counter++];
-    Bchl_ActPRK = vec[offset + counter++];
-    Bchl_ActRubisco = vec[offset + counter++];
-    Bchl_ActRCA = vec[offset + counter++];
+    Ci = vec[offset + counter++];
+    Cb = vec[offset + counter++];
+    Eb = vec[offset + counter++];
+    Gs = vec[offset + counter++];
+    Tleaf = vec[offset + counter++];
+    H2Oou = vec[offset + counter++];
+    CO2in = vec[offset + counter++];
 }
 
-arr AECondition::_toArray() const {
-    return {Mchl_ActATPsynthase, Mchl_ActGAPDH, Mchl_ActNADPMDH,
-                Bchl_ActATPsynthase, Bchl_ActPEPC, Bchl_ActGAPDH,
-                Bchl_ActFBPase, Bchl_ActSBPase, Bchl_ActPRK,
-                Bchl_ActRubisco, Bchl_ActRCA};
+arr LeafCondition::_toArray() const {
+    return {Ci, Cb, Eb, Gs, Tleaf, H2Oou, CO2in};
 }
