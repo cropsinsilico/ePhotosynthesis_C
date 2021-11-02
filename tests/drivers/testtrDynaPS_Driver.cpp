@@ -35,6 +35,7 @@ protected:
 
 namespace {
 TEST_F(trDynaPSDriverTest, IniTest) {
+    trDynaPSCondition::reset();
     driver = new trDynaPSDriver(theVars, 0., 1., 100., 2500, 1e-4, 1e-4, 18, 1.3);
     trDynaPSCondition* trc = ini();
     arr res = trc->toArray();
@@ -86,7 +87,7 @@ TEST_F(trDynaPSDriverTest, FullTest) {
     theVars->RUBISCOMETHOD = 1;
     Variables* orig = new Variables(theVars);
     PR::setRUBISCOTOTAL(3);
-    driver = new trDynaPSDriver(theVars, 0., 1., 100., 2500, 1e-4, 1e-4, 1, 1);
+    driver = new trDynaPSDriver(theVars, 0., .1, 100., 2500, 1e-4, 1e-4, 1, 1);
     arr res;
     EXPECT_THROW(res = driver->run(), std::runtime_error);
     delete driver;

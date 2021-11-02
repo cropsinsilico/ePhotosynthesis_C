@@ -33,6 +33,7 @@ TEST_F(trDynaPSConditionTest, ConstructorTest) {
 }
 
 TEST_F(trDynaPSConditionTest, ArrayTest) {
+    trDynaPSCondition::reset();
     arr input = get_random(trDynaPSCondition::size());
     trDynaPSCondition trDynaPS(input);
     arr output = trDynaPS.toArray();

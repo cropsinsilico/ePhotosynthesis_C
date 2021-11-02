@@ -43,7 +43,7 @@ TEST_F(PSConditionTest, InitializerTest) {
     EXPECT_NE(pc.ADPG, 0.);
     EXPECT_NE(pc.ADPG, pc2.ADPG);
     EXPECT_DOUBLE_EQ(pc.PenP, pc2.PenP);
-
+    pc.clear();
 }
 
 TEST_F(PSConditionTest, ArrayTest) {

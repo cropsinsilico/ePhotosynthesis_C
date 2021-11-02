@@ -9,11 +9,13 @@ using namespace ePhotosynthesis::vel;
 namespace {
 
 TEST_F(EPSModuleTest, InitTest) {
+    EPS::reset();
     EPSCondition* epsc = EPS::init(CMModuleTest::theVars);
     EXPECT_TRUE(epsc->CM_con->PS_PR_con->PR_con->getPS_RuBP());
 }
 
 TEST_F(EPSModuleTest, MBTest) {
+    EPS::reset();
     CMModuleTest::theVars->FIBF_PSPR_com = true;
     Variables* orig = new Variables(CMModuleTest::theVars);
     BF::setPS_connect(true);
@@ -24,6 +26,7 @@ TEST_F(EPSModuleTest, MBTest) {
     DIFF(res, comp)
 
     delete epsc;
+    EPS::reset();
     orig->useC3 = true;
     epsc = EPS::init(orig);
     arr res1 = MB(1.5, epsc, orig);

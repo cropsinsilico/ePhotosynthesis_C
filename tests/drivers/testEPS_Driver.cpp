@@ -35,6 +35,7 @@ protected:
 
 namespace {
 TEST_F(EPSDriverTest, IniTest) {
+    EPSCondition::reset();
     driver = new EPSDriver(theVars, 0., 1., 100., 2500, 1e-4, 1e-4, 15, 1.5, 27.3);
     EPSCondition* ec = ini();
     arr res = ec->toArray();

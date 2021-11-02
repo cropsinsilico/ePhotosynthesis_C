@@ -12,6 +12,7 @@ class RAConditionTest : public VariableFramework {
 };
 
 TEST_F(RAConditionTest, ConstructorTest) {
+    RACondition::reset();
     RACondition RA;
     RA.EPS_con->CM_con->PS_PR_con->PR_con->HPRc = 2.5;
     RA.RuACT_con->ER = 0.445;
@@ -33,6 +34,7 @@ TEST_F(RAConditionTest, ConstructorTest) {
 }
 
 TEST_F(RAConditionTest, ArrayTest) {
+    RACondition::reset();
     arr input = get_random(RACondition::size());
     RACondition RA(input);
     arr output = RA.toArray();

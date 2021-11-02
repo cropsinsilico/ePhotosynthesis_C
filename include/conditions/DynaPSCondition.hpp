@@ -34,6 +34,13 @@ namespace ePhotosynthesis {
 namespace modules {
 class DynaPS;
 }
+
+#ifdef TESTING
+namespace test {
+class DynaPSConditionTest;
+}
+#endif
+
 namespace conditions {
 
 class trDynaPSCondition;
@@ -97,6 +104,10 @@ public:
 private:
     friend ConditionBase;
     friend class modules::DynaPS;
+#ifdef TESTING
+    friend class test::DynaPSConditionTest;
+#endif
+
     /**
       \copydoc ConditionBase::_fromArray
       */

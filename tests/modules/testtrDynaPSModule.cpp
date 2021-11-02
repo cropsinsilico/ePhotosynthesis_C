@@ -16,6 +16,7 @@ TEST_F(trDynaPSModuleTest, InitTest) {
 }
 
 TEST_F(trDynaPSModuleTest, MBTest) {
+    trDynaPS::reset();
     RROEAModuleTest::theVars->RuACT_EPS_com = true;
     BF::setRROEA_connect(true);
     trDynaPSCondition* tdc = trDynaPS::init(RROEAModuleTest::theVars);

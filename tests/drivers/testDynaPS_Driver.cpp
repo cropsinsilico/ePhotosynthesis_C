@@ -30,6 +30,7 @@ protected:
 
 namespace {
 TEST_F(DynaPSDriverTest, IniTest) {
+    DynaPSCondition::reset();
     driver = new DynaPSDriver(theVars, 0., 1., 100., 2500, 1e-4, 1e-4, 1, 1.2);
     DynaPSCondition* dc = ini();
     arr res = dc->toArray();

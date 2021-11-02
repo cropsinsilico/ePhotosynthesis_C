@@ -50,6 +50,7 @@ TEST_F(PRConditionTest, InitializerTest) {
     EXPECT_NE(pr.GCEA, 0.);
     EXPECT_NE(pr.RuBP, pr2.RuBP);
     EXPECT_DOUBLE_EQ(pr.GCEA, pr2.GCEA);
+    pr.clear();
 
 }
 

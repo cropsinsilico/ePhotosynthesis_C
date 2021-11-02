@@ -32,6 +32,13 @@ namespace ePhotosynthesis {
 namespace modules {
 class RROEA;
 }
+
+#ifdef TESTING
+namespace test {
+class RROEAConditionTest;
+}
+#endif
+
 namespace conditions {
 
 class trDynaPSCondition;
@@ -82,6 +89,10 @@ public:
 private:
     friend ConditionBase;
     friend class modules::RROEA;
+#ifdef TESTING
+    friend class test::RROEAConditionTest;
+#endif
+
     /**
       \copydoc ConditionBase::_fromArray
       */

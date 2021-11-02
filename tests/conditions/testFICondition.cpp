@@ -48,6 +48,7 @@ TEST_F(FIConditionTest, InitializerTest) {
         EXPECT_DOUBLE_EQ(fic->A, fic2.A);
         EXPECT_DOUBLE_EQ(fic->U, fic2.U);
         EXPECT_NE(fic->PQn, fic2.PQn);
+        fic->clear();
         delete fic;
     }
     catch(...) {

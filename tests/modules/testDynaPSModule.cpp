@@ -14,6 +14,7 @@ TEST_F(DynaPSModuleTest, InitTest) {
 }
 
 TEST_F(DynaPSModuleTest, MBTest) {
+    DynaPS::reset();
     DynaPSCondition* dc = DynaPS::init(RAModuleTest::theVars);
     arr res = MB(1.5, dc, RAModuleTest::theVars);
     arr comp = zeros(DynaPSCondition::size());

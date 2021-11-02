@@ -9,6 +9,7 @@ using namespace ePhotosynthesis::vel;
 namespace {
 
 TEST_F(PS_PRModuleTest, InitTest) {
+    PS_PR::reset();
     PSModuleTest::theVars->PR_PS_com = true;
     PS_PRCondition* psprc = PS_PR::init(PSModuleTest::theVars);
     EXPECT_TRUE(psprc->PR_con->getPS_RuBP());
@@ -16,6 +17,7 @@ TEST_F(PS_PRModuleTest, InitTest) {
 }
 
 TEST_F(PS_PRModuleTest, MBTest) {
+    PS_PR::reset();
     PS_PRCondition* psprc = PS_PR::init(PSModuleTest::theVars);
     arr res = MB(1.5, psprc, PSModuleTest::theVars);
     arr comp = zeros(PS_PRCondition::size());

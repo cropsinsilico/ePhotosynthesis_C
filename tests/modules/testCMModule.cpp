@@ -14,6 +14,7 @@ TEST_F(CMModuleTest, InitTest) {
 }
 
 TEST_F(CMModuleTest, MBTest) {
+    CM::reset();
     CM::setTestSucPath(true);
     Variables* orig = new Variables(SUCSModuleTest::theVars);
     CMCondition* cmc = CM::init(SUCSModuleTest::theVars);
@@ -22,7 +23,7 @@ TEST_F(CMModuleTest, MBTest) {
     DIFF(res, comp)
 
     delete cmc;
-
+    CM::reset();
     orig->useC3 = true;
     arr vfc(50, 1.5);
     arr vft(50, 2.1);
@@ -43,6 +44,8 @@ TEST_F(CMModuleTest, MBTest) {
 }
 
 TEST_F(CMModuleTest, MBTestPRPS) {
+    CM::reset();
+
     CM::setTestSucPath(true);
     SUCSModuleTest::theVars->PR_PS_com = true;
     Variables* orig = new Variables(SUCSModuleTest::theVars);
@@ -53,6 +56,7 @@ TEST_F(CMModuleTest, MBTestPRPS) {
 
     delete cmc;
 
+    CM::reset();
     orig->useC3 = true;
     arr vfc(50, 1.5);
     arr vft(50, 2.1);
@@ -73,6 +77,7 @@ TEST_F(CMModuleTest, MBTestPRPS) {
 }
 
 TEST_F(CMModuleTest, MBTestRUBISCO) {
+    CM::reset();
     CM::setTestSucPath(true);
     SUCSModuleTest::theVars->RUBISCOMETHOD = 2;
     Variables* orig = new Variables(SUCSModuleTest::theVars);
@@ -84,6 +89,7 @@ TEST_F(CMModuleTest, MBTestRUBISCO) {
 
     delete cmc;
 
+    CM::reset();
     orig->useC3 = true;
     arr vfc(50, 1.5);
     arr vft(50, 2.1);

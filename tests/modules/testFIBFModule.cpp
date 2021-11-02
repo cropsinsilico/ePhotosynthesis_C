@@ -16,6 +16,7 @@ TEST_F(FIBFModuleTest, InitTest) {
 }
 
 TEST_F(FIBFModuleTest, MBTest) {
+    FIBF::reset();
     FI::setBF_connect(true);
     BFCondition* bfc = BF::init(BFModuleTest::theVars);
     FICondition* fic = FI::init(BFModuleTest::theVars);

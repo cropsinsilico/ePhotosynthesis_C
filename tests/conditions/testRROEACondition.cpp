@@ -17,6 +17,7 @@ TEST_F(RROEAConditionTest, InitializeTest) {
     rrc->PRK = 0.85;
     RROEACondition* rrc2 = new RROEACondition(rrc);
     EXPECT_DOUBLE_EQ(rrc->PRK, rrc2->PRK);
+    rrc->clear();
     delete rrc;
     delete rrc2;
 }

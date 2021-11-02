@@ -24,6 +24,7 @@ TEST_F(RuACTConditionTest, InitializeTest) {
     RuACTCondition::setEPS_connect(true);
     RuACTCondition* rc3 = new RuACTCondition(rc);
     EXPECT_NE(rc->RuBP, rc3->RuBP);
+    rc->clear();
     delete rc;
     delete rc2;
     delete rc3;

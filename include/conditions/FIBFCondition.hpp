@@ -35,6 +35,13 @@ namespace ePhotosynthesis {
 namespace modules {
 class FIBF;
 }
+
+#ifdef TESTING
+namespace test {
+class FIBFConditionTest;
+}
+#endif
+
 namespace conditions {
 
 class EPSCondition;
@@ -90,6 +97,9 @@ public:
 private:
     friend ConditionBase;
     friend class modules::FIBF;
+#ifdef TESTING
+    friend class test::FIBFConditionTest;
+#endif
     /**
       \copydoc ConditionBase::_fromArray
       */

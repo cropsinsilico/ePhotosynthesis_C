@@ -1,24 +1,24 @@
-#include <random>
 #include "VariableFramework.hpp"
 #include "conditions/FIBFCondition.hpp"
 
 
-namespace {
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::test;
 
+namespace {
 class FIBFConditionTest : public VariableFramework {
     void SetUp() override {
-        FICondition::setBF_connect(false);
-        BFCondition::setPS_connect(false);
-        BFCondition::setRROEA_connect(false);
-        BFCondition::setFI_connect(false);
+        conditions::FICondition::setBF_connect(false);
+        conditions::BFCondition::setPS_connect(false);
+        conditions::BFCondition::setRROEA_connect(false);
+        conditions::BFCondition::setFI_connect(false);
         VariableFramework::SetUp();
     }
 };
 
 TEST_F(FIBFConditionTest, InitializeTest) {
+    FIBFCondition::reset();
     FIBFCondition fc;
     fc.kd = 10.9;
     fc.FI_con->QAnQB = 52.8;
@@ -48,6 +48,7 @@ TEST_F(FIBFConditionTest, InitializeTest) {
 }
 
 TEST_F(FIBFConditionTest, ArrayTest) {
+    FIBFCondition::reset();
     arr input = get_random(FIBFCondition::size());
     FIBFCondition fib(input);
     arr output = fib.toArray();

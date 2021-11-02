@@ -33,6 +33,7 @@ protected:
 
 namespace {
 TEST_F(CMDriverTest, IniTest) {
+    CMCondition::reset();
     driver = new CMDriver(theVars, 0., 1., 100., 2500, 1e-4, 1e-4);
     CMCondition* cmc = ini();
     arr res = cmc->toArray();
