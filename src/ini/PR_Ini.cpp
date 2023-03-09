@@ -237,6 +237,7 @@ PRCondition* PR::_init(Variables *theVars) {
         PR::KM1012 = 0.2;
         PR::KI1012 = 0.22;
         const double tempRatio = (theVars->Tp - 25.) / 10.;
+	const double c2 = 0.01;
 
         PR::PrV112 = PR::V112 * PR::Vfactor112 * PR::Vf_T112 * pow(Q10_112, tempRatio);
         PR::PrV113 = PR::V113 * PR::Vfactor113 * PR::Vf_T113 * pow(Q10_113, tempRatio);
@@ -244,7 +245,7 @@ PRCondition* PR::_init(Variables *theVars) {
         PR::PrV122 = PR::V122 * PR::Vfactor122 * PR::Vf_T122 * pow(Q10_122, tempRatio);
         PR::PrV123 = PR::V123 * PR::Vfactor123 * PR::Vf_T123 * pow(Q10_123, tempRatio);
         PR::PrV124 = PR::V124 * PR::Vfactor124 * pow(Q10_124, tempRatio);
-        PR::PrV131 = PR::V131 * PR::Vfactor131 * PR::Vf_T131 * pow(Q10_131, tempRatio);
+        PR::PrV131 = PR::V131 * PR::Vfactor131 * PR::Vf_T131 * pow(Q10_131, tempRatio)*c2;
 
     } else {
         // To set global information for different reactions

@@ -208,16 +208,17 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
         SUCS::V62 = 2; // SUC Sink        0.2 works.
 
         const double tempRatio = (theVars->Tp - 25.) / 10.;
+	const double c3 = 1.37;
         SUCS::SUCSV51 = SUCS::V51 * SUCS::Vfactor51 * SUCS::Vf_T51 *
-                        pow(Q10_51, tempRatio);       //  DHAP+GAP --FBP
+                        pow(Q10_51, tempRatio)*c3;       //  DHAP+GAP --FBP
         SUCS::SUCSV52 = SUCS::V52 * SUCS::Vfactor52 * SUCS::Vf_T52 *
-                        pow(Q10_52, tempRatio);       //  FBP --F6P + Pi
-        SUCS::SUCSV55 = SUCS::V55 * pow(Q10_55, tempRatio); //  G1P+UTP --OPOP+UDPG
+                        pow(Q10_52, tempRatio)*c3;       //  FBP --F6P + Pi
+        SUCS::SUCSV55 = SUCS::V55 * pow(Q10_55, tempRatio)*c3; //  G1P+UTP --OPOP+UDPG
         SUCS::SUCSV56 = SUCS::V56 * SUCS::Vfactor56 * SUCS::Vf_T56 *
-                        pow(Q10_56, tempRatio);       // UDPG+F6P--SUCP + UDP
+                        pow(Q10_56, tempRatio)*c3;       // UDPG+F6P--SUCP + UDP
         SUCS::SUCSV57 = SUCS::V57 * SUCS::Vfactor57 * SUCS::Vf_T57 *
-                        pow(Q10_57, tempRatio);       // SUCP--Pi + SUC
-        SUCS::SUCSV58 = SUCS::V58 * pow(Q10_58, tempRatio); // F26BP--F6P + Pi
+                        pow(Q10_57, tempRatio)*c3;       // SUCP--Pi + SUC
+        SUCS::SUCSV58 = SUCS::V58 * pow(Q10_58, tempRatio)*c3; // F26BP--F6P + Pi
 
         // Initialize the leaves of active enzyme in a dark adapted leaves;
         // mM
