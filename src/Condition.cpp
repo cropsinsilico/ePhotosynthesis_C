@@ -28,6 +28,7 @@
 #include "globals.hpp"
 #include <boost/algorithm/string_regex.hpp>
 #include <boost/regex.hpp>
+#include <sstream>
 
 const boost::regex token("\\s+");
 
