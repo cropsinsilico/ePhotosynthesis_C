@@ -106,8 +106,8 @@ public:
     double alfa = 0.;
     double fc = 0.;
     double lightParam = 0.;
-    const double alpha1 = 1.0;
-    const double alpha2 = 1.2;
+    const double alpha1 = 0.87;
+    const double alpha2 = 1.44;
 
     // Parameters
     arr PR_Param = zeros(2);
