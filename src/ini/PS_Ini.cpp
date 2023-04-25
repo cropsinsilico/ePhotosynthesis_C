@@ -248,9 +248,8 @@ PSCondition* PS::_init(Variables *theVars) {
 
         //PsKM11_0 = ;
         //PsKM12_0 = ;  // O2 1 RuBP+CO2->2PGA  0.28 DEFAUL.
-        const double cc = 2.0;
         PS::KM11 = 0.0097 * exp(c_c - dHa_c * 1000. / (R * (theVars->Tp + 273.15))) / 272.38;
-        PS::KM12 = 0.244 * exp(c_o - dHa_o * 1000. / (R * (theVars->Tp + 273.15))) / 165.82 * cc;
+        PS::KM12 = 0.244  * exp(c_o - dHa_o * 1000. / (R * (theVars->Tp + 273.15))) / 165.82; 
 
         PS::KM13 = 0.02;   //  RuBP 1 RuBP+CO2->2PGA
         PS::KI11 = 0.84;   // PGA
