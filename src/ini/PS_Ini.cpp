@@ -362,9 +362,7 @@ PSCondition* PS::_init(Variables *theVars) {
         PS::PsV32  =   PS::V32  * theVars->alpha2;         //  32  Phosphate translocator  PGAi<->PGAo
         PS::PsV33  =   PS::V33  * theVars->alpha2;         //  33  Phosphate translocator  GAPi<->GAPo
         PS::Ru_Act = -3. * pow(10., -5.) * pow(theVars->Tp, 3.) + 0.0013 * pow(theVars->Tp, 2.) - 0.0106 * theVars->Tp + 0.8839; //Rubisco activition state   % SHARED
-	const double scaler = pow(1.5,(theVars->Tp - 25.) / 10.);
-	const double c1=0.828;
-        PS::PsV1 = PS::PsV1_0 * PS::Ru_Act * pow(Q10_1, (theVars->Tp - 25.) / 10.)*c1;                     //   SHARED
+        PS::PsV1 = PS::PsV1_0 * PS::Ru_Act * pow(Q10_1, (theVars->Tp - 25.) / 10.);                     //   SHARED
         PS::PsV2 = PS::PsV2_0 * pow(Q10_2, (theVars->Tp - 25.) / 10.);
         PS::PsV3 = PS::PsV3_0 * pow(Q10_3, (theVars->Tp - 25.) / 10.);
         PS::PsV5 = PS::PsV5_0 * pow(Q10_5, (theVars->Tp - 25.) / 10.);
@@ -373,8 +371,8 @@ PSCondition* PS::_init(Variables *theVars) {
         PS::PsV8 = PS::PsV8_0 * pow(Q10_8, (theVars->Tp - 25.) / 10.);
         PS::PsV9 = PS::PsV9_0 * pow(Q10_9, (theVars->Tp - 25.) / 10.);
         PS::PsV10 = PS::PsV10_0 * pow(Q10_10, (theVars->Tp - 25.) / 10.);
-        PS::PsV13= PS::PsV13_0 * pow(Q10_13, (theVars->Tp - 25.) / 10.)*scaler*c1;
-        PS::PsV23 = PS::PsV23_0 * pow(Q10_23, (theVars->Tp - 25.) / 10.)*scaler*c1;
+        PS::PsV13= PS::PsV13_0 * pow(Q10_13, (theVars->Tp - 25.) / 10.);
+        PS::PsV23 = PS::PsV23_0 * pow(Q10_23, (theVars->Tp - 25.) / 10.);
         PS::I2 = theVars->TestLi * theVars->alfa * (1. - theVars->fc) / 2.;
         PS::J = (I2 + PS::Jmax - sqrt(pow(I2 + PS::Jmax, 2.) - 4. * PS::Theta * I2 * PS::Jmax)) / (2. * PS::Theta);
 
