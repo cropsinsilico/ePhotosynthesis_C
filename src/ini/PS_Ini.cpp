@@ -249,8 +249,8 @@ PSCondition* PS::_init(Variables *theVars) {
 
         //PsKM11_0 = ;
         //PsKM12_0 = ;  // O2 1 RuBP+CO2->2PGA  0.28 DEFAUL.
-        double kc_25 = exp(c_c - dHa_c / (R * (25.0 + 273.15))) 
-        double ko_25 = exp(c_o - dHa_o / (R * (25.0 + 273.15))) 
+        double kc_25 = exp(c_c - dHa_c / (R * (25.0 + 273.15)));
+        double ko_25 = exp(c_o - dHa_o / (R * (25.0 + 273.15))); 
         PS::KM11 = 0.0097 * exp(c_c - dHa_c / (R * (theVars->Tp + 273.15))) / kc_25;
         PS::KM12 = 0.244  * exp(c_o - dHa_o / (R * (theVars->Tp + 273.15))) / ko_25; 
 
