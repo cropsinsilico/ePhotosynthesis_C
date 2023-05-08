@@ -1,6 +1,6 @@
 # ePhotosynthesis
 
-On biocluster (Linux), I manage to build it successfully using a conda environment. First, initialize a new conda env so that the package path is on your local drive with r/w permissons. Second, install both boost and sundial through conda. Third, follow the above step for cmake and make. This way, the cmake should be able to find the boost and sundial automatically. Of course, be sure to activate the related env the next time after login.
+On biocluster (Linux), I manage to build it successfully using a conda environment. First, initialize a new conda env so that the package path is on your local drive with r/w permissons. Second, install both boost and sundial through conda. Third, follow the following steps for cmake and make. This way, the cmake should be able to find the boost and sundial automatically. Of course, be sure to activate the related env the next time after login.
 
 This is a C++ port of the ePhotosynthesis Matlab model code. The code is built with
 *CMake*.
