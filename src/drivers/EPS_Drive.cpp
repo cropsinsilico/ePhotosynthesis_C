@@ -24,6 +24,7 @@
  *
  **********************************************************************************************************************************************/
 
+#include <math.h>
 #include "Variables.hpp"
 #include "globals.hpp"
 #include "drivers/EPS_Driver.hpp"
@@ -52,7 +53,10 @@ void EPSDriver::setup() {
     inputVars->alfa = 0.85;
     PS::setJmax(inputVars->EnzymeAct.at("Jmax"));
     inputVars->fc = 0.15;
-    PS::setTheta(0.95);
+
+    double Tp = inputVars->Tp;
+    double Theta = 0.76 + 0.01713 * Tp - 3.75 * pow(Tp,2.0) / 10000.0;//Yufeng: match Farquhar Matlab
+    PS::setTheta(Theta);
     PS::setbeta(0.7519);
     inputVars->BF_FI_com = true;
     inputVars->EnzymeAct.at("V1") *= inputVars->alpha1;
@@ -66,6 +70,12 @@ void EPSDriver::setup() {
     inputVars->EnzymeAct.at("V10") *= inputVars->alpha2;
     inputVars->EnzymeAct.at("V13") *= inputVars->alpha2;
     inputVars->EnzymeAct.at("V23") *= inputVars->alpha2;
+
+    //we scale up some enzymes 
+//    inputVars->EnzymeAct.at("V5") *= inputVars->sensitivity_sf;
+    inputVars->EnzymeAct.at("V6") *= inputVars->sensitivity_sf;
+    inputVars->EnzymeAct.at("V9") *= inputVars->sensitivity_sf;
+    //
 
     inputVars->PR_PS_com = true;     // This is a variable indicating whether the PR model is actually need to be combined with PS or not. If 1 then means combined; 0 means not.
 

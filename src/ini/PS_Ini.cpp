@@ -224,7 +224,7 @@ PSCondition* PS::_init(Variables *theVars) {
     PS_con->PenP = 0.25;
 
     if (theVars->useC3) {
-        PS::PS_C_CP = 22.;    //   Global constant for the total phosphate
+        PS::PS_C_CP = 30.;    //   Global constant for the total phosphate
         PS::PS_C_CA = 1.5;   //   Global constant for the total adenylates
         PS::PS_C_CN = 1.;    //   Global constant for the cytosolic Phosphate concentration;
         if (theVars->GRNC == 1 && theVars->CO2_cond > 0) {
