@@ -30,6 +30,10 @@
 #include "drivers/EPS_Driver.hpp"
 #include "modules/EPS.hpp"
 #include "modules/PS.hpp"
+//#include <iostream>
+//#include <fstream>
+
+//using namespace std;
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
@@ -72,9 +76,9 @@ void EPSDriver::setup() {
     inputVars->EnzymeAct.at("V23") *= inputVars->alpha2;
 
     //we scale up some enzymes 
-//    inputVars->EnzymeAct.at("V5") *= inputVars->sensitivity_sf;
-    inputVars->EnzymeAct.at("V6") *= inputVars->sensitivity_sf;
-    inputVars->EnzymeAct.at("V9") *= inputVars->sensitivity_sf;
+    inputVars->EnzymeAct.at("V2") *= inputVars->sensitivity_sf;
+    inputVars->EnzymeAct.at("V5") *= inputVars->sensitivity_sf;
+    inputVars->EnzymeAct.at("V13") *= inputVars->sensitivity_sf;
     //
 
     inputVars->PR_PS_com = true;     // This is a variable indicating whether the PR model is actually need to be combined with PS or not. If 1 then means combined; 0 means not.
@@ -120,10 +124,17 @@ void EPSDriver::setup() {
 void EPSDriver::getResults() {
     EPSCondition* eps_int_con = new EPSCondition(intermediateRes);
     arr temp = EPS::MB(time, eps_int_con, inputVars);
-    results = zeros(1);
+    results = zeros(3);
     const double Arate = (inputVars->PS_Vel.v1 - inputVars->PR_Vel.v131) * inputVars->AVR;
     delete eps_int_con;
+
+//    ofstream myfile;
+//    myfile.open ("hello.txt");
+//    myfile << "Writing this to a file.\n";
+//    myfile.close();
     results[0] = Arate;
+    results[1] = inputVars->PS_Vel.v1 * inputVars->AVR; //carboxylation
+    results[2] = inputVars->PR_Vel.v131 * inputVars->AVR; //photorespiration 
 }
 
 EPSCondition* EPSDriver::EPS_Init() {
