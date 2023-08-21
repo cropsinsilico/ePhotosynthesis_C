@@ -77,7 +77,6 @@ void EPSDriver::setup() {
 
     //we scale up some enzymes 
     inputVars->EnzymeAct.at("V2") *= inputVars->sensitivity_sf;
-    inputVars->EnzymeAct.at("V5") *= inputVars->sensitivity_sf;
     inputVars->EnzymeAct.at("V13") *= inputVars->sensitivity_sf;
     //
 

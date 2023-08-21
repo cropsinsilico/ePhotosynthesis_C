@@ -80,8 +80,11 @@ void PR::_Rate(const double t, const PRCondition* const PR_con, Variables *theVa
             theVars->PR_Vel.v111 = PrV111t * theVars->O2_cond / (theVars->O2_cond + PR::KO *
                                                                  (1. + theVars->CO2_cond / PR::KC));
 
-            if (RuBP < PR::RUBISCOTOTAL)
-                theVars->PR_Vel.v111 = theVars->PR_Vel.v111 * RuBP / PR::RUBISCOTOTAL;
+//            if (RuBP < PR::RUBISCOTOTAL)
+//                theVars->PR_Vel.v111 = theVars->PR_Vel.v111 * RuBP / PR::RUBISCOTOTAL;
+            if (RuBP < PS::getPsV1() / 2.) {
+                theVars->PR_Vel.v111 = theVars->PR_Vel.v111 * RuBP / (PS::getPsV1()/ 2.);
+            }
 
         } else if (theVars->RUBISCOMETHOD == 1) {
             theVars->PR_Vel.v111 = PrV111 * theVars->O2_cond / (theVars->O2_cond + PR::KO *
