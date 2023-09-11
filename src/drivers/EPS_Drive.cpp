@@ -54,9 +54,9 @@ void EPSDriver::setup() {
     SYSInitial(inputVars);
     //time = tglobal;
     inputVars->Tp = this->Tp;
-    inputVars->alfa = 0.85;
+    inputVars->Phi_max = 0.63;
     PS::setJmax(inputVars->EnzymeAct.at("Jmax"));
-    inputVars->fc = 0.15;
+    inputVars->fc = 0.2;
 
     double Tp = inputVars->Tp;
     double Theta = 0.76 + 0.01713 * Tp - 3.75 * pow(Tp,2.0) / 10000.0;//Yufeng: match Farquhar Matlab

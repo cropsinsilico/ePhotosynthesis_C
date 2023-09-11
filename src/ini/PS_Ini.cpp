@@ -376,7 +376,7 @@ PSCondition* PS::_init(Variables *theVars) {
         PS::PsV10 = PS::PsV10_0 * pow(Q10_10, (theVars->Tp - 25.) / 10.);
         PS::PsV13= PS::PsV13_0 * pow(Q10_13, (theVars->Tp - 25.) / 10.);
         PS::PsV23 = PS::PsV23_0 * pow(Q10_23, (theVars->Tp - 25.) / 10.);
-        PS::I2 = theVars->TestLi * theVars->alfa * (1. - theVars->fc) / 2.;
+        PS::I2 = theVars->TestLi * theVars->Phi_max * (1. - theVars->fc) / 2.;
         PS::J = (I2 + PS::Jmax - sqrt(pow(I2 + PS::Jmax, 2.) - 4. * PS::Theta * I2 * PS::Jmax)) / (2. * PS::Theta);
 
     } else {
