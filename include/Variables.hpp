@@ -105,6 +105,7 @@ public:
     double Tp = 0;
     double alfa = 0.;
     double fc = 0.;
+    double Phi_max = 0.;
     double lightParam = 0.;
     const double alpha1 = 0.87;
     const double alpha2 = 1.03;
