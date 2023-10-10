@@ -63,7 +63,7 @@ trDynaPSCondition* trDynaPS::_MB_con(const double t, const trDynaPSCondition* co
     GenOut(t, theVars);
     trDynaPSCondition* dydt = new trDynaPSCondition(DynaPSdydt, RROEAdydt);
 #ifdef INCDEBUG
-    DEBUG_INTERNAL(dydt)
+    DEBUG_DELTA(dydt)
 #endif
     return dydt;
 }

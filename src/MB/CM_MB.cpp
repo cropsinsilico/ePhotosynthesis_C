@@ -58,7 +58,7 @@ CMCondition* CM::_MB_con(const realtype t, const CMCondition* const CM_con, Vari
 
     CMCondition *dydt = new CMCondition(PSPRdydt, SUCSdydt);
 #ifdef INCDEBUG
-    DEBUG_INTERNAL(dydt)
+    DEBUG_DELTA(dydt)
 #endif
     return dydt;
 }

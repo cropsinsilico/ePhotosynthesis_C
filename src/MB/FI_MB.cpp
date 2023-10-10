@@ -98,7 +98,7 @@ FICondition* FI::_MB_con(const double t, const FICondition* const FI_Con, Variab
                     theVars->FI_Vel.v_r3_n - theVars->FI_Vel.v_pq_ox; // PQn
 
 #ifdef INCDEBUG
-    DEBUG_INTERNAL(dydt)
+    DEBUG_DELTA(dydt)
 #endif
     return dydt;
 }

@@ -107,6 +107,7 @@ enum RequestedDebug : uint {None = 0,
 
 #define DEBUG_MESSAGE(x) if (x->debugLevel() & theVars->debuglevel) std::cout << (x) << std::endl;
 #define DEBUG_INTERNAL(x) if (Debug::Internal & theVars->debuglevel) std::cout << (x) << std::endl;
+#define DEBUG_DELTA(x) if (Debug::Delta & theVars->debuglevel) std::cout << "DELTA" << std::endl << (x) << std::endl << "END DELTA" << std::endl;
 #endif
 
 /**

@@ -40,10 +40,18 @@ else()
   set(PACKAGE_VERSION "${PACKAGE_VERSION_MAJOR}.${PACKAGE_VERSION_MINOR}.${PACKAGE_VERSION_PATCH}")
 endif()
 
+option(BUILD_MESSAGES "Enable the use of outputting intermediate products, useful for debugging. Alwyas on with Debug builds")
+if(BUILD_MESSAGES)
+    set(BUILDINC " -DINCDEBUG")
+else()
+    set(BUILDINC "")
+endif()
+
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_FLAGS_DEBUG "-g -DINCDEBUG${BUILD_FLAGS}")
-set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG${BUILD_FLAGS}")
+set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG${BUILDINC}${BUILD_FLAGS}")
+set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O2 -g -DINCDEBUG${BUILD_FLAGS}")
 # Prohibit in-source build
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
   message(FATAL_ERROR "In-source build prohibited.")
@@ -54,6 +62,13 @@ set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${PROJECT_SOURCE_DIR}/cmake")
 option(BUILD_TESTS "Build ePhotosynthesis tests.")
 option(TEST_COVERAGE "Include test coverage in the tests (turns BUILD_TESTS ON)")
 option(BUILD_DOCS "Create HTML and PDF API documentation for ePhotosynthesis (requires Doxygen)")
+option(BUILD_PYTHON "Build python bindings for the library.")
+
+if(NOT BUILD_PYTHON)
+    set(BUILD_PYTHON OFF)
+else()
+    set(BUILD_PYTHON ON)
+endif()
 
 if(NOT BUILD_TESTS)
     set(BUILD_TESTS OFF)
@@ -86,18 +101,20 @@ if(BUILD_DOCS)
     find_package(LATEX COMPONENTS PDFLATEX MAKEINDEX)
 endif(BUILD_DOCS)
 
-find_package(Boost 1.36.0 REQUIRED)
+file(GLOB_RECURSE SOURCES "src/*.cpp")
+
+add_library(EPhotosynthesis SHARED ${SOURCES})
+add_executable(ePhoto bin/ePhotosynthesis.cpp)
+
+find_package(Boost 1.36.0 REQUIRED COMPONENTS regex)
+
+
 include_directories(${Boost_INCLUDE_DIRS})
 
 find_package(Sundials REQUIRED)
 include_directories(${SUNDIALS_INCLUDE_DIRS})
 
 include_directories("${PROJECT_SOURCE_DIR}/include")
-
-file(GLOB_RECURSE SOURCES "src/*.cpp")
-
-add_library(EPhotosynthesis SHARED ${SOURCES})
-add_executable(ePhoto bin/ePhotosynthesis.cpp)
 
 target_link_libraries(EPhotosynthesis ${SUNDIALS_LIBRARIES})
 target_link_libraries(EPhotosynthesis ${Boost_LIBRARIES})
@@ -191,4 +208,18 @@ if(TEST_COVERAGE)
         NAME coverage
         EXECUTABLE testRunner
         DEPENDENCIES testRunner EPhotosynthesis)
+endif()
+
+if(BUILD_PYTHON)
+    find_package(PythonInterp 3)
+    find_package(PythonLibs 3 REQUIRED)
+    add_library(pyPhotosynthesis MODULE ${SOURCES})
+    include_directories(${PYTHON_INCLUDE_DIRS})
+    find_package(Boost 1.36.0 REQUIRED COMPONENTS regex python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
+    target_link_libraries(pyPhotosynthesis boost_python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
+    target_link_libraries(pyPhotosynthesis boost_regex)
+    target_link_libraries(pyPhotosynthesis ${PYTHON_LIBRARIES})
+    target_link_libraries(pyPhotosynthesis ${SUNDIALS_LIBRARIES})
+    target_compile_options(pyPhotosynthesis PRIVATE -DBUILD_PYTHON)
+    set_target_properties(pyPhotosynthesis PROPERTIES PREFIX "")
 endif()

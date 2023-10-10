@@ -98,7 +98,7 @@ BFCondition* BF::_MB_con(const double t, const BFCondition* const BF_con, Variab
     dydt->PHl = -(Hvqo1 + Hvqo2 + Hroe - theVars->HPR * theVars->BF_Vel.Vbf11) / 1000. / 0.015; //   PHl  The changes in PH of lumen, 0.03 is from Curz et al., 2001, Biochemistry.
     dydt->NADPH = theVars->BF_Vel.vbfn2 - theVars->BF_Vel.VsNADPH;
 #ifdef INCDEBUG
-    DEBUG_INTERNAL(dydt)
+    DEBUG_DELTA(dydt)
 #endif
     return dydt;
 }

@@ -2,7 +2,7 @@
 
 This documentation is aimed at those who intend to use the ePhotosynthesis library as opposed to the stand alone binary. For the general use case code will only need to interact with a Driver class, giving it a few inputs and letting it handle the minutia. For those wanting to have finer control over the ODE functionality see the \ref apidet section below.
 
-@section callingCode Calling the Code
+@section callingCode Calling the Code from C++
 
 For the basic use case there are only two objects which must be interacted with: a Variables instance and an instance of one of the Driver classes. The Variables class is used to hold variables on the global scope, intermediate results for each ODE iteration, and if requested a copy of the Rate calculations for each step. The Driver class is used to initialize the input variables, initialize and run the ODE solver, and return the results to the user. A few of the Variables data members may need to be changed from their default value for the computation to succeed. These include (but are not limited to):
 
@@ -56,3 +56,5 @@ The following code snippet gives the general minimum code needed to interface wi
 \endcode
 
 @section apidet Details
+
+Apart from the arguments to the Driver classes, there are many options which affect how the ODE solver works toward a solution. These currently are not exposed to the user, in part because of their number. However, adding these options is straight forward in the ePhotosynthesis::drivers::CVodeMem::cvode_mem_init() function.

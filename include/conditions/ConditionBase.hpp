@@ -105,7 +105,7 @@ public:
       \param out output stream to write to.
       \param tab The level of indentation to use.
       */
-    void print(std::ostream &out, const uint tab = 0) {return static_cast<T*>(this)->_print(out, tab);}
+    std::ostream& print(std::ostream &out, const uint tab = 0) {return static_cast<T*>(this)->_print(out, tab);}
 
     /**
       Overloaded output stream function.

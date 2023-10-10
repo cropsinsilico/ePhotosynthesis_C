@@ -7,6 +7,8 @@ the ePhotosynthesis code. The following sections are covered:
 
 - \subpage running Running ePhotosynthesis from the command line.
 
+- \subpage python Calling the code from Python.
+
 - \subpage conversion Describes how the original ePhotosynthesis Matlab code was converted to C++.
 
 - \subpage structure Describes the general data and calling structure of the code.
@@ -14,3 +16,4 @@ the ePhotosynthesis code. The following sections are covered:
 - \subpage newparts Describes how to add new modules to the existing code.
 
 - \subpage api Describes how to link with the ePhotosynthesis code from other code.
+

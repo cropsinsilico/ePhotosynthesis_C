@@ -78,6 +78,40 @@ inline CalcData *alloc_calc_data() {
 class Driver {
 public:
     /**
+      Generate the initial parameter Condition class for the solver to use.
+      */
+    virtual void setup() = 0;
+
+    /**
+      Run the ODE solver and return the results.
+
+      \return `std::vector<double>` containg the results of the computations.
+      \exception std::runtime_error General failure.
+      */
+    arr run();
+
+    /**
+      Runs the solver one more time on the intermediate results to get the solution at the end time
+      stamp.
+      */
+    virtual void getResults() = 0;
+
+    /**
+      Wrapper for the underlying Module MB function. Takes the inputs and converts them to the
+      appropriate Condition class.
+
+      \param t The current timestamp.
+      \param u A specialized data vector containgin the inputs which are converted to a Condition class.
+      \returns dy/dt values for the step.
+      */
+    virtual arr MB(realtype t, N_Vector u) = 0;
+    virtual ~Driver();
+    static Variables *inputVars;  // the instance of Variables to use for all calculations.
+    arr constraints;   // serialized version of the Condition class being used.
+
+protected:
+    friend CVodeMem;
+    /**
       This sets up initial values for the class.
 
       \param[in, out] theVars Instance of the Variables class, which holds global scope variables and
@@ -108,26 +142,6 @@ public:
         data = nullptr;
         origVars = nullptr;
     }
-
-    /**
-      Generate the initial parameter Condition class for the solver to use.
-      */
-    virtual void setup() = 0;
-
-    /**
-      Run the ODE solver and return the results.
-
-      \return `std::vector<double>` containg the results of the computations.
-      \exception std::runtime_error General failure.
-      */
-    arr run();
-
-    /**
-      Runs the solver one more time on the intermediate results to get the solution at the end time
-      stamp.
-      */
-    virtual void getResults() = 0;
-
     /**
       Does the computations and generates the results for each step or sub-step in the solver.
       A pointer to this function is passed to the ODE solver. The API of the function cannot change
@@ -140,21 +154,6 @@ public:
       */
     static int calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
 
-    /**
-      Wrapper for the underlying Module MB function. Takes the inputs and converts them to the
-      appropriate Condition class.
-
-      \param t The current timestamp.
-      \param u A specialized data vector containgin the inputs which are converted to a Condition class.
-      \returns dy/dt values for the step.
-      */
-    virtual arr MB(realtype t, N_Vector u) = 0;
-    virtual ~Driver();
-    static Variables *inputVars;  // the instance of Variables to use for all calculations.
-    arr constraints;   // serialized version of the Condition class being used.
-
-protected:
-    friend CVodeMem;
     realtype abstol;            // absolute tolerance
     realtype reltol;            // relative tolerance
     double start, step, endtime; // time stuff
