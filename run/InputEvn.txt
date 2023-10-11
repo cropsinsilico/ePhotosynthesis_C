@@ -1,4 +1,0 @@
-CO2     285.421
-PAR     400.8784
-SucPath	0
-daylength 14
