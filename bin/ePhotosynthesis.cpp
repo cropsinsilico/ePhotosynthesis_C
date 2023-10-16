@@ -126,7 +126,7 @@ int main(int argc, const char* argv[]) {
         theVars->TestATPCost = stoi(inputs.at("ATPCost"), nullptr);
         theVars->record = record;
         theVars->useC3 = useC3;
-        theVars->RUBISCOMETHOD = 1;
+        theVars->RUBISCOMETHOD = 2;
         modules::PR::setRUBISCOTOTAL(3);
         if (debugDelta)
             dbglvl += 8;

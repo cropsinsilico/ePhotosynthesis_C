@@ -27,11 +27,12 @@
 #include "Variables.hpp"
 #include "modules/PS.hpp"
 
-#define R 8.314
-#define c_c 38.28
-#define dHa_c 80.99
-#define c_o 14.68
-#define dHa_o 23.72
+//Yufeng: I changed these constants to match BioCro's
+#define R 8.314E-3 //KJ mole-1 K-1
+#define c_c 38.05
+#define dHa_c 79.43 
+#define c_o 20.30 
+#define dHa_o 36.38 
 #define RegFactor 1.
 
 using namespace ePhotosynthesis;
@@ -223,7 +224,7 @@ PSCondition* PS::_init(Variables *theVars) {
     PS_con->PenP = 0.25;
 
     if (theVars->useC3) {
-        PS::PS_C_CP = 22.;    //   Global constant for the total phosphate
+        PS::PS_C_CP = 30.;    //   Global constant for the total phosphate
         PS::PS_C_CA = 1.5;   //   Global constant for the total adenylates
         PS::PS_C_CN = 1.;    //   Global constant for the cytosolic Phosphate concentration;
         if (theVars->GRNC == 1 && theVars->CO2_cond > 0) {
@@ -248,8 +249,10 @@ PSCondition* PS::_init(Variables *theVars) {
 
         //PsKM11_0 = ;
         //PsKM12_0 = ;  // O2 1 RuBP+CO2->2PGA  0.28 DEFAUL.
-        PS::KM11 = 0.0097 * exp(c_c - dHa_c * 1000. / (R * (theVars->Tp + 273.15))) / 272.38;
-        PS::KM12 = 0.244 * exp(c_o - dHa_o * 1000. / (R * (theVars->Tp + 273.15))) / 165.82;
+        double kc_25 = exp(c_c - dHa_c / (R * (25.0 + 273.15)));
+        double ko_25 = exp(c_o - dHa_o / (R * (25.0 + 273.15))); 
+        PS::KM11 = 0.0097 * exp(c_c - dHa_c / (R * (theVars->Tp + 273.15))) / kc_25;
+        PS::KM12 = 0.244  * exp(c_o - dHa_o / (R * (theVars->Tp + 273.15))) / ko_25; 
 
         PS::KM13 = 0.02;   //  RuBP 1 RuBP+CO2->2PGA
         PS::KI11 = 0.84;   // PGA
@@ -373,7 +376,7 @@ PSCondition* PS::_init(Variables *theVars) {
         PS::PsV10 = PS::PsV10_0 * pow(Q10_10, (theVars->Tp - 25.) / 10.);
         PS::PsV13= PS::PsV13_0 * pow(Q10_13, (theVars->Tp - 25.) / 10.);
         PS::PsV23 = PS::PsV23_0 * pow(Q10_23, (theVars->Tp - 25.) / 10.);
-        PS::I2 = theVars->TestLi * theVars->alfa * (1. - theVars->fc) / 2.;
+        PS::I2 = theVars->TestLi * theVars->Phi_max * (1. - theVars->fc) / 2.;
         PS::J = (I2 + PS::Jmax - sqrt(pow(I2 + PS::Jmax, 2.) - 4. * PS::Theta * I2 * PS::Jmax)) / (2. * PS::Theta);
 
     } else {

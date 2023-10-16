@@ -24,11 +24,16 @@
  *
  **********************************************************************************************************************************************/
 
+#include <math.h>
 #include "Variables.hpp"
 #include "globals.hpp"
 #include "drivers/EPS_Driver.hpp"
 #include "modules/EPS.hpp"
 #include "modules/PS.hpp"
+//#include <iostream>
+//#include <fstream>
+
+//using namespace std;
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
@@ -49,10 +54,13 @@ void EPSDriver::setup() {
     SYSInitial(inputVars);
     //time = tglobal;
     inputVars->Tp = this->Tp;
-    inputVars->alfa = 0.85;
+    inputVars->Phi_max = 0.63;
     PS::setJmax(inputVars->EnzymeAct.at("Jmax"));
-    inputVars->fc = 0.15;
-    PS::setTheta(0.7);
+    inputVars->fc = 0.2;
+
+    double Tp = inputVars->Tp;
+    double Theta = 0.76 + 0.01713 * Tp - 3.75 * pow(Tp,2.0) / 10000.0;//Yufeng: match Farquhar Matlab
+    PS::setTheta(Theta);
     PS::setbeta(0.7519);
     inputVars->BF_FI_com = true;
     inputVars->EnzymeAct.at("V1") *= inputVars->alpha1;
@@ -66,6 +74,11 @@ void EPSDriver::setup() {
     inputVars->EnzymeAct.at("V10") *= inputVars->alpha2;
     inputVars->EnzymeAct.at("V13") *= inputVars->alpha2;
     inputVars->EnzymeAct.at("V23") *= inputVars->alpha2;
+
+    //we scale up some enzymes 
+    inputVars->EnzymeAct.at("V2") *= inputVars->sensitivity_sf;
+    inputVars->EnzymeAct.at("V13") *= inputVars->sensitivity_sf;
+    //
 
     inputVars->PR_PS_com = true;     // This is a variable indicating whether the PR model is actually need to be combined with PS or not. If 1 then means combined; 0 means not.
 
@@ -110,10 +123,17 @@ void EPSDriver::setup() {
 void EPSDriver::getResults() {
     EPSCondition* eps_int_con = new EPSCondition(intermediateRes);
     arr temp = EPS::MB(time, eps_int_con, inputVars);
-    results = zeros(1);
+    results = zeros(3);
     const double Arate = (inputVars->PS_Vel.v1 - inputVars->PR_Vel.v131) * inputVars->AVR;
     delete eps_int_con;
+
+//    ofstream myfile;
+//    myfile.open ("hello.txt");
+//    myfile << "Writing this to a file.\n";
+//    myfile.close();
     results[0] = Arate;
+    results[1] = inputVars->PS_Vel.v1 * inputVars->AVR; //carboxylation
+    results[2] = inputVars->PR_Vel.v131 * inputVars->AVR; //photorespiration 
 }
 
 EPSCondition* EPSDriver::EPS_Init() {

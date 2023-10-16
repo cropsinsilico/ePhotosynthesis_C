@@ -106,9 +106,11 @@ public:
     double Tp = 0;
     double alfa = 0.;
     double fc = 0.;
+    double Phi_max = 0.;
     double lightParam = 0.;
-    const double alpha1 = 1.205;
-    const double alpha2 = 2.06;
+    const double alpha1 = 0.87;
+    const double alpha2 = 1.03;
+    double sensitivity_sf = 1.0; //a scaling factor for enzymes
 
     // Parameters
     arr PR_Param = zeros(2);
