@@ -1,0 +1,37 @@
+Glyma.19G046800	PS::V1		Rubisco RuBP+CO2<->2PGA 
+Glyma.08G165400	?		?
+Glyma.08G165500	PS::V2		PGA Kinase  PGA+ATP <-> ADP + DPGA
+Glyma.04G015900	PS::V3		GAP dehydragenase   DPGA+NADPH <->GAP + OP+NADP
+Glyma.03G185800	?		?
+Glyma.10G268500	PS::V5		Aldolase    GAP+DHAP <->FBP
+Glyma.07G142700	?		?
+Glyma.10G293500	PS::V7		Transketolase   F6P+GAP<->E4P+Xu5P
+Glyma.11G226900	?		?
+Glyma.15G136200	?		?
+Glyma.05G025300	?		?
+Glyma.01G026700	PR::V124	Glyoxylate + Glu  <--> KG + Glycine
+Glyma.19G089100	PS::V13		Ribulosebiphosphate kinase  Ru5P+ATP<->RuBP+ADP
+Glyma.06G094300	?		?
+Glyma.10G210700	?		?
+Glyma.04G011900	?		?
+Glyma.17G015600	PS::V23		ADP-glucose pyrophosphorylase and   ADPG+Gn<->G(n+1)+ADP
+Glyma.19G022900	?		?
+Glyma.07G028500	?		?
+Glyma.16G168000	SUCS::V52	FBP --F6P + Pi
+Glyma.19G017200	?		?
+Glyma.08G044100	?		?
+Glyma.06G323700	SUCS::V56	UDPG+F6P--SUCP + UDP
+Glyma.10G086600	SUCS::V57	SUCP--Pi + SUC
+Glyma.11G169700	SUCS::V59	F6P + ATP --ADP + F26BP
+Glyma.09G015500	PR::V112	PGlycolate-->Pi+Glycolate
+Glyma.15G012500	PR::V113	Gcea+ATP<-->ADP + PGA
+Glyma.08G097300	?		?
+Glyma.06G017900	PR::V121	Glycolate +O2<-->H2O2+Glyoxylate
+Glyma.08G302600	PR::V122	Glyoxylate + Serine<--> Hydoxypyruvate + Glycine
+Glyma.09G255200	PR::V123	HydroxylPyruvate + NAD <--> NADH + Glycerate
+Glyma.04G051200	?		?
+Glyma.13G222300	PR::V131	NAD+Glycine <--> CO2+ NADH + NH3
+Glyma.13G204800	?		?
+Glyma.10G042000	?		?
+Glyma.01G095900	?		?
+Glyma.09G024100	?		?
