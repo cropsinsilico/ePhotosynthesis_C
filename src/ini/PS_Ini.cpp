@@ -223,7 +223,7 @@ PSCondition* PS::_init(Variables *theVars) {
     PS_con->PenP = 0.25;
 
     if (theVars->useC3) {
-        PS::PS_C_CP = 22.;    //   Global constant for the total phosphate
+        PS::PS_C_CP = 22.;   //   Global constant for the total phosphate
         PS::PS_C_CA = 1.5;   //   Global constant for the total adenylates
         PS::PS_C_CN = 1.;    //   Global constant for the cytosolic Phosphate concentration;
         if (theVars->GRNC == 1 && theVars->CO2_cond > 0) {
@@ -379,6 +379,8 @@ PSCondition* PS::_init(Variables *theVars) {
     } else {
         PS::PS_C_CP = 15. * theVars->PSRatio[0];  // Global constant for the total phosphate
         PS::PS_C_CA = 1.5 * theVars->PSRatio[1];  // Global constant for the total adenylates
+	// langmm: Present in Matlab version
+	// PS::PS_C_CN = 1.0 * theVars->PSRatio[2];  // Global constant for the cytosolic Phosphate concentration;
         PS::PS_PEXT = 0.5 * theVars->PSRatio[3];  // Global constant for the cytosolic Phosphate concentration;
 
         // Initialize the constants for the different reactions

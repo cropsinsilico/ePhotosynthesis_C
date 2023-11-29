@@ -71,11 +71,11 @@ using namespace ePhotosynthesis;
 
 #ifdef WITH_YGGDRASIL
 #define assignYggVarD(src, dst) if (new_state.HasMember(#src))		\
-    theVars->dst = new_state[#src].GetScalar<double>()
+    theVars->dst = new_state[#src].GetDouble()
 #define assignYggVarI(src, dst) if (new_state.HasMember(#src))		\
-    theVars->dst = static_cast<int>(new_state[#src].GetScalar<double>())
+    theVars->dst = new_state[#src].GetInt()
 #define setYggVarB(src, mod, dst) if (new_state.HasMember(#src))	\
-    modules::mod::set ## dst ((static_cast<int>(new_state[#src].GetScalar<double>()) == 1))
+    modules::mod::set ## dst ((static_cast<int>(new_state[#src].GetBool()) == 1))
 #endif // WITH_YGGDRASIL
 
 enum DriverType {
@@ -103,16 +103,16 @@ int main(int argc, const char* argv[]) {
         bool debugDelta, debugInternal;
         options.add_options()
                 ("v,verbose", "Record output values for all steps (this can significantly slow the program).", cxxopts::value<bool>(record)->default_value("false"))
-                ("e,evn", "The InputEvn.txt file.", cxxopts::value<std::string>(evn)->default_value("InputEvn.txt"))
-                ("a,atpcost", "The InputATPCost.txt file.", cxxopts::value<std::string>(atpcost)->default_value("InputATPCost.txt"))
-                ("n,enzyme", "The input enzyme file.", cxxopts::value<std::string>(enzymeFile)->default_value(""))
-	        ("g,grn", "The input genetic regulatory network concentrations.",
+                ("e,evn", "The file (including path) containing environmental parameters", cxxopts::value<std::string>(evn)->default_value("InputEvn.txt"))
+                ("a,atpcost", "The file (including path) containing the ATP cost", cxxopts::value<std::string>(atpcost)->default_value("InputATPCost.txt"))
+                ("n,enzyme", "The file (including path) containing enzyme activities like InputEnzyme.txt", cxxopts::value<std::string>(enzymeFile)->default_value(""))
+	        ("g,grn", "The file (including path) containing protein ratios for relevant genes like InputGRNC.txt",
 		 cxxopts::value<std::string>(grnFile)->default_value(""))
                 ("b,begintime", "The starting time for the calculations.", cxxopts::value<double>(begintime)->default_value("0.0"))
                 ("s,stoptime", "The time to stop calculations.", cxxopts::value<double>(stoptime)->default_value("5000.0"))
                 ("z,stepsize", "The step size to use in the calculations.", cxxopts::value<double>(stepsize)->default_value("1.0"))
                 ("m,maxSubSteps", "The maximum number of iterations at each time step.", cxxopts::value<int>(maxSubSteps)->default_value("750"))
-                ("d,driver", "The driver to use. Choices are:                            1 - trDynaPS                                         2 - DynaPS                                           3 - CM                                               4 - EPS         ", cxxopts::value<int>(driver)->default_value("1"))
+                ("d,driver", "The driver to use. Choices are:                        1 - trDynaPS: PS, PR, FI, BF, SUCS, RuACT,                 XanCycle, RROEA                                2 - DynaPS: PS, PR, FI, BF, SUCS, XanCycle           3 - CM: PS, PR, SUCS                                 4 - EPS: PS, PR, FI, BF, SUCS                    ", cxxopts::value<int>(driver)->default_value("1"))
                 ("c,c3", "Use the C3 model, automatically set to true for EPS driver", cxxopts::value<bool>(useC3)->default_value("false"))
                 ("t,abstol", "Absolute tolerance for calculations", cxxopts::value<double>(abstol)->default_value("1e-5"))
                 ("r,reltol", "Relative tolerance for calculations", cxxopts::value<double>(reltol)->default_value("1e-4"))
@@ -157,6 +157,7 @@ int main(int argc, const char* argv[]) {
 	}
         Variables *theVars = new Variables(&context);
         if (result.count("enzyme")) {
+	    std::cerr << "ENZYME DATA PROVIDED" << std::endl;
 	    readFile(enzymeFile, theVars->EnzymeAct, true);
         }
 
@@ -168,9 +169,10 @@ int main(int argc, const char* argv[]) {
 	assignInputVarI(GRNC, GRNC);
 	setInputVarB(SucPath, CM, TestSucPath);
 
-	// Read the GRN data and assign it into the correct positions based
-	// on the expected order
+	// Read the GRN data and assign it into the correct positions
+	// based on the expected order
 	if (result.count("grn")) {
+	  std::cerr << "GRN DATA PROVIDED" << std::endl;
 	  std::map<std::string, double> glymaID_map;
 	  readFile(grnFile, glymaID_map);
 	  double pcfactor = 1.0 / 0.973;
@@ -243,7 +245,7 @@ int main(int argc, const char* argv[]) {
 	  printf("Invalid driver choice given.\n");
 	  exit(EXIT_FAILURE);
         }
-	YggGenericInput steps("steps");
+	YggGenericInput steps("param");
 	bool first = true;
 	int iteration = 0;
 	while (true) {
