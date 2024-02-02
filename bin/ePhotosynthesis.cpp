@@ -54,28 +54,43 @@ using namespace ePhotosynthesis;
 #define varSearch(x) if (result.count(#x) == 0 && inputs.count(#x) > 0) \
     x = inputs.at(#x);
 
-#define assignInputVarD(src, dst) if (inputs.count(#src) > 0)		\
-    theVars-> dst = static_cast<double>(stof(inputs.at(#src), nullptr));	\
-  else \
+#define displayInputVar(fmt, src, val)				\
+  printf("Input variable \"%s\" = " #fmt "\n", #src, val)
+
+#define assignInputVarD(src, dst) if (inputs.count(#src) > 0) {		\
+    theVars-> dst = static_cast<double>(stof(inputs.at(#src), nullptr)); \
+    displayInputVar(%lf, src, theVars-> dst);				\
+  } else								\
     printf("Input variable \"%s\" not set\n", #src)
-#define assignInputVarI(src, dst) if (inputs.count(#src) > 0)		\
+#define assignInputVarI(src, dst) if (inputs.count(#src) > 0) {		\
     theVars-> dst = stoi(inputs.at(#src), nullptr);			\
-  else \
+    displayInputVar(%d, src, theVars-> dst);				\
+  } else								\
     printf("Input variable \"%s\" not set\n", #src)
 
-#define setInputVarB(src, mod, dst) if (inputs.count(#src) > 0)		\
+#define setInputVarB(src, mod, dst) if (inputs.count(#src) > 0) {	\
     modules::mod::set ## dst ((bool)(stoi(inputs.at(#src), nullptr)));	\
-  else \
+    displayInputVar(%d, src, stoi(inputs.at(#src), nullptr));		\
+  } else								\
     printf("Input variable \"%s\" not set\n", #src)
 
 
 #ifdef WITH_YGGDRASIL
-#define assignYggVarD(src, dst) if (new_state.HasMember(#src))		\
-    theVars->dst = new_state[#src].GetDouble()
-#define assignYggVarI(src, dst) if (new_state.HasMember(#src))		\
-    theVars->dst = new_state[#src].GetInt()
-#define setYggVarB(src, mod, dst) if (new_state.HasMember(#src))	\
-    modules::mod::set ## dst ((static_cast<int>(new_state[#src].GetBool()) == 1))
+#define displayYggInputVar(fmt, src, val)				\
+  printf("Yggdrasil input variable \"%s\" = " #fmt "\n", #src, val)
+
+#define assignYggVarD(src, dst) if (new_state.HasMember(#src)) {	\
+    theVars->dst = new_state[#src].GetDouble();				\
+    displayYggInputVar(%lf, src, theVars->dst);				\
+  }
+#define assignYggVarI(src, dst) if (new_state.HasMember(#src)) {	\
+    theVars->dst = new_state[#src].GetInt();				\
+    displayYggInputVar(%d, src, theVars->dst);				\
+  }
+#define setYggVarB(src, mod, dst) if (new_state.HasMember(#src)) {	\
+    modules::mod::set ## dst ((static_cast<int>(new_state[#src].GetBool()) == 1)); \
+    displayYggInputVar(%d, src, static_cast<int>(new_state[#src].GetBool())); \
+  }
 #endif // WITH_YGGDRASIL
 
 enum DriverType {
@@ -273,6 +288,11 @@ int main(int argc, const char* argv[]) {
 	  assignYggVarD(ATPCost, TestATPCost);
 	  assignYggVarI(GRNC, GRNC);
 	  setYggVarB(SucPath, CM, TestSucPath);
+	  if (new_state.HasMember("Temp")) {
+	    Tp = new_state["Temp"].GetDouble();
+	    displayYggInputVar(%lf, Temp, Tp);
+	  }
+	  // TODO: inputs for driver
 
 #endif
 

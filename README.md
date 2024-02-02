@@ -92,3 +92,48 @@ The ePhotosynthesis executable takes the following arguments:
 - EPS: PS + PR + FI + BF + SUCS
 - DynaPS: EPS + XanCycle
 - trDynaPS: DynaPS + RuACT + RROEA
+
+### Running with Yggdrasil
+
+The model can be run as part of an [yggdrasil](https://github.com/cropsinsilico/yggdrasil) integration. The steps to running ePhotosynthesis via yggdrasil can be found below
+
+#### Install yggdrasil in development mode
+
+Yggdrasil is under active development on the topic/cache branch to add features for calling ePhotosynthesis from python as a function so it is recommended to install this version of yggdrasil from source. A full description of development installation can be found [here](https://cropsinsilico.github.io/yggdrasil/development/general.html#dev-env-rst), but a simplified form is found below:
+```
+conda activate [your env name here]
+conda install mamba  # optional if you already have mamba
+git clone --recurse-submodules git@github.com:cropsinsilico/yggdrasil.git
+cd yggdrasil
+git checkout topic/cache
+python utils/manage_requirements.py install mamba --for-development
+pip install .
+cd ../  # To ensure the installed yggdrasil is used
+yggconfig
+yggcompile cpp
+```
+
+#### Run via yggdrasil
+
+Then you should be able to run the ePhotosynthesis model from the command line via
+
+```
+yggrun ePhoto.yml
+```
+
+The inputs to the model are controlled in the ePhoto.yml file on the line that begins `args: [./ePhoto ...`. Much of the model's behavior can be controlled via these arguments or via the files passed as arguments. The location of the output file is determined by the value in the `outputs` section of ePhoto.yml. The default is currently `output_ygg_single.data`. If you make changes to the ePhotosynthesis source code, you should pass the `--overwrite` flag to `yggrun` the next time you call it so that ePhotosynthesis will be rebuilt.
+
+### Running interactively in Python with Yggdrasil
+
+If yggdrasil is installed, it can be used to load the ePhotosynthesis model as a function into Python for interactive use. The currently available inputs are CO2, PAR, ATPCost, GRNC, & SucPath. If any of the input files are modified (e.g. ePhoto.yml, InputEnzyme.txt), you will need to reload the model as a function by calling the reload method.
+Make sure to call ePhoto.stop() before closing the Python process or it could leave the model running in the background.
+```
+from yggdrasil import import_as_function
+ePhoto = import_as_function("ePhoto.yml")
+ePhoto(CO2=400, PAR=339.575, ATPCost=0, GRNC=1, SucPath=False)
+ePhoto(CO2=410, PAR=339.575, ATPCost=0, GRNC=1, SucPath=False)
+# Changes made to input file
+ePhoto.reload()
+ePhoto(CO2=400, PAR=339.575, ATPCost=0, GRNC=1, SucPath=False)
+ePhoto.stop()
+```
