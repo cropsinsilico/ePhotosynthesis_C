@@ -99,13 +99,15 @@ The model can be run as part of an [yggdrasil](https://github.com/cropsinsilico/
 
 #### Install yggdrasil in development mode
 
-Yggdrasil is under active development on the topic/cache branch to add features for calling ePhotosynthesis from python as a function so it is recommended to install this version of yggdrasil from source. A full description of development installation can be found [here](https://cropsinsilico.github.io/yggdrasil/development/general.html#dev-env-rst), but a simplified form is found below:
+Yggdrasil is under active development on the topic/cache branch to add features for calling ePhotosynthesis from python as a function so it is recommended to install this version of yggdrasil from source. A full description of development installation can be found [here](https://cropsinsilico.github.io/yggdrasil/development/general.html#dev-env-rst), but a simplified form is found below. It is recommended that you install mamba for faster dependency solutions. Directions for doing so can be found [here](https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html). If you do not install mamba, replace any occurance of 'mamba' with 'conda' in the directions below:
+
 ```
 conda activate [your env name here]
-conda install mamba  # optional if you already have mamba
 git clone --recurse-submodules git@github.com:cropsinsilico/yggdrasil.git
 cd yggdrasil
 git checkout topic/cache
+git submodule init  # required because the main branch does not have the python-rapidjson submodule
+git submodule update
 python utils/manage_requirements.py install mamba --for-development
 pip install .
 cd ../  # To ensure the installed yggdrasil is used
