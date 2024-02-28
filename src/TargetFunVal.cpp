@@ -31,8 +31,11 @@ using namespace ePhotosynthesis;
 
 const bool VolRatioStCyto = true;
 double ePhotosynthesis::TargetFunVal(Variables *theVars) {
-    if (!theVars->record)
-        return 0.;
+    if (!theVars->record) {
+      if (theVars->RuACT_EPS_com)
+	return (theVars->RuACT_Vel.v6_1 - theVars->PR_Vel.v131) * theVars->AVR;
+      return (theVars->PS_Vel.v1 - theVars->PR_Vel.v131) * theVars->AVR;
+    }
 
 
     const double PSVCOEFF = 30.;

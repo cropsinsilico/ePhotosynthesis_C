@@ -99,7 +99,8 @@ void trDynaPSDriver::getResults() {
     double Vpgasink = inputVars->SUCS_Vel.vpga_use * inputVars->AVR;
     double VStarch = (inputVars->PS_Vel.v23 - inputVars->PS_Vel.v25) * inputVars->AVR;
     double Vt3p = (inputVars->PS_Vel.v31 + inputVars->PS_Vel.v33) * inputVars->AVR;
-    results = zeros(7);
+    const double CO2AR = TargetFunVal(inputVars);
+    results = zeros(8);
     results[0] = CarbonRate; //Vc
     results[1] = VPR;        //Vo
     results[2] = Vpgasink;   //PGA
@@ -107,6 +108,7 @@ void trDynaPSDriver::getResults() {
     results[4] = VStarch;    //Vstarch
     results[5] = inputVars->PR_Vel.v1in * inputVars->AVR;  //Vt_glycerate
     results[6] = inputVars->PR_Vel.v2out * inputVars->AVR; //Vt_glycolate
+    results[7] = CO2AR;
 
     if(inputVars->record) {
         makeFluxTR(inputVars);

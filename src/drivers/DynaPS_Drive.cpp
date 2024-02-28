@@ -130,8 +130,9 @@ void DynaPSDriver::getResults() {
     double Vpgasink = inputVars->SUCS_Vel.vpga_use * inputVars->AVR;
     double VStarch = (inputVars->PS_Vel.v23 - inputVars->PS_Vel.v25) * inputVars->AVR;
     double Vsucrose = inputVars->SUCS_Vel.vdhap_in * inputVars->AVR;
+    const double CO2AR = TargetFunVal(inputVars);
 
-    results = zeros(7);
+    results = zeros(8);
 
     results[0] = PSIIabs;
     results[1] = PSIabs;
@@ -141,6 +142,7 @@ void DynaPSDriver::getResults() {
     results[4] = Vpgasink;
     results[5] = Vsucrose;
     results[6] = VStarch;
+    results[7] = CO2AR;
 
     if(inputVars->record) {
         makeFluxTR(inputVars);

@@ -245,10 +245,10 @@ int main(int argc, const char* argv[]) {
 	Variables *origVars = theVars->deepcopy();
         switch (driverChoice) {
 	case trDynaPS:
-	  out = new YggAsciiTableOutput("output", "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n");
+	  out = new YggAsciiTableOutput("output", "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n");
 	  break;
 	case DynaPS:
-	  out = new YggAsciiTableOutput("output", "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n");
+	  out = new YggAsciiTableOutput("output", "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n");
 	  break;
 	case CM:
 	  out = new YggAsciiTableOutput("output", "%f\t%f\n");
@@ -325,14 +325,14 @@ int main(int argc, const char* argv[]) {
 #ifdef WITH_YGGDRASIL
         switch (driverChoice) {
 	case trDynaPS:
-	  flag = out->send(8, theVars->TestLi, ResultRate[0], ResultRate[1],
+	  flag = out->send(9, theVars->TestLi, ResultRate[0], ResultRate[1],
 			   ResultRate[2], ResultRate[3], ResultRate[4],
-			   ResultRate[5], ResultRate[6]);
+			   ResultRate[5], ResultRate[6], ResultRate[7]);
 	  break;
 	case DynaPS:
-	  flag = out->send(8, theVars->TestLi, ResultRate[0], ResultRate[1],
+	  flag = out->send(9, theVars->TestLi, ResultRate[0], ResultRate[1],
 			   ResultRate[2], ResultRate[3], ResultRate[4],
-			   ResultRate[5], ResultRate[6]);
+			   ResultRate[5], ResultRate[6], ResultRate[7]);
 	  break;
 	case CM:
 	  flag = out->send(2, theVars->TestLi, ResultRate[0]);
@@ -352,23 +352,23 @@ int main(int argc, const char* argv[]) {
 
         switch (driverChoice) {
             case trDynaPS:
-                outfile << "Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate" << std::endl;
+                outfile << "Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate,CO2AR" << std::endl;
                 outfile << theVars->TestLi << "," << ResultRate[0] << ",";
                 outfile << ResultRate[1] << "," << ResultRate[2] << "," << ResultRate[3] << ",";
-                outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << std::endl;
+                outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << "," << ResultRate[7] << std::endl;
                 break;
             case DynaPS:
-                outfile << "Light intensity,PSIIabs,PSIabs,Vc,Vo,VPGA,Vsucrose,Vstarch" << std::endl;
+                outfile << "Light intensity,PSIIabs,PSIabs,Vc,Vo,VPGA,Vsucrose,Vstarch,CO2AR" << std::endl;
                 outfile << theVars->TestLi << "," << ResultRate[0] << ",";
                 outfile << ResultRate[1] << "," << ResultRate[2] << "," << ResultRate[3] << ",";
-                outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << std::endl;
+                outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << "," << ResultRate[7] << std::endl;
                 break;
             case CM:
                 outfile << "Light intensity,CO2AR" << std::endl;
                 outfile << theVars->TestLi << "," << ResultRate[0] << std::endl;
                 break;
             case EPS:
-                outfile << ResultRate[0] << std::endl;
+	        outfile << ResultRate[0] << std::endl;
                 break;
             default:
                 break;

@@ -32,14 +32,14 @@ models:
           transformtype: map
   outputs:
     - name: output
-      vars: [Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate]
+      vars: [Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate,CO2AR]
       # Single timestep
       # default_file:
       #   name: output_ygg_single.data
       #   filetype: table
-      #   field_names: Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate
+      #   field_names: Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate,CO2AR
       # Multiple timesteps
       default_file:
         name: output_ygg_multiple.data
         filetype: table
-        field_names: Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate
+        field_names: Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate,CO2AR
