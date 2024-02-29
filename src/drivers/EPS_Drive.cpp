@@ -63,17 +63,17 @@ void EPSDriver::setup() {
     PS::setTheta(Theta);
     PS::setbeta(0.7519);
     inputVars->BF_FI_com = true;
-    inputVars->EnzymeAct.at("V1") *= inputVars->alpha1;
-    inputVars->EnzymeAct.at("V2") *= inputVars->alpha2;
-    inputVars->EnzymeAct.at("V3") *= inputVars->alpha2;
-    inputVars->EnzymeAct.at("V5") *= inputVars->alpha2;
-    inputVars->EnzymeAct.at("V6") *= inputVars->alpha2;
-    inputVars->EnzymeAct.at("V7") *= inputVars->alpha2;
-    inputVars->EnzymeAct.at("V8") *= inputVars->alpha2;
-    inputVars->EnzymeAct.at("V9") *= inputVars->alpha2;
-    inputVars->EnzymeAct.at("V10") *= inputVars->alpha2;
-    inputVars->EnzymeAct.at("V13") *= inputVars->alpha2;
-    inputVars->EnzymeAct.at("V23") *= inputVars->alpha2;
+    //inputVars->EnzymeAct.at("V1") *= inputVars->alpha1;
+    //inputVars->EnzymeAct.at("V2") *= inputVars->alpha2;
+    //inputVars->EnzymeAct.at("V3") *= inputVars->alpha2;
+    //inputVars->EnzymeAct.at("V5") *= inputVars->alpha2;
+    //inputVars->EnzymeAct.at("V6") *= inputVars->alpha2;
+    //inputVars->EnzymeAct.at("V7") *= inputVars->alpha2;
+    //inputVars->EnzymeAct.at("V8") *= inputVars->alpha2;
+    //inputVars->EnzymeAct.at("V9") *= inputVars->alpha2;
+    //inputVars->EnzymeAct.at("V10") *= inputVars->alpha2;
+    //inputVars->EnzymeAct.at("V13") *= inputVars->alpha2;
+    //inputVars->EnzymeAct.at("V23") *= inputVars->alpha2;
 
     //we scale up some enzymes 
     inputVars->EnzymeAct.at("V2") *= inputVars->sensitivity_sf;
