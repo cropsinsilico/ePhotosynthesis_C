@@ -9,7 +9,7 @@ The script is provided for convenience and is not used in the build process.
 
 ### Prerequisites:
 - [Boost](https://www.boost.org/) (1.36 or newer) - only the algorithm headers are needed
-- [Sundials](https://computing.llnl.gov/projects/sundials) - Only the following modules are used:
+- [Sundials>=6.7.0](https://computing.llnl.gov/projects/sundials) - Only the following modules are used:
   - CVode
   - Kinsol
 - [Doxygen](https://www.doxygen.nl/index.html) - (optional) needed to build the documentation
