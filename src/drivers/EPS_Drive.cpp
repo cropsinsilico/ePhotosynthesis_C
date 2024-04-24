@@ -54,12 +54,13 @@ void EPSDriver::setup() {
     SYSInitial(inputVars);
     //time = tglobal;
     inputVars->Tp = this->Tp;
-    inputVars->Phi_max = 0.63;
+    inputVars->Phi_max = 0.5;
     PS::setJmax(inputVars->EnzymeAct.at("Jmax"));
-    inputVars->fc = 0.2;
+    inputVars->fc = 0.15; // equals leaf_reflectance + leaf_transmittance in BioCro
 
     double Tp = inputVars->Tp;
-    double Theta = 0.76 + 0.01713 * Tp - 3.75 * pow(Tp,2.0) / 10000.0;//Yufeng: match Farquhar Matlab
+    double Theta_base = 0.76 * 0.64; //0.76 is the default of Theta. The second term is a scaling factor that comes from ACi&AQ fitting of the Farquhar for LD11
+    double Theta = Theta_base + 0.01713 * Tp - 3.75 * pow(Tp,2.0) / 10000.0;//Yufeng: match Farquhar Matlab
     PS::setTheta(Theta);
     PS::setbeta(0.7519);
     inputVars->BF_FI_com = true;
