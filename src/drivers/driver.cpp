@@ -43,7 +43,8 @@ bool Driver::showWarnings = false;
 arr Driver::run() {
     origVars = new Variables(inputVars);
     uint count = 0;
-    while (count < 10){
+    int max_count = 20; 
+    while (count < max_count){
         maxStep = 20. * step;
 
         setup();
@@ -120,7 +121,15 @@ arr Driver::run() {
         step = initialStep / (count + 1);
         std::cout << "Retrying with smaller step size: " << step << std::endl;
     }
-    throw std::runtime_error("No valid solution found");
+//    throw std::runtime_error("No valid solution found");
+//  Create an array of some values
+    std::cout << "No solution was found after all adaptive steps." << std::endl;
+    arr no_solution_results;
+    for (int i = 0; i < 3; ++i) {
+//-10 is used as a meaningless value for gross assimilation
+        no_solution_results.push_back(-10.0);
+    }
+    return no_solution_results; // Return an array of x if no valid solution found
 }
 
 Driver::~Driver() {
