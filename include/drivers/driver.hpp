@@ -154,6 +154,8 @@ protected:
       */
     static int calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
 
+    void saveLastDataToFile(const std::vector<double> &lastData, const std::string &filename);
+
     realtype abstol;            // absolute tolerance
     realtype reltol;            // relative tolerance
     double start, step, endtime; // time stuff

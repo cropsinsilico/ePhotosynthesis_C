@@ -43,7 +43,7 @@ bool Driver::showWarnings = false;
 arr Driver::run() {
     origVars = new Variables(inputVars);
     uint count = 0;
-    int max_count = 20; 
+    int max_count = 10; 
     while (count < max_count){
         maxStep = 20. * step;
 
@@ -94,6 +94,7 @@ arr Driver::run() {
         realtype t = 0;
         bool runOK = true;
         realtype tout = start + step;
+        std::vector<double> lastData1,difference; // Declare lastData1 outside the loop
         while (t <= endtime) {
             if (CVode(cvode_mem, tout, y, &t, CV_NORMAL) != CV_SUCCESS) {
                 std::cout << "CVode failed at t=" << tout << "  " << t << std::endl;
@@ -101,7 +102,70 @@ arr Driver::run() {
                 break;
             }
             tout += step;
+
+//this print out all metabolites concentration for each time step
+//be careful of adpative time step
+           if(false){
+             std::cout << "t = " << t <<std::endl; 
+             GenOut(t,inputVars);
+             TimeSeries<std::vector<double> > metabolites = inputVars->CO2A;
+             std::vector<double> lastData = metabolites.getLastData();
+             std::cout << "This step data:\n";
+             for (double val : lastData) {
+                 std::cout << val << " ";
+             }
+             std::cout << std::endl;
+           }
+//get the data at endtime-100
+          if (std::abs(t - (endtime - 100)) < 1e-6) {
+//            std::cout << "t = " << t <<std::endl; 
+            GenOut(t,inputVars);
+            TimeSeries<std::vector<double> > metabolites = inputVars->CO2A;
+            lastData1 = metabolites.getLastData();
+//            std::cout << "Last step data:\n";
+//            for (double val : lastData1) {
+//                std::cout << val << " ";
+//            }
+//            std::cout << std::endl;
+          }
+//get the data at endtime and calculate the difference
+          if(std::abs(t - endtime) < 1e-6){
+//            std::cout << "t = " << t <<std::endl; 
+            GenOut(t,inputVars);
+            TimeSeries<std::vector<double> > metabolites = inputVars->CO2A;
+            auto lastData2 = metabolites.getLastData();
+// Ensure difference vector is properly sized
+            difference.resize(lastData1.size());
+            if(lastData1.size()<52) 
+            {
+              std::cout << "lastData1 has size of: ";
+              std::cout << lastData1.size() <<std::endl;
+              throw std::runtime_error("invalid data size"); 
+            }
+            for (size_t i = 0; i < lastData1.size(); ++i) {
+                difference[i] = (lastData2[i] - lastData1[i])/100.;//divide delta t
+            }
+//            std::cout << "Last step data:\n";
+//            for (double val : difference) {
+//                std::cout << val << " ";
+//            }
+//            std::cout << std::endl;
+          }
+        }//end while
+// Threshold value
+        double threshold = 1e-4;
+
+// Check if some elements are larger than the threshold
+        bool allSmallerThanThreshold = true;
+        if(difference.size()>52){ 
+          for (int index=7; index<51; ++index) {
+            if (difference[index] > threshold) {
+                allSmallerThanThreshold = false;
+                break;
+            }
+          }
         }
+
         if (runOK) {
             intermediateRes = N_VGetArrayPointer(y);
             time = t;
@@ -112,14 +176,29 @@ arr Driver::run() {
         SUNLinSolFree(LS);
         SUNMatDestroy(A);
         N_VDestroy(y);
-        if (runOK)
-            return results;
+//if condition 1: ODE runs AND
+//condition 2: all metabolites are converged
+        if (runOK && allSmallerThanThreshold){
+//save steady-state metabolite to a text file
+//during optimization, this should be turned off to save time
+//turn it on for analysis purpose
+	  if(false){
+            GenOut(time,inputVars);
+            TimeSeries<std::vector<double> > metabolites = inputVars->CO2A;
+            auto lastData = metabolites.getLastData();
+            std::string filename = "last_data.txt";
+            saveLastDataToFile(lastData, filename);
+          }
+//return results of assimilation and others
+          return results;
+        }
 
+// Restore inputVars to its original state
         inputVars = origVars;
 
         count++;
         step = initialStep / (count + 1);
-        std::cout << "Retrying with smaller step size: " << step << std::endl;
+//        std::cout << "Retrying with smaller step size: " << step << std::endl;
     }
 //    throw std::runtime_error("No valid solution found");
 //  Create an array of some values
@@ -127,7 +206,7 @@ arr Driver::run() {
     arr no_solution_results;
     for (int i = 0; i < 3; ++i) {
 //-10 is used as a meaningless value for gross assimilation
-        no_solution_results.push_back(-10.0);
+        no_solution_results.push_back(0.5);
     }
     return no_solution_results; // Return an array of x if no valid solution found
 }
@@ -144,4 +223,20 @@ int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
     for (std::size_t index = 0; index < ddxdt.size(); index++)
         dxdt[index] = ddxdt[index];
     return 0;
+}
+
+void Driver::saveLastDataToFile(const std::vector<double> &lastData, const std::string &filename) {
+    std::ofstream outFile(filename);
+
+    if (!outFile) {
+        std::cerr << "Error opening file: " << filename << std::endl;
+        return;
+    }
+
+    for (double val : lastData) {
+        outFile << val << " ";
+    }
+
+    outFile << std::endl;
+    outFile.close();
 }
