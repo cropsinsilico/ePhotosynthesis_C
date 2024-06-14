@@ -39,6 +39,9 @@ void ePhotosynthesis::GenOut(double t, Variables *theVars) {
     if (!theVars->XanCycle_BF_com)
         theVars->XanCycle2OUT.clear();
 
+//Yufeng: Define co2a outside if(theVars->record) so that 
+//we get a zero co2a even without the if condition being true
+    arr co2a = zeros(100);
     if (theVars->record) {
         double ATP = theVars->PS2OUT.ATP;
         double NADPH = PS::get_NADPH();
@@ -55,7 +58,6 @@ void ePhotosynthesis::GenOut(double t, Variables *theVars) {
             ATP = theVars->BF2OUT[4];
         }
 
-        arr co2a = zeros(100);
         co2a[0] = theVars->CO2_cond * 3. * pow(10., 4.);
         co2a[1] = O2 / 1.26;
         if (theVars->FIBF_PSPR_com) {
@@ -114,8 +116,9 @@ void ePhotosynthesis::GenOut(double t, Variables *theVars) {
 
 
         co2a[99] = t;
-        theVars->CO2A.insert(PS::getN() - 1, t, co2a);
     }
+//Yufeng:theVars->CO2A needs to be always defined with or without if (theVars->record)  
+    theVars->CO2A.insert(PS::getN() - 1, t, co2a);
 }
 
 void ePhotosynthesis::makeFluxTR(Variables *theVars) {
