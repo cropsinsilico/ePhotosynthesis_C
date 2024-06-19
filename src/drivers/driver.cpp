@@ -105,7 +105,7 @@ arr Driver::run() {
 
 //this print out all metabolites concentration for each time step
 //be careful of adpative time step
-           if(false){
+           if(inputVars->saveMetabolite){
              std::cout << "t = " << t <<std::endl; 
              GenOut(t,inputVars);
              TimeSeries<std::vector<double> > metabolites = inputVars->CO2A;
@@ -182,7 +182,7 @@ arr Driver::run() {
 //save steady-state metabolite to a text file
 //during optimization, this should be turned off to save time
 //turn it on for analysis purpose
-	  if(false){
+	  if(inputVars->saveMetabolite){
             GenOut(time,inputVars);
             TimeSeries<std::vector<double> > metabolites = inputVars->CO2A;
             auto lastData = metabolites.getLastData();
@@ -190,12 +190,24 @@ arr Driver::run() {
             saveLastDataToFile(lastData, filename);
           }
 // Extract subvector
+// we only need the difference for metabolites
           std::vector<double> sub_vector(difference.begin() + 7,
                                          difference.begin() + 51);
           double penalty = smoothPenalty(sub_vector, threshold);
 //return results of assimilation and others
 //since we maximize assimilation, the penalty (positive) is deducted
-          results[0] = results[0] - 4*penalty;
+//the penalty takes value from 0 to 1
+//the multiplier on the penalty is determined from my own tests and subject to changes 
+//If it's too large, the optimizer can not converge
+//If it's too small, the optimizer may converge by allowing penalties on some metabolites
+//Neither is what we want
+          double multiplier = 4.0;
+          
+	  if(inputVars->saveMetabolite){
+            std::cout << "results[0] is "<<results[0]<<" Penalty is "<<penalty<<
+            " multiplier is"<<multiplier<<std::endl;
+          }
+          results[0] = results[0] - multiplier * penalty;
           return results;
         }
 

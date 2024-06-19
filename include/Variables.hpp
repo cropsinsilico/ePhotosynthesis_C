@@ -77,6 +77,7 @@ public:
     bool RedoxReg_RA_com = false;
     bool RuACT_EPS_com = false;
     bool XanCycle_BF_com = false;
+    bool saveMetabolite  = false;
 
     int GP = 0;
     int GRNC = 0;
