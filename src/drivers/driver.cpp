@@ -118,19 +118,12 @@ arr Driver::run() {
            }
 //get the data at endtime-100
           if (std::abs(t - (endtime - 100)) < 1e-6) {
-//            std::cout << "t = " << t <<std::endl; 
             GenOut(t,inputVars);
             TimeSeries<std::vector<double> > metabolites = inputVars->CO2A;
             lastData1 = metabolites.getLastData();
-//            std::cout << "Last step data:\n";
-//            for (double val : lastData1) {
-//                std::cout << val << " ";
-//            }
-//            std::cout << std::endl;
           }
 //get the data at endtime and calculate the difference
           if(std::abs(t - endtime) < 1e-6){
-//            std::cout << "t = " << t <<std::endl; 
             GenOut(t,inputVars);
             TimeSeries<std::vector<double> > metabolites = inputVars->CO2A;
             auto lastData2 = metabolites.getLastData();
@@ -145,22 +138,22 @@ arr Driver::run() {
             for (size_t i = 0; i < lastData1.size(); ++i) {
                 difference[i] = (lastData2[i] - lastData1[i])/100.;//divide delta t
             }
-//            std::cout << "Last step data:\n";
-//            for (double val : difference) {
-//                std::cout << val << " ";
-//            }
-//            std::cout << std::endl;
           }
         }//end while
-// Threshold value
+
+// Threshold value for checking steady-state metabolite
         double threshold = 1e-4;
 
 // Check if some elements are larger than the threshold
+// This is no longer used. Instead we use a penalty on the non-steady-state
+// metabolites to make our obj function smoother
+// Keep this here for diagnosis purpose only
         bool allSmallerThanThreshold = true;
         if(difference.size()>52){ 
           for (int index=7; index<51; ++index) {
             if (difference[index] > threshold) {
                 allSmallerThanThreshold = false;
+                std::cout << "Warning: metabolites' steady-state check failed\n";
                 break;
             }
           }
@@ -177,7 +170,7 @@ arr Driver::run() {
         SUNMatDestroy(A);
         N_VDestroy(y);
 //if condition 1: ODE runs AND
-//condition 2: all metabolites are converged
+//condition 2: all metabolites are converged, which is as a penalty
         if (runOK){
 //save steady-state metabolite to a text file
 //during optimization, this should be turned off to save time
@@ -223,7 +216,7 @@ arr Driver::run() {
     std::cout << "No solution was found after all adaptive steps." << std::endl;
     arr no_solution_results;
     for (int i = 0; i < 3; ++i) {
-//-10 is used as a meaningless value for gross assimilation
+//0.5 is used as a negligible value for gross assimilation
         no_solution_results.push_back(0.5);
     }
     return no_solution_results; // Return an array of x if no valid solution found
