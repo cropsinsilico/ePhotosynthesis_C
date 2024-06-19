@@ -156,6 +156,8 @@ protected:
 
     void saveLastDataToFile(const std::vector<double> &lastData, const std::string &filename);
 
+    double smoothPenalty(const std::vector<double>& x, double threshold);
+
     realtype abstol;            // absolute tolerance
     realtype reltol;            // relative tolerance
     double start, step, endtime; // time stuff

@@ -178,7 +178,7 @@ arr Driver::run() {
         N_VDestroy(y);
 //if condition 1: ODE runs AND
 //condition 2: all metabolites are converged
-        if (runOK && allSmallerThanThreshold){
+        if (runOK){
 //save steady-state metabolite to a text file
 //during optimization, this should be turned off to save time
 //turn it on for analysis purpose
@@ -189,7 +189,13 @@ arr Driver::run() {
             std::string filename = "last_data.txt";
             saveLastDataToFile(lastData, filename);
           }
+// Extract subvector
+          std::vector<double> sub_vector(difference.begin() + 7,
+                                         difference.begin() + 51);
+          double penalty = smoothPenalty(sub_vector, threshold);
 //return results of assimilation and others
+//since we maximize assimilation, the penalty (positive) is deducted
+          results[0] = results[0] - 4*penalty;
           return results;
         }
 
@@ -239,4 +245,18 @@ void Driver::saveLastDataToFile(const std::vector<double> &lastData, const std::
 
     outFile << std::endl;
     outFile.close();
+}
+
+// Function to calculate the smooth penalty
+double Driver::smoothPenalty(const std::vector<double>& x, double threshold) {
+    double penalty = 0.0;
+    double alpha = 1000.0;  // Parameter to control the sharpness of the penalty
+
+    for (double xi : x) {
+        if (xi > threshold) {
+            penalty += 1.0 - exp(-alpha * (xi - threshold));
+        }
+    }
+
+    return penalty;
 }
