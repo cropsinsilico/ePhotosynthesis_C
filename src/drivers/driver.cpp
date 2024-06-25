@@ -153,7 +153,9 @@ arr Driver::run() {
           for (int index=7; index<51; ++index) {
             if (difference[index] > threshold) {
                 allSmallerThanThreshold = false;
-                std::cout << "Warning: metabolites' steady-state check failed\n";
+	        if(inputVars->saveMetabolite){
+                  std::cout << "\nWarning: metabolites' steady-state check failed\n";
+                }
                 break;
             }
           }
@@ -191,10 +193,11 @@ arr Driver::run() {
 //since we maximize assimilation, the penalty (positive) is deducted
 //the penalty takes value from 0 to 1
 //the multiplier on the penalty is determined from my own tests and subject to changes 
-//If it's too large, the optimizer can not converge
+//If it's too large, the optimizer may not converge
 //If it's too small, the optimizer may converge by allowing penalties on some metabolites
 //Neither is what we want
-          double multiplier = 4.0;
+
+          double multiplier = 8.0;
           
 	  if(inputVars->saveMetabolite){
             std::cout << "results[0] is "<<results[0]<<" Penalty is "<<penalty<<
