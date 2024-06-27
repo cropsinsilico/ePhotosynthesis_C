@@ -164,7 +164,9 @@ void ePhotosynthesis::readFile(const std::string &filename, std::map<std::string
         std::stringstream ss(tempVec[1]);
         ss >> d;
         if (count < 27)
-            d /= 30.;
+//30 is to convert micromole m-s s-1 to mmol L-1 s-1
+//This is an assumption based on: https://doi.org/10.1104/pp.107.103713
+            d /= 30.; 
         count++;
         mapper.insert(std::pair<std::string, double>(tempVec[0], d));
     }
