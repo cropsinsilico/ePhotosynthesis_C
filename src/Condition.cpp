@@ -48,7 +48,7 @@ void ePhotosynthesis::Condition(double t, Variables *theVars) {
 
     theVars->CO2_cond = CO2Temp / (3. * pow(10., 4.));
     theVars->O2_cond = O2Temp * 1.26;
-    const double light = theVars->TestLi * 0.85 * 0.85;// light umol m-2 s-1
+    const double light = theVars->TestLi * theVars->Phi_max * (1.0 - theVars->fc);// light umol m-2 s-1
 
     // Here the time dependent variable is regulated.
 
