@@ -54,12 +54,12 @@ void EPSDriver::setup() {
     SYSInitial(inputVars);
     //time = tglobal;
     inputVars->Tp = this->Tp;
-    inputVars->Phi_max = 0.5;
+    inputVars->Phi_max = 0.69;//similar to PhiPSII in BIoCro, but this represents the maximum light efficiency for both PSI and PSII. So it can be adjusted/optimized as needed.
     PS::setJmax(inputVars->EnzymeAct.at("Jmax"));
     inputVars->fc = 0.15; // equals leaf_reflectance + leaf_transmittance in BioCro
 
     double Tp = inputVars->Tp;
-    double Theta_base = 0.76 * 0.64; //0.76 is the default of Theta. The second term is a scaling factor that comes from ACi&AQ fitting of the Farquhar for LD11
+    double Theta_base = 0.76; //0.76 is the default of Theta used in BioCro 
     double Theta = Theta_base + 0.01713 * Tp - 3.75 * pow(Tp,2.0) / 10000.0;//Yufeng: match Farquhar Matlab
     PS::setTheta(Theta);
     PS::setbeta(0.7519);
