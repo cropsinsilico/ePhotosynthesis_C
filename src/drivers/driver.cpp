@@ -186,9 +186,11 @@ arr Driver::run() {
           }
 // Extract subvector
 // we only need the difference for metabolites
+// difference has a length of 100
           std::vector<double> sub_vector(difference.begin() + 7,
                                          difference.begin() + 51);
           double penalty = smoothPenalty(sub_vector, threshold);
+          double penalty_assim = 1.0 - exp(-1000.0 * (difference[6] - threshold)); 
 //return results of assimilation and others
 //since we maximize assimilation, the penalty (positive) is deducted
 //the penalty takes value from 0 to 1
@@ -200,8 +202,8 @@ arr Driver::run() {
           double multiplier = 8.0;
           
 	  if(inputVars->saveMetabolite){
-            std::cout << "results[0] is "<<results[0]<<" Penalty is "<<penalty<<
-            " multiplier is"<<multiplier<<std::endl;
+            std::cout << "results[0] "<<results[0]<<" Penalty "<<penalty<<
+            " multiplier "<<multiplier<<" assim_penalty "<<penalty_assim<<std::endl;
           }
           results[0] = results[0] - multiplier * penalty;
           return results;

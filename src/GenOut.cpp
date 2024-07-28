@@ -68,7 +68,7 @@ void ePhotosynthesis::GenOut(double t, Variables *theVars) {
         co2a[3] = theVars->XanCycle2OUT.ABA;
         co2a[4] = ATP;
         co2a[5] = 0.; // Gs;
-        co2a[6] = (theVars->PS2OUT._v1 - theVars->PR2OUT._v131) * theVars->AVR;//
+        co2a[6] = (theVars->PS2OUT._v1 - theVars->PR2OUT._v131) * theVars->AVR;// CO2 Assimilation
         if (theVars->RuACT_EPS_com)
             co2a[6] = (theVars->RuACT_Vel.v6_1 - theVars->PR2OUT._v131) * theVars->AVR;//
         co2a[7] = theVars->PS2OUT.PGA;//
