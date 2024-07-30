@@ -113,6 +113,17 @@ public:
     //const double alpha2 = 1.03;
     double sensitivity_sf = 1.0; //a scaling factor for enzymes
 
+    double Q10_1  = 1.93;
+    double Q10_2  = 2.0;
+    double Q10_3  = 2.0;
+    double Q10_5  = 2.0;
+    double Q10_6  = 2.0;
+    double Q10_7  = 2.0;
+    double Q10_8  = 2.0;
+    double Q10_9  = 2.0;
+    double Q10_10 = 2.0;
+    double Q10_13 = 2.0;
+    double Q10_23 = 2.0;
     // Parameters
     arr PR_Param = zeros(2);
     arr BF_Param = zeros(2);

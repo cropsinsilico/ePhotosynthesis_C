@@ -42,17 +42,17 @@ class Variables;
   */
 typedef std::vector<double> arr;  // Shortcut for std::vector<double>
 
-#define Q10_1 1.93
-#define Q10_2 2.
-#define Q10_3 2.
-#define Q10_5 2.
-#define Q10_6 2.
-#define Q10_7 2.
-#define Q10_8 2.
-#define Q10_9 2.
-#define Q10_10 2.
-#define Q10_13 2.
-#define Q10_23 2.
+//#define Q10_1 1.93
+//#define Q10_2 2.
+//#define Q10_3 2.
+//#define Q10_5 2.
+//#define Q10_6 2.
+//#define Q10_7 2.
+//#define Q10_8 2.
+//#define Q10_9 2.
+//#define Q10_10 2.
+//#define Q10_13 2.
+//#define Q10_23 2.
 #define Q10_112 1.81
 #define Q10_113 2.
 #define Q10_121 2.
