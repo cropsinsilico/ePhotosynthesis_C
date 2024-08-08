@@ -190,7 +190,7 @@ arr Driver::run() {
           std::vector<double> sub_vector(difference.begin() + 7,
                                          difference.begin() + 51);
           double penalty = smoothPenalty(sub_vector, threshold);
-          double penalty_assim = 1.0 - exp(-1000.0 * (difference[6] - threshold)); 
+          double penalty_assim = 1.0 - exp(-1000.0 * (std::max(difference[6] - threshold,0.0))); 
 //return results of assimilation and others
 //since we maximize assimilation, the penalty (positive) is deducted
 //the penalty takes value from 0 to 1
