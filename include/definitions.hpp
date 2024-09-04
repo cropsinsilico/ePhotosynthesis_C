@@ -31,6 +31,10 @@
 #include <algorithm>
 #include <fstream>
 
+#ifndef uint
+#define uint unsigned int
+#endif
+
 namespace ePhotosynthesis {
 
 // predeclare main global data structure
