@@ -253,6 +253,16 @@ if(TEST_COVERAGE)
         DEPENDENCIES testRunner EPhotosynthesis)
 endif()
 
+if(TEST_VALGRIND)
+    find_program(VALGRIND_FOUND valgrind)
+    if(NOT VALGRIND_FOUND)
+        message(FATAL_ERROR "valgrind could not be located")
+    endif()
+    add_test(NAME valgrind_tests
+             COMMAND valgrind --suppressions=${CMAKE_CURRENT_SOURCE_DIR}/valgrind.supp --suppressions=${CMAKE_CURRENT_SOURCE_DIR}/valgrind-python.supp --leak-check=full --error-exitcode=1 --track-origins=yes --dsymutil=no --keep-debuginfo=yes --read-var-info=yes ${CMAKE_CURRENT_BINARY_DIR}/testRunner --gtest_filter=-SIMD.*
+             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+endif()
+
 if(BUILD_PYTHON)
     find_package(PythonInterp 3)
     find_package(PythonLibs 3 REQUIRED)

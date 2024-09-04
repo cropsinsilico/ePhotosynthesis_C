@@ -120,6 +120,28 @@ public:
     const double alpha1 = 1.205;
     const double alpha2 = 2.06;
 
+    // Constants files
+    std::string BF_fconstants = "param/BF_constants.txt";
+    std::string FI_fconstants = "param/FI_constants.txt";
+    std::string PR_fconstants = "param/PR_constants.txt";
+    std::string PS_fconstants = "param/PS_constants.txt";
+    std::string RROEA_fconstants = "param/RROEA_constants.txt";
+    std::string RedoxReg_fconstants = "param/RedoxReg_constants.txt";
+    std::string RuACT_fconstants = "param/RuACT_constants.txt";
+    std::string SUCS_fconstants = "param/SUCS_constants.txt";
+    std::string XanCycle_fconstants = "param/XanCycle_constants.txt";
+
+    // Initialization files
+    std::string BF_finit = "param/BF_init.txt";
+    std::string FI_finit = "param/FI_init.txt";
+    std::string PR_finit = "param/PR_init.txt";
+    std::string PS_finit = "param/PS_init.txt";
+    std::string RROEA_finit = "param/RROEA_init.txt";
+    std::string RedoxReg_finit = "param/RedoxReg_init.txt";
+    std::string RuACT_finit = "param/RuACT_init.txt";
+    std::string SUCS_finit = "param/SUCS_init.txt";
+    std::string XanCycle_finit = "param/XanCycle_init.txt";
+
     // Parameters
     arr PR_Param = zeros(2);
     arr BF_Param = zeros(2);

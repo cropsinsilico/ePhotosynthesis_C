@@ -59,6 +59,11 @@ jobs:
           channel-priority: strict
           miniforge-variant: Mambaforge
           use-mamba: true
+      - name: Check mamba installation
+        shell: bash -l {0}
+        run: |
+          mamba info
+          mamba list
       - name: Install doxgen on unix systems
         if: matrix.os != 'windows-latest'
         shell: bash -l {0}
