@@ -5,7 +5,7 @@ namespace ePhotosynthesis {
 namespace drivers {
 
 class Driver;
-class CalcData;
+struct CalcData;
 
 class CVodeMem {
 public:

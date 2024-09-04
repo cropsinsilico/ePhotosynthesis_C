@@ -70,7 +70,7 @@ TEST_F(trDynaPSDriverTest, MBTest) {
     EXPECT_EQ(0, driver->constraints.size());
     driver->setup();
     EXPECT_NE(0, driver->constraints.size());
-    N_Vector y = N_VNew_Serial(driver->constraints.size(), context);
+    N_Vector y = N_VNew_Serial(static_cast<sunindextype>(driver->constraints.size()), context);
     for (size_t i = 0; i < driver->constraints.size(); i++)
         NV_Ith_S(y, i) = driver->constraints[i];
     arr res = MB(1.5, y);
@@ -80,7 +80,7 @@ TEST_F(trDynaPSDriverTest, MBTest) {
 
 TEST_F(trDynaPSDriverTest, FullTest) {
     theVars->CO2_in = 500.;
-    theVars->TestLi = 14.;
+    theVars->TestLi = 1.4;
     theVars->TestATPCost = 4.5;
     theVars->EnzymeAct = Emap;
     theVars->RUBISCOMETHOD = 1;

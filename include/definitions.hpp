@@ -34,6 +34,9 @@
 #ifndef uint
 #define uint unsigned int
 #endif
+#ifndef ushort
+#define ushort unsigned short int
+#endif
 
 namespace ePhotosynthesis {
 
@@ -298,11 +301,11 @@ void TimeSeries<T>::insert(std::size_t step, double time, T &input) {
     std::vector<int>::iterator it = std::find(_step.begin(), _step.end(), step);
     T vec(input);
     if (it == _step.end()) {
-        _step.push_back(step);
+        _step.push_back(static_cast<int>(step));
         _timestamp.push_back(time);
         _data.push_back(vec);
     } else {
-        int index = std::distance(_step.begin(), it);
+        size_t index = static_cast<size_t>(std::distance(_step.begin(), it));
         _timestamp[index] = time;
         _data[index] = vec;
     }
