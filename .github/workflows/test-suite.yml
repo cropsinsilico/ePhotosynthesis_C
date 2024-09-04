@@ -13,10 +13,10 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        with-coverage: [false]
-        with-asan: [false]
+        with-coverage: [false, true]
+        with-asan: [false, true]
         with-elf: [false]
-        with-valgrind: [false]
+        with-valgrind: [false, true]
         exclude:
           - os: windows-latest
             with-asan: true

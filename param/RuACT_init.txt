@@ -1,4 +1,4 @@
-ER = 0.20	// The concentration of inactive ER
-Eaf = 0.20	// The total concentration of E, EC, AND ECM
-ECMR = 0.8	// The concentration of ECMR
-RuBP = 2.0	// The concentration of ECMR
+ER = 0.20	# The concentration of inactive ER
+Eaf = 0.20	# The total concentration of E, EC, AND ECM
+ECMR = 0.8	# The concentration of ECMR
+RuBP = 2.0	# The concentration of ECMR

@@ -38,7 +38,7 @@ TEST_F(DynaPSConditionTest, ArrayTest) {
     arr output = DynaPS.toArray();
     COMPARE(input, output)
 
-    N_Vector y = N_VNew_Serial(input.size(), context);
+    N_Vector y = N_VNew_Serial(static_cast<sunindextype>(input.size()), context);
     for (size_t i = 0; i < input.size(); i++)
         NV_Ith_S(y, i) = input[i];
 

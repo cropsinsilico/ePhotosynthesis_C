@@ -1,24 +1,24 @@
-// ATPc		0.4
-// Unit: mmol l-1 s-1;
-V51		0.107376831	// DHAP+GAP --FBP; default 0.5
-V52		0.063979048	// FBP --F6P + Pi
-V55		0.115403205	// G1P+UTP --OPOP+UDPG
-V56		0.055503446	// UDPG+F6P--SUCP + UDP
-V57		0.55503446	// SUCP--Pi + SUC; 0.27 DEFALT
-V58		0.016819226	// F26BP--F6P + Pi
-V59		0.03		// F6P + ATP --ADP + F26BP; default 0.03
-// V60		6.1		// ATP+UDP --UTP + ADP
-// V61		10000		// POPO --2PO; constant set in globals.hpp
-V62		2.0		// SUC Sink        0.9 works.
-Vdhap_in	1.05		// DHAP export from chloroplast
-Vgap_in		1.05		// GAP export from chloroplast
-Vpga_in		1.05		// PGA export from chloropalst
-// Pool constants
-ATc		1.0		// mM
-UTc		1.5		// mM
-PTc		15.0		//
-// Rate constants
-KE501		20.0		// 0.05 for C3
+# ATPc		0.4
+# Unit: mmol l-1 s-1;
+V51		0.107376831	# DHAP+GAP --FBP; default 0.5
+V52		0.063979048	# FBP --F6P + Pi
+V55		0.115403205	# G1P+UTP --OPOP+UDPG
+V56		0.055503446	# UDPG+F6P--SUCP + UDP
+V57		0.55503446	# SUCP--Pi + SUC; 0.27 DEFALT
+V58		0.016819226	# F26BP--F6P + Pi
+V59		0.03		# F6P + ATP --ADP + F26BP; default 0.03
+# V60		6.1		# ATP+UDP --UTP + ADP
+# V61		10000		# POPO --2PO; constant set in globals.hpp
+V62		2.0		# SUC Sink        0.9 works.
+Vdhap_in	1.05		# DHAP export from chloroplast
+Vgap_in		1.05		# GAP export from chloroplast
+Vpga_in		1.05		# PGA export from chloropalst
+# Pool constants
+ATc		1.0		# mM
+UTc		1.5		# mM
+PTc		15.0		#
+# Rate constants
+KE501		20.0		# 0.05 for C3
 Km511		0.02
 Km512		0.3
 Km513		0.4

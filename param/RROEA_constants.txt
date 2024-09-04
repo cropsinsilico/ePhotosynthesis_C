@@ -1,14 +1,14 @@
-ke2GAPDH	22. / 60	// The rate constant of electron transfer to GAPDH. From literature.
-ke2MDH		20. / 60	// The rate constant of electront transfer to MDH, this rate is totally ASSUMED.
-ke2FBPase	1.38 / 60	// The rate constant of electron transfer from thioredoxin to FBPase.
-ke2SBPase	1.65 / 60	// The rate constant of electron tranfer from thioredoxin to SBPase
-ke2PRK		59.8 / 60	// The rate constant of electron transfer from thioredoxin to PRK, Phosphoribulase kinase
-ke2RubACT	6.35 / 60	// The rate constant of electron transfer from thioredoxin to Rubisco activase
-ke2Fd		18.5   		// The rate constant of electron transfer to fe
-keFd2Thio	10		// The rate constant of electron transfer from fd to thio
-keFd2Calvin	7		// The rate constant of electron transfer from fd to Calvin cycle
-ke2ATPGPP	6.3 / 60	// The rate constant of electron transfer to ATPGPP
-// Equilibrium constants
+ke2GAPDH	22. / 60	# The rate constant of electron transfer to GAPDH. From literature.
+ke2MDH		20. / 60	# The rate constant of electront transfer to MDH, this rate is totally ASSUMED.
+ke2FBPase	1.38 / 60	# The rate constant of electron transfer from thioredoxin to FBPase.
+ke2SBPase	1.65 / 60	# The rate constant of electron tranfer from thioredoxin to SBPase
+ke2PRK		59.8 / 60	# The rate constant of electron transfer from thioredoxin to PRK, Phosphoribulase kinase
+ke2RubACT	6.35 / 60	# The rate constant of electron transfer from thioredoxin to Rubisco activase
+ke2Fd		18.5   		# The rate constant of electron transfer to fe
+keFd2Thio	10		# The rate constant of electron transfer from fd to thio
+keFd2Calvin	7		# The rate constant of electron transfer from fd to Calvin cycle
+ke2ATPGPP	6.3 / 60	# The rate constant of electron transfer to ATPGPP
+# Equilibrium constants
 KEe2FBPase	0.311167869
 KEe2SBPase	0.459194309
 KEe2PRK		0.677638775
@@ -18,7 +18,7 @@ KEe2GAPDH	0.044461692
 KEe2MDH		0.044461692
 KEe2ATPGPP	1.0
 KEeFd2Thio	24776.0
-// Pool
+# Pool
 SA_GAPDH	620.0
 SA_MDH		184.0
 SA_PRK		410.0
@@ -33,6 +33,6 @@ mw_FBPase	195000.0
 mw_SBPase	66000.0
 mw_ATPGPP	210000.0
 mw_ATPase	500000.0
-FdT		0.081		// Not used with RROEA_EPS
+FdT		0.081		# Not used with RROEA_EPS
 ThioT		0.081
 RuACTT		0.0056

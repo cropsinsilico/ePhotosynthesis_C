@@ -2,9 +2,9 @@ T3Pc	2.0
 FBPc	2.0
 HexPc	5.8
 F26BPc	7.8e-6
-// ATPc	0.4
+# ATPc	0.4
 UDPGc	0.57
-// UTPc	0.75
+# UTPc	0.75
 SUCP	0.0
 SUC	0.0
 PGAc	0.5

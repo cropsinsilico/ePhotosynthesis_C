@@ -149,28 +149,132 @@ if(WITH_ASAN)
     endif()
 endif()
 
+
+#########################
+# Regenerate enum files #
+#########################
+
+set(ENUM_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/utils/generate_enum.py)
+
+foreach(suffix constants init)
+  set(ENUM_SRC_REGEX ${CMAKE_CURRENT_SOURCE_DIR}/param/*_${suffix}.txt)
+  file(GLOB ENUM_SRC "${ENUM_SRC_REGEX}")
+  string(REPLACE "*" "\\*" ENUM_SRC_REGEX ${ENUM_SRC_REGEX})
+
+  set(ENUM_MAP ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${suffix}_map.cpp)
+  set(ENUM_MAP_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${suffix}_map.hpp)
+  set(ENUM_DST ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${suffix}.hpp)
+  add_custom_target(
+    generate_enum_${suffix}
+    COMMAND python ${ENUM_SCRIPT}
+    "${ENUM_SRC_REGEX}" --src-regex --dst-type=c --dst=${ENUM_DST}
+    --dst-maps=${ENUM_MAP} --dst-maps-header=${ENUM_MAP_H}
+    --root-include-dir=${CMAKE_CURRENT_SOURCE_DIR}/include
+    --prefix-by-split=${suffix} --overwrite --verbose
+    BYPRODUCTS ${ENUM_DST} ${ENUM_MAP} ${ENUM_MAP_H}
+    DEPENDS ${ENUM_SRC} ${ENUM_SCRIPT}
+  )
+  list(APPEND GENERATED_SOURCES ${ENUM_MAP})
+endforeach()
+
+
+########################
+# Library & Executable #
+########################
+
 file(GLOB_RECURSE SOURCES "src/*.cpp")
+list(APPEND SOURCES ${GENERATED_SOURCES})
 
 add_library(EPhotosynthesis SHARED ${SOURCES})
 add_executable(ePhoto bin/ePhotosynthesis.cpp)
 
 find_package(Boost 1.36.0 REQUIRED COMPONENTS regex)
-
-
-include_directories(${Boost_INCLUDE_DIRS})
-
 find_package(Sundials REQUIRED)
-include_directories(${SUNDIALS_INCLUDE_DIRS})
 
-include_directories("${PROJECT_SOURCE_DIR}/include")
+if(WIN32)
+    set_target_properties(
+        EPhotosynthesis PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON
+    )
+endif()
 
-target_link_libraries(EPhotosynthesis ${SUNDIALS_LIBRARIES})
+target_link_libraries(
+    EPhotosynthesis PUBLIC ${Boost_LIBRARIES} ${SUNDIALS_LIBRARIES}
+)
+target_include_directories(
+    EPhotosynthesis PUBLIC ${Boost_INCLUDE_DIRS} ${SUNDIALS_INCLUDE_DIRS}
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include/ePhotosynthesis>
+)
 
-target_link_libraries(EPhotosynthesis ${Boost_LIBRARIES})
 target_link_libraries(ePhoto EPhotosynthesis)
 
-install(TARGETS EPhotosynthesis DESTINATION lib)
-install(TARGETS ePhoto DESTINATION bin)
+
+###########################
+# Generate exports header #
+###########################
+
+include(GenerateExportHeader)
+generate_export_header(
+    EPhotosynthesis
+    BASE_NAME EPHOTO_API
+    EXPORT_MACRO_NAME EPHOTO_API
+    EXPORT_FILE_NAME ePhotosynthesis_export.h
+    DEPRECATED_MACRO_NAME EPHOTO_API_DEPRECATED
+    NO_DEPRECATED_MACRO_NAME EPHOTO_API_NO_DEPRECATED
+)
+target_include_directories(
+    EPhotosynthesis PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+)
+
+
+###########
+# Install #
+###########
+
+include(GNUInstallDirs)
+cmake_path(
+    APPEND CMAKE_INSTALL_INCLUDEDIR ePhotosynthesis
+    OUTPUT_VARIABLE EPHOTOSYNTHESIS_INSTALL_INCLUDEDIR
+)
+
+install(
+    TARGETS EPhotosynthesis ePhoto
+    EXPORT ePhotosynthesisTargets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    PUBLIC_HEADER DESTINATION EPHOTOSYNTHESIS_INSTALL_INCLUDEDIR
+)
+install(
+    EXPORT ePhotosynthesisTargets
+    FILE ePhotosynthesisTargets.cmake
+    NAMESPACE ePhotosynthesis::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ePhotosynthesis
+)
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+    "ePhotosynthesisConfigVersion.cmake"
+    VERSION ${PACKAGE_VERSION}
+    COMPATIBILITY AnyNewerVersion
+)
+configure_file(
+    cmake/ePhotosynthesisConfig.cmake.in
+    ePhotosynthesisConfig.cmake @ONLY
+)
+install(
+    FILES "${CMAKE_CURRENT_BINARY_DIR}/ePhotosynthesisConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/ePhotosynthesisConfigVersion.cmake"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ePhotosynthesis
+)
+install(
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/ePhotosynthesis_export.h
+    DESTINATION ${EPHOTOSYNTHESIS_INSTALL_INCLUDEDIR}
+)
+
+#################
+# Documentation #
+#################
 
 if(BUILD_DOCS)
     if(NOT DOXYGEN_FOUND)
@@ -207,6 +311,11 @@ if(BUILD_DOCS)
         COMMENT "Generating API documentation with Doxygen"
         VERBATIM)
 endif()
+
+
+#########
+# Tests #
+#########
 
 if(BUILD_TESTS)
     message(STATUS "Building tests")
@@ -269,6 +378,11 @@ if(TEST_VALGRIND)
              COMMAND valgrind --suppressions=${CMAKE_CURRENT_SOURCE_DIR}/valgrind.supp --suppressions=${CMAKE_CURRENT_SOURCE_DIR}/valgrind-python.supp --leak-check=full --error-exitcode=1 --track-origins=yes --dsymutil=no --keep-debuginfo=yes --read-var-info=yes ${CMAKE_CURRENT_BINARY_DIR}/testRunner --gtest_filter=-SIMD.*
              WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endif()
+
+
+##########
+# Python #
+##########
 
 if(BUILD_PYTHON)
     find_package(PythonInterp 3)

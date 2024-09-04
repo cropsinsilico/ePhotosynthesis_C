@@ -1,117 +1,117 @@
-// _NADPH	0.21		//
-CP		22.0		// Global constant for the total phosphate
-CA		1.5		// Global constant for the total adenylates
-CN		1.0		// Global constant for the cytosolic Phosphate concentration;
-PEXT		0.5		// Global constant for the cytosolic Phosphate concentration;
-// Enzyme activities [Read from EnzymeAct for C3]
-V1		2.93		// (Harris & Koniger, 1997)
-V2		30.15		// (Harris & Koniger, 1997)
-V3		4.04		// 1.57*SC  (Harris & Koniger, 1997)
-V5		1.22		// (Harris & Koniger, 1997)
-V6		0.734		// (Harris & Koniger, 1997)
-V7		12.48		// (Harris & Koniger, 1997)
-V8		1.22		// (Harris & Koniger, 1997)
-V9		0.96		// 0.17*SC*FC (Harris & Koniger, 1997) *3.
-// V10		V7		// (Harris & Koniger, 1997)
-V13		10.81		// (Harris & Koniger, 1997)
-V16		5.47		// (Aflalo & Shavit, 1983, Davenport & McLeod, 1986)
+# _NADPH	0.21		#
+CP		22.0		# Global constant for the total phosphate
+CA		1.5		# Global constant for the total adenylates
+CN		1.0		# Global constant for the cytosolic Phosphate concentration;
+PEXT		0.5		# Global constant for the cytosolic Phosphate concentration;
+# Enzyme activities [Read from EnzymeAct for C3]
+V1		2.93		# (Harris & Koniger, 1997)
+V2		30.15		# (Harris & Koniger, 1997)
+V3		4.04		# 1.57*SC  (Harris & Koniger, 1997)
+V5		1.22		# (Harris & Koniger, 1997)
+V6		0.734		# (Harris & Koniger, 1997)
+V7		12.48		# (Harris & Koniger, 1997)
+V8		1.22		# (Harris & Koniger, 1997)
+V9		0.96		# 0.17*SC*FC (Harris & Koniger, 1997) *3.
+# V10		V7		# (Harris & Koniger, 1997)
+V13		10.81		# (Harris & Koniger, 1997)
+V16		5.47		# (Aflalo & Shavit, 1983, Davenport & McLeod, 1986)
 V23		2.0
 V24		2.0
-V31		20.0		// 3.73 / 3 for C3 (Lilley, Chon, Mosbach & Heldt, 1977b)
-V32		1.0		// 3.73 / 3 for C3 (Lilley, Chon, Mosbach & Heldt, 1977b)
-V33		20.0		// WY 2018103; 3.73 / 3 for C3 (Lilley, Chon, Mosbach & Heldt, 1977b)
-// Reaction 1: RuBP+CO2->2PGA
-KM11_A		0.0097  	// Factor for KM11 calc
-KM12_A		0.244		// Factor for KM12 calc
-KM13		0.02		// RuBP 1 RuBP+CO2->2PGA
-KI11		0.84		// PGA
-KI12		0.04		// FBP
-KI13		0.075		// SBP
-KI14		0.9		// Pi
-KI15		0.07		// NADPH
-// Reaction 2: PGA+ATP<->ADP+DPGA
-KM21		0.240		// PGA 2 PGA+ATP <-> ADP + DPGA
-KM22		0.390		// ATP 2 PGA+ATP <-> ADP + DPGA
-KM23		0.23		// ADP
-// Reaction 3: DPGA+NADPH<->GAP+OP+NADP
-KM31a		0.004		// BPGA 3 DPGA+NADPH <->GAP + OP+NADP
-KM32b		0.1		// NADPH 3 DPGA+NADPH <->GAP + OP+NADP
-// Reaction 4: DHAP<->GAP
-//KM41		2.5 		// DHAP 4 DHAP <->GAP
-//KM42		0.68		// GAP 4 DHAP <->GAP
-KE4		0.05		// Using the value from Patterson
-// Reaction 5: GAP+DHAP<->FBP
-KM51		0.3		// GAP 5 GAP+DHAP <->FBP
-KM52		0.4		// DHAP 5 GAP+DHAP <->FBP
-KM53		0.02		// FBP 5 GAP+DHAP <->FBP
-KE5		7.100		// Defult: 7.1
-// Reaction 6: FBP<->F6P+OP
-KM61		0.033		// FBP 6 FBP<->F6P+OP
-KI61		0.7		// F6P
-KI62		12.		// Pi
-KE6		6.66e5		// The equilibrium constant for this reaction  New: mM Laisk or Bassham and Krause 1969 BBA
-// Reaction 7: F6P+GAP<->E4P+Xu5P
-KM71		0.100		// Xu5P 7 F6P+GAP<->E4P+Xu5P
-KM72		0.100		// E4P 7 F6P+GAP<->E4P+Xu5P
-KM73		0.1		// F6P This value was based on estimate
-KM74		0.1000		// Estimate for GAP ORIGINAL 0.1
-KE7		10.		// The equilibrium constant for this reaction  New: Laisk Bassham and Krause 1969 BBA
-// Reaction 8: E4P+DHAP<->SBP
-//KM8		0.02		// SBP 8 E4P+DHAP<->SBP
-KM81		0.4		// DHAP
-KM82		0.2		// E4P estimate
-KE8		1.017		// The equilibrium constant for this reaction  New: mM-1  Laisk  Bassham and Krause 1969 BBA. Default: 1.107
-// Reaction 9: SBP<->S7P+OP
-KM9		0.05		// SBP 9 SBP<->S7P+OP
-KI9		12.0		// The inibintion constant for Pi;
-KE9		6.66e5 		// The equilibrium constant of this reaction  New:  mM      Laisk  Bassham and Krause 1969 BBA
-// Reaction 10: S7P+GAP<->Ri5P+Xu5P
-KM10		1.5		// R5P 10 S7P+GAP<->Ri5P+Xu5P
-KM101		0.1		// Xu5P
-KM102		0.072		// Estimate for GAP
-KM103		0.46		// Estimate for S7P  New
-KE10		1.1764705882352942	// The equilibrium constant for this reaction  New: From Laisk or Bassham and Krause 1969 BBA
-KE11		0.4		// Equilibrium Constant 11 Ri5P<-->Ru5P
-KE12		0.67		// Equilibrium Constant 12 Xu5P<-->Ru5P
-// Reaction 13: Ru5P+ATP<->RuBP+ADP
-KM131		0.05		// Ru5P 13 Ru5P+ATP<->RuBP+ADP
-KM132		0.059		// ATP 13 Ru5P+ATP<->RuBP+ADP
-KI131		2.0		// PGA 13 Ru5P+ATP<->RuBP+ADP
-KI132		0.7 		// RuBP 13 Ru5P+ATP<->RuBP+ADP
-KI133		4.0		// Pi 13 Ru5P+ATP<->RuBP+ADP
-KI134		2.5		// ADP 13 Ru5P+ATP<->RuBP+ADP
-KI135		0.4		// ADP 13 Ru5P+ATP<->RuBP+ADP
-KE13		6.846e3		// The equilibrium constant for this reaction  New: From Laisk or Bassham and Krause 1969 BBA
-// Reaction 16: ADP+Pi<->ATP
-KM161		0.014		// ADP 16 ADP+Pi<->ATP
-KM162		0.3		// Pi 16 ADP+Pi<-> ATP
-KM163		0.3		// ATP 16  ADP+Pi<-> ATP  New: Based on Laisk
-KE16		5.734		// The equilibrium constant for this reaction  New: From Laisk or Bassham and Krause 1969 BBA
-KE21		2.3		// Equilibrium constant 21 F6P<->G6P
-KE22		0.058		// Equilibrium constant 22 G6P<->G1P
-// Reaction 31: DHAPi<->DHAPo
-KM311		0.077		// DHAP 31 DHAPi<->DHAPo
-KM312		0.63		// Pi 31 DHAPi<->DHAPo
-KM313		0.74		// Pext 31 DHAPi<->DHAPo
-KM32		0.25		// PGA 32 PGAi<->PGAo
-KM33		0.075		// GAP 33 GAPi<->GAPo
-// Reaction 23: G1P+ATP+Gn<->PPi+ADP+Gn+1 [C3 Only]
-KM231		0.08		// G1P 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
-KM232		0.08		// ATP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
-KA231		0.1		// PGA 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
-KA232		0.02		// F6P 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
-KA233		0.02		// FBP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
-KI23		10.0		// ADP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
-// Reaction 23: ATP+G1P<->ADPG+PPi [Not used for C3]
-KM231		0.031		// G1P 23 G1P+ATP<->ADPG + PPi  Laisk et al 1989
-KM232		0.045		// ATP 23 G1P+ATP<->ADPG + PPi  Laisk et al 1989
-KM233		0.14		// ADPG 23 G1P+ATP<->ADPG + PPi  Laisk et al 1989
-KM234		0.8		// PPi 23 G1P+ATP<->ADPG + PPi  Laisk et al 1989
+V31		20.0		# 3.73 / 3 for C3 (Lilley, Chon, Mosbach & Heldt, 1977b)
+V32		1.0		# 3.73 / 3 for C3 (Lilley, Chon, Mosbach & Heldt, 1977b)
+V33		20.0		# WY 2018103; 3.73 / 3 for C3 (Lilley, Chon, Mosbach & Heldt, 1977b)
+# Reaction 1: RuBP+CO2->2PGA
+KM11_A		0.0097  	# Factor for KM11 calc
+KM12_A		0.244		# Factor for KM12 calc
+KM13		0.02		# RuBP 1 RuBP+CO2->2PGA
+KI11		0.84		# PGA
+KI12		0.04		# FBP
+KI13		0.075		# SBP
+KI14		0.9		# Pi
+KI15		0.07		# NADPH
+# Reaction 2: PGA+ATP<->ADP+DPGA
+KM21		0.240		# PGA 2 PGA+ATP <-> ADP + DPGA
+KM22		0.390		# ATP 2 PGA+ATP <-> ADP + DPGA
+KM23		0.23		# ADP
+# Reaction 3: DPGA+NADPH<->GAP+OP+NADP
+KM31a		0.004		# BPGA 3 DPGA+NADPH <->GAP + OP+NADP
+KM32b		0.1		# NADPH 3 DPGA+NADPH <->GAP + OP+NADP
+# Reaction 4: DHAP<->GAP
+#KM41		2.5 		# DHAP 4 DHAP <->GAP
+#KM42		0.68		# GAP 4 DHAP <->GAP
+KE4		0.05		# Using the value from Patterson
+# Reaction 5: GAP+DHAP<->FBP
+KM51		0.3		# GAP 5 GAP+DHAP <->FBP
+KM52		0.4		# DHAP 5 GAP+DHAP <->FBP
+KM53		0.02		# FBP 5 GAP+DHAP <->FBP
+KE5		7.100		# Defult: 7.1
+# Reaction 6: FBP<->F6P+OP
+KM61		0.033		# FBP 6 FBP<->F6P+OP
+KI61		0.7		# F6P
+KI62		12.		# Pi
+KE6		6.66e5		# The equilibrium constant for this reaction  New: mM Laisk or Bassham and Krause 1969 BBA
+# Reaction 7: F6P+GAP<->E4P+Xu5P
+KM71		0.100		# Xu5P 7 F6P+GAP<->E4P+Xu5P
+KM72		0.100		# E4P 7 F6P+GAP<->E4P+Xu5P
+KM73		0.1		# F6P This value was based on estimate
+KM74		0.1000		# Estimate for GAP ORIGINAL 0.1
+KE7		10.		# The equilibrium constant for this reaction  New: Laisk Bassham and Krause 1969 BBA
+# Reaction 8: E4P+DHAP<->SBP
+#KM8		0.02		# SBP 8 E4P+DHAP<->SBP
+KM81		0.4		# DHAP
+KM82		0.2		# E4P estimate
+KE8		1.017		# The equilibrium constant for this reaction  New: mM-1  Laisk  Bassham and Krause 1969 BBA. Default: 1.107
+# Reaction 9: SBP<->S7P+OP
+KM9		0.05		# SBP 9 SBP<->S7P+OP
+KI9		12.0		# The inibintion constant for Pi;
+KE9		6.66e5 		# The equilibrium constant of this reaction  New:  mM      Laisk  Bassham and Krause 1969 BBA
+# Reaction 10: S7P+GAP<->Ri5P+Xu5P
+KM10		1.5		# R5P 10 S7P+GAP<->Ri5P+Xu5P
+KM101		0.1		# Xu5P
+KM102		0.072		# Estimate for GAP
+KM103		0.46		# Estimate for S7P  New
+KE10		1.1764705882352942	# The equilibrium constant for this reaction  New: From Laisk or Bassham and Krause 1969 BBA
+KE11		0.4		# Equilibrium Constant 11 Ri5P<-->Ru5P
+KE12		0.67		# Equilibrium Constant 12 Xu5P<-->Ru5P
+# Reaction 13: Ru5P+ATP<->RuBP+ADP
+KM131		0.05		# Ru5P 13 Ru5P+ATP<->RuBP+ADP
+KM132		0.059		# ATP 13 Ru5P+ATP<->RuBP+ADP
+KI131		2.0		# PGA 13 Ru5P+ATP<->RuBP+ADP
+KI132		0.7 		# RuBP 13 Ru5P+ATP<->RuBP+ADP
+KI133		4.0		# Pi 13 Ru5P+ATP<->RuBP+ADP
+KI134		2.5		# ADP 13 Ru5P+ATP<->RuBP+ADP
+KI135		0.4		# ADP 13 Ru5P+ATP<->RuBP+ADP
+KE13		6.846e3		# The equilibrium constant for this reaction  New: From Laisk or Bassham and Krause 1969 BBA
+# Reaction 16: ADP+Pi<->ATP
+KM161		0.014		# ADP 16 ADP+Pi<->ATP
+KM162		0.3		# Pi 16 ADP+Pi<-> ATP
+KM163		0.3		# ATP 16  ADP+Pi<-> ATP  New: Based on Laisk
+KE16		5.734		# The equilibrium constant for this reaction  New: From Laisk or Bassham and Krause 1969 BBA
+KE21		2.3		# Equilibrium constant 21 F6P<->G6P
+KE22		0.058		# Equilibrium constant 22 G6P<->G1P
+# Reaction 31: DHAPi<->DHAPo
+KM311		0.077		# DHAP 31 DHAPi<->DHAPo
+KM312		0.63		# Pi 31 DHAPi<->DHAPo
+KM313		0.74		# Pext 31 DHAPi<->DHAPo
+KM32		0.25		# PGA 32 PGAi<->PGAo
+KM33		0.075		# GAP 33 GAPi<->GAPo
+# Reaction 23: G1P+ATP+Gn<->PPi+ADP+Gn+1 [C3 Only]
+# KM231		0.08		# G1P 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
+# KM232		0.08		# ATP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
+# KA231		0.1		# PGA 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
+# KA232		0.02		# F6P 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
+# KA233		0.02		# FBP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
+# KI23		10.0		# ADP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
+# Reaction 23: ATP+G1P<->ADPG+PPi [Not used for C3]
+KM231		0.031		# G1P 23 G1P+ATP<->ADPG + PPi  Laisk et al 1989
+KM232		0.045		# ATP 23 G1P+ATP<->ADPG + PPi  Laisk et al 1989
+KM233		0.14		# ADPG 23 G1P+ATP<->ADPG + PPi  Laisk et al 1989
+KM234		0.8		# PPi 23 G1P+ATP<->ADPG + PPi  Laisk et al 1989
 KE23		7.6e-3
-KA231		0.23		// PGA 23 G1P+ATP<->ADPG + PPi  Laisk et al 1989
-KI231		0.9		// Pi 23 G1P+ATP<->ADPG + PPi  Laisk et al 1989 WY201803
-KVmo		0.007		// The minimum maximum velocity  Laisk et al 1989
-// Reaction 24: ADPG<->ADP+Gn  The starch synthesis. Laisk et al 1989
+KA231		0.23		# PGA 23 G1P+ATP<->ADPG + PPi  Laisk et al 1989
+KI231		0.9		# Pi 23 G1P+ATP<->ADPG + PPi  Laisk et al 1989 WY201803
+KVmo		0.007		# The minimum maximum velocity  Laisk et al 1989
+# Reaction 24: ADPG<->ADP+Gn  The starch synthesis. Laisk et al 1989
 KM241		0.2
 KE25		128.4
 KE57		0.1005
@@ -123,18 +123,18 @@ Km8f6p		0.5443
 Km8s7p		0.01576
 Km8gap		0.09
 MaxCoeff	5.0
-Vfactor1	1		// VfactorCp used with GRNC and CO2 > 0
-Vfactor2	1		// VfactorCp used with GRNC and CO2 > 0
-Vfactor3	1		// VfactorCp used with GRNC and CO2 > 0
-Vfactor5	1		// VfactorCp used with GRNC and CO2 > 0
-Vfactor7	1		// VfactorCp used with GRNC and CO2 > 0
-Vfactor13	1		// VfactorCp used with GRNC and CO2 > 0
-Vfactor23	1		// VfactorCp used with GRNC and CO2 > 0
-Vf_T3		1		// VfactorT used with GRNT & Tp > 25
-Vf_T2		1		// VfactorT used with GRNT & Tp > 25
-Vf_T1		1		// VfactorT used with GRNT & Tp > 25
-Vf_T6		1		// VfactorT used with GRNT & Tp > 25
-Vf_T5		1		// VfactorT used with GRNT & Tp > 25
-Vf_T9		1		// VfactorT used with GRNT & Tp > 25
-Vf_T13		1		// VfactorT used with GRNT & Tp > 25
-Vf_T23		1		// VfactorT used with GRNT & Tp > 25
+Vfactor1	1		# VfactorCp used with GRNC and CO2 > 0
+Vfactor2	1		# VfactorCp used with GRNC and CO2 > 0
+Vfactor3	1		# VfactorCp used with GRNC and CO2 > 0
+Vfactor5	1		# VfactorCp used with GRNC and CO2 > 0
+Vfactor7	1		# VfactorCp used with GRNC and CO2 > 0
+Vfactor13	1		# VfactorCp used with GRNC and CO2 > 0
+Vfactor23	1		# VfactorCp used with GRNC and CO2 > 0
+Vf_T3		1		# VfactorT used with GRNT & Tp > 25
+Vf_T2		1		# VfactorT used with GRNT & Tp > 25
+Vf_T1		1		# VfactorT used with GRNT & Tp > 25
+Vf_T6		1		# VfactorT used with GRNT & Tp > 25
+Vf_T5		1		# VfactorT used with GRNT & Tp > 25
+Vf_T9		1		# VfactorT used with GRNT & Tp > 25
+Vf_T13		1		# VfactorT used with GRNT & Tp > 25
+Vf_T23		1		# VfactorT used with GRNT & Tp > 25
