@@ -82,7 +82,7 @@ if [ -n "$DO_DOCS" ]; then
 	cmake .. $CMAKE_FLAGS -DBUILD_DOCS=ON -DBUILD_TESTS=OFF -DDOXYGEN_CHECK_MISSING=ON
 	cmake --build . $CONFIG_FLAGS --target docs
 	# Need install here to ensure that cmake config files are in place
-	cmake --install . --prefix "$INSTALL_DIR" $CONFIG_FLAGS
+	# cmake --install . --prefix "$INSTALL_DIR" $CONFIG_FLAGS
     fi
 fi
 cd ..
