@@ -1,0 +1,4 @@
+MDH	0.0	// The initial concentration of actove MDH
+Thio	0.081	// The initial concentration of reduced thioredoxin
+Fd	0.081	// The initial concentration of reduced ferrodoxin
+RuACT	0.0056	// The initial concentration of active Rubisco activase

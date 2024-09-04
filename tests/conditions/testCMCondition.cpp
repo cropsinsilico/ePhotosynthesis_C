@@ -38,7 +38,7 @@ TEST_F(CMConditionTest, ArrayTest) {
     arr output = cm.toArray();
     COMPARE(input, output)
 
-    N_Vector y = N_VNew_Serial(input.size());
+    N_Vector y = N_VNew_Serial(input.size(), context);
     for (size_t i = 0; i < input.size(); i++)
         NV_Ith_S(y, i) = input[i];
 

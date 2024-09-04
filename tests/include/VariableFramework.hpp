@@ -91,8 +91,12 @@ const std::map<std::string, double> Emap = {{"V1", 120},
 class VariableFramework: public testing::Test {
 protected:
     void SetUp() override {
-        if (theVars == nullptr)
-            theVars = new Variables();
+        if (theVars == nullptr) {
+	    if (SUNContext_Create(NULL, &context) < 0) {
+	      throw std::runtime_error("SUNContext_Create failed");
+	    }
+            theVars = new Variables(&context);
+	}
         IniModelCom(theVars);
     }
 
@@ -100,10 +104,12 @@ protected:
         if (theVars != nullptr) {
             delete theVars;
             theVars = nullptr;
+	    SUNContext_Free(&context);
         }
     }
 
     Variables* theVars = nullptr;
+    SUNContext context = nullptr;
 };
 
 inline arr get_random(const size_t size) {

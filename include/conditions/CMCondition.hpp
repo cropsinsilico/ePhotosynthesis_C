@@ -111,8 +111,7 @@ private:
       \returns The size of the serialized vector.
       */
     static std::size_t _size() {
-        if (count == 0)
-            count = PS_PRCondition::size() + SUCSCondition::size();
+        count = PS_PRCondition::size() + SUCSCondition::size();
         return count;
     }
 

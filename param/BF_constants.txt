@@ -1,0 +1,48 @@
+K1		1.0e6		# The rate constant for formation of ISP.QH2 complex; unit:  per second
+K2		500.0		# The rate constant for ISP.QH2-->QH(semi) + ISPH(red) ; unit:  per second
+K3		5.0e7		# The rate constant for QH. + cytbL --> Q + cytbL- + H+ Unit: s-1
+K4		5.0e7		# The rate constant for cytbL- + cytbH --> cytbL + cytbH- Unit: s-1
+K5		5.0e7		# The rate constant for CytbH- + Q --> cytbH + Q- Unit: s-1
+K6		5.0e7		# The rate constant  for CytbH- + Q- --> cytbH + Q2- Unit: s-1
+K7		1.0e4		# The rate constant for Q binding to Qi site; which assumed half time as 200 us, following Croft's website Unit: s-1
+K8		1000.0		# The rate constant for ISPH + CytC1 --> ISPH(ox) + CytC1+ Unit: s-1
+K9		8.3e6		# The rate constant for the electron transport from cytc1 to cytc2 Unit: s-1
+K10		8.0e8		# The rate constant for the electron transport from cytc2 to P700 Unit: s-1
+Vmax11		6.0		# The maximum rate of ATP synthesis Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+Kqi		1.0e3		# The rate constant for uptake of two protons from the stroma to Q2- s-1
+PK		3.6e-8		# The permeability constant for K Unit: cm s-1
+PMg		3.6e-8		# The permeability constant for Mg Unit: cm s-1
+PCl		1.8e-8		# The permeability constant for Cl Unit: cm s-1
+Kau		1.0e10		# The rate constant for exciton transfer from perpheral antenna to core antenna, see FI Unit: s-1
+Kua		1.0e10		# The rate constant for exciton transfer from core antenna to peripheral antenna, SEE FI Unit: s-1
+Kf		6.3e6		# The rate constant for fluorescence emission, see the note in FI Unit: s-1
+Kd		2.0e8		# The rate constant for heat dissipation; see the note for FI Unit: s-1
+K15		1.0e10		# The rate constant for primary charge separation in PSI Unit: s-1
+K16		1.0e5		# The rate constant for electron tranfer from electron acceptor of PSI to Fd Unit: s-1
+Em_ISP		0.31		# ISPHr + cytc1 --> ISPHox + cytc1-
+Em_Cytf		0.27		# ISPHr + cytc1 --> ISPHox + cytc1-
+Em_PG		0.35		# cytc1- + cytc2 --> cytc1 + cytc2-
+MemCap		0.6e-6		# The membrane capacity
+RVA		8.0e-10		# The ratio of lumen volume to thylakoid membrane area
+KBs		1.1e-8 		# The buffer equilibrium constant in stroma
+KBl		5.1e-6		# The buffer equilibrium constant in lumen
+KM1ATP		0.12		# The michaelis menton constant for ATP for ATP synthesis
+KM1ADP		0.014		# The michaelis menton constant for ATP for ADP synthesis
+KM1PI		0.3		# The michaelis menton constant for ATP for PI synthesis
+KM2NADP		0.05		# The michaelis menten constant for NADP Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+KM2NADPH	0.035		# The michaelis menten constant for NADPH Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+V2M		27.8		# The maximum rate of NADPH formation Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+KE2		495.0		# Equilibrium constant
+# Pool variables
+kA_d		1.0		# The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
+kA_f		1.0		# The total amount of cytc; Unit: micromole m-2 leaf area
+kA_U		20.0		# The total concentration of K in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant.
+kU_A		10.0		# The total concentration of Mg in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant.
+kU_d		2.0		# The total concentration of Cl in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant.
+kU_f		1.0		# The total concentration of Ferrodoxin
+k1		1.0		# The total concentration of the primary electron acceptor of PSI; Unit: micromole m-2 leaf area
+k_r1		8.0		# The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
+kz		38.0		# The total concentration of buffer in stroma; unit: mmol per liter
+k12		38.0		# The total concentration of buffer in lumen; unit: mmol per liter
+k23		1.0		# The total number of P700; unit: micromole m-2 leaf area
+k30		1.0		#   The total concentration of NADPH in stroma; 1 is an guessed value;

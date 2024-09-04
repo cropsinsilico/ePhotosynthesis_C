@@ -1,0 +1,19 @@
+// NADHc		0.47		// NADH concentration in cytosol
+// NADc		0.4		// NAD concentration in cytosol
+// // 10 & 11 in PRRatio not used
+// GLUc		24.		// GLU concentration in cytosol
+// KGc		0.4		// KG concentration in cytosol
+// ADP		0.82		// ADP concentration
+// ATP		0.68		// ATP concentration
+// PGA          4.3             // PGA in chloroplast (2.4 with C3)
+GCEA		0.1812	// Glycerate in chloroplast; derived based on V113
+GCA		0.36	// Derived from radioactive labelling experiment; assume equal concenatration inside and outshide chloroplast
+PGCA		0.0029	// Phosphoglycolate in chloroplast derived based on the Km112; orignal value is : 0.0029;
+
+GCAc		0.36	// See the note for GCA.
+GOAc		0.028	// Glyoxylate in cytosol; 0.028; EXPERIMENTAL DATA;
+SERc		7.5	// Serine in cytosol; 7.5 original value
+GLYc		1.8	// Glycine in cytosol; 1.8 original vlaue
+HPRc		0.0035	// HydroxylPyruvate; derived from equation 123;
+GCEAc		0.1812	// Glycerate in cytosol; assume at equilibrium with GCEA initially.
+RuBP		2.0	// RuBP concentration

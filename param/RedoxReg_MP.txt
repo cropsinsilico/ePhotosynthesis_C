@@ -1,0 +1,6 @@
+# Species	Eqn     Coef	Init
+ThioRatio	1000	-0.3	0.5
+FBPase		6	-0.305	0.5
+SBPase		9	-0.3	0.5
+PRK		13	-0.295	0.5
+ATPase		16	-0.28	0.5

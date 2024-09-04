@@ -11,7 +11,7 @@ TEST_F(SUCSModuleTest, InitTest) {
 
     SUCSCondition* SUCSc = SUCS::init(theVars);
 
-    Variables* theVars2 = new Variables();
+    Variables* theVars2 = new Variables(&context);
     theVars2->CO2_in = 500.;
     theVars2->TestLi = 14.;
     theVars2->TestATPCost = 4.5;

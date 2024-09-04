@@ -1,0 +1,70 @@
+// Enzyme activities [Read from EnzymeAct for C3]
+V111		0.24		// Reaction 111: RUBP+O2<-->PGlycolate + PGA
+V112		52.41992121	// Reaction 112: PGlycolate-->Pi+Glycolate;
+V113		5.715787563	// Reaction 113: Gcea+ATP<-->ADP + PGA
+V121		1.456108923	// Reaction 121: Glycolate +O2<-->H2O2+Glyoxylate
+V122		9.918572535	// Reaction 122: Glyoxylate + Serine<--> Hydoxypyruvate + Glycine;
+V123		10.00978112	// Reaction 123: HydroxylPyruvate + NAD <--> NADH + Glycerate
+V124		2.745819515	// Reaction 124: Glyoxylate + Glu  <--> KG + Glycine;
+V131		2.494745448	// Reaction 131: NAD+Glycine <--> CO2+ NADH + NH3
+NADHc		0.47		// NADH concentration in cytosol
+NADc		0.4		// NAD concentration in cytosol
+// 10 & 11 in PRRatio not used
+GLUc		24.		// GLU concentration in cytosol
+KGc		0.4		// KG concentration in cytosol
+ADP		0.82		// ADP concentration in chloroplast
+ATP		0.68		// ATP concentration in chloroplast
+PGA             4.3             // PGA in chloroplast (2.4 with C3)
+// Reaction 111: RUBP+O2<-->PGlycolate + PGA
+KO		0.222		// Michaelis constant for O2; ignored w/ PS_PR
+KC		0.0115		// Michaelis constant for CO2; ignored w/ PS_PR
+KR		0.02		// Michaelis constant for RUBP
+// Reaction 112: PGlycolate-->Pi+Glycolate;
+KM112		0.026		// Km112 for PGlycolate;
+KI1122		94.0		// Inhibition constant for Glycolate;
+KI1121		2.55		// The competitive Pi inhibition for PGlycolate
+// Reaction 113: Gcea+ATP<-->ADP + PGA
+KM1131	    	0.21		// Km for ATP;
+KM1132		0.25		// Km for Gcea;
+KI113		0.36		// Competitive inhibition for ATP; in original paper it is 0.36;
+KE113		300.0		// New: Kleczkowski et al . 1985 Archives of Biochemistry and Biophysics  300, as default
+// Reaction 121: Glycolate +O2<-->H2O2+Glyoxylate
+KM121	     	0.1		// Km for Glycolate
+// Reaction 122: Glyoxylate + Serine<--> Hydoxypyruvate + Glycine;
+KM1221	     	0.15	        // Michaelis constant for glyoxylate;
+KM1222		2.7		// Michaelis constant for serinie;
+KI1221		33.0		// Inhibition constant for Glycine;
+KE122		0.24		// New: Guynn, R.W.; Arch. Biochem. Biophys.; 218, 14 (1982).; 0.24. At 25 degree.
+// Reaction 123: HydroxylPyruvate + NAD <--> NADH + Glycerate
+KM123	    	0.09		// Michaelis constant for hydroxylpyruvate;
+KI123		12.0		// Inhibition constant for hydroxypyruvate;
+KE123		2.5e5		// Equilibrium constant for hydroxypyruvate;
+// Reaction 124: Glyoxylate + Glu  <--> KG + Glycine;
+KM1241	        0.15	        // Michaelis constant for glyoxylate
+KM1242		1.7		// Michaelis constant for Glu
+KE124		607.0		// New: Cooper, A.J.L.; Meister, A.; Biochemistry; 11, 661 (1972).; K' 607.
+// Reaction 131: NAD+Glycine <--> CO2+ NADH + NH3
+KM1311	        6.0	        // Michaelis constant for Glycine;
+KI1311		4.0		// Inhibition constant for Serine
+// The constant for calculating the glycerate uptake.
+// PRRatio 40 & 41 unused
+V1T    		5.0             // Multiplied by CE
+KM1011		0.39		// Michaelis constant for glycerate
+KI1011		0.28		// Inhibition constant for glycerate
+// The constant for calculating the glycolate output
+V2T    		6.4 		// Multiplied by CE, 6 for C3
+KM1012		0.2		// Michaelis constant for glycolate
+KI1012		0.22		// Inhibition constant for glycolate
+Vfactor112	1.0		// VfactorCp used with GRNC and CO2 > 0
+Vfactor113	1.0		// VfactorCp used with GRNC and CO2 > 0
+Vfactor121	1.0		// VfactorCp used with GRNC and CO2 > 0
+Vfactor122	1.0		// VfactorCp used with GRNC and CO2 > 0
+Vfactor123	1.0		// VfactorCp used with GRNC and CO2 > 0
+Vfactor124	1.0		// VfactorCp used with GRNC and CO2 > 0
+Vfactor131	1.0		// VfactorCp used with GRNC and CO2 > 0
+Vf_T131		1.0		// VfactorT used with GRNT & Tp > 25
+Vf_T113		1.0		// VfactorT used with GRNT & Tp > 25
+Vf_T123		1.0		// VfactorT used with GRNT & Tp > 25
+Vf_T121		1.0		// VfactorT used with GRNT & Tp > 25
+Vf_T122		1.0		// VfactorT used with GRNT & Tp > 25
+Vf_T112		1.0		// VfactorT used with GRNT & Tp > 25
