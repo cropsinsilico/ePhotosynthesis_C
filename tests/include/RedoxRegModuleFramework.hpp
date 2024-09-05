@@ -12,7 +12,6 @@ protected:
         theVars->TestLi = 14.;
         theVars->TestATPCost = 4.5;
         theVars->EnzymeAct = Emap;
-        std::vector<double> ratio(50, 1.5);
     }
 
     void Rate(const double t, const conditions::RedoxRegCondition* RedoxReg_con,

@@ -1,6 +1,4 @@
 #include "enums/enums_utils.hpp"
-#include "enums/enums_constants.hpp"
-#include "enums/enums_init.hpp"
 #include <istream>
 #include <iostream>
 #include <algorithm>

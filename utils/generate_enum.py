@@ -7,9 +7,10 @@ import argparse
 _registry = {'parser': {}, 'generator': {}}
 
 
-def registered_classes(typename):
+def registered_classes(typename, return_classes=False):
     global _registry
-    return [k for k in _registry[typename].keys() if k is not None]
+    if return_classes:
+        return [v for k, v in _registry[typename].items() if k is not None]
 
 
 def get_registered_class(typename, name):
@@ -26,37 +27,6 @@ class EnumMeta(type):
             assert cls.name not in _registry[cls._type]
             _registry[cls._type][cls.name] = cls
         return cls
-
-
-class CMixin:
-
-    def __init__(self, *args, **kwargs):
-        self.root_include_dir = kwargs.pop('root_include_dir', None)
-        kwargs.setdefault('child_kws', {})
-        kwargs['child_kws'].setdefault(
-            'root_include_dir', self.root_include_dir)
-        super().__init__(*args, **kwargs)
-
-    @classmethod
-    def include_file(cls, x, caller=None, rootdir=None):
-        if isinstance(x, EnumGeneratorBase):
-            x = x.dst
-        elif isinstance(x, EnumParserBase):
-            x = x.src
-        if rootdir is None and caller is not None:
-            rootdir = os.path.commonprefix([x, caller])
-        if rootdir is None:
-            header_incl = os.path.basename(x)
-        else:
-            header_incl = os.path.relpath(x, rootdir)
-        return [f"#include \"{header_incl}\"", ""]
-
-    def include_header(self, caller=None):
-        if caller is None:
-            caller = self.dst
-        return self.include_file(
-            self.added_files['header'].dst, caller=caller,
-            rootdir=self.root_include_dir)
 
 
 class EnumBase(metaclass=EnumMeta):
@@ -99,6 +69,7 @@ class EnumBase(metaclass=EnumMeta):
 class EnumParserBase(EnumBase):
 
     _type = 'parser'
+    file_extension = None
 
     def __init__(self, src, is_regex=False, verbose=False, **kwargs):
         if is_regex:
@@ -162,13 +133,23 @@ class EnumGeneratorBase(EnumBase):
     skip = []
     skip_items = {}
     added_file_classes = {}
+    explicit_dst = False
+    perfile_options = {
+        'dst': {
+            'type': str,
+            'help': "Location where generated file should be written"
+        },
+    }
 
     def __init__(self, src, dst=None, directory=None, added_files=None,
                  parent=None, child_kws={}, skip_children=False,
                  dont_generate=False, **kwargs):
-        for k in ['dst', 'kwargs']:
+        for k in self.perfile_options_keys():
             assert f'{k}_{self.name}' not in kwargs
         if dst is None:
+            if self.explicit_dst:
+                raise ValueError(f"Destination must be provided for "
+                                 f"\'{self.name}\' {self._type}")
             assert self.file_suffix or self.file_extension
             src_parts = os.path.split(src.src[0])
             dst = directory if directory else src_parts[0]
@@ -187,44 +168,94 @@ class EnumGeneratorBase(EnumBase):
         if added_files is None:
             added_files = {}
         self.added_files = added_files
-        child_kws = dict(self.extract_child_kws(kwargs), **child_kws)
+        child_kws = self.extract_child_kws(kwargs, child_kws,
+                                           directory=directory,
+                                           dont_generate=dont_generate,
+                                           parent=self)
         if not skip_children:
-            child_kws = dict(kwargs, directory=directory,
-                             dont_generate=dont_generate,
-                             parent=self, **child_kws)
             for k, v in self.added_file_classes.items():
-                kws = dict(child_kws)
-                for x in ['dst', 'kwargs']:
-                    xk = f'{x}_{v.name}'
-                    if xk in child_kws:
-                        if x == 'kwargs':
-                            kws.update(**child_kws.pop(xk))
-                        else:
-                            kws[x] = child_kws.pop(xk)
-                        kws.pop(xk, None)
+                kws = child_kws[v.name]
                 if k == 'header' and 'dst' not in kws:
                     kws['dst'] = self.dst.replace(
                         self.file_extension, v.file_extension)
                 if k not in self.added_files:
-                    self.added_files[k] = v(src, **kws)
+                    self.added_files[k] = v(src, child_kws=child_kws, **kws)
         super(EnumGeneratorBase, self).__init__(src, kwargs)
         if not dont_generate:
             self.lines = self.generate()
             self.write(**kwargs)
 
     @classmethod
-    def extract_child_kws(cls, kwargs):
-        out = {}
-        for k in [f"dst_{cls.name}", f"kwargs_{cls.name}"]:
-            if k in kwargs:
-                out[k] = kwargs.pop(k)
+    def add_arguments(cls, parser):
+        for k, v in cls.perfile_options.items():
+            key = f"{k}_{cls.name}"
+            dest = v.get('dest', '')
+            help_msg = v.get('help', '')
+            if help_msg:
+                v = dict(v, help=f"{cls.name}: {help_msg}")
+            if dest:
+                v = dict(v, dest=f"{dest}_{cls.name}")
+            parser.add_argument(
+                f"--{key.replace('_', '-')}", **v)
+
+    @classmethod
+    def get_arguments(cls, args, kwargs):
+        for k, v in cls.perfile_options.items():
+            if v.get('dest', ''):
+                k = v['dest']
+            key = f"{k}_{cls.name}"
+            val = getattr(args, key, None)
+            if val:
+                kwargs[key] = val
+
+    @classmethod
+    def perfile_options_keys(cls):
+        return ['kwargs'] + [
+            v.get('dest', k) for k, v in cls.perfile_options.items()]
+
+    @classmethod
+    def all_children(cls):
+        out = [v.name for v in cls.added_file_classes.values()]
         for v in cls.added_file_classes.values():
-            out.update(**v.extract_child_kws(kwargs))
+            out += v.all_children()
         return out
 
-    def write(self, verbose=False, overwrite=False, dry_run=False):
-        contents = '\n'.join(
-            self.prefix + self.lines + self.suffix) + '\n'
+    @classmethod
+    def extract_child_kws(cls, kwargs, child_kws, **kws_all):
+        out = child_kws
+        kws_all.update(**child_kws.pop('all', {}))
+        for x in cls.all_children():
+            out.setdefault(x, {})
+            for k in cls.perfile_options_keys():
+                key = f"{k}_{x}"
+                if key in kwargs:
+                    if k == 'kwargs':
+                        out[x].update(**kwargs.pop(key))
+                    else:
+                        out[x][k] = kwargs.pop(key)
+        kws_all = dict(kwargs, **kws_all)
+        for x in cls.all_children():
+            out[x] = dict(kws_all, **out[x])
+        return out
+
+    def write(self, verbose=False, overwrite=False, dry_run=False,
+              append=False, append_unique=False):
+        lines = self.prefix + self.lines + self.suffix
+        if append_unique:
+            append = True
+        if self.name == 'global':
+            assert append_unique
+        if append and os.path.isfile(self.dst):
+            with open(self.dst, 'r') as fd:
+                existing = fd.read().splitlines()
+            if append_unique:
+                for x in lines:
+                    if x not in existing:
+                        existing.append(x)
+                lines = existing
+            else:
+                lines = existing + lines
+        contents = '\n'.join(lines) + '\n'
         if verbose:
             print(f"{self.dst}\n----------------\n{contents}")
         if dry_run:
@@ -270,10 +301,92 @@ class EnumGeneratorBase(EnumBase):
         return lines
 
 
+class CMixin:
+
+    perfile_options = dict(
+        EnumGeneratorBase.perfile_options,
+        include_file={
+            'action': 'append',
+            'dest': 'include_files',
+            'help': "File that should be included.",
+        },
+    )
+
+    def __init__(self, *args, **kwargs):
+        self.root_include_dir = kwargs.pop('root_include_dir', None)
+        self.include_files = kwargs.pop('include_files', None)
+        self.namespaces = kwargs.pop('namespaces', None)
+        if self.include_files:
+            assert isinstance(self.include_files, list)
+        if ((self._type == 'generator'
+             and (self.namespaces or self.root_include_dir))):
+            kwargs.setdefault('child_kws', {})
+            kwargs['child_kws'].setdefault('all', {})
+            kwargs['child_kws']['all'].setdefault(
+                'root_include_dir', self.root_include_dir)
+            kwargs['child_kws']['all']['namespaces'] = self.namespaces
+        super().__init__(*args, **kwargs)
+
+    @classmethod
+    def include_file(cls, x, caller=None, rootdir=None):
+        if isinstance(x, EnumGeneratorBase):
+            x = x.dst
+        elif isinstance(x, EnumParserBase):
+            x = x.src
+        if rootdir is None and caller is not None:
+            rootdir = os.path.commonprefix([x, caller])
+        if rootdir is None:
+            header_incl = os.path.basename(x)
+        else:
+            header_incl = os.path.relpath(x, rootdir)
+        return [f"#include \"{header_incl}\"", ""]
+
+    def add_include_files(self):
+        lines = []
+        if self.include_files:
+            for x in self.include_files:
+                lines += self.include_file(x, caller=self.dst,
+                                           rootdir=self.root_include_dir)
+            lines += ['']
+        return lines
+
+    def include_self(self, caller, rootdir=None):
+        if rootdir is None:
+            rootdir = self.root_include_dir
+        return self.include_file(
+            self.dst, caller=caller, rootdir=rootdir)
+
+    def include_header(self, caller=None):
+        if caller is None:
+            caller = self.dst
+        return self.include_file(
+            self.added_files['header'].dst, caller=caller,
+            rootdir=self.root_include_dir)
+
+    def generate(self, indent='', **kwargs):
+        lines = []
+        lines += self.add_include_files()
+        if self.namespaces:
+            if self.file_extension in ['.hpp', '.h']:
+                for x in self.namespaces:
+                    lines += [f"{indent}namespace {x} {{"]
+                    indent += 2 * ' '
+            else:
+                lines += [
+                    f"using namespace {'::'.join(self.namespaces)};", ""]
+        lines += super().generate(indent=indent, **kwargs)
+        if self.namespaces and self.file_extension in ['.hpp', '.h']:
+            for x in self.namespaces:
+                indent = indent[:(len(indent) - 2)]
+                lines += [f"{indent}}}"]
+        return lines
+
+
 class ParamFileParser(EnumParserBase):
 
     name = 'param'
     comment = '#'
+    file_extension = '.txt'
 
     def parse(self, src, **kwargs):
         k = os.path.basename(os.path.splitext(src)[0])
@@ -299,6 +412,7 @@ class ParamFileParser(EnumParserBase):
 class CEnumParser(EnumParserBase):
 
     name = 'c'
+    file_extension = '.cpp'
 
     def parse_lines(self, lines):
         i = 0
@@ -335,43 +449,12 @@ class CEnumGeneratorBase(CMixin, EnumGeneratorBase):
         '',
     ]
 
-    def __init__(self, src, dst=None, namespaces=None, include_files=None,
-                 **kwargs):
-        self.namespaces = namespaces
-        self.include_files = include_files
-        kwargs.setdefault('child_kws', {})
-        kwargs['child_kws']['namespaces'] = self.namespaces
-        super(CEnumGeneratorBase, self).__init__(
-            src, dst=dst, **kwargs)
-
-    def generate(self, indent='', **kwargs):
-        lines = []
-        if self.include_files:
-            for x in self.include_files:
-                lines += self.include_file(x, caller=self.dst,
-                                           rootdir=self.root_include_dir)
-            lines += ['']
-        if self.namespaces:
-            for x in self.namespaces:
-                lines += [f"{indent}namespace {x} {{"]
-                indent += 2 * ' '
-        lines += super(CEnumGeneratorBase, self).generate(
-            indent=indent, **kwargs)
-        if self.namespaces:
-            for x in self.namespaces:
-                indent = indent[:(len(indent) - 2)]
-                lines += [f"{indent}}}"]
-        return lines
-
 
 class CEnumGeneratorMapHeader(CEnumGeneratorBase):
 
     name = 'maps_header'
     file_suffix = '_maps'
-    file_extension = '.hpp'
-    prefix = [
-        '#pragma once',
-        '',
+    prefix = CEnumGeneratorBase.prefix + [
         '#include <map>',
         '#include <string>',
         '',
@@ -382,9 +465,10 @@ class CEnumGeneratorMapHeader(CEnumGeneratorBase):
         if tname is None:
             tname = name
         func_name = f"{name}_map"
-        lines.append(
+        lines += [
             f"const std::map<const {tname}, "
-            f"const std::string>& {func_name}();")
+            f"const std::string>& {func_name}();",
+        ]
         return lines
 
 
@@ -396,13 +480,6 @@ class CEnumGeneratorMapSource(CMixin, EnumGeneratorBase):
     added_file_classes = {
         'header': CEnumGeneratorMapHeader
     }
-
-    def __init__(self, *args, **kwargs):
-        self.namespaces = kwargs.pop('namespaces', None)
-        kwargs.setdefault('child_kws', {})
-        kwargs['child_kws']['namespaces'] = self.namespaces
-        super(CEnumGeneratorMapSource, self).__init__(
-            *args, **kwargs)
 
     def generate_member(self, x, width=None, width_abbr=None):
         assert width and width_abbr
@@ -428,39 +505,52 @@ class CEnumGeneratorMapSource(CMixin, EnumGeneratorBase):
         width_abbr = len(max(members, key=lambda x: len(x['abbr']))['abbr'])
         lines += super(CEnumGeneratorMapSource, self).generate_item(
             name, members, width=width, width_abbr=width_abbr)
-        lines += ["  };", "  return map;", "};", ""]
+        lines += [
+            "  };", "  return map;", "};",
+            f"template<> const std::map<const {tname}, "
+            f"const std::string>& get_enum_map<enum {tname}>() {{",
+            f"  return {func_name}();",
+            "};",
+            ""
+        ]
         return lines
 
     def generate(self, indent='', **kwargs):
         lines = self.include_header()
-        if self.namespaces:
-            lines += [
-                f"using namespace {'::'.join(self.namespaces)};", ""]
         lines += super(CEnumGeneratorMapSource, self).generate(
             indent=indent, **kwargs)
         return lines
+
+
+class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
+
+    name = 'global'
+    file_suffix = ''
+    explicit_dst = True
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("append_unique", True)
+        super(CEnumGeneratorGlobalHeader, self).__init__(*args, **kwargs)
+        assert self.parent
+
+    def generate(self, indent='', **kwargs):
+        return self.parent.include_self(
+            self.dst, rootdir=self.root_include_dir)
 
 
 class CEnumGeneratorHeader(CEnumGeneratorBase):
 
     name = 'c'
     file_suffix = '_enum'
-    file_extension = '.hpp'
-    prefix = [
-        '#pragma once',
-        '',
-    ]
     added_file_classes = {
-        'maps': CEnumGeneratorMapSource
+        'maps': CEnumGeneratorMapSource,
+        'global': CEnumGeneratorGlobalHeader,
     }
 
     def __init__(self, *args, **kwargs):
-        kwargs.setdefault('child_kws', {})
-        kwargs['child_kws'].setdefault('kwargs_maps_header', {})
-        kwargs['child_kws']['kwargs_maps_header'].setdefault(
-            'include_files', [])
-        kwargs['child_kws']['kwargs_maps_header']['include_files'].append(
-            self)
+        kwargs.setdefault('kwargs_maps_header', {})
+        kwargs['kwargs_maps_header'].setdefault('include_files', [])
+        kwargs['kwargs_maps_header']['include_files'].append(self)
         super(CEnumGeneratorHeader, self).__init__(*args, **kwargs)
 
     def generate_member(self, x, width=None, width_val=None):
@@ -469,8 +559,8 @@ class CEnumGeneratorHeader(CEnumGeneratorBase):
         docs = ''
         if x.get('explicit_val', False):
             val = f" = {x['val']}"
-        if x.get('docs', False):
-            docs = f"  //!< {x['docs']}"
+        if x.get('doc', False):
+            docs = f"  //!< {x['doc']}"
         return [f"  {x['name']:{width}}{val:{width_val}},{docs}"]
 
     def generate_item(self, name, members):
@@ -686,6 +776,17 @@ class FortranEnumGeneratorValue(EnumGeneratorBase):
         return lines
 
 
+def rename_source(directory, src_suffix, dst_suffix, ext):
+    import shutil
+    src_regex = os.path.join(directory, f"*_{src_suffix}{ext}")
+    files = glob.glob(src_regex)
+    if not files:
+        raise Exception(f"No files found matching {src_regex}")
+    for src in files:
+        dst = src.replace(src_suffix, dst_suffix)
+        shutil.move(src, dst)
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         "Generate enum source code & header files based on "
@@ -722,22 +823,26 @@ if __name__ == "__main__":
     parser.add_argument("--prefix-by-split", type=str,
                         help=("Add prefixes to enum members by splitting "
                               "the name of the enum set by this string"))
-    for x in registered_classes('generator'):
-        parser.add_argument(f"--dst-{x.replace('_', '-')}", type=str,
-                            help=(f"Location where generated {x} file "
-                                  f"should be written"))
+    parser.add_argument("--rename-source", type=str,
+                        help=("Rename source files in this directory "
+                              "with the provided src suffix to use the "
+                              "provided dst suffix"))
+    for x in registered_classes('generator', return_classes=True):
+        x.add_arguments(parser)
     args = parser.parse_args()
-    src = get_registered_class('parser', args.src_type)(
-        args.src, verbose=args.verbose, is_regex=args.src_regex)
-    if args.prefix_by_split:
-        src.prefix_by_split(args.prefix_by_split)
-    kws = {}
-    for x in registered_classes('generator'):
-        k = f"dst_{x}"
-        v = getattr(args, k, None)
-        if v:
-            kws[k] = v
-    dst = get_registered_class('generator', args.dst_type)(
-        src, dst=args.dst, overwrite=args.overwrite, verbose=args.verbose,
-        dry_run=args.dry_run, skip_children=args.skip_children,
-        root_include_dir=args.root_include_dir, **kws)
+    if args.rename_source:
+        src_cls = get_registered_class('parser', args.src_type)
+        rename_source(args.rename_source, args.src, args.dst,
+                      src_cls.file_extension)
+    else:
+        src = get_registered_class('parser', args.src_type)(
+            args.src, verbose=args.verbose, is_regex=args.src_regex)
+        if args.prefix_by_split:
+            src.prefix_by_split(args.prefix_by_split)
+        kws = {}
+        for x in registered_classes('generator', return_classes=True):
+            x.get_arguments(args, kws)
+        dst = get_registered_class('generator', args.dst_type)(
+            src, dst=args.dst, overwrite=args.overwrite, verbose=args.verbose,
+            dry_run=args.dry_run, skip_children=args.skip_children,
+            root_include_dir=args.root_include_dir, **kws)

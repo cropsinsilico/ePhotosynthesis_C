@@ -70,9 +70,10 @@ arr Driver::run() {
         sunindextype N =  static_cast<long>(constraints.size());
         N_Vector y;
         y = N_VNew_Serial(N, *context);
+	sunrealtype* y_ptr = N_VGetArrayPointer(y);
 
         for (std::size_t i = 0; i < constraints.size(); i++)
-            NV_Ith_S(y, i) =  constraints[i];
+	  y_ptr[i] = constraints[i];
         realtype t0 = start;
 
         CVodeMem *cmem;

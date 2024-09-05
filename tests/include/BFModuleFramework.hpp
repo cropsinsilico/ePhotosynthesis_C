@@ -15,8 +15,7 @@ protected:
         theVars->TestLi = 14.;
         theVars->TestATPCost = 4.5;
         theVars->EnzymeAct = Emap;
-        std::vector<double> ratio(50, 1.5);
-        theVars->BFRatio = ratio;
+        theVars->BFRatio = std::vector<double>(theVars->BFRatio.size(), 1.5);
     }
     void Rate(const double t, const conditions::BFCondition* BF_con, Variables *theVars) {
         modules::BF::_Rate(t, BF_con, theVars);

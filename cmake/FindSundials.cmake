@@ -1,122 +1,228 @@
-# **********************************************************************************************************************************************
-# *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
-# *
-# * CAS-MPG Partner Institute for Computational Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
-# * China Institute of Genomic Biology and Department of Plant Biology, Shanghai Institutes for Biological Sciences, CAS, Shanghai,200031
-# * University of Illinois at Urbana Champaign
-# * Global Change and Photosynthesis Research Unit, USDA/ARS, 1406 Institute of Genomic Biology, Urbana, IL 61801, USA.
-# *
-# * Converted from Matlab to C++ by Douglas N. Friedel, National Center for Supercomputing Applications (2020)
-# *
-# *   This file is part of e-photosynthesis.
-# *
-# *    e-photosynthesis is free software; you can redistribute it and/or modify
-# *    it under the terms of the GNU General Public License as published by
-# *    the Free Software Foundation;
-# *
-# *    e-photosynthesis is distributed in the hope that it will be useful,
-# *    but WITHOUT ANY WARRANTY; without even the implied warranty of
-# *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# *    GNU General Public License for more details.
-# *
-# *    You should have received a copy of the GNU General Public License (GPL)
-# *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
-# *
-# **********************************************************************************************************************************************
+# This module is adapted from that in CADET (`<https://github.com/modsim/CADET)>`_):
+
+
+
+# Find SUNDIALS, the SUite of Nonlinear and DIfferential/ALgebraic equation Solvers.
 #
-# Check for the needed Sundials components.
-# Since only parts of the Sundials package are needed, only specific files are looked for
+# The module will optionally accept the COMPONENTS argument. If no COMPONENTS
+# are specified, then the find module will default to find all the SUNDIALS
+# libraries. If one or more COMPONENTS are specified, the module will attempt to
+# find the specified components.
+#
+# Valid components are
+#   * sundials_cvode
+#   * sundials_cvodes
+#   * sundials_ida
+#   * sundials_idas
+#   * sundials_kinsol
+#   * sundials_nvecserial
+#   * sundials_nvecopenmp
+#   * sundials_nvecpthreads
+#
+#
+# On UNIX systems, this module will read the variable SUNDIALS_PREFER_STATIC_LIBRARIES
+# to determine whether or not to prefer a static link to a dynamic link for SUNDIALS
+# and all of it's dependencies.  To use this feature, make sure that the
+# SUNDIALS_PREFER_STATIC_LIBRARIES variable is set before the call to find_package.
+#
+# To provide the module with a hint about where to find your SUNDIALS installation,
+# you can set the environment variable SUNDIALS_ROOT. The FindSUNDIALS module will
+# then look in this path when searching for SUNDIALS paths and libraries.
+#
+# This module will define the following variables:
+#  SUNDIALS_FOUND - true if SUNDIALS was found on the system
+#  SUNDIALS_INCLUDE_DIRS - Location of the SUNDIALS includes
+#  SUNDIALS_LIBRARIES - Required libraries for all requested components
+#  SUNDIALS_VERSION_MAJOR - Major version
+#  SUNDIALS_VERSION_MINOR - Minro version
+#  SUNDIALS_VERSION_PATCH - Patch level
+#  SUNDIALS_VERSION - Full version string
+#
+# This module exports the target SUNDIALS::<component> if it was found.
+
+
+# List of the valid SUNDIALS components
+set(SUNDIALS_VALID_COMPONENTS
+    sundials_core
+    sundials_cvode
+    sundials_cvodes
+    sundials_ida
+    sundials_idas
+    sundials_kinsol
+    sundials_sunlinsolklu
+    sundials_sunlinsoldense
+    sundials_sunlinsolspbcgs
+    sundials_sunlinsollapackdense
+    sundials_sunmatrixsparse
+    sundials_sunmatrixdense
+    sundials_sunmatrixband
+    sundials_nvecserial
+    sundials_nvecopenmp
+    sundials_nvecpthreads
+)
+
+if (NOT SUNDIALS_FIND_COMPONENTS)
+    set(SUNDIALS_WANT_COMPONENTS ${SUNDIALS_VALID_COMPONENTS})
+else()
+    # add the extra specified components, ensuring that they are valid.
+    foreach(_COMPONENT ${SUNDIALS_FIND_COMPONENTS})
+        string(TOLOWER ${_COMPONENT} _COMPONENT_LOWER)
+        list(FIND SUNDIALS_VALID_COMPONENTS ${_COMPONENT_LOWER} COMPONENT_LOCATION)
+        if (${COMPONENT_LOCATION} EQUAL -1)
+            message(FATAL_ERROR "\"${_COMPONENT_LOWER}\" is not a valid SUNDIALS component.")
+        else()
+            list(APPEND SUNDIALS_WANT_COMPONENTS ${_COMPONENT_LOWER})
+        endif()
+    endforeach()
+endif()
+
+find_package(PkgConfig QUIET)
+if (PKG_CONFIG_FOUND)
+    pkg_check_modules(PKGCONFIG_SUNDIALS QUIET sundials)
+else()
+    set(PKGCONFIG_SUNDIALS_INCLUDE_DIRS "")
+endif()
+
+
+# find the SUNDIALS include directories
+find_path(SUNDIALS_INCLUDE_DIR sundials_types.h
+    PATHS
+        ${SUNDIALS_USER_PATHS}
+        ${SUNDIALS_ROOT}
+        ${SUNDIALS_ROOT_DIR}
+        ${PKGCONFIG_SUNDIALS_INCLUDE_DIRS}
+    ENV
+        SUNDIALS_ROOT
+        SUNDIALS_ROOT_DIR
+    PATH_SUFFIXES
+        include
+        include/sundials
+)
+set(SUNDIALS_INCLUDE_DIRS
+    "${SUNDIALS_INCLUDE_DIR}/.."
+    "${SUNDIALS_INCLUDE_DIR}"
+)
+
+# extract version
+if (SUNDIALS_INCLUDE_DIR)
+    file(READ "${SUNDIALS_INCLUDE_DIR}/sundials_config.h" _SUNDIALS_VERSION_FILE)
+
+    string(FIND "${_SUNDIALS_VERSION_FILE}" "SUNDIALS_PACKAGE_VERSION" index)
+    if ("${index}" LESS 0)
+        # Handle versions from 3.0.0 onwards (including)
+        string(REGEX REPLACE ".*#define SUNDIALS_VERSION \"([0-9]+)\\.([0-9]+)\\.([0-9]+)\".*" "\\1" SUNDIALS_VERSION_MAJOR "${_SUNDIALS_VERSION_FILE}")
+        string(REGEX REPLACE ".*#define SUNDIALS_VERSION \"([0-9]+)\\.([0-9]+)\\.([0-9]+)\".*" "\\2" SUNDIALS_VERSION_MINOR "${_SUNDIALS_VERSION_FILE}")
+        string(REGEX REPLACE ".*#define SUNDIALS_VERSION \"([0-9]+)\\.([0-9]+)\\.([0-9]+)\".*" "\\3" SUNDIALS_VERSION_PATCH "${_SUNDIALS_VERSION_FILE}")
+        set(SUNDIALS_VERSION "${SUNDIALS_VERSION_MAJOR}.${SUNDIALS_VERSION_MINOR}.${SUNDIALS_VERSION_PATCH}")
+    else()
+        # Handle versions up to 2.7.0 (including)
+        string(REGEX REPLACE ".*#define SUNDIALS_PACKAGE_VERSION \"([0-9]+)\\.([0-9]+)\\.([0-9]+)\".*" "\\1" SUNDIALS_VERSION_MAJOR "${_SUNDIALS_VERSION_FILE}")
+        string(REGEX REPLACE ".*#define SUNDIALS_PACKAGE_VERSION \"([0-9]+)\\.([0-9]+)\\.([0-9]+)\".*" "\\2" SUNDIALS_VERSION_MINOR "${_SUNDIALS_VERSION_FILE}")
+        string(REGEX REPLACE ".*#define SUNDIALS_PACKAGE_VERSION \"([0-9]+)\\.([0-9]+)\\.([0-9]+)\".*" "\\3" SUNDIALS_VERSION_PATCH "${_SUNDIALS_VERSION_FILE}")
+        set(SUNDIALS_VERSION "${SUNDIALS_VERSION_MAJOR}.${SUNDIALS_VERSION_MINOR}.${SUNDIALS_VERSION_PATCH}")
+    endif()
+    find_path(SUNMATH_INCLUDE_DIR "sundials/sundials_math.h"
+        HINTS ${SUNDIALS_INCLUDE_DIR}
+        )
+    find_path(SUNMATRIX_INCLUDE_DIR "sunmatrix/sunmatrix_dense.h"
+        HINTS ${SUNDIALS_INCLUDE_DIR}
+        )
+    find_path(SUNTYPES_INCLUDE_DIR "sundials/sundials_types.h"
+        HINTS ${SUNDIALS_INCLUDE_DIR}
+        )
+    find_path(SUNLINSOL_INCLUDE_DIR "sunlinsol/sunlinsol_dense.h"
+        HINTS ${SUNDIALS_INCLUDE_DIR}
+        )
+    find_path(CVODE_INCLUDE_DIR "cvode/cvode.h"
+        HINTS ${SUNDIALS_INCLUDE_DIR}
+        )
+    find_path(CVODE_DIRECT_INCLUDE_DIR "cvode/cvode_direct.h"
+        HINTS ${SUNDIALS_INCLUDE_DIR}
+        )
+    find_path(NVECTOR_INCLUDE_DIR "nvector/nvector_serial.h"
+        HINTS ${SUNDIALS_INCLUDE_DIR}
+        )
+    find_path(KINSOL_INCLUDE_DIR "kinsol/kinsol.h"
+        HINTS ${SUNDIALS_INCLUDE_DIR}
+        )
+    list(APPEND SUNDIALS_INCLUDE_DIRS
+         ${SUNMATH_INCLUDE_DIR}
+         ${SUNMATRIX_INCLUDE_DIR}
+         ${SUNTYPES_INCLUDE_DIR}
+         ${SUNLINSOL_INCLUDE_DIR}
+         ${CVODE_INCLUDE_DIR}
+         ${CVODE_DIRECT_INCLUDE_DIR}
+         ${NVECTOR_INCLUDE_DIR}
+         ${KINSOL_INCLUDE_DIR})
+endif()
+
+
+# find the SUNDIALS libraries
+foreach(LIB ${SUNDIALS_WANT_COMPONENTS})
+    if (UNIX AND SUNDIALS_PREFER_STATIC_LIBRARIES)
+        # According to bug 1643 on the CMake bug tracker, this is the
+        # preferred method for searching for a static library.
+        # See http://www.cmake.org/Bug/view.php?id=1643.  We search
+        # first for the full static library name, but fall back to a
+        # generic search on the name if the static search fails.
+        set(THIS_LIBRARY_SEARCH lib${LIB}.a ${LIB})
+    else()
+        set(THIS_LIBRARY_SEARCH ${LIB})
+    endif()
+
+    find_library(SUNDIALS_${LIB}_LIBRARY
+        NAMES ${THIS_LIBRARY_SEARCH}
+        PATHS
+            ${SUNDIALS_USER_PATHS}
+            ${SUNDIALS_ROOT}
+            ${SUNDIALS_ROOT_DIR}
+            ${PKGCONFIG_SUNDIALS_INCLUDE_DIRS}
+            ${SUNDIALS_INCLUDE_DIR}/..
+        ENV
+            SUNDIALS_ROOT
+            SUNDIALS_ROOT_DIR
+        PATH_SUFFIXES
+            lib
+            Lib
+    )
+
+    set(SUNDIALS_${LIB}_FOUND FALSE)
+    if (SUNDIALS_${LIB}_LIBRARY)
+        list(APPEND SUNDIALS_LIBRARIES ${SUNDIALS_${LIB}_LIBRARY})
+        set(SUNDIALS_${LIB}_FOUND TRUE)
+    endif()
+    mark_as_advanced(SUNDIALS_${LIB}_LIBRARY)
+endforeach()
+
 
 include(FindPackageHandleStandardArgs)
+find_package_handle_standard_args(SUNDIALS
+    REQUIRED_VARS SUNDIALS_LIBRARIES SUNDIALS_INCLUDE_DIRS
+    VERSION_VAR SUNDIALS_VERSION
+    HANDLE_COMPONENTS
+)
 
-if(DEFINED ENV{SUNDIALS_INCLUDE_DIR})
-    set(SUNDIALS_INCLUDE_DIR "$ENV{SUNDIALS_INCLUDE_DIR}")
+include(FeatureSummary)
+set_package_properties(SUNDIALS PROPERTIES
+    URL "https://computation.llnl.gov/projects/sundials"
+    DESCRIPTION "SUNDIALS Suite of nonlinear and differential/algebraic equation solvers"
+)
+
+if (SUNDIALS_FOUND)
+    foreach(LIB ${SUNDIALS_WANT_COMPONENTS})
+        if (SUNDIALS_${LIB}_LIBRARY)
+            add_library(SUNDIALS::${LIB} UNKNOWN IMPORTED)
+            set_target_properties(SUNDIALS::${LIB} PROPERTIES
+                INTERFACE_INCLUDE_DIRECTORIES "${SUNDIALS_INCLUDE_DIRS}"
+                IMPORTED_LOCATION ${SUNDIALS_${LIB}_LIBRARY}
+            )
+        endif()
+    endforeach()
 endif()
 
-find_path(SUNMATH_INCLUDE_DIR "sundials/sundials_math.h"
-    HINTS ${SUNDIALS_INCLUDE_DIR}
-    )
-find_path(SUNMATRIX_INCLUDE_DIR "sunmatrix/sunmatrix_dense.h"
-    HINTS ${SUNDIALS_INCLUDE_DIR}
-    )
-find_path(SUNTYPES_INCLUDE_DIR "sundials/sundials_types.h"
-    HINTS ${SUNDIALS_INCLUDE_DIR}
-    )
-find_path(SUNLINSOL_INCLUDE_DIR "sunlinsol/sunlinsol_dense.h"
-    HINTS ${SUNDIALS_INCLUDE_DIR}
-    )
-find_path(CVODE_INCLUDE_DIR "cvode/cvode.h"
-    HINTS ${SUNDIALS_INCLUDE_DIR}
-    )
-find_path(CVODE_DIRECT_INCLUDE_DIR "cvode/cvode_direct.h"
-    HINTS ${SUNDIALS_INCLUDE_DIR}
-    )
-find_path(NVECTOR_INCLUDE_DIR "nvector/nvector_serial.h"
-    HINTS ${SUNDIALS_INCLUDE_DIR}
-    )
-find_path(KINSOL_INCLUDE_DIR "kinsol/kinsol.h"
-    HINTS ${SUNDIALS_INCLUDE_DIR}
-    )
 
-if(DEFINED ENV{SUNDIALS_DIR})
-    set(SUNLINSOL_LIBRARY_DIR "$ENV{SUNDIALS_DIR}")
-endif()
-
-set(NVECSERIAL_LIB_NAMES sundials_nvecserial SUNDIALS_NVECSERIAL)
-find_library(NVECSERIAL_LIBRARY
-    NAMES ${NVECSERIAL_LIB_NAMES}
-    PATHS ${SUNLINSOL_LIBRARY_DIR}
-    )
-set(KINSOL_LIB_NAMES sundials_kinsol SUNDIALS_KINSOL)
-find_library(KINSOL_LIBRARY
-    NAMES ${KINSOL_LIB_NAMES}
-    PATHS ${SUNLINSOL_LIBRARY_DIR}
-    )
-set(CVODE_LIB_NAMES sundials_cvode SUNDIALS_CVODE)
-find_library(CVODE_LIBRARY
-    NAMES ${CVODE_LIB_NAMES}
-    PATHS ${SUNLINSOL_LIBRARY_DIR}
-    )
-find_package_handle_standard_args(Sundials DEFAULT_MSG
-    SUNMATH_INCLUDE_DIR
-    SUNMATRIX_INCLUDE_DIR
-    SUNTYPES_INCLUDE_DIR
-    SUNLINSOL_INCLUDE_DIR
-    CVODE_INCLUDE_DIR
-    CVODE_DIRECT_INCLUDE_DIR
-    NVECTOR_INCLUDE_DIR
-    KINSOL_INCLUDE_DIR
-    NVECSERIAL_LIBRARY
-    KINSOL_LIBRARY
-    CVODE_LIBRARY
-    )
-
-if(Sundials_FOUND)
-    set(SUNDIALS_INCLUDE_DIRS ${SUNMATH_INCLUDE_DIR}
-        ${SUNMATRIX_INCLUDE_DIR}
-        ${SUNTYPES_INCLUDE_DIR}
-        ${SUNLINSOL_INCLUDE_DIR}
-        ${CVODE_INCLUDE_DIR}
-        ${CVODE_DIRECT_INCLUDE_DIR}
-        ${NVECTOR_INCLUDE_DIR}
-        ${KINSOL_INCLUDE_DIR})
-    set(SUNDIALS_LIBRARIES ${NVECSERIAL_LIBRARY} ${KINSOL_LIBRARY} ${CVODE_LIBRARY})
-
-    MARK_AS_ADVANCED(
-        SUNMATH_INCLUDE_DIR
-        SUNMATRIX_INCLUDE_DIR
-        SUNTYPES_INCLUDE_DIR
-        SUNLINSOL_INCLUDE_DIR
-        CVODE_INCLUDE_DIR
-        CVODE_DIRECT_INCLUDE_DIR
-        NVECTOR_INCLUDE_DIR
-        KINSOL_INCLUDE_DIR
-        NVECSERIAL_LIBRARY
-        KINSOL_LIBRARY
-        CVODE_LIBRARY
-        )
-    message(STATUS "Searching for Sundials libraries... ok")
-else()
-    message(FATAL_ERROR "Searching for Sundials libraries... failed")
-endif()
-
+mark_as_advanced(
+    SUNDIALS_LIBRARIES
+    SUNDIALS_INCLUDE_DIR
+    SUNDIALS_INCLUDE_DIRS
+)

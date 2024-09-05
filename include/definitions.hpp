@@ -30,6 +30,7 @@
 #include <iostream>
 #include <algorithm>
 #include <fstream>
+#include "ePhotosynthesis_export.h"
 
 #ifndef uint
 #define uint unsigned int

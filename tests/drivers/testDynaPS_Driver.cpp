@@ -16,10 +16,10 @@ protected:
     DynaPSCondition* ini() {
         return driver->DynaPS_Ini();
     }
-    arr MB(realtype t, N_Vector u) {
+    arr MB(realtype t, N_Vector& u) {
         return driver->MB(t, u);
     }
-    void setIntermediate(arr data) {
+    void setIntermediate(arr& data) {
         driver->intermediateRes = &data[0];
     }
     arr getResultsVal() {
@@ -68,8 +68,9 @@ TEST_F(DynaPSDriverTest, MBTest) {
     driver->setup();
     EXPECT_NE(0, driver->constraints.size());
     N_Vector y = N_VNew_Serial(static_cast<sunindextype>(driver->constraints.size()), context);
+    sunrealtype* y_ptr = N_VGetArrayPointer(y);
     for (size_t i = 0; i < driver->constraints.size(); i++)
-        NV_Ith_S(y, i) = driver->constraints[i];
+      y_ptr[i] = driver->constraints[i];
     arr res = MB(1.5, y);
     EXPECT_NE(0, res.size());
     N_VDestroy(y);

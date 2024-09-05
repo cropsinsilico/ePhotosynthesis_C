@@ -9,5 +9,5 @@ dependencies:
   - lcov
   - pytest
   - python
-  - sundials<7.0.0
+  - sundials
   - yggdrasil

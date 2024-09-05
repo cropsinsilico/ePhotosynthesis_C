@@ -50,6 +50,8 @@ endif()
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    # conda-forge sundials only produces static libraries
+    set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
     add_definitions(-D_CRT_SECURE_NO_WARNINGS=1)
     set(CMAKE_CXX_FLAGS_DEBUG "/Zi -DINCDEBUG${BUILD_FLAGS}")
     set(CMAKE_CXX_FLAGS_RELEASE "/O2 -DNDEBUG${BUILDINC}${BUILD_FLAGS}")
@@ -106,9 +108,9 @@ endif()
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Release)
-    message("CMAKE_BUILD_TYPE not defined, defaulting to Release")
+    message(STATUS "CMAKE_BUILD_TYPE not defined, defaulting to Release")
 else()
-    message("Doing a ${CMAKE_BUILD_TYPE} build")
+    message(STATUS "Doing a ${CMAKE_BUILD_TYPE} build")
 endif()
 
 if(BUILD_DOCS)
@@ -156,11 +158,13 @@ endif()
 
 set(ENUM_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/utils/generate_enum.py)
 
-foreach(suffix constants init)
+foreach(suffix rate_constants conditions)
   set(ENUM_SRC_REGEX ${CMAKE_CURRENT_SOURCE_DIR}/param/*_${suffix}.txt)
   file(GLOB ENUM_SRC "${ENUM_SRC_REGEX}")
   string(REPLACE "*" "\\*" ENUM_SRC_REGEX ${ENUM_SRC_REGEX})
 
+  set(ENUM_UTILS ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_utils.hpp)
+  set(ENUM_GLOBAL ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums.hpp)
   set(ENUM_MAP ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${suffix}_map.cpp)
   set(ENUM_MAP_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${suffix}_map.hpp)
   set(ENUM_DST ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${suffix}.hpp)
@@ -169,9 +173,11 @@ foreach(suffix constants init)
     COMMAND python ${ENUM_SCRIPT}
     "${ENUM_SRC_REGEX}" --src-regex --dst-type=c --dst=${ENUM_DST}
     --dst-maps=${ENUM_MAP} --dst-maps-header=${ENUM_MAP_H}
+    --dst-global=${ENUM_GLOBAL}
     --root-include-dir=${CMAKE_CURRENT_SOURCE_DIR}/include
-    --prefix-by-split=${suffix} --overwrite --verbose
-    BYPRODUCTS ${ENUM_DST} ${ENUM_MAP} ${ENUM_MAP_H}
+    --include-file-maps=${ENUM_UTILS}
+    --prefix-by-split=${suffix} --overwrite  # --verbose
+    BYPRODUCTS ${ENUM_DST} ${ENUM_MAP} ${ENUM_MAP_H} ${ENUM_GLOBAL}
     DEPENDS ${ENUM_SRC} ${ENUM_SCRIPT}
   )
   list(APPEND GENERATED_SOURCES ${ENUM_MAP})
@@ -189,7 +195,11 @@ add_library(EPhotosynthesis SHARED ${SOURCES})
 add_executable(ePhoto bin/ePhotosynthesis.cpp)
 
 find_package(Boost 1.36.0 REQUIRED COMPONENTS regex)
-find_package(Sundials REQUIRED)
+find_package(SUNDIALS REQUIRED)
+if(NOT SUNDIALS_LIBRARIES)
+    message(FATAL_ERROR "Failed to find sundials libraries")
+endif()
+message(STATUS "SUNDIALS_LIBRARIES = ${SUNDIALS_LIBRARIES}")
 
 if(WIN32)
     set_target_properties(
@@ -280,15 +290,15 @@ if(BUILD_DOCS)
     if(NOT DOXYGEN_FOUND)
         message(FATAL_ERROR "Doxygen is needed to build the documentation.")
     endif()
-    message("The following documentation can be built:")
-    message("   HTML...  Yes")
+    message(STATUS "The following documentation can be built:")
+    message(STATUS "   HTML...  Yes")
     set(EPHOTOROOT ${CMAKE_CURRENT_SOURCE_DIR})
     set(GENERATE_LATEX "NO")
     set(USE_PDFLATEX "NO")
     set(MAKEINDEX_CMD "")
     set(LATEX_EXE "")
     #if(LATEX_MAKEINDEX_FOUND)
-    #    message("   PDF...  Yes")
+    #    message(STATUS "   PDF...  Yes")
     #    set(GENERATE_LATEX "YES")
     #    set(LATEX_EXE ${LATEX_COMPILER})
     #    set(MAKEINDEX_CMD ${MAKEINDEX_COMPILER})
@@ -296,20 +306,33 @@ if(BUILD_DOCS)
     #        set(USE_PDFLATEX "YES")
     #    endif(LATEX_PDFLATEX_FOUND)
     #else()
-    #    message("   PDF...  No  (LaTeX not found)")
+    #    message(STATUS "   PDF...  No  (LaTeX not found)")
     #endif()
-
+    set(DOXYGEN_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR}/doc CACHE INTERNAL "")
+    if (DOXYGEN_CHECK_MISSING)
+        set(DOXYGEN_WARN_AS_ERROR YES)
+    	set(DOXYGEN_EXTRACT_ALL NO)
+    else()
+        set(DOXYGEN_WARN_AS_ERROR NO)
+    	set(DOXYGEN_EXTRACT_ALL YES)
+    endif()
     set(doxyfile_in "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in")
     set(doxyfile "${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile")
     configure_file(${doxyfile_in} ${doxyfile} @ONLY)
-    #message("Building documentation")
-    message("Documentation can be built by running make docs")
-    file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/doc)
+    #message(STATUS "Building documentation")
+    message(STATUS "Documentation can be built by running make docs")
+    file(MAKE_DIRECTORY ${DOXYGEN_BUILD_DIR})
     add_custom_target(docs
         COMMAND ${DOXYGEN_EXECUTABLE} ${doxyfile}
-        WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
         COMMENT "Generating API documentation with Doxygen"
-        VERBATIM)
+        VERBATIM
+    )
+    install(
+        DIRECTORY ${DOXYGEN_BUILD_DIR}/
+	DESTINATION ${CMAKE_INSTALL_PREFIX}/share/doc/ephotosynthesis
+	OPTIONAL
+    )
 endif()
 
 
@@ -324,8 +347,8 @@ if(BUILD_TESTS)
     if(GTEST_FOUND)
         include_directories(${GTEST_INCLUDE_DIRS})
     else()
-        message("GTest found... no")
-        message("   Using github GTest")
+        message(STATUS "GTest found... no")
+        message(STATUS "   Using github GTest")
         include(FetchContent)
         FetchContent_Declare(
             googletest

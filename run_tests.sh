@@ -1,5 +1,6 @@
 set -e
 
+CMAKE_BUILD_TYPE_TEST="Debug"
 REBUILD=""
 BUILD_DIR="build"
 DONT_BUILD=""
@@ -8,6 +9,7 @@ INSTALL_DIR="$(pwd)/_install"
 DO_DOCS=""
 DONT_TEST=""
 WITH_ASAN=""
+TEST_FLAGS="-C ${CMAKE_BUILD_TYPE_TEST}"
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -67,7 +69,7 @@ fi
 cd $BUILD_DIR
 if [ ! -n "$DONT_BUILD" ]; then
     cmake .. $CMAKE_FLAGS $CMAKE_FLAGS_LIB
-    cmake --build .
+    cmake --build . --config ${CMAKE_BUILD_TYPE_TEST}
     # Need install here to ensure that cmake config files are in place
     cmake --install . --prefix "$INSTALL_DIR"
 fi
@@ -80,7 +82,7 @@ if [ -n "$DO_DOCS" ]; then
     path_to_doxygen=$(which doxygen)
     if [ -x "$path_to_doxygen" ]; then
 	cmake .. $CMAKE_FLAGS -DBUILD_DOCS=ON -DBUILD_TESTS=OFF -DDOXYGEN_CHECK_MISSING=ON
-	cmake --build . $CONFIG_FLAGS --target docs
+	cmake --build . $CONFIG_FLAGS --target docs --config ${CMAKE_BUILD_TYPE_TEST}
 	# Need install here to ensure that cmake config files are in place
 	# cmake --install . --prefix "$INSTALL_DIR" $CONFIG_FLAGS
     fi

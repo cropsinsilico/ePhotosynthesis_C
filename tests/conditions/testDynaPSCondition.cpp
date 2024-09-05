@@ -39,8 +39,9 @@ TEST_F(DynaPSConditionTest, ArrayTest) {
     COMPARE(input, output)
 
     N_Vector y = N_VNew_Serial(static_cast<sunindextype>(input.size()), context);
+    sunrealtype* y_ptr = N_VGetArrayPointer(y);
     for (size_t i = 0; i < input.size(); i++)
-        NV_Ith_S(y, i) = input[i];
+	y_ptr[i] = input[i];
 
     DynaPSCondition DynaPS2(N_VGetArrayPointer(y));
     arr output2 = DynaPS2.toArray();

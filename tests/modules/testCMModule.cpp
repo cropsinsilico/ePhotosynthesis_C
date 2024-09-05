@@ -24,8 +24,8 @@ TEST_F(CMModuleTest, MBTest) {
     delete cmc;
 
     orig->useC3 = true;
-    arr vfc(50, 1.5);
-    arr vft(50, 2.1);
+    arr vfc(orig->VfactorCp.size(), 1.5);
+    arr vft(orig->VfactorT.size(), 2.1);
     orig->VfactorCp = vfc;
     orig->VfactorT = vft;
     orig->GRNC = 1;
@@ -54,8 +54,8 @@ TEST_F(CMModuleTest, MBTestPRPS) {
     delete cmc;
 
     orig->useC3 = true;
-    arr vfc(50, 1.5);
-    arr vft(50, 2.1);
+    arr vfc(orig->VfactorCp.size(), 1.5);
+    arr vft(orig->VfactorT.size(), 2.1);
     orig->VfactorCp = vfc;
     orig->VfactorT = vft;
     orig->GRNC = 1;
@@ -85,8 +85,8 @@ TEST_F(CMModuleTest, MBTestRUBISCO) {
     delete cmc;
 
     orig->useC3 = true;
-    arr vfc(50, 1.5);
-    arr vft(50, 2.1);
+    arr vfc(orig->VfactorCp.size(), 1.5);
+    arr vft(orig->VfactorT.size(), 2.1);
     orig->VfactorCp = vfc;
     orig->VfactorT = vft;
     orig->GRNC = 1;
