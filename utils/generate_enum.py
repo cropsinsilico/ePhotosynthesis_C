@@ -116,10 +116,13 @@ class EnumParserBase(EnumBase):
         raise NotImplementedError
 
     def prefix_by_split(self, split):
+        out = {}
         for k, v in self.param.items():
             prefix = k.split(split, 1)[0]
-            for x in v:
-                x['name'] = prefix + x['name']
+            out[k] = [prefix]
+            # for x in v:
+            #     x['name'] = prefix + x['name']
+        return out
 
 
 class EnumGeneratorBase(EnumBase):
@@ -214,25 +217,35 @@ class EnumGeneratorBase(EnumBase):
             v.get('dest', k) for k, v in cls.perfile_options.items()]
 
     @classmethod
-    def all_children(cls):
-        out = [v.name for v in cls.added_file_classes.values()]
+    def all_children(cls, return_classes=False):
+        if return_classes:
+            out = list(cls.added_file_classes.values())
+        else:
+            out = [v.name for v in cls.added_file_classes.values()]
         for v in cls.added_file_classes.values():
-            out += v.all_children()
+            out += v.all_children(return_classes=return_classes)
         return out
 
     @classmethod
     def extract_child_kws(cls, kwargs, child_kws, **kws_all):
+        kwargs_orig = dict(kwargs)
         out = child_kws
         kws_all.update(**child_kws.pop('all', {}))
-        for x in cls.all_children():
+        for xcls in cls.all_children(return_classes=True):
+            x = xcls.name
             out.setdefault(x, {})
-            for k in cls.perfile_options_keys():
+            for k in xcls.perfile_options_keys():
                 key = f"{k}_{x}"
                 if key in kwargs:
                     if k == 'kwargs':
                         out[x].update(**kwargs.pop(key))
                     else:
                         out[x][k] = kwargs.pop(key)
+                elif key in kwargs_orig:
+                    if k == 'kwargs':
+                        out[x].update(**kwargs_orig[key])
+                    else:
+                        out[x][k] = kwargs_orig[key]
         kws_all = dict(kwargs, **kws_all)
         for x in cls.all_children():
             out[x] = dict(kws_all, **out[x])
@@ -266,17 +279,30 @@ class EnumGeneratorBase(EnumBase):
         with open(self.dst, 'w') as fd:
             fd.write(contents)
 
-    def add_member(self, member):
+    def max_width(self, members):
+        width = len(self.add_member(
+            max(members, key=lambda x:
+                len(self.add_member(x, return_name=True))),
+            return_name=True))
+        return width
+
+    def add_member(self, member, return_name=False):
         assert self.current_key is not None
-        member.setdefault('abbr', member['name'])
-        member['name'] = self._current_keys['kreplacement'].get(
-            member['name'], member['name'])
+        name = member['name']
+        abbr = member.get('abbr', name)
+        name = self._current_keys['kreplacement'].get(
+            name, name)
         if self._current_keys['klower']:
-            member['name'] = member['name'].lower()
-        for x in self._current_keys['ksuffix']:
-            member['name'] = member['name'] + x
-        for x in self._current_keys['kprefix']:
-            member['name'] = x + member['name']
+            name = name.lower()
+        if not member.get('no_suffix', False):
+            for x in self._current_keys['ksuffix']:
+                name = name + x
+        if not member.get('no_prefix', False):
+            for x in self._current_keys['kprefix']:
+                name = x + name
+        if return_name:
+            return name
+        return dict(member, name=name, abbr=abbr)
 
     def generate_member(self, x, **kwargs):
         raise NotImplementedError
@@ -286,7 +312,7 @@ class EnumGeneratorBase(EnumBase):
         for x in members:
             if x['name'] in self.skip_items.get(name, []):
                 continue
-            self.add_member(x)
+            x = self.add_member(x)
             lines += self.generate_member(x, **kwargs)
         return lines
 
@@ -501,7 +527,7 @@ class CEnumGeneratorMapSource(CMixin, EnumGeneratorBase):
             "",
             f"  static const std::map<const {tname}, const std::string> map {{"
         ]
-        width = len(max(members, key=lambda x: len(x['name']))['name'])
+        width = self.max_width(members)
         width_abbr = len(max(members, key=lambda x: len(x['abbr']))['abbr'])
         lines += super(CEnumGeneratorMapSource, self).generate_item(
             name, members, width=width, width_abbr=width_abbr)
@@ -511,6 +537,9 @@ class CEnumGeneratorMapSource(CMixin, EnumGeneratorBase):
             f"const std::string>& get_enum_map<enum {tname}>() {{",
             f"  return {func_name}();",
             "};",
+            f"template<> MODULE get_enum_module<enum {tname}>() {{",
+            f"  return MODULE_{name.split('_')[0]};",
+            "}",
             ""
         ]
         return lines
@@ -527,15 +556,55 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
     name = 'global'
     file_suffix = ''
     explicit_dst = True
+    perfile_options = dict(
+        CEnumGeneratorBase.perfile_options,
+        enum_name={
+            'type': str,
+            'help': "Name that should be used for the global enum",
+        },
+    )
 
     def __init__(self, *args, **kwargs):
+        self.enum_name = kwargs.pop('enum_name', None)
+        if self.enum_name is None:
+            self.enum_name = self.name.upper()
         kwargs.setdefault("append_unique", True)
         super(CEnumGeneratorGlobalHeader, self).__init__(*args, **kwargs)
         assert self.parent
 
+    def generate_item(self, name, members, width=None):
+        assert width
+        if self._current_keys['kprefix']:
+            name = ''.join(self._current_keys['kprefix'][::-1]).rstrip('_')
+        key = f"{self.enum_name}_{name}"
+        return [f"{key:{width}},"]
+
     def generate(self, indent='', **kwargs):
-        return self.parent.include_self(
+        lines = []
+        lines += self.parent.include_self(
             self.dst, rootdir=self.root_include_dir)
+
+        def key_len(x):
+            return len(''.join(self.prefixes.get(x, [x])))
+
+        width = (
+            key_len(max(self.src.param.keys(), key=key_len))
+            + len(self.enum_name) + 1)
+        first = f'{self.enum_name}_NONE'
+        last = f'{self.enum_name}_MAX'
+        lines += [
+            f'enum {self.enum_name} {{',
+            f'  {first:{width}},',
+        ]
+        indent += '  '
+        lines += super(CEnumGeneratorGlobalHeader, self).generate(
+            indent=indent, width=width, **kwargs)
+        lines += [
+            f'  {last:{width}},',
+            "};",
+            ""
+        ]
+        return lines
 
 
 class CEnumGeneratorHeader(CEnumGeneratorBase):
@@ -543,8 +612,8 @@ class CEnumGeneratorHeader(CEnumGeneratorBase):
     name = 'c'
     file_suffix = '_enum'
     added_file_classes = {
-        'maps': CEnumGeneratorMapSource,
         'global': CEnumGeneratorGlobalHeader,
+        'maps': CEnumGeneratorMapSource,
     }
 
     def __init__(self, *args, **kwargs):
@@ -566,11 +635,19 @@ class CEnumGeneratorHeader(CEnumGeneratorBase):
     def generate_item(self, name, members):
         lines = []
         lines += [
-            f"enum {name} {{"
+            f"enum {name} {{",
         ]
-        width = len(max(members, key=lambda x: len(x['name']))['name'])
+        width = self.max_width(members)
         width_val = len(max(members, key=lambda x:
                             len(x.get('val', ''))).get('val', '')) + 3
+        first = f"{name}_NONE"
+        last = f"{name}_MAX"
+        if members[0]['name'] != first:
+            members.insert(0, {'name': first, 'abbr': first,
+                               'no_prefix': True})
+        if members[-1]['name'] != last:
+            members.append({'name': last, 'abbr': last,
+                            'no_prefix': True})
         lines += super(CEnumGeneratorHeader, self).generate_item(
             name, members, width=width, width_val=width_val)
         lines += [
@@ -779,7 +856,7 @@ class FortranEnumGeneratorValue(EnumGeneratorBase):
 def rename_source(directory, src_suffix, dst_suffix, ext):
     import shutil
     src_regex = os.path.join(directory, f"*_{src_suffix}{ext}")
-    files = glob.glob(src_regex)
+    files = sorted(glob.glob(src_regex))
     if not files:
         raise Exception(f"No files found matching {src_regex}")
     for src in files:
@@ -837,9 +914,9 @@ if __name__ == "__main__":
     else:
         src = get_registered_class('parser', args.src_type)(
             args.src, verbose=args.verbose, is_regex=args.src_regex)
-        if args.prefix_by_split:
-            src.prefix_by_split(args.prefix_by_split)
         kws = {}
+        if args.prefix_by_split:
+            kws['prefixes'] = src.prefix_by_split(args.prefix_by_split)
         for x in registered_classes('generator', return_classes=True):
             x.get_arguments(args, kws)
         dst = get_registered_class('generator', args.dst_type)(

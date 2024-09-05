@@ -1,6 +1,7 @@
 #pragma once
 
 enum PR_conditions {
+  PR_conditions_NONE     ,
   PR_GCEA      ,  //!< Glycerate in chloroplast; derived based on V113
   PR_GCA       ,  //!< Derived from radioactive labelling experiment; assume equal concenatration inside and outshide chloroplast
   PR_PGCA      ,  //!< Phosphoglycolate in chloroplast derived based on the Km112; orignal value is : 0.0029;
@@ -11,9 +12,11 @@ enum PR_conditions {
   PR_HPRc      ,  //!< HydroxylPyruvate; derived from equation 123;
   PR_GCEAc     ,  //!< Glycerate in cytosol; assume at equilibrium with GCEA initially.
   PR_RuBP      ,  //!< RuBP concentration
+  PR_conditions_MAX     ,
 };
 
 enum PS_conditions {
+  PS_conditions_NONE     ,
   PS_RuBP     ,
   PS_PGA      ,
   PS_DPGA     ,
@@ -26,17 +29,21 @@ enum PS_conditions {
   PS_ATP      ,
   PS_HexP     ,
   PS_PenP     ,
+  PS_conditions_MAX     ,
 };
 
 enum RedoxReg_conditions {
+  RedoxReg_conditions_NONE     ,
   RedoxReg_ThioRatio     ,
   RedoxReg_FBPase        ,
   RedoxReg_SBPase        ,
   RedoxReg_PRK           ,
   RedoxReg_ATPase        ,
+  RedoxReg_conditions_MAX     ,
 };
 
 enum FI_conditions {
+  FI_conditions_NONE     ,
   FI_A              ,  //!< The concentration of excitons in the peripheral antenna
   FI_U              ,  //!< The concentration fo excitons in the core antenna
   FI_P680ePheo      ,  //!< The concentration of the P680Pheo
@@ -59,23 +66,29 @@ enum FI_conditions {
   FI_QAQB2n         ,  //!< The concentration of [QAQB2-]
   FI_QAnQB2n        ,  //!< The concentration of [QA-QB2-]
   FI_PQn            ,  //!< The concentration of reduced PQ, i.e. PQH2;
+  FI_conditions_MAX     ,
 };
 
 enum RuACT_conditions {
+  RuACT_conditions_NONE     ,
   RuACT_ER       ,  //!< The concentration of inactive ER
   RuACT_Eaf      ,  //!< The total concentration of E, EC, AND ECM
   RuACT_ECMR     ,  //!< The concentration of ECMR
   RuACT_RuBP     ,  //!< The concentration of ECMR
+  RuACT_conditions_MAX     ,
 };
 
 enum XanCycle_conditions {
+  XanCycle_conditions_NONE     ,
   XanCycle_Vx      ,  //!< * 0.37
   XanCycle_Ax      ,  //!< * 0.37
   XanCycle_Zx      ,  //!< * 0.37
   XanCycle_ABA     ,
+  XanCycle_conditions_MAX     ,
 };
 
 enum SUCS_conditions {
+  SUCS_conditions_NONE     ,
   SUCS_T3Pc       ,
   SUCS_FBPc       ,
   SUCS_HexPc      ,
@@ -84,9 +97,11 @@ enum SUCS_conditions {
   SUCS_SUCP       ,
   SUCS_SUC        ,
   SUCS_PGAc       ,
+  SUCS_conditions_MAX     ,
 };
 
 enum BF_conditions {
+  BF_conditions_NONE     ,
   BF_ISPHr       ,  //!< The reduced ion sulfer protein (ISPH)
   BF_cytc1       ,  //!< The oxidized state of cytc1
   BF_ISPo        ,  //!< The oxidized ion sulfer protein (ISP)
@@ -116,12 +131,15 @@ enum BF_conditions {
   BF_PHs         ,  //!< The PH value of the stroma
   BF_PHl         ,  //!< The PH value of the lumen
   BF_NADPH       ,  //!< The NADPH concentration in stroma, Unit: mmol l-1;
+  BF_conditions_MAX     ,
 };
 
 enum RROEA_conditions {
+  RROEA_conditions_NONE     ,
   RROEA_MDH       ,  //!< The initial concentration of actove MDH
   RROEA_Thio      ,  //!< The initial concentration of reduced thioredoxin
   RROEA_Fd        ,  //!< The initial concentration of reduced ferrodoxin
   RROEA_RuACT     ,  //!< The initial concentration of active Rubisco activase
+  RROEA_conditions_MAX     ,
 };
 

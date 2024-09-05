@@ -1,6 +1,7 @@
 #pragma once
 
 enum RuACT_rate_constants {
+  RuACT_rate_constants_NONE     ,
   RuACT_k1      ,  //!< The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco theVars->activase content or activity;
   RuACT_kn1     ,  //!< The rate constant of E inactivation by binding of RuBP;
   RuACT_km1     ,  //!< The michaelis menton constant for RuBP with E.
@@ -15,16 +16,20 @@ enum RuACT_rate_constants {
   RuACT_C       ,  //!< mM
   RuACT_O       ,  //!< mM
   RuACT_M       ,
+  RuACT_rate_constants_MAX     ,
 };
 
 enum RedoxReg_rate_constants {
+  RedoxReg_rate_constants_NONE     ,
   RedoxReg_Fd_Thio_ET         ,
   RedoxReg_ThioT              ,
   RedoxReg_Thio_Oxidation     ,
   RedoxReg_Thion0             ,  //!< This is a wild guess
+  RedoxReg_rate_constants_MAX     ,
 };
 
 enum PR_rate_constants {
+  PR_rate_constants_NONE     ,
   PR_V111           ,  //!< Reaction 111: RUBP+O2<-->PGlycolate + PGA
   PR_V112           ,  //!< Reaction 112: PGlycolate-->Pi+Glycolate;
   PR_V113           ,  //!< Reaction 113: Gcea+ATP<-->ADP + PGA
@@ -82,9 +87,11 @@ enum PR_rate_constants {
   PR_Vf_T121        ,  //!< VfactorT used with GRNT & Tp > 25
   PR_Vf_T122        ,  //!< VfactorT used with GRNT & Tp > 25
   PR_Vf_T112        ,  //!< VfactorT used with GRNT & Tp > 25
+  PR_rate_constants_MAX     ,
 };
 
 enum BF_rate_constants {
+  BF_rate_constants_NONE     ,
   BF_K1           ,  //!< The rate constant for formation of ISP.QH2 complex; unit:  per second
   BF_K2           ,  //!< The rate constant for ISP.QH2-->QH(semi) + ISPH(red) ; unit:  per second
   BF_K3           ,  //!< The rate constant for QH. + cytbL --> Q + cytbL- + H+ Unit: s-1
@@ -132,9 +139,11 @@ enum BF_rate_constants {
   BF_k12          ,  //!< The total concentration of buffer in lumen; unit: mmol per liter
   BF_k23          ,  //!< The total number of P700; unit: micromole m-2 leaf area
   BF_k30          ,  //!< The total concentration of NADPH in stroma; 1 is an guessed value;
+  BF_rate_constants_MAX     ,
 };
 
 enum RROEA_rate_constants {
+  RROEA_rate_constants_NONE     ,
   RROEA_ke2GAPDH        ,  //!< The rate constant of electron transfer to GAPDH. From literature.
   RROEA_ke2MDH          ,  //!< The rate constant of electront transfer to MDH, this rate is totally ASSUMED.
   RROEA_ke2FBPase       ,  //!< The rate constant of electron transfer from thioredoxin to FBPase.
@@ -171,9 +180,11 @@ enum RROEA_rate_constants {
   RROEA_FdT             ,  //!< Not used with RROEA_EPS
   RROEA_ThioT           ,
   RROEA_RuACTT          ,
+  RROEA_rate_constants_MAX     ,
 };
 
 enum SUCS_rate_constants {
+  SUCS_rate_constants_NONE     ,
   SUCS_V51          ,  //!< DHAP+GAP --FBP; default 0.5
   SUCS_V52          ,  //!< FBP --F6P + Pi
   SUCS_V55          ,  //!< G1P+UTP --OPOP+UDPG
@@ -225,16 +236,20 @@ enum SUCS_rate_constants {
   SUCS_KE59         ,
   SUCS_KE61         ,
   SUCS_Km621        ,
+  SUCS_rate_constants_MAX     ,
 };
 
 enum XanCycle_rate_constants {
+  XanCycle_rate_constants_NONE     ,
   XanCycle_kva     ,  //!< Ruth Frommolt et a; 2001; Planta
   XanCycle_kaz     ,  //!< Ruth Frommolt et a; 2001; Planta
   XanCycle_kza     ,  //!< Ruth Frommolt et a; 2001; Planta
   XanCycle_kav     ,  //!< Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
+  XanCycle_rate_constants_MAX     ,
 };
 
 enum FI_rate_constants {
+  FI_rate_constants_NONE     ,
   FI_kA_d         ,  //!< The rate constant of heat dissipation from peripheral antenna Lazar (1999), 0.25~1 *10^(9)
   FI_kA_f         ,  //!< The rate constant of fluorescence emission from peripheral antenna Lazar 1999, with a lifetime of 5 ns at closed reaction center
   FI_kA_U         ,  //!< The rate constant of exciton transfer from periphral antenna to core antenna Reference needed, a guess
@@ -258,9 +273,11 @@ enum FI_rate_constants {
   FI_k_pq_oxy     ,  //!< The rate constant of the PQH2 oxidation Lazar (1999),50~500
   FI_QBt          ,  //!< The total concentration of Qb site;
   FI_PQT          ,  //!< The total concentration of PQ;
+  FI_rate_constants_MAX     ,
 };
 
 enum PS_rate_constants {
+  PS_rate_constants_NONE     ,
   PS_CP            ,  //!< Global constant for the total phosphate
   PS_CA            ,  //!< Global constant for the total adenylates
   PS_CN            ,  //!< Global constant for the cytosolic Phosphate concentration;
@@ -373,5 +390,6 @@ enum PS_rate_constants {
   PS_Vf_T9         ,  //!< VfactorT used with GRNT & Tp > 25
   PS_Vf_T13        ,  //!< VfactorT used with GRNT & Tp > 25
   PS_Vf_T23        ,  //!< VfactorT used with GRNT & Tp > 25
+  PS_rate_constants_MAX     ,
 };
 

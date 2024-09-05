@@ -18,6 +18,11 @@ const std::map<const T, const std::string>& get_enum_map() {
   return out;
 }
 
+template<typename T>
+MODULE get_enum_module() {
+  return MODULE_NONE;
+}
+
 namespace ePhotosynthesis {
   namespace utils {
 
@@ -44,8 +49,8 @@ namespace ePhotosynthesis {
     }
 
     template<typename Tenum, typename Tval>
-    void readEnumFile(const std::string &filename,
-		      std::map<Tenum, Tval> &map) {
+    std::map<Tenum, Tval> readEnumFile(const std::string &filename) {
+      std::map<Tenum, Tval> map;
       std::vector<std::string> tempVec;
       std::string comment = "#";
       std::string input;
@@ -67,7 +72,7 @@ namespace ePhotosynthesis {
         count++;
         map.insert(std::pair<Tenum, Tval>(key, val));
       }
-      
+      return map;
     }
     
     template<typename T1>

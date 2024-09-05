@@ -153,7 +153,7 @@ if (SUNDIALS_INCLUDE_DIR)
 	    CVODE_DIRECT_INCLUDE_DIR
 	    NVECTOR_INCLUDE_DIR
 	    KINSOL_INCLUDE_DIR)
-      if(NOT ${${x}} STREQUAL "NOTFOUND")
+      if(NOT ${${x}} STREQUAL "${x}-NOTFOUND")
         list(APPEND SUNDIALS_INCLUDE_DIRS ${${x}})
       endif()
     endforeach()

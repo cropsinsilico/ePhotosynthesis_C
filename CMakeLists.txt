@@ -174,6 +174,7 @@ foreach(suffix rate_constants conditions)
     "${ENUM_SRC_REGEX}" --src-regex --dst-type=c --dst=${ENUM_DST}
     --dst-maps=${ENUM_MAP} --dst-maps-header=${ENUM_MAP_H}
     --dst-global=${ENUM_GLOBAL}
+    --enum-name-global=MODULE
     --root-include-dir=${CMAKE_CURRENT_SOURCE_DIR}/include
     --include-file-maps=${ENUM_UTILS}
     --prefix-by-split=${suffix} --overwrite  # --verbose

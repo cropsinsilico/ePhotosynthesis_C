@@ -21,6 +21,9 @@ const std::map<const PR_conditions, const std::string>& PR_conditions_map() {
 template<> const std::map<const PR_conditions, const std::string>& get_enum_map<enum PR_conditions>() {
   return PR_conditions_map();
 };
+template<> MODULE get_enum_module<enum PR_conditions>() {
+  return MODULE_PR;
+}
 
 const std::map<const PS_conditions, const std::string>& PS_conditions_map() {
   static const std::map<const PS_conditions, const std::string> map {
@@ -42,6 +45,9 @@ const std::map<const PS_conditions, const std::string>& PS_conditions_map() {
 template<> const std::map<const PS_conditions, const std::string>& get_enum_map<enum PS_conditions>() {
   return PS_conditions_map();
 };
+template<> MODULE get_enum_module<enum PS_conditions>() {
+  return MODULE_PS;
+}
 
 const std::map<const RedoxReg_conditions, const std::string>& RedoxReg_conditions_map() {
   static const std::map<const RedoxReg_conditions, const std::string> map {
@@ -56,6 +62,9 @@ const std::map<const RedoxReg_conditions, const std::string>& RedoxReg_condition
 template<> const std::map<const RedoxReg_conditions, const std::string>& get_enum_map<enum RedoxReg_conditions>() {
   return RedoxReg_conditions_map();
 };
+template<> MODULE get_enum_module<enum RedoxReg_conditions>() {
+  return MODULE_RedoxReg;
+}
 
 const std::map<const FI_conditions, const std::string>& FI_conditions_map() {
   static const std::map<const FI_conditions, const std::string> map {
@@ -87,6 +96,9 @@ const std::map<const FI_conditions, const std::string>& FI_conditions_map() {
 template<> const std::map<const FI_conditions, const std::string>& get_enum_map<enum FI_conditions>() {
   return FI_conditions_map();
 };
+template<> MODULE get_enum_module<enum FI_conditions>() {
+  return MODULE_FI;
+}
 
 const std::map<const RuACT_conditions, const std::string>& RuACT_conditions_map() {
   static const std::map<const RuACT_conditions, const std::string> map {
@@ -100,6 +112,9 @@ const std::map<const RuACT_conditions, const std::string>& RuACT_conditions_map(
 template<> const std::map<const RuACT_conditions, const std::string>& get_enum_map<enum RuACT_conditions>() {
   return RuACT_conditions_map();
 };
+template<> MODULE get_enum_module<enum RuACT_conditions>() {
+  return MODULE_RuACT;
+}
 
 const std::map<const XanCycle_conditions, const std::string>& XanCycle_conditions_map() {
   static const std::map<const XanCycle_conditions, const std::string> map {
@@ -113,6 +128,9 @@ const std::map<const XanCycle_conditions, const std::string>& XanCycle_condition
 template<> const std::map<const XanCycle_conditions, const std::string>& get_enum_map<enum XanCycle_conditions>() {
   return XanCycle_conditions_map();
 };
+template<> MODULE get_enum_module<enum XanCycle_conditions>() {
+  return MODULE_XanCycle;
+}
 
 const std::map<const SUCS_conditions, const std::string>& SUCS_conditions_map() {
   static const std::map<const SUCS_conditions, const std::string> map {
@@ -130,6 +148,9 @@ const std::map<const SUCS_conditions, const std::string>& SUCS_conditions_map() 
 template<> const std::map<const SUCS_conditions, const std::string>& get_enum_map<enum SUCS_conditions>() {
   return SUCS_conditions_map();
 };
+template<> MODULE get_enum_module<enum SUCS_conditions>() {
+  return MODULE_SUCS;
+}
 
 const std::map<const BF_conditions, const std::string>& BF_conditions_map() {
   static const std::map<const BF_conditions, const std::string> map {
@@ -168,6 +189,9 @@ const std::map<const BF_conditions, const std::string>& BF_conditions_map() {
 template<> const std::map<const BF_conditions, const std::string>& get_enum_map<enum BF_conditions>() {
   return BF_conditions_map();
 };
+template<> MODULE get_enum_module<enum BF_conditions>() {
+  return MODULE_BF;
+}
 
 const std::map<const RROEA_conditions, const std::string>& RROEA_conditions_map() {
   static const std::map<const RROEA_conditions, const std::string> map {
@@ -181,4 +205,7 @@ const std::map<const RROEA_conditions, const std::string>& RROEA_conditions_map(
 template<> const std::map<const RROEA_conditions, const std::string>& get_enum_map<enum RROEA_conditions>() {
   return RROEA_conditions_map();
 };
+template<> MODULE get_enum_module<enum RROEA_conditions>() {
+  return MODULE_RROEA;
+}
 

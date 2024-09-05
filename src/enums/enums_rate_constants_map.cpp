@@ -25,6 +25,9 @@ const std::map<const RuACT_rate_constants, const std::string>& RuACT_rate_consta
 template<> const std::map<const RuACT_rate_constants, const std::string>& get_enum_map<enum RuACT_rate_constants>() {
   return RuACT_rate_constants_map();
 };
+template<> MODULE get_enum_module<enum RuACT_rate_constants>() {
+  return MODULE_RuACT;
+}
 
 const std::map<const RedoxReg_rate_constants, const std::string>& RedoxReg_rate_constants_map() {
   static const std::map<const RedoxReg_rate_constants, const std::string> map {
@@ -38,6 +41,9 @@ const std::map<const RedoxReg_rate_constants, const std::string>& RedoxReg_rate_
 template<> const std::map<const RedoxReg_rate_constants, const std::string>& get_enum_map<enum RedoxReg_rate_constants>() {
   return RedoxReg_rate_constants_map();
 };
+template<> MODULE get_enum_module<enum RedoxReg_rate_constants>() {
+  return MODULE_RedoxReg;
+}
 
 const std::map<const PR_rate_constants, const std::string>& PR_rate_constants_map() {
   static const std::map<const PR_rate_constants, const std::string> map {
@@ -104,6 +110,9 @@ const std::map<const PR_rate_constants, const std::string>& PR_rate_constants_ma
 template<> const std::map<const PR_rate_constants, const std::string>& get_enum_map<enum PR_rate_constants>() {
   return PR_rate_constants_map();
 };
+template<> MODULE get_enum_module<enum PR_rate_constants>() {
+  return MODULE_PR;
+}
 
 const std::map<const BF_rate_constants, const std::string>& BF_rate_constants_map() {
   static const std::map<const BF_rate_constants, const std::string> map {
@@ -160,6 +169,9 @@ const std::map<const BF_rate_constants, const std::string>& BF_rate_constants_ma
 template<> const std::map<const BF_rate_constants, const std::string>& get_enum_map<enum BF_rate_constants>() {
   return BF_rate_constants_map();
 };
+template<> MODULE get_enum_module<enum BF_rate_constants>() {
+  return MODULE_BF;
+}
 
 const std::map<const RROEA_rate_constants, const std::string>& RROEA_rate_constants_map() {
   static const std::map<const RROEA_rate_constants, const std::string> map {
@@ -205,6 +217,9 @@ const std::map<const RROEA_rate_constants, const std::string>& RROEA_rate_consta
 template<> const std::map<const RROEA_rate_constants, const std::string>& get_enum_map<enum RROEA_rate_constants>() {
   return RROEA_rate_constants_map();
 };
+template<> MODULE get_enum_module<enum RROEA_rate_constants>() {
+  return MODULE_RROEA;
+}
 
 const std::map<const SUCS_rate_constants, const std::string>& SUCS_rate_constants_map() {
   static const std::map<const SUCS_rate_constants, const std::string> map {
@@ -265,6 +280,9 @@ const std::map<const SUCS_rate_constants, const std::string>& SUCS_rate_constant
 template<> const std::map<const SUCS_rate_constants, const std::string>& get_enum_map<enum SUCS_rate_constants>() {
   return SUCS_rate_constants_map();
 };
+template<> MODULE get_enum_module<enum SUCS_rate_constants>() {
+  return MODULE_SUCS;
+}
 
 const std::map<const XanCycle_rate_constants, const std::string>& XanCycle_rate_constants_map() {
   static const std::map<const XanCycle_rate_constants, const std::string> map {
@@ -278,6 +296,9 @@ const std::map<const XanCycle_rate_constants, const std::string>& XanCycle_rate_
 template<> const std::map<const XanCycle_rate_constants, const std::string>& get_enum_map<enum XanCycle_rate_constants>() {
   return XanCycle_rate_constants_map();
 };
+template<> MODULE get_enum_module<enum XanCycle_rate_constants>() {
+  return MODULE_XanCycle;
+}
 
 const std::map<const FI_rate_constants, const std::string>& FI_rate_constants_map() {
   static const std::map<const FI_rate_constants, const std::string> map {
@@ -310,6 +331,9 @@ const std::map<const FI_rate_constants, const std::string>& FI_rate_constants_ma
 template<> const std::map<const FI_rate_constants, const std::string>& get_enum_map<enum FI_rate_constants>() {
   return FI_rate_constants_map();
 };
+template<> MODULE get_enum_module<enum FI_rate_constants>() {
+  return MODULE_FI;
+}
 
 const std::map<const PS_rate_constants, const std::string>& PS_rate_constants_map() {
   static const std::map<const PS_rate_constants, const std::string> map {
@@ -431,4 +455,7 @@ const std::map<const PS_rate_constants, const std::string>& PS_rate_constants_ma
 template<> const std::map<const PS_rate_constants, const std::string>& get_enum_map<enum PS_rate_constants>() {
   return PS_rate_constants_map();
 };
+template<> MODULE get_enum_module<enum PS_rate_constants>() {
+  return MODULE_PS;
+}
 

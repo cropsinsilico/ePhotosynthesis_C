@@ -16,3 +16,8 @@ std::string ePhotosynthesis::utils::str_tolower(const std::string& inStr) {
 		 [](unsigned char c) { return std::tolower(c); });
   return outStr;
 }
+
+template<> const std::map<const EMPTY_ENUM, const std::string>& get_enum_map<enum EMPTY_ENUM>() {
+  static const std::map<const EMPTY_ENUM, const std::string> map;
+  return map;
+};
