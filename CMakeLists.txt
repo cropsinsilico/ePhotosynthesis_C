@@ -158,18 +158,26 @@ endif()
 
 set(ENUM_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/utils/generate_enum.py)
 
-foreach(suffix rate_constants conditions)
-  set(ENUM_SRC_REGEX ${CMAKE_CURRENT_SOURCE_DIR}/param/*_${suffix}.txt)
+foreach(suffix RC COND)
+  if(suffix STREQUAL "RC")
+    set(fsuffix rate_constants)
+  elseif(suffix STREQUAL "COND")
+    set(fsuffix conditions)
+  else()
+    message(FATAL_ERROR "Unsupported suffix \'${suffix}\'")
+  endif()
+  set(suffix ${fsuffix})
+  set(ENUM_SRC_REGEX ${CMAKE_CURRENT_SOURCE_DIR}/param/*_${fsuffix}.txt)
   file(GLOB ENUM_SRC "${ENUM_SRC_REGEX}")
   string(REPLACE "*" "\\*" ENUM_SRC_REGEX ${ENUM_SRC_REGEX})
 
   set(ENUM_UTILS ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_utils.hpp)
   set(ENUM_GLOBAL ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums.hpp)
-  set(ENUM_MAP ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${suffix}_map.cpp)
-  set(ENUM_MAP_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${suffix}_map.hpp)
-  set(ENUM_DST ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${suffix}.hpp)
+  set(ENUM_MAP ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_map.cpp)
+  set(ENUM_MAP_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_map.hpp)
+  set(ENUM_DST ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}.hpp)
   add_custom_target(
-    generate_enum_${suffix}
+    generate_enum_${fsuffix}
     COMMAND python ${ENUM_SCRIPT}
     "${ENUM_SRC_REGEX}" --src-regex --dst-type=c --dst=${ENUM_DST}
     --dst-maps=${ENUM_MAP} --dst-maps-header=${ENUM_MAP_H}
@@ -177,7 +185,9 @@ foreach(suffix rate_constants conditions)
     --enum-name-global=MODULE
     --root-include-dir=${CMAKE_CURRENT_SOURCE_DIR}/include
     --include-file-maps=${ENUM_UTILS}
-    --prefix-by-split=${suffix} --overwrite  # --verbose
+    # --prefix-with-type
+    --prefix-by-split=${suffix}
+    --overwrite  # --verbose
     BYPRODUCTS ${ENUM_DST} ${ENUM_MAP} ${ENUM_MAP_H} ${ENUM_GLOBAL}
     DEPENDS ${ENUM_SRC} ${ENUM_SCRIPT}
   )

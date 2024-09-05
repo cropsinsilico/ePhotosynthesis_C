@@ -27,8 +27,13 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
+#include "enums/enums_utils.hpp"
 #include <stdexcept>
 #include <sundials/sundials_types.h>
+
+#ifndef realtype
+#define realtype sunrealtype
+#endif
 
 namespace ePhotosynthesis {
 namespace conditions {

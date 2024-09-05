@@ -120,8 +120,6 @@ class EnumParserBase(EnumBase):
         for k, v in self.param.items():
             prefix = k.split(split, 1)[0]
             out[k] = [prefix]
-            # for x in v:
-            #     x['name'] = prefix + x['name']
         return out
 
 
@@ -897,6 +895,8 @@ if __name__ == "__main__":
     parser.add_argument("--root-include-dir", type=str,
                         help=("Root directory where include files are "
                               "located"))
+    parser.add_argument("--prefix-with-type", action="store_true",
+                        help="Prefix enums w/ their type")
     parser.add_argument("--prefix-by-split", type=str,
                         help=("Add prefixes to enum members by splitting "
                               "the name of the enum set by this string"))
@@ -916,7 +916,10 @@ if __name__ == "__main__":
             args.src, verbose=args.verbose, is_regex=args.src_regex)
         kws = {}
         if args.prefix_by_split:
+            assert not args.prefix_with_type
             kws['prefixes'] = src.prefix_by_split(args.prefix_by_split)
+        elif args.prefix_with_type:
+            kws['prefixes'] = {k: [f"{k}_"] for k in src.param.keys()}
         for x in registered_classes('generator', return_classes=True):
             x.get_arguments(args, kws)
         dst = get_registered_class('generator', args.dst_type)(
