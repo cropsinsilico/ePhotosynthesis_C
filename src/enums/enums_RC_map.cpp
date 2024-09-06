@@ -61,11 +61,6 @@ template<> const std::map<const BF_RC, const std::string>& get_enum_map<enum BF_
 template<> MODULE get_enum_module<enum BF_RC>() {
   return MODULE_BF;
 }
-template<>
-struct MODULE2Enum_RC<MODULE_BF> {
-public:
-  typedef enum BF_RC Type;
-};
 
 const std::map<const FI_RC, const std::string>& FI_RC_map() {
   static const std::map<const FI_RC, const std::string> map {
@@ -101,11 +96,6 @@ template<> const std::map<const FI_RC, const std::string>& get_enum_map<enum FI_
 template<> MODULE get_enum_module<enum FI_RC>() {
   return MODULE_FI;
 }
-template<>
-struct MODULE2Enum_RC<MODULE_FI> {
-public:
-  typedef enum FI_RC Type;
-};
 
 const std::map<const PR_RC, const std::string>& PR_RC_map() {
   static const std::map<const PR_RC, const std::string> map {
@@ -175,11 +165,6 @@ template<> const std::map<const PR_RC, const std::string>& get_enum_map<enum PR_
 template<> MODULE get_enum_module<enum PR_RC>() {
   return MODULE_PR;
 }
-template<>
-struct MODULE2Enum_RC<MODULE_PR> {
-public:
-  typedef enum PR_RC Type;
-};
 
 const std::map<const PS_RC, const std::string>& PS_RC_map() {
   static const std::map<const PS_RC, const std::string> map {
@@ -304,11 +289,6 @@ template<> const std::map<const PS_RC, const std::string>& get_enum_map<enum PS_
 template<> MODULE get_enum_module<enum PS_RC>() {
   return MODULE_PS;
 }
-template<>
-struct MODULE2Enum_RC<MODULE_PS> {
-public:
-  typedef enum PS_RC Type;
-};
 
 const std::map<const RROEA_RC, const std::string>& RROEA_RC_map() {
   static const std::map<const RROEA_RC, const std::string> map {
@@ -357,11 +337,6 @@ template<> const std::map<const RROEA_RC, const std::string>& get_enum_map<enum 
 template<> MODULE get_enum_module<enum RROEA_RC>() {
   return MODULE_RROEA;
 }
-template<>
-struct MODULE2Enum_RC<MODULE_RROEA> {
-public:
-  typedef enum RROEA_RC Type;
-};
 
 const std::map<const RedoxReg_RC, const std::string>& RedoxReg_RC_map() {
   static const std::map<const RedoxReg_RC, const std::string> map {
@@ -378,11 +353,6 @@ template<> const std::map<const RedoxReg_RC, const std::string>& get_enum_map<en
 template<> MODULE get_enum_module<enum RedoxReg_RC>() {
   return MODULE_RedoxReg;
 }
-template<>
-struct MODULE2Enum_RC<MODULE_RedoxReg> {
-public:
-  typedef enum RedoxReg_RC Type;
-};
 
 const std::map<const RuACT_RC, const std::string>& RuACT_RC_map() {
   static const std::map<const RuACT_RC, const std::string> map {
@@ -409,11 +379,6 @@ template<> const std::map<const RuACT_RC, const std::string>& get_enum_map<enum 
 template<> MODULE get_enum_module<enum RuACT_RC>() {
   return MODULE_RuACT;
 }
-template<>
-struct MODULE2Enum_RC<MODULE_RuACT> {
-public:
-  typedef enum RuACT_RC Type;
-};
 
 const std::map<const SUCS_RC, const std::string>& SUCS_RC_map() {
   static const std::map<const SUCS_RC, const std::string> map {
@@ -477,11 +442,6 @@ template<> const std::map<const SUCS_RC, const std::string>& get_enum_map<enum S
 template<> MODULE get_enum_module<enum SUCS_RC>() {
   return MODULE_SUCS;
 }
-template<>
-struct MODULE2Enum_RC<MODULE_SUCS> {
-public:
-  typedef enum SUCS_RC Type;
-};
 
 const std::map<const XanCycle_RC, const std::string>& XanCycle_RC_map() {
   static const std::map<const XanCycle_RC, const std::string> map {
@@ -498,9 +458,4 @@ template<> const std::map<const XanCycle_RC, const std::string>& get_enum_map<en
 template<> MODULE get_enum_module<enum XanCycle_RC>() {
   return MODULE_XanCycle;
 }
-template<>
-struct MODULE2Enum_RC<MODULE_XanCycle> {
-public:
-  typedef enum XanCycle_RC Type;
-};
 

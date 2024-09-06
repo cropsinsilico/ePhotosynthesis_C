@@ -17,7 +17,6 @@ enum BF_COND {
   BF_COND_cytc2       ,  //!< oxidized cytc2
   BF_COND_P700        ,  //!< The reduced state of P700, including both P700 and excited P700
   BF_COND_ADP         ,  //!< ADP in stroma
-  BF_COND__Pi         ,  //!< Phosphate in stroma
   BF_COND_ATP         ,  //!< ATP in stroma
   BF_COND_Ks          ,  //!< K ions in stroma
   BF_COND_Mgs         ,  //!< Mg ions in stroma

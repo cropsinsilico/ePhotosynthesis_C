@@ -3,7 +3,6 @@ cytc1	1.	# The oxidized state of cytc1
 ISPo	1.	# The oxidized ion sulfer protein (ISP)
 ISPoQH2	0.	# The complex of oxidized ion sulfer protein and reduced quinone
 QHsemi	0.	# Semiquinone
-
 cytbL	1.	# The oxidized cytbL
 Qi	0.	# The binding Quinone
 Q	1.	# Quinone
@@ -15,7 +14,6 @@ QH2	5.	# QH2
 cytc2	1.	# oxidized cytc2
 P700	0.5	# The reduced state of P700, including both P700 and excited P700
 ADP	0.82	# ADP in stroma
-_Pi	0.9	# Phosphate in stroma
 ATP	0.68	# ATP in stroma
 Ks	10.	# K ions in stroma
 Mgs	5.	# Mg ions in stroma

@@ -20,7 +20,6 @@ const std::map<const BF_COND, const std::string>& BF_COND_map() {
     {BF_COND_cytc2  , "cytc2"  },
     {BF_COND_P700   , "P700"   },
     {BF_COND_ADP    , "ADP"    },
-    {BF_COND__Pi    , "_Pi"    },
     {BF_COND_ATP    , "ATP"    },
     {BF_COND_Ks     , "Ks"     },
     {BF_COND_Mgs    , "Mgs"    },
@@ -43,11 +42,6 @@ template<> const std::map<const BF_COND, const std::string>& get_enum_map<enum B
 template<> MODULE get_enum_module<enum BF_COND>() {
   return MODULE_BF;
 }
-template<>
-struct MODULE2Enum_COND<MODULE_BF> {
-public:
-  typedef enum BF_COND Type;
-};
 
 const std::map<const FI_COND, const std::string>& FI_COND_map() {
   static const std::map<const FI_COND, const std::string> map {
@@ -82,11 +76,6 @@ template<> const std::map<const FI_COND, const std::string>& get_enum_map<enum F
 template<> MODULE get_enum_module<enum FI_COND>() {
   return MODULE_FI;
 }
-template<>
-struct MODULE2Enum_COND<MODULE_FI> {
-public:
-  typedef enum FI_COND Type;
-};
 
 const std::map<const PR_COND, const std::string>& PR_COND_map() {
   static const std::map<const PR_COND, const std::string> map {
@@ -109,11 +98,6 @@ template<> const std::map<const PR_COND, const std::string>& get_enum_map<enum P
 template<> MODULE get_enum_module<enum PR_COND>() {
   return MODULE_PR;
 }
-template<>
-struct MODULE2Enum_COND<MODULE_PR> {
-public:
-  typedef enum PR_COND Type;
-};
 
 const std::map<const PS_COND, const std::string>& PS_COND_map() {
   static const std::map<const PS_COND, const std::string> map {
@@ -138,11 +122,6 @@ template<> const std::map<const PS_COND, const std::string>& get_enum_map<enum P
 template<> MODULE get_enum_module<enum PS_COND>() {
   return MODULE_PS;
 }
-template<>
-struct MODULE2Enum_COND<MODULE_PS> {
-public:
-  typedef enum PS_COND Type;
-};
 
 const std::map<const RROEA_COND, const std::string>& RROEA_COND_map() {
   static const std::map<const RROEA_COND, const std::string> map {
@@ -159,11 +138,6 @@ template<> const std::map<const RROEA_COND, const std::string>& get_enum_map<enu
 template<> MODULE get_enum_module<enum RROEA_COND>() {
   return MODULE_RROEA;
 }
-template<>
-struct MODULE2Enum_COND<MODULE_RROEA> {
-public:
-  typedef enum RROEA_COND Type;
-};
 
 const std::map<const RedoxReg_COND, const std::string>& RedoxReg_COND_map() {
   static const std::map<const RedoxReg_COND, const std::string> map {
@@ -181,11 +155,6 @@ template<> const std::map<const RedoxReg_COND, const std::string>& get_enum_map<
 template<> MODULE get_enum_module<enum RedoxReg_COND>() {
   return MODULE_RedoxReg;
 }
-template<>
-struct MODULE2Enum_COND<MODULE_RedoxReg> {
-public:
-  typedef enum RedoxReg_COND Type;
-};
 
 const std::map<const RuACT_COND, const std::string>& RuACT_COND_map() {
   static const std::map<const RuACT_COND, const std::string> map {
@@ -202,11 +171,6 @@ template<> const std::map<const RuACT_COND, const std::string>& get_enum_map<enu
 template<> MODULE get_enum_module<enum RuACT_COND>() {
   return MODULE_RuACT;
 }
-template<>
-struct MODULE2Enum_COND<MODULE_RuACT> {
-public:
-  typedef enum RuACT_COND Type;
-};
 
 const std::map<const SUCS_COND, const std::string>& SUCS_COND_map() {
   static const std::map<const SUCS_COND, const std::string> map {
@@ -227,11 +191,6 @@ template<> const std::map<const SUCS_COND, const std::string>& get_enum_map<enum
 template<> MODULE get_enum_module<enum SUCS_COND>() {
   return MODULE_SUCS;
 }
-template<>
-struct MODULE2Enum_COND<MODULE_SUCS> {
-public:
-  typedef enum SUCS_COND Type;
-};
 
 const std::map<const XanCycle_COND, const std::string>& XanCycle_COND_map() {
   static const std::map<const XanCycle_COND, const std::string> map {
@@ -248,9 +207,4 @@ template<> const std::map<const XanCycle_COND, const std::string>& get_enum_map<
 template<> MODULE get_enum_module<enum XanCycle_COND>() {
   return MODULE_XanCycle;
 }
-template<>
-struct MODULE2Enum_COND<MODULE_XanCycle> {
-public:
-  typedef enum XanCycle_COND Type;
-};
 

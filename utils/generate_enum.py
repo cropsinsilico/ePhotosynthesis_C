@@ -525,8 +525,7 @@ class CEnumGeneratorMapSource(CMixin, EnumGeneratorBase):
         width_abbr = len(max(members, key=lambda x: len(x['abbr']))['abbr'])
         lines += super(CEnumGeneratorMapSource, self).generate_item(
             name, members, width=width, width_abbr=width_abbr)
-        # import pdb; pdb.set_trace()
-        suffix = self.parent.added_files['global'].strip_suffix
+        # suffix = self.parent.added_files['global'].strip_suffix
         lines += [
             "  };", "  return map;", "};",
             f"template<> const std::map<const {tname}, "
@@ -536,11 +535,11 @@ class CEnumGeneratorMapSource(CMixin, EnumGeneratorBase):
             f"template<> MODULE get_enum_module<enum {tname}>() {{",
             f"  return MODULE_{name.split('_')[0]};",
             "}",
-            "template<>",
-            f"struct MODULE2Enum{suffix}<MODULE_{name.split('_')[0]}> {{",
-            "public:",
-            f"  typedef enum {tname} Type;",
-            "};",
+            # "template<>",
+            # f"struct MODULE2Enum{suffix}<MODULE_{name.split('_')[0]}> {{",
+            # "public:",
+            # f"  typedef enum {tname} Type;",
+            # "};",
             ""
         ]
         return lines
@@ -623,8 +622,18 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
             "public:",
             "  typedef enum EMPTY_ENUM Type;",
             "};",
-            ""
         ]
+        for k, v in self.src.param.items():
+            key = k.rsplit(self.strip_suffix)[0]
+            lines += [
+                "template<>",
+                f"struct {self.enum_name}2Enum{self.strip_suffix}"
+                f"<{self.enum_name}_{key}> {{",
+                "public:",
+                f"  typedef enum {k} Type;",
+                "};",
+                ""
+            ]
         return lines
 
 
