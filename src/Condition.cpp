@@ -31,8 +31,6 @@
 #include <string>
 #include <sstream>
 
-const boost::regex token("\\s+");
-
 // Function [light] = condition; This function is used to store all the required
 // environmental variables, such as light, CO2, O2, humidity as such. This function
 // contains two parts. Part a includes the generic (default) conditions and the
