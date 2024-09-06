@@ -1,0 +1,5 @@
+ET	1.2		#  The total concentraiton of E, ER, EC, ECM, ECMR , mM;
+Rac	0.0056		# The concentration of the activase, mM
+C	0.012		# mM
+O	0.260		# mM
+M	5.0

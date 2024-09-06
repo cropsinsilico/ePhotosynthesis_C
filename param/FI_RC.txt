@@ -19,6 +19,3 @@ kBA2		250	# The rate constant of the QAQB2- --> QAQB- Lazar (1999), or same as 3
 k3		800 	# The rate constant of the exchange of PQ and QBH2 Lazar (1999),0.12~1 for the fast PQ pool, or 3~8 for the slow recycling PQ pool
 k_r3		80	# The rate constant of the exchange of QB and PQH2 Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
 k_pq_oxy	500 	# The rate constant of the PQH2 oxidation Lazar (1999),50~500
-# Pool variables
-QBt		1	# The total concentration of Qb site;
-PQT		8	# The total concentration of PQ;

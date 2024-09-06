@@ -1,0 +1,11 @@
+# var = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+GAPDH 	        0.0006583	# SA = 620.0, mw = 147000.0, PS::V3
+FBPase		0.0025856	# SA = 119.0, mw = 195000.0, PS::V6
+SBPase		0.0129870	# SA = 70.0, mw = 66000.0, PS::V9
+PRK		0.0036585	# SA = 410.0, mw = 40000.0 PS::V13
+ATPase		0.0012		# SA = 100.0, mw = 500000.0 PS::V16
+ATPGPP		0.0285714	# SA = 10.0, mw = 210000.0 PS::V23
+MDH		0.0037481	# SA = 184.0, mw = 87000.0, MDH_Vmax = 2 value is assumed, but no literature to support. Needs to be fixed.
+ThioT		0.081
+FdT		0.081		# Compes from BF if used with RROEA_EPS
+RuACTT		0.0056

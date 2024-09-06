@@ -33,16 +33,3 @@ KM2NADP		0.05		# The michaelis menten constant for NADP Unit: mmol l-1 s-1; The 
 KM2NADPH	0.035		# The michaelis menten constant for NADPH Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
 V2M		27.8		# The maximum rate of NADPH formation Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
 KE2		495.0		# Equilibrium constant
-# Pool variables
-kA_d		1.0		# The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
-kA_f		1.0		# The total amount of cytc; Unit: micromole m-2 leaf area
-kA_U		20.0		# The total concentration of K in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant.
-kU_A		10.0		# The total concentration of Mg in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant.
-kU_d		2.0		# The total concentration of Cl in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant.
-kU_f		1.0		# The total concentration of Ferrodoxin
-k1		1.0		# The total concentration of the primary electron acceptor of PSI; Unit: micromole m-2 leaf area
-k_r1		8.0		# The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
-kz		38.0		# The total concentration of buffer in stroma; unit: mmol per liter
-k12		38.0		# The total concentration of buffer in lumen; unit: mmol per liter
-k23		1.0		# The total number of P700; unit: micromole m-2 leaf area
-k30		1.0		#   The total concentration of NADPH in stroma; 1 is an guessed value;

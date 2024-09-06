@@ -1,0 +1,2 @@
+QBt		1	# The total concentration of Qb site;
+PQT		8	# The total concentration of PQ;

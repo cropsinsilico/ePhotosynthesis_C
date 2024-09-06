@@ -28,6 +28,8 @@
 
 #include "definitions.hpp"
 #include "enums/enums_utils.hpp"
+#include "enums/enums_COND_names.hpp"
+#include "enums/enums_COND_defaults.hpp"
 #include <stdexcept>
 #include <sundials/sundials_types.h>
 
@@ -133,7 +135,8 @@ public:
     friend std::ostream& operator<<(std::ostream &out, const T* const in) {
         return in->_print(out, 0);
     }
-    U* parent = nullptr;  // The parent Condition instance.
+
+    U* parent = nullptr;  //!< The parent Condition instance.
 #ifdef INCDEBUG
     Debug::DebugLevel debugLevel() const {return static_cast<const T*>(this)->_dlevel;}
 #endif

@@ -42,13 +42,20 @@ namespace modules {
 template<class T, class U>
 class ModuleBase {
 public:
+    typedef T ModType;
+    typedef U CondType;
+  
     /**
       Common, public interface for the private init function.
 
       \param theVars The main Variables instance.
       \returns A pointer to the associated Condition class.
       */
-    static U* init(Variables *theVars) {return T::_init(theVars);}
+    static U* init(Variables *theVars) {
+      // CondType* out = new CondType();
+      // out.init(theVars);
+      return T::_init(theVars);
+    }
 
     /**
       Common, public interface for the private differential calculation function

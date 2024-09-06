@@ -1,0 +1,3 @@
+ATc		1.0		# mM
+UTc		1.5		# mM
+PTc		15.0		#

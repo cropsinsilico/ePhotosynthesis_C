@@ -8,31 +8,3 @@ ke2Fd		18.5   		# The rate constant of electron transfer to fe
 keFd2Thio	10		# The rate constant of electron transfer from fd to thio
 keFd2Calvin	7		# The rate constant of electron transfer from fd to Calvin cycle
 ke2ATPGPP	6.3 / 60	# The rate constant of electron transfer to ATPGPP
-# Equilibrium constants
-KEe2FBPase	0.311167869
-KEe2SBPase	0.459194309
-KEe2PRK		0.677638775
-KEe2ATPase	2.177727336
-KEe2RuACT	0.677638775
-KEe2GAPDH	0.044461692
-KEe2MDH		0.044461692
-KEe2ATPGPP	1.0
-KEeFd2Thio	24776.0
-# Pool
-SA_GAPDH	620.0
-SA_MDH		184.0
-SA_PRK		410.0
-SA_FBPase	119.0
-SA_SBPase	70.0
-SA_ATPGPP	10.0
-SA_ATPase	100;
-mw_GAPDH	147000.0
-mw_MDH		87000.0
-mw_PRK		40000.0
-mw_FBPase	195000.0
-mw_SBPase	66000.0
-mw_ATPGPP	210000.0
-mw_ATPase	500000.0
-FdT		0.081		# Not used with RROEA_EPS
-ThioT		0.081
-RuACTT		0.0056

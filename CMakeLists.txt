@@ -169,7 +169,9 @@ endif()
 
 set(ENUM_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/utils/generate_enum.py)
 
-foreach(suffix RC COND)
+# The last suffix must have a complete set of modules for the global
+# enum to be generated correctly
+foreach(suffix COND POOL KE RC)
   set(fsuffix ${suffix})
   set(ENUM_SRC_REGEX ${CMAKE_CURRENT_SOURCE_DIR}/param/*_${fsuffix}.txt)
   file(GLOB ENUM_SRC "${ENUM_SRC_REGEX}")
@@ -189,17 +191,20 @@ foreach(suffix RC COND)
     --dst-names=${ENUM_MAP} --dst-names-header=${ENUM_MAP_H}
     --dst-values=${ENUM_VAL} --dst-values-header=${ENUM_VAL_H}
     --function-suffix-values=defaults
-    --dst-global=${ENUM_GLOBAL}
+    --dst-global=${ENUM_GLOBAL} ${APPEND_GLOBAL_ARGS}
     --enum-name-global=MODULE --strip-suffix-global=_${suffix}
     --root-include-dir=${CMAKE_CURRENT_SOURCE_DIR}/include
-    --include-file-names=${ENUM_UTILS}
+    --include-file-names-header=${ENUM_UTILS}
+    --include-file-values-header=${ENUM_UTILS}
     --prefix-with-type
     --overwrite  # --verbose
     BYPRODUCTS ${ENUM_DST} ${ENUM_MAP} ${ENUM_MAP_H}
     ${ENUM_VAL} ${ENUM_VAL_H} ${ENUM_GLOBAL}
-    DEPENDS ${ENUM_SRC} ${ENUM_SCRIPT}
+    DEPENDS ${ENUM_SRC} ${ENUM_SCRIPT} ${LAST_SUFFIX_PROCESSED}
   )
   list(APPEND GENERATED_SOURCES ${ENUM_MAP} ${ENUM_VAL})
+  set(APPEND_GLOBAL_ARGS --append-global=preserved)
+  set(LAST_SUFFIX_PROCESSED ${ENUM_VAL})
 endforeach()
 
 

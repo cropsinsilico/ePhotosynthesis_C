@@ -13,14 +13,14 @@ const boost::regex token("\\s+");
 
 template<typename T>
 const std::map<const T, const std::string>& get_enum_names() {
-  static std::map<const T, const std::string> out;
+  static const std::map<const T, const std::string> out;
   throw std::runtime_error("No enum names map could be found");
   return out;
 }
 
 template<typename T>
 const std::map<const T, const double>& get_enum_defaults() {
-  static std::map<const T, const double> out;
+  static const std::map<const T, const double> out;
   throw std::runtime_error("No enum defaults map could be found");
   return out;
 }
