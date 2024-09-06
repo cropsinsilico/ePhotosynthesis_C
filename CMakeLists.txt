@@ -177,24 +177,29 @@ foreach(suffix RC COND)
 
   set(ENUM_UTILS ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_utils.hpp)
   set(ENUM_GLOBAL ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums.hpp)
-  set(ENUM_MAP ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_map.cpp)
-  set(ENUM_MAP_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_map.hpp)
+  set(ENUM_MAP ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_names.cpp)
+  set(ENUM_MAP_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_names.hpp)
+  set(ENUM_VAL ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_defaults.cpp)
+  set(ENUM_VAL_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_defaults.hpp)
   set(ENUM_DST ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}.hpp)
   add_custom_target(
     generate_enum_${fsuffix}
     COMMAND python ${ENUM_SCRIPT}
     "${ENUM_SRC_REGEX}" --src-regex --dst-type=c --dst=${ENUM_DST}
-    --dst-maps=${ENUM_MAP} --dst-maps-header=${ENUM_MAP_H}
+    --dst-names=${ENUM_MAP} --dst-names-header=${ENUM_MAP_H}
+    --dst-values=${ENUM_VAL} --dst-values-header=${ENUM_VAL_H}
+    --function-suffix-values=defaults
     --dst-global=${ENUM_GLOBAL}
     --enum-name-global=MODULE --strip-suffix-global=_${suffix}
     --root-include-dir=${CMAKE_CURRENT_SOURCE_DIR}/include
-    --include-file-maps=${ENUM_UTILS}
+    --include-file-names=${ENUM_UTILS}
     --prefix-with-type
     --overwrite  # --verbose
-    BYPRODUCTS ${ENUM_DST} ${ENUM_MAP} ${ENUM_MAP_H} ${ENUM_GLOBAL}
+    BYPRODUCTS ${ENUM_DST} ${ENUM_MAP} ${ENUM_MAP_H}
+    ${ENUM_VAL} ${ENUM_VAL_H} ${ENUM_GLOBAL}
     DEPENDS ${ENUM_SRC} ${ENUM_SCRIPT}
   )
-  list(APPEND GENERATED_SOURCES ${ENUM_MAP})
+  list(APPEND GENERATED_SOURCES ${ENUM_MAP} ${ENUM_VAL})
 endforeach()
 
 
@@ -296,6 +301,10 @@ install(
     FILES ${CMAKE_CURRENT_BINARY_DIR}/ePhotosynthesis_export.h
     DESTINATION ${EPHOTOSYNTHESIS_INSTALL_INCLUDEDIR}
 )
+# install(
+#      DIRECTORY param
+#      DESTINATION ${EPHOTOSYNTHESIS_INSTALL_INCLUDEDIR}
+# )
 
 #################
 # Documentation #

@@ -1,30 +1,28 @@
-ISPHr	0.	# The reduced ion sulfer protein (ISPH)
-cytc1	1.	# The oxidized state of cytc1
-ISPo	1.	# The oxidized ion sulfer protein (ISP)
-ISPoQH2	0.	# The complex of oxidized ion sulfer protein and reduced quinone
-QHsemi	0.	# Semiquinone
-cytbL	1.	# The oxidized cytbL
-Qi	0.	# The binding Quinone
-Q	1.	# Quinone
-cytbH	1.	# The oxidized form of cytbH
-Qn	0.	# Q-
-
-Qr	0.	# Q2-
-QH2	5.	# QH2
-cytc2	1.	# oxidized cytc2
+ISPHr	0.0	# The reduced ion sulfer protein (ISPH)
+cytc1	1.0	# The oxidized state of cytc1
+ISPo	1.0	# The oxidized ion sulfer protein (ISP)
+ISPoQH2	0.0	# The complex of oxidized ion sulfer protein and reduced quinone
+QHsemi	0.0	# Semiquinone
+cytbL	1.0	# The oxidized cytbL
+Qi	0.0	# The binding Quinone
+Q	1.0	# Quinone
+cytbH	1.0	# The oxidized form of cytbH
+Qn	0.0	# Q-
+Qr	0.0	# Q2-
+QH2	5.0	# QH2
+cytc2	1.0	# oxidized cytc2
 P700	0.5	# The reduced state of P700, including both P700 and excited P700
 ADP	0.82	# ADP in stroma
 ATP	0.68	# ATP in stroma
-Ks	10.	# K ions in stroma
-Mgs	5.	# Mg ions in stroma
-Cls	1.	# Cl ions in stroma
-
-Aip	0.	# The number of photons in peripheral antenna
-U	0.	# The number of photons in core antenna
-An	0.	# The reduced electron acceptor in PSI
+Ks	10.0	# K ions in stroma
+Mgs	5.0	# Mg ions in stroma
+Cls	1.0	# Cl ions in stroma
+Aip	0.0	# The number of photons in peripheral antenna
+U	0.0	# The number of photons in core antenna
+An	0.0	# The reduced electron acceptor in PSI
 Fdn	0.3	# The reduced ferrodoxin
 BFHs	19.0001	# The total concentration of proton and protonated buffer species in stroma, put in unit: mmol l-1
 BFHl	19.0001	# The total concentration of proton and protonated buffer species in lumen, unit: mmol l-1
-PHs	7.	# The PH value of the stroma
-PHl	7.	# The PH value of the lumen
+PHs	7.0	# The PH value of the stroma
+PHl	7.0	# The PH value of the lumen
 NADPH	0.21	# The NADPH concentration in stroma, Unit: mmol l-1;

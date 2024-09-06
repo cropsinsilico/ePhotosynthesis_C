@@ -12,9 +12,16 @@
 const boost::regex token("\\s+");
 
 template<typename T>
-const std::map<const T, const std::string>& get_enum_map() {
+const std::map<const T, const std::string>& get_enum_names() {
   static std::map<const T, const std::string> out;
-  throw std::runtime_error("No enum map could be found");
+  throw std::runtime_error("No enum names map could be found");
+  return out;
+}
+
+template<typename T>
+const std::map<const T, const double>& get_enum_defaults() {
+  static std::map<const T, const double> out;
+  throw std::runtime_error("No enum defaults map could be found");
   return out;
 }
 
@@ -64,7 +71,7 @@ namespace ePhotosynthesis {
     
     template<typename T>
     T enum_string2key(const std::string& val) {
-      const std::map<const T, const std::string>& map = get_enum_map<T>();
+      const std::map<const T, const std::string>& map = get_enum_names<T>();
       T key;
       if (!enum_value_search(map, val, key))
 	throw std::runtime_error("Could not locate enum for \"" + val
@@ -73,7 +80,7 @@ namespace ePhotosynthesis {
     }
     template<typename T>
     std::string enum_key2string(const T& key) {
-      const std::map<const T, const std::string>& map = get_enum_map<T>();
+      const std::map<const T, const std::string>& map = get_enum_names<T>();
       std::string val;
       if (!enum_key_search(map, key, val))
 	throw std::runtime_error("Could not locate enum for \"" + val
