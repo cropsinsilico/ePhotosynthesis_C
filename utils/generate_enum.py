@@ -79,7 +79,7 @@ class EnumParserBase(EnumBase):
             src = [src]
         self.param = {}
         super(EnumParserBase, self).__init__(src, kwargs)
-        for isrc in self.src:
+        for isrc in sorted(self.src):
             self.parse(isrc, **kwargs)
         if verbose:
             pprint.pprint(self.param)
@@ -147,6 +147,7 @@ class EnumGeneratorBase(EnumBase):
                  dont_generate=False, **kwargs):
         for k in self.perfile_options_keys():
             assert f'{k}_{self.name}' not in kwargs
+            setattr(self, k, kwargs.pop(k, None))
         if dst is None:
             if self.explicit_dst:
                 raise ValueError(f"Destination must be provided for "
@@ -254,8 +255,6 @@ class EnumGeneratorBase(EnumBase):
         lines = self.prefix + self.lines + self.suffix
         if append_unique:
             append = True
-        if self.name == 'global':
-            assert append_unique
         if append and os.path.isfile(self.dst):
             with open(self.dst, 'r') as fd:
                 existing = fd.read().splitlines()
@@ -338,10 +337,7 @@ class CMixin:
 
     def __init__(self, *args, **kwargs):
         self.root_include_dir = kwargs.pop('root_include_dir', None)
-        self.include_files = kwargs.pop('include_files', None)
         self.namespaces = kwargs.pop('namespaces', None)
-        if self.include_files:
-            assert isinstance(self.include_files, list)
         if ((self._type == 'generator'
              and (self.namespaces or self.root_include_dir))):
             kwargs.setdefault('child_kws', {})
@@ -529,6 +525,8 @@ class CEnumGeneratorMapSource(CMixin, EnumGeneratorBase):
         width_abbr = len(max(members, key=lambda x: len(x['abbr']))['abbr'])
         lines += super(CEnumGeneratorMapSource, self).generate_item(
             name, members, width=width, width_abbr=width_abbr)
+        # import pdb; pdb.set_trace()
+        suffix = self.parent.added_files['global'].strip_suffix
         lines += [
             "  };", "  return map;", "};",
             f"template<> const std::map<const {tname}, "
@@ -538,6 +536,11 @@ class CEnumGeneratorMapSource(CMixin, EnumGeneratorBase):
             f"template<> MODULE get_enum_module<enum {tname}>() {{",
             f"  return MODULE_{name.split('_')[0]};",
             "}",
+            "template<>",
+            f"struct MODULE2Enum{suffix}<MODULE_{name.split('_')[0]}> {{",
+            "public:",
+            f"  typedef enum {tname} Type;",
+            "};",
             ""
         ]
         return lines
@@ -560,13 +563,16 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
             'type': str,
             'help': "Name that should be used for the global enum",
         },
+        strip_suffix={
+            'type': str,
+            'help': ("Suffix that should be stripped from global enum "
+                     "members"),
+        },
     )
 
     def __init__(self, *args, **kwargs):
-        self.enum_name = kwargs.pop('enum_name', None)
-        if self.enum_name is None:
-            self.enum_name = self.name.upper()
-        kwargs.setdefault("append_unique", True)
+        kwargs.setdefault('enum_name', self.name.upper())
+        kwargs.setdefault('append_unique', True)
         super(CEnumGeneratorGlobalHeader, self).__init__(*args, **kwargs)
         assert self.parent
 
@@ -575,15 +581,24 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
         if self._current_keys['kprefix']:
             name = ''.join(self._current_keys['kprefix'][::-1]).rstrip('_')
         key = f"{self.enum_name}_{name}"
+        if self.strip_suffix:
+            assert key.endswith(self.strip_suffix)
+            key = key.rsplit(self.strip_suffix)[0]
         return [f"{key:{width}},"]
 
     def generate(self, indent='', **kwargs):
         lines = []
         lines += self.parent.include_self(
             self.dst, rootdir=self.root_include_dir)
+        lines += [
+            "enum EMPTY_ENUM {};", ""
+        ]
 
         def key_len(x):
-            return len(''.join(self.prefixes.get(x, [x])))
+            out = ''.join(self.prefixes.get(x, [x]))
+            if self.strip_suffix:
+                out = out.rsplit(self.strip_suffix)[-1]
+            return len(out)
 
         width = (
             key_len(max(self.src.param.keys(), key=key_len))
@@ -599,6 +614,14 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
             indent=indent, width=width, **kwargs)
         lines += [
             f'  {last:{width}},',
+            "};",
+            ""
+        ]
+        lines += [
+            f"template<{self.enum_name} T>",
+            f"struct {self.enum_name}2Enum{self.strip_suffix} {{",
+            "public:",
+            "  typedef enum EMPTY_ENUM Type;",
             "};",
             ""
         ]

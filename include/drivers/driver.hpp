@@ -32,6 +32,10 @@
 #include <sundials/sundials_types.h>
 #include "globals.hpp"
 
+#ifndef realtype
+#define realtype sunrealtype
+#endif
+
 namespace ePhotosynthesis {
 class Variables;
 namespace drivers {
