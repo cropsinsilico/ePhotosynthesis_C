@@ -1,5 +1,4 @@
 #pragma once
-#include <cvode/cvode_direct.h>
 
 namespace ePhotosynthesis {
 namespace drivers {
