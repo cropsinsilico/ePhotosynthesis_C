@@ -27,6 +27,8 @@ jobs:
           - os: windows-latest
             with-elf: true
           - os: macos-latest
+            with-valgrind: true
+          - os: macos-latest
             with-elf: true
           - with-valgrind: true
             with-elf: true
