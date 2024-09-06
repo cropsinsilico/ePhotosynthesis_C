@@ -74,6 +74,11 @@ jobs:
         shell: bash -l {0}
         run: |
           mamba install c-compiler cxx-compiler
+      - name: Install valgrind on unix systems
+        if: matrix.os != 'windows-latest' && matrix.with-valgrind == true
+        shell: bash -l {0}
+        run: |
+          mamba install valgrind
 
       ###################################
       # SET CONFIG FLAGS
