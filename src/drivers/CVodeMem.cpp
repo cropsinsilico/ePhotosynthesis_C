@@ -1,7 +1,6 @@
 #include <cvode/cvode.h>
 #include <sunmatrix/sunmatrix_dense.h>
 #include <sunlinsol/sunlinsol_dense.h>
-#include <cvode/cvode_direct.h>
 
 #include "drivers/CVodeMem.hpp"
 #include "drivers/driver.hpp"
