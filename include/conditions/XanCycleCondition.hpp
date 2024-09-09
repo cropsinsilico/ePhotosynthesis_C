@@ -39,7 +39,7 @@ class DynaPSCondition;
 /**
  Class to hold the inputs to XanCycle_mb
  */
-class XanCycleCondition : public ConditionBase<XanCycleCondition, DynaPSCondition> {
+class XanCycleCondition : public ConditionBase<XanCycleCondition, DynaPSCondition, MODULE_XanCycle> {
 public:
     XanCycleCondition(DynaPSCondition* par = nullptr) {
         setParent(par);

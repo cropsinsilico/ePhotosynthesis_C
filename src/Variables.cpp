@@ -74,10 +74,7 @@ Variables& Variables::operator=(const Variables &other) {
     PS2BF_Pi = other.PS2BF_Pi;
     PS_PR_Param = other.PS_PR_Param;
     Tp = other.Tp;
-    files_COND = other.files_COND;
-    files_RC = other.files_RC;
-    files_POOL = other.files_POOL;
-    files_KE = other.files_KE;
+    files = other.files;
     BFRatio = other.BFRatio;
     FIRatio = other.FIRatio;
     PRRatio = other.PRRatio;
@@ -239,4 +236,16 @@ out << std::endl;
 
     out << "useC3 = " << in->useC3 << std::endl;
     return out;
+}
+
+template<typename T>
+void Variables::initParam(T& param) {
+  param.init();
+  std::map<PARAM_TYPE, std::map<MODULE, std::string> >::iterator it_pt = files.find(param.param_type_);
+  if (it_pt == files.end())
+    return;
+  std::map<MODULE, std::string>::iterator it_mod = it_pt->second.find(param.module_);
+  if (it_mod == it_pt->second.end())
+    return;
+  param.update_values(it_mod->second);
 }

@@ -39,7 +39,7 @@ class trDynaPSCondition;
 /**
  Class for holding the inputs to RROEA_mb
  */
-class RROEACondition : public ConditionBase<RROEACondition, trDynaPSCondition> {
+class RROEACondition : public ConditionBase<RROEACondition, trDynaPSCondition, MODULE_RROEA> {
 public:
     RROEACondition(trDynaPSCondition* par = nullptr) {
         setParent(par);

@@ -146,6 +146,7 @@ FICondition* FI::_init(Variables *theVars) {
         theVars->FI_Pool.QBt = 1 * theVars->FIRatio[21]; // The total concentration of Qb site;
         theVars->FI_Pool.PQT = 8 * theVars->FIRatio[22]; // The total concentration of PQ;
     }
+    // theVars->FI_Pool.QBt *= theVars->FIRatio[21];
 
     return FI_Con;
 }

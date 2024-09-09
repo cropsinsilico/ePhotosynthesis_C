@@ -27,6 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
+#include "ValueSet.hpp"
 
 namespace ePhotosynthesis {
 namespace pool {
@@ -34,15 +35,17 @@ namespace pool {
 /**
  Class for RROEA_Pool data
  */
-class RROEAPool {
+class RROEAPool : public ValueSet<MODULE_RROEA, PARAM_TYPE_POOL> {
 public:
-    RROEAPool() {}
+    RROEAPool() :
+      ValueSet<MODULE_RROEA, PARAM_TYPE_POOL>() {}
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The RROEAPool object to copy
       */
-    RROEAPool(const RROEAPool &other) {
+    RROEAPool(const RROEAPool &other) :
+      ValueSet<MODULE_RROEA, PARAM_TYPE_POOL>(other) {
 
         GAPDH = other.GAPDH;
         FBPase = other.FBPase;

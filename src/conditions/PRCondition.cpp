@@ -29,7 +29,8 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-PRCondition::PRCondition(const PRCondition* const other)  {
+PRCondition::PRCondition(const PRCondition* const other) :
+  ConditionBase<PRCondition, PS_PRCondition, MODULE_PR>(other) {
     GCEA = other->GCEA;
     GCA = other->GCA;
     PGCA = other->PGCA;

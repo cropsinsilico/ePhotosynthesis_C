@@ -25,10 +25,12 @@
  **********************************************************************************************************************************************/
 
 #include "conditions/XanCycleCondition.hpp"
+
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-XanCycleCondition::XanCycleCondition(const XanCycleCondition* const other) {
+XanCycleCondition::XanCycleCondition(const XanCycleCondition* const other) :
+  ConditionBase<XanCycleCondition, DynaPSCondition, MODULE_XanCycle>(other) {
     Vx = other->Vx;
     Ax = other->Ax;
     Zx = other->Zx;

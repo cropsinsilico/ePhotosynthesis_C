@@ -194,12 +194,12 @@ foreach(suffix COND POOL KE RC)
     --dst-global=${ENUM_GLOBAL} ${APPEND_GLOBAL_ARGS}
     --enum-name-global=MODULE --strip-suffix-global=_${suffix}
     --root-include-dir=${CMAKE_CURRENT_SOURCE_DIR}/include
-    --include-file-names-header=${ENUM_UTILS}
-    --include-file-values-header=${ENUM_UTILS}
+    # --include-file-names-header=${ENUM_DST}
+    # --include-file-values-header=${ENUM_DST}
     --prefix-with-type
     --overwrite  # --verbose
-    BYPRODUCTS ${ENUM_DST} ${ENUM_MAP} ${ENUM_MAP_H}
-    ${ENUM_VAL} ${ENUM_VAL_H} ${ENUM_GLOBAL}
+    BYPRODUCTS ${ENUM_DST} ${ENUM_MAP_H} ${ENUM_VAL_H} ${ENUM_GLOBAL} 
+    ${ENUM_MAP} ${ENUM_VAL}
     DEPENDS ${ENUM_SRC} ${ENUM_SCRIPT} ${LAST_SUFFIX_PROCESSED}
   )
   list(APPEND GENERATED_SOURCES ${ENUM_MAP} ${ENUM_VAL})

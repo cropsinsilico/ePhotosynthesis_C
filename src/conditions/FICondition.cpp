@@ -29,7 +29,8 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-FICondition::FICondition(const FICondition* const other) {
+FICondition::FICondition(const FICondition* const other) :
+  ConditionBase<FICondition, FIBFCondition, MODULE_FI>(other) {
     A = other->A;
     U = other->U;
     P680ePheo = other->P680ePheo;

@@ -39,7 +39,7 @@ class FIBFCondition;
 /**
  Class for holding the inputs to FI_mb
  */
-class FICondition : public ConditionBase<FICondition, FIBFCondition> {
+class FICondition : public ConditionBase<FICondition, FIBFCondition, MODULE_FI> {
 public:
     FICondition(FIBFCondition* par = nullptr) {
         setParent(par);
@@ -91,7 +91,7 @@ public:
       */
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
 
-    SET_GET_BOOL(BF_connect)
+    SET_GET_BOOL(BF_connect, FI_COND_PQn)
 private:
     friend ConditionBase;
     friend modules::FI;
@@ -125,7 +125,7 @@ private:
       Reset any static data members to their initial state
       */
     static void reset(){
-        BF_connect = false;
+        setBF_connect(false);
     }
 
     static const std::size_t count;  // size of the current serialized output

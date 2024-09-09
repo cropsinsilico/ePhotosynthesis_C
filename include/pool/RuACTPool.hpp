@@ -27,6 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
+#include "ValueSet.hpp"
 
 namespace ePhotosynthesis {
 namespace pool {
@@ -34,15 +35,17 @@ namespace pool {
 /**
  Class for RuACT_Pool data
  */
-class RuACTPool {
+class RuACTPool : public ValueSet<MODULE_RuACT, PARAM_TYPE_POOL> {
 public:
-    RuACTPool() {}
+    RuACTPool() :
+      ValueSet<MODULE_RuACT, PARAM_TYPE_POOL>() {}
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The RuACTPool object to copy
       */
-    RuACTPool(const RuACTPool &other) {
+    RuACTPool(const RuACTPool &other) :
+      ValueSet<MODULE_RuACT, PARAM_TYPE_POOL>(other) {
 
         ET = other.ET;
         Rac = other.Rac;

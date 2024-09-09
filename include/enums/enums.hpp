@@ -7,8 +7,6 @@
 #include "enums/enums_POOL.hpp"
 #include "enums/enums_KE.hpp"
 
-enum EMPTY_ENUM {};
-
 enum MODULE {
   MODULE_NONE,
   MODULE_BF,
@@ -23,167 +21,221 @@ enum MODULE {
   MODULE_MAX,
 };
 
-// Code after this line will be preserved
-template<MODULE T>
-struct MODULE2Enum_COND {
+enum PARAM_TYPE {
+  PARAM_TYPE_NONE   ,
+  PARAM_TYPE_COND   ,
+  PARAM_TYPE_POOL   ,
+  PARAM_TYPE_KE     ,
+  PARAM_TYPE_RC     ,
+  PARAM_TYPE_MAX    ,
+};
+
+// Empty enum
+enum EMPTY_ENUM {
+  EMPTY_ENUM_NONE,
+  EMPTY_ENUM_MAX,
+};
+
+// Utility for getting module id from enum type
+template<typename T>
+MODULE get_enum_module() {
+  throw std::runtime_error("No module could be found");
+  return MODULE_NONE;
+}
+template<>
+inline MODULE get_enum_module<enum EMPTY_ENUM>() {
+  return MODULE_NONE;
+}
+
+// Utility for getting param_type from enum type
+template<typename T>
+PARAM_TYPE get_enum_param_type() {
+  throw std::runtime_error("No param_type could be found");
+  return PARAM_TYPE_NONE;
+}
+template<>
+inline PARAM_TYPE get_enum_param_type<enum EMPTY_ENUM>() {
+  return PARAM_TYPE_NONE;
+}
+
+// Utility for getting names from enum
+template<typename T>
+const std::map<T, std::string>& get_enum_names() {
+  static const std::map<T, std::string> result;
+  throw std::runtime_error("No enum names map could be found");
+  return result;
+}
+template<>
+inline const std::map<enum EMPTY_ENUM, std::string>& get_enum_names<enum EMPTY_ENUM>() {
+  static const std::map<enum EMPTY_ENUM, std::string> result;
+  return result;
+}
+// Specializations for get_enum_names
+#include "enums/enums_COND_names.hpp"
+#include "enums/enums_POOL_names.hpp"
+#include "enums/enums_KE_names.hpp"
+#include "enums/enums_RC_names.hpp"
+
+// Utility for getting values from enum
+template<typename T>
+const std::map<T, double>& get_enum_defaults() {
+  static const std::map<T, double> result;
+  throw std::runtime_error("No enum defaults map could be found");
+  return result;
+}
+template<>
+inline const std::map<enum EMPTY_ENUM, double>& get_enum_defaults<enum EMPTY_ENUM>() {
+  static const std::map<enum EMPTY_ENUM, double> result;
+  return result;
+}
+// Specializations for get_enum_values
+#include "enums/enums_COND_defaults.hpp"
+#include "enums/enums_POOL_defaults.hpp"
+#include "enums/enums_KE_defaults.hpp"
+#include "enums/enums_RC_defaults.hpp"
+
+
+// Utility for getting enum type from module & param_type
+template<MODULE T0, PARAM_TYPE T1>
+struct MODULE2Enum {
 public:
   typedef enum EMPTY_ENUM Type;
 };
+// Code after this line will be preserved
 template<>
-struct MODULE2Enum_COND<MODULE_BF> {
+struct MODULE2Enum<MODULE_BF, PARAM_TYPE_COND> {
 public:
   typedef enum BF_COND Type;
 };
 
 template<>
-struct MODULE2Enum_COND<MODULE_FI> {
+struct MODULE2Enum<MODULE_FI, PARAM_TYPE_COND> {
 public:
   typedef enum FI_COND Type;
 };
 
 template<>
-struct MODULE2Enum_COND<MODULE_PR> {
+struct MODULE2Enum<MODULE_PR, PARAM_TYPE_COND> {
 public:
   typedef enum PR_COND Type;
 };
 
 template<>
-struct MODULE2Enum_COND<MODULE_PS> {
+struct MODULE2Enum<MODULE_PS, PARAM_TYPE_COND> {
 public:
   typedef enum PS_COND Type;
 };
 
 template<>
-struct MODULE2Enum_COND<MODULE_RROEA> {
+struct MODULE2Enum<MODULE_RROEA, PARAM_TYPE_COND> {
 public:
   typedef enum RROEA_COND Type;
 };
 
 template<>
-struct MODULE2Enum_COND<MODULE_RedoxReg> {
-public:
-  typedef enum RedoxReg_COND Type;
-};
-
-template<>
-struct MODULE2Enum_COND<MODULE_RuACT> {
+struct MODULE2Enum<MODULE_RuACT, PARAM_TYPE_COND> {
 public:
   typedef enum RuACT_COND Type;
 };
 
 template<>
-struct MODULE2Enum_COND<MODULE_SUCS> {
+struct MODULE2Enum<MODULE_SUCS, PARAM_TYPE_COND> {
 public:
   typedef enum SUCS_COND Type;
 };
 
 template<>
-struct MODULE2Enum_COND<MODULE_XanCycle> {
+struct MODULE2Enum<MODULE_XanCycle, PARAM_TYPE_COND> {
 public:
   typedef enum XanCycle_COND Type;
 };
 
-template<MODULE T>
-struct MODULE2Enum_POOL {
-public:
-  typedef enum EMPTY_ENUM Type;
-};
 template<>
-struct MODULE2Enum_POOL<MODULE_BF> {
+struct MODULE2Enum<MODULE_BF, PARAM_TYPE_POOL> {
 public:
   typedef enum BF_POOL Type;
 };
 
 template<>
-struct MODULE2Enum_POOL<MODULE_FI> {
+struct MODULE2Enum<MODULE_FI, PARAM_TYPE_POOL> {
 public:
   typedef enum FI_POOL Type;
 };
 
 template<>
-struct MODULE2Enum_POOL<MODULE_RROEA> {
+struct MODULE2Enum<MODULE_RROEA, PARAM_TYPE_POOL> {
 public:
   typedef enum RROEA_POOL Type;
 };
 
 template<>
-struct MODULE2Enum_POOL<MODULE_RuACT> {
+struct MODULE2Enum<MODULE_RuACT, PARAM_TYPE_POOL> {
 public:
   typedef enum RuACT_POOL Type;
 };
 
 template<>
-struct MODULE2Enum_POOL<MODULE_SUCS> {
+struct MODULE2Enum<MODULE_SUCS, PARAM_TYPE_POOL> {
 public:
   typedef enum SUCS_POOL Type;
 };
 
-template<MODULE T>
-struct MODULE2Enum_KE {
-public:
-  typedef enum EMPTY_ENUM Type;
-};
 template<>
-struct MODULE2Enum_KE<MODULE_RROEA> {
+struct MODULE2Enum<MODULE_RROEA, PARAM_TYPE_KE> {
 public:
   typedef enum RROEA_KE Type;
 };
 
-template<MODULE T>
-struct MODULE2Enum_RC {
-public:
-  typedef enum EMPTY_ENUM Type;
-};
 template<>
-struct MODULE2Enum_RC<MODULE_BF> {
+struct MODULE2Enum<MODULE_BF, PARAM_TYPE_RC> {
 public:
   typedef enum BF_RC Type;
 };
 
 template<>
-struct MODULE2Enum_RC<MODULE_FI> {
+struct MODULE2Enum<MODULE_FI, PARAM_TYPE_RC> {
 public:
   typedef enum FI_RC Type;
 };
 
 template<>
-struct MODULE2Enum_RC<MODULE_PR> {
+struct MODULE2Enum<MODULE_PR, PARAM_TYPE_RC> {
 public:
   typedef enum PR_RC Type;
 };
 
 template<>
-struct MODULE2Enum_RC<MODULE_PS> {
+struct MODULE2Enum<MODULE_PS, PARAM_TYPE_RC> {
 public:
   typedef enum PS_RC Type;
 };
 
 template<>
-struct MODULE2Enum_RC<MODULE_RROEA> {
+struct MODULE2Enum<MODULE_RROEA, PARAM_TYPE_RC> {
 public:
   typedef enum RROEA_RC Type;
 };
 
 template<>
-struct MODULE2Enum_RC<MODULE_RedoxReg> {
+struct MODULE2Enum<MODULE_RedoxReg, PARAM_TYPE_RC> {
 public:
   typedef enum RedoxReg_RC Type;
 };
 
 template<>
-struct MODULE2Enum_RC<MODULE_RuACT> {
+struct MODULE2Enum<MODULE_RuACT, PARAM_TYPE_RC> {
 public:
   typedef enum RuACT_RC Type;
 };
 
 template<>
-struct MODULE2Enum_RC<MODULE_SUCS> {
+struct MODULE2Enum<MODULE_SUCS, PARAM_TYPE_RC> {
 public:
   typedef enum SUCS_RC Type;
 };
 
 template<>
-struct MODULE2Enum_RC<MODULE_XanCycle> {
+struct MODULE2Enum<MODULE_XanCycle, PARAM_TYPE_RC> {
 public:
   typedef enum XanCycle_RC Type;
 };

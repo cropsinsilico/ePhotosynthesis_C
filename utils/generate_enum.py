@@ -73,6 +73,12 @@ class EnumBase(metaclass=EnumMeta):
     def add_member(self, member):
         raise NotImplementedError
 
+    def add_prefix(self, k, v):
+        self.prefixes = dict(self.prefixes)
+        self.prefixes.setdefault(k, [])
+        if v not in self.prefixes[k]:
+            self.prefixes[k].append(v)
+
 
 class EnumParserBase(EnumBase):
 
@@ -143,6 +149,7 @@ class EnumGeneratorBase(EnumBase):
     skip = []
     skip_items = {}
     added_file_classes = {}
+    added_section_classes = {}
     explicit_dst = False
     perfile_options = {
         'dst': {
@@ -165,7 +172,7 @@ class EnumGeneratorBase(EnumBase):
 
     def __init__(self, src, dst=None, directory=None, added_files=None,
                  parent=None, child_kws={}, skip_children=False,
-                 dont_generate=False, **kwargs):
+                 dont_generate=False, added_sections=None, **kwargs):
         for k in self.perfile_options_keys():
             assert f'{k}_{self.name}' not in kwargs
             setattr(self, k, kwargs.pop(k, None))
@@ -191,9 +198,13 @@ class EnumGeneratorBase(EnumBase):
         if added_files is None:
             added_files = {}
         self.added_files = added_files
+        if added_sections is None:
+            added_sections = {}
+        self.added_sections = added_sections
         child_kws = self.extract_child_kws(kwargs, child_kws,
                                            directory=directory,
-                                           dont_generate=dont_generate)
+                                           dont_generate=True)
+        super(EnumGeneratorBase, self).__init__(src, kwargs)
         if not skip_children:
             for k, v in self.added_file_classes.items():
                 kws = child_kws[v.name]
@@ -203,10 +214,15 @@ class EnumGeneratorBase(EnumBase):
                 if k not in self.added_files:
                     self.added_files[k] = v(src, child_kws=child_kws,
                                             parent=self, **kws)
-        super(EnumGeneratorBase, self).__init__(src, kwargs)
+            for k, v in self.added_section_classes.items():
+                kws = child_kws[v.name]
+                if k not in self.added_sections:
+                    self.added_sections[k] = v(src, child_kws=child_kws,
+                                               parent=self, **kws)
+        self.lines = []
+        self.write_kwargs = dict(kwargs, append=self.append)
         if not dont_generate:
-            self.lines = self.generate()
-            self.write(append=self.append, **kwargs)
+            self.do_write()
 
     @classmethod
     def add_arguments(cls, parser):
@@ -239,10 +255,18 @@ class EnumGeneratorBase(EnumBase):
     @classmethod
     def all_children(cls, return_classes=False):
         if return_classes:
-            out = list(cls.added_file_classes.values())
+            out = (
+                list(cls.added_file_classes.values())
+                + list(cls.added_section_classes.values())
+            )
         else:
-            out = [v.name for v in cls.added_file_classes.values()]
+            out = (
+                [v.name for v in cls.added_file_classes.values()]
+                + [v.name for v in cls.added_section_classes.values()]
+            )
         for v in cls.added_file_classes.values():
+            out += v.all_children(return_classes=return_classes)
+        for v in cls.added_section_classes.values():
             out += v.all_children(return_classes=return_classes)
         return out
 
@@ -271,16 +295,45 @@ class EnumGeneratorBase(EnumBase):
             out[x] = dict(kws_all, **out[x])
         return out
 
+    @property
+    def existing_lines(self):
+        if os.path.isfile(self.dst):
+            with open(self.dst, 'r') as fd:
+                return fd.read().splitlines()
+        return []
+
+    def get_child(self, k):
+        if k in self.added_sections:
+            return self.added_sections[k]
+        return self.added_files[k]
+
+    def do_generate(self):
+        for v in self.added_sections.values():
+            v.do_generate()
+        for v in self.added_files.values():
+            v.do_generate()
+        self.lines = self.generate()
+
+    def do_write(self):
+        for v in self.added_sections.values():
+            v.do_generate()
+        for v in self.added_files.values():
+            v.do_write()
+        return self.write(**self.write_kwargs)
+
     def write(self, verbose=False, overwrite=False, dry_run=False,
               append=False):
+        self.lines = self.generate()
+        # if not self.lines:
+        #     print(f"No lines to be written to {self.dst}")
+        #     return
         lines = [
             self.comment + ' ' + x for x in self.disclaimer
         ] + self.prefix + self.lines + self.suffix
         if append == 'nothing':
             append = False
         if append and os.path.isfile(self.dst):
-            with open(self.dst, 'r') as fd:
-                existing = fd.read().splitlines()
+            existing = self.existing_lines
             if append in [True, 'direct', 'True']:
                 lines = existing + lines
             elif append == 'unique':
@@ -315,11 +368,21 @@ class EnumGeneratorBase(EnumBase):
         with open(self.dst, 'w') as fd:
             fd.write(contents)
 
-    def max_width(self, members):
-        width = len(self.add_member(
-            max(members, key=lambda x:
-                len(self.add_member(x, return_name=True))),
-            return_name=True))
+    def max_width(self, members, key='name', func=None):
+        if len(members) == 0:
+            return 0
+        if func is not None:
+            width = len(func(max(members, key=lambda x: len(func(x)))))
+        elif key == 'name':
+            width = len(self.add_member(
+                max(members, key=lambda x:
+                    len(self.add_member(x, return_name=True))),
+                return_name=True))
+        else:
+            width = len(max(members, key=lambda x:
+                            len(x.get(key, ''))).get(key, ''))
+        if key == 'idx':
+            width += 3
         return width
 
     def add_member(self, member, return_name=False):
@@ -342,6 +405,15 @@ class EnumGeneratorBase(EnumBase):
 
     def generate_member(self, x, **kwargs):
         raise NotImplementedError
+
+    def generate_enum(self, name, members, prefix_with_type=False,
+                      **kwargs):
+        lines = []
+        if prefix_with_type:
+            self.add_prefix(name, name + '_')
+        self.add_enum(name)
+        lines += self.generate_item(name, members, **kwargs)
+        return lines
 
     def generate_item(self, name, members, **kwargs):
         lines = []
@@ -373,6 +445,11 @@ class CMixin:
             'dest': 'include_files',
             'help': "File that should be included.",
         },
+        namespace={
+            'action': 'append',
+            'dest': 'namespaces',
+            'help': "C++ namespaces that should contain the classes",
+        },
     )
 
     def __init__(self, *args, **kwargs):
@@ -401,6 +478,20 @@ class CMixin:
             header_incl = os.path.relpath(x, rootdir)
         return [f"#include \"{header_incl}\"", ""]
 
+    @classmethod
+    def specialization(cls, lines, spec_param=[], specialize=[]):
+        specialization = ''
+        if spec_param:
+            if specialize:
+                lines += ['template<>']
+                specialization = f"<{', '.join(specialize)}>"
+            elif len(spec_param) == 1:
+                lines += [f"template<{spec_param[0]} T>"]
+            else:
+                param = [f"{x} T{i}" for i, x in enumerate(spec_param)]
+                lines += [f"template<{', '.join(param)}>"]
+        return specialization
+
     def add_include_files(self):
         lines = []
         if self.include_files:
@@ -420,7 +511,7 @@ class CMixin:
         if caller is None:
             caller = self.dst
         return self.include_file(
-            self.added_files['header'].dst, caller=caller,
+            self.get_child('header').dst, caller=caller,
             rootdir=self.root_include_dir)
 
     def generate(self, indent='', **kwargs):
@@ -512,6 +603,10 @@ class CEnumGeneratorBase(CMixin, EnumGeneratorBase):
 
 class CEnumGeneratorBaseHeader(CEnumGeneratorBase):
 
+    def add_enum(self, *args, **kwargs):
+        super(CEnumGeneratorBaseHeader, self).add_enum(*args, **kwargs)
+        self.parent.add_enum(*args, **kwargs)
+
     def generate_item(self, name, members):
         assert self.parent
         return self.parent.generate_header_item(name, members)
@@ -521,6 +616,14 @@ class CEnumGeneratorBaseSource(CMixin, EnumGeneratorBase):
 
     file_extension = '.cpp'
     header_attr = {}
+    perfile_options = dict(
+        CMixin.perfile_options,
+        define_in_header={
+            'action': 'store_true', 'default': True,
+            'help': "Write the definition in the header.",
+        },
+        **EnumGeneratorBase.perfile_options,
+    )
 
     @staticmethod
     def create_child_classes(cls):
@@ -539,6 +642,18 @@ class CEnumGeneratorBaseSource(CMixin, EnumGeneratorBase):
             cls.added_file_classes,
             header=HeaderClass)
 
+    def generate_header_item(self, name, members):
+        lines = [self.generate_declaration(name, members,
+                                           for_header=True)]
+        if self.define_in_header:
+            lines[-1] = 'inline ' + lines[-1] + ' {'
+            lines += [
+                '  ' + x for x in self.generate_definition(name, members)]
+            lines += ["};", ""]
+        else:
+            lines[-1] += ';'
+        return lines
+
     def generate_declaration(self, name, members, for_header=False):
         raise NotImplementedError
 
@@ -548,14 +663,17 @@ class CEnumGeneratorBaseSource(CMixin, EnumGeneratorBase):
 
     def generate_item(self, name, members):
         lines = []
-        lines += [self.generate_declaration(name, members) + ' {']
-        lines += [
-            '  ' + x for x in self.generate_definition(name, members)]
-        lines += ["};", ""]
+        if not self.define_in_header:
+            lines += [self.generate_declaration(name, members) + ' {']
+            lines += [
+                '  ' + x for x in self.generate_definition(name, members)]
+            lines += ["};", ""]
         return lines
 
     def generate(self, indent='', **kwargs):
-        lines = self.include_header()
+        lines = []
+        if not self.define_in_header:
+            lines += self.include_header()
         lines += super(CEnumGeneratorBaseSource, self).generate(
             indent=indent, **kwargs)
         return lines
@@ -584,12 +702,18 @@ class CEnumGeneratorMapBase(CEnumGeneratorBaseSource):
             'help': ("Specialize the template to get the map in the "
                      "source file instead of the header"),
         },
+        dont_specialize={
+            'action': 'store_true',
+            'help': "Don't special the template function",
+        },
     )
     default_value_type = None
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault("function_suffix", self.name)
         kwargs.setdefault("value_type", self.default_value_type)
+        if kwargs.get('define_in_header', False):
+            kwargs['specialize_in_source'] = False
         super(CEnumGeneratorMapBase, self).__init__(*args, **kwargs)
 
     def generate_value(self, x):
@@ -606,41 +730,33 @@ class CEnumGeneratorMapBase(CEnumGeneratorBaseSource):
         if (not for_header) and self.namespaces:
             func_name = f"{'::'.join(self.namespaces)}::{func_name}"
         func_decl = (
-            f"const std::map<const {name}, "
-            f"const {self.value_type}>& {func_name}()")
+            f"const std::map<{name}, "
+            f"{self.value_type}>& {func_name}()")
         return func_decl
 
-    def generate_definition(self, name, members, **kwargs):
+    def generate_definition(self, name, members, var_name='map', **kwargs):
         lines = [
-            f"static const std::map<const {name}, "
-            f"const {self.value_type}> map {{"
+            f"static const std::map<{name}, "
+            f"{self.value_type}> {var_name} {{"
         ]
         width = self.max_width(members)
-        width_value = len(self.generate_value(
-            max(members, key=lambda x: len(self.generate_value(x)))))
+        width_value = self.max_width(members, func=self.generate_value)
         lines += super(CEnumGeneratorMapBase, self).generate_definition(
             name, members, width=width, width_value=width_value, **kwargs)
         lines += ["};", "return map;"]
         return lines
 
-    def generate_specialization(self, name, members, for_header=False):
+    def generate_specialization(self, name, members, **kwargs):
         lines = []
-        func_name = f"{name}_{self.function_suffix}"
-        if self.namespaces and not for_header:
-            func_name = f"{'::'.join(self.namespaces)}::{func_name}"
-        lines += [
-            f"template<> const std::map<const {name}, "
-            f"const {self.value_type}>& get_enum_{self.function_suffix}"
-            f"<enum {name}>() {{",
-            f"  return {func_name}();",
-            "};",
-            ""
-        ]
+        if self.dont_specialize:
+            return lines
+        lines += self.generate_function(
+            name, specialize=[f'enum {name}'], **kwargs)
         return lines
 
     def generate_header_item(self, name, members):
-        lines = [self.generate_declaration(name, members,
-                                           for_header=True) + ';']
+        lines = super(CEnumGeneratorMapBase, self).generate_header_item(
+            name, members)
         if not self.specialize_in_source:
             lines += self.generate_specialization(name, members,
                                                   for_header=True)
@@ -648,13 +764,59 @@ class CEnumGeneratorMapBase(CEnumGeneratorBaseSource):
 
     def generate_item(self, name, members):
         lines = []
-        func_name = f"{name}_{self.function_suffix}"
-        if self.namespaces:
-            func_name = f"{'::'.join(self.namespaces)}::{func_name}"
         lines += super(CEnumGeneratorMapBase, self).generate_item(
             name, members)
         if self.specialize_in_source:
             lines += self.generate_specialization(name, members)
+        return lines
+
+    def generate_function(self, name, for_header=False, result=None,
+                          specialize_empty=False, **kwargs):
+        lines = []
+        kwargs.setdefault('spec_param', ['typename'])
+        assert len(kwargs['spec_param']) == 1
+        specialization = self.specialization(lines, **kwargs)
+        inline = 'inline ' if (specialization and for_header) else ''
+        key_type = specialization.strip('<>') if specialization else 'T'
+        lines += [
+            f'{inline}const std::map<{key_type}, '
+            f'{self.value_type}>& '
+            f'get_enum_{self.function_suffix}{specialization}() {{',
+        ]
+        if result is None:
+            if specialization:
+                if specialize_empty:
+                    result = 'result'
+                    lines += [
+                        f'  static const std::map<{key_type}, '
+                        f'{self.value_type}> result;',
+                    ]
+                else:
+                    func_name = f"{name}_{self.function_suffix}"
+                    if self.namespaces and not for_header:
+                        func_name = (
+                            f"{'::'.join(self.namespaces)}::{func_name}")
+                    result = f'{func_name}()'
+            else:
+                result = 'result'
+                lines += [
+                    f'  static const std::map<{key_type}, '
+                    f'{self.value_type}> result;',
+                    f'  throw std::runtime_error(\"No enum '
+                    f'{self.function_suffix} map could be found\");'
+                ]
+        assert result is not None
+        lines += [
+            f'  return {result};',
+            '}',
+        ]
+        if (not specialization) and specialize_empty:
+            kwargs.update(
+                for_header=for_header,
+                specialize=[f'enum {specialize_empty}'],
+                specialize_empty=specialize_empty,
+            )
+            lines += self.generate_function(name, **kwargs)
         return lines
 
 
@@ -687,36 +849,21 @@ class CEnumGeneratorNameMapSource(CEnumGeneratorMapBase):
         lines = super(
             CEnumGeneratorNameMapSource, self).generate_specialization(
                 name, members, for_header=for_header)
-        # suffix = self.parent.added_files['global'].strip_suffix
-        lines += [
-            f"template<> MODULE get_enum_module<enum {name}>() {{",
-            f"  return MODULE_{name.split('_')[0]};",
-            "}",
-            # "template<>",
-            # f"struct MODULE2Enum{suffix}<MODULE_{name.split('_')[0]}> {{",
-            # "public:",
-            # f"  typedef enum {name} Type;",
-            # "};",
-            ""
-        ]
+        if not self.dont_specialize:
+            fglobal = self.parent.get_child('global')
+            this_id = f"{fglobal.enum_name}_{name.split('_')[0]}"
+            lines += fglobal.generate_param_function(
+                fglobal.enum_name, result=this_id,
+                for_header=for_header, specialize=[f'enum {name}'])
+            # spec_param = [
+            #     f"{x}_{name.split('_')[0]}"
+            #     for x in fglobal.spec_param
+            # ]
+            # lines += fglobal.generate_type_struct(
+            #     fglobal.enum_name, result=name,
+            #     for_header=for_header, specialize=spec_param)
+            lines += ['']
         return lines
-
-    # def generate_item(self, name, members):
-    #     lines = []
-    #     lines += super(CEnumGeneratorNameMapSource, self).generate_item(
-    #         name, members)
-    #     lines += [
-    #         f"template<> MODULE get_enum_module<enum {name}>() {{",
-    #         f"  return MODULE_{name.split('_')[0]};",
-    #         "}",
-    #         # "template<>",
-    #         # f"struct MODULE2Enum{suffix}<MODULE_{name.split('_')[0]}> {{",
-    #         # "public:",
-    #         # f"  typedef enum {name} Type;",
-    #         # "};",
-    #         ""
-    #     ]
-    #     return lines
 
 
 class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
@@ -730,6 +877,17 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
             'type': str,
             'help': "Name that should be used for the global enum",
         },
+        accum_enum_name={
+            'type': str,
+            'help': ("Name that should be used for enum accumulated "
+                     "between calls"),
+            'default': "PARAM_TYPE",
+        },
+        empty_enum_name={
+            'type': str,
+            'help': "Name that should be used for empty enum",
+            'default': "EMPTY_ENUM",
+        },
         strip_suffix={
             'type': str,
             'help': ("Suffix that should be stripped from global enum "
@@ -739,6 +897,7 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('enum_name', self.name.upper())
+        kwargs.setdefault('prefixes', {})
         super(CEnumGeneratorGlobalHeader, self).__init__(*args, **kwargs)
         assert self.parent
 
@@ -752,20 +911,96 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
             key = key.rsplit(self.strip_suffix)[0]
         return [f"{key:{width}},"]
 
+    def generate_type_struct(self, name, result=None, for_header=False,
+                             **kwargs):
+        assert not self.parent.as_class
+        kwargs.setdefault('spec_param', self.spec_param)
+        lines = []
+        func_name = f'{name}2Enum'
+        specialization = self.specialization(lines, **kwargs)
+        lines += [
+            f'struct {func_name}{specialization} {{',
+            'public:',
+        ]
+        if result is None and (not specialization):
+            result = self.empty_enum_name
+        assert result is not None
+        lines += [
+            f'  typedef enum {result} Type;',
+            '};',
+        ]
+        return lines
+
+    def generate_param_function(self, dst, result=None, for_header=False,
+                                **kwargs):
+        lines = []
+        func_name = f'get_enum_{dst.lower()}'
+        kwargs.setdefault('spec_param', ['typename'])
+        specialization = self.specialization(lines, **kwargs)
+        inline = 'inline ' if (specialization and for_header) else ''
+        lines += [
+            f'{inline}{dst} {func_name}{specialization}() {{',
+        ]
+        if not specialization:
+            lines += [
+                f'  throw std::runtime_error(\"No {dst.lower()} '
+                f'could be found\");',
+            ]
+        if result is None and (not specialization):
+            result = f'{dst}_NONE'
+        assert result is not None
+        lines += [
+            f'  return {result};',
+            '}',
+        ]
+        if not specialization:
+            kwargs.update(
+                result=result,
+                for_header=for_header,
+                specialize=[
+                    'enum ' + self.empty_enum_name
+                ]
+            )
+            lines += self.generate_param_function(dst, **kwargs)
+        return lines
+
+    @property
+    def spec_param(self):
+        out = [self.enum_name]
+        if self.accum_enum_name:
+            out.append(self.accum_enum_name)
+        return out
+
     def generate(self, indent='', **kwargs):
         lines = []
+        includes = {'names': [], 'values': []}
+        existing_accum_enum = []
         if os.path.isfile(self.dst):
             with open(self.dst, 'r') as fd:
-                lines += [x for x in fd.read().splitlines()
-                          if x.startswith('#include')]
+                existing = fd.read().splitlines()
+            for x in existing:
+                if x.startswith('#include'):
+                    for k in ['names', 'values']:
+                        base = os.path.basename(
+                            self.parent.get_child(k).get_child(
+                                'header').dst)
+                        if x.endswith(f'{base.split("_")[-1]}"'):
+                            if k in self.parent.added_files:
+                                includes[k].append(x)
+                            break
+                    else:
+                        lines.append(x)
+                elif (self.accum_enum_name
+                      and x.startswith(f'  {self.accum_enum_name}_')):
+                    new_val = x.split(
+                        f'{self.accum_enum_name}_')[-1].split(',')[0].strip()
+                    if new_val not in ['NONE', 'MAX']:
+                        existing_accum_enum.append(new_val)
         include = self.parent.include_self(
             self.dst, rootdir=self.root_include_dir)
         for x in include:
             if x not in lines:
                 lines.append(x)
-        lines += [
-            "enum EMPTY_ENUM {};", ""
-        ]
 
         def key_len(x):
             out = ''.join(self.prefixes.get(x, [x]))
@@ -790,25 +1025,77 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
             "};",
             ""
         ]
-        lines += [self.comment + ' ' + x for x in self.preserve_marker]
+        spec_param = [self.enum_name]
+        # Param types
+        if self.accum_enum_name:
+            spec_param.append(self.accum_enum_name)
+            new_accum_enum = self.strip_suffix.strip('_')
+            if new_accum_enum not in existing_accum_enum:
+                existing_accum_enum.append(new_accum_enum)
+            lines += self.parent.generate_enum(
+                self.accum_enum_name,
+                [{'name': x, 'abbr': x} for x in existing_accum_enum],
+                prefix_with_type=True, as_class=False)
+        # Empty enum
+        lines += ['// Empty enum']
+        lines += self.parent.generate_enum(
+            self.empty_enum_name, [],
+            prefix_with_type=True, as_class=False)
+        # Utility for getting module id from enum type
         lines += [
-            f"template<{self.enum_name} T>",
-            f"struct {self.enum_name}2Enum{self.strip_suffix} {{",
-            "public:",
-            "  typedef enum EMPTY_ENUM Type;",
-            "};",
+            f'// Utility for getting {self.enum_name.lower()} '
+            f'id from enum type',
         ]
-        for k, v in self.src.param.items():
-            key = k.rsplit(self.strip_suffix)[0]
+        lines += self.generate_param_function(
+            self.enum_name, for_header=True)
+        lines += ['']
+        # Utility for getting param type from enum type
+        if self.accum_enum_name:
             lines += [
-                "template<>",
-                f"struct {self.enum_name}2Enum{self.strip_suffix}"
-                f"<{self.enum_name}_{key}> {{",
-                "public:",
-                f"  typedef enum {k} Type;",
-                "};",
-                ""
+                f'// Utility for getting {self.accum_enum_name.lower()} '
+                f'from enum type',
             ]
+            lines += self.generate_param_function(
+                self.accum_enum_name, for_header=True)
+            lines += ['']
+        # Utilities for getting names/values from enum type
+        for k in ['names', 'values']:
+            lines += [
+                f'// Utility for getting {k} from enum',
+            ]
+            lines += self.parent.get_child(k).generate_function(
+                self.enum_name, spec_param=['typename'],
+                specialize_empty=self.empty_enum_name,
+                for_header=True)
+            if k in self.parent.added_files:
+                new_include = self.parent.get_child(
+                    k).get_child('header').include_self(
+                        self.dst, rootdir=self.root_include_dir)
+                for x in new_include:
+                    if x not in includes[k]:
+                        includes[k].append(x)
+            if includes[k]:
+                lines += [f'// Specializations for get_enum_{k}']
+                lines += includes[k]
+        lines += ['']
+        if not self.parent.as_class:
+            lines += [
+                f'// Utility for getting enum type from '
+                f'{self.enum_name.lower()} & '
+                f'{self.accum_enum_name.lower()}',
+            ]
+            lines += self.generate_type_struct(
+                self.enum_name, for_header=True)
+            # Begin preserved lines
+            lines += [self.comment + ' ' + x for x in self.preserve_marker]
+            for k, v in self.src.param.items():
+                key = k.rsplit(self.strip_suffix)[0]
+                lines += self.generate_type_struct(
+                    self.enum_name, result=k, for_header=True,
+                    specialize=[f'{self.enum_name}_{key}',
+                                f'{self.accum_enum_name}'
+                                f'{self.strip_suffix}'])
+                lines += ['']
         return lines
 
 
@@ -816,10 +1103,17 @@ class CEnumGeneratorHeader(CEnumGeneratorBase):
 
     name = 'c'
     file_suffix = '_enum'
+    perfile_options = dict(
+        CEnumGeneratorBase.perfile_options,
+        as_class={
+            'action': 'store_true', 'default': False,
+            'help': "Create enum as a class",
+        },
+    )
     added_file_classes = {
         'global': CEnumGeneratorGlobalHeader,
         'names': CEnumGeneratorNameMapSource,
-        'defaults': CEnumGeneratorValueMapSource,
+        'values': CEnumGeneratorValueMapSource,
     }
 
     def __init__(self, *args, **kwargs):
@@ -827,6 +1121,15 @@ class CEnumGeneratorHeader(CEnumGeneratorBase):
             kwargs.setdefault(f'kwargs_{k}_header', {})
             kwargs[f'kwargs_{k}_header'].setdefault('include_files', [])
             kwargs[f'kwargs_{k}_header']['include_files'].append(self)
+        if kwargs.get('as_class', False):
+            self.added_file_classes = dict(self.added_file_classes)
+            self.added_section_classes = dict(self.added_section_classes)
+            for k in ['names', 'values']:
+                self.added_section_classes.setdefault(
+                    k, self.added_file_classes.pop(k))
+                kwargs.setdefault(f'kwargs_{k}', {})
+                kwargs[f'kwargs_{k}']['define_in_header'] = True
+                kwargs[f'kwargs_{k}']['dont_specialize'] = True
         super(CEnumGeneratorHeader, self).__init__(*args, **kwargs)
 
     def generate_member(self, x, width=None, width_val=None):
@@ -839,24 +1142,56 @@ class CEnumGeneratorHeader(CEnumGeneratorBase):
             docs = f"  //!< {x['doc']}"
         return [f"  {x['name']:{width}}{val:{width_val}},{docs}"]
 
-    def generate_item(self, name, members):
+    def generate_item(self, name, members, spec_param=[],
+                      specialize=[], as_class=None, **kwargs):
         lines = []
+        indent = ''
+        enum_name = name
+        specialization = self.specialization(
+            lines, spec_param=spec_param, specialize=specialize,
+            **kwargs)
+        if as_class is None:
+            as_class = self.as_class
+        if as_class:
+            lines += [
+                f'class {name}{specialization} {{'
+            ]
+            enum_name = 'Type'
+            indent += '  '
         lines += [
-            f"enum {name} {{",
+            f"{indent}enum {enum_name} {{",
         ]
         width = self.max_width(members)
-        width_val = len(max(members, key=lambda x:
-                            len(x.get('idx', ''))).get('idx', '')) + 3
-        first = f"{name}_NONE"
-        last = f"{name}_MAX"
-        if members[0]['name'] != first:
-            members.insert(0, {'name': first, 'abbr': first,
-                               'no_prefix': True})
-        if members[-1]['name'] != last:
-            members.append({'name': last, 'abbr': last,
-                            'no_prefix': True})
-        lines += super(CEnumGeneratorHeader, self).generate_item(
-            name, members, width=width, width_val=width_val)
+        width_val = self.max_width(members, key='idx')
+        first = "NONE"
+        last = "MAX"
+        if (not members) or members[0]['name'] != first:
+            members.insert(0, {'name': first, 'abbr': first})
+        if (not members) or members[-1]['name'] != last:
+            members.append({'name': last, 'abbr': last})
+        lines += [
+            indent + x for x in
+            super(CEnumGeneratorHeader, self).generate_item(
+                name, members, width=width, width_val=width_val)
+        ]
+        if as_class:
+            if spec_param and not specialize:
+                if len(spec_param) == 1:
+                    lines += [
+                        f"{indent}static const {spec_param[0]} = T;"]
+                else:
+                    for i, p in enumerate(spec_param):
+                        lines += [f"{indent}static const {p} = T{i};"]
+            lines += [
+                f'{indent}static const {enum_name} All[] = {{',
+                f'{", ".join(x["name"] for x in members)}}};',
+                f'{indent}}};',
+            ]
+            for k in ['names', 'values']:
+                lines += [
+                    indent + x for x in
+                    self.added_sections[k].generate_definition(
+                        name, members, var_name=k)]
         lines += [
             "};",
             ""
@@ -1113,7 +1448,6 @@ if __name__ == "__main__":
                         help=("Rename source files in this directory "
                               "with the provided src suffix to use the "
                               "provided dst suffix"))
-    print(list(registered_classes('generator')))
     for x in registered_classes('generator', return_classes=True):
         x.add_arguments(parser)
     args = parser.parse_args()

@@ -29,7 +29,8 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-SUCSCondition::SUCSCondition(const SUCSCondition* const other) {
+SUCSCondition::SUCSCondition(const SUCSCondition* const other) :
+  ConditionBase<SUCSCondition, CMCondition, MODULE_SUCS>(other) {
     T3Pc = other->T3Pc;
     FBPc = other->FBPc;
     HexPc = other->HexPc;

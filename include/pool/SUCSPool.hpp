@@ -27,6 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
+#include "ValueSet.hpp"
 
 namespace ePhotosynthesis {
 namespace pool {
@@ -34,10 +35,12 @@ namespace pool {
 /**
  Class for SUCS_Pool data
  */
-class SUCSPool {
+class SUCSPool : public ValueSet<MODULE_SUCS, PARAM_TYPE_POOL> {
 public:
-    SUCSPool() {}
-    SUCSPool(const SUCSPool &other) {
+    SUCSPool() :
+      ValueSet<MODULE_SUCS, PARAM_TYPE_POOL>() {}
+    SUCSPool(const SUCSPool &other) :
+      ValueSet<MODULE_SUCS, PARAM_TYPE_POOL>(other) {
         ATc = other.ATc;
         UTc = other.UTc;
         PTc = other.PTc;

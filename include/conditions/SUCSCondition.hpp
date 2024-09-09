@@ -38,7 +38,7 @@ class CMCondition;
 /**
  Class for holding the inputs for SUCS_mb
  */
-class SUCSCondition : public ConditionBase<SUCSCondition, CMCondition> {
+class SUCSCondition : public ConditionBase<SUCSCondition, CMCondition, MODULE_SUCS> {
 public:
     SUCSCondition(CMCondition* par = nullptr) {
         setParent(par);

@@ -110,7 +110,7 @@ int main(int argc, const char* argv[]) {
         options.show_positional_help();
         std::string evn, atpcost, optionsFile, enzymeFile, grnFile;
 #define MODULE_FPARAM(name)			\
-	std::string f ## name ## _COND, f ## name ## _RC
+	std::string f ## name ## _COND, f ## name ## _RC, f ## name ## _POOL, f ## name ## _KE
 	MODULE_FPARAM(BF);
 	MODULE_FPARAM(FI);
 	MODULE_FPARAM(PR);
@@ -135,7 +135,11 @@ int main(int argc, const char* argv[]) {
 	MODULE_FPARAM_X(name, Conditions, COND,				\
 			"initial conditions tracked by")		\
 	MODULE_FPARAM_X(name, RateConstants, RC,			\
-			"rate_constants that control the")
+			"rate constants that control the")		\
+	MODULE_FPARAM_X(name, Pool, POOL,				\
+			"pool constants that control the")		\
+	MODULE_FPARAM_X(name, EquilibriumConstants, KE,			\
+			"equilibrium constants that control the")
         options.add_options()
                 ("v,verbose", "Record output values for all steps (this can significantly slow the program).", cxxopts::value<bool>(record)->default_value("false"))
                 ("e,evn", "The file (including path) containing environmental parameters", cxxopts::value<std::string>(evn)->default_value("InputEvn.txt"))
@@ -195,7 +199,9 @@ int main(int argc, const char* argv[]) {
 	    varSearch(f ## name ## _ ## fsuffix)
 #define MODULE_FPARAM(name)			\
 	    MODULE_FPARAM_X(name, COND)	\
-	    MODULE_FPARAM_X(name, RC)
+	    MODULE_FPARAM_X(name, RC)	\
+	    MODULE_FPARAM_X(name, POOL)	\
+	    MODULE_FPARAM_X(name, KE)
 	    MODULE_FPARAM(BF)
 	    MODULE_FPARAM(FI)
 	    MODULE_FPARAM(PR)
@@ -223,11 +229,16 @@ int main(int argc, const char* argv[]) {
 	    readFile(enzymeFile, theVars->EnzymeAct, true);
         }
 
-#define MODULE_FPARAM_X(name, fsuffix)		\
-	theVars->files_ ## fsuffix[MODULE_ ## name] = f ## name ## _ ## fsuffix
+#define MODULE_FPARAM_X(name, fsuffix)					\
+	if (f ## name ## _ ## fsuffix.size() > 0) {			\
+	  theVars->files[PARAM_TYPE_ ## fsuffix][MODULE_ ## name] = f ## name ## _ ## fsuffix; \
+	}
+	// theVars->files_ ## fsuffix[MODULE_ ## name] = f ## name ## _ ## fsuffix
 #define MODULE_FPARAM(name)			\
 	MODULE_FPARAM_X(name, COND);		\
-	MODULE_FPARAM_X(name, RC)
+	MODULE_FPARAM_X(name, RC);		\
+	MODULE_FPARAM_X(name, POOL);		\
+	MODULE_FPARAM_X(name, KE)
 	MODULE_FPARAM(BF);
 	MODULE_FPARAM(FI);
 	MODULE_FPARAM(PR);

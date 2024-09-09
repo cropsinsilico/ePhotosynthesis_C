@@ -95,22 +95,18 @@ enum PS_COND {
 };
 
 enum RROEA_COND {
-  RROEA_COND_NONE      ,
-  RROEA_COND_MDH       ,  //!< The initial concentration of actove MDH
-  RROEA_COND_Thio      ,  //!< The initial concentration of reduced thioredoxin
-  RROEA_COND_Fd        ,  //!< The initial concentration of reduced ferrodoxin
-  RROEA_COND_RuACT     ,  //!< The initial concentration of active Rubisco activase
-  RROEA_COND_MAX       ,
-};
-
-enum RedoxReg_COND {
-  RedoxReg_COND_NONE          ,
-  RedoxReg_COND_ThioRatio     ,
-  RedoxReg_COND_FBPase        ,
-  RedoxReg_COND_SBPase        ,
-  RedoxReg_COND_PRK           ,
-  RedoxReg_COND_ATPase        ,
-  RedoxReg_COND_MAX           ,
+  RROEA_COND_NONE       ,
+  RROEA_COND_GAPDH      ,  //!< SA = 620.0, mw = 147000.0, PS::V3
+  RROEA_COND_FBPase     ,  //!< SA = 119.0, mw = 195000.0, PS::V6
+  RROEA_COND_SBPase     ,  //!< SA = 70.0, mw = 66000.0, PS::V9
+  RROEA_COND_PRK        ,  //!< SA = 410.0, mw = 40000.0 PS::V13
+  RROEA_COND_ATPase     ,  //!< SA = 100.0, mw = 500000.0 PS::V16
+  RROEA_COND_ATPGPP     ,  //!< SA = 10.0, mw = 210000.0 PS::V23
+  RROEA_COND_MDH        ,  //!< The initial concentration of actove MDH
+  RROEA_COND_Thio       ,  //!< The initial concentration of reduced thioredoxin
+  RROEA_COND_Fd         ,  //!< The initial concentration of reduced ferrodoxin
+  RROEA_COND_RuACT      ,  //!< The initial concentration of active Rubisco activase
+  RROEA_COND_MAX        ,
 };
 
 enum RuACT_COND {

@@ -40,7 +40,7 @@ class PS_PRCondition;
 /**
  Class for holding the inputs to PS_mb
  */
-class PSCondition : public ConditionBase<PSCondition, PS_PRCondition> {
+class PSCondition : public ConditionBase<PSCondition, PS_PRCondition, MODULE_PS> {
 public:
     PSCondition(PS_PRCondition* par = nullptr) {
         setParent(par);
@@ -83,7 +83,7 @@ public:
       \returns The output stream
       */
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-    SET_GET_BOOL(C3)
+    SET_GET_BOOL(C3, PS_COND_ADPG)
 private:
     friend ConditionBase;
     friend class modules::PS;
@@ -117,7 +117,7 @@ private:
       Reset any static data members to their initial state
       */
     static void reset() {
-        C3 = false;
+      setC3(false);
     }
 
     static const std::size_t count;  // size of the current serialized output

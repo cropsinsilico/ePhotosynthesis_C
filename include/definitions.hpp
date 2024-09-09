@@ -181,11 +181,27 @@ enum RequestedDebug : uint {None = 0,
 //! [SET_GET]
 
 //! [SET_GET_BOOL]
-#define SET_GET_BOOL(NAME) public:\
+#define SET_GET_BOOL(NAME, SKIP) public:				\
     /** Get the value of NAME \returns The current value */\
     static bool get ## NAME() {return NAME;}\
     /** Set the value of NAME \param val The value to set NAME to */\
-    static void set ## NAME(const bool val) {NAME = val;}\
+    static void set ## NAME(const bool val) {			    \
+      NAME = val;						    \
+      if (SKIP) {						    \
+	if (val) {						    \
+	  skip(SKIP);						    \
+	} else {						    \
+	  unskip(SKIP);						    \
+	}							    \
+      }								    \
+    }								    \
+    private:\
+        EPHOTO_API static bool NAME;
+#define SET_GET_BOOL_NOSKIP(NAME) public:			\
+    /** Get the value of NAME \returns The current value */\
+    static bool get ## NAME() {return NAME;}\
+    /** Set the value of NAME \param val The value to set NAME to */\
+    static void set ## NAME(const bool val) {NAME = val;}	    \
     private:\
         EPHOTO_API static bool NAME;
 //! [SET_GET_BOOL]

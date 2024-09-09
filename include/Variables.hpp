@@ -76,6 +76,8 @@ public:
     Variables* deepcopy() const;
     Variables& operator=(const Variables& other);
     friend std::ostream& operator<<(std::ostream &out, const Variables *in);
+    template<typename T>
+    void initParam(T& param);
 
     SUNContext* context = NULL;
     bool record = false;
@@ -122,10 +124,7 @@ public:
     const double alpha2 = 2.06;
 
     // Files containing default conditions & constants
-    std::map<MODULE, std::string> files_COND;
-    std::map<MODULE, std::string> files_RC;
-    std::map<MODULE, std::string> files_POOL;
-    std::map<MODULE, std::string> files_KE;
+    std::map<PARAM_TYPE, std::map<MODULE, std::string> > files;
 
     // Parameters
     arr PR_Param = zeros(2);
@@ -163,7 +162,6 @@ public:
     arr VfactorT = ones(28);
 
     // Pool
-    std::map<MODULE, std::map<int64_t, double> > Pools;
     pool::BFPool BF_Pool;
     pool::FIBFPool FIBF_Pool;
     pool::FIPool FI_Pool;
@@ -172,7 +170,6 @@ public:
     pool::SUCSPool SUCS_Pool;
 
     // RC
-    std::map<MODULE, std::map<int64_t, double> > RCs;
     RC::BFRC BF_RC;
     RC::FIRC FI_RC;
     RC::RROEARC RROEA_RC;

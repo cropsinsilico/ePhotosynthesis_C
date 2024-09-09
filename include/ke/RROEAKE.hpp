@@ -27,6 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
+#include "ValueSet.hpp"
 
 namespace ePhotosynthesis {
 namespace KE {
@@ -34,15 +35,16 @@ namespace KE {
 /**
  Class for RROEA_KE data
  */
-class RROEAKE {
+class RROEAKE : public ValueSet<MODULE_RROEA, PARAM_TYPE_KE> {
 public:
-    RROEAKE() {}
+    RROEAKE() : ValueSet<MODULE_RROEA, PARAM_TYPE_KE>() {}
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The RROEAKE object to copy
       */
-    RROEAKE(const RROEAKE &other) {
+    RROEAKE(const RROEAKE &other) :
+      ValueSet<MODULE_RROEA, PARAM_TYPE_KE>(other) {
 
         KEe2FBPase = other.KEe2FBPase;
         KEe2SBPase = other.KEe2SBPase;

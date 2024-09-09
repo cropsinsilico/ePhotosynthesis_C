@@ -1,0 +1,5 @@
+- Add rate constants to init
+- Add param files for module level constants?
+- Initialize module level values
+- Clean up comments for param files
+- Change enums for parameters to use classes for scope

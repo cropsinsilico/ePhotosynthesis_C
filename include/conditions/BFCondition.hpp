@@ -38,7 +38,7 @@ class FIBFCondition;
 /**
  Class for holding the inputs to BF_mb
  */
-class BFCondition : public ConditionBase<BFCondition, FIBFCondition> {
+class BFCondition : public ConditionBase<BFCondition, FIBFCondition, MODULE_BF> {
 public:
     BFCondition(FIBFCondition* par = nullptr) {
         setParent(par);
@@ -94,9 +94,9 @@ public:
       \returns The output stream
       */
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-    SET_GET_BOOL(PS_connect)
-    SET_GET_BOOL(RROEA_connect)
-    SET_GET_BOOL(FI_connect)
+    SET_GET_BOOL(PS_connect, BF_COND_Q)
+    SET_GET_BOOL(RROEA_connect, BF_COND_ATP)
+    SET_GET_BOOL(FI_connect, BF_COND_Fdn)
 
 private:
     friend ConditionBase;
@@ -136,9 +136,9 @@ private:
       Reset any static data members to their initial state
       */
     static void reset() {
-        PS_connect = false;
-        RROEA_connect = false;
-        FI_connect = false;
+      setPS_connect(false);
+      setRROEA_connect(false);
+      setFI_connect(false);
     }
     static const std::size_t count;  // The Maximum size of the serialized vector.
 #ifdef INCDEBUG

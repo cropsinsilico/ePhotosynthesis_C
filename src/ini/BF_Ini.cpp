@@ -26,6 +26,7 @@
 
 #include <math.h>
 #include "Variables.hpp"
+#include "ValueSet.hpp"
 #include "modules/BF.hpp"
 #define PMODTEM 1.
 #define RT (8.314 * 298.)
@@ -57,6 +58,42 @@ BFCondition* BF::_init(Variables *theVars) {
     BF::setRROEA_connect(theVars->RROEA_EPS_com);
     // Indicate in the beginning there is no ATP synthesis activity.
     BF::EPS_ATP_Rate = 0.;
+    double Em_IPS = 0.31;
+    double Em_Cytf = 0.27;
+    double Em_PG = 0.35;
+    // theVars->initParam(theVars->BF_RC);
+    // theVars->BF_RC.K1 = pow(10., 6.);
+    // theVars->BF_RC.K2 = 500.;
+    // theVars->BF_RC.K3 = 5. * pow(10., 7.);
+    // theVars->BF_RC.K4 = 5. * pow(10., 7.);
+    // theVars->BF_RC.K5 = 5. * pow(10., 7.);
+    // theVars->BF_RC.K6 = 5. * pow(10., 7.);
+    // theVars->BF_RC.K7 = pow(10., 4.);
+    // theVars->BF_RC.K8 = 1000.;
+    // theVars->BF_RC.K9 = 8.3 * pow(10., 6.);
+    // theVars->BF_RC.K10 = 8. * pow(10., 8.);
+    // theVars->BF_RC.Vmax11 = 6.;
+    // theVars->BF_RC.Kqi = pow(10., 3.);
+    // theVars->BF_RC.PK = 3.6 * pow(10., -8.);
+    // theVars->BF_RC.PMg = 3.6 * pow(10., -8.);
+    // theVars->BF_RC.PCl = 1.8 * pow(10., -8.);
+    // theVars->BF_RC.Kau = pow(10., 10.);
+    // theVars->BF_RC.Kua = pow(10., 10.);
+    // theVars->BF_RC.Kf = 6.3 * pow(10., 6.);
+    // theVars->BF_RC.Kd = 2. * pow(10., 8.);
+    // theVars->BF_RC.K15 = pow(10., 10.);
+    // theVars->BF_RC.K16 = pow(10., 5.);
+    // theVars->BF_RC.MemCap = 0.6 * pow(10., -6.);
+    // theVars->BF_RC.RVA = 8. * pow(10., -10.);
+    // theVars->BF_RC.KBs = 1.1 * pow(10., -8.);
+    // theVars->BF_RC.KBl = 5.1 * pow(10., -6.);
+    // theVars->BF_RC.KM1ATP = 0.12;
+    // theVars->BF_RC.KM1ADP = 0.014;
+    // theVars->BF_RC.KM1PI = 0.3;
+    // theVars->BF_RC.KM2NADP = 0.05;
+    // theVars->BF_RC.KM2NADPH = 0.035;
+    // theVars->BF_RC.V2M = 27.8;
+    // theVars->BF_RC.KE2 = 495.;
     if (theVars->useC3) {
         BF::cNADPHsyn = 1.;
         BF::CPSi = 1.;
@@ -68,17 +105,6 @@ BFCondition* BF::_init(Variables *theVars) {
             const double light_scaler = theVars->alfa * (1. - theVars->fc);
             theVars->lightParam = theVars->TestLi * 30. * light_scaler;
         }
-
-        // ISPHr + cytc1 --> ISPHox + cytc1-
-        double DeltaEm = 0.27 - 0.31;
-        double DeltaG = DeltaEm * (-9.649) * pow(10., 4.);
-        const double KE8 = exp(-DeltaG / RT);
-
-        // cytc1- + cytc2 --> cytc1 + cytc2-
-        DeltaEm = 0.35 - 0.27;
-        DeltaG = DeltaEm * -9.649 * pow(10., 4.);
-
-        const double KE9 = exp(-DeltaG / RT);
 
         // Assign values to the array for rate constant
         theVars->BF_RC.K1 = theVars->EnzymeAct.at("K1");     // The rate constant for formation of ISP.QH2 complex; unit:  per second
@@ -100,8 +126,6 @@ BFCondition* BF::_init(Variables *theVars) {
         theVars->BF_RC.Kua = theVars->EnzymeAct.at("Kua");   // The rate constant for exciton transfer from core antenna to peripheral antenna, SEE FI Unit: s-1
         theVars->BF_RC.Kf = theVars->EnzymeAct.at("Kf");    // The rate constant for fluorescence emission, see the note in FI Unit: s-1
         theVars->BF_RC.Kd = theVars->EnzymeAct.at("Kd");    // The rate constant for heat dissipation; see the note for FI Unit: s-1
-        theVars->BF_RC.KE8 = KE8;                   // ISPHr + cytc1 --> ISPHox + cytc1- Unit: s-1
-        theVars->BF_RC.KE9 = KE9;                   // cytc1- + cytc2 --> cytc1 + cytc2- Unit: s-1
         theVars->BF_RC.K15 = theVars->EnzymeAct.at("K15") * BF::CPSi;     // The rate constant for primary charge separation in PSI Unit: s-1
         theVars->BF_RC.K16 = theVars->EnzymeAct.at("K16");    // The rate constant for electron tranfer from electron acceptor of PSI to Fd Unit: s-1
         theVars->BF_RC.MemCap = 0.6 * pow(10., -6.); // The membrane capacity
@@ -116,18 +140,6 @@ BFCondition* BF::_init(Variables *theVars) {
         theVars->BF_RC.V2M = theVars->EnzymeAct.at("V2M") * BF::cNADPHsyn;     // The maximum rate of NADPH formation Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
         theVars->BF_RC.KE2 = 495.;                    // Equilibrium constatn
     } else {
-
-
-        // ISPHr + cytc1 --> ISPHox + cytc1-
-        double DeltaEm = 0.27 * theVars->BFRatio[22] - 0.31 * theVars->BFRatio[21];
-        double DeltaG = DeltaEm * -9.649 * pow(10., 4.);
-        const double KE8 = exp(-DeltaG / RT);
-
-        // cytc1- + cytc2 --> cytc1 + cytc2-
-        DeltaEm = 0.35 * theVars->BFRatio[25] - 0.27 * theVars->BFRatio[22];
-        DeltaG = DeltaEm * -9.649 * pow(10., 4.);
-
-        const double KE9 = exp(-DeltaG / RT);
 
         theVars->BF_RC.K1 = pow(10., 6.) * theVars->BFRatio[0];     // The rate constant for formation of ISP.QH2 complex; unit:  per second
         theVars->BF_RC.K2 = 500. * theVars->BFRatio[1];            // The rate constant for ISP.QH2-->QH(semi) + ISPH(red) ; unit:  per second
@@ -148,8 +160,6 @@ BFCondition* BF::_init(Variables *theVars) {
         theVars->BF_RC.Kua = pow(10., 10.) * theVars->BFRatio[16];     // The rate constant for exciton transfer from core antenna to peripheral antenna, SEE FI Unit: s-1
         theVars->BF_RC.Kf = 6.3 * pow(10., 6.) * theVars->BFRatio[17]; // The rate constant for fluorescence emission, see the note in FI Unit: s-1
         theVars->BF_RC.Kd = 2. * pow(10., 8.) * theVars->BFRatio[18];   // The rate constant for heat dissipation; see the note for FI Unit: s-1
-        theVars->BF_RC.KE8 = KE8; // ISPHr + cytc1 --> ISPHox + cytc1- Unit: s-1
-        theVars->BF_RC.KE9 = KE9; // cytc1- + cytc2 --> cytc1 + cytc2- Unit: s-1
         theVars->BF_RC.K15 = pow(10., 10.) * theVars->BFRatio[19];     // The rate constant for primary charge separation in PSI Unit: s-1
         theVars->BF_RC.K16 = pow(10., 5.) * theVars->BFRatio[20];      // The rate constant for electron tranfer from electron acceptor of PSI to Fd Unit: s-1
         theVars->BF_RC.MemCap = 0.6 * pow(10., -6.) * theVars->BFRatio[26]; // The membrane capacity
@@ -164,6 +174,125 @@ BFCondition* BF::_init(Variables *theVars) {
         theVars->BF_RC.V2M = 27.8 * theVars->BFRatio[35];     // The maximum rate of NADPH formation Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
         theVars->BF_RC.KE2 = 495. * theVars->BFRatio[36];      // Equilibrium constatn
     }
+    // theVars->BF_RC.PK *= PMODTEM;
+    // theVars->BF_RC.PMg *= PMODTEM;
+    // theVars->BF_RC.PCl *= PMODTEM;
+    // theVars->BF_RC[BF_RC_PK] *= PMODTEM;
+    // theVars->BF_RC[BF_RC_PMg] *= PMODTEM;
+    // theVars->BF_RC[BF_RC_PCl] *= PMODTEM;
+    if (theVars->useC3) {
+      // Set values from loaded EnzymeAct
+      // This may be deprecated infavor of setting via RC parameter file
+    //   int i = 0;
+    //   for (typename std::map<BF_RC, double>::iterator it = theVars->BF_RC.begin();
+    //        it != theVars->BF_RC.end(); it++, i++) {
+    //     switch(it->first) {
+    //     case (BF_RC_K1) :
+    //     case (BF_RC_K2) :
+    //     case (BF_RC_K3) :
+    //     case (BF_RC_K4) :
+    //     case (BF_RC_K5) :
+    //     case (BF_RC_K6) :
+    //     case (BF_RC_K7) :
+    //     case (BF_RC_K8) :
+    //     case (BF_RC_K9) :
+    //     case (BF_RC_K10) :
+    //     case (BF_RC_Vmax11) :
+    //     case (BF_RC_Kau) :
+    //     case (BF_RC_Kua) :
+    //     case (BF_RC_Kf) :
+    //     case (BF_RC_Kd) :
+    //     case (BF_RC_K15) :
+    //     case (BF_RC_K16) :
+    //     case (BF_RC_V2M) : {
+    //       if (theVars->useC3) {
+    //         it->second = theVars->EnzymeAct.at(enum_key2string(it->first));
+    //         break;
+    //       }
+    //     default : {
+    //       continue;
+    //     }
+    //     }
+    //   }
+    } else {
+    //   theVars->BF_RC.K1 *= theVars->BFRatio[0];
+    //   theVars->BF_RC.K2 *= theVars->BFRatio[1];
+    //   theVars->BF_RC.K3 *= theVars->BFRatio[2];
+    //   theVars->BF_RC.K4 *= theVars->BFRatio[3];
+    //   theVars->BF_RC.K5 *= theVars->BFRatio[4];
+    //   theVars->BF_RC.K6 *= theVars->BFRatio[5];
+    //   theVars->BF_RC.K7 *= theVars->BFRatio[6];
+    //   theVars->BF_RC.K8 *= theVars->BFRatio[7];
+    //   theVars->BF_RC.K9 *= theVars->BFRatio[8];
+    //   theVars->BF_RC.K10 *= theVars->BFRatio[9];
+    //   theVars->BF_RC.Vmax11 *= theVars->BFRatio[10];
+    //   theVars->BF_RC.Kqi *= theVars->BFRatio[11];
+    //   theVars->BF_RC.PK *= theVars->BFRatio[12];
+    //   theVars->BF_RC.PMg *= theVars->BFRatio[13];
+    //   theVars->BF_RC.PCl *= theVars->BFRatio[14];
+    //   theVars->BF_RC.Kau *= theVars->BFRatio[15];
+    //   theVars->BF_RC.Kua *= theVars->BFRatio[16];
+    //   theVars->BF_RC.Kf *= theVars->BFRatio[17];
+    //   theVars->BF_RC.Kd *= theVars->BFRatio[18];
+    //   // KE8 & KE9 skipped for BFRatio as they are not parametrized directly
+    //   theVars->BF_RC.K15 *= theVars->BFRatio[19];
+    //   theVars->BF_RC.K16 *= theVars->BFRatio[20];
+      Em_IPS *= theVars->BFRatio[21];
+      Em_Cytf *= theVars->BFRatio[22];
+      // BFRatio 23 & 24 not used?
+      Em_PG *= theVars->BFRatio[25];
+    //   theVars->BF_RC.MemCap *= theVars->BFRatio[26];
+    //   theVars->BF_RC.RVA *= theVars->BFRatio[27];
+    //   theVars->BF_RC.KBs *= theVars->BFRatio[28];
+    //   theVars->BF_RC.KBl *= theVars->BFRatio[29];
+    //   theVars->BF_RC.KM1ATP *= theVars->BFRatio[30];
+    //   theVars->BF_RC.KM1ADP *= theVars->BFRatio[31];
+    //   theVars->BF_RC.KM1PI *= theVars->BFRatio[32];
+    //   theVars->BF_RC.KM2NADP *= theVars->BFRatio[33];
+    //   theVars->BF_RC.KM2NADPH *= theVars->BFRatio[34];
+    //   theVars->BF_RC.V2M *= theVars->BFRatio[35];
+    //   theVars->BF_RC.KE2 *= theVars->BFRatio[36];
+    //   theVars->BF_RC.K1 *= theVars->BFRatio[32];
+    //   theVars->BF_RC.K1 *= theVars->BFRatio[33];
+    //   theVars->BF_RC.K1 *= theVars->BFRatio[34];
+    //   theVars->BF_RC.K1 *= theVars->BFRatio[35];
+    //   theVars->BF_RC.K1 *= theVars->BFRatio[36];
+    //   int i = 0;
+    //   for (typename std::map<BF_RC, double>::iterator it = theVars->BF_RC.begin();
+    //        it != theVars->BF_RC.end(); it++, i++) {
+    //     switch(it->first) {
+    //     case (BF_RC_Em_IPS) : {
+    //       assert i == 21
+    //       Em_IPS *= theVars->BFRatio[i];
+    //       break;
+    //     }
+    //     case (BF_RC_Em_Cytf) : {
+    //       assert i == 22
+    //       Em_Cytf *= theVars->BFRatio[i];
+    //       i += 2; // BFRatio 23 & 24 not used?
+    //       break;
+    //     }
+    //     case (BF_RC_Em_IPS) : {
+    //       assert i == 25
+    //       Em_PG *= theVars->BFRatio[i];
+    //       break;
+    //     }
+    //     default : {
+    //       it->second *= theVars->BFRatio[i];
+    //     }
+    //     }
+    //   }
+    }
+    // ISPHr + cytc1 --> ISPHox + cytc1-
+    double DeltaEm = Em_Cytf - Em_IPS;
+    double DeltaG = DeltaEm * -9.649 * pow(10., 4.);
+    theVars->BF_RC.KE8 = exp(-DeltaG / RT);  // ISPHr + cytc1 --> ISPHox + cytc1- Unit: s-1
+    // theVars->BF_RC[BF_RC_KE8] = exp(-DeltaG / RT);
+    // cytc1- + cytc2 --> cytc1 + cytc2-
+    DeltaEm = Em_PG - Em_Cytf;
+    DeltaG = DeltaEm * -9.649 * pow(10., 4.);
+    theVars->BF_RC.KE9 = exp(-DeltaG / RT);  // cytc1- + cytc2 --> cytc1 + cytc2- Unit: s-1
+    // theVars->BF_RC[BF_RC_KE9] = exp(-DeltaG / RT);
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Initialization of the initial concentration of the different component  //
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -216,6 +345,19 @@ BFCondition* BF::_init(Variables *theVars) {
     // The sizes of different pools in the model
 
     // Assign the pools to the global pool variables
+    // theVars->initParam(theVars->BF_Pool);
+    // theVars->BF_Pool.kA_d = 1.;
+    // theVars->BF_Pool.kA_f = 1.;
+    // theVars->BF_Pool.kA_U = 20.;
+    // theVars->BF_Pool.kU_A = 10.;
+    // theVars->BF_Pool.kU_d = 2.;
+    // theVars->BF_Pool.kU_f = 1.;
+    // theVars->BF_Pool.k1 = 1.;
+    // theVars->BF_Pool.k_r1 = 8.;
+    // theVars->BF_Pool.kz = 38.;
+    // theVars->BF_Pool.k12 = 38.;
+    // theVars->BF_Pool.k23 = 1.;
+    // theVars->BF_Pool.k30 = 1.;
     if (theVars->useC3) {
         theVars->BF_Pool.kA_d = 1.;  // The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
         theVars->BF_Pool.kA_f = 1.;  // The total amount of cytc; Unit: micromole m-2 leaf area
@@ -244,6 +386,28 @@ BFCondition* BF::_init(Variables *theVars) {
         theVars->BF_Pool.k23 = 1. * theVars->BFRatio[47];   // The total number of P700; unit: micromole m-2 leaf area
         theVars->BF_Pool.k30 = 1. * theVars->BFRatio[48];   //   The total concentration of NADPH in stroma; 1 is an guessed value;
     }
+    // if (!theVars->useC3) {
+    //   theVars->BF_Pool.kA_d *= theVars->BFRatio[37];
+    //   theVars->BF_Pool.kA_f *= theVars->BFRatio[38];
+    //   theVars->BF_Pool.kA_U *= theVars->BFRatio[39];
+    //   theVars->BF_Pool.kU_A *= theVars->BFRatio[40];
+    //   theVars->BF_Pool.kU_d *= theVars->BFRatio[41];
+    //   theVars->BF_Pool.kU_f *= theVars->BFRatio[42];
+    //   theVars->BF_Pool.k1 = *= theVars->BFRatio[43];
+    //   theVars->BF_Pool.k_r1 *= theVars->BFRatio[44];
+    //   theVars->BF_Pool.kz *= theVars->BFRatio[45];
+    //   theVars->BF_Pool.k12 *= theVars->BFRatio[46];
+    //   theVars->BF_Pool.k23 *= theVars->BFRatio[47];
+    //   theVars->BF_Pool.k30 *= theVars->BFRatio[48];
+    //   int i = 37;
+    //   for (typename std::map<BF_POOL, double>::iterator it = theVars->BF_Pool.begin();
+    //        it != theVars->BF_Pool.end(); it++, i++) {
+    //     it->second *= theVars->BFRatio[i];
+    //     if (i == 48)
+    //       break;
+    //   }
+    // }
+    // 
 
     return BF_con;
 }

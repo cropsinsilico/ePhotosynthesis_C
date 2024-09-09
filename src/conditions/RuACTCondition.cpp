@@ -29,7 +29,8 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-RuACTCondition::RuACTCondition(const RuACTCondition* const other) {
+RuACTCondition::RuACTCondition(const RuACTCondition* const other) :
+  ConditionBase<RuACTCondition, RACondition, MODULE_RuACT>(other) {
     ER = other->ER;
     Eaf = other->Eaf;
     ECMR = other->ECMR;

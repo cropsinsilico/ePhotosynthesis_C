@@ -28,8 +28,7 @@
 
 #include "definitions.hpp"
 #include "enums/enums_utils.hpp"
-#include "enums/enums_COND_names.hpp"
-#include "enums/enums_COND_defaults.hpp"
+#include "ValueSet.hpp"
 #include <stdexcept>
 #include <sundials/sundials_types.h>
 
@@ -47,8 +46,8 @@ namespace conditions {
   \tparam T The class type to work with
   \tparam U The parent Condition class
   */
-template<class T, class U>
-class ConditionBase {
+template<class T, class U, MODULE ID = MODULE_NONE>
+class ConditionBase : public ValueSet<ID, PARAM_TYPE_COND> {
 public:
     virtual ~ConditionBase() {}
 
@@ -77,6 +76,19 @@ public:
       \returns The number of active data members in this class.
       */
     static std::size_t size() {
+        if (T::MODULE != MODULE_NONE) {
+	  size_t alt = T::default_values().size() - T::skipped_values().size();
+	  if (alt != T::_size()) {
+	    std::cerr << "DEFAULTS = " << std::endl;
+	    T::print_defaults(std::cerr, 1);
+	    std::cerr << "SKIPPED = ";
+	    T::print_skipped(std::cerr);
+	    throw std::runtime_error("Size of default_values ("
+				     + std::to_string(T::default_values().size())
+				     + ") does not match expected count ("
+				     + std::to_string(T::_size()) + ")");
+	  }
+	}
         return T::_size();
     }
 
@@ -141,7 +153,9 @@ public:
     Debug::DebugLevel debugLevel() const {return static_cast<const T*>(this)->_dlevel;}
 #endif
 protected:
-    ConditionBase() {}
+    ConditionBase() : ValueSet<ID, PARAM_TYPE_COND>() {}
+    ConditionBase(const ConditionBase* const other) :
+      ValueSet<ID, PARAM_TYPE_COND>(*other) {}
 
     /**
       Serialize the data members of this object to a vector of double's. This is the opposite of

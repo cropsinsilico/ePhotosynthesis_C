@@ -98,7 +98,7 @@ private:
       Reset the static member variables to their default values.
       */
     static void _reset();
-    SET_GET_BOOL(TestSucPath)
+    SET_GET_BOOL_NOSKIP(TestSucPath)
 };
 
 }  // namespace modules

@@ -12,22 +12,28 @@
 const boost::regex token("\\s+");
 
 template<typename T>
-const std::map<const T, const std::string>& get_enum_names() {
-  static const std::map<const T, const std::string> out;
-  throw std::runtime_error("No enum names map could be found");
+std::vector<T>& skipped_enum_param(bool clear = false) {
+  static std::vector<T> out;
+  if (clear)
+    out.clear();
   return out;
 }
-
 template<typename T>
-const std::map<const T, const double>& get_enum_defaults() {
-  static const std::map<const T, const double> out;
-  throw std::runtime_error("No enum defaults map could be found");
-  return out;
-}
-
-template<typename T>
-MODULE get_enum_module() {
-  return MODULE_NONE;
+std::vector<T>& skip_enum_param(T val, bool unskip = false) {
+  std::vector<T>& skipped = skipped_enum_param<T>();
+  typename std::vector<T>::iterator it = skipped.begin();
+  for (; it != skipped.end(); it++) {
+    if (val == *it)
+      break;
+  }
+  if (unskip) {
+    if (it != skipped.end())
+      skipped.erase(it);
+  } else {
+    if (it == skipped.end())
+      skipped.push_back(val);
+  }
+  return skipped;
 }
 
 namespace ePhotosynthesis {
@@ -37,10 +43,10 @@ namespace ePhotosynthesis {
     EPHOTO_API std::string str_tolower(const std::string& inStr);
 
     template<typename T1>
-    bool enum_key_search(const std::map<const T1, const std::string> map,
+    bool enum_key_search(const std::map<T1, std::string> map,
 			 const T1& key,
 			 std::string& val) {
-      for (typename std::map<const T1, const std::string>::const_iterator it = map.cbegin();
+      for (typename std::map<T1, std::string>::const_iterator it = map.cbegin();
 	   it != map.cend(); it++) {
 	if (it->first == key) {
 	  val = it->second;
@@ -51,12 +57,12 @@ namespace ePhotosynthesis {
     }
 			 
     template<typename T1>
-    bool enum_value_search(const std::map<const T1, const std::string> map,
+    bool enum_value_search(const std::map<T1, std::string> map,
 			   const std::string& val,
 			   T1& key, bool allow_anycase=false,
 			   std::string prefix="",
 			   std::string suffix="") {
-      for (typename std::map<const T1, const std::string>::const_iterator it = map.cbegin();
+      for (typename std::map<T1, std::string>::const_iterator it = map.cbegin();
 	   it != map.cend(); it++) {
 	if ((it->second == val) ||
 	    (allow_anycase && (str_toupper(val) == str_toupper(it->second))) ||
@@ -71,7 +77,7 @@ namespace ePhotosynthesis {
     
     template<typename T>
     T enum_string2key(const std::string& val) {
-      const std::map<const T, const std::string>& map = get_enum_names<T>();
+      const std::map<T, std::string>& map = get_enum_names<T>();
       T key;
       if (!enum_value_search(map, val, key))
 	throw std::runtime_error("Could not locate enum for \"" + val
@@ -80,7 +86,7 @@ namespace ePhotosynthesis {
     }
     template<typename T>
     std::string enum_key2string(const T& key) {
-      const std::map<const T, const std::string>& map = get_enum_names<T>();
+      const std::map<T, std::string>& map = get_enum_names<T>();
       std::string val;
       if (!enum_key_search(map, key, val))
 	throw std::runtime_error("Could not locate enum for \"" + val
@@ -116,18 +122,18 @@ namespace ePhotosynthesis {
     }
     
     template<typename T1, typename T2>
-    T1 max_enum_value(const std::map<const T1, const T2> map) {
+    T1 max_enum_value(const std::map<T1, T2> map) {
       return map.crbegin()->first;
     }
 
 
     template<typename T, typename Tflag>
     std::string strBitFlags(const T& flag,
-			    const std::map<const Tflag, const std::string>& map,
+			    const std::map<Tflag, std::string>& map,
 			    const std::string& prefix="",
 			    const std::string& suffix="\n") {
       std::string out;
-      for (typename std::map<const Tflag, const std::string>::const_iterator it = map.begin();
+      for (typename std::map<Tflag, std::string>::const_iterator it = map.begin();
 	   it != map.end(); it++) {
 	if (flag & it->first)
 	  out += prefix + it->second + suffix;

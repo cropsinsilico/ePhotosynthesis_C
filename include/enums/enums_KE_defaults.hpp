@@ -3,11 +3,25 @@
 #pragma once
 
 #include <map>
-#include "enums/enums_utils.hpp"
+#include "enums/enums_KE.hpp"
 
 
-const std::map<const RROEA_KE, const double>& RROEA_KE_defaults();
-template<> const std::map<const RROEA_KE, const double>& get_enum_defaults<enum RROEA_KE>() {
-  return RROEA_KE_defaults();
+inline const std::map<RROEA_KE, double>& RROEA_KE_defaults() {
+  static const std::map<RROEA_KE, double> map {
+    {RROEA_KE_KEe2FBPase, 0.311167869},
+    {RROEA_KE_KEe2SBPase, 0.459194309},
+    {RROEA_KE_KEe2PRK   , 0.677638775},
+    {RROEA_KE_KEe2ATPase, 2.177727336},
+    {RROEA_KE_KEe2RuACT , 0.677638775},
+    {RROEA_KE_KEe2GAPDH , 0.044461692},
+    {RROEA_KE_KEe2MDH   , 0.044461692},
+    {RROEA_KE_KEe2ATPGPP, 1.0        },
+    {RROEA_KE_KEeFd2Thio, 24776.0    },
+  };
+  return map;
 };
 
+template<>
+inline const std::map<enum RROEA_KE, double>& get_enum_defaults<enum RROEA_KE>() {
+  return RROEA_KE_defaults();
+}

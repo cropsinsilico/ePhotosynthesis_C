@@ -41,7 +41,7 @@ namespace modules {
  Class for RedoxReg related calculations and common variables
  */
 class RedoxReg : public ModuleBase<RedoxReg, conditions::RedoxRegCondition> {
-    SET_GET_BOOL(trDynaPS2RedReg_cal)
+    SET_GET_BOOL_NOSKIP(trDynaPS2RedReg_cal)
 private:
     friend ModuleBase;
 #ifdef TESTING

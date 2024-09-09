@@ -29,7 +29,8 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-PSCondition::PSCondition(const PSCondition* const other)  {
+PSCondition::PSCondition(const PSCondition* const other) :
+  ConditionBase<PSCondition, PS_PRCondition, MODULE_PS>(other) {
     RuBP = other->RuBP;
     PGA = other->PGA;
     DPGA = other->DPGA;

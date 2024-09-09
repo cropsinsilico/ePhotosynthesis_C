@@ -29,7 +29,8 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-BFCondition::BFCondition(const BFCondition* const other) {
+BFCondition::BFCondition(const BFCondition* const other) :
+  ConditionBase<BFCondition, FIBFCondition, MODULE_BF>(other) {
     ISPHr = other->ISPHr;
     cytc1 = other->cytc1;
     ISPo = other->ISPo;

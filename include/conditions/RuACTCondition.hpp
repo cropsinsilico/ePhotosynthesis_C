@@ -39,7 +39,7 @@ class RACondition;
 /**
  Class for holding the inputs to RuACT_mb
  */
-class RuACTCondition : public ConditionBase<RuACTCondition, RACondition> {
+class RuACTCondition : public ConditionBase<RuACTCondition, RACondition, MODULE_RuACT> {
 public:
     RuACTCondition(RACondition* par = nullptr) {
         setParent(par);
@@ -105,9 +105,9 @@ private:
       Reset any static data members to their initial state
       */
     static void reset() {
-        EPS_connect = false;
+      setEPS_connect(false);
     }
-    SET_GET_BOOL(EPS_connect)
+    SET_GET_BOOL(EPS_connect, RuACT_COND_RuBP)
 
     static const std::size_t count;  // size of the current serialized output
 #ifdef INCDEBUG

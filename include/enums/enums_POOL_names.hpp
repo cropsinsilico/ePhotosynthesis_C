@@ -4,51 +4,122 @@
 
 #include <map>
 #include <string>
-#include "enums/enums_utils.hpp"
+#include "enums/enums_POOL.hpp"
 
 
-const std::map<const BF_POOL, const std::string>& BF_POOL_names();
-template<> const std::map<const BF_POOL, const std::string>& get_enum_names<enum BF_POOL>() {
-  return BF_POOL_names();
+inline const std::map<BF_POOL, std::string>& BF_POOL_names() {
+  static const std::map<BF_POOL, std::string> map {
+    {BF_POOL_kA_d    , "kA_d"    },
+    {BF_POOL_kA_f    , "kA_f"    },
+    {BF_POOL_kA_U    , "kA_U"    },
+    {BF_POOL_kU_A    , "kU_A"    },
+    {BF_POOL_kU_d    , "kU_d"    },
+    {BF_POOL_kU_f    , "kU_f"    },
+    {BF_POOL_k1      , "k1"      },
+    {BF_POOL_k_r1    , "k_r1"    },
+    {BF_POOL_kz      , "kz"      },
+    {BF_POOL_k12     , "k12"     },
+    {BF_POOL_k23     , "k23"     },
+    {BF_POOL_k30     , "k30"     },
+    {BF_POOL_k01     , "k01"     },
+    {BF_POOL_k2      , "k2"      },
+    {BF_POOL_kAB1    , "kAB1"    },
+    {BF_POOL_kBA1    , "kBA1"    },
+    {BF_POOL_kAB2    , "kAB2"    },
+    {BF_POOL_kBA2    , "kBA2"    },
+    {BF_POOL_k3      , "k3"      },
+    {BF_POOL_k_r3    , "k_r3"    },
+    {BF_POOL_k_pq_oxy, "k_pq_oxy"},
+  };
+  return map;
 };
 
-template<> MODULE get_enum_module<enum BF_POOL>() {
+template<>
+inline const std::map<enum BF_POOL, std::string>& get_enum_names<enum BF_POOL>() {
+  return BF_POOL_names();
+}
+template<>
+inline MODULE get_enum_module<enum BF_POOL>() {
   return MODULE_BF;
 }
 
-const std::map<const FI_POOL, const std::string>& FI_POOL_names();
-template<> const std::map<const FI_POOL, const std::string>& get_enum_names<enum FI_POOL>() {
-  return FI_POOL_names();
+inline const std::map<FI_POOL, std::string>& FI_POOL_names() {
+  static const std::map<FI_POOL, std::string> map {
+    {FI_POOL_QBt, "QBt"},
+    {FI_POOL_PQT, "PQT"},
+  };
+  return map;
 };
 
-template<> MODULE get_enum_module<enum FI_POOL>() {
+template<>
+inline const std::map<enum FI_POOL, std::string>& get_enum_names<enum FI_POOL>() {
+  return FI_POOL_names();
+}
+template<>
+inline MODULE get_enum_module<enum FI_POOL>() {
   return MODULE_FI;
 }
 
-const std::map<const RROEA_POOL, const std::string>& RROEA_POOL_names();
-template<> const std::map<const RROEA_POOL, const std::string>& get_enum_names<enum RROEA_POOL>() {
-  return RROEA_POOL_names();
+inline const std::map<RROEA_POOL, std::string>& RROEA_POOL_names() {
+  static const std::map<RROEA_POOL, std::string> map {
+    {RROEA_POOL_GAPDH , "GAPDH" },
+    {RROEA_POOL_FBPase, "FBPase"},
+    {RROEA_POOL_SBPase, "SBPase"},
+    {RROEA_POOL_PRK   , "PRK"   },
+    {RROEA_POOL_ATPase, "ATPase"},
+    {RROEA_POOL_ATPGPP, "ATPGPP"},
+    {RROEA_POOL_MDH   , "MDH"   },
+    {RROEA_POOL_ThioT , "ThioT" },
+    {RROEA_POOL_FdT   , "FdT"   },
+    {RROEA_POOL_RuACTT, "RuACTT"},
+  };
+  return map;
 };
 
-template<> MODULE get_enum_module<enum RROEA_POOL>() {
+template<>
+inline const std::map<enum RROEA_POOL, std::string>& get_enum_names<enum RROEA_POOL>() {
+  return RROEA_POOL_names();
+}
+template<>
+inline MODULE get_enum_module<enum RROEA_POOL>() {
   return MODULE_RROEA;
 }
 
-const std::map<const RuACT_POOL, const std::string>& RuACT_POOL_names();
-template<> const std::map<const RuACT_POOL, const std::string>& get_enum_names<enum RuACT_POOL>() {
-  return RuACT_POOL_names();
+inline const std::map<RuACT_POOL, std::string>& RuACT_POOL_names() {
+  static const std::map<RuACT_POOL, std::string> map {
+    {RuACT_POOL_ET , "ET" },
+    {RuACT_POOL_Rac, "Rac"},
+    {RuACT_POOL_C  , "C"  },
+    {RuACT_POOL_O  , "O"  },
+    {RuACT_POOL_M  , "M"  },
+  };
+  return map;
 };
 
-template<> MODULE get_enum_module<enum RuACT_POOL>() {
+template<>
+inline const std::map<enum RuACT_POOL, std::string>& get_enum_names<enum RuACT_POOL>() {
+  return RuACT_POOL_names();
+}
+template<>
+inline MODULE get_enum_module<enum RuACT_POOL>() {
   return MODULE_RuACT;
 }
 
-const std::map<const SUCS_POOL, const std::string>& SUCS_POOL_names();
-template<> const std::map<const SUCS_POOL, const std::string>& get_enum_names<enum SUCS_POOL>() {
-  return SUCS_POOL_names();
+inline const std::map<SUCS_POOL, std::string>& SUCS_POOL_names() {
+  static const std::map<SUCS_POOL, std::string> map {
+    {SUCS_POOL_ATc, "ATc"},
+    {SUCS_POOL_UTc, "UTc"},
+    {SUCS_POOL_PTc, "PTc"},
+  };
+  return map;
 };
 
-template<> MODULE get_enum_module<enum SUCS_POOL>() {
+template<>
+inline const std::map<enum SUCS_POOL, std::string>& get_enum_names<enum SUCS_POOL>() {
+  return SUCS_POOL_names();
+}
+template<>
+inline MODULE get_enum_module<enum SUCS_POOL>() {
   return MODULE_SUCS;
 }
 

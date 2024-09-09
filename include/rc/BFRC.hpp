@@ -27,6 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
+#include "ValueSet.hpp"
 
 namespace ePhotosynthesis {
 namespace RC {
@@ -34,15 +35,15 @@ namespace RC {
 /**
  Class for holding BF_RC data
  */
-class BFRC {
+class BFRC : public ValueSet<MODULE_BF, PARAM_TYPE_RC> {
 public:
-    BFRC(){}
+    BFRC() : ValueSet<MODULE_BF, PARAM_TYPE_RC>() {}
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The BFRC object to copy
       */
-    BFRC(const BFRC &other) {
+    BFRC(const BFRC &other) : ValueSet<MODULE_BF, PARAM_TYPE_RC>(other) {
         K1 = other.K1;
         K2 = other.K2;
         K3 = other.K3;

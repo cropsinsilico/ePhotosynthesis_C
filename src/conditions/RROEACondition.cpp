@@ -29,7 +29,8 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-RROEACondition::RROEACondition(const RROEACondition* const other) {
+RROEACondition::RROEACondition(const RROEACondition* const other) :
+  ConditionBase<RROEACondition, trDynaPSCondition, MODULE_RROEA>(other) {
     GAPDH = other->GAPDH;
     FBPase = other->FBPase;
     SBPase = other->SBPase;

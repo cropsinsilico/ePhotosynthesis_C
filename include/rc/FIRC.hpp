@@ -27,21 +27,23 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
+#include "ValueSet.hpp"
 
 namespace ePhotosynthesis {
 namespace RC {
 
 // class for holding FIRC data
-class FIRC {
+class FIRC : public ValueSet<MODULE_FI, PARAM_TYPE_RC> {
 public:
-    FIRC() {}
+    FIRC() : ValueSet<MODULE_FI, PARAM_TYPE_RC>() {}
 
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The FIRC object to copy
       */
-    FIRC(const FIRC &other){
+    FIRC(const FIRC &other) :
+      ValueSet<MODULE_FI, PARAM_TYPE_RC>(other) {
         kA_d = other.kA_d;  //  The rate constant of heat dissipation from peripheral antenna  Lazar (1999), 0.25~1 *10^(9)
         kA_f = other.kA_f;  //  The rate constant of fluorescence emission from peripheral antenna  Lazar 1999, with a lifetime of 5 ns at closed reaction center
         kA_U = other.kA_U;  //  The rate constant of exciton transfer from periphral antenna to core antenna  Reference needed, a guess
