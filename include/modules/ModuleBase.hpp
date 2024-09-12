@@ -28,6 +28,7 @@
 
 #include "definitions.hpp"
 #include "Variables.hpp"
+#include "ValueSet.hpp"
 
 namespace ePhotosynthesis {
 namespace modules {
@@ -39,9 +40,10 @@ namespace modules {
   \tparam T The class type to work with
   \tparam U The condition class associated with this Module
   */
-template<class T, class U>
-class ModuleBase {
+template<class T, class U, MODULE ID = MODULE_NONE>
+class ModuleBase : public ValueSetStatic<ID, PARAM_TYPE_MOD> {
 public:
+    DECLARE_VALUE_SET_STATIC_BASE(ModuleBase, ValueSetStatic<ID, PARAM_TYPE_MOD>)
     typedef T ModType;
     typedef U CondType;
   
@@ -52,9 +54,9 @@ public:
       \returns A pointer to the associated Condition class.
       */
     static U* init(Variables *theVars) {
-      // CondType* out = new CondType();
-      // out.init(theVars);
-      return T::_init(theVars);
+      U* out = T::_init(theVars);
+      checkAlts("ModuleBase::init: ");
+      return out;
     }
 
     /**
@@ -90,10 +92,13 @@ public:
       to their default values.
       */
     static void reset() {
+        resetValues();
         T::_reset();
+	checkAlts("ModuleBase::reset: ");
     }
 protected:
     ModuleBase() {}
+  // ValueSet<ID, PARAM_TYPE_MODULE>() {}
 
     /**
       Common interface for the private rate calculation function.

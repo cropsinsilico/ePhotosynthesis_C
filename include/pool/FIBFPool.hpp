@@ -27,27 +27,41 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
+#include "ValueSet.hpp"
 
 namespace ePhotosynthesis {
 namespace pool {
 
+#define MEMBERS_FIBFPool			\
+  PQT
+#define MEMBERS_FIBFPool_CONSTANT EMPTY_MEMBER_LIST
+#define MEMBERS_FIBFPool_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_FIBFPool_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+
 /**
  Class for FIBF_Pool data
  */
-class FIBFPool {
+class FIBFPool : public ValueSet<MODULE_FIBF, PARAM_TYPE_POOL> {
 public:
-  FIBFPool() {}
+  DECLARE_VALUE_SET_SINGLE(FIBFPool, ValueSet<MODULE_FIBF, PARAM_TYPE_POOL>)
+  FIBFPool() {
+    initMembers();
+  }
 
   /**
     Copy constructor that makes a deep copy of the given object
 
     @param other The FIBFPool object to copy
     */
-  FIBFPool(const FIBFPool &other) {
+  FIBFPool(const FIBFPool &other) :
+    ValueSet<MODULE_FIBF, PARAM_TYPE_POOL>(other) {
+      initMembers();
       PQT = other.PQT;
+      copyMembers(other);
   }
-  double PQT = 0.;
 };
+
+  DEFINE_VALUE_SET_HEADER_SINGLE(FIBFPool);
 
 }  // namespace pool
 }  // namespace ePhotosynthesis

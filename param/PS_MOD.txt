@@ -1,0 +1,182 @@
+PS_C_CP		15.0	22.0		# Global constant for the total phosphate
+PS_C_CA		1.5	1.5		# Global constant for the total adenylates
+PS_C_CN		0.0	1.0		# Global constant for the cytosolic Phosphate concentration; langmm: 1.0 w/o C3 in Matlab version
+PS_PEXT		0.5	0.0		# Global constant for the cytosolic Phosphate concentration;
+V1		2.93			# *= SC1 / STOM1 (Harris & Koniger, 1997); Set by EnzymeAct for C3
+V2		30.15			# *= SC * STOM2 (Harris & Koniger, 1997); Set by EnzymeAct for C3
+V3		4.04			# *= SC * STOM2 (Harris & Koniger, 1997); Set by EnzymeAct for C3
+V5		1.22			# *= SC (Harris & Koniger, 1997); Set by EnzymeAct for C3
+V6		0.734			# *= SC / STOM1 (Harris & Koniger, 1997); Set by EnzymeAct for C3
+V7		12.48			# *= SC (Harris & Koniger, 1997); Set by EnzymeAct for C3
+V8		1.22			# *= SC (Harris & Koniger, 1997); Set by EnzymeAct for C3
+V9		0.96			# 0.17*SC *FC; (Harris & Koniger, 1997) *3.; Set by EnzymeAct for C3
+V10		0.0			# V10 skipped if not C3 and not present in PSRatio; Set by EnzymeAct for C3
+V13		10.81			# *= SC1 (Harris & Koniger, 1997); Set by EnzymeAct for C3
+V16		5.47			# (Aflalo & Shavit, 1983, Davenport & McLeod, 1986); Set by EnzymeAct for C3
+V23		2.0			# Set by EnzymeAct for C3
+V24		2.0	0.0
+V31		20.0	1.24333
+V32		1.0	1.24333
+V33		20.0	1.24333		# WY 2018103
+KM11		0.0115			# CO2 1 RuBP+CO2->2PGA; calc for C3
+KM12		0.222			# O2 1 RuBP+CO2->2PGA; calc for C3
+KM13		0.02			# RuBP 1 RuBP+CO2->2PGA; calc for C3
+KI11		0.84			# PGA
+KI12		0.04			# FBP
+KI13		0.075 			# SBP
+KI14		0.9 			# Pi
+KI15		0.07 			# NADPH
+KM21		0.240 			# PGA 2 PGA+ATP <-> ADP + DPGA
+KM22		0.390			# ATP 2 PGA+ATP <-> ADP + DPGA
+KM23		0.23			# ADP
+KM31a		0.004			# BPGA 3 DPGA+NADPH <->GAP + OP+NADP
+KM32b		0.1			# NADPH 3 DPGA+NADPH <->GAP + OP+NADP
+# KM41		0.0	2.5		# DHAP 4 DHAP <->GAP
+# KM42		0.0	0.68		# GAP 4 DHAP <->GAP
+KE4		20.0	0.05		# Using the value from Patterson; langmm: calcs suspiciously different for C3 vs not, this might be a typo?
+KM51		0.3			# GAP 5 GAP+DHAP <->FBP
+KM52		0.4			# DHAP 5 GAP+DHAP <->FBP
+KM53		0.02			# FBP 5 GAP+DHAP <->FBP; Original Value: 0.02
+KE5		7.100
+KM61		0.033			# FBP 6 FBP<->F6P+OP
+KI61		0.7 			# F6P
+KI62		12.0			# Pi
+KE6		6.66e5
+KM71		0.0	0.100		# Xu5P 7 F6P+GAP<->E4P+Xu5P; jn
+KM72		0.0	0.100		# E4P 7 F6P+GAP<->E4P+Xu5P
+KM73		0.0	0.1		# F6P This value was based on estimate
+KM74		0.0	0.1000		# Estimate for GAP ORIGINAL 0.1
+KE7		0.1	10.0		# The equilibrium constant for this reaction  New   Laisk  Bassham and Krause 1969 BBA
+KM81		0.4			# DHAP
+KM82		0.2			# E4P estimate
+KE8		1.017			# The equilibrium constant for this reaction  New  mM-1  Laisk  Bassham and Krause 1969 BBA. Default: 1.107
+KM9		0.05			# SBP 9 SBP<->S7P+OP
+KI9		12.0			# The inibintion constant for Pi
+KE9		6.66e5
+KM10		0.5	1.5		# R5P 10 S7P+GAP<->Ri5P+Xu5P
+KM101		0.1			# Xu5P
+KM102		0.09	0.072		# Estimate for GAP
+KM103		0.015	0.46		# Estimate for S7P
+KE10		0.0	1.1764706	# The equilibrium constant for this reaction; New: From Laisk or Bassham and Krause 1969 BBA
+KE11		0.4			# Equilibrium Constant 11 Ri5P<-->Ru5P
+KE12		0.67			# Equilibrium Constant 12 Xu5P<-->Ru5P
+KM131		0.05			# Ru5P 13 Ru5P+ATP<->RuBP+ADP
+KM132		0.059			# ATP 13 Ru5P+ATP<->RuBP+ADP
+KI131		2.0			# PGA 13 Ru5P+ATP<->RuBP+ADP
+KI132		0.7			# RuBP 13 Ru5P+ATP<->RuBP+ADP
+KI133		4.0			# Pi 13 Ru5P+ATP<->RuBP+ADP
+KI134		2.5			# ADP 13 Ru5P+ATP<->RuBP+ADP
+KI135		0.4			# ADP 13 Ru5P+ATP<->RuBP+ADP
+KE13		6.846e3			# The equilibrium constant for this reaction; New: From Laisk or Bassham and Krause 1969 BBA
+KM161		0.014			# ADP 16 ADP+Pi<->ATP
+KM162		0.3			# Pi 16 ADP+Pi<-> ATP
+KM163		0.3			# ATP 16  ADP+Pi<-> ATP; New: Based on Laisk
+KE16		5.734			# The equilibrium constant for this reaction; New: From Laisk or Bassham and Krause 1969 BBA
+KE21		2.3			# Equilibrium constant 21 F6P<->G6P
+KE22		0.058			# Equilibrium constant 22 G6P<->G1P
+KM311		0.077			# DHAP 31 DHAPi<->DHAPo
+KM312		0.0	0.63		# Pi 31 DHAPi<->DHAPo
+KM313		0.74			# Pext 31 DHAPi<->DHAPo
+KM32		0.25			# PGA 32 PGAi<->PGAo
+KM33		0.075			# GAP 33 GAPi<->GAPo
+# ATP + Glucose-1-Phosphate --> ADPG + PPi
+KM231		0.031	0.08		# G1P 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)
+KM232		0.045	0.08		# ATP 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)
+KM233		0.14	0.0		# ADPG 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)
+KM234		0.8	0.0		# PPi 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)
+KE23		7.6e-3	0.0
+KA231		0.23	0.08		# PGA 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)
+KI231		0.9	0.0		# Pi 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989) WY201803
+KVmo		0.007	0.0		# The minimum maximum velocity (Laisk et al 1989)
+# ADPG --> ADP + Gn; The starch synthesis reaction 24. (Laisk et al 1989)
+KM241		0.2  	0.0		# ADPG    ADPG --> ADP + Gn (Laisk et al 1989)
+KA232		0.0   	0.02		# F6P 23 G1P+ATP+Gn<->PPi+ADP+Gn+1; skipped in PSRatio
+KA233		0.0	0.02		# FBP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1; skipped in PSRatio
+KI23		0.0   	10.0		# ADP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1; skipped in PSRatio
+KE25		128.4	0.0
+KE57		0.1005	0.0
+Km8p5p		0.118	0.0
+Km5p5p		0.616	0.0
+KE810		0.8446	0.0
+Km5gap		0.2727	0.0
+Km8f6p		0.5443	0.0
+Km8s7p		0.01576	0.0
+Km8gap		0.09	0.0
+MaxCoeff	5.0	0.0
+# Variables not scaled by PSRatio
+_NADPH	    	0.21   0.21
+# Variables initialized via calculation
+KE1Ratio	0.0	0.0     # Calculated from KE11 & KE12
+KE2Ratio	0.0	0.0	# Calculated from KE21 & KE22
+Ru_Act		0.0	0.0	# Initialized w/ C3
+PsV31		0.0	0.0	# Set by scaling V31
+PsV32		0.0	0.0	# Set by scaling V32
+PsV33		0.0	0.0	# Set by scaling V33
+# Variables only set during calculation
+PiTc		0.0	0.0
+V1Reg		0.0	0.0
+Theta		0.0	0.0
+beta		0.0	0.0
+Jmax		0.0	0.0
+# Variables only used for C3
+Vfactor1	1.0      1.0	# Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vfactor2	1.0	 1.0	# Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vfactor3	1.0	 1.0	# Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vfactor5	1.0	 1.0	# Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vfactor7	1.0	 1.0	# Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vfactor13	1.0	 1.0	# Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vfactor23	1.0	 1.0	# Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vf_T3		1.0	 1.0	# Set by VfactorT if GRNT and Tp > 25 w/ C4
+Vf_T2		1.0	 1.0	# Set by VfactorT if GRNT and Tp > 25 w/ C3
+Vf_T1		1.0	 1.0	# Set by VfactorT if GRNT and Tp > 25 w/ C3
+Vf_T6		1.0	 1.0	# Set by VfactorT if GRNT and Tp > 25 w/ C3
+Vf_T5		1.0	 1.0	# Set by VfactorT if GRNT and Tp > 25 w/ C3
+Vf_T9		1.0	 1.0	# Set by VfactorT if GRNT and Tp > 25 w/ C3
+Vf_T13		1.0	 1.0	# Set by VfactorT if GRNT and Tp > 25 w/ C3
+Vf_T23		1.0	 1.0	# Set by VfactorT if GRNT and Tp > 25 w/ C3
+PsV1		0.0	 0.0	# Set by calculation w/ C3
+PsV2		0.0	 0.0	# Set by calculation w/ C3
+PsV3		0.0	 0.0	# Set by calculation w/ C3
+PsV5		0.0	 0.0	# Set by calculation w/ C3
+PsV6		0.0	 0.0	# Set by calculation w/ C3
+PsV7		0.0	 0.0	# Set by calculation w/ C3
+PsV8		0.0	 0.0	# Set by calculation w/ C3
+PsV9		0.0	 0.0	# Set by calculation w/ C3
+PsV10		0.0	 0.0	# Set by calculation w/ C3
+PsV13		0.0	 0.0	# Set by calculation w/ C3
+PsV16		0.0	 0.0	# Set by calculation w/ C3
+PsV23		0.0	 0.0	# Set by calculation w/ C3
+PsV1_0		0.0	 0.0	# Product of VX, VfactorX & Vf_TX; X = 1
+PsV2_0		0.0	 0.0	# Product of VX, VfactorX & Vf_TX; X = 2
+PsV3_0		0.0	 0.0	# Product of VX, VfactorX & Vf_TX; X = 3
+PsV5_0		0.0	 0.0	# Product of VX, VfactorX & Vf_TX; X = 5
+PsV6_0		0.0	 0.0	# Product of VX & Vf_TX; X = 6
+PsV7_0		0.0	 0.0	# Product of VX & VfactorX; X = 7
+PsV8_0		0.0	 0.0	# Product of VX, Vfactor5 & Vf_T5; X = 8
+PsV9_0		0.0	 0.0	# Product of VX & Vf_TX; X = 9
+PsV10_0		0.0	 0.0	# Product of VX & Vfactor7; X = 10
+PsV13_0		0.0	 0.0	# Product of VX, VfactorX & Vf_TX; X = 13
+PsV23_0		0.0	 0.0	# Product of VX, VfactorX & Vf_TX; X = 23
+I2		0.0	 0.0	# Set by calculation w/ C3
+J		0.0	 0.0	# Set by calculation w/ C3
+Q10_1		1.93		# [CONST] Q10 for PsV1; unused w/o C3
+Q10_2		2.0		# [CONST] Q10 for PsV2; unused w/o C3
+Q10_3		2.0		# [CONST] Q10 for PsV3; unused w/o C3
+Q10_5		2.0		# [CONST] Q10 for PsV5; unused w/o C3
+Q10_6		2.0		# [CONST] Q10 for PsV6; unused w/o C3
+Q10_7		2.0		# [CONST] Q10 for PsV7; unused w/o C3
+Q10_8		2.0		# [CONST] Q10 for PsV8; unused w/o C3
+Q10_9		2.0		# [CONST] Q10 for PsV9; unused w/o C3
+Q10_10		2.0		# [CONST] Q10 for PsV10; unused w/o C3
+Q10_13		2.0		# [CONST] Q10 for PsV13; unused w/o C3
+Q10_23		2.0		# [CONST] Q10 for PsV23; unused w/o C3
+R		8.314		# [CONST] ideal gas constant J mole-1 K-1; BioCro: 8.314E-3; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
+c_c		38.28		# [CONST] dimensionless; BioCro: 38.05; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
+dHa_c		80.99		# [CONST] J / mol activation_energy; BioCro: 79.43; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
+c_o		14.68		# [CONST] dimensionless; BioCro: 20.30; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
+dHa_o		23.72		# [CONST] J / mol activation_energy; BioCro: 36.38; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
+RegFactor	1.0		# [CONST] dimensionless; BioCro: 1.0; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
+SC		1.0		# [CONST] Scaling coefficient for the stroma volume per mg chl. defualt 2 in comments; Used to scale PS module parameters V2, V3, V5, V6, V7 & V8; was previously used in comments to scale V9, V31, V32, & V33, but is not currently (see Lilley, Chon, Mosbach & Heldt, 1977b & Lilley et al., 1977b)
+SC1		1.0		# [CONST] Used to scale PS module parameters V1 & V13
+STOM1		1.0		# [CONST] Used to scale PS module parameters V1 & V6
+STOM2		1.0		# [CONST] Used to scale PS module parameters V2 & V3

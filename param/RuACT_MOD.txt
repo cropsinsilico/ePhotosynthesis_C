@@ -1,0 +1,2 @@
+activase	80.0	80.0
+factor		1.0		# [CONST] Factor used to scale RuACT condition parameters ER, Eaf & ECMR and RuACT pool parameter ET; was previously 0.224/0.3 in comments

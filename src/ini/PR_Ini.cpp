@@ -28,84 +28,92 @@
 #include "modules/PR.hpp"
 #include "modules/PS.hpp"
 
-#define KI124 2        // This KI is one guessed.
-#define KM1312 0.075   // Michaelis constant for NAD;
-#define KI1312 0.015   // Inhibition constant for NADH;    Since in the current program, we assume that P protein limit the
-                       // rate of the overall glycin decarboxylase; the KI1312 and
-                       // KM1312 were not used.
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-double PR::KC = 0.;
-double PR::KE113 = 0.;
-double PR::KE122 = 0.;
-double PR::KE123 = 0.;
-double PR::KE124 = 0.;
-double PR::KGc = 0.;
-double PR::KI1011 = 0.;
-double PR::KI1012 = 0.;
-double PR::KI1121 = 0.;
-double PR::KI1122 = 0.;
-double PR::KI113 = 0.;
-double PR::KI1221 = 0.;
-double PR::KI123 = 0.;
-double PR::KI1311 = 0.;
-double PR::KM1011 = 0.;
-double PR::KM1012 = 0.;
-double PR::KM112 = 0.;
-double PR::KM1131 = 0.;
-double PR::KM1132 = 0.;
-double PR::KM121 = 0.;
-double PR::KM1221 = 0.;
-double PR::KM1222 = 0.;
-double PR::KM123 = 0.;
-double PR::KM1241 = 0.;
-double PR::KM1242 = 0.;
-double PR::KM1311 = 0.;
-double PR::KO = 0.;
-double PR::KR = 0.;
-double PR::NADHc = 0.;
-double PR::NADc = 0.;
-double PR::PR_ADP = 0.;
-double PR::PR_ATP = 0.;
-double PR::V111 = 0.;
-double PR::V112 = 0.;
-double PR::V113 = 0.;
-double PR::V121 = 0.;
-double PR::V122 = 0.;
-double PR::V123 = 0.;
-double PR::V124 = 0.;
-double PR::V131 = 0.;
-double PR::V2T = 0.;
-double PR::Vfactor112 = 0.;
-double PR::Vfactor113 = 0.;
-double PR::Vfactor121 = 0.;
-double PR::Vfactor122 = 0.;
-double PR::Vfactor123 = 0.;
-double PR::Vfactor124 = 0.;
-double PR::Vfactor131 = 0.;
-double PR::Vf_T131 = 0.;
-double PR::Vf_T113 = 0.;
-double PR::Vf_T123 = 0.;
-double PR::Vf_T121 = 0.;
-double PR::Vf_T122 = 0.;
-double PR::Vf_T112 = 0.;
-double PR::PGA = 0.;
+DEFINE_VALUE_SET_STATIC(PR);
+
+INIT_MEMBER_STATIC(PR, KC);
+INIT_MEMBER_STATIC(PR, KE113);
+INIT_MEMBER_STATIC(PR, KE122);
+INIT_MEMBER_STATIC(PR, KE123);
+INIT_MEMBER_STATIC(PR, KE124);
+INIT_MEMBER_STATIC(PR, KGc);
+INIT_MEMBER_STATIC(PR, KI1011);
+INIT_MEMBER_STATIC(PR, KI1012);
+INIT_MEMBER_STATIC(PR, KI1121);
+INIT_MEMBER_STATIC(PR, KI1122);
+INIT_MEMBER_STATIC(PR, KI113);
+INIT_MEMBER_STATIC(PR, KI1221);
+INIT_MEMBER_STATIC(PR, KI123);
+INIT_MEMBER_STATIC(PR, KI1311);
+INIT_MEMBER_STATIC(PR, KM1312);
+INIT_MEMBER_STATIC(PR, KI1312);
+INIT_MEMBER_STATIC(PR, KM1011);
+INIT_MEMBER_STATIC(PR, KM1012);
+INIT_MEMBER_STATIC(PR, KM112);
+INIT_MEMBER_STATIC(PR, KM1131);
+INIT_MEMBER_STATIC(PR, KM1132);
+INIT_MEMBER_STATIC(PR, KM121);
+INIT_MEMBER_STATIC(PR, KM1221);
+INIT_MEMBER_STATIC(PR, KM1222);
+INIT_MEMBER_STATIC(PR, KM123);
+INIT_MEMBER_STATIC(PR, KM1241);
+INIT_MEMBER_STATIC(PR, KM1242);
+INIT_MEMBER_STATIC(PR, KI124);
+INIT_MEMBER_STATIC(PR, KM1311);
+INIT_MEMBER_STATIC(PR, KO);
+INIT_MEMBER_STATIC(PR, KR);
+INIT_MEMBER_STATIC(PR, NADHc);
+INIT_MEMBER_STATIC(PR, NADc);
+INIT_MEMBER_STATIC(PR, PR_ADP);
+INIT_MEMBER_STATIC(PR, PR_ATP);
+INIT_MEMBER_STATIC(PR, V111);
+INIT_MEMBER_STATIC(PR, V112);
+INIT_MEMBER_STATIC(PR, V113);
+INIT_MEMBER_STATIC(PR, V121);
+INIT_MEMBER_STATIC(PR, V122);
+INIT_MEMBER_STATIC(PR, V123);
+INIT_MEMBER_STATIC(PR, V124);
+INIT_MEMBER_STATIC(PR, V131);
+INIT_MEMBER_STATIC(PR, V2T);
+INIT_MEMBER_STATIC_VAL(PR, Vfactor112, 1.0);
+INIT_MEMBER_STATIC_VAL(PR, Vfactor113, 1.0);
+INIT_MEMBER_STATIC_VAL(PR, Vfactor121, 1.0);
+INIT_MEMBER_STATIC_VAL(PR, Vfactor122, 1.0);
+INIT_MEMBER_STATIC_VAL(PR, Vfactor123, 1.0);
+INIT_MEMBER_STATIC_VAL(PR, Vfactor124, 1.0);
+INIT_MEMBER_STATIC_VAL(PR, Vfactor131, 1.0);
+INIT_MEMBER_STATIC_VAL(PR, Vf_T131, 1.0);
+INIT_MEMBER_STATIC_VAL(PR, Vf_T113, 1.0);
+INIT_MEMBER_STATIC_VAL(PR, Vf_T123, 1.0);
+INIT_MEMBER_STATIC_VAL(PR, Vf_T121, 1.0);
+INIT_MEMBER_STATIC_VAL(PR, Vf_T122, 1.0);
+INIT_MEMBER_STATIC_VAL(PR, Vf_T112, 1.0);
+INIT_MEMBER_STATIC(PR, PGA);
+INIT_MEMBER_STATIC(PR, GLUc);
+INIT_MEMBER_STATIC(PR, RUBISCOTOTAL);
+INIT_MEMBER_STATIC(PR, V1T);
+
+INIT_MEMBER_STATIC(PR, PrV112);
+INIT_MEMBER_STATIC(PR, PrV113);
+INIT_MEMBER_STATIC(PR, PrV121);
+INIT_MEMBER_STATIC(PR, PrV122);
+INIT_MEMBER_STATIC(PR, PrV123);
+INIT_MEMBER_STATIC(PR, PrV124);
+INIT_MEMBER_STATIC(PR, PrV131);
+
+INIT_CONST_MEMBER_STATIC(PR, Q10_112, 1.81);
+INIT_CONST_MEMBER_STATIC(PR, Q10_113, 2.0);
+INIT_CONST_MEMBER_STATIC(PR, Q10_121, 2.0);
+INIT_CONST_MEMBER_STATIC(PR, Q10_122, 2.01);
+INIT_CONST_MEMBER_STATIC(PR, Q10_123, 2.0);
+INIT_CONST_MEMBER_STATIC(PR, Q10_124, 2.0);
+INIT_CONST_MEMBER_STATIC(PR, Q10_131, 2.0);
+
 double PR::TIME = 0.;
-double PR::GLUc = 0.;
-double PR::RUBISCOTOTAL = 0.;
-double PR::V1T = 0.;
 std::size_t PR::N = 1;
-
-double PR::PrV112 = 0.;
-double PR::PrV113 = 0.;
-double PR::PrV121 = 0.;
-double PR::PrV122 = 0.;
-double PR::PrV123 = 0.;
-double PR::PrV124 = 0.;
-double PR::PrV131 = 0.;
-
 const std::size_t PRCondition::count = 10;
 bool PRCondition::PS_connect = false;
 bool PR::PS_connect = false;
@@ -114,6 +122,158 @@ bool PR::PS_RuBP = false;
 
 PRCondition* PR::_init(Variables *theVars) {
     PR::setPS_connect(theVars->PR_PS_com);
+    theVars->initParamStatic<PR>();
+    PRCondition* PR_con = new PRCondition();
+    theVars->initParam(*PR_con);
+
+    // Reaction 111: RUBP+O2<-->PGlycolate + PGA
+    // Reaction 112: PGlycolate-->Pi+Glycolate;
+    // Reaction 113: Gcea+ATP<-->ADP + PGA
+    // Reaction 121: Glycolate +O2<-->H2O2+Glyoxylate
+    // Reaction 122: Glyoxylate + Serine<--> Hydoxypyruvate + Glycine;
+    // Reaction 123: HydroxylPyruvate + NAD <--> NADH + Glycerate
+    // Reaction 124: Glyoxylate + Glu  <--> KG + Glycine;
+    // Reaction 131: NAD+Glycine <--> CO2+ NADH + NH3
+    
+    if (theVars->useC3) {
+      if (theVars->GRNC == 1 && theVars->CO2_cond > 0.) {
+	PR::set(MOD::PR::Vfactor112, theVars->VfactorCp[25]);
+	PR::set(MOD::PR::Vfactor113, theVars->VfactorCp[26]);
+	PR::set(MOD::PR::Vfactor121, theVars->VfactorCp[28]);
+	PR::set(MOD::PR::Vfactor122, theVars->VfactorCp[29]);
+	PR::set(MOD::PR::Vfactor123, theVars->VfactorCp[30]);
+	PR::set(MOD::PR::Vfactor131, theVars->VfactorCp[32]);
+	PR::set(MOD::PR::Vfactor124, theVars->VfactorCp[11]);
+      }
+      if (theVars->GRNT == 1 && theVars->Tp > 25) {
+	PR::set(MOD::PR::Vf_T131, theVars->VfactorT[4]);
+	PR::set(MOD::PR::Vf_T113, theVars->VfactorT[6]);
+	PR::set(MOD::PR::Vf_T123, theVars->VfactorT[7]);
+	PR::set(MOD::PR::Vf_T121, theVars->VfactorT[8]);
+	PR::set(MOD::PR::Vf_T122, theVars->VfactorT[11]);
+	PR::set(MOD::PR::Vf_T112, theVars->VfactorT[22]);
+      }
+      if (theVars->GP == 0) {
+	PR::set(MOD::PR::V111, PS::getV1() * 0.22);
+	PR::setFromEnzymeAct(MOD::PR::V112, theVars->EnzymeAct);
+	PR::setFromEnzymeAct(MOD::PR::V113, theVars->EnzymeAct);
+	PR::setFromEnzymeAct(MOD::PR::V121, theVars->EnzymeAct);
+	PR::setFromEnzymeAct(MOD::PR::V122, theVars->EnzymeAct);
+	PR::setFromEnzymeAct(MOD::PR::V123, theVars->EnzymeAct);
+	PR::setFromEnzymeAct(MOD::PR::V124, theVars->EnzymeAct);
+	PR::setFromEnzymeAct(MOD::PR::V131, theVars->EnzymeAct);
+      }
+      PR::set(MOD::PR::KO, PS::getKM12());
+      PR::set(MOD::PR::KC, PS::getKM11());
+      
+      const double tempRatio = (theVars->Tp - 25.) / 10.;
+      PR::set(MOD::PR::PrV112,
+	      PR::get(MOD::PR::V112) *
+	      PR::get(MOD::PR::Vfactor112) *
+	      PR::get(MOD::PR::Vf_T112) *
+	      pow(PR::get(MOD::PR::Q10_112), tempRatio));
+      PR::set(MOD::PR::PrV113,
+	      PR::get(MOD::PR::V113) *
+	      PR::get(MOD::PR::Vfactor113) *
+	      PR::get(MOD::PR::Vf_T113) *
+	      pow(PR::get(MOD::PR::Q10_113), tempRatio));
+      PR::set(MOD::PR::PrV121,
+	      PR::get(MOD::PR::V121) *
+	      PR::get(MOD::PR::Vfactor121) *
+	      PR::get(MOD::PR::Vf_T121) *
+	      pow(PR::get(MOD::PR::Q10_121), tempRatio));
+      PR::set(MOD::PR::PrV122,
+	      PR::get(MOD::PR::V122) *
+	      PR::get(MOD::PR::Vfactor122) *
+	      PR::get(MOD::PR::Vf_T122) *
+	      pow(PR::get(MOD::PR::Q10_122), tempRatio));
+      PR::set(MOD::PR::PrV123,
+	      PR::get(MOD::PR::V123) *
+	      PR::get(MOD::PR::Vfactor123) *
+	      PR::get(MOD::PR::Vf_T123) *
+	      pow(PR::get(MOD::PR::Q10_123), tempRatio));
+      PR::set(MOD::PR::PrV124,
+	      PR::get(MOD::PR::V124) *
+	      PR::get(MOD::PR::Vfactor124) *
+	      pow(PR::get(MOD::PR::Q10_124), tempRatio));
+      PR::set(MOD::PR::PrV131,
+	      PR::get(MOD::PR::V131) *
+	      PR::get(MOD::PR::Vfactor131) *
+	      PR::get(MOD::PR::Vf_T131) *
+	      pow(PR::get(MOD::PR::Q10_131), tempRatio));
+    } else {
+
+      // This is the coefficient for calibrating the volume effect
+      // Default is 4.
+      const double CE = 1.;
+      
+      if (theVars->GP == 0) {
+	if (theVars->PR_PS_com) {
+	  PR::set(MOD::PR::V111, PS::getV1() * 0.24);
+	} else {
+	  PR::set(MOD::PR::V111, 3.7 * 0.24 * 1.);
+	}
+      }
+
+      if (theVars->PR_PS_com) {
+	PR::set(MOD::PR::KC, PS::getKM11());
+	PR::set(MOD::PR::KO, PS::getKM12());
+      }
+	
+      size_t i = 0;
+      for (PR::iterator it = PR::begin(); it != PR::end(); it++) {
+	if (i == 48)
+	  break;
+	switch (it->first) {
+	case (MOD::PR::V111) : {
+	  if (theVars->GP == 0 && theVars->PR_PS_com)
+	    it->second = it->second * theVars->PRRatio[i];
+	  i++;
+	  break;
+	}
+	case (MOD::PR::NADc) : {
+	  it->second = it->second * theVars->PRRatio[i];
+	  // PRRatio 10 & 11 skipped
+	  i = 12;
+	  break;
+	}
+	case (MOD::PR::KC) :
+	case (MOD::PR::KO) : {
+	  if (!theVars->PR_PS_com) {
+	    it->second = it->second * theVars->PRRatio[i];
+	  }
+	  i++;
+	  break;
+	}
+	case (MOD::PR::V1T) :
+	case (MOD::PR::V2T) : {
+	  it->second = it->second * CE * theVars->PRRatio[i];
+	  i++;
+	  break;
+	}
+	case (MOD::PR::KI1311) : {
+	  it->second = it->second * theVars->PRRatio[i];
+	  // PRRatio 40 & 41 skipped
+	  i = 42;
+	  break;
+	}
+	case (MOD::PR::KI124) :
+	case (MOD::PR::KM1312) :
+	case (MOD::PR::KI1312) : {
+	  // PRRatio not used
+	  i++;
+	  break;
+	}
+	default : {
+	  it->second = it->second * theVars->PRRatio[i];
+	  i++;
+	}
+	}
+      }
+
+    }
+
+#ifdef CHECK_VALUE_SET_ALTS
     if (theVars->useC3) {
         PR::NADHc = 0.47;
         PR::NADc = 0.4;
@@ -128,8 +288,6 @@ PRCondition* PR::_init(Variables *theVars) {
         PR::PR_ADP = 0.82 * theVars->PRRatio[14];
         PR::PR_ATP = 0.68 * theVars->PRRatio[15];
     }
-
-    PRCondition* PR_con = new PRCondition();
 
     PR_con->GCEA = 0.1812;   // Glycerate in chloroplast; derived based on V113
     PR_con->GCA = 0.36;      // Derived from radioactive labelling experiment; assuem equal concenatration
@@ -226,10 +384,14 @@ PRCondition* PR::_init(Variables *theVars) {
 
         PR::KM1241 = 0.15;   // Michaelis constant for glyoxylate
         PR::KM1242 = 1.7;    // Michaelis constant for Glu
+	PR::KI124 = 2.0;     // This KI is one guessed
         PR::KE124 = 607.;    // New       Cooper, A.J.L.; Meister, A.; Biochemistry; 11, 661 (1972).; K 607.
 
         PR::KM1311 = 6.;     // Michaelis constant for Glycine;
         PR::KI1311 = 4.;     // Inhibition constant for Serine
+
+	PR::KM1312 = 0.075;  // Michaelis constant for NAD;
+	PR::KI1312 = 0.015;  // Inhibition constant for NADH; Since in the current program, we assume that P protein limit the rate of the overall glycin decarboxylase; the KI1312 and KM1312 were not used.
 
         PR::KM1011 = 0.39;
         PR::KI1011 = 0.28;
@@ -238,13 +400,13 @@ PRCondition* PR::_init(Variables *theVars) {
         PR::KI1012 = 0.22;
         const double tempRatio = (theVars->Tp - 25.) / 10.;
 
-        PR::PrV112 = PR::V112 * PR::Vfactor112 * PR::Vf_T112 * pow(Q10_112, tempRatio);
-        PR::PrV113 = PR::V113 * PR::Vfactor113 * PR::Vf_T113 * pow(Q10_113, tempRatio);
-        PR::PrV121 = PR::V121 * PR::Vfactor121 * PR::Vf_T121 * pow(Q10_121, tempRatio);
-        PR::PrV122 = PR::V122 * PR::Vfactor122 * PR::Vf_T122 * pow(Q10_122, tempRatio);
-        PR::PrV123 = PR::V123 * PR::Vfactor123 * PR::Vf_T123 * pow(Q10_123, tempRatio);
-        PR::PrV124 = PR::V124 * PR::Vfactor124 * pow(Q10_124, tempRatio);
-        PR::PrV131 = PR::V131 * PR::Vfactor131 * PR::Vf_T131 * pow(Q10_131, tempRatio);
+        PR::PrV112 = PR::V112 * PR::Vfactor112 * PR::Vf_T112 * pow(PR::Q10_112, tempRatio);
+        PR::PrV113 = PR::V113 * PR::Vfactor113 * PR::Vf_T113 * pow(PR::Q10_113, tempRatio);
+        PR::PrV121 = PR::V121 * PR::Vfactor121 * PR::Vf_T121 * pow(PR::Q10_121, tempRatio);
+        PR::PrV122 = PR::V122 * PR::Vfactor122 * PR::Vf_T122 * pow(PR::Q10_122, tempRatio);
+        PR::PrV123 = PR::V123 * PR::Vfactor123 * PR::Vf_T123 * pow(PR::Q10_123, tempRatio);
+        PR::PrV124 = PR::V124 * PR::Vfactor124 * pow(PR::Q10_124, tempRatio);
+        PR::PrV131 = PR::V131 * PR::Vfactor131 * PR::Vf_T131 * pow(PR::Q10_131, tempRatio);
 
     } else {
         // To set global information for different reactions
@@ -327,14 +489,9 @@ PRCondition* PR::_init(Variables *theVars) {
             PR::V131 = 2.494745448 * theVars->PRRatio[7];
         }
     }
-    // Reaction: 111: RUBP+O2<-->PGlycolate + PGA
-    // Reaction: 112: PGlycolate-->Pi+Glycolate;
-    // Reaction 113  : Gcea+ATP<-->ADP + PGA
-    // Reactoin 121; Glycolate +O2<-->H2O2+Glyoxylate
-    // Reaction 122  : Glyoxylate + Serine<--> Hydoxypyruvate + Glycine;
-    // Reaction 123: HydroxylPyruvate + NAD <--> NADH + Glycerate
-    // Reaction 124: Glyoxylate + Glu  <--> KG + Glycine;
-    // Reaction 131: NAD+Glycine <--> CO2+ NADH + NH3
+
+    PR_con->checkAlts();
+#endif // CHECK_VALUE_SET_ALTS
 
     return PR_con;
 }
@@ -354,6 +511,8 @@ void PR::_reset() {
     PR::KI1221 = 0.;
     PR::KI123 = 0.;
     PR::KI1311 = 0.;
+    PR::KM1312 = 0.;
+    PR::KI1312 = 0.;
     PR::KM1011 = 0.;
     PR::KM1012 = 0.;
     PR::KM112 = 0.;
@@ -365,6 +524,7 @@ void PR::_reset() {
     PR::KM123 = 0.;
     PR::KM1241 = 0.;
     PR::KM1242 = 0.;
+    PR::KI124 = 0.;
     PR::KM1311 = 0.;
     PR::KO = 0.;
     PR::KR = 0.;

@@ -38,10 +38,23 @@ class XanCycleModuleTest;
 #endif
 namespace modules {
 class DynaPS;
+
+#define MEMBERS_XanCycle			\
+  kav,						\
+    kaz,					\
+    kva,					\
+    kza,					\
+    XanCycle2FIBF_Xstate
+#define MEMBERS_XanCycle_CONSTANT EMPTY_MEMBER_LIST
+#define MEMBERS_XanCycle_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_XanCycle_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+  
 /**
  Class for XanCycle code and internal variables
  */
-class XanCycle : public ModuleBase<XanCycle, conditions::XanCycleCondition> {
+class XanCycle : public ModuleBase<XanCycle, conditions::XanCycleCondition, MODULE_XanCycle> {
+public:
+    DECLARE_VALUE_SET_STATIC(XanCycle, ModuleBase<XanCycle, conditions::XanCycleCondition, MODULE_XanCycle>)
 private:
     friend ModuleBase;
     friend class modules::DynaPS;
@@ -112,5 +125,7 @@ private:
     static std::size_t N;  // The current size of the XanCycle TimeSeries
 };
 
+  DEFINE_VALUE_SET_STATIC_HEADER(XanCycle);
+  
 }  // namespace modules
 }  // namespace ePhotosynthesis

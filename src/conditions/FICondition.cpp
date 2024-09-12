@@ -29,8 +29,11 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
+DEFINE_VALUE_SET_SRC(FICondition);
+
 FICondition::FICondition(const FICondition* const other) :
   ConditionBase<FICondition, FIBFCondition, MODULE_FI>(other) {
+    initMembers();
     A = other->A;
     U = other->U;
     P680ePheo = other->P680ePheo;
@@ -54,9 +57,11 @@ FICondition::FICondition(const FICondition* const other) :
     QAnQB2n = other->QAnQB2n;
     if (!FICondition::BF_connect)
         PQn = other->PQn;
+    copyMembers(*other);
 }
 
 FICondition::FICondition(const arr &vec, const std::size_t offset) {
+    initMembers();
     fromArray(vec, offset);
 }
 

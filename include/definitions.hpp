@@ -31,6 +31,7 @@
 #include <algorithm>
 #include <fstream>
 #include "ePhotosynthesis_export.h"
+#include "macros.hpp"
 
 #ifndef uint
 #define uint unsigned int
@@ -49,31 +50,6 @@ class Variables;
   @typedef std::vector<double> arr
   */
 typedef std::vector<double> arr;  // Shortcut for std::vector<double>
-
-#define Q10_1 1.93
-#define Q10_2 2.
-#define Q10_3 2.
-#define Q10_5 2.
-#define Q10_6 2.
-#define Q10_7 2.
-#define Q10_8 2.
-#define Q10_9 2.
-#define Q10_10 2.
-#define Q10_13 2.
-#define Q10_23 2.
-#define Q10_112 1.81
-#define Q10_113 2.
-#define Q10_121 2.
-#define Q10_122 2.01
-#define Q10_123 2.
-#define Q10_124 2.
-#define Q10_131 2.
-#define Q10_51 2.
-#define Q10_52 1.60
-#define Q10_55 2.
-#define Q10_56 2.
-#define Q10_57 2.
-#define Q10_58 2.
 
 static std::vector<std::string> glymaID_order {
     "Glyma.19G046800",
@@ -170,15 +146,41 @@ enum RequestedDebug : uint {None = 0,
   Creates a *static boolean* private data member and public setter and getter functions for a module class
   */
 
+#ifdef CHECK_VALUE_SET_ALTS
+#define CHECK_SET_GET(NAME)			\
+  checkAlt(EnumClass::NAME);
+#else // CHECK_VALUE_SET_ALTS
+#define CHECK_SET_GET(NAME)
+#endif // CHECK_VALUE_SET_ALTS
+  
 //! [SET_GET]
-#define SET_GET(NAME) public:\
+#define SET_GET(NAME) public:						\
+  /** Get the value of NAME \returns The current value */		\
+  static double get ## NAME() {						\
+    CHECK_SET_GET(NAME)							\
+    /* return get(EnumClass::NAME); */					\
+    return NAME;							\
+  }									\
+  /** Set the value of NAME \param val The value to set NAME to */	\
+  static void set ## NAME(const double val) {				\
+    NAME = val;								\
+    /* set(EnumClass::NAME, val); */					\
+  }
+//! [SET_GET]
+
+//! [SET_GET_NOVS]
+#define SET_GET_NOVS(NAME) public:\
     /** Get the value of NAME \returns The current value */\
-    static double get ## NAME() {return NAME;}\
-    /** Set the value of NAME \param val The value to set NAME to */\
-    static void set ## NAME(const double val) {NAME = val;}\
+    static double get ## NAME() {				      	\
+      return NAME;							\
+    }									\
+    /** Set the value of NAME \param val The value to set NAME to */	\
+    static void set ## NAME(const double val) {			    \
+      NAME = val;						    \
+    }								    \
     private:\
         EPHOTO_API static double NAME;
-//! [SET_GET]
+//! [SET_GET_NOVS]
 
 //! [SET_GET_BOOL]
 #define SET_GET_BOOL(NAME, SKIP) public:				\
@@ -187,16 +189,17 @@ enum RequestedDebug : uint {None = 0,
     /** Set the value of NAME \param val The value to set NAME to */\
     static void set ## NAME(const bool val) {			    \
       NAME = val;						    \
-      if (SKIP) {						    \
-	if (val) {						    \
-	  skip(SKIP);						    \
-	} else {						    \
-	  unskip(SKIP);						    \
-	}							    \
+      if (val) {						    \
+	skip(EnumClass::SKIP);					    \
+      } else {							    \
+	unskip(EnumClass::SKIP);				    \
       }								    \
     }								    \
     private:\
         EPHOTO_API static bool NAME;
+//! [SET_GET_BOOL]
+  
+//! [SET_GET_BOOL_NOSKIP]
 #define SET_GET_BOOL_NOSKIP(NAME) public:			\
     /** Get the value of NAME \returns The current value */\
     static bool get ## NAME() {return NAME;}\
@@ -204,7 +207,7 @@ enum RequestedDebug : uint {None = 0,
     static void set ## NAME(const bool val) {NAME = val;}	    \
     private:\
         EPHOTO_API static bool NAME;
-//! [SET_GET_BOOL]
+//! [SET_GET_BOOL_NOSKIP]
 
 //! [SET_GET_BOOL_MODULE]
 #define SET_GET_BOOL_MODULE(NAME, CON) public:\

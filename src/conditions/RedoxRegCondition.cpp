@@ -29,13 +29,18 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
+DEFINE_VALUE_SET_SRC(RedoxRegCondition);
+
 RedoxRegCondition::RedoxRegCondition(const RedoxRegCondition* const other) {
+    initMembers();
     RA_con = new RACondition(other->RA_con);
     Thion = other->Thion;
     //RA_con.setParent(this);
+    copyMembers(*other);
 }
 
 RedoxRegCondition::RedoxRegCondition(RACondition* rother, double thio) {
+    initMembers();
     if (rother->parent == nullptr) {
         RA_con = rother;
     } else {
@@ -43,9 +48,13 @@ RedoxRegCondition::RedoxRegCondition(RACondition* rother, double thio) {
     }
     //RA_con->setParent(this);
     Thion = thio;
+#ifdef CHECK_VALUE_SET_ALTS
+    set(COND::RedoxReg::Thion, thio);
+#endif // CHECK_VALUE_SET_ALTS
 }
 
 RedoxRegCondition::RedoxRegCondition(const arr &vec, const std::size_t offset) {
+    initMembers();
     fromArray(vec, offset);
 }
 

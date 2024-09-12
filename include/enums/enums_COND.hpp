@@ -2,141 +2,309 @@
 // modified directly
 #pragma once
 
-enum BF_COND {
-  BF_COND_NONE        ,
-  BF_COND_ISPHr       ,  //!< The reduced ion sulfer protein (ISPH)
-  BF_COND_cytc1       ,  //!< The oxidized state of cytc1
-  BF_COND_ISPo        ,  //!< The oxidized ion sulfer protein (ISP)
-  BF_COND_ISPoQH2     ,  //!< The complex of oxidized ion sulfer protein and reduced quinone
-  BF_COND_QHsemi      ,  //!< Semiquinone
-  BF_COND_cytbL       ,  //!< The oxidized cytbL
-  BF_COND_Qi          ,  //!< The binding Quinone
-  BF_COND_Q           ,  //!< Quinone
-  BF_COND_cytbH       ,  //!< The oxidized form of cytbH
-  BF_COND_Qn          ,  //!< Q-
-  BF_COND_Qr          ,  //!< Q2-
-  BF_COND_QH2         ,  //!< QH2
-  BF_COND_cytc2       ,  //!< oxidized cytc2
-  BF_COND_P700        ,  //!< The reduced state of P700, including both P700 and excited P700
-  BF_COND_ADP         ,  //!< ADP in stroma
-  BF_COND_ATP         ,  //!< ATP in stroma
-  BF_COND_Ks          ,  //!< K ions in stroma
-  BF_COND_Mgs         ,  //!< Mg ions in stroma
-  BF_COND_Cls         ,  //!< Cl ions in stroma
-  BF_COND_Aip         ,  //!< The number of photons in peripheral antenna
-  BF_COND_U           ,  //!< The number of photons in core antenna
-  BF_COND_An          ,  //!< The reduced electron acceptor in PSI
-  BF_COND_Fdn         ,  //!< The reduced ferrodoxin
-  BF_COND_BFHs        ,  //!< The total concentration of proton and protonated buffer species in stroma, put in unit: mmol l-1
-  BF_COND_BFHl        ,  //!< The total concentration of proton and protonated buffer species in lumen, unit: mmol l-1
-  BF_COND_PHs         ,  //!< The PH value of the stroma
-  BF_COND_PHl         ,  //!< The PH value of the lumen
-  BF_COND_NADPH       ,  //!< The NADPH concentration in stroma, Unit: mmol l-1;
-  BF_COND_MAX         ,
+template<>
+enum ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type : int {
+    NONE        ,
+    ISPHr       ,  //!< The reduced ion sulfer protein (ISPH); unit: micromole per m2
+    cytc1       ,  //!< The oxidized state of cytc1; unit: micromole per meter square
+    ISPo        ,  //!< The oxidized ion sulfer protein (ISP); unit: micromole per meter square
+    ISPoQH2     ,  //!< The complex of oxidized ion sulfer protein and reduced quinone; unit: micromole per meter square
+    QHsemi      ,  //!< Semiquinone; micromole per meter square
+    cytbL       ,  //!< The oxidized cytbL; micromole per meter square
+    Qi          ,  //!< The binding Quinone; micromole per meter square
+    Q           ,  //!< Quinone; micromole per meter square
+    cytbH       ,  //!< The oxidized form of cytbH; micromole per meter square
+    Qn          ,  //!< Q-; unit: micromole per meter square
+    Qr          ,  //!< The reduced quinone Q2-; micromole per meter square
+    QH2         ,  //!< The reduced quinone PQH2; micromole per meter square
+    cytc2       ,  //!< oxidized cytc2; micromole per meter square
+    P700        ,  //!< The reduced state of P700, including both P700 and excited P700; micromole per meter square
+    ADP         ,  //!< ADP in stroma, from the earlier photorespiration model; mmol l-1
+    ATP         ,  //!< ATP in stroma, from the photorespiration model; mmol l-1
+    Ks          ,  //!< K ions in stroma, mM, from the literature; mmol l-1; 90 might be an default;
+    Mgs         ,  //!< Mg ions in stroma, mM, from the literature of the ion estimate
+    Cls         ,  //!< Cl ions in stroma, mM, from the literature of the ion estimate
+    Aip         ,  //!< The number of photons in peripheral antenna; micromole per meter square
+    U           ,  //!< The number of photons in core antenna; micromole per meter square
+    An          ,  //!< The reduced electron acceptor in PSI; micromole per meter square
+    Fdn         ,  //!< The reduced ferrodoxin; micromole per meter square leaf area
+    BFHs        ,  //!< The protonated buffer species  and free proton together in stroma; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number.; default 25
+    BFHl        ,  //!< The protonated buffer species and free proton together in lumen; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number. ; default 5
+    PHs         ,  //!< The PH value of the stroma
+    PHl         ,  //!< The PH value of the lumen
+    NADPH       ,  //!< The NADPH concentration in stroma, Unit: mmol l-1;
+    MAX         ,
 };
+template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::skipped;
 
-enum FI_COND {
-  FI_COND_NONE           ,
-  FI_COND_A              ,  //!< The concentration of excitons in the peripheral antenna
-  FI_COND_U              ,  //!< The concentration fo excitons in the core antenna
-  FI_COND_P680ePheo      ,  //!< The concentration of the P680Pheo
-  FI_COND_P680pPheon     ,  //!< The concentration for the P680+ Pheo-
-  FI_COND_P680pPheo      ,  //!< The concentration of P680+ Pheo
-  FI_COND_P680Pheon      ,  //!< The concentration of P680Pheo-
-  FI_COND_Yz             ,  //!< The concentration of reduced tyrosine
-  FI_COND_S1T            ,  //!< The concentration of S1 in combination with reduced tyrosine
-  FI_COND_S2T            ,  //!< The concentration of S2 in combination with reduced tyrosine
-  FI_COND_S3T            ,  //!< The concentration of S3 in combination with reduced tyrosine
-  FI_COND_S0T            ,  //!< The concentration of S0 in combination with reduced tyrosine
-  FI_COND_S1Tp           ,  //!< The concentration of S1 in combination with oxidized tyrosine
-  FI_COND_S2Tp           ,  //!< The concentration of S2 in combination with oxidized tyrosine
-  FI_COND_S3Tp           ,  //!< The concentration of S3 in combination with oxidized tyrosine
-  FI_COND_S0Tp           ,  //!< The concentration of S0 in combination with oxidized tyrosine
-  FI_COND_QAQB           ,  //!< The concentration of [QAQB]
-  FI_COND_QAnQB          ,  //!< The concentration of [QA-QB]
-  FI_COND_QAQBn          ,  //!< The concentration of [QAQB-]
-  FI_COND_QAnQBn         ,  //!< The concentration of [QA-QB-]
-  FI_COND_QAQB2n         ,  //!< The concentration of [QAQB2-]
-  FI_COND_QAnQB2n        ,  //!< The concentration of [QA-QB2-]
-  FI_COND_PQn            ,  //!< The concentration of reduced PQ, i.e. PQH2;
-  FI_COND_MAX            ,
-};
+namespace COND {
+  typedef ValueSetEnum<MODULE_BF, PARAM_TYPE_COND> BF;
+}
 
-enum PR_COND {
-  PR_COND_NONE      ,
-  PR_COND_GCEA      ,  //!< Glycerate in chloroplast; derived based on V113
-  PR_COND_GCA       ,  //!< Derived from radioactive labelling experiment; assume equal concenatration inside and outshide chloroplast
-  PR_COND_PGCA      ,  //!< Phosphoglycolate in chloroplast derived based on the Km112; orignal value is : 0.0029;
-  PR_COND_GCAc      ,  //!< See the note for GCA.
-  PR_COND_GOAc      ,  //!< Glyoxylate in cytosol; 0.028; EXPERIMENTAL DATA;
-  PR_COND_SERc      ,  //!< Serine in cytosol; 7.5 original value
-  PR_COND_GLYc      ,  //!< Glycine in cytosol; 1.8 original vlaue
-  PR_COND_HPRc      ,  //!< HydroxylPyruvate; derived from equation 123;
-  PR_COND_GCEAc     ,  //!< Glycerate in cytosol; assume at equilibrium with GCEA initially.
-  PR_COND_RuBP      ,  //!< RuBP concentration
-  PR_COND_MAX       ,
+template<>
+enum ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type : int {
+    NONE           ,
+    A              ,  //!< The concentration of excitons in the peripheral antenna
+    U              ,  //!< The concentration fo excitons in the core antenna
+    P680ePheo      ,  //!< The concentration of the P680Pheo; QF add
+    P680pPheon     ,  //!< The concentration for the P680+ Pheo-
+    P680pPheo      ,  //!< The concentration of P680+ Pheo
+    P680Pheon      ,  //!< The concentration of P680Pheo-
+    Yz             ,  //!< The concentration of reduced tyrosine; --unused
+    S1T            ,  //!< The concentration of S1 in combination with reduced tyrosine
+    S2T            ,  //!< The concentration of S2 in combination with reduced tyrosine
+    S3T            ,  //!< The concentration of S3 in combination with reduced tyrosine
+    S0T            ,  //!< The concentration of S0 in combination with reduced tyrosine
+    S1Tp           ,  //!< The concentration of S1 in combination with oxidized tyrosine
+    S2Tp           ,  //!< The concentration of S2 in combination with oxidized tyrosine
+    S3Tp           ,  //!< The concentration of S3 in combination with oxidized tyrosine
+    S0Tp           ,  //!< The concentration of S0 in combination with oxidized tyrosine
+    QAQB           ,  //!< The concentration of [QAQB]
+    QAnQB          ,  //!< The concentration of [QA-QB]
+    QAQBn          ,  //!< The concentration of [QAQB-]
+    QAnQBn         ,  //!< The concentration of [QA-QB-]
+    QAQB2n         ,  //!< The concentration of [QAQB2-]
+    QAnQB2n        ,  //!< The concentration of [QA-QB2-]
+    PQn            ,  //!< The concentration of reduced PQ, i.e. PQH2;
+    MAX            ,
 };
+template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::skipped;
 
-enum PS_COND {
-  PS_COND_NONE     ,
-  PS_COND_RuBP     ,
-  PS_COND_PGA      ,
-  PS_COND_DPGA     ,
-  PS_COND_T3P      ,
-  PS_COND_ADPG     ,  //!< (0.0 with C3)
-  PS_COND_FBP      ,
-  PS_COND_E4P      ,
-  PS_COND_S7P      ,
-  PS_COND_SBP      ,
-  PS_COND_ATP      ,
-  PS_COND_HexP     ,
-  PS_COND_PenP     ,
-  PS_COND_MAX      ,
-};
+namespace COND {
+  typedef ValueSetEnum<MODULE_FI, PARAM_TYPE_COND> FI;
+}
 
-enum RROEA_COND {
-  RROEA_COND_NONE       ,
-  RROEA_COND_GAPDH      ,  //!< SA = 620.0, mw = 147000.0, PS::V3
-  RROEA_COND_FBPase     ,  //!< SA = 119.0, mw = 195000.0, PS::V6
-  RROEA_COND_SBPase     ,  //!< SA = 70.0, mw = 66000.0, PS::V9
-  RROEA_COND_PRK        ,  //!< SA = 410.0, mw = 40000.0 PS::V13
-  RROEA_COND_ATPase     ,  //!< SA = 100.0, mw = 500000.0 PS::V16
-  RROEA_COND_ATPGPP     ,  //!< SA = 10.0, mw = 210000.0 PS::V23
-  RROEA_COND_MDH        ,  //!< The initial concentration of actove MDH
-  RROEA_COND_Thio       ,  //!< The initial concentration of reduced thioredoxin
-  RROEA_COND_Fd         ,  //!< The initial concentration of reduced ferrodoxin
-  RROEA_COND_RuACT      ,  //!< The initial concentration of active Rubisco activase
-  RROEA_COND_MAX        ,
+template<>
+enum ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type : int {
+    NONE      ,
+    GCEA      ,  //!< Glycerate in chloroplast; derived based on V113
+    GCA       ,  //!< Derived from radioactive labelling experiment; assume equal concenatration inside and outshide chloroplast
+    PGCA      ,  //!< Phosphoglycolate in chloroplast derived based on the Km112; orignal value is : 0.0029;
+    GCAc      ,  //!< See the note for GCA.
+    GOAc      ,  //!< Glyoxylate in cytosol; 0.028; EXPERIMENTAL DATA;
+    SERc      ,  //!< Serine in cytosol; 7.5 original value
+    GLYc      ,  //!< Glycine in cytosol; 1.8 original vlaue
+    HPRc      ,  //!< HydroxylPyruvate; derived from equation 123;
+    GCEAc     ,  //!< Glycerate in cytosol; assume at equilibrium with GCEA initially.
+    RuBP      ,  //!< RuBP concentration
+    _v131     ,  //!< [CONST] ?
+    MAX       ,
 };
+template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::skipped;
 
-enum RuACT_COND {
-  RuACT_COND_NONE     ,
-  RuACT_COND_ER       ,  //!< The concentration of inactive ER
-  RuACT_COND_Eaf      ,  //!< The total concentration of E, EC, AND ECM
-  RuACT_COND_ECMR     ,  //!< The concentration of ECMR
-  RuACT_COND_RuBP     ,  //!< The concentration of ECMR
-  RuACT_COND_MAX      ,
-};
+namespace COND {
+  typedef ValueSetEnum<MODULE_PR, PARAM_TYPE_COND> PR;
+}
 
-enum SUCS_COND {
-  SUCS_COND_NONE       ,
-  SUCS_COND_T3Pc       ,
-  SUCS_COND_FBPc       ,
-  SUCS_COND_HexPc      ,
-  SUCS_COND_F26BPc     ,
-  SUCS_COND_UDPGc      ,
-  SUCS_COND_SUCP       ,
-  SUCS_COND_SUC        ,
-  SUCS_COND_PGAc       ,
-  SUCS_COND_MAX        ,
+template<>
+enum ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type : int {
+    NONE     ,
+    RuBP     ,
+    PGA      ,
+    DPGA     ,
+    T3P      ,
+    ADPG     ,  //!< (0.0 with C3)
+    FBP      ,
+    E4P      ,
+    S7P      ,
+    SBP      ,
+    ATP      ,
+    HexP     ,
+    PenP     ,
+    _Pi      ,  //!< [CONST] ?
+    _ADP     ,  //!< [CONST] ?
+    _v1      ,  //!< [CONST] ?
+    MAX      ,
 };
+template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::skipped;
 
-enum XanCycle_COND {
-  XanCycle_COND_NONE     ,
-  XanCycle_COND_Vx      ,  //!< * 0.37
-  XanCycle_COND_Ax      ,  //!< * 0.37
-  XanCycle_COND_Zx      ,  //!< * 0.37
-  XanCycle_COND_ABA     ,
-  XanCycle_COND_MAX     ,
+namespace COND {
+  typedef ValueSetEnum<MODULE_PS, PARAM_TYPE_COND> PS;
+}
+
+template<>
+enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type : int {
+    NONE       ,
+    GAPDH      ,  //!< [CALC] Calculated from Pool & Coeff The initial concentration of active GAPDH; *=V3; SA = 620.0, mw = 147000.0, PS::V3
+    FBPase     ,  //!< [CALC] Calculated from Pool & Coeff The initial concentration of active FBPase; *=V6; SA = 119.0, mw = 195000.0, PS::V6
+    SBPase     ,  //!< [CALC] Calculated from Pool & Coeff The initial concentration of active SBPase; *=V9; SA = 70.0, mw = 66000.0, PS::V9
+    PRK        ,  //!< [CALC] Calculated from Pool & Coeff The initial concentration of active PRK; *=V13; SA = 410.0, mw = 40000.0 PS::V13
+    ATPase     ,  //!< [CALC] Calculated from Pool & Coeff The initial concentration of active ATPase; *=V16; SA = 100.0, mw = 500000.0 PS::V16
+    ATPGPP     ,  //!< [CALC] Calculated from Pool & Coeff The initial concentration of active ATPGPP; *=V23; SA = 10.0, mw = 210000.0 PS::V23
+    MDH        ,  //!< The initial concentration of active MDH; Not set from Pool like previous variables
+    Thio       ,  //!< The initial concentration of reduced thioredoxin; scaled by Coeff
+    Fd         ,  //!< The initial concentration of reduced ferrodoxin; scaled by Coeff
+    RuACT      ,  //!< The initial concentration of active Rubisco activase; scaled by Coeff
+    Coeff      ,  //!< [CONST, NON_VECTOR] Used to scale Thio, Fd, & RuACT and calculate GAPDH, FBPase, SBPase, PRK, ATPase, ATPGPP from Pool values
+    MAX        ,
 };
+template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::skipped;
+
+namespace COND {
+  typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND> RROEA;
+}
+
+template<>
+enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type : int {
+    NONE      ,
+    Thion     ,  //!< This is a wild guess
+    V6        ,  //!< [CALC, NON_VECTOR]
+    V9        ,  //!< [CALC, NON_VECTOR]
+    V13       ,  //!< [CALC, NON_VECTOR]
+    V16       ,  //!< [CALC, NON_VECTOR]
+    MAX       ,
+};
+template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::skipped;
+
+namespace COND {
+  typedef ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND> RedoxReg;
+}
+
+template<>
+enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type : int {
+    NONE     ,
+    ER       ,  //!< The concentration of inactive ER
+    Eaf      ,  //!< The total concentration of E, EC, AND ECM
+    ECMR     ,  //!< The concentration of ECMR
+    RuBP     ,  //!< The concentration of ECMR
+    MAX      ,
+};
+template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::skipped;
+
+namespace COND {
+  typedef ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND> RuACT;
+}
+
+template<>
+enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type : int {
+    NONE       ,
+    T3Pc       ,
+    FBPc       ,
+    HexPc      ,
+    F26BPc     ,
+    UDPGc      ,
+    SUCP       ,
+    SUC        ,
+    PGAc       ,
+    MAX        ,
+};
+template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::skipped;
+
+namespace COND {
+  typedef ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND> SUCS;
+}
+
+template<>
+enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type : int {
+    NONE     ,
+    Vx       ,  //!< * 0.37; The concentration of Violozanthin
+    Ax       ,  //!< * 0.37; The concentration of Anthrozanthin
+    Zx       ,  //!< * 0.37; The concentration of Zeaznthin
+    ABA      ,  //!< The concentration of ABA
+    MAX      ,
+};
+template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::skipped;
+
+namespace COND {
+  typedef ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND> XanCycle;
+}
+
+template<>
+enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::skipped;
+
+namespace COND {
+  typedef ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND> NONE;
+}
+
+template<>
+enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::skipped;
+
+namespace COND {
+  typedef ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND> MAX;
+}
 

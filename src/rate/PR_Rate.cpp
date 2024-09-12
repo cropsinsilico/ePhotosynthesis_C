@@ -30,7 +30,6 @@
 #include "modules/PS.hpp"
 #include "conditions/PS_PRCondition.hpp"
 
-#define KI124 2
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
@@ -118,7 +117,7 @@ void PR::_Rate(const double t, const PRCondition* const PR_con, Variables *theVa
                                (PR_con->HPRc + PR::KM123 * (1. + PR_con->HPRc / PR::KI123));
         theVars->PR_Vel.v124 = PR::PrV124 * (PR_con->GOAc * PR::GLUc - PR::KGc * PR_con->GLYc / PR::KE124) /
                                ((PR_con->GOAc + PR::KM1241) * (PR::GLUc + PR::KM1242 *
-                                                               (1. + PR_con->GLYc / KI124)));
+                                                               (1. + PR_con->GLYc / PR::KI124)));
 
         theVars->PR_Vel.v131 = PR::PrV131 * PR_con->GLYc/(PR_con->GLYc + PR::KM1311 *
                                                           (1. + PR_con->SERc / PR::KI1311));

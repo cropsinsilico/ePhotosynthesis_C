@@ -1,10 +1,12 @@
-ke2GAPDH	22. / 60	# The rate constant of electron transfer to GAPDH. From literature.
-ke2MDH		20. / 60	# The rate constant of electront transfer to MDH, this rate is totally ASSUMED.
-ke2FBPase	1.38 / 60	# The rate constant of electron transfer from thioredoxin to FBPase.
-ke2SBPase	1.65 / 60	# The rate constant of electron tranfer from thioredoxin to SBPase
-ke2PRK		59.8 / 60	# The rate constant of electron transfer from thioredoxin to PRK, Phosphoribulase kinase
-ke2RubACT	6.35 / 60	# The rate constant of electron transfer from thioredoxin to Rubisco activase
-ke2Fd		18.5   		# The rate constant of electron transfer to fe
-keFd2Thio	10		# The rate constant of electron transfer from fd to thio
-keFd2Calvin	7		# The rate constant of electron transfer from fd to Calvin cycle
-ke2ATPGPP	6.3 / 60	# The rate constant of electron transfer to ATPGPP
+ke2GAPDH	22.0		# *= Coeff / 60; The rate constant of electron transfer to GAPDH. From literature.
+ke2MDH		20.0		# *= Coeff / 60; The rate constant of electront transfer to MDH, this rate is totally ASSUMED.
+ke2FBPase	1.38		# *= Coeff / 60; The rate constant of electron transfer from thioredoxin to FBPase.
+ke2SBPase	1.65		# *= Coeff / 60; The rate constant of electron tranfer from thioredoxin to SBPase
+ke2PRK		59.8		# *= Coeff / 60; The rate constant of electron transfer from thioredoxin to PRK, Phosphoribulase kinase
+ke2ATPase	1.0		# [CONST] The rate constant of electron transfer to ATPase; This was constant in the code
+ke2RubACT	6.35		# *= Coeff / 60; The rate constant of electron transfer from thioredoxin to Rubisco activase
+ke2Fd		18.5   		# *= Coeff; The rate constant of electron transfer to fe
+keFd2Thio	10		# *= Coeff; The rate constant of electron transfer from fd to thio
+keFd2Calvin	7		# *= Coeff; The rate constant of electron transfer from fd to Calvin cycle
+ke2ATPGPP	0.105		# *= Coeff / 60; The rate constant of electron transfer to ATPGPP
+Coeff		1.0		# [CONST] Used to scale electron transfer rate constants (with the exception of ke2ATPase)

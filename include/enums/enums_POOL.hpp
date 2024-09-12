@@ -2,69 +2,230 @@
 // modified directly
 #pragma once
 
-enum BF_POOL {
-  BF_POOL_NONE         ,
-  BF_POOL_kA_d         ,  //!< The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
-  BF_POOL_kA_f         ,  //!< The total amount of cytc; Unit: micromole m-2 leaf area
-  BF_POOL_kA_U         ,  //!< The total concentration of K in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant.
-  BF_POOL_kU_A         ,  //!< The total concentration of Mg in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant.
-  BF_POOL_kU_d         ,  //!< The total concentration of Cl in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant.
-  BF_POOL_kU_f         ,  //!< The total concentration of Ferrodoxin
-  BF_POOL_k1           ,  //!< The total concentration of the primary electron acceptor of PSI; Unit: micromole m-2 leaf area
-  BF_POOL_k_r1         ,  //!< The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
-  BF_POOL_kz           ,  //!< The total concentration of buffer in stroma; unit: mmol per liter
-  BF_POOL_k12          ,  //!< The total concentration of buffer in lumen; unit: mmol per liter
-  BF_POOL_k23          ,  //!< The total number of P700; unit: micromole m-2 leaf area
-  BF_POOL_k30          ,  //!< The total concentration of NADPH in stroma; 1 is an guessed value;
-  BF_POOL_k01          ,
-  BF_POOL_k2           ,
-  BF_POOL_kAB1         ,
-  BF_POOL_kBA1         ,
-  BF_POOL_kAB2         ,
-  BF_POOL_kBA2         ,
-  BF_POOL_k3           ,
-  BF_POOL_k_r3         ,
-  BF_POOL_k_pq_oxy     ,
-  BF_POOL_MAX          ,
+template<>
+enum ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type : int {
+    NONE         ,
+    kA_d         ,  //!< The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
+    kA_f         ,  //!< The total amount of cytc; Unit: micromole m-2 leaf area
+    kA_U         ,  //!< The total concentration of K in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant.
+    kU_A         ,  //!< The total concentration of Mg in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant.
+    kU_d         ,  //!< The total concentration of Cl in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant.
+    kU_f         ,  //!< The total concentration of Ferrodoxin
+    k1           ,  //!< The total concentration of the primary electron acceptor of PSI; Unit: micromole m-2 leaf area
+    k_r1         ,  //!< The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
+    kz           ,  //!< The total concentration of buffer in stroma; unit: mmol per liter
+    k12          ,  //!< The total concentration of buffer in lumen; unit: mmol per liter
+    k23          ,  //!< The total number of P700; unit: micromole m-2 leaf area
+    k30          ,  //!< The total concentration of NADPH in stroma; 1 is an guessed value;
+    k01          ,
+    k2           ,
+    kAB1         ,
+    kBA1         ,
+    kAB2         ,
+    kBA2         ,
+    k3           ,
+    k_r3         ,
+    k_pq_oxy     ,
+    MAX          ,
 };
+template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::skipped;
 
-enum FI_POOL {
-  FI_POOL_NONE     ,
-  FI_POOL_QBt     ,  //!< The total concentration of Qb site;
-  FI_POOL_PQT     ,  //!< The total concentration of PQ;
-  FI_POOL_MAX     ,
-};
+namespace POOL {
+  typedef ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL> BF;
+}
 
-enum RROEA_POOL {
-  RROEA_POOL_NONE       ,
-  RROEA_POOL_GAPDH      ,  //!< SA = 620.0, mw = 147000.0, PS::V3
-  RROEA_POOL_FBPase     ,  //!< SA = 119.0, mw = 195000.0, PS::V6
-  RROEA_POOL_SBPase     ,  //!< SA = 70.0, mw = 66000.0, PS::V9
-  RROEA_POOL_PRK        ,  //!< SA = 410.0, mw = 40000.0 PS::V13
-  RROEA_POOL_ATPase     ,  //!< SA = 100.0, mw = 500000.0 PS::V16
-  RROEA_POOL_ATPGPP     ,  //!< SA = 10.0, mw = 210000.0 PS::V23
-  RROEA_POOL_MDH        ,  //!< SA = 184.0, mw = 87000.0, MDH_Vmax = 2 value is assumed, but no literature to support. Needs to be fixed.
-  RROEA_POOL_ThioT      ,
-  RROEA_POOL_FdT        ,  //!< Compes from BF if used with RROEA_EPS
-  RROEA_POOL_RuACTT     ,
-  RROEA_POOL_MAX        ,
+template<>
+enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type : int {
+    NONE     ,
+    PQT      ,
+    MAX      ,
 };
+template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::skipped;
 
-enum RuACT_POOL {
-  RuACT_POOL_NONE     ,
-  RuACT_POOL_ET      ,  //!< The total concentraiton of E, ER, EC, ECM, ECMR , mM;
-  RuACT_POOL_Rac     ,  //!< The concentration of the activase, mM
-  RuACT_POOL_C       ,  //!< mM
-  RuACT_POOL_O       ,  //!< mM
-  RuACT_POOL_M       ,
-  RuACT_POOL_MAX     ,
-};
+namespace POOL {
+  typedef ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL> FIBF;
+}
 
-enum SUCS_POOL {
-  SUCS_POOL_NONE     ,
-  SUCS_POOL_ATc     ,  //!< mM
-  SUCS_POOL_UTc     ,  //!< mM
-  SUCS_POOL_PTc     ,
-  SUCS_POOL_MAX     ,
+template<>
+enum ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type : int {
+    NONE     ,
+    QBt      ,  //!< The total concentration of Qb site;
+    PQT      ,  //!< The total concentration of PQ;
+    MAX      ,
 };
+template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::skipped;
+
+namespace POOL {
+  typedef ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL> FI;
+}
+
+template<>
+enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type : int {
+    NONE          ,
+    GAPDH         ,  //!< [CALC] The initial concentration of active GAPDH; *=V3; SA = 620.0, mw = 147000.0, PS::V3
+    FBPase        ,  //!< [CALC] The initial concentration of active FBPase; *=V6; SA = 119.0, mw = 195000.0, PS::V6
+    SBPase        ,  //!< [CALC] The initial concentration of active SBPase; *=V9; SA = 70.0, mw = 66000.0, PS::V9
+    PRK           ,  //!< [CALC] The initial concentration of active PRK; *=V13; SA = 410.0, mw = 40000.0 PS::V13
+    ATPase        ,  //!< [CALC] The initial concentration of active ATPase; *=V16; SA = 100.0, mw = 500000.0 PS::V16
+    ATPGPP        ,  //!< [CALC] The initial concentration of active ATPGPP; *=V23; SA = 10.0, mw = 210000.0 PS::V23
+    MDH           ,  //!< [CALC] The initial concentration of active MDH; *=MDH_Vmax; SA = 184.0, mw = 87000.0; MDH_Vmax = 2 value is assumed, but no literature to support. Needs to be fixed.
+    ThioT         ,
+    FdT           ,  //!< Comes from BF if used with RROEA_EPS
+    RuACTT        ,
+    SA_GAPDH      ,  //!< [CONST] Used w/ mw_GAPDH to calculate GAPDH from PS::V3; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    SA_FBPase     ,  //!< [CONST] Used w/ mw_FBPase to calculate FBPase from PS::V6; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    SA_SBPase     ,  //!< [CONST] Used w/ mw_SBPase to calculate SBPase from PS::V9; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    SA_PRK        ,  //!< [CONST] Used w/ mw_PRK to calculate PRK from PS::V13; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    SA_ATPase     ,  //!< [CONST] Used w/ mw_ATPase to calculate ATPase from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    SA_ATPGPP     ,  //!< [CONST] Used w/ mw_ATPGPP to calculate ATPGPP from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    SA_MDH        ,  //!< [CONST] Used w/ MDH_Vmax & mw_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    mw_GAPDH      ,  //!< [CONST] Used w/ SA_GAPDH to calculate GAPDH from PS::V3; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    mw_FBPase     ,  //!< [CONST] Used w/ SA_FBPase to calculate FBPase from PS::V6; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    mw_SBPase     ,  //!< [CONST] Used w/ SA_SBPase to calculate SBPase from PS::V9; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    mw_PRK        ,  //!< [CONST] Used w/ SA_PRK to calculate PRK from PS::V13; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    mw_ATPase     ,  //!< [CONST] Used w/ SA_ATPase to calculate ATPase from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    mw_ATPGPP     ,  //!< [CONST] Used w/ SA_ATPGPP to calculate ATPGPP from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    mw_MDH        ,  //!< [CONST] Used w/ MDH_Vmax & SA_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    MDH_Vmax      ,  //!< [CONST] This value is assumed and there is no literature about it. Need to be fixed.; Used w/ SA_MDH & mw_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    MAX           ,
+};
+template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::skipped;
+
+namespace POOL {
+  typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL> RROEA;
+}
+
+template<>
+enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type : int {
+    NONE             ,
+    FBPase_Coeff     ,
+    FBPase0          ,
+    SBPase_Coeff     ,
+    SBPase0          ,
+    PRK_Coeff        ,
+    PRK0             ,
+    ATPase_Coeff     ,
+    ATPase0          ,
+    MAX              ,
+};
+template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::skipped;
+
+namespace POOL {
+  typedef ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL> RedoxReg;
+}
+
+template<>
+enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type : int {
+    NONE     ,
+    ET       ,  //!< The total concentraiton of E, ER, EC, ECM, ECMR , mM;
+    Rac      ,  //!< The concentration of the activase, mM
+    C        ,  //!< mM
+    O        ,  //!< mM
+    M        ,
+    MAX      ,
+};
+template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::skipped;
+
+namespace POOL {
+  typedef ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL> RuACT;
+}
+
+template<>
+enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type : int {
+    NONE     ,
+    ATc      ,  //!< mM
+    UTc      ,  //!< mM
+    PTc      ,
+    MAX      ,
+};
+template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::skipped;
+
+namespace POOL {
+  typedef ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL> SUCS;
+}
+
+template<>
+enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::skipped;
+
+namespace POOL {
+  typedef ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL> NONE;
+}
+
+template<>
+enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::skipped;
+
+namespace POOL {
+  typedef ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL> MAX;
+}
 

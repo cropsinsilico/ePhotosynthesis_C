@@ -1,0 +1,87 @@
+V111		0.888
+V112		52.41992121
+V113		5.715787563
+V121		1.456108923
+V122		9.918572535
+V123		10.00978112
+V124		2.745819515
+V131		2.494745448
+NADHc		0.47
+NADc		0.4
+# 10 & 11 skipped in PRRatio
+GLUc		24.0
+KGc		0.4
+PR_ADP		0.82		0.0
+PR_ATP		0.68		0.0
+# Reaction: 111: RUBP+O2<-->PGlycolate + PGA
+KO		0.222			# Michaelis constant for O2
+KC		0.0115			# Michaelis constant for CO2
+KR		0.02			# Michaelis constant for RUBP
+# Reaction: 112: PGlycolate-->Pi+Glycolate;
+KM112		0.026			# Km112 for PGlycolate
+KI1122		94.0			# Inhibition constant for Glycolate
+KI1121		2.55			# The competitive Pi inhibition for PGlycolate
+# Reaction 113: Gcea+ATP<-->ADP + PGA
+KM1131		0.21			# Km for ATP
+KM1132		0.25			# Km for Gcea
+KI113		0.36			# Competitive inhibition for ATP; in original paper it is 0.36
+KE113		300.0			# New: Kleczkowski et al . 1985 Archives of Biochemistry and Biophysics  300, as default
+# Reaction 121: Glycolate +O2<-->H2O2+Glyoxylate
+KM121		0.1
+# Reaction 122: Glyoxylate + Serine<--> Hydoxypyruvate + Glycine
+KM1221		0.15	     		# Michaelis constant for glyoxylate
+KM1222		2.7			# Michaelis constant for serinie
+KI1221		33.0			# Inhibition constant for Glycine
+KE122		0.24			# New: Guynn, R.W.; Arch. Biochem. Biophys.; 218, 14 (1982).; 0.24. At 25 degree.
+# Reaction 123: HydroxylPyruvate + NAD <--> NADH + Glycerate
+KM123		0.09		        # Michaelis constant for hydroxylpyruvate
+KI123		12.0			# Inhibition constant for hydroxypyruvate
+KE123		250000.0
+# Reaction 124: Glyoxylate + Glu  <--> KG + Glycine;
+KM1241		0.15	     	        # Michaelis constant for glyoxylate
+KM1242		1.7			# Michaelis constant for Glu
+KI124		2.0			# This KI is one guessed
+KE124		607.0			# New: Cooper, A.J.L.; Meister, A.; Biochemistry; 11, 661 (1972).; K' 607.
+# Reaction 131: NAD+Glycine <--> CO2+ NADH + NH3
+KM1311		6.0	    	        # Michaelis constant for Glycine
+KI1311		4.0			# Inhibition constant for Serine
+KM1312		0.075			# Michaelis constant for NAD;
+KI1312		0.015			# Inhibition constant for NADH; Since in the current program, we assume that P protein limit the rate of the overall glycin decarboxylase; the KI1312 and KM1312 were not used.
+# The consant for calculating the glycerate uptake.
+V1T		5.0	      	  	# *= CE if not C3
+KM1011		0.39
+KI1011		0.28
+# The constant for calculating the glycolate output
+V2T		6.4	       	        # *= CE if not C3
+KM1012		0.2
+KI1012		0.22
+Vfactor112	0.0		1.0
+Vfactor113	0.0		1.0
+Vfactor121	0.0		1.0
+Vfactor122	0.0		1.0
+Vfactor123	0.0		1.0
+Vfactor124	0.0		1.0
+Vfactor131	0.0		1.0
+Vf_T131		0.0		1.0
+Vf_T113		0.0		1.0
+Vf_T123		0.0		1.0
+Vf_T121		0.0		1.0
+Vf_T122		0.0		1.0
+Vf_T112		0.0		1.0
+PGA		4.3		2.4
+RUBISCOTOTAL	0.0
+PrV112		0.0
+PrV113		0.0
+PrV121		0.0
+PrV122		0.0
+PrV123		0.0
+PrV124		0.0
+PrV131		0.0
+Q10_112		1.81			# [CONST] Q10 for PrV112; unused w/o C3
+Q10_113		2.0			# [CONST] Q10 for PrV113; unused w/o C3
+Q10_121		2.0			# [CONST] Q10 for PrV121; unused w/o C3
+Q10_122		2.01			# [CONST] Q10 for PrV122; unused w/o C3
+Q10_123		2.0			# [CONST] Q10 for PrV123; unused w/o C3
+Q10_124		2.0			# [CONST] Q10 for PrV124; unused w/o C3
+Q10_131		2.0			# [CONST] Q10 for PrV131; unused w/o C3
+CE		1.0			# [CONST] This is the coefficient for calibrating the volume effect; Used to scale V1T & V2T; Comment says default is 4; Unused w/ C3

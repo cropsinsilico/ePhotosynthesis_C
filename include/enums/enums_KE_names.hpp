@@ -2,32 +2,7 @@
 // modified directly
 #pragma once
 
-#include <map>
-#include <string>
-#include "enums/enums_KE.hpp"
-
-
-inline const std::map<RROEA_KE, std::string>& RROEA_KE_names() {
-  static const std::map<RROEA_KE, std::string> map {
-    {RROEA_KE_KEe2FBPase, "KEe2FBPase"},
-    {RROEA_KE_KEe2SBPase, "KEe2SBPase"},
-    {RROEA_KE_KEe2PRK   , "KEe2PRK"   },
-    {RROEA_KE_KEe2ATPase, "KEe2ATPase"},
-    {RROEA_KE_KEe2RuACT , "KEe2RuACT" },
-    {RROEA_KE_KEe2GAPDH , "KEe2GAPDH" },
-    {RROEA_KE_KEe2MDH   , "KEe2MDH"   },
-    {RROEA_KE_KEe2ATPGPP, "KEe2ATPGPP"},
-    {RROEA_KE_KEeFd2Thio, "KEeFd2Thio"},
-  };
-  return map;
-};
-
 template<>
-inline const std::map<enum RROEA_KE, std::string>& get_enum_names<enum RROEA_KE>() {
-  return RROEA_KE_names();
+inline const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, std::string>& get_enum_names<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type>() {
+  return ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::names;
 }
-template<>
-inline MODULE get_enum_module<enum RROEA_KE>() {
-  return MODULE_RROEA;
-}
-

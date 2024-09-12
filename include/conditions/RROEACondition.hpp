@@ -36,13 +36,32 @@ namespace conditions {
 
 class trDynaPSCondition;
 
+#define MEMBERS_RROEACondition			\
+  GAPDH,					\
+    FBPase,					\
+    SBPase,					\
+    PRK,					\
+    ATPase,					\
+    ATPGPP,					\
+    MDH,					\
+    Thio,					\
+    Fd,						\
+    RuACT,					\
+    Coeff
+#define MEMBERS_RROEACondition_CONSTANT		\
+  Coeff
+#define MEMBERS_RROEACondition_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_RROEACondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+
 /**
  Class for holding the inputs to RROEA_mb
  */
 class RROEACondition : public ConditionBase<RROEACondition, trDynaPSCondition, MODULE_RROEA> {
 public:
+    DECLARE_VALUE_SET(RROEACondition, ConditionBase<RROEACondition, trDynaPSCondition, MODULE_RROEA>)
     RROEACondition(trDynaPSCondition* par = nullptr) {
         setParent(par);
+        initMembers();
     }
     /**
       Copy constructor that makes a deep copy of the given object
@@ -58,17 +77,6 @@ public:
       @param offset The index in vec to start creating the object from
       */
     RROEACondition(const arr &vec, const std::size_t offset = 0);
-
-    double GAPDH = 0.;  ///< The initial concentration of active GAPDH
-    double FBPase = 0.; ///< The initial concentration of active FBPase
-    double SBPase = 0.; ///< The initial concentration of active SBPase
-    double PRK = 0.;    ///< The initial concentration of actove PRK
-    double ATPase = 0.; ///< The initial concentration of actove ATPase
-    double ATPGPP = 0.; ///< The initial concentration of actove ATPGPP
-    double MDH = 0.;    ///< The initial concentration of actove MDH
-    double Thio = 0.;   ///< The initial concentration of reduced thioredoxin
-    double Fd = 0.;     ///< The initial concentration of reduced ferrodoxin
-    double RuACT = 0.;  ///< The initial concentration of active Rubisco activase
 
     /**
       Write the contents of the instance to the output stream.
@@ -116,6 +124,8 @@ private:
     const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif
 };
+
+  DEFINE_VALUE_SET_HEADER(RROEACondition);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

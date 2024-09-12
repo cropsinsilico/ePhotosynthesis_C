@@ -110,7 +110,7 @@ int main(int argc, const char* argv[]) {
         options.show_positional_help();
         std::string evn, atpcost, optionsFile, enzymeFile, grnFile;
 #define MODULE_FPARAM(name)			\
-	std::string f ## name ## _COND, f ## name ## _RC, f ## name ## _POOL, f ## name ## _KE
+	std::string f ## name ## _COND, f ## name ## _RC, f ## name ## _POOL, f ## name ## _KE, f ## name ## _MOD
 	MODULE_FPARAM(BF);
 	MODULE_FPARAM(FI);
 	MODULE_FPARAM(PR);
@@ -139,7 +139,9 @@ int main(int argc, const char* argv[]) {
 	MODULE_FPARAM_X(name, Pool, POOL,				\
 			"pool constants that control the")		\
 	MODULE_FPARAM_X(name, EquilibriumConstants, KE,			\
-			"equilibrium constants that control the")
+			"equilibrium constants that control the")	\
+	MODULE_FPARAM_X(name, ModuleConstants, MOD,			\
+			"top level constants that control the")
         options.add_options()
                 ("v,verbose", "Record output values for all steps (this can significantly slow the program).", cxxopts::value<bool>(record)->default_value("false"))
                 ("e,evn", "The file (including path) containing environmental parameters", cxxopts::value<std::string>(evn)->default_value("InputEvn.txt"))
@@ -201,7 +203,8 @@ int main(int argc, const char* argv[]) {
 	    MODULE_FPARAM_X(name, COND)	\
 	    MODULE_FPARAM_X(name, RC)	\
 	    MODULE_FPARAM_X(name, POOL)	\
-	    MODULE_FPARAM_X(name, KE)
+	    MODULE_FPARAM_X(name, KE)	\
+	    MODULE_FPARAM_X(name, MOD)
 	    MODULE_FPARAM(BF)
 	    MODULE_FPARAM(FI)
 	    MODULE_FPARAM(PR)
@@ -215,6 +218,8 @@ int main(int argc, const char* argv[]) {
 #undef MODULE_FPARAM_X
         }
         driverChoice = static_cast<DriverType>(driver);
+	if (driverChoice == EPS)
+	  useC3 = true;
 
         readFile(evn, inputs);
         readFile(atpcost, inputs);
@@ -227,7 +232,10 @@ int main(int argc, const char* argv[]) {
         if (result.count("enzyme")) {
 	    std::cerr << "ENZYME DATA PROVIDED" << std::endl;
 	    readFile(enzymeFile, theVars->EnzymeAct, true);
-        }
+        } else {
+	  if (useC3)
+	    throw std::runtime_error("Enzyme data required if --c3 set (automatically true for EPS driver)");
+	}
 
 #define MODULE_FPARAM_X(name, fsuffix)					\
 	if (f ## name ## _ ## fsuffix.size() > 0) {			\
@@ -238,7 +246,8 @@ int main(int argc, const char* argv[]) {
 	MODULE_FPARAM_X(name, COND);		\
 	MODULE_FPARAM_X(name, RC);		\
 	MODULE_FPARAM_X(name, POOL);		\
-	MODULE_FPARAM_X(name, KE)
+	MODULE_FPARAM_X(name, KE);		\
+	MODULE_FPARAM_X(name, MOD)
 	MODULE_FPARAM(BF);
 	MODULE_FPARAM(FI);
 	MODULE_FPARAM(PR);
@@ -386,7 +395,6 @@ int main(int argc, const char* argv[]) {
                                                    maxSubSteps, abstol, reltol);
                 break;
             case EPS:
-                theVars->useC3 = true;
                 maindriver = new drivers::EPSDriver(theVars, begintime, stepsize, stoptime,
                                                     maxSubSteps, abstol, reltol, 1, 1, Tp);
                 break;

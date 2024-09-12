@@ -49,6 +49,7 @@ namespace conditions {
 template<class T, class U, MODULE ID = MODULE_NONE>
 class ConditionBase : public ValueSet<ID, PARAM_TYPE_COND> {
 public:
+    DECLARE_VALUE_SET_BASE(ConditionBase, ValueSet<ID, PARAM_TYPE_COND>)
     virtual ~ConditionBase() {}
 
     /**
@@ -76,13 +77,15 @@ public:
       \returns The number of active data members in this class.
       */
     static std::size_t size() {
-        if (T::MODULE != MODULE_NONE) {
-	  size_t alt = T::default_values().size() - T::skipped_values().size();
+        if (T::module != MODULE_NONE) {
+	  size_t alt = T::default_values().size() - (T::skipped_values().size() + T::non_array_values().size());
 	  if (alt != T::_size()) {
 	    std::cerr << "DEFAULTS = " << std::endl;
 	    T::print_defaults(std::cerr, 1);
 	    std::cerr << "SKIPPED = ";
 	    T::print_skipped(std::cerr);
+	    std::cerr << "NON-ARRAY = ";
+	    T::print_non_array(std::cerr);
 	    throw std::runtime_error("Size of default_values ("
 				     + std::to_string(T::default_values().size())
 				     + ") does not match expected count ("

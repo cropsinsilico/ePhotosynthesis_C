@@ -1,11 +1,12 @@
 # var = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-GAPDH 	        0.0006583	# SA = 620.0, mw = 147000.0, PS::V3
-FBPase		0.0025856	# SA = 119.0, mw = 195000.0, PS::V6
-SBPase		0.0129870	# SA = 70.0, mw = 66000.0, PS::V9
-PRK		0.0036585	# SA = 410.0, mw = 40000.0 PS::V13
-ATPase		0.0012		# SA = 100.0, mw = 500000.0 PS::V16
-ATPGPP		0.0285714	# SA = 10.0, mw = 210000.0 PS::V23
-MDH		0.0		# The initial concentration of actove MDH
-Thio		0.081		# The initial concentration of reduced thioredoxin
-Fd		0.081		# The initial concentration of reduced ferrodoxin
-RuACT		0.0056		# The initial concentration of active Rubisco activase
+GAPDH 	        1.0972130787798991e-08	# [CALC] Calculated from Pool & Coeff The initial concentration of active GAPDH; *=V3; SA = 620.0, mw = 147000.0, PS::V3
+FBPase		4.309416074121956e-08	# [CALC] Calculated from Pool & Coeff The initial concentration of active FBPase; *=V6; SA = 119.0, mw = 195000.0, PS::V6
+SBPase		2.1645021645021643e-07	# [CALC] Calculated from Pool & Coeff The initial concentration of active SBPase; *=V9; SA = 70.0, mw = 66000.0, PS::V9
+PRK		6.097560975609756e-08	# [CALC] Calculated from Pool & Coeff The initial concentration of active PRK; *=V13; SA = 410.0, mw = 40000.0 PS::V13
+ATPase		2e-08		# [CALC] Calculated from Pool & Coeff The initial concentration of active ATPase; *=V16; SA = 100.0, mw = 500000.0 PS::V16
+ATPGPP		4.7619047619047623e-07	# [CALC] Calculated from Pool & Coeff The initial concentration of active ATPGPP; *=V23; SA = 10.0, mw = 210000.0 PS::V23
+MDH		0.0		# The initial concentration of active MDH; Not set from Pool like previous variables
+Thio		0.081		# The initial concentration of reduced thioredoxin; scaled by Coeff
+Fd		0.081		# The initial concentration of reduced ferrodoxin; scaled by Coeff
+RuACT		0.0056		# The initial concentration of active Rubisco activase; scaled by Coeff
+Coeff		0.3		# [CONST, NON_VECTOR] Used to scale Thio, Fd, & RuACT and calculate GAPDH, FBPase, SBPase, PRK, ATPase, ATPGPP from Pool values

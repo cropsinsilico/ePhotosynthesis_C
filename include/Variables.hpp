@@ -77,7 +77,27 @@ public:
     Variables& operator=(const Variables& other);
     friend std::ostream& operator<<(std::ostream &out, const Variables *in);
     template<typename T>
-    void initParam(T& param);
+    void initParam(T& param) {
+      param.initValues(useC3);
+      std::map<PARAM_TYPE, std::map<MODULE, std::string> >::iterator it_pt = files.find(param.param_type);
+      if (it_pt == files.end())
+	return;
+      std::map<MODULE, std::string>::iterator it_mod = it_pt->second.find(param.module);
+      if (it_mod == it_pt->second.end())
+	return;
+      param.update_values(it_mod->second);
+    }
+    template<typename T>
+    void initParamStatic() {
+      T::initValues(useC3);
+      std::map<PARAM_TYPE, std::map<MODULE, std::string> >::iterator it_pt = files.find(T::param_type);
+      if (it_pt == files.end())
+	return;
+      std::map<MODULE, std::string>::iterator it_mod = it_pt->second.find(T::module);
+      if (it_mod == it_pt->second.end())
+	return;
+      T::update_values(it_mod->second);
+    }
 
     SUNContext* context = NULL;
     bool record = false;

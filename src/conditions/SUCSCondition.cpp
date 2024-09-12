@@ -29,8 +29,11 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
+DEFINE_VALUE_SET_SRC(SUCSCondition);
+
 SUCSCondition::SUCSCondition(const SUCSCondition* const other) :
   ConditionBase<SUCSCondition, CMCondition, MODULE_SUCS>(other) {
+    initMembers();
     T3Pc = other->T3Pc;
     FBPc = other->FBPc;
     HexPc = other->HexPc;
@@ -39,9 +42,11 @@ SUCSCondition::SUCSCondition(const SUCSCondition* const other) :
     SUCP = other->SUCP;
     SUC = other->SUC;
     PGAc = other->PGAc;
+    copyMembers(*other);
 }
 
 SUCSCondition::SUCSCondition(const arr &vec, const std::size_t offset) {
+    initMembers();
     fromArray(vec, offset);
 }
 

@@ -29,8 +29,11 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
+DEFINE_VALUE_SET_SRC(PRCondition);
+
 PRCondition::PRCondition(const PRCondition* const other) :
   ConditionBase<PRCondition, PS_PRCondition, MODULE_PR>(other) {
+    initMembers();
     GCEA = other->GCEA;
     GCA = other->GCA;
     PGCA = other->PGCA;
@@ -42,9 +45,11 @@ PRCondition::PRCondition(const PRCondition* const other) :
     GCEAc = other->GCEAc;
     if (!PS_RuBP)
         RuBP = other->RuBP;
+    copyMembers(*other);
 }
 
 PRCondition::PRCondition(const arr vec, const std::size_t offset)  {
+    initMembers();
     fromArray(vec, offset);
 }
 

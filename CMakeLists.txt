@@ -171,11 +171,33 @@ set(ENUM_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/utils/generate_enum.py)
 
 # The last suffix must have a complete set of modules for the global
 # enum to be generated correctly
-foreach(suffix COND POOL KE RC)
+foreach(suffix COND POOL KE MOD RC)
   set(fsuffix ${suffix})
   set(ENUM_SRC_REGEX ${CMAKE_CURRENT_SOURCE_DIR}/param/*_${fsuffix}.txt)
   file(GLOB ENUM_SRC "${ENUM_SRC_REGEX}")
   string(REPLACE "*" "\\*" ENUM_SRC_REGEX ${ENUM_SRC_REGEX})
+  set(iBYPRODUCTS)
+  set(iGENERATED_SOURCES)
+  set(iARGS)
+  foreach(ftype names defaults defaults_C3)
+    if(ftype STREQUAL "defaults_C3")
+      set(ftype_key "alternate-values")
+      list(APPEND iARGS --collection-name-${ftype_key}=${ftype})
+    elseif(ftype STREQUAL "defaults")
+      set(ftype_key "values")
+      list(APPEND iARGS --collection-name-${ftype_key}=${ftype})
+    else()
+      set(ftype_key ${ftype})
+    endif()
+    set(ENUM_${ftype} ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_${ftype}.cpp)
+    set(ENUM_${ftype}_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_${ftype}.hpp)
+    list(APPEND iBYPRODUCTS ${ENUM_${ftype}_H} ${ENUM_${ftype}})
+    list(APPEND iGENERATED_SOURCES ${ENUM_${ftype}})
+    list(APPEND iARGS
+      --dst-${ftype_key}=${ENUM_${ftype}}
+      --dst-${ftype_key}-header=${ENUM_${ftype}_H}
+    )
+  endforeach()
 
   set(ENUM_UTILS ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_utils.hpp)
   set(ENUM_GLOBAL ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums.hpp)
@@ -183,26 +205,26 @@ foreach(suffix COND POOL KE RC)
   set(ENUM_MAP_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_names.hpp)
   set(ENUM_VAL ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_defaults.cpp)
   set(ENUM_VAL_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_defaults.hpp)
-  set(ENUM_DST ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}.hpp)
+  set(ENUM_ALT ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_defaults_C3.cpp)
+  set(ENUM_ALT_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_defaults_C3.hpp)
+  set(ENUM_DST ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}.cpp)
+  set(ENUM_DST_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}.hpp)
   add_custom_target(
     generate_enum_${fsuffix}
     COMMAND python ${ENUM_SCRIPT}
-    "${ENUM_SRC_REGEX}" --src-regex --dst-type=c --dst=${ENUM_DST}
-    --dst-names=${ENUM_MAP} --dst-names-header=${ENUM_MAP_H}
-    --dst-values=${ENUM_VAL} --dst-values-header=${ENUM_VAL_H}
-    --function-suffix-values=defaults
+    "${ENUM_SRC_REGEX}" --src-regex --dst-type=c --dst=${ENUM_DST_H}
+    --dst-c-source=${ENUM_DST} --include-file-c-source=${ENUM_GLOBAL}
+    --namespace-c-source=ePhotosynthesis
     --dst-global=${ENUM_GLOBAL} ${APPEND_GLOBAL_ARGS}
     --enum-name-global=MODULE --strip-suffix-global=_${suffix}
     --root-include-dir=${CMAKE_CURRENT_SOURCE_DIR}/include
-    # --include-file-names-header=${ENUM_DST}
-    # --include-file-values-header=${ENUM_DST}
-    --prefix-with-type
-    --overwrite  # --verbose
-    BYPRODUCTS ${ENUM_DST} ${ENUM_MAP_H} ${ENUM_VAL_H} ${ENUM_GLOBAL} 
-    ${ENUM_MAP} ${ENUM_VAL}
+    --as-class-c=ValueSetEnum
+    --namespace-global=ePhotosynthesis
+    --overwrite ${iARGS} # --verbose
+    BYPRODUCTS ${ENUM_DST_H} ${ENUM_DST} ${ENUM_GLOBAL} ${iBYPRODUCTS}
     DEPENDS ${ENUM_SRC} ${ENUM_SCRIPT} ${LAST_SUFFIX_PROCESSED}
   )
-  list(APPEND GENERATED_SOURCES ${ENUM_MAP} ${ENUM_VAL})
+  list(APPEND GENERATED_SOURCES ${ENUM_DST} ${iGENERATED_SOURCES})
   set(APPEND_GLOBAL_ARGS --append-global=preserved)
   set(LAST_SUFFIX_PROCESSED ${ENUM_VAL})
 endforeach()
@@ -375,6 +397,7 @@ if(BUILD_TESTS)
     find_package(GTest)
     if(GTEST_FOUND)
         include_directories(${GTEST_INCLUDE_DIRS})
+        include_directories(SYSTEM ${GTEST_INCLUDE_DIRS})
     else()
         message(STATUS "GTest found... no")
         message(STATUS "   Using github GTest")
@@ -404,7 +427,6 @@ if(BUILD_TESTS)
         list(APPEND TEST_LIST ${TEST_PATH})
     endforeach()
     add_executable(testRunner ${TEST_LIST})
-    target_link_libraries(testRunner gtest_main)
     target_link_libraries(testRunner EPhotosynthesis)
     if(GTEST_FOUND)
         target_link_libraries(testRunner ${GTEST_BOTH_LIBRARIES})

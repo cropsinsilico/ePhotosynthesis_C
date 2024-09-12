@@ -19,7 +19,9 @@ Kf		6.3e6		# The rate constant for fluorescence emission, see the note in FI Uni
 Kd		2.0e8		# The rate constant for heat dissipation; see the note for FI Unit: s-1
 K15		1.0e10		# The rate constant for primary charge separation in PSI Unit: s-1
 K16		1.0e5		# The rate constant for electron tranfer from electron acceptor of PSI to Fd Unit: s-1
-Em_ISP		0.31		# ISPHr + cytc1 --> ISPHox + cytc1-
+KE8		0.0		# ISPHr + cytc1 --> ISPHox + cytc1-; Calculated from Em_IPS, Em_Cytf & Em_PG; Unit: s-1
+KE9		0.0		# cytc1- + cytc2 --> cytc1 + cytc2-; Calculated from Em_IPS, Em_Cytf & Em_PG; Unit: s-1
+Em_IPS		0.31		# ISPHr + cytc1 --> ISPHox + cytc1-
 Em_Cytf		0.27		# ISPHr + cytc1 --> ISPHox + cytc1-
 Em_PG		0.35		# cytc1- + cytc2 --> cytc1 + cytc2-
 MemCap		0.6e-6		# The membrane capacity

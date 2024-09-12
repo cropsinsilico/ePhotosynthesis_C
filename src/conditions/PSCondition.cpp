@@ -29,8 +29,11 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
+DEFINE_VALUE_SET_SRC(PSCondition);
+
 PSCondition::PSCondition(const PSCondition* const other) :
   ConditionBase<PSCondition, PS_PRCondition, MODULE_PS>(other) {
+    initMembers();
     RuBP = other->RuBP;
     PGA = other->PGA;
     DPGA = other->DPGA;
@@ -47,9 +50,11 @@ PSCondition::PSCondition(const PSCondition* const other) :
     _Pi = other->_Pi;
     _ADP = other->_ADP;
     _v1 = other->_v1;
+    copyMembers(*other);
 }
 
 PSCondition::PSCondition(const arr &vec, const std::size_t offset) {
+    initMembers();
     fromArray(vec, offset);
 }
 

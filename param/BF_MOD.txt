@@ -1,0 +1,8 @@
+# Name		Value	C3Value	Docs
+cATPsyn		0.0	1.0	# cATPsyn=1.0447;%1.01866 WY201803
+CPSi		0.0	1.0	# CPSi=1.0131;% 1.0237 WY201803
+cNADPHsyn	0.0	1.0	# cNADPHsyn=1.094468408;%1.0388 WY201803
+EPS_ATP_Rate	0.0	0.0	# Indicate in the beginning there is no ATP synthesis activity.
+_Pi		0.9	0.9	# Phosphate in stroma
+PMODTEM		1.0		# [CONST] ?; Used to scale RC parameters PK, PMg, & PCl
+RT		2477.572	# [CONST] ?; 8.314 * 298.; Used to calculate RC parameters KE8 & KE9

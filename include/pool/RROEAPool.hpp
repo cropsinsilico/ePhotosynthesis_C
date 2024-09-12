@@ -32,13 +32,61 @@
 namespace ePhotosynthesis {
 namespace pool {
 
+#define MEMBERS_RROEAPool			\
+  GAPDH,					\
+    FBPase,					\
+    SBPase,					\
+    PRK,					\
+    ATPase,					\
+    ATPGPP,					\
+    MDH,					\
+    ThioT,					\
+    FdT,					\
+    RuACTT,					\
+    SA_GAPDH,					\
+    SA_FBPase,					\
+    SA_SBPase,					\
+    SA_PRK,					\
+    SA_ATPase,					\
+    SA_ATPGPP,					\
+    SA_MDH,					\
+    mw_GAPDH,					\
+    mw_FBPase,					\
+    mw_SBPase,					\
+    mw_PRK,					\
+    mw_ATPase,					\
+    mw_ATPGPP,					\
+    mw_MDH,					\
+    MDH_Vmax
+#define MEMBERS_RROEAPool_CONSTANT		\
+    SA_GAPDH,					\
+    SA_FBPase,					\
+    SA_SBPase,					\
+    SA_PRK,					\
+    SA_ATPase,					\
+    SA_ATPGPP,					\
+    SA_MDH,					\
+    mw_GAPDH,					\
+    mw_FBPase,					\
+    mw_SBPase,					\
+    mw_PRK,					\
+    mw_ATPase,					\
+    mw_ATPGPP,					\
+    mw_MDH,					\
+    MDH_Vmax
+#define MEMBERS_RROEAPool_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_RROEAPool_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+  
 /**
  Class for RROEA_Pool data
  */
 class RROEAPool : public ValueSet<MODULE_RROEA, PARAM_TYPE_POOL> {
 public:
+    DECLARE_VALUE_SET(RROEAPool, ValueSet<MODULE_RROEA, PARAM_TYPE_POOL>)
     RROEAPool() :
-      ValueSet<MODULE_RROEA, PARAM_TYPE_POOL>() {}
+      ValueSet<MODULE_RROEA, PARAM_TYPE_POOL>() {
+        initMembers();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -46,7 +94,7 @@ public:
       */
     RROEAPool(const RROEAPool &other) :
       ValueSet<MODULE_RROEA, PARAM_TYPE_POOL>(other) {
-
+        initMembers();
         GAPDH = other.GAPDH;
         FBPase = other.FBPase;
         SBPase = other.SBPase;
@@ -57,19 +105,12 @@ public:
         ThioT = other.ThioT;
         FdT = other.FdT;
         RuACTT = other.RuACTT;
+	copyMembers(other);
     }
 
-    double GAPDH = 0.;
-    double FBPase = 0.;
-    double SBPase = 0.;
-    double PRK = 0.;
-    double ATPase = 0.;
-    double ATPGPP = 0.;
-    double MDH = 0.;
-    double ThioT = 0.;
-    double FdT = 0.;
-    double RuACTT = 0.;
 };
+
+  DEFINE_VALUE_SET_HEADER(RROEAPool);
 
 }  // namespace pool
 }  // namespace ePhotosynthesis

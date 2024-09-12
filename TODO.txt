@@ -1,5 +1,6 @@
 - Add rate constants to init
-- Add param files for module level constants?
 - Initialize module level values
 - Clean up comments for param files
-- Change enums for parameters to use classes for scope
+- Remove _toArray, _fromArray, & explicit copy constructor where value pointers can be used
+- Clean up unused macros
+- Add support for static parameters on ValueSets (Needed by RedoxRegCondition)

@@ -32,24 +32,35 @@
 namespace ePhotosynthesis {
 namespace pool {
 
+#define MEMBERS_SUCSPool			\
+  ATc,						\
+    UTc,					\
+    PTc
+#define MEMBERS_SUCSPool_CONSTANT EMPTY_MEMBER_LIST
+#define MEMBERS_SUCSPool_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_SUCSPool_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+  
 /**
  Class for SUCS_Pool data
  */
 class SUCSPool : public ValueSet<MODULE_SUCS, PARAM_TYPE_POOL> {
 public:
+    DECLARE_VALUE_SET(SUCSPool, ValueSet<MODULE_SUCS, PARAM_TYPE_POOL>)
     SUCSPool() :
-      ValueSet<MODULE_SUCS, PARAM_TYPE_POOL>() {}
+      ValueSet<MODULE_SUCS, PARAM_TYPE_POOL>() {
+        initMembers();
+    }
     SUCSPool(const SUCSPool &other) :
       ValueSet<MODULE_SUCS, PARAM_TYPE_POOL>(other) {
+        initMembers();
         ATc = other.ATc;
         UTc = other.UTc;
         PTc = other.PTc;
+	copyMembers(other);
     }
-
-    double ATc = 0.;
-    double UTc = 0.;
-    double PTc = 0.;
 };
+
+  DEFINE_VALUE_SET_HEADER(SUCSPool);
 
 }  // namespace pool
 }  // namespace ePhotosynthesis

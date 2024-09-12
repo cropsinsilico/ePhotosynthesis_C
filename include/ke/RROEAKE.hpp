@@ -32,12 +32,29 @@
 namespace ePhotosynthesis {
 namespace KE {
 
+#define MEMBERS_RROEAKE				\
+  KEe2FBPase,					\
+    KEe2SBPase,					\
+    KEe2PRK,					\
+    KEe2ATPase,					\
+    KEe2RuACT,					\
+    KEe2GAPDH,					\
+    KEe2MDH,					\
+    KEe2ATPGPP,					\
+    KEeFd2Thio
+#define MEMBERS_RROEAKE_CONSTANT EMPTY_MEMBER_LIST
+#define MEMBERS_RROEAKE_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_RROEAKE_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+  
 /**
  Class for RROEA_KE data
  */
 class RROEAKE : public ValueSet<MODULE_RROEA, PARAM_TYPE_KE> {
 public:
-    RROEAKE() : ValueSet<MODULE_RROEA, PARAM_TYPE_KE>() {}
+    DECLARE_VALUE_SET(RROEAKE, ValueSet<MODULE_RROEA, PARAM_TYPE_KE>)
+    RROEAKE() : ValueSet<MODULE_RROEA, PARAM_TYPE_KE>() {
+      initMembers();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -45,28 +62,22 @@ public:
       */
     RROEAKE(const RROEAKE &other) :
       ValueSet<MODULE_RROEA, PARAM_TYPE_KE>(other) {
-
+        initMembers();
         KEe2FBPase = other.KEe2FBPase;
         KEe2SBPase = other.KEe2SBPase;
         KEe2PRK = other.KEe2PRK;
-        KEe2ATPase = other.KEe2ATPase;
+        // KEe2ATPase = other.KEe2ATPase;
         KEe2RuACT = other.KEe2RuACT;
         KEe2GAPDH = other.KEe2GAPDH;
         KEe2MDH = other.KEe2MDH;
         KEe2ATPGPP = other.KEe2ATPGPP;
         KEeFd2Thio = other.KEeFd2Thio;
+	copyMembers(other);
     }
 
-    double KEe2FBPase = 0.;
-    double KEe2SBPase = 0.;
-    double KEe2PRK = 0.;
-    double KEe2ATPase = 0.;
-    double KEe2RuACT = 0.;
-    double KEe2GAPDH = 0.;
-    double KEe2MDH = 0.;
-    double KEe2ATPGPP = 0.;
-    double KEeFd2Thio = 0.;
 };
+
+  DEFINE_VALUE_SET_HEADER(RROEAKE);
 
 }  // namespace KE
 }  // namespace ePhotosynthesis

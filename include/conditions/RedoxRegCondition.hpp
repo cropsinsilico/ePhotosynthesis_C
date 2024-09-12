@@ -33,12 +33,35 @@ class RedoxReg;
 }
 namespace conditions {
 
+#define MEMBERS_RedoxRegCondition		\
+  Thion
+  /*
+    V6,						\
+    V9,						\
+    V13,					\
+    V16
+  */
+#define MEMBERS_RedoxRegCondition_CONSTANT EMPTY_MEMBER_LIST
+#define MEMBERS_RedoxRegCondition_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_RedoxRegCondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+
+  /*
+#define MEMBERS_RedoxRegCondition_NOT_IN_ARRAY	\
+  V6,						\
+    V9,						\
+    V13,					\
+    V16
+  */
+
 /**
  Class for holding the inputs to RedoxReg_mb
  */
-class RedoxRegCondition : public ConditionBase<RedoxRegCondition, RedoxRegCondition> {
+class RedoxRegCondition : public ConditionBase<RedoxRegCondition, RedoxRegCondition, MODULE_RedoxReg> {
 public:
-    RedoxRegCondition() : RA_con(new RACondition()) {}
+    DECLARE_VALUE_SET_SINGLE(RedoxRegCondition, ConditionBase<RedoxRegCondition, RedoxRegCondition, MODULE_RedoxReg>)
+    RedoxRegCondition() : RA_con(new RACondition()) {
+      initMembers();
+    }
 
     /**
       Copy constructor that makes a deep copy of the given object
@@ -67,8 +90,6 @@ public:
 
     RACondition* RA_con = nullptr;     // child Condition
 
-    double Thion = 0;
-
     /**
       Write the contents of the instance to the output stream.
 
@@ -77,10 +98,10 @@ public:
       \returns The output stream
       */
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-    SET_GET(V6)
-    SET_GET(V9)
-    SET_GET(V13)
-    SET_GET(V16)
+    SET_GET_NOVS(V6)
+    SET_GET_NOVS(V9)
+    SET_GET_NOVS(V13)
+    SET_GET_NOVS(V16)
 private:
     friend ConditionBase;
     friend class modules::RedoxReg;
@@ -121,6 +142,8 @@ private:
     const static Debug::DebugLevel _dlevel = Debug::Middle;
 #endif
 };
+
+  DEFINE_VALUE_SET_HEADER_SINGLE(RedoxRegCondition);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

@@ -32,9 +32,12 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
+DEFINE_VALUE_SET_STATIC(RuACT);
+
+INIT_MEMBER_STATIC(RuACT, activase);
+
 bool RuACT::EPS_connect = false;
 bool RuACTCondition::EPS_connect = false;
-double RuACT::activase = 0.;
 double RuACT::TIME = 0.;
 std::size_t RuACT::N = 1;
 
@@ -42,6 +45,60 @@ const std::size_t RuACTCondition::count = 4;
 
 RuACTCondition* RuACT::_init(Variables *theVars) {
     RuACT::setEPS_connect(theVars->RuACT_EPS_com);
+    theVars->initParamStatic<RuACT>();
+    theVars->initParam(theVars->RuACT_RC);
+    theVars->initParam(theVars->RuACT_Pool);
+    RuACTCondition* RuACT_Con = new RuACTCondition();
+    theVars->initParam(*RuACT_Con);
+
+    RuACT::set(MOD::RuACT::activase,
+	       RuACT::get(MOD::RuACT::activase) *
+	       theVars->RacRatio[10]);
+    size_t i = 0;
+    
+    //factor = 0.224/0.3;
+    const double factor = 1;
+    
+    for (typename RC::RuACTRC::iterator it = theVars->RuACT_RC.begin();
+	 it != theVars->RuACT_RC.end(); it++) {
+      if (i == 10)
+	break;
+      switch (it->first) {
+      case (RC::RuACT::k7) : {
+	it->second = it->second * theVars->RacRatio[i] * theVars->RuACT_RC[RC::RuACT::k6];
+	i++;
+	break;
+      }
+      default : {
+	it->second = it->second * theVars->RacRatio[i];
+	i++;
+      }
+      }
+    }
+
+    (*RuACT_Con)[COND::RuACT::ER] *= factor;
+    (*RuACT_Con)[COND::RuACT::Eaf] *= factor;
+    (*RuACT_Con)[COND::RuACT::ECMR] *= factor;
+
+    i = 11;
+    for (typename pool::RuACTPool::iterator it = theVars->RuACT_Pool.begin();
+	 it != theVars->RuACT_Pool.end(); it++) {
+      if (i == 16)
+	break;
+      switch (it->first) {
+      case (POOL::RuACT::ET) : {
+	it->second = it->second * theVars->RacRatio[i] * factor;
+	i++;
+	break;
+      }
+      default : {
+	it->second = it->second * theVars->RacRatio[i];
+	i++;
+      }
+      }
+    }
+
+#ifdef CHECK_VALUE_SET_ALTS
     RuACT::activase = 80. * theVars->RacRatio[10];
 
     // The rate constant used in the model
@@ -56,11 +113,7 @@ RuACTCondition* RuACT::_init(Variables *theVars) {
     theVars->RuACT_RC.k7 = theVars->RuACT_RC.k6 * 10 * theVars->RacRatio[8]; // The rate constant for ecm to ecmr
     theVars->RuACT_RC.kr = 20. * pow(10., -3.) * theVars->RacRatio[9];   // The apparaent michaelis menton constant for RuBP
 
-    //factor = 0.224/0.3;
-    const double factor = 1;
-
     // Assign value to a variable that is transferred to the program
-    RuACTCondition* RuACT_Con = new RuACTCondition();
     RuACT_Con->ER = 0.05 * 4. * factor;  // The concentration of inactive ER
     RuACT_Con->Eaf = 0.05 * 4. * factor; // The total concentration of E, EC, AND ECM
     RuACT_Con->ECMR = 0.2 * 4. * factor; // The concentration of ECMR
@@ -71,6 +124,11 @@ RuACTCondition* RuACT::_init(Variables *theVars) {
     theVars->RuACT_Pool.C = 0.012 * theVars->RacRatio[13];             // mM
     theVars->RuACT_Pool.O = 0.260 * theVars->RacRatio[14];             // mM
     theVars->RuACT_Pool.M = 5. * theVars->RacRatio[15];
+
+    RuACT_Con->checkAlts();
+    theVars->RuACT_RC.checkAlts();
+    theVars->RuACT_Pool.checkAlts();
+#endif // CHECK_VALUE_SET_ALTS
 
     return RuACT_Con;
 }

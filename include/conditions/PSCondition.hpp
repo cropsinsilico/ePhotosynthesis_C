@@ -37,13 +37,40 @@ namespace conditions {
 
 class PS_PRCondition;
 
+#define MEMBERS_PSCondition			\
+  RuBP,						\
+    PGA,					\
+    DPGA,					\
+    T3P,					\
+    ADPG,					\
+    FBP,					\
+    E4P,					\
+    S7P,					\
+    SBP,					\
+    ATP,					\
+    HexP,					\
+    PenP,					\
+    _Pi,					\
+    _ADP,					\
+    _v1
+#define MEMBERS_PSCondition_NOT_IN_ARRAY	\
+  _Pi,						\
+    _ADP,					\
+    _v1
+#define MEMBERS_PSCondition_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_PSCondition_CONSTANT EMPTY_MEMBER_LIST
+
+
 /**
  Class for holding the inputs to PS_mb
  */
 class PSCondition : public ConditionBase<PSCondition, PS_PRCondition, MODULE_PS> {
 public:
+    DECLARE_VALUE_SET(PSCondition, ConditionBase<PSCondition, PS_PRCondition, MODULE_PS>)
+
     PSCondition(PS_PRCondition* par = nullptr) {
         setParent(par);
+	initMembers();
     }
     /**
       Copy constructor that makes a deep copy of the given object
@@ -59,22 +86,6 @@ public:
       */
     PSCondition(const arr &vec, const std::size_t offset = 0);
 
-    double RuBP = 0.;
-    double PGA = 0.;
-    double DPGA = 0.;
-    double T3P = 0.;
-    double ADPG = 0.;
-    double FBP = 0.;
-    double E4P = 0.;
-    double S7P = 0.;
-    double SBP = 0.;
-    double ATP = 0.;
-    double HexP = 0.;
-    double PenP = 0.;
-    double _Pi = 0.;
-    double _ADP = 0.;
-    double _v1 = 0.;
-
     /**
       Write the contents of the instance to the output stream.
 
@@ -83,7 +94,7 @@ public:
       \returns The output stream
       */
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-    SET_GET_BOOL(C3, PS_COND_ADPG)
+    SET_GET_BOOL(C3, ADPG)
 private:
     friend ConditionBase;
     friend class modules::PS;
@@ -125,6 +136,8 @@ private:
     const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif
 };
+
+  DEFINE_VALUE_SET_HEADER(PSCondition);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

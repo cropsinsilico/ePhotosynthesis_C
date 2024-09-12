@@ -38,10 +38,102 @@ class PRModuleTest;
 #endif
 namespace modules {
 class PS_PR;
+
+#define MEMBERS_PR				\
+  KC,						\
+    KE113,					\
+    KE122,					\
+    KE123,					\
+    KE124,					\
+    KGc,					\
+    KI1011,					\
+    KI1012,					\
+    KI1121,					\
+    KI1122,					\
+    KI113,					\
+    KI1221,					\
+    KI123,					\
+    KI1311,					\
+    KM1312,					\
+    KI1312,					\
+    KM1011,					\
+    KM1012,					\
+    KM112,					\
+    KM1131,					\
+    KM1132,					\
+    KM121,					\
+    KM1221,					\
+    KM1222,					\
+    KM123,					\
+    KM1241,					\
+    KM1242,					\
+    KI124,					\
+    KM1311,					\
+    KO,						\
+    KR,						\
+    NADHc,					\
+    NADc,					\
+    PR_ADP,					\
+    PR_ATP,					\
+    V111,					\
+    V112,					\
+    V113,					\
+    V121,					\
+    V122,					\
+    V123,					\
+    V124,					\
+    V131,					\
+    V2T,					\
+    Vfactor112,					\
+    Vfactor113,					\
+    Vfactor121,					\
+    Vfactor122,					\
+    Vfactor123,					\
+    Vfactor124,					\
+    Vfactor131,					\
+    Vf_T131,					\
+    Vf_T113,					\
+    Vf_T123,					\
+    Vf_T121,					\
+    Vf_T122,					\
+    Vf_T112,					\
+    PGA,					\
+    GLUc,					\
+    RUBISCOTOTAL,				\
+    V1T,					\
+    PrV112,					\
+    PrV113,					\
+    PrV121,					\
+    PrV122,					\
+    PrV123,					\
+    PrV124,					\
+    PrV131,					\
+    Q10_112,					\
+    Q10_113,					\
+    Q10_121,					\
+    Q10_122,					\
+    Q10_123,					\
+    Q10_124,					\
+    Q10_131,					\
+    CE
+#define MEMBERS_PR_CONSTANT			\
+  Q10_112,					\
+    Q10_113,					\
+    Q10_121,					\
+    Q10_122,					\
+    Q10_123,					\
+    Q10_124,					\
+    Q10_131,					\
+    CE
+#define MEMBERS_PR_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_PR_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+  
 /**
   Class for grouping PR related functions and common variables
   */
-class PR : public ModuleBase<PR, conditions::PRCondition> {
+class PR : public ModuleBase<PR, conditions::PRCondition, MODULE_PR> {
+public:
+    DECLARE_VALUE_SET_STATIC(PR, ModuleBase<PR, conditions::PRCondition, MODULE_PR>)
 private:
     friend ModuleBase;
     friend class modules::PS_PR;
@@ -104,6 +196,8 @@ private:
     SET_GET(KI1221)
     SET_GET(KI123)
     SET_GET(KI1311)
+    SET_GET(KM1312)
+    SET_GET(KI1312)
     SET_GET(KM1011)
     SET_GET(KM1012)
     SET_GET(KM112)
@@ -115,6 +209,7 @@ private:
     SET_GET(KM123)
     SET_GET(KM1241)
     SET_GET(KM1242)
+    SET_GET(KI124)
     SET_GET(KM1311)
     SET_GET(KO)
     SET_GET(KR)
@@ -151,17 +246,11 @@ private:
     SET_GET_BOOL_MODULE(PS_RuBP, conditions::PR)
     SET_GET(RUBISCOTOTAL)
 
-    static double PrV112;
-    static double PrV113;
-    static double PrV121;
-    static double PrV122;
-    static double PrV123;
-    static double PrV124;
-    static double PrV131;
-
     static double TIME;    // The timestamp of the most recent call to _Rate
     static std::size_t N;  // The current size of the PR TimeSeries
 };
+
+  DEFINE_VALUE_SET_STATIC_HEADER(PR);
 
 }  // namespace modules
 }  // namespace ePhotosynthesis

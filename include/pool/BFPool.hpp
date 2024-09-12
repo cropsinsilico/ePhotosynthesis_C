@@ -32,13 +32,42 @@
 namespace ePhotosynthesis {
 namespace pool {
 
+#define MEMBERS_BFPool				\
+  kA_d,						\
+    kA_f,					\
+    kA_U,					\
+    kU_A,					\
+    kU_d,					\
+    kU_f,					\
+    k1,						\
+    k_r1,					\
+    kz,						\
+    k12,					\
+    k23,					\
+    k30,					\
+    k01,					\
+    k2,						\
+    kAB1,					\
+    kBA1,					\
+    kAB2,					\
+    kBA2,	\
+    k3,		\
+    k_r3,	\
+    k_pq_oxy
+#define MEMBERS_BFPool_CONSTANT EMPTY_MEMBER_LIST
+#define MEMBERS_BFPool_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_BFPool_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+  
 /**
  Class for holding BF_Pool data
  */
 class BFPool : public ValueSet<MODULE_BF, PARAM_TYPE_POOL> {
 public:
+    DECLARE_VALUE_SET(BFPool, ValueSet<MODULE_BF, PARAM_TYPE_POOL>)
     BFPool() :
-      ValueSet<MODULE_BF, PARAM_TYPE_POOL>() {}
+      ValueSet<MODULE_BF, PARAM_TYPE_POOL>() {
+        initMembers();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -46,7 +75,7 @@ public:
       */
     BFPool(const BFPool &other) :
       ValueSet<MODULE_BF, PARAM_TYPE_POOL>(other) {
-
+        initMembers();
         kA_d = other.kA_d;
         kA_f = other.kA_f;
         kA_U = other.kA_U;
@@ -68,30 +97,12 @@ public:
         k3 = other.k3;
         k_r3 = other.k_r3;
         k_pq_oxy = other.k_pq_oxy;
+	copyMembers(other);
     }
 
-    double kA_d = 0.;
-    double kA_f = 0.;
-    double kA_U = 0.;
-    double kU_A = 0.;
-    double kU_d = 0.;
-    double kU_f = 0.;
-    double k1 = 0.;
-    double k_r1 = 0.;
-    double kz = 0.;
-    double k12 = 0.;
-    double k23 = 0.;
-    double k30 = 0.;
-    double k01 = 0.;
-    double k2 = 0.;
-    double kAB1 = 0.;
-    double kBA1 = 0.;
-    double kAB2 = 0.;
-    double kBA2 = 0.;
-    double k3 = 0.;
-    double k_r3 = 0.;
-    double k_pq_oxy = 0.;
 };
+
+  DEFINE_VALUE_SET_HEADER(BFPool);
 
 }  // namespace pool
 }  // namespace ePhotosynthesis

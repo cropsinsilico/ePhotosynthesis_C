@@ -27,9 +27,6 @@
 #include "Variables.hpp"
 #include "modules/RROEA.hpp"
 
-#define KEe2ATPase 1.
-#define ke2ATPase 1.
-
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
@@ -61,8 +58,8 @@ void RROEA::_Rate(const double t, const RROEACondition* const RROEA_con, Variabl
                                                                   RROEA_con->SBPase / theVars->RROEA_KE.KEe2SBPase);
     theVars->RROEA_Vel.ve2PRK = theVars->RROEA_RC.ke2PRK * (RROEA_con->Thio * PRKo - Thioo *
                                                             RROEA_con->PRK / theVars->RROEA_KE.KEe2PRK);
-    theVars->RROEA_Vel.ve2ATPase = ke2ATPase * (RROEA_con->Thio * ATPaseo - Thioo *
-                                                RROEA_con->ATPase / KEe2ATPase);
+    theVars->RROEA_Vel.ve2ATPase = theVars->RROEA_RC.ke2ATPase * (RROEA_con->Thio * ATPaseo - Thioo *
+                                                RROEA_con->ATPase / theVars->RROEA_KE.KEe2ATPase);
     theVars->RROEA_Vel.ve2ATPGPP = theVars->RROEA_RC.ke2ATPGPP * (RROEA_con->Thio * ATPGPPo -
                                                                   Thioo * RROEA_con->ATPGPP /
                                                                   theVars->RROEA_KE.KEe2ATPGPP);

@@ -32,12 +32,30 @@
 namespace ePhotosynthesis {
 namespace RC {
 
+#define MEMBERS_RuACTRC				\
+  k1,						\
+    kn1,					\
+    km1,					\
+    Ke2,					\
+    Ke3,					\
+    k6,						\
+    kc,						\
+    ko,						\
+    k7,						\
+    kr
+#define MEMBERS_RuACTRC_CONSTANT EMPTY_MEMBER_LIST
+#define MEMBERS_RuACTRC_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_RuACTRC_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+  
 /**
  Class for RuACT_RC data
  */
 class RuACTRC : public ValueSet<MODULE_RuACT, PARAM_TYPE_RC> {
 public:
-    RuACTRC() : ValueSet<MODULE_RuACT, PARAM_TYPE_RC>() {}
+    DECLARE_VALUE_SET(RuACTRC, ValueSet<MODULE_RuACT, PARAM_TYPE_RC>)
+    RuACTRC() : ValueSet<MODULE_RuACT, PARAM_TYPE_RC>() {
+        initMembers();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -45,7 +63,7 @@ public:
       */
     RuACTRC(const RuACTRC &other) :
       ValueSet<MODULE_RuACT, PARAM_TYPE_RC>(other) {
-
+        initMembers();
         k1 = other.k1;
         kn1 = other.kn1;
         km1 = other.km1;
@@ -56,19 +74,12 @@ public:
         ko = other.ko;
         k7 = other.k7;
         kr = other.kr;
+	copyMembers(other);
     }
 
-    double k1 = 0.;
-    double kn1 = 0.; ///< The rate constant of E inactivation by binding of RuBP; Lazar 1999, with a lifetime of 5 ns at closed reaction center
-    double km1 = 0.;
-    double Ke2 = 0.; ///< Data from Mate et al 1996. Unit: micormolar; Reference needed, a guess
-    double Ke3 = 0.; ///< Data from Mate et al 1996. Unit: micormolar;
-    double k6 = 0.;  ///< micromolar per meter square per second, transfered to unit
-    double kc = 0.;  ///< Michaelis menton constant for CO2
-    double ko = 0.;  ///< Michaelis menton constant for O2
-    double k7 = 0.;  ///< The rate constant for ecm to ecmr
-    double kr = 0.;
 };
+
+  DEFINE_VALUE_SET_HEADER(RuACTRC);
 
 }  // namespace RC
 }  // namespace ePhotosynthesis

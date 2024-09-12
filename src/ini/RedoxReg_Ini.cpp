@@ -33,10 +33,18 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-double RedoxReg::RedoxReg_VMAX13 = 0.;
-double RedoxReg::RedoxReg_VMAX16 = 0.;
-double RedoxReg::RedoxReg_VMAX6 = 0.;
-double RedoxReg::RedoxReg_VMAX9 = 0.;
+DEFINE_VALUE_SET_STATIC(RedoxReg);
+DEFINE_VALUE_SET_CONSTANTS(RedoxReg, {Fd_Thio_ET, ThioT, Thio_Oxidation});
+
+INIT_MEMBER_STATIC(RedoxReg, RedoxReg_VMAX13);
+INIT_MEMBER_STATIC(RedoxReg, RedoxReg_VMAX16);
+INIT_MEMBER_STATIC(RedoxReg, RedoxReg_VMAX6);
+INIT_MEMBER_STATIC(RedoxReg, RedoxReg_VMAX9);
+
+INIT_CONST_MEMBER_STATIC(RedoxReg, Fd_Thio_ET, 500.);
+INIT_CONST_MEMBER_STATIC(RedoxReg, ThioT, 0.5);
+INIT_CONST_MEMBER_STATIC(RedoxReg, Thio_Oxidation, 0.1);
+
 double RedoxRegCondition::V13 = 0.;
 double RedoxRegCondition::V16 = 0.;
 double RedoxRegCondition::V6 = 0.;
@@ -44,10 +52,11 @@ double RedoxRegCondition::V9 = 0.;
 double RedoxReg::TIME = 0.;
 std::size_t RedoxReg::N = 1;
 bool RedoxReg::trDynaPS2RedReg_cal = false;
-const double RedoxReg::Fd_Thio_ET = 500.;
-const double RedoxReg::ThioT = 0.5;
-const double RedoxReg::Thio_Oxidation = 0.1;
+
 RedoxRegCondition* RedoxReg::_init(Variables *theVars) {
+
+    theVars->initParamStatic<RedoxReg>();
+  
     RACondition* RA_con = RA::init(theVars);
 
     const double Thion = 0.25;     // This is a wild guess

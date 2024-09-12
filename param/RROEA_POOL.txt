@@ -1,11 +1,26 @@
 # var = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-GAPDH 	        0.0006583	# SA = 620.0, mw = 147000.0, PS::V3
-FBPase		0.0025856	# SA = 119.0, mw = 195000.0, PS::V6
-SBPase		0.0129870	# SA = 70.0, mw = 66000.0, PS::V9
-PRK		0.0036585	# SA = 410.0, mw = 40000.0 PS::V13
-ATPase		0.0012		# SA = 100.0, mw = 500000.0 PS::V16
-ATPGPP		0.0285714	# SA = 10.0, mw = 210000.0 PS::V23
-MDH		0.0037481	# SA = 184.0, mw = 87000.0, MDH_Vmax = 2 value is assumed, but no literature to support. Needs to be fixed.
+GAPDH 	        1.0972130787798991e-08	# [CALC] The initial concentration of active GAPDH; *=V3; SA = 620.0, mw = 147000.0, PS::V3
+FBPase		4.309416074121956e-08	# [CALC] The initial concentration of active FBPase; *=V6; SA = 119.0, mw = 195000.0, PS::V6
+SBPase		2.1645021645021643e-07	# [CALC] The initial concentration of active SBPase; *=V9; SA = 70.0, mw = 66000.0, PS::V9
+PRK		6.097560975609756e-08	# [CALC] The initial concentration of active PRK; *=V13; SA = 410.0, mw = 40000.0 PS::V13
+ATPase		2e-08		# [CALC] The initial concentration of active ATPase; *=V16; SA = 100.0, mw = 500000.0 PS::V16
+ATPGPP		4.7619047619047623e-07	# [CALC] The initial concentration of active ATPGPP; *=V23; SA = 10.0, mw = 210000.0 PS::V23
+MDH		6.24687656171914e-08	# [CALC] The initial concentration of active MDH; *=MDH_Vmax; SA = 184.0, mw = 87000.0; MDH_Vmax = 2 value is assumed, but no literature to support. Needs to be fixed.
 ThioT		0.081
-FdT		0.081		# Compes from BF if used with RROEA_EPS
+FdT		0.081		# Comes from BF if used with RROEA_EPS
 RuACTT		0.0056
+SA_GAPDH	620		# [CONST] Used w/ mw_GAPDH to calculate GAPDH from PS::V3; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+SA_FBPase	119		# [CONST] Used w/ mw_FBPase to calculate FBPase from PS::V6; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+SA_SBPase	70		# [CONST] Used w/ mw_SBPase to calculate SBPase from PS::V9; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+SA_PRK		410		# [CONST] Used w/ mw_PRK to calculate PRK from PS::V13; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+SA_ATPase	100		# [CONST] Used w/ mw_ATPase to calculate ATPase from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+SA_ATPGPP	10		# [CONST] Used w/ mw_ATPGPP to calculate ATPGPP from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+SA_MDH		184		# [CONST] Used w/ MDH_Vmax & mw_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+mw_GAPDH	147000		# [CONST] Used w/ SA_GAPDH to calculate GAPDH from PS::V3; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+mw_FBPase	195000		# [CONST] Used w/ SA_FBPase to calculate FBPase from PS::V6; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+mw_SBPase	66000		# [CONST] Used w/ SA_SBPase to calculate SBPase from PS::V9; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+mw_PRK		40000		# [CONST] Used w/ SA_PRK to calculate PRK from PS::V13; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+mw_ATPase	500000		# [CONST] Used w/ SA_ATPase to calculate ATPase from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+mw_ATPGPP	210000		# [CONST] Used w/ SA_ATPGPP to calculate ATPGPP from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+mw_MDH		87000		# [CONST] Used w/ MDH_Vmax & SA_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+MDH_Vmax	2.0		# [CONST] This value is assumed and there is no literature about it. Need to be fixed.; Used w/ SA_MDH & mw_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var

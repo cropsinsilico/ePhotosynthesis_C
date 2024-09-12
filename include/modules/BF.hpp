@@ -37,12 +37,26 @@ class BFModuleTest;
 }
 #endif
 namespace modules {
+
+#define MEMBERS_BF				\
+  cATPsyn,					\
+    CPSi,					\
+    cNADPHsyn,					\
+    EPS_ATP_Rate,				\
+    _Pi,					\
+    PMODTEM,					\
+    RT
+#define MEMBERS_BF_CONSTANT EMPTY_MEMBER_LIST
+#define MEMBERS_BF_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_BF_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+  
 class FIBF;
 /**
  Class for the BF Module functions.
  */
-class BF : public ModuleBase<BF, conditions::BFCondition> {
+class BF : public ModuleBase<BF, conditions::BFCondition, MODULE_BF> {
 public:
+    DECLARE_VALUE_SET_STATIC(BF, ModuleBase<BF, conditions::BFCondition, MODULE_BF>)
     SET_GET(_Pi)
     SET_GET(EPS_ATP_Rate)
     SET_GET_BOOL_MODULE(FI_connect, conditions::BF)
@@ -102,19 +116,21 @@ private:
       Reset the static member variables to their default values.
       */
     static void _reset() {
-        cATPsyn = 0.;
-        CPSi = 0.;
-        cNADPHsyn = 0.;
+        setcATPsyn(0.);
+        setCPSi(0.);
+        setcNADPHsyn(0.);
         _Pi = 0.;
         EPS_ATP_Rate = 0.;
-        FI_connect = false;
-        PS_connect = false;
-        RROEA_connect = false;
+        setFI_connect(false);
+        setPS_connect(false);
+        setRROEA_connect(false);
         N = 0;
         TIME = 0.;
         conditions::BFCondition::reset();
     }
 };
+
+  DEFINE_VALUE_SET_STATIC_HEADER(BF);
 
 }  // namespace modules
 }  // namespace ePhotosynthesis

@@ -35,13 +35,34 @@ class PR;
 namespace conditions {
 
 class PS_PRCondition;
+
+#define MEMBERS_PRCondition			\
+  GCEA,						\
+    GCA,					\
+    PGCA,					\
+    GCAc,					\
+    GOAc,					\
+    SERc,					\
+    GLYc,					\
+    HPRc,					\
+    GCEAc,					\
+    RuBP,					\
+    _v131
+#define MEMBERS_PRCondition_NOT_IN_ARRAY _v131
+#define MEMBERS_PRCondition_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_PRCondition_CONSTANT EMPTY_MEMBER_LIST
+  
+  
 /**
  Class for holding the inputs to PR_mb
  */
 class PRCondition : public ConditionBase<PRCondition, PS_PRCondition, MODULE_PR> {
 public:
+    DECLARE_VALUE_SET(PRCondition, ConditionBase<PRCondition, PS_PRCondition, MODULE_PR>)
+    
     PRCondition(PS_PRCondition* par = nullptr) {
         setParent(par);
+	initMembers();
     }
     /**
       Copy constructor that makes a deep copy of the given object
@@ -58,19 +79,6 @@ public:
       */
     PRCondition(const arr vec, const std::size_t offset = 0);
 
-
-    double GCEA = 0.;
-    double GCA = 0.;
-    double PGCA = 0.;
-    double GCAc = 0.;
-    double GOAc = 0.;
-    double SERc = 0.;
-    double GLYc = 0.;
-    double HPRc = 0.;
-    double GCEAc = 0.;
-    double RuBP = 0.;
-    double _v131;
-
     /**
       Write the contents of the instance to the output stream.
 
@@ -79,8 +87,8 @@ public:
       \returns The output stream
       */
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-    SET_GET_BOOL(PS_connect, PR_COND_RuBP)
-    SET_GET_BOOL(PS_RuBP, PR_COND_RuBP)
+    SET_GET_BOOL(PS_connect, RuBP)
+    SET_GET_BOOL(PS_RuBP, RuBP)
 private:
     friend ConditionBase;
     friend class modules::PR;
@@ -122,6 +130,8 @@ private:
     const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif
 };
+
+  DEFINE_VALUE_SET_HEADER(PRCondition);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

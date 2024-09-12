@@ -32,10 +32,13 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
+DEFINE_VALUE_SET_STATIC(FI);
+
+INIT_MEMBER_STATIC(FI, cpsii);
+
 double FI::TIME = 0.;
 std::size_t FI::N = 1;
 const std::size_t FICondition::count = 22;
-double FI::cpsii = 0.;
 bool FICondition::BF_connect = false;
 bool FI::BF_connect = false;
 // This is the routine that initialize the parameters, initial conditions for simulation of fluorescence induction curve.
@@ -47,6 +50,9 @@ FICondition* FI::_init(Variables *theVars) {
     // Initilization of the rate constant //
     ////////////////////////////////////////////////////////////////////////////
     FI::setBF_connect(theVars->BF_FI_com);
+    theVars->initParamStatic<FI>();
+    theVars->initParam(theVars->FI_RC);
+    theVars->initParam(theVars->FI_Pool);
     // The rate constant used in the model
     // Reference
     // The rate constant used in the model
@@ -117,6 +123,14 @@ FICondition* FI::_init(Variables *theVars) {
     // Assign the value to a array
     // This is the program that initialize the major variables used in the fluorescence induction system.In this file, the n represent negative charges, _red represent that the components are associated with the closed reaction center; while _ox represent a system with open reaction center.
     FICondition* FI_Con = new FICondition();
+    theVars->initParam(*FI_Con);
+
+    if (!theVars->useC3) {
+      theVars->FI_Pool[POOL::FI::QBt] *= theVars->FIRatio[21];
+      theVars->FI_Pool[POOL::FI::PQT] *= theVars->FIRatio[22];
+    }
+
+#ifdef CHECK_VALUE_SET_ALTS
     FI_Con->A = 0;          // The concentration of excitons in the peripheral antenna
     FI_Con->U = 0;          // The concentration fo excitons in the core antenna
     FI_Con->P680ePheo = 1;  // The concentration of the P680Pheo
@@ -147,6 +161,11 @@ FICondition* FI::_init(Variables *theVars) {
         theVars->FI_Pool.PQT = 8 * theVars->FIRatio[22]; // The total concentration of PQ;
     }
     // theVars->FI_Pool.QBt *= theVars->FIRatio[21];
+    
+    FI_Con->checkAlts();
+    theVars->FI_RC.checkAlts();
+    theVars->FI_Pool.checkAlts();
+#endif // CHECK_VALUE_SET_ALTS
 
     return FI_Con;
 }

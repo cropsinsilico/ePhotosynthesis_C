@@ -37,10 +37,27 @@ class RedoxRegModuleTest;
 #endif
 namespace modules {
 
+#define MEMBERS_RedoxReg			\
+  RedoxReg_VMAX13,				\
+    RedoxReg_VMAX16,				\
+    RedoxReg_VMAX6,				\
+    RedoxReg_VMAX9,				\
+    Fd_Thio_ET,					\
+    ThioT,					\
+    Thio_Oxidation
+#define MEMBERS_RedoxReg_CONSTANT		\
+  Fd_Thio_ET,					\
+    ThioT,					\
+    Thio_Oxidation
+#define MEMBERS_RedoxReg_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_RedoxReg_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+
 /**
  Class for RedoxReg related calculations and common variables
  */
-class RedoxReg : public ModuleBase<RedoxReg, conditions::RedoxRegCondition> {
+class RedoxReg : public ModuleBase<RedoxReg, conditions::RedoxRegCondition, MODULE_RedoxReg> {
+public:
+    DECLARE_VALUE_SET_STATIC(RedoxReg, ModuleBase<RedoxReg, conditions::RedoxRegCondition, MODULE_RedoxReg>);
     SET_GET_BOOL_NOSKIP(trDynaPS2RedReg_cal)
 private:
     friend ModuleBase;
@@ -108,10 +125,9 @@ private:
     SET_GET(RedoxReg_VMAX9)
     static double TIME;    // The timestamp of the most recent call to _Rate
     static std::size_t N;  // The current size of the RedoxReg TimeSeries
-    static const double Fd_Thio_ET;
-    static const double ThioT;
-    static const double Thio_Oxidation;
 };
 
+  DEFINE_VALUE_SET_STATIC_HEADER(RedoxReg);
+  
 }  // namespace modules
 }  // namespace ePhotosynthesis

@@ -36,13 +36,43 @@ namespace conditions {
 
 class FIBFCondition;
 
+#define MEMBERS_FICondition			\
+  A,						\
+    U,						\
+    P680ePheo,					\
+    P680pPheon,					\
+    P680pPheo,					\
+    P680Pheon,					\
+    Yz,						\
+    S1T,					\
+    S2T,					\
+    S3T,					\
+    S0T,					\
+    S1Tp,					\
+    S2Tp,					\
+    S3Tp,					\
+    S0Tp,					\
+    QAQB,					\
+    QAnQB,					\
+    QAQBn,					\
+    QAnQBn,					\
+    QAQB2n,					\
+    QAnQB2n,					\
+    PQn
+#define MEMBERS_FICondition_CONSTANT EMPTY_MEMBER_LIST
+#define MEMBERS_FICondition_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_FICondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+
+  
 /**
  Class for holding the inputs to FI_mb
  */
 class FICondition : public ConditionBase<FICondition, FIBFCondition, MODULE_FI> {
 public:
+    DECLARE_VALUE_SET(FICondition, ConditionBase<FICondition, FIBFCondition, MODULE_FI>)
     FICondition(FIBFCondition* par = nullptr) {
         setParent(par);
+        initMembers();
     }
     /**
       Copy constructor that makes a deep copy of the given object
@@ -59,29 +89,6 @@ public:
       */
     FICondition(const arr &vec, const std::size_t offset = 0);
 
-    double A = 0.;          ///< The concentration of excitons in the peripheral antenna
-    double U = 0.;          ///< The concentration fo excitons in the core antenna
-    double P680ePheo = 0.;  ///< QF add
-    double P680pPheon = 0.; ///< The concentration for the P680+ Pheo-
-    double P680pPheo = 0.;  ///< The concentration of P680+ Pheo
-    double P680Pheon = 0.;  ///< The concentration of P680Pheo-
-    double Yz = 0.;         ///< The concentration of reduced tyrosine// --unused
-    double S1T = 0.;        ///< The concentration of S1 in combination with reduced tyrosine
-    double S2T = 0.;        ///< The concentration of S2 in combination with reduced tyrosine
-    double S3T = 0.;        ///< The concentration of S3 in combination with reduced tyrosine
-    double S0T = 0.;        ///< The concentration of S0 in combination with reduced tyrosine
-    double S1Tp = 0.;       ///< The concentration of S1 in combination with oxidized tyrosine
-    double S2Tp = 0.;       ///< The concentration of S2 in combination with oxidized tyrosine
-    double S3Tp = 0.;       ///< The concentration of S3 in combination with oxidized tyrosine
-    double S0Tp = 0.;       ///< The concentration of S0 in combination with oxidized tyrosine
-    double QAQB = 0.;       ///< The concentration of [QAQB]
-    double QAnQB = 0.;      ///< The concentration of [QA-QB]
-    double QAQBn = 0.;      ///< The concentration of [QAQB-]
-    double QAnQBn = 0.;     ///< The concentration of [QA-QB-]
-    double QAQB2n = 0.;     ///< The concentration of [QAQB2-]
-    double QAnQB2n = 0.;    ///< The concentration of [QA-QB2-]
-    double PQn = 0.;        ///< The concentration of reduced PQ, i.e. PQH2;
-
     /**
       Write the contents of the instance to the output stream.
 
@@ -91,7 +98,7 @@ public:
       */
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
 
-    SET_GET_BOOL(BF_connect, FI_COND_PQn)
+    SET_GET_BOOL(BF_connect, PQn)
 private:
     friend ConditionBase;
     friend modules::FI;
@@ -134,6 +141,8 @@ private:
     const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif
 };
+
+  DEFINE_VALUE_SET_HEADER(FICondition);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

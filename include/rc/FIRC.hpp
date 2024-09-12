@@ -32,10 +32,40 @@
 namespace ePhotosynthesis {
 namespace RC {
 
+#define MEMBERS_FIRC				\
+  kA_d,						\
+    kA_f,					\
+    kA_U,					\
+    kU_A,					\
+    kU_d,					\
+    kU_f,					\
+    k1,						\
+    k_r1,					\
+    kz,						\
+    k12,					\
+    k23,					\
+    k30,					\
+    k01,					\
+    k2,						\
+    kAB1,					\
+    kBA1,					\
+    kAB2,					\
+    kBA2,					\
+    k3,						\
+    k_r3,					\
+    k_pq_oxy
+#define MEMBERS_FIRC_CONSTANT EMPTY_MEMBER_LIST
+#define MEMBERS_FIRC_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_FIRC_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+  
+
 // class for holding FIRC data
 class FIRC : public ValueSet<MODULE_FI, PARAM_TYPE_RC> {
 public:
-    FIRC() : ValueSet<MODULE_FI, PARAM_TYPE_RC>() {}
+    DECLARE_VALUE_SET(FIRC, ValueSet<MODULE_FI, PARAM_TYPE_RC>)
+    FIRC() : ValueSet<MODULE_FI, PARAM_TYPE_RC>() {
+        initMembers();
+    }
 
     /**
       Copy constructor that makes a deep copy of the given object
@@ -44,6 +74,7 @@ public:
       */
     FIRC(const FIRC &other) :
       ValueSet<MODULE_FI, PARAM_TYPE_RC>(other) {
+        initMembers();
         kA_d = other.kA_d;  //  The rate constant of heat dissipation from peripheral antenna  Lazar (1999), 0.25~1 *10^(9)
         kA_f = other.kA_f;  //  The rate constant of fluorescence emission from peripheral antenna  Lazar 1999, with a lifetime of 5 ns at closed reaction center
         kA_U = other.kA_U;  //  The rate constant of exciton transfer from periphral antenna to core antenna  Reference needed, a guess
@@ -65,31 +96,12 @@ public:
         k3 = other.k3;      //  The rate constant of the exchange of PQ and QBH2  Lazar (1999),0.12~1 for the fast PQ pool,  or 3~8 for the slow recycling PQ pool
         k_r3 = other.k_r3;  //  The rate constant of the exchange of QB and PQH2  Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
         k_pq_oxy = other.k_pq_oxy;//  The rate constant of the PQH2 oxidation  Lazar (1999),50~500
+	copyMembers(other);
     }
 
-    double kA_d = 0.;  //  The rate constant of heat dissipation from peripheral antenna   Lazar (1999), 0.25~1 *10^(9)
-    double kA_f = 0.;  //  The rate constant of fluorescence emission from peripheral antenna  Lazar 1999, with a lifetime of 5 ns at closed reaction center
-    double kA_U = 0.;  //  The rate constant of exciton transfer from periphral antenna to core antenna    Reference needed, a guess
-    double kU_A = 0.;  //  The rate constant of exciton transfer from core antenna to peripheral antenna   Reference needed, a guess
-    double kU_d = 0.;  //  The rate constant of  heat emission from core antenna
-    double kU_f = 0.;  //  The rate constant of fluorescence emission from core antenna
-    double k1 = 0.;    //  The rate constant of primary charge separation for open reaction center
-    double k_r1 = 0.;  //  The rate constant of charge recombination for open reactoin center
-    double kz = 0.;    //  The rate constant of the Tyrosine oxidation Lazar (1999); 3.8~50 * 10^6
-    double k12 = 0.;   //  The rate constant of the S1 to S2 transition    Lazar (1999); 0.667~33.3 * 10^3
-    double k23 = 0.;   //  The rate constant of the S2 to S3 transition    Lazar (1999); 0.667~33.3 * 10^3
-    double k30 = 0.;   //  The rate constant of the S3 to S0 transition    Lazar (1999); 0.667~33.3 * 10^3
-    double k01 = 0.;   //  The rate constant of the S0 to S1 transition    Lazar (1999); 0.667~33.3 * 10^3
-    double k2 = 0.;    //  The rate constant of the QA reduction by Pheo-  Lazar (1999); 2~2.3 * 10^9
-    double kAB1 = 0.;  //  The rate constant of QAQB-->QAQB-   Lazar (1999); 2.5~5 * 10^3
-    double kBA1 = 0.;  //  The rate constant of the QAQB- -->QAQB  Lazar (1999)
-    double kAB2 = 0.;  //  The rate constant of the QAQB- --> QAQB2-   Lazar (1999); 1.25~3.33 * 10^3
-    double kBA2 = 0.;  //  The rate constant of the QAQB2- --> QAQB-   Lazar (1999), or same as kAB2 depend on the equilibium constant
-    double k3 = 0.;    //  The rate constant of the exchange of PQ and QBH2    Lazar (1999),0.12~1 for the fast PQ pool,  or 3~8 for the slow recycling PQ pool
-    double k_r3 = 0.;  //  The rate constant of the exchange of QB and PQH2    Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
-    double k_pq_oxy = 0.;  //  The rate constant of the PQH2 oxidation Lazar (1999),50~500
-
 };
+
+  DEFINE_VALUE_SET_HEADER(FIRC);
 
 }  // namespace RC
 }  // namespace ePhotosynthesis

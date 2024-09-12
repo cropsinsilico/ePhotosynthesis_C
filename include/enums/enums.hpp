@@ -2,241 +2,197 @@
 // modified directly
 #pragma once
 
-#include "enums/enums_RC.hpp"
-#include "enums/enums_COND.hpp"
-#include "enums/enums_POOL.hpp"
-#include "enums/enums_KE.hpp"
-
-enum MODULE {
-  MODULE_NONE,
-  MODULE_BF,
-  MODULE_FI,
-  MODULE_PR,
-  MODULE_PS,
-  MODULE_RROEA,
-  MODULE_RedoxReg,
-  MODULE_RuACT,
-  MODULE_SUCS,
-  MODULE_XanCycle,
-  MODULE_MAX,
-};
-
-enum PARAM_TYPE {
-  PARAM_TYPE_NONE   ,
-  PARAM_TYPE_COND   ,
-  PARAM_TYPE_POOL   ,
-  PARAM_TYPE_KE     ,
-  PARAM_TYPE_RC     ,
-  PARAM_TYPE_MAX    ,
-};
-
-// Empty enum
-enum EMPTY_ENUM {
-  EMPTY_ENUM_NONE,
-  EMPTY_ENUM_MAX,
-};
-
-// Utility for getting module id from enum type
-template<typename T>
-MODULE get_enum_module() {
-  throw std::runtime_error("No module could be found");
-  return MODULE_NONE;
+#include <string>
+#include <map>
+#include <vector>
+namespace ePhotosynthesis {
+  enum MODULE : int {
+      MODULE_NONE       ,
+      MODULE_BF         ,
+      MODULE_FI         ,
+      MODULE_PR         ,
+      MODULE_PS         ,
+      MODULE_RROEA      ,
+      MODULE_RuACT      ,
+      MODULE_SUCS       ,
+      MODULE_XanCycle   ,
+      MODULE_FIBF       ,
+      MODULE_RedoxReg   ,
+      MODULE_MAX        ,
+  };
+  
+  enum PARAM_TYPE : int {
+      PARAM_TYPE_NONE   ,
+      PARAM_TYPE_COND   ,
+      PARAM_TYPE_POOL   ,
+      PARAM_TYPE_KE     ,
+      PARAM_TYPE_MOD    ,
+      PARAM_TYPE_RC     ,
+      PARAM_TYPE_MAX    ,
+  };
+  
+  // Unspecialized enum
+  template<MODULE M, PARAM_TYPE PT>
+  class ValueSetEnum {
+  public:
+    enum Type : int;
+    static const MODULE module = M;
+    static const PARAM_TYPE param_type = PT;
+    static const std::vector<Type> all;
+    static const std::map<Type, std::string> names;
+    static const std::map<Type, double> defaults;
+    static const std::map<Type, double> defaults_C3;
+    static const std::vector<Type> constants;
+    static const std::vector<Type> calculated;
+    static const std::vector<Type> nonvector;
+    static const std::vector<Type> skipped;
+  };
+  
+  #include "enums/enums_POOL.hpp"
+  #include "enums/enums_COND.hpp"
+  #include "enums/enums_KE.hpp"
+  #include "enums/enums_RC.hpp"
+  #include "enums/enums_MOD.hpp"
+  
+  // Utility for getting module id from enum type
+  template<typename T>
+  MODULE get_enum_module() {
+    return T::MODULE;
+  }
+  
+  // Utility for getting param_type from enum type
+  template<typename T>
+  PARAM_TYPE get_enum_param_type() {
+    return T::PARAM_TYPE;
+  }
+  
+  // Utility for getting names from enum
+  template<typename T>
+  const std::map<T, std::string>& get_enum_names() {
+    static const std::map<T, std::string> result;
+    throw std::runtime_error("No enum names collection could be found");
+    return result;
+  }
+  template<>
+  inline const std::map<MODULE, std::string>& get_enum_names<MODULE>() {
+    static const std::map<MODULE, std::string> collection = {
+      {MODULE_BF      , "BF"      },
+      {MODULE_FI      , "FI"      },
+      {MODULE_PR      , "PR"      },
+      {MODULE_PS      , "PS"      },
+      {MODULE_RROEA   , "RROEA"   },
+      {MODULE_RuACT   , "RuACT"   },
+      {MODULE_SUCS    , "SUCS"    },
+      {MODULE_XanCycle, "XanCycle"},
+      {MODULE_FIBF    , "FIBF"    },
+      {MODULE_RedoxReg, "RedoxReg"},
+    };
+    return collection;
+  }
+  template<>
+  inline const std::map<PARAM_TYPE, std::string>& get_enum_names<PARAM_TYPE>() {
+    static const std::map<PARAM_TYPE, std::string> collection = {
+      {PARAM_TYPE_COND, "COND"},
+      {PARAM_TYPE_POOL, "POOL"},
+      {PARAM_TYPE_KE  , "KE"  },
+      {PARAM_TYPE_MOD , "MOD" },
+      {PARAM_TYPE_RC  , "RC"  },
+    };
+    return collection;
+  }
+  // Specializations for get_enum_names
+  #include "enums/enums_POOL_names.hpp"
+  #include "enums/enums_COND_names.hpp"
+  #include "enums/enums_KE_names.hpp"
+  #include "enums/enums_RC_names.hpp"
+  #include "enums/enums_MOD_names.hpp"
+  
+  // Utility for getting values from enum
+  template<typename T>
+  const std::map<T, double>& get_enum_defaults() {
+    static const std::map<T, double> result;
+    throw std::runtime_error("No enum defaults collection could be found");
+    return result;
+  }
+  // Specializations for get_enum_values
+  #include "enums/enums_POOL_defaults.hpp"
+  #include "enums/enums_COND_defaults.hpp"
+  #include "enums/enums_KE_defaults.hpp"
+  #include "enums/enums_RC_defaults.hpp"
+  #include "enums/enums_MOD_defaults.hpp"
+  
+  // Utility for getting alternate_values from enum
+  template<typename T>
+  const std::map<T, double>& get_enum_defaults_C3() {
+    static const std::map<T, double> result;
+    throw std::runtime_error("No enum defaults_C3 collection could be found");
+    return result;
+  }
+  // Specializations for get_enum_alternate_values
+  #include "enums/enums_COND_defaults_C3.hpp"
+  #include "enums/enums_POOL_defaults_C3.hpp"
+  #include "enums/enums_KE_defaults_C3.hpp"
+  #include "enums/enums_MOD_defaults_C3.hpp"
+  #include "enums/enums_RC_defaults_C3.hpp"
+  
+  // Utility for getting constants from enum
+  template<typename T>
+  const std::vector<T>& get_enum_constants() {
+    static const std::vector<T> result;
+    throw std::runtime_error("No enum constants collection could be found");
+    return result;
+  }
+  // Specializations for get_enum_constants
+  #include "enums/enums_COND_constants.hpp"
+  #include "enums/enums_POOL_constants.hpp"
+  #include "enums/enums_KE_constants.hpp"
+  #include "enums/enums_MOD_constants.hpp"
+  #include "enums/enums_RC_constants.hpp"
+  
+  // Utility for getting calculated from enum
+  template<typename T>
+  const std::vector<T>& get_enum_calculated() {
+    static const std::vector<T> result;
+    throw std::runtime_error("No enum calculated collection could be found");
+    return result;
+  }
+  // Specializations for get_enum_calculated
+  #include "enums/enums_COND_calculated.hpp"
+  #include "enums/enums_POOL_calculated.hpp"
+  #include "enums/enums_KE_calculated.hpp"
+  #include "enums/enums_MOD_calculated.hpp"
+  #include "enums/enums_RC_calculated.hpp"
+  
+  // Utility for getting nonvector from enum
+  template<typename T>
+  const std::vector<T>& get_enum_nonvector() {
+    static const std::vector<T> result;
+    throw std::runtime_error("No enum nonvector collection could be found");
+    return result;
+  }
+  // Specializations for get_enum_nonvector
+  #include "enums/enums_COND_nonvector.hpp"
+  #include "enums/enums_POOL_nonvector.hpp"
+  #include "enums/enums_KE_nonvector.hpp"
+  #include "enums/enums_MOD_nonvector.hpp"
+  #include "enums/enums_RC_nonvector.hpp"
+  
+  // Utility for getting skipped from enum
+  template<typename T>
+  const std::vector<T>& get_enum_skipped() {
+    static const std::vector<T> result;
+    throw std::runtime_error("No enum skipped collection could be found");
+    return result;
+  }
+  // Specializations for get_enum_skipped
+  #include "enums/enums_COND_skipped.hpp"
+  #include "enums/enums_POOL_skipped.hpp"
+  #include "enums/enums_KE_skipped.hpp"
+  #include "enums/enums_MOD_skipped.hpp"
+  #include "enums/enums_RC_skipped.hpp"
+  
+  
+  // Utility for getting enum type from module & param_type
+  #define MODULE2Enum ValueSetEnum
+  // Code after this line will be preserved
 }
-template<>
-inline MODULE get_enum_module<enum EMPTY_ENUM>() {
-  return MODULE_NONE;
-}
-
-// Utility for getting param_type from enum type
-template<typename T>
-PARAM_TYPE get_enum_param_type() {
-  throw std::runtime_error("No param_type could be found");
-  return PARAM_TYPE_NONE;
-}
-template<>
-inline PARAM_TYPE get_enum_param_type<enum EMPTY_ENUM>() {
-  return PARAM_TYPE_NONE;
-}
-
-// Utility for getting names from enum
-template<typename T>
-const std::map<T, std::string>& get_enum_names() {
-  static const std::map<T, std::string> result;
-  throw std::runtime_error("No enum names map could be found");
-  return result;
-}
-template<>
-inline const std::map<enum EMPTY_ENUM, std::string>& get_enum_names<enum EMPTY_ENUM>() {
-  static const std::map<enum EMPTY_ENUM, std::string> result;
-  return result;
-}
-// Specializations for get_enum_names
-#include "enums/enums_COND_names.hpp"
-#include "enums/enums_POOL_names.hpp"
-#include "enums/enums_KE_names.hpp"
-#include "enums/enums_RC_names.hpp"
-
-// Utility for getting values from enum
-template<typename T>
-const std::map<T, double>& get_enum_defaults() {
-  static const std::map<T, double> result;
-  throw std::runtime_error("No enum defaults map could be found");
-  return result;
-}
-template<>
-inline const std::map<enum EMPTY_ENUM, double>& get_enum_defaults<enum EMPTY_ENUM>() {
-  static const std::map<enum EMPTY_ENUM, double> result;
-  return result;
-}
-// Specializations for get_enum_values
-#include "enums/enums_COND_defaults.hpp"
-#include "enums/enums_POOL_defaults.hpp"
-#include "enums/enums_KE_defaults.hpp"
-#include "enums/enums_RC_defaults.hpp"
-
-
-// Utility for getting enum type from module & param_type
-template<MODULE T0, PARAM_TYPE T1>
-struct MODULE2Enum {
-public:
-  typedef enum EMPTY_ENUM Type;
-};
-// Code after this line will be preserved
-template<>
-struct MODULE2Enum<MODULE_BF, PARAM_TYPE_COND> {
-public:
-  typedef enum BF_COND Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_FI, PARAM_TYPE_COND> {
-public:
-  typedef enum FI_COND Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_PR, PARAM_TYPE_COND> {
-public:
-  typedef enum PR_COND Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_PS, PARAM_TYPE_COND> {
-public:
-  typedef enum PS_COND Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_RROEA, PARAM_TYPE_COND> {
-public:
-  typedef enum RROEA_COND Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_RuACT, PARAM_TYPE_COND> {
-public:
-  typedef enum RuACT_COND Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_SUCS, PARAM_TYPE_COND> {
-public:
-  typedef enum SUCS_COND Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_XanCycle, PARAM_TYPE_COND> {
-public:
-  typedef enum XanCycle_COND Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_BF, PARAM_TYPE_POOL> {
-public:
-  typedef enum BF_POOL Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_FI, PARAM_TYPE_POOL> {
-public:
-  typedef enum FI_POOL Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_RROEA, PARAM_TYPE_POOL> {
-public:
-  typedef enum RROEA_POOL Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_RuACT, PARAM_TYPE_POOL> {
-public:
-  typedef enum RuACT_POOL Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_SUCS, PARAM_TYPE_POOL> {
-public:
-  typedef enum SUCS_POOL Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_RROEA, PARAM_TYPE_KE> {
-public:
-  typedef enum RROEA_KE Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_BF, PARAM_TYPE_RC> {
-public:
-  typedef enum BF_RC Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_FI, PARAM_TYPE_RC> {
-public:
-  typedef enum FI_RC Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_PR, PARAM_TYPE_RC> {
-public:
-  typedef enum PR_RC Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_PS, PARAM_TYPE_RC> {
-public:
-  typedef enum PS_RC Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_RROEA, PARAM_TYPE_RC> {
-public:
-  typedef enum RROEA_RC Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_RedoxReg, PARAM_TYPE_RC> {
-public:
-  typedef enum RedoxReg_RC Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_RuACT, PARAM_TYPE_RC> {
-public:
-  typedef enum RuACT_RC Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_SUCS, PARAM_TYPE_RC> {
-public:
-  typedef enum SUCS_RC Type;
-};
-
-template<>
-struct MODULE2Enum<MODULE_XanCycle, PARAM_TYPE_RC> {
-public:
-  typedef enum XanCycle_RC Type;
-};
-

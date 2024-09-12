@@ -36,13 +36,24 @@ namespace conditions {
 
 class RACondition;
 
+#define MEMBERS_RuACTCondition			\
+  ER,						\
+    Eaf,					\
+    ECMR,					\
+    RuBP
+#define MEMBERS_RuACTCondition_CONSTANT EMPTY_MEMBER_LIST
+#define MEMBERS_RuACTCondition_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_RuACTCondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+
 /**
  Class for holding the inputs to RuACT_mb
  */
 class RuACTCondition : public ConditionBase<RuACTCondition, RACondition, MODULE_RuACT> {
 public:
+    DECLARE_VALUE_SET(RuACTCondition, ConditionBase<RuACTCondition, RACondition, MODULE_RuACT>)
     RuACTCondition(RACondition* par = nullptr) {
         setParent(par);
+        initMembers();
     }
     /**
       Copy constructor that makes a deep copy of the given object
@@ -58,11 +69,6 @@ public:
       @param offset The index in vec to start creating the object from
       */
     RuACTCondition(const arr vec, const std::size_t offset = 0);
-
-    double ER = 0.;   ///< The concentration of inactive ER
-    double Eaf = 0.;  ///< The total concentration of E, EC, AND ECM
-    double ECMR = 0.; ///< The concentration of ECMR
-    double RuBP = 0.; ///< The concentration of ECMR
 
     /**
       Write the contents of the instance to the output stream.
@@ -107,13 +113,15 @@ private:
     static void reset() {
       setEPS_connect(false);
     }
-    SET_GET_BOOL(EPS_connect, RuACT_COND_RuBP)
+    SET_GET_BOOL(EPS_connect, RuBP)
 
     static const std::size_t count;  // size of the current serialized output
 #ifdef INCDEBUG
     const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif
 };
+
+  DEFINE_VALUE_SET_HEADER(RuACTCondition);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

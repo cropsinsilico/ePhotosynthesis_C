@@ -38,10 +38,116 @@ class SUCSModuleTest;
 #endif
 namespace modules {
 class CM;
+
+#define MEMBERS_SUCS				\
+  KE501,					\
+    KE51,					\
+    KE52,					\
+    KE531,					\
+    KE541,					\
+    KE55,					\
+    KE56,					\
+    KE57,					\
+    KE59,					\
+    KE61,					\
+    KI521,					\
+    KI522,					\
+    KI523,					\
+    KI561,					\
+    KI562,					\
+    KI563,					\
+    KI564,					\
+    KI565,					\
+    KI581,					\
+    KI582,					\
+    KI583,					\
+    KI591,					\
+    Ki572,					\
+    Km511,					\
+    Km512,					\
+    Km513,					\
+    Km521,					\
+    Km551,					\
+    Km552,					\
+    Km553,					\
+    Km554,					\
+    Km561,					\
+    Km562,					\
+    Km571,					\
+    Km581,					\
+    Km591,					\
+    Km593,					\
+    Km621,					\
+    V51,					\
+    V52,					\
+    V55,					\
+    V56,					\
+    V57,					\
+    V58,					\
+    V59,					\
+    V60,					\
+    V61,					\
+    V62,					\
+    Vdhap_in,					\
+    Vgap_in,					\
+    Vpga_in,					\
+    Km592,					\
+    KI592,					\
+    Km601,					\
+    Km602,					\
+    Km603,					\
+    Km604,					\
+    KE60,					\
+    Vfactor51,					\
+    Vfactor52,					\
+    Vfactor56,					\
+    Vfactor57,					\
+    Vfactor59,					\
+    Vf_T52,					\
+    Vf_T59,					\
+    Vf_T57,					\
+    Vf_T51,					\
+    Vf_T56,					\
+    UTPc,					\
+    ATPc,					\
+    SUCS2PS_Pic,				\
+    KE5Ratio,					\
+    ADPc,					\
+    Vmatpf,					\
+    SUCSV51,					\
+    SUCSV52,					\
+    SUCSV55,					\
+    SUCSV56,					\
+    SUCSV57,					\
+    SUCSV58,					\
+    Q10_51,					\
+    Q10_52,					\
+    Q10_55,					\
+    Q10_56,					\
+    Q10_57,					\
+    Q10_58,					\
+    SC,						\
+    SC1
+#define MEMBERS_SUCS_CONSTANT			\
+  KI583,					\
+    Vmatpf,					\
+    Q10_51,					\
+    Q10_52,					\
+    Q10_55,					\
+    Q10_56,					\
+    Q10_57,					\
+    Q10_58,					\
+    SC,						\
+    SC1
+#define MEMBERS_SUCS_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_SUCS_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+  
 /**
  Class for SUCS related functions and common variables
  */
-class SUCS : public ModuleBase<SUCS, conditions::SUCSCondition> {
+class SUCS : public ModuleBase<SUCS, conditions::SUCSCondition, MODULE_SUCS> {
+public:
+    DECLARE_VALUE_SET_STATIC(SUCS, ModuleBase<SUCS, conditions::SUCSCondition, MODULE_SUCS>)
 private:
     friend ModuleBase;
     friend class modules::CM;
@@ -163,17 +269,11 @@ private:
 
     SET_GET(SUCS2PS_Pic)
 
-    static double KE5Ratio;
-    static double ADPc;
-    static double SUCSV51;
-    static double SUCSV52;
-    static double SUCSV55;
-    static double SUCSV56;
-    static double SUCSV57;
-    static double SUCSV58;
     static double TIME;    // The timestamp of the most recent call to _Rate
     static std::size_t N;  // The current size of the SUCS TimeSeries
 };
+
+  DEFINE_VALUE_SET_STATIC_HEADER(SUCS);
 
 }  // namespace modules
 }  // namespace ePhotosynthesis

@@ -37,11 +37,17 @@ class FIModuleTest;
 #endif
 namespace modules {
 
+#define MEMBERS_FI cpsii
+#define MEMBERS_FI_CONSTANT EMPTY_MEMBER_LIST
+#define MEMBERS_FI_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_FI_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+  
 /**
  Class for FI related functions
  */
-class FI : public ModuleBase<FI, conditions::FICondition> {
+class FI : public ModuleBase<FI, conditions::FICondition, MODULE_FI> {
 public:
+    DECLARE_VALUE_SET_STATIC_SINGLE(FI, ModuleBase<FI, conditions::FICondition, MODULE_FI>)
     SET_GET_BOOL_MODULE(BF_connect, conditions::FI)
 private:
     friend ModuleBase;
@@ -103,5 +109,7 @@ private:
     static std::size_t N;  // The current size of the FI TimeSeries
 };
 
+  DEFINE_VALUE_SET_STATIC_HEADER_SINGLE(FI);
+  
 }  // namespace modules
 }  // namespace ePhotosynthesis

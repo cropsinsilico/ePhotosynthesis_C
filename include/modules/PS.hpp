@@ -38,11 +38,213 @@ class PSModuleTest;
 #endif
 namespace modules {
 class PS_PR;
+
+#define MEMBERS_PS				\
+  KA231,					\
+    KE11,					\
+    KE12,					\
+    KE13,					\
+    KE16,					\
+    KE21,					\
+    KE22,					\
+    KE23,					\
+    KE25,					\
+    KE4,					\
+    KE5,					\
+    KE6,					\
+    KE7,					\
+    KE8,					\
+    KE9,					\
+    KI11,					\
+    KI12,					\
+    KI13,					\
+    KI131,					\
+    KI132,					\
+    KI133,					\
+    KI134,					\
+    KI135,					\
+    KI14,					\
+    KI15,					\
+    KI231,					\
+    KI61,					\
+    KI62,					\
+    KI9,					\
+    KM10,					\
+    KM101,					\
+    KM102,					\
+    KM103,					\
+    KM13,					\
+    KM131,					\
+    KM132,					\
+    KM161,					\
+    KM162,					\
+    KM163,					\
+    KM21,					\
+    KM22,					\
+    KM23,					\
+    KM231,					\
+    KM232,					\
+    KM233,					\
+    KM234,					\
+    KM241,					\
+    KM311,					\
+    KM313,					\
+    KM31a,					\
+    KM32,					\
+    KM32b,					\
+    KM33,					\
+    KM51,					\
+    KM52,					\
+    KM53,					\
+    KM61,					\
+    KM81,					\
+    KM82,					\
+    KM9,					\
+    KVmo,					\
+    PS_C_CA,					\
+    PS_C_CP,					\
+    PS_PEXT,					\
+    V24,					\
+    V31,					\
+    V32,					\
+    V33,					\
+    V2,						\
+    V3,						\
+    V6,						\
+    V9,						\
+    V13,					\
+    V16,					\
+    V23,					\
+    V1,						\
+    V5,						\
+    V7,						\
+    V8,						\
+    V10,					\
+    PS_C_CN,					\
+    KA232,					\
+    KA233,					\
+    KI23,					\
+    KM312,					\
+    KE10,					\
+    KM11,					\
+    KM12,					\
+    KM71,					\
+    KM72,					\
+    KM73,					\
+    KM74,					\
+    Vfactor1,					\
+    Vfactor2,					\
+    Vfactor3,					\
+    Vfactor5,					\
+    Vfactor7,					\
+    Vfactor13,					\
+    Vfactor23,					\
+    Vf_T3,					\
+    Vf_T2,					\
+    Vf_T1,					\
+    Vf_T6,					\
+    Vf_T5,					\
+    Vf_T9,					\
+    Vf_T13,					\
+    Vf_T23,					\
+    PsV1,					\
+    _NADPH,					\
+    PiTc,					\
+    V1Reg,					\
+    Theta,					\
+    beta,					\
+    Jmax,					\
+    KE1Ratio,					\
+    KE2Ratio,					\
+    PsV1_0,					\
+    PsV2_0,					\
+    PsV3_0,					\
+    PsV5_0,					\
+    PsV6_0,					\
+    PsV7_0,					\
+    PsV8_0,					\
+    PsV9_0,					\
+    PsV10_0,					\
+    PsV13_0,					\
+    PsV16,					\
+    PsV23_0,					\
+    PsV31,					\
+    PsV32,					\
+    PsV33,					\
+    Ru_Act,					\
+    PsV2,					\
+    PsV3,					\
+    PsV5,					\
+    PsV6,					\
+    PsV7,					\
+    PsV8,					\
+    PsV9,					\
+    PsV10,					\
+    PsV13,					\
+    PsV23,					\
+    I2,						\
+    J,						\
+    KE57,					\
+    Km8p5p,					\
+    Km5p5p,					\
+    KE810,					\
+    Km5gap,					\
+    Km8f6p,					\
+    Km8s7p,					\
+    Km8gap,					\
+    MaxCoeff,					\
+    Q10_1,					\
+    Q10_2,					\
+    Q10_3,					\
+    Q10_5,					\
+    Q10_6,					\
+    Q10_7,					\
+    Q10_8,					\
+    Q10_9,					\
+    Q10_10,					\
+    Q10_13,					\
+    Q10_23,					\
+    R,						\
+    c_c,					\
+    dHa_c,					\
+    c_o,					\
+    dHa_o,					\
+    RegFactor,					\
+    SC,						\
+    SC1,					\
+    STOM1,					\
+    STOM2
+#define MEMBERS_PS_CONSTANT			\
+    Q10_1,					\
+    Q10_2,					\
+    Q10_3,					\
+    Q10_5,					\
+    Q10_6,					\
+    Q10_7,					\
+    Q10_8,					\
+    Q10_9,					\
+    Q10_10,					\
+    Q10_13,					\
+    Q10_23,					\
+    R,						\
+    c_c,					\
+    dHa_c,					\
+    c_o,					\
+    dHa_o,					\
+    RegFactor,					\
+    SC,						\
+    SC1,					\
+    STOM1,					\
+    STOM2
+#define MEMBERS_PS_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_PS_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+  
 /**
  Class to for PS related functions and common variables
  */
-class PS : public ModuleBase<PS, conditions::PSCondition> {
+class PS : public ModuleBase<PS, conditions::PSCondition, MODULE_PS> {
 public:
+    DECLARE_VALUE_SET_STATIC(PS, ModuleBase<PS, conditions::PSCondition, MODULE_PS>)
     /**
       Set the initial parameters.
 
@@ -223,50 +425,12 @@ private:
     SET_GET_BOOL_MODULE(C3, conditions::PS)
     SET_GET(_NADPH)
 
-    static double KE1Ratio;
-    static double KE2Ratio;
-    static double PsV1_0;
-    static double PsV2_0;
-    static double PsV3_0;
-    static double PsV5_0;
-    static double PsV6_0;
-    static double PsV7_0;
-    static double PsV8_0;
-    static double PsV9_0;
-    static double PsV10_0;
-    static double PsV13_0;
-    static double PsV16;
-    static double PsV23_0;
-    static double PsV31;
-    static double PsV32;
-    static double PsV33;
-    static double Ru_Act;
-    static double PsV2;
-    static double PsV3;
-    static double PsV5;
-    static double PsV6;
-    static double PsV7;
-    static double PsV8;
-    static double PsV9;
-    static double PsV10;
-    static double PsV13;
-    static double PsV23;
-    static double I2;
-    static double J;
-    static double KE57;
-    static double Km8p5p;
-    static double Km5p5p;
-    static double KE810;
-    static double Km5gap;
-    static double Km8f6p;
-    static double Km8s7p;
-    static double Km8gap;
-    static double MaxCoeff;
-
     static arr Param;
     static double TIME;    // The timestamp of the most recent call to _Rate
     static std::size_t N;  // The current size of the PS TimeSeries
 };
+
+  DEFINE_VALUE_SET_STATIC_HEADER(PS);
 
 }  // namespace modules
 }  // namespace ePhotosynthesis

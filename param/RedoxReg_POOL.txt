@@ -1,0 +1,8 @@
+FBPase_Coeff	-0.305
+FBPase0		0.5
+SBPase_Coeff	-0.3
+SBPase0		0.5
+PRK_Coeff	-0.295
+PRK0		0.5
+ATPase_Coeff	-0.28
+ATPase0		0.5

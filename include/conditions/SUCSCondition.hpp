@@ -34,14 +34,30 @@ class SUCS;
 }
 namespace conditions {
 
+#define MEMBERS_SUCSCondition			\
+  T3Pc,						\
+    FBPc,					\
+    HexPc,					\
+    F26BPc,					\
+    UDPGc,					\
+    SUCP,					\
+    SUC,					\
+    PGAc
+#define MEMBERS_SUCSCondition_CONSTANT EMPTY_MEMBER_LIST
+#define MEMBERS_SUCSCondition_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_SUCSCondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+
+  
 class CMCondition;
 /**
  Class for holding the inputs for SUCS_mb
  */
 class SUCSCondition : public ConditionBase<SUCSCondition, CMCondition, MODULE_SUCS> {
 public:
+    DECLARE_VALUE_SET(SUCSCondition, ConditionBase<SUCSCondition, CMCondition, MODULE_SUCS>)
     SUCSCondition(CMCondition* par = nullptr) {
         setParent(par);
+        initMembers();
     }
     /**
       Copy constructor that makes a deep copy of the given object
@@ -57,15 +73,6 @@ public:
       @param offset The index in vec to start creating the object from
       */
     SUCSCondition(const arr &vec, const std::size_t offset = 0);
-
-    double T3Pc = 0.;
-    double FBPc = 0.;
-    double HexPc = 0.;
-    double F26BPc = 0.;
-    double UDPGc = 0.;
-    double SUCP = 0.;
-    double SUC = 0.;
-    double PGAc = 0.;
 
     /**
       Write the contents of the instance to the output stream.
@@ -112,6 +119,8 @@ private:
     const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif
 };
+
+  DEFINE_VALUE_SET_HEADER(SUCSCondition);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

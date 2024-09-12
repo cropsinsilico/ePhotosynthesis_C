@@ -1,10 +1,10 @@
 A		0	# The concentration of excitons in the peripheral antenna
 U		0	# The concentration fo excitons in the core antenna
-P680ePheo	1	# The concentration of the P680Pheo
+P680ePheo	1	# The concentration of the P680Pheo; QF add
 P680pPheon	0	# The concentration for the P680+ Pheo-
 P680pPheo	0	# The concentration of P680+ Pheo
 P680Pheon	0	# The concentration of P680Pheo-
-Yz		1	# The concentration of reduced tyrosine
+Yz		1	# The concentration of reduced tyrosine; --unused
 S1T		0.8	# The concentration of S1 in combination with reduced tyrosine
 S2T		0	# The concentration of S2 in combination with reduced tyrosine
 S3T		0	# The concentration of S3 in combination with reduced tyrosine

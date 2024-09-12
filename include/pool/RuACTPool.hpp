@@ -32,13 +32,26 @@
 namespace ePhotosynthesis {
 namespace pool {
 
+#define MEMBERS_RuACTPool			\
+  ET,						\
+    Rac,					\
+    C,						\
+    O,						\
+    M
+#define MEMBERS_RuACTPool_CONSTANT EMPTY_MEMBER_LIST
+#define MEMBERS_RuACTPool_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_RuACTPool_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+  
 /**
  Class for RuACT_Pool data
  */
 class RuACTPool : public ValueSet<MODULE_RuACT, PARAM_TYPE_POOL> {
 public:
+    DECLARE_VALUE_SET(RuACTPool, ValueSet<MODULE_RuACT, PARAM_TYPE_POOL>)
     RuACTPool() :
-      ValueSet<MODULE_RuACT, PARAM_TYPE_POOL>() {}
+      ValueSet<MODULE_RuACT, PARAM_TYPE_POOL>() {
+        initMembers();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -46,20 +59,18 @@ public:
       */
     RuACTPool(const RuACTPool &other) :
       ValueSet<MODULE_RuACT, PARAM_TYPE_POOL>(other) {
-
+        initMembers();
         ET = other.ET;
         Rac = other.Rac;
         C = other.C;
         O = other.O;
         M = other.M;
+	copyMembers(other);
     }
 
-    double ET = 0.;
-    double Rac = 0.;
-    double C = 0.;
-    double O = 0.;
-    double M = 0.;
 };
+
+  DEFINE_VALUE_SET_HEADER(RuACTPool);
 
 }  // namespace pool
 }  // namespace ePhotosynthesis

@@ -36,10 +36,24 @@ class RROEAModuleTest;
 #endif
 namespace modules {
 class trDynaPS;
+
+#define MEMBERS_RROEA					\
+  SC,							\
+    fc16,						\
+    FC
+#define MEMBERS_RROEA_CONSTANT				\
+  SC,							\
+    fc16,						\
+    FC
+#define MEMBERS_RROEA_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_RROEA_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+  
 /**
  Class for RROEA related functions
  */
-class RROEA : public ModuleBase<RROEA, conditions::RROEACondition> {
+class RROEA : public ModuleBase<RROEA, conditions::RROEACondition, MODULE_RROEA> {
+public:
+    DECLARE_VALUE_SET_STATIC(RROEA, ModuleBase<RROEA, conditions::RROEACondition, MODULE_RROEA>)
 private:
     friend ModuleBase;
     friend class modules::trDynaPS;
@@ -97,6 +111,8 @@ private:
     static double TIME;    // The timestamp of the most recent call to _Rate
     static std::size_t N;  // The current size of the RROEA TimeSeries
 };
+
+  DEFINE_VALUE_SET_STATIC_HEADER(RROEA);
 
 }  // namespace modules
 }  // namespace ePhotosynthesis

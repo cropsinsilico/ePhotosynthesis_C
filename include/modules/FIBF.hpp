@@ -39,10 +39,22 @@ class FIBFModuleTest;
 namespace modules {
 class EPS;
 
+#define MEMBERS_FIBF				\
+  ChlPSI,					\
+    ChlT,					\
+    ChlT2,					\
+    FIBF2FI_PQ,					\
+    FIBF2FI_PQa
+#define MEMBERS_FIBF_CONSTANT EMPTY_MEMBER_LIST
+#define MEMBERS_FIBF_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_FIBF_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+  
 /**
  Class for the FIBF Module functions.
  */
-class FIBF : public ModuleBase<FIBF, conditions::FIBFCondition> {
+class FIBF : public ModuleBase<FIBF, conditions::FIBFCondition, MODULE_FIBF> {
+public:
+    DECLARE_VALUE_SET_STATIC_COMPOSITE(FIBF, ModuleBase<FIBF, conditions::FIBFCondition, MODULE_FIBF>)
 private:
     friend ModuleBase;
     friend class modules::EPS;
@@ -105,5 +117,7 @@ private:
     static void _reset();
 };
 
+  DEFINE_VALUE_SET_STATIC_HEADER_COMPOSITE(FIBF);
+  
 }  // namespace modules
 }  // namespace ePhotosynthesis

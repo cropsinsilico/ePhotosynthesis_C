@@ -34,22 +34,37 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
+DEFINE_VALUE_SET_STATIC(FIBF);
+
+INIT_MEMBER_STATIC(FIBF, ChlPSI);
+INIT_MEMBER_STATIC(FIBF, ChlT);
+INIT_MEMBER_STATIC(FIBF, ChlT2);
+INIT_MEMBER_STATIC(FIBF, FIBF2FI_PQ);
+INIT_MEMBER_STATIC(FIBF, FIBF2FI_PQa);
+
 std::size_t FIBFCondition::count = 0;
-double FIBF::ChlPSI = 0.;
-double FIBF::ChlT = 0.;
-double FIBF::ChlT2 = 0.;
-double FIBF::FIBF2FI_PQ = 0.;
-double FIBF::FIBF2FI_PQa = 0.;
 
 FIBFCondition* FIBF::_init(Variables *theVars) {
 
+#ifdef CHECK_VALUE_SET_ALTS
     const double FIBF_PQT = 8.;
     theVars->FIBF_Pool.PQT = FIBF_PQT;
+#endif // CHECK_VALUE_SET_ALTS
     FICondition* FI_Con = FI::init(theVars);
     BFCondition* BF_con = BF::init(theVars);
+    theVars->initParamStatic<FIBF>();
+    theVars->initParam(theVars->FIBF_Pool);
     FIBFCondition* FIBF_con = new FIBFCondition(BF_con, FI_Con);
+
+    theVars->FI_Pool[POOL::FI::PQT] = theVars->FIBF_Pool[POOL::FIBF::PQT];
+    theVars->BF_Pool[POOL::BF::k_r1] = theVars->FIBF_Pool[POOL::FIBF::PQT];
+
+#ifdef CHECK_VALUE_SET_ALTS
     theVars->FI_Pool.PQT = theVars->FIBF_Pool.PQT;
     theVars->BF_Pool.k_r1 = theVars->FIBF_Pool.PQT;
+    
+    theVars->FIBF_Pool.checkAlts();
+#endif // CHECK_VALUE_SET_ALTS
 
     return FIBF_con;
 }

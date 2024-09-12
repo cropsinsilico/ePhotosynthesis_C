@@ -32,13 +32,23 @@
 namespace ePhotosynthesis {
 namespace pool {
 
+#define MEMBERS_FIPool				\
+  QBt,						\
+    PQT
+#define MEMBERS_FIPool_CONSTANT EMPTY_MEMBER_LIST
+#define MEMBERS_FIPool_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_FIPool_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+  
 /**
  Class for hoplding FI_Pool data
  */
 class FIPool : public ValueSet<MODULE_FI, PARAM_TYPE_POOL> {
 public:
+    DECLARE_VALUE_SET(FIPool, ValueSet<MODULE_FI, PARAM_TYPE_POOL>)
     FIPool() :
-      ValueSet<MODULE_FI, PARAM_TYPE_POOL>() {}
+      ValueSet<MODULE_FI, PARAM_TYPE_POOL>() {
+        initMembers();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -46,12 +56,14 @@ public:
       */
     FIPool(const FIPool &other) :
       ValueSet<MODULE_FI, PARAM_TYPE_POOL>(other) {
+        initMembers();
         QBt = other.QBt;
         PQT = other.PQT;
+	copyMembers(other);
     }
-    double QBt = 0.;
-    double PQT = 0.;
 };
+
+  DEFINE_VALUE_SET_HEADER(FIPool);
 
 }  // namespace pool
 }  // namespace ePhotosynthesis

@@ -29,8 +29,11 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
+DEFINE_VALUE_SET_SRC(BFCondition);
+
 BFCondition::BFCondition(const BFCondition* const other) :
   ConditionBase<BFCondition, FIBFCondition, MODULE_BF>(other) {
+    initMembers();
     ISPHr = other->ISPHr;
     cytc1 = other->cytc1;
     ISPo = other->ISPo;
@@ -62,9 +65,11 @@ BFCondition::BFCondition(const BFCondition* const other) :
     PHs = other->PHs;
     PHl = other->PHl;
     NADPH = other->NADPH;
+    copyMembers(*other);
 }
 
 BFCondition::BFCondition(const arr &vec, const std::size_t offset) {
+    initMembers();
     fromArray(vec, offset);
 }
 

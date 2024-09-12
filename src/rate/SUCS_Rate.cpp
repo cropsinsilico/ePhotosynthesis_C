@@ -27,9 +27,6 @@
 #include "Variables.hpp"
 #include "modules/SUCS.hpp"
 #include "modules/PS.hpp"
-#define Vmatpf 0.25
-
-const double KI583 = 1.55;
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
@@ -121,7 +118,7 @@ void SUCS::_Rate(const double t, const SUCSCondition* const SUCS_Con, Variables 
         theVars->SUCS_Vel.v62 = V62 * SUCS_Con->SUC / (SUCS_Con->SUC + SUCS::Km621);
 
 
-        theVars->SUCS_Vel.vatpf = Vmatpf * SUCS::ADPc * Pic /((SUCS::ADPc + 0.014)*(Pic + 0.3));
+        theVars->SUCS_Vel.vatpf = SUCS::Vmatpf * SUCS::ADPc * Pic /((SUCS::ADPc + 0.014)*(Pic + 0.3));
 
         theVars->SUCS_Vel.vdhap_in = 2. * Pic / (Pic + 2.);
         theVars->SUCS_Vel.vgap_in = 2. * Pic / (Pic + 2.);

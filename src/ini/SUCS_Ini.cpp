@@ -31,91 +31,250 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-double SUCS::KE501 = 0.;
-double SUCS::KE51 = 0.;
-double SUCS::KE52 = 0.;
-double SUCS::KE531 = 0.;
-double SUCS::KE541 = 0.;
-double SUCS::KE55 = 0.;
-double SUCS::KE56 = 0.;
-double SUCS::KE57 = 0.;
-double SUCS::KE59 = 0.;
-double SUCS::KE61 = 0.;
-double SUCS::KI521 = 0.;
-double SUCS::KI522 = 0.;
-double SUCS::KI523 = 0.;
-double SUCS::KI561 = 0.;
-double SUCS::KI562 = 0.;
-double SUCS::KI563 = 0.;
-double SUCS::KI564 = 0.;
-double SUCS::KI565 = 0.;
-double SUCS::KI581 = 0.;
-double SUCS::KI582 = 0.;
-double SUCS::KI591 = 0.;
-double SUCS::Ki572 = 0.;
-double SUCS::Km511 = 0.;
-double SUCS::Km512 = 0.;
-double SUCS::Km513 = 0.;
-double SUCS::Km521 = 0.;
-double SUCS::Km551 = 0.;
-double SUCS::Km552 = 0.;
-double SUCS::Km553 = 0.;
-double SUCS::Km554 = 0.;
-double SUCS::Km561 = 0.;
-double SUCS::Km562 = 0.;
-double SUCS::Km571 = 0.;
-double SUCS::Km581 = 0.;
-double SUCS::Km591 = 0.;
-double SUCS::Km593 = 0.;
-double SUCS::Km621 = 0.;
-double SUCS::V51 = 0.;
-double SUCS::V52 = 0.;
-double SUCS::V55 = 0.;
-double SUCS::V56 = 0.;
-double SUCS::V57 = 0.;
-double SUCS::V58 = 0.;
-double SUCS::V59 = 0.;
-double SUCS::V60 = 0;
-double SUCS::V61 = 0.;
-double SUCS::V62 = 0.;
-double SUCS::Vdhap_in = 0.;
-double SUCS::Vgap_in = 0.;
-double SUCS::Vpga_in = 0.;
-double SUCS::Km592 = 0.;
-double SUCS::KI592 = 0.;
-double SUCS::Km601 = 0.;
-double SUCS::Km602 = 0.;
-double SUCS::Km603 = 0.;
-double SUCS::Km604 = 0.;
-double SUCS::KE60 = 0.;
-double SUCS::Vfactor51 = 0.;
-double SUCS::Vfactor52 = 0.;
-double SUCS::Vfactor56 = 0.;
-double SUCS::Vfactor57 = 0.;
-double SUCS::Vfactor59 = 0.;
-double SUCS::Vf_T52 = 0.;
-double SUCS::Vf_T59 = 0.;
-double SUCS::Vf_T57 = 0.;
-double SUCS::Vf_T51 = 0.;
-double SUCS::Vf_T56 = 0.;
-double SUCS::UTPc = 0.;
-double SUCS::ATPc = 0.;
-double SUCS::SUCS2PS_Pic = 0.;
+DEFINE_VALUE_SET_STATIC(SUCS);
+
+INIT_MEMBER_STATIC(SUCS, KE501);
+INIT_MEMBER_STATIC(SUCS, KE51);
+INIT_MEMBER_STATIC(SUCS, KE52);
+INIT_MEMBER_STATIC(SUCS, KE531);
+INIT_MEMBER_STATIC(SUCS, KE541);
+INIT_MEMBER_STATIC(SUCS, KE55);
+INIT_MEMBER_STATIC(SUCS, KE56);
+INIT_MEMBER_STATIC(SUCS, KE57);
+INIT_MEMBER_STATIC(SUCS, KE59);
+INIT_MEMBER_STATIC(SUCS, KE61);
+INIT_MEMBER_STATIC(SUCS, KI521);
+INIT_MEMBER_STATIC(SUCS, KI522);
+INIT_MEMBER_STATIC(SUCS, KI523);
+INIT_MEMBER_STATIC(SUCS, KI561);
+INIT_MEMBER_STATIC(SUCS, KI562);
+INIT_MEMBER_STATIC(SUCS, KI563);
+INIT_MEMBER_STATIC(SUCS, KI564);
+INIT_MEMBER_STATIC(SUCS, KI565);
+INIT_MEMBER_STATIC(SUCS, KI581);
+INIT_MEMBER_STATIC(SUCS, KI582);
+INIT_CONST_MEMBER_STATIC(SUCS, KI583, 1.55);
+INIT_MEMBER_STATIC(SUCS, KI591);
+INIT_MEMBER_STATIC(SUCS, Ki572);
+INIT_MEMBER_STATIC(SUCS, Km511);
+INIT_MEMBER_STATIC(SUCS, Km512);
+INIT_MEMBER_STATIC(SUCS, Km513);
+INIT_MEMBER_STATIC(SUCS, Km521);
+INIT_MEMBER_STATIC(SUCS, Km551);
+INIT_MEMBER_STATIC(SUCS, Km552);
+INIT_MEMBER_STATIC(SUCS, Km553);
+INIT_MEMBER_STATIC(SUCS, Km554);
+INIT_MEMBER_STATIC(SUCS, Km561);
+INIT_MEMBER_STATIC(SUCS, Km562);
+INIT_MEMBER_STATIC(SUCS, Km571);
+INIT_MEMBER_STATIC(SUCS, Km581);
+INIT_MEMBER_STATIC(SUCS, Km591);
+INIT_MEMBER_STATIC(SUCS, Km593);
+INIT_MEMBER_STATIC(SUCS, Km621);
+INIT_MEMBER_STATIC(SUCS, V51);
+INIT_MEMBER_STATIC(SUCS, V52);
+INIT_MEMBER_STATIC(SUCS, V55);
+INIT_MEMBER_STATIC(SUCS, V56);
+INIT_MEMBER_STATIC(SUCS, V57);
+INIT_MEMBER_STATIC(SUCS, V58);
+INIT_MEMBER_STATIC(SUCS, V59);
+INIT_MEMBER_STATIC(SUCS, V60);
+INIT_MEMBER_STATIC(SUCS, V61);
+INIT_MEMBER_STATIC(SUCS, V62);
+INIT_MEMBER_STATIC(SUCS, Vdhap_in);
+INIT_MEMBER_STATIC(SUCS, Vgap_in);
+INIT_MEMBER_STATIC(SUCS, Vpga_in);
+INIT_MEMBER_STATIC(SUCS, Km592);
+INIT_MEMBER_STATIC(SUCS, KI592);
+INIT_MEMBER_STATIC(SUCS, Km601);
+INIT_MEMBER_STATIC(SUCS, Km602);
+INIT_MEMBER_STATIC(SUCS, Km603);
+INIT_MEMBER_STATIC(SUCS, Km604);
+INIT_MEMBER_STATIC(SUCS, KE60);
+INIT_MEMBER_STATIC_VAL(SUCS, Vfactor51, 1.0);
+INIT_MEMBER_STATIC_VAL(SUCS, Vfactor52, 1.0);
+INIT_MEMBER_STATIC_VAL(SUCS, Vfactor56, 1.0);
+INIT_MEMBER_STATIC_VAL(SUCS, Vfactor57, 1.0);
+INIT_MEMBER_STATIC_VAL(SUCS, Vfactor59, 1.0);
+INIT_MEMBER_STATIC_VAL(SUCS, Vf_T52, 1.0);
+INIT_MEMBER_STATIC_VAL(SUCS, Vf_T59, 1.0);
+INIT_MEMBER_STATIC_VAL(SUCS, Vf_T57, 1.0);
+INIT_MEMBER_STATIC_VAL(SUCS, Vf_T51, 1.0);
+INIT_MEMBER_STATIC_VAL(SUCS, Vf_T56, 1.0);
+INIT_MEMBER_STATIC(SUCS, UTPc);
+INIT_MEMBER_STATIC(SUCS, ATPc);
+INIT_MEMBER_STATIC(SUCS, SUCS2PS_Pic);
+INIT_MEMBER_STATIC(SUCS, KE5Ratio);
+INIT_MEMBER_STATIC(SUCS, ADPc);
+INIT_MEMBER_STATIC(SUCS, Vmatpf);
+INIT_MEMBER_STATIC(SUCS, SUCSV51);
+INIT_MEMBER_STATIC(SUCS, SUCSV52);
+INIT_MEMBER_STATIC(SUCS, SUCSV55);
+INIT_MEMBER_STATIC(SUCS, SUCSV56);
+INIT_MEMBER_STATIC(SUCS, SUCSV57);
+INIT_MEMBER_STATIC(SUCS, SUCSV58);
+
+INIT_CONST_MEMBER_STATIC(SUCS, Q10_51, 2.0);
+INIT_CONST_MEMBER_STATIC(SUCS, Q10_52, 1.6);
+INIT_CONST_MEMBER_STATIC(SUCS, Q10_55, 2.0);
+INIT_CONST_MEMBER_STATIC(SUCS, Q10_56, 2.0);
+INIT_CONST_MEMBER_STATIC(SUCS, Q10_57, 2.0);
+INIT_CONST_MEMBER_STATIC(SUCS, Q10_58, 2.0);
+    
 double SUCS::TIME = 0.;
-double SUCS::KE5Ratio = 0.;
-double SUCS::ADPc = 0.;
-double SUCS::SUCSV51 = 0.;
-double SUCS::SUCSV52 = 0.;
-double SUCS::SUCSV55 = 0.;
-double SUCS::SUCSV56 = 0.;
-double SUCS::SUCSV57 = 0.;
-double SUCS::SUCSV58 = 0.;
 std::size_t SUCS::N = 1;
 
 const std::size_t SUCSCondition::count = 8;
 
 SUCSCondition* SUCS::_init(Variables *theVars) {
     SUCSCondition* SUCS_Con = new SUCSCondition();
+    theVars->initParamStatic<SUCS>();
+    theVars->initParam(*SUCS_Con);
+    theVars->initParam(theVars->SUCS_Pool);
+
+    if (theVars->useC3) {
+      if (theVars->GRNC == 1 && theVars->CO2_cond > 0.) {
+	SUCS::set(MOD::SUCS::Vfactor52, theVars->VfactorCp[19]);
+	SUCS::set(MOD::SUCS::Vfactor56, theVars->VfactorCp[22]);
+	SUCS::set(MOD::SUCS::Vfactor57, theVars->VfactorCp[23]);
+	SUCS::set(MOD::SUCS::Vfactor59, theVars->VfactorCp[24]);
+      }
+      if (theVars->GRNT == 1 && theVars->Tp > 25) {
+	SUCS::set(MOD::SUCS::Vf_T52, theVars->VfactorT[0]);
+	SUCS::set(MOD::SUCS::Vf_T59, theVars->VfactorT[12]);
+	SUCS::set(MOD::SUCS::Vf_T57, theVars->VfactorT[13]);
+	SUCS::set(MOD::SUCS::Vf_T51, theVars->VfactorT[17]);
+	SUCS::set(MOD::SUCS::Vf_T56, theVars->VfactorT[27]);
+      }
+      if (theVars->GP == 0) {
+	SUCS::setFromEnzymeAct(MOD::SUCS::V51, theVars->EnzymeAct);
+	SUCS::setFromEnzymeAct(MOD::SUCS::V52, theVars->EnzymeAct);
+	SUCS::setFromEnzymeAct(MOD::SUCS::V55, theVars->EnzymeAct);
+	SUCS::setFromEnzymeAct(MOD::SUCS::V56, theVars->EnzymeAct);
+	SUCS::setFromEnzymeAct(MOD::SUCS::V57, theVars->EnzymeAct);
+	SUCS::setFromEnzymeAct(MOD::SUCS::V58, theVars->EnzymeAct);
+      }
+      SUCS::setFromEnzymeAct(MOD::SUCS::V59, theVars->EnzymeAct);
+      
+      const double tempRatio = (theVars->Tp - 25.) / 10.;
+      // DHAP+GAP --FBP
+      SUCS::set(MOD::SUCS::SUCSV51,
+		SUCS::get(MOD::SUCS::V51) *
+		SUCS::get(MOD::SUCS::Vfactor51) *
+		SUCS::get(MOD::SUCS::Vf_T51) *
+		pow(SUCS::get(MOD::SUCS::Q10_51), tempRatio));
+      // FBP --F6P + Pi
+      SUCS::set(MOD::SUCS::SUCSV52,
+		SUCS::get(MOD::SUCS::V52) *
+		SUCS::get(MOD::SUCS::Vfactor52) *
+		SUCS::get(MOD::SUCS::Vf_T52) *
+		pow(SUCS::get(MOD::SUCS::Q10_52), tempRatio));
+      // G1P+UTP --OPOP+UDPG
+      SUCS::set(MOD::SUCS::SUCSV55,
+		SUCS::get(MOD::SUCS::V55) *
+		pow(SUCS::get(MOD::SUCS::Q10_55), tempRatio));
+      // UDPG+F6P--SUCP + UDP
+      SUCS::set(MOD::SUCS::SUCSV56,
+		SUCS::get(MOD::SUCS::V56) *
+		SUCS::get(MOD::SUCS::Vfactor56) *
+		SUCS::get(MOD::SUCS::Vf_T56) *
+		pow(SUCS::get(MOD::SUCS::Q10_56), tempRatio));
+      // SUCP--Pi + SUC
+      SUCS::set(MOD::SUCS::SUCSV57,
+		SUCS::get(MOD::SUCS::V57) *
+		SUCS::get(MOD::SUCS::Vfactor57) *
+		SUCS::get(MOD::SUCS::Vf_T57) *
+		pow(SUCS::get(MOD::SUCS::Q10_57), tempRatio));
+      // F26BP--F6P + Pi
+      SUCS::set(MOD::SUCS::SUCSV58,
+		SUCS::get(MOD::SUCS::V58) *
+		pow(SUCS::get(MOD::SUCS::Q10_58), tempRatio));
+    } else {
+      
+      const double SC = 10.;
+      const double SC1 = 1.;
+      
+      size_t i = 0;
+      for (SUCS::iterator it = SUCS::begin(); it != SUCS::end(); it++) {
+	if (i == 60)
+	  break;
+	switch (it->first) {
+	case (MOD::SUCS::V51) :
+	case (MOD::SUCS::V52) :
+	case (MOD::SUCS::V55) :
+	case (MOD::SUCS::V56) :
+	case (MOD::SUCS::V57) :
+	case (MOD::SUCS::V58) : {
+	  if (theVars->GP == 0) {
+	    if (it->first == MOD::SUCS::V57)
+	      it->second = it->second * SC1 * theVars->SUCRatio[i];
+	    else
+	      it->second = it->second * SC * theVars->SUCRatio[i];
+	  }
+	  i++;
+	  break;
+	}
+	case (MOD::SUCS::V59) :
+	case (MOD::SUCS::V62) :
+	case (MOD::SUCS::Vdhap_in) :
+	case (MOD::SUCS::Vgap_in) :
+	case (MOD::SUCS::Vpga_in) : {
+	  if (it->first == MOD::SUCS::V59)
+	    it->second = it->second * SC * theVars->SUCRatio[i];
+	  else
+	    it->second = it->second * SC1 * theVars->SUCRatio[i];
+	  i++;
+	  if (it->first == Vpga_in) {
+	    // SUCRatio 12, 13, & 14 are used by SUCS_Pool
+	    i = 15;
+	  }
+	  break;
+	}
+	// Next ratio is skipped
+	case (MOD::SUCS::KE51) :
+	case (MOD::SUCS::KI591) : {
+	  it->second = it->second * theVars->SUCRatio[i];
+	  i = i + 2;
+	  break;
+	}
+	// Skipped, but has SUCRatio entry
+	case (MOD::SUCS::V60) :
+	case (MOD::SUCS::KI583) :
+	case (MOD::SUCS::KI592) :
+	case (MOD::SUCS::Km592) :
+	case (MOD::SUCS::Km601) :
+	case (MOD::SUCS::Km602) :
+	case (MOD::SUCS::Km603) :
+	case (MOD::SUCS::Km604) :
+	case (MOD::SUCS::KE60) : {
+	  i++;
+	  break;
+	}
+	// Skipped and does not have SUCRatio entry
+	case (MOD::SUCS::V61) :
+	case (MOD::SUCS::Vmatpf) : {
+	  break;
+	}
+	default : {
+	  it->second = it->second * theVars->SUCRatio[i];
+	  i++;
+	}
+	}
+      }
+
+      theVars->SUCS_Pool[POOL::SUCS::ATc] *= theVars->SUCRatio[12];
+      theVars->SUCS_Pool[POOL::SUCS::UTc] *= theVars->SUCRatio[13];
+      theVars->SUCS_Pool[POOL::SUCS::PTc] *= theVars->SUCRatio[14];
+      
+    }
+    SUCS::set(MOD::SUCS::KE5Ratio,
+	      1. + SUCS::get(MOD::SUCS::KE541) +
+	      1. / SUCS::get(MOD::SUCS::KE531));
+    SUCS::set(MOD::SUCS::ADPc,
+	      theVars->SUCS_Pool.get(POOL::SUCS::ATc) -
+	      SUCS::get(MOD::SUCS::ATPc));
+
+#ifdef CHECK_VALUE_SET_ALTS
     SUCS::UTPc = 0.75;
     if (theVars->useC3) {
 
@@ -156,6 +315,7 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
         SUCS::Km581 = 0.032;    // F26BPa 3.1.3.46 58  Km581 F26BP 0.032 Spinacia oleracea (Macdonald, Chou et al. 1989)
         SUCS::KI581 = 0.1;      // F26BPa 3.1.3.46 58  KI581 F6P 0.1 Arabidopsis thaliana (Villadsen and Nielsen 2001)
         SUCS::KI582 = 0.5;      // F26BPa 3.1.3.46 58  KI582 OP 0.5 Arabidopsis thaliana (Villadsen and Nielsen 2001)
+        SUCS::KI583 = 1.55;     // F26BPa 3.1.3.46 58  KI583 ? 1.55 Arabidopsis thaliana (Villadsen and Nielsen 2001); Previously stored as constant
         SUCS::Km591 = 0.5;      // 6PF2K 2.7.1.105 59  Km591 ATP 0.5 Spinacia oleracea (Walker and Huber 1987)
         SUCS::Km593 = 0.5;      // 6PF2K 2.7.1.105 59  Km593 F6P 0.5 Spinacia oleracea (Walker and Huber 1987)
         SUCS::KI591 = 0.16;     //   59  KI591 ADP 0.16 Rattus norvegicus (Kretschmer and Hofmann 1984)
@@ -209,15 +369,15 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
 
         const double tempRatio = (theVars->Tp - 25.) / 10.;
         SUCS::SUCSV51 = SUCS::V51 * SUCS::Vfactor51 * SUCS::Vf_T51 *
-                        pow(Q10_51, tempRatio);       //  DHAP+GAP --FBP
+	  pow(SUCS::Q10_51, tempRatio);       //  DHAP+GAP --FBP
         SUCS::SUCSV52 = SUCS::V52 * SUCS::Vfactor52 * SUCS::Vf_T52 *
-                        pow(Q10_52, tempRatio);       //  FBP --F6P + Pi
-        SUCS::SUCSV55 = SUCS::V55 * pow(Q10_55, tempRatio); //  G1P+UTP --OPOP+UDPG
+                        pow(SUCS::Q10_52, tempRatio);       //  FBP --F6P + Pi
+        SUCS::SUCSV55 = SUCS::V55 * pow(SUCS::Q10_55, tempRatio); //  G1P+UTP --OPOP+UDPG
         SUCS::SUCSV56 = SUCS::V56 * SUCS::Vfactor56 * SUCS::Vf_T56 *
-                        pow(Q10_56, tempRatio);       // UDPG+F6P--SUCP + UDP
+                        pow(SUCS::Q10_56, tempRatio);       // UDPG+F6P--SUCP + UDP
         SUCS::SUCSV57 = SUCS::V57 * SUCS::Vfactor57 * SUCS::Vf_T57 *
-                        pow(Q10_57, tempRatio);       // SUCP--Pi + SUC
-        SUCS::SUCSV58 = SUCS::V58 * pow(Q10_58, tempRatio); // F26BP--F6P + Pi
+                        pow(SUCS::Q10_57, tempRatio);       // SUCP--Pi + SUC
+        SUCS::SUCSV58 = SUCS::V58 * pow(SUCS::Q10_58, tempRatio); // F26BP--F6P + Pi
 
         // Initialize the leaves of active enzyme in a dark adapted leaves;
         // mM
@@ -272,6 +432,7 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
         SUCS::Km581 = 0.032 * theVars->SUCRatio[44];
         SUCS::KI581 = 0.1 * theVars->SUCRatio[45];
         SUCS::KI582 = 0.5 * theVars->SUCRatio[46];
+	SUCS::KI583 = 1.55;  // Previously stored as constant
         SUCS::Km591 = 0.5 * theVars->SUCRatio[47];
         SUCS::Km593 = 0.5 * theVars->SUCRatio[49];
         SUCS::KI591 = 0.16 * theVars->SUCRatio[50];
@@ -311,6 +472,9 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
             SUCS::V57 = 0.55503446 * SC1 * theVars->SUCRatio[4]; // SUCP--Pi + SUC; 0.27 DEFALT
             SUCS::V58 = 0.016819226 * SC * theVars->SUCRatio[5]; // F26BP--F6P + Pi
         }
+	// if (theVars->GP == 0) {
+	//   
+	// }
 
         SUCS::V59 = 0.03 * SC * theVars->SUCRatio[6];            // F6P + ATP --ADP + F26BP // defalut 0.03  (* 0.3)
         //theVars->V60 = 6.1 * theVars->SUCRatio[7];// ATP+UDP --UTP + ADP
@@ -329,6 +493,12 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
     }
     SUCS::KE5Ratio = 1. + SUCS::KE541 + 1. / SUCS::KE531;
     SUCS::ADPc = theVars->SUCS_Pool.ATc - SUCS::ATPc;
+    SUCS::Vmatpf = 0.25; // Previously stored in constant
+    
+    SUCS_Con->checkAlts();
+    theVars->SUCS_Pool.checkAlts();
+#endif // CHECK_VALUE_SET_ALTS
+    
     return SUCS_Con;
 }
 
@@ -353,6 +523,7 @@ void SUCS::_reset() {
     SUCS::KI565 = 0.;
     SUCS::KI581 = 0.;
     SUCS::KI582 = 0.;
+    SUCS::KI583 = 0.;
     SUCS::KI591 = 0.;
     SUCS::Ki572 = 0.;
     SUCS::Km511 = 0.;
@@ -407,6 +578,7 @@ void SUCS::_reset() {
 
     SUCS::KE5Ratio = 0.;
     SUCS::ADPc = 0.;
+    SUCS::Vmatpf = 0.;
     SUCS::SUCSV51 = 0.;
     SUCS::SUCSV52 = 0.;
     SUCS::SUCSV55 = 0.;

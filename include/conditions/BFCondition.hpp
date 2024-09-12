@@ -35,13 +35,49 @@ class BF;
 namespace conditions {
 class FIBFCondition;
 
+#define MEMBERS_BFCondition			\
+  ISPHr,					\
+    cytc1,					\
+    ISPo,					\
+    ISPoQH2,					\
+    QHsemi,					\
+    cytbL,					\
+    Qi,						\
+    Q,						\
+    cytbH,					\
+    Qn,						\
+    Qr,						\
+    QH2,					\
+    cytc2,					\
+    P700,					\
+    ADP,					\
+    ATP,					\
+    Ks,						\
+    Mgs,					\
+    Cls,					\
+    Aip,					\
+    U,						\
+    An,						\
+    Fdn,					\
+    BFHs,					\
+    BFHl,					\
+    PHs,					\
+    PHl,					\
+    NADPH
+#define MEMBERS_BFCondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+#define MEMBERS_BFCondition_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_BFCondition_CONSTANT EMPTY_MEMBER_LIST
+
+  
 /**
  Class for holding the inputs to BF_mb
  */
 class BFCondition : public ConditionBase<BFCondition, FIBFCondition, MODULE_BF> {
 public:
+    DECLARE_VALUE_SET(BFCondition, ConditionBase<BFCondition, FIBFCondition, MODULE_BF>)
     BFCondition(FIBFCondition* par = nullptr) {
         setParent(par);
+	initMembers();
     }
     /**
       Copy constructor that makes a deep copy of the given object
@@ -57,35 +93,6 @@ public:
       */
     BFCondition(const arr &vec, const std::size_t offset = 0);
 
-    double ISPHr = 0.;   ///< The reduced ion sulfer protein (ISPH); unit: micromole per m2
-    double cytc1 = 0.;   ///< The oxidized state of cytc1; unit: micromole per meter square
-    double ISPo = 0.;    ///< The oxidized ion sulfer protein (ISP); unit: micromole per meter square
-    double ISPoQH2 = 0.; ///< The complex of oxidized ion sulfer protein and reduced quinone; unit: micromole per meter square
-    double QHsemi = 0.;  ///< Semiquinone; micromole per meter square
-    double cytbL = 0.;   ///< The oxidized cytbL; micromole per meter square
-    double Qi = 0.;      ///< The binding Quinone; micromole per meter square
-    double Q = 0.;       ///< Quinone; micromole per meter square
-    double cytbH = 0.;   ///< The oxidized form of cytbH; micromole per meter square
-    double Qn = 0.;      ///< Q-; unit: micromole per meter square
-    double Qr = 0.;      ///< The reduced quinone Q2-; micromole per meter square
-    double QH2 = 0.;     ///< The reduced quinone PQH2; micromole per meter square
-    double cytc2 = 0.;   ///< oxidized cytc2; micromole per meter square
-    double P700 = 0.;    ///< The reduced state of P700, including both P700 and excited P700; micromole per meter square
-    double ADP = 0.;     ///< ADP in stroma, from the earlier photorespiration model; mmol l-1
-    double ATP = 0.;     ///< ATP in stroma, from the photorespiration model; mmol l-1
-    double Ks = 0.;      ///< K ions in stroma, mM, from the literature; mmol l-1; 90 might be an default;
-    double Mgs = 0.;     ///< Mg ions in stroma, mM, from the literature of the ion estimate
-    double Cls = 0.;     ///< Cl ions in stroma, mM, from the literature of the ion estimate
-    double Aip = 0.;     ///< The number of photons in peripheral antenna; micromole per meter square
-    double U = 0.;       ///< The number of photons in core antenna; micromole per meter square
-    double An = 0.;      ///< The reduced electron acceptor in PSI; micromole per meter square
-    double Fdn = 0.;     ///< The reduced ferrodoxin; micromole per meter square leaf area
-    double BFHs = 0.;    ///< The protonated buffer species  and free proton together in stroma; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number.; default 25
-    double BFHl = 0.;    ///< The protonated buffer species and free proton together in lumen; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number. ; default 5
-    double PHs = 0.;     ///< The PH value of the stroma
-    double PHl = 0.;     ///< The PH value of the lumen
-    double NADPH = 0.;   ///< The NADPH concentration in stroma, Unit: mmol l-1;
-
     /**
       Write the contents of the instance to the output stream.
 
@@ -94,9 +101,9 @@ public:
       \returns The output stream
       */
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-    SET_GET_BOOL(PS_connect, BF_COND_Q)
-    SET_GET_BOOL(RROEA_connect, BF_COND_ATP)
-    SET_GET_BOOL(FI_connect, BF_COND_Fdn)
+    SET_GET_BOOL(PS_connect, ATP)
+    SET_GET_BOOL(RROEA_connect, Fdn)
+    SET_GET_BOOL(FI_connect, Q)
 
 private:
     friend ConditionBase;
@@ -145,6 +152,8 @@ private:
     const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif
 };
+
+  DEFINE_VALUE_SET_HEADER(BFCondition);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

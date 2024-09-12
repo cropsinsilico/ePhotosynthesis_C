@@ -2,17 +2,66 @@
 // modified directly
 #pragma once
 
-enum RROEA_KE {
-  RROEA_KE_NONE           ,
-  RROEA_KE_KEe2FBPase     ,
-  RROEA_KE_KEe2SBPase     ,
-  RROEA_KE_KEe2PRK        ,
-  RROEA_KE_KEe2ATPase     ,
-  RROEA_KE_KEe2RuACT      ,
-  RROEA_KE_KEe2GAPDH      ,
-  RROEA_KE_KEe2MDH        ,
-  RROEA_KE_KEe2ATPGPP     ,
-  RROEA_KE_KEeFd2Thio     ,
-  RROEA_KE_MAX            ,
+template<>
+enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type : int {
+    NONE           ,
+    KEe2FBPase     ,
+    KEe2SBPase     ,
+    KEe2PRK        ,
+    KEe2ATPase     ,  //!< 2.177727336 was set in code, but not used
+    KEe2RuACT      ,
+    KEe2GAPDH      ,
+    KEe2MDH        ,
+    KEe2ATPGPP     ,
+    KEeFd2Thio     ,
+    MAX            ,
 };
+template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::skipped;
+
+namespace KE {
+  typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE> RROEA;
+}
+
+template<>
+enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::skipped;
+
+namespace KE {
+  typedef ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE> NONE;
+}
+
+template<>
+enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::defaults_C3;
+template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::constants;
+template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::nonvector;
+template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::skipped;
+
+namespace KE {
+  typedef ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE> MAX;
+}
 

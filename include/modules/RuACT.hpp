@@ -37,10 +37,20 @@ class RuACTModuleTest;
 #endif
 namespace modules {
 class RA;
+
+#define MEMBERS_RuACT \
+  activase,	      \
+    factor
+#define MEMBERS_RuACT_CONSTANT factor
+#define MEMBERS_RuACT_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_RuACT_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+  
 /**
  Class for RuACT related functions
  */
-class RuACT : public ModuleBase<RuACT, conditions::RuACTCondition> {
+class RuACT : public ModuleBase<RuACT, conditions::RuACTCondition, MODULE_RuACT> {
+public:
+    DECLARE_VALUE_SET_STATIC(RuACT, ModuleBase<RuACT, conditions::RuACTCondition, MODULE_RuACT>)
     SET_GET_BOOL_MODULE(EPS_connect, conditions::RuACT)
 private:
     friend ModuleBase;
@@ -101,5 +111,7 @@ private:
     static std::size_t N;  // The current size of the RuACT TimeSeries
 };
 
+  DEFINE_VALUE_SET_STATIC_HEADER(RuACT);
+  
 }  // namespace modules
 }  // namespace ePhotosynthesis

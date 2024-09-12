@@ -36,13 +36,24 @@ namespace conditions {
 
 class DynaPSCondition;
 
+#define MEMBERS_XanCycleCondition		\
+  Vx,						\
+    Ax,						\
+    Zx,						\
+    ABA
+#define MEMBERS_XanCycleCondition_CONSTANT EMPTY_MEMBER_LIST
+#define MEMBERS_XanCycleCondition_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_XanCycleCondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+
 /**
  Class to hold the inputs to XanCycle_mb
  */
 class XanCycleCondition : public ConditionBase<XanCycleCondition, DynaPSCondition, MODULE_XanCycle> {
 public:
+    DECLARE_VALUE_SET(XanCycleCondition, ConditionBase<XanCycleCondition, DynaPSCondition, MODULE_XanCycle>)
     XanCycleCondition(DynaPSCondition* par = nullptr) {
         setParent(par);
+        initMembers();
     }
     /**
       Copy constructor that makes a deep copy of the given object
@@ -58,11 +69,6 @@ public:
       @param offset The index in vec to start creating the object from
       */
     XanCycleCondition(const arr &vec, const std::size_t offset = 0);
-
-    double Vx = 0.;  ///< The concentration of Violozanthin
-    double Ax = 0.;  ///< The concentration of Anthrozanthin
-    double Zx = 0.;  ///< The concentration of Zeaznthin
-    double ABA = 0.; ///< The concentration of ABA
 
     /**
       Write the contents of the instance to the output stream.
@@ -110,6 +116,8 @@ private:
     const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif
 };
+
+  DEFINE_VALUE_SET_HEADER(XanCycleCondition);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

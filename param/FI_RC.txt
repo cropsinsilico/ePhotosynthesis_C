@@ -3,7 +3,7 @@ kA_f		1.26e6	# The rate constant of fluorescence emission from peripheral antenn
 kA_U		1.0e10	# The rate constant of exciton transfer from periphral antenna to core antenna Reference needed, a guess
 kU_A		1.0e10	# The rate constant of exciton transfer from core antenna to peripheral antenna Reference needed, a guess
 kU_d		2e8	# The rate constant of heat emission from core antenna
-kU_f		1.575e6	# The rate constant of fluorescence emission from core antenna
+kU_f		1.26e6	# The rate constant of fluorescence emission from core antenna
 k1		2.5e11	# The rate constant of primary charge separation for open reaction center
 k_r1		3e8	# The rate constant of charge recombination for open reactoin center
 kz		5e6	# The rate constant of the Tyrosine oxidation Lazar (1999); 3.8~50 * 10^6
@@ -15,7 +15,7 @@ k2		2e9	# The rate constant of the QA reduction by Pheo- Lazar (1999); 2~2.3 * 1
 kAB1		2500 	# The rate constant of QAQB-->QAQB- Lazar (1999); 2.5~5 * 10^3
 kBA1		200	# The rate constant of the QAQB- -->QAQB Lazar (1999)
 kAB2		3300 	# The rate constant of the QAQB- --> QAQB2- Lazar (1999); 1.25~3.33 * 10^3
-kBA2		250	# The rate constant of the QAQB2- --> QAQB- Lazar (1999), or same as 330016] depend on the equilibium constant
+kBA2		250	# The rate constant of the QAQB2- --> QAQB- Lazar (1999), or same as kAB2 depend on the equilibium constant
 k3		800 	# The rate constant of the exchange of PQ and QBH2 Lazar (1999),0.12~1 for the fast PQ pool, or 3~8 for the slow recycling PQ pool
 k_r3		80	# The rate constant of the exchange of QB and PQH2 Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
 k_pq_oxy	500 	# The rate constant of the PQH2 oxidation Lazar (1999),50~500
