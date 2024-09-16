@@ -109,21 +109,24 @@ public:
     double fc = 0.;
     double Phi_max = 0.;
     double lightParam = 0.;
+    //YH:No longer use these scaling factors in the source code
+    //You need to update the text input file if you change Vmax
     //const double alpha1 = 0.87;
     //const double alpha2 = 1.03;
     double sensitivity_sf = 1.0; //a scaling factor for enzymes
 
-    double Q10_1  = 1.93;
-    double Q10_2  = 2.0;
+    //YH:Q10 values come from my Q10 fitting for LD11
+    double Q10_1  = 2.26;
+    double Q10_2  = 1.5;
     double Q10_3  = 2.0;
-    double Q10_5  = 2.0;
-    double Q10_6  = 2.0;
-    double Q10_7  = 2.0;
+    double Q10_5  = 2.5;
+    double Q10_6  = 2.025;
+    double Q10_7  = 1.728;
     double Q10_8  = 2.0;
     double Q10_9  = 2.0;
     double Q10_10 = 2.0;
     double Q10_13 = 2.0;
-    double Q10_23 = 2.0;
+    double Q10_23 = 2.5;
     // Parameters
     arr PR_Param = zeros(2);
     arr BF_Param = zeros(2);
