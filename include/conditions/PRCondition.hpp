@@ -36,18 +36,6 @@ namespace conditions {
 
 class PS_PRCondition;
 
-#define MEMBERS_PRCondition			\
-  GCEA,						\
-    GCA,					\
-    PGCA,					\
-    GCAc,					\
-    GOAc,					\
-    SERc,					\
-    GLYc,					\
-    HPRc,					\
-    GCEAc,					\
-    RuBP,					\
-    _v131
 #define MEMBERS_PRCondition_NOT_IN_ARRAY _v131
 #define MEMBERS_PRCondition_SKIPPED EMPTY_MEMBER_LIST
 #define MEMBERS_PRCondition_CONSTANT EMPTY_MEMBER_LIST

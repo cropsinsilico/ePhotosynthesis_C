@@ -36,22 +36,11 @@ namespace conditions {
 
 class trDynaPSCondition;
 
-#define MEMBERS_RROEACondition			\
-  GAPDH,					\
-    FBPase,					\
-    SBPase,					\
-    PRK,					\
-    ATPase,					\
-    ATPGPP,					\
-    MDH,					\
-    Thio,					\
-    Fd,						\
-    RuACT,					\
-    Coeff
 #define MEMBERS_RROEACondition_CONSTANT		\
   Coeff
 #define MEMBERS_RROEACondition_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_RROEACondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+#define MEMBERS_RROEACondition_NOT_IN_ARRAY	\
+  Coeff
 
 /**
  Class for holding the inputs to RROEA_mb

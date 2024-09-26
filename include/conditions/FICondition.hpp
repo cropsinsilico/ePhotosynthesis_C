@@ -36,29 +36,6 @@ namespace conditions {
 
 class FIBFCondition;
 
-#define MEMBERS_FICondition			\
-  A,						\
-    U,						\
-    P680ePheo,					\
-    P680pPheon,					\
-    P680pPheo,					\
-    P680Pheon,					\
-    Yz,						\
-    S1T,					\
-    S2T,					\
-    S3T,					\
-    S0T,					\
-    S1Tp,					\
-    S2Tp,					\
-    S3Tp,					\
-    S0Tp,					\
-    QAQB,					\
-    QAnQB,					\
-    QAQBn,					\
-    QAnQBn,					\
-    QAQB2n,					\
-    QAnQB2n,					\
-    PQn
 #define MEMBERS_FICondition_CONSTANT EMPTY_MEMBER_LIST
 #define MEMBERS_FICondition_SKIPPED EMPTY_MEMBER_LIST
 #define MEMBERS_FICondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST

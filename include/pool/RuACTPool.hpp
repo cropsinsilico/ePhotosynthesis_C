@@ -32,12 +32,6 @@
 namespace ePhotosynthesis {
 namespace pool {
 
-#define MEMBERS_RuACTPool			\
-  ET,						\
-    Rac,					\
-    C,						\
-    O,						\
-    M
 #define MEMBERS_RuACTPool_CONSTANT EMPTY_MEMBER_LIST
 #define MEMBERS_RuACTPool_SKIPPED EMPTY_MEMBER_LIST
 #define MEMBERS_RuACTPool_NOT_IN_ARRAY EMPTY_MEMBER_LIST

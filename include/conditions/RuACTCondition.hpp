@@ -36,11 +36,6 @@ namespace conditions {
 
 class RACondition;
 
-#define MEMBERS_RuACTCondition			\
-  ER,						\
-    Eaf,					\
-    ECMR,					\
-    RuBP
 #define MEMBERS_RuACTCondition_CONSTANT EMPTY_MEMBER_LIST
 #define MEMBERS_RuACTCondition_SKIPPED EMPTY_MEMBER_LIST
 #define MEMBERS_RuACTCondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST

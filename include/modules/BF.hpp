@@ -38,14 +38,6 @@ class BFModuleTest;
 #endif
 namespace modules {
 
-#define MEMBERS_BF				\
-  cATPsyn,					\
-    CPSi,					\
-    cNADPHsyn,					\
-    EPS_ATP_Rate,				\
-    _Pi,					\
-    PMODTEM,					\
-    RT
 #define MEMBERS_BF_CONSTANT EMPTY_MEMBER_LIST
 #define MEMBERS_BF_SKIPPED EMPTY_MEMBER_LIST
 #define MEMBERS_BF_NOT_IN_ARRAY EMPTY_MEMBER_LIST

@@ -16,4 +16,4 @@ GLYc		1.8	# Glycine in cytosol; 1.8 original vlaue
 HPRc		0.0035	# HydroxylPyruvate; derived from equation 123;
 GCEAc		0.1812	# Glycerate in cytosol; assume at equilibrium with GCEA initially.
 RuBP		2.0	# RuBP concentration
-_v131		0.0	# [CONST] ?
+_v131		0.0	# [CONST, NON_VECTOR] ?

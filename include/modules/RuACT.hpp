@@ -38,9 +38,6 @@ class RuACTModuleTest;
 namespace modules {
 class RA;
 
-#define MEMBERS_RuACT \
-  activase,	      \
-    factor
 #define MEMBERS_RuACT_CONSTANT factor
 #define MEMBERS_RuACT_SKIPPED EMPTY_MEMBER_LIST
 #define MEMBERS_RuACT_NOT_IN_ARRAY EMPTY_MEMBER_LIST

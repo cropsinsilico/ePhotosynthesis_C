@@ -19,10 +19,10 @@ def get_registered_class(typename, name):
     return _registry[typename][name]
 
 
-def get_registered_qualifiers():
+def get_registered_value_keys():
     global _registry
-    return [v.qualifier for v in _registry['generator'].values()
-            if hasattr(v, 'qualifier')]
+    return [v.default_value_key for v in _registry['generator'].values()
+            if hasattr(v, 'default_value_key')]
 
 
 class EnumMeta(type):
@@ -258,7 +258,7 @@ class EnumGeneratorBase(EnumBase):
                 k = v['dest']
             key = f"{k}_{cls.name}"
             val = getattr(args, key, None)
-            if val:
+            if val is not None:
                 if top_level:
                     kwargs[k] = val
                 else:
@@ -583,6 +583,8 @@ class ParamFileParser(EnumParserBase):
     name = 'param'
     comment = '#'
     file_extension = '.txt'
+    required_keys = ['name', 'val']
+    optional_keys = ['doc', 'val_alt', 'qualifiers']
 
     def parse(self, src, **kwargs):
         k = os.path.basename(os.path.splitext(src)[0])
@@ -601,19 +603,27 @@ class ParamFileParser(EnumParserBase):
             if len(rem) == 2:
                 member['doc'] = rem[1].strip()
                 if member['doc'].startswith('['):
-                    member['qualifiers'] = [
-                        x.strip().upper() for x in
-                        member['doc'].split(']')[0].lstrip('[').split(',')
-                    ]
-                    valid_qualifiers = get_registered_qualifiers()
+                    member['qualifiers'] = member['doc'].split(
+                        ']')[0].lstrip('[')
+                    qualifiers = {}
+                    for x in member['qualifiers'].split(','):
+                        val = True
+                        if '=' in x:
+                            x, val = x.split('=')
+                        qualifiers[x.strip().upper()] = val
+                    valid_qualifiers = get_registered_value_keys()
+                    for k in self.required_keys + self.optional_keys:
+                        if k in valid_qualifiers:
+                            valid_qualifiers.remove(k)
                     invalid_qualifiers = [
-                        x for x in member['qualifiers']
+                        x for x in qualifiers.keys()
                         if x not in valid_qualifiers
                     ]
                     if invalid_qualifiers:
                         raise AssertionError(
                             f"Invalid qualifiers: {invalid_qualifiers} "
                             f" (available options: {valid_qualifiers})")
+                    member.update(qualifiers)
             rem = rem[0].split()
             member['name'] = rem[0].strip()
             member['val'] = rem[1].strip()
@@ -622,6 +632,11 @@ class ParamFileParser(EnumParserBase):
             if len(rem) > 3:
                 raise AssertionError(f"Line in {src} contains more than "
                                      f"3 values: \"{line}\"")
+            for k in self.required_keys:
+                if k not in member:
+                    raise AssertionError(
+                        f"Required key \"{k}\" not parsed from line in "
+                        f"{src}: \"{line}\"")
             self.add_member(member)
 
 
@@ -711,6 +726,9 @@ class CEnumGeneratorBaseHeader(CEnumGeneratorBase):
             lines += ["};", ""]
         return lines
 
+    def generate_source_closing(self, **kwargs):
+        return []
+
     def generate_declaration(self, name, members, for_header=False):
         raise NotImplementedError
 
@@ -728,6 +746,13 @@ class CEnumGeneratorBaseHeader(CEnumGeneratorBase):
             lines += [
                 '  ' + x for x in self.generate_definition(name, members)]
             lines += ["};", ""]
+        return lines
+
+    def generate(self, **kwargs):
+        lines = super(CEnumGeneratorBaseHeader, self).generate(**kwargs)
+        if not self.is_parent:
+            assert self.parent
+            lines += self.parent.generate_header_closing(**kwargs)
         return lines
 
 
@@ -775,6 +800,9 @@ class CEnumGeneratorBaseSource(CMixin, EnumGeneratorBase):
             lines[-1] += ';'
         return lines
 
+    def generate_header_closing(self, **kwargs):
+        return []
+
     def generate_declaration(self, name, members, for_header=False):
         raise NotImplementedError
 
@@ -800,6 +828,10 @@ class CEnumGeneratorBaseSource(CMixin, EnumGeneratorBase):
             lines += self.include_header()
         lines += super(CEnumGeneratorBaseSource, self).generate(
             indent=indent, **kwargs)
+        if not self.is_parent:
+            assert self.parent
+            lines += self.parent.generate_source_closing(
+                indent=indent, **kwargs)
         return lines
 
 
@@ -828,15 +860,88 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             'action': 'store_true',
             'help': "Don't special the template function",
         },
+        is_editable={
+            'action': 'store_true',
+            'help': "Allow the static collection to be editable",
+        },
+        value_key={
+            'type': str,
+            'help': ("Name of key where values controlling the "
+                     "collection are stored."),
+        },
+        secondary_value_key={
+            'type': str,
+            'help': ("Name of key where values for the collection "
+                     "should be taken from if value_key is not "
+                     "present."),
+        },
     )
     collection_type = None
+    default_is_editable = False
+    default_value_key = None
+    default_secondary_value_key = None
+    _utility_functions = [
+        'error_prefix', 'print', 'string',
+    ]
+    _additional_functions = []
+    _editable_functions = [
+        'clear', 'add', 'remove', 'addMultiple', 'removeMultiple',
+    ]
+    _print_prefix = None
+    _print_suffix = None
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault("collection_name", self.name)
         kwargs.setdefault("function_suffix", kwargs['collection_name'])
+        kwargs.setdefault("is_editable", self.default_is_editable)
+        kwargs.setdefault("value_key", self.default_value_key)
+        kwargs.setdefault("secondary_value_key",
+                          self.default_secondary_value_key)
         if kwargs.get('define_in_header', False):
             kwargs['specialize_in_source'] = False
         super(CEnumGeneratorCollectionBase, self).__init__(*args, **kwargs)
+
+    @classmethod
+    def create_class(cls, class_name, **kwargs):
+
+        kwargs.setdefault('file_suffix', f"_{class_name}")
+
+        class CEnumGeneratorCollectionCreated(cls):
+
+            name = class_name
+
+        for k, v in kwargs.items():
+            setattr(CEnumGeneratorCollectionCreated, k, v)
+        for k in list(CEnumGeneratorCollectionCreated.perfile_options.items()):
+            if f'default_{k}' in kwargs:
+                CEnumGeneratorCollectionCreated.perfile_options[k] = dict(
+                    CEnumGeneratorCollectionCreated.perfile_options[k],
+                    default=kwargs[f'default_{k}'])
+        return CEnumGeneratorCollectionCreated
+
+    @property
+    def add_value_args(self):
+        return []
+
+    @property
+    def utility_functions(self):
+        return self._utility_functions
+
+    @property
+    def additional_functions(self):
+        if self.is_editable:
+            return (self._utility_functions
+                    + self._additional_functions
+                    + self._editable_functions)
+        return self._utility_functions + self._additional_functions
+
+    def generate_value(self, x):
+        if self.value_key is None:
+            raise NotImplementedError
+        out = str(x.get(self.value_key, ''))
+        if (not out) and self.secondary_value_key is not None:
+            out = str(x.get(self.secondary_value_key, ''))
+        return out
 
     def generate_member(self, *args, **kwargs):
         raise NotImplementedError
@@ -853,27 +958,34 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
 
     def generate_declaration(self, name, members, for_header=False,
                              in_class=False, var_name='collection'):
+        const = "" if self.is_editable else "const "
         if in_class:
             return (
-                f"const "
+                f"{const}"
                 f"{self.generate_collection_type(name, enum_prefix=in_class)} "
                 f"{var_name}")
         func_name = f"{name}_{self.function_suffix}"
         if (not for_header) and self.namespaces:
             func_name = f"{'::'.join(self.namespaces)}::{func_name}"
         func_decl = (
-            f"const {self.generate_collection_type(name)}& {func_name}()")
+            f"{const}{self.generate_collection_type(name)}& {func_name}()")
         return func_decl
 
     def generate_definition(self, name, members, var_name='collection',
                             no_return=False, in_class=False,
-                            enum_prefix='', **kwargs):
+                            enum_prefix='', function_type='get', **kwargs):
         if in_class:
             no_return = True
             enum_prefix = in_class
+        if function_type != 'get':
+            return self.generate_additional_method(
+                function_type, enum_name=f'{enum_prefix}{name}',
+                enum_is_class=in_class, result=var_name,
+                no_return=no_return)
         static = '' if in_class else 'static '
+        const = "" if self.is_editable else "const "
         lines = [
-            f"{static}const "
+            f"{static}{const}"
             f"{self.generate_collection_type(name, enum_prefix=enum_prefix)} "
             f"{var_name} = {{"
         ]
@@ -884,7 +996,7 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 enum_prefix=enum_prefix, **kwargs)
         lines += ["};"]
         if not no_return:
-            lines += ["return collection;"]
+            lines += [f"return {var_name};"]
         return lines
 
     def generate_specialization(self, name, members, **kwargs):
@@ -925,64 +1037,313 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             lines += self.generate_specialization(name, members)
         return lines
 
+    def generate_iteration(self, collection_name, iter_name):
+        return (
+            f"for ({iter_name} = {collection_name}.begin(); "
+            f"{iter_name} != {collection_name}.end(); {iter_name}++)"
+        )
+
+    def generate_iterator_dref(self, iter_name):
+        raise NotImplementedError
+
+    def generate_add(self, collection_name, var_name):
+        raise NotImplementedError
+
+    def generate_find(self, collection_name, key_name, iter_name="it"):
+        raise NotImplementedError
+
+    def generate_utilty_methods(self, completed_utils, **kwargs):
+        lines = []
+        completed_utils.setdefault(self.collection_type, [])
+        for k in self.utility_functions:
+            if k in completed_utils[self.collection_type]:
+                continue
+            if ((k == 'error_prefix'
+                 and any(k in v for v in completed_utils.values()))):
+                continue
+            lines += self.generate_additional_method(
+                k, utility=True, **kwargs)
+            completed_utils[self.collection_type].append(k)
+        return lines
+
+    def generate_additional_methods(self, **kwargs):
+        lines = []
+        for k in self.additional_functions:
+            lines += self.generate_additional_method(k, **kwargs)
+        return lines
+
+    def generate_additional_method(self, function_type, enum_name='Type',
+                                   enum_is_class=None, result=None,
+                                   no_return=False, utility=False):
+        lines = []
+        if enum_is_class is None:
+            enum_is_class = self.parent.as_class
+        if result is None:
+            result = self.collection_name
+        utility_suffix = '_' + self.collection_type.split('::')[-1]
+        if enum_is_class:
+            if utility:
+                function_suffix = utility_suffix
+            else:
+                function_suffix = self.collection_name.title()
+                if function_type == 'get':
+                    function_suffix = function_suffix.rstrip('s')
+                    function_suffix = function_suffix.replace('s_C3', '_C3')
+        else:
+            function_suffix = f"_enum_{self.function_suffix}"
+        collection_type = self.generate_collection_type(enum_name)
+        if function_type in ['error_prefix']:
+            function_name = function_type
+        else:
+            function_name = f"{function_type}{function_suffix}"
+        if function_type == 'is':
+            return_type = 'bool'
+        elif function_type == 'get':
+            return_type = self.value_type
+        elif function_type == 'print':
+            return_type = 'std::ostream&'
+        elif function_type in ['string', 'error_prefix']:
+            return_type = 'std::string'
+        else:
+            return_type = 'void'
+        args = []
+        arg_names = []
+        if utility and function_type != 'error_prefix':
+            args.append(f'const {collection_type}& collection')
+            arg_names.append('collection')
+        if function_type in ['add', 'remove', 'is', 'get', 'check',
+                             'checkNot']:
+            args.append(f'const {enum_name}& x')
+            arg_names.append('x')
+            if function_type == 'add' and hasattr(self, 'value_type'):
+                args.append(f'const {self.value_type}& y')
+                arg_names.append('y')
+            elif function_type in ['check', 'checkNot']:
+                args.append('const std::string& context = ""')
+                arg_names.append('context')
+        elif function_type in ['addMultiple', 'removeMultiple']:
+            args.append(f'const {collection_type}& x')
+            arg_names.append('x')
+        elif function_type == 'print':
+            args += ['std::ostream& out', 'const unsigned int tab = 0']
+            arg_names += ['out', 'tab']
+        elif function_type == 'string':
+            args += ['const unsigned int tab = 0']
+            arg_names += ['tab']
+        body = []
+        if not enum_is_class:
+            const = '' if self.is_editable else 'const '
+            body += [
+                f"{const}{collection_type} {result} = "
+                f"get{function_suffix};"
+            ]
+        if function_type not in self.additional_functions:
+            raise NotImplementedError(
+                f"Invalid function_type \'{function_type}\' "
+                f"(valid values = {self.additional_functions})")
+        if (not utility) and function_type in self.utility_functions:
+            if function_type == 'error_prefix':
+                return []
+            body += [
+                f"return {function_type}{utility_suffix}("
+                f"{result}, {', '.join(arg_names)});"
+            ]
+        elif function_type == 'is':
+            body += [f"typename {collection_type}::const_iterator it;"]
+            body += self.generate_find(result, "x", "it")
+            body += [f"return (it != {result}.end());"]
+        elif function_type in ['check', 'checkNot']:
+            codeNot = ''
+            strNot = ''
+            if function_type == 'check':
+                codeNot = '!'
+                strNot = 'not '
+            body += [
+                f'if ({codeNot}is{function_suffix}(x)) {{',
+                f'  throw std::runtime_error('
+                f'error_prefix() + context + ": \'" + '
+                f'names.find(x)->second'
+                f' + "\' is {strNot}in {self.collection_name}");',
+                '}',
+            ]
+        elif function_type == 'clear':
+            assert self.is_editable
+            body += [f"{result}.clear();"]
+        elif function_type == 'get':
+            assert hasattr(self, 'value_type')
+            body += [f"typename {collection_type}::const_iterator it;"]
+            body += self.generate_find(result, "x", "it")
+            dref = self.generate_iterator_dref("it")[1]
+            body += [
+                f'if (it == {result}.end()) {{',
+                f'  throw std::runtime_error("Could not locate '
+                f'{function_suffix} for \'" + '
+                f'names.find(x)->second + "\'");',
+                '}'
+            ]
+            body += [f"return {dref};"]
+        elif function_type == 'error_prefix':
+            body += [
+                'std::string out;',
+                'out += get_enum_names<PARAM_TYPE>().'
+                'find(param_type)->second;',
+                'out += "[";',
+                'out += get_enum_names<MODULE>().find(module)->second;',
+                'out += "]: ";',
+                'return out;',
+            ]
+        elif function_type == 'print':
+            body += ["const std::string space(tab * 4, ' ');"]
+            itdref = self.generate_print(
+                *self.generate_iterator_dref('it'),
+                space='space', out='out')
+            if self._print_prefix:
+                body += [f"out << {self._print_prefix};"]
+            body += [
+                f"typename {collection_type}::const_iterator it;",
+                f"{self.generate_iteration('collection', 'it')} {{",
+                f"  {itdref}",
+                "}",
+            ]
+            if self._print_suffix:
+                body += [f"out << {self._print_suffix};"]
+            body += [
+                "return out;",
+            ]
+        elif function_type == 'string':
+            body += [
+                "std::ostringstream oss;",
+                f"print{function_suffix}(collection, oss, tab);",
+                "return oss.str();",
+            ]
+        elif function_type == 'remove':
+            assert self.is_editable
+            body += [f"typename {collection_type}::iterator it;"]
+            body += self.generate_find(result, "x", "it")
+            body += [
+                f"if (it != {result}.end()) {{",
+                f"  {result}.erase(it);",
+                "}",
+            ]
+        elif function_type == 'add':
+            assert self.is_editable
+            if hasattr(self, 'value_type'):
+                body += self.generate_add(result, *arg_names)
+            else:
+                body += [
+                    f"if (!is{function_suffix}(x)) {{",
+                    f"  {self.generate_add(result, *arg_names)};",
+                    "}"
+                ]
+        elif function_type.endswith('Multiple'):
+            assert self.is_editable
+            ftype = (
+                function_type.split('Multiple')[0] + function_suffix
+            )
+            itdref = ", ".join(self.generate_iterator_dref('it'))
+            body += [
+                f"typename {collection_type}::const_iterator it;",
+                f"{self.generate_iteration('x', 'it')} {{",
+                f"  {ftype}({itdref});",
+                "}"
+            ]
+        else:
+            raise NotImplementedError(
+                f"Unimplemented function_type \'{function_type}\' "
+                f"(valid values = {self.additional_functions})")
+        if no_return:
+            return body
+        lines += [f"static {return_type} {function_name}"
+                  f"({', '.join(args)}) {{"]
+        lines += ["  " + x for x in body]
+        lines += ["}"]
+        return lines
+
     def generate_function(self, name, for_header=False, result=None,
                           specialize_empty=False, enum_is_class=None,
                           specialize_direct=None, direct=False,
-                          skip_items=[], **kwargs):
+                          skip_items=[], function_type='get', **kwargs):
         lines = []
         kwargs.setdefault('spec_param', ['typename'])
         assert len(kwargs['spec_param']) == 1
         specialization, spec_var = self.specialization(lines, **kwargs)
         inline = 'inline ' if (specialization and for_header) else ''
+        const = "" if self.is_editable else "const "
         key_type = (specialization.strip('<>') if specialization
                     else spec_var[0])
+        class_type = None
         if enum_is_class is None:
             enum_is_class = self.parent.as_class
         if enum_is_class and specialization:
             class_type = self.parent.get_child('global').item2specialize(
                 name, return_class=True)
-            if result is None:
-                result = f'{class_type}::{self.collection_name}'
             key_type = f'typename {class_type}::Type'
+        collection_type = self.generate_collection_type(key_type)
+        args = []
+        arg_names = []
+        if function_type in ['add', 'remove', 'is']:
+            args.append(f'const {key_type}& x')
+            arg_names.append('x')
+            if function_type == 'add' and hasattr(self, 'value_type'):
+                args.append(f'const {self.value_type}& y')
+                arg_names.append('y')
+        elif function_type in ['addMultiple', 'removeMultiple']:
+            args.append(f'const {collection_type}& x')
+        if enum_is_class and specialization:
+            if result is None:
+                if function_type == 'get':
+                    result = f'{class_type}::{self.collection_name}'
+                else:
+                    result = (
+                        f'{class_type}::{function_type}'
+                        f'{self.collection_name.title()}('
+                        f'{", ".join(arg_names)})'
+                    )
+        if function_type == 'is':
+            return_type = 'bool'
+            return_value = ' = false'
+            return_ref = ''
+        else:
+            return_type = f"{const}{collection_type}"
+            return_value = ''
+            return_ref = '&'
         lines += [
-            f'{inline}const {self.generate_collection_type(key_type)}& '
-            f'get_enum_{self.function_suffix}{specialization}() {{',
+            f'{inline}{return_type}{return_ref} {function_type}_enum_'
+            f'{self.function_suffix}{specialization}('
+            f'{", ".join(args)}) {{',
         ]
         if result is None:
             if specialization:
                 if specialize_empty:
                     result = 'result'
                     lines += [
-                        f'  static const '
-                        f'{self.generate_collection_type(key_type)} result;',
+                        f'  static{return_type}result{return_value};'
                     ]
-                elif direct:
+                else:
+                    if not direct:
+                        raise AssertionError(
+                            "direct must be provide names of members "
+                            "for non-empty specialization")
                     self.add_enum(name)
                     result = 'collection'
                     lines += [
                         '  ' + x for x in self.generate_definition(
                             name, direct, no_return=True,
                             var_name=result, skip_items=skip_items,
+                            function_type=function_type,
                         )]
-                else:
-                    func_name = f"{name}_{self.function_suffix}"
-                    if self.namespaces and not for_header:
-                        func_name = (
-                            f"{'::'.join(self.namespaces)}::{func_name}")
-                    result = f'{func_name}()'
+                    if function_type == 'is':
+                        result = None
             else:
                 result = 'result'
                 lines += [
-                    f'  static const '
-                    f'{self.generate_collection_type(key_type)} result;',
+                    f'  static {return_type} result{return_value};',
                     f'  throw std::runtime_error(\"No enum '
                     f'{self.collection_name} collection could be found\");'
                 ]
-        assert result is not None
-        lines += [
-            f'  return {result};',
-            '}',
-        ]
+        if result is not None:
+            lines += [f'  return {result};']
+        lines += ['}']
         kwargs.update(for_header=for_header, skip_items=skip_items)
         kwargs.pop('specialize', None)
         if (not specialization) and specialize_empty:
@@ -1015,10 +1376,19 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
     )
     default_value_type = None
     collection_type = 'std::map'
+    _additional_functions = (
+        CEnumGeneratorCollectionBase._additional_functions + [
+            'get'
+        ]
+    )
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault("value_type", self.default_value_type)
         super(CEnumGeneratorMapBase, self).__init__(*args, **kwargs)
+
+    @property
+    def add_value_args(self):
+        return [(f"const {self.value_type}&", "value")]
 
     def generate_collection_param(self, *args, **kwargs):
         out = super(CEnumGeneratorMapBase, self).generate_collection_param(
@@ -1027,15 +1397,21 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
         return out
 
     def generate_value(self, x):
-        raise NotImplementedError
+        out = super(CEnumGeneratorMapBase, self).generate_value(x)
+        if out and self.value_type == 'std::string':
+            out = f"\"{out}\""
+        return out
 
     def generate_member(self, x, width=None, width_value=None,
-                        enum_prefix=''):
-        assert width and width_value
+                        enum_prefix='', member_suffix=''):
+        assert width is not None and width_value is not None
         value = self.generate_value(x)
+        if not value:
+            return []
         pad = (width_value - len(value)) * ' '
         return [
-            f"  {{{(enum_prefix + x['name']):{width}}, {value}{pad}}},"]
+            f"  {{{(enum_prefix + x['name']):{width}}, {value}{pad}}},"
+            f"{member_suffix}"]
 
     def generate_definition(self, name, members, **kwargs):
         width_value = self.max_width(members, func=self.generate_value)
@@ -1043,13 +1419,36 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
             name, members, width_value=width_value, **kwargs)
         return lines
 
+    def generate_iterator_dref(self, iter_name):
+        return [f"{iter_name}->first", f"{iter_name}->second"]
+
+    def generate_add(self, collection_name, key_name, val_name):
+        return f"{collection_name}.emplace({key_name}, {val_name})"
+
+    def generate_find(self, collection_name, key_name, iter_name="it"):
+        return [f"{iter_name} = {collection_name}.find({key_name});"]
+
+    def generate_print(self, *args, space=None, out='std::cout'):
+        if space:
+            space = f" << {space}"
+        else:
+            space = ''
+        assert len(args) == 2
+        key = f"names.find({args[0]})->second"
+        val = f"{args[1]}"
+        return f'{out}{space} << {key} << " = " << {val} << std::endl;'
+
 
 class CEnumGeneratorVectorBase(CEnumGeneratorCollectionBase):
 
     collection_type = 'std::vector'
-
-    def generate_value(self, x):
-        raise NotImplementedError
+    _additional_functions = (
+        CEnumGeneratorCollectionBase._additional_functions + [
+            'is', 'check', 'checkNot',
+        ]
+    )
+    _print_prefix = "space << \"[\""
+    _print_suffix = "\"]\" << std::endl"
 
     def generate_member(self, x, width=None, enum_prefix=''):
         if not self.generate_value(x):
@@ -1057,90 +1456,24 @@ class CEnumGeneratorVectorBase(CEnumGeneratorCollectionBase):
         assert width
         return [f"  {(enum_prefix + x['name']):{width}},"]
 
+    def generate_iterator_dref(self, iter_name):
+        return [f"(*({iter_name}))"]
 
-class CEnumGeneratorValueMapSource(CEnumGeneratorMapBase):
+    def generate_add(self, collection_name, var_name):
+        return f'{collection_name}.push_back({var_name})'
 
-    name = 'values'
-    file_suffix = '_values'
-    default_value_type = 'double'
+    def generate_find(self, collection_name, key_name, iter_name="it"):
+        dref = self.generate_iterator_dref(iter_name)[0]
+        return [
+            self.generate_iteration(collection_name, iter_name) + "{",
+            f"  if ({dref} == {key_name}) break;",
+            "}",
+        ]
 
-    def generate_value(self, x):
-        if 'val' not in x:
-            return ''
-        return str(x['val'])
-
-
-class CEnumGeneratorAltValueMapSource(CEnumGeneratorMapBase):
-
-    name = 'alternate_values'
-    file_suffix = '_alternate_values'
-    default_value_type = 'double'
-
-    def generate_value(self, x):
-        return str(x.get('val_alt', x.get('val', '')))
-
-
-class CEnumGeneratorNameMapSource(CEnumGeneratorMapBase):
-
-    name = 'names'
-    file_suffix = '_names'
-    default_value_type = 'std::string'
-
-    def generate_value(self, x):
-        if 'abbr' not in x:
-            return ''
-        return f"\"{x['abbr']}\""
-
-    def generate_specialization(self, name, members, for_header=False):
-        lines = super(
-            CEnumGeneratorNameMapSource, self).generate_specialization(
-                name, members, for_header=for_header)
-        if (not self.dont_specialize) and (not self.parent.as_class):
-            fglobal = self.parent.get_child('global')
-            this_id = f"{fglobal.enum_name}_{name.split('_')[0]}"
-            lines += fglobal.generate_param_function(
-                fglobal.enum_name, result=this_id,
-                for_header=for_header, specialize=[name])
-            lines += ['']
-        return lines
-
-
-class CEnumGeneratorSelectVectorBase(CEnumGeneratorVectorBase):
-
-    qualifier = None
-
-    def generate_value(self, x):
-        if self.qualifier is None:
-            raise NotImplementedError
-        return (self.qualifier in x.get('qualifiers', []))
-
-
-class CEnumGeneratorSelectConstVector(CEnumGeneratorSelectVectorBase):
-
-    name = 'constants'
-    file_suffix = '_constants'
-    qualifier = 'CONST'
-
-
-class CEnumGeneratorSelectCalcVector(CEnumGeneratorSelectVectorBase):
-
-    name = 'calculated'
-    file_suffix = '_calculated'
-    qualifier = 'CALC'
-
-
-class CEnumGeneratorSelectNonVectorVector(CEnumGeneratorSelectVectorBase):
-
-    name = 'nonvector'
-    file_suffix = '_nonvector'
-    qualifier = 'NON_VECTOR'
-
-
-class CEnumGeneratorSelectSkippedVector(CEnumGeneratorSelectVectorBase):
-
-    name = 'skipped'
-    file_suffix = '_skipped'
-    qualifier = 'SKIPPED'
+    def generate_print(self, *args, space=None, out='std::cout'):
+        assert len(args) == 1
+        key = f"names.find({args[0]})->second"
+        return f'{out} << {key} << "," << std::endl;'
 
 
 class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
@@ -1151,10 +1484,14 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
         '#include <string>',
         '#include <map>',
         '#include <vector>',
+        '#include <iostream>',
+        '#include <fstream>',
+        '#include <sstream>',
     ]
     explicit_dst = True
     perfile_options = dict(
-        CEnumGeneratorBase.perfile_options,
+        {k: v for k, v in CEnumGeneratorBase.perfile_options.items()
+         if k not in ['define_in_header']},
         enum_name={
             'type': str,
             'help': "Name that should be used for the global enum",
@@ -1341,28 +1678,6 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
             lines += self.parent.generate_enum(
                 self.accum_enum_name, accum_enum_members, as_class=False,
             )
-        # Base class
-        if self.parent.as_class:
-            lines += ['// Unspecialized enum']
-            lines += self.parent.generate_enum(
-                self.parent.as_class, [],
-                spec_param=self.spec_param, spec_var=self.spec_var,
-                specialize=False)
-        else:
-            # Empty enum
-            lines += ['// Empty enum']
-            lines += self.parent.generate_enum(
-                self.empty_enum_name, [],
-                spec_param=self.spec_param, spec_var=self.spec_var,
-                specialize=False)
-        # Include for module/param specific enums
-        added_include = False
-        for k in includes['global']:
-            if k and k not in lines:
-                added_include = True
-                lines.append(k)
-        if added_include:
-            lines += ['']
         # Utility for getting module id from enum type
         lines += [
             f'// Utility for getting {self.enum_name.lower()} '
@@ -1396,6 +1711,30 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
                 self.enum_name, spec_param=['typename'],
                 specialize_direct=specialize_direct,
                 for_header=True, skip_items=['NONE', 'MAX'])
+        # Base class
+        if self.parent.as_class:
+            lines += ['// Unspecialized enum']
+            lines += self.parent.generate_enum(
+                self.parent.as_class, [],
+                spec_param=self.spec_param, spec_var=self.spec_var,
+                specialize=False)
+        else:
+            # Empty enum
+            lines += ['// Empty enum']
+            lines += self.parent.generate_enum(
+                self.empty_enum_name, [],
+                spec_param=self.spec_param, spec_var=self.spec_var,
+                specialize=False)
+        # Include for module/param specific enums
+        added_include = False
+        for k in includes['global']:
+            if k and k not in lines:
+                added_include = True
+                lines.append(k)
+        if added_include:
+            lines += ['']
+        # Utilities for getting names/values from enum type
+        for k in self.parent.added_collections:
             if k in self.parent.added_files:
                 new_include = self.parent.get_child(
                     k).get_child('header').include_self(
@@ -1452,17 +1791,72 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             'action': 'store_true',
             'help': "Define the enum in the source code."
         },
+        macro_suffix={
+            'type': str,
+            'help': "Suffix to use for members macro",
+        },
     )
     added_file_classes = {
         'global': CEnumGeneratorGlobalHeader,
-        'names': CEnumGeneratorNameMapSource,
-        'values': CEnumGeneratorValueMapSource,
-        'constants': CEnumGeneratorSelectConstVector,
-        'calculated': CEnumGeneratorSelectCalcVector,
-        'nonvector': CEnumGeneratorSelectNonVectorVector,
-        'skipped': CEnumGeneratorSelectSkippedVector,
-        'alternate_values': CEnumGeneratorAltValueMapSource,
     }
+    added_collection_classes = {
+        'map': {
+            'names': {
+                'default_value_type': 'std::string',
+                'default_value_key': 'abbr',
+                '_utility_functions': [
+                    x for x in CEnumGeneratorMapBase._utility_functions
+                    if x not in ['print', 'string']
+                ],
+            },
+            'values': {
+                'default_value_type': 'double',
+                'default_value_key': 'val',
+            },
+            'alternate_values': {
+                'default_value_type': 'double',
+                'default_value_key': 'val_alt',
+                'default_secondary_value_key': 'val',
+            },
+            'glymaids': {
+                'default_value_type': 'std::string',
+                'default_value_key': 'GLYMAID',
+            },
+        },
+        'vector': {
+            'constant': {
+                'default_value_key': 'CONST',
+            },
+            'calculated': {
+                'default_value_key': 'CALC',
+            },
+            'nonvector': {
+                'default_value_key': 'NON_VECTOR',
+            },
+            'skipped': {
+                'default_value_key': 'SKIPPED',
+                'default_is_editable': True,
+            },
+        },
+    }
+
+    @staticmethod
+    def create_child_classes(cls):
+        CEnumGeneratorBaseHeader.create_child_classes(cls)
+        if cls.name is None or not cls.is_parent:
+            return
+        added = {}
+        for ktype, classes in cls.added_collection_classes.items():
+            if ktype == 'map':
+                base = CEnumGeneratorMapBase
+            elif ktype == 'vector':
+                base = CEnumGeneratorVectorBase
+            else:
+                raise NotImplementedError(
+                    f"Unsupported collection class: {ktype}")
+            for k, v in classes.items():
+                added[k] = base.create_class(k, **v)
+        cls.added_file_classes = dict(cls.added_file_classes, **added)
 
     @property
     def added_maps(self):
@@ -1478,14 +1872,16 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
     def added_collections(self):
         return self.added_maps + self.added_vectors
 
-    def generate_member(self, x, width=None, width_val=None):
+    def generate_member(self, x, width=None, width_val=None,
+                        name_only=False):
         assert width is not None and width_val is not None
         val = ''
         docs = ''
-        if x.get('explicit_idx', False):
-            val = f" = {x['idx']}"
-        if x.get('doc', False):
-            docs = f"  //!< {x['doc']}"
+        if not name_only:
+            if x.get('explicit_idx', False):
+                val = f" = {x['idx']}"
+            if x.get('doc', False):
+                docs = f"  //!< {x['doc']}"
         return [f"  {x['name']:{width}}{val:{width_val}},{docs}"]
 
     def generate_declaration(self, name, members, enum_name=None,
@@ -1531,7 +1927,11 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 ]
             if spec_var and not specialization:
                 for p, t in zip(kwargs['spec_param'], spec_var):
-                    lines += [f'{static}const {p} {p.lower()} = {t};']
+                    lines += [f'{static}const {p} {p.lower()};']
+            if specialization:
+                lines += self.generate_definition_macro(
+                    name, members, enum_name=enum_name,
+                    enum_prefix=enum_prefix)
             lines += [
                 f'{template}{static}const std::vector<'
                 f'{enum_name_full}> {enum_prefix}all;'
@@ -1539,11 +1939,20 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             for k in self.added_collections:
                 self.get_child(k).add_enum(enum_name)
                 collection_type = self.get_child(k).generate_collection_type(
-                    f'{enum_name_full}')
+                    enum_name_full)
+                const = '' if self.get_child(k).is_editable else 'const '
                 lines += [
-                    f'{template}{static}const {collection_type} '
+                    f'{template}{static}{const}{collection_type} '
                     f'{enum_prefix}{self.get_child(k).collection_name};'
                 ]
+            if not specialization:
+                completed_utils = {}
+                for k in self.added_collections:
+                    lines += self.get_child(k).generate_utilty_methods(
+                        completed_utils,
+                        enum_name=enum_name_full, enum_is_class=as_class)
+                    lines += self.get_child(k).generate_additional_methods(
+                        enum_name=enum_name_full, enum_is_class=as_class)
             if specialization:
                 lines += ['']
             return lines
@@ -1558,6 +1967,26 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 members_only=True, **kwargs)
         ]
         lines += ["};"]
+        # Definition of static members for unspecialized class
+        if spec_var and not specialization:
+            enum_prefix = f'{class_name}<{", ".join(spec_var)}>::'
+            enum_name_full = f'typename {enum_prefix}{enum_name}'
+            for p, t in zip(kwargs['spec_param'], spec_var):
+                lines += template_lines
+                lines += [
+                    f'const {p} {enum_prefix}{p.lower()} = {t};'
+                ]
+            for k in self.added_collections:
+                self.get_child(k).add_enum(enum_name)
+                collection_type = self.get_child(k).generate_collection_type(
+                    enum_name_full)
+                const = '' if self.get_child(k).is_editable else 'const '
+                lines += template_lines
+                lines += [
+                    f'{const}{collection_type} '
+                    f'{enum_prefix}{self.get_child(k).collection_name}'
+                    f' = {{}};'
+                ]
         return lines
 
     def generate_definition_enum(self, name, members, enum_name=None,
@@ -1580,6 +2009,31 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 name, members, width=width, width_val=width_val)
         ]
         lines += ['};']
+        return lines
+
+    def generate_definition_macro(self, name, members, enum_name=None,
+                                  enum_prefix=''):
+        macro_name = name
+        if self.macro_suffix is not None:
+            macro_name = name.rsplit('_', 1)[0] + self.macro_suffix
+        lines = [
+            f'#define MEMBERS_{macro_name}'
+        ]
+        # members = [x for x in members
+        #            if not x['name'].endswith(('NONE', 'MAX'))]
+        if members:
+            lines[-1] += '\t\t\\'
+        width = self.max_width(members)
+        width_val = self.max_width(members, key='idx')
+        values = super(CEnumGeneratorBaseHeader, self).generate_item(
+            name, members, width=width, width_val=width_val,
+            name_only=True)
+        for i in range(len(values)):
+            if i == len(values) - 1:
+                values[i] = '  ' + values[i].rstrip(',').rstrip()
+            else:
+                values[i] = '  ' + values[i] + '\t\t\\'
+        lines += values
         return lines
 
     def generate_definition(self, name, members, enum_name=None,
@@ -1653,6 +2107,17 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
         specialize = self.get_child('global').item2specialize(name)
         return self.generate_definition(name, members,
                                         specialize=specialize)
+
+    def generate_source_closing(self, **kwargs):
+        lines = super(CEnumGeneratorHeader, self).generate_source_closing(
+            **kwargs)
+        for k in ['NONE', 'MAX']:
+            members = [self.add_member(x) for x in ['NONE', 'MAX']]
+            name = f"{k}{self.get_child('global').strip_suffix}"
+            specialize = self.get_child('global').item2specialize(name)
+            lines += self.generate_definition(name, members,
+                                              specialize=specialize)
+        return lines
 
     def generate_item(self, name, members, as_class=None, **kwargs):
         if as_class is None:

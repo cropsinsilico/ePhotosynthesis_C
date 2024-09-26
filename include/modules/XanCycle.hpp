@@ -39,12 +39,6 @@ class XanCycleModuleTest;
 namespace modules {
 class DynaPS;
 
-#define MEMBERS_XanCycle			\
-  kav,						\
-    kaz,					\
-    kva,					\
-    kza,					\
-    XanCycle2FIBF_Xstate
 #define MEMBERS_XanCycle_CONSTANT EMPTY_MEMBER_LIST
 #define MEMBERS_XanCycle_SKIPPED EMPTY_MEMBER_LIST
 #define MEMBERS_XanCycle_NOT_IN_ARRAY EMPTY_MEMBER_LIST

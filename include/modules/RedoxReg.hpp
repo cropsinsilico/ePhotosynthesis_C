@@ -37,14 +37,6 @@ class RedoxRegModuleTest;
 #endif
 namespace modules {
 
-#define MEMBERS_RedoxReg			\
-  RedoxReg_VMAX13,				\
-    RedoxReg_VMAX16,				\
-    RedoxReg_VMAX6,				\
-    RedoxReg_VMAX9,				\
-    Fd_Thio_ET,					\
-    ThioT,					\
-    Thio_Oxidation
 #define MEMBERS_RedoxReg_CONSTANT		\
   Fd_Thio_ET,					\
     ThioT,					\

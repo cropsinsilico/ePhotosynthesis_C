@@ -78,16 +78,16 @@ public:
       */
     static std::size_t size() {
         if (T::module != MODULE_NONE) {
-	  size_t alt = T::default_values().size() - (T::skipped_values().size() + T::non_array_values().size());
+	  size_t alt = T::defaults.size() - (T::skipped.size() + T::nonvector.size());
 	  if (alt != T::_size()) {
 	    std::cerr << "DEFAULTS = " << std::endl;
-	    T::print_defaults(std::cerr, 1);
+	    T::printDefaults(std::cerr, 1);
 	    std::cerr << "SKIPPED = ";
-	    T::print_skipped(std::cerr);
+	    T::printSkipped(std::cerr);
 	    std::cerr << "NON-ARRAY = ";
-	    T::print_non_array(std::cerr);
+	    T::printNonvector(std::cerr);
 	    throw std::runtime_error("Size of default_values ("
-				     + std::to_string(T::default_values().size())
+				     + std::to_string(T::defaults.size())
 				     + ") does not match expected count ("
 				     + std::to_string(T::_size()) + ")");
 	  }

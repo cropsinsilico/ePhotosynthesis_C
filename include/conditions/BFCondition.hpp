@@ -35,35 +35,6 @@ class BF;
 namespace conditions {
 class FIBFCondition;
 
-#define MEMBERS_BFCondition			\
-  ISPHr,					\
-    cytc1,					\
-    ISPo,					\
-    ISPoQH2,					\
-    QHsemi,					\
-    cytbL,					\
-    Qi,						\
-    Q,						\
-    cytbH,					\
-    Qn,						\
-    Qr,						\
-    QH2,					\
-    cytc2,					\
-    P700,					\
-    ADP,					\
-    ATP,					\
-    Ks,						\
-    Mgs,					\
-    Cls,					\
-    Aip,					\
-    U,						\
-    An,						\
-    Fdn,					\
-    BFHs,					\
-    BFHl,					\
-    PHs,					\
-    PHl,					\
-    NADPH
 #define MEMBERS_BFCondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST
 #define MEMBERS_BFCondition_SKIPPED EMPTY_MEMBER_LIST
 #define MEMBERS_BFCondition_CONSTANT EMPTY_MEMBER_LIST

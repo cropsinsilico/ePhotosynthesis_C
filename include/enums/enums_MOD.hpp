@@ -14,14 +14,25 @@ enum ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type : int {
     RT               ,  //!< [CONST] ?; 8.314 * 298.; Used to calculate RC parameters KE8 & KE9
     MAX              ,
 };
+#define MEMBERS_BF		\
+    NONE             ,		\
+    cATPsyn          ,		\
+    CPSi             ,		\
+    cNADPHsyn        ,		\
+    EPS_ATP_Rate     ,		\
+    _Pi              ,		\
+    PMODTEM          ,		\
+    RT               ,		\
+    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::constants;
+template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::glymaids;
+template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::nonvector;
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::skipped;
+template<> std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::skipped;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD> BF;
@@ -37,14 +48,23 @@ enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type : int {
     FIBF2FI_PQa     ,
     MAX             ,
 };
+#define MEMBERS_FIBF		\
+    NONE            ,		\
+    ChlPSI          ,		\
+    ChlT            ,		\
+    ChlT2           ,		\
+    FIBF2FI_PQ      ,		\
+    FIBF2FI_PQa     ,		\
+    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::constants;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::glymaids;
+template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::nonvector;
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::skipped;
+template<> std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::skipped;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD> FIBF;
@@ -56,14 +76,19 @@ enum ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type : int {
     cpsii     ,
     MAX       ,
 };
+#define MEMBERS_FI		\
+    NONE      ,		\
+    cpsii     ,		\
+    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::constants;
+template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::glymaids;
+template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::nonvector;
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::skipped;
+template<> std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::skipped;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD> FI;
@@ -150,14 +175,94 @@ enum ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type : int {
     CE               ,  //!< [CONST] This is the coefficient for calibrating the volume effect; Used to scale V1T & V2T; Comment says default is 4; Unused w/ C3
     MAX              ,
 };
+#define MEMBERS_PR		\
+    NONE             ,		\
+    V111             ,		\
+    V112             ,		\
+    V113             ,		\
+    V121             ,		\
+    V122             ,		\
+    V123             ,		\
+    V124             ,		\
+    V131             ,		\
+    NADHc            ,		\
+    NADc             ,		\
+    GLUc             ,		\
+    KGc              ,		\
+    PR_ADP           ,		\
+    PR_ATP           ,		\
+    KO               ,		\
+    KC               ,		\
+    KR               ,		\
+    KM112            ,		\
+    KI1122           ,		\
+    KI1121           ,		\
+    KM1131           ,		\
+    KM1132           ,		\
+    KI113            ,		\
+    KE113            ,		\
+    KM121            ,		\
+    KM1221           ,		\
+    KM1222           ,		\
+    KI1221           ,		\
+    KE122            ,		\
+    KM123            ,		\
+    KI123            ,		\
+    KE123            ,		\
+    KM1241           ,		\
+    KM1242           ,		\
+    KI124            ,		\
+    KE124            ,		\
+    KM1311           ,		\
+    KI1311           ,		\
+    KM1312           ,		\
+    KI1312           ,		\
+    V1T              ,		\
+    KM1011           ,		\
+    KI1011           ,		\
+    V2T              ,		\
+    KM1012           ,		\
+    KI1012           ,		\
+    Vfactor112       ,		\
+    Vfactor113       ,		\
+    Vfactor121       ,		\
+    Vfactor122       ,		\
+    Vfactor123       ,		\
+    Vfactor124       ,		\
+    Vfactor131       ,		\
+    Vf_T131          ,		\
+    Vf_T113          ,		\
+    Vf_T123          ,		\
+    Vf_T121          ,		\
+    Vf_T122          ,		\
+    Vf_T112          ,		\
+    PGA              ,		\
+    RUBISCOTOTAL     ,		\
+    PrV112           ,		\
+    PrV113           ,		\
+    PrV121           ,		\
+    PrV122           ,		\
+    PrV123           ,		\
+    PrV124           ,		\
+    PrV131           ,		\
+    Q10_112          ,		\
+    Q10_113          ,		\
+    Q10_121          ,		\
+    Q10_122          ,		\
+    Q10_123          ,		\
+    Q10_124          ,		\
+    Q10_131          ,		\
+    CE               ,		\
+    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::constants;
+template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::glymaids;
+template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::nonvector;
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::skipped;
+template<> std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::skipped;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD> PR;
@@ -342,14 +447,192 @@ enum ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type : int {
     STOM2         ,  //!< [CONST] Used to scale PS module parameters V2 & V3
     MAX           ,
 };
+#define MEMBERS_PS		\
+    NONE          ,		\
+    PS_C_CP       ,		\
+    PS_C_CA       ,		\
+    PS_C_CN       ,		\
+    PS_PEXT       ,		\
+    V1            ,		\
+    V2            ,		\
+    V3            ,		\
+    V5            ,		\
+    V6            ,		\
+    V7            ,		\
+    V8            ,		\
+    V9            ,		\
+    V10           ,		\
+    V13           ,		\
+    V16           ,		\
+    V23           ,		\
+    V24           ,		\
+    V31           ,		\
+    V32           ,		\
+    V33           ,		\
+    KM11          ,		\
+    KM12          ,		\
+    KM13          ,		\
+    KI11          ,		\
+    KI12          ,		\
+    KI13          ,		\
+    KI14          ,		\
+    KI15          ,		\
+    KM21          ,		\
+    KM22          ,		\
+    KM23          ,		\
+    KM31a         ,		\
+    KM32b         ,		\
+    KE4           ,		\
+    KM51          ,		\
+    KM52          ,		\
+    KM53          ,		\
+    KE5           ,		\
+    KM61          ,		\
+    KI61          ,		\
+    KI62          ,		\
+    KE6           ,		\
+    KM71          ,		\
+    KM72          ,		\
+    KM73          ,		\
+    KM74          ,		\
+    KE7           ,		\
+    KM81          ,		\
+    KM82          ,		\
+    KE8           ,		\
+    KM9           ,		\
+    KI9           ,		\
+    KE9           ,		\
+    KM10          ,		\
+    KM101         ,		\
+    KM102         ,		\
+    KM103         ,		\
+    KE10          ,		\
+    KE11          ,		\
+    KE12          ,		\
+    KM131         ,		\
+    KM132         ,		\
+    KI131         ,		\
+    KI132         ,		\
+    KI133         ,		\
+    KI134         ,		\
+    KI135         ,		\
+    KE13          ,		\
+    KM161         ,		\
+    KM162         ,		\
+    KM163         ,		\
+    KE16          ,		\
+    KE21          ,		\
+    KE22          ,		\
+    KM311         ,		\
+    KM312         ,		\
+    KM313         ,		\
+    KM32          ,		\
+    KM33          ,		\
+    KM231         ,		\
+    KM232         ,		\
+    KM233         ,		\
+    KM234         ,		\
+    KE23          ,		\
+    KA231         ,		\
+    KI231         ,		\
+    KVmo          ,		\
+    KM241         ,		\
+    KA232         ,		\
+    KA233         ,		\
+    KI23          ,		\
+    KE25          ,		\
+    KE57          ,		\
+    Km8p5p        ,		\
+    Km5p5p        ,		\
+    KE810         ,		\
+    Km5gap        ,		\
+    Km8f6p        ,		\
+    Km8s7p        ,		\
+    Km8gap        ,		\
+    MaxCoeff      ,		\
+    _NADPH        ,		\
+    KE1Ratio      ,		\
+    KE2Ratio      ,		\
+    Ru_Act        ,		\
+    PsV31         ,		\
+    PsV32         ,		\
+    PsV33         ,		\
+    PiTc          ,		\
+    V1Reg         ,		\
+    Theta         ,		\
+    beta          ,		\
+    Jmax          ,		\
+    Vfactor1      ,		\
+    Vfactor2      ,		\
+    Vfactor3      ,		\
+    Vfactor5      ,		\
+    Vfactor7      ,		\
+    Vfactor13     ,		\
+    Vfactor23     ,		\
+    Vf_T3         ,		\
+    Vf_T2         ,		\
+    Vf_T1         ,		\
+    Vf_T6         ,		\
+    Vf_T5         ,		\
+    Vf_T9         ,		\
+    Vf_T13        ,		\
+    Vf_T23        ,		\
+    PsV1          ,		\
+    PsV2          ,		\
+    PsV3          ,		\
+    PsV5          ,		\
+    PsV6          ,		\
+    PsV7          ,		\
+    PsV8          ,		\
+    PsV9          ,		\
+    PsV10         ,		\
+    PsV13         ,		\
+    PsV16         ,		\
+    PsV23         ,		\
+    PsV1_0        ,		\
+    PsV2_0        ,		\
+    PsV3_0        ,		\
+    PsV5_0        ,		\
+    PsV6_0        ,		\
+    PsV7_0        ,		\
+    PsV8_0        ,		\
+    PsV9_0        ,		\
+    PsV10_0       ,		\
+    PsV13_0       ,		\
+    PsV23_0       ,		\
+    I2            ,		\
+    J             ,		\
+    Q10_1         ,		\
+    Q10_2         ,		\
+    Q10_3         ,		\
+    Q10_5         ,		\
+    Q10_6         ,		\
+    Q10_7         ,		\
+    Q10_8         ,		\
+    Q10_9         ,		\
+    Q10_10        ,		\
+    Q10_13        ,		\
+    Q10_23        ,		\
+    R             ,		\
+    c_c           ,		\
+    dHa_c         ,		\
+    c_o           ,		\
+    dHa_o         ,		\
+    RegFactor     ,		\
+    SC            ,		\
+    SC1           ,		\
+    STOM1         ,		\
+    STOM2         ,		\
+    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::constants;
+template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::glymaids;
+template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::nonvector;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::skipped;
+template<> std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::skipped;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD> PS;
@@ -363,14 +646,21 @@ enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type : int {
     FC       ,  //!< [CONST] Used to scale PS module parameters V9 & V23 if RROEA is used without EPS
     MAX      ,
 };
+#define MEMBERS_RROEA		\
+    NONE     ,		\
+    SC       ,		\
+    fc16     ,		\
+    FC       ,		\
+    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::constants;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::glymaids;
+template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::nonvector;
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::skipped;
+template<> std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::skipped;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD> RROEA;
@@ -388,14 +678,25 @@ enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type : int {
     Thio_Oxidation      ,  //!< [CONST]
     MAX                 ,
 };
+#define MEMBERS_RedoxReg		\
+    NONE                ,		\
+    RedoxReg_VMAX6      ,		\
+    RedoxReg_VMAX9      ,		\
+    RedoxReg_VMAX13     ,		\
+    RedoxReg_VMAX16     ,		\
+    Fd_Thio_ET          ,		\
+    ThioT               ,		\
+    Thio_Oxidation      ,		\
+    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::constants;
+template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::glymaids;
+template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::nonvector;
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::skipped;
+template<> std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::skipped;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD> RedoxReg;
@@ -408,14 +709,20 @@ enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type : int {
     factor       ,  //!< [CONST] Factor used to scale RuACT condition parameters ER, Eaf & ECMR and RuACT pool parameter ET; was previously 0.224/0.3 in comments
     MAX          ,
 };
+#define MEMBERS_RuACT		\
+    NONE         ,		\
+    activase     ,		\
+    factor       ,		\
+    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::constants;
+template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::glymaids;
+template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::nonvector;
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::skipped;
+template<> std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::skipped;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD> RuACT;
@@ -514,14 +821,106 @@ enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type : int {
     SC1             ,  //!< [CONST] Scale factor for SUCS module parameters V62, Vdhap_in, Vgap_in & Vpga_in always and V57 when GP set; unused w/o C3
     MAX             ,
 };
+#define MEMBERS_SUCS		\
+    NONE            ,		\
+    V51             ,		\
+    V52             ,		\
+    V55             ,		\
+    V56             ,		\
+    V57             ,		\
+    V58             ,		\
+    V59             ,		\
+    V60             ,		\
+    V61             ,		\
+    V62             ,		\
+    Vdhap_in        ,		\
+    Vgap_in         ,		\
+    Vpga_in         ,		\
+    KE501           ,		\
+    Km511           ,		\
+    Km512           ,		\
+    Km513           ,		\
+    KE51            ,		\
+    Km521           ,		\
+    KI521           ,		\
+    KI522           ,		\
+    KI523           ,		\
+    KE52            ,		\
+    KE531           ,		\
+    KE541           ,		\
+    Km551           ,		\
+    Km552           ,		\
+    Km553           ,		\
+    Km554           ,		\
+    KE55            ,		\
+    Km561           ,		\
+    Km562           ,		\
+    KI561           ,		\
+    KI562           ,		\
+    KI563           ,		\
+    KI564           ,		\
+    KI565           ,		\
+    KE56            ,		\
+    Km571           ,		\
+    Ki572           ,		\
+    KE57            ,		\
+    Km581           ,		\
+    KI581           ,		\
+    KI582           ,		\
+    KI583           ,		\
+    Km591           ,		\
+    Km592           ,		\
+    Km593           ,		\
+    KI591           ,		\
+    KI592           ,		\
+    KE59            ,		\
+    Km601           ,		\
+    Km602           ,		\
+    Km603           ,		\
+    Km604           ,		\
+    KE60            ,		\
+    KE61            ,		\
+    Km621           ,		\
+    ATPc            ,		\
+    UTPc            ,		\
+    Vf_T52          ,		\
+    Vf_T59          ,		\
+    Vf_T57          ,		\
+    Vf_T51          ,		\
+    Vf_T56          ,		\
+    Vfactor51       ,		\
+    Vfactor52       ,		\
+    Vfactor56       ,		\
+    Vfactor57       ,		\
+    Vfactor59       ,		\
+    SUCSV51         ,		\
+    SUCSV52         ,		\
+    SUCSV55         ,		\
+    SUCSV56         ,		\
+    SUCSV57         ,		\
+    SUCSV58         ,		\
+    SUCS2PS_Pic     ,		\
+    KE5Ratio        ,		\
+    ADPc            ,		\
+    Vmatpf          ,		\
+    Q10_51          ,		\
+    Q10_52          ,		\
+    Q10_55          ,		\
+    Q10_56          ,		\
+    Q10_57          ,		\
+    Q10_58          ,		\
+    SC              ,		\
+    SC1             ,		\
+    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::constants;
+template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::glymaids;
+template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::nonvector;
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::skipped;
+template<> std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::skipped;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD> SUCS;
@@ -537,14 +936,23 @@ enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type : int {
     XanCycle2FIBF_Xstate     ,  //!< Calculated
     MAX                      ,
 };
+#define MEMBERS_XanCycle		\
+    NONE                     ,		\
+    kva                      ,		\
+    kaz                      ,		\
+    kza                      ,		\
+    kav                      ,		\
+    XanCycle2FIBF_Xstate     ,		\
+    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::constants;
+template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::glymaids;
+template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::nonvector;
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::skipped;
+template<> std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::skipped;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD> XanCycle;
@@ -555,14 +963,18 @@ enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type : int {
     NONE   ,
     MAX    ,
 };
+#define MEMBERS_NONE		\
+    NONE   ,		\
+    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::constants;
+template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::glymaids;
+template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::nonvector;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::skipped;
+template<> std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::skipped;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD> NONE;
@@ -573,14 +985,18 @@ enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type : int {
     NONE   ,
     MAX    ,
 };
+#define MEMBERS_MAX		\
+    NONE   ,		\
+    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::constants;
+template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::glymaids;
+template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::nonvector;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::skipped;
+template<> std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::skipped;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD> MAX;

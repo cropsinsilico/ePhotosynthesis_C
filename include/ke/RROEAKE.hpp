@@ -32,16 +32,6 @@
 namespace ePhotosynthesis {
 namespace KE {
 
-#define MEMBERS_RROEAKE				\
-  KEe2FBPase,					\
-    KEe2SBPase,					\
-    KEe2PRK,					\
-    KEe2ATPase,					\
-    KEe2RuACT,					\
-    KEe2GAPDH,					\
-    KEe2MDH,					\
-    KEe2ATPGPP,					\
-    KEeFd2Thio
 #define MEMBERS_RROEAKE_CONSTANT EMPTY_MEMBER_LIST
 #define MEMBERS_RROEAKE_SKIPPED EMPTY_MEMBER_LIST
 #define MEMBERS_RROEAKE_NOT_IN_ARRAY EMPTY_MEMBER_LIST

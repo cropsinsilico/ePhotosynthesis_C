@@ -32,8 +32,6 @@
 namespace ePhotosynthesis {
 namespace pool {
 
-#define MEMBERS_FIBFPool			\
-  PQT
 #define MEMBERS_FIBFPool_CONSTANT EMPTY_MEMBER_LIST
 #define MEMBERS_FIBFPool_SKIPPED EMPTY_MEMBER_LIST
 #define MEMBERS_FIBFPool_NOT_IN_ARRAY EMPTY_MEMBER_LIST

@@ -33,32 +33,16 @@ class RedoxReg;
 }
 namespace conditions {
 
-#define MEMBERS_RedoxRegCondition		\
-  Thion
-  /*
-    V6,						\
-    V9,						\
-    V13,					\
-    V16
-  */
 #define MEMBERS_RedoxRegCondition_CONSTANT EMPTY_MEMBER_LIST
 #define MEMBERS_RedoxRegCondition_SKIPPED EMPTY_MEMBER_LIST
 #define MEMBERS_RedoxRegCondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-
-  /*
-#define MEMBERS_RedoxRegCondition_NOT_IN_ARRAY	\
-  V6,						\
-    V9,						\
-    V13,					\
-    V16
-  */
 
 /**
  Class for holding the inputs to RedoxReg_mb
  */
 class RedoxRegCondition : public ConditionBase<RedoxRegCondition, RedoxRegCondition, MODULE_RedoxReg> {
 public:
-    DECLARE_VALUE_SET_SINGLE(RedoxRegCondition, ConditionBase<RedoxRegCondition, RedoxRegCondition, MODULE_RedoxReg>)
+    DECLARE_VALUE_SET_COMPOSITE_SINGLE(RedoxRegCondition, (RACondition), ConditionBase<RedoxRegCondition, RedoxRegCondition, MODULE_RedoxReg>)
     RedoxRegCondition() : RA_con(new RACondition()) {
       initMembers();
     }

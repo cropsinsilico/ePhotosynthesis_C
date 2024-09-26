@@ -37,7 +37,6 @@ class FIModuleTest;
 #endif
 namespace modules {
 
-#define MEMBERS_FI cpsii
 #define MEMBERS_FI_CONSTANT EMPTY_MEMBER_LIST
 #define MEMBERS_FI_SKIPPED EMPTY_MEMBER_LIST
 #define MEMBERS_FI_NOT_IN_ARRAY EMPTY_MEMBER_LIST

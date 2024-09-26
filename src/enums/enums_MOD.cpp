@@ -37,7 +37,10 @@ const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, double> ValueSetEn
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::RT          , 2477.572},
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::constants = {
+const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::constant = {
   ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::PMODTEM     ,
   ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::RT          ,
 };
@@ -48,7 +51,7 @@ template<>
 const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::nonvector = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::skipped = {
+std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::skipped = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::all = {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::ChlPSI, ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::ChlT, ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::ChlT2, ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::FIBF2FI_PQ, ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::FIBF2FI_PQa};
@@ -77,7 +80,10 @@ const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, double> ValueSet
   {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::FIBF2FI_PQa, 0.0},
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::constants = {
+const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::constant = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::calculated = {
@@ -86,7 +92,7 @@ template<>
 const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::nonvector = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::skipped = {
+std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::skipped = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::all = {ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::cpsii};
@@ -103,7 +109,10 @@ const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, double> ValueSetEn
   {ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::cpsii, 1.0},
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::constants = {
+const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::constant = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::calculated = {
@@ -112,7 +121,7 @@ template<>
 const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::nonvector = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::skipped = {
+std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::skipped = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::all = {ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::V111, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::V112, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::V113, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::V121, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::V122, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::V123, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::V124, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::V131, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::NADHc, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::NADc, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::GLUc, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KGc, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::PR_ADP, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::PR_ATP, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KO, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KC, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KR, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KM112, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KI1122, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KI1121, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KM1131, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KM1132, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KI113, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KE113, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KM121, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KM1221, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KM1222, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KI1221, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KE122, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KM123, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KI123, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KE123, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KM1241, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KM1242, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KI124, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KE124, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KM1311, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KI1311, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KM1312, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KI1312, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::V1T, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KM1011, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KI1011, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::V2T, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KM1012, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::KI1012, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Vfactor112, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Vfactor113, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Vfactor121, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Vfactor122, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Vfactor123, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Vfactor124, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Vfactor131, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Vf_T131, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Vf_T113, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Vf_T123, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Vf_T121, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Vf_T122, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Vf_T112, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::PGA, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::RUBISCOTOTAL, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::PrV112, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::PrV113, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::PrV121, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::PrV122, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::PrV123, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::PrV124, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::PrV131, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Q10_112, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Q10_113, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Q10_121, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Q10_122, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Q10_123, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Q10_124, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Q10_131, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::CE};
@@ -354,7 +363,10 @@ const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEn
   {ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::CE          , 1.0        },
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::constants = {
+const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::constant = {
   ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Q10_112     ,
   ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Q10_113     ,
   ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Q10_121     ,
@@ -371,7 +383,7 @@ template<>
 const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::nonvector = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::skipped = {
+std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::skipped = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::all = {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PS_C_CP, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PS_C_CA, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PS_C_CN, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PS_PEXT, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::V1, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::V2, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::V3, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::V5, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::V6, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::V7, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::V8, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::V9, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::V10, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::V13, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::V16, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::V23, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::V24, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::V31, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::V32, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::V33, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM11, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM12, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM13, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KI11, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KI12, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KI13, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KI14, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KI15, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM21, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM22, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM23, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM31a, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM32b, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KE4, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM51, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM52, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM53, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KE5, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM61, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KI61, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KI62, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KE6, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM71, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM72, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM73, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM74, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KE7, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM81, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM82, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KE8, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM9, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KI9, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KE9, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM10, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM101, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM102, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM103, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KE10, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KE11, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KE12, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM131, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM132, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KI131, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KI132, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KI133, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KI134, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KI135, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KE13, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM161, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM162, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM163, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KE16, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KE21, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KE22, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM311, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM312, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM313, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM32, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM33, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM231, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM232, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM233, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM234, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KE23, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KA231, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KI231, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KVmo, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KM241, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KA232, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KA233, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KI23, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KE25, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KE57, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Km8p5p, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Km5p5p, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KE810, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Km5gap, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Km8f6p, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Km8s7p, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Km8gap, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::MaxCoeff, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::_NADPH, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KE1Ratio, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::KE2Ratio, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Ru_Act, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV31, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV32, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV33, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PiTc, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::V1Reg, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Theta, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::beta, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Jmax, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Vfactor1, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Vfactor2, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Vfactor3, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Vfactor5, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Vfactor7, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Vfactor13, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Vfactor23, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Vf_T3, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Vf_T2, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Vf_T1, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Vf_T6, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Vf_T5, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Vf_T9, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Vf_T13, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Vf_T23, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV1, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV2, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV3, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV5, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV6, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV7, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV8, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV9, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV10, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV13, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV16, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV23, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV1_0, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV2_0, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV3_0, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV5_0, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV6_0, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV7_0, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV8_0, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV9_0, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV10_0, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV13_0, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::PsV23_0, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::I2, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::J, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Q10_1, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Q10_2, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Q10_3, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Q10_5, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Q10_6, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Q10_7, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Q10_8, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Q10_9, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Q10_10, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Q10_13, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Q10_23, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::R, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::c_c, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::dHa_c, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::c_o, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::dHa_o, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::RegFactor, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SC, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SC1, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::STOM1, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::STOM2};
@@ -907,7 +919,10 @@ const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, double> ValueSetEn
   {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::STOM2    , 1.0      },
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::constants = {
+const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::constant = {
   ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Q10_1    ,
   ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Q10_2    ,
   ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Q10_3    ,
@@ -937,7 +952,7 @@ template<>
 const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::nonvector = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::skipped = {
+std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::skipped = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::all = {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::SC, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::fc16, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::FC};
@@ -960,7 +975,10 @@ const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, double> ValueSe
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::FC  , 1.0},
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::constants = {
+const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::constant = {
   ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::SC  ,
   ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::fc16,
   ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::FC  ,
@@ -972,7 +990,7 @@ template<>
 const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::nonvector = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::skipped = {
+std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::skipped = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::all = {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::RedoxReg_VMAX6, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::RedoxReg_VMAX9, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::RedoxReg_VMAX13, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::RedoxReg_VMAX16, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Fd_Thio_ET, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::ThioT, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Thio_Oxidation};
@@ -1007,7 +1025,10 @@ const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, double> Valu
   {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Thio_Oxidation , 0.1  },
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::constants = {
+const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::constant = {
   ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Fd_Thio_ET     ,
   ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::ThioT          ,
   ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Thio_Oxidation ,
@@ -1019,7 +1040,7 @@ template<>
 const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::nonvector = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::skipped = {
+std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::skipped = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::all = {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::activase, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::factor};
@@ -1039,7 +1060,10 @@ const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, double> ValueSe
   {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::factor  , 1.0 },
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::constants = {
+const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::constant = {
   ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::factor  ,
 };
 template<> 
@@ -1049,7 +1073,7 @@ template<>
 const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::nonvector = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::skipped = {
+std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::skipped = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::all = {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::V51, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::V52, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::V55, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::V56, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::V57, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::V58, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::V59, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::V60, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::V61, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::V62, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Vdhap_in, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Vgap_in, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Vpga_in, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KE501, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km511, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km512, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km513, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KE51, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km521, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KI521, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KI522, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KI523, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KE52, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KE531, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KE541, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km551, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km552, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km553, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km554, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KE55, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km561, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km562, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KI561, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KI562, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KI563, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KI564, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KI565, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KE56, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km571, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Ki572, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KE57, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km581, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KI581, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KI582, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KI583, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km591, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km592, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km593, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KI591, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KI592, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KE59, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km601, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km602, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km603, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km604, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KE60, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KE61, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Km621, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::ATPc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::UTPc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Vf_T52, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Vf_T59, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Vf_T57, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Vf_T51, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Vf_T56, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Vfactor51, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Vfactor52, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Vfactor56, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Vfactor57, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Vfactor59, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SUCSV51, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SUCSV52, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SUCSV55, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SUCSV56, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SUCSV57, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SUCSV58, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SUCS2PS_Pic, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KE5Ratio, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::ADPc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Vmatpf, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Q10_51, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Q10_52, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Q10_55, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Q10_56, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Q10_57, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Q10_58, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SC, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SC1};
@@ -1327,7 +1351,10 @@ const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, double> ValueSet
   {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SC1        , 1.0   },
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::constants = {
+const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::constant = {
   ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::KI583      ,
   ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Vmatpf     ,
   ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Q10_51     ,
@@ -1346,7 +1373,7 @@ template<>
 const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::nonvector = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::skipped = {
+std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::skipped = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::all = {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::kva, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::kaz, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::kza, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::kav, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::XanCycle2FIBF_Xstate};
@@ -1375,7 +1402,10 @@ const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, double> Valu
   {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::XanCycle2FIBF_Xstate, 0.0  },
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::constants = {
+const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::constant = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::calculated = {
@@ -1384,6 +1414,58 @@ template<>
 const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::nonvector = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::skipped = {
+std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::skipped = {
+};
+
+template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::all = {};
+template<> 
+const std::map<ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::names = {
+};
+template<> 
+const std::map<ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::defaults = {
+};
+template<> 
+const std::map<ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::defaults_C3 = {
+};
+template<> 
+const std::map<ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::constant = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::calculated = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::nonvector = {
+};
+template<> 
+std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::skipped = {
+};
+
+template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::all = {};
+template<> 
+const std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::names = {
+};
+template<> 
+const std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::defaults = {
+};
+template<> 
+const std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::defaults_C3 = {
+};
+template<> 
+const std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::constant = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::calculated = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::nonvector = {
+};
+template<> 
+std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::skipped = {
 };
 

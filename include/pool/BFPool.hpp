@@ -32,28 +32,6 @@
 namespace ePhotosynthesis {
 namespace pool {
 
-#define MEMBERS_BFPool				\
-  kA_d,						\
-    kA_f,					\
-    kA_U,					\
-    kU_A,					\
-    kU_d,					\
-    kU_f,					\
-    k1,						\
-    k_r1,					\
-    kz,						\
-    k12,					\
-    k23,					\
-    k30,					\
-    k01,					\
-    k2,						\
-    kAB1,					\
-    kBA1,					\
-    kAB2,					\
-    kBA2,	\
-    k3,		\
-    k_r3,	\
-    k_pq_oxy
 #define MEMBERS_BFPool_CONSTANT EMPTY_MEMBER_LIST
 #define MEMBERS_BFPool_SKIPPED EMPTY_MEMBER_LIST
 #define MEMBERS_BFPool_NOT_IN_ARRAY EMPTY_MEMBER_LIST

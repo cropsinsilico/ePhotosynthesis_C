@@ -11,6 +11,6 @@ ATP		0.68	#
 # _NADPH	0.21	#
 HexP		2.2	#
 PenP		0.25	#
-_Pi		0.0	# [CONST] ?
-_ADP		0.0	# [CONST] ?
-_v1		0.0	# [CONST] ?
+_Pi		0.0	# [CONST, NON_VECTOR] ?
+_ADP		0.0	# [CONST, NON_VECTOR] ?
+_v1		0.0	# [CONST, NON_VECTOR] ?

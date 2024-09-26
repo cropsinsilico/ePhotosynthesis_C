@@ -32,17 +32,6 @@
 namespace ePhotosynthesis {
 namespace RC {
 
-#define MEMBERS_RuACTRC				\
-  k1,						\
-    kn1,					\
-    km1,					\
-    Ke2,					\
-    Ke3,					\
-    k6,						\
-    kc,						\
-    ko,						\
-    k7,						\
-    kr
 #define MEMBERS_RuACTRC_CONSTANT EMPTY_MEMBER_LIST
 #define MEMBERS_RuACTRC_SKIPPED EMPTY_MEMBER_LIST
 #define MEMBERS_RuACTRC_NOT_IN_ARRAY EMPTY_MEMBER_LIST

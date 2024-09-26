@@ -3,6 +3,6 @@
 #pragma once
 
 template<>
-inline const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type>& get_enum_skipped<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type>() {
+inline std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type>& get_enum_skipped<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type>() {
   return ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::skipped;
 }

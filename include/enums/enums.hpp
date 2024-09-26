@@ -5,6 +5,9 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <iostream>
+#include <fstream>
+#include <sstream>
 namespace ePhotosynthesis {
   enum MODULE : int {
       MODULE_NONE       ,
@@ -18,6 +21,12 @@ namespace ePhotosynthesis {
       MODULE_XanCycle   ,
       MODULE_FIBF       ,
       MODULE_RedoxReg   ,
+      MODULE_CM         ,
+      MODULE_DynaPS     ,
+      MODULE_EPS        ,
+      MODULE_RA         ,
+      MODULE_trDynaPS   ,
+      MODULE_PS_PR      ,
       MODULE_MAX        ,
   };
   
@@ -30,29 +39,6 @@ namespace ePhotosynthesis {
       PARAM_TYPE_RC     ,
       PARAM_TYPE_MAX    ,
   };
-  
-  // Unspecialized enum
-  template<MODULE M, PARAM_TYPE PT>
-  class ValueSetEnum {
-  public:
-    enum Type : int;
-    static const MODULE module = M;
-    static const PARAM_TYPE param_type = PT;
-    static const std::vector<Type> all;
-    static const std::map<Type, std::string> names;
-    static const std::map<Type, double> defaults;
-    static const std::map<Type, double> defaults_C3;
-    static const std::vector<Type> constants;
-    static const std::vector<Type> calculated;
-    static const std::vector<Type> nonvector;
-    static const std::vector<Type> skipped;
-  };
-  
-  #include "enums/enums_POOL.hpp"
-  #include "enums/enums_COND.hpp"
-  #include "enums/enums_KE.hpp"
-  #include "enums/enums_RC.hpp"
-  #include "enums/enums_MOD.hpp"
   
   // Utility for getting module id from enum type
   template<typename T>
@@ -86,6 +72,12 @@ namespace ePhotosynthesis {
       {MODULE_XanCycle, "XanCycle"},
       {MODULE_FIBF    , "FIBF"    },
       {MODULE_RedoxReg, "RedoxReg"},
+      {MODULE_CM      , "CM"      },
+      {MODULE_DynaPS  , "DynaPS"  },
+      {MODULE_EPS     , "EPS"     },
+      {MODULE_RA      , "RA"      },
+      {MODULE_trDynaPS, "trDynaPS"},
+      {MODULE_PS_PR   , "PS_PR"   },
     };
     return collection;
   }
@@ -100,13 +92,6 @@ namespace ePhotosynthesis {
     };
     return collection;
   }
-  // Specializations for get_enum_names
-  #include "enums/enums_POOL_names.hpp"
-  #include "enums/enums_COND_names.hpp"
-  #include "enums/enums_KE_names.hpp"
-  #include "enums/enums_RC_names.hpp"
-  #include "enums/enums_MOD_names.hpp"
-  
   // Utility for getting values from enum
   template<typename T>
   const std::map<T, double>& get_enum_defaults() {
@@ -114,13 +99,6 @@ namespace ePhotosynthesis {
     throw std::runtime_error("No enum defaults collection could be found");
     return result;
   }
-  // Specializations for get_enum_values
-  #include "enums/enums_POOL_defaults.hpp"
-  #include "enums/enums_COND_defaults.hpp"
-  #include "enums/enums_KE_defaults.hpp"
-  #include "enums/enums_RC_defaults.hpp"
-  #include "enums/enums_MOD_defaults.hpp"
-  
   // Utility for getting alternate_values from enum
   template<typename T>
   const std::map<T, double>& get_enum_defaults_C3() {
@@ -128,27 +106,20 @@ namespace ePhotosynthesis {
     throw std::runtime_error("No enum defaults_C3 collection could be found");
     return result;
   }
-  // Specializations for get_enum_alternate_values
-  #include "enums/enums_COND_defaults_C3.hpp"
-  #include "enums/enums_POOL_defaults_C3.hpp"
-  #include "enums/enums_KE_defaults_C3.hpp"
-  #include "enums/enums_MOD_defaults_C3.hpp"
-  #include "enums/enums_RC_defaults_C3.hpp"
-  
-  // Utility for getting constants from enum
+  // Utility for getting glymaids from enum
   template<typename T>
-  const std::vector<T>& get_enum_constants() {
-    static const std::vector<T> result;
-    throw std::runtime_error("No enum constants collection could be found");
+  const std::map<T, std::string>& get_enum_glymaids() {
+    static const std::map<T, std::string> result;
+    throw std::runtime_error("No enum glymaids collection could be found");
     return result;
   }
-  // Specializations for get_enum_constants
-  #include "enums/enums_COND_constants.hpp"
-  #include "enums/enums_POOL_constants.hpp"
-  #include "enums/enums_KE_constants.hpp"
-  #include "enums/enums_MOD_constants.hpp"
-  #include "enums/enums_RC_constants.hpp"
-  
+  // Utility for getting constant from enum
+  template<typename T>
+  const std::vector<T>& get_enum_constant() {
+    static const std::vector<T> result;
+    throw std::runtime_error("No enum constant collection could be found");
+    return result;
+  }
   // Utility for getting calculated from enum
   template<typename T>
   const std::vector<T>& get_enum_calculated() {
@@ -156,13 +127,6 @@ namespace ePhotosynthesis {
     throw std::runtime_error("No enum calculated collection could be found");
     return result;
   }
-  // Specializations for get_enum_calculated
-  #include "enums/enums_COND_calculated.hpp"
-  #include "enums/enums_POOL_calculated.hpp"
-  #include "enums/enums_KE_calculated.hpp"
-  #include "enums/enums_MOD_calculated.hpp"
-  #include "enums/enums_RC_calculated.hpp"
-  
   // Utility for getting nonvector from enum
   template<typename T>
   const std::vector<T>& get_enum_nonvector() {
@@ -170,6 +134,306 @@ namespace ePhotosynthesis {
     throw std::runtime_error("No enum nonvector collection could be found");
     return result;
   }
+  // Utility for getting skipped from enum
+  template<typename T>
+  std::vector<T>& get_enum_skipped() {
+    static std::vector<T> result;
+    throw std::runtime_error("No enum skipped collection could be found");
+    return result;
+  }
+  // Unspecialized enum
+  template<MODULE M, PARAM_TYPE PT>
+  class ValueSetEnum {
+  public:
+    enum Type : int;
+    static const MODULE module;
+    static const PARAM_TYPE param_type;
+    static const std::vector<Type> all;
+    static const std::map<Type, std::string> names;
+    static const std::map<Type, double> defaults;
+    static const std::map<Type, double> defaults_C3;
+    static const std::map<Type, std::string> glymaids;
+    static const std::vector<Type> constant;
+    static const std::vector<Type> calculated;
+    static const std::vector<Type> nonvector;
+    static std::vector<Type> skipped;
+    static std::string error_prefix() {
+      std::string out;
+      out += get_enum_names<PARAM_TYPE>().find(param_type)->second;
+      out += "[";
+      out += get_enum_names<MODULE>().find(module)->second;
+      out += "]: ";
+      return out;
+    }
+    static std::string getName(const Type& x) {
+      typename std::map<Type, std::string>::const_iterator it;
+      it = names.find(x);
+      if (it == names.end()) {
+        throw std::runtime_error("Could not locate Name for '" + names.find(x)->second + "'");
+      }
+      return it->second;
+    }
+    static std::ostream& print_map(const std::map<Type, double>& collection, std::ostream& out, const unsigned int tab = 0) {
+      const std::string space(tab * 4, ' ');
+      typename std::map<Type, double>::const_iterator it;
+      for (it = collection.begin(); it != collection.end(); it++) {
+        out << space << names.find(it->first)->second << " = " << it->second << std::endl;
+      }
+      return out;
+    }
+    static std::string string_map(const std::map<Type, double>& collection, const unsigned int tab = 0) {
+      std::ostringstream oss;
+      print_map(collection, oss, tab);
+      return oss.str();
+    }
+    static std::ostream& printDefaults(std::ostream& out, const unsigned int tab = 0) {
+      return print_map(defaults, out, tab);
+    }
+    static std::string stringDefaults(const unsigned int tab = 0) {
+      return string_map(defaults, tab);
+    }
+    static double getDefault(const Type& x) {
+      typename std::map<Type, double>::const_iterator it;
+      it = defaults.find(x);
+      if (it == defaults.end()) {
+        throw std::runtime_error("Could not locate Default for '" + names.find(x)->second + "'");
+      }
+      return it->second;
+    }
+    static std::ostream& printDefaults_C3(std::ostream& out, const unsigned int tab = 0) {
+      return print_map(defaults_C3, out, tab);
+    }
+    static std::string stringDefaults_C3(const unsigned int tab = 0) {
+      return string_map(defaults_C3, tab);
+    }
+    static double getDefault_C3(const Type& x) {
+      typename std::map<Type, double>::const_iterator it;
+      it = defaults_C3.find(x);
+      if (it == defaults_C3.end()) {
+        throw std::runtime_error("Could not locate Default_C3 for '" + names.find(x)->second + "'");
+      }
+      return it->second;
+    }
+    static std::ostream& printGlymaids(std::ostream& out, const unsigned int tab = 0) {
+      return print_map(glymaids, out, tab);
+    }
+    static std::string stringGlymaids(const unsigned int tab = 0) {
+      return string_map(glymaids, tab);
+    }
+    static std::string getGlymaid(const Type& x) {
+      typename std::map<Type, std::string>::const_iterator it;
+      it = glymaids.find(x);
+      if (it == glymaids.end()) {
+        throw std::runtime_error("Could not locate Glymaid for '" + names.find(x)->second + "'");
+      }
+      return it->second;
+    }
+    static std::ostream& print_vector(const std::vector<Type>& collection, std::ostream& out, const unsigned int tab = 0) {
+      const std::string space(tab * 4, ' ');
+      out << space << "[";
+      typename std::vector<Type>::const_iterator it;
+      for (it = collection.begin(); it != collection.end(); it++) {
+        out << names.find((*(it)))->second << "," << std::endl;
+      }
+      out << "]" << std::endl;
+      return out;
+    }
+    static std::string string_vector(const std::vector<Type>& collection, const unsigned int tab = 0) {
+      std::ostringstream oss;
+      print_vector(collection, oss, tab);
+      return oss.str();
+    }
+    static std::ostream& printConstant(std::ostream& out, const unsigned int tab = 0) {
+      return print_vector(constant, out, tab);
+    }
+    static std::string stringConstant(const unsigned int tab = 0) {
+      return string_vector(constant, tab);
+    }
+    static bool isConstant(const Type& x) {
+      typename std::vector<Type>::const_iterator it;
+      for (it = constant.begin(); it != constant.end(); it++){
+        if ((*(it)) == x) break;
+      }
+      return (it != constant.end());
+    }
+    static void checkConstant(const Type& x, const std::string& context = "") {
+      if (!isConstant(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in constant");
+      }
+    }
+    static void checkNotConstant(const Type& x, const std::string& context = "") {
+      if (isConstant(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in constant");
+      }
+    }
+    static std::ostream& printCalculated(std::ostream& out, const unsigned int tab = 0) {
+      return print_vector(calculated, out, tab);
+    }
+    static std::string stringCalculated(const unsigned int tab = 0) {
+      return string_vector(calculated, tab);
+    }
+    static bool isCalculated(const Type& x) {
+      typename std::vector<Type>::const_iterator it;
+      for (it = calculated.begin(); it != calculated.end(); it++){
+        if ((*(it)) == x) break;
+      }
+      return (it != calculated.end());
+    }
+    static void checkCalculated(const Type& x, const std::string& context = "") {
+      if (!isCalculated(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in calculated");
+      }
+    }
+    static void checkNotCalculated(const Type& x, const std::string& context = "") {
+      if (isCalculated(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in calculated");
+      }
+    }
+    static std::ostream& printNonvector(std::ostream& out, const unsigned int tab = 0) {
+      return print_vector(nonvector, out, tab);
+    }
+    static std::string stringNonvector(const unsigned int tab = 0) {
+      return string_vector(nonvector, tab);
+    }
+    static bool isNonvector(const Type& x) {
+      typename std::vector<Type>::const_iterator it;
+      for (it = nonvector.begin(); it != nonvector.end(); it++){
+        if ((*(it)) == x) break;
+      }
+      return (it != nonvector.end());
+    }
+    static void checkNonvector(const Type& x, const std::string& context = "") {
+      if (!isNonvector(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in nonvector");
+      }
+    }
+    static void checkNotNonvector(const Type& x, const std::string& context = "") {
+      if (isNonvector(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in nonvector");
+      }
+    }
+    static std::ostream& printSkipped(std::ostream& out, const unsigned int tab = 0) {
+      return print_vector(skipped, out, tab);
+    }
+    static std::string stringSkipped(const unsigned int tab = 0) {
+      return string_vector(skipped, tab);
+    }
+    static bool isSkipped(const Type& x) {
+      typename std::vector<Type>::const_iterator it;
+      for (it = skipped.begin(); it != skipped.end(); it++){
+        if ((*(it)) == x) break;
+      }
+      return (it != skipped.end());
+    }
+    static void checkSkipped(const Type& x, const std::string& context = "") {
+      if (!isSkipped(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in skipped");
+      }
+    }
+    static void checkNotSkipped(const Type& x, const std::string& context = "") {
+      if (isSkipped(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in skipped");
+      }
+    }
+    static void clearSkipped() {
+      skipped.clear();
+    }
+    static void addSkipped(const Type& x) {
+      if (!isSkipped(x)) {
+        skipped.push_back(x);
+      }
+    }
+    static void removeSkipped(const Type& x) {
+      typename std::vector<Type>::iterator it;
+      for (it = skipped.begin(); it != skipped.end(); it++){
+        if ((*(it)) == x) break;
+      }
+      if (it != skipped.end()) {
+        skipped.erase(it);
+      }
+    }
+    static void addMultipleSkipped(const std::vector<Type>& x) {
+      typename std::vector<Type>::const_iterator it;
+      for (it = x.begin(); it != x.end(); it++) {
+        addSkipped((*(it)));
+      }
+    }
+    static void removeMultipleSkipped(const std::vector<Type>& x) {
+      typename std::vector<Type>::const_iterator it;
+      for (it = x.begin(); it != x.end(); it++) {
+        removeSkipped((*(it)));
+      }
+    }
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  const MODULE ValueSetEnum<M, PT>::module = M;
+  template<MODULE M, PARAM_TYPE PT>
+  const PARAM_TYPE ValueSetEnum<M, PT>::param_type = PT;
+  template<MODULE M, PARAM_TYPE PT>
+  const std::map<typename ValueSetEnum<M, PT>::Type, std::string> ValueSetEnum<M, PT>::names = {};
+  template<MODULE M, PARAM_TYPE PT>
+  const std::map<typename ValueSetEnum<M, PT>::Type, double> ValueSetEnum<M, PT>::defaults = {};
+  template<MODULE M, PARAM_TYPE PT>
+  const std::map<typename ValueSetEnum<M, PT>::Type, double> ValueSetEnum<M, PT>::defaults_C3 = {};
+  template<MODULE M, PARAM_TYPE PT>
+  const std::map<typename ValueSetEnum<M, PT>::Type, std::string> ValueSetEnum<M, PT>::glymaids = {};
+  template<MODULE M, PARAM_TYPE PT>
+  const std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::constant = {};
+  template<MODULE M, PARAM_TYPE PT>
+  const std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::calculated = {};
+  template<MODULE M, PARAM_TYPE PT>
+  const std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::nonvector = {};
+  template<MODULE M, PARAM_TYPE PT>
+  std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::skipped = {};
+  
+  #include "enums/enums_POOL.hpp"
+  #include "enums/enums_COND.hpp"
+  #include "enums/enums_KE.hpp"
+  #include "enums/enums_RC.hpp"
+  #include "enums/enums_MOD.hpp"
+  
+  // Specializations for get_enum_names
+  #include "enums/enums_POOL_names.hpp"
+  #include "enums/enums_COND_names.hpp"
+  #include "enums/enums_KE_names.hpp"
+  #include "enums/enums_RC_names.hpp"
+  #include "enums/enums_MOD_names.hpp"
+  
+  // Specializations for get_enum_values
+  #include "enums/enums_POOL_defaults.hpp"
+  #include "enums/enums_COND_defaults.hpp"
+  #include "enums/enums_KE_defaults.hpp"
+  #include "enums/enums_RC_defaults.hpp"
+  #include "enums/enums_MOD_defaults.hpp"
+  
+  // Specializations for get_enum_alternate_values
+  #include "enums/enums_COND_defaults_C3.hpp"
+  #include "enums/enums_POOL_defaults_C3.hpp"
+  #include "enums/enums_KE_defaults_C3.hpp"
+  #include "enums/enums_MOD_defaults_C3.hpp"
+  #include "enums/enums_RC_defaults_C3.hpp"
+  
+  // Specializations for get_enum_glymaids
+  #include "enums/enums_COND_glymaids.hpp"
+  #include "enums/enums_POOL_glymaids.hpp"
+  #include "enums/enums_KE_glymaids.hpp"
+  #include "enums/enums_MOD_glymaids.hpp"
+  #include "enums/enums_RC_glymaids.hpp"
+  
+  // Specializations for get_enum_constant
+  #include "enums/enums_COND_constant.hpp"
+  #include "enums/enums_POOL_constant.hpp"
+  #include "enums/enums_KE_constant.hpp"
+  #include "enums/enums_MOD_constant.hpp"
+  #include "enums/enums_RC_constant.hpp"
+  
+  // Specializations for get_enum_calculated
+  #include "enums/enums_COND_calculated.hpp"
+  #include "enums/enums_POOL_calculated.hpp"
+  #include "enums/enums_KE_calculated.hpp"
+  #include "enums/enums_MOD_calculated.hpp"
+  #include "enums/enums_RC_calculated.hpp"
+  
   // Specializations for get_enum_nonvector
   #include "enums/enums_COND_nonvector.hpp"
   #include "enums/enums_POOL_nonvector.hpp"
@@ -177,13 +441,6 @@ namespace ePhotosynthesis {
   #include "enums/enums_MOD_nonvector.hpp"
   #include "enums/enums_RC_nonvector.hpp"
   
-  // Utility for getting skipped from enum
-  template<typename T>
-  const std::vector<T>& get_enum_skipped() {
-    static const std::vector<T> result;
-    throw std::runtime_error("No enum skipped collection could be found");
-    return result;
-  }
   // Specializations for get_enum_skipped
   #include "enums/enums_COND_skipped.hpp"
   #include "enums/enums_POOL_skipped.hpp"

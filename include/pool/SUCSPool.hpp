@@ -32,10 +32,6 @@
 namespace ePhotosynthesis {
 namespace pool {
 
-#define MEMBERS_SUCSPool			\
-  ATc,						\
-    UTc,					\
-    PTc
 #define MEMBERS_SUCSPool_CONSTANT EMPTY_MEMBER_LIST
 #define MEMBERS_SUCSPool_SKIPPED EMPTY_MEMBER_LIST
 #define MEMBERS_SUCSPool_NOT_IN_ARRAY EMPTY_MEMBER_LIST

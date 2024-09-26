@@ -32,32 +32,6 @@
 namespace ePhotosynthesis {
 namespace pool {
 
-#define MEMBERS_RROEAPool			\
-  GAPDH,					\
-    FBPase,					\
-    SBPase,					\
-    PRK,					\
-    ATPase,					\
-    ATPGPP,					\
-    MDH,					\
-    ThioT,					\
-    FdT,					\
-    RuACTT,					\
-    SA_GAPDH,					\
-    SA_FBPase,					\
-    SA_SBPase,					\
-    SA_PRK,					\
-    SA_ATPase,					\
-    SA_ATPGPP,					\
-    SA_MDH,					\
-    mw_GAPDH,					\
-    mw_FBPase,					\
-    mw_SBPase,					\
-    mw_PRK,					\
-    mw_ATPase,					\
-    mw_ATPGPP,					\
-    mw_MDH,					\
-    MDH_Vmax
 #define MEMBERS_RROEAPool_CONSTANT		\
     SA_GAPDH,					\
     SA_FBPase,					\

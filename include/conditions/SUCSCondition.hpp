@@ -34,15 +34,6 @@ class SUCS;
 }
 namespace conditions {
 
-#define MEMBERS_SUCSCondition			\
-  T3Pc,						\
-    FBPc,					\
-    HexPc,					\
-    F26BPc,					\
-    UDPGc,					\
-    SUCP,					\
-    SUC,					\
-    PGAc
 #define MEMBERS_SUCSCondition_CONSTANT EMPTY_MEMBER_LIST
 #define MEMBERS_SUCSCondition_SKIPPED EMPTY_MEMBER_LIST
 #define MEMBERS_SUCSCondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST

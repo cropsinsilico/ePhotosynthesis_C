@@ -7,6 +7,22 @@ inline const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type
   return ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::calculated;
 }
 template<>
+inline const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type>& get_enum_calculated<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type>() {
+  return ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::calculated;
+}
+template<>
+inline const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type>& get_enum_calculated<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type>() {
+  return ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::calculated;
+}
+template<>
+inline const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type>& get_enum_calculated<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type>() {
+  return ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::calculated;
+}
+template<>
+inline const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type>& get_enum_calculated<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type>() {
+  return ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::calculated;
+}
+template<>
 inline const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type>& get_enum_calculated<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type>() {
   return ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::calculated;
 }
@@ -17,6 +33,14 @@ inline const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type
 template<>
 inline const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type>& get_enum_calculated<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type>() {
   return ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::calculated;
+}
+template<>
+inline const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type>& get_enum_calculated<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type>() {
+  return ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::calculated;
+}
+template<>
+inline const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type>& get_enum_calculated<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type>() {
+  return ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::calculated;
 }
 template<>
 inline const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type>& get_enum_calculated<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type>() {
@@ -37,4 +61,8 @@ inline const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Ty
 template<>
 inline const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type>& get_enum_calculated<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type>() {
   return ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::calculated;
+}
+template<>
+inline const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type>& get_enum_calculated<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type>() {
+  return ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::calculated;
 }

@@ -190,9 +190,9 @@ enum RequestedDebug : uint {None = 0,
     static void set ## NAME(const bool val) {			    \
       NAME = val;						    \
       if (val) {						    \
-	skip(EnumClass::SKIP);					    \
+	addSkipped(EnumClass::SKIP);				    \
       } else {							    \
-	unskip(EnumClass::SKIP);				    \
+	removeSkipped(EnumClass::SKIP);				    \
       }								    \
     }								    \
     private:\

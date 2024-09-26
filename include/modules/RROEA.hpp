@@ -37,10 +37,6 @@ class RROEAModuleTest;
 namespace modules {
 class trDynaPS;
 
-#define MEMBERS_RROEA					\
-  SC,							\
-    fc16,						\
-    FC
 #define MEMBERS_RROEA_CONSTANT				\
   SC,							\
     fc16,						\

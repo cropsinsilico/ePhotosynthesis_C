@@ -37,22 +37,6 @@ namespace conditions {
 
 class PS_PRCondition;
 
-#define MEMBERS_PSCondition			\
-  RuBP,						\
-    PGA,					\
-    DPGA,					\
-    T3P,					\
-    ADPG,					\
-    FBP,					\
-    E4P,					\
-    S7P,					\
-    SBP,					\
-    ATP,					\
-    HexP,					\
-    PenP,					\
-    _Pi,					\
-    _ADP,					\
-    _v1
 #define MEMBERS_PSCondition_NOT_IN_ARRAY	\
   _Pi,						\
     _ADP,					\

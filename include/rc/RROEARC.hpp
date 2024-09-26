@@ -32,19 +32,6 @@
 namespace ePhotosynthesis {
 namespace RC {
 
-#define MEMBERS_RROEARC				\
-  ke2GAPDH,					\
-    ke2MDH,					\
-    ke2FBPase,					\
-    ke2SBPase,					\
-    ke2PRK,					\
-    ke2ATPase,					\
-    ke2RubACT,					\
-    ke2Fd,					\
-    keFd2Thio,					\
-    keFd2Calvin,				\
-    ke2ATPGPP,					\
-    Coeff
 #define MEMBERS_RROEARC_CONSTANT \
   ke2ATPase,			 \
     Coeff

@@ -127,7 +127,10 @@ const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, double> ValueSetEnu
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::KE2     , 495.0  },
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::constants = {
+const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::constant = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::calculated = {
@@ -136,7 +139,7 @@ template<>
 const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::nonvector = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::skipped = {
+std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::skipped = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::all = {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::kA_d, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::kA_f, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::kA_U, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::kU_A, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::kU_d, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::kU_f, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::k1, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::k_r1, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::kz, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::k12, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::k23, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::k30, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::k01, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::k2, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::kAB1, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::kBA1, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::kAB2, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::kBA2, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::k3, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::k_r3, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::k_pq_oxy};
@@ -213,7 +216,10 @@ const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, double> ValueSetEnu
   {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::k_pq_oxy, 500   },
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::constants = {
+const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::constant = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::calculated = {
@@ -222,7 +228,7 @@ template<>
 const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::nonvector = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::skipped = {
+std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::skipped = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::all = {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::V111, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::V112, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::V113, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::V121, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::V122, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::V123, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::V124, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::V131, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::NADHc, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::NADc, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::GLUc, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KGc, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::ADP, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::ATP, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::PGA, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KO, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KC, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KR, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KM112, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KI1122, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KI1121, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KM1131, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KM1132, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KI113, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KE113, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KM121, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KM1221, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KM1222, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KI1221, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KE122, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KM123, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KI123, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KE123, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KM1241, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KM1242, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KE124, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KM1311, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KI1311, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::V1T, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KM1011, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KI1011, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::V2T, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KM1012, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::KI1012, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Vfactor112, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Vfactor113, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Vfactor121, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Vfactor122, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Vfactor123, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Vfactor124, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Vfactor131, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Vf_T131, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Vf_T113, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Vf_T123, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Vf_T121, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Vf_T122, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Vf_T112};
@@ -407,7 +413,10 @@ const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, double> ValueSetEnu
   {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Vf_T112   , 1.0        },
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::constants = {
+const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::constant = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::calculated = {
@@ -416,7 +425,7 @@ template<>
 const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::nonvector = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::skipped = {
+std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::skipped = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::all = {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::CP, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::CA, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::CN, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::PEXT, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::V1, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::V2, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::V3, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::V5, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::V6, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::V7, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::V8, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::V9, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::V13, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::V16, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::V23, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::V24, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::V31, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::V32, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::V33, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM11_A, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM12_A, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM13, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KI11, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KI12, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KI13, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KI14, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KI15, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM21, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM22, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM23, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM31a, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM32b, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KE4, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM51, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM52, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM53, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KE5, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM61, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KI61, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KI62, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KE6, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM71, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM72, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM73, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM74, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KE7, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM81, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM82, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KE8, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM9, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KI9, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KE9, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM10, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM101, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM102, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM103, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KE10, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KE11, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KE12, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM131, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM132, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KI131, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KI132, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KI133, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KI134, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KI135, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KE13, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM161, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM162, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM163, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KE16, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KE21, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KE22, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM311, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM312, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM313, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM32, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM33, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM231, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM232, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM233, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM234, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KE23, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KA231, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KI231, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KVmo, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KM241, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KE25, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KE57, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Km8p5p, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Km5p5p, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::KE810, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Km5gap, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Km8f6p, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Km8s7p, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Km8gap, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::MaxCoeff, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Vfactor1, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Vfactor2, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Vfactor3, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Vfactor5, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Vfactor7, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Vfactor13, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Vfactor23, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Vf_T3, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Vf_T2, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Vf_T1, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Vf_T6, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Vf_T5, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Vf_T9, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Vf_T13, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Vf_T23};
@@ -766,7 +775,10 @@ const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, double> ValueSetEnu
   {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Vf_T23   , 1                 },
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::constants = {
+const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::constant = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::calculated = {
@@ -775,7 +787,7 @@ template<>
 const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::nonvector = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::skipped = {
+std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::skipped = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::all = {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::ke2GAPDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::ke2MDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::ke2FBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::ke2SBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::ke2PRK, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::ke2ATPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::ke2RubACT, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::ke2Fd, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::keFd2Thio, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::keFd2Calvin, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::ke2ATPGPP, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Coeff};
@@ -825,7 +837,10 @@ const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, double> ValueSet
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Coeff      , 1.0  },
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::constants = {
+const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::constant = {
   ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::ke2ATPase  ,
   ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Coeff      ,
 };
@@ -836,7 +851,7 @@ template<>
 const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::nonvector = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::skipped = {
+std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::skipped = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::all = {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Fd_Thio_ET, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::ThioT, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Thio_Oxidation, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Thion0};
@@ -862,7 +877,10 @@ const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, double> Value
   {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Thion0        , 0.25},
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::constants = {
+const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::constant = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::calculated = {
@@ -871,7 +889,7 @@ template<>
 const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::nonvector = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::skipped = {
+std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::skipped = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::all = {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::k1, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::kn1, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::km1, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Ke2, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Ke3, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::k6, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::kc, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::ko, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::k7, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::kr};
@@ -915,7 +933,10 @@ const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, double> ValueSet
   {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::kr  , 20.0e-3},
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::constants = {
+const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::constant = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::calculated = {
@@ -924,7 +945,7 @@ template<>
 const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::nonvector = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::skipped = {
+std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::skipped = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::all = {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::V51, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::V52, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::V55, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::V56, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::V57, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::V58, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::V59, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::V62, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Vdhap_in, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Vgap_in, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Vpga_in, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KE501, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km511, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km512, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km513, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KE51, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km521, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KI521, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KI522, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KI523, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KE52, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KE531, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KE541, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km551, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km552, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km553, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km554, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KE55, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km561, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km562, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KI561, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KI562, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KI563, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KI564, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KI565, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KE56, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km571, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Ki572, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KE57, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km581, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KI581, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KI582, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km591, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km593, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KI591, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KE61, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km621, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KE59, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km592, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KI592, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km601, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km602, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km603, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Km604, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KE60};
@@ -1103,7 +1124,10 @@ const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, double> ValueSetE
   {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::KE60    , 16.0       },
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::constants = {
+const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::constant = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::calculated = {
@@ -1112,7 +1136,7 @@ template<>
 const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::nonvector = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::skipped = {
+std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::skipped = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::all = {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::kva, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::kaz, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::kza, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::kav};
@@ -1138,7 +1162,10 @@ const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, double> Value
   {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::kav , 0.119},
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::constants = {
+const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::constant = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::calculated = {
@@ -1147,6 +1174,58 @@ template<>
 const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::nonvector = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::skipped = {
+std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::skipped = {
+};
+
+template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::all = {};
+template<> 
+const std::map<ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::names = {
+};
+template<> 
+const std::map<ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::defaults = {
+};
+template<> 
+const std::map<ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::defaults_C3 = {
+};
+template<> 
+const std::map<ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::constant = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::calculated = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::nonvector = {
+};
+template<> 
+std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::skipped = {
+};
+
+template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::all = {};
+template<> 
+const std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::names = {
+};
+template<> 
+const std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::defaults = {
+};
+template<> 
+const std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::defaults_C3 = {
+};
+template<> 
+const std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::constant = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::calculated = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::nonvector = {
+};
+template<> 
+std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::skipped = {
 };
 

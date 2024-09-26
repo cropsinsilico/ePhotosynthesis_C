@@ -40,6 +40,60 @@
 #define PTR_ORIG(x) (&(x))
 #endif
 
+class _EmptyMacroType {
+public:
+  static std::size_t memberCount() {
+    return 0;
+  }
+};
+// template<typename T=_EmptyMacroType>
+// bool _isEmptyMacroType() {
+//   return false;
+// }
+// template<>
+// bool _isEmptyMacroType<_EmptyMacroType>() {
+//   return true;
+// }
+
+#define INHERIT_METHOD_ENUM_BASE(name1, name2, ...)	\
+  using __VA_ARGS__::name1;					\
+  using __VA_ARGS__::print ## name2;				\
+  using __VA_ARGS__::string ## name2
+#define INHERIT_METHOD_ENUM_MAP(name1, name2, name3, ...)	\
+  INHERIT_METHOD_ENUM_BASE(name1, name2, __VA_ARGS__);		\
+  using __VA_ARGS__::get ## name3
+#define INHERIT_METHOD_ENUM_MAP_NAMES(name1, name2, name3, ...)	\
+  using __VA_ARGS__::name1;					\
+  using __VA_ARGS__::get ## name3
+#define INHERIT_METHOD_ENUM_VECTOR(name1, name2, ...)		\
+  INHERIT_METHOD_ENUM_BASE(name1, name2, __VA_ARGS__);		\
+  using __VA_ARGS__::is ## name2;				\
+  using __VA_ARGS__::check ## name2;				\
+  using __VA_ARGS__::checkNot ## name2
+#define INHERIT_METHOD_ENUM_VECTOR_EDIT(name1, name2, ...)	\
+  INHERIT_METHOD_ENUM_VECTOR(name1, name2, __VA_ARGS__);	\
+  using __VA_ARGS__::add ## name2;				\
+  using __VA_ARGS__::remove ## name2;				\
+  using __VA_ARGS__::addMultiple ## name2;			\
+  using __VA_ARGS__::removeMultiple ## name2;			\
+  using __VA_ARGS__::clear ## name2
+#define INHERIT_METHOD_ENUM(...)					\
+  using __VA_ARGS__::module;						\
+  using __VA_ARGS__::param_type;					\
+  using __VA_ARGS__::error_prefix;					\
+  using __VA_ARGS__::print_map;						\
+  using __VA_ARGS__::print_vector;					\
+  using __VA_ARGS__::string_map;					\
+  using __VA_ARGS__::string_vector;					\
+  INHERIT_METHOD_ENUM_MAP_NAMES(names, Names, Name, __VA_ARGS__);	\
+  INHERIT_METHOD_ENUM_MAP(defaults, Defaults, Default, __VA_ARGS__);	\
+  INHERIT_METHOD_ENUM_MAP(defaults_C3, Defaults_C3, Default_C3, __VA_ARGS__); \
+  INHERIT_METHOD_ENUM_VECTOR(constant, Constant, __VA_ARGS__);		\
+  INHERIT_METHOD_ENUM_VECTOR(calculated, Calculated, __VA_ARGS__);	\
+  INHERIT_METHOD_ENUM_VECTOR(nonvector, Nonvector, __VA_ARGS__);	\
+  INHERIT_METHOD_ENUM_VECTOR_EDIT(skipped, Skipped, __VA_ARGS__)
+  
+
 #define INHERIT_METHODS_VALUE_SET_BASE(...)	\
   typedef __VA_ARGS__ ParentClass;		\
   using typename __VA_ARGS__::BaseClass;	\
@@ -48,32 +102,9 @@
   using typename __VA_ARGS__::ValueType;	\
   using typename __VA_ARGS__::iterator;		\
   using typename __VA_ARGS__::const_iterator;	\
-  using __VA_ARGS__::module;			\
-  using __VA_ARGS__::param_type;		\
-  using __VA_ARGS__::error_prefix;		\
-  using __VA_ARGS__::default_values;		\
-  using __VA_ARGS__::default_values_C3;		\
-  using __VA_ARGS__::constant_values;		\
-  using __VA_ARGS__::add_constant;		\
-  using __VA_ARGS__::add_constants;		\
-  using __VA_ARGS__::isConstant;		\
-  using __VA_ARGS__::checkConstant;		\
-  using __VA_ARGS__::skipped_values;		\
-  using __VA_ARGS__::skip;			\
-  using __VA_ARGS__::unskip;			\
-  using __VA_ARGS__::isSkipped;			\
-  using __VA_ARGS__::reset_skipped;		\
-  using __VA_ARGS__::checkSkipped;		\
-  using __VA_ARGS__::non_array_values;		\
-  using __VA_ARGS__::add_non_array;		\
+  INHERIT_METHOD_ENUM(__VA_ARGS__);		\
   using __VA_ARGS__::inArrays;			\
   using __VA_ARGS__::print_value_map;		\
-  using __VA_ARGS__::print_value_vector;	\
-  using __VA_ARGS__::string_value_map;		\
-  using __VA_ARGS__::string_value_vector;	\
-  using __VA_ARGS__::print_defaults;		\
-  using __VA_ARGS__::print_skipped;		\
-  using __VA_ARGS__::print_non_array;		\
   using __VA_ARGS__::compareValues;		\
   using __VA_ARGS__::check_value_map;		\
   using __VA_ARGS__::update_value_map;		\
@@ -126,7 +157,7 @@
 #define VALUE_SET_MEMBER_TYPE double
 #endif // USE_VALUE_SET_VALUE_CLASS
 #define DEFAULT_VALUE(cls, name)		\
-  cls::default_values().find(cls::EnumClass::name)->second
+  cls::defaults.find(cls::EnumClass::name)->second
 
 #ifdef USE_VALUE_SET_VALUE_CLASS
 #define DECLARE_VALUE_SET_MEMBER_VAL(name, val)	\
@@ -205,15 +236,15 @@
   INIT_MEMBER_VAL(name, 0.0)
 #define INIT_CONST_MEMBER_VAL(name, val)				\
   INIT_MEMBER_VAL(name, val);						\
-  add_constant(EnumClass::name)
+  addConstant(EnumClass::name)
 #define INIT_CONST_MEMBER(name)						\
   INIT_CONST_MEMBER_VAL(name, 0.0)
 #define INIT_SKIPPED_MEMBER(name)		\
   INIT_MEMBER(name);				\
-  skip(EnumClass::name)
+  addSkipped(EnumClass::name)
 #define INIT_NON_ARRAY_MEMBER(name)		\
   INIT_MEMBER(name);				\
-  add_non_array(EnumClass::name)
+  addNonvector(EnumClass::name)
 #define INIT_MEMBER_STATIC(cls, name)					\
   INIT_MEMBER_STATIC_VAL(cls, name, 0.0)
 #define EMPTY_MEMBER_LIST NONE, MAX
