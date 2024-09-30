@@ -39,6 +39,10 @@ namespace conditions {
 
 class EPSCondition;
 
+#define MEMBERS_FIBFCondition_CONSTANT EMPTY_MEMBER_LIST
+#define MEMBERS_FIBFCondition_SKIPPED EMPTY_MEMBER_LIST
+#define MEMBERS_FIBFCondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST
+
 /**
  Class for input to FIBF_mb
  */

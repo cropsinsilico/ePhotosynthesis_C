@@ -32,11 +32,15 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET_STATIC(RROEA);
-
 double RROEA::TIME = 0.;
 std::size_t RROEA::N = 1;
 const std::size_t RROEACondition::count = 10;
+
+DEFINE_VALUE_SET_STATIC(RROEA);
+DEFINE_VALUE_SET(RROEACondition);
+DEFINE_VALUE_SET_NS(RC::, RROEARC);
+DEFINE_VALUE_SET_NS(KE::, RROEAKE);
+DEFINE_VALUE_SET_NS(pool::, RROEAPool);
 
 RROEACondition* RROEA::_init(Variables *theVars) {
 
@@ -47,75 +51,85 @@ RROEACondition* RROEA::_init(Variables *theVars) {
     RROEACondition* RROEA_con = new RROEACondition();
     theVars->initParam(*RROEA_con);
 
-    double Coeff = 1.;
-    double SC;
-    double fc16;
-    double FC;
-    
     for (typename RC::RROEARC::iterator it = theVars->RROEA_RC.begin();
 	 it != theVars->RROEA_RC.end(); it++) {
+      if (it->first == RC::RROEA::Coeff)
+	continue;
       if (it->first != RC::RROEA::ke2Fd &&
 	  it->first != RC::RROEA::keFd2Thio &&
 	  it->first != RC::RROEA::ke2ATPGPP &&
 	  it->first != RC::RROEA::ke2ATPase)
 	it->second /= 60.0;
-      it->second *= Coeff;
+      if (it->first != RC::RROEA::ke2ATPase)
+	it->second *= theVars->RROEA_RC[RC::RROEA::Coeff];
     }
 
     if (!theVars->RROEA_EPS_com) {
-      FC = 1.;
-      fc16 = 1.;
-      SC = 1.;
-      PS::set(MOD::PS::V3, 5.04 * SC);
-      PS::set(MOD::PS::V6, 1.155 * SC);
-      PS::set(MOD::PS::V9, 0.168 * SC * FC);
-      PS::set(MOD::PS::V13, 8.0094 * SC);
-      PS::set(MOD::PS::V16, 3. * SC * fc16);
-      PS::set(MOD::PS::V23, 1.68 * SC * FC);
+      PS::set(MOD::PS::V3, 5.04 * RROEA::get(MOD::RROEA::SC));
+      PS::set(MOD::PS::V6, 1.155 * RROEA::get(MOD::RROEA::SC));
+      PS::set(MOD::PS::V9, 0.168 * RROEA::get(MOD::RROEA::SC) *
+	      RROEA::get(MOD::RROEA::FC));
+      PS::set(MOD::PS::V13, 8.0094 * RROEA::get(MOD::RROEA::SC));
+      PS::set(MOD::PS::V16, 3. * RROEA::get(MOD::RROEA::SC) *
+	      RROEA::get(MOD::RROEA::fc16));
+      PS::set(MOD::PS::V23, 1.68 * RROEA::get(MOD::RROEA::SC) *
+	      RROEA::get(MOD::RROEA::FC));
     }
 
     if (theVars->RROEA_EPS_com)
       theVars->RROEA_Pool[POOL::RROEA::FdT] = theVars->BF_Pool[POOL::BF::kU_f];
+#define UPDATE_POOL(name, Vmax)						\
+    theVars->RROEA_Pool[POOL::RROEA::name] = PS::get(MOD::PS::Vmax) *	\
+      1000. * 60. /							\
+      theVars->RROEA_Pool[POOL::RROEA::SA_ ## name] /			\
+      theVars->RROEA_Pool[POOL::RROEA::mw_ ## name]
+    UPDATE_POOL(GAPDH, V3);
+    UPDATE_POOL(FBPase, V6);
+    UPDATE_POOL(SBPase, V9);
+    UPDATE_POOL(PRK, V13);
+    UPDATE_POOL(ATPase, V16);
+    UPDATE_POOL(ATPGPP, V23);
+#undef UPDATE_POOL
+    theVars->RROEA_Pool[POOL::RROEA::MDH] =
+      theVars->RROEA_Pool[POOL::RROEA::MDH_Vmax] * 1000. * 60. /
+      theVars->RROEA_Pool[POOL::RROEA::SA_MDH] /
+      theVars->RROEA_Pool[POOL::RROEA::mw_MDH];
 
-    // TODO: Double check if pool vars in param are already scaled by Vmax values
-
-    Coeff = 0.3;
-    RROEA_con->set(COND::RROEA::GAPDH,
-		   Coeff * theVars->RROEA_Pool[POOL::RROEA::GAPDH]);
-    RROEA_con->set(COND::RROEA::FBPase,
-		   Coeff * theVars->RROEA_Pool[POOL::RROEA::FBPase]);
-    RROEA_con->set(COND::RROEA::SBPase,
-		   Coeff * theVars->RROEA_Pool[POOL::RROEA::SBPase]);
-    RROEA_con->set(COND::RROEA::PRK,
-		   Coeff * theVars->RROEA_Pool[POOL::RROEA::PRK]);
-    RROEA_con->set(COND::RROEA::ATPase,
-		   Coeff * theVars->RROEA_Pool[POOL::RROEA::ATPase]);
-    RROEA_con->set(COND::RROEA::ATPGPP,
-		   Coeff * theVars->RROEA_Pool[POOL::RROEA::ATPGPP]);
-    (*RROEA_con)[COND::RROEA::Thio] *= Coeff;
-    (*RROEA_con)[COND::RROEA::Fd] *= Coeff;
-    (*RROEA_con)[COND::RROEA::RuACT] *= Coeff;
+#define UPDATE_COND(name)					\
+    RROEA_con->set(COND::RROEA::name,				\
+		   RROEA_con->get(COND::RROEA::Coeff) *		\
+		   theVars->RROEA_Pool[POOL::RROEA::name])
+    UPDATE_COND(GAPDH);
+    UPDATE_COND(FBPase);
+    UPDATE_COND(SBPase);
+    UPDATE_COND(PRK);
+    UPDATE_COND(ATPase);
+    UPDATE_COND(ATPGPP);
+#undef UPDATE_COND
+    (*RROEA_con)[COND::RROEA::Thio] *= RROEA_con->get(COND::RROEA::Coeff);
+    (*RROEA_con)[COND::RROEA::Fd] *= RROEA_con->get(COND::RROEA::Coeff);
+    (*RROEA_con)[COND::RROEA::RuACT] *= RROEA_con->get(COND::RROEA::Coeff);
 
 #ifdef CHECK_VALUE_SET_ALTS
 
-    Coeff = 1.;
+    theVars->RROEA_RC.Coeff = 1.;
     
     // The rate constant used in the model
-    theVars->RROEA_RC.ke2GAPDH = 22. / 60. * Coeff;    // The rate constant of electron transfer to GAPDH. From literature.
-    theVars->RROEA_RC.ke2MDH = 20. / 60. * Coeff;      // The rate constant of electront transfer to MDH, this rate is totally ASSUMED.
-    theVars->RROEA_RC.ke2FBPase = 1.38 / 60. * Coeff; // The rate constant of electron transfer from thioredoxin to FBPase.
-    theVars->RROEA_RC.ke2SBPase = 1.65 / 60. * Coeff; // The rate constant of electron tranfer from thioredoxin to SBPase
-    theVars->RROEA_RC.ke2PRK = 59.8 / 60. * Coeff;    // The rate constant of electron transfer from thioredoxin to PRK, Phosphoribulase kinase
-    theVars->RROEA_RC.ke2RubACT = 6.35 / 60. * Coeff; // The rate constant of electron transfer from thioredoxin to Rubisco activase
-    theVars->RROEA_RC.ke2Fd = 18.5 * Coeff;          // The rate constant of electron transfer to fe
+    theVars->RROEA_RC.ke2GAPDH = 22. / 60. * theVars->RROEA_RC.Coeff;    // The rate constant of electron transfer to GAPDH. From literature.
+    theVars->RROEA_RC.ke2MDH = 20. / 60. * theVars->RROEA_RC.Coeff;      // The rate constant of electront transfer to MDH, this rate is totally ASSUMED.
+    theVars->RROEA_RC.ke2FBPase = 1.38 / 60. * theVars->RROEA_RC.Coeff; // The rate constant of electron transfer from thioredoxin to FBPase.
+    theVars->RROEA_RC.ke2SBPase = 1.65 / 60. * theVars->RROEA_RC.Coeff; // The rate constant of electron tranfer from thioredoxin to SBPase
+    theVars->RROEA_RC.ke2PRK = 59.8 / 60. * theVars->RROEA_RC.Coeff;    // The rate constant of electron transfer from thioredoxin to PRK, Phosphoribulase kinase
+    theVars->RROEA_RC.ke2RubACT = 6.35 / 60. * theVars->RROEA_RC.Coeff; // The rate constant of electron transfer from thioredoxin to Rubisco activase
+    theVars->RROEA_RC.ke2Fd = 18.5 * theVars->RROEA_RC.Coeff;          // The rate constant of electron transfer to fe
     // Jmax of 180 micro mole per meter square per second.
-    theVars->RROEA_RC.keFd2Thio = 10. * Coeff;        // The rate constant of electron transfer from fd to thio
-    theVars->RROEA_RC.keFd2Calvin = 7. * Coeff;       // The rate constant of electron transfer from fd to Calvin cycle
+    theVars->RROEA_RC.keFd2Thio = 10. * theVars->RROEA_RC.Coeff;        // The rate constant of electron transfer from fd to thio
+    theVars->RROEA_RC.keFd2Calvin = 7. * theVars->RROEA_RC.Coeff;       // The rate constant of electron transfer from fd to Calvin cycle
     // Of course, this is a big assumption where the electron is transfered to NADPH
     // then to the Calvin cycle. This rate is much higher than the electron transfer to differnet
     // enzymes.
 
-    theVars->RROEA_RC.ke2ATPGPP = 6.3 / 60 * Coeff;     // The rate constant of electron transfer to ATPGPP
+    theVars->RROEA_RC.ke2ATPGPP = 6.3 / 60 * theVars->RROEA_RC.Coeff;     // The rate constant of electron transfer to ATPGPP
     theVars->RROEA_RC.ke2ATPase = 1.0;                  // The rate constant of electron transfer to ATPase
 
     // Here is all the equilibriun constants for the different reactions in photosystem
@@ -131,14 +145,11 @@ RROEACondition* RROEA::_init(Variables *theVars) {
 
     // The following calculate the total concentration of different enzymes.
 
-    const double MDH_Vmax = 2;       // This value is assumed and there is no literature about it. Need to be
-    // fixed.
-
     if (!theVars->RROEA_EPS_com) {
 
-        FC = 1.;
-        fc16 = 1.;
-        SC = 1.;
+        const double FC = 1.;
+        const double fc16 = 1.;
+        const double SC = 1.;
 
         PS::setV3(5.04 * SC);       // (Harris & Koniger, 1997) 3 GAP dehydragenase DPGA+NADPH <->GAP + OP+NADP
         PS::setV6(1.155 * SC);      // (Harris & Koniger, 1997) 6 FBPase FBP<->F6P+OP    1.155
@@ -180,33 +191,33 @@ RROEACondition* RROEA::_init(Variables *theVars) {
     theVars->RROEA_Pool.PRK = PS::getV13() * 1000. * 60. / SA_PRK / mw_PRK;
     theVars->RROEA_Pool.ATPase = PS::getV16() * 1000. * 60. / SA_ATPase / mw_ATPase;
     theVars->RROEA_Pool.ATPGPP = PS::getV23() * 1000. * 60. / SA_ATPGPP / mw_ATPGPP;
-    theVars->RROEA_Pool.MDH = MDH_Vmax * 1000. * 60. / SA_MDH / mw_MDH;
+    theVars->RROEA_Pool.MDH = theVars->RROEA_Pool.MDH_Vmax * 1000. * 60. / SA_MDH / mw_MDH;
     theVars->RROEA_Pool.ThioT = 0.081;
     theVars->RROEA_Pool.FdT = FdT;
     theVars->RROEA_Pool.RuACTT = 0.0056;
 
 
-    Coeff = 0.3;
+    RROEA_con->Coeff = 0.3;
 
-    double Fd = 0.081 * Coeff; // The initial concentraiton of reduced fd
+    double Fd = 0.081 * RROEA_con->Coeff; // The initial concentraiton of reduced fd
 
-    RROEA_con->GAPDH = theVars->RROEA_Pool.GAPDH * Coeff;   // The initial concentration of active GAPDH
-    RROEA_con->FBPase = theVars->RROEA_Pool.FBPase * Coeff; // The initial concentration of active FBPase
-    RROEA_con->SBPase = theVars->RROEA_Pool.SBPase * Coeff; // The initial concentration of active SBPase
-    RROEA_con->PRK = theVars->RROEA_Pool.PRK * Coeff;       // The initial concentration of actove PRK
-    RROEA_con->ATPase = theVars->RROEA_Pool.ATPase * Coeff; // The initial concentration of actove ATPase
-    RROEA_con->ATPGPP = theVars->RROEA_Pool.ATPGPP * Coeff; // The initial concentration of actove ATPGPP
+    RROEA_con->GAPDH = theVars->RROEA_Pool.GAPDH * RROEA_con->Coeff;   // The initial concentration of active GAPDH
+    RROEA_con->FBPase = theVars->RROEA_Pool.FBPase * RROEA_con->Coeff; // The initial concentration of active FBPase
+    RROEA_con->SBPase = theVars->RROEA_Pool.SBPase * RROEA_con->Coeff; // The initial concentration of active SBPase
+    RROEA_con->PRK = theVars->RROEA_Pool.PRK * RROEA_con->Coeff;       // The initial concentration of actove PRK
+    RROEA_con->ATPase = theVars->RROEA_Pool.ATPase * RROEA_con->Coeff; // The initial concentration of actove ATPase
+    RROEA_con->ATPGPP = theVars->RROEA_Pool.ATPGPP * RROEA_con->Coeff; // The initial concentration of actove ATPGPP
     RROEA_con->MDH = 0.;                                     // The initial concentration of actove MDH
-    RROEA_con->Thio = 0.081 * Coeff;                        // The initial concentration of reduced thioredoxin
+    RROEA_con->Thio = 0.081 * RROEA_con->Coeff;                        // The initial concentration of reduced thioredoxin
     RROEA_con->Fd = Fd;                                     // The initial concentration of reduced ferrodoxin
-    RROEA_con->RuACT = 0.0056 * Coeff;                      // The initial concentration of active Rubisco activase
+    RROEA_con->RuACT = 0.0056 * RROEA_con->Coeff;                      // The initial concentration of active Rubisco activase
 
     // Here defines the information for transfer between models
 
-    RROEA_con->checkAlts();
-    theVars->RROEA_RC.checkAlts();
-    theVars->RROEA_KE.checkAlts();
-    theVars->RROEA_Pool.checkAlts();
+    RROEA_con->checkAlts("RROEA::_init::Condition: ");
+    theVars->RROEA_RC.checkAlts("RROEA::_init::RROEA_RC: ");
+    theVars->RROEA_KE.checkAlts("RROEA::_init::RROEA_KE: ");
+    theVars->RROEA_Pool.checkAlts("RROEA::_init::RROEA_Pool: ");
 #endif // CHECK_VALUE_SET_ALTS
 
     return RROEA_con;

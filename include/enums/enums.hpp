@@ -173,6 +173,14 @@ namespace ePhotosynthesis {
       }
       return it->second;
     }
+    static std::string getName(const Type& x, const std::string& defaultV) {
+      typename std::map<Type, std::string>::const_iterator it;
+      it = names.find(x);
+      if (it == names.end()) {
+        return defaultV;
+      }
+      return it->second;
+    }
     static std::ostream& print_map(const std::map<Type, double>& collection, std::ostream& out, const unsigned int tab = 0) {
       const std::string space(tab * 4, ' ');
       typename std::map<Type, double>::const_iterator it;
@@ -200,6 +208,14 @@ namespace ePhotosynthesis {
       }
       return it->second;
     }
+    static double getDefault(const Type& x, const double& defaultV) {
+      typename std::map<Type, double>::const_iterator it;
+      it = defaults.find(x);
+      if (it == defaults.end()) {
+        return defaultV;
+      }
+      return it->second;
+    }
     static std::ostream& printDefaults_C3(std::ostream& out, const unsigned int tab = 0) {
       return print_map(defaults_C3, out, tab);
     }
@@ -214,6 +230,14 @@ namespace ePhotosynthesis {
       }
       return it->second;
     }
+    static double getDefault_C3(const Type& x, const double& defaultV) {
+      typename std::map<Type, double>::const_iterator it;
+      it = defaults_C3.find(x);
+      if (it == defaults_C3.end()) {
+        return defaultV;
+      }
+      return it->second;
+    }
     static std::ostream& printGlymaids(std::ostream& out, const unsigned int tab = 0) {
       return print_map(glymaids, out, tab);
     }
@@ -225,6 +249,14 @@ namespace ePhotosynthesis {
       it = glymaids.find(x);
       if (it == glymaids.end()) {
         throw std::runtime_error("Could not locate Glymaid for '" + names.find(x)->second + "'");
+      }
+      return it->second;
+    }
+    static std::string getGlymaid(const Type& x, const std::string& defaultV) {
+      typename std::map<Type, std::string>::const_iterator it;
+      it = glymaids.find(x);
+      if (it == glymaids.end()) {
+        return defaultV;
       }
       return it->second;
     }
@@ -249,6 +281,11 @@ namespace ePhotosynthesis {
     static std::string stringConstant(const unsigned int tab = 0) {
       return string_vector(constant, tab);
     }
+    /**
+      Check if a value is in constant
+      \param[in] x Value to check
+      \return true if x is present, false otherwise
+    */
     static bool isConstant(const Type& x) {
       typename std::vector<Type>::const_iterator it;
       for (it = constant.begin(); it != constant.end(); it++){
@@ -272,6 +309,11 @@ namespace ePhotosynthesis {
     static std::string stringCalculated(const unsigned int tab = 0) {
       return string_vector(calculated, tab);
     }
+    /**
+      Check if a value is in calculated
+      \param[in] x Value to check
+      \return true if x is present, false otherwise
+    */
     static bool isCalculated(const Type& x) {
       typename std::vector<Type>::const_iterator it;
       for (it = calculated.begin(); it != calculated.end(); it++){
@@ -295,6 +337,11 @@ namespace ePhotosynthesis {
     static std::string stringNonvector(const unsigned int tab = 0) {
       return string_vector(nonvector, tab);
     }
+    /**
+      Check if a value is in nonvector
+      \param[in] x Value to check
+      \return true if x is present, false otherwise
+    */
     static bool isNonvector(const Type& x) {
       typename std::vector<Type>::const_iterator it;
       for (it = nonvector.begin(); it != nonvector.end(); it++){
@@ -318,6 +365,11 @@ namespace ePhotosynthesis {
     static std::string stringSkipped(const unsigned int tab = 0) {
       return string_vector(skipped, tab);
     }
+    /**
+      Check if a value is in skipped
+      \param[in] x Value to check
+      \return true if x is present, false otherwise
+    */
     static bool isSkipped(const Type& x) {
       typename std::vector<Type>::const_iterator it;
       for (it = skipped.begin(); it != skipped.end(); it++){

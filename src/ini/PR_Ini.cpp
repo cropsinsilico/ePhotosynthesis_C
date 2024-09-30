@@ -32,86 +32,6 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET_STATIC(PR);
-
-INIT_MEMBER_STATIC(PR, KC);
-INIT_MEMBER_STATIC(PR, KE113);
-INIT_MEMBER_STATIC(PR, KE122);
-INIT_MEMBER_STATIC(PR, KE123);
-INIT_MEMBER_STATIC(PR, KE124);
-INIT_MEMBER_STATIC(PR, KGc);
-INIT_MEMBER_STATIC(PR, KI1011);
-INIT_MEMBER_STATIC(PR, KI1012);
-INIT_MEMBER_STATIC(PR, KI1121);
-INIT_MEMBER_STATIC(PR, KI1122);
-INIT_MEMBER_STATIC(PR, KI113);
-INIT_MEMBER_STATIC(PR, KI1221);
-INIT_MEMBER_STATIC(PR, KI123);
-INIT_MEMBER_STATIC(PR, KI1311);
-INIT_MEMBER_STATIC(PR, KM1312);
-INIT_MEMBER_STATIC(PR, KI1312);
-INIT_MEMBER_STATIC(PR, KM1011);
-INIT_MEMBER_STATIC(PR, KM1012);
-INIT_MEMBER_STATIC(PR, KM112);
-INIT_MEMBER_STATIC(PR, KM1131);
-INIT_MEMBER_STATIC(PR, KM1132);
-INIT_MEMBER_STATIC(PR, KM121);
-INIT_MEMBER_STATIC(PR, KM1221);
-INIT_MEMBER_STATIC(PR, KM1222);
-INIT_MEMBER_STATIC(PR, KM123);
-INIT_MEMBER_STATIC(PR, KM1241);
-INIT_MEMBER_STATIC(PR, KM1242);
-INIT_MEMBER_STATIC(PR, KI124);
-INIT_MEMBER_STATIC(PR, KM1311);
-INIT_MEMBER_STATIC(PR, KO);
-INIT_MEMBER_STATIC(PR, KR);
-INIT_MEMBER_STATIC(PR, NADHc);
-INIT_MEMBER_STATIC(PR, NADc);
-INIT_MEMBER_STATIC(PR, PR_ADP);
-INIT_MEMBER_STATIC(PR, PR_ATP);
-INIT_MEMBER_STATIC(PR, V111);
-INIT_MEMBER_STATIC(PR, V112);
-INIT_MEMBER_STATIC(PR, V113);
-INIT_MEMBER_STATIC(PR, V121);
-INIT_MEMBER_STATIC(PR, V122);
-INIT_MEMBER_STATIC(PR, V123);
-INIT_MEMBER_STATIC(PR, V124);
-INIT_MEMBER_STATIC(PR, V131);
-INIT_MEMBER_STATIC(PR, V2T);
-INIT_MEMBER_STATIC_VAL(PR, Vfactor112, 1.0);
-INIT_MEMBER_STATIC_VAL(PR, Vfactor113, 1.0);
-INIT_MEMBER_STATIC_VAL(PR, Vfactor121, 1.0);
-INIT_MEMBER_STATIC_VAL(PR, Vfactor122, 1.0);
-INIT_MEMBER_STATIC_VAL(PR, Vfactor123, 1.0);
-INIT_MEMBER_STATIC_VAL(PR, Vfactor124, 1.0);
-INIT_MEMBER_STATIC_VAL(PR, Vfactor131, 1.0);
-INIT_MEMBER_STATIC_VAL(PR, Vf_T131, 1.0);
-INIT_MEMBER_STATIC_VAL(PR, Vf_T113, 1.0);
-INIT_MEMBER_STATIC_VAL(PR, Vf_T123, 1.0);
-INIT_MEMBER_STATIC_VAL(PR, Vf_T121, 1.0);
-INIT_MEMBER_STATIC_VAL(PR, Vf_T122, 1.0);
-INIT_MEMBER_STATIC_VAL(PR, Vf_T112, 1.0);
-INIT_MEMBER_STATIC(PR, PGA);
-INIT_MEMBER_STATIC(PR, GLUc);
-INIT_MEMBER_STATIC(PR, RUBISCOTOTAL);
-INIT_MEMBER_STATIC(PR, V1T);
-
-INIT_MEMBER_STATIC(PR, PrV112);
-INIT_MEMBER_STATIC(PR, PrV113);
-INIT_MEMBER_STATIC(PR, PrV121);
-INIT_MEMBER_STATIC(PR, PrV122);
-INIT_MEMBER_STATIC(PR, PrV123);
-INIT_MEMBER_STATIC(PR, PrV124);
-INIT_MEMBER_STATIC(PR, PrV131);
-
-INIT_CONST_MEMBER_STATIC(PR, Q10_112, 1.81);
-INIT_CONST_MEMBER_STATIC(PR, Q10_113, 2.0);
-INIT_CONST_MEMBER_STATIC(PR, Q10_121, 2.0);
-INIT_CONST_MEMBER_STATIC(PR, Q10_122, 2.01);
-INIT_CONST_MEMBER_STATIC(PR, Q10_123, 2.0);
-INIT_CONST_MEMBER_STATIC(PR, Q10_124, 2.0);
-INIT_CONST_MEMBER_STATIC(PR, Q10_131, 2.0);
-
 double PR::TIME = 0.;
 std::size_t PR::N = 1;
 const std::size_t PRCondition::count = 10;
@@ -120,12 +40,19 @@ bool PR::PS_connect = false;
 bool PRCondition::PS_RuBP = false;
 bool PR::PS_RuBP = false;
 
+DEFINE_VALUE_SET_STATIC(PR);
+DEFINE_VALUE_SET(PRCondition);
+
 PRCondition* PR::_init(Variables *theVars) {
     PR::setPS_connect(theVars->PR_PS_com);
     theVars->initParamStatic<PR>();
     PRCondition* PR_con = new PRCondition();
     theVars->initParam(*PR_con);
 
+    // Useful intermediate constants
+    const double tempRatio = (theVars->Tp - 25.) / 10.;
+      
+    // Reaction 110: RuBP + CO2 <--> 2PGA
     // Reaction 111: RUBP+O2<-->PGlycolate + PGA
     // Reaction 112: PGlycolate-->Pi+Glycolate;
     // Reaction 113: Gcea+ATP<-->ADP + PGA
@@ -166,7 +93,6 @@ PRCondition* PR::_init(Variables *theVars) {
       PR::set(MOD::PR::KO, PS::getKM12());
       PR::set(MOD::PR::KC, PS::getKM11());
       
-      const double tempRatio = (theVars->Tp - 25.) / 10.;
       PR::set(MOD::PR::PrV112,
 	      PR::get(MOD::PR::V112) *
 	      PR::get(MOD::PR::Vfactor112) *
@@ -203,10 +129,6 @@ PRCondition* PR::_init(Variables *theVars) {
 	      pow(PR::get(MOD::PR::Q10_131), tempRatio));
     } else {
 
-      // This is the coefficient for calibrating the volume effect
-      // Default is 4.
-      const double CE = 1.;
-      
       if (theVars->GP == 0) {
 	if (theVars->PR_PS_com) {
 	  PR::set(MOD::PR::V111, PS::getV1() * 0.24);
@@ -227,12 +149,12 @@ PRCondition* PR::_init(Variables *theVars) {
 	switch (it->first) {
 	case (MOD::PR::V111) : {
 	  if (theVars->GP == 0 && theVars->PR_PS_com)
-	    it->second = it->second * theVars->PRRatio[i];
+	    it->second *= theVars->PRRatio[i];
 	  i++;
 	  break;
 	}
 	case (MOD::PR::NADc) : {
-	  it->second = it->second * theVars->PRRatio[i];
+	  it->second *= theVars->PRRatio[i];
 	  // PRRatio 10 & 11 skipped
 	  i = 12;
 	  break;
@@ -240,19 +162,19 @@ PRCondition* PR::_init(Variables *theVars) {
 	case (MOD::PR::KC) :
 	case (MOD::PR::KO) : {
 	  if (!theVars->PR_PS_com) {
-	    it->second = it->second * theVars->PRRatio[i];
+	    it->second *= theVars->PRRatio[i];
 	  }
 	  i++;
 	  break;
 	}
 	case (MOD::PR::V1T) :
 	case (MOD::PR::V2T) : {
-	  it->second = it->second * CE * theVars->PRRatio[i];
+	  it->second *= PR::get(MOD::PR::CE) * theVars->PRRatio[i];
 	  i++;
 	  break;
 	}
 	case (MOD::PR::KI1311) : {
-	  it->second = it->second * theVars->PRRatio[i];
+	  it->second *= theVars->PRRatio[i];
 	  // PRRatio 40 & 41 skipped
 	  i = 42;
 	  break;
@@ -265,7 +187,7 @@ PRCondition* PR::_init(Variables *theVars) {
 	  break;
 	}
 	default : {
-	  it->second = it->second * theVars->PRRatio[i];
+	  it->second *= theVars->PRRatio[i];
 	  i++;
 	}
 	}
@@ -398,7 +320,6 @@ PRCondition* PR::_init(Variables *theVars) {
 
         PR::KM1012 = 0.2;
         PR::KI1012 = 0.22;
-        const double tempRatio = (theVars->Tp - 25.) / 10.;
 
         PR::PrV112 = PR::V112 * PR::Vfactor112 * PR::Vf_T112 * pow(PR::Q10_112, tempRatio);
         PR::PrV113 = PR::V113 * PR::Vfactor113 * PR::Vf_T113 * pow(PR::Q10_113, tempRatio);
@@ -411,8 +332,6 @@ PRCondition* PR::_init(Variables *theVars) {
     } else {
         // To set global information for different reactions
         // Reaction: 110: RuBP + CO2 <--> 2PGA
-
-        const double CE = 1.; // This is the coefficient for calibrating the volume effect // Default is 4.
 
         // Reaction: 111: RUBP+O2<-->PGlycolate + PGA
 
@@ -465,12 +384,12 @@ PRCondition* PR::_init(Variables *theVars) {
         PR::KI1311 = 4. * theVars->PRRatio[39];  // Inhibition constant for Serine
 
         // The consant for calculating the glycerate uptake.
-        PR::V1T = 0.25 * CE * 20. * theVars->PRRatio[42];
+        PR::V1T = 0.25 * PR::CE * 20. * theVars->PRRatio[42];
         PR::KM1011 = 0.39 * theVars->PRRatio[43];
         PR::KI1011 = 0.28 * theVars->PRRatio[44];
 
         // The constant for calculating the glycolate output
-        PR::V2T = 0.32 * CE * 10. * 2. * theVars->PRRatio[45];
+        PR::V2T = 0.32 * PR::CE * 10. * 2. * theVars->PRRatio[45];
         PR::KM1012 = 0.2 * theVars->PRRatio[46];
         PR::KI1012 = 0.22 * theVars->PRRatio[47];
 
@@ -490,7 +409,7 @@ PRCondition* PR::_init(Variables *theVars) {
         }
     }
 
-    PR_con->checkAlts();
+    PR_con->checkAlts("PR::_init::Condition: ");
 #endif // CHECK_VALUE_SET_ALTS
 
     return PR_con;

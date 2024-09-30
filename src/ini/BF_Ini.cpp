@@ -28,19 +28,10 @@
 #include "Variables.hpp"
 #include "ValueSet.hpp"
 #include "modules/BF.hpp"
-#define PMODTEM 1.
-#define RT (8.314 * 298.)
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
-
-DEFINE_VALUE_SET_STATIC(BF);
-
-INIT_MEMBER_STATIC(BF, cATPsyn);
-INIT_MEMBER_STATIC(BF, CPSi);
-INIT_MEMBER_STATIC(BF, cNADPHsyn);
-INIT_MEMBER_STATIC(BF, EPS_ATP_Rate);
 
 const std::size_t BFCondition::count = 28;
 bool BFCondition::FI_connect = false;
@@ -52,7 +43,10 @@ bool BFCondition::RROEA_connect = false;
 std::size_t BF::N = 1;
 double BF::TIME = 0.;
 
-double BF::_Pi = 0.;
+DEFINE_VALUE_SET_STATIC(BF);
+DEFINE_VALUE_SET(BFCondition);
+DEFINE_VALUE_SET_NS(RC::, BFRC);
+DEFINE_VALUE_SET_NS(pool::, BFPool);
 
 BFCondition* BF::_init(Variables *theVars) {
 
@@ -67,9 +61,9 @@ BFCondition* BF::_init(Variables *theVars) {
     BFCondition* BF_con = new BFCondition();
     theVars->initParam(*BF_con);
 
-    theVars->BF_RC[RC::BF::PK] *= PMODTEM;
-    theVars->BF_RC[RC::BF::PMg] *= PMODTEM;
-    theVars->BF_RC[RC::BF::PCl] *= PMODTEM;
+    theVars->BF_RC[RC::BF::PK] *= BF::get(MOD::BF::PMODTEM);
+    theVars->BF_RC[RC::BF::PMg] *= BF::get(MOD::BF::PMODTEM);
+    theVars->BF_RC[RC::BF::PCl] *= BF::get(MOD::BF::PMODTEM);
 
     if (theVars->useC3) {
       if (theVars->lightParam == 0.) {
@@ -143,12 +137,12 @@ BFCondition* BF::_init(Variables *theVars) {
       double DeltaEm = theVars->BF_RC[RC::BF::Em_Cytf]
 	- theVars->BF_RC[RC::BF::Em_IPS];
       double DeltaG = DeltaEm * -9.649 * pow(10., 4.);
-      theVars->BF_RC[RC::BF::KE8] = exp(-DeltaG / RT);
+      theVars->BF_RC[RC::BF::KE8] = exp(-DeltaG / BF::get(MOD::BF::RT));
       // cytc1- + cytc2 --> cytc1 + cytc2-
       DeltaEm = theVars->BF_RC[RC::BF::Em_PG]
 	- theVars->BF_RC[RC::BF::Em_Cytf];
       DeltaG = DeltaEm * -9.649 * pow(10., 4.);
-      theVars->BF_RC[RC::BF::KE9] = exp(-DeltaG / RT);
+      theVars->BF_RC[RC::BF::KE9] = exp(-DeltaG / BF::get(MOD::BF::RT));
       
     }
 
@@ -190,9 +184,9 @@ BFCondition* BF::_init(Variables *theVars) {
     theVars->BF_RC.V2M = 27.8;
     theVars->BF_RC.KE2 = 495.;
     
-    theVars->BF_RC.PK *= PMODTEM;
-    theVars->BF_RC.PMg *= PMODTEM;
-    theVars->BF_RC.PCl *= PMODTEM;
+    theVars->BF_RC.PK *= BF::PMODTEM;
+    theVars->BF_RC.PMg *= BF::PMODTEM;
+    theVars->BF_RC.PCl *= BF::PMODTEM;
     
     if (theVars->useC3) {
       // Set values from loaded EnzymeAct
@@ -269,11 +263,11 @@ BFCondition* BF::_init(Variables *theVars) {
     // ISPHr + cytc1 --> ISPHox + cytc1-
     double DeltaEm = Em_Cytf - Em_IPS;
     double DeltaG = DeltaEm * -9.649 * pow(10., 4.);
-    theVars->BF_RC.KE8 = exp(-DeltaG / RT);  // ISPHr + cytc1 --> ISPHox + cytc1- Unit: s-1
+    theVars->BF_RC.KE8 = exp(-DeltaG / BF::RT);  // ISPHr + cytc1 --> ISPHox + cytc1- Unit: s-1
     // cytc1- + cytc2 --> cytc1 + cytc2-
     DeltaEm = Em_PG - Em_Cytf;
     DeltaG = DeltaEm * -9.649 * pow(10., 4.);
-    theVars->BF_RC.KE9 = exp(-DeltaG / RT);  // cytc1- + cytc2 --> cytc1 + cytc2- Unit: s-1
+    theVars->BF_RC.KE9 = exp(-DeltaG / BF::RT);  // cytc1- + cytc2 --> cytc1 + cytc2- Unit: s-1
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Initialization of the initial concentration of the different component  //
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -352,9 +346,9 @@ BFCondition* BF::_init(Variables *theVars) {
       theVars->BF_Pool.k30 *= theVars->BFRatio[48];
     }
 
-    theVars->BF_RC.checkAlts();
-    theVars->BF_Pool.checkAlts();
-    BF_con->checkAlts();
+    theVars->BF_RC.checkAlts("BF::_init::BF_RC: ");
+    theVars->BF_Pool.checkAlts("BF::_init::BF_Pool: ");
+    BF_con->checkAlts("BF::_init::Condition: ");
 #endif // CHECK_VALUE_SET_ALTS
     
     return BF_con;

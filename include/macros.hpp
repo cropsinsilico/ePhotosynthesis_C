@@ -157,7 +157,7 @@ public:
 #define VALUE_SET_MEMBER_TYPE double
 #endif // USE_VALUE_SET_VALUE_CLASS
 #define DEFAULT_VALUE(cls, name)		\
-  cls::defaults.find(cls::EnumClass::name)->second
+  cls::getDefault(cls::EnumClass::name, 0.0)
 
 #ifdef USE_VALUE_SET_VALUE_CLASS
 #define DECLARE_VALUE_SET_MEMBER_VAL(name, val)	\

@@ -38,6 +38,8 @@
 
 namespace ePhotosynthesis {
 
+#define DONT_USE_SINGLE_NONE 1
+
 #define DECLARE_VALUE_SET_MEMBER_RECORD			\
   static const StaticMemberClass _adjustments
 #define TYPED_VALUE_SET_MEMBERS(name, ...)		\
@@ -48,6 +50,18 @@ namespace ePhotosynthesis {
 				   {TYPED_VALUE_SET_MEMBERS(prefix name, NONE, MEMBERS_ ## name ## _CONSTANT)}, \
 				   {TYPED_VALUE_SET_MEMBERS(prefix name, NONE, MEMBERS_ ## name ## _SKIPPED)}, \
 				   {TYPED_VALUE_SET_MEMBERS(prefix name, NONE, MEMBERS_ ## name ## _NOT_IN_ARRAY)})
+#define DEFINE_VALUE_SET_MEMBER_RECORD_HEADER(prefix, name)
+  // const typename prefix name::StaticMemberClass prefix name::_adjustments
+#ifdef DONT_USE_SINGLE_NONE
+#define DEFINE_VALUE_SET_MEMBER_RECORD_SINGLE(prefix, name)		\
+  DEFINE_VALUE_SET_MEMBER_RECORD(prefix, name)
+#define DEFINE_VALUE_SET_MEMBER_RECORD_NONE(prefix, name)	\
+  DEFINE_VALUE_SET_MEMBER_RECORD(prefix, name)
+#define DEFINE_VALUE_SET_MEMBER_RECORD_HEADER_SINGLE(prefix, name)	\
+  DEFINE_VALUE_SET_MEMBER_RECORD_HEADER(prefix, name)
+#define DEFINE_VALUE_SET_MEMBER_RECORD_HEADER_NONE(prefix, name)	\
+  DEFINE_VALUE_SET_MEMBER_RECORD_HEADER(prefix, name)
+#else // DONT_USE_SINGLE_NONE
 #define DEFINE_VALUE_SET_MEMBER_RECORD_SINGLE(prefix, name)		\
   const typename prefix name::StaticMemberClass prefix name::_adjustments = \
     prefix name::StaticMemberClass({prefix name::EnumClass::MEMBERS_ ## name}, \
@@ -56,10 +70,15 @@ namespace ePhotosynthesis {
 				   {TYPED_VALUE_SET_MEMBERS(prefix name, NONE, MEMBERS_ ## name ## _NOT_IN_ARRAY)})
 #define DEFINE_VALUE_SET_MEMBER_RECORD_NONE(prefix, name)		\
   const typename prefix name::StaticMemberClass prefix name::_adjustments = \
-    prefix name::StaticMemberClass({},					\
+    prefix name::StaticMemberClass({},		\
 				   {TYPED_VALUE_SET_MEMBERS(prefix name, NONE, MEMBERS_ ## name ## _CONSTANT)}, \
 				   {TYPED_VALUE_SET_MEMBERS(prefix name, NONE, MEMBERS_ ## name ## _SKIPPED)}, \
 				   {TYPED_VALUE_SET_MEMBERS(prefix name, NONE, MEMBERS_ ## name ## _NOT_IN_ARRAY)})
+#define DEFINE_VALUE_SET_MEMBER_RECORD_HEADER_SINGLE(prefix, name)	\
+  DEFINE_VALUE_SET_MEMBER_RECORD_HEADER(prefix, name)
+#define DEFINE_VALUE_SET_MEMBER_RECORD_HEADER_NONE(prefix, name)	\
+  DEFINE_VALUE_SET_MEMBER_RECORD_HEADER(prefix, name)
+#endif // DONT_USE_SINGLE_NONE
 
   // Non-static value set
 #define INIT_VALUE_SET_MEMBER(name)				\
@@ -69,9 +88,16 @@ namespace ePhotosynthesis {
   FOR_EACH(INIT_VALUE_SET_MEMBER, __VA_ARGS__)
 #define INIT_VALUE_SET_MEMBERS(name)					\
   INIT_VALUE_SET_MEMBERS_(MEMBERS_ ## name)
+#ifdef DONT_USE_SINGLE_NONE
+#define INIT_VALUE_SET_MEMBERS_SINGLE(name)	\
+  INIT_VALUE_SET_MEMBERS(name)
+#define INIT_VALUE_SET_MEMBERS_NONE(name)	\
+  INIT_VALUE_SET_MEMBERS(name)
+#else // DONT_USE_SINGLE_NONE
 #define INIT_VALUE_SET_MEMBERS_SINGLE(name)	\
   INIT_VALUE_SET_MEMBER(MEMBERS_ ## name)
 #define INIT_VALUE_SET_MEMBERS_NONE(name)
+#endif // DONT_USE_SINGLE_NONE
 
 #define DECLARE_VALUE_SET_CORE(name)				\
   typedef _valueSetStaticMember<name> StaticMemberClass;	\
@@ -100,6 +126,12 @@ namespace ePhotosynthesis {
     ParentClass::initMembers();				\
   }							\
   DECLARE_VALUE_SET_CORE(name)
+#ifdef DONT_USE_SINGLE_NONE
+#define DECLARE_VALUE_SET_MEMBERS_SINGLE(name)	\
+  DECLARE_VALUE_SET_MEMBERS(name)
+#define DECLARE_VALUE_SET_MEMBERS_NONE(name)	\
+  DECLARE_VALUE_SET_MEMBERS(name)
+#else // DONT_USE_SINGLE_NONE
 #define DECLARE_VALUE_SET_MEMBERS_SINGLE(name)		\
   DECLARE_VALUE_SET_MEMBER(MEMBERS_ ## name);		\
   void initMembers() override {				\
@@ -113,10 +145,17 @@ namespace ePhotosynthesis {
     ParentClass::initMembers();				\
   }							\
   DECLARE_VALUE_SET_CORE(name)
+#endif // DONT_USE_SINGLE_NONE
 #define DECLARE_VALUE_SET(name, ...)		\
   INHERIT_METHODS_VALUE_SET(__VA_ARGS__)	\
   using __VA_ARGS__::memberCount;		\
   DECLARE_VALUE_SET_MEMBERS(name)
+#ifdef DONT_USE_SINGLE_NONE
+#define DECLARE_VALUE_SET_SINGLE(name, ...)	\
+  DECLARE_VALUE_SET(name, __VA_ARGS__)
+#define DECLARE_VALUE_SET_NONE(name, ...)	\
+  DECLARE_VALUE_SET(name, __VA_ARGS__)
+#else // DONT_USE_SINGLE_NONE
 #define DECLARE_VALUE_SET_SINGLE(name, ...)	\
   INHERIT_METHODS_VALUE_SET(__VA_ARGS__)	\
   using __VA_ARGS__::memberCount;		\
@@ -125,6 +164,7 @@ namespace ePhotosynthesis {
   INHERIT_METHODS_VALUE_SET(__VA_ARGS__)	\
   using __VA_ARGS__::memberCount;		\
   DECLARE_VALUE_SET_MEMBERS_NONE(name)
+#endif // DONT_USE_SINGLE_NONE
 #define DECLARE_VALUE_SET_COMPOSITE_ADD_CHILD(child)	\
     std::cerr << "Child " #child << child::memberCount();	\
     out += child::memberCount()
@@ -138,6 +178,12 @@ namespace ePhotosynthesis {
     DECLARE_VALUE_SET_COMPOSITE_ADD_CHILDREN children;		\
     return out;							\
   }
+#ifdef DONT_USE_SINGLE_NONE
+#define DECLARE_VALUE_SET_COMPOSITE_SINGLE(name, children, ...)	\
+  DECLARE_VALUE_SET_COMPOSITE(name, children, __VA_ARGS__)
+#define DECLARE_VALUE_SET_COMPOSITE_NONE(name, children, ...)	\
+  DECLARE_VALUE_SET_COMPOSITE(name, children, __VA_ARGS__)
+#else // DONT_USE_SINGLE_NONE
 #define DECLARE_VALUE_SET_COMPOSITE_SINGLE(name, children, ...)	\
   INHERIT_METHODS_VALUE_SET(__VA_ARGS__)			\
   DECLARE_VALUE_SET_MEMBERS_SINGLE(name)			\
@@ -154,26 +200,41 @@ namespace ePhotosynthesis {
     DECLARE_VALUE_SET_COMPOSITE_ADD_CHILDREN children;		\
     return out;							\
   }
+#endif // DONT_USE_SINGLE_NONE
   
 #define DEFINE_VALUE_SET_MEMBERS(mod, name)	\
   DEFINE_VALUE_SET_MEMBER_RECORD(mod, name)
+#ifdef DONT_USE_SINGLE_NONE
+#define DEFINE_VALUE_SET_MEMBERS_SINGLE(mod, name)	\
+  DEFINE_VALUE_SET_MEMBERS(mod, name)
+#define DEFINE_VALUE_SET_MEMBERS_NONE(mod, name)	\
+  DEFINE_VALUE_SET_MEMBERS(mod, name)
+#else // DONT_USE_SINGLE_NONE
 #define DEFINE_VALUE_SET_MEMBERS_SINGLE(mod, name)	\
   DEFINE_VALUE_SET_MEMBER_RECORD_SINGLE(mod, name)
 #define DEFINE_VALUE_SET_MEMBERS_NONE(mod, name)	\
   DEFINE_VALUE_SET_MEMBER_RECORD_NONE(mod, name)
+#endif // DONT_USE_SINGLE_NONE
 #define DEFINE_VALUE_SET_NS(mod, name)			\
   DEFINE_VALUE_SET_MEMBERS(mod, name)			\
   DEFINE_VALUE_SET_CORE(mod, name)
 #define DEFINE_VALUE_SET(name)			\
   DEFINE_VALUE_SET_NS(, name)
+#ifdef DONT_USE_SINGLE_NONE
+#define DEFINE_VALUE_SET_SINGLE_NS(mod, name)	\
+  DEFINE_VALUE_SET_NS(mod, name)
+#define DEFINE_VALUE_SET_NONE_NS(mod, name)	\
+  DEFINE_VALUE_SET_NS(mod, name)
+#else // DONT_USE_SINGLE_NONE
 #define DEFINE_VALUE_SET_SINGLE_NS(mod, name)		\
   DEFINE_VALUE_SET_MEMBERS_SINGLE(mod, name)		\
   DEFINE_VALUE_SET_CORE(mod, name)
-#define DEFINE_VALUE_SET_SINGLE(name)		\
-  DEFINE_VALUE_SET_SINGLE_NS(, name)
 #define DEFINE_VALUE_SET_NONE_NS(mod, name)		\
   DEFINE_VALUE_SET_MEMBERS_NONE(mod, name)		\
   DEFINE_VALUE_SET_CORE(mod, name)
+#endif // DONT_USE_SINGLE_NONE
+#define DEFINE_VALUE_SET_SINGLE(name)		\
+  DEFINE_VALUE_SET_SINGLE_NS(, name)
 #define DEFINE_VALUE_SET_NONE(name)		\
   DEFINE_VALUE_SET_NONE_NS(, name)
 #define DEFINE_VALUE_SET_HEADER(name)
@@ -189,9 +250,16 @@ namespace ePhotosynthesis {
   FOR_EACH(INIT_VALUE_SET_STATIC_MEMBER, __VA_ARGS__)
 #define INIT_VALUE_SET_STATIC_MEMBERS(name)		\
   INIT_VALUE_SET_STATIC_MEMBERS_(MEMBERS_ ## name)
+#ifdef DONT_USE_SINGLE_NONE
+#define INIT_VALUE_SET_STATIC_MEMBERS_SINGLE(name)	\
+  INIT_VALUE_SET_STATIC_MEMBERS(name)
+#define INIT_VALUE_SET_STATIC_MEMBERS_NONE(name)	\
+  INIT_VALUE_SET_STATIC_MEMBERS(name)
+#else // DONT_USE_SINGLE_NONE
 #define INIT_VALUE_SET_STATIC_MEMBERS_SINGLE(name)	\
   INIT_VALUE_SET_STATIC_MEMBER(MEMBERS_ ## name)
 #define INIT_VALUE_SET_STATIC_MEMBERS_NONE(name)
+#endif // DONT_USE_SINGLE_NONE
 
 #define DEFINE_VALUE_SET_STATIC_MODULE_CORE0(mod, name)	\
   double mod name::TIME = 0.;				\
@@ -206,16 +274,23 @@ namespace ePhotosynthesis {
   DEFINE_VALUE_SET_MEMBER_RECORD(mod, name)
 #define DEFINE_VALUE_SET_STATIC_MEMBERS(name)			\
   DEFINE_VALUE_SET_STATIC_MEMBERS_NS(, name)
+#ifdef DONT_USE_SINGLE_NONE
+#define DEFINE_VALUE_SET_STATIC_MEMBERS_SINGLE_NS(mod, name)	\
+  DEFINE_VALUE_SET_STATIC_MEMBERS_NS(mod, name)
+#define DEFINE_VALUE_SET_STATIC_MEMBERS_NONE_NS(mod, name)	\
+  DEFINE_VALUE_SET_STATIC_MEMBERS_NS(mod, name)
+#else // DONT_USE_SINGLE_NONE
 #define DEFINE_VALUE_SET_STATIC_MEMBERS_SINGLE_NS(mod, name)	\
   DEFINE_VALUE_SET_STATIC_MEMBER(name, MEMBERS_ ## name);	\
   DEFINE_VALUE_SET_STATIC_MODULE_CORE(mod, name)		\
   DEFINE_VALUE_SET_MEMBER_RECORD_SINGLE(mod, name)
+#define DEFINE_VALUE_SET_STATIC_MEMBERS_NONE_NS(mod, name)	\
+  DEFINE_VALUE_SET_STATIC_MODULE_CORE(mod, name)		\
+  DEFINE_VALUE_SET_MEMBER_RECORD_NONE(mod, name)
+#endif // DONT_USE_SINGLE_NONE
 #define DEFINE_VALUE_SET_STATIC_MEMBERS_SINGLE(name)		\
   DEFINE_VALUE_SET_STATIC_MEMBERS_SINGLE_NS(, name)
-#define DEFINE_VALUE_SET_STATIC_MEMBERS_NONE_NS(mod, name)	\
-  DEFINE_VALUE_SET_MEMBER_RECORD_NONE(mod, name)
 #define DEFINE_VALUE_SET_STATIC_MEMBERS_NONE(name)		\
-  DEFINE_VALUE_SET_STATIC_MODULE_CORE(mod, name)		\
   DEFINE_VALUE_SET_STATIC_MEMBERS_NONE_NS(, name)
 #define DEFINE_VALUE_SET_STATIC_MEMBERS_COMPOSITE_NS(mod, name)	\
   DEFINE_VALUE_SET_STATIC_MEMBERS_(name, MEMBERS_ ## name)	\
@@ -238,13 +313,16 @@ namespace ePhotosynthesis {
   DEFINE_VALUE_SET_STATIC_MEMBERS_COMPOSITE_NS(mod, name)
 #define DEFINE_VALUE_SET_STATIC_COMPOSITE(name)	\
   DEFINE_VALUE_SET_STATIC_COMPOSITE_NS(, name)
-#define DEFINE_VALUE_SET_STATIC_HEADER_NS(mod, name)
+#define DEFINE_VALUE_SET_STATIC_HEADER_NS(mod, name)	\
+  DEFINE_VALUE_SET_MEMBER_RECORD_HEADER(mod, name)
 #define DEFINE_VALUE_SET_STATIC_HEADER(name)		\
-  DEFINE_VALUE_SET_STATIC_HEADER_NS(, )
-#define DEFINE_VALUE_SET_STATIC_HEADER_SINGLE_NS(mod, name)
+  DEFINE_VALUE_SET_STATIC_HEADER_NS(, name)
+#define DEFINE_VALUE_SET_STATIC_HEADER_SINGLE_NS(mod, name)	\
+  DEFINE_VALUE_SET_MEMBER_RECORD_HEADER_SINGLE(mod, name)
 #define DEFINE_VALUE_SET_STATIC_HEADER_SINGLE(name)	\
   DEFINE_VALUE_SET_STATIC_HEADER_SINGLE_NS(, name)
-#define DEFINE_VALUE_SET_STATIC_HEADER_NONE_NS(mod, name)
+#define DEFINE_VALUE_SET_STATIC_HEADER_NONE_NS(mod, name)	\
+  DEFINE_VALUE_SET_MEMBER_RECORD_HEADER_NONE(mod, name)
 #define DEFINE_VALUE_SET_STATIC_HEADER_NONE(name)	\
   DEFINE_VALUE_SET_STATIC_HEADER_NONE_NS(, name)
 #define DEFINE_VALUE_SET_STATIC_HEADER_COMPOSITE_NS(mod, name)
@@ -256,15 +334,26 @@ namespace ePhotosynthesis {
 #define DECLARE_VALUE_SET_STATIC_MEMBERS(name)		\
   public:						\
   static void initMembers() {				\
+    if (!values.empty())				\
+      return;						\
+    std::cerr << error_prefix() << ": initMembers" << std::endl;	\
     INIT_VALUE_SET_STATIC_MEMBERS(name);		\
     ParentClass::initMembers();				\
   }							\
   private:						\
   DECLARE_VALUE_SET_STATIC_MEMBERS_(MEMBERS_ ## name);	\
   public:
+#ifdef DONT_USE_SINGLE_NONE
+#define DECLARE_VALUE_SET_STATIC_MEMBERS_SINGLE(name)	\
+  DECLARE_VALUE_SET_STATIC_MEMBERS(name)
+#define DECLARE_VALUE_SET_STATIC_MEMBERS_NONE(name)	\
+  DECLARE_VALUE_SET_STATIC_MEMBERS(name)
+#else // DONT_USE_SINGLE_NONE
 #define DECLARE_VALUE_SET_STATIC_MEMBERS_SINGLE(name)	\
   public:						\
   static void initMembers() {				\
+    if (!values.empty())				\
+      return;						\
     INIT_VALUE_SET_STATIC_MEMBERS_SINGLE(name);		\
     ParentClass::initMembers();				\
   }							\
@@ -274,9 +363,12 @@ namespace ePhotosynthesis {
 #define DECLARE_VALUE_SET_STATIC_MEMBERS_NONE(name)	\
   public:						\
   static void initMembers() {				\
+    if (!values.empty())				\
+      return;						\
     INIT_VALUE_SET_STATIC_MEMBERS_NONE(name)		\
     ParentClass::initMembers();				\
   }
+#endif // DONT_USE_SINGLE_NONE
 #define DECLARE_VALUE_SET_STATIC_CORE(name, ...)		\
   INHERIT_METHODS_VALUE_SET(__VA_ARGS__)			\
   typedef _valueSetStaticMember<name> StaticMemberClass;	\
@@ -367,13 +459,8 @@ namespace ePhotosynthesis {
   template<typename T>
   class _valueSetStaticMember {
   public:
-    _valueSetStaticMember(typename T::EnumType k, double* val,
-			  const std::string& context="_valueSetStaticMember: ") {
-      T::insertOrig(k, val, context);
-    }
-    _valueSetStaticMember(typename T::EnumType k, const double* val,
-			  const std::string& context="_valueSetStaticMember: ") {
-      T::insertConstOrig(k, val, context);
+    _valueSetStaticMember() {
+      T::initStaticMembers();
     }
     _valueSetStaticMember(const std::vector<typename T::EnumType> order,
 			  const std::vector<typename T::EnumType> constant,
@@ -1301,6 +1388,8 @@ namespace ePhotosynthesis {
          by child classes with a method that adds pointers to values.
      */
     virtual void initMembers() {
+      if (!values.empty())
+	return;
       init_value_map_orig(values, values_all);
     }
     /**
@@ -1425,6 +1514,8 @@ namespace ePhotosynthesis {
      */
     virtual void insertOrig(const EnumType k, double* v,
 			    const std::string& context="") {
+      if (k == EnumClass::NONE || k == EnumClass::MAX)
+	return;
 #ifdef CHECK_VALUE_SET_ALTS
       if (alts.find(k) == alts.end())
 	alts[k] = *v;
@@ -1439,6 +1530,8 @@ namespace ePhotosynthesis {
      */
     virtual void insertConstOrig(const EnumType k, const double* v,
 				 const std::string& context="") {
+      if (k == EnumClass::NONE || k == EnumClass::MAX)
+	return;
 #ifdef CHECK_VALUE_SET_ALTS
       if (alts.find(k) == alts.end())
 	alts[k] = *v;
@@ -1474,13 +1567,15 @@ namespace ePhotosynthesis {
        Check if the value using the original code matches the value
          calculated using only dynamic value methods.
        \param k Key to check.
+       \param context String providing context for error messages.
      */
-    virtual void checkAlt(const EnumType k) const {
+    virtual void checkAlt(const EnumType k,
+			  const std::string& context="") const {
 #ifdef CHECK_VALUE_SET_ALTS
-      check_value_alt(values, alts, k);
+      check_value_alt(values, alts, k, context);
 #else // CHECK_VALUE_SET_ALTS
       UNUSED(k);
-      throw std::runtime_error(error_prefix() + "Alternates not enabled");
+      throw std::runtime_error(error_prefix() + context + "Alternates not enabled");
 #endif // CHECK_VALUE_SET_ALTS
     }
     /**
@@ -1542,6 +1637,8 @@ namespace ePhotosynthesis {
          by child classes with a method that adds pointers to values.
      */
     static void initMembers() {
+      if (!values.empty())
+	return;
       init_value_map_orig(values, values_all);
     }
     /**
@@ -1653,9 +1750,14 @@ namespace ePhotosynthesis {
      */
     static void insertOrig(const EnumType k, double* v,
 			   const std::string& context="") {
+      if (k == EnumClass::NONE || k == EnumClass::MAX)
+	return;
 #ifdef CHECK_VALUE_SET_ALTS
-      if (alts.find(k) == alts.end())
+      if (alts.find(k) == alts.end()) {
+	std::cerr << error_prefix() << ": insertOrig: " <<
+	  utils::enum_key2string(k) << std::endl;
 	alts[k] = *v;
+      }
 #endif // CHECK_VALUE_SET_ALTS
       insert_value_orig(values, values_all, k, v, context);
     }
@@ -1667,6 +1769,8 @@ namespace ePhotosynthesis {
      */
     static void insertConstOrig(const EnumType k, const double* v,
 				const std::string& context="") {
+      if (k == EnumClass::NONE || k == EnumClass::MAX)
+	return;
       if (!EnumClass::isConstant(k)) {
 	throw std::runtime_error(error_prefix() + context +
 				 "insertConstOrig: Key\'" +
@@ -1713,13 +1817,15 @@ namespace ePhotosynthesis {
        Check if the value using the original code matches the value
          calculated using only dynamic value methods.
        \param k Key to check.
+       \param context String providing context for error messages.
      */
-    static void checkAlt(const EnumType k) {
+    static void checkAlt(const EnumType k,
+			 const std::string& context="") {
 #ifdef CHECK_VALUE_SET_ALTS
-      check_value_alt(values, alts, k);
+      check_value_alt(values, alts, k, context);
 #else // CHECK_VALUE_SET_ALTS
       UNUSED(k);
-      throw std::runtime_error(error_prefix() + "Alternates not enabled");
+      throw std::runtime_error(error_prefix() + context + "Alternates not enabled");
 #endif // CHECK_VALUE_SET_ALTS
     }
     /**

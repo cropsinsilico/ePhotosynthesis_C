@@ -39,16 +39,10 @@ class FIBFModuleTest;
 namespace modules {
 class EPS;
 
-#define MEMBERS_FIBF				\
-  ChlPSI,					\
-    ChlT,					\
-    ChlT2,					\
-    FIBF2FI_PQ,					\
-    FIBF2FI_PQa
 #define MEMBERS_FIBF_CONSTANT EMPTY_MEMBER_LIST
 #define MEMBERS_FIBF_SKIPPED EMPTY_MEMBER_LIST
 #define MEMBERS_FIBF_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-  
+
 /**
  Class for the FIBF Module functions.
  */

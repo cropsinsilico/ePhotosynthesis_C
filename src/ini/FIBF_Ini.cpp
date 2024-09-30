@@ -34,15 +34,11 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET_STATIC(FIBF);
-
-INIT_MEMBER_STATIC(FIBF, ChlPSI);
-INIT_MEMBER_STATIC(FIBF, ChlT);
-INIT_MEMBER_STATIC(FIBF, ChlT2);
-INIT_MEMBER_STATIC(FIBF, FIBF2FI_PQ);
-INIT_MEMBER_STATIC(FIBF, FIBF2FI_PQa);
-
 std::size_t FIBFCondition::count = 0;
+
+DEFINE_VALUE_SET_STATIC_COMPOSITE(FIBF);
+// DEFINE_VALUE_SET_NONE(FIBFCondition);
+DEFINE_VALUE_SET_SINGLE_NS(pool::, FIBFPool);
 
 FIBFCondition* FIBF::_init(Variables *theVars) {
 
@@ -63,7 +59,7 @@ FIBFCondition* FIBF::_init(Variables *theVars) {
     theVars->FI_Pool.PQT = theVars->FIBF_Pool.PQT;
     theVars->BF_Pool.k_r1 = theVars->FIBF_Pool.PQT;
     
-    theVars->FIBF_Pool.checkAlts();
+    theVars->FIBF_Pool.checkAlts("FIBF::_init::FIBF_Pool: ");
 #endif // CHECK_VALUE_SET_ALTS
 
     return FIBF_con;

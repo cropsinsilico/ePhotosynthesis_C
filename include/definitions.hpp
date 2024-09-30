@@ -147,22 +147,24 @@ enum RequestedDebug : uint {None = 0,
   */
 
 #ifdef CHECK_VALUE_SET_ALTS
-#define CHECK_SET_GET(NAME)			\
-  checkAlt(EnumClass::NAME);
+#define CHECK_SET_GET(NAME, CONTEXT)			\
+  checkAlt(EnumClass::NAME, CONTEXT);
 #else // CHECK_VALUE_SET_ALTS
-#define CHECK_SET_GET(NAME)
+#define CHECK_SET_GET(NAME, CONTEXT)
 #endif // CHECK_VALUE_SET_ALTS
   
 //! [SET_GET]
 #define SET_GET(NAME) public:						\
   /** Get the value of NAME \returns The current value */		\
   static double get ## NAME() {						\
-    CHECK_SET_GET(NAME)							\
+    initStaticMembers();						\
+    CHECK_SET_GET(NAME, "get: ")					\
     /* return get(EnumClass::NAME); */					\
     return NAME;							\
   }									\
   /** Set the value of NAME \param val The value to set NAME to */	\
   static void set ## NAME(const double val) {				\
+    initStaticMembers();						\
     NAME = val;								\
     /* set(EnumClass::NAME, val); */					\
   }

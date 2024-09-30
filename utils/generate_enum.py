@@ -1086,7 +1086,7 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 function_suffix = utility_suffix
             else:
                 function_suffix = self.collection_name.title()
-                if function_type == 'get':
+                if function_type in ['get', 'getdefault']:
                     function_suffix = function_suffix.rstrip('s')
                     function_suffix = function_suffix.replace('s_C3', '_C3')
         else:
@@ -1094,11 +1094,16 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
         collection_type = self.generate_collection_type(enum_name)
         if function_type in ['error_prefix']:
             function_name = function_type
+        elif function_type in ['getdefault']:
+            function_name = (
+                f"{function_type.rsplit('default', 1)[0]}"
+                f"{function_suffix}"
+            )
         else:
             function_name = f"{function_type}{function_suffix}"
         if function_type == 'is':
             return_type = 'bool'
-        elif function_type == 'get':
+        elif function_type in ['get', 'getdefault']:
             return_type = self.value_type
         elif function_type == 'print':
             return_type = 'std::ostream&'
@@ -1111,8 +1116,8 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
         if utility and function_type != 'error_prefix':
             args.append(f'const {collection_type}& collection')
             arg_names.append('collection')
-        if function_type in ['add', 'remove', 'is', 'get', 'check',
-                             'checkNot']:
+        if function_type in ['add', 'remove', 'is', 'get', 'getdefault',
+                             'check', 'checkNot']:
             args.append(f'const {enum_name}& x')
             arg_names.append('x')
             if function_type == 'add' and hasattr(self, 'value_type'):
@@ -1121,6 +1126,9 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             elif function_type in ['check', 'checkNot']:
                 args.append('const std::string& context = ""')
                 arg_names.append('context')
+            elif function_type == 'getdefault':
+                args.append(f'const {self.value_type}& defaultV')
+                arg_names.append('defaultV')
         elif function_type in ['addMultiple', 'removeMultiple']:
             args.append(f'const {collection_type}& x')
             arg_names.append('x')
@@ -1130,6 +1138,7 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
         elif function_type == 'string':
             args += ['const unsigned int tab = 0']
             arg_names += ['tab']
+        docs = []
         body = []
         if not enum_is_class:
             const = '' if self.is_editable else 'const '
@@ -1149,6 +1158,11 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 f"{result}, {', '.join(arg_names)});"
             ]
         elif function_type == 'is':
+            docs += [
+                f'Check if a value is in {self.collection_name}',
+                '\\param[in] x Value to check',
+                '\\return true if x is present, false otherwise',
+            ]
             body += [f"typename {collection_type}::const_iterator it;"]
             body += self.generate_find(result, "x", "it")
             body += [f"return (it != {result}.end());"]
@@ -1169,18 +1183,24 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
         elif function_type == 'clear':
             assert self.is_editable
             body += [f"{result}.clear();"]
-        elif function_type == 'get':
+        elif function_type in ['get', 'getdefault']:
             assert hasattr(self, 'value_type')
             body += [f"typename {collection_type}::const_iterator it;"]
             body += self.generate_find(result, "x", "it")
             dref = self.generate_iterator_dref("it")[1]
             body += [
                 f'if (it == {result}.end()) {{',
-                f'  throw std::runtime_error("Could not locate '
-                f'{function_suffix} for \'" + '
-                f'names.find(x)->second + "\'");',
-                '}'
             ]
+            if function_type == 'getdefault':
+                body += ['  return defaultV;',
+                         '}']
+            else:
+                body += [
+                    f'  throw std::runtime_error("Could not locate '
+                    f'{function_suffix} for \'" + '
+                    f'names.find(x)->second + "\'");',
+                    '}'
+                ]
             body += [f"return {dref};"]
         elif function_type == 'error_prefix':
             body += [
@@ -1253,6 +1273,10 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 f"(valid values = {self.additional_functions})")
         if no_return:
             return body
+        if docs:
+            lines += ['/**']
+            lines += ["  " + x for x in docs]
+            lines += ['*/']
         lines += [f"static {return_type} {function_name}"
                   f"({', '.join(args)}) {{"]
         lines += ["  " + x for x in body]
@@ -1378,7 +1402,7 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
     collection_type = 'std::map'
     _additional_functions = (
         CEnumGeneratorCollectionBase._additional_functions + [
-            'get'
+            'get', 'getdefault',
         ]
     )
 

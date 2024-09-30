@@ -27,184 +27,9 @@
 #include "Variables.hpp"
 #include "modules/PS.hpp"
 
-#define R 8.314
-#define c_c 38.28
-#define dHa_c 80.99
-#define c_o 14.68
-#define dHa_o 23.72
-#define RegFactor 1.
-
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
-
-DEFINE_VALUE_SET_STATIC(PS);
-
-INIT_MEMBER_STATIC(PS, KA231);
-INIT_MEMBER_STATIC(PS, KE11);
-INIT_MEMBER_STATIC(PS, KE12);
-INIT_MEMBER_STATIC(PS, KE13);
-INIT_MEMBER_STATIC(PS, KE16);
-INIT_MEMBER_STATIC(PS, KE21);
-INIT_MEMBER_STATIC(PS, KE22);
-INIT_MEMBER_STATIC(PS, KE23);
-INIT_MEMBER_STATIC(PS, KE25);
-INIT_MEMBER_STATIC(PS, KE4);
-INIT_MEMBER_STATIC(PS, KE5);
-INIT_MEMBER_STATIC(PS, KE6);
-INIT_MEMBER_STATIC(PS, KE7);
-INIT_MEMBER_STATIC(PS, KE8);
-INIT_MEMBER_STATIC(PS, KE9);
-INIT_MEMBER_STATIC(PS, KI11);
-INIT_MEMBER_STATIC(PS, KI12);
-INIT_MEMBER_STATIC(PS, KI13);
-INIT_MEMBER_STATIC(PS, KI131);
-INIT_MEMBER_STATIC(PS, KI132);
-INIT_MEMBER_STATIC(PS, KI133);
-INIT_MEMBER_STATIC(PS, KI134);
-INIT_MEMBER_STATIC(PS, KI135);
-INIT_MEMBER_STATIC(PS, KI14);
-INIT_MEMBER_STATIC(PS, KI15);
-INIT_MEMBER_STATIC(PS, KI231);
-INIT_MEMBER_STATIC(PS, KI61);
-INIT_MEMBER_STATIC(PS, KI62);
-INIT_MEMBER_STATIC(PS, KI9);
-INIT_MEMBER_STATIC(PS, KM10);
-INIT_MEMBER_STATIC(PS, KM101);
-INIT_MEMBER_STATIC(PS, KM102);
-INIT_MEMBER_STATIC(PS, KM103);
-INIT_MEMBER_STATIC(PS, KM13);
-INIT_MEMBER_STATIC(PS, KM131);
-INIT_MEMBER_STATIC(PS, KM132);
-INIT_MEMBER_STATIC(PS, KM161);
-INIT_MEMBER_STATIC(PS, KM162);
-INIT_MEMBER_STATIC(PS, KM163);
-INIT_MEMBER_STATIC(PS, KM21);
-INIT_MEMBER_STATIC(PS, KM22);
-INIT_MEMBER_STATIC(PS, KM23);
-INIT_MEMBER_STATIC(PS, KM231);
-INIT_MEMBER_STATIC(PS, KM232);
-INIT_MEMBER_STATIC(PS, KM233);
-INIT_MEMBER_STATIC(PS, KM234);
-INIT_MEMBER_STATIC(PS, KM241);
-INIT_MEMBER_STATIC(PS, KM311);
-INIT_MEMBER_STATIC(PS, KM313);
-INIT_MEMBER_STATIC(PS, KM31a);
-INIT_MEMBER_STATIC(PS, KM32);
-INIT_MEMBER_STATIC(PS, KM32b);
-INIT_MEMBER_STATIC(PS, KM33);
-INIT_MEMBER_STATIC(PS, KM51);
-INIT_MEMBER_STATIC(PS, KM52);
-INIT_MEMBER_STATIC(PS, KM53);
-INIT_MEMBER_STATIC(PS, KM61);
-INIT_MEMBER_STATIC(PS, KM81);
-INIT_MEMBER_STATIC(PS, KM82);
-INIT_MEMBER_STATIC(PS, KM9);
-INIT_MEMBER_STATIC(PS, KVmo);
-INIT_MEMBER_STATIC(PS, PS_C_CA);
-INIT_MEMBER_STATIC(PS, PS_C_CP);
-INIT_MEMBER_STATIC(PS, PS_PEXT);
-INIT_MEMBER_STATIC(PS, V24);
-INIT_MEMBER_STATIC(PS, V31);
-INIT_MEMBER_STATIC(PS, V32);
-INIT_MEMBER_STATIC(PS, V33);
-INIT_MEMBER_STATIC(PS, V2);
-INIT_MEMBER_STATIC(PS, V3);
-INIT_MEMBER_STATIC(PS, V6);
-INIT_MEMBER_STATIC(PS, V9);
-INIT_MEMBER_STATIC(PS, V13);
-INIT_MEMBER_STATIC(PS, V16);
-INIT_MEMBER_STATIC(PS, V23);
-INIT_MEMBER_STATIC(PS, V1);
-INIT_MEMBER_STATIC(PS, V5);
-INIT_MEMBER_STATIC(PS, V7);
-INIT_MEMBER_STATIC(PS, V8);
-INIT_MEMBER_STATIC(PS, V10);
-INIT_MEMBER_STATIC(PS, PS_C_CN);
-INIT_MEMBER_STATIC(PS, KA232);
-INIT_MEMBER_STATIC(PS, KA233);
-INIT_MEMBER_STATIC(PS, KI23);
-INIT_MEMBER_STATIC(PS, KM312);
-INIT_MEMBER_STATIC(PS, KE10);
-INIT_MEMBER_STATIC(PS, KM11);
-INIT_MEMBER_STATIC(PS, KM12);
-INIT_MEMBER_STATIC(PS, KM71);
-INIT_MEMBER_STATIC(PS, KM72);
-INIT_MEMBER_STATIC(PS, KM73);
-INIT_MEMBER_STATIC(PS, KM74);
-INIT_MEMBER_STATIC_VAL(PS, Vfactor1, 1.0);
-INIT_MEMBER_STATIC_VAL(PS, Vfactor2, 1.0);
-INIT_MEMBER_STATIC_VAL(PS, Vfactor3, 1.0);
-INIT_MEMBER_STATIC_VAL(PS, Vfactor5, 1.0);
-INIT_MEMBER_STATIC_VAL(PS, Vfactor7, 1.0);
-INIT_MEMBER_STATIC_VAL(PS, Vfactor13, 1.0);
-INIT_MEMBER_STATIC_VAL(PS, Vfactor23, 1.0);
-INIT_MEMBER_STATIC_VAL(PS, Vf_T3, 1.0);
-INIT_MEMBER_STATIC_VAL(PS, Vf_T2, 1.0);
-INIT_MEMBER_STATIC_VAL(PS, Vf_T1, 1.0);
-INIT_MEMBER_STATIC_VAL(PS, Vf_T6, 1.0);
-INIT_MEMBER_STATIC_VAL(PS, Vf_T5, 1.0);
-INIT_MEMBER_STATIC_VAL(PS, Vf_T9, 1.0);
-INIT_MEMBER_STATIC_VAL(PS, Vf_T13, 1.0);
-INIT_MEMBER_STATIC_VAL(PS, Vf_T23, 1.0);
-INIT_MEMBER_STATIC(PS, PsV1);
-INIT_MEMBER_STATIC(PS, _NADPH);
-INIT_MEMBER_STATIC(PS, PiTc);
-INIT_MEMBER_STATIC(PS, V1Reg);
-INIT_MEMBER_STATIC(PS, Theta);
-INIT_MEMBER_STATIC(PS, beta);
-INIT_MEMBER_STATIC(PS, Jmax);
-INIT_MEMBER_STATIC(PS, KE1Ratio);
-INIT_MEMBER_STATIC(PS, KE2Ratio);
-INIT_MEMBER_STATIC(PS, PsV1_0);
-INIT_MEMBER_STATIC(PS, PsV2_0);
-INIT_MEMBER_STATIC(PS, PsV3_0);
-INIT_MEMBER_STATIC(PS, PsV5_0);
-INIT_MEMBER_STATIC(PS, PsV6_0);
-INIT_MEMBER_STATIC(PS, PsV7_0);
-INIT_MEMBER_STATIC(PS, PsV8_0);
-INIT_MEMBER_STATIC(PS, PsV9_0);
-INIT_MEMBER_STATIC(PS, PsV10_0);
-INIT_MEMBER_STATIC(PS, PsV13_0);
-INIT_MEMBER_STATIC(PS, PsV16);
-INIT_MEMBER_STATIC(PS, PsV23_0);
-INIT_MEMBER_STATIC(PS, PsV31);
-INIT_MEMBER_STATIC(PS, PsV32);
-INIT_MEMBER_STATIC(PS, PsV33);
-INIT_MEMBER_STATIC(PS, Ru_Act);
-INIT_MEMBER_STATIC(PS, PsV2);
-INIT_MEMBER_STATIC(PS, PsV3);
-INIT_MEMBER_STATIC(PS, PsV5);
-INIT_MEMBER_STATIC(PS, PsV6);
-INIT_MEMBER_STATIC(PS, PsV7);
-INIT_MEMBER_STATIC(PS, PsV8);
-INIT_MEMBER_STATIC(PS, PsV9);
-INIT_MEMBER_STATIC(PS, PsV10);
-INIT_MEMBER_STATIC(PS, PsV13);
-INIT_MEMBER_STATIC(PS, PsV23);
-INIT_MEMBER_STATIC(PS, I2);
-INIT_MEMBER_STATIC(PS, J);
-INIT_MEMBER_STATIC(PS, KE57);
-INIT_MEMBER_STATIC(PS, Km8p5p);
-INIT_MEMBER_STATIC(PS, Km5p5p);
-INIT_MEMBER_STATIC(PS, KE810);
-INIT_MEMBER_STATIC(PS, Km5gap);
-INIT_MEMBER_STATIC(PS, Km8f6p);
-INIT_MEMBER_STATIC(PS, Km8s7p);
-INIT_MEMBER_STATIC(PS, Km8gap);
-INIT_MEMBER_STATIC(PS, MaxCoeff);
-
-INIT_CONST_MEMBER_STATIC(PS, Q10_1, 1.93);
-INIT_CONST_MEMBER_STATIC(PS, Q10_2, 2.0);
-INIT_CONST_MEMBER_STATIC(PS, Q10_3, 2.0);
-INIT_CONST_MEMBER_STATIC(PS, Q10_5, 2.0);
-INIT_CONST_MEMBER_STATIC(PS, Q10_6, 2.0);
-INIT_CONST_MEMBER_STATIC(PS, Q10_7, 2.0);
-INIT_CONST_MEMBER_STATIC(PS, Q10_8, 2.0);
-INIT_CONST_MEMBER_STATIC(PS, Q10_9, 2.0);
-INIT_CONST_MEMBER_STATIC(PS, Q10_10, 2.0);
-INIT_CONST_MEMBER_STATIC(PS, Q10_13, 2.0);
-INIT_CONST_MEMBER_STATIC(PS, Q10_23, 2.0);
 
 double PS::TIME = 0.;
 std::size_t PS::N = 1;
@@ -214,16 +39,15 @@ bool PS::C3 = false;
 
 arr PS::Param = {0., 0.};
 
+DEFINE_VALUE_SET_STATIC(PS);
+DEFINE_VALUE_SET(PSCondition);
+
 PSCondition* PS::_init(Variables *theVars) {
     setC3(theVars->useC3);
     PSCondition* PS_con = new PSCondition();
     theVars->initParamStatic<PS>();
     theVars->initParam(*PS_con);
-    
-    const double SC = 1.;        // Scalling coefficient for the stroma volume per mg chl. defualt 2
-    const double SC1 = 1.;
-    const double STOM1 = 1.;
-    const double STOM2 = 1.;
+    std::cerr << "after initParam" << std::endl;
     
     if (theVars->useC3) {
       if (theVars->GRNC == 1 && theVars->CO2_cond > 0.) {
@@ -262,12 +86,16 @@ PSCondition* PS::_init(Variables *theVars) {
 
       PS::set(MOD::PS::KM11,
 	      0.0097 *
-	      exp(c_c - dHa_c * 1000. /
-		  (R * (theVars->Tp + 273.15))) / 272.38);
+	      exp(PS::get(MOD::PS::c_c) -
+		  PS::get(MOD::PS::dHa_c) * 1000. /
+		  (PS::get(MOD::PS::R) *
+		   (theVars->Tp + 273.15))) / 272.38);
       PS::set(MOD::PS::KM12,
 	      0.244 *
-	      exp(c_o - dHa_o * 1000. /
-		  (R * (theVars->Tp + 273.15))) / 165.82);
+	      exp(PS::get(MOD::PS::c_o) -
+		  PS::get(MOD::PS::dHa_o) * 1000. /
+		  (PS::get(MOD::PS::R) *
+		   (theVars->Tp + 273.15))) / 165.82);
 
       PS::set(MOD::PS::PsV1_0,
 	      PS::get(MOD::PS::V1) *
@@ -377,30 +205,42 @@ PSCondition* PS::_init(Variables *theVars) {
 	  break;
 	switch (it->first) {
 	case (MOD::PS::V1) : {
-	  it->second = it->second * SC1 / STOM1 * theVars->PSRatio[i];
+	  CHECK_RATIO_IDX(i, 4, it->first);
+	  it->second = it->second * PS::get(MOD::PS::SC1) / PS::get(MOD::PS::STOM1) * theVars->PSRatio[i];
 	  i++;
 	  break;
 	}
 	case (MOD::PS::V2) :
 	case (MOD::PS::V3) : {
-	  it->second = it->second * SC * STOM2 * theVars->PSRatio[i];
+	  CHECK_RATIO_IDX(i, 5, MOD::PS::V2);
+	  CHECK_RATIO_IDX(i, 6, MOD::PS::V3);
+	  it->second = it->second * PS::get(MOD::PS::SC) * PS::get(MOD::PS::STOM2) * theVars->PSRatio[i];
 	  i++;
 	  break;
 	}
 	case (MOD::PS::V5) :
 	case (MOD::PS::V7) :
 	case (MOD::PS::V8) : {
-	  it->second = it->second * SC * theVars->PSRatio[i];
+	  CHECK_RATIO_IDX(i, 7, MOD::PS::V5);
+	  CHECK_RATIO_IDX(i, 9, MOD::PS::V7);
+	  CHECK_RATIO_IDX(i, 10, MOD::PS::V8);
+	  it->second = it->second * PS::get(MOD::PS::SC) * theVars->PSRatio[i];
 	  i++;
 	  break;
 	}
 	case (MOD::PS::V6) : {
-	  it->second = it->second * SC / STOM1 * theVars->PSRatio[i];
+	  CHECK_RATIO_IDX(i, 8, it->first);
+	  it->second = it->second * PS::get(MOD::PS::SC) / PS::get(MOD::PS::STOM1) * theVars->PSRatio[i];
 	  i++;
 	  break;
 	}
+	case (MOD::PS::V10) : {
+	  // Skipped
+	  break;
+	}
 	case (MOD::PS::V13) : {
-	  it->second = it->second * SC1 * theVars->PSRatio[i];
+	  CHECK_RATIO_IDX(i, 12, it->first);
+	  it->second = it->second * PS::get(MOD::PS::SC1) * theVars->PSRatio[i];
 	  i++;
 	  break;
 	}
@@ -410,35 +250,42 @@ PSCondition* PS::_init(Variables *theVars) {
 	  break;
 	}
 	case (MOD::PS::KM32b) : {
+	  CHECK_RATIO_IDX(i, 31, it->first);
 	  it->second = it->second * theVars->PSRatio[i];
-	  // PSRatio 32 & 33 skipped
+	  // PSRatio 32 & 33 skipped as KM41 & KM42 not used
 	  i = 34;
 	  break;
 	}
-	case (MOD::PS::KE6) : {
-	  it->second = it->second * theVars->PSRatio[i];
-	  // PSRatio 43, 44, 45, & 46 skipped
-	  i = 47;
-	  break;
-	}
 	case (MOD::PS::KE7) : {
+	  CHECK_RATIO_IDX(i, 47, it->first);
 	  it->second = it->second * theVars->PSRatio[i];
 	  // PSRatio 48 skipped
 	  i = 49;
 	  break;
 	}
+	// case (MOD::PS::KM41) :
+	// case (MOD::PS::KM42) :
+	case (MOD::PS::KM71) :
+	case (MOD::PS::KM72) :
+	case (MOD::PS::KM73) :
+	case (MOD::PS::KM74) :
 	case (MOD::PS::KE10) :
-	case (MOD::PS::KM312) : {
+	case (MOD::PS::KM312) :
+	case (MOD::PS::KA232) :
+	case (MOD::PS::KA233) : {
+	  // PSRatio unused
 	  i++;
 	  break;
 	}
-	case (MOD::PS::KM241) : {
-	  it->second = it->second * theVars->PSRatio[i];
-	  // PSRatio 90 & 91 skipped
-	  i = 92;
+	case (MOD::PS::KI23) : {
+	  // No PSRatio
 	  break;
 	}
 	default : {
+	  CHECK_RATIO_IDX(i, 42, MOD::PS::KE6);
+	  CHECK_RATIO_IDX(i, 89, MOD::PS::KM241);
+	  CHECK_RATIO_IDX(i, 92, MOD::PS::KE25);
+	  CHECK_RATIO_IDX(i, 93, MOD::PS::KE57);
 	  it->second = it->second * theVars->PSRatio[i];
 	  i++;
 	}
@@ -503,8 +350,8 @@ PSCondition* PS::_init(Variables *theVars) {
 
         //PsKM11_0 = ;
         //PsKM12_0 = ;  // O2 1 RuBP+CO2->2PGA  0.28 DEFAUL.
-        PS::KM11 = 0.0097 * exp(c_c - dHa_c * 1000. / (R * (theVars->Tp + 273.15))) / 272.38;
-        PS::KM12 = 0.244 * exp(c_o - dHa_o * 1000. / (R * (theVars->Tp + 273.15))) / 165.82;
+        PS::KM11 = 0.0097 * exp(PS::c_c - PS::dHa_c * 1000. / (PS::R * (theVars->Tp + 273.15))) / 272.38;
+        PS::KM12 = 0.244 * exp(PS::c_o - PS::dHa_o * 1000. / (PS::R * (theVars->Tp + 273.15))) / 165.82;
 
         PS::KM13 = 0.02;   //  RuBP 1 RuBP+CO2->2PGA
         PS::KI11 = 0.84;   // PGA
@@ -594,9 +441,9 @@ PSCondition* PS::_init(Variables *theVars) {
             PS::V16 = theVars->EnzymeAct.at("V16");
         }
 
-        PS::V31 = 3.73 / 3.;   // 1.05 *SC  *1.0 ; % (Lilley, Chon, Mosbach & Heldt, 1977b) 31 Phosphate translocator DHAPi<->DHAPo   1.05 defulat
-        PS::V32 = 3.73 / 3.;   //1.05 *SC *1.0;     % (Lilley et al., 1977b) 32 Phosphate translocator PGAi<->PGAo 1.05 default
-        PS::V33 = 3.73 / 3.;   //1.05 *SC * 1.0;     % (Lilley et al., 1977b) 33 Phosphate translocator GAPi<->GAPo 1.05 default
+        PS::V31 = 3.73 / 3.;   // 1.05 *PS::SC  *1.0 ; % (Lilley, Chon, Mosbach & Heldt, 1977b) 31 Phosphate translocator DHAPi<->DHAPo   1.05 defulat
+        PS::V32 = 3.73 / 3.;   //1.05 *PS::SC *1.0;     % (Lilley et al., 1977b) 32 Phosphate translocator PGAi<->PGAo 1.05 default
+        PS::V33 = 3.73 / 3.;   //1.05 *PS::SC * 1.0;     % (Lilley et al., 1977b) 33 Phosphate translocator GAPi<->GAPo 1.05 default
 
         PS::PsV1_0 = PS::V1 * PS::Vfactor1 * PS::Vf_T1 ;   //  1   Rubisco RuBP+CO2<->2PGA
         PS::PsV2_0 = PS::V2 * PS::Vfactor2 * PS::Vf_T2 ;   //  2   PGA Kinase  PGA+ATP <-> ADP + DPGA
@@ -738,16 +585,16 @@ PSCondition* PS::_init(Variables *theVars) {
         if (theVars->GP == 0) {
             // Initialize the values of the global variables
 
-            PS::V1 = 2.93 * SC1 / STOM1 * theVars->PSRatio[4]; // (Harris & Koniger, 1997)
-            PS::V2 = 30.15 * SC * STOM2 * theVars->PSRatio[5]; // (Harris & Koniger, 1997)
-            PS::V3 = 4.04 * SC * STOM2 * theVars->PSRatio[6];  // 1.57*SC     ; // (Harris & Koniger, 1997)
-            PS::V5 = 1.22 * SC * theVars->PSRatio[7];          // (Harris & Koniger, 1997)
-            PS::V6 = 0.734 * SC / STOM1 * theVars->PSRatio[8]; // (Harris & Koniger, 1997)
-            PS::V7 = 3.12 * SC * 4. * theVars->PSRatio[9];     // (Harris & Koniger, 1997)
-            PS::V8 = 1.22 * SC * theVars->PSRatio[10];         // (Harris & Koniger, 1997)
-            PS::V9 = 0.32 * 3. * theVars->PSRatio[11];         // 0.17*SC *FC ; // (Harris & Koniger, 1997) *3.
+            PS::V1 = 2.93 * PS::SC1 / PS::STOM1 * theVars->PSRatio[4]; // (Harris & Koniger, 1997)
+            PS::V2 = 30.15 * PS::SC * PS::STOM2 * theVars->PSRatio[5]; // (Harris & Koniger, 1997)
+            PS::V3 = 4.04 * PS::SC * PS::STOM2 * theVars->PSRatio[6];  // 1.57*PS::SC     ; // (Harris & Koniger, 1997)
+            PS::V5 = 1.22 * PS::SC * theVars->PSRatio[7];          // (Harris & Koniger, 1997)
+            PS::V6 = 0.734 * PS::SC / PS::STOM1 * theVars->PSRatio[8]; // (Harris & Koniger, 1997)
+            PS::V7 = 3.12 * PS::SC * 4. * theVars->PSRatio[9];     // (Harris & Koniger, 1997)
+            PS::V8 = 1.22 * PS::SC * theVars->PSRatio[10];         // (Harris & Koniger, 1997)
+            PS::V9 = 0.32 * 3. * theVars->PSRatio[11];         // 0.17*PS::SC *FC ; // (Harris & Koniger, 1997) *3.
             //theVars->V10 = theVars->V7; // (Harris & Koniger, 1997)
-            PS::V13 = 10.81 * SC1 * theVars->PSRatio[12];      // (Harris & Koniger, 1997)
+            PS::V13 = 10.81 * PS::SC1 * theVars->PSRatio[12];      // (Harris & Koniger, 1997)
             PS::V16 = 5.47 * theVars->PSRatio[13];             // (Aflalo & Shavit, 1983, Davenport & McLeod, 1986)
             PS::V23 = 2. * theVars->PSRatio[14];
         }
@@ -779,13 +626,14 @@ PSCondition* PS::_init(Variables *theVars) {
     PS::KE2Ratio = (1. + 1. / PS::KE21 + PS::KE22);
     PS::KE1Ratio = (1. + 1. / PS::KE11 + 1. / PS::KE12);
 
-    PS_con->checkAlts();
+    PS_con->checkAlts("PS::_init::Condition: ");
 #endif // CHECK_VALUE_SET_ALTS
     
     return PS_con;
 }
 
 void PS::_reset() {
+  std::cerr << "PS::_reset called" << std::endl;
     PS::PiTc = 0.;
     PS::V1 = 0.;
     PS::KM12 = 0.;

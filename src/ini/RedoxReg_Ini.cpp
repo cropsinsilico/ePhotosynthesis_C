@@ -33,18 +33,6 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET_STATIC(RedoxReg);
-DEFINE_VALUE_SET_CONSTANTS(RedoxReg, {Fd_Thio_ET, ThioT, Thio_Oxidation});
-
-INIT_MEMBER_STATIC(RedoxReg, RedoxReg_VMAX13);
-INIT_MEMBER_STATIC(RedoxReg, RedoxReg_VMAX16);
-INIT_MEMBER_STATIC(RedoxReg, RedoxReg_VMAX6);
-INIT_MEMBER_STATIC(RedoxReg, RedoxReg_VMAX9);
-
-INIT_CONST_MEMBER_STATIC(RedoxReg, Fd_Thio_ET, 500.);
-INIT_CONST_MEMBER_STATIC(RedoxReg, ThioT, 0.5);
-INIT_CONST_MEMBER_STATIC(RedoxReg, Thio_Oxidation, 0.1);
-
 double RedoxRegCondition::V13 = 0.;
 double RedoxRegCondition::V16 = 0.;
 double RedoxRegCondition::V6 = 0.;
@@ -52,6 +40,9 @@ double RedoxRegCondition::V9 = 0.;
 double RedoxReg::TIME = 0.;
 std::size_t RedoxReg::N = 1;
 bool RedoxReg::trDynaPS2RedReg_cal = false;
+
+DEFINE_VALUE_SET_STATIC(RedoxReg);
+DEFINE_VALUE_SET_SINGLE(RedoxRegCondition);
 
 RedoxRegCondition* RedoxReg::_init(Variables *theVars) {
 
@@ -61,12 +52,21 @@ RedoxRegCondition* RedoxReg::_init(Variables *theVars) {
 
     const double Thion = 0.25;     // This is a wild guess
     RedoxRegCondition* RedoxReg_con = new RedoxRegCondition(RA_con, Thion);
+    theVars->initParam(*RedoxReg_con);
 
-    RedoxReg_VMAX6 = PS::getV6();
-    RedoxReg_VMAX9 = PS::getV9();
-    RedoxReg_VMAX13 = PS::getV13();
-    RedoxReg_VMAX16 = PS::getV16();
+#ifdef CHECK_VALUE_SET_ALTS
+    RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX6, PS::getV6());
+    RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX9, PS::getV9());
+    RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX13, PS::getV13());
+    RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX16, PS::getV16());
+#endif // CHECK_VALUE_SET_ALTS
 
+    RedoxReg::RedoxReg_VMAX6 = PS::getV6();
+    RedoxReg::RedoxReg_VMAX9 = PS::getV9();
+    RedoxReg::RedoxReg_VMAX13 = PS::getV13();
+    RedoxReg::RedoxReg_VMAX16 = PS::getV16();
+
+    // TODO: Read these from RedoxReg_MP
     for (int i = 0; i < 5; i++)
         theVars->RedoxReg_MP.push_back(zeros(3));
     theVars->RedoxReg_MP[0][0] = 1000.;
@@ -90,5 +90,10 @@ RedoxRegCondition* RedoxReg::_init(Variables *theVars) {
     theVars->RedoxReg_MP[4][2] = 0.5;
 
     //theVars->BF2RedoxReg_Fdt = theVars->BF_Pool.kU_f;
+
+#ifdef CHECK_VALUE_SET_ALTS
+    RedoxReg_con->checkAlts("RedoxReg::_init::Condition");
+#endif // CHECK_VALUE_SET_ALTS
+    
     return RedoxReg_con;
 }

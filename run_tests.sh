@@ -10,9 +10,15 @@ DO_DOCS=""
 DONT_TEST=""
 WITH_ASAN=""
 TEST_FLAGS="-C ${CMAKE_BUILD_TYPE_TEST}"
+NJOBS="8"
 
 while [[ $# -gt 0 ]]; do
     case $1 in
+	-j )
+	    NJOBS="$2"
+	    shift
+	    shift
+	    ;;
 	--build-dir )
 	    BUILD_DIR="$2"
 	    shift
@@ -69,7 +75,7 @@ fi
 cd $BUILD_DIR
 if [ ! -n "$DONT_BUILD" ]; then
     cmake .. $CMAKE_FLAGS $CMAKE_FLAGS_LIB
-    cmake --build . --config ${CMAKE_BUILD_TYPE_TEST}
+    cmake --build . --config ${CMAKE_BUILD_TYPE_TEST} -- -j ${NJOBS}
     # Need install here to ensure that cmake config files are in place
     cmake --install . --prefix "$INSTALL_DIR"
 fi

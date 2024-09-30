@@ -38,18 +38,13 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET_STATIC(XanCycle);
-
-INIT_MEMBER_STATIC(XanCycle, kav);
-INIT_MEMBER_STATIC(XanCycle, kaz);
-INIT_MEMBER_STATIC(XanCycle, kva);
-INIT_MEMBER_STATIC(XanCycle, kza);
-INIT_MEMBER_STATIC(XanCycle, XanCycle2FIBF_Xstate);
-
 double XanCycle::TIME = 0.;
 std::size_t XanCycle::N = 1;
 
 const std::size_t XanCycleCondition::count = 4;
+
+DEFINE_VALUE_SET_STATIC(XanCycle);
+DEFINE_VALUE_SET(XanCycleCondition);
 
 XanCycleCondition* XanCycle::_init(Variables *theVars) {
 
@@ -58,11 +53,15 @@ XanCycleCondition* XanCycle::_init(Variables *theVars) {
     theVars->initParam(*XanCycle_con);
 
     int i = 0;
-    for (XanCycle::iterator it = XanCycle::begin(); it != XanCycle::end(); i++) {
-      it->second = it->second / 60.0 * theVars->XanRatio[i];
+    for (XanCycle::iterator it = XanCycle::begin(); it != XanCycle::end(); it++, i++) {
+      std::cerr << "before: " << i << ": " << it->second << std::endl;
+      it->second *= (theVars->XanRatio[i] / 60.0);
+      // it->second = it->second / 60.0 * theVars->XanRatio[i];
+      std::cerr << "after : " << i << ": " << it->second << std::endl;
       if (i == 3)
 	break;
     }
+    std::cerr << "after [kva]: " << XanCycle::get(MOD::XanCycle::kva) << std::endl;
 
     // XanCycle2FIBF_Xstate set before multiplying Vx, Ax, & Zx by 0.37
     XanCycle::set(MOD::XanCycle::XanCycle2FIBF_Xstate,
@@ -77,6 +76,7 @@ XanCycleCondition* XanCycle::_init(Variables *theVars) {
     
 #ifdef CHECK_VALUE_SET_ALTS
     XanCycle::kva = 0.163 / 60. * theVars->XanRatio[0]; // Ruth Frommolt et a; 2001; Planta
+    std::cerr << "XanCycle::kva = " << XanCycle::kva << std::endl;
     XanCycle::kaz = 0.691 / 60. * theVars->XanRatio[1]; // Ruth Frommolt et a; 2001; Planta
     XanCycle::kza = 0.119 / 60. * theVars->XanRatio[2]; // Ruth Frommolt et a; 2001; Planta
     XanCycle::kav = 0.119 / 60. * theVars->XanRatio[3]; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
@@ -89,7 +89,7 @@ XanCycleCondition* XanCycle::_init(Variables *theVars) {
     SET_VALUE_STATIC(XanCycle, XanCycle2FIBF_Xstate,
 		     Zx_ / (Ax_ + Vx_ + Zx_));
 
-    XanCycle_con->checkAlts();
+    XanCycle_con->checkAlts("XanCycle::_init::Condition: ");
 #endif // CHECK_VALUE_SET_ALTS
 
     return XanCycle_con;
