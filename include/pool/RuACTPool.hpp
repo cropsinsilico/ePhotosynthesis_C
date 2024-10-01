@@ -32,10 +32,6 @@
 namespace ePhotosynthesis {
 namespace pool {
 
-#define MEMBERS_RuACTPool_CONSTANT EMPTY_MEMBER_LIST
-#define MEMBERS_RuACTPool_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_RuACTPool_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-  
 /**
  Class for RuACT_Pool data
  */
@@ -51,15 +47,18 @@ public:
 
       @param other The RuACTPool object to copy
       */
-    RuACTPool(const RuACTPool &other) :
-      ValueSet<MODULE_RuACT, PARAM_TYPE_POOL>(other) {
-        initMembers();
+    RuACTPool(const RuACTPool &other) : ValueSet<MODULE_RuACT, PARAM_TYPE_POOL>(other) {
+      initMembers();
+      *this = other;
+    }
+    RuACTPool& operator=(const RuACTPool &other) {
         ET = other.ET;
         Rac = other.Rac;
         C = other.C;
         O = other.O;
         M = other.M;
 	copyMembers(other);
+	return *this;
     }
 
 };

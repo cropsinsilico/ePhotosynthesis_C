@@ -1,0 +1,1 @@
+kd	0.5e8	# The initialization of the initial rate constant for heat dissipation

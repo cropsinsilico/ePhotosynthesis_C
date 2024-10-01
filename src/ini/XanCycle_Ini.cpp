@@ -27,13 +27,6 @@
 #include "Variables.hpp"
 #include "modules/XanCycle.hpp"
 
-#ifdef CHECK_VALUE_SET_ALTS
-const double Vx_ = 160.;
-const double Ax_ = 10.;
-const double Zx_ = 5.;
-const double ABA_ = 1.;
-#endif // CHECK_VALUE_SET_ALTS
-
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
@@ -48,49 +41,62 @@ DEFINE_VALUE_SET(XanCycleCondition);
 
 XanCycleCondition* XanCycle::_init(Variables *theVars) {
 
-    theVars->initParamStatic<XanCycle>();
-    XanCycleCondition* XanCycle_con = new XanCycleCondition();
-    theVars->initParam(*XanCycle_con);
-
-    int i = 0;
-    for (XanCycle::iterator it = XanCycle::begin(); it != XanCycle::end(); it++, i++) {
-      std::cerr << "before: " << i << ": " << it->second << std::endl;
-      it->second *= (theVars->XanRatio[i] / 60.0);
-      // it->second = it->second / 60.0 * theVars->XanRatio[i];
-      std::cerr << "after : " << i << ": " << it->second << std::endl;
-      if (i == 3)
-	break;
-    }
-    std::cerr << "after [kva]: " << XanCycle::get(MOD::XanCycle::kva) << std::endl;
-
-    // XanCycle2FIBF_Xstate set before multiplying Vx, Ax, & Zx by 0.37
-    XanCycle::set(MOD::XanCycle::XanCycle2FIBF_Xstate,
-		  (*XanCycle_con)[COND::XanCycle::Zx] /
-		  ((*XanCycle_con)[COND::XanCycle::Ax] +
-		   (*XanCycle_con)[COND::XanCycle::Vx] +
-		   (*XanCycle_con)[COND::XanCycle::Zx]));
-
-    (*XanCycle_con)[COND::XanCycle::Vx] = 0.37 * (*XanCycle_con)[COND::XanCycle::Vx];
-    (*XanCycle_con)[COND::XanCycle::Ax] = 0.37 * (*XanCycle_con)[COND::XanCycle::Ax];
-    (*XanCycle_con)[COND::XanCycle::Zx] = 0.37 * (*XanCycle_con)[COND::XanCycle::Zx];
-    
-#ifdef CHECK_VALUE_SET_ALTS
     XanCycle::kva = 0.163 / 60. * theVars->XanRatio[0]; // Ruth Frommolt et a; 2001; Planta
-    std::cerr << "XanCycle::kva = " << XanCycle::kva << std::endl;
     XanCycle::kaz = 0.691 / 60. * theVars->XanRatio[1]; // Ruth Frommolt et a; 2001; Planta
     XanCycle::kza = 0.119 / 60. * theVars->XanRatio[2]; // Ruth Frommolt et a; 2001; Planta
     XanCycle::kav = 0.119 / 60. * theVars->XanRatio[3]; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
     
-    XanCycle_con->Vx = Vx_ * 0.37;
-    XanCycle_con->Ax = Ax_ * 0.37;
-    XanCycle_con->Zx = Zx_ * 0.37;
-    XanCycle_con->ABA = ABA_;
+    XanCycleCondition* XanCycle_con = new XanCycleCondition();
 
-    SET_VALUE_STATIC(XanCycle, XanCycle2FIBF_Xstate,
-		     Zx_ / (Ax_ + Vx_ + Zx_));
+    XanCycle::Vx_ = 160.;
+    XanCycle::Ax_ = 10.;
+    XanCycle::Zx_ = 5.;
+    XanCycle::ABA_ = 1.;
+    XanCycle_con->Vx = XanCycle::Vx_ * 0.37;
+    XanCycle_con->Ax = XanCycle::Ax_ * 0.37;
+    XanCycle_con->Zx = XanCycle::Zx_ * 0.37;
+    XanCycle_con->ABA = XanCycle::ABA_;
 
-    XanCycle_con->checkAlts("XanCycle::_init::Condition: ");
-#endif // CHECK_VALUE_SET_ALTS
+    XanCycle::XanCycle2FIBF_Xstate = XanCycle::Zx_ /
+      (XanCycle::Ax_ + XanCycle::Vx_ + XanCycle::Zx_);
 
     return XanCycle_con;
+}
+
+XanCycleCondition* XanCycle::_initAlt(Variables *theVars, XanCycleCondition* XanCycle_con) {
+#ifdef CHECK_VALUE_SET_ALTS
+    theVars->initParamStatic<XanCycle>();
+    theVars->initParam(*XanCycle_con);
+  
+    int i = 0;
+    for (XanCycle::iterator it = XanCycle::begin(); it != XanCycle::end(); it++, i++) {
+      it->second *= (theVars->XanRatio[i] / 60.0);
+      if (i == 3)
+	break;
+    }
+
+    (*XanCycle_con)[COND::XanCycle::Vx] = 0.37 * XanCycle::get(MOD::XanCycle::Vx_);
+    (*XanCycle_con)[COND::XanCycle::Ax] = 0.37 * XanCycle::get(MOD::XanCycle::Ax_);
+    (*XanCycle_con)[COND::XanCycle::Zx] = 0.37 * XanCycle::get(MOD::XanCycle::Zx_);
+    
+    XanCycle::set(MOD::XanCycle::XanCycle2FIBF_Xstate,
+		  XanCycle::get(MOD::XanCycle::Zx_) /
+		  (XanCycle::get(MOD::XanCycle::Ax_) +
+		   XanCycle::get(MOD::XanCycle::Vx_) +
+		   XanCycle::get(MOD::XanCycle::Zx_)));
+
+#else // CHECK_VALUE_SET_ALTS
+    UNUSED(theVars);
+#endif // CHECK_VALUE_SET_ALTS
+    return XanCycle_con;
+}
+
+void XanCycle::_updateAlts(Variables *theVars, XanCycleCondition* XanCycle_con) {
+#ifdef CHECK_VALUE_SET_ALTS
+    XanCycle::updateAlts();
+    XanCycle_con->updateAlts();
+#else // CHECK_VALUE_SET_ALTS
+    UNUSED(theVars);
+    UNUSED(XanCycle_con);
+#endif // CHECK_VALUE_SET_ALTS
 }

@@ -40,10 +40,12 @@ class EPSCondition;
 /**
  Class for holding the inputs to CM_mb
  */
-class CMCondition : public ConditionBase<CMCondition, EPSCondition> {
+class CMCondition : public ConditionBase<CMCondition, EPSCondition, MODULE_CM> {
 public:
+    DECLARE_VALUE_SET_COMPOSITE(CMCondition, (PS_PRCondition, SUCSCondition), ConditionBase<CMCondition, EPSCondition, MODULE_CM>)
     CMCondition(EPSCondition* par = nullptr) : PS_PR_con(new PS_PRCondition(this)), SUCS_con(new SUCSCondition(this)) {
         setParent(par);
+        initMembers();
     }
     ~CMCondition() {
         _clear();
@@ -123,7 +125,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {
+    static void _reset() {
         count = 0;
     }
 

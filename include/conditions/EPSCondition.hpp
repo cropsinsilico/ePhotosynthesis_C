@@ -39,10 +39,12 @@ class RACondition;
 /**
  Class for holding the inputs to EPS_mb
  */
-class EPSCondition : public ConditionBase<EPSCondition, RACondition> {
+class EPSCondition : public ConditionBase<EPSCondition, RACondition, MODULE_EPS> {
 public:
+    DECLARE_VALUE_SET_COMPOSITE(EPSCondition, (CMCondition, FIBFCondition), ConditionBase<EPSCondition, RACondition, MODULE_EPS>)
     EPSCondition(RACondition* par = nullptr) : CM_con(new CMCondition(this)), FIBF_con(new FIBFCondition(this)) {
         setParent(par);
+        initMembers();
     }
     ~EPSCondition() override {
         _clear();
@@ -118,7 +120,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {
+    static void _reset() {
         count = 0;
     }
     /**

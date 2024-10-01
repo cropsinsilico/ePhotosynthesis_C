@@ -40,6 +40,9 @@ std::size_t EPSCondition::count = 0;
 #ifdef INCDEBUG
 Debug::DebugLevel EPSCondition::_dlevel = Debug::Middle;
 #endif
+
+DEFINE_VALUE_SET(EPSCondition);
+
 EPSCondition* EPS::_init(Variables *theVars) {
     FIBFCondition* FIBF_con = FIBF::init(theVars);
 
@@ -56,8 +59,10 @@ EPSCondition* EPS::_init(Variables *theVars) {
     return EPS_con;
 }
 
+DEFINE_DEFAULT_INITALT(EPS)
+
 void EPS::_reset() {
-    FIBF::_reset();
-    CM::_reset();
+    FIBF::reset();
+    CM::reset();
     conditions::EPSCondition::reset();
 }

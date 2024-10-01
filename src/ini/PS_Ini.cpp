@@ -45,267 +45,14 @@ DEFINE_VALUE_SET(PSCondition);
 PSCondition* PS::_init(Variables *theVars) {
     setC3(theVars->useC3);
     PSCondition* PS_con = new PSCondition();
-    theVars->initParamStatic<PS>();
-    theVars->initParam(*PS_con);
-    std::cerr << "after initParam" << std::endl;
+
+    PS::R = 8.314;
+    PS::c_c = 38.28;
+    PS::dHa_c = 80.99;
+    PS::c_o = 14.68;
+    PS::dHa_o = 23.72;
+    PS::RegFactor = 1.;
     
-    if (theVars->useC3) {
-      if (theVars->GRNC == 1 && theVars->CO2_cond > 0.) {
-	PS::set(MOD::PS::Vfactor1, theVars->VfactorCp[0]);
-	PS::set(MOD::PS::Vfactor2, theVars->VfactorCp[2]);
-	PS::set(MOD::PS::Vfactor3, theVars->VfactorCp[3]);
-	PS::set(MOD::PS::Vfactor5, theVars->VfactorCp[5]);
-	PS::set(MOD::PS::Vfactor7, theVars->VfactorCp[7]);
-	PS::set(MOD::PS::Vfactor13, theVars->VfactorCp[12]);
-	PS::set(MOD::PS::Vfactor23, theVars->VfactorCp[16]);
-      }
-      if (theVars->GRNT == 1 && theVars->Tp > 25) {
-	PS::set(MOD::PS::Vf_T3, theVars->VfactorT[9]);
-	PS::set(MOD::PS::Vf_T2, theVars->VfactorT[21]);
-	PS::set(MOD::PS::Vf_T1, theVars->VfactorT[24]);
-	PS::set(MOD::PS::Vf_T6, theVars->VfactorT[16]);
-	PS::set(MOD::PS::Vf_T9, theVars->VfactorT[25]);
-	PS::set(MOD::PS::Vf_T5, theVars->VfactorT[1]);
-	PS::set(MOD::PS::Vf_T23, theVars->VfactorT[2]);
-	PS::set(MOD::PS::Vf_T13, theVars->VfactorT[3]);
-      }
-      if (theVars->GP == 0) {
-	PS::setFromEnzymeAct(MOD::PS::V1, theVars->EnzymeAct);
-	PS::setFromEnzymeAct(MOD::PS::V2, theVars->EnzymeAct);
-	PS::setFromEnzymeAct(MOD::PS::V3, theVars->EnzymeAct);
-	PS::setFromEnzymeAct(MOD::PS::V5, theVars->EnzymeAct);
-	PS::setFromEnzymeAct(MOD::PS::V6, theVars->EnzymeAct);
-	PS::setFromEnzymeAct(MOD::PS::V7, theVars->EnzymeAct);
-	PS::setFromEnzymeAct(MOD::PS::V8, theVars->EnzymeAct);
-	PS::setFromEnzymeAct(MOD::PS::V9, theVars->EnzymeAct);
-	PS::setFromEnzymeAct(MOD::PS::V10, theVars->EnzymeAct);
-	PS::setFromEnzymeAct(MOD::PS::V13, theVars->EnzymeAct);
-	PS::setFromEnzymeAct(MOD::PS::V23, theVars->EnzymeAct);
-	PS::setFromEnzymeAct(MOD::PS::V16, theVars->EnzymeAct);
-      }
-
-      PS::set(MOD::PS::KM11,
-	      0.0097 *
-	      exp(PS::get(MOD::PS::c_c) -
-		  PS::get(MOD::PS::dHa_c) * 1000. /
-		  (PS::get(MOD::PS::R) *
-		   (theVars->Tp + 273.15))) / 272.38);
-      PS::set(MOD::PS::KM12,
-	      0.244 *
-	      exp(PS::get(MOD::PS::c_o) -
-		  PS::get(MOD::PS::dHa_o) * 1000. /
-		  (PS::get(MOD::PS::R) *
-		   (theVars->Tp + 273.15))) / 165.82);
-
-      PS::set(MOD::PS::PsV1_0,
-	      PS::get(MOD::PS::V1) *
-	      PS::get(MOD::PS::Vfactor1) *
-	      PS::get(MOD::PS::Vf_T1));
-      PS::set(MOD::PS::PsV2_0,
-	      PS::get(MOD::PS::V2) *
-	      PS::get(MOD::PS::Vfactor2) *
-	      PS::get(MOD::PS::Vf_T2));
-      PS::set(MOD::PS::PsV3_0,
-	      PS::get(MOD::PS::V3) *
-	      PS::get(MOD::PS::Vfactor3) *
-	      PS::get(MOD::PS::Vf_T3));
-      PS::set(MOD::PS::PsV5_0,
-	      PS::get(MOD::PS::V5) *
-	      PS::get(MOD::PS::Vfactor5) *
-	      PS::get(MOD::PS::Vf_T5));
-      PS::set(MOD::PS::PsV6_0,
-	      PS::get(MOD::PS::V6) *
-	      PS::get(MOD::PS::Vf_T6));
-      PS::set(MOD::PS::PsV7_0,
-	      PS::get(MOD::PS::V7) *
-	      PS::get(MOD::PS::Vfactor7));
-      PS::set(MOD::PS::PsV8_0,
-	      PS::get(MOD::PS::V8) *
-	      PS::get(MOD::PS::Vfactor5) *
-	      PS::get(MOD::PS::Vf_T5));
-      PS::set(MOD::PS::PsV9_0,
-	      PS::get(MOD::PS::V9) *
-	      PS::get(MOD::PS::Vf_T9));
-      PS::set(MOD::PS::PsV10_0,
-	      PS::get(MOD::PS::V10) *
-	      PS::get(MOD::PS::Vfactor7));
-      PS::set(MOD::PS::PsV13_0,
-	      PS::get(MOD::PS::V13) *
-	      PS::get(MOD::PS::Vfactor13) *
-	      PS::get(MOD::PS::Vf_T13));
-      PS::set(MOD::PS::PsV16, PS::get(MOD::PS::V16));
-      PS::set(MOD::PS::PsV23_0,
-	      PS::get(MOD::PS::V23) *
-	      PS::get(MOD::PS::Vfactor23) *
-	      PS::get(MOD::PS::Vf_T23));
-      PS::set(MOD::PS::PsV31,
-	      PS::get(MOD::PS::V31) *
-	      theVars->alpha2);
-      PS::set(MOD::PS::PsV32,
-	      PS::get(MOD::PS::V32) *
-	      theVars->alpha2);
-      PS::set(MOD::PS::PsV33,
-	      PS::get(MOD::PS::V33)
-	      * theVars->alpha2);
-      PS::set(MOD::PS::Ru_Act,
-	      -3. * pow(10., -5.) * pow(theVars->Tp, 3.)
-	      + 0.0013 * pow(theVars->Tp, 2.)
-	      - 0.0106 * theVars->Tp + 0.8839);
-      PS::set(MOD::PS::PsV1,
-	      PS::get(MOD::PS::PsV1_0) *
-	      PS::get(MOD::PS::Ru_Act) *
-	      pow(PS::get(MOD::PS::Q10_1), (theVars->Tp - 25.) / 10.));
-      PS::set(MOD::PS::PsV2,
-	      PS::get(MOD::PS::PsV2_0) *
-	      pow(PS::get(MOD::PS::Q10_2), (theVars->Tp - 25.) / 10.));
-      PS::set(MOD::PS::PsV3,
-	      PS::get(MOD::PS::PsV3_0) *
-	      pow(PS::get(MOD::PS::Q10_3), (theVars->Tp - 25.) / 10.));
-      PS::set(MOD::PS::PsV5,
-	      PS::get(MOD::PS::PsV5_0) *
-	      pow(PS::get(MOD::PS::Q10_5), (theVars->Tp - 25.) / 10.));
-      PS::set(MOD::PS::PsV6,
-	      PS::get(MOD::PS::PsV6_0)
-	      * pow(PS::get(MOD::PS::Q10_6), (theVars->Tp - 25.) / 10.));
-      PS::set(MOD::PS::PsV7,
-	      PS::get(MOD::PS::PsV7_0) *
-	      pow(PS::get(MOD::PS::Q10_7), (theVars->Tp - 25.) / 10.));
-      PS::set(MOD::PS::PsV8,
-	      PS::get(MOD::PS::PsV8_0) *
-	      pow(PS::get(MOD::PS::Q10_8), (theVars->Tp - 25.) / 10.));
-      PS::set(MOD::PS::PsV9,
-	      PS::get(MOD::PS::PsV9_0) *
-	      pow(PS::get(MOD::PS::Q10_9), (theVars->Tp - 25.) / 10.));
-      PS::set(MOD::PS::PsV10,
-	      PS::get(MOD::PS::PsV10_0) *
-	      pow(PS::get(MOD::PS::Q10_10), (theVars->Tp - 25.) / 10.));
-      PS::set(MOD::PS::PsV13,
-	      PS::get(MOD::PS::PsV13_0) *
-	      pow(PS::get(MOD::PS::Q10_13), (theVars->Tp - 25.) / 10.));
-      PS::set(MOD::PS::PsV23,
-	      PS::get(MOD::PS::PsV23_0) *
-	      pow(PS::get(MOD::PS::Q10_23), (theVars->Tp - 25.) / 10.));
-      PS::set(MOD::PS::I2,
-	      theVars->TestLi *
-	      theVars->alfa *
-	      (1. - theVars->fc) / 2.);
-      PS::set(MOD::PS::J,
-	      (I2 + PS::get(MOD::PS::Jmax)
-	       - sqrt(pow(I2 + PS::get(MOD::PS::Jmax), 2.)
-		      - 4. * PS::get(MOD::PS::Theta) *
-		      I2 * PS::get(MOD::PS::Jmax))) /
-	      (2. * PS::get(MOD::PS::Theta)));
-      
-      
-    } else {
-
-      size_t i = 0;
-      for (PS::iterator it = PS::begin(); it != PS::end(); it++) {
-	if (i == 102)
-	  break;
-	switch (it->first) {
-	case (MOD::PS::V1) : {
-	  CHECK_RATIO_IDX(i, 4, it->first);
-	  it->second = it->second * PS::get(MOD::PS::SC1) / PS::get(MOD::PS::STOM1) * theVars->PSRatio[i];
-	  i++;
-	  break;
-	}
-	case (MOD::PS::V2) :
-	case (MOD::PS::V3) : {
-	  CHECK_RATIO_IDX(i, 5, MOD::PS::V2);
-	  CHECK_RATIO_IDX(i, 6, MOD::PS::V3);
-	  it->second = it->second * PS::get(MOD::PS::SC) * PS::get(MOD::PS::STOM2) * theVars->PSRatio[i];
-	  i++;
-	  break;
-	}
-	case (MOD::PS::V5) :
-	case (MOD::PS::V7) :
-	case (MOD::PS::V8) : {
-	  CHECK_RATIO_IDX(i, 7, MOD::PS::V5);
-	  CHECK_RATIO_IDX(i, 9, MOD::PS::V7);
-	  CHECK_RATIO_IDX(i, 10, MOD::PS::V8);
-	  it->second = it->second * PS::get(MOD::PS::SC) * theVars->PSRatio[i];
-	  i++;
-	  break;
-	}
-	case (MOD::PS::V6) : {
-	  CHECK_RATIO_IDX(i, 8, it->first);
-	  it->second = it->second * PS::get(MOD::PS::SC) / PS::get(MOD::PS::STOM1) * theVars->PSRatio[i];
-	  i++;
-	  break;
-	}
-	case (MOD::PS::V10) : {
-	  // Skipped
-	  break;
-	}
-	case (MOD::PS::V13) : {
-	  CHECK_RATIO_IDX(i, 12, it->first);
-	  it->second = it->second * PS::get(MOD::PS::SC1) * theVars->PSRatio[i];
-	  i++;
-	  break;
-	}
-	case (MOD::PS::PS_C_CN) : {
-	  // langmm: Present in Matlab version
-	  i++;
-	  break;
-	}
-	case (MOD::PS::KM32b) : {
-	  CHECK_RATIO_IDX(i, 31, it->first);
-	  it->second = it->second * theVars->PSRatio[i];
-	  // PSRatio 32 & 33 skipped as KM41 & KM42 not used
-	  i = 34;
-	  break;
-	}
-	case (MOD::PS::KE7) : {
-	  CHECK_RATIO_IDX(i, 47, it->first);
-	  it->second = it->second * theVars->PSRatio[i];
-	  // PSRatio 48 skipped
-	  i = 49;
-	  break;
-	}
-	// case (MOD::PS::KM41) :
-	// case (MOD::PS::KM42) :
-	case (MOD::PS::KM71) :
-	case (MOD::PS::KM72) :
-	case (MOD::PS::KM73) :
-	case (MOD::PS::KM74) :
-	case (MOD::PS::KE10) :
-	case (MOD::PS::KM312) :
-	case (MOD::PS::KA232) :
-	case (MOD::PS::KA233) : {
-	  // PSRatio unused
-	  i++;
-	  break;
-	}
-	case (MOD::PS::KI23) : {
-	  // No PSRatio
-	  break;
-	}
-	default : {
-	  CHECK_RATIO_IDX(i, 42, MOD::PS::KE6);
-	  CHECK_RATIO_IDX(i, 89, MOD::PS::KM241);
-	  CHECK_RATIO_IDX(i, 92, MOD::PS::KE25);
-	  CHECK_RATIO_IDX(i, 93, MOD::PS::KE57);
-	  it->second = it->second * theVars->PSRatio[i];
-	  i++;
-	}
-	}
-      }
-      PS::set(MOD::PS::PsV31, PS::get(MOD::PS::V31) * RegFactor);
-      PS::set(MOD::PS::PsV32, PS::get(MOD::PS::V32) * RegFactor);
-      PS::set(MOD::PS::PsV33, PS::get(MOD::PS::V33) * RegFactor);
-    }
-#ifndef CHECK_VALUE_SET_ALTS
-    theVars->ADP = PS::get(MOD::PS::PS_C_CA) - PS_con->get(COND::PS::ATP);
-#endif // CHECK_VALUE_SET_ALTS
-    PS::set(MOD::PS::KE2Ratio,
-	    (1. + 1. / PS::get(MOD::PS::KE21) +
-	     PS::get(MOD::PS::KE22)));
-    PS::set(MOD::PS::KE1Ratio,
-	    (1. + 1. / PS::get(MOD::PS::KE11) +
-	     1. / PS::get(MOD::PS::KE12)));
-    
-#ifdef CHECK_VALUE_SET_ALTS
     PS_con->RuBP = 2.000;
     PS_con->PGA = 2.400;
     PS_con->DPGA = 0.0011;
@@ -481,8 +228,8 @@ PSCondition* PS::_init(Variables *theVars) {
     } else {
         PS::PS_C_CP = 15. * theVars->PSRatio[0];  // Global constant for the total phosphate
         PS::PS_C_CA = 1.5 * theVars->PSRatio[1];  // Global constant for the total adenylates
-	// langmm: Present in Matlab version
-	// PS::PS_C_CN = 1.0 * theVars->PSRatio[2];  // Global constant for the cytosolic Phosphate concentration;
+        // langmm: Present in Matlab version
+        // PS::PS_C_CN = 1.0 * theVars->PSRatio[2];  // Global constant for the cytosolic Phosphate concentration;
         PS::PS_PEXT = 0.5 * theVars->PSRatio[3];  // Global constant for the cytosolic Phosphate concentration;
 
         // Initialize the constants for the different reactions
@@ -585,6 +332,11 @@ PSCondition* PS::_init(Variables *theVars) {
         if (theVars->GP == 0) {
             // Initialize the values of the global variables
 
+            PS::SC = 1.;  // Scalling coefficient for the stroma volume per mg chl. defualt 2
+            PS::SC1 = 1.;
+            PS::STOM1 = 1.;
+            PS::STOM2 = 1.;
+
             PS::V1 = 2.93 * PS::SC1 / PS::STOM1 * theVars->PSRatio[4]; // (Harris & Koniger, 1997)
             PS::V2 = 30.15 * PS::SC * PS::STOM2 * theVars->PSRatio[5]; // (Harris & Koniger, 1997)
             PS::V3 = 4.04 * PS::SC * PS::STOM2 * theVars->PSRatio[6];  // 1.57*PS::SC     ; // (Harris & Koniger, 1997)
@@ -626,14 +378,278 @@ PSCondition* PS::_init(Variables *theVars) {
     PS::KE2Ratio = (1. + 1. / PS::KE21 + PS::KE22);
     PS::KE1Ratio = (1. + 1. / PS::KE11 + 1. / PS::KE12);
 
-    PS_con->checkAlts("PS::_init::Condition: ");
-#endif // CHECK_VALUE_SET_ALTS
+    return PS_con;
+}
+
+PSCondition* PS::_initAlt(Variables *theVars, PSCondition* PS_con) {
+#ifdef CHECK_VALUE_SET_ALTS
+    theVars->initParamStatic<PS>();
+    theVars->initParam(*PS_con);
+
+    if (theVars->useC3) {
+      if (theVars->GRNC == 1 && theVars->CO2_cond > 0.) {
+        PS::set(MOD::PS::Vfactor1, theVars->VfactorCp[0]);
+        PS::set(MOD::PS::Vfactor2, theVars->VfactorCp[2]);
+        PS::set(MOD::PS::Vfactor3, theVars->VfactorCp[3]);
+        PS::set(MOD::PS::Vfactor5, theVars->VfactorCp[5]);
+        PS::set(MOD::PS::Vfactor7, theVars->VfactorCp[7]);
+        PS::set(MOD::PS::Vfactor13, theVars->VfactorCp[12]);
+        PS::set(MOD::PS::Vfactor23, theVars->VfactorCp[16]);
+      }
+      if (theVars->GRNT == 1 && theVars->Tp > 25) {
+        PS::set(MOD::PS::Vf_T3, theVars->VfactorT[9]);
+        PS::set(MOD::PS::Vf_T2, theVars->VfactorT[21]);
+        PS::set(MOD::PS::Vf_T1, theVars->VfactorT[24]);
+        PS::set(MOD::PS::Vf_T6, theVars->VfactorT[16]);
+        PS::set(MOD::PS::Vf_T9, theVars->VfactorT[25]);
+        PS::set(MOD::PS::Vf_T5, theVars->VfactorT[1]);
+        PS::set(MOD::PS::Vf_T23, theVars->VfactorT[2]);
+        PS::set(MOD::PS::Vf_T13, theVars->VfactorT[3]);
+      }
+      if (theVars->GP == 0) {
+        PS::setFromEnzymeAct(MOD::PS::V1, theVars->EnzymeAct);
+        PS::setFromEnzymeAct(MOD::PS::V2, theVars->EnzymeAct);
+        PS::setFromEnzymeAct(MOD::PS::V3, theVars->EnzymeAct);
+        PS::setFromEnzymeAct(MOD::PS::V5, theVars->EnzymeAct);
+        PS::setFromEnzymeAct(MOD::PS::V6, theVars->EnzymeAct);
+        PS::setFromEnzymeAct(MOD::PS::V7, theVars->EnzymeAct);
+        PS::setFromEnzymeAct(MOD::PS::V8, theVars->EnzymeAct);
+        PS::setFromEnzymeAct(MOD::PS::V9, theVars->EnzymeAct);
+        PS::setFromEnzymeAct(MOD::PS::V10, theVars->EnzymeAct);
+        PS::setFromEnzymeAct(MOD::PS::V13, theVars->EnzymeAct);
+        PS::setFromEnzymeAct(MOD::PS::V23, theVars->EnzymeAct);
+        PS::setFromEnzymeAct(MOD::PS::V16, theVars->EnzymeAct);
+      }
+
+      PS::set(MOD::PS::KM11,
+              0.0097 *
+              exp(PS::get(MOD::PS::c_c) -
+                  PS::get(MOD::PS::dHa_c) * 1000. /
+                  (PS::get(MOD::PS::R) *
+                   (theVars->Tp + 273.15))) / 272.38);
+      PS::set(MOD::PS::KM12,
+              0.244 *
+              exp(PS::get(MOD::PS::c_o) -
+                  PS::get(MOD::PS::dHa_o) * 1000. /
+                  (PS::get(MOD::PS::R) *
+                   (theVars->Tp + 273.15))) / 165.82);
+
+      PS::set(MOD::PS::PsV1_0,
+              PS::get(MOD::PS::V1) *
+              PS::get(MOD::PS::Vfactor1) *
+              PS::get(MOD::PS::Vf_T1));
+      PS::set(MOD::PS::PsV2_0,
+              PS::get(MOD::PS::V2) *
+              PS::get(MOD::PS::Vfactor2) *
+              PS::get(MOD::PS::Vf_T2));
+      PS::set(MOD::PS::PsV3_0,
+              PS::get(MOD::PS::V3) *
+              PS::get(MOD::PS::Vfactor3) *
+              PS::get(MOD::PS::Vf_T3));
+      PS::set(MOD::PS::PsV5_0,
+              PS::get(MOD::PS::V5) *
+              PS::get(MOD::PS::Vfactor5) *
+              PS::get(MOD::PS::Vf_T5));
+      PS::set(MOD::PS::PsV6_0,
+              PS::get(MOD::PS::V6) *
+              PS::get(MOD::PS::Vf_T6));
+      PS::set(MOD::PS::PsV7_0,
+              PS::get(MOD::PS::V7) *
+              PS::get(MOD::PS::Vfactor7));
+      PS::set(MOD::PS::PsV8_0,
+              PS::get(MOD::PS::V8) *
+              PS::get(MOD::PS::Vfactor5) *
+              PS::get(MOD::PS::Vf_T5));
+      PS::set(MOD::PS::PsV9_0,
+              PS::get(MOD::PS::V9) *
+              PS::get(MOD::PS::Vf_T9));
+      PS::set(MOD::PS::PsV10_0,
+              PS::get(MOD::PS::V10) *
+              PS::get(MOD::PS::Vfactor7));
+      PS::set(MOD::PS::PsV13_0,
+              PS::get(MOD::PS::V13) *
+              PS::get(MOD::PS::Vfactor13) *
+              PS::get(MOD::PS::Vf_T13));
+      PS::set(MOD::PS::PsV16, PS::get(MOD::PS::V16));
+      PS::set(MOD::PS::PsV23_0,
+              PS::get(MOD::PS::V23) *
+              PS::get(MOD::PS::Vfactor23) *
+              PS::get(MOD::PS::Vf_T23));
+      PS::set(MOD::PS::PsV31,
+              PS::get(MOD::PS::V31) *
+              theVars->alpha2);
+      PS::set(MOD::PS::PsV32,
+              PS::get(MOD::PS::V32) *
+              theVars->alpha2);
+      PS::set(MOD::PS::PsV33,
+              PS::get(MOD::PS::V33)
+              * theVars->alpha2);
+      PS::set(MOD::PS::Ru_Act,
+              -3. * pow(10., -5.) * pow(theVars->Tp, 3.)
+              + 0.0013 * pow(theVars->Tp, 2.)
+              - 0.0106 * theVars->Tp + 0.8839);
+      PS::set(MOD::PS::PsV1,
+              PS::get(MOD::PS::PsV1_0) *
+              PS::get(MOD::PS::Ru_Act) *
+              pow(PS::get(MOD::PS::Q10_1), (theVars->Tp - 25.) / 10.));
+      PS::set(MOD::PS::PsV2,
+              PS::get(MOD::PS::PsV2_0) *
+              pow(PS::get(MOD::PS::Q10_2), (theVars->Tp - 25.) / 10.));
+      PS::set(MOD::PS::PsV3,
+              PS::get(MOD::PS::PsV3_0) *
+              pow(PS::get(MOD::PS::Q10_3), (theVars->Tp - 25.) / 10.));
+      PS::set(MOD::PS::PsV5,
+              PS::get(MOD::PS::PsV5_0) *
+              pow(PS::get(MOD::PS::Q10_5), (theVars->Tp - 25.) / 10.));
+      PS::set(MOD::PS::PsV6,
+              PS::get(MOD::PS::PsV6_0)
+              * pow(PS::get(MOD::PS::Q10_6), (theVars->Tp - 25.) / 10.));
+      PS::set(MOD::PS::PsV7,
+              PS::get(MOD::PS::PsV7_0) *
+              pow(PS::get(MOD::PS::Q10_7), (theVars->Tp - 25.) / 10.));
+      PS::set(MOD::PS::PsV8,
+              PS::get(MOD::PS::PsV8_0) *
+              pow(PS::get(MOD::PS::Q10_8), (theVars->Tp - 25.) / 10.));
+      PS::set(MOD::PS::PsV9,
+              PS::get(MOD::PS::PsV9_0) *
+              pow(PS::get(MOD::PS::Q10_9), (theVars->Tp - 25.) / 10.));
+      PS::set(MOD::PS::PsV10,
+              PS::get(MOD::PS::PsV10_0) *
+              pow(PS::get(MOD::PS::Q10_10), (theVars->Tp - 25.) / 10.));
+      PS::set(MOD::PS::PsV13,
+              PS::get(MOD::PS::PsV13_0) *
+              pow(PS::get(MOD::PS::Q10_13), (theVars->Tp - 25.) / 10.));
+      PS::set(MOD::PS::PsV23,
+              PS::get(MOD::PS::PsV23_0) *
+              pow(PS::get(MOD::PS::Q10_23), (theVars->Tp - 25.) / 10.));
+      PS::set(MOD::PS::I2,
+              theVars->TestLi *
+              theVars->alfa *
+              (1. - theVars->fc) / 2.);
+      PS::set(MOD::PS::J,
+              (I2 + PS::get(MOD::PS::Jmax)
+               - sqrt(pow(I2 + PS::get(MOD::PS::Jmax), 2.)
+                      - 4. * PS::get(MOD::PS::Theta) *
+                      I2 * PS::get(MOD::PS::Jmax))) /
+              (2. * PS::get(MOD::PS::Theta)));
+      
+      
+    } else {
+
+      size_t i = 0;
+      for (PS::iterator it = PS::begin(); it != PS::end(); it++) {
+        if (i == 102)
+          break;
+        switch (it->first) {
+        case (MOD::PS::V1) : {
+          CHECK_RATIO_IDX(i, 4, it->first);
+          it->second *= PS::get(MOD::PS::SC1) / PS::get(MOD::PS::STOM1) * theVars->PSRatio[i];
+          i++;
+          break;
+        }
+        case (MOD::PS::V2) :
+        case (MOD::PS::V3) : {
+          CHECK_RATIO_IDX(i, 5, MOD::PS::V2);
+          CHECK_RATIO_IDX(i, 6, MOD::PS::V3);
+          it->second *= PS::get(MOD::PS::SC) * PS::get(MOD::PS::STOM2) * theVars->PSRatio[i];
+          i++;
+          break;
+        }
+        case (MOD::PS::V5) :
+        case (MOD::PS::V7) :
+        case (MOD::PS::V8) : {
+          CHECK_RATIO_IDX(i, 7, MOD::PS::V5);
+          CHECK_RATIO_IDX(i, 9, MOD::PS::V7);
+          CHECK_RATIO_IDX(i, 10, MOD::PS::V8);
+          it->second *= PS::get(MOD::PS::SC) * theVars->PSRatio[i];
+          i++;
+          break;
+        }
+        case (MOD::PS::V6) : {
+          CHECK_RATIO_IDX(i, 8, it->first);
+          it->second *= PS::get(MOD::PS::SC) / PS::get(MOD::PS::STOM1) * theVars->PSRatio[i];
+          i++;
+          break;
+        }
+        case (MOD::PS::V10) : {
+          // Skipped
+          break;
+        }
+        case (MOD::PS::V13) : {
+          CHECK_RATIO_IDX(i, 12, it->first);
+          it->second *= PS::get(MOD::PS::SC1) * theVars->PSRatio[i];
+          i++;
+          break;
+        }
+        case (MOD::PS::PS_C_CN) : {
+          // langmm: Present in Matlab version
+          i++;
+          break;
+        }
+        case (MOD::PS::KM32b) : {
+          CHECK_RATIO_IDX(i, 31, it->first);
+          it->second *= theVars->PSRatio[i];
+          // PSRatio 32 & 33 skipped as KM41 & KM42 not used
+          i = 34;
+          break;
+        }
+        case (MOD::PS::KE7) : {
+          CHECK_RATIO_IDX(i, 47, it->first);
+          it->second *= theVars->PSRatio[i];
+          // PSRatio 48 skipped
+          i = 49;
+          break;
+        }
+        // case (MOD::PS::KM41) :
+        // case (MOD::PS::KM42) :
+        case (MOD::PS::KM71) :
+        case (MOD::PS::KM72) :
+        case (MOD::PS::KM73) :
+        case (MOD::PS::KM74) :
+        case (MOD::PS::KE10) :
+        case (MOD::PS::KM312) :
+        case (MOD::PS::KA232) :
+        case (MOD::PS::KA233) : {
+          // PSRatio unused
+          i++;
+          break;
+        }
+        case (MOD::PS::KI23) : {
+          // No PSRatio
+          break;
+        }
+        default : {
+          CHECK_RATIO_IDX(i, 42, MOD::PS::KE6);
+          CHECK_RATIO_IDX(i, 89, MOD::PS::KM241);
+          CHECK_RATIO_IDX(i, 92, MOD::PS::KE25);
+          CHECK_RATIO_IDX(i, 93, MOD::PS::KE57);
+          it->second *= theVars->PSRatio[i];
+          i++;
+        }
+        }
+      }
+      PS::set(MOD::PS::PsV31, PS::get(MOD::PS::V31) * RegFactor);
+      PS::set(MOD::PS::PsV32, PS::get(MOD::PS::V32) * RegFactor);
+      PS::set(MOD::PS::PsV33, PS::get(MOD::PS::V33) * RegFactor);
+    }
     
+#ifndef CHECK_VALUE_SET_ALTS
+    theVars->ADP = PS::get(MOD::PS::PS_C_CA) - PS_con->get(COND::PS::ATP);
+#endif // CHECK_VALUE_SET_ALTS
+    PS::set(MOD::PS::KE2Ratio,
+            (1. + 1. / PS::get(MOD::PS::KE21) +
+             PS::get(MOD::PS::KE22)));
+    PS::set(MOD::PS::KE1Ratio,
+            (1. + 1. / PS::get(MOD::PS::KE11) +
+             1. / PS::get(MOD::PS::KE12)));
+    
+#else // CHECK_VALUE_SET_ALTS
+    UNUSED(theVars);
+#endif // CHECK_VALUE_SET_ALTS
     return PS_con;
 }
 
 void PS::_reset() {
-  std::cerr << "PS::_reset called" << std::endl;
     PS::PiTc = 0.;
     PS::V1 = 0.;
     PS::KM12 = 0.;
@@ -795,4 +811,14 @@ void PS::_reset() {
     PS::TIME = 0.;
     PS::N = 1;
     conditions::PSCondition::reset();
+}
+
+void PS::_updateAlts(Variables *theVars, PSCondition* PS_con) {
+#ifdef CHECK_VALUE_SET_ALTS
+    PS::updateAlts();
+    PS_con->updateAlts();
+#else // CHECK_VALUE_SET_ALTS
+    UNUSED(theVars);
+    UNUSED(PS_con);
+#endif // CHECK_VALUE_SET_ALTS
 }

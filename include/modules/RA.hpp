@@ -41,7 +41,9 @@ class DynaPS;
 /**
  Class for the RA Module functions.
  */
-class RA : public ModuleBase<RA, conditions::RACondition> {
+class RA : public MODULE_BASE(RA) {
+public:
+    DECLARE_MODULE_COMPOSITE(RA)
 private:
     friend ModuleBase;
     friend class modules::DynaPS;

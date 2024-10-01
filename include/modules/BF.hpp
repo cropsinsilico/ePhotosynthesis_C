@@ -38,17 +38,13 @@ class BFModuleTest;
 #endif
 namespace modules {
 
-#define MEMBERS_BF_CONSTANT EMPTY_MEMBER_LIST
-#define MEMBERS_BF_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_BF_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-  
 class FIBF;
 /**
  Class for the BF Module functions.
  */
-class BF : public ModuleBase<BF, conditions::BFCondition, MODULE_BF> {
+class BF : public MODULE_BASE(BF) {
 public:
-    DECLARE_VALUE_SET_STATIC(BF, ModuleBase<BF, conditions::BFCondition, MODULE_BF>)
+    DECLARE_MODULE(BF)
     SET_GET(_Pi)
     SET_GET(EPS_ATP_Rate)
     SET_GET_BOOL_MODULE(FI_connect, conditions::BF)

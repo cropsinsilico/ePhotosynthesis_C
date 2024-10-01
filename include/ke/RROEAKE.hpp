@@ -32,10 +32,6 @@
 namespace ePhotosynthesis {
 namespace KE {
 
-#define MEMBERS_RROEAKE_CONSTANT EMPTY_MEMBER_LIST
-#define MEMBERS_RROEAKE_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_RROEAKE_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-  
 /**
  Class for RROEA_KE data
  */
@@ -50,9 +46,11 @@ public:
 
       @param other The RROEAKE object to copy
       */
-    RROEAKE(const RROEAKE &other) :
-      ValueSet<MODULE_RROEA, PARAM_TYPE_KE>(other) {
-        initMembers();
+    RROEAKE(const RROEAKE &other) : ValueSet<MODULE_RROEA, PARAM_TYPE_KE>(other) {
+      initMembers();
+      *this = other;
+    }
+    RROEAKE& operator=(const RROEAKE &other) {
         KEe2FBPase = other.KEe2FBPase;
         KEe2SBPase = other.KEe2SBPase;
         KEe2PRK = other.KEe2PRK;
@@ -63,6 +61,7 @@ public:
         KEe2ATPGPP = other.KEe2ATPGPP;
         KEeFd2Thio = other.KEeFd2Thio;
 	copyMembers(other);
+	return *this;
     }
 
 };

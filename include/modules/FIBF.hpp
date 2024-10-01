@@ -39,16 +39,12 @@ class FIBFModuleTest;
 namespace modules {
 class EPS;
 
-#define MEMBERS_FIBF_CONSTANT EMPTY_MEMBER_LIST
-#define MEMBERS_FIBF_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_FIBF_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-
 /**
  Class for the FIBF Module functions.
  */
-class FIBF : public ModuleBase<FIBF, conditions::FIBFCondition, MODULE_FIBF> {
+class FIBF : public MODULE_BASE(FIBF) {
 public:
-    DECLARE_VALUE_SET_STATIC_COMPOSITE(FIBF, ModuleBase<FIBF, conditions::FIBFCondition, MODULE_FIBF>)
+    DECLARE_MODULE_COMPOSITE(FIBF)
 private:
     friend ModuleBase;
     friend class modules::EPS;

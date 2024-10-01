@@ -42,7 +42,9 @@ class EPS;
 /**
 Class for the CM Module functions.
   */
-class CM : public ModuleBase<CM, conditions::CMCondition> {
+class CM : public MODULE_BASE(CM) {
+public:
+    DECLARE_MODULE_COMPOSITE(CM)
 private:
     friend ModuleBase;
     friend class modules::EPS;

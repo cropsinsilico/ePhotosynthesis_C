@@ -36,6 +36,9 @@ std::size_t DynaPSCondition::count = 0;
 #ifdef INCDEBUG
 Debug::DebugLevel DynaPSCondition::_dlevel = Debug::Middle;
 #endif
+
+DEFINE_VALUE_SET(DynaPSCondition);
+
 DynaPSCondition* DynaPS::_init(Variables *theVars) {
 
     //////////////////////////////////////////////////////////////////////////////////
@@ -48,8 +51,10 @@ DynaPSCondition* DynaPS::_init(Variables *theVars) {
     return DynaPS_con;
 }
 
+DEFINE_DEFAULT_INITALT(DynaPS)
+
 void DynaPS::_reset() {
-    RA::_reset();
-    XanCycle::_reset();
+    RA::reset();
+    XanCycle::reset();
     conditions::DynaPSCondition::reset();
 }

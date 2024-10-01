@@ -38,6 +38,8 @@ bool CM::TestSucPath = false;
 Debug::DebugLevel CMCondition::_dlevel = Debug::Middle;
 #endif
 
+DEFINE_VALUE_SET(CMCondition);
+
 CMCondition* CM::_init(Variables *theVars) {
 
     PS_PRCondition* PS_PR_con = PS_PR::init(theVars);
@@ -48,9 +50,11 @@ CMCondition* CM::_init(Variables *theVars) {
     return CMs;
 }
 
+DEFINE_DEFAULT_INITALT(CM)
+
 void CM::_reset() {
     CM::TestSucPath = false;
-    PS_PR::_reset();
-    SUCS::_reset();
+    PS_PR::reset();
+    SUCS::reset();
     conditions::CMCondition::reset();
 }

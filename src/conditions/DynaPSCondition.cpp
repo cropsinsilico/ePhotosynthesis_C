@@ -29,18 +29,24 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
+DEFINE_VALUE_SET_SRC(DynaPSCondition);
+
 DynaPSCondition::DynaPSCondition(const DynaPSCondition* const other) {
+    initMembers();
     RA_con = new RACondition(other->RA_con);
     XanCycle_con = new XanCycleCondition(other->XanCycle_con);
     RA_con->setParent(this);
     XanCycle_con->setParent(this);
+    copyMembers(*other);
 }
 
 DynaPSCondition::DynaPSCondition(realtype *x) {
+    initMembers();
     fromArray(x);
 }
 
 DynaPSCondition::DynaPSCondition(RACondition* rother, XanCycleCondition* xother) {
+    initMembers();
     if (rother->parent == nullptr) {
         RA_con = rother;
     } else {
@@ -56,6 +62,7 @@ DynaPSCondition::DynaPSCondition(RACondition* rother, XanCycleCondition* xother)
 }
 
 DynaPSCondition::DynaPSCondition(const arr &vec, const std::size_t offset){
+    initMembers();
     fromArray(vec, offset);
 }
 

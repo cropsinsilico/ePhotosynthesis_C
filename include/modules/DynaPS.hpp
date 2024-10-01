@@ -44,7 +44,9 @@ class trDynaPS;
 /**
  Class for the DynaPS Module functions.
  */
-class DynaPS : public ModuleBase<DynaPS, conditions::DynaPSCondition> {
+class DynaPS : public MODULE_BASE(DynaPS) {
+public:
+    DECLARE_MODULE_COMPOSITE(DynaPS)
 private:
     friend ModuleBase;
     friend class modules::trDynaPS;

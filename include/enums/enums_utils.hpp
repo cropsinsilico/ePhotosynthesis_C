@@ -11,69 +11,6 @@
 
 const boost::regex token("\\s+");
 
-template<typename T>
-std::vector<T>& skipped_enum_param(bool clear = false) {
-  static std::vector<T> out;
-  if (clear)
-    out.clear();
-  return out;
-}
-template<typename T>
-std::vector<T>& skip_enum_param(T val, bool unskip = false) {
-  std::vector<T>& out = skipped_enum_param<T>();
-  typename std::vector<T>::iterator it = out.begin();
-  for (; it != out.end(); it++) {
-    if (val == *it)
-      break;
-  }
-  if (unskip) {
-    if (it != out.end())
-      out.erase(it);
-  } else {
-    if (it == out.end())
-      out.push_back(val);
-  }
-  return out;
-}
-
-template<typename T>
-std::vector<T>& constant_enum_param(bool clear = false) {
-  static std::vector<T> out;
-  if (clear)
-    out.clear();
-  return out;
-}
-template<typename T>
-std::vector<T>& add_constant_enum_param(T val) {
-  std::vector<T>& out = constant_enum_param<T>();
-  typename std::vector<T>::iterator it = out.begin();
-  for (; it != out.end(); it++) {
-    if (val == *it)
-      break;
-  }
-  if (it == out.end())
-    out.push_back(val);
-  return out;
-}
-
-template<typename T>
-std::vector<T>& non_array_enum_param() {
-  static std::vector<T> out;
-  return out;
-}
-template<typename T>
-std::vector<T>& add_non_array_enum_param(T val) {
-  std::vector<T>& out = non_array_enum_param<T>();
-  typename std::vector<T>::iterator it = out.begin();
-  for (; it != out.end(); it++) {
-    if (val == *it)
-      break;
-  }
-  if (it == out.end())
-    out.push_back(val);
-  return out;
-}
-
 namespace ePhotosynthesis {
   namespace utils {
 

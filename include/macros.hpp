@@ -1,3 +1,4 @@
+// Generic tools
 #define UNUSED(arg) ((void)&(arg))
 #define _Args(...) __VA_ARGS__
 #define PASS_THROUGH(X) X
@@ -21,24 +22,12 @@
 #define CONCATENATE1(arg1, arg2)  CONCATENATE2(arg1, arg2)
 #define CONCATENATE2(arg1, arg2)  arg1##arg2
 
-#define CHECK_VALUE_SET_ALTS 1
-#define PTR_VALUE_SET_ORIG 1
-
-#ifdef PTR_VALUE_SET_ORIG
-#define TORIG double*
-#define TORIG_CONST double* const
-#define TORIG_STRING "pointer"
-#define DREF_ORIG(x) (*(x))
-#define ADDR_ORIG(x) (&(x))
-#define PTR_ORIG(x) x
-#else
-#define TORIG double&
-#define TORIG_CONST const double&
-#define TORIG_STRING "reference"
-#define DREF_ORIG(x) (x)
-#define ADDR_ORIG(x) (x)
-#define PTR_ORIG(x) (&(x))
-#endif
+// Control parameters
+// #define CHECK_VALUE_SET_ALTS 1
+#define COMPARE_PRECISION 15
+#define COMPARE_RELATIVE_EPSILON			\
+  std::numeric_limits<double>::epsilon()
+#define COMPARE_ABSOLUTE_EPSILON 1e-9
 
 class _EmptyMacroType {
 public:
@@ -46,15 +35,8 @@ public:
     return 0;
   }
 };
-// template<typename T=_EmptyMacroType>
-// bool _isEmptyMacroType() {
-//   return false;
-// }
-// template<>
-// bool _isEmptyMacroType<_EmptyMacroType>() {
-//   return true;
-// }
 
+// Inheritance for ValueSet
 #define INHERIT_METHOD_ENUM_BASE(name1, name2, ...)	\
   using __VA_ARGS__::name1;					\
   using __VA_ARGS__::print ## name2;				\
@@ -80,6 +62,7 @@ public:
 #define INHERIT_METHOD_ENUM(...)					\
   using __VA_ARGS__::module;						\
   using __VA_ARGS__::param_type;					\
+  using __VA_ARGS__::state_updated;					\
   using __VA_ARGS__::error_prefix;					\
   using __VA_ARGS__::print_map;						\
   using __VA_ARGS__::print_vector;					\
@@ -91,10 +74,12 @@ public:
   INHERIT_METHOD_ENUM_VECTOR(constant, Constant, __VA_ARGS__);		\
   INHERIT_METHOD_ENUM_VECTOR(calculated, Calculated, __VA_ARGS__);	\
   INHERIT_METHOD_ENUM_VECTOR(nonvector, Nonvector, __VA_ARGS__);	\
-  INHERIT_METHOD_ENUM_VECTOR_EDIT(skipped, Skipped, __VA_ARGS__)
-  
+  INHERIT_METHOD_ENUM_VECTOR_EDIT(skipped, Skipped, __VA_ARGS__);	\
+  INHERIT_METHOD_ENUM_VECTOR(resetone, Resetone, __VA_ARGS__);		\
+  INHERIT_METHOD_ENUM_VECTOR(initonce, Initonce, __VA_ARGS__)
 
-#define INHERIT_METHODS_VALUE_SET_BASE(...)	\
+
+#define INHERIT_METHODS_VALUE_SET_TYPES(...)	\
   typedef __VA_ARGS__ ParentClass;		\
   using typename __VA_ARGS__::BaseClass;	\
   using typename __VA_ARGS__::EnumClass;	\
@@ -102,31 +87,36 @@ public:
   using typename __VA_ARGS__::ValueType;	\
   using typename __VA_ARGS__::iterator;		\
   using typename __VA_ARGS__::const_iterator;	\
-  INHERIT_METHOD_ENUM(__VA_ARGS__);		\
+  INHERIT_METHOD_ENUM(__VA_ARGS__);
+
+#define INHERIT_METHODS_VALUE_SET_BASE(...)	\
+  INHERIT_METHODS_VALUE_SET_TYPES(__VA_ARGS__)	\
   using __VA_ARGS__::inArrays;			\
+  using __VA_ARGS__::remove_skipped;		\
+  using __VA_ARGS__::get_pointer_map;		\
   using __VA_ARGS__::print_value_map;		\
   using __VA_ARGS__::compareValues;		\
   using __VA_ARGS__::check_value_map;		\
+  using __VA_ARGS__::check_value_maps;		\
   using __VA_ARGS__::update_value_map;		\
+  using __VA_ARGS__::copy_value_map;		\
   using __VA_ARGS__::init_value_map;		\
-  using __VA_ARGS__::init_value_map_orig;	\
   using __VA_ARGS__::get_value;			\
+  using __VA_ARGS__::get_value_const;		\
   using __VA_ARGS__::set_value;			\
   using __VA_ARGS__::set_value_from_EnzymeAct;	\
   using __VA_ARGS__::get_value_orig;		\
   using __VA_ARGS__::set_value_orig;		\
   using __VA_ARGS__::insert_value_orig;		\
-  using __VA_ARGS__::insert_const_value_orig;	\
   using __VA_ARGS__::check_value_alt;		\
   using __VA_ARGS__::check_value_alts;		\
   using __VA_ARGS__::reset_value_map;		\
   using __VA_ARGS__::value_map_toArray;		\
   using __VA_ARGS__::value_map_fromArray;
 #define INHERIT_METHODS_VALUE_SET(...)		\
-  INHERIT_METHODS_VALUE_SET_BASE(__VA_ARGS__)	\
-  using __VA_ARGS__::initMembers;		\
-  using __VA_ARGS__::initValues;		\
-  using __VA_ARGS__::size_values;		\
+  /*INHERIT_METHODS_VALUE_SET_BASE(__VA_ARGS__)*/	\
+  INHERIT_METHODS_VALUE_SET_TYPES(__VA_ARGS__)		\
+  using typename __VA_ARGS__::ValueSetClass;	\
   using __VA_ARGS__::begin;			\
   using __VA_ARGS__::end;			\
   using __VA_ARGS__::print;			\
@@ -134,120 +124,33 @@ public:
   using __VA_ARGS__::update_values;		\
   using __VA_ARGS__::set;			\
   using __VA_ARGS__::get;			\
-  using __VA_ARGS__::setOrig;			\
-  using __VA_ARGS__::getOrig;			\
-  using __VA_ARGS__::insertOrig;			\
-  using __VA_ARGS__::insertConstOrig;		\
   using __VA_ARGS__::checkAlt;			\
   using __VA_ARGS__::checkAlts;			\
-  using __VA_ARGS__::resetValues;		\
+  using __VA_ARGS__::sizeArray;			\
   using __VA_ARGS__::toArray;			\
   using __VA_ARGS__::fromArray;
 #define DECLARE_VALUE_SET_BASE(cls, ...)       \
+  typedef cls ThisClass;		       \
   INHERIT_METHODS_VALUE_SET(__VA_ARGS__)
 #define DECLARE_VALUE_SET_STATIC_BASE(cls, ...)	\
+  typedef cls ThisClass;		       \
   INHERIT_METHODS_VALUE_SET(__VA_ARGS__)
-#define COMPARE_PRECISION 15
-#define COMPARE_RELATIVE_EPSILON std::numeric_limits<double>::epsilon()
-#define COMPARE_ABSOLUTE_EPSILON 1e-9
-// #define USE_VALUE_SET_VALUE_CLASS 1
-#ifdef USE_VALUE_SET_VALUE_CLASS
-#define VALUE_SET_MEMBER_TYPE ValueType
-#else // USE_VALUE_SET_VALUE_CLASS
-#define VALUE_SET_MEMBER_TYPE double
-#endif // USE_VALUE_SET_VALUE_CLASS
+
 #define DEFAULT_VALUE(cls, name)		\
   cls::getDefault(cls::EnumClass::name, 0.0)
-
-#ifdef USE_VALUE_SET_VALUE_CLASS
-#define DECLARE_VALUE_SET_MEMBER_VAL(name, val)	\
-  VALUE_SET_MEMBER_TYPE name(EnumType::name)
-#define DECLARE_VALUE_SET_STATIC_MEMBER_VAL(name, val)	\
-  static VALUE_SET_MEMBER_TYPE name(EnumType::name, val)
-#define DECLARE_VALUE_SET_STATIC_MEMBER_CONST_VAL(name, val)	\
-  static const VALUE_SET_MEMBER_TYPE name(EnumType::name, val, true)
-#define DEFINE_VALUE_SET_MEMBER_VAL(name, val)	\
-  name = val;					\
-  name.init("DEFINE_VALUE_SET_MEMBER_VAL: ")
-#define DEFINE_VALUE_SET_STATIC_MEMBER_VAL(cls, name, val)	\
-  cls::VALUE_SET_MEMBER_TYPE cls::name = val
-#define DEFINE_VALUE_SET_STATIC_MEMBER_CONST_VAL(cls, name, val)	\
-  const cls::VALUE_SET_MEMBER_TYPE cls::name = val
-#define INIT_MEMBER_VAL(name, val)		\
-  DEFINE_VALUE_SET_MEMBER_VAL(name, val)
-#define DECL_MEMBER_STATIC(cls, name)
-#define INIT_MEMBER_STATIC_VAL(cls, name, val)		\
-  DEFINE_VALUE_SET_STATIC_MEMBER_VAL(cls, name, val)
-#define INIT_CONST_MEMBER_STATIC(cls, name, val)		\
-  const DEFINE_VALUE_SET_STATIC_MEMBER_VAL(cls, name, val)
-#else // USE_VALUE_SET_VALUE_CLASS
-#define DECLARE_VALUE_SET_MEMBER_VAL(name, val)	\
-  VALUE_SET_MEMBER_TYPE name = val
-#define DECLARE_VALUE_SET_STATIC_MEMBER_VAL(name, val)	\
-  static VALUE_SET_MEMBER_TYPE name
-/*
-  static double* _getOrig ## name() {			\
-    return &name;					\
-  }
-*/
-#define DECLARE_VALUE_SET_STATIC_MEMBER_CONST_VAL(name, val)	\
-  static const VALUE_SET_MEMBER_TYPE name
-/*
-  static const double* _getOrig ## name() {			\
-    return &name;						\
-  }
-*/
-#define DEFINE_VALUE_SET_MEMBER_VAL(name, val)				\
-  name = val;								\
-  insertOrig(EnumClass::name, &name, "DEFINE_VALUE_SET_MEMBER_VAL: ")
-#define DEFINE_VALUE_SET_STATIC_MEMBER_VAL(cls, name, val)	\
-  VALUE_SET_MEMBER_TYPE cls::name = val
-#define DEFINE_VALUE_SET_STATIC_MEMBER_CONST_VAL(cls, name, val)	\
-  const VALUE_SET_MEMBER_TYPE cls::name = val
-#define INIT_MEMBER_VAL(name, val)				\
-  name = val;							\
-  insertOrig(EnumClass::name, &name, "INIT_MEMBER_VAL: ")
-#define VALUE_SET_STATIC_MEMBER(cls, name, ctx)				\
-  _valueSetStaticMember<cls> cls ## _ ## name ## _member_(cls::EnumClass::name, cls::_getOrig ## name(), ctx)
-#define DECL_MEMBER_STATIC(cls, name)
-  // static VALUE_SET_STATIC_MEMBER(cls, name, "DECL_MEMBER_STATIC: ")
-#define INIT_MEMBER_STATIC_VAL(cls, name, val)				\
-  double cls::name = val;						\
-  VALUE_SET_STATIC_MEMBER(cls, name, "INIT_MEMBER_STATIC_VAL: ")
-#define INIT_CONST_MEMBER_STATIC(cls, name, val)			\
-  const double cls::name = val;						\
-  VALUE_SET_STATIC_MEMBER(cls, name, "INIT_CONST_MEMBER_STATIC: ")
-#endif // USE_VALUE_SET_VALUE_CLASS
-
-  // TODO: Initialize const static members with default value in define
 #define DECLARE_VALUE_SET_MEMBER(name)		\
-  DECLARE_VALUE_SET_MEMBER_VAL(name, 0.0)
+  double name = 0.0
 #define DECLARE_VALUE_SET_STATIC_MEMBER(name)	\
-  DECLARE_VALUE_SET_STATIC_MEMBER_VAL(name, 0.0)
+  static double name
 #define DECLARE_VALUE_SET_STATIC_MEMBER_CONST(name)	\
-  DECLARE_VALUE_SET_STATIC_MEMBER_CONST_VAL(name, 0.0)
-#define DEFINE_VALUE_SET_MEMBER(name)		\
-  DEFINE_VALUE_SET_MEMBER_VAL(name, 0.0)
+  static const double name
+#define DEFINE_VALUE_SET_MEMBER(name)					\
+  name = 0.0;								\
+  ValueSetClass::insertOrig(EnumClass::name, &name, "DEFINE_VALUE_SET_MEMBER: ")
 #define DEFINE_VALUE_SET_STATIC_MEMBER(cls, name)			\
-  DEFINE_VALUE_SET_STATIC_MEMBER_VAL(cls, name, DEFAULT_VALUE(cls, name))
+  double cls::name = DEFAULT_VALUE(cls, name)
 #define DEFINE_VALUE_SET_STATIC_MEMBER_CONST(cls, name)			\
-  DEFINE_VALUE_SET_STATIC_MEMBER_CONST_VAL(cls, name, DEFAULT_VALUE(cls, name))
-#define INIT_MEMBER(name)			\
-  INIT_MEMBER_VAL(name, 0.0)
-#define INIT_CONST_MEMBER_VAL(name, val)				\
-  INIT_MEMBER_VAL(name, val);						\
-  addConstant(EnumClass::name)
-#define INIT_CONST_MEMBER(name)						\
-  INIT_CONST_MEMBER_VAL(name, 0.0)
-#define INIT_SKIPPED_MEMBER(name)		\
-  INIT_MEMBER(name);				\
-  addSkipped(EnumClass::name)
-#define INIT_NON_ARRAY_MEMBER(name)		\
-  INIT_MEMBER(name);				\
-  addNonvector(EnumClass::name)
-#define INIT_MEMBER_STATIC(cls, name)					\
-  INIT_MEMBER_STATIC_VAL(cls, name, 0.0)
-#define EMPTY_MEMBER_LIST NONE, MAX
+  const double cls::name = DEFAULT_VALUE(cls, name)
 
 #define FOR_EACH_1(what, x, ...) what(x)
 #define FOR_EACH_2(what, x, ...)\

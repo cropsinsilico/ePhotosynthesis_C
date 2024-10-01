@@ -38,9 +38,12 @@ namespace conditions {
 /**
  Class for holding inputs to trDynaPS_mb
  */
-class trDynaPSCondition : public ConditionBase<trDynaPSCondition, trDynaPSCondition> {
+class trDynaPSCondition : public ConditionBase<trDynaPSCondition, trDynaPSCondition, MODULE_trDynaPS> {
 public:
-    trDynaPSCondition() : RROEA_con(new RROEACondition(this)), DynaPS_con(new DynaPSCondition(this)) {}
+    DECLARE_VALUE_SET_COMPOSITE(trDynaPSCondition, (RROEACondition, DynaPSCondition), ConditionBase<trDynaPSCondition, trDynaPSCondition, MODULE_trDynaPS>)
+    trDynaPSCondition() : RROEA_con(new RROEACondition(this)), DynaPS_con(new DynaPSCondition(this)) {
+        initMembers();
+    }
 
     ~trDynaPSCondition() override {
         _clear();
@@ -123,7 +126,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {
+    static void _reset() {
         count = 0;
     }
 

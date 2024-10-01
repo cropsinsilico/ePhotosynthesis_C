@@ -39,16 +39,12 @@ class XanCycleModuleTest;
 namespace modules {
 class DynaPS;
 
-#define MEMBERS_XanCycle_CONSTANT EMPTY_MEMBER_LIST
-#define MEMBERS_XanCycle_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_XanCycle_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-  
 /**
  Class for XanCycle code and internal variables
  */
-class XanCycle : public ModuleBase<XanCycle, conditions::XanCycleCondition, MODULE_XanCycle> {
+class XanCycle : public MODULE_BASE(XanCycle) {
 public:
-    DECLARE_VALUE_SET_STATIC(XanCycle, ModuleBase<XanCycle, conditions::XanCycleCondition, MODULE_XanCycle>)
+    DECLARE_MODULE(XanCycle)
 private:
     friend ModuleBase;
     friend class modules::DynaPS;

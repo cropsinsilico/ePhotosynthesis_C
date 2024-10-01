@@ -33,10 +33,6 @@ class RedoxReg;
 }
 namespace conditions {
 
-#define MEMBERS_RedoxRegCondition_CONSTANT EMPTY_MEMBER_LIST
-#define MEMBERS_RedoxRegCondition_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_RedoxRegCondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-
 /**
  Class for holding the inputs to RedoxReg_mb
  */
@@ -116,7 +112,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {
+    static void _reset() {
         V6 = 0.;
         V9 = 0.;
         V13 = 0.;

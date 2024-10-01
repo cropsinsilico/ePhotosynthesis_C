@@ -42,175 +42,6 @@ DEFINE_VALUE_SET_NS(pool::, SUCSPool);
 
 SUCSCondition* SUCS::_init(Variables *theVars) {
     SUCSCondition* SUCS_Con = new SUCSCondition();
-    theVars->initParamStatic<SUCS>();
-    theVars->initParam(*SUCS_Con);
-    theVars->initParam(theVars->SUCS_Pool);
-
-    // Useful intermediate constants
-    const double tempRatio = (theVars->Tp - 25.) / 10.;
-      
-    if (theVars->useC3) {
-      if (theVars->GRNC == 1 && theVars->CO2_cond > 0.) {
-	SUCS::set(MOD::SUCS::Vfactor52, theVars->VfactorCp[19]);
-	SUCS::set(MOD::SUCS::Vfactor56, theVars->VfactorCp[22]);
-	SUCS::set(MOD::SUCS::Vfactor57, theVars->VfactorCp[23]);
-	SUCS::set(MOD::SUCS::Vfactor59, theVars->VfactorCp[24]);
-      }
-      if (theVars->GRNT == 1 && theVars->Tp > 25) {
-	SUCS::set(MOD::SUCS::Vf_T52, theVars->VfactorT[0]);
-	SUCS::set(MOD::SUCS::Vf_T59, theVars->VfactorT[12]);
-	SUCS::set(MOD::SUCS::Vf_T57, theVars->VfactorT[13]);
-	SUCS::set(MOD::SUCS::Vf_T51, theVars->VfactorT[17]);
-	SUCS::set(MOD::SUCS::Vf_T56, theVars->VfactorT[27]);
-      }
-      if (theVars->GP == 0) {
-	SUCS::setFromEnzymeAct(MOD::SUCS::V51, theVars->EnzymeAct);
-	SUCS::setFromEnzymeAct(MOD::SUCS::V52, theVars->EnzymeAct);
-	SUCS::setFromEnzymeAct(MOD::SUCS::V55, theVars->EnzymeAct);
-	SUCS::setFromEnzymeAct(MOD::SUCS::V56, theVars->EnzymeAct);
-	SUCS::setFromEnzymeAct(MOD::SUCS::V57, theVars->EnzymeAct);
-	SUCS::setFromEnzymeAct(MOD::SUCS::V58, theVars->EnzymeAct);
-      }
-      SUCS::setFromEnzymeAct(MOD::SUCS::V59, theVars->EnzymeAct);
-      
-      // DHAP+GAP --FBP
-      SUCS::set(MOD::SUCS::SUCSV51,
-		SUCS::get(MOD::SUCS::V51) *
-		SUCS::get(MOD::SUCS::Vfactor51) *
-		SUCS::get(MOD::SUCS::Vf_T51) *
-		pow(SUCS::get(MOD::SUCS::Q10_51), tempRatio));
-      // FBP --F6P + Pi
-      SUCS::set(MOD::SUCS::SUCSV52,
-		SUCS::get(MOD::SUCS::V52) *
-		SUCS::get(MOD::SUCS::Vfactor52) *
-		SUCS::get(MOD::SUCS::Vf_T52) *
-		pow(SUCS::get(MOD::SUCS::Q10_52), tempRatio));
-      // G1P+UTP --OPOP+UDPG
-      SUCS::set(MOD::SUCS::SUCSV55,
-		SUCS::get(MOD::SUCS::V55) *
-		pow(SUCS::get(MOD::SUCS::Q10_55), tempRatio));
-      // UDPG+F6P--SUCP + UDP
-      SUCS::set(MOD::SUCS::SUCSV56,
-		SUCS::get(MOD::SUCS::V56) *
-		SUCS::get(MOD::SUCS::Vfactor56) *
-		SUCS::get(MOD::SUCS::Vf_T56) *
-		pow(SUCS::get(MOD::SUCS::Q10_56), tempRatio));
-      // SUCP--Pi + SUC
-      SUCS::set(MOD::SUCS::SUCSV57,
-		SUCS::get(MOD::SUCS::V57) *
-		SUCS::get(MOD::SUCS::Vfactor57) *
-		SUCS::get(MOD::SUCS::Vf_T57) *
-		pow(SUCS::get(MOD::SUCS::Q10_57), tempRatio));
-      // F26BP--F6P + Pi
-      SUCS::set(MOD::SUCS::SUCSV58,
-		SUCS::get(MOD::SUCS::V58) *
-		pow(SUCS::get(MOD::SUCS::Q10_58), tempRatio));
-    } else {
-      
-      size_t i = 0;
-      for (SUCS::iterator it = SUCS::begin(); it != SUCS::end(); it++) {
-	if (i == 60)
-	  break;
-	switch (it->first) {
-	case (MOD::SUCS::V51) :
-	case (MOD::SUCS::V52) :
-	case (MOD::SUCS::V55) :
-	case (MOD::SUCS::V56) :
-	case (MOD::SUCS::V57) :
-	case (MOD::SUCS::V58) : {
-	  CHECK_RATIO_IDX(i, 0, MOD::SUCS::V51);
-	  CHECK_RATIO_IDX(i, 1, MOD::SUCS::V52);
-	  CHECK_RATIO_IDX(i, 2, MOD::SUCS::V55);
-	  CHECK_RATIO_IDX(i, 3, MOD::SUCS::V56);
-	  CHECK_RATIO_IDX(i, 4, MOD::SUCS::V57);
-	  CHECK_RATIO_IDX(i, 5, MOD::SUCS::V58);
-	  if (theVars->GP == 0) {
-	    if (it->first == MOD::SUCS::V57)
-	      it->second = it->second * SUCS::get(MOD::SUCS::SC1) * theVars->SUCRatio[i];
-	    else
-	      it->second = it->second * SUCS::get(MOD::SUCS::SC) * theVars->SUCRatio[i];
-	  }
-	  i++;
-	  break;
-	}
-	case (MOD::SUCS::V59) :
-	case (MOD::SUCS::V62) :
-	case (MOD::SUCS::Vdhap_in) :
-	case (MOD::SUCS::Vgap_in) :
-	case (MOD::SUCS::Vpga_in) : {
-	  CHECK_RATIO_IDX(i, 6, MOD::SUCS::V59);
-	  CHECK_RATIO_IDX(i, 8, MOD::SUCS::V62);
-	  CHECK_RATIO_IDX(i, 9, MOD::SUCS::Vdhap_in);
-	  CHECK_RATIO_IDX(i, 10, MOD::SUCS::Vgap_in);
-	  CHECK_RATIO_IDX(i, 11, MOD::SUCS::Vpga_in);
-	  if (it->first == MOD::SUCS::V59)
-	    it->second = it->second * SUCS::get(MOD::SUCS::SC) * theVars->SUCRatio[i];
-	  else
-	    it->second = it->second * SUCS::get(MOD::SUCS::SC1) * theVars->SUCRatio[i];
-	  i++;
-	  if (it->first == MOD::SUCS::Vpga_in) {
-	    // SUCRatio 12, 13, & 14 are used by SUCS_Pool
-	    i = 15;
-	  }
-	  break;
-	}
-	// Next ratio is skipped
-	case (MOD::SUCS::KE51) : {
-	  CHECK_RATIO_IDX(i, 19, MOD::SUCS::KE51);
-	  it->second = it->second * theVars->SUCRatio[i];
-	  i = i + 2;
-	  break;
-	}
-	// Skipped, but has SUCRatio entry
-	case (MOD::SUCS::V60) :
-	case (MOD::SUCS::Km592) :
-	case (MOD::SUCS::KI592) :
-	case (MOD::SUCS::Km601) :
-	case (MOD::SUCS::Km602) :
-	case (MOD::SUCS::Km603) :
-	case (MOD::SUCS::Km604) :
-	case (MOD::SUCS::KE60) : {
-	  CHECK_RATIO_IDX(i, 7, MOD::SUCS::V60);
-	  i++;
-	  break;
-	}
-	// Skipped and does not have SUCRatio entry
-	case (MOD::SUCS::V61) :
-	case (MOD::SUCS::KI583) :
-	case (MOD::SUCS::Vmatpf) : {
-	  break;
-	}
-	default : {
-	  CHECK_RATIO_IDX(i, 15, MOD::SUCS::KE501);
-	  CHECK_RATIO_IDX(i, 21, MOD::SUCS::Km521);
-	  CHECK_RATIO_IDX(i, 22, MOD::SUCS::KI521);
-	  CHECK_RATIO_IDX(i, 30, MOD::SUCS::Km553);
-	  CHECK_RATIO_IDX(i, 40, MOD::SUCS::KE56);
-	  CHECK_RATIO_IDX(i, 45, MOD::SUCS::KI581);
-	  CHECK_RATIO_IDX(i, 46, MOD::SUCS::KI582);
-	  CHECK_RATIO_IDX(i, 47, MOD::SUCS::Km591);
-	  CHECK_RATIO_IDX(i, 49, MOD::SUCS::Km593);
-	  CHECK_RATIO_IDX(i, 50, MOD::SUCS::KI591);
-	  CHECK_RATIO_IDX(i, 52, MOD::SUCS::KE59);
-	  it->second = it->second * theVars->SUCRatio[i];
-	  i++;
-	}
-	}
-      }
-
-      theVars->SUCS_Pool[POOL::SUCS::ATc] *= theVars->SUCRatio[12];
-      theVars->SUCS_Pool[POOL::SUCS::UTc] *= theVars->SUCRatio[13];
-      theVars->SUCS_Pool[POOL::SUCS::PTc] *= theVars->SUCRatio[14];
-      
-    }
-    SUCS::set(MOD::SUCS::KE5Ratio,
-	      1. + SUCS::get(MOD::SUCS::KE541) +
-	      1. / SUCS::get(MOD::SUCS::KE531));
-    SUCS::set(MOD::SUCS::ADPc,
-	      theVars->SUCS_Pool.get(POOL::SUCS::ATc) -
-	      SUCS::get(MOD::SUCS::ATPc));
-
-#ifdef CHECK_VALUE_SET_ALTS
     SUCS::UTPc = 0.75;
     if (theVars->useC3) {
 
@@ -301,9 +132,10 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
         SUCS::V60 = 6.1; // ATP+UDP --UTP + ADP
         SUCS::V61 = 10000; // POPO --2PO
         SUCS::V62 = 2; // SUC Sink        0.2 works.
+        const double tempRatio = (theVars->Tp - 25.) / 10.;
 
         SUCS::SUCSV51 = SUCS::V51 * SUCS::Vfactor51 * SUCS::Vf_T51 *
-	  pow(SUCS::Q10_51, tempRatio);       //  DHAP+GAP --FBP
+                        pow(SUCS::Q10_51, tempRatio);       //  DHAP+GAP --FBP
         SUCS::SUCSV52 = SUCS::V52 * SUCS::Vfactor52 * SUCS::Vf_T52 *
                         pow(SUCS::Q10_52, tempRatio);       //  FBP --F6P + Pi
         SUCS::SUCSV55 = SUCS::V55 * pow(SUCS::Q10_55, tempRatio); //  G1P+UTP --OPOP+UDPG
@@ -393,26 +225,28 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
         ///////////////////////////////////////////////////////////////////////////////////////////
 
         // The following calculate the total concentration of different enzymes.
+        const double SC = 10.;
+        const double SC1 = 1.;
+        SUCS::SC = SC;
+        SUCS::SC1 = SC1;
+
         if (theVars->GP == 0) {
             // Unit: mmol l-1 s-1;
-            SUCS::V51 = 0.107376831 * SUCS::SC * theVars->SUCRatio[0]; // DHAP+GAP --FBP     default 0.5
-            SUCS::V52 = 0.063979048 * SUCS::SC * theVars->SUCRatio[1]; // FBP --F6P + Pi
-            SUCS::V55 = 0.115403205 * SUCS::SC * theVars->SUCRatio[2]; // G1P+UTP --OPOP+UDPG
-            SUCS::V56 = 0.055503446 * SUCS::SC * theVars->SUCRatio[3]; // UDPG+F6P--SUCP + UDP
-            SUCS::V57 = 0.55503446 * SUCS::SC1 * theVars->SUCRatio[4]; // SUCP--Pi + SUC; 0.27 DEFALT
-            SUCS::V58 = 0.016819226 * SUCS::SC * theVars->SUCRatio[5]; // F26BP--F6P + Pi
+            SUCS::V51 = 0.107376831 * SC * theVars->SUCRatio[0]; // DHAP+GAP --FBP     default 0.5
+            SUCS::V52 = 0.063979048 * SC * theVars->SUCRatio[1]; // FBP --F6P + Pi
+            SUCS::V55 = 0.115403205 * SC * theVars->SUCRatio[2]; // G1P+UTP --OPOP+UDPG
+            SUCS::V56 = 0.055503446 * SC * theVars->SUCRatio[3]; // UDPG+F6P--SUCP + UDP
+            SUCS::V57 = 0.55503446 * SC1 * theVars->SUCRatio[4]; // SUCP--Pi + SUC; 0.27 DEFALT
+            SUCS::V58 = 0.016819226 * SC * theVars->SUCRatio[5]; // F26BP--F6P + Pi
         }
-	// if (theVars->GP == 0) {
-	//   
-	// }
 
-        SUCS::V59 = 0.03 * SUCS::SC * theVars->SUCRatio[6];            // F6P + ATP --ADP + F26BP // defalut 0.03  (* 0.3)
+        SUCS::V59 = 0.03 * SC * theVars->SUCRatio[6];            // F6P + ATP --ADP + F26BP // defalut 0.03  (* 0.3)
         //theVars->V60 = 6.1 * theVars->SUCRatio[7];// ATP+UDP --UTP + ADP
         //theVars->V61 = 10000;         // POPO --2PO   // constant set in globals.hpp
-        SUCS::V62 = 2. * SUCS::SC1 * theVars->SUCRatio[8];             // SUC Sink        0.9 works.
-        SUCS::Vdhap_in = 1.05 * SUCS::SC1 * theVars->SUCRatio[9];      // DHAP export from chloroplast
-        SUCS::Vgap_in = 1.05 * SUCS::SC1 * theVars->SUCRatio[10];      // GAP export from chloroplast
-        SUCS::Vpga_in = 1.05 * SUCS::SC1 * theVars->SUCRatio[11];      // PGA export from chloropalst
+        SUCS::V62 = 2. * SC1 * theVars->SUCRatio[8];             // SUC Sink        0.9 works.
+        SUCS::Vdhap_in = 1.05 * SC1 * theVars->SUCRatio[9];      // DHAP export from chloroplast
+        SUCS::Vgap_in = 1.05 * SC1 * theVars->SUCRatio[10];      // GAP export from chloroplast
+        SUCS::Vpga_in = 1.05 * SC1 * theVars->SUCRatio[11];      // PGA export from chloropalst
 
         //////////////////////////////////////////////////////////////////
         // Here is some pool values      //
@@ -424,11 +258,185 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
     SUCS::KE5Ratio = 1. + SUCS::KE541 + 1. / SUCS::KE531;
     SUCS::ADPc = theVars->SUCS_Pool.ATc - SUCS::ATPc;
     
-    SUCS_Con->checkAlts("SUCS::_init::Condition: ");
-    theVars->SUCS_Pool.checkAlts("SUCS::_init:SUCS_Pool: ");
-#endif // CHECK_VALUE_SET_ALTS
-    
     return SUCS_Con;
+}
+
+SUCSCondition* SUCS::_initAlt(Variables *theVars, SUCSCondition* SUCS_Con) {
+#ifdef CHECK_VALUE_SET_ALTS
+    theVars->initParamStatic<SUCS>();
+    theVars->initParam(*SUCS_Con);
+    theVars->initParam(theVars->SUCS_Pool);
+    
+    // Useful intermediate constants
+    const double tempRatio = (theVars->Tp - 25.) / 10.;
+      
+    if (theVars->useC3) {
+      if (theVars->GRNC == 1 && theVars->CO2_cond > 0.) {
+        SUCS::set(MOD::SUCS::Vfactor52, theVars->VfactorCp[19]);
+        SUCS::set(MOD::SUCS::Vfactor56, theVars->VfactorCp[22]);
+        SUCS::set(MOD::SUCS::Vfactor57, theVars->VfactorCp[23]);
+        SUCS::set(MOD::SUCS::Vfactor59, theVars->VfactorCp[24]);
+      }
+      if (theVars->GRNT == 1 && theVars->Tp > 25) {
+        SUCS::set(MOD::SUCS::Vf_T52, theVars->VfactorT[0]);
+        SUCS::set(MOD::SUCS::Vf_T59, theVars->VfactorT[12]);
+        SUCS::set(MOD::SUCS::Vf_T57, theVars->VfactorT[13]);
+        SUCS::set(MOD::SUCS::Vf_T51, theVars->VfactorT[17]);
+        SUCS::set(MOD::SUCS::Vf_T56, theVars->VfactorT[27]);
+      }
+      if (theVars->GP == 0) {
+        SUCS::setFromEnzymeAct(MOD::SUCS::V51, theVars->EnzymeAct);
+        SUCS::setFromEnzymeAct(MOD::SUCS::V52, theVars->EnzymeAct);
+        SUCS::setFromEnzymeAct(MOD::SUCS::V55, theVars->EnzymeAct);
+        SUCS::setFromEnzymeAct(MOD::SUCS::V56, theVars->EnzymeAct);
+        SUCS::setFromEnzymeAct(MOD::SUCS::V57, theVars->EnzymeAct);
+        SUCS::setFromEnzymeAct(MOD::SUCS::V58, theVars->EnzymeAct);
+      }
+      SUCS::setFromEnzymeAct(MOD::SUCS::V59, theVars->EnzymeAct);
+      
+      // DHAP+GAP --FBP
+      SUCS::set(MOD::SUCS::SUCSV51,
+                SUCS::get(MOD::SUCS::V51) *
+                SUCS::get(MOD::SUCS::Vfactor51) *
+                SUCS::get(MOD::SUCS::Vf_T51) *
+                pow(SUCS::get(MOD::SUCS::Q10_51), tempRatio));
+      // FBP --F6P + Pi
+      SUCS::set(MOD::SUCS::SUCSV52,
+                SUCS::get(MOD::SUCS::V52) *
+                SUCS::get(MOD::SUCS::Vfactor52) *
+                SUCS::get(MOD::SUCS::Vf_T52) *
+                pow(SUCS::get(MOD::SUCS::Q10_52), tempRatio));
+      // G1P+UTP --OPOP+UDPG
+      SUCS::set(MOD::SUCS::SUCSV55,
+                SUCS::get(MOD::SUCS::V55) *
+                pow(SUCS::get(MOD::SUCS::Q10_55), tempRatio));
+      // UDPG+F6P--SUCP + UDP
+      SUCS::set(MOD::SUCS::SUCSV56,
+                SUCS::get(MOD::SUCS::V56) *
+                SUCS::get(MOD::SUCS::Vfactor56) *
+                SUCS::get(MOD::SUCS::Vf_T56) *
+                pow(SUCS::get(MOD::SUCS::Q10_56), tempRatio));
+      // SUCP--Pi + SUC
+      SUCS::set(MOD::SUCS::SUCSV57,
+                SUCS::get(MOD::SUCS::V57) *
+                SUCS::get(MOD::SUCS::Vfactor57) *
+                SUCS::get(MOD::SUCS::Vf_T57) *
+                pow(SUCS::get(MOD::SUCS::Q10_57), tempRatio));
+      // F26BP--F6P + Pi
+      SUCS::set(MOD::SUCS::SUCSV58,
+                SUCS::get(MOD::SUCS::V58) *
+                pow(SUCS::get(MOD::SUCS::Q10_58), tempRatio));
+    } else {
+      
+      size_t i = 0;
+      for (SUCS::iterator it = SUCS::begin(); it != SUCS::end(); it++) {
+        if (i == 60)
+          break;
+        switch (it->first) {
+        case (MOD::SUCS::V51) :
+        case (MOD::SUCS::V52) :
+        case (MOD::SUCS::V55) :
+        case (MOD::SUCS::V56) :
+        case (MOD::SUCS::V57) :
+        case (MOD::SUCS::V58) : {
+          CHECK_RATIO_IDX(i, 0, MOD::SUCS::V51);
+          CHECK_RATIO_IDX(i, 1, MOD::SUCS::V52);
+          CHECK_RATIO_IDX(i, 2, MOD::SUCS::V55);
+          CHECK_RATIO_IDX(i, 3, MOD::SUCS::V56);
+          CHECK_RATIO_IDX(i, 4, MOD::SUCS::V57);
+          CHECK_RATIO_IDX(i, 5, MOD::SUCS::V58);
+          if (theVars->GP == 0) {
+            if (it->first == MOD::SUCS::V57)
+              it->second = it->second * SUCS::get(MOD::SUCS::SC1) * theVars->SUCRatio[i];
+            else
+              it->second = it->second * SUCS::get(MOD::SUCS::SC) * theVars->SUCRatio[i];
+          }
+          i++;
+          break;
+        }
+        case (MOD::SUCS::V59) :
+        case (MOD::SUCS::V62) :
+        case (MOD::SUCS::Vdhap_in) :
+        case (MOD::SUCS::Vgap_in) :
+        case (MOD::SUCS::Vpga_in) : {
+          CHECK_RATIO_IDX(i, 6, MOD::SUCS::V59);
+          CHECK_RATIO_IDX(i, 8, MOD::SUCS::V62);
+          CHECK_RATIO_IDX(i, 9, MOD::SUCS::Vdhap_in);
+          CHECK_RATIO_IDX(i, 10, MOD::SUCS::Vgap_in);
+          CHECK_RATIO_IDX(i, 11, MOD::SUCS::Vpga_in);
+          if (it->first == MOD::SUCS::V59)
+            it->second = it->second * SUCS::get(MOD::SUCS::SC) * theVars->SUCRatio[i];
+          else
+            it->second = it->second * SUCS::get(MOD::SUCS::SC1) * theVars->SUCRatio[i];
+          i++;
+          if (it->first == MOD::SUCS::Vpga_in) {
+            // SUCRatio 12, 13, & 14 are used by SUCS_Pool
+            i = 15;
+          }
+          break;
+        }
+        // Next ratio is skipped
+        case (MOD::SUCS::KE51) : {
+          CHECK_RATIO_IDX(i, 19, MOD::SUCS::KE51);
+          it->second = it->second * theVars->SUCRatio[i];
+          i = i + 2;
+          break;
+        }
+        // Skipped, but has SUCRatio entry
+        case (MOD::SUCS::V60) :
+        case (MOD::SUCS::Km592) :
+        case (MOD::SUCS::KI592) :
+        case (MOD::SUCS::Km601) :
+        case (MOD::SUCS::Km602) :
+        case (MOD::SUCS::Km603) :
+        case (MOD::SUCS::Km604) :
+        case (MOD::SUCS::KE60) : {
+          CHECK_RATIO_IDX(i, 7, MOD::SUCS::V60);
+          i++;
+          break;
+        }
+        // Skipped and does not have SUCRatio entry
+        case (MOD::SUCS::V61) :
+        case (MOD::SUCS::KI583) :
+        case (MOD::SUCS::Vmatpf) : {
+          break;
+        }
+        default : {
+          CHECK_RATIO_IDX(i, 15, MOD::SUCS::KE501);
+          CHECK_RATIO_IDX(i, 21, MOD::SUCS::Km521);
+          CHECK_RATIO_IDX(i, 22, MOD::SUCS::KI521);
+          CHECK_RATIO_IDX(i, 30, MOD::SUCS::Km553);
+          CHECK_RATIO_IDX(i, 40, MOD::SUCS::KE56);
+          CHECK_RATIO_IDX(i, 45, MOD::SUCS::KI581);
+          CHECK_RATIO_IDX(i, 46, MOD::SUCS::KI582);
+          CHECK_RATIO_IDX(i, 47, MOD::SUCS::Km591);
+          CHECK_RATIO_IDX(i, 49, MOD::SUCS::Km593);
+          CHECK_RATIO_IDX(i, 50, MOD::SUCS::KI591);
+          CHECK_RATIO_IDX(i, 52, MOD::SUCS::KE59);
+          it->second = it->second * theVars->SUCRatio[i];
+          i++;
+        }
+        }
+      }
+
+      theVars->SUCS_Pool[POOL::SUCS::ATc] *= theVars->SUCRatio[12];
+      theVars->SUCS_Pool[POOL::SUCS::UTc] *= theVars->SUCRatio[13];
+      theVars->SUCS_Pool[POOL::SUCS::PTc] *= theVars->SUCRatio[14];
+      
+    }
+    SUCS::set(MOD::SUCS::KE5Ratio,
+              1. + SUCS::get(MOD::SUCS::KE541) +
+              1. / SUCS::get(MOD::SUCS::KE531));
+    SUCS::set(MOD::SUCS::ADPc,
+              theVars->SUCS_Pool.get(POOL::SUCS::ATc) -
+              SUCS::get(MOD::SUCS::ATPc));
+
+    
+    theVars->SUCS_Pool.checkAlts("SUCS::_init:SUCS_Pool: ");
+    return SUCS_Con;
+#else // CHECK_VALUE_SET_ALTS
+    UNUSED(theVars);
+#endif // CHECK_VALUE_SET_ALTS
 }
 
 void SUCS::_reset() {
@@ -515,4 +523,15 @@ void SUCS::_reset() {
     SUCS::TIME = 0.;
     SUCS::N = 0;
     conditions::SUCSCondition::reset();
+}
+
+void SUCS::_updateAlts(Variables *theVars, SUCSCondition* SUCS_con) {
+#ifdef CHECK_VALUE_SET_ALTS
+    SUCS::updateAlts();
+    theVars->SUCS_Pool.updateAlts();
+    SUCS_con->updateAlts();
+#else // CHECK_VALUE_SET_ALTS
+    UNUSED(theVars);
+    UNUSED(SUCS_con);
+#endif // CHECK_VALUE_SET_ALTS
 }

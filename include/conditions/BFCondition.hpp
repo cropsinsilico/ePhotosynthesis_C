@@ -35,11 +35,6 @@ class BF;
 namespace conditions {
 class FIBFCondition;
 
-#define MEMBERS_BFCondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-#define MEMBERS_BFCondition_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_BFCondition_CONSTANT EMPTY_MEMBER_LIST
-
-  
 /**
  Class for holding the inputs to BF_mb
  */
@@ -113,7 +108,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {
+    static void _reset() {
       setPS_connect(false);
       setRROEA_connect(false);
       setFI_connect(false);

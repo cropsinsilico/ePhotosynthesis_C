@@ -32,25 +32,6 @@
 namespace ePhotosynthesis {
 namespace pool {
 
-#define MEMBERS_RROEAPool_CONSTANT		\
-    SA_GAPDH,					\
-    SA_FBPase,					\
-    SA_SBPase,					\
-    SA_PRK,					\
-    SA_ATPase,					\
-    SA_ATPGPP,					\
-    SA_MDH,					\
-    mw_GAPDH,					\
-    mw_FBPase,					\
-    mw_SBPase,					\
-    mw_PRK,					\
-    mw_ATPase,					\
-    mw_ATPGPP,					\
-    mw_MDH,					\
-    MDH_Vmax
-#define MEMBERS_RROEAPool_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_RROEAPool_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-  
 /**
  Class for RROEA_Pool data
  */
@@ -66,9 +47,11 @@ public:
 
       @param other The RROEAPool object to copy
       */
-    RROEAPool(const RROEAPool &other) :
-      ValueSet<MODULE_RROEA, PARAM_TYPE_POOL>(other) {
-        initMembers();
+    RROEAPool(const RROEAPool &other) : ValueSet<MODULE_RROEA, PARAM_TYPE_POOL>(other) {
+      initMembers();
+      *this = other;
+    }
+    RROEAPool& operator=(const RROEAPool &other) {
         GAPDH = other.GAPDH;
         FBPase = other.FBPase;
         SBPase = other.SBPase;
@@ -80,6 +63,7 @@ public:
         FdT = other.FdT;
         RuACTT = other.RuACTT;
 	copyMembers(other);
+	return *this;
     }
 
 };

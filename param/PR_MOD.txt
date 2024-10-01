@@ -1,4 +1,4 @@
-V111		0.888
+V111		0.888			# [CALC]
 V112		52.41992121
 V113		5.715787563
 V121		1.456108923
@@ -40,21 +40,21 @@ KE123		250000.0
 # Reaction 124: Glyoxylate + Glu  <--> KG + Glycine;
 KM1241		0.15	     	        # Michaelis constant for glyoxylate
 KM1242		1.7			# Michaelis constant for Glu
-KI124		2.0			# This KI is one guessed
+KI124		0.0		2.0	# [CONST] This KI is one guessed
 KE124		607.0			# New: Cooper, A.J.L.; Meister, A.; Biochemistry; 11, 661 (1972).; K' 607.
 # Reaction 131: NAD+Glycine <--> CO2+ NADH + NH3
 KM1311		6.0	    	        # Michaelis constant for Glycine
 KI1311		4.0			# Inhibition constant for Serine
-KM1312		0.075			# Michaelis constant for NAD;
-KI1312		0.015			# Inhibition constant for NADH; Since in the current program, we assume that P protein limit the rate of the overall glycin decarboxylase; the KI1312 and KM1312 were not used.
+KM1312		0.0		0.075	# [CONST] Michaelis constant for NAD;
+KI1312		0.0		0.015	# [CONST] Inhibition constant for NADH; Since in the current program, we assume that P protein limit the rate of the overall glycin decarboxylase; the KI1312 and KM1312 were not used.
 # The consant for calculating the glycerate uptake.
 V1T		5.0	      	  	# *= CE if not C3
 KM1011		0.39
 KI1011		0.28
 # The constant for calculating the glycolate output
 V2T		6.4	       	        # *= CE if not C3
-KM1012		0.2
-KI1012		0.22
+KM1012		0.2		0.2
+KI1012		0.22		0.22
 Vfactor112	0.0		1.0
 Vfactor113	0.0		1.0
 Vfactor121	0.0		1.0

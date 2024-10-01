@@ -36,10 +36,6 @@ namespace conditions {
 
 class DynaPSCondition;
 
-#define MEMBERS_XanCycleCondition_CONSTANT EMPTY_MEMBER_LIST
-#define MEMBERS_XanCycleCondition_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_XanCycleCondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-
 /**
  Class to hold the inputs to XanCycle_mb
  */
@@ -104,7 +100,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {}
+    static void _reset() {}
 
     static const std::size_t count;  // size of the current serialized output
 #ifdef INCDEBUG

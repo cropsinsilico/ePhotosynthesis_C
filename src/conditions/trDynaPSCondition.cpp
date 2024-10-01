@@ -31,14 +31,19 @@ using namespace ePhotosynthesis::conditions;
 
 std::size_t trDynaPSCondition::count = 0;
 
+DEFINE_VALUE_SET_SRC(trDynaPSCondition);
+
 trDynaPSCondition::trDynaPSCondition(const trDynaPSCondition* const other) {
+    initMembers();
     RROEA_con = new RROEACondition(other->RROEA_con);
     DynaPS_con = new DynaPSCondition(other->DynaPS_con);
     RROEA_con->setParent(this);
     DynaPS_con->setParent(this);
+    copyMembers(*other);
 }
 
 trDynaPSCondition::trDynaPSCondition(DynaPSCondition* dother, RROEACondition* rother) {
+    initMembers();
     if (dother->parent == nullptr) {
         DynaPS_con = dother;
     } else {
@@ -54,10 +59,12 @@ trDynaPSCondition::trDynaPSCondition(DynaPSCondition* dother, RROEACondition* ro
 }
 
 trDynaPSCondition::trDynaPSCondition(const arr &vec, const std::size_t offset) {
+    initMembers();
     fromArray(vec, offset);
 }
 
 trDynaPSCondition::trDynaPSCondition(realtype *x) {
+    initMembers();
     fromArray(x);
 }
 

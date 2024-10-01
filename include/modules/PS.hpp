@@ -39,37 +39,12 @@ class PSModuleTest;
 namespace modules {
 class PS_PR;
 
-#define MEMBERS_PS_CONSTANT			\
-    Q10_1,					\
-    Q10_2,					\
-    Q10_3,					\
-    Q10_5,					\
-    Q10_6,					\
-    Q10_7,					\
-    Q10_8,					\
-    Q10_9,					\
-    Q10_10,					\
-    Q10_13,					\
-    Q10_23,					\
-    R,						\
-    c_c,					\
-    dHa_c,					\
-    c_o,					\
-    dHa_o,					\
-    RegFactor,					\
-    SC,						\
-    SC1,					\
-    STOM1,					\
-    STOM2
-#define MEMBERS_PS_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_PS_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-  
 /**
  Class to for PS related functions and common variables
  */
-class PS : public ModuleBase<PS, conditions::PSCondition, MODULE_PS> {
+class PS : public MODULE_BASE(PS) {
 public:
-    DECLARE_VALUE_SET_STATIC(PS, ModuleBase<PS, conditions::PSCondition, MODULE_PS>)
+    DECLARE_MODULE(PS)
     /**
       Set the initial parameters.
 

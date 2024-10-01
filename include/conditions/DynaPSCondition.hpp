@@ -40,10 +40,12 @@ class trDynaPSCondition;
 /**
  Class for holding inputs to DynaPS_mb
  */
-class DynaPSCondition : public ConditionBase<DynaPSCondition, trDynaPSCondition> {
+class DynaPSCondition : public ConditionBase<DynaPSCondition, trDynaPSCondition, MODULE_DynaPS> {
 public:
+    DECLARE_VALUE_SET_COMPOSITE(DynaPSCondition, (RACondition, XanCycleCondition), ConditionBase<DynaPSCondition, trDynaPSCondition, MODULE_DynaPS>)
     DynaPSCondition(trDynaPSCondition* par = nullptr) : RA_con(new RACondition(this)), XanCycle_con(new XanCycleCondition(this)) {
         setParent(par);
+        initMembers();
     }
 
     ~DynaPSCondition() override {
@@ -126,7 +128,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {
+    static void _reset() {
         count = 0;
     }
     EPHOTO_API static std::size_t count;  // size of the current serialized output

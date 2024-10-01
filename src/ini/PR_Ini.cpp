@@ -45,157 +45,6 @@ DEFINE_VALUE_SET(PRCondition);
 
 PRCondition* PR::_init(Variables *theVars) {
     PR::setPS_connect(theVars->PR_PS_com);
-    theVars->initParamStatic<PR>();
-    PRCondition* PR_con = new PRCondition();
-    theVars->initParam(*PR_con);
-
-    // Useful intermediate constants
-    const double tempRatio = (theVars->Tp - 25.) / 10.;
-      
-    // Reaction 110: RuBP + CO2 <--> 2PGA
-    // Reaction 111: RUBP+O2<-->PGlycolate + PGA
-    // Reaction 112: PGlycolate-->Pi+Glycolate;
-    // Reaction 113: Gcea+ATP<-->ADP + PGA
-    // Reaction 121: Glycolate +O2<-->H2O2+Glyoxylate
-    // Reaction 122: Glyoxylate + Serine<--> Hydoxypyruvate + Glycine;
-    // Reaction 123: HydroxylPyruvate + NAD <--> NADH + Glycerate
-    // Reaction 124: Glyoxylate + Glu  <--> KG + Glycine;
-    // Reaction 131: NAD+Glycine <--> CO2+ NADH + NH3
-    
-    if (theVars->useC3) {
-      if (theVars->GRNC == 1 && theVars->CO2_cond > 0.) {
-	PR::set(MOD::PR::Vfactor112, theVars->VfactorCp[25]);
-	PR::set(MOD::PR::Vfactor113, theVars->VfactorCp[26]);
-	PR::set(MOD::PR::Vfactor121, theVars->VfactorCp[28]);
-	PR::set(MOD::PR::Vfactor122, theVars->VfactorCp[29]);
-	PR::set(MOD::PR::Vfactor123, theVars->VfactorCp[30]);
-	PR::set(MOD::PR::Vfactor131, theVars->VfactorCp[32]);
-	PR::set(MOD::PR::Vfactor124, theVars->VfactorCp[11]);
-      }
-      if (theVars->GRNT == 1 && theVars->Tp > 25) {
-	PR::set(MOD::PR::Vf_T131, theVars->VfactorT[4]);
-	PR::set(MOD::PR::Vf_T113, theVars->VfactorT[6]);
-	PR::set(MOD::PR::Vf_T123, theVars->VfactorT[7]);
-	PR::set(MOD::PR::Vf_T121, theVars->VfactorT[8]);
-	PR::set(MOD::PR::Vf_T122, theVars->VfactorT[11]);
-	PR::set(MOD::PR::Vf_T112, theVars->VfactorT[22]);
-      }
-      if (theVars->GP == 0) {
-	PR::set(MOD::PR::V111, PS::getV1() * 0.22);
-	PR::setFromEnzymeAct(MOD::PR::V112, theVars->EnzymeAct);
-	PR::setFromEnzymeAct(MOD::PR::V113, theVars->EnzymeAct);
-	PR::setFromEnzymeAct(MOD::PR::V121, theVars->EnzymeAct);
-	PR::setFromEnzymeAct(MOD::PR::V122, theVars->EnzymeAct);
-	PR::setFromEnzymeAct(MOD::PR::V123, theVars->EnzymeAct);
-	PR::setFromEnzymeAct(MOD::PR::V124, theVars->EnzymeAct);
-	PR::setFromEnzymeAct(MOD::PR::V131, theVars->EnzymeAct);
-      }
-      PR::set(MOD::PR::KO, PS::getKM12());
-      PR::set(MOD::PR::KC, PS::getKM11());
-      
-      PR::set(MOD::PR::PrV112,
-	      PR::get(MOD::PR::V112) *
-	      PR::get(MOD::PR::Vfactor112) *
-	      PR::get(MOD::PR::Vf_T112) *
-	      pow(PR::get(MOD::PR::Q10_112), tempRatio));
-      PR::set(MOD::PR::PrV113,
-	      PR::get(MOD::PR::V113) *
-	      PR::get(MOD::PR::Vfactor113) *
-	      PR::get(MOD::PR::Vf_T113) *
-	      pow(PR::get(MOD::PR::Q10_113), tempRatio));
-      PR::set(MOD::PR::PrV121,
-	      PR::get(MOD::PR::V121) *
-	      PR::get(MOD::PR::Vfactor121) *
-	      PR::get(MOD::PR::Vf_T121) *
-	      pow(PR::get(MOD::PR::Q10_121), tempRatio));
-      PR::set(MOD::PR::PrV122,
-	      PR::get(MOD::PR::V122) *
-	      PR::get(MOD::PR::Vfactor122) *
-	      PR::get(MOD::PR::Vf_T122) *
-	      pow(PR::get(MOD::PR::Q10_122), tempRatio));
-      PR::set(MOD::PR::PrV123,
-	      PR::get(MOD::PR::V123) *
-	      PR::get(MOD::PR::Vfactor123) *
-	      PR::get(MOD::PR::Vf_T123) *
-	      pow(PR::get(MOD::PR::Q10_123), tempRatio));
-      PR::set(MOD::PR::PrV124,
-	      PR::get(MOD::PR::V124) *
-	      PR::get(MOD::PR::Vfactor124) *
-	      pow(PR::get(MOD::PR::Q10_124), tempRatio));
-      PR::set(MOD::PR::PrV131,
-	      PR::get(MOD::PR::V131) *
-	      PR::get(MOD::PR::Vfactor131) *
-	      PR::get(MOD::PR::Vf_T131) *
-	      pow(PR::get(MOD::PR::Q10_131), tempRatio));
-    } else {
-
-      if (theVars->GP == 0) {
-	if (theVars->PR_PS_com) {
-	  PR::set(MOD::PR::V111, PS::getV1() * 0.24);
-	} else {
-	  PR::set(MOD::PR::V111, 3.7 * 0.24 * 1.);
-	}
-      }
-
-      if (theVars->PR_PS_com) {
-	PR::set(MOD::PR::KC, PS::getKM11());
-	PR::set(MOD::PR::KO, PS::getKM12());
-      }
-	
-      size_t i = 0;
-      for (PR::iterator it = PR::begin(); it != PR::end(); it++) {
-	if (i == 48)
-	  break;
-	switch (it->first) {
-	case (MOD::PR::V111) : {
-	  if (theVars->GP == 0 && theVars->PR_PS_com)
-	    it->second *= theVars->PRRatio[i];
-	  i++;
-	  break;
-	}
-	case (MOD::PR::NADc) : {
-	  it->second *= theVars->PRRatio[i];
-	  // PRRatio 10 & 11 skipped
-	  i = 12;
-	  break;
-	}
-	case (MOD::PR::KC) :
-	case (MOD::PR::KO) : {
-	  if (!theVars->PR_PS_com) {
-	    it->second *= theVars->PRRatio[i];
-	  }
-	  i++;
-	  break;
-	}
-	case (MOD::PR::V1T) :
-	case (MOD::PR::V2T) : {
-	  it->second *= PR::get(MOD::PR::CE) * theVars->PRRatio[i];
-	  i++;
-	  break;
-	}
-	case (MOD::PR::KI1311) : {
-	  it->second *= theVars->PRRatio[i];
-	  // PRRatio 40 & 41 skipped
-	  i = 42;
-	  break;
-	}
-	case (MOD::PR::KI124) :
-	case (MOD::PR::KM1312) :
-	case (MOD::PR::KI1312) : {
-	  // PRRatio not used
-	  i++;
-	  break;
-	}
-	default : {
-	  it->second *= theVars->PRRatio[i];
-	  i++;
-	}
-	}
-      }
-
-    }
-
-#ifdef CHECK_VALUE_SET_ALTS
     if (theVars->useC3) {
         PR::NADHc = 0.47;
         PR::NADc = 0.4;
@@ -210,6 +59,8 @@ PRCondition* PR::_init(Variables *theVars) {
         PR::PR_ADP = 0.82 * theVars->PRRatio[14];
         PR::PR_ATP = 0.68 * theVars->PRRatio[15];
     }
+
+    PRCondition* PR_con = new PRCondition();
 
     PR_con->GCEA = 0.1812;   // Glycerate in chloroplast; derived based on V113
     PR_con->GCA = 0.36;      // Derived from radioactive labelling experiment; assuem equal concenatration
@@ -306,21 +157,22 @@ PRCondition* PR::_init(Variables *theVars) {
 
         PR::KM1241 = 0.15;   // Michaelis constant for glyoxylate
         PR::KM1242 = 1.7;    // Michaelis constant for Glu
-	PR::KI124 = 2.0;     // This KI is one guessed
+        PR::KI124 = 2.0;     // This KI is one guessed
         PR::KE124 = 607.;    // New       Cooper, A.J.L.; Meister, A.; Biochemistry; 11, 661 (1972).; K 607.
 
         PR::KM1311 = 6.;     // Michaelis constant for Glycine;
         PR::KI1311 = 4.;     // Inhibition constant for Serine
 
-	PR::KM1312 = 0.075;  // Michaelis constant for NAD;
-	PR::KI1312 = 0.015;  // Inhibition constant for NADH; Since in the current program, we assume that P protein limit the rate of the overall glycin decarboxylase; the KI1312 and KM1312 were not used.
+        PR::KM1312 = 0.075;  // Michaelis constant for NAD;
+        PR::KI1312 = 0.015;  // Inhibition constant for NADH; Since in the current program, we assume that P protein limit the rate of the overall glycin decarboxylase; the KI1312 and KM1312 were not used.
 
         PR::KM1011 = 0.39;
         PR::KI1011 = 0.28;
 
         PR::KM1012 = 0.2;
         PR::KI1012 = 0.22;
-
+        const double tempRatio = (theVars->Tp - 25.) / 10.;
+    
         PR::PrV112 = PR::V112 * PR::Vfactor112 * PR::Vf_T112 * pow(PR::Q10_112, tempRatio);
         PR::PrV113 = PR::V113 * PR::Vfactor113 * PR::Vf_T113 * pow(PR::Q10_113, tempRatio);
         PR::PrV121 = PR::V121 * PR::Vfactor121 * PR::Vf_T121 * pow(PR::Q10_121, tempRatio);
@@ -332,6 +184,8 @@ PRCondition* PR::_init(Variables *theVars) {
     } else {
         // To set global information for different reactions
         // Reaction: 110: RuBP + CO2 <--> 2PGA
+
+        PR::CE = 1.; // This is the coefficient for calibrating the volume effect // Default is 4.
 
         // Reaction: 111: RUBP+O2<-->PGlycolate + PGA
 
@@ -409,9 +263,173 @@ PRCondition* PR::_init(Variables *theVars) {
         }
     }
 
-    PR_con->checkAlts("PR::_init::Condition: ");
-#endif // CHECK_VALUE_SET_ALTS
+    // Reaction 110: RuBP + CO2 <--> 2PGA
+    // Reaction 111: RUBP+O2<-->PGlycolate + PGA
+    // Reaction 112: PGlycolate-->Pi+Glycolate;
+    // Reaction 113: Gcea+ATP<-->ADP + PGA
+    // Reaction 121: Glycolate +O2<-->H2O2+Glyoxylate
+    // Reaction 122: Glyoxylate + Serine<--> Hydoxypyruvate + Glycine;
+    // Reaction 123: HydroxylPyruvate + NAD <--> NADH + Glycerate
+    // Reaction 124: Glyoxylate + Glu  <--> KG + Glycine;
+    // Reaction 131: NAD+Glycine <--> CO2+ NADH + NH3
+    
+    return PR_con;
+}
 
+PRCondition* PR::_initAlt(Variables *theVars, PRCondition* PR_con) {
+#ifdef CHECK_VALUE_SET_ALTS
+    theVars->initParamStatic<PR>();
+    theVars->initParam(*PR_con);
+    
+    // Useful intermediate constants
+    const double tempRatio = (theVars->Tp - 25.) / 10.;
+
+    // Reaction 110: RuBP + CO2 <--> 2PGA
+    // Reaction 111: RUBP+O2<-->PGlycolate + PGA
+    // Reaction 112: PGlycolate-->Pi+Glycolate;
+    // Reaction 113: Gcea+ATP<-->ADP + PGA
+    // Reaction 121: Glycolate +O2<-->H2O2+Glyoxylate
+    // Reaction 122: Glyoxylate + Serine<--> Hydoxypyruvate + Glycine;
+    // Reaction 123: HydroxylPyruvate + NAD <--> NADH + Glycerate
+    // Reaction 124: Glyoxylate + Glu  <--> KG + Glycine;
+    // Reaction 131: NAD+Glycine <--> CO2+ NADH + NH3
+    
+    if (theVars->useC3) {
+      if (theVars->GRNC == 1 && theVars->CO2_cond > 0.) {
+        PR::set(MOD::PR::Vfactor112, theVars->VfactorCp[25]);
+        PR::set(MOD::PR::Vfactor113, theVars->VfactorCp[26]);
+        PR::set(MOD::PR::Vfactor121, theVars->VfactorCp[28]);
+        PR::set(MOD::PR::Vfactor122, theVars->VfactorCp[29]);
+        PR::set(MOD::PR::Vfactor123, theVars->VfactorCp[30]);
+        PR::set(MOD::PR::Vfactor131, theVars->VfactorCp[32]);
+        PR::set(MOD::PR::Vfactor124, theVars->VfactorCp[11]);
+      }
+      if (theVars->GRNT == 1 && theVars->Tp > 25) {
+        PR::set(MOD::PR::Vf_T131, theVars->VfactorT[4]);
+        PR::set(MOD::PR::Vf_T113, theVars->VfactorT[6]);
+        PR::set(MOD::PR::Vf_T123, theVars->VfactorT[7]);
+        PR::set(MOD::PR::Vf_T121, theVars->VfactorT[8]);
+        PR::set(MOD::PR::Vf_T122, theVars->VfactorT[11]);
+        PR::set(MOD::PR::Vf_T112, theVars->VfactorT[22]);
+      }
+      if (theVars->GP == 0) {
+        PR::set(MOD::PR::V111, PS::getV1() * 0.22);
+        PR::setFromEnzymeAct(MOD::PR::V112, theVars->EnzymeAct);
+        PR::setFromEnzymeAct(MOD::PR::V113, theVars->EnzymeAct);
+        PR::setFromEnzymeAct(MOD::PR::V121, theVars->EnzymeAct);
+        PR::setFromEnzymeAct(MOD::PR::V122, theVars->EnzymeAct);
+        PR::setFromEnzymeAct(MOD::PR::V123, theVars->EnzymeAct);
+        PR::setFromEnzymeAct(MOD::PR::V124, theVars->EnzymeAct);
+        PR::setFromEnzymeAct(MOD::PR::V131, theVars->EnzymeAct);
+      }
+      PR::set(MOD::PR::KO, PS::getKM12());
+      PR::set(MOD::PR::KC, PS::getKM11());
+      
+      PR::set(MOD::PR::PrV112,
+              PR::get(MOD::PR::V112) *
+              PR::get(MOD::PR::Vfactor112) *
+              PR::get(MOD::PR::Vf_T112) *
+              pow(PR::get(MOD::PR::Q10_112), tempRatio));
+      PR::set(MOD::PR::PrV113,
+              PR::get(MOD::PR::V113) *
+              PR::get(MOD::PR::Vfactor113) *
+              PR::get(MOD::PR::Vf_T113) *
+              pow(PR::get(MOD::PR::Q10_113), tempRatio));
+      PR::set(MOD::PR::PrV121,
+              PR::get(MOD::PR::V121) *
+              PR::get(MOD::PR::Vfactor121) *
+              PR::get(MOD::PR::Vf_T121) *
+              pow(PR::get(MOD::PR::Q10_121), tempRatio));
+      PR::set(MOD::PR::PrV122,
+              PR::get(MOD::PR::V122) *
+              PR::get(MOD::PR::Vfactor122) *
+              PR::get(MOD::PR::Vf_T122) *
+              pow(PR::get(MOD::PR::Q10_122), tempRatio));
+      PR::set(MOD::PR::PrV123,
+              PR::get(MOD::PR::V123) *
+              PR::get(MOD::PR::Vfactor123) *
+              PR::get(MOD::PR::Vf_T123) *
+              pow(PR::get(MOD::PR::Q10_123), tempRatio));
+      PR::set(MOD::PR::PrV124,
+              PR::get(MOD::PR::V124) *
+              PR::get(MOD::PR::Vfactor124) *
+              pow(PR::get(MOD::PR::Q10_124), tempRatio));
+      PR::set(MOD::PR::PrV131,
+              PR::get(MOD::PR::V131) *
+              PR::get(MOD::PR::Vfactor131) *
+              PR::get(MOD::PR::Vf_T131) *
+              pow(PR::get(MOD::PR::Q10_131), tempRatio));
+    } else {
+
+      if (theVars->GP == 0) {
+        if (theVars->PR_PS_com) {
+          PR::set(MOD::PR::V111, PS::getV1() * 0.24);
+        } else {
+          PR::set(MOD::PR::V111, 3.7 * 0.24 * 1.);
+        }
+      }
+
+      if (theVars->PR_PS_com) {
+        PR::set(MOD::PR::KC, PS::getKM11());
+        PR::set(MOD::PR::KO, PS::getKM12());
+      }
+        
+      size_t i = 0;
+      for (PR::iterator it = PR::begin(); it != PR::end(); it++) {
+        if (i == 48)
+          break;
+        switch (it->first) {
+        case (MOD::PR::V111) : {
+          if (theVars->GP == 0 && theVars->PR_PS_com)
+            it->second *= theVars->PRRatio[i];
+          i++;
+          break;
+        }
+        case (MOD::PR::NADc) : {
+          it->second *= theVars->PRRatio[i];
+          // PRRatio 10 & 11 skipped
+          i = 12;
+          break;
+        }
+        case (MOD::PR::KC) :
+        case (MOD::PR::KO) : {
+          if (!theVars->PR_PS_com) {
+            it->second *= theVars->PRRatio[i];
+          }
+          i++;
+          break;
+        }
+        case (MOD::PR::V1T) :
+        case (MOD::PR::V2T) : {
+          it->second *= PR::get(MOD::PR::CE) * theVars->PRRatio[i];
+          i++;
+          break;
+        }
+        case (MOD::PR::KI1311) : {
+          it->second *= theVars->PRRatio[i];
+          // PRRatio 40 & 41 skipped
+          i = 42;
+          break;
+        }
+        case (MOD::PR::KI124) :
+        case (MOD::PR::KM1312) :
+        case (MOD::PR::KI1312) : {
+          // PRRatio not used
+          i++;
+          break;
+        }
+        default : {
+          it->second *= theVars->PRRatio[i];
+          i++;
+        }
+        }
+      }
+
+    }
+
+#else // CHECK_VALUE_SET_ALTS
+    UNUSED(theVars);
+#endif // CHECK_VALUE_SET_ALTS
     return PR_con;
 }
 
@@ -430,8 +448,6 @@ void PR::_reset() {
     PR::KI1221 = 0.;
     PR::KI123 = 0.;
     PR::KI1311 = 0.;
-    PR::KM1312 = 0.;
-    PR::KI1312 = 0.;
     PR::KM1011 = 0.;
     PR::KM1012 = 0.;
     PR::KM112 = 0.;
@@ -443,7 +459,6 @@ void PR::_reset() {
     PR::KM123 = 0.;
     PR::KM1241 = 0.;
     PR::KM1242 = 0.;
-    PR::KI124 = 0.;
     PR::KM1311 = 0.;
     PR::KO = 0.;
     PR::KR = 0.;
@@ -491,4 +506,14 @@ void PR::_reset() {
     PR::TIME = 0.;
     PR::N = 1;
     conditions::PRCondition::reset();
+}
+
+void PR::_updateAlts(Variables *theVars, PRCondition* PR_con) {
+#ifdef CHECK_VALUE_SET_ALTS
+    PR::updateAlts();
+    PR_con->updateAlts();
+#else // CHECK_VALUE_SET_ALTS
+    UNUSED(theVars);
+    UNUSED(PR_con);
+#endif // CHECK_VALUE_SET_ALTS
 }

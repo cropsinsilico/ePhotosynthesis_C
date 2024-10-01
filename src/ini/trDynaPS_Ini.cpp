@@ -32,6 +32,8 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
+DEFINE_VALUE_SET(trDynaPSCondition);
+
 trDynaPSCondition* trDynaPS::_init(Variables *theVars) {
     DynaPSCondition* DynaPS_con = DynaPS::init(theVars);
 
@@ -42,8 +44,24 @@ trDynaPSCondition* trDynaPS::_init(Variables *theVars) {
     return trDynaPS_Con;
 }
 
+trDynaPSCondition* trDynaPS::_initAlt(Variables *theVars, trDynaPSCondition* trDynaPS_Con) {
+#ifdef CHECK_VALUE_SET_ALTS
+    if (theVars->RROEA_EPS_com)
+	trDynaPS_Con->RROEA_con->set(COND::RROEA::Fd,
+				     trDynaPS_Con->DynaPS_con->RA_con->EPS_con->FIBF_con->BF_con->Fdn);
+#else // CHECK_VALUE_SET_ALTS
+    UNUSED(theVars);
+#endif // CHECK_VALUE_SET_ALTS
+    return trDynaPS_Con;
+}
+
+void trDynaPS::_updateAlts(Variables *theVars, trDynaPSCondition* trDynaPS_con) {
+    UNUSED(theVars);
+    UNUSED(trDynaPS_con);
+}
+
 void trDynaPS::_reset() {
-    DynaPS::_reset();
-    RROEA::_reset();
+    DynaPS::reset();
+    RROEA::reset();
     conditions::trDynaPSCondition::reset();
 }

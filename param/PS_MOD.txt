@@ -113,27 +113,27 @@ PsV31		0.0	0.0	# Set by scaling V31
 PsV32		0.0	0.0	# Set by scaling V32
 PsV33		0.0	0.0	# Set by scaling V33
 # Variables only set during calculation
-PiTc		0.0	0.0
-V1Reg		0.0	0.0
-Theta		0.0	0.0
-beta		0.0	0.0
-Jmax		0.0	0.0
+PiTc		0.0	0.0	# [INIT_ONCE]
+V1Reg		0.0	0.0	# [INIT_ONCE]
+Theta		0.0	0.0	# [INIT_ONCE]
+beta		0.0	0.0	# [INIT_ONCE]
+Jmax		0.0	0.0	# [INIT_ONCE]
 # Variables only used for C3
-Vfactor1	1.0      1.0	# Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-Vfactor2	1.0	 1.0	# Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-Vfactor3	1.0	 1.0	# Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-Vfactor5	1.0	 1.0	# Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-Vfactor7	1.0	 1.0	# Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-Vfactor13	1.0	 1.0	# Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-Vfactor23	1.0	 1.0	# Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-Vf_T3		1.0	 1.0	# Set by VfactorT if GRNT and Tp > 25 w/ C4
-Vf_T2		1.0	 1.0	# Set by VfactorT if GRNT and Tp > 25 w/ C3
-Vf_T1		1.0	 1.0	# Set by VfactorT if GRNT and Tp > 25 w/ C3
-Vf_T6		1.0	 1.0	# Set by VfactorT if GRNT and Tp > 25 w/ C3
-Vf_T5		1.0	 1.0	# Set by VfactorT if GRNT and Tp > 25 w/ C3
-Vf_T9		1.0	 1.0	# Set by VfactorT if GRNT and Tp > 25 w/ C3
-Vf_T13		1.0	 1.0	# Set by VfactorT if GRNT and Tp > 25 w/ C3
-Vf_T23		1.0	 1.0	# Set by VfactorT if GRNT and Tp > 25 w/ C3
+Vfactor1	1.0      1.0	# [RESET_ONE] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vfactor2	1.0	 1.0	# [RESET_ONE] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vfactor3	1.0	 1.0	# [RESET_ONE] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vfactor5	1.0	 1.0	# [RESET_ONE] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vfactor7	1.0	 1.0	# [RESET_ONE] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vfactor13	1.0	 1.0	# [RESET_ONE] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vfactor23	1.0	 1.0	# [RESET_ONE] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vf_T3		1.0	 1.0	# [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C4
+Vf_T2		1.0	 1.0	# [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
+Vf_T1		1.0	 1.0	# [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
+Vf_T6		1.0	 1.0	# [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
+Vf_T5		1.0	 1.0	# [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
+Vf_T9		1.0	 1.0	# [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
+Vf_T13		1.0	 1.0	# [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
+Vf_T23		1.0	 1.0	# [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
 PsV1		0.0	 0.0	# Set by calculation w/ C3
 PsV2		0.0	 0.0	# Set by calculation w/ C3
 PsV3		0.0	 0.0	# Set by calculation w/ C3

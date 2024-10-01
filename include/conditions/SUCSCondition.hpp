@@ -34,11 +34,6 @@ class SUCS;
 }
 namespace conditions {
 
-#define MEMBERS_SUCSCondition_CONSTANT EMPTY_MEMBER_LIST
-#define MEMBERS_SUCSCondition_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_SUCSCondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-
-  
 class CMCondition;
 /**
  Class for holding the inputs for SUCS_mb
@@ -103,7 +98,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {}
+    static void _reset() {}
 
     static const std::size_t count;  // size of the current serialized output
 #ifdef INCDEBUG

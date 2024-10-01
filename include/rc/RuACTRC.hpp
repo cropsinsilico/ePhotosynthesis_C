@@ -32,10 +32,6 @@
 namespace ePhotosynthesis {
 namespace RC {
 
-#define MEMBERS_RuACTRC_CONSTANT EMPTY_MEMBER_LIST
-#define MEMBERS_RuACTRC_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_RuACTRC_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-  
 /**
  Class for RuACT_RC data
  */
@@ -50,9 +46,11 @@ public:
 
       @param other The RuACTRC object to copy
       */
-    RuACTRC(const RuACTRC &other) :
-      ValueSet<MODULE_RuACT, PARAM_TYPE_RC>(other) {
-        initMembers();
+    RuACTRC(const RuACTRC &other) : ValueSet<MODULE_RuACT, PARAM_TYPE_RC>(other) {
+      initMembers();
+      *this = other;
+    }
+    RuACTRC& operator=(const RuACTRC &other) {
         k1 = other.k1;
         kn1 = other.kn1;
         km1 = other.km1;
@@ -64,6 +62,7 @@ public:
         k7 = other.k7;
         kr = other.kr;
 	copyMembers(other);
+	return *this;
     }
 
 };

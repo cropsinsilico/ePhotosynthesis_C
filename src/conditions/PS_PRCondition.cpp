@@ -29,15 +29,20 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
+DEFINE_VALUE_SET_SRC(PS_PRCondition);
+
 std::size_t PS_PRCondition::count = 0;
 PS_PRCondition::PS_PRCondition(const PS_PRCondition* const other) {
+    initMembers();
     PS_con = new PSCondition(other->PS_con);
     PR_con = new PRCondition(other->PR_con);
     PS_con->setParent(this);
     PR_con->setParent(this);
+    copyMembers(*other);
 }
 
 PS_PRCondition::PS_PRCondition(PSCondition* sother, PRCondition* rother) {
+    initMembers();
     if (sother->parent == nullptr) {
         PS_con = sother;
     } else {
@@ -53,6 +58,7 @@ PS_PRCondition::PS_PRCondition(PSCondition* sother, PRCondition* rother) {
 }
 
 PS_PRCondition::PS_PRCondition(const arr &vec, const std::size_t offset) {
+    initMembers();
     fromArray(vec, offset);
 }
 

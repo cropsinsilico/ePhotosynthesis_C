@@ -32,10 +32,6 @@
 namespace ePhotosynthesis {
 namespace pool {
 
-#define MEMBERS_FIPool_CONSTANT EMPTY_MEMBER_LIST
-#define MEMBERS_FIPool_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_FIPool_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-  
 /**
  Class for hoplding FI_Pool data
  */

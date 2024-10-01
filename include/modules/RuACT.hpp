@@ -38,16 +38,12 @@ class RuACTModuleTest;
 namespace modules {
 class RA;
 
-#define MEMBERS_RuACT_CONSTANT factor
-#define MEMBERS_RuACT_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_RuACT_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-  
 /**
  Class for RuACT related functions
  */
-class RuACT : public ModuleBase<RuACT, conditions::RuACTCondition, MODULE_RuACT> {
+class RuACT : public MODULE_BASE(RuACT) {
 public:
-    DECLARE_VALUE_SET_STATIC(RuACT, ModuleBase<RuACT, conditions::RuACTCondition, MODULE_RuACT>)
+    DECLARE_MODULE(RuACT)
     SET_GET_BOOL_MODULE(EPS_connect, conditions::RuACT)
 private:
     friend ModuleBase;

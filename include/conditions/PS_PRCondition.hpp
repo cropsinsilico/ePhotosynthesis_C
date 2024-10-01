@@ -39,10 +39,12 @@ class CMCondition;
 /**
  Class to hold inputs to PS_PR_mb
  */
-class PS_PRCondition : public ConditionBase<PS_PRCondition, CMCondition> {
+class PS_PRCondition : public ConditionBase<PS_PRCondition, CMCondition, MODULE_PS_PR> {
 public:
+    DECLARE_VALUE_SET_COMPOSITE(PS_PRCondition, (PSCondition, PRCondition), ConditionBase<PS_PRCondition, CMCondition, MODULE_PS_PR>)
     PS_PRCondition(CMCondition* par = nullptr) : PS_con(new PSCondition(this)), PR_con(new PRCondition(this)) {
         setParent(par);
+        initMembers();
     }
 
     ~PS_PRCondition() override {
@@ -113,7 +115,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {
+    static void _reset() {
         count = 0;
     }
 

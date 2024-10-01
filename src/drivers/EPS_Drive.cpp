@@ -36,7 +36,7 @@ using namespace ePhotosynthesis::drivers;
 using namespace ePhotosynthesis::conditions;
 
 EPSDriver::~EPSDriver() {
-    modules::EPS::_reset();
+    modules::EPS::reset();
 }
 
 void EPSDriver::setup() {

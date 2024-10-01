@@ -37,19 +37,12 @@ class RROEAModuleTest;
 namespace modules {
 class trDynaPS;
 
-#define MEMBERS_RROEA_CONSTANT				\
-  SC,							\
-    fc16,						\
-    FC
-#define MEMBERS_RROEA_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_RROEA_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-  
 /**
  Class for RROEA related functions
  */
-class RROEA : public ModuleBase<RROEA, conditions::RROEACondition, MODULE_RROEA> {
+class RROEA : public MODULE_BASE(RROEA) {
 public:
-    DECLARE_VALUE_SET_STATIC(RROEA, ModuleBase<RROEA, conditions::RROEACondition, MODULE_RROEA>)
+    DECLARE_MODULE(RROEA)
 private:
     friend ModuleBase;
     friend class modules::trDynaPS;

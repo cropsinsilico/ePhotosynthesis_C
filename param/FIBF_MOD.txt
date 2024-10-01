@@ -1,6 +1,6 @@
 # Name		Value	C3Value
-ChlPSI		0.0
-ChlT		0.0
-ChlT2		0.0
-FIBF2FI_PQ	0.0
-FIBF2FI_PQa	0.0
+ChlPSI		0.0		# [INIT_ONCE]
+ChlT		0.0		# [INIT_ONCE]
+ChlT2		0.0		# [INIT_ONCE]
+FIBF2FI_PQ	0.0		# [INIT_ONCE]
+FIBF2FI_PQa	0.0		# [INIT_ONCE]

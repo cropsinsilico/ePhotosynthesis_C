@@ -32,6 +32,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
+DEFINE_VALUE_SET(PS_PRCondition);
 
 PS_PRCondition* PS_PR::_init(Variables *theVars) {
     PSCondition* PS_con = PS::init(theVars);
@@ -41,8 +42,10 @@ PS_PRCondition* PS_PR::_init(Variables *theVars) {
     return PS_PR_con;
 }
 
+DEFINE_DEFAULT_INITALT(PS_PR)
+
 void PS_PR::_reset() {
-    PS::_reset();
-    PR::_reset();
+    PS::reset();
+    PR::reset();
     conditions::PS_PRCondition::reset();
 }

@@ -38,22 +38,44 @@
 
 namespace ePhotosynthesis {
 
+#ifdef CHECK_VALUE_SET_ALTS
+#define DEBUG_VALUE_SET_MSG(x)			\
+  std::cerr << x
+#define DEBUG_VALUE_SET_(...)			\
+  FOR_EACH(DEBUG_VALUE_SET_MSG, __VA_ARGS__)
+#define DEBUG_VALUE_SET(...)						\
+  DEBUG_VALUE_SET_(error_prefix(), ": ", __func__, ": ",		\
+		   __VA_ARGS__, std::endl)
+#define DEBUG_VALUE_SET_NOARGS						\
+  DEBUG_VALUE_SET_(error_prefix(), ": ", __func__, std::endl)
+#define DEBUG_VALUE_SET_RAW(...)		\
+  DEBUG_VALUE_SET_(__VA_ARGS__, "")
+#define DEBUG_VALUE_SET_END(...)		\
+  DEBUG_VALUE_SET_(__VA_ARGS__, std::endl)
+#define DEBUG_VALUE_SET_NOEND(...)			\
+  DEBUG_VALUE_SET_(error_prefix(), ": ", __func__, ": ", __VA_ARGS__)
+#else
+#define DEBUG_VALUE_SET(...)
+#define DEBUG_VALUE_SET_NOARGS
+#define DEBUG_VALUE_SET_RAW(...)
+#define DEBUG_VALUE_SET_END(...)
+#define DEBUG_VALUE_SET_NOEND(...)
+#endif // CHECK_VALUE_SET_ALTS
+  
 #define DECLARE_VALUE_SET_MEMBER_RECORD			\
   static const StaticMemberClass _adjustments
+  /*
 #define TYPED_VALUE_SET_MEMBERS(name, ...)		\
   FOR_EACH_WITH_ARGS_COMMA(JOIN, (name::EnumClass::), __VA_ARGS__)
+  */
 #define DEFINE_VALUE_SET_MEMBER_RECORD(prefix, name)			\
   const typename prefix name::StaticMemberClass prefix name::_adjustments = \
-    prefix name::StaticMemberClass({TYPED_VALUE_SET_MEMBERS(prefix name, MEMBERS_ ## name)}, \
-				   {TYPED_VALUE_SET_MEMBERS(prefix name, NONE, MEMBERS_ ## name ## _CONSTANT)}, \
-				   {TYPED_VALUE_SET_MEMBERS(prefix name, NONE, MEMBERS_ ## name ## _SKIPPED)}, \
-				   {TYPED_VALUE_SET_MEMBERS(prefix name, NONE, MEMBERS_ ## name ## _NOT_IN_ARRAY)})
+    prefix name::StaticMemberClass()
 #define DEFINE_VALUE_SET_MEMBER_RECORD_HEADER(prefix, name)
 
   // Non-static value set
 #define INIT_VALUE_SET_MEMBER(name)				\
-  name = 0.0;							\
-  insertOrig(EnumClass::name, &name, "INIT_VALUE_SET_MEMBER: ")
+  ValueSetClass::insertOrig(EnumClass::name, &name, "INIT_VALUE_SET_MEMBER: ")
 #define INIT_VALUE_SET_MEMBERS_(...)		\
   FOR_EACH(INIT_VALUE_SET_MEMBER, __VA_ARGS__)
 #define INIT_VALUE_SET_MEMBERS(name)					\
@@ -77,26 +99,39 @@ namespace ePhotosynthesis {
     fromArray(vec, offset);					\
   }
   */
+#ifdef CHECK_VALUE_SET_ALTS
+#define DECLARE_VALUE_SET_INIT_MEMBERS(name)		\
+  void initMembers() override {				\
+    initMemberPointers();				\
+  }
+#else // CHECK_VALUE_SET_ALTS
+#define DECLARE_VALUE_SET_INIT_MEMBERS(name)	\
+  void initMembers() override {}
+#endif // CHECK_VALUE_SET_ALTS
 #define DECLARE_VALUE_SET_MEMBERS_(...)				\
   FOR_EACH(DECLARE_VALUE_SET_MEMBER, __VA_ARGS__)
-#define DECLARE_VALUE_SET_MEMBERS(name)			\
-  DECLARE_VALUE_SET_MEMBERS_(MEMBERS_ ## name);		\
-  void initMembers() override {				\
-    INIT_VALUE_SET_MEMBERS(name);			\
-    ParentClass::initMembers();				\
-  }							\
+#define DECLARE_VALUE_SET_MEMBERS(name)				\
+  DECLARE_VALUE_SET_MEMBERS_(MEMBERS_ ## name);			\
+  void initMemberPointers() override {				\
+    if (!values.empty()) return;				\
+    INIT_VALUE_SET_MEMBERS(name);				\
+  }								\
+  std::map<std::string, double*> getPointerMap() override {	\
+    initMemberPointers();					\
+    return get_pointer_map(values);				\
+  }								\
+  DECLARE_VALUE_SET_INIT_MEMBERS(name)				\
   DECLARE_VALUE_SET_CORE(name)
 #define DECLARE_VALUE_SET(name, ...)		\
-  INHERIT_METHODS_VALUE_SET(__VA_ARGS__)	\
+  DECLARE_VALUE_SET_BASE(name, __VA_ARGS__)	\
   using __VA_ARGS__::memberCount;		\
   DECLARE_VALUE_SET_MEMBERS(name)
 #define DECLARE_VALUE_SET_COMPOSITE_ADD_CHILD(child)	\
-    std::cerr << "Child " #child << child::memberCount();	\
     out += child::memberCount()
 #define DECLARE_VALUE_SET_COMPOSITE_ADD_CHILDREN(...)	\
   FOR_EACH(DECLARE_VALUE_SET_COMPOSITE_ADD_CHILD, __VA_ARGS__, _EmptyMacroType)
 #define DECLARE_VALUE_SET_COMPOSITE(name, children, ...)	\
-  INHERIT_METHODS_VALUE_SET(__VA_ARGS__)			\
+  DECLARE_VALUE_SET_BASE(name, __VA_ARGS__)			\
   DECLARE_VALUE_SET_MEMBERS(name)				\
   static std::size_t memberCount() {				\
     std::size_t out = ParentClass::memberCount();		\
@@ -116,8 +151,7 @@ namespace ePhotosynthesis {
   
   // Static value set
 #define INIT_VALUE_SET_STATIC_MEMBER(name)				\
-  name = 0.0;								\
-  insertOrig(EnumClass::name, &name, "INIT_VALUE_SET_STATIC_MEMBER: ")
+  ValueSetClass::insertOrig(EnumClass::name, &name, "INIT_VALUE_SET_STATIC_MEMBER: ")
 #define INIT_VALUE_SET_STATIC_MEMBERS_(...)		\
   FOR_EACH(INIT_VALUE_SET_STATIC_MEMBER, __VA_ARGS__)
 #define INIT_VALUE_SET_STATIC_MEMBERS(name)		\
@@ -157,22 +191,47 @@ namespace ePhotosynthesis {
 #define DEFINE_VALUE_SET_STATIC_HEADER_COMPOSITE(name)	\
   DEFINE_VALUE_SET_STATIC_HEADER_COMPOSITE_NS(, name)
   
+#ifdef CHECK_VALUE_SET_ALTS
+#define DECLARE_VALUE_SET_STATIC_INIT_MEMBERS(name)	\
+  static void initMembers() {				\
+    initMemberPointers();				\
+  }
+#else // CHECK_VALUE_SET_ALTS
+#define DECLARE_VALUE_SET_STATIC_INIT_MEMBERS(name)	\
+  static void initMembers() {}
+#endif // CHECK_VALUE_SET_ALTS
 #define DECLARE_VALUE_SET_STATIC_MEMBERS_(...)			\
   FOR_EACH(DECLARE_VALUE_SET_STATIC_MEMBER, __VA_ARGS__)
-#define DECLARE_VALUE_SET_STATIC_MEMBERS(name)		\
-  public:						\
-  static void initMembers() {				\
-    if (!values.empty())				\
-      return;						\
-    std::cerr << error_prefix() << ": initMembers" << std::endl;	\
-    INIT_VALUE_SET_STATIC_MEMBERS(name);		\
-    ParentClass::initMembers();				\
-  }							\
-  private:						\
-  DECLARE_VALUE_SET_STATIC_MEMBERS_(MEMBERS_ ## name);	\
+#define DECLARE_VALUE_SET_STATIC_MEMBERS(name)			\
+  public:							\
+  static void initMemberPointers() {				\
+    if (!values.empty())					\
+      return;							\
+    INIT_VALUE_SET_STATIC_MEMBERS(name);			\
+  }								\
+  static std::map<std::string, double*> getPointerMap() {	\
+    initMemberPointers();					\
+    return get_pointer_map(values);				\
+  }								\
+  DECLARE_VALUE_SET_STATIC_INIT_MEMBERS(name)			\
+  static void initStaticMembers() {				\
+    initMembers();						\
+  }								\
+  static void initMembersState(bool force=false) {		\
+    if (!(force || values.empty()))				\
+      return;							\
+    initMembers();						\
+    ValueSetClass::initMembersState();				\
+  }								\
+  static void initValues(const bool useC3) {			\
+    initMembersState();						\
+    ParentClass::initValues(useC3);				\
+  }								\
+  private:							\
+  DECLARE_VALUE_SET_STATIC_MEMBERS_(MEMBERS_ ## name);		\
   public:
 #define DECLARE_VALUE_SET_STATIC_CORE(name, ...)		\
-  INHERIT_METHODS_VALUE_SET(__VA_ARGS__)			\
+  DECLARE_VALUE_SET_STATIC_BASE(name, __VA_ARGS__)		\
   typedef _valueSetStaticMember<name> StaticMemberClass;	\
   friend Value<name>;						\
   friend _valueSetStaticMember<name>;				\
@@ -189,66 +248,120 @@ namespace ePhotosynthesis {
   DECLARE_VALUE_SET_STATIC_CORE(name, __VA_ARGS__)	\
   DECLARE_VALUE_SET_STATIC_MEMBERS(name)
 
-#ifdef CHECK_VALUE_SET_ALTS
-#define CALL_STATIC(method, ...)		\
-  method(alts, __VA_ARGS__)
-#define CALL_STATIC_NOARGS(method)		\
-  method(alts)
-#define CALL_STATIC_METHOD(method)		\
-  alts.method()
-#define CALL_STATIC_WITH_ALL(method, ...)	\
-  method(alts, __VA_ARGS__)
-#else // CHECK_VALUE_SET_ALTS
-#define CALL_STATIC(method, ...)		\
-  method(values, __VA_ARGS__)
-#define CALL_STATIC_NOARGS(method)		\
-  method(values)
-#define CALL_STATIC_METHOD(method)		\
-  values.method()
-#define CALL_STATIC_WITH_ALL(method, ...)	\
-  method(values, values_all, __VA_ARGS__)
-#endif // CHECK_VALUE_SET_ALTS
+#define DECLARE_CONDITION_BASE(name)					\
+  public:								\
+  /** Copy constructor that makes a deep copy of the given object */	\
+  /** @param other The object to copy */				\
+  name ## Condition(const name ## Condition* const other);		\
+  /** Constructor to create an object from the input vector, starting */ \
+  /**   at the given offset.*/						\
+  /** @param vec Vector to create the object from */			\
+  /** @param offset The index in vec to start creating the object from */ \
+  name ## Condition(const arr &vec, const std::size_t offset = 0);	\
+  ~name ## Condition() override {					\
+    _clear();								\
+  }									\
+  /** \copydoc ConditionBase::_print */					\
+  std::ostream& _print(std::ostream &out, const uint tab = 0) const;	\
+private:								\
+ friend ConditionBase;							\
+ friend class modules::name;						\
+ /** \copydoc ConditionBase::_fromArray */				\
+ void _fromArray(const arr &vec, const std::size_t offset = 0) override; \
+ /** \copydoc ConditionBase::_toArray */				\
+ arr _toArray() const override;						\
+ /** \copydoc ConditionBase::_size */					\
+ static std::size_t _size();						\
+ /** \copydoc ConditionBase::_clear */					\
+ void _clear() override;						\
+ /** \copydoc ConditionBase::_reset */					\
+ static void _reset();
   
+#define DECLARE_CONDITION(name, parent)					\
+  DECLARE_VALUE_SET(name ## Condition,					\
+		    ConditionBase<name ## Condition, parent,		\
+		    MODULE_ ## name>)					\
+  DECLARE_CONDITION_BASE(name)						\
+  name ## Condition(parent* par = nullptr) {				\
+    setParent(par);							\
+    initMembers();							\
+  }									\
+  /** The Maximum size of the serialized vector */			\
+  static const std::size_t count;
+  
+#define INIT_CONDITION_CHILD(name)					\
+  name ## _con(new name ## Condition(this))
+#define INIT_CONDITION_CHILDREN_(...) // TODO
+#define INIT_CONDITION_CHILDREN(...)					\
+  INIT_CONDITION_CHILDREN_(__VA_ARGS__)
+#define DECLARE_CONDITION_COMPOSITE(name, parent)			\
+  DECLARE_VALUE_SET_COMPOSITE(name ## Condition, (CHILDREN_ ## name),	\
+			      ConditionBase<name ## Condition, parent,	\
+			      MODULE_ ## name>)				\
+  DECLARE_CONDITION_BASE(name)						\
+  name ## Condition(parent* par = nullptr) :				\
+  INIT_CONDITION_CHILDREN(CHILDREN_ ## name) {				\
+    setParent(par);							\
+    initMembers();							\
+  }
+#define DEFINE_CONDITION_BASE(name)					\
+  name ## Condition::name ## Condition(const arr &vec,			\
+				       const std::size_t offset) {	\
+    initMembers();							\
+    fromArray(vec, offset);						\
+  }
+#define DEFINE_CONDITION(name)			\
+  void name ## Condition::_clear() {}
+  
+#define CLEAR_CONDITION_CHILD(name)		\
+  if (name ## _con != nullptr) {		\
+    delete name ## _con;			\
+    name ## _con = nullptr;			\
+  }
+#define CLEAR_CONDITION_CHILDREN_(...) // TODO
+#define CLEAR_CONDITION_CHILDREN(...)		\
+  CLEAR_CONDITION_CHILDREN_(__VA_ARGS__)
+#define DEFINE_CONDITION_COMPOSITE(name)	\
+  void name ## Condition::_clear() {		\
+    CLEAR_CONDITION_CHILDREN(CHILDREN_ ## name)	\
+  }
+
+#define DEFINE_MODULE_COMPOSITE(name, children)	\
+  void name::_reset() {				\
+    RESET_CHILDREN children;			\
+    conditions::name ## Condition::reset();	\
+  }
+
 #ifdef CHECK_VALUE_SET_ALTS
-#define SET_VALUE(module, pt, var, k, v)	\
-  var.k = v;					\
-  var[pt::module::k] = v
-#define MULT_VALUE(module, pt, var, k, v)	\
-  var.k = var.k * v;				\
-  var[pt::module::k] = var[pt::module::k] * v
-#define DIVD_VALUE(module, pt, var, k, v)	\
-  var.k = var.k / v;				\
-  var[pt::module::k] = var[pt::module::k] / v
-#define SET_VALUE_PTR(module, pt, var, k, v)	\
-  var->k = v;					\
-  (*var)[pt::module::k] = v
-#define MULT_VALUE_PTR(module, pt, var, k, v)		\
-  var->k = var-k * v;					\
-  (*var)[pt::module::k] = (*var)[pt::module::k] * v
-#define DIVD_VALUE_PTR(module, pt, var, k, v)		\
-  var->k = var->k / v;					\
-  (*var)[pt::module::k] = (*var)[pt::module::k] / v
-#define SET_VALUE_STATIC(cls, k, v)		\
-  cls::k = v;					\
-  cls::set(cls::EnumClass::k, v)
+#define CALL_STATIC(method, ...)		\
+  return method(alts, __VA_ARGS__)
+#define CALL_STATIC_CONST(method, ...)		\
+  CALL_STATIC(method, __VA_ARGS__)
+#define CALL_STATIC_NOARGS(method)		\
+  return method(alts)
+#define CALL_STATIC_NOARGS_CONST(method)	\
+  CALL_STATIC_NOARGS(method)
+#define CALL_STATIC_METHOD(method)		\
+  return alts.method()
+#define CALL_STATIC_METHOD_CONST(method)	\
+  CALL_STATIC_METHOD(method)
 #else // CHECK_VALUE_SET_ALTS
-#define SET_VALUE(module, pt, var, k, v)	\
-  var[pt::module::k] = v
-#define MULT_VALUE(module, pt, var, k, v)	\
-  var[pt::module::k] = var[pt::module::k] * v
-#define DIVD_VALUE(module, pt, var, k, v)	\
-  var[pt::module::k] = var[pt::module::k] / v
-#define SET_VALUE_PTR(module, pt, var, k, v)	\
-  (*var)[pt::module::k] = v
-#define MULT_VALUE_PTR(module, pt, var, k, v)	\
-  (*var)[pt::module::k] = (*var)[pt::module::k] * v
-#define DIVD_VALUE_PTR(module, pt, var, k, v)		\
-  (*var)[pt::module::k] = (*var)[pt::module::k] / v
+#define CALL_STATIC(method, ...)		\
+  initMemberPointers();				\
+  return method(values, __VA_ARGS__)
+#define CALL_STATIC_CONST(method, ...)		\
+  return method(values, __VA_ARGS__)
+#define CALL_STATIC_NOARGS(method)		\
+  initMemberPointers();				\
+  return method(values)
+#define CALL_STATIC_NOARGS_CONST(method)	\
+  return method(values)
+#define CALL_STATIC_METHOD(method)		\
+  initMemberPointers();				\
+  return values.method()
+#define CALL_STATIC_METHOD_CONST(method)	\
+  return values.method()
 #endif // CHECK_VALUE_SET_ALTS
-#define SET_VALUE_VARS(module, pt, k, v)			\
-  SET_VALUE(module, pt, theVars->module ## _ ## pt, k, v)
-#define MULT_VALUE_VARS(module, pt, k, v)			\
-  MULT_VALUE(module, pt, theVars->module ## _ ## pt, k, v)
 
   template<typename T>
   class _valueSetStaticMember {
@@ -256,75 +369,81 @@ namespace ePhotosynthesis {
     _valueSetStaticMember() {
       T::initStaticMembers();
     }
-    _valueSetStaticMember(const std::vector<typename T::EnumType> order,
-			  const std::vector<typename T::EnumType> constant,
-			  const std::vector<typename T::EnumType> skipped,
-			  const std::vector<typename T::EnumType> not_in_array) :
-      order_(order.begin(), order.end()),
-      constant_(constant.begin(), constant.end()),
-      skipped_(skipped.begin(), skipped.end()),
-      not_in_array_(not_in_array.begin(), not_in_array.end()) {
-      T::initStaticMembers();
-      typename std::vector<typename T::EnumType>::const_iterator it;
-#define INSERT(b, check)						\
-      for (it = b.begin(); it != b.end(); it++) {			\
-	if (((*it) == T::EnumClass::NONE) ||				\
-	    ((*it) == T::EnumClass::MAX)) {				\
-	  continue;							\
-	}								\
-	if (!T::EnumClass::check(*it)) {				\
-	  throw std::runtime_error(T::error_prefix() +			\
-	    #check " failed for \'" +					\
-				   utils::enum_key2string(*it) +	\
-				   "\'");				\
-	}								\
-      }
-      INSERT(constant, isConstant);
-      INSERT(skipped, isSkipped);
-      INSERT(not_in_array, isNonvector);
-#undef INSERT
-    }
-    std::vector<typename T::EnumType> order_;
-    std::vector<typename T::EnumType> constant_;
-    std::vector<typename T::EnumType> skipped_;
-    std::vector<typename T::EnumType> not_in_array_;
   };
 
+#define VALUE_X_PTR 1
   template<typename T>
   class Value {
   public:
-    Value(typename T::EnumType k0=T::EnumClass::NONE) : k(k0), x(0.0) {}
-    Value(typename T::EnumType k0, const double& v) : k(k0), x(v) {
+#ifdef VALUE_X_PTR
+    Value(typename T::EnumType k0, double& v,
+	  const std::string& context="") : x(&v), k(k0), ctx(context) {}
+    Value(typename T::EnumType k0, double* v,
+	  const std::string& context="") : x(v), k(k0), ctx(context) {}
+    double* x = nullptr;
+#else // VALUE_X_PTR
+    Value(typename T::EnumType k0=T::EnumClass::NONE,
+	  const std::string& context="") : x(0.0), k(k0), ctx(context) {}
+    Value(typename T::EnumType k0, const double& v,
+	  const std::string& context="") : x(v), k(k0), ctx(context) {
       init();
     }
-    typename T::EnumType k;
-    double x = 0.0;
     void init(const std::string& context="") {
       T::insertOrig(k, &x, context + "Value::init: ");
     }
+    double x = 0.0;
+#endif // VALUE_X_PTR
+    typename T::EnumType k;
+    std::string ctx;
+    static std::string error_prefix() {
+      return T::error_prefix();
+    }
+    double get(const std::string& context="") const {
+#ifdef VALUE_X_PTR
+      DEBUG_VALUE_SET(context, "(", ctx, "): get[", k, ", ", x,
+		      "] = ", *x);
+      return *x;
+#else // VALUE_X_PTR
+      return x;
+#endif // VALUE_X_PTR
+    }
+    void set(const double& y, const std::string& context="") {
+      T::checkNotConstant(k, context + "(" + ctx + "): set: ");
+#ifdef VALUE_X_PTR
+      DEBUG_VALUE_SET(context, "(", ctx, "): set[", k, ", ", x, "]: ",
+		      *x, " -> ", y);
+      x[0] = y;
+#else // VALUE_X_PTR
+      x = y;
+#endif // VALUE_X_PTR
+    }
 #define CONV_OP(op)				\
     operator op() const {			\
-      return op(x);				\
+      return op(get(#op));			\
     }
 #define ASSIGN_OP(op)				\
     template<typename T2>			\
     Value& operator op(const Value<T2>& b) {	\
-      x op b.x;					\
+      double y = get(#op);			\
+      y op b.get("rhs:" #op);			\
+      set(y, #op);				\
       return *this;				\
     }						\
     template<typename T2>			\
     Value& operator op(const T2& b) {		\
-      x op b;					\
+      double y = get(#op);			\
+      y op b;					\
+      set(y, #op);				\
       return *this;				\
     }
-#define BINARY_OP(ret, op)					\
-    template<typename T2>					\
-    friend ret operator op(Value<T> a, const Value<T2>& b) {	\
-      return (a.x op b.x);					\
-    }								\
-    template<typename T2>					\
-    friend ret operator op(Value<T> a, const T2& b) {		\
-      return (a.x op b);					\
+#define BINARY_OP(ret, op)						\
+    template<typename T2>						\
+    friend ret operator op(const Value<T>& a, const Value<T2>& b) {	\
+      return (a.get("lhs:" #op) op b.get("rhs:" #op));			\
+    }									\
+    template<typename T2>						\
+    friend ret operator op(const Value<T>& a, const T2& b) {		\
+      return (a.get("lhs:" #op) op b);					\
     }
 #define ARITH_OP2(op)						\
     ASSIGN_OP(op ## =)						\
@@ -369,8 +488,8 @@ namespace ePhotosynthesis {
     typedef typename std::map<EnumType, double>::iterator iterator; /**< Iterator type for values in the set */
     typedef typename std::map<EnumType, double>::const_iterator const_iterator; /**< Constant iterator type for values in the set */
 #else // CHECK_VALUE_SET_ALTS
-    typedef typename std::map<EnumType, double&>::iterator iterator; /**< Iterator type for values in the set */
-    typedef typename std::map<EnumType, double&>::const_iterator const_iterator; /**< Constant iterator type for values in the set */
+    typedef typename std::map<EnumType, double*>::iterator iterator; /**< Iterator type for values in the set */
+    typedef typename std::map<EnumType, double*>::const_iterator const_iterator; /**< Constant iterator type for values in the set */
 #endif // CHECK_VALUE_SET_ALTS
     INHERIT_METHOD_ENUM(EnumClass);
 
@@ -380,9 +499,9 @@ namespace ePhotosynthesis {
        \returns true if the key is included in arrays, false otherwise.
      */
     static bool inArrays(const EnumType k) {
-      return (!EnumClass::isNonvector(k));
+      return (!(EnumClass::isNonvector(k) || EnumClass::isSkipped(k)));
     }
-    
+
     // Inspection utilities
     /**
        Display the values in a value map.
@@ -391,14 +510,21 @@ namespace ePhotosynthesis {
        \param tab Number of tabs to prefix each line in the output with.
        \returns Output stream.
      */
-    static std::ostream& print_value_map(const std::map<EnumType, TORIG>& vals,
+    static std::ostream& print_value_map(const std::map<EnumType, double*>& vals,
 					 std::ostream &out,
-					 const uint tab = 0) {
+					 const uint tab=0,
+					 bool show_pointers=false) {
       const std::string space(tab * 4, ' ');
-      for (typename std::map<EnumType, TORIG>::const_iterator it = vals.begin();
-	   it != vals.end(); it++)
-	out << space << utils::enum_key2string(it->first) << " = " <<
-	  DREF_ORIG(it->second) << std::endl;
+      for (typename std::map<EnumType, double*>::const_iterator it = vals.begin();
+	   it != vals.end(); it++) {
+	out << space << getName(it->first) << " = ";
+	if (show_pointers) {
+	  out << it->second;
+	} else {
+	  out << *(it->second);
+	}
+	out << std::endl;
+      }
       return out;
     }
     /**
@@ -427,6 +553,8 @@ namespace ePhotosynthesis {
        \param b Second value for comparison.
      */
     static bool valuesEqual(const double& a, const double& b) {
+      if (std::isnan(a) && std::isnan(b))
+	return true;
       double relative_max = std::max(std::fabs(a), std::fabs(b));
       double relative = std::fabs(a - b);
       if (relative_max > COMPARE_RELATIVE_EPSILON)
@@ -434,6 +562,88 @@ namespace ePhotosynthesis {
       double absolute = std::fabs(a - b);
       return ((relative <= COMPARE_RELATIVE_EPSILON) &&
 	      (absolute <= COMPARE_ABSOLUTE_EPSILON));
+    }
+    static bool valuesEqual(const double* a, const double* b) {
+      return valuesEqual(*a, *b);
+    }
+    static bool valuesEqual(const double& a, const double* b) {
+      return valuesEqual(a, *b);
+    }
+    static bool valuesEqual(const double* a, const double& b) {
+      return valuesEqual(*a, b);
+    }
+    static std::string valueString(const double& a) {
+      return std::to_string(a);
+    }
+    static std::string valueString(const double* a) {
+      if (!a)
+	return "NULL";
+      return std::to_string(*a);
+    }
+    static std::string valuePointerString(const double& a) {
+      return "N/A";
+    }
+    static std::string valuePointerString(const double* a) {
+      std::ostringstream oss;
+      oss << a;
+      return oss.str();
+    }
+    static void valueSet(double& dst, const double& src,
+			 const std::string& context = "") {
+      UNUSED(context);
+      dst = src;
+    }
+    static void valueSet(double& dst, const double* src,
+			 const std::string& context = "") {
+      if (!src)
+	throw std::runtime_error(error_prefix() + context +
+				 "source pointer null");
+      dst = src[0];
+    }
+    static void valueSet(double* dst, const double& src,
+			 const std::string& context = "") {
+      if (!dst)
+	throw std::runtime_error(error_prefix() + context +
+				 "destination pointer null");
+      dst[0] = src;
+    }
+    static void valueSet(double* dst, const double* src,
+			 const std::string& context = "") {
+      if (!dst)
+	throw std::runtime_error(error_prefix() + context +
+				 "pointer null");
+      if (!src)
+	throw std::runtime_error(error_prefix() + context +
+				 "source pointer null");
+      dst[0] = src[0];
+    }
+    static void insertValue(std::map<EnumType, double*>& valsDst,
+			    const EnumType& k, const double* src,
+			    const std::string& context = "") {
+      if (!src)
+	throw std::runtime_error(error_prefix() + context +
+				 "source pointer null");
+      valsDst[k] = const_cast<double*>(src);
+    }
+    static void insertValue(std::map<EnumType, double>& valsDst,
+			    const EnumType& k, const double& src,
+			    const std::string& context = "") {
+      UNUSED(context);
+      valsDst[k] = src;
+    }
+    static void insertValue(std::map<EnumType, double>& valsDst,
+			    const EnumType& k, const double* src,
+			    const std::string& context = "") {
+      if (!src)
+	throw std::runtime_error(error_prefix() + context +
+				 "source pointer null");
+      valsDst[k] = src[0];
+    }
+    static void insertValue(std::map<EnumType, double*>&,
+			    const EnumType& k, const double&,
+			    const std::string& context = "") {
+      throw std::runtime_error(error_prefix() + context +
+			       "No value for \'" + getName(k) + "\'");
     }
     /**
        Throw an error if two values are not equivalent.
@@ -445,6 +655,8 @@ namespace ePhotosynthesis {
     static void compareValues(const EnumType k,
 			      const double& a, const double& b,
 			      const std::string& context = "") {
+      if (std::isnan(a) && std::isnan(b))
+	return;
       double relative_max = std::max(std::fabs(a), std::fabs(b));
       double relative = std::fabs(a - b);
       if (relative_max > COMPARE_RELATIVE_EPSILON)
@@ -455,7 +667,7 @@ namespace ePhotosynthesis {
 	std::string msg = "Values for " +
 	  utils::enum_key2string(module) + " " +
 	  utils::enum_key2string(param_type) + " " +
-	  utils::enum_key2string(k) +
+	  getName(k) +
 	  " differ: " +
 	  to_string_with_precision(a) + " vs " +
 	  to_string_with_precision(b) +
@@ -480,7 +692,7 @@ namespace ePhotosynthesis {
       typename std::map<EnumType, V>::const_iterator it = vals.find(k);
       if (it == vals.end()) {
 	std::string msg = "\'" +
-	  utils::enum_key2string(k) +
+	  getName(k) +
 	  "\' not present";
 	if (!context.empty())
 	  msg = context + ": " + msg;
@@ -489,248 +701,229 @@ namespace ePhotosynthesis {
     }
     // Value manipulation
     /**
-       Add values to a value map.
-       \param vals Map to add values to.
-       \param new_values New values to add to the set.
-       \param clear_existing If true, any existing keys will be removed
-         from the set. If false, any existing keys will remain in the set
-	 unless overwritten by an entry in new_values.
-       \param ignore_constants If true, allow constant values to be
-         updated.
+       Remove skipped values from a value mpa.
+       \tparam V Type of values in the map.
+       \param val Map to remove skipped values from.
+       \param context String providing context for error messages.
      */
-    static void update_value_map(std::map<EnumType, double>& vals,
-				 const std::map<EnumType, double>& new_values,
-				 bool clear_existing = false,
-				 bool ignore_constants = false) {
-      if (EnumClass::constant.size() == 0) {
-	if (clear_existing)
-	  vals.clear();
-      } else {
-	if (clear_existing) {
-	  std::vector<EnumType> to_erase;
-	  for (typename std::map<EnumType, double>::const_iterator it = vals.begin();
-	       it != vals.end(); it++) {
-	    if (!EnumClass::isConstant(it->first))
-	      to_erase.push_back(it->first);
-	  }
-	  for (typename std::vector<EnumType>::const_iterator it = to_erase.begin();
-	       it != to_erase.end(); it++) {
-	    std::cerr << error_prefix() << "update_value_map: erasing " <<
-	      utils::enum_key2string(*it) << std::endl;
-	    vals.erase(vals.find(*it));
-	  }
-	}
-	if (!ignore_constants) {
-	  for (typename std::map<EnumType, double>::const_iterator it = new_values.begin();
-	       it != new_values.end(); it++) {
-	    typename std::map<EnumType, double>::const_iterator it_old = vals.find(it->first);
-	    if (it_old == vals.end() ||
-		!(valuesEqual(it_old->second, it->second))) {
-	      std::string oldval = "NULL";
-	      std::string newval = std::to_string(it->second);
-	      if (it_old != vals.end())
-		oldval = std::to_string(it_old->second);
-	      checkNotConstant(it->first, "update_value_map[alts][" + oldval
-			    + ", " + newval + "]: ");
-	    }
-	  }
-	}
-      }
-      for (typename std::map<EnumType, double>::const_iterator it = new_values.begin();
-	   it != new_values.end(); it++) {
-	if (EnumClass::isSkipped(it->first) ||
-	    EnumClass::isConstant(it->first))
-	  continue;
-	typename std::map<EnumType, double>::iterator it_old = vals.find(it->first);
-	// if (it_old == vals.end())
-	//   throw std::runtime_error(error_prefix() +
-	// 			   "No alt for \'" +
-	// 			   utils::enum_key2string(it->first) +
-	// 			   "\'");
-	std::cerr << error_prefix() << "update_value_map[alts][" <<
-	  utils::enum_key2string(it->first) << "]: ";
-	if (it_old == vals.end()) {
-	  std::cerr << "NULL";
-	  vals.emplace(it->first, it->second);
-	} else {
-	  std::cerr << it_old->second;
-	  it_old->second = it->second;
-	}
-	std::cerr << " -> " << it->second <<
-	  " [AFTER = " << it_old->second <<
-	  "]" << std::endl;
-      }
+    template<typename V>
+    static void remove_skipped(std::map<EnumType, V>& vals,
+			       const std::string& context="") {
       for (typename std::vector<EnumType>::const_iterator s = EnumClass::skipped.begin();
 	   s != EnumClass::skipped.end(); s++) {
-	typename std::map<EnumType, double>::iterator it = vals.find(*s);
+	typename std::map<EnumType, V>::iterator it = vals.find(*s);
 	if (it != vals.end()) {
-	  std::cerr << error_prefix() << "update_value_map[alts]: erasing " <<
-	    utils::enum_key2string(*s) << std::endl;
+	  DEBUG_VALUE_SET(context, "erasing ", *s);
 	  vals.erase(it);
 	}
       }
     }
     /**
-       Add values to a value map.
-       \param vals Map to add values to.
-       \param new_values New values to add to the set.
-       \param clear_existing If true, any existing keys will be removed
-         from the set. If false, any existing keys will remain in the set
-	 unless overwritten by an entry in new_values.
-       \param ignore_constants If true, allow constant values to be
-         updated.
+       Get a map from value name to value pointer.
+       \param val Map from enum key to value pointer.
+       \return Map between value names and value pointers.
      */
-    static void update_value_map(std::map<EnumType, TORIG>& vals,
-				 const std::map<EnumType, double>& new_values,
-				 bool clear_existing = false,
-				 bool ignore_constants = false) {
-      if (clear_existing) {
-	std::vector<EnumType> to_erase;
-	for (typename std::map<EnumType, TORIG>::const_iterator it = vals.begin();
-	     it != vals.end(); it++) {
-	  if (EnumClass::isSkipped(it->first) ||
-	      (new_values.find(it->first) == new_values.end() &&
-	       !EnumClass::isConstant(it->first)))
-	    to_erase.push_back(it->first);
+    static std::map<std::string, double*> get_pointer_map(std::map<EnumType, double*> vals) {
+      std::map<std::string, double*> out;
+      for (typename std::map<EnumType, double*>::iterator it = vals.begin();
+	   it != vals.end(); it++) {
+	out[getName(it->first)] = it->second;
+      }
+      return out;
+    }
+    /**
+       Compare two values maps, throwing an error if the keys do not
+         match, valsSrc contains a constant value that is different than
+	 the value in valsDst, or either map contains a skipped value.
+       \tparam VDst Destination value type.
+       \tparam VSrc Source value type.
+       \param valsDst Map to add values to.
+       \param valsSrc New values to add to the set.
+       \param context String providing context for error messages.
+       \param ignore_extras If true, extra values in valsSrc will be
+         ignored.
+       \param ignore_missing If true, missing values in valsSrc will be
+         ignored.
+       \param ignore_constants If true, constant values can be changed.
+     */
+    template<typename VSrc, typename VDst>
+    static void check_value_maps(std::map<EnumType, VDst>& valsDst,
+				 const std::map<EnumType, VSrc>& valsSrc,
+				 const std::string& context="",
+				 bool ignore_extras=false,
+				 bool ignore_missing=false,
+				 bool ignore_constants=false) {
+      for (typename std::map<EnumType, VSrc>::const_iterator itSrc = valsSrc.begin();
+	   itSrc != valsSrc.end(); itSrc++) {
+	typename std::map<EnumType, VDst>::const_iterator itDst = valsDst.find(itSrc->first);
+	if (itDst == valsDst.end()) {
+	  if (ignore_extras)
+	    continue;
+	  throw std::runtime_error(error_prefix() + context +
+				   getName(itSrc->first) +
+				   " is not present in the destination");
 	}
-	for (typename std::vector<EnumType>::const_iterator it = to_erase.begin();
-	     it != to_erase.end(); it++) {
-	  std::cerr << error_prefix() << "update_value_map[values]: erasing " <<
-	    utils::enum_key2string(*it) << std::endl;
-	  vals.erase(vals.find(*it));
+	if ((!ignore_constants) && isConstant(itSrc->first) &&
+	    (!valuesEqual(itDst->second, itSrc->second))) {
+	  std::string oldval = valueString(itDst->second);
+	  std::string newval = valueString(itSrc->second);
+	  checkNotConstant(itSrc->first, context +
+			   "[" + oldval + ", " + newval + "]: ");
 	}
       }
-      if (!ignore_constants) {
-	for (typename std::map<EnumType, double>::const_iterator it = new_values.begin();
-	     it != new_values.end(); it++) {
-	  typename std::map<EnumType, TORIG>::const_iterator it_old = vals.find(it->first);
-	  if (it_old == vals.end() ||
-	      !(valuesEqual(DREF_ORIG(it_old->second), it->second))) {
-	    std::string oldval = "NULL";
-	    std::string newval = std::to_string(it->second);
-	    if (it_old != vals.end())
-	      oldval = std::to_string(DREF_ORIG(it_old->second));
-	    checkNotConstant(it->first, "update_value_map[values][" + oldval
-			  + ", " + newval + "]: ");
+      if (valsDst.size() != valsSrc.size()) {
+	for (typename std::map<EnumType, VDst>::const_iterator itDst = valsDst.begin();
+	     itDst != valsDst.end(); itDst++) {
+	  typename std::map<EnumType, VSrc>::const_iterator itSrc = valsSrc.find(itDst->first);
+	  if (itSrc == valsSrc.end()) {
+	    if (ignore_missing)
+	      continue;
+	    throw std::runtime_error(error_prefix() + context +
+				     getName(itDst->first) +
+				     " is not present in the source");
 	  }
 	}
       }
-      for (typename std::map<EnumType, double>::const_iterator it = new_values.begin();
-	   it != new_values.end(); it++) {
-	if (EnumClass::isSkipped(it->first) ||
-	    ((!ignore_constants) &&
-	     EnumClass::isConstant(it->first)))
-	  continue;
-	typename std::map<EnumType, TORIG>::iterator it_old = vals.find(it->first);
-	if (it_old == vals.end())
-	  throw std::runtime_error(error_prefix() +
-				   "update_value_map[values][constants]: No " TORIG_STRING " for \'" +
-				   utils::enum_key2string(it->first) +
-				   "\'");
-	std::cerr << error_prefix() << "update_value_map[values][" <<
-	  utils::enum_key2string(it->first) << "]: " <<
-	  PTR_ORIG(it_old->second) << ", ";
-	std::cerr << DREF_ORIG(it_old->second) << " -> " << it->second;
-	DREF_ORIG(it_old->second) = it->second;
-	std::cerr << " [AFTER = " << DREF_ORIG(it_old->second) <<
-	  "]" << std::endl;
-      }
     }
     /**
-       Add values to a value map.
-       \param vals Map to add values to.
-       \param new_values New values to add to the set.
-       \param clear_existing If true, any existing keys will be removed
-         from the set. If false, any existing keys will remain in the set
-	 unless overwritten by an entry in new_values.
-       \param ignore_constants If true, allow constant values to be
-         updated.
+       Copy values from one map to another.
+       \tparam VDst Destination value type.
+       \tparam VSrc Source value type.
+       \param valsDst Map to add values to.
+       \param valsSrc New values to add to the set.
+       \param context String providing context for error messages.
+       \param ignore_extras If true, extra values in valsSrc will be
+         ignored.
+       \param ignore_missing If true, missing values in valsSrc will be
+         ignored.
+       \param ignore_constants If true, constant values can be changed.
+       \param ignore_skipped If true, skipped values can be changed.
      */
-    static void update_value_map(std::map<EnumType, TORIG>& vals,
-				 const std::map<EnumType, TORIG>& new_values,
-				 bool clear_existing = false,
-				 bool ignore_constants = false) {
-      if (clear_existing) {
-	std::vector<EnumType> to_erase;
-	for (typename std::map<EnumType, TORIG>::const_iterator it = vals.begin();
-	     it != vals.end(); it++) {
-	  if (EnumClass::isSkipped(it->first) ||
-	      (new_values.find(it->first) == new_values.end() &&
-	       !EnumClass::isConstant(it->first)))
-	    to_erase.push_back(it->first);
+    template<typename VSrc, typename VDst>
+    static void copy_value_map(std::map<EnumType, VDst>& valsDst,
+			       const std::map<EnumType, VSrc>& valsSrc,
+			       const std::string& context="",
+			       bool ignore_extras=false,
+			       bool ignore_missing=false,
+			       bool ignore_constants=false,
+			       bool ignore_skipped=false) {
+#ifdef CHECK_VALUE_SET_ALTS
+      bool check = true;
+#else // CHECK_VALUE_SET_ALTS
+      bool check = false;
+#endif // CHECK_VALUE_SET_ALTS
+      if (valsDst.size() != valsSrc.size())
+	check = true;
+      if (check)
+	check_value_maps(valsDst, valsSrc, context + "copy_value_map: ",
+			 ignore_extras, ignore_missing, ignore_constants);
+      for (typename std::map<EnumType, VSrc>::const_iterator itSrc = valsSrc.begin();
+	   itSrc != valsSrc.end(); itSrc++) {
+	typename std::map<EnumType, VDst>::iterator itDst = valsDst.find(itSrc->first);
+	if (itDst == valsDst.end()) {
+	  if (ignore_extras)
+	    continue;
+	  throw std::runtime_error(error_prefix() + context +
+				   getName(itSrc->first) +
+				   " is not present in the destination");
 	}
-	for (typename std::vector<EnumType>::const_iterator it = to_erase.begin();
-	     it != to_erase.end(); it++) {
-	  std::cerr << error_prefix() << "update_value_map[values]: erasing " <<
-	    utils::enum_key2string(*it) << std::endl;
-	  vals.erase(vals.find(*it));
-	}
-      }
-      if (!ignore_constants) {
-	for (typename std::map<EnumType, TORIG>::const_iterator it = new_values.begin();
-	     it != new_values.end(); it++) {
-	  typename std::map<EnumType, TORIG>::const_iterator it_old = vals.find(it->first);
-	  if (it_old == vals.end() ||
-	      !(valuesEqual(DREF_ORIG(it_old->second),
-			    DREF_ORIG(it->second)))) {
-	    std::string oldval = "NULL";
-	    std::string newval = std::to_string(DREF_ORIG(it->second));
-	    if (it_old != vals.end())
-	      oldval = std::to_string(DREF_ORIG(it_old->second));
-	    checkNotConstant(it->first, "update_value_map[values][" + oldval
-			  + ", " + newval + "]: ");
-	  }
-	}
-      }
-      for (typename std::map<EnumType, TORIG>::const_iterator it = new_values.begin();
-	   it != new_values.end(); it++) {
-	if (EnumClass::isSkipped(it->first) ||
-	    ((!ignore_constants) &&
-	     EnumClass::isConstant(it->first)))
+	if (((!ignore_skipped) && isSkipped(itSrc->first))
+	    || isInitonce(itSrc->first))
 	  continue;
-	typename std::map<EnumType, TORIG>::iterator it_old = vals.find(it->first);
-	if (it_old == vals.end())
-	  throw std::runtime_error(error_prefix() +
-				   "update_value_map[values][" TORIG_STRING "s]: No " TORIG_STRING " for \'" +
-				   utils::enum_key2string(it->first) +
-				   "\'");
-	std::cerr << error_prefix() << "update_value_map[values][" <<
-	  utils::enum_key2string(it->first) << "]: " <<
-	  PTR_ORIG(it_old->second) << ", ";
-	std::cerr << DREF_ORIG(it_old->second) << " -> " << DREF_ORIG(it->second);
-	DREF_ORIG(it_old->second) = DREF_ORIG(it->second);
-	std::cerr << " [AFTER = " << DREF_ORIG(it_old->second) <<
-	  "]" << std::endl;
-      }
+#ifdef CHECK_VALUE_SET_ALTS
+	std::string srcval = valueString(itSrc->second);
+	std::string dstval = valueString(itDst->second);
+	std::string dstptr = valuePointerString(itDst->second);
+#endif // CHECK_VALUE_SET_ALTS
+	valueSet(itDst->second, itSrc->second);
+#ifdef CHECK_VALUE_SET_ALTS
+	DEBUG_VALUE_SET(context, itSrc->first, ": [", dstptr, "] ",
+			dstval, " -> ", srcval, " [AFTER = ",
+			valueString(itDst->second), "]");
+#endif // CHECK_VALUE_SET_ALTS
+      }      
     }
     /**
        Add values to a value map by reading a parameter file.
+       \tparam V Type of value in vals.
        \param vals Map to add values to.
        \param filename File containing values to add to the set.
-       \param clear_existing If true, any existing keys will be removed
-         from the set. If false, any existing keys will remain in the set
-	 unless overwritten by an entry in new_values.
+       \param context String providing context for error messages.
+       \param ignore_extras If true, extra values in valsSrc will be
+         ignored.
+       \param ignore_missing If true, missing values in valsSrc will be
+         ignored.
+       \param ignore_constants If true, constant values can be changed.
+       \param ignore_skipped If true, skipped values can be changed.
      */
-    static void update_value_map(std::map<EnumType, double>& vals,
-				 const std::string& filename,
-				 bool clear_existing = false) {
+    template<typename V>
+    static void copy_value_map(std::map<EnumType, V>& vals,
+			       const std::string& filename,
+			       const std::string& context="",
+			       bool ignore_extras=false,
+			       bool ignore_missing=false,
+			       bool ignore_constants=false,
+			       bool ignore_skipped=false) {
       std::map<EnumType, double> new_values = utils::readEnumFile<EnumType, double>(filename);
-      update_value_map(vals, new_values, clear_existing, true);
+      copy_value_map(vals, new_values, context + "[" + filename + "]: ",
+		     ignore_extras, ignore_missing,
+		     ignore_constants, ignore_skipped);
+    }
+    /**
+       Add values to a value map from another.
+       \tparam VDst Destination value type.
+       \tparam VSrc Source value type.
+       \param valsDst Map to add values to.
+       \param valsSrc New values to add to the set.
+       \param context String providing context for error messages.
+       \param allow_extras If true, extra values in valsSrc that are not
+         in valsDst will be allowed.
+       \param no_missing If true, an error will be raised if there are
+         values in valsDst that are not in valsSrc.
+       \param no_constants If true, an error will be raised if there are
+         constant values in valsSrc that differ from the values in
+	 valsDst.
+       \param no_skipped If true, an error will be raised if there are
+         skipped values in valsSrc.
+     */
+    template<typename VSrc, typename VDst>
+    static void update_value_map(std::map<EnumType, VDst>& valsDst,
+				 const std::map<EnumType, VSrc>& valsSrc,
+				 const std::string& context="",
+				 bool allow_extras=false,
+				 bool no_missing=false,
+				 bool no_constants=false,
+				 bool no_skipped=false) {
+      copy_value_map(valsDst, valsSrc, context,
+		     allow_extras, !no_missing,
+		     !no_constants, !no_skipped);
     }
     /**
        Add values to a value map by reading a parameter file.
+       \tparam V Type of value in vals.
        \param vals Map to add values to.
        \param filename File containing values to add to the set.
-       \param clear_existing If true, any existing keys will be removed
-         from the set. If false, any existing keys will remain in the set
-	 unless overwritten by an entry in new_values.
+       \param context String providing context for error messages.
+       \param allow_extras If true, extra values in the file that are not
+         in vals will be allowed.
+       \param no_missing If true, an error will be raised if there are
+         values in vals that are not in the file.
+       \param no_constants If true, an error will be raised if there are
+         constant values in the file that differ from the values in vals.
+       \param no_skipped If true, an error will be raised if there are
+         skipped values in the file.
      */
-    static void update_value_map(std::map<EnumType, TORIG>& vals,
-				 std::map<EnumType, TORIG>& vals_all,
+    template<typename V>
+    static void update_value_map(std::map<EnumType, V>& vals,
 				 const std::string& filename,
-				 bool clear_existing = false) {
-      std::map<EnumType, double> new_values = utils::readEnumFile<EnumType, double>(filename);
-      update_value_map(vals, vals_all, new_values, clear_existing, true);
+				 const std::string& context="",
+				 bool allow_extras=false,
+				 bool no_missing=false,
+				 bool no_constants=false,
+				 bool no_skipped=false) {
+      copy_value_map(vals, filename, context,
+		     allow_extras, !no_missing,
+		     !no_constants, !no_skipped);
     }
     /**
        Re-initialize the values in a value map to the default values,
@@ -743,72 +936,30 @@ namespace ePhotosynthesis {
     static void init_value_map(std::map<EnumType, V>& vals,
 			       const bool useC3) {
       if (useC3) {
-	update_value_map(vals, defaults_C3, false, true);
+	copy_value_map(vals, defaults_C3, "init_value_map[C3]: ",
+		       true, false, true, true);
       } else {
-	update_value_map(vals, defaults, false, true);
-      }
-    }
-    static void init_value_map_orig(std::map<EnumType, TORIG>& vals,
-				    const std::map<EnumType, TORIG>& new_vals) {
-      // vals.insert(new_vals.begin(), new_vals.end());
-      for (typename std::map<EnumType, TORIG>::const_iterator it_new = new_vals.begin();
-	   it_new != new_vals.end(); it_new++) {
-	typename std::map<EnumType, TORIG>::iterator it_old = vals.find(it_new->first);
-	if (it_old == vals.end()) {
-	  std::cerr << error_prefix() << "init_value_map_orig: emplace " <<
-	    utils::enum_key2string(it_new->first) << std::endl;
-	  vals.emplace(it_new->first, it_new->second);
-	}
-      }
-      for (typename std::vector<EnumType>::const_iterator s = EnumClass::skipped.begin();
-	   s != EnumClass::skipped.end(); s++) {
-	typename std::map<EnumType, TORIG>::iterator it = vals.find(*s);
-	if (it != vals.end()) {
-	  std::cerr << error_prefix() << "init_value_map_orig[values]: erasing " <<
-	    utils::enum_key2string(*s) << std::endl;
-	  vals.erase(it);
-	}
+	copy_value_map(vals, defaults, "init_value_map: ",
+		       true, false, true, true);
       }
     }
     /**
        Get the reference for the value associated with a key from a value
          map.
+       \tparam T Type of values in map.
        \param vals Value map.
        \param k Key to get value for.
        \param context String providing context for error messages.
        \returns Value reference.
      */
-    static double& get_value(std::map<EnumType, double>& vals,
-			     const EnumType k,
-			     const std::string& context="[]") {
-      checkNotSkipped(k, context);
-      checkNotConstant(k, context);
+    template<typename T>
+    static ValueType get_value(std::map<EnumType, T>& vals,
+			       const EnumType k,
+			       const std::string& context="[]: ") {
       check_value_map(vals, k, context);
-      if (context.size()) {
-	std::cerr << error_prefix() << context << "get_value[double]: " <<
-	  utils::enum_key2string(k) << std::endl;
-      }
-      return vals.find(k)->second;
-    }
-    /**
-       Get the reference for the value associated with a key from a value
-         map.
-       \param vals Value map.
-       \param k Key to get value for.
-       \param context String providing context for error messages.
-       \returns Value reference.
-     */
-    static double& get_value(std::map<EnumType, TORIG>& vals,
-			     const EnumType k,
-			     const std::string& context="[]") {
-      checkNotSkipped(k, context);
-      checkNotConstant(k, context);
-      check_value_map(vals, k, context);
-      if (context.size()) {
-	std::cerr << error_prefix() << context << "get_value[TORIG]: " <<
-	  utils::enum_key2string(k) << std::endl;
-      }
-      return DREF_ORIG(vals.find(k)->second);
+      return ValueType(k, vals.find(k)->second,
+		       context + "get_value[T]: "
+		       + getName(k));
     }
     /**
        Get the constant reference for the value associated with a key from
@@ -818,15 +969,12 @@ namespace ePhotosynthesis {
        \param context String providing context for error messages.
        \returns Constant value reference.
      */
-    static const double& get_value(const std::map<EnumType, double>& vals,
-				   const EnumType k,
-				   const std::string& context="[]") {
-      checkNotSkipped(k, context);
+    static const double& get_value_const(const std::map<EnumType, double>& vals,
+					 const EnumType k,
+					 const std::string& context="") {
       check_value_map(vals, k, context);
-      if (context.size()) {
-	std::cerr << error_prefix() << context << "get_value[const double]: " <<
-	  utils::enum_key2string(k) << std::endl;
-      }
+      DEBUG_VALUE_SET(context, "[CONST DOUBLE]: ", k, " = ",
+		      vals.find(k)->second);
       return vals.find(k)->second;
     }
     /**
@@ -837,55 +985,61 @@ namespace ePhotosynthesis {
        \param context String providing context for error messages.
        \returns Constant value reference.
      */
-    static const double& get_value(const std::map<EnumType, TORIG>& vals,
-				   const EnumType k,
-				   const std::string& context="[]") {
-      checkNotSkipped(k, context);
+    static const double& get_value_const(const std::map<EnumType, double*>& vals,
+					 const EnumType k,
+					 const std::string& context="") {
       check_value_map(vals, k, context);
-      if (context.size()) {
-	std::cerr << error_prefix() << context << "get_value[const TORIG]: " <<
-	  utils::enum_key2string(k) << std::endl;
-      }
-      return DREF_ORIG(vals.find(k)->second);
+      DEBUG_VALUE_SET(context, "[CONST DOUBLE*]: ", k, " = ",
+		      *(vals.find(k)->second));
+      return *(vals.find(k)->second);
     }
     /**
        Update the value associated with a key in a value map.
        \param vals Value map to update.
        \param k Key to update value for.
        \param v New value for key.
+       \param context String providing context for error messages.
      */
     static void set_value(std::map<EnumType, double>& vals,
-			  const EnumType k, const double v) {
-      checkNotSkipped(k, "set_value: ");
-      checkNotConstant(k, "set_value: ");
-      std::cerr << error_prefix() << "set_value[double]: " <<
-	utils::enum_key2string(k) << ": ";
-      if (vals.find(k) == vals.end())
-	std::cerr << "NULL";
-      else
-	std::cerr << vals[k];
-      std::cerr << " -> " << v;
+			  const EnumType k, const double v,
+			  const std::string& context="") {
+#ifdef CHECK_VALUE_SET_ALTS
+      DEBUG_VALUE_SET_NOEND(context, "[DOUBLE] ", k, "[",
+			    std::to_string(k), "]: ");
+      if (vals.find(k) == vals.end()) {
+	DEBUG_VALUE_SET_RAW("NULL");
+      } else {
+	DEBUG_VALUE_SET_RAW(vals[k]);
+      }
+      DEBUG_VALUE_SET_RAW(" -> ", v);
+#endif // CHECK_VALUE_SET_ALTS
+      checkNotConstant(k, context);
       vals[k] = v;
-      std::cerr << " [AFTER = " << vals[k] << "]" << std::endl;
-      // get_value(vals, k, "set") = v;
+      DEBUG_VALUE_SET_END(" [AFTER = ", vals[k], "]");
     }
     /**
        Update the value associated with a key in a value map.
        \param vals Value map to update.
        \param k Key to update value for.
        \param v New value for key.
+       \param context String providing context for error messages.
      */
-    static void set_value(std::map<EnumType, TORIG>& vals,
-			  const EnumType k, const double v) {
-      std::cerr << error_prefix() << "set_value[TORIG]: " <<
-	utils::enum_key2string(k) << ": ";
-      if (vals.find(k) == vals.end())
-	std::cerr << "NULL";
-      else
-	std::cerr << DREF_ORIG(vals[k]);
-      std::cerr << " -> " << v;
-      get_value(vals, k, "set") = v;
-      std::cerr << " [AFTER = " << DREF_ORIG(vals[k]) << std::endl;
+    static void set_value(std::map<EnumType, double*>& vals,
+			  const EnumType k, const double v,
+			  const std::string& context="") {
+      DEBUG_VALUE_SET_NOEND(context, "[DOUBLE*] ", k, "[",
+			    std::to_string(k), "]: ");
+#ifdef CHECK_VALUE_SET_ALTS
+      if (vals.find(k) == vals.end()) {
+	DEBUG_VALUE_SET_RAW("[NULL] 0");
+      } else {
+	DEBUG_VALUE_SET_RAW("[", vals[k], "] ", *(vals[k]));
+      }
+      DEBUG_VALUE_SET_RAW(" -> ", v);
+#endif // CHECK_VALUE_SET_ALTS
+      check_value_map(vals, k, context);
+      *(vals[k]) = v;
+      DEBUG_VALUE_SET_END(" [AFTER = ", *(vals[k]), "]");
     }
     /**
        Update the value associated with a key in a value map from a map
@@ -899,7 +1053,8 @@ namespace ePhotosynthesis {
     static void set_value_from_EnzymeAct(std::map<EnumType, V>& vals,
 					 const EnumType k,
 					 const std::map<std::string, double>& EnzymeAct) {
-      set_value(vals, k, EnzymeAct.at(utils::enum_key2string(k)));
+      set_value(vals, k, EnzymeAct.at(getName(k)),
+		"set_value_from_EnzymeAct: ");
     }
     /**
        Get the alternate value for the value associated with a
@@ -909,82 +1064,35 @@ namespace ePhotosynthesis {
        \param context String providing context for error messages.
        \returns Alternate value.
      */
-    static TORIG& get_value_orig(std::map<EnumType, TORIG>& vals,
-				 const EnumType k,
-				 const std::string& context="[]") {
-      checkNotSkipped(k, context);
+    static double*& get_value_orig(std::map<EnumType, double*>& vals,
+				   const EnumType k,
+				   const std::string& context="[]: ") {
       checkNotConstant(k, context);
       check_value_map(vals, k, context);
-      std::cerr << error_prefix() << context << "get_value_orig: " <<
-	utils::enum_key2string(k) << std::endl;
-      return vals.find(k)->second;
-    }
-    /**
-       Get the constant alternate value for the value associated with a
-         key from a value map.
-       \param vals Value map.
-       \param k Key to get value for.
-       \param context String providing context for error messages.
-       \returns Constant alternate value.
-     */
-    static TORIG_CONST& get_value_orig(const std::map<EnumType, TORIG>& vals,
-				       const EnumType k,
-				       const std::string& context="[]") {
-      checkNotSkipped(k, context);
-      check_value_map(vals, k, context);
-      std::cerr << error_prefix() << context << "get_value_orig[const]: " <<
-	utils::enum_key2string(k) << std::endl;
+      DEBUG_VALUE_SET(context, k);
       return vals.find(k)->second;
     }
     /**
        Add a reference to an original value for the given key to a value
          map.
        \param vals Value map to update.
-       \param vals_all Value map of all values to update.
        \param k Key to update value for.
        \param v New value for key.
        \param context String providing context for error messages.
      */
-    static void insert_value_orig(std::map<EnumType, TORIG>& vals,
-				  std::map<EnumType, TORIG>& vals_all,
+    static void insert_value_orig(std::map<EnumType, double*>& vals,
 				  const EnumType k, double* v,
 				  const std::string& context="") {
-      if (vals_all.find(k) == vals_all.end()) {
-	std::cerr << error_prefix() << "insert_value_orig: emplace " <<
-	  utils::enum_key2string(k) << std::endl;
-	vals.emplace(k, ADDR_ORIG(v[0]));
-	vals_all.emplace(k, ADDR_ORIG(v[0]));
-	std::cerr << error_prefix() << context << "inserted " <<
-	  utils::enum_key2string(k) << " [" << v << "]" << std::endl;
-      } else {
-	std::cerr << error_prefix() << context <<
-	  utils::enum_key2string(k) << " already inserted" << std::endl;
-      }
-    }
-    /**
-       Add a reference to an original value for the given key to a value
-         map.
-       \param vals Value map to update.
-       \param vals_all Value map of all values to update.
-       \param k Key to update value for.
-       \param v New value for key.
-       \param context String providing context for error messages.
-     */
-    static void insert_const_value_orig(std::map<EnumType, TORIG>& vals,
-					std::map<EnumType, TORIG>& vals_all,
-					const EnumType k, const double* v,
-					const std::string& context="") {
-      if (vals_all.find(k) == vals_all.end()) {
-	std::cerr << error_prefix() << "insert_const_value_orig: emplace " <<
-	  utils::enum_key2string(k) << std::endl;
-	vals.emplace(k, ADDR_ORIG(const_cast<double*>(v)[0]));
-	vals_all.emplace(k, ADDR_ORIG(const_cast<double*>(v)[0]));
-	EnumClass::checkConstant(k);
-	std::cerr << error_prefix() << context << "inserted " <<
-	  utils::enum_key2string(k) << " [" << v << "]" << std::endl;
-      } else {
-	std::cerr << error_prefix() << context <<
-	  utils::enum_key2string(k) << " already inserted" << std::endl;
+      if (vals.find(k) == vals.end()) {
+	vals.emplace(k, &(v[0]));
+	if (isInitonce(k)) {
+	  compareValues(k, defaults.find(k)->second, defaults_C3.find(k)->second);
+	  v[0] = defaults.find(k)->second;
+	  DEBUG_VALUE_SET(context, "initialized ", k, " = ",
+			  vals[k], " [", v, "]");
+	}
+	DEBUG_VALUE_SET(context, "inserted ", k, " = ",
+			vals[k], " [", v, "]");
       }
     }
     /**
@@ -993,8 +1101,8 @@ namespace ePhotosynthesis {
        \param k Key to update value for.
        \param v New value for key.
      */
-    static void set_value_orig(std::map<EnumType, TORIG>& vals,
-			       const EnumType k, TORIG v) {
+    static void set_value_orig(std::map<EnumType, double*>& vals,
+			       const EnumType k, double* v) {
       get_value_orig(vals, k, "set_orig") = v;
     }
     /**
@@ -1005,7 +1113,7 @@ namespace ePhotosynthesis {
        \param k Key to check.
        \param context String providing context for error messages.
      */
-    static void check_value_alt(const std::map<EnumType, TORIG>& vals,
+    static void check_value_alt(const std::map<EnumType, double*>& vals,
 				const std::map<EnumType, double>& alts,
 				const EnumType k,
 				const std::string& context="") {
@@ -1013,19 +1121,19 @@ namespace ePhotosynthesis {
       if (itp == alts.end()) {
 	throw std::runtime_error(error_prefix() + context +
 				 "check_value_alt: Key \'" +
-				 utils::enum_key2string(k) +
+				 getName(k) +
 				 "\' is missing from alts");
       }
-      typename std::map<EnumType, TORIG>::const_iterator itv = vals.find(k);
+      typename std::map<EnumType, double*>::const_iterator itv = vals.find(k);
       if (itv == vals.end()) {
 	throw std::runtime_error(error_prefix() + context +
 				 "check_value_alt: Key \'" +
-				 utils::enum_key2string(k) +
+				 getName(k) +
 				 "\' is missing from values");
       }
-      compareValues(k, DREF_ORIG(itv->second), itp->second,
+      compareValues(k, *(itv->second), itp->second,
 		    context +
-		    "Comparing \'" + utils::enum_key2string(k) +
+		    "Comparing \'" + getName(k) +
 		    "\' between old and new tracking methods");
     }
     /**
@@ -1035,45 +1143,39 @@ namespace ePhotosynthesis {
        \param alts Alternate value map.
        \param context String providing context for error messages.
      */
-    static void check_value_alts(const std::map<EnumType, TORIG>& vals,
+    static void check_value_alts(const std::map<EnumType, double*>& vals,
 				 const std::map<EnumType, double>& alts,
 				 const std::string& context="") {
-      for (typename std::map<EnumType, TORIG>::const_iterator itv = vals.begin();
+      for (typename std::map<EnumType, double*>::const_iterator itv = vals.begin();
 	   itv != vals.end(); itv++) {
 	check_value_alt(vals, alts, itv->first, context);
       }
       for (typename std::map<EnumType, double>::const_iterator itp = alts.begin();
 	   itp != alts.end(); itp++) {
-	typename std::map<EnumType, TORIG>::const_iterator itv = vals.find(itp->first);
+	typename std::map<EnumType, double*>::const_iterator itv = vals.find(itp->first);
 	if (itv == vals.end()) {
-	  throw std::runtime_error(error_prefix() + context +
-				   "check_value_alts: Key \'" +
-				   utils::enum_key2string(itp->first) +
-				   "\' is missing from values");
+	  check_value_alt(vals, alts, itp->first, context);
 	}
       }
     }
     /**
        Reset all of the values in a value map that are not constant to 0.
+       \tparam Type of value in map.
        \param vals Value map to reset.
      */
-    static void reset_value_orig_map(std::map<EnumType, TORIG>& vals) {
-      std::cerr << error_prefix() << "reset_value_orig_map" << std::endl;
-      for (typename std::map<EnumType, TORIG>::iterator it = vals.begin();
-	   it != vals.end(); it++)
-	if (!EnumClass::isConstant(it->first))
-	  set_value(vals, it->first, getDefault(it->first));
-    }
-    /**
-       Reset all of the values in a value map that are not constant to 0.
-       \param vals Value map to reset.
-     */
-    static void reset_value_map(std::map<EnumType, double>& vals) {
-      std::cerr << error_prefix() << "reset_value_map" << std::endl;
-      for (typename std::map<EnumType, double>::iterator it = vals.begin();
-	   it != vals.end(); it++)
-	if (!EnumClass::isConstant(it->first))
-	  set_value(vals, it->first, getDefault(it->first));
+    template<typename V>
+    static void reset_value_map(std::map<EnumType, V>& vals) {
+      DEBUG_VALUE_SET_NOARGS;
+      for (typename std::map<EnumType, V>::iterator it = vals.begin();
+	   it != vals.end(); it++) {
+	if (!EnumClass::isConstant(it->first)) {
+	  if (isResetone(it->first)) {
+	    set_value(vals, it->first, 1.0, "reset_value_map: ");
+	  } else {
+	    set_value(vals, it->first, 0.0, "reset_value_map: ");
+	  }
+	}
+      }
     }
     /**
        Get the values from a value map in an array ordering based on
@@ -1088,9 +1190,13 @@ namespace ePhotosynthesis {
       size_t i = 0;
       out.resize(vals.size());
       for (typename std::map<EnumType, V>::const_iterator it = vals.begin();
-	   it != vals.end(); it++, i++) {
-	if (inArrays(it->first))
-	  out[i] = get_value(vals, it->first);
+	   it != vals.end(); it++) {
+	if (inArrays(it->first)) {
+	  checkNotConstant(it->first);
+	  out[i] = get_value_const(vals, it->first,
+				   "value_map_toArray: ");
+	  i++;
+	}
       }
       return out;
     }
@@ -1106,8 +1212,14 @@ namespace ePhotosynthesis {
 				    const arr &vec,
 				    const std::size_t offset = 0) {
       size_t i = 0;
-      size_t nexp = vals.size() - EnumClass::nonvector.size();
+      size_t nexp = memberCount();
       size_t nact = vec.size() - offset;
+      if (vals.size() != defaults.size())
+	throw std::runtime_error(error_prefix() +
+				 std::to_string(vals.size()) +
+				 " provided, but " +
+				 std::to_string(defaults.size()) +
+				 " expected");
       if (nexp > nact)
 	throw std::runtime_error(error_prefix() +
 				 std::to_string(nexp) +
@@ -1120,11 +1232,20 @@ namespace ePhotosynthesis {
       for (typename std::map<EnumType, V>::iterator it = vals.begin();
 	   it != vals.end(); it++) {
 	if (inArrays(it->first)) {
-	  checkNotConstant(it->first, "value_map_fromArray: ");
-	  set_value(vals, it->first, vec[offset + i]);
+	  // checkNotConstant(it->first, "value_map_fromArray: ");
+	  set_value(vals, it->first, vec[offset + i],
+		    "value_map_fromArray: ");
 	  i++;
 	}
       }
+    }
+    /**
+       Get the number of members that will be used to populated vectors.
+       \return Member counts.
+     */
+    static std::size_t memberCount() {
+      std::size_t out = defaults.size() - (skipped.size() + nonvector.size());
+      return out;
     }
   };
   
@@ -1140,6 +1261,7 @@ namespace ePhotosynthesis {
   template<MODULE ID, PARAM_TYPE PT>
   class ValueSet : public ValueSetBase<ID, PT> {
   public:
+    typedef ValueSet<ID, PT> ValueSetClass;
     INHERIT_METHODS_VALUE_SET_BASE(ValueSetBase<ID, PT>)
 
     /**
@@ -1150,14 +1272,27 @@ namespace ePhotosynthesis {
 #ifdef CHECK_VALUE_SET_ALTS
       alts(),
 #endif // CHECK_VALUE_SET_ALTS
-      values(), values_all() {}
+      values() {}
     /**
        Copy constructor. Values will be updated from the values in the
          copied set.
+       \param other Value set to copy values from.
      */
     ValueSet(const ValueSet& other) : ValueSet() {}
     /**
+       Assignment operator. Values will be updated from the values in the
+         copied set.
+       \param other Value set to copy values from.
+       \returns Updated value set.
+     */
+    ValueSet& operator=(const ValueSet &other) {
+      copyMembers(other);
+      return *this;
+    }
+    /**
        Copy values from an array.
+       \param vec Vector to copy values from.
+       \param offset Index into vec that copied values should start from.
      */
     ValueSet(const arr &vec, const std::size_t offset) : ValueSet() {}
     /**
@@ -1165,58 +1300,81 @@ namespace ePhotosynthesis {
        \param other Value set to copy values from.
      */
     virtual void copyMembers(const ValueSet& other) {
-      init_value_map_orig(values, values_all);
-      EnumClass::printSkipped(std::cerr);
-      std::cerr << "ValueSet::copy" << std::endl;
-      update_value_map(values, other.values, true);
+      initMembersState();
 #ifdef CHECK_VALUE_SET_ALTS
-      update_value_map(alts, other.alts, true);
+      copy_value_map(alts, other.alts, "copyMembers[alts]: ", true);
+#else // CHECK_VALUE_SET_ALTS
+      // copy_value_map(values, other.values, "copyMembers[vals]: ", true);
 #endif // CHECK_VALUE_SET_ALTS
     }
-    static std::size_t memberCount() {
-      std::size_t out = defaults.size() - (skipped.size() + nonvector.size());
-      return out;
-    }
     /**
-       Initialize the values in the instance. This should be overriden
+       Initialize the members in the instance. This should be overriden
          by child classes with a method that adds pointers to values.
      */
-    virtual void initMembers() {
-      if (!values.empty())
-	return;
-      init_value_map_orig(values, values_all);
-    }
+    virtual void initMembers() {}
     /**
        Initialize the static values in the instance.
      */
     static void initStaticMembers() {}
     /**
+       Initialize the members in the instance for the current state.
+       \param force If true, the state will be updated reguardless of
+         if the class has be updated since the last time the state was
+	 updated.
+     */
+    virtual void initMembersState(bool force=false) {
+      if (!(force || values.empty()))
+	return;
+      initMembers();
+#ifdef CHECK_VALUE_SET_ALTS
+      alts.insert(defaults.begin(), defaults.end());
+#endif // CHECK_VALUE_SET_ALTS
+    }
+    /**
        Re-initialize the values to the default values, minus any values
          that are skipped.
        \param useC3 If true, default values for a C3 will be used
      */
-    void initValues(const bool useC3) {
-      init_value_map_orig(values, values_all);
-      init_value_map(values, useC3);
+    virtual void initValues(const bool useC3) {
+      initMembersState(true);
 #ifdef CHECK_VALUE_SET_ALTS
       init_value_map(alts, useC3);
 #endif // CHECK_VALUE_SET_ALTS
     }
+
     /**
-       Get the current number of values in the set.
-       \returns Number of values in the set.
+       Copy values from member pointers into alternate value map.
      */
-    virtual std::size_t size_values() const {
-      return CALL_STATIC_METHOD(size);
+    virtual void updateAlts() {
+#ifdef CHECK_VALUE_SET_ALTS
+      copy_value_map(alts, values, "updateAlts: ",
+		     false, false, false, false);
+#endif // CHECK_VALUE_SET_ALTS
     }
+
+    /**
+       Initialize the map containing pointers to instance members.
+     */
+    virtual void initMemberPointers() {}
+      
+    /**
+       Get the map containing pointers to the instance members.
+       \return Map between member names and pointers to instance
+         members.
+     */
+    virtual std::map<std::string, double*> getPointerMap() {
+      std::map<std::string, double*> out;
+      return out;
+    }
+
     /** Get the iterator pointing to the start of the value set */
-    iterator begin() { return CALL_STATIC_METHOD(begin); }
+    iterator begin() { CALL_STATIC_METHOD(begin); }
     /** Get the iterator pointing to the end of the value set */
-    iterator end() { return CALL_STATIC_METHOD(end); }
+    iterator end() { CALL_STATIC_METHOD(end); }
     /** Get the constant iterator pointing to the start of the value set */
-    const_iterator begin() const { return CALL_STATIC_METHOD(begin); }
+    const_iterator begin() const { CALL_STATIC_METHOD_CONST(begin); }
     /** Get the constant iterator pointing to the end of the value set */
-    const_iterator end() const { return CALL_STATIC_METHOD(end); }
+    const_iterator end() const { CALL_STATIC_METHOD_CONST(end); }
     // Inspection utilities
     /**
        Display the values in the set.
@@ -1225,7 +1383,7 @@ namespace ePhotosynthesis {
        \returns Output stream.
      */
     virtual std::ostream& print(std::ostream &out, const uint tab = 0) const {
-      return CALL_STATIC(print_value_map, out, tab);
+      CALL_STATIC_CONST(print_value_map, out, tab);
     }
     /**
        Throw an error if a key is not present in the set.
@@ -1233,38 +1391,66 @@ namespace ePhotosynthesis {
        \param context String to prefix the error message with.
      */
     void check(const EnumType k, const std::string& context = "") const {
-      CALL_STATIC(check_value_map, k, context);
+      CALL_STATIC_CONST(check_value_map, k, context);
     }
     // Value manipulation
     /**
        Add values to the set.
        \param new_values New values to add to the set.
-       \param clear_existing If true, any existing keys will be removed
-         from the set. If false, any existing keys will remain in the set
-	 unless overwritten by an entry in new_values.
+       \param context String providing context for error messages.
+       \param allow_extras If true, extra values in new_values that are
+         not in the set will be allowed.
+       \param no_missing If true, an error will be raised if there are
+         values in the set that are not in new_values.
+       \param no_constants If true, an error will be raised if there are
+         constant values in new_values that differ from the values in
+	 the set.
+       \param no_skipped If true, an error will be raised if there are
+         skipped values in new_values.
      */
     void update_values(const std::map<EnumType, double>& new_values,
-		       bool clear_existing = false) {
-      CALL_STATIC(update_value_map, new_values, clear_existing);
+		       const std::string& context="",
+		       bool allow_extras=false,
+		       bool no_missing=false,
+		       bool no_constants=false,
+		       bool no_skipped=false) {
+      CALL_STATIC(update_value_map, new_values,
+		  context + "update_values: ",
+		  allow_extras, no_missing,
+		  no_constants, no_skipped);
     }
     /**
        Add values to the set by reading a parameter file.
        \param filename File containing values to add to the set.
-       \param clear_existing If true, any existing keys will be removed
-         from the set. If false, any existing keys will remain in the set
-	 unless overwritten by an entry in new_values.
+       \param context String providing context for error messages.
+       \param allow_extras If true, extra values in the file that are not
+         in the set will be allowed.
+       \param no_missing If true, an error will be raised if there are
+         values in the set that are not in the file.
+       \param no_constants If true, an error will be raised if there are
+         constant values in the file that differ from the values in the
+	 set.
+       \param no_skipped If true, an error will be raised if there are
+         skipped values in the file.
      */
     void update_values(const std::string& filename,
-		       bool clear_existing = false) {
-      CALL_STATIC(update_value_map, filename, clear_existing);
+		       const std::string& context="",
+		       bool allow_extras=false,
+		       bool no_missing=false,
+		       bool no_constants=false,
+		       bool no_skipped=false) {
+      CALL_STATIC(update_value_map, filename,
+		  context + "update_values[" + filename + "]: ",
+		  allow_extras, no_missing,
+		  no_constants, no_skipped);
     }
     /**
        Get the reference for the value associated with a key.
        \param k Key to get value for.
        \returns Value reference.
      */
-    double& operator[](const EnumType k) {
-      return CALL_STATIC(get_value, k);
+    ValueType operator[](const EnumType k) {
+      CALL_STATIC(get_value, k);
     }
     /**
        Get the constant reference for the value associated with a key.
@@ -1272,7 +1458,7 @@ namespace ePhotosynthesis {
        \returns Constant value reference.
      */
     const double& operator[](const EnumType k) const {
-      return CALL_STATIC(get_value, k);
+      CALL_STATIC_CONST(get_value_const, k);
     }
     /**
        Update the value associated with a key.
@@ -1290,15 +1476,23 @@ namespace ePhotosynthesis {
      */
     virtual void setFromEnzymeAct(const EnumType k,
 				  const std::map<std::string, double>& EnzymeAct) {
-      return CALL_STATIC(set_value_from_EnzymeAct, k, EnzymeAct);
+      CALL_STATIC(set_value_from_EnzymeAct, k, EnzymeAct);
     }
     /**
-       Get the reference for the value associated with a key.
+       Get the value associated with a key.
        \param k Key to get value for.
-       \returns Value reference.
+       \returns Value
+     */
+    virtual ValueType get(const EnumType k) {
+      CALL_STATIC(get_value, k);
+    }
+    /**
+       Get the value associated with a key.
+       \param k Key to get value for.
+       \returns Value
      */
     virtual double get(const EnumType k) const {
-      return CALL_STATIC(get_value, k);
+      CALL_STATIC_CONST(get_value_const, k);
     }
     /**
        Add a value reference for the given key.
@@ -1314,48 +1508,7 @@ namespace ePhotosynthesis {
       if (alts.find(k) == alts.end())
 	alts[k] = *v;
 #endif // CHECK_VALUE_SET_ALTS
-      insert_value_orig(values, values_all, k, v, context);
-    }
-    /**
-       Add a constant value reference for the given key.
-       \param k Key to update value for.
-       \param v New value pointer for key.
-       \param context String providing context for error messages.
-     */
-    virtual void insertConstOrig(const EnumType k, const double* v,
-				 const std::string& context="") {
-      if (k == EnumClass::NONE || k == EnumClass::MAX)
-	return;
-#ifdef CHECK_VALUE_SET_ALTS
-      if (alts.find(k) == alts.end())
-	alts[k] = *v;
-#endif // CHECK_VALUE_SET_ALTS
-      insert_const_value_orig(values, values_all, k, v, context);
-    }
-    /**
-       Update the value reference associated with a key.
-       \param k Key to update value for.
-       \param v New value reference for key.
-     */
-    virtual void setOrig(const EnumType k, TORIG v) {
-      set_value_orig(values, k, v);
-    }
-    /**
-       Get the reference for the value associated with a key.
-       \param k Key to get value for.
-       \returns Value reference.
-     */
-    virtual TORIG getOrig(const EnumType k) {
-      return get_value_orig(values, k);
-    }
-    /**
-       Get the const reference for the value reference associated with
-         a key.
-       \param k Key to get value for.
-       \returns Constant value reference.
-     */
-    virtual TORIG_CONST getOrig(const EnumType k) const {
-      return get_value_orig(values, k);
+      insert_value_orig(values, k, v, context);
     }
     /**
        Check if the value using the original code matches the value
@@ -1385,17 +1538,31 @@ namespace ePhotosynthesis {
 #endif // CHECK_VALUE_SET_ALTS
     }
     /**
+       Reset the static class members.
+     */
+    static void reset() {
+      clearSkipped();
+    }
+    /**
        Reset all of the values to 0;
      */
     virtual void resetValues() {
       CALL_STATIC_NOARGS(reset_value_map);
     }
     /**
+       Get the number of values in the set that would be included in an
+         array produced by toArray.
+       \returns Value count.
+     */
+    virtual std::size_t sizeArray() const {
+      CALL_STATIC_METHOD_CONST(size);
+    }
+    /**
        Get the values in an array ordering based on key order.
        \returns Values array.
      */
     virtual arr toArray() const {
-      return CALL_STATIC_NOARGS(value_map_toArray);
+      CALL_STATIC_NOARGS_CONST(value_map_toArray);
     }
     /**
        Update the values in the set from an array.
@@ -1408,8 +1575,7 @@ namespace ePhotosynthesis {
 #ifdef CHECK_VALUE_SET_ALTS
     std::map<EnumType, double> alts; /**< Alternate copy of values in the set calculated using only the updated dynamic values */
 #endif // CHECK_VALUE_SET_ALTS
-    std::map<EnumType, TORIG> values; /**< Values in the set. */
-    std::map<EnumType, TORIG> values_all; /**< Values in the set including those that are being skipped. */
+    std::map<EnumType, double*> values; /**< Values in the set. */
   };
   
   /**
@@ -1424,22 +1590,31 @@ namespace ePhotosynthesis {
   template<MODULE ID, PARAM_TYPE PT>
   class ValueSetStatic : public ValueSetBase<ID, PT> {
   public:
+    typedef ValueSetStatic<ID, PT> ValueSetClass;
     INHERIT_METHODS_VALUE_SET_BASE(ValueSetBase<ID, PT>)
     
     /**
        Initialize the values in the instance. This should be overriden
          by child classes with a method that adds pointers to values.
      */
-    static void initMembers() {
-      if (!values.empty())
-	return;
-      init_value_map_orig(values, values_all);
-    }
+    static void initMembers() {}
     /**
        Initialize the static values in the instance.
      */
-    static void initStaticMembers() {
+    static void initStaticMembers() {}
+    /**
+       Initialize the members in the instance for the current state.
+       \param force If true, the state will be updated reguardless of
+         if the class has be updated since the last time the state was
+	 updated.
+     */
+    static void initMembersState(bool force=false) {
+      if (!(force || values.empty()))
+	return;
       initMembers();
+#ifdef CHECK_VALUE_SET_ALTS
+      alts.insert(defaults.begin(), defaults.end());
+#endif // CHECK_VALUE_SET_ALTS
     }
     /**
        Re-initialize the values to the default values, minus any values
@@ -1447,27 +1622,41 @@ namespace ePhotosynthesis {
        \param useC3 If true, default values for a C3 will be used
      */
     static void initValues(const bool useC3) {
-      std::cerr << error_prefix() << "Before init_value_map_orig" << std::endl;
-      init_value_map_orig(values, values_all);
-      std::cerr << error_prefix() << "Before init_value_map[values]" << std::endl;
-      init_value_map(values, useC3);
+      initMembersState();
 #ifdef CHECK_VALUE_SET_ALTS
-      std::cerr << error_prefix() << "Before init_value_map[alts]" << std::endl;
       init_value_map(alts, useC3);
 #endif // CHECK_VALUE_SET_ALTS
-      std::cerr << error_prefix() << "initValues done" << std::endl;
     }
+
     /**
-       Get the current number of values in the set.
-       \returns Number of values in the set.
+       Copy values from member pointers into alternate value map.
      */
-    static std::size_t size_values() {
-      return CALL_STATIC_METHOD(size);
+    static void updateAlts() {
+#ifdef CHECK_VALUE_SET_ALTS
+      copy_value_map(alts, values, "updateAlts: ",
+		     false, false, false, false);
+#endif // CHECK_VALUE_SET_ALTS
     }
+    
+    /**
+       Initialize the map containing pointers to instance members.
+     */
+    static void initMemberPointers() {}
+      
+    /**
+       Get the map containing pointers to the static class members.
+       \return Map between member names and pointers to static class
+         members.
+     */
+    static std::map<std::string, double*> getPointerMap() {
+      std::map<std::string, double*> out;
+      return out;
+    }
+
     /** Get the iterator pointing to the start of the value set */
-    static iterator begin() { return CALL_STATIC_METHOD(begin); }
+    static iterator begin() { CALL_STATIC_METHOD(begin); }
     /** Get the iterator pointing to the end of the value set */
-    static iterator end() { return CALL_STATIC_METHOD(end); }
+    static iterator end() { CALL_STATIC_METHOD(end); }
     /** Get the constant iterator pointing to the start of the value set */
     // Inspection utilities
     /**
@@ -1477,7 +1666,7 @@ namespace ePhotosynthesis {
        \returns Output stream.
      */
     static std::ostream& print(std::ostream &out, const uint tab = 0) {
-      return CALL_STATIC(print_value_map, out, tab);
+      CALL_STATIC(print_value_map, out, tab);
     }
     /**
        Throw an error if a key is not present in the set.
@@ -1491,24 +1680,52 @@ namespace ePhotosynthesis {
     /**
        Add values to the set.
        \param new_values New values to add to the set.
-       \param clear_existing If true, any existing keys will be removed
-         from the set. If false, any existing keys will remain in the set
-	 unless overwritten by an entry in new_values.
+       \param context String providing context for error messages.
+       \param allow_extras If true, extra values in new_values that are
+         not in the set will be allowed.
+       \param no_missing If true, an error will be raised if there are
+         values in the set that are not in new_values.
+       \param no_constants If true, an error will be raised if there are
+         constant values in new_values that differ from the values in
+	 the set.
+       \param no_skipped If true, an error will be raised if there are
+         skipped values in new_values.
      */
     static void update_values(const std::map<EnumType, double>& new_values,
-			      bool clear_existing = false) {
-      CALL_STATIC(update_value_map, new_values, clear_existing);
+			      const std::string& context="",
+			      bool allow_extras=false,
+			      bool no_missing=false,
+			      bool no_constants=false,
+			      bool no_skipped=false) {
+      CALL_STATIC(update_value_map, new_values,
+		  context + "update_values: ",
+		  allow_extras, no_missing,
+		  no_constants, no_skipped);
     }
     /**
        Add values to the set by reading a parameter file.
        \param filename File containing values to add to the set.
-       \param clear_existing If true, any existing keys will be removed
-         from the set. If false, any existing keys will remain in the set
-	 unless overwritten by an entry in new_values.
+       \param context String providing context for error messages.
+       \param allow_extras If true, extra values in the file that are not
+         in the set will be allowed.
+       \param no_missing If true, an error will be raised if there are
+         values in the set that are not in the file.
+       \param no_constants If true, an error will be raised if there are
+         constant values in the file that differ from the values in the
+	 set.
+       \param no_skipped If true, an error will be raised if there are
+         skipped values in the file.
      */
     static void update_values(const std::string& filename,
-			      bool clear_existing = false) {
-      CALL_STATIC(update_value_map, filename, clear_existing);
+			      const std::string& context="",
+			      bool allow_extras=false,
+			      bool no_missing=false,
+			      bool no_constants=false,
+			      bool no_skipped=false) {
+      CALL_STATIC(update_value_map, filename,
+		  context + "update_values[" + filename + "]: ",
+		  allow_extras, no_missing,
+		  no_constants, no_skipped);
     }
     /**
        Update the value associated with a key.
@@ -1526,15 +1743,15 @@ namespace ePhotosynthesis {
      */
     static void setFromEnzymeAct(const EnumType k,
 				 const std::map<std::string, double>& EnzymeAct) {
-      return CALL_STATIC(set_value_from_EnzymeAct, k, EnzymeAct);
+      CALL_STATIC(set_value_from_EnzymeAct, k, EnzymeAct);
     }
     /**
-       Get the reference for the value associated with a key.
+       Get the value associated with a key.
        \param k Key to get value for.
-       \returns Value reference.
+       \returns Value.
      */
     static double get(const EnumType k) {
-      return CALL_STATIC(get_value, k);
+      CALL_STATIC(get_value_const, k);
     }
     /**
        Add a value reference for the given key.
@@ -1548,64 +1765,10 @@ namespace ePhotosynthesis {
 	return;
 #ifdef CHECK_VALUE_SET_ALTS
       if (alts.find(k) == alts.end()) {
-	std::cerr << error_prefix() << ": insertOrig: " <<
-	  utils::enum_key2string(k) << std::endl;
 	alts[k] = *v;
       }
 #endif // CHECK_VALUE_SET_ALTS
-      insert_value_orig(values, values_all, k, v, context);
-    }
-    /**
-       Add a constant value reference for the given key.
-       \param k Key to update value for.
-       \param v New value pointer for key.
-       \param context String providing context for error messages.
-     */
-    static void insertConstOrig(const EnumType k, const double* v,
-				const std::string& context="") {
-      if (k == EnumClass::NONE || k == EnumClass::MAX)
-	return;
-      if (!EnumClass::isConstant(k)) {
-	throw std::runtime_error(error_prefix() + context +
-				 "insertConstOrig: Key\'" +
-				 utils::enum_key2string(k) +
-				 "\' is not constant (constant keys: " +
-				 string_value_vector(EnumClass::constant) +
-				 ")");
-      }
-      insertOrig(k, const_cast<double*>(v), context);
-	/*
-#ifdef CHECK_VALUE_SET_ALTS
-      if (alts.find(k) == alts.end())
-	alts[k] = *v;
-#endif // CHECK_VALUE_SET_ALTS
-      insert_const_value_orig(values, values_all, k, v, context);
-	*/
-    }
-    /**
-       Update the value reference associated with a key.
-       \param k Key to update value for.
-       \param v New value reference for key.
-     */
-    static void setOrig(const EnumType k, TORIG v) {
-      set_value_orig(values, k, v);
-    }
-    /**
-       Get the reference for the value associated with a key.
-       \param k Key to get value for.
-       \returns Value reference.
-     */
-    static TORIG getOrig(const EnumType k) {
-      return get_value_orig(values, k);
-    }
-    /**
-       Get the const reference for the value reference associated with
-         a key.
-       \param k Key to get value for.
-       \returns Constant value reference.
-     */
-    static TORIG_CONST getOrigConst(const EnumType k) {
-      return get_value_orig(const_cast<const std::map<EnumType, TORIG>&>(values), k);
+      insert_value_orig(values, k, v, context);
     }
     /**
        Check if the value using the original code matches the value
@@ -1635,17 +1798,26 @@ namespace ePhotosynthesis {
 #endif // CHECK_VALUE_SET_ALTS
     }
     /**
-       Reset all of the values to 0;
+       Reset the static class members to 0.
      */
-    static void resetValues() {
+    static void reset() {
+      clearSkipped();
       CALL_STATIC_NOARGS(reset_value_map);
+    }
+    /**
+       Get the number of values in the set that would be included in an
+         array produced by toArray.
+       \returns Value count.
+     */
+    virtual std::size_t sizeArray() const {
+      CALL_STATIC_METHOD(size);
     }
     /**
        Get the values in an array ordering based on key order.
        \returns Values array.
      */
     static arr toArray() {
-      return CALL_STATIC_NOARGS(value_map_toArray);
+      CALL_STATIC_NOARGS(value_map_toArray);
     }
     /**
        Update the values in the set from an array.
@@ -1658,8 +1830,7 @@ namespace ePhotosynthesis {
 #ifdef CHECK_VALUE_SET_ALTS
     static std::map<EnumType, double> alts; /**< Alternate copy of values in the set calculated using only the updated dynamic values */
 #endif // CHECK_VALUE_SET_ALTS
-    static std::map<EnumType, TORIG> values; /**< Values in the set. */
-    static std::map<EnumType, TORIG> values_all; /**< Values in the set including those that are being skipped. */
+    static std::map<EnumType, double*> values; /**< Values in the set. */
   };
 
 #ifdef CHECK_VALUE_SET_ALTS
@@ -1669,13 +1840,9 @@ namespace ePhotosynthesis {
 #endif // CHECK_VALUE_SET_ALTS
 
   template<MODULE ID, PARAM_TYPE PT>
-  std::map<typename ValueSetStatic<ID, PT>::EnumType, TORIG>
+  std::map<typename ValueSetStatic<ID, PT>::EnumType, double*>
   ValueSetStatic<ID, PT>::values = {};
   
-  template<MODULE ID, PARAM_TYPE PT>
-  std::map<typename ValueSetStatic<ID, PT>::EnumType, TORIG>
-  ValueSetStatic<ID, PT>::values_all = {};
-
 }
     
 #undef CALL_STATIC

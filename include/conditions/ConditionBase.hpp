@@ -60,6 +60,9 @@ public:
       */
     void fromArray(const arr &vec, const std::size_t offset = 0) {
         static_cast<T*>(this)->_fromArray(vec, offset);
+#ifdef CHECK_VALUE_SET_ALTS
+	ValueSetClass::fromArray(vec, offset);
+#endif // CHECK_VALUE_SET_ALTS
     }
 
     /**
@@ -78,7 +81,7 @@ public:
       */
     static std::size_t size() {
         if (T::module != MODULE_NONE) {
-	  size_t alt = T::defaults.size() - (T::skipped.size() + T::nonvector.size());
+	  size_t alt = T::memberCount();
 	  if (alt != T::_size()) {
 	    std::cerr << "DEFAULTS = " << std::endl;
 	    T::printDefaults(std::cerr, 1);
@@ -86,8 +89,9 @@ public:
 	    T::printSkipped(std::cerr);
 	    std::cerr << "NON-ARRAY = ";
 	    T::printNonvector(std::cerr);
-	    throw std::runtime_error("Size of default_values ("
-				     + std::to_string(T::defaults.size())
+	    throw std::runtime_error(error_prefix()
+				     + "Size of default_values ("
+				     + std::to_string(alt)
 				     + ") does not match expected count ("
 				     + std::to_string(T::_size()) + ")");
 	  }
@@ -112,6 +116,14 @@ public:
       */
     void clear() {
         static_cast<T*>(this)->_clear();
+    }
+
+    /**
+       Common, public interface for the private _reset function.
+    */
+    static void reset() {
+        T::_reset();
+        ValueSetClass::reset();
     }
 
     /**

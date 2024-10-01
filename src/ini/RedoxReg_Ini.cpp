@@ -46,27 +46,21 @@ DEFINE_VALUE_SET(RedoxRegCondition);
 
 RedoxRegCondition* RedoxReg::_init(Variables *theVars) {
 
-    theVars->initParamStatic<RedoxReg>();
-  
     RACondition* RA_con = RA::init(theVars);
 
     const double Thion = 0.25;     // This is a wild guess
+    
     RedoxRegCondition* RedoxReg_con = new RedoxRegCondition(RA_con, Thion);
-    theVars->initParam(*RedoxReg_con);
-
-#ifdef CHECK_VALUE_SET_ALTS
-    RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX6, PS::getV6());
-    RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX9, PS::getV9());
-    RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX13, PS::getV13());
-    RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX16, PS::getV16());
-#endif // CHECK_VALUE_SET_ALTS
+    RedoxReg_con->Thion = Thion;
+    RedoxReg::Fd_Thio_ET = 500.;
+    RedoxReg::ThioT = 0.5;
+    RedoxReg::Thio_Oxidation = 0.1;
 
     RedoxReg::RedoxReg_VMAX6 = PS::getV6();
     RedoxReg::RedoxReg_VMAX9 = PS::getV9();
     RedoxReg::RedoxReg_VMAX13 = PS::getV13();
     RedoxReg::RedoxReg_VMAX16 = PS::getV16();
 
-    // TODO: Read these from RedoxReg_MP
     for (int i = 0; i < 5; i++)
         theVars->RedoxReg_MP.push_back(zeros(3));
     theVars->RedoxReg_MP[0][0] = 1000.;
@@ -91,9 +85,33 @@ RedoxRegCondition* RedoxReg::_init(Variables *theVars) {
 
     //theVars->BF2RedoxReg_Fdt = theVars->BF_Pool.kU_f;
 
-#ifdef CHECK_VALUE_SET_ALTS
-    RedoxReg_con->checkAlts("RedoxReg::_init::Condition");
-#endif // CHECK_VALUE_SET_ALTS
-    
     return RedoxReg_con;
+}
+
+RedoxRegCondition* RedoxReg::_initAlt(Variables *theVars, RedoxRegCondition* RedoxReg_con) {
+#ifdef CHECK_VALUE_SET_ALTS
+    theVars->initParamStatic<RedoxReg>();
+    theVars->initParam(*RedoxReg_con);
+  
+    RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX6, PS::getV6());
+    RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX9, PS::getV9());
+    RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX13, PS::getV13());
+    RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX16, PS::getV16());
+
+    // TODO: Read RedoxReg_MP from file?
+    
+#else // CHECK_VALUE_SET_ALTS
+    UNUSED(theVars);
+#endif // CHECK_VALUE_SET_ALTS
+    return RedoxReg_con;
+}
+
+void RedoxReg::_updateAlts(Variables *theVars, RedoxRegCondition* RedoxReg_con) {
+#ifdef CHECK_VALUE_SET_ALTS
+    RedoxReg::updateAlts();
+    RedoxReg_con->updateAlts();
+#else // CHECK_VALUE_SET_ALTS
+    UNUSED(theVars);
+    UNUSED(RedoxReg_con);
+#endif // CHECK_VALUE_SET_ALTS
 }

@@ -189,7 +189,8 @@ foreach(suffix COND POOL KE MOD RC)
     list(APPEND iARGS --macro-suffix-c=${suffix})
   endif()
   foreach(ftype names defaults defaults_C3
-          constant calculated nonvector skipped glymaids)
+          constant calculated nonvector skipped glymaids resetone
+	  initonce)
     if(ftype STREQUAL "defaults_C3")
       set(ftype_key "alternate-values")
       list(APPEND iARGS --collection-name-${ftype_key}=${ftype})

@@ -35,7 +35,7 @@ using namespace ePhotosynthesis::drivers;
 using namespace ePhotosynthesis::conditions;
 
 CMDriver::~CMDriver() {
-    modules::CM::_reset();
+    modules::CM::reset();
 }
 void CMDriver::setup() {
 

@@ -39,24 +39,12 @@ class PRModuleTest;
 namespace modules {
 class PS_PR;
 
-#define MEMBERS_PR_CONSTANT			\
-  Q10_112,					\
-    Q10_113,					\
-    Q10_121,					\
-    Q10_122,					\
-    Q10_123,					\
-    Q10_124,					\
-    Q10_131,					\
-    CE
-#define MEMBERS_PR_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_PR_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-  
 /**
   Class for grouping PR related functions and common variables
   */
-class PR : public ModuleBase<PR, conditions::PRCondition, MODULE_PR> {
+class PR : public MODULE_BASE(PR) {
 public:
-    DECLARE_VALUE_SET_STATIC(PR, ModuleBase<PR, conditions::PRCondition, MODULE_PR>)
+    DECLARE_MODULE(PR)
 private:
     friend ModuleBase;
     friend class modules::PS_PR;

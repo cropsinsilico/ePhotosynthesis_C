@@ -36,10 +36,6 @@ namespace conditions {
 
 class RACondition;
 
-#define MEMBERS_RuACTCondition_CONSTANT EMPTY_MEMBER_LIST
-#define MEMBERS_RuACTCondition_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_RuACTCondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-
 /**
  Class for holding the inputs to RuACT_mb
  */
@@ -105,7 +101,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {
+    static void _reset() {
       setEPS_connect(false);
     }
     SET_GET_BOOL(EPS_connect, RuBP)

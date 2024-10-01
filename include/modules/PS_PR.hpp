@@ -41,7 +41,9 @@ class CM;
 /**
  Class for the PS_PR Module functions.
  */
-class PS_PR : public ModuleBase<PS_PR, conditions::PS_PRCondition> {
+class PS_PR : public MODULE_BASE(PS_PR) {
+public:
+    DECLARE_MODULE_COMPOSITE(PS_PR)
 private:
     friend ModuleBase;
     friend class modules::CM;

@@ -32,10 +32,6 @@
 namespace ePhotosynthesis {
 namespace pool {
 
-#define MEMBERS_FIBFPool_CONSTANT EMPTY_MEMBER_LIST
-#define MEMBERS_FIBFPool_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_FIBFPool_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-
 /**
  Class for FIBF_Pool data
  */
@@ -51,11 +47,14 @@ public:
 
     @param other The FIBFPool object to copy
     */
-  FIBFPool(const FIBFPool &other) :
-    ValueSet<MODULE_FIBF, PARAM_TYPE_POOL>(other) {
-      initMembers();
+  FIBFPool(const FIBFPool &other) : ValueSet<MODULE_FIBF, PARAM_TYPE_POOL>(other) {
+    initMembers();
+    *this = other;
+  }
+  FIBFPool& operator=(const FIBFPool &other) {
       PQT = other.PQT;
       copyMembers(other);
+      return *this;
   }
 };
 

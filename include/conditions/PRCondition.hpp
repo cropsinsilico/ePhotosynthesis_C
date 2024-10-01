@@ -36,11 +36,6 @@ namespace conditions {
 
 class PS_PRCondition;
 
-#define MEMBERS_PRCondition_NOT_IN_ARRAY _v131
-#define MEMBERS_PRCondition_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_PRCondition_CONSTANT EMPTY_MEMBER_LIST
-  
-  
 /**
  Class for holding the inputs to PR_mb
  */
@@ -109,7 +104,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {
+    static void _reset() {
       setPS_connect(false);
       setPS_RuBP(false);
     }

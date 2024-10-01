@@ -31,14 +31,19 @@ using namespace ePhotosynthesis::conditions;
 
 std::size_t RACondition::count = 0;
 
+DEFINE_VALUE_SET_SRC(RACondition);
+
 RACondition::RACondition(const RACondition* const other) {
+    initMembers();
     RuACT_con = new RuACTCondition(other->RuACT_con);
     EPS_con = new EPSCondition(other->EPS_con);
     RuACT_con->setParent(this);
     EPS_con->setParent(this);
+    copyMembers(*other);
 }
 
 RACondition::RACondition(EPSCondition* eother, RuACTCondition* rother) {
+    initMembers();
     if (rother->parent == nullptr) {
         RuACT_con = rother;
     } else {
@@ -54,6 +59,7 @@ RACondition::RACondition(EPSCondition* eother, RuACTCondition* rother) {
 }
 
 RACondition::RACondition(const arr &vec, const std::size_t offset) {
+    initMembers();
     fromArray(vec, offset);
 }
 

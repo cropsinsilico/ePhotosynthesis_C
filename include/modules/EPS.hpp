@@ -44,7 +44,9 @@ class RA;
 /**
  Class for the EPS Module functions.
  */
-class EPS : public ModuleBase<EPS, conditions::EPSCondition> {
+class EPS : public MODULE_BASE(EPS) {
+public:
+    DECLARE_MODULE_COMPOSITE(EPS);
 private:
     friend ModuleBase;
     friend class modules::RA;

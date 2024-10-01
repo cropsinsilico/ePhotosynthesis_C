@@ -36,7 +36,7 @@ using namespace ePhotosynthesis::drivers;
 using namespace ePhotosynthesis::conditions;
 
 DynaPSDriver::~DynaPSDriver() {
-    modules::DynaPS::_reset();
+    modules::DynaPS::reset();
 }
 
 void DynaPSDriver::setup() {

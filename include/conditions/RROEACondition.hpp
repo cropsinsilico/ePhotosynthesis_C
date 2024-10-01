@@ -36,12 +36,6 @@ namespace conditions {
 
 class trDynaPSCondition;
 
-#define MEMBERS_RROEACondition_CONSTANT		\
-  Coeff
-#define MEMBERS_RROEACondition_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_RROEACondition_NOT_IN_ARRAY	\
-  Coeff
-
 /**
  Class for holding the inputs to RROEA_mb
  */
@@ -106,7 +100,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {}
+    static void _reset() {}
 
     static const std::size_t count; // size of the current serialized output
 #ifdef INCDEBUG

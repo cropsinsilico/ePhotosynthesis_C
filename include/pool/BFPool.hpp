@@ -32,10 +32,6 @@
 namespace ePhotosynthesis {
 namespace pool {
 
-#define MEMBERS_BFPool_CONSTANT EMPTY_MEMBER_LIST
-#define MEMBERS_BFPool_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_BFPool_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-  
 /**
  Class for holding BF_Pool data
  */
@@ -51,9 +47,11 @@ public:
 
       @param other The BFPool object to copy
       */
-    BFPool(const BFPool &other) :
-      ValueSet<MODULE_BF, PARAM_TYPE_POOL>(other) {
-        initMembers();
+    BFPool(const BFPool &other) : ValueSet<MODULE_BF, PARAM_TYPE_POOL>(other) {
+      initMembers();
+      *this = other;
+    }
+    BFPool& operator=(const BFPool &other) {
         kA_d = other.kA_d;
         kA_f = other.kA_f;
         kA_U = other.kA_U;
@@ -76,6 +74,7 @@ public:
         k_r3 = other.k_r3;
         k_pq_oxy = other.k_pq_oxy;
 	copyMembers(other);
+	return *this;
     }
 
 };

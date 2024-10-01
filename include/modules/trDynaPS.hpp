@@ -40,7 +40,9 @@ class trDynaPSDriver;
 }
 namespace modules {
 
-class trDynaPS : public ModuleBase<trDynaPS, conditions::trDynaPSCondition> {
+class trDynaPS : public MODULE_BASE(trDynaPS) {
+public:
+    DECLARE_MODULE_COMPOSITE(trDynaPS)
 private:
     friend ModuleBase;
     friend drivers::trDynaPSDriver;

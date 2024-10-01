@@ -40,10 +40,12 @@ class DynaPSCondition;
 /**
  Class for holding input for RA_mb
  */
-class RACondition : public ConditionBase<RACondition, DynaPSCondition> {
+class RACondition : public ConditionBase<RACondition, DynaPSCondition, MODULE_RA> {
 public:
+    DECLARE_VALUE_SET_COMPOSITE(RACondition, (RuACTCondition, EPSCondition), ConditionBase<RACondition, DynaPSCondition, MODULE_RA>)
     RACondition(DynaPSCondition* par = nullptr) : RuACT_con(new RuACTCondition(this)), EPS_con(new EPSCondition(this)) {
         setParent(par);
+        initMembers();
     }
     ~RACondition() override {
         _clear();
@@ -117,7 +119,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {
+    static void _reset() {
         count = 0;
     }
 #ifdef INCDEBUG

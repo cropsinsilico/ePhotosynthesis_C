@@ -33,6 +33,8 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
+DEFINE_VALUE_SET(RACondition);
+
 RACondition* RA::_init(Variables *theVars) {
     EPSCondition* EPS_con = EPS::init(theVars);
     RuACTCondition* RuACT_con = RuACT::init(theVars);
@@ -45,8 +47,24 @@ RACondition* RA::_init(Variables *theVars) {
     return RA_con;
 }
 
+RACondition* RA::_initAlt(Variables *theVars, RACondition* RA_con) {
+#ifdef CHECK_VALUE_SET_ALTS
+    if (theVars->RuACT_EPS_com)
+	RA_con->RuACT_con->set(COND::RuACT::RuBP,
+			       RA_con->EPS_con->CM_con->PS_PR_con->PS_con->RuBP);
+#else // CHECK_VALUE_SET_ALTS
+    UNUSED(theVars);
+#endif // CHECK_VALUE_SET_ALTS
+    return RA_con;
+}
+
+void RA::_updateAlts(Variables *theVars, RACondition* RA_con) {
+    UNUSED(theVars);
+    UNUSED(RA_con);
+}
+
 void RA::_reset() {
-    EPS::_reset();
-    RuACT::_reset();
+    EPS::reset();
+    RuACT::reset();
     conditions::RACondition::reset();
 }

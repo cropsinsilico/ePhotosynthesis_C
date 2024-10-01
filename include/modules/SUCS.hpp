@@ -39,26 +39,12 @@ class SUCSModuleTest;
 namespace modules {
 class CM;
 
-#define MEMBERS_SUCS_CONSTANT			\
-  KI583,					\
-    Vmatpf,					\
-    Q10_51,					\
-    Q10_52,					\
-    Q10_55,					\
-    Q10_56,					\
-    Q10_57,					\
-    Q10_58,					\
-    SC,						\
-    SC1
-#define MEMBERS_SUCS_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_SUCS_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-  
 /**
  Class for SUCS related functions and common variables
  */
-class SUCS : public ModuleBase<SUCS, conditions::SUCSCondition, MODULE_SUCS> {
+class SUCS : public MODULE_BASE(SUCS) {
 public:
-    DECLARE_VALUE_SET_STATIC(SUCS, ModuleBase<SUCS, conditions::SUCSCondition, MODULE_SUCS>)
+    DECLARE_MODULE(SUCS)
 private:
     friend ModuleBase;
     friend class modules::CM;

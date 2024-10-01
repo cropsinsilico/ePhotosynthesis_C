@@ -32,13 +32,6 @@
 namespace ePhotosynthesis {
 namespace RC {
 
-#define MEMBERS_RROEARC_CONSTANT \
-  ke2ATPase,			 \
-    Coeff
-#define MEMBERS_RROEARC_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_RROEARC_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-  
-
 /**
  Class for RROEA_RC data
  */
@@ -53,9 +46,11 @@ public:
 
       @param other The RROEARC object to copy
       */
-    RROEARC(const RROEARC &other) :
-      ValueSet<MODULE_RROEA, PARAM_TYPE_RC>(other) {
-        initMembers();
+    RROEARC(const RROEARC &other) : ValueSet<MODULE_RROEA, PARAM_TYPE_RC>(other) {
+      initMembers();
+      *this = other;
+    }
+    RROEARC& operator=(const RROEARC &other) {
         ke2GAPDH = other.ke2GAPDH;
         ke2MDH = other.ke2MDH;
         ke2FBPase = other.ke2FBPase;
@@ -68,6 +63,7 @@ public:
         keFd2Calvin = other.keFd2Calvin;
         ke2ATPGPP = other.ke2ATPGPP;
 	copyMembers(other);
+	return *this;
     }
 
 };

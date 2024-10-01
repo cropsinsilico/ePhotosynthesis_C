@@ -32,10 +32,6 @@
 namespace ePhotosynthesis {
 namespace RC {
 
-#define MEMBERS_BFRC_CONSTANT EMPTY_MEMBER_LIST
-#define MEMBERS_BFRC_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_BFRC_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-  
 /**
  Class for holding BF_RC data
  */
@@ -51,7 +47,10 @@ public:
       @param other The BFRC object to copy
       */
     BFRC(const BFRC &other) : ValueSet<MODULE_BF, PARAM_TYPE_RC>(other) {
-        initMembers();
+      initMembers();
+      *this = other;
+    }
+    BFRC& operator=(const BFRC &other) {
         K1 = other.K1;
         K2 = other.K2;
         K3 = other.K3;
@@ -90,6 +89,7 @@ public:
         V2M = other.V2M;
         KE2 = other.KE2;
 	copyMembers(other);
+	return *this;
     }
 };
 

@@ -29,15 +29,20 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
+DEFINE_VALUE_SET_SRC(FIBFCondition);
+
 FIBFCondition::FIBFCondition(const FIBFCondition* const other) {
+    initMembers();
     BF_con = new BFCondition(other->BF_con);
     FI_con = new FICondition(other->FI_con);
     BF_con->setParent(this);
     FI_con->setParent(this);
     kd = other->kd;
+    copyMembers(*other);
 }
 
 FIBFCondition::FIBFCondition(BFCondition* bother, FICondition* fother) {
+    initMembers();
     if (bother->parent == nullptr) {
         BF_con = bother;
     } else {
@@ -54,6 +59,7 @@ FIBFCondition::FIBFCondition(BFCondition* bother, FICondition* fother) {
 }
 
 FIBFCondition::FIBFCondition(const arr &vec, const std::size_t offset) {
+    initMembers();
     fromArray(vec, offset);
 }
 

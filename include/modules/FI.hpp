@@ -37,16 +37,12 @@ class FIModuleTest;
 #endif
 namespace modules {
 
-#define MEMBERS_FI_CONSTANT EMPTY_MEMBER_LIST
-#define MEMBERS_FI_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_FI_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-  
 /**
  Class for FI related functions
  */
-class FI : public ModuleBase<FI, conditions::FICondition, MODULE_FI> {
+class FI : public MODULE_BASE(FI) {
 public:
-    DECLARE_VALUE_SET_STATIC(FI, ModuleBase<FI, conditions::FICondition, MODULE_FI>)
+    DECLARE_MODULE(FI)
     SET_GET_BOOL_MODULE(BF_connect, conditions::FI)
 private:
     friend ModuleBase;

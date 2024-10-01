@@ -1,4 +1,4 @@
-Vx	160.0	# * 0.37; The concentration of Violozanthin
-Ax	10.0	# * 0.37; The concentration of Anthrozanthin
-Zx	5.0	# * 0.37; The concentration of Zeaznthin
-ABA	1.0	# The concentration of ABA
+Vx	160.0	# [CALC] * 0.37; The concentration of Violozanthin
+Ax	10.0	# [CALC] * 0.37; The concentration of Anthrozanthin
+Zx	5.0	# [CALC] * 0.37; The concentration of Zeaznthin
+ABA	1.0	# [CALC] The concentration of ABA

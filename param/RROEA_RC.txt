@@ -8,5 +8,5 @@ ke2RubACT	6.35		# *= Coeff / 60; The rate constant of electron transfer from thi
 ke2Fd		18.5   		# *= Coeff; The rate constant of electron transfer to fe
 keFd2Thio	10		# *= Coeff; The rate constant of electron transfer from fd to thio
 keFd2Calvin	7		# *= Coeff; The rate constant of electron transfer from fd to Calvin cycle
-ke2ATPGPP	0.105		# *= Coeff / 60; The rate constant of electron transfer to ATPGPP
+ke2ATPGPP	6.3		# *= Coeff / 60; The rate constant of electron transfer to ATPGPP
 Coeff		1.0		# [CONST] Used to scale electron transfer rate constants (with the exception of ke2ATPase)

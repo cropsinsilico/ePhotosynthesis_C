@@ -141,6 +141,20 @@ namespace ePhotosynthesis {
     throw std::runtime_error("No enum skipped collection could be found");
     return result;
   }
+  // Utility for getting resetone from enum
+  template<typename T>
+  const std::vector<T>& get_enum_resetone() {
+    static const std::vector<T> result;
+    throw std::runtime_error("No enum resetone collection could be found");
+    return result;
+  }
+  // Utility for getting initonce from enum
+  template<typename T>
+  const std::vector<T>& get_enum_initonce() {
+    static const std::vector<T> result;
+    throw std::runtime_error("No enum initonce collection could be found");
+    return result;
+  }
   // Unspecialized enum
   template<MODULE M, PARAM_TYPE PT>
   class ValueSetEnum {
@@ -148,15 +162,18 @@ namespace ePhotosynthesis {
     enum Type : int;
     static const MODULE module;
     static const PARAM_TYPE param_type;
-    static const std::vector<Type> all;
-    static const std::map<Type, std::string> names;
-    static const std::map<Type, double> defaults;
-    static const std::map<Type, double> defaults_C3;
-    static const std::map<Type, std::string> glymaids;
-    static const std::vector<Type> constant;
-    static const std::vector<Type> calculated;
-    static const std::vector<Type> nonvector;
-    static std::vector<Type> skipped;
+    static const std::vector<Type> all;  /**< All enum values */
+    static bool state_updated;  /** One of the editable collection(s) was updated */
+    static const std::map<Type, std::string> names;  /**< Names for values */
+    static const std::map<Type, double> defaults;  /**< Defaults for values */
+    static const std::map<Type, double> defaults_C3;  /**< Defaults_C3 for values */
+    static const std::map<Type, std::string> glymaids;  /**< Glymaids for values */
+    static const std::vector<Type> constant;  /**< Values that are constant */
+    static const std::vector<Type> calculated;  /**< Values that are calculated */
+    static const std::vector<Type> nonvector;  /**< Values that are nonvector */
+    static std::vector<Type> skipped;  /**< Values that are skipped */
+    static const std::vector<Type> resetone;  /**< Values that are resetone */
+    static const std::vector<Type> initonce;  /**< Values that are initonce */
     /**
       Get a prefix for errors describing the class
       \return Prefix
@@ -167,6 +184,26 @@ namespace ePhotosynthesis {
       out += "[";
       out += get_enum_names<MODULE>().find(module)->second;
       out += "]: ";
+      return out;
+    }
+    /**
+      Serialize an enum to an output stream
+      \param[in,out] out Output stream
+      \param[in] x Key to serialize
+      \return Updated stream
+    */
+    friend std::ostream& operator<<(std::ostream& out, const Type& x) {
+      out << getName(x);
+      return out;
+    }
+    /**
+      Serialize an enum to an output stream
+      \param[in,out] out Output stream
+      \param[in] x Collection to serialize
+      \return Updated stream
+    */
+    friend std::ostream& operator<<(std::ostream& out, const std::map<Type, std::string>& x) {
+      print_map(x, out);
       return out;
     }
     /**
@@ -205,10 +242,13 @@ namespace ePhotosynthesis {
     */
     static std::ostream& print_map(const std::map<Type, double>& collection, std::ostream& out, const unsigned int tab = 0) {
       const std::string space(tab * 4, ' ');
+      out << space << "{" << std::endl;;
       typename std::map<Type, double>::const_iterator it;
       for (it = collection.begin(); it != collection.end(); it++) {
-        out << space << names.find(it->first)->second << " = " << it->second << std::endl;
+        out << space << "  " << names.find(it->first)->second << " = " << it->second << std::endl;
       }
+      out << space << "}";
+      out << std::endl;
       return out;
     }
     /**
@@ -366,9 +406,10 @@ namespace ePhotosynthesis {
       out << space << "[";
       typename std::vector<Type>::const_iterator it;
       for (it = collection.begin(); it != collection.end(); it++) {
-        out << names.find((*(it)))->second << "," << std::endl;
+        out << names.find((*(it)))->second << ",";
       }
-      out << "]" << std::endl;
+      out << "]";
+      out << std::endl;
       return out;
     }
     /**
@@ -381,6 +422,16 @@ namespace ePhotosynthesis {
       std::ostringstream oss;
       print_vector(collection, oss, tab);
       return oss.str();
+    }
+    /**
+      Serialize an enum to an output stream
+      \param[in,out] out Output stream
+      \param[in] x Collection to serialize
+      \return Updated stream
+    */
+    friend std::ostream& operator<<(std::ostream& out, const std::vector<Type>& x) {
+      print_vector(x, out);
+      return out;
     }
     /**
       Print the contents of constant
@@ -591,6 +642,7 @@ namespace ePhotosynthesis {
     */
     static void clearSkipped() {
       skipped.clear();
+      state_updated = true;
     }
     /**
       Add an element to skipped if it is not already present
@@ -600,6 +652,7 @@ namespace ePhotosynthesis {
       if (!isSkipped(x)) {
         skipped.push_back(x);
       }
+      state_updated = true;
     }
     /**
       Remove an element from skipped
@@ -613,6 +666,7 @@ namespace ePhotosynthesis {
       if (it != skipped.end()) {
         skipped.erase(it);
       }
+      state_updated = true;
     }
     /**
       Add multiple elements to skipped if they are not already present
@@ -623,6 +677,7 @@ namespace ePhotosynthesis {
       for (it = x.begin(); it != x.end(); it++) {
         addSkipped((*(it)));
       }
+      state_updated = true;
     }
     /**
       Remove multiple elements to skipped if they are not already present
@@ -632,6 +687,109 @@ namespace ePhotosynthesis {
       typename std::vector<Type>::const_iterator it;
       for (it = x.begin(); it != x.end(); it++) {
         removeSkipped((*(it)));
+      }
+      state_updated = true;
+    }
+    /**
+      Print the contents of resetone
+      \param[in,out] out Stream to print to
+      \param[in] tab Indentation to add to each line
+      \return Updated stream
+    */
+    static std::ostream& printResetone(std::ostream& out, const unsigned int tab = 0) {
+      return print_vector(resetone, out, tab);
+    }
+    /**
+      Serialize the contents of resetone
+      \param[in] tab Indentation to add to each line
+      \return Serialized collection
+    */
+    static std::string stringResetone(const unsigned int tab = 0) {
+      return string_vector(resetone, tab);
+    }
+    /**
+      Check if a key is in resetone
+      \param[in] x Key to check
+      \return true if x is present, false otherwise
+    */
+    static bool isResetone(const Type& x) {
+      typename std::vector<Type>::const_iterator it;
+      for (it = resetone.begin(); it != resetone.end(); it++){
+        if ((*(it)) == x) break;
+      }
+      return (it != resetone.end());
+    }
+    /**
+      Throw an error if a key is not in resetone
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
+    static void checkResetone(const Type& x, const std::string& context = "") {
+      if (!isResetone(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in resetone");
+      }
+    }
+    /**
+      Throw an error if a key is in resetone
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
+    static void checkNotResetone(const Type& x, const std::string& context = "") {
+      if (isResetone(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in resetone");
+      }
+    }
+    /**
+      Print the contents of initonce
+      \param[in,out] out Stream to print to
+      \param[in] tab Indentation to add to each line
+      \return Updated stream
+    */
+    static std::ostream& printInitonce(std::ostream& out, const unsigned int tab = 0) {
+      return print_vector(initonce, out, tab);
+    }
+    /**
+      Serialize the contents of initonce
+      \param[in] tab Indentation to add to each line
+      \return Serialized collection
+    */
+    static std::string stringInitonce(const unsigned int tab = 0) {
+      return string_vector(initonce, tab);
+    }
+    /**
+      Check if a key is in initonce
+      \param[in] x Key to check
+      \return true if x is present, false otherwise
+    */
+    static bool isInitonce(const Type& x) {
+      typename std::vector<Type>::const_iterator it;
+      for (it = initonce.begin(); it != initonce.end(); it++){
+        if ((*(it)) == x) break;
+      }
+      return (it != initonce.end());
+    }
+    /**
+      Throw an error if a key is not in initonce
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
+    static void checkInitonce(const Type& x, const std::string& context = "") {
+      if (!isInitonce(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in initonce");
+      }
+    }
+    /**
+      Throw an error if a key is in initonce
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
+    static void checkNotInitonce(const Type& x, const std::string& context = "") {
+      if (isInitonce(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in initonce");
       }
     }
   };
@@ -655,6 +813,10 @@ namespace ePhotosynthesis {
   const std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::nonvector = {};
   template<MODULE M, PARAM_TYPE PT>
   std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::skipped = {};
+  template<MODULE M, PARAM_TYPE PT>
+  const std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::resetone = {};
+  template<MODULE M, PARAM_TYPE PT>
+  const std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::initonce = {};
   
   #include "enums/enums_POOL.hpp"
   #include "enums/enums_COND.hpp"
@@ -717,6 +879,20 @@ namespace ePhotosynthesis {
   #include "enums/enums_KE_skipped.hpp"
   #include "enums/enums_MOD_skipped.hpp"
   #include "enums/enums_RC_skipped.hpp"
+  
+  // Specializations for get_enum_resetone
+  #include "enums/enums_COND_resetone.hpp"
+  #include "enums/enums_POOL_resetone.hpp"
+  #include "enums/enums_KE_resetone.hpp"
+  #include "enums/enums_MOD_resetone.hpp"
+  #include "enums/enums_RC_resetone.hpp"
+  
+  // Specializations for get_enum_initonce
+  #include "enums/enums_COND_initonce.hpp"
+  #include "enums/enums_POOL_initonce.hpp"
+  #include "enums/enums_KE_initonce.hpp"
+  #include "enums/enums_MOD_initonce.hpp"
+  #include "enums/enums_RC_initonce.hpp"
   
   
   // Utility for getting enum type from module & param_type

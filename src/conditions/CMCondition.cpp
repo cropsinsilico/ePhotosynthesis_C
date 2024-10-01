@@ -29,22 +29,29 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
+DEFINE_VALUE_SET_SRC(CMCondition);
+
 CMCondition::CMCondition(const CMCondition* const other) {
+    initMembers();
     PS_PR_con = new PS_PRCondition(other->PS_PR_con);
     SUCS_con = new SUCSCondition(other->SUCS_con);
     PS_PR_con->setParent(this);
     SUCS_con->setParent(this);
+    copyMembers(*other);
 }
 
 CMCondition::CMCondition(const arr &vec, const std::size_t offset) {
+    initMembers();
     fromArray(vec, offset);
 }
 
 CMCondition::CMCondition(realtype *x) {
+    initMembers();
     fromArray(x);
 }
 
 CMCondition::CMCondition(PS_PRCondition* pother, SUCSCondition* sother) {
+    initMembers();
     if (pother->parent == nullptr) {
         PS_PR_con = pother;
     } else {

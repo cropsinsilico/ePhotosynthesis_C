@@ -29,18 +29,24 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
+DEFINE_VALUE_SET_SRC(EPSCondition);
+
 EPSCondition::EPSCondition(const EPSCondition* const other) {
+    initMembers();
     CM_con = new CMCondition(other->CM_con);
     FIBF_con = new FIBFCondition(other->FIBF_con);
     CM_con->setParent(this);
     FIBF_con->setParent(this);
+    copyMembers(*other);
 }
 
 EPSCondition::EPSCondition(realtype *x) {
+    initMembers();
     fromArray(x);
 }
 
 EPSCondition::EPSCondition(FIBFCondition* fother, CMCondition* cother) {
+    initMembers();
     if (cother->parent == nullptr) {
         CM_con = cother;
     } else {
@@ -56,6 +62,7 @@ EPSCondition::EPSCondition(FIBFCondition* fother, CMCondition* cother) {
 }
 
 EPSCondition::EPSCondition(const arr &vec, const std::size_t offset) {
+    initMembers();
     fromArray(vec, offset);
 }
 

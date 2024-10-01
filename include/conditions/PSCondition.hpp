@@ -37,14 +37,6 @@ namespace conditions {
 
 class PS_PRCondition;
 
-#define MEMBERS_PSCondition_NOT_IN_ARRAY	\
-  _Pi,						\
-    _ADP,					\
-    _v1
-#define MEMBERS_PSCondition_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_PSCondition_CONSTANT EMPTY_MEMBER_LIST
-
-
 /**
  Class for holding the inputs to PS_mb
  */
@@ -111,7 +103,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {
+    static void _reset() {
       setC3(false);
     }
 

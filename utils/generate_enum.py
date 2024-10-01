@@ -767,6 +767,10 @@ class CEnumGeneratorBaseSource(CMixin, EnumGeneratorBase):
             'action': 'store_true', 'default': True,
             'help': "Write the definition in the header.",
         },
+        docs={
+            'type': str,
+            'help': "Doc string for enumerator",
+        },
         **EnumGeneratorBase.perfile_options,
     )
 
@@ -788,16 +792,24 @@ class CEnumGeneratorBaseSource(CMixin, EnumGeneratorBase):
             cls.added_file_classes,
             header=HeaderClass)
 
+    def generate_docs(self, name):
+        return self.docs
+
     def generate_header_item(self, name, members):
         lines = [self.generate_declaration(name, members,
                                            for_header=True)]
+        docs = self.generate_docs(name)
         if self.define_in_header:
+            if docs:
+                lines = [f'/** {docs} */'] + lines
             lines[-1] = 'inline ' + lines[-1] + ' {'
             lines += [
                 '  ' + x for x in self.generate_definition(name, members)]
             lines += ["};", ""]
         else:
             lines[-1] += ';'
+            if docs:
+                lines[-1] += f'  /**< {docs} */'
         return lines
 
     def generate_header_closing(self, **kwargs):
@@ -880,9 +892,16 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
     default_is_editable = False
     default_value_key = None
     default_secondary_value_key = None
+    _default_function_param = {
+        'return_type': 'void',
+    }
     _utility_functions = [
-        'error_prefix', 'print', 'string',
+        'error_prefix', 'print', 'string', 'operator<<',
     ]
+    _utility_function_param = {
+        'error_prefix': {
+        }
+    }
     _additional_functions = []
     _editable_functions = [
         'clear', 'add', 'remove', 'addMultiple', 'removeMultiple',
@@ -1058,11 +1077,15 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
         for k in self.utility_functions:
             if k in completed_utils[self.collection_type]:
                 continue
-            if ((k == 'error_prefix'
+            ikws = dict(kwargs)
+            if ((k in ['error_prefix', 'operator<<']
                  and any(k in v for v in completed_utils.values()))):
-                continue
+                if k == 'operator<<':
+                    ikws['function_param'] = {'for_class': True}
+                else:
+                    continue
             lines += self.generate_additional_method(
-                k, utility=True, **kwargs)
+                k, utility=True, **ikws)
             completed_utils[self.collection_type].append(k)
         return lines
 
@@ -1074,8 +1097,11 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
 
     def generate_additional_method(self, function_type, enum_name='Type',
                                    enum_is_class=None, result=None,
-                                   no_return=False, utility=False):
+                                   no_return=False, utility=False,
+                                   function_param=None):
         lines = []
+        if function_param is None:
+            function_param = {}
         if enum_is_class is None:
             enum_is_class = self.parent.as_class
         if result is None:
@@ -1092,7 +1118,8 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
         else:
             function_suffix = f"_enum_{self.function_suffix}"
         collection_type = self.generate_collection_type(enum_name)
-        if function_type in ['error_prefix']:
+        if function_type in ['error_prefix'] or function_type.startswith(
+                'operator'):
             function_name = function_type
         elif function_type in ['getdefault']:
             function_name = (
@@ -1105,7 +1132,7 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             return_type = 'bool'
         elif function_type in ['get', 'getdefault']:
             return_type = self.value_type
-        elif function_type == 'print':
+        elif function_type in ['print', 'operator<<']:
             return_type = 'std::ostream&'
         elif function_type in ['string', 'error_prefix']:
             return_type = 'std::string'
@@ -1113,7 +1140,8 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             return_type = 'void'
         args = []
         arg_names = []
-        if utility and function_type != 'error_prefix':
+        if utility and function_type not in ['error_prefix',
+                                             'operator<<']:
             args.append(f'const {collection_type}& collection')
             arg_names.append('collection')
         if function_type in ['add', 'remove', 'is', 'get', 'getdefault',
@@ -1135,6 +1163,13 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
         elif function_type == 'print':
             args += ['std::ostream& out', 'const unsigned int tab = 0']
             arg_names += ['out', 'tab']
+        elif function_type == 'operator<<':
+            args += ['std::ostream& out']
+            arg_names += ['out', 'x']
+            if function_param.get('for_class', False):
+                args += [f'const {collection_type}& x']
+            else:
+                args += [f'const {enum_name}& x']
         elif function_type == 'string':
             args += ['const unsigned int tab = 0']
             arg_names += ['tab']
@@ -1151,7 +1186,8 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 f"Invalid function_type \'{function_type}\' "
                 f"(valid values = {self.additional_functions})")
         if (not utility) and function_type in self.utility_functions:
-            if function_type == 'error_prefix':
+            if function_type == 'error_prefix' or function_type.startswith(
+                    'operator'):
                 return []
             elif function_type == 'print':
                 docs += [
@@ -1206,6 +1242,7 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 f'Remove all entries from {self.collection_name}'
             ]
             body += [f"{result}.clear();"]
+            body += ['state_updated = true;']
         elif function_type in ['get', 'getdefault']:
             assert hasattr(self, 'value_type')
             body += [f"typename {collection_type}::const_iterator it;"]
@@ -1251,6 +1288,30 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 'out += "]: ";',
                 'return out;',
             ]
+        elif function_type == 'operator<<':
+            docs += [
+                'Serialize an enum to an output stream',
+                '\\param[in,out] out Output stream',
+            ]
+            if function_param.get('for_class', False):
+                docs += [
+                    '\\param[in] x Collection to serialize',
+                ]
+                body += [
+                    f"print{function_suffix}(x, out);",
+                    "return out;",
+                ]
+            else:
+                docs += [
+                    '\\param[in] x Key to serialize',
+                ]
+                body += [
+                    'out << getName(x);',
+                    'return out;'
+                ]
+            docs += [
+                '\\return Updated stream',
+            ]
         elif function_type == 'print':
             docs += [
                 'Print the contents of a collection',
@@ -1273,6 +1334,7 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             ]
             if self._print_suffix:
                 body += [f"out << {self._print_suffix};"]
+            body += ['out << std::endl;']
             body += [
                 "return out;",
             ]
@@ -1301,6 +1363,7 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 f"  {result}.erase(it);",
                 "}",
             ]
+            body += ['state_updated = true;']
         elif function_type == 'add':
             assert self.is_editable
             docs += [
@@ -1317,6 +1380,7 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                     f"  {self.generate_add(result, *arg_names)};",
                     "}"
                 ]
+            body += ['state_updated = true;']
         elif function_type.endswith('Multiple'):
             assert self.is_editable
             short = function_type.split('Multiple')[0]
@@ -1333,6 +1397,7 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 f"  {ftype}({itdref});",
                 "}"
             ]
+            body += ['state_updated = true;']
         else:
             raise NotImplementedError(
                 f"Unimplemented function_type \'{function_type}\' "
@@ -1343,10 +1408,20 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             lines += ['/**']
             lines += ["  " + x for x in docs]
             lines += ['*/']
-        lines += [f"static {return_type} {function_name}"
+        static = 'static'
+        if function_type in ['operator<<']:
+            static = 'friend'
+        lines += [f"{static} {return_type} {function_name}"
                   f"({', '.join(args)}) {{"]
         lines += ["  " + x for x in body]
         lines += ["}"]
+        if function_type in ['operator<<'] and not function_param.get(
+                'for_class', False):
+            lines += self.generate_additional_method(
+                function_type, enum_name=enum_name,
+                enum_is_class=enum_is_class, result=result,
+                no_return=no_return, utility=utility,
+                function_param=dict(function_param, for_class=True))
         return lines
 
     def generate_function(self, name, for_header=False, result=None,
@@ -1471,6 +1546,8 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
             'get', 'getdefault',
         ]
     )
+    _print_prefix = "space << \"{\" << std::endl;"
+    _print_suffix = "space << \"}\""
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault("value_type", self.default_value_type)
@@ -1479,6 +1556,10 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
     @property
     def add_value_args(self):
         return [(f"const {self.value_type}&", "value")]
+
+    def generate_docs(self, name):
+        name_doc = self.collection_name.title()
+        return f'{name_doc} for values'
 
     def generate_collection_param(self, *args, **kwargs):
         out = super(CEnumGeneratorMapBase, self).generate_collection_param(
@@ -1526,7 +1607,8 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
         assert len(args) == 2
         key = f"names.find({args[0]})->second"
         val = f"{args[1]}"
-        return f'{out}{space} << {key} << " = " << {val} << std::endl;'
+        return (f'{out}{space} << "  " << {key} << " = " << {val} '
+                f'<< std::endl;')
 
 
 class CEnumGeneratorVectorBase(CEnumGeneratorCollectionBase):
@@ -1538,7 +1620,12 @@ class CEnumGeneratorVectorBase(CEnumGeneratorCollectionBase):
         ]
     )
     _print_prefix = "space << \"[\""
-    _print_suffix = "\"]\" << std::endl"
+    _print_suffix = "\"]\""
+
+    def generate_docs(self, name):
+        name_doc = self.collection_name.rstrip('s')
+        name_doc = name_doc.replace('s_C3', '_C3')
+        return f'Values that are {name_doc}'
 
     def generate_member(self, x, width=None, enum_prefix=''):
         if not self.generate_value(x):
@@ -1563,7 +1650,7 @@ class CEnumGeneratorVectorBase(CEnumGeneratorCollectionBase):
     def generate_print(self, *args, space=None, out='std::cout'):
         assert len(args) == 1
         key = f"names.find({args[0]})->second"
-        return f'{out} << {key} << "," << std::endl;'
+        return f'{out} << {key} << ",";'
 
 
 class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
@@ -1927,6 +2014,12 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 'default_value_key': 'SKIPPED',
                 'default_is_editable': True,
             },
+            'resetone': {
+                'default_value_key': 'RESET_ONE',
+            },
+            'initonce': {
+                'default_value_key': 'INIT_ONCE',
+            },
         },
     }
 
@@ -2026,6 +2119,16 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 f'{template}{static}const std::vector<'
                 f'{enum_name_full}> {enum_prefix}all;'
             ]
+            if not specialization:
+                lines[-1] += '  /**< All enum values */'
+            lines += [
+                f'{template}{static}bool {enum_prefix}state_updated;'
+            ]
+            if not specialization:
+                lines[-1] += (
+                    '  /** One of the editable collection(s) was '
+                    'updated */'
+                )
             for k in self.added_collections:
                 self.get_child(k).add_enum(enum_name)
                 collection_type = self.get_child(k).generate_collection_type(
@@ -2035,6 +2138,9 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                     f'{template}{static}{const}{collection_type} '
                     f'{enum_prefix}{self.get_child(k).collection_name};'
                 ]
+                docs = self.get_child(k).generate_docs(k)
+                if docs and not specialization:
+                    lines[-1] += f'  /**< {docs} */'
             if not specialization:
                 completed_utils = {}
                 for k in self.added_collections:
@@ -2066,6 +2172,8 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 lines += [
                     f'const {p} {enum_prefix}{p.lower()} = {t};'
                 ]
+            # lines += template_lines
+            # lines += [f'bool {enum_prefix}state_updated = true;']
             for k in self.added_collections:
                 self.get_child(k).add_enum(enum_name)
                 collection_type = self.get_child(k).generate_collection_type(
@@ -2177,7 +2285,9 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 f'{template}const '
                 f'std::vector<{enum_name_full}> '
                 f'{enum_prefix}all = '
-                f'{{{", ".join(prefixed_names)}}};'
+                f'{{{", ".join(prefixed_names)}}};',
+                f'{template}bool '
+                f'{enum_prefix}state_updated = true;',
             ]
             for k in self.added_collections:
                 self.get_child(k).add_enum(enum_name)

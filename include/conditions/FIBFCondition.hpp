@@ -39,17 +39,15 @@ namespace conditions {
 
 class EPSCondition;
 
-#define MEMBERS_FIBFCondition_CONSTANT EMPTY_MEMBER_LIST
-#define MEMBERS_FIBFCondition_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_FIBFCondition_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-
 /**
  Class for input to FIBF_mb
  */
-class FIBFCondition : public ConditionBase<FIBFCondition, EPSCondition> {
+class FIBFCondition : public ConditionBase<FIBFCondition, EPSCondition, MODULE_FIBF> {
 public:
+    DECLARE_VALUE_SET_COMPOSITE(FIBFCondition, (BFCondition, FICondition), ConditionBase<FIBFCondition, EPSCondition, MODULE_FIBF>)
     FIBFCondition(EPSCondition* par = nullptr) : BF_con(new BFCondition(this)), FI_con(new FICondition(this)) {
         setParent(par);
+        initMembers();
     }
     ~FIBFCondition() override {
         _clear();
@@ -81,7 +79,6 @@ public:
     BFCondition* BF_con = nullptr;  // child Condition
     FICondition* FI_con = nullptr;  // child Condition
 
-    double kd = 0; // The initialization of the initial rate constant for heat dissipation
     /**
       Write the contents of the instance to the output stream.
 
@@ -125,7 +122,7 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void reset() {
+    static void _reset() {
         count = 0;
     }
 #ifdef INCDEBUG

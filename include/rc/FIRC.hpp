@@ -32,11 +32,6 @@
 namespace ePhotosynthesis {
 namespace RC {
 
-#define MEMBERS_FIRC_CONSTANT EMPTY_MEMBER_LIST
-#define MEMBERS_FIRC_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_FIRC_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-  
-
 // class for holding FIRC data
 class FIRC : public ValueSet<MODULE_FI, PARAM_TYPE_RC> {
 public:
@@ -50,9 +45,11 @@ public:
 
       @param other The FIRC object to copy
       */
-    FIRC(const FIRC &other) :
-      ValueSet<MODULE_FI, PARAM_TYPE_RC>(other) {
-        initMembers();
+    FIRC(const FIRC &other) : ValueSet<MODULE_FI, PARAM_TYPE_RC>(other) {
+      initMembers();
+      *this = other;
+    }
+    FIRC& operator=(const FIRC &other) {
         kA_d = other.kA_d;  //  The rate constant of heat dissipation from peripheral antenna  Lazar (1999), 0.25~1 *10^(9)
         kA_f = other.kA_f;  //  The rate constant of fluorescence emission from peripheral antenna  Lazar 1999, with a lifetime of 5 ns at closed reaction center
         kA_U = other.kA_U;  //  The rate constant of exciton transfer from periphral antenna to core antenna  Reference needed, a guess
@@ -75,6 +72,7 @@ public:
         k_r3 = other.k_r3;  //  The rate constant of the exchange of QB and PQH2  Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
         k_pq_oxy = other.k_pq_oxy;//  The rate constant of the PQH2 oxidation  Lazar (1999),50~500
 	copyMembers(other);
+	return *this;
     }
 
 };

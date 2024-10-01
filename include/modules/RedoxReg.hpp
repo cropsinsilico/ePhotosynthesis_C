@@ -37,19 +37,12 @@ class RedoxRegModuleTest;
 #endif
 namespace modules {
 
-#define MEMBERS_RedoxReg_CONSTANT		\
-  Fd_Thio_ET,					\
-    ThioT,					\
-    Thio_Oxidation
-#define MEMBERS_RedoxReg_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_RedoxReg_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-
 /**
  Class for RedoxReg related calculations and common variables
  */
-class RedoxReg : public ModuleBase<RedoxReg, conditions::RedoxRegCondition, MODULE_RedoxReg> {
+class RedoxReg : public MODULE_BASE(RedoxReg) {
 public:
-    DECLARE_VALUE_SET_STATIC(RedoxReg, ModuleBase<RedoxReg, conditions::RedoxRegCondition, MODULE_RedoxReg>);
+    DECLARE_MODULE(RedoxReg)
     SET_GET_BOOL_NOSKIP(trDynaPS2RedReg_cal)
 private:
     friend ModuleBase;

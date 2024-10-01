@@ -32,10 +32,6 @@
 namespace ePhotosynthesis {
 namespace pool {
 
-#define MEMBERS_SUCSPool_CONSTANT EMPTY_MEMBER_LIST
-#define MEMBERS_SUCSPool_SKIPPED EMPTY_MEMBER_LIST
-#define MEMBERS_SUCSPool_NOT_IN_ARRAY EMPTY_MEMBER_LIST
-  
 /**
  Class for SUCS_Pool data
  */
@@ -46,13 +42,16 @@ public:
       ValueSet<MODULE_SUCS, PARAM_TYPE_POOL>() {
         initMembers();
     }
-    SUCSPool(const SUCSPool &other) :
-      ValueSet<MODULE_SUCS, PARAM_TYPE_POOL>(other) {
-        initMembers();
+    SUCSPool(const SUCSPool &other) : ValueSet<MODULE_SUCS, PARAM_TYPE_POOL>(other) {
+      initMembers();
+      *this = other;
+    }
+    SUCSPool& operator=(const SUCSPool &other) {
         ATc = other.ATc;
         UTc = other.UTc;
         PTc = other.PTc;
 	copyMembers(other);
+	return *this;
     }
 };
 

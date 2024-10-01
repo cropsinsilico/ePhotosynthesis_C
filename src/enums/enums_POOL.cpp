@@ -6,6 +6,7 @@
 using namespace ePhotosynthesis;
 
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kA_d, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kA_f, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kA_U, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kU_A, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kU_d, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kU_f, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k1, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k_r1, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kz, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k12, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k23, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k30, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k01, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k2, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kAB1, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kBA1, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kAB2, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kBA2, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k3, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k_r3, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k_pq_oxy};
+template<> bool ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::names = {
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kA_d    , "kA_d"    },
@@ -93,8 +94,15 @@ const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<M
 template<> 
 std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::skipped = {
 };
+template<> 
+const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::resetone = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::initonce = {
+};
 
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::PQT};
+template<> bool ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::names = {
   {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::PQT , "PQT" },
@@ -122,8 +130,15 @@ const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum
 template<> 
 std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::skipped = {
 };
+template<> 
+const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::resetone = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::initonce = {
+};
 
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::QBt, ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::PQT};
+template<> bool ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::names = {
   {ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::QBt , "QBt" },
@@ -154,8 +169,15 @@ const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<M
 template<> 
 std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::skipped = {
 };
+template<> 
+const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::resetone = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::initonce = {
+};
 
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::GAPDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::FBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::PRK, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::ATPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::ATPGPP, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::MDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::ThioT, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::FdT, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::RuACTT, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_GAPDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_FBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_SBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_PRK, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_ATPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_ATPGPP, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_MDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_GAPDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_FBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_SBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_PRK, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_ATPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_ATPGPP, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_MDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::MDH_Vmax};
+template<> bool ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::names = {
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::GAPDH    , "GAPDH"    },
@@ -277,8 +299,15 @@ const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnu
 template<> 
 std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::skipped = {
 };
+template<> 
+const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::resetone = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::initonce = {
+};
 
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::FBPase_Coeff, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::FBPase0, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SBPase_Coeff, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SBPase0, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::PRK_Coeff, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::PRK0, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::ATPase_Coeff, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::ATPase0};
+template<> bool ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::names = {
   {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::FBPase_Coeff, "FBPase_Coeff"},
@@ -327,8 +356,15 @@ const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSet
 template<> 
 std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::skipped = {
 };
+template<> 
+const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::resetone = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::initonce = {
+};
 
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::ET, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Rac, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::C, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::O, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::M};
+template<> bool ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::names = {
   {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::ET  , "ET"  },
@@ -368,8 +404,15 @@ const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnu
 template<> 
 std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::skipped = {
 };
+template<> 
+const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::resetone = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::initonce = {
+};
 
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::ATc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::UTc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::PTc};
+template<> bool ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::names = {
   {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::ATc , "ATc" },
@@ -403,8 +446,15 @@ const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum
 template<> 
 std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::skipped = {
 };
+template<> 
+const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::resetone = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::initonce = {
+};
 
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::all = {};
+template<> bool ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::names = {
 };
@@ -429,8 +479,15 @@ const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum
 template<> 
 std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::skipped = {
 };
+template<> 
+const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::resetone = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::initonce = {
+};
 
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::all = {};
+template<> bool ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::names = {
 };
@@ -454,5 +511,11 @@ const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<
 };
 template<> 
 std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::skipped = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::resetone = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::initonce = {
 };
 

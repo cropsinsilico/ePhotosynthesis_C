@@ -52,50 +52,10 @@ FICondition* FI::_init(Variables *theVars) {
     // Initilization of the rate constant //
     ////////////////////////////////////////////////////////////////////////////
     FI::setBF_connect(theVars->BF_FI_com);
-    theVars->initParamStatic<FI>();
-    theVars->initParam(theVars->FI_RC);
-    theVars->initParam(theVars->FI_Pool);
-    FICondition* FI_Con = new FICondition();
-    theVars->initParam(*FI_Con);
+    // The rate constant used in the model
+    // Reference
+    // The rate constant used in the model
 
-    if (theVars->useC3) {
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kA_d, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kA_f, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kA_U, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kA_d, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kU_A, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kU_d, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kU_f, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k1, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k_r1, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kz, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k12, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k23, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k30, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k01, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k2, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kAB1, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kBA1, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kAB2, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kBA2, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k3, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k_r3, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k_pq_oxy, theVars->EnzymeAct);
-      theVars->FI_RC[RC::FI::k1] *= FI::get(MOD::FI::cpsii);
-    } else {
-      size_t i = 0;
-      for (RC::FIRC::iterator it = theVars->FI_RC.begin();
-	   it != theVars->FI_RC.end(); it++, i++) {
-	if (i == 21)
-	  break;
-	CHECK_RATIO_IDX(i, 6, RC::FI::k1);
-	it->second *= theVars->FIRatio[i];
-      }
-      theVars->FI_Pool[POOL::FI::QBt] *= theVars->FIRatio[21];
-      theVars->FI_Pool[POOL::FI::PQT] *= theVars->FIRatio[22];
-    }
-    
-#ifdef CHECK_VALUE_SET_ALTS
     if (theVars->useC3) {
         FI::cpsii = 1.;
         if (theVars->lightParam == 0.) {
@@ -162,7 +122,7 @@ FICondition* FI::_init(Variables *theVars) {
 
     // Assign the value to a array
     // This is the program that initialize the major variables used in the fluorescence induction system.In this file, the n represent negative charges, _red represent that the components are associated with the closed reaction center; while _ox represent a system with open reaction center.
-
+    FICondition* FI_Con = new FICondition();
     FI_Con->A = 0;          // The concentration of excitons in the peripheral antenna
     FI_Con->U = 0;          // The concentration fo excitons in the core antenna
     FI_Con->P680ePheo = 1;  // The concentration of the P680Pheo
@@ -192,12 +152,70 @@ FICondition* FI::_init(Variables *theVars) {
         theVars->FI_Pool.QBt = 1 * theVars->FIRatio[21]; // The total concentration of Qb site;
         theVars->FI_Pool.PQT = 8 * theVars->FIRatio[22]; // The total concentration of PQ;
     }
-    // theVars->FI_Pool.QBt *= theVars->FIRatio[21];
-    
-    FI_Con->checkAlts("FI::_init::Condition: ");
-    theVars->FI_RC.checkAlts("FI::_init::FI_RC: ");
-    theVars->FI_Pool.checkAlts("FI::_init::FI_Pool: ");
-#endif // CHECK_VALUE_SET_ALTS
 
     return FI_Con;
+}
+
+FICondition* FI::_initAlt(Variables *theVars, FICondition* FI_Con) {
+#ifdef CHECK_VALUE_SET_ALTS
+    theVars->initParamStatic<FI>();
+    theVars->initParam(theVars->FI_RC);
+    theVars->initParam(theVars->FI_Pool);
+    theVars->initParam(*FI_Con);
+
+    if (theVars->useC3) {
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::kA_d, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::kA_f, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::kA_U, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::kA_d, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::kU_A, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::kU_d, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::kU_f, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::k1, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::k_r1, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::kz, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::k12, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::k23, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::k30, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::k01, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::k2, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::kAB1, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::kBA1, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::kAB2, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::kBA2, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::k3, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::k_r3, theVars->EnzymeAct);
+      theVars->FI_RC.setFromEnzymeAct(RC::FI::k_pq_oxy, theVars->EnzymeAct);
+      theVars->FI_RC[RC::FI::k1] *= FI::get(MOD::FI::cpsii);
+    } else {
+      size_t i = 0;
+      for (RC::FIRC::iterator it = theVars->FI_RC.begin();
+	   it != theVars->FI_RC.end(); it++, i++) {
+	if (i == 21)
+	  break;
+	CHECK_RATIO_IDX(i, 6, RC::FI::k1);
+	it->second *= theVars->FIRatio[i];
+      }
+      theVars->FI_Pool[POOL::FI::QBt] *= theVars->FIRatio[21];
+      theVars->FI_Pool[POOL::FI::PQT] *= theVars->FIRatio[22];
+    }
+    
+    theVars->FI_RC.checkAlts("FI::_init::FI_RC: ");
+    theVars->FI_Pool.checkAlts("FI::_init::FI_Pool: ");
+#else // CHECK_VALUE_SET_ALTS
+    UNUSED(theVars);
+#endif // CHECK_VALUE_SET_ALTS
+    return FI_Con;
+}
+
+void FI::_updateAlts(Variables *theVars, FICondition* FI_con) {
+#ifdef CHECK_VALUE_SET_ALTS
+    FI::updateAlts();
+    theVars->FI_RC.updateAlts();
+    theVars->FI_Pool.updateAlts();
+    FI_con->updateAlts();
+#else // CHECK_VALUE_SET_ALTS
+    UNUSED(theVars);
+    UNUSED(FI_con);
+#endif // CHECK_VALUE_SET_ALTS
 }

@@ -33,6 +33,37 @@
 namespace ePhotosynthesis {
 namespace modules {
 
+#define MODULE_BASE(name)						\
+  ModuleBase<name, conditions::name ## Condition, MODULE_ ## name>
+#define DECLARE_MODULE_BASE(name)		\
+  static conditions::name ## Condition* _initAlt(Variables *theVars,	\
+						 conditions::name ## Condition* name ## _Con); \
+  static void _updateAlts(Variables *theVars,				\
+			  conditions::name ## Condition* name ## _Con);
+#define DECLARE_MODULE(name)						\
+  DECLARE_VALUE_SET_STATIC(name, ModuleBase<name,			\
+			   conditions::name ## Condition,		\
+			   MODULE_ ## name>)				\
+  DECLARE_MODULE_BASE(name)
+#define DECLARE_MODULE_COMPOSITE(name)					\
+  DECLARE_VALUE_SET_STATIC_COMPOSITE(name, ModuleBase<name,		\
+				     conditions::name ## Condition,	\
+				     MODULE_ ## name>)			\
+  DECLARE_MODULE_BASE(name)
+  
+#define DEFINE_DEFAULT_INITALT(name)					\
+  name ## Condition* name::_initAlt(Variables *theVars,			\
+				    name ## Condition* name ## _Con) {	\
+    UNUSED(theVars);							\
+    return name ## _Con;						\
+  }									\
+  void name::_updateAlts(Variables *theVars,				\
+			 conditions::name ## Condition* name ## _Con) { \
+    UNUSED(theVars);							\
+    UNUSED(name ## _Con);						\
+  }
+  
+
 /**
   This template class provides a common set of static funtions for every Module subclass. This makes
   calling the underlying functions more straight forward.
@@ -55,7 +86,11 @@ public:
       */
     static U* init(Variables *theVars) {
       U* out = T::_init(theVars);
-      checkAlts("ModuleBase::init: ");
+#ifdef CHECK_VALUE_SET_ALTS
+      T::_initAlt(theVars, out);
+      out->checkAlts("ModuleBase::init::Condition: ");
+      checkAlts("ModuleBase::init::Module: ");
+#endif // CHECK_VALUE_SET_ALTS
       return out;
     }
 
@@ -71,7 +106,12 @@ public:
 #ifdef INCDEBUG
         DEBUG_MESSAGE(condition)
 #endif
-        return T::_MB(t, condition, theVars);}
+	arr out = T::_MB(t, condition, theVars);
+#ifdef CHECK_VALUE_SET_ALTS
+	T::_updateAlts(theVars, condition);
+#endif // CHECK_VALUE_SET_ALTS
+	return out;
+    }
 
     /**
       Common, public interface for the private differential calculation function
@@ -85,16 +125,19 @@ public:
 #ifdef INCDEBUG
         DEBUG_MESSAGE(condition)
 #endif
-        return T::_MB_con(t, condition, theVars);}
-
+	U* out = T::_MB_con(t, condition, theVars);
+#ifdef CHECK_VALUE_SET_ALTS
+	T::_updateAlts(theVars, out);
+#endif // CHECK_VALUE_SET_ALTS
+	return out;
+    }
     /**
       Common, public interface for the private function which resets any static Module parameters
       to their default values.
       */
     static void reset() {
-        resetValues();
         T::_reset();
-	checkAlts("ModuleBase::reset: ");
+        ValueSetClass::reset();
     }
 protected:
     ModuleBase() {}
@@ -109,6 +152,9 @@ protected:
       */
     static void Rate(const double t, const U* condition, Variables *theVars) {
         T::_Rate(t, condition, theVars);
+#ifdef CHECK_VALUE_SET_ALTS
+	T::_updateAlts(theVars, condition);
+#endif // CHECK_VALUE_SET_ALTS
     }
 };
 

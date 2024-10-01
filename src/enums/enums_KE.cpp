@@ -6,6 +6,7 @@
 using namespace ePhotosynthesis;
 
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::all = {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::KEe2FBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::KEe2SBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::KEe2PRK, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::KEe2ATPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::KEe2RuACT, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::KEe2GAPDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::KEe2MDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::KEe2ATPGPP, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::KEeFd2Thio};
+template<> bool ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::names = {
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::KEe2FBPase, "KEe2FBPase"},
@@ -47,6 +48,7 @@ const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, std::string> Val
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::constant = {
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::KEe2ATPase,
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::calculated = {
@@ -57,8 +59,15 @@ const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<
 template<> 
 std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::skipped = {
 };
+template<> 
+const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::resetone = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::initonce = {
+};
 
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::all = {};
+template<> bool ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::names = {
 };
@@ -83,8 +92,15 @@ const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<M
 template<> 
 std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::skipped = {
 };
+template<> 
+const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::resetone = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::initonce = {
+};
 
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::all = {};
+template<> bool ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::names = {
 };
@@ -108,5 +124,11 @@ const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MO
 };
 template<> 
 std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::skipped = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::resetone = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::initonce = {
 };
 

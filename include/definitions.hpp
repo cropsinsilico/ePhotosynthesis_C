@@ -153,6 +153,12 @@ enum RequestedDebug : uint {None = 0,
 #define CHECK_SET_GET(NAME, CONTEXT)
 #endif // CHECK_VALUE_SET_ALTS
   
+#ifdef CHECK_VALUE_SET_ALTS
+#define SET_ALT(name) set(EnumClass::name, val);
+#else // CHECK_VALUE_SET_ALTS
+#define SET_ALT(name)
+#endif // CHECK_VALUE_SET_ALTS
+
 //! [SET_GET]
 #define SET_GET(NAME) public:						\
   /** Get the value of NAME \returns The current value */		\
@@ -166,7 +172,7 @@ enum RequestedDebug : uint {None = 0,
   static void set ## NAME(const double val) {				\
     initStaticMembers();						\
     NAME = val;								\
-    /* set(EnumClass::NAME, val); */					\
+    SET_ALT(NAME)							\
   }
 //! [SET_GET]
 
