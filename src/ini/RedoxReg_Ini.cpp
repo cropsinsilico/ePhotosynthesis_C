@@ -42,7 +42,7 @@ std::size_t RedoxReg::N = 1;
 bool RedoxReg::trDynaPS2RedReg_cal = false;
 
 DEFINE_VALUE_SET_STATIC(RedoxReg);
-DEFINE_VALUE_SET_SINGLE(RedoxRegCondition);
+DEFINE_VALUE_SET(RedoxRegCondition);
 
 RedoxRegCondition* RedoxReg::_init(Variables *theVars) {
 

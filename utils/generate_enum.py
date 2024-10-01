@@ -1153,14 +1153,27 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
         if (not utility) and function_type in self.utility_functions:
             if function_type == 'error_prefix':
                 return []
+            elif function_type == 'print':
+                docs += [
+                    f'Print the contents of {self.collection_name}',
+                    '\\param[in,out] out Stream to print to',
+                    '\\param[in] tab Indentation to add to each line',
+                    '\\return Updated stream',
+                ]
+            elif function_type == 'string':
+                docs += [
+                    f'Serialize the contents of {self.collection_name}',
+                    '\\param[in] tab Indentation to add to each line',
+                    '\\return Serialized collection',
+                ]
             body += [
                 f"return {function_type}{utility_suffix}("
                 f"{result}, {', '.join(arg_names)});"
             ]
         elif function_type == 'is':
             docs += [
-                f'Check if a value is in {self.collection_name}',
-                '\\param[in] x Value to check',
+                f'Check if a key is in {self.collection_name}',
+                '\\param[in] x Key to check',
                 '\\return true if x is present, false otherwise',
             ]
             body += [f"typename {collection_type}::const_iterator it;"]
@@ -1172,6 +1185,13 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             if function_type == 'check':
                 codeNot = '!'
                 strNot = 'not '
+            docs += [
+                f'Throw an error if a key is {strNot}in '
+                f'{self.collection_name}',
+                '\\param[in] x Key to check',
+                '\\param[in] context String describing context that ',
+                '  should be used in the error message',
+            ]
             body += [
                 f'if ({codeNot}is{function_suffix}(x)) {{',
                 f'  throw std::runtime_error('
@@ -1182,16 +1202,28 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             ]
         elif function_type == 'clear':
             assert self.is_editable
+            docs += [
+                f'Remove all entries from {self.collection_name}'
+            ]
             body += [f"{result}.clear();"]
         elif function_type in ['get', 'getdefault']:
             assert hasattr(self, 'value_type')
             body += [f"typename {collection_type}::const_iterator it;"]
             body += self.generate_find(result, "x", "it")
             dref = self.generate_iterator_dref("it")[1]
+            docs += [
+                f'Get the {function_suffix.lower()} value corresponding '
+                f'to an enum key',
+                '\\param[in] x Key to get value for',
+            ]
             body += [
                 f'if (it == {result}.end()) {{',
             ]
             if function_type == 'getdefault':
+                docs += [
+                    '\\param[in] defaultV Value to return if x is not '
+                    'present'
+                ]
                 body += ['  return defaultV;',
                          '}']
             else:
@@ -1201,8 +1233,15 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                     f'names.find(x)->second + "\'");',
                     '}'
                 ]
+            docs += [
+                '\\return Value'
+            ]
             body += [f"return {dref};"]
         elif function_type == 'error_prefix':
+            docs += [
+                'Get a prefix for errors describing the class',
+                '\\return Prefix',
+            ]
             body += [
                 'std::string out;',
                 'out += get_enum_names<PARAM_TYPE>().'
@@ -1213,6 +1252,13 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 'return out;',
             ]
         elif function_type == 'print':
+            docs += [
+                'Print the contents of a collection',
+                '\\param[in] collection Object to print',
+                '\\param[in,out] out Stream to print to',
+                '\\param[in] tab Indentation to add to each line',
+                '\\return Updated stream',
+            ]
             body += ["const std::string space(tab * 4, ' ');"]
             itdref = self.generate_print(
                 *self.generate_iterator_dref('it'),
@@ -1231,6 +1277,12 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 "return out;",
             ]
         elif function_type == 'string':
+            docs += [
+                'Serialize a collection to a string',
+                '\\param[in] collection Object to serialize',
+                '\\param[in] tab Indentation to add to each line',
+                '\\return Serialized collection',
+            ]
             body += [
                 "std::ostringstream oss;",
                 f"print{function_suffix}(collection, oss, tab);",
@@ -1238,6 +1290,10 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             ]
         elif function_type == 'remove':
             assert self.is_editable
+            docs += [
+                f'Remove an element from {self.collection_name}',
+                '\\param[in] x Key to remove',
+            ]
             body += [f"typename {collection_type}::iterator it;"]
             body += self.generate_find(result, "x", "it")
             body += [
@@ -1247,7 +1303,13 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             ]
         elif function_type == 'add':
             assert self.is_editable
+            docs += [
+                f'Add an element to {self.collection_name} if it is not '
+                f'already present',
+                '\\param[in] x Key to add',
+            ]
             if hasattr(self, 'value_type'):
+                docs += ['\\param y Value to add for x']
                 body += self.generate_add(result, *arg_names)
             else:
                 body += [
@@ -1257,10 +1319,14 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 ]
         elif function_type.endswith('Multiple'):
             assert self.is_editable
-            ftype = (
-                function_type.split('Multiple')[0] + function_suffix
-            )
+            short = function_type.split('Multiple')[0]
+            ftype = short + function_suffix
             itdref = ", ".join(self.generate_iterator_dref('it'))
+            docs += [
+                f'{short.title()} multiple elements to '
+                f'{self.collection_name} if they are not already present',
+                '\\param[in] x Elements to add',
+            ]
             body += [
                 f"typename {collection_type}::const_iterator it;",
                 f"{self.generate_iteration('x', 'it')} {{",

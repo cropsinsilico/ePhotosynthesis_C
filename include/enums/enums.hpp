@@ -157,6 +157,10 @@ namespace ePhotosynthesis {
     static const std::vector<Type> calculated;
     static const std::vector<Type> nonvector;
     static std::vector<Type> skipped;
+    /**
+      Get a prefix for errors describing the class
+      \return Prefix
+    */
     static std::string error_prefix() {
       std::string out;
       out += get_enum_names<PARAM_TYPE>().find(param_type)->second;
@@ -165,6 +169,11 @@ namespace ePhotosynthesis {
       out += "]: ";
       return out;
     }
+    /**
+      Get the name value corresponding to an enum key
+      \param[in] x Key to get value for
+      \return Value
+    */
     static std::string getName(const Type& x) {
       typename std::map<Type, std::string>::const_iterator it;
       it = names.find(x);
@@ -173,6 +182,12 @@ namespace ePhotosynthesis {
       }
       return it->second;
     }
+    /**
+      Get the name value corresponding to an enum key
+      \param[in] x Key to get value for
+      \param[in] defaultV Value to return if x is not present
+      \return Value
+    */
     static std::string getName(const Type& x, const std::string& defaultV) {
       typename std::map<Type, std::string>::const_iterator it;
       it = names.find(x);
@@ -181,6 +196,13 @@ namespace ePhotosynthesis {
       }
       return it->second;
     }
+    /**
+      Print the contents of a collection
+      \param[in] collection Object to print
+      \param[in,out] out Stream to print to
+      \param[in] tab Indentation to add to each line
+      \return Updated stream
+    */
     static std::ostream& print_map(const std::map<Type, double>& collection, std::ostream& out, const unsigned int tab = 0) {
       const std::string space(tab * 4, ' ');
       typename std::map<Type, double>::const_iterator it;
@@ -189,17 +211,39 @@ namespace ePhotosynthesis {
       }
       return out;
     }
+    /**
+      Serialize a collection to a string
+      \param[in] collection Object to serialize
+      \param[in] tab Indentation to add to each line
+      \return Serialized collection
+    */
     static std::string string_map(const std::map<Type, double>& collection, const unsigned int tab = 0) {
       std::ostringstream oss;
       print_map(collection, oss, tab);
       return oss.str();
     }
+    /**
+      Print the contents of defaults
+      \param[in,out] out Stream to print to
+      \param[in] tab Indentation to add to each line
+      \return Updated stream
+    */
     static std::ostream& printDefaults(std::ostream& out, const unsigned int tab = 0) {
       return print_map(defaults, out, tab);
     }
+    /**
+      Serialize the contents of defaults
+      \param[in] tab Indentation to add to each line
+      \return Serialized collection
+    */
     static std::string stringDefaults(const unsigned int tab = 0) {
       return string_map(defaults, tab);
     }
+    /**
+      Get the default value corresponding to an enum key
+      \param[in] x Key to get value for
+      \return Value
+    */
     static double getDefault(const Type& x) {
       typename std::map<Type, double>::const_iterator it;
       it = defaults.find(x);
@@ -208,6 +252,12 @@ namespace ePhotosynthesis {
       }
       return it->second;
     }
+    /**
+      Get the default value corresponding to an enum key
+      \param[in] x Key to get value for
+      \param[in] defaultV Value to return if x is not present
+      \return Value
+    */
     static double getDefault(const Type& x, const double& defaultV) {
       typename std::map<Type, double>::const_iterator it;
       it = defaults.find(x);
@@ -216,12 +266,28 @@ namespace ePhotosynthesis {
       }
       return it->second;
     }
+    /**
+      Print the contents of defaults_C3
+      \param[in,out] out Stream to print to
+      \param[in] tab Indentation to add to each line
+      \return Updated stream
+    */
     static std::ostream& printDefaults_C3(std::ostream& out, const unsigned int tab = 0) {
       return print_map(defaults_C3, out, tab);
     }
+    /**
+      Serialize the contents of defaults_C3
+      \param[in] tab Indentation to add to each line
+      \return Serialized collection
+    */
     static std::string stringDefaults_C3(const unsigned int tab = 0) {
       return string_map(defaults_C3, tab);
     }
+    /**
+      Get the default_c3 value corresponding to an enum key
+      \param[in] x Key to get value for
+      \return Value
+    */
     static double getDefault_C3(const Type& x) {
       typename std::map<Type, double>::const_iterator it;
       it = defaults_C3.find(x);
@@ -230,6 +296,12 @@ namespace ePhotosynthesis {
       }
       return it->second;
     }
+    /**
+      Get the default_c3 value corresponding to an enum key
+      \param[in] x Key to get value for
+      \param[in] defaultV Value to return if x is not present
+      \return Value
+    */
     static double getDefault_C3(const Type& x, const double& defaultV) {
       typename std::map<Type, double>::const_iterator it;
       it = defaults_C3.find(x);
@@ -238,12 +310,28 @@ namespace ePhotosynthesis {
       }
       return it->second;
     }
+    /**
+      Print the contents of glymaids
+      \param[in,out] out Stream to print to
+      \param[in] tab Indentation to add to each line
+      \return Updated stream
+    */
     static std::ostream& printGlymaids(std::ostream& out, const unsigned int tab = 0) {
       return print_map(glymaids, out, tab);
     }
+    /**
+      Serialize the contents of glymaids
+      \param[in] tab Indentation to add to each line
+      \return Serialized collection
+    */
     static std::string stringGlymaids(const unsigned int tab = 0) {
       return string_map(glymaids, tab);
     }
+    /**
+      Get the glymaid value corresponding to an enum key
+      \param[in] x Key to get value for
+      \return Value
+    */
     static std::string getGlymaid(const Type& x) {
       typename std::map<Type, std::string>::const_iterator it;
       it = glymaids.find(x);
@@ -252,6 +340,12 @@ namespace ePhotosynthesis {
       }
       return it->second;
     }
+    /**
+      Get the glymaid value corresponding to an enum key
+      \param[in] x Key to get value for
+      \param[in] defaultV Value to return if x is not present
+      \return Value
+    */
     static std::string getGlymaid(const Type& x, const std::string& defaultV) {
       typename std::map<Type, std::string>::const_iterator it;
       it = glymaids.find(x);
@@ -260,6 +354,13 @@ namespace ePhotosynthesis {
       }
       return it->second;
     }
+    /**
+      Print the contents of a collection
+      \param[in] collection Object to print
+      \param[in,out] out Stream to print to
+      \param[in] tab Indentation to add to each line
+      \return Updated stream
+    */
     static std::ostream& print_vector(const std::vector<Type>& collection, std::ostream& out, const unsigned int tab = 0) {
       const std::string space(tab * 4, ' ');
       out << space << "[";
@@ -270,20 +371,37 @@ namespace ePhotosynthesis {
       out << "]" << std::endl;
       return out;
     }
+    /**
+      Serialize a collection to a string
+      \param[in] collection Object to serialize
+      \param[in] tab Indentation to add to each line
+      \return Serialized collection
+    */
     static std::string string_vector(const std::vector<Type>& collection, const unsigned int tab = 0) {
       std::ostringstream oss;
       print_vector(collection, oss, tab);
       return oss.str();
     }
+    /**
+      Print the contents of constant
+      \param[in,out] out Stream to print to
+      \param[in] tab Indentation to add to each line
+      \return Updated stream
+    */
     static std::ostream& printConstant(std::ostream& out, const unsigned int tab = 0) {
       return print_vector(constant, out, tab);
     }
+    /**
+      Serialize the contents of constant
+      \param[in] tab Indentation to add to each line
+      \return Serialized collection
+    */
     static std::string stringConstant(const unsigned int tab = 0) {
       return string_vector(constant, tab);
     }
     /**
-      Check if a value is in constant
-      \param[in] x Value to check
+      Check if a key is in constant
+      \param[in] x Key to check
       \return true if x is present, false otherwise
     */
     static bool isConstant(const Type& x) {
@@ -293,25 +411,48 @@ namespace ePhotosynthesis {
       }
       return (it != constant.end());
     }
+    /**
+      Throw an error if a key is not in constant
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
     static void checkConstant(const Type& x, const std::string& context = "") {
       if (!isConstant(x)) {
         throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in constant");
       }
     }
+    /**
+      Throw an error if a key is in constant
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
     static void checkNotConstant(const Type& x, const std::string& context = "") {
       if (isConstant(x)) {
         throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in constant");
       }
     }
+    /**
+      Print the contents of calculated
+      \param[in,out] out Stream to print to
+      \param[in] tab Indentation to add to each line
+      \return Updated stream
+    */
     static std::ostream& printCalculated(std::ostream& out, const unsigned int tab = 0) {
       return print_vector(calculated, out, tab);
     }
+    /**
+      Serialize the contents of calculated
+      \param[in] tab Indentation to add to each line
+      \return Serialized collection
+    */
     static std::string stringCalculated(const unsigned int tab = 0) {
       return string_vector(calculated, tab);
     }
     /**
-      Check if a value is in calculated
-      \param[in] x Value to check
+      Check if a key is in calculated
+      \param[in] x Key to check
       \return true if x is present, false otherwise
     */
     static bool isCalculated(const Type& x) {
@@ -321,25 +462,48 @@ namespace ePhotosynthesis {
       }
       return (it != calculated.end());
     }
+    /**
+      Throw an error if a key is not in calculated
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
     static void checkCalculated(const Type& x, const std::string& context = "") {
       if (!isCalculated(x)) {
         throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in calculated");
       }
     }
+    /**
+      Throw an error if a key is in calculated
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
     static void checkNotCalculated(const Type& x, const std::string& context = "") {
       if (isCalculated(x)) {
         throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in calculated");
       }
     }
+    /**
+      Print the contents of nonvector
+      \param[in,out] out Stream to print to
+      \param[in] tab Indentation to add to each line
+      \return Updated stream
+    */
     static std::ostream& printNonvector(std::ostream& out, const unsigned int tab = 0) {
       return print_vector(nonvector, out, tab);
     }
+    /**
+      Serialize the contents of nonvector
+      \param[in] tab Indentation to add to each line
+      \return Serialized collection
+    */
     static std::string stringNonvector(const unsigned int tab = 0) {
       return string_vector(nonvector, tab);
     }
     /**
-      Check if a value is in nonvector
-      \param[in] x Value to check
+      Check if a key is in nonvector
+      \param[in] x Key to check
       \return true if x is present, false otherwise
     */
     static bool isNonvector(const Type& x) {
@@ -349,25 +513,48 @@ namespace ePhotosynthesis {
       }
       return (it != nonvector.end());
     }
+    /**
+      Throw an error if a key is not in nonvector
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
     static void checkNonvector(const Type& x, const std::string& context = "") {
       if (!isNonvector(x)) {
         throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in nonvector");
       }
     }
+    /**
+      Throw an error if a key is in nonvector
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
     static void checkNotNonvector(const Type& x, const std::string& context = "") {
       if (isNonvector(x)) {
         throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in nonvector");
       }
     }
+    /**
+      Print the contents of skipped
+      \param[in,out] out Stream to print to
+      \param[in] tab Indentation to add to each line
+      \return Updated stream
+    */
     static std::ostream& printSkipped(std::ostream& out, const unsigned int tab = 0) {
       return print_vector(skipped, out, tab);
     }
+    /**
+      Serialize the contents of skipped
+      \param[in] tab Indentation to add to each line
+      \return Serialized collection
+    */
     static std::string stringSkipped(const unsigned int tab = 0) {
       return string_vector(skipped, tab);
     }
     /**
-      Check if a value is in skipped
-      \param[in] x Value to check
+      Check if a key is in skipped
+      \param[in] x Key to check
       \return true if x is present, false otherwise
     */
     static bool isSkipped(const Type& x) {
@@ -377,24 +564,47 @@ namespace ePhotosynthesis {
       }
       return (it != skipped.end());
     }
+    /**
+      Throw an error if a key is not in skipped
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
     static void checkSkipped(const Type& x, const std::string& context = "") {
       if (!isSkipped(x)) {
         throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in skipped");
       }
     }
+    /**
+      Throw an error if a key is in skipped
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
     static void checkNotSkipped(const Type& x, const std::string& context = "") {
       if (isSkipped(x)) {
         throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in skipped");
       }
     }
+    /**
+      Remove all entries from skipped
+    */
     static void clearSkipped() {
       skipped.clear();
     }
+    /**
+      Add an element to skipped if it is not already present
+      \param[in] x Key to add
+    */
     static void addSkipped(const Type& x) {
       if (!isSkipped(x)) {
         skipped.push_back(x);
       }
     }
+    /**
+      Remove an element from skipped
+      \param[in] x Key to remove
+    */
     static void removeSkipped(const Type& x) {
       typename std::vector<Type>::iterator it;
       for (it = skipped.begin(); it != skipped.end(); it++){
@@ -404,12 +614,20 @@ namespace ePhotosynthesis {
         skipped.erase(it);
       }
     }
+    /**
+      Add multiple elements to skipped if they are not already present
+      \param[in] x Elements to add
+    */
     static void addMultipleSkipped(const std::vector<Type>& x) {
       typename std::vector<Type>::const_iterator it;
       for (it = x.begin(); it != x.end(); it++) {
         addSkipped((*(it)));
       }
     }
+    /**
+      Remove multiple elements to skipped if they are not already present
+      \param[in] x Elements to add
+    */
     static void removeMultipleSkipped(const std::vector<Type>& x) {
       typename std::vector<Type>::const_iterator it;
       for (it = x.begin(); it != x.end(); it++) {

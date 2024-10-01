@@ -37,8 +37,8 @@ using namespace ePhotosynthesis::conditions;
 std::size_t FIBFCondition::count = 0;
 
 DEFINE_VALUE_SET_STATIC_COMPOSITE(FIBF);
-// DEFINE_VALUE_SET_NONE(FIBFCondition);
-DEFINE_VALUE_SET_SINGLE_NS(pool::, FIBFPool);
+// DEFINE_VALUE_SET(FIBFCondition);
+DEFINE_VALUE_SET_NS(pool::, FIBFPool);
 
 FIBFCondition* FIBF::_init(Variables *theVars) {
 

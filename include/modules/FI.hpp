@@ -46,7 +46,7 @@ namespace modules {
  */
 class FI : public ModuleBase<FI, conditions::FICondition, MODULE_FI> {
 public:
-    DECLARE_VALUE_SET_STATIC_SINGLE(FI, ModuleBase<FI, conditions::FICondition, MODULE_FI>)
+    DECLARE_VALUE_SET_STATIC(FI, ModuleBase<FI, conditions::FICondition, MODULE_FI>)
     SET_GET_BOOL_MODULE(BF_connect, conditions::FI)
 private:
     friend ModuleBase;
@@ -108,7 +108,7 @@ private:
     static std::size_t N;  // The current size of the FI TimeSeries
 };
 
-  DEFINE_VALUE_SET_STATIC_HEADER_SINGLE(FI);
+  DEFINE_VALUE_SET_STATIC_HEADER(FI);
   
 }  // namespace modules
 }  // namespace ePhotosynthesis

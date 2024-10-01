@@ -41,7 +41,7 @@ namespace pool {
  */
 class FIBFPool : public ValueSet<MODULE_FIBF, PARAM_TYPE_POOL> {
 public:
-  DECLARE_VALUE_SET_SINGLE(FIBFPool, ValueSet<MODULE_FIBF, PARAM_TYPE_POOL>)
+  DECLARE_VALUE_SET(FIBFPool, ValueSet<MODULE_FIBF, PARAM_TYPE_POOL>)
   FIBFPool() {
     initMembers();
   }
@@ -59,7 +59,7 @@ public:
   }
 };
 
-  DEFINE_VALUE_SET_HEADER_SINGLE(FIBFPool);
+  DEFINE_VALUE_SET_HEADER(FIBFPool);
 
 }  // namespace pool
 }  // namespace ePhotosynthesis

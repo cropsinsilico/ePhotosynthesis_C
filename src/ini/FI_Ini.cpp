@@ -38,7 +38,7 @@ const std::size_t FICondition::count = 22;
 bool FICondition::BF_connect = false;
 bool FI::BF_connect = false;
 
-DEFINE_VALUE_SET_STATIC_SINGLE(FI);
+DEFINE_VALUE_SET_STATIC(FI);
 DEFINE_VALUE_SET(FICondition);
 DEFINE_VALUE_SET_NS(RC::, FIRC);
 DEFINE_VALUE_SET_NS(pool::, FIPool);

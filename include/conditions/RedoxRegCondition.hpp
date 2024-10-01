@@ -42,7 +42,7 @@ namespace conditions {
  */
 class RedoxRegCondition : public ConditionBase<RedoxRegCondition, RedoxRegCondition, MODULE_RedoxReg> {
 public:
-    DECLARE_VALUE_SET_COMPOSITE_SINGLE(RedoxRegCondition, (RACondition), ConditionBase<RedoxRegCondition, RedoxRegCondition, MODULE_RedoxReg>)
+    DECLARE_VALUE_SET_COMPOSITE(RedoxRegCondition, (RACondition), ConditionBase<RedoxRegCondition, RedoxRegCondition, MODULE_RedoxReg>)
     RedoxRegCondition() : RA_con(new RACondition()) {
       initMembers();
     }
@@ -127,7 +127,7 @@ private:
 #endif
 };
 
-  DEFINE_VALUE_SET_HEADER_SINGLE(RedoxRegCondition);
+  DEFINE_VALUE_SET_HEADER(RedoxRegCondition);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis
