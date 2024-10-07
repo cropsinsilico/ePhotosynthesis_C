@@ -8,6 +8,19 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#ifdef _MSC_VER
+// There is a bug in the MSVC compiler where it does not allow
+//   declaration of a specialized class member enum
+//   https://developercommunity.visualstudio.com/t/Explicit-specialization-of-member-enumer/10609934
+#define EPHOTO_USE_SCOPED_ENUM 1
+#endif // _MSC_VER
+#ifdef EPHOTO_USE_SCOPED_ENUM
+#define SCOPED_ENUM enum class
+#define SCOPED_ENUM_TYPE(name) name::
+#else // EPHOTO_USE_SCOPED_ENUM
+#define SCOPED_ENUM enum
+#define SCOPED_ENUM_TYPE(name)
+#endif // EPHOTO_USE_SCOPED_ENUM
 namespace ePhotosynthesis {
   enum MODULE : int {
       MODULE_NONE       ,
@@ -159,7 +172,7 @@ namespace ePhotosynthesis {
   template<MODULE M, PARAM_TYPE PT>
   class ValueSetEnum {
   public:
-    enum Type : int;
+    SCOPED_ENUM Type : int;
     static const MODULE module;
     static const PARAM_TYPE param_type;
     static const std::vector<Type> all;  /**< All enum values */

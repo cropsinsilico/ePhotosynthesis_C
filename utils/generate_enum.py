@@ -1001,6 +1001,9 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 function_type, enum_name=f'{enum_prefix}{name}',
                 enum_is_class=in_class, result=var_name,
                 no_return=no_return)
+        enum_member_prefix = enum_prefix
+        if in_class:
+            enum_member_prefix += f'SCOPED_ENUM_TYPE({name})'
         static = '' if in_class else 'static '
         const = "" if self.is_editable else "const "
         lines = [
@@ -1012,7 +1015,7 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
         lines += super(
             CEnumGeneratorCollectionBase, self).generate_definition(
                 name, members, width=width,
-                enum_prefix=enum_prefix, **kwargs)
+                enum_prefix=enum_member_prefix, **kwargs)
         lines += ["};"]
         if not no_return:
             lines += [f"return {var_name};"]
@@ -1664,6 +1667,20 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
         '#include <iostream>',
         '#include <fstream>',
         '#include <sstream>',
+        '#ifdef _MSC_VER',
+        '// There is a bug in the MSVC compiler where it does not allow',
+        '//   declaration of a specialized class member enum',
+        '//   https://developercommunity.visualstudio.com/t/'
+        'Explicit-specialization-of-member-enumer/10609934',
+        '#define EPHOTO_USE_SCOPED_ENUM 1',
+        '#endif // _MSC_VER',
+        '#ifdef EPHOTO_USE_SCOPED_ENUM',
+        '#define SCOPED_ENUM enum class',
+        '#define SCOPED_ENUM_TYPE(name) name::',
+        '#else // EPHOTO_USE_SCOPED_ENUM',
+        '#define SCOPED_ENUM enum',
+        '#define SCOPED_ENUM_TYPE(name)',
+        '#endif // EPHOTO_USE_SCOPED_ENUM',
     ]
     explicit_dst = True
     perfile_options = dict(
@@ -2104,8 +2121,12 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                     enum_type=enum_type, enum_prefix=enum_prefix,
                     as_class=as_class)
             else:
+                if as_class:
+                    member_prefix = 'SCOPED_ENUM '
+                else:
+                    member_prefix = 'enum '
                 lines += [
-                    f'{template}enum {enum_prefix}{enum_name} : '
+                    f'{template}{member_prefix}{enum_prefix}{enum_name} : '
                     f'{enum_type};',
                 ]
             if spec_var and not specialization:
@@ -2200,7 +2221,11 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 enum_name = name
         width = self.max_width(members)
         width_val = self.max_width(members, key='idx')
-        lines += [f'enum {enum_prefix}{enum_name} : {enum_type} {{']
+        if as_class:
+            member_prefix = 'SCOPED_ENUM '
+        else:
+            member_prefix = 'enum '
+        lines += [f'{member_prefix}{enum_prefix}{enum_name} : {enum_type} {{']
         lines += [
             '  ' + x for x in
             super(CEnumGeneratorBaseHeader, self).generate_item(
@@ -2268,6 +2293,9 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             specialization, spec_var = self.specialization(
                 template_lines, **kwargs)
             enum_prefix = f'{class_name}{specialization}::'
+        enum_member_prefix = enum_prefix
+        if as_class:
+            enum_member_prefix += f'SCOPED_ENUM_TYPE({enum_name})'
         enum_name_full = f'{enum_prefix}{enum_name}'
         if specialization:
             enum_name_full = f'typename {enum_name_full}'
@@ -2278,7 +2306,7 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 enum_prefix=enum_prefix, as_class=as_class)
         if as_class:
             prefixed_names = [
-                enum_prefix + x["name"] for x in members_core
+                enum_member_prefix + x["name"] for x in members_core
             ]
             template = 'template<> ' if specialization else ''
             lines += [

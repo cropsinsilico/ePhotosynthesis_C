@@ -156,7 +156,7 @@ FICondition* FI::_init(Variables *theVars) {
     return FI_Con;
 }
 
-FICondition* FI::_initAlt(Variables *theVars, FICondition* FI_Con) {
+void FI::_initAlt(Variables *theVars, FICondition* FI_Con) {
 #ifdef CHECK_VALUE_SET_ALTS
     theVars->initParamStatic<FI>();
     theVars->initParam(theVars->FI_RC);
@@ -204,18 +204,16 @@ FICondition* FI::_initAlt(Variables *theVars, FICondition* FI_Con) {
     theVars->FI_Pool.checkAlts("FI::_init::FI_Pool: ");
 #else // CHECK_VALUE_SET_ALTS
     UNUSED(theVars);
+    UNUSED(FI_Con);
 #endif // CHECK_VALUE_SET_ALTS
-    return FI_Con;
 }
 
-void FI::_updateAlts(Variables *theVars, FICondition* FI_con) {
-#ifdef CHECK_VALUE_SET_ALTS
-    FI::updateAlts();
-    theVars->FI_RC.updateAlts();
-    theVars->FI_Pool.updateAlts();
-    FI_con->updateAlts();
-#else // CHECK_VALUE_SET_ALTS
-    UNUSED(theVars);
-    UNUSED(FI_con);
-#endif // CHECK_VALUE_SET_ALTS
+void FI::_checkAlts(Variables *theVars, const std::string& context) {
+    theVars->FI_RC.checkAlts(context + "FI_RC:");
+    theVars->FI_Pool.checkAlts(context + "FI_RC:");
+}
+
+void FI::_updateAlts(Variables *theVars, const std::string& context) {
+    theVars->FI_RC.updateAlts(context + "FI_RC:");
+    theVars->FI_Pool.updateAlts(context + "FI_RC:");
 }

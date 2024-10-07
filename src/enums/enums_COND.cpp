@@ -5,100 +5,100 @@
 
 using namespace ePhotosynthesis;
 
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ISPHr, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::cytc1, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ISPo, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ISPoQH2, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::QHsemi, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::cytbL, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Qi, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Q, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::cytbH, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Qn, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Qr, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::QH2, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::cytc2, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::P700, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ADP, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ATP, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Ks, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Mgs, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Cls, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Aip, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::U, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::An, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Fdn, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::BFHs, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::BFHl, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::PHs, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::PHl, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::NADPH};
+template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPHr, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc1, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPo, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPoQH2, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QHsemi, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytbL, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qi, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Q, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytbH, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qn, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qr, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QH2, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc2, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P700, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADP, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATP, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ks, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Mgs, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Cls, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Aip, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)An, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fdn, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)BFHs, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)BFHl, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHs, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHl, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)NADPH};
 template<> bool ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::names = {
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ISPHr  , "ISPHr"  },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::cytc1  , "cytc1"  },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ISPo   , "ISPo"   },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ISPoQH2, "ISPoQH2"},
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::QHsemi , "QHsemi" },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::cytbL  , "cytbL"  },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Qi     , "Qi"     },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Q      , "Q"      },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::cytbH  , "cytbH"  },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Qn     , "Qn"     },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Qr     , "Qr"     },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::QH2    , "QH2"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::cytc2  , "cytc2"  },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::P700   , "P700"   },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ADP    , "ADP"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ATP    , "ATP"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Ks     , "Ks"     },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Mgs    , "Mgs"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Cls    , "Cls"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Aip    , "Aip"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::U      , "U"      },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::An     , "An"     },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Fdn    , "Fdn"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::BFHs   , "BFHs"   },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::BFHl   , "BFHl"   },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::PHs    , "PHs"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::PHl    , "PHl"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::NADPH  , "NADPH"  },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPHr, "ISPHr"  },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc1, "cytc1"  },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPo, "ISPo"   },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPoQH2, "ISPoQH2"},
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QHsemi, "QHsemi" },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytbL, "cytbL"  },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qi, "Qi"     },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Q, "Q"      },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytbH, "cytbH"  },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qn, "Qn"     },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qr, "Qr"     },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QH2, "QH2"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc2, "cytc2"  },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P700, "P700"   },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADP, "ADP"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATP, "ATP"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ks, "Ks"     },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Mgs, "Mgs"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Cls, "Cls"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Aip, "Aip"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U, "U"      },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)An, "An"     },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fdn, "Fdn"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)BFHs, "BFHs"   },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)BFHl, "BFHl"   },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHs, "PHs"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHl, "PHl"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)NADPH, "NADPH"  },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::defaults = {
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ISPHr  , 0.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::cytc1  , 1.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ISPo   , 1.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ISPoQH2, 0.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::QHsemi , 0.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::cytbL  , 1.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Qi     , 0.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Q      , 1.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::cytbH  , 1.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Qn     , 0.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Qr     , 0.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::QH2    , 5.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::cytc2  , 1.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::P700   , 0.5    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ADP    , 0.82   },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ATP    , 0.68   },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Ks     , 10.0   },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Mgs    , 5.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Cls    , 1.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Aip    , 0.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::U      , 0.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::An     , 0.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Fdn    , 0.3    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::BFHs   , 19.0001},
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::BFHl   , 19.0001},
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::PHs    , 7.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::PHl    , 7.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::NADPH  , 0.21   },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPHr, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc1, 1.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPo, 1.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPoQH2, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QHsemi, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytbL, 1.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qi, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Q, 1.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytbH, 1.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qn, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qr, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QH2, 5.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc2, 1.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P700, 0.5    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADP, 0.82   },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATP, 0.68   },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ks, 10.0   },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Mgs, 5.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Cls, 1.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Aip, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)An, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fdn, 0.3    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)BFHs, 19.0001},
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)BFHl, 19.0001},
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHs, 7.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHl, 7.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)NADPH, 0.21   },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::defaults_C3 = {
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ISPHr  , 0.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::cytc1  , 1.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ISPo   , 1.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ISPoQH2, 0.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::QHsemi , 0.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::cytbL  , 1.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Qi     , 0.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Q      , 1.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::cytbH  , 1.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Qn     , 0.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Qr     , 0.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::QH2    , 5.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::cytc2  , 1.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::P700   , 0.5    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ADP    , 0.82   },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::ATP    , 0.68   },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Ks     , 10.0   },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Mgs    , 5.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Cls    , 1.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Aip    , 0.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::U      , 0.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::An     , 0.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Fdn    , 0.3    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::BFHs   , 19.0001},
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::BFHl   , 19.0001},
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::PHs    , 7.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::PHl    , 7.0    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::NADPH  , 0.21   },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPHr, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc1, 1.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPo, 1.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPoQH2, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QHsemi, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytbL, 1.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qi, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Q, 1.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytbH, 1.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qn, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qr, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QH2, 5.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc2, 1.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P700, 0.5    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADP, 0.82   },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATP, 0.68   },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ks, 10.0   },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Mgs, 5.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Cls, 1.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Aip, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)An, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fdn, 0.3    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)BFHs, 19.0001},
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)BFHl, 19.0001},
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHs, 7.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHl, 7.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)NADPH, 0.21   },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::glymaids = {
@@ -221,19 +221,19 @@ template<>
 const std::vector<ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::initonce = {
 };
 
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::kd};
+template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)kd};
 template<> bool ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::names = {
-  {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::kd  , "kd"  },
+  {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)kd, "kd"  },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::defaults = {
-  {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::kd  , 0.5e8},
+  {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)kd, 0.5e8},
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::defaults_C3 = {
-  {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::kd  , 0.5e8},
+  {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)kd, 0.5e8},
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::glymaids = {
@@ -257,82 +257,82 @@ template<>
 const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::initonce = {
 };
 
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::A, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::U, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::P680ePheo, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::P680pPheon, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::P680pPheo, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::P680Pheon, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Yz, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S1T, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S2T, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S3T, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S0T, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S1Tp, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S2Tp, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S3Tp, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S0Tp, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAQB, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAnQB, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAQBn, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAnQBn, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAQB2n, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAnQB2n, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::PQn};
+template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)A, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680ePheo, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheon, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheo, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680Pheon, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Yz, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S1T, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S2T, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S3T, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S0T, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S1Tp, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S2Tp, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S3Tp, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S0Tp, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQBn, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQBn, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB2n, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB2n, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PQn};
 template<> bool ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::names = {
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::A         , "A"         },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::U         , "U"         },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::P680ePheo , "P680ePheo" },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::P680pPheon, "P680pPheon"},
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::P680pPheo , "P680pPheo" },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::P680Pheon , "P680Pheon" },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Yz        , "Yz"        },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S1T       , "S1T"       },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S2T       , "S2T"       },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S3T       , "S3T"       },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S0T       , "S0T"       },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S1Tp      , "S1Tp"      },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S2Tp      , "S2Tp"      },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S3Tp      , "S3Tp"      },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S0Tp      , "S0Tp"      },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAQB      , "QAQB"      },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAnQB     , "QAnQB"     },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAQBn     , "QAQBn"     },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAnQBn    , "QAnQBn"    },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAQB2n    , "QAQB2n"    },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAnQB2n   , "QAnQB2n"   },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::PQn       , "PQn"       },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)A, "A"         },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U, "U"         },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680ePheo, "P680ePheo" },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheon, "P680pPheon"},
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheo, "P680pPheo" },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680Pheon, "P680Pheon" },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Yz, "Yz"        },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S1T, "S1T"       },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S2T, "S2T"       },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S3T, "S3T"       },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S0T, "S0T"       },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S1Tp, "S1Tp"      },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S2Tp, "S2Tp"      },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S3Tp, "S3Tp"      },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S0Tp, "S0Tp"      },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB, "QAQB"      },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB, "QAnQB"     },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQBn, "QAQBn"     },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQBn, "QAnQBn"    },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB2n, "QAQB2n"    },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB2n, "QAnQB2n"   },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PQn, "PQn"       },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::defaults = {
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::A         , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::U         , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::P680ePheo , 1  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::P680pPheon, 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::P680pPheo , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::P680Pheon , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Yz        , 1  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S1T       , 0.8},
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S2T       , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S3T       , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S0T       , 0.2},
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S1Tp      , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S2Tp      , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S3Tp      , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S0Tp      , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAQB      , 1  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAnQB     , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAQBn     , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAnQBn    , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAQB2n    , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAnQB2n   , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::PQn       , 5  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)A, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680ePheo, 1  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheon, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheo, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680Pheon, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Yz, 1  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S1T, 0.8},
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S2T, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S3T, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S0T, 0.2},
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S1Tp, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S2Tp, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S3Tp, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S0Tp, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB, 1  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQBn, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQBn, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB2n, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB2n, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PQn, 5  },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::defaults_C3 = {
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::A         , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::U         , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::P680ePheo , 1  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::P680pPheon, 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::P680pPheo , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::P680Pheon , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Yz        , 1  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S1T       , 0.8},
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S2T       , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S3T       , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S0T       , 0.2},
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S1Tp      , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S2Tp      , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S3Tp      , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::S0Tp      , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAQB      , 1  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAnQB     , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAQBn     , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAnQBn    , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAQB2n    , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::QAnQB2n   , 0  },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::PQn       , 5  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)A, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680ePheo, 1  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheon, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheo, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680Pheon, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Yz, 1  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S1T, 0.8},
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S2T, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S3T, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S0T, 0.2},
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S1Tp, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S2Tp, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S3Tp, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S0Tp, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB, 1  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQBn, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQBn, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB2n, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB2n, 0  },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PQn, 5  },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::glymaids = {
@@ -356,63 +356,63 @@ template<>
 const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::initonce = {
 };
 
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GCEA, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GCA, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::PGCA, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GCAc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GOAc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SERc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GLYc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::HPRc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GCEAc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::RuBP, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::_v131};
+template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEA, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCA, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGCA, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCAc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GOAc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SERc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GLYc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HPRc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEAc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131};
 template<> bool ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::names = {
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GCEA , "GCEA" },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GCA  , "GCA"  },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::PGCA , "PGCA" },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GCAc , "GCAc" },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GOAc , "GOAc" },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SERc , "SERc" },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GLYc , "GLYc" },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::HPRc , "HPRc" },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GCEAc, "GCEAc"},
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::RuBP , "RuBP" },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::_v131, "_v131"},
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEA, "GCEA" },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCA, "GCA"  },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGCA, "PGCA" },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCAc, "GCAc" },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GOAc, "GOAc" },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SERc, "SERc" },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GLYc, "GLYc" },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HPRc, "HPRc" },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEAc, "GCEAc"},
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, "RuBP" },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131, "_v131"},
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::defaults = {
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GCEA , 0.1812},
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GCA  , 0.36  },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::PGCA , 0.0029},
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GCAc , 0.36  },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GOAc , 0.028 },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SERc , 7.5   },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GLYc , 1.8   },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::HPRc , 0.0035},
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GCEAc, 0.1812},
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::RuBP , 2.0   },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::_v131, 0.0   },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEA, 0.1812},
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCA, 0.36  },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGCA, 0.0029},
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCAc, 0.36  },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GOAc, 0.028 },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SERc, 7.5   },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GLYc, 1.8   },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HPRc, 0.0035},
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEAc, 0.1812},
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, 2.0   },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131, 0.0   },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::defaults_C3 = {
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GCEA , 0.1812},
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GCA  , 0.36  },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::PGCA , 0.0029},
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GCAc , 0.36  },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GOAc , 0.028 },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SERc , 7.5   },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GLYc , 1.8   },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::HPRc , 0.0035},
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::GCEAc, 0.1812},
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::RuBP , 2.0   },
-  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::_v131, 0.0   },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEA, 0.1812},
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCA, 0.36  },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGCA, 0.0029},
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCAc, 0.36  },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GOAc, 0.028 },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SERc, 7.5   },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GLYc, 1.8   },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HPRc, 0.0035},
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEAc, 0.1812},
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, 2.0   },
+  {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131, 0.0   },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::glymaids = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::constant = {
-  ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::_v131,
+  ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131,
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::calculated = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::nonvector = {
-  ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::_v131,
+  ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131,
 };
 template<> 
 std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::skipped = {
@@ -424,79 +424,79 @@ template<>
 const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::initonce = {
 };
 
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::RuBP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::PGA, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::DPGA, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::T3P, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::ADPG, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::FBP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::E4P, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::S7P, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SBP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::ATP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::HexP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::PenP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::_Pi, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::_ADP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::_v1};
+template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGA, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)DPGA, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3P, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADPG, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)E4P, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S7P, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HexP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PenP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_Pi, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_ADP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1};
 template<> bool ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::names = {
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::RuBP, "RuBP"},
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::PGA , "PGA" },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::DPGA, "DPGA"},
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::T3P , "T3P" },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::ADPG, "ADPG"},
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::FBP , "FBP" },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::E4P , "E4P" },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::S7P , "S7P" },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SBP , "SBP" },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::ATP , "ATP" },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::HexP, "HexP"},
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::PenP, "PenP"},
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::_Pi , "_Pi" },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::_ADP, "_ADP"},
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::_v1 , "_v1" },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, "RuBP"},
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGA, "PGA" },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)DPGA, "DPGA"},
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3P, "T3P" },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADPG, "ADPG"},
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBP, "FBP" },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)E4P, "E4P" },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S7P, "S7P" },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBP, "SBP" },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATP, "ATP" },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HexP, "HexP"},
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PenP, "PenP"},
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_Pi, "_Pi" },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_ADP, "_ADP"},
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1, "_v1" },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::defaults = {
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::RuBP, 2.000 },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::PGA , 2.400 },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::DPGA, 0.0011},
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::T3P , 0.5   },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::ADPG, 0.005 },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::FBP , 0.670 },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::E4P , 0.050 },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::S7P , 2.000 },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SBP , 0.300 },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::ATP , 0.68  },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::HexP, 2.2   },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::PenP, 0.25  },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::_Pi , 0.0   },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::_ADP, 0.0   },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::_v1 , 0.0   },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, 2.000 },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGA, 2.400 },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)DPGA, 0.0011},
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3P, 0.5   },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADPG, 0.005 },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBP, 0.670 },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)E4P, 0.050 },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S7P, 2.000 },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBP, 0.300 },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATP, 0.68  },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HexP, 2.2   },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PenP, 0.25  },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_Pi, 0.0   },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_ADP, 0.0   },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1, 0.0   },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::defaults_C3 = {
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::RuBP, 2.000 },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::PGA , 2.400 },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::DPGA, 0.0011},
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::T3P , 0.5   },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::ADPG, 0.005 },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::FBP , 0.670 },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::E4P , 0.050 },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::S7P , 2.000 },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SBP , 0.300 },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::ATP , 0.68  },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::HexP, 2.2   },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::PenP, 0.25  },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::_Pi , 0.0   },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::_ADP, 0.0   },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::_v1 , 0.0   },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, 2.000 },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGA, 2.400 },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)DPGA, 0.0011},
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3P, 0.5   },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADPG, 0.005 },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBP, 0.670 },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)E4P, 0.050 },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S7P, 2.000 },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBP, 0.300 },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATP, 0.68  },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HexP, 2.2   },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PenP, 0.25  },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_Pi, 0.0   },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_ADP, 0.0   },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1, 0.0   },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::glymaids = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::constant = {
-  ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::_Pi ,
-  ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::_ADP,
-  ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::_v1 ,
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_Pi,
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_ADP,
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1,
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::calculated = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::nonvector = {
-  ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::_Pi ,
-  ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::_ADP,
-  ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::_v1 ,
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_Pi,
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_ADP,
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1,
 };
 template<> 
 std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::skipped = {
@@ -574,69 +574,69 @@ template<>
 const std::vector<ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::initonce = {
 };
 
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::GAPDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::FBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::PRK, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::ATPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::ATPGPP, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::MDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Thio, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Fd, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::RuACT, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Coeff};
+template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GAPDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PRK, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPGPP, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)MDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thio, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fd, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuACT, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff};
 template<> bool ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::names = {
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::GAPDH , "GAPDH" },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::FBPase, "FBPase"},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SBPase, "SBPase"},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::PRK   , "PRK"   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::ATPase, "ATPase"},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::ATPGPP, "ATPGPP"},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::MDH   , "MDH"   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Thio  , "Thio"  },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Fd    , "Fd"    },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::RuACT , "RuACT" },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Coeff , "Coeff" },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GAPDH, "GAPDH" },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPase, "FBPase"},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBPase, "SBPase"},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PRK, "PRK"   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPase, "ATPase"},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPGPP, "ATPGPP"},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)MDH, "MDH"   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thio, "Thio"  },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fd, "Fd"    },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuACT, "RuACT" },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff, "Coeff" },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::defaults = {
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::GAPDH , 1.0972130787798991e-08},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::FBPase, 4.309416074121956e-08 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SBPase, 2.1645021645021643e-07},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::PRK   , 6.097560975609756e-08 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::ATPase, 2e-08                 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::ATPGPP, 4.7619047619047623e-07},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::MDH   , 0.0                   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Thio  , 0.081                 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Fd    , 0.081                 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::RuACT , 0.0056                },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Coeff , 0.3                   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GAPDH, 1.0972130787798991e-08},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPase, 4.309416074121956e-08 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBPase, 2.1645021645021643e-07},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PRK, 6.097560975609756e-08 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPase, 2e-08                 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPGPP, 4.7619047619047623e-07},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)MDH, 0.0                   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thio, 0.081                 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fd, 0.081                 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuACT, 0.0056                },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff, 0.3                   },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::defaults_C3 = {
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::GAPDH , 1.0972130787798991e-08},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::FBPase, 4.309416074121956e-08 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SBPase, 2.1645021645021643e-07},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::PRK   , 6.097560975609756e-08 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::ATPase, 2e-08                 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::ATPGPP, 4.7619047619047623e-07},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::MDH   , 0.0                   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Thio  , 0.081                 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Fd    , 0.081                 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::RuACT , 0.0056                },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Coeff , 0.3                   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GAPDH, 1.0972130787798991e-08},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPase, 4.309416074121956e-08 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBPase, 2.1645021645021643e-07},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PRK, 6.097560975609756e-08 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPase, 2e-08                 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPGPP, 4.7619047619047623e-07},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)MDH, 0.0                   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thio, 0.081                 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fd, 0.081                 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuACT, 0.0056                },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff, 0.3                   },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::glymaids = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::constant = {
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Coeff ,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff,
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::calculated = {
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::GAPDH ,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::FBPase,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SBPase,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::PRK   ,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::ATPase,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::ATPGPP,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GAPDH,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPase,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBPase,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PRK,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPase,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPGPP,
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::nonvector = {
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Coeff ,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff,
 };
 template<> 
 std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::skipped = {
@@ -648,19 +648,19 @@ template<>
 const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::initonce = {
 };
 
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Thion};
+template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thion};
 template<> bool ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::names = {
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Thion, "Thion"},
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thion, "Thion"},
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::defaults = {
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Thion, 0.25},
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thion, 0.25},
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::defaults_C3 = {
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Thion, 0.25},
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thion, 0.25},
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::glymaids = {
@@ -684,28 +684,28 @@ template<>
 const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::initonce = {
 };
 
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::ER, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Eaf, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::ECMR, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::RuBP};
+template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ER, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Eaf, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ECMR, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP};
 template<> bool ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::names = {
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::ER  , "ER"  },
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Eaf , "Eaf" },
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::ECMR, "ECMR"},
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::RuBP, "RuBP"},
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ER, "ER"  },
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Eaf, "Eaf" },
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ECMR, "ECMR"},
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, "RuBP"},
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::defaults = {
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::ER  , 0.20},
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Eaf , 0.20},
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::ECMR, 0.8 },
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::RuBP, 2.0 },
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ER, 0.20},
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Eaf, 0.20},
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ECMR, 0.8 },
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, 2.0 },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::defaults_C3 = {
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::ER  , 0.20},
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Eaf , 0.20},
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::ECMR, 0.8 },
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::RuBP, 2.0 },
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ER, 0.20},
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Eaf, 0.20},
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ECMR, 0.8 },
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, 2.0 },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::glymaids = {
@@ -729,40 +729,40 @@ template<>
 const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::initonce = {
 };
 
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::T3Pc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::FBPc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::HexPc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::F26BPc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::UDPGc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SUCP, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SUC, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::PGAc};
+template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3Pc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HexPc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)F26BPc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)UDPGc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUCP, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUC, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGAc};
 template<> bool ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::names = {
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::T3Pc  , "T3Pc"  },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::FBPc  , "FBPc"  },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::HexPc , "HexPc" },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::F26BPc, "F26BPc"},
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::UDPGc , "UDPGc" },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SUCP  , "SUCP"  },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SUC   , "SUC"   },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::PGAc  , "PGAc"  },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3Pc, "T3Pc"  },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPc, "FBPc"  },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HexPc, "HexPc" },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)F26BPc, "F26BPc"},
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)UDPGc, "UDPGc" },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUCP, "SUCP"  },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUC, "SUC"   },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGAc, "PGAc"  },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::defaults = {
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::T3Pc  , 2.0   },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::FBPc  , 2.0   },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::HexPc , 5.8   },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::F26BPc, 7.8e-6},
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::UDPGc , 0.57  },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SUCP  , 0.0   },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SUC   , 0.0   },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::PGAc  , 0.5   },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3Pc, 2.0   },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPc, 2.0   },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HexPc, 5.8   },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)F26BPc, 7.8e-6},
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)UDPGc, 0.57  },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUCP, 0.0   },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUC, 0.0   },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGAc, 0.5   },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::defaults_C3 = {
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::T3Pc  , 2.0   },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::FBPc  , 2.0   },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::HexPc , 5.8   },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::F26BPc, 7.8e-6},
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::UDPGc , 0.57  },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SUCP  , 0.0   },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SUC   , 0.0   },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::PGAc  , 0.5   },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3Pc, 2.0   },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPc, 2.0   },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HexPc, 5.8   },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)F26BPc, 7.8e-6},
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)UDPGc, 0.57  },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUCP, 0.0   },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUC, 0.0   },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGAc, 0.5   },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::glymaids = {
@@ -786,28 +786,28 @@ template<>
 const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::initonce = {
 };
 
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Vx, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Ax, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Zx, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::ABA};
+template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA};
 template<> bool ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::names = {
-  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Vx  , "Vx"  },
-  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Ax  , "Ax"  },
-  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Zx  , "Zx"  },
-  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::ABA , "ABA" },
+  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx, "Vx"  },
+  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax, "Ax"  },
+  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx, "Zx"  },
+  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA, "ABA" },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::defaults = {
-  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Vx  , 160.0},
-  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Ax  , 10.0 },
-  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Zx  , 5.0  },
-  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::ABA , 1.0  },
+  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx, 160.0},
+  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax, 10.0 },
+  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx, 5.0  },
+  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA, 1.0  },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::defaults_C3 = {
-  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Vx  , 160.0},
-  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Ax  , 10.0 },
-  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Zx  , 5.0  },
-  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::ABA , 1.0  },
+  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx, 160.0},
+  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax, 10.0 },
+  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx, 5.0  },
+  {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA, 1.0  },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::glymaids = {
@@ -817,10 +817,10 @@ const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSet
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::calculated = {
-  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Vx  ,
-  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Ax  ,
-  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Zx  ,
-  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::ABA ,
+  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx,
+  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax,
+  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx,
+  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA,
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::nonvector = {

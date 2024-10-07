@@ -3,7 +3,7 @@
 #pragma once
 
 template<>
-enum ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type : int {
     NONE         ,
     kA_d         ,  //!< The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
     kA_f         ,  //!< The total amount of cytc; Unit: micromole m-2 leaf area
@@ -70,7 +70,7 @@ namespace POOL {
 }
 
 template<>
-enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type : int {
     NONE     ,
     PQT      ,
     MAX      ,
@@ -97,7 +97,7 @@ namespace POOL {
 }
 
 template<>
-enum ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type : int {
     NONE     ,
     QBt      ,  //!< The total concentration of Qb site;
     PQT      ,  //!< The total concentration of PQ;
@@ -126,7 +126,7 @@ namespace POOL {
 }
 
 template<>
-enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type : int {
     NONE          ,
     GAPDH         ,  //!< [CALC] The initial concentration of active GAPDH; *=V3; SA = 620.0, mw = 147000.0, PS::V3
     FBPase        ,  //!< [CALC] The initial concentration of active FBPase; *=V6; SA = 119.0, mw = 195000.0, PS::V6
@@ -201,7 +201,7 @@ namespace POOL {
 }
 
 template<>
-enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type : int {
     NONE             ,
     FBPase_Coeff     ,
     FBPase0          ,
@@ -242,7 +242,7 @@ namespace POOL {
 }
 
 template<>
-enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type : int {
     NONE     ,
     ET       ,  //!< The total concentraiton of E, ER, EC, ECM, ECMR , mM;
     Rac      ,  //!< The concentration of the activase, mM
@@ -277,7 +277,7 @@ namespace POOL {
 }
 
 template<>
-enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type : int {
     NONE     ,
     ATc      ,  //!< mM
     UTc      ,  //!< mM
@@ -308,7 +308,7 @@ namespace POOL {
 }
 
 template<>
-enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type : int {
     NONE   ,
     MAX    ,
 };
@@ -333,7 +333,7 @@ namespace POOL {
 }
 
 template<>
-enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type : int {
     NONE   ,
     MAX    ,
 };

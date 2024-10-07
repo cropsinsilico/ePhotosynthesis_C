@@ -381,7 +381,7 @@ PSCondition* PS::_init(Variables *theVars) {
     return PS_con;
 }
 
-PSCondition* PS::_initAlt(Variables *theVars, PSCondition* PS_con) {
+void PS::_initAlt(Variables *theVars, PSCondition* PS_con) {
 #ifdef CHECK_VALUE_SET_ALTS
     theVars->initParamStatic<PS>();
     theVars->initParam(*PS_con);
@@ -645,9 +645,11 @@ PSCondition* PS::_initAlt(Variables *theVars, PSCondition* PS_con) {
     
 #else // CHECK_VALUE_SET_ALTS
     UNUSED(theVars);
+    UNUSED(PS_con);
 #endif // CHECK_VALUE_SET_ALTS
-    return PS_con;
 }
+
+DEFINE_DEFAULT_CHECKALT(PS)
 
 void PS::_reset() {
     PS::PiTc = 0.;
@@ -811,14 +813,4 @@ void PS::_reset() {
     PS::TIME = 0.;
     PS::N = 1;
     conditions::PSCondition::reset();
-}
-
-void PS::_updateAlts(Variables *theVars, PSCondition* PS_con) {
-#ifdef CHECK_VALUE_SET_ALTS
-    PS::updateAlts();
-    PS_con->updateAlts();
-#else // CHECK_VALUE_SET_ALTS
-    UNUSED(theVars);
-    UNUSED(PS_con);
-#endif // CHECK_VALUE_SET_ALTS
 }

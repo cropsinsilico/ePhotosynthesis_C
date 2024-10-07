@@ -176,7 +176,7 @@ RROEACondition* RROEA::_init(Variables *theVars) {
     return RROEA_con;
 }
 
-RROEACondition* RROEA::_initAlt(Variables *theVars, RROEACondition* RROEA_con) {
+void RROEA::_initAlt(Variables *theVars, RROEACondition* RROEA_con) {
 #ifdef CHECK_VALUE_SET_ALTS
     theVars->initParamStatic<RROEA>();
     theVars->initParam(theVars->RROEA_RC);
@@ -248,19 +248,18 @@ RROEACondition* RROEA::_initAlt(Variables *theVars, RROEACondition* RROEA_con) {
     theVars->RROEA_Pool.checkAlts("RROEA::_init::RROEA_Pool: ");
 #else // CHECK_VALUE_SET_ALTS
     UNUSED(theVars);
-#endif // CHECK_VALUE_SET_ALTS
-    return RROEA_con;
-}
-
-void RROEA::_updateAlts(Variables *theVars, RROEACondition* RROEA_con) {
-#ifdef CHECK_VALUE_SET_ALTS
-    RROEA::updateAlts();
-    theVars->RROEA_RC.updateAlts();
-    theVars->RROEA_Pool.updateAlts();
-    theVars->RROEA_KE.updateAlts();
-    RROEA_con->updateAlts();
-#else // CHECK_VALUE_SET_ALTS
-    UNUSED(theVars);
     UNUSED(RROEA_con);
 #endif // CHECK_VALUE_SET_ALTS
+}
+
+void RROEA::_checkAlts(Variables *theVars, const std::string& context) {
+    theVars->RROEA_RC.checkAlts(context + "RROEA_RC:");
+    theVars->RROEA_Pool.checkAlts(context + "RROEA_Pool:");
+    theVars->RROEA_KE.checkAlts(context + "RROEA_KE:");
+}
+
+void RROEA::_updateAlts(Variables *theVars, const std::string& context) {
+    theVars->RROEA_RC.updateAlts(context + "RROEA_RC:");
+    theVars->RROEA_Pool.updateAlts(context + "RROEA_Pool:");
+    theVars->RROEA_KE.updateAlts(context + "RROEA_KE:");
 }

@@ -3,7 +3,7 @@
 #pragma once
 
 template<>
-enum ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type : int {
     NONE             ,
     cATPsyn          ,  //!< cATPsyn=1.0447;%1.01866 WY201803
     CPSi             ,  //!< CPSi=1.0131;% 1.0237 WY201803
@@ -42,7 +42,7 @@ namespace MOD {
 }
 
 template<>
-enum ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type : int {
     NONE   ,
     MAX    ,
 };
@@ -67,7 +67,7 @@ namespace MOD {
 }
 
 template<>
-enum ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type : int {
     NONE   ,
     MAX    ,
 };
@@ -92,7 +92,7 @@ namespace MOD {
 }
 
 template<>
-enum ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type : int {
     NONE   ,
     MAX    ,
 };
@@ -117,7 +117,7 @@ namespace MOD {
 }
 
 template<>
-enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type : int {
     NONE            ,
     ChlPSI          ,  //!< [INIT_ONCE]
     ChlT            ,  //!< [INIT_ONCE]
@@ -152,7 +152,7 @@ namespace MOD {
 }
 
 template<>
-enum ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type : int {
     NONE      ,
     cpsii     ,
     MAX       ,
@@ -179,7 +179,7 @@ namespace MOD {
 }
 
 template<>
-enum ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type : int {
     NONE             ,
     V111             ,  //!< [CALC]
     V112             ,
@@ -356,7 +356,7 @@ namespace MOD {
 }
 
 template<>
-enum ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type : int {
     NONE          ,
     PS_C_CP       ,  //!< Global constant for the total phosphate
     PS_C_CA       ,  //!< Global constant for the total adenylates
@@ -729,7 +729,7 @@ namespace MOD {
 }
 
 template<>
-enum ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type : int {
     NONE   ,
     MAX    ,
 };
@@ -754,7 +754,7 @@ namespace MOD {
 }
 
 template<>
-enum ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type : int {
     NONE   ,
     MAX    ,
 };
@@ -779,7 +779,7 @@ namespace MOD {
 }
 
 template<>
-enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type : int {
     NONE     ,
     SC       ,  //!< [CONST] Used to scale PS module parameters V3, V6, V9, V13, V16, & V23 if RROEA is used without EPS
     fc16     ,  //!< [CONST] Used to scale PS module parameter V16 if RROEA is used without EPS
@@ -810,7 +810,7 @@ namespace MOD {
 }
 
 template<>
-enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type : int {
     NONE                ,
     RedoxReg_VMAX6      ,  //!< Taken from PS::V6
     RedoxReg_VMAX9      ,  //!< Taken from PS::V9
@@ -849,7 +849,7 @@ namespace MOD {
 }
 
 template<>
-enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type : int {
     NONE         ,
     activase     ,
     factor       ,  //!< [CONST] Factor used to scale RuACT condition parameters ER, Eaf & ECMR and RuACT pool parameter ET; was previously 0.224/0.3 in comments
@@ -878,7 +878,7 @@ namespace MOD {
 }
 
 template<>
-enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type : int {
     NONE            ,
     V51             ,  //!< from EnzymeAct for C3, *= SC with GP; DHAP+GAP --FBP     default 0.5; Unit: mmol l-1 s-1
     V52             ,  //!< from EnzymeAct for C3, *= SC with GP; FBP --F6P + Pi; Unit: mmol l-1 s-1
@@ -1079,7 +1079,7 @@ namespace MOD {
 }
 
 template<>
-enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type : int {
     NONE                     ,
     kva                      ,  //!< /=60; Ruth Frommolt et a; 2001; Planta
     kaz                      ,  //!< /=60; Ruth Frommolt et a; 2001; Planta
@@ -1122,7 +1122,7 @@ namespace MOD {
 }
 
 template<>
-enum ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type : int {
     NONE   ,
     MAX    ,
 };
@@ -1147,7 +1147,7 @@ namespace MOD {
 }
 
 template<>
-enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type : int {
     NONE   ,
     MAX    ,
 };
@@ -1172,7 +1172,7 @@ namespace MOD {
 }
 
 template<>
-enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type : int {
     NONE   ,
     MAX    ,
 };

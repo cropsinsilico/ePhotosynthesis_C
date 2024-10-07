@@ -88,7 +88,8 @@ RedoxRegCondition* RedoxReg::_init(Variables *theVars) {
     return RedoxReg_con;
 }
 
-RedoxRegCondition* RedoxReg::_initAlt(Variables *theVars, RedoxRegCondition* RedoxReg_con) {
+void RedoxReg::_initAlt(Variables *theVars,
+			RedoxRegCondition* RedoxReg_con) {
 #ifdef CHECK_VALUE_SET_ALTS
     theVars->initParamStatic<RedoxReg>();
     theVars->initParam(*RedoxReg_con);
@@ -102,16 +103,8 @@ RedoxRegCondition* RedoxReg::_initAlt(Variables *theVars, RedoxRegCondition* Red
     
 #else // CHECK_VALUE_SET_ALTS
     UNUSED(theVars);
-#endif // CHECK_VALUE_SET_ALTS
-    return RedoxReg_con;
-}
-
-void RedoxReg::_updateAlts(Variables *theVars, RedoxRegCondition* RedoxReg_con) {
-#ifdef CHECK_VALUE_SET_ALTS
-    RedoxReg::updateAlts();
-    RedoxReg_con->updateAlts();
-#else // CHECK_VALUE_SET_ALTS
-    UNUSED(theVars);
     UNUSED(RedoxReg_con);
 #endif // CHECK_VALUE_SET_ALTS
 }
+
+DEFINE_DEFAULT_CHECKALT(RedoxReg)

@@ -5,79 +5,79 @@
 
 using namespace ePhotosynthesis;
 
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kA_d, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kA_f, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kA_U, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kU_A, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kU_d, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kU_f, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k1, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k_r1, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kz, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k12, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k23, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k30, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k01, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k2, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kAB1, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kBA1, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kAB2, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kBA2, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k3, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k_r3, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k_pq_oxy};
+template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kA_d, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kA_f, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kA_U, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kU_A, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kU_d, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kU_f, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k1, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k_r1, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kz, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k12, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k23, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k30, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k01, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k2, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kAB1, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kBA1, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kAB2, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kBA2, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k3, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k_r3, ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k_pq_oxy};
 template<> bool ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::names = {
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kA_d    , "kA_d"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kA_f    , "kA_f"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kA_U    , "kA_U"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kU_A    , "kU_A"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kU_d    , "kU_d"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kU_f    , "kU_f"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k1      , "k1"      },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k_r1    , "k_r1"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kz      , "kz"      },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k12     , "k12"     },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k23     , "k23"     },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k30     , "k30"     },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k01     , "k01"     },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k2      , "k2"      },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kAB1    , "kAB1"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kBA1    , "kBA1"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kAB2    , "kAB2"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kBA2    , "kBA2"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k3      , "k3"      },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k_r3    , "k_r3"    },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k_pq_oxy, "k_pq_oxy"},
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kA_d, "kA_d"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kA_f, "kA_f"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kA_U, "kA_U"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kU_A, "kU_A"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kU_d, "kU_d"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kU_f, "kU_f"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k1, "k1"      },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k_r1, "k_r1"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kz, "kz"      },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k12, "k12"     },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k23, "k23"     },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k30, "k30"     },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k01, "k01"     },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k2, "k2"      },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kAB1, "kAB1"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kBA1, "kBA1"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kAB2, "kAB2"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kBA2, "kBA2"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k3, "k3"      },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k_r3, "k_r3"    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k_pq_oxy, "k_pq_oxy"},
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::defaults = {
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kA_d    , 1.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kA_f    , 1.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kA_U    , 20.0},
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kU_A    , 10.0},
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kU_d    , 2.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kU_f    , 1.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k1      , 1.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k_r1    , 8.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kz      , 38.0},
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k12     , 38.0},
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k23     , 1.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k30     , 1.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k01     , 0.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k2      , 0.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kAB1    , 0.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kBA1    , 0.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kAB2    , 0.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kBA2    , 0.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k3      , 0.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k_r3    , 0.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k_pq_oxy, 0.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kA_d, 1.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kA_f, 1.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kA_U, 20.0},
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kU_A, 10.0},
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kU_d, 2.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kU_f, 1.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k1, 1.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k_r1, 8.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kz, 38.0},
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k12, 38.0},
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k23, 1.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k30, 1.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k01, 0.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k2, 0.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kAB1, 0.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kBA1, 0.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kAB2, 0.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kBA2, 0.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k3, 0.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k_r3, 0.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k_pq_oxy, 0.0 },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::defaults_C3 = {
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kA_d    , 1.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kA_f    , 1.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kA_U    , 20.0},
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kU_A    , 10.0},
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kU_d    , 2.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kU_f    , 1.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k1      , 1.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k_r1    , 8.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kz      , 38.0},
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k12     , 38.0},
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k23     , 1.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k30     , 1.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k01     , 0.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k2      , 0.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kAB1    , 0.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kBA1    , 0.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kAB2    , 0.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::kBA2    , 0.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k3      , 0.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k_r3    , 0.0 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::k_pq_oxy, 0.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kA_d, 1.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kA_f, 1.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kA_U, 20.0},
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kU_A, 10.0},
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kU_d, 2.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kU_f, 1.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k1, 1.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k_r1, 8.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kz, 38.0},
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k12, 38.0},
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k23, 1.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k30, 1.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k01, 0.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k2, 0.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kAB1, 0.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kBA1, 0.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kAB2, 0.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kBA2, 0.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k3, 0.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k_r3, 0.0 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k_pq_oxy, 0.0 },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::glymaids = {
@@ -101,19 +101,19 @@ template<>
 const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::initonce = {
 };
 
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::PQT};
+template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PQT};
 template<> bool ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::names = {
-  {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::PQT , "PQT" },
+  {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PQT, "PQT" },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::defaults = {
-  {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::PQT , 8.0},
+  {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PQT, 8.0},
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::defaults_C3 = {
-  {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::PQT , 8.0},
+  {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PQT, 8.0},
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::glymaids = {
@@ -137,22 +137,22 @@ template<>
 const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::initonce = {
 };
 
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::QBt, ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::PQT};
+template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)QBt, ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PQT};
 template<> bool ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::names = {
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::QBt , "QBt" },
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::PQT , "PQT" },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)QBt, "QBt" },
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PQT, "PQT" },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::defaults = {
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::QBt , 1},
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::PQT , 8},
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)QBt, 1},
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PQT, 8},
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::defaults_C3 = {
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::QBt , 1},
-  {ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::PQT , 8},
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)QBt, 1},
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PQT, 8},
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::glymaids = {
@@ -176,122 +176,122 @@ template<>
 const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::initonce = {
 };
 
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::GAPDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::FBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::PRK, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::ATPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::ATPGPP, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::MDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::ThioT, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::FdT, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::RuACTT, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_GAPDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_FBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_SBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_PRK, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_ATPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_ATPGPP, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_MDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_GAPDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_FBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_SBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_PRK, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_ATPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_ATPGPP, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_MDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::MDH_Vmax};
+template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)GAPDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PRK, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPGPP, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)MDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ThioT, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FdT, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)RuACTT, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_GAPDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_FBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_SBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_PRK, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_ATPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_ATPGPP, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_MDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_GAPDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_FBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_SBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_PRK, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_ATPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_ATPGPP, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_MDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)MDH_Vmax};
 template<> bool ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::names = {
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::GAPDH    , "GAPDH"    },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::FBPase   , "FBPase"   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SBPase   , "SBPase"   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::PRK      , "PRK"      },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::ATPase   , "ATPase"   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::ATPGPP   , "ATPGPP"   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::MDH      , "MDH"      },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::ThioT    , "ThioT"    },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::FdT      , "FdT"      },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::RuACTT   , "RuACTT"   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_GAPDH , "SA_GAPDH" },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_FBPase, "SA_FBPase"},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_SBPase, "SA_SBPase"},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_PRK   , "SA_PRK"   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_ATPase, "SA_ATPase"},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_ATPGPP, "SA_ATPGPP"},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_MDH   , "SA_MDH"   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_GAPDH , "mw_GAPDH" },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_FBPase, "mw_FBPase"},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_SBPase, "mw_SBPase"},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_PRK   , "mw_PRK"   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_ATPase, "mw_ATPase"},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_ATPGPP, "mw_ATPGPP"},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_MDH   , "mw_MDH"   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::MDH_Vmax , "MDH_Vmax" },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)GAPDH, "GAPDH"    },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FBPase, "FBPase"   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SBPase, "SBPase"   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PRK, "PRK"      },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPase, "ATPase"   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPGPP, "ATPGPP"   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)MDH, "MDH"      },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ThioT, "ThioT"    },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FdT, "FdT"      },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)RuACTT, "RuACTT"   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_GAPDH, "SA_GAPDH" },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_FBPase, "SA_FBPase"},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_SBPase, "SA_SBPase"},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_PRK, "SA_PRK"   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_ATPase, "SA_ATPase"},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_ATPGPP, "SA_ATPGPP"},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_MDH, "SA_MDH"   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_GAPDH, "mw_GAPDH" },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_FBPase, "mw_FBPase"},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_SBPase, "mw_SBPase"},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_PRK, "mw_PRK"   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_ATPase, "mw_ATPase"},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_ATPGPP, "mw_ATPGPP"},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_MDH, "mw_MDH"   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)MDH_Vmax, "MDH_Vmax" },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::defaults = {
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::GAPDH    , 1.0972130787798991e-08},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::FBPase   , 4.309416074121956e-08 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SBPase   , 2.1645021645021643e-07},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::PRK      , 6.097560975609756e-08 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::ATPase   , 2e-08                 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::ATPGPP   , 4.7619047619047623e-07},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::MDH      , 6.24687656171914e-08  },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::ThioT    , 0.081                 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::FdT      , 0.081                 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::RuACTT   , 0.0056                },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_GAPDH , 620                   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_FBPase, 119                   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_SBPase, 70                    },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_PRK   , 410                   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_ATPase, 100                   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_ATPGPP, 10                    },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_MDH   , 184                   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_GAPDH , 147000                },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_FBPase, 195000                },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_SBPase, 66000                 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_PRK   , 40000                 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_ATPase, 500000                },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_ATPGPP, 210000                },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_MDH   , 87000                 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::MDH_Vmax , 2.0                   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)GAPDH, 1.0972130787798991e-08},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FBPase, 4.309416074121956e-08 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SBPase, 2.1645021645021643e-07},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PRK, 6.097560975609756e-08 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPase, 2e-08                 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPGPP, 4.7619047619047623e-07},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)MDH, 6.24687656171914e-08  },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ThioT, 0.081                 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FdT, 0.081                 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)RuACTT, 0.0056                },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_GAPDH, 620                   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_FBPase, 119                   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_SBPase, 70                    },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_PRK, 410                   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_ATPase, 100                   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_ATPGPP, 10                    },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_MDH, 184                   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_GAPDH, 147000                },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_FBPase, 195000                },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_SBPase, 66000                 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_PRK, 40000                 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_ATPase, 500000                },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_ATPGPP, 210000                },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_MDH, 87000                 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)MDH_Vmax, 2.0                   },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::defaults_C3 = {
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::GAPDH    , 1.0972130787798991e-08},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::FBPase   , 4.309416074121956e-08 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SBPase   , 2.1645021645021643e-07},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::PRK      , 6.097560975609756e-08 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::ATPase   , 2e-08                 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::ATPGPP   , 4.7619047619047623e-07},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::MDH      , 6.24687656171914e-08  },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::ThioT    , 0.081                 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::FdT      , 0.081                 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::RuACTT   , 0.0056                },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_GAPDH , 620                   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_FBPase, 119                   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_SBPase, 70                    },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_PRK   , 410                   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_ATPase, 100                   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_ATPGPP, 10                    },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_MDH   , 184                   },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_GAPDH , 147000                },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_FBPase, 195000                },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_SBPase, 66000                 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_PRK   , 40000                 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_ATPase, 500000                },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_ATPGPP, 210000                },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_MDH   , 87000                 },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::MDH_Vmax , 2.0                   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)GAPDH, 1.0972130787798991e-08},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FBPase, 4.309416074121956e-08 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SBPase, 2.1645021645021643e-07},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PRK, 6.097560975609756e-08 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPase, 2e-08                 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPGPP, 4.7619047619047623e-07},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)MDH, 6.24687656171914e-08  },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ThioT, 0.081                 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FdT, 0.081                 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)RuACTT, 0.0056                },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_GAPDH, 620                   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_FBPase, 119                   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_SBPase, 70                    },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_PRK, 410                   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_ATPase, 100                   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_ATPGPP, 10                    },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_MDH, 184                   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_GAPDH, 147000                },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_FBPase, 195000                },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_SBPase, 66000                 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_PRK, 40000                 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_ATPase, 500000                },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_ATPGPP, 210000                },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_MDH, 87000                 },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)MDH_Vmax, 2.0                   },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::glymaids = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::constant = {
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_GAPDH ,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_FBPase,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_SBPase,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_PRK   ,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_ATPase,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_ATPGPP,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SA_MDH   ,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_GAPDH ,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_FBPase,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_SBPase,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_PRK   ,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_ATPase,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_ATPGPP,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::mw_MDH   ,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::MDH_Vmax ,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_GAPDH,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_FBPase,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_SBPase,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_PRK,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_ATPase,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_ATPGPP,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_MDH,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_GAPDH,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_FBPase,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_SBPase,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_PRK,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_ATPase,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_ATPGPP,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_MDH,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)MDH_Vmax,
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::calculated = {
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::GAPDH    ,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::FBPase   ,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SBPase   ,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::PRK      ,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::ATPase   ,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::ATPGPP   ,
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::MDH      ,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)GAPDH,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FBPase,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SBPase,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PRK,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPase,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPGPP,
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)MDH,
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::nonvector = {
@@ -306,40 +306,40 @@ template<>
 const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::initonce = {
 };
 
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::FBPase_Coeff, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::FBPase0, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SBPase_Coeff, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SBPase0, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::PRK_Coeff, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::PRK0, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::ATPase_Coeff, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::ATPase0};
+template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FBPase_Coeff, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FBPase0, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SBPase_Coeff, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SBPase0, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PRK_Coeff, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PRK0, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPase_Coeff, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPase0};
 template<> bool ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::names = {
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::FBPase_Coeff, "FBPase_Coeff"},
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::FBPase0     , "FBPase0"     },
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SBPase_Coeff, "SBPase_Coeff"},
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SBPase0     , "SBPase0"     },
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::PRK_Coeff   , "PRK_Coeff"   },
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::PRK0        , "PRK0"        },
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::ATPase_Coeff, "ATPase_Coeff"},
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::ATPase0     , "ATPase0"     },
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FBPase_Coeff, "FBPase_Coeff"},
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FBPase0, "FBPase0"     },
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SBPase_Coeff, "SBPase_Coeff"},
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SBPase0, "SBPase0"     },
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PRK_Coeff, "PRK_Coeff"   },
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PRK0, "PRK0"        },
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPase_Coeff, "ATPase_Coeff"},
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPase0, "ATPase0"     },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::defaults = {
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::FBPase_Coeff, -0.305},
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::FBPase0     , 0.5   },
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SBPase_Coeff, -0.3  },
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SBPase0     , 0.5   },
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::PRK_Coeff   , -0.295},
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::PRK0        , 0.5   },
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::ATPase_Coeff, -0.28 },
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::ATPase0     , 0.5   },
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FBPase_Coeff, -0.305},
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FBPase0, 0.5   },
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SBPase_Coeff, -0.3  },
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SBPase0, 0.5   },
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PRK_Coeff, -0.295},
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PRK0, 0.5   },
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPase_Coeff, -0.28 },
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPase0, 0.5   },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::defaults_C3 = {
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::FBPase_Coeff, -0.305},
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::FBPase0     , 0.5   },
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SBPase_Coeff, -0.3  },
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SBPase0     , 0.5   },
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::PRK_Coeff   , -0.295},
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::PRK0        , 0.5   },
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::ATPase_Coeff, -0.28 },
-  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::ATPase0     , 0.5   },
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FBPase_Coeff, -0.305},
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FBPase0, 0.5   },
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SBPase_Coeff, -0.3  },
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SBPase0, 0.5   },
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PRK_Coeff, -0.295},
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PRK0, 0.5   },
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPase_Coeff, -0.28 },
+  {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPase0, 0.5   },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::glymaids = {
@@ -363,31 +363,31 @@ template<>
 const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::initonce = {
 };
 
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::ET, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Rac, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::C, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::O, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::M};
+template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ET, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)Rac, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)C, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)O, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)M};
 template<> bool ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::names = {
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::ET  , "ET"  },
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Rac , "Rac" },
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::C   , "C"   },
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::O   , "O"   },
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::M   , "M"   },
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ET, "ET"  },
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)Rac, "Rac" },
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)C, "C"   },
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)O, "O"   },
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)M, "M"   },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::defaults = {
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::ET  , 1.2   },
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Rac , 0.0056},
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::C   , 0.012 },
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::O   , 0.260 },
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::M   , 5.0   },
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ET, 1.2   },
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)Rac, 0.0056},
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)C, 0.012 },
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)O, 0.260 },
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)M, 5.0   },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::defaults_C3 = {
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::ET  , 1.2   },
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Rac , 0.0056},
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::C   , 0.012 },
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::O   , 0.260 },
-  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::M   , 5.0   },
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ET, 1.2   },
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)Rac, 0.0056},
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)C, 0.012 },
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)O, 0.260 },
+  {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)M, 5.0   },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::glymaids = {
@@ -411,25 +411,25 @@ template<>
 const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::initonce = {
 };
 
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::ATc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::UTc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::PTc};
+template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::all = {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)UTc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PTc};
 template<> bool ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::names = {
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::ATc , "ATc" },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::UTc , "UTc" },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::PTc , "PTc" },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATc, "ATc" },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)UTc, "UTc" },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PTc, "PTc" },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::defaults = {
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::ATc , 1.0 },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::UTc , 1.5 },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::PTc , 15.0},
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATc, 1.0 },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)UTc, 1.5 },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PTc, 15.0},
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::defaults_C3 = {
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::ATc , 1.0 },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::UTc , 1.5 },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::PTc , 15.0},
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATc, 1.0 },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)UTc, 1.5 },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PTc, 15.0},
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::glymaids = {

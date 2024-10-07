@@ -80,7 +80,7 @@ RuACTCondition* RuACT::_init(Variables *theVars) {
     return RuACT_Con;
 }
 
-RuACTCondition* RuACT::_initAlt(Variables *theVars, RuACTCondition* RuACT_Con) {
+void RuACT::_initAlt(Variables *theVars, RuACTCondition* RuACT_Con) {
 #ifdef CHECK_VALUE_SET_ALTS
     theVars->initParamStatic<RuACT>();
     theVars->initParam(theVars->RuACT_RC);
@@ -140,18 +140,16 @@ RuACTCondition* RuACT::_initAlt(Variables *theVars, RuACTCondition* RuACT_Con) {
     theVars->RuACT_Pool.checkAlts("RuACT::_init::RuACT_Pool: ");
 #else // CHECK_VALUE_SET_ALTS
     UNUSED(theVars);
+    UNUSED(RuACT_Con);
 #endif // CHECK_VALUE_SET_ALTS
-    return RuACT_Con;
 }
 
-void RuACT::_updateAlts(Variables *theVars, RuACTCondition* RuACT_con) {
-#ifdef CHECK_VALUE_SET_ALTS
-    RuACT::updateAlts();
-    theVars->RuACT_RC.updateAlts();
-    theVars->RuACT_Pool.updateAlts();
-    RuACT_con->updateAlts();
-#else // CHECK_VALUE_SET_ALTS
-    UNUSED(theVars);
-    UNUSED(RuACT_con);
-#endif // CHECK_VALUE_SET_ALTS
+void RuACT::_checkAlts(Variables *theVars, const std::string& context) {
+    theVars->RuACT_RC.checkAlts(context + "RuACT_RC:");
+    theVars->RuACT_Pool.checkAlts(context + "RuACT_Pool:");
+}
+
+void RuACT::_updateAlts(Variables *theVars, const std::string& context) {
+    theVars->RuACT_RC.updateAlts(context + "RuACT_RC:");
+    theVars->RuACT_Pool.updateAlts(context + "RuACT_Pool:");
 }

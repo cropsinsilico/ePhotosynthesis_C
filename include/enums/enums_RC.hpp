@@ -3,7 +3,7 @@
 #pragma once
 
 template<>
-enum ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type : int {
     NONE         ,
     K1           ,  //!< The rate constant for formation of ISP.QH2 complex; unit:  per second
     K2           ,  //!< The rate constant for ISP.QH2-->QH(semi) + ISPH(red) ; unit:  per second
@@ -102,7 +102,7 @@ namespace RC {
 }
 
 template<>
-enum ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type : int {
     NONE         ,
     kA_d         ,  //!< The rate constant of heat dissipation from peripheral antenna Lazar (1999), 0.25~1 *10^(9)
     kA_f         ,  //!< The rate constant of fluorescence emission from peripheral antenna Lazar 1999, with a lifetime of 5 ns at closed reaction center
@@ -169,7 +169,7 @@ namespace RC {
 }
 
 template<>
-enum ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type : int {
     NONE           ,
     V111           ,  //!< Reaction 111: RUBP+O2<-->PGlycolate + PGA
     V112           ,  //!< Reaction 112: PGlycolate-->Pi+Glycolate;
@@ -308,7 +308,7 @@ namespace RC {
 }
 
 template<>
-enum ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type : int {
     NONE          ,
     CP            ,  //!< Global constant for the total phosphate
     CA            ,  //!< Global constant for the total adenylates
@@ -557,7 +557,7 @@ namespace RC {
 }
 
 template<>
-enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type : int {
     NONE            ,
     ke2GAPDH        ,  //!< *= Coeff / 60; The rate constant of electron transfer to GAPDH. From literature.
     ke2MDH          ,  //!< *= Coeff / 60; The rate constant of electront transfer to MDH, this rate is totally ASSUMED.
@@ -606,7 +606,7 @@ namespace RC {
 }
 
 template<>
-enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type : int {
     NONE               ,
     Fd_Thio_ET         ,
     ThioT              ,
@@ -639,7 +639,7 @@ namespace RC {
 }
 
 template<>
-enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type : int {
     NONE     ,
     k1       ,  //!< The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco theVars->activase content or activity;
     kn1      ,  //!< The rate constant of E inactivation by binding of RuBP; Lazar 1999, with a lifetime of 5 ns at closed reaction center
@@ -684,7 +684,7 @@ namespace RC {
 }
 
 template<>
-enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type : int {
     NONE         ,
     V51          ,  //!< DHAP+GAP --FBP; default 0.5
     V52          ,  //!< FBP --F6P + Pi
@@ -819,7 +819,7 @@ namespace RC {
 }
 
 template<>
-enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type : int {
     NONE     ,
     kva      ,  //!< Ruth Frommolt et a; 2001; Planta
     kaz      ,  //!< Ruth Frommolt et a; 2001; Planta
@@ -852,7 +852,7 @@ namespace RC {
 }
 
 template<>
-enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type : int {
     NONE   ,
     MAX    ,
 };
@@ -877,7 +877,7 @@ namespace RC {
 }
 
 template<>
-enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type : int {
     NONE   ,
     MAX    ,
 };

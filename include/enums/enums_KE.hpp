@@ -3,7 +3,7 @@
 #pragma once
 
 template<>
-enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type : int {
     NONE           ,
     KEe2FBPase     ,
     KEe2SBPase     ,
@@ -46,7 +46,7 @@ namespace KE {
 }
 
 template<>
-enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type : int {
     NONE   ,
     MAX    ,
 };
@@ -71,7 +71,7 @@ namespace KE {
 }
 
 template<>
-enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type : int {
     NONE   ,
     MAX    ,
 };

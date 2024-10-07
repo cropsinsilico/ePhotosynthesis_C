@@ -250,7 +250,7 @@ BFCondition* BF::_init(Variables *theVars) {
     return BF_con;
 }
 
-BFCondition* BF::_initAlt(Variables *theVars, BFCondition* BF_con) {
+void BF::_initAlt(Variables *theVars, BFCondition* BF_con) {
 #ifdef CHECK_VALUE_SET_ALTS
     theVars->initParamStatic<BF>();
     theVars->initParam(theVars->BF_RC);
@@ -340,24 +340,18 @@ BFCondition* BF::_initAlt(Variables *theVars, BFCondition* BF_con) {
       DeltaG = DeltaEm * -9.649 * pow(10., 4.);
       theVars->BF_RC[RC::BF::KE9] = exp(-DeltaG / BF::get(MOD::BF::RT));
     }
-    
-    theVars->BF_RC.checkAlts("BF::_init::BF_RC: ");
-    theVars->BF_Pool.checkAlts("BF::_init::BF_Pool: ");
-
-#else // CHECK_VALUE_SET_ALTS
-    UNUSED(theVars);
-#endif // CHECK_VALUE_SET_ALTS
-    return BF_con;
-}
-
-void BF::_updateAlts(Variables *theVars, BFCondition* BF_con) {
-#ifdef CHECK_VALUE_SET_ALTS
-    BF::updateAlts();
-    theVars->BF_RC.updateAlts();
-    theVars->BF_Pool.updateAlts();
-    BF_con->updateAlts();
 #else // CHECK_VALUE_SET_ALTS
     UNUSED(theVars);
     UNUSED(BF_con);
 #endif // CHECK_VALUE_SET_ALTS
+}
+
+void BF::_checkAlts(Variables *theVars, const std::string& context) {
+    theVars->BF_RC.checkAlts(context + "BF_RC:");
+    theVars->BF_Pool.checkAlts(context + "BF_Pool:");
+}
+
+void BF::_updateAlts(Variables *theVars, const std::string& context) {
+    theVars->BF_RC.updateAlts(context + "BF_RC:");
+    theVars->BF_Pool.updateAlts(context + "BF_Pool:");
 }

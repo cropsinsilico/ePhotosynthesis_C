@@ -124,8 +124,6 @@ public:
   using __VA_ARGS__::update_values;		\
   using __VA_ARGS__::set;			\
   using __VA_ARGS__::get;			\
-  using __VA_ARGS__::checkAlt;			\
-  using __VA_ARGS__::checkAlts;			\
   using __VA_ARGS__::sizeArray;			\
   using __VA_ARGS__::toArray;			\
   using __VA_ARGS__::fromArray;

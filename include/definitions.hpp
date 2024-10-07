@@ -32,6 +32,8 @@
 #include <fstream>
 #include "ePhotosynthesis_export.h"
 #include "macros.hpp"
+#include <cmath>
+#include <cstdlib>
 
 #ifndef uint
 #define uint unsigned int
@@ -146,18 +148,18 @@ enum RequestedDebug : uint {None = 0,
   Creates a *static boolean* private data member and public setter and getter functions for a module class
   */
 
-#ifdef CHECK_VALUE_SET_ALTS
-#define CHECK_SET_GET(NAME, CONTEXT)			\
-  checkAlt(EnumClass::NAME, CONTEXT);
-#else // CHECK_VALUE_SET_ALTS
+// #ifdef CHECK_VALUE_SET_ALTS
+// #define CHECK_SET_GET(NAME, CONTEXT)			\
+//   checkAlt(EnumClass::NAME, CONTEXT);
+// #else // CHECK_VALUE_SET_ALTS
 #define CHECK_SET_GET(NAME, CONTEXT)
-#endif // CHECK_VALUE_SET_ALTS
+// #endif // CHECK_VALUE_SET_ALTS
   
-#ifdef CHECK_VALUE_SET_ALTS
-#define SET_ALT(name) set(EnumClass::name, val);
-#else // CHECK_VALUE_SET_ALTS
+// #ifdef CHECK_VALUE_SET_ALTS
+// #define SET_ALT(name) set(EnumClass::name, val);
+// #else // CHECK_VALUE_SET_ALTS
 #define SET_ALT(name)
-#endif // CHECK_VALUE_SET_ALTS
+// #endif // CHECK_VALUE_SET_ALTS
 
 //! [SET_GET]
 #define SET_GET(NAME) public:						\

@@ -261,7 +261,7 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
     return SUCS_Con;
 }
 
-SUCSCondition* SUCS::_initAlt(Variables *theVars, SUCSCondition* SUCS_Con) {
+void SUCS::_initAlt(Variables *theVars, SUCSCondition* SUCS_Con) {
 #ifdef CHECK_VALUE_SET_ALTS
     theVars->initParamStatic<SUCS>();
     theVars->initParam(*SUCS_Con);
@@ -433,10 +433,18 @@ SUCSCondition* SUCS::_initAlt(Variables *theVars, SUCSCondition* SUCS_Con) {
 
     
     theVars->SUCS_Pool.checkAlts("SUCS::_init:SUCS_Pool: ");
-    return SUCS_Con;
 #else // CHECK_VALUE_SET_ALTS
     UNUSED(theVars);
+    UNUSED(SUCS_Con);
 #endif // CHECK_VALUE_SET_ALTS
+}
+
+void SUCS::_checkAlts(Variables *theVars, const std::string& context) {
+    theVars->SUCS_Pool.checkAlts(context + "SUCS_Pool:");
+}
+
+void SUCS::_updateAlts(Variables *theVars, const std::string& context) {
+    theVars->SUCS_Pool.updateAlts(context + "SUCS_Pool:");
 }
 
 void SUCS::_reset() {
@@ -523,15 +531,4 @@ void SUCS::_reset() {
     SUCS::TIME = 0.;
     SUCS::N = 0;
     conditions::SUCSCondition::reset();
-}
-
-void SUCS::_updateAlts(Variables *theVars, SUCSCondition* SUCS_con) {
-#ifdef CHECK_VALUE_SET_ALTS
-    SUCS::updateAlts();
-    theVars->SUCS_Pool.updateAlts();
-    SUCS_con->updateAlts();
-#else // CHECK_VALUE_SET_ALTS
-    UNUSED(theVars);
-    UNUSED(SUCS_con);
-#endif // CHECK_VALUE_SET_ALTS
 }

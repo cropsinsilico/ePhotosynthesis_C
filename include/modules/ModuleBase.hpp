@@ -35,11 +35,31 @@ namespace modules {
 
 #define MODULE_BASE(name)						\
   ModuleBase<name, conditions::name ## Condition, MODULE_ ## name>
-#define DECLARE_MODULE_BASE(name)		\
-  static conditions::name ## Condition* _initAlt(Variables *theVars,	\
-						 conditions::name ## Condition* name ## _Con); \
+#define DECLARE_MODULE_BASE(name)					\
+  static void _initAlt(Variables *theVars,				\
+		       conditions::name ## Condition* name ## _Con);	\
   static void _updateAlts(Variables *theVars,				\
-			  conditions::name ## Condition* name ## _Con);
+			  const std::string& context = "");		\
+  static void _updateAlts(Variables *theVars,				\
+			  conditions::name ## Condition* name ## _Con = nullptr, \
+			  const std::string& context = "") {		\
+      _updateAlts(theVars, context);					\
+      if (name ## _Con) {						\
+	name ## _Con->updateAlts(context);				\
+      }									\
+      ValueSetClass::updateAlts(context);				\
+  }									\
+  static void _checkAlts(Variables *theVars,				\
+			 const std::string& context = "");		\
+  static void _checkAlts(Variables *theVars,				\
+			 const conditions::name ## Condition* name ## _Con = nullptr, \
+			 const std::string& context = "") {		\
+    if (name ## _Con) {							\
+      name ## _Con->checkAlts(context + #name + "Condition: ");		\
+    }									\
+    _checkAlts(theVars, context);					\
+    ValueSetClass::checkAlts(context + #name + ": ");			\
+  }
 #define DECLARE_MODULE(name)						\
   DECLARE_VALUE_SET_STATIC(name, ModuleBase<name,			\
 			   conditions::name ## Condition,		\
@@ -50,19 +70,26 @@ namespace modules {
 				     conditions::name ## Condition,	\
 				     MODULE_ ## name>)			\
   DECLARE_MODULE_BASE(name)
-  
-#define DEFINE_DEFAULT_INITALT(name)					\
-  name ## Condition* name::_initAlt(Variables *theVars,			\
-				    name ## Condition* name ## _Con) {	\
+
+#define DEFINE_DEFAULT_CHECKALT(name)					\
+  void name::_checkAlts(Variables *theVars,				\
+			const std::string& context) {			\
     UNUSED(theVars);							\
-    return name ## _Con;						\
+    UNUSED(context);							\
   }									\
   void name::_updateAlts(Variables *theVars,				\
-			 conditions::name ## Condition* name ## _Con) { \
+			 const std::string& context) {			\
     UNUSED(theVars);							\
-    UNUSED(name ## _Con);						\
+    UNUSED(context);							\
   }
   
+#define DEFINE_DEFAULT_INITALT(name)					\
+  void name::_initAlt(Variables *theVars,				\
+		      name ## Condition* name ## _Con) {		\
+    UNUSED(theVars);							\
+    UNUSED(name ## _Con);						\
+  }									\
+  DEFINE_DEFAULT_CHECKALT(name)
 
 /**
   This template class provides a common set of static funtions for every Module subclass. This makes
@@ -88,8 +115,7 @@ public:
       U* out = T::_init(theVars);
 #ifdef CHECK_VALUE_SET_ALTS
       T::_initAlt(theVars, out);
-      out->checkAlts("ModuleBase::init::Condition: ");
-      checkAlts("ModuleBase::init::Module: ");
+      T::_checkAlts(theVars, out, "ModuleBase::init::");
 #endif // CHECK_VALUE_SET_ALTS
       return out;
     }
@@ -107,9 +133,6 @@ public:
         DEBUG_MESSAGE(condition)
 #endif
 	arr out = T::_MB(t, condition, theVars);
-#ifdef CHECK_VALUE_SET_ALTS
-	T::_updateAlts(theVars, condition);
-#endif // CHECK_VALUE_SET_ALTS
 	return out;
     }
 
@@ -125,9 +148,12 @@ public:
 #ifdef INCDEBUG
         DEBUG_MESSAGE(condition)
 #endif
+#ifdef CHECK_VALUE_SET_ALTS
+	T::_checkAlts(theVars, condition, "ModuleBase::MB_con::");
+#endif // CHECK_VALUE_SET_ALTS
 	U* out = T::_MB_con(t, condition, theVars);
 #ifdef CHECK_VALUE_SET_ALTS
-	T::_updateAlts(theVars, out);
+	T::_updateAlts(theVars, out, "ModuleBase::MB_con::");
 #endif // CHECK_VALUE_SET_ALTS
 	return out;
     }
@@ -151,9 +177,12 @@ protected:
       \param theVars The main Variables instance.
       */
     static void Rate(const double t, const U* condition, Variables *theVars) {
+#ifdef CHECK_VALUE_SET_ALTS
+	T::_checkAlts(theVars, condition, "ModuleBase::Rate::");
+#endif // CHECK_VALUE_SET_ALTS
         T::_Rate(t, condition, theVars);
 #ifdef CHECK_VALUE_SET_ALTS
-	T::_updateAlts(theVars, condition);
+	T::_updateAlts(theVars, nullptr, "ModuleBase::Rate::");
 #endif // CHECK_VALUE_SET_ALTS
     }
 };

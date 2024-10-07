@@ -276,7 +276,7 @@ PRCondition* PR::_init(Variables *theVars) {
     return PR_con;
 }
 
-PRCondition* PR::_initAlt(Variables *theVars, PRCondition* PR_con) {
+void PR::_initAlt(Variables *theVars, PRCondition* PR_con) {
 #ifdef CHECK_VALUE_SET_ALTS
     theVars->initParamStatic<PR>();
     theVars->initParam(*PR_con);
@@ -429,9 +429,11 @@ PRCondition* PR::_initAlt(Variables *theVars, PRCondition* PR_con) {
 
 #else // CHECK_VALUE_SET_ALTS
     UNUSED(theVars);
+    UNUSED(PR_con);
 #endif // CHECK_VALUE_SET_ALTS
-    return PR_con;
 }
+
+DEFINE_DEFAULT_CHECKALT(PR)
 
 void PR::_reset() {
     PR::KC = 0.;
@@ -506,14 +508,4 @@ void PR::_reset() {
     PR::TIME = 0.;
     PR::N = 1;
     conditions::PRCondition::reset();
-}
-
-void PR::_updateAlts(Variables *theVars, PRCondition* PR_con) {
-#ifdef CHECK_VALUE_SET_ALTS
-    PR::updateAlts();
-    PR_con->updateAlts();
-#else // CHECK_VALUE_SET_ALTS
-    UNUSED(theVars);
-    UNUSED(PR_con);
-#endif // CHECK_VALUE_SET_ALTS
 }

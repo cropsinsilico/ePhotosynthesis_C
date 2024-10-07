@@ -53,30 +53,25 @@ FIBFCondition* FIBF::_init(Variables *theVars) {
     return FIBF_con;
 }
 
-FIBFCondition* FIBF::_initAlt(Variables *theVars,
-			      FIBFCondition* FIBF_con) {
+void FIBF::_initAlt(Variables *theVars, FIBFCondition* FIBF_con) {
 #ifdef CHECK_VALUE_SET_ALTS
     theVars->initParamStatic<FIBF>();
     theVars->initParam(theVars->FIBF_Pool);
     theVars->initParam(*FIBF_con);
     theVars->FI_Pool[POOL::FI::PQT] = theVars->FIBF_Pool[POOL::FIBF::PQT];
     theVars->BF_Pool[POOL::BF::k_r1] = theVars->FIBF_Pool[POOL::FIBF::PQT];
-    theVars->FIBF_Pool.checkAlts("FIBF::_init::FIBF_Pool: ");
-#else // CHECK_VALUE_SET_ALTS
-    UNUSED(theVars);
-#endif // CHECK_VALUE_SET_ALTS
-    return FIBF_con;
-}
-
-void FIBF::_updateAlts(Variables *theVars, FIBFCondition* FIBF_con) {
-#ifdef CHECK_VALUE_SET_ALTS
-    FIBF::updateAlts();
-    theVars->FIBF_Pool.updateAlts();
-    FIBF_con->updateAlts();
 #else // CHECK_VALUE_SET_ALTS
     UNUSED(theVars);
     UNUSED(FIBF_con);
 #endif // CHECK_VALUE_SET_ALTS
+}
+
+void FIBF::_checkAlts(Variables *theVars, const std::string& context) {
+    theVars->FIBF_Pool.checkAlts(context + "FIBF_Pool:");
+}
+
+void FIBF::_updateAlts(Variables *theVars, const std::string& context) {
+    theVars->FIBF_Pool.updateAlts(context + "FIBF_Pool:");
 }
 
 void FIBF::_reset()  {

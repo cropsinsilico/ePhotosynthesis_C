@@ -63,7 +63,8 @@ XanCycleCondition* XanCycle::_init(Variables *theVars) {
     return XanCycle_con;
 }
 
-XanCycleCondition* XanCycle::_initAlt(Variables *theVars, XanCycleCondition* XanCycle_con) {
+void XanCycle::_initAlt(Variables *theVars,
+			XanCycleCondition* XanCycle_con) {
 #ifdef CHECK_VALUE_SET_ALTS
     theVars->initParamStatic<XanCycle>();
     theVars->initParam(*XanCycle_con);
@@ -87,16 +88,8 @@ XanCycleCondition* XanCycle::_initAlt(Variables *theVars, XanCycleCondition* Xan
 
 #else // CHECK_VALUE_SET_ALTS
     UNUSED(theVars);
-#endif // CHECK_VALUE_SET_ALTS
-    return XanCycle_con;
-}
-
-void XanCycle::_updateAlts(Variables *theVars, XanCycleCondition* XanCycle_con) {
-#ifdef CHECK_VALUE_SET_ALTS
-    XanCycle::updateAlts();
-    XanCycle_con->updateAlts();
-#else // CHECK_VALUE_SET_ALTS
-    UNUSED(theVars);
     UNUSED(XanCycle_con);
 #endif // CHECK_VALUE_SET_ALTS
 }
+
+DEFINE_DEFAULT_CHECKALT(XanCycle)

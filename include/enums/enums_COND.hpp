@@ -3,7 +3,7 @@
 #pragma once
 
 template<>
-enum ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type : int {
     NONE        ,
     ISPHr       ,  //!< The reduced ion sulfer protein (ISPH); unit: micromole per m2
     cytc1       ,  //!< The oxidized state of cytc1; unit: micromole per meter square
@@ -84,7 +84,7 @@ namespace COND {
 }
 
 template<>
-enum ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type : int {
     NONE   ,
     MAX    ,
 };
@@ -109,7 +109,7 @@ namespace COND {
 }
 
 template<>
-enum ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type : int {
     NONE   ,
     MAX    ,
 };
@@ -134,7 +134,7 @@ namespace COND {
 }
 
 template<>
-enum ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type : int {
     NONE   ,
     MAX    ,
 };
@@ -159,7 +159,7 @@ namespace COND {
 }
 
 template<>
-enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type : int {
     NONE     ,
     kd       ,  //!< The initialization of the initial rate constant for heat dissipation
     MAX      ,
@@ -186,7 +186,7 @@ namespace COND {
 }
 
 template<>
-enum ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type : int {
     NONE           ,
     A              ,  //!< The concentration of excitons in the peripheral antenna
     U              ,  //!< The concentration fo excitons in the core antenna
@@ -255,7 +255,7 @@ namespace COND {
 }
 
 template<>
-enum ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type : int {
     NONE      ,
     GCEA      ,  //!< Glycerate in chloroplast; derived based on V113
     GCA       ,  //!< Derived from radioactive labelling experiment; assume equal concenatration inside and outshide chloroplast
@@ -302,7 +302,7 @@ namespace COND {
 }
 
 template<>
-enum ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type : int {
     NONE     ,
     RuBP     ,
     PGA      ,
@@ -357,7 +357,7 @@ namespace COND {
 }
 
 template<>
-enum ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type : int {
     NONE   ,
     MAX    ,
 };
@@ -382,7 +382,7 @@ namespace COND {
 }
 
 template<>
-enum ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type : int {
     NONE   ,
     MAX    ,
 };
@@ -407,7 +407,7 @@ namespace COND {
 }
 
 template<>
-enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type : int {
     NONE       ,
     GAPDH      ,  //!< [CALC] Calculated from Pool & Coeff The initial concentration of active GAPDH; *=V3; SA = 620.0, mw = 147000.0, PS::V3
     FBPase     ,  //!< [CALC] Calculated from Pool & Coeff The initial concentration of active FBPase; *=V6; SA = 119.0, mw = 195000.0, PS::V6
@@ -454,7 +454,7 @@ namespace COND {
 }
 
 template<>
-enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type : int {
     NONE      ,
     Thion     ,  //!< This is a wild guess
     MAX       ,
@@ -481,7 +481,7 @@ namespace COND {
 }
 
 template<>
-enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type : int {
     NONE     ,
     ER       ,  //!< The concentration of inactive ER
     Eaf      ,  //!< The total concentration of E, EC, AND ECM
@@ -514,7 +514,7 @@ namespace COND {
 }
 
 template<>
-enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type : int {
     NONE       ,
     T3Pc       ,
     FBPc       ,
@@ -555,7 +555,7 @@ namespace COND {
 }
 
 template<>
-enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type : int {
     NONE     ,
     Vx       ,  //!< [CALC] * 0.37; The concentration of Violozanthin
     Ax       ,  //!< [CALC] * 0.37; The concentration of Anthrozanthin
@@ -588,7 +588,7 @@ namespace COND {
 }
 
 template<>
-enum ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type : int {
     NONE   ,
     MAX    ,
 };
@@ -613,7 +613,7 @@ namespace COND {
 }
 
 template<>
-enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type : int {
     NONE   ,
     MAX    ,
 };
@@ -638,7 +638,7 @@ namespace COND {
 }
 
 template<>
-enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type : int {
+SCOPED_ENUM ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type : int {
     NONE   ,
     MAX    ,
 };

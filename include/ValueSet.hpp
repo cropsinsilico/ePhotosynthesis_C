@@ -481,8 +481,13 @@ private:								\
   class ValueSetBase : public ValueSetEnum<ID, PT> {
   public:
     typedef ValueSetBase<ID, PT> BaseClass; /**< Specialized value set base class */
-    typedef ValueSetEnum<ID, PT> EnumClass; /**< Enumerator class specifying keys for values in the set */
-    typedef typename EnumClass::Type EnumType; /**< Enumerator type specifying keys for values in the set */
+    typedef ValueSetEnum<ID, PT> EnumBaseClass; /**< Base class containing enum utilities */
+    typedef typename EnumBaseClass::Type EnumType; /**< Enumerator type specifying keys for values in the set */
+#ifdef EPHOTO_USE_SCOPED_ENUM
+    typedef typename EnumBaseClass::Type EnumClass; /**< Enumerator class specifying keys for values in the set */
+#else // EPHOTO_USE_SCOPED_ENUM
+    typedef EnumBaseClass EnumClass; /**< Enumerator class specifying keys for values in the set */
+#endif // EPHOTO_USE_SCOPED_ENUM
     typedef Value<BaseClass> ValueType; /**< Class for storing values */
 #ifdef CHECK_VALUE_SET_ALTS    
     typedef typename std::map<EnumType, double>::iterator iterator; /**< Iterator type for values in the set */
@@ -491,7 +496,7 @@ private:								\
     typedef typename std::map<EnumType, double*>::iterator iterator; /**< Iterator type for values in the set */
     typedef typename std::map<EnumType, double*>::const_iterator const_iterator; /**< Constant iterator type for values in the set */
 #endif // CHECK_VALUE_SET_ALTS
-    INHERIT_METHOD_ENUM(EnumClass);
+    INHERIT_METHOD_ENUM(EnumBaseClass);
 
     /**
        Determine if a key is included in arrays.
@@ -499,7 +504,7 @@ private:								\
        \returns true if the key is included in arrays, false otherwise.
      */
     static bool inArrays(const EnumType k) {
-      return (!(EnumClass::isNonvector(k) || EnumClass::isSkipped(k)));
+      return (!(isNonvector(k) || isSkipped(k)));
     }
 
     // Inspection utilities
@@ -537,7 +542,7 @@ private:								\
     static std::ostream& print_value_map(const std::map<EnumType, double>& vals,
 					 std::ostream &out,
 					 const uint tab = 0) {
-      return EnumClass::print_map(vals, out, tab);
+      return print_map(vals, out, tab);
     }
     template <typename T>
     static std::string to_string_with_precision(const T a_value,
@@ -709,8 +714,8 @@ private:								\
     template<typename V>
     static void remove_skipped(std::map<EnumType, V>& vals,
 			       const std::string& context="") {
-      for (typename std::vector<EnumType>::const_iterator s = EnumClass::skipped.begin();
-	   s != EnumClass::skipped.end(); s++) {
+      for (typename std::vector<EnumType>::const_iterator s = skipped.begin();
+	   s != skipped.end(); s++) {
 	typename std::map<EnumType, V>::iterator it = vals.find(*s);
 	if (it != vals.end()) {
 	  DEBUG_VALUE_SET(context, "erasing ", *s);
@@ -1168,7 +1173,7 @@ private:								\
       DEBUG_VALUE_SET_NOARGS;
       for (typename std::map<EnumType, V>::iterator it = vals.begin();
 	   it != vals.end(); it++) {
-	if (!EnumClass::isConstant(it->first)) {
+	if (!isConstant(it->first)) {
 	  if (isResetone(it->first)) {
 	    set_value(vals, it->first, 1.0, "reset_value_map: ");
 	  } else {
@@ -1344,11 +1349,15 @@ private:								\
 
     /**
        Copy values from member pointers into alternate value map.
+       \param context String to prefix the error message with.
      */
-    virtual void updateAlts() {
+    virtual void updateAlts(const std::string& context="") {
 #ifdef CHECK_VALUE_SET_ALTS
-      copy_value_map(alts, values, "updateAlts: ",
+      copy_value_map(alts, values, context + "updateAlts: ",
 		     false, false, false, false);
+#else // CHECK_VALUE_SET_ALTS
+      throw std::runtime_error(error_prefix() + context +
+			       "updateAlts: Alternates not enabled");
 #endif // CHECK_VALUE_SET_ALTS
     }
 
@@ -1534,7 +1543,8 @@ private:								\
 #ifdef CHECK_VALUE_SET_ALTS
       check_value_alts(values, alts, context);
 #else // CHECK_VALUE_SET_ALTS
-      throw std::runtime_error(error_prefix() + context + "Alternates not enabled");
+      throw std::runtime_error(error_prefix() + context +
+			       "checkAlts: Alternates not enabled");
 #endif // CHECK_VALUE_SET_ALTS
     }
     /**
@@ -1630,11 +1640,15 @@ private:								\
 
     /**
        Copy values from member pointers into alternate value map.
+       \param context String to prefix the error message with.
      */
-    static void updateAlts() {
+    static void updateAlts(const std::string& context="") {
 #ifdef CHECK_VALUE_SET_ALTS
-      copy_value_map(alts, values, "updateAlts: ",
+      copy_value_map(alts, values, context + "updateAlts: ",
 		     false, false, false, false);
+#else // CHECK_VALUE_SET_ALTS
+      throw std::runtime_error(error_prefix() + context +
+			       "updateAlts: Alternates not enabled");
 #endif // CHECK_VALUE_SET_ALTS
     }
     
