@@ -125,9 +125,14 @@ namespace ePhotosynthesis {
 #define DECLARE_VALUE_SET(name, ...)		\
   DECLARE_VALUE_SET_BASE(name, __VA_ARGS__)	\
   using __VA_ARGS__::memberCount;		\
+  using __VA_ARGS__::memberState;		\
   DECLARE_VALUE_SET_MEMBERS(name)
+#define DECLARE_VALUE_SET_COMPOSITE_STATE_CHILD(child)	\
+  out += "\n\t" + child::memberState()
+#define DECLARE_VALUE_SET_COMPOSITE_STATE_CHILDREN(...)	\
+  FOR_EACH(DECLARE_VALUE_SET_COMPOSITE_STATE_CHILD, __VA_ARGS__, _EmptyMacroType)
 #define DECLARE_VALUE_SET_COMPOSITE_ADD_CHILD(child)	\
-    out += child::memberCount()
+  out += child::memberCount()
 #define DECLARE_VALUE_SET_COMPOSITE_ADD_CHILDREN(...)	\
   FOR_EACH(DECLARE_VALUE_SET_COMPOSITE_ADD_CHILD, __VA_ARGS__, _EmptyMacroType)
 #define DECLARE_VALUE_SET_COMPOSITE(name, children, ...)	\
@@ -136,6 +141,11 @@ namespace ePhotosynthesis {
   static std::size_t memberCount() {				\
     std::size_t out = ParentClass::memberCount();		\
     DECLARE_VALUE_SET_COMPOSITE_ADD_CHILDREN children;		\
+    return out;							\
+  }								\
+  static std::string memberState() {				\
+    std::string out = ParentClass::memberState();		\
+    DECLARE_VALUE_SET_COMPOSITE_STATE_CHILDREN children;	\
     return out;							\
   }
   
@@ -1252,6 +1262,19 @@ private:								\
       std::size_t out = defaults.size() - (skipped.size() + nonvector.size());
       return out;
     }
+
+    /**
+       Get a string representation of the class state.
+       \return String representation.
+     */
+    static std::string memberState() {
+      std::string out = error_prefix() +
+	", COUNT = " + std::to_string(memberCount()) +
+	", SKIPPED = " + stringSkipped() +
+	", NONVECT = " + stringNonvector();
+      return out;
+    }
+    
   };
   
   /**

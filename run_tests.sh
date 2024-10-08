@@ -8,7 +8,9 @@ CMAKE_FLAGS="-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DBUILD_TESTS:BOOL=ON"
 INSTALL_DIR="$(pwd)/_install"
 DO_DOCS=""
 DONT_TEST=""
+LIST_TESTS=""
 WITH_ASAN=""
+WITH_COVERAGE=""
 TEST_FLAGS="-C ${CMAKE_BUILD_TYPE_TEST}"
 NJOBS="8"
 
@@ -51,8 +53,19 @@ while [[ $# -gt 0 ]]; do
 	    DONT_TEST="TRUE"
 	    shift # past argument with no value
 	    ;;
+	--list-tests )
+	    LIST_TESTS="TRUE"
+	    DONT_TEST="TRUE"
+	    shift # past argument with no value
+	    ;;
 	--verbose )
 	    TEST_FLAGS="${TEST_FLAGS} --output-on-failure -VV"
+	    shift # past argument with no value
+	    ;;
+	--with-coverage )
+	    WITH_COVERAGE="TRUE"
+	    DONT_TEST="TRUE"
+	    CMAKE_FLAGS_LIB="${CMAKE_FLAGS_LIB} -DTEST_COVERAGE=ON"
 	    shift # past argument with no value
 	    ;;
 	--with-asan )
@@ -82,6 +95,12 @@ fi
 
 if [ ! -n "$DONT_TEST" ]; then
     ctest $TEST_FLAGS --stop-on-failure
+fi
+if [ -n "$LIST_TESTS" ]; then
+    ctest -N
+fi
+if [ -n "$WITH_COVERAGE" ]; then
+    make coverage
 fi
 
 if [ -n "$DO_DOCS" ]; then

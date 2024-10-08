@@ -1,5 +1,6 @@
 #include "VariableFramework.hpp"
 #include "drivers/CM_Driver.hpp"
+#include "modules/CM.hpp"
 
 using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::drivers;
@@ -8,6 +9,10 @@ namespace ePhotosynthesis {
 namespace test {
 class CMDriverTest : public VariableFramework {
 protected:
+    void SetUp() override {
+        VariableFramework::SetUp();
+        modules::CM::reset();
+    }
     void TearDown() override {
         if (driver != nullptr)
             delete driver;

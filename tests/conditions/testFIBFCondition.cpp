@@ -1,22 +1,10 @@
 #include <random>
-#include "VariableFramework.hpp"
-#include "conditions/FIBFCondition.hpp"
-
+#include "FIBFModuleFramework.hpp"
 
 namespace {
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::test;
-
-class FIBFConditionTest : public VariableFramework {
-    void SetUp() override {
-        FICondition::setBF_connect(false);
-        BFCondition::setPS_connect(false);
-        BFCondition::setRROEA_connect(false);
-        BFCondition::setFI_connect(false);
-        VariableFramework::SetUp();
-    }
-};
 
 TEST_F(FIBFConditionTest, InitializeTest) {
     FIBFCondition fc;

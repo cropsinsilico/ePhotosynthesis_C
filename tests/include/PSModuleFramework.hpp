@@ -1,13 +1,22 @@
 #include "VariableFramework.hpp"
 #include "modules/PS.hpp"
+#include "conditions/PSCondition.hpp"
 
 namespace ePhotosynthesis {
 namespace test {
 
+class PSConditionTest : public virtual VariableFramework {
+protected:
+    void SetUp() override {
+        conditions::PSCondition::reset();
+        VariableFramework::SetUp();
+    }
+};
+
 class PSModuleTest : public virtual VariableFramework {
 protected:
     void SetUp() override {
-        modules::PS::setC3(false);
+        modules::PS::reset();
         VariableFramework::SetUp();
         theVars->CO2_in = 500.;
         theVars->TestLi = 14.;

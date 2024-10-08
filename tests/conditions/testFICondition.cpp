@@ -1,20 +1,11 @@
 #include <random>
-#include "VariableFramework.hpp"
-#include "conditions/FICondition.hpp"
+#include "FIModuleFramework.hpp"
 
 namespace {
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::test;
-
-class FIConditionTest : public VariableFramework {
-protected:
-    void SetUp() override {
-        FICondition::setBF_connect(false);
-        VariableFramework::SetUp();
-    }
-};
 
 TEST_F(FIConditionTest, ConnectTest) {
     EXPECT_FALSE(FICondition::getBF_connect());

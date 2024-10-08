@@ -1,15 +1,11 @@
 #include <random>
-#include "VariableFramework.hpp"
-#include "conditions/CMCondition.hpp"
+#include "CMModuleFramework.hpp"
 #include <nvector/nvector_serial.h>
 
 namespace {
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::test;
-
-class CMConditionTest : public VariableFramework {
-};
 
 TEST_F(CMConditionTest, ConstructorTest) {
     CMCondition cm;

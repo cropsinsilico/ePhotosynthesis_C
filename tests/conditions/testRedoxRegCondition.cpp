@@ -1,15 +1,11 @@
 #include <random>
-#include "VariableFramework.hpp"
-#include "conditions/RedoxRegCondition.hpp"
+#include "RedoxRegModuleFramework.hpp"
 
 namespace {
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::test;
-
-class RedoxRegConditionTest : public VariableFramework {
-};
 
 TEST_F(RedoxRegConditionTest, InitializerTest) {
     RedoxRegCondition RedoxReg;

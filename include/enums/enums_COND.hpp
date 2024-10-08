@@ -2,8 +2,8 @@
 // modified directly
 #pragma once
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_BF_COND : int {
     NONE        ,
     ISPHr       ,  //!< The reduced ion sulfer protein (ISPH); unit: micromole per m2
     cytc1       ,  //!< The oxidized state of cytc1; unit: micromole per meter square
@@ -35,6 +35,45 @@ SCOPED_ENUM ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type : int {
     NADPH       ,  //!< The NADPH concentration in stroma, Unit: mmol l-1;
     MAX         ,
 };
+template<>
+struct enum_helper<MODULE_BF, PARAM_TYPE_COND> {
+  typedef ENUM_BF_COND type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type : int {
+    NONE        ,
+    ISPHr       ,  //!< The reduced ion sulfer protein (ISPH); unit: micromole per m2
+    cytc1       ,  //!< The oxidized state of cytc1; unit: micromole per meter square
+    ISPo        ,  //!< The oxidized ion sulfer protein (ISP); unit: micromole per meter square
+    ISPoQH2     ,  //!< The complex of oxidized ion sulfer protein and reduced quinone; unit: micromole per meter square
+    QHsemi      ,  //!< Semiquinone; micromole per meter square
+    cytbL       ,  //!< The oxidized cytbL; micromole per meter square
+    Qi          ,  //!< The binding Quinone; micromole per meter square
+    Q           ,  //!< Quinone; micromole per meter square
+    cytbH       ,  //!< The oxidized form of cytbH; micromole per meter square
+    Qn          ,  //!< Q-; unit: micromole per meter square
+    Qr          ,  //!< The reduced quinone Q2-; micromole per meter square
+    QH2         ,  //!< The reduced quinone PQH2; micromole per meter square
+    cytc2       ,  //!< oxidized cytc2; micromole per meter square
+    P700        ,  //!< The reduced state of P700, including both P700 and excited P700; micromole per meter square
+    ADP         ,  //!< ADP in stroma, from the earlier photorespiration model; mmol l-1
+    ATP         ,  //!< ATP in stroma, from the photorespiration model; mmol l-1
+    Ks          ,  //!< K ions in stroma, mM, from the literature; mmol l-1; 90 might be an default;
+    Mgs         ,  //!< Mg ions in stroma, mM, from the literature of the ion estimate
+    Cls         ,  //!< Cl ions in stroma, mM, from the literature of the ion estimate
+    Aip         ,  //!< The number of photons in peripheral antenna; micromole per meter square
+    U           ,  //!< The number of photons in core antenna; micromole per meter square
+    An          ,  //!< The reduced electron acceptor in PSI; micromole per meter square
+    Fdn         ,  //!< The reduced ferrodoxin; micromole per meter square leaf area
+    BFHs        ,  //!< The protonated buffer species  and free proton together in stroma; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number.; default 25
+    BFHl        ,  //!< The protonated buffer species and free proton together in lumen; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number. ; default 5
+    PHs         ,  //!< The PH value of the stroma
+    PHl         ,  //!< The PH value of the lumen
+    NADPH       ,  //!< The NADPH concentration in stroma, Unit: mmol l-1;
+    MAX         ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_BFCondition		\
     NONE        ,		\
     ISPHr       ,		\
@@ -83,11 +122,22 @@ namespace COND {
   typedef ValueSetEnum<MODULE_BF, PARAM_TYPE_COND> BF;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_CM_COND : int {
     NONE   ,
     MAX    ,
 };
+template<>
+struct enum_helper<MODULE_CM, PARAM_TYPE_COND> {
+  typedef ENUM_CM_COND type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_CMCondition		\
     NONE   ,		\
     MAX
@@ -108,11 +158,22 @@ namespace COND {
   typedef ValueSetEnum<MODULE_CM, PARAM_TYPE_COND> CM;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_DynaPS_COND : int {
     NONE   ,
     MAX    ,
 };
+template<>
+struct enum_helper<MODULE_DynaPS, PARAM_TYPE_COND> {
+  typedef ENUM_DynaPS_COND type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_DynaPSCondition		\
     NONE   ,		\
     MAX
@@ -133,11 +194,22 @@ namespace COND {
   typedef ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND> DynaPS;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_EPS_COND : int {
     NONE   ,
     MAX    ,
 };
+template<>
+struct enum_helper<MODULE_EPS, PARAM_TYPE_COND> {
+  typedef ENUM_EPS_COND type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_EPSCondition		\
     NONE   ,		\
     MAX
@@ -158,12 +230,24 @@ namespace COND {
   typedef ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND> EPS;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_FIBF_COND : int {
     NONE     ,
     kd       ,  //!< The initialization of the initial rate constant for heat dissipation
     MAX      ,
 };
+template<>
+struct enum_helper<MODULE_FIBF, PARAM_TYPE_COND> {
+  typedef ENUM_FIBF_COND type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type : int {
+    NONE     ,
+    kd       ,  //!< The initialization of the initial rate constant for heat dissipation
+    MAX      ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_FIBFCondition		\
     NONE     ,		\
     kd       ,		\
@@ -185,8 +269,8 @@ namespace COND {
   typedef ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND> FIBF;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_FI_COND : int {
     NONE           ,
     A              ,  //!< The concentration of excitons in the peripheral antenna
     U              ,  //!< The concentration fo excitons in the core antenna
@@ -212,6 +296,39 @@ SCOPED_ENUM ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type : int {
     PQn            ,  //!< The concentration of reduced PQ, i.e. PQH2;
     MAX            ,
 };
+template<>
+struct enum_helper<MODULE_FI, PARAM_TYPE_COND> {
+  typedef ENUM_FI_COND type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type : int {
+    NONE           ,
+    A              ,  //!< The concentration of excitons in the peripheral antenna
+    U              ,  //!< The concentration fo excitons in the core antenna
+    P680ePheo      ,  //!< The concentration of the P680Pheo; QF add
+    P680pPheon     ,  //!< The concentration for the P680+ Pheo-
+    P680pPheo      ,  //!< The concentration of P680+ Pheo
+    P680Pheon      ,  //!< The concentration of P680Pheo-
+    Yz             ,  //!< The concentration of reduced tyrosine; --unused
+    S1T            ,  //!< The concentration of S1 in combination with reduced tyrosine
+    S2T            ,  //!< The concentration of S2 in combination with reduced tyrosine
+    S3T            ,  //!< The concentration of S3 in combination with reduced tyrosine
+    S0T            ,  //!< The concentration of S0 in combination with reduced tyrosine
+    S1Tp           ,  //!< The concentration of S1 in combination with oxidized tyrosine
+    S2Tp           ,  //!< The concentration of S2 in combination with oxidized tyrosine
+    S3Tp           ,  //!< The concentration of S3 in combination with oxidized tyrosine
+    S0Tp           ,  //!< The concentration of S0 in combination with oxidized tyrosine
+    QAQB           ,  //!< The concentration of [QAQB]
+    QAnQB          ,  //!< The concentration of [QA-QB]
+    QAQBn          ,  //!< The concentration of [QAQB-]
+    QAnQBn         ,  //!< The concentration of [QA-QB-]
+    QAQB2n         ,  //!< The concentration of [QAQB2-]
+    QAnQB2n        ,  //!< The concentration of [QA-QB2-]
+    PQn            ,  //!< The concentration of reduced PQ, i.e. PQH2;
+    MAX            ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_FICondition		\
     NONE           ,		\
     A              ,		\
@@ -254,8 +371,8 @@ namespace COND {
   typedef ValueSetEnum<MODULE_FI, PARAM_TYPE_COND> FI;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_PR_COND : int {
     NONE      ,
     GCEA      ,  //!< Glycerate in chloroplast; derived based on V113
     GCA       ,  //!< Derived from radioactive labelling experiment; assume equal concenatration inside and outshide chloroplast
@@ -270,6 +387,28 @@ SCOPED_ENUM ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type : int {
     _v131     ,  //!< [CONST, NON_VECTOR] ?
     MAX       ,
 };
+template<>
+struct enum_helper<MODULE_PR, PARAM_TYPE_COND> {
+  typedef ENUM_PR_COND type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type : int {
+    NONE      ,
+    GCEA      ,  //!< Glycerate in chloroplast; derived based on V113
+    GCA       ,  //!< Derived from radioactive labelling experiment; assume equal concenatration inside and outshide chloroplast
+    PGCA      ,  //!< Phosphoglycolate in chloroplast derived based on the Km112; orignal value is : 0.0029;
+    GCAc      ,  //!< See the note for GCA.
+    GOAc      ,  //!< Glyoxylate in cytosol; 0.028; EXPERIMENTAL DATA;
+    SERc      ,  //!< Serine in cytosol; 7.5 original value
+    GLYc      ,  //!< Glycine in cytosol; 1.8 original vlaue
+    HPRc      ,  //!< HydroxylPyruvate; derived from equation 123;
+    GCEAc     ,  //!< Glycerate in cytosol; assume at equilibrium with GCEA initially.
+    RuBP      ,  //!< RuBP concentration
+    _v131     ,  //!< [CONST, NON_VECTOR] ?
+    MAX       ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_PRCondition		\
     NONE      ,		\
     GCEA      ,		\
@@ -301,8 +440,8 @@ namespace COND {
   typedef ValueSetEnum<MODULE_PR, PARAM_TYPE_COND> PR;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_PS_COND : int {
     NONE     ,
     RuBP     ,
     PGA      ,
@@ -321,6 +460,32 @@ SCOPED_ENUM ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type : int {
     _v1      ,  //!< [CONST, NON_VECTOR] ?
     MAX      ,
 };
+template<>
+struct enum_helper<MODULE_PS, PARAM_TYPE_COND> {
+  typedef ENUM_PS_COND type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type : int {
+    NONE     ,
+    RuBP     ,
+    PGA      ,
+    DPGA     ,
+    T3P      ,
+    ADPG     ,  //!< (0.0 with C3)
+    FBP      ,
+    E4P      ,
+    S7P      ,
+    SBP      ,
+    ATP      ,
+    HexP     ,
+    PenP     ,
+    _Pi      ,  //!< [CONST, NON_VECTOR] ?
+    _ADP     ,  //!< [CONST, NON_VECTOR] ?
+    _v1      ,  //!< [CONST, NON_VECTOR] ?
+    MAX      ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_PSCondition		\
     NONE     ,		\
     RuBP     ,		\
@@ -356,11 +521,22 @@ namespace COND {
   typedef ValueSetEnum<MODULE_PS, PARAM_TYPE_COND> PS;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_PS_PR_COND : int {
     NONE   ,
     MAX    ,
 };
+template<>
+struct enum_helper<MODULE_PS_PR, PARAM_TYPE_COND> {
+  typedef ENUM_PS_PR_COND type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_PS_PRCondition		\
     NONE   ,		\
     MAX
@@ -381,11 +557,22 @@ namespace COND {
   typedef ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND> PS_PR;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_RA_COND : int {
     NONE   ,
     MAX    ,
 };
+template<>
+struct enum_helper<MODULE_RA, PARAM_TYPE_COND> {
+  typedef ENUM_RA_COND type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_RACondition		\
     NONE   ,		\
     MAX
@@ -406,8 +593,8 @@ namespace COND {
   typedef ValueSetEnum<MODULE_RA, PARAM_TYPE_COND> RA;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_RROEA_COND : int {
     NONE       ,
     GAPDH      ,  //!< [CALC] Calculated from Pool & Coeff The initial concentration of active GAPDH; *=V3; SA = 620.0, mw = 147000.0, PS::V3
     FBPase     ,  //!< [CALC] Calculated from Pool & Coeff The initial concentration of active FBPase; *=V6; SA = 119.0, mw = 195000.0, PS::V6
@@ -422,6 +609,28 @@ SCOPED_ENUM ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type : int {
     Coeff      ,  //!< [CONST, NON_VECTOR] Used to scale Thio, Fd, & RuACT and calculate GAPDH, FBPase, SBPase, PRK, ATPase, ATPGPP from Pool values
     MAX        ,
 };
+template<>
+struct enum_helper<MODULE_RROEA, PARAM_TYPE_COND> {
+  typedef ENUM_RROEA_COND type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type : int {
+    NONE       ,
+    GAPDH      ,  //!< [CALC] Calculated from Pool & Coeff The initial concentration of active GAPDH; *=V3; SA = 620.0, mw = 147000.0, PS::V3
+    FBPase     ,  //!< [CALC] Calculated from Pool & Coeff The initial concentration of active FBPase; *=V6; SA = 119.0, mw = 195000.0, PS::V6
+    SBPase     ,  //!< [CALC] Calculated from Pool & Coeff The initial concentration of active SBPase; *=V9; SA = 70.0, mw = 66000.0, PS::V9
+    PRK        ,  //!< [CALC] Calculated from Pool & Coeff The initial concentration of active PRK; *=V13; SA = 410.0, mw = 40000.0 PS::V13
+    ATPase     ,  //!< [CALC] Calculated from Pool & Coeff The initial concentration of active ATPase; *=V16; SA = 100.0, mw = 500000.0 PS::V16
+    ATPGPP     ,  //!< [CALC] Calculated from Pool & Coeff The initial concentration of active ATPGPP; *=V23; SA = 10.0, mw = 210000.0 PS::V23
+    MDH        ,  //!< The initial concentration of active MDH; Not set from Pool like previous variables
+    Thio       ,  //!< The initial concentration of reduced thioredoxin; scaled by Coeff
+    Fd         ,  //!< The initial concentration of reduced ferrodoxin; scaled by Coeff
+    RuACT      ,  //!< The initial concentration of active Rubisco activase; scaled by Coeff
+    Coeff      ,  //!< [CONST, NON_VECTOR] Used to scale Thio, Fd, & RuACT and calculate GAPDH, FBPase, SBPase, PRK, ATPase, ATPGPP from Pool values
+    MAX        ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_RROEACondition		\
     NONE       ,		\
     GAPDH      ,		\
@@ -453,12 +662,24 @@ namespace COND {
   typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND> RROEA;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_RedoxReg_COND : int {
     NONE      ,
     Thion     ,  //!< This is a wild guess
     MAX       ,
 };
+template<>
+struct enum_helper<MODULE_RedoxReg, PARAM_TYPE_COND> {
+  typedef ENUM_RedoxReg_COND type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type : int {
+    NONE      ,
+    Thion     ,  //!< This is a wild guess
+    MAX       ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_RedoxRegCondition		\
     NONE      ,		\
     Thion     ,		\
@@ -480,8 +701,8 @@ namespace COND {
   typedef ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND> RedoxReg;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_RuACT_COND : int {
     NONE     ,
     ER       ,  //!< The concentration of inactive ER
     Eaf      ,  //!< The total concentration of E, EC, AND ECM
@@ -489,6 +710,21 @@ SCOPED_ENUM ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type : int {
     RuBP     ,  //!< The concentration of ECMR
     MAX      ,
 };
+template<>
+struct enum_helper<MODULE_RuACT, PARAM_TYPE_COND> {
+  typedef ENUM_RuACT_COND type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type : int {
+    NONE     ,
+    ER       ,  //!< The concentration of inactive ER
+    Eaf      ,  //!< The total concentration of E, EC, AND ECM
+    ECMR     ,  //!< The concentration of ECMR
+    RuBP     ,  //!< The concentration of ECMR
+    MAX      ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_RuACTCondition		\
     NONE     ,		\
     ER       ,		\
@@ -513,8 +749,8 @@ namespace COND {
   typedef ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND> RuACT;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_SUCS_COND : int {
     NONE       ,
     T3Pc       ,
     FBPc       ,
@@ -526,6 +762,25 @@ SCOPED_ENUM ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type : int {
     PGAc       ,
     MAX        ,
 };
+template<>
+struct enum_helper<MODULE_SUCS, PARAM_TYPE_COND> {
+  typedef ENUM_SUCS_COND type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type : int {
+    NONE       ,
+    T3Pc       ,
+    FBPc       ,
+    HexPc      ,
+    F26BPc     ,
+    UDPGc      ,
+    SUCP       ,
+    SUC        ,
+    PGAc       ,
+    MAX        ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_SUCSCondition		\
     NONE       ,		\
     T3Pc       ,		\
@@ -554,8 +809,8 @@ namespace COND {
   typedef ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND> SUCS;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_XanCycle_COND : int {
     NONE     ,
     Vx       ,  //!< [CALC] * 0.37; The concentration of Violozanthin
     Ax       ,  //!< [CALC] * 0.37; The concentration of Anthrozanthin
@@ -563,6 +818,21 @@ SCOPED_ENUM ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type : int {
     ABA      ,  //!< [CALC] The concentration of ABA
     MAX      ,
 };
+template<>
+struct enum_helper<MODULE_XanCycle, PARAM_TYPE_COND> {
+  typedef ENUM_XanCycle_COND type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type : int {
+    NONE     ,
+    Vx       ,  //!< [CALC] * 0.37; The concentration of Violozanthin
+    Ax       ,  //!< [CALC] * 0.37; The concentration of Anthrozanthin
+    Zx       ,  //!< [CALC] * 0.37; The concentration of Zeaznthin
+    ABA      ,  //!< [CALC] The concentration of ABA
+    MAX      ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_XanCycleCondition		\
     NONE     ,		\
     Vx       ,		\
@@ -587,11 +857,22 @@ namespace COND {
   typedef ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND> XanCycle;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_trDynaPS_COND : int {
     NONE   ,
     MAX    ,
 };
+template<>
+struct enum_helper<MODULE_trDynaPS, PARAM_TYPE_COND> {
+  typedef ENUM_trDynaPS_COND type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_trDynaPSCondition		\
     NONE   ,		\
     MAX
@@ -612,11 +893,22 @@ namespace COND {
   typedef ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND> trDynaPS;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_NONE_COND : int {
     NONE   ,
     MAX    ,
 };
+template<>
+struct enum_helper<MODULE_NONE, PARAM_TYPE_COND> {
+  typedef ENUM_NONE_COND type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_NONECondition		\
     NONE   ,		\
     MAX
@@ -637,11 +929,22 @@ namespace COND {
   typedef ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND> NONE;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_MAX_COND : int {
     NONE   ,
     MAX    ,
 };
+template<>
+struct enum_helper<MODULE_MAX, PARAM_TYPE_COND> {
+  typedef ENUM_MAX_COND type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_MAXCondition		\
     NONE   ,		\
     MAX

@@ -1,13 +1,22 @@
 #include "VariableFramework.hpp"
 #include "modules/SUCS.hpp"
+#include "conditions/SUCSCondition.hpp"
 
 namespace ePhotosynthesis {
 namespace test {
 
+class SUCSConditionTest : public virtual VariableFramework {
+protected:
+    void SetUp() override {
+        conditions::SUCSCondition::reset();
+        VariableFramework::SetUp();
+    }
+};
+
 class SUCSModuleTest : public virtual VariableFramework {
 protected:
     void SetUp() override {
-        modules::SUCS::setSUCS2PS_Pic(false);
+        modules::SUCS::reset();
         VariableFramework::SetUp();
         theVars->CO2_in = 500.;
         theVars->TestLi = 14.;

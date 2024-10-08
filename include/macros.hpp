@@ -34,6 +34,9 @@ public:
   static std::size_t memberCount() {
     return 0;
   }
+  static std::string memberState() {
+    return "";
+  }
 };
 
 // Inheritance for ValueSet

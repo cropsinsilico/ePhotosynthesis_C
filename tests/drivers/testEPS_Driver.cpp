@@ -1,5 +1,6 @@
 #include "VariableFramework.hpp"
 #include "drivers/EPS_Driver.hpp"
+#include "modules/EPS.hpp"
 
 using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::drivers;
@@ -10,6 +11,7 @@ class EPSDriverTest : public VariableFramework {
 protected:
     void SetUp() override {
         VariableFramework::SetUp();
+        modules::EPS::reset();
         theVars->EnzymeAct = Emap;
     }
 

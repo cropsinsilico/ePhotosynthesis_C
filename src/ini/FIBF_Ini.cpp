@@ -82,4 +82,5 @@ void FIBF::_reset()  {
     FIBF2FI_PQa = 0.;
     FI::reset();
     BF::reset();
+    conditions::FIBFCondition::reset();
 }

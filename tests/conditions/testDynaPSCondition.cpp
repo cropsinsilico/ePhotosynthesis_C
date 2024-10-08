@@ -1,15 +1,11 @@
 #include <random>
-#include "VariableFramework.hpp"
-#include "conditions/DynaPSCondition.hpp"
+#include "DynaPSModuleFramework.hpp"
 #include <nvector/nvector_serial.h>
 
 namespace {
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::test;
-
-class DynaPSConditionTest : public VariableFramework {
-};
 
 TEST_F(DynaPSConditionTest, ConstructorTest) {
     DynaPSCondition DynaPS;

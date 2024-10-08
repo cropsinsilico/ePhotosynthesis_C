@@ -160,6 +160,7 @@ jobs:
       # Test CXX
       ###################################
       - name: Test C++
+        if: matrix.with-coverage != true
         shell: bash -l {0}
         run: |
           mamba list
@@ -167,6 +168,14 @@ jobs:
           cd build
           which ctest
           ctest ${{ env.TEST_FLAGS }}
+      - name: Test C++ (COVERAGE)
+        if: matrix.with-coverage && matrix.os != 'windows-latest'
+        shell: bash -l {0}
+        run: |
+          mamba list
+          echo "PATH=$PATH"
+          cd build
+          make coverage
       - name: Preserve coverage information
         if: matrix.with-coverage && matrix.os != 'windows-latest'
         shell: bash -l {0}

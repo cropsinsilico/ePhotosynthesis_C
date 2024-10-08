@@ -1,15 +1,22 @@
 #include "VariableFramework.hpp"
 #include "modules/BF.hpp"
+#include "conditions/BFCondition.hpp"
 
 namespace ePhotosynthesis {
 namespace test {
 
+class BFConditionTest : public virtual VariableFramework {
+protected:
+    void SetUp() override {
+        conditions::BFCondition::reset();
+        VariableFramework::SetUp();
+    }
+};
+
 class BFModuleTest : public virtual VariableFramework {
 protected:
     void SetUp() override {
-        modules::BF::setFI_connect(false);
-        modules::BF::setPS_connect(false);
-        modules::BF::setRROEA_connect(false);
+        modules::BF::reset();
         VariableFramework::SetUp();
         theVars->CO2_in = 500.;
         theVars->TestLi = 14.;

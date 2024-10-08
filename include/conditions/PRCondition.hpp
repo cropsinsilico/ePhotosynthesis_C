@@ -70,7 +70,7 @@ public:
       \returns The output stream
       */
     std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-    SET_GET_BOOL(PS_connect, RuBP)
+    SET_GET_BOOL_NOSKIP(PS_connect)
     SET_GET_BOOL(PS_RuBP, RuBP)
 private:
     friend ConditionBase;

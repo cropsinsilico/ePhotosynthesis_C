@@ -2,13 +2,23 @@
 
 #include "VariableFramework.hpp"
 #include "modules/XanCycle.hpp"
+#include "conditions/XanCycleCondition.hpp"
 
 namespace ePhotosynthesis {
 namespace test {
 
+class XanCycleConditionTest : public virtual VariableFramework {
+protected:
+    void SetUp() override {
+	conditions::XanCycleCondition::reset();
+        VariableFramework::SetUp();
+    }
+};
+
 class XanCycleModuleTest : public virtual VariableFramework {
 protected:
     void SetUp() override {
+        modules::XanCycle::reset();
         modules::XanCycle::setXanCycle2FIBF_Xstate(0.5);
         VariableFramework::SetUp();
         theVars->CO2_in = 500.;

@@ -1,21 +1,11 @@
 #include <random>
-#include "VariableFramework.hpp"
-#include "conditions/PRCondition.hpp"
+#include "PRModuleFramework.hpp"
 
 namespace {
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::test;
-
-class PRConditionTest : public VariableFramework {
-protected:
-    void SetUp() override {
-        PRCondition::setPS_RuBP(false);
-        PRCondition::setPS_connect(false);
-        VariableFramework::SetUp();
-    }
-};
 
 TEST_F(PRConditionTest, C3Test) {
     EXPECT_FALSE(PRCondition::getPS_RuBP());

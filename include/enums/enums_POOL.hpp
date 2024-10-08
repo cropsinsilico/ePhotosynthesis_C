@@ -2,8 +2,8 @@
 // modified directly
 #pragma once
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_BF_POOL : int {
     NONE         ,
     kA_d         ,  //!< The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
     kA_f         ,  //!< The total amount of cytc; Unit: micromole m-2 leaf area
@@ -28,6 +28,38 @@ SCOPED_ENUM ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type : int {
     k_pq_oxy     ,
     MAX          ,
 };
+template<>
+struct enum_helper<MODULE_BF, PARAM_TYPE_POOL> {
+  typedef ENUM_BF_POOL type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type : int {
+    NONE         ,
+    kA_d         ,  //!< The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
+    kA_f         ,  //!< The total amount of cytc; Unit: micromole m-2 leaf area
+    kA_U         ,  //!< The total concentration of K in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant.
+    kU_A         ,  //!< The total concentration of Mg in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant.
+    kU_d         ,  //!< The total concentration of Cl in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant.
+    kU_f         ,  //!< The total concentration of Ferrodoxin
+    k1           ,  //!< The total concentration of the primary electron acceptor of PSI; Unit: micromole m-2 leaf area
+    k_r1         ,  //!< The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
+    kz           ,  //!< The total concentration of buffer in stroma; unit: mmol per liter
+    k12          ,  //!< The total concentration of buffer in lumen; unit: mmol per liter
+    k23          ,  //!< The total number of P700; unit: micromole m-2 leaf area
+    k30          ,  //!< The total concentration of NADPH in stroma; 1 is an guessed value;
+    k01          ,
+    k2           ,
+    kAB1         ,
+    kBA1         ,
+    kAB2         ,
+    kBA2         ,
+    k3           ,
+    k_r3         ,
+    k_pq_oxy     ,
+    MAX          ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_BFPool		\
     NONE         ,		\
     kA_d         ,		\
@@ -69,12 +101,24 @@ namespace POOL {
   typedef ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL> BF;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_FIBF_POOL : int {
     NONE     ,
     PQT      ,
     MAX      ,
 };
+template<>
+struct enum_helper<MODULE_FIBF, PARAM_TYPE_POOL> {
+  typedef ENUM_FIBF_POOL type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type : int {
+    NONE     ,
+    PQT      ,
+    MAX      ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_FIBFPool		\
     NONE     ,		\
     PQT      ,		\
@@ -96,13 +140,26 @@ namespace POOL {
   typedef ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL> FIBF;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_FI_POOL : int {
     NONE     ,
     QBt      ,  //!< The total concentration of Qb site;
     PQT      ,  //!< The total concentration of PQ;
     MAX      ,
 };
+template<>
+struct enum_helper<MODULE_FI, PARAM_TYPE_POOL> {
+  typedef ENUM_FI_POOL type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type : int {
+    NONE     ,
+    QBt      ,  //!< The total concentration of Qb site;
+    PQT      ,  //!< The total concentration of PQ;
+    MAX      ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_FIPool		\
     NONE     ,		\
     QBt      ,		\
@@ -125,8 +182,8 @@ namespace POOL {
   typedef ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL> FI;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_RROEA_POOL : int {
     NONE          ,
     GAPDH         ,  //!< [CALC] The initial concentration of active GAPDH; *=V3; SA = 620.0, mw = 147000.0, PS::V3
     FBPase        ,  //!< [CALC] The initial concentration of active FBPase; *=V6; SA = 119.0, mw = 195000.0, PS::V6
@@ -155,6 +212,42 @@ SCOPED_ENUM ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type : int {
     MDH_Vmax      ,  //!< [CONST] This value is assumed and there is no literature about it. Need to be fixed.; Used w/ SA_MDH & mw_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
     MAX           ,
 };
+template<>
+struct enum_helper<MODULE_RROEA, PARAM_TYPE_POOL> {
+  typedef ENUM_RROEA_POOL type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type : int {
+    NONE          ,
+    GAPDH         ,  //!< [CALC] The initial concentration of active GAPDH; *=V3; SA = 620.0, mw = 147000.0, PS::V3
+    FBPase        ,  //!< [CALC] The initial concentration of active FBPase; *=V6; SA = 119.0, mw = 195000.0, PS::V6
+    SBPase        ,  //!< [CALC] The initial concentration of active SBPase; *=V9; SA = 70.0, mw = 66000.0, PS::V9
+    PRK           ,  //!< [CALC] The initial concentration of active PRK; *=V13; SA = 410.0, mw = 40000.0 PS::V13
+    ATPase        ,  //!< [CALC] The initial concentration of active ATPase; *=V16; SA = 100.0, mw = 500000.0 PS::V16
+    ATPGPP        ,  //!< [CALC] The initial concentration of active ATPGPP; *=V23; SA = 10.0, mw = 210000.0 PS::V23
+    MDH           ,  //!< [CALC] The initial concentration of active MDH; *=MDH_Vmax; SA = 184.0, mw = 87000.0; MDH_Vmax = 2 value is assumed, but no literature to support. Needs to be fixed.
+    ThioT         ,
+    FdT           ,  //!< Comes from BF if used with RROEA_EPS
+    RuACTT        ,
+    SA_GAPDH      ,  //!< [CONST] Used w/ mw_GAPDH to calculate GAPDH from PS::V3; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    SA_FBPase     ,  //!< [CONST] Used w/ mw_FBPase to calculate FBPase from PS::V6; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    SA_SBPase     ,  //!< [CONST] Used w/ mw_SBPase to calculate SBPase from PS::V9; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    SA_PRK        ,  //!< [CONST] Used w/ mw_PRK to calculate PRK from PS::V13; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    SA_ATPase     ,  //!< [CONST] Used w/ mw_ATPase to calculate ATPase from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    SA_ATPGPP     ,  //!< [CONST] Used w/ mw_ATPGPP to calculate ATPGPP from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    SA_MDH        ,  //!< [CONST] Used w/ MDH_Vmax & mw_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    mw_GAPDH      ,  //!< [CONST] Used w/ SA_GAPDH to calculate GAPDH from PS::V3; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    mw_FBPase     ,  //!< [CONST] Used w/ SA_FBPase to calculate FBPase from PS::V6; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    mw_SBPase     ,  //!< [CONST] Used w/ SA_SBPase to calculate SBPase from PS::V9; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    mw_PRK        ,  //!< [CONST] Used w/ SA_PRK to calculate PRK from PS::V13; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    mw_ATPase     ,  //!< [CONST] Used w/ SA_ATPase to calculate ATPase from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    mw_ATPGPP     ,  //!< [CONST] Used w/ SA_ATPGPP to calculate ATPGPP from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    mw_MDH        ,  //!< [CONST] Used w/ MDH_Vmax & SA_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    MDH_Vmax      ,  //!< [CONST] This value is assumed and there is no literature about it. Need to be fixed.; Used w/ SA_MDH & mw_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
+    MAX           ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_RROEAPool		\
     NONE          ,		\
     GAPDH         ,		\
@@ -200,8 +293,8 @@ namespace POOL {
   typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL> RROEA;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_RedoxReg_POOL : int {
     NONE             ,
     FBPase_Coeff     ,
     FBPase0          ,
@@ -213,6 +306,25 @@ SCOPED_ENUM ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type : int {
     ATPase0          ,
     MAX              ,
 };
+template<>
+struct enum_helper<MODULE_RedoxReg, PARAM_TYPE_POOL> {
+  typedef ENUM_RedoxReg_POOL type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type : int {
+    NONE             ,
+    FBPase_Coeff     ,
+    FBPase0          ,
+    SBPase_Coeff     ,
+    SBPase0          ,
+    PRK_Coeff        ,
+    PRK0             ,
+    ATPase_Coeff     ,
+    ATPase0          ,
+    MAX              ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_RedoxRegPool		\
     NONE             ,		\
     FBPase_Coeff     ,		\
@@ -241,8 +353,8 @@ namespace POOL {
   typedef ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL> RedoxReg;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_RuACT_POOL : int {
     NONE     ,
     ET       ,  //!< The total concentraiton of E, ER, EC, ECM, ECMR , mM;
     Rac      ,  //!< The concentration of the activase, mM
@@ -251,6 +363,22 @@ SCOPED_ENUM ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type : int {
     M        ,
     MAX      ,
 };
+template<>
+struct enum_helper<MODULE_RuACT, PARAM_TYPE_POOL> {
+  typedef ENUM_RuACT_POOL type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type : int {
+    NONE     ,
+    ET       ,  //!< The total concentraiton of E, ER, EC, ECM, ECMR , mM;
+    Rac      ,  //!< The concentration of the activase, mM
+    C        ,  //!< mM
+    O        ,  //!< mM
+    M        ,
+    MAX      ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_RuACTPool		\
     NONE     ,		\
     ET       ,		\
@@ -276,14 +404,28 @@ namespace POOL {
   typedef ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL> RuACT;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_SUCS_POOL : int {
     NONE     ,
     ATc      ,  //!< mM
     UTc      ,  //!< mM
     PTc      ,
     MAX      ,
 };
+template<>
+struct enum_helper<MODULE_SUCS, PARAM_TYPE_POOL> {
+  typedef ENUM_SUCS_POOL type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type : int {
+    NONE     ,
+    ATc      ,  //!< mM
+    UTc      ,  //!< mM
+    PTc      ,
+    MAX      ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_SUCSPool		\
     NONE     ,		\
     ATc      ,		\
@@ -307,11 +449,22 @@ namespace POOL {
   typedef ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL> SUCS;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_NONE_POOL : int {
     NONE   ,
     MAX    ,
 };
+template<>
+struct enum_helper<MODULE_NONE, PARAM_TYPE_POOL> {
+  typedef ENUM_NONE_POOL type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_NONEPool		\
     NONE   ,		\
     MAX
@@ -332,11 +485,22 @@ namespace POOL {
   typedef ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL> NONE;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_MAX_POOL : int {
     NONE   ,
     MAX    ,
 };
+template<>
+struct enum_helper<MODULE_MAX, PARAM_TYPE_POOL> {
+  typedef ENUM_MAX_POOL type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_MAXPool		\
     NONE   ,		\
     MAX

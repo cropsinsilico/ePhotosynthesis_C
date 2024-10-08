@@ -1,15 +1,11 @@
 #include <random>
-#include "VariableFramework.hpp"
-#include "conditions/EPSCondition.hpp"
+#include "EPSModuleFramework.hpp"
 #include <nvector/nvector_serial.h>
 
 namespace {
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::test;
-
-class EPSConditionTest : public VariableFramework {
-};
 
 TEST_F(EPSConditionTest, ConstructorTest) {
     EPSCondition EPS;

@@ -1,12 +1,22 @@
 #include "VariableFramework.hpp"
 #include "modules/RROEA.hpp"
+#include "conditions/RROEACondition.hpp"
 
 namespace ePhotosynthesis {
 namespace test {
 
+class RROEAConditionTest : public virtual VariableFramework {
+protected:
+    void SetUp() override {
+        conditions::RROEACondition::reset();
+        VariableFramework::SetUp();
+    }
+};
+
 class RROEAModuleTest : public virtual VariableFramework {
 protected:
     void SetUp() override {
+        modules::RROEA::reset();
         VariableFramework::SetUp();
         theVars->CO2_in = 500.;
         theVars->TestLi = 14.;

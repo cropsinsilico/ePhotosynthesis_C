@@ -1,5 +1,6 @@
 #include "VariableFramework.hpp"
 #include "drivers/DynaPS_Driver.hpp"
+#include "modules/DynaPS.hpp"
 
 using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::drivers;
@@ -8,6 +9,10 @@ namespace ePhotosynthesis {
 namespace test {
 class DynaPSDriverTest : public VariableFramework {
 protected:
+    void SetUp() override {
+        VariableFramework::SetUp();
+        modules::DynaPS::reset();
+    }
     void TearDown() override {
         if (driver != nullptr)
             delete driver;

@@ -1,14 +1,22 @@
 #include "VariableFramework.hpp"
 #include "modules/PR.hpp"
+#include "conditions/PRCondition.hpp"
 
 namespace ePhotosynthesis {
 namespace test {
 
+class PRConditionTest : public virtual VariableFramework {
+protected:
+    void SetUp() override {
+        conditions::PRCondition::reset();
+        VariableFramework::SetUp();
+    }
+};
+
 class PRModuleTest : public virtual VariableFramework {
 protected:
     void SetUp() override {
-        modules::PR::setPS_connect(false);
-        modules::PR::setPS_RuBP(false);
+        modules::PR::reset();
         VariableFramework::SetUp();
         theVars->CO2_in = 500.;
         theVars->TestLi = 14.;

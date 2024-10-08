@@ -429,10 +429,29 @@ if(BUILD_TESTS)
     include_directories("${PROJECT_SOURCE_DIR}/tests/include")
     file(GLOB_RECURSE TEST_SOURCES "tests/*.cpp")
     if(TEST_COVERAGE)
-        if (CMAKE_CXX_COMPILER_ID MATCHES GNU)
+        set(CODE_COVERAGE_VERBOSE TRUE)
+        set(COVERAGE_DIR ${CMAKE_BINARY_DIR}/coverage)
+        if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang|ARMClang")
             set(COVERAGE_LCOV_EXCLUDES */tests/* /usr/* */ssPS* */RedoxReg* */output/* */bin/* */cxxopts.hpp)
             include(CodeCoverage)
+	    set(COVERAGE_COMPILER_FLAGS "${COVERAGE_COMPILER_FLAGS} -fno-inline")
+	    if(CMAKE_CXX_COMPILER_ID MATCHES "Clang|AppleClang|ARMClang")
+                set(CTEST_COVERAGE_COMMAND "llvm-cov")
+                set(CTEST_COVERAGE_EXTRA_FLAGS "gcov")
+		set(COVERAGE_COMPILER_FLAGS
+	            "${COVERAGE_COMPILER_FLAGS} -fprofile-instr-generate -fcoverage-mapping")
+	    else()
+                set(CTEST_COVERAGE_COMMAND "gcov")
+                set(CTEST_COVERAGE_EXTRA_FLAGS "")
+		set(COVERAGE_COMPILER_FLAGS
+	            "${COVERAGE_COMPILER_FLAGS} -fno-inline-small-functions -fno-default-inline")
+	    endif()
             append_coverage_compiler_flags()
+  	    # list(
+	    #     APPEND GCOVR_ADDITIONAL_ARGS
+	    # 	--gcov-executable=\"${CTEST_COVERAGE_COMMAND} ${CTEST_COVERAGE_EXTRA_FLAGS}\"
+	    # 	--coveralls=${COVERAGE_DIR}/coverage.info
+	    # )
             set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
             set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
         else()
@@ -451,14 +470,22 @@ if(BUILD_TESTS)
     else()
         include(GoogleTest)
     endif()
-    gtest_discover_tests(testRunner)
+    gtest_discover_tests(testRunner PROPERTIES DISCOVERY_TIMEOUT 1200)
 endif()
 
 if(TEST_COVERAGE)
-    setup_target_for_coverage_lcov(
+    # setup_target_for_coverage_lcov(
+    #     NAME coverage
+    #     EXECUTABLE testRunner
+    #     DEPENDENCIES testRunner EPhotosynthesis
+    # )
+    setup_target_for_coverage_gcovr_html(
         NAME coverage
-        EXECUTABLE testRunner
-        DEPENDENCIES testRunner EPhotosynthesis)
+	EXECUTABLE testRunner
+	DEPENDENCIES testRunner EPhotosynthesis
+	EXCLUDE "tests/"
+	BASE_DIRECTORY "${PROJECT_SOURCE_DIR}/src"
+    )
 endif()
 
 if(TEST_VALGRIND)

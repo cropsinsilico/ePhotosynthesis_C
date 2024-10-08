@@ -83,12 +83,7 @@ public:
         if (T::module != MODULE_NONE) {
 	  size_t alt = T::memberCount();
 	  if (alt != T::_size()) {
-	    std::cerr << "DEFAULTS = " << std::endl;
-	    T::printDefaults(std::cerr, 1);
-	    std::cerr << "SKIPPED = ";
-	    T::printSkipped(std::cerr);
-	    std::cerr << "NON-ARRAY = ";
-	    T::printNonvector(std::cerr);
+	    std::cerr << T::memberState() << std::endl;
 	    throw std::runtime_error(error_prefix()
 				     + "Size of default_values ("
 				     + std::to_string(alt)

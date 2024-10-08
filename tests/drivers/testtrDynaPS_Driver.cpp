@@ -1,5 +1,6 @@
 #include "VariableFramework.hpp"
 #include "drivers/trDynaPS_Driver.hpp"
+#include "modules/trDynaPS.hpp"
 #include "modules/PR.hpp"
 
 using namespace ePhotosynthesis::conditions;
@@ -10,6 +11,10 @@ namespace ePhotosynthesis {
 namespace test {
 class trDynaPSDriverTest : public VariableFramework {
 protected:
+    void SetUp() override {
+        VariableFramework::SetUp();
+        modules::trDynaPS::reset();
+    }
     void TearDown() override {
         if (driver != nullptr)
             delete driver;

@@ -1,16 +1,26 @@
 #include "PS_PRModuleFramework.hpp"
 #include "SUCSModuleFramework.hpp"
 #include "modules/CM.hpp"
+#include "conditions/CMCondition.hpp"
 
 namespace ePhotosynthesis {
 namespace test {
+
+class CMConditionTest : public virtual PS_PRConditionTest, public virtual SUCSConditionTest {
+protected:
+    void SetUp() override {
+	PS_PRConditionTest::SetUp();
+	SUCSConditionTest::SetUp();
+	conditions::CMCondition::reset();
+    }
+};
 
 class CMModuleTest : public virtual PS_PRModuleTest, public virtual SUCSModuleTest {
 protected:
     void SetUp() override {
         PS_PRModuleTest::SetUp();
         SUCSModuleTest::SetUp();
-        modules::CM::setTestSucPath(false);
+        modules::CM::reset();
     }
 
     conditions::CMCondition* MB_con(const double t, const conditions::CMCondition* CM_con,

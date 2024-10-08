@@ -1,20 +1,11 @@
 #include <random>
-#include "VariableFramework.hpp"
-#include "conditions/PSCondition.hpp"
+#include "PSModuleFramework.hpp"
 
 namespace {
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::test;
-
-class PSConditionTest : public VariableFramework {
-protected:
-    void SetUp() override {
-        PSCondition::setC3(false);
-        VariableFramework::SetUp();
-    }
-};
 
 TEST_F(PSConditionTest, C3Test) {
     EXPECT_FALSE(PSCondition::getC3());

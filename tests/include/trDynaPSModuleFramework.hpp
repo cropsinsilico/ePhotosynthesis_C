@@ -3,6 +3,7 @@
 #include "DynaPSModuleFramework.hpp"
 #include "RROEAModuleFramework.hpp"
 #include "modules/trDynaPS.hpp"
+#include "conditions/trDynaPSCondition.hpp"
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::test;
@@ -12,11 +13,21 @@ using namespace ePhotosynthesis::modules;
 namespace ePhotosynthesis {
 namespace test {
 
+class trDynaPSConditionTest : public virtual RROEAConditionTest, public virtual DynaPSConditionTest {
+protected:
+    void SetUp() override {
+        RROEAConditionTest::SetUp();
+        DynaPSConditionTest::SetUp();
+        conditions::trDynaPSCondition::reset();
+    }
+};
+
 class trDynaPSModuleTest : public virtual RROEAModuleTest, public virtual DynaPSModuleTest {
 protected:
     void SetUp() override {
         DynaPSModuleTest::SetUp();
         RROEAModuleTest::SetUp();
+        modules::trDynaPS::reset();
     }
 
     conditions::trDynaPSCondition* MB_con(const double t,

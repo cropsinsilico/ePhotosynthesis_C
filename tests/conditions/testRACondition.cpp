@@ -1,15 +1,11 @@
 #include <random>
-#include "VariableFramework.hpp"
-#include "conditions/RACondition.hpp"
+#include "RAModuleFramework.hpp"
 #include <nvector/nvector_serial.h>
 
 namespace {
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::test;
-
-class RAConditionTest : public VariableFramework {
-};
 
 TEST_F(RAConditionTest, ConstructorTest) {
     RACondition RA;

@@ -1,16 +1,11 @@
 #include <random>
-#include "VariableFramework.hpp"
-#include "conditions/SUCSCondition.hpp"
+#include "SUCSModuleFramework.hpp"
 
 namespace {
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::test;
-
-class SUCSConditionTest : public VariableFramework {
-
-};
 
 TEST_F(SUCSConditionTest, InitializeTest) {
     SUCSCondition* sc = new SUCSCondition();

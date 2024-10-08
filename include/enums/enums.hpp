@@ -15,10 +15,8 @@
 #define EPHOTO_USE_SCOPED_ENUM 1
 #endif // _MSC_VER
 #ifdef EPHOTO_USE_SCOPED_ENUM
-#define SCOPED_ENUM enum class
 #define SCOPED_ENUM_TYPE(name) name::
 #else // EPHOTO_USE_SCOPED_ENUM
-#define SCOPED_ENUM enum
 #define SCOPED_ENUM_TYPE(name)
 #endif // EPHOTO_USE_SCOPED_ENUM
 namespace ePhotosynthesis {
@@ -169,10 +167,20 @@ namespace ePhotosynthesis {
     return result;
   }
   // Unspecialized enum
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  template<MODULE M, PARAM_TYPE PT>
+  struct enum_helper {
+    typedef int type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
   template<MODULE M, PARAM_TYPE PT>
   class ValueSetEnum {
   public:
-    SCOPED_ENUM Type : int;
+    #ifdef EPHOTO_USE_SCOPED_ENUM
+    typedef typename enum_helper<M, PT>::type Type;
+    #else // EPHOTO_USE_SCOPED_ENUM
+    enum Type : int;
+    #endif // EPHOTO_USE_SCOPED_ENUM
     static const MODULE module;
     static const PARAM_TYPE param_type;
     static const std::vector<Type> all;  /**< All enum values */
@@ -261,7 +269,6 @@ namespace ePhotosynthesis {
         out << space << "  " << names.find(it->first)->second << " = " << it->second << std::endl;
       }
       out << space << "}";
-      out << std::endl;
       return out;
     }
     /**
@@ -422,7 +429,6 @@ namespace ePhotosynthesis {
         out << names.find((*(it)))->second << ",";
       }
       out << "]";
-      out << std::endl;
       return out;
     }
     /**

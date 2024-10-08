@@ -1,16 +1,11 @@
 #include <random>
-#include "VariableFramework.hpp"
-#include "conditions/RROEACondition.hpp"
+#include "RROEAModuleFramework.hpp"
 
 namespace {
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::test;
-
-class RROEAConditionTest : public VariableFramework {
-
-};
 
 TEST_F(RROEAConditionTest, InitializeTest) {
     RROEACondition* rrc = new RROEACondition();

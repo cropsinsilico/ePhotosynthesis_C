@@ -1337,7 +1337,6 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             ]
             if self._print_suffix:
                 body += [f"out << {self._print_suffix};"]
-            body += ['out << std::endl;']
             body += [
                 "return out;",
             ]
@@ -1623,7 +1622,7 @@ class CEnumGeneratorVectorBase(CEnumGeneratorCollectionBase):
         ]
     )
     _print_prefix = "space << \"[\""
-    _print_suffix = "\"]\""
+    _print_suffix = "\"]\""  # " << std::endl;"
 
     def generate_docs(self, name):
         name_doc = self.collection_name.rstrip('s')
@@ -1675,10 +1674,8 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
         '#define EPHOTO_USE_SCOPED_ENUM 1',
         '#endif // _MSC_VER',
         '#ifdef EPHOTO_USE_SCOPED_ENUM',
-        '#define SCOPED_ENUM enum class',
         '#define SCOPED_ENUM_TYPE(name) name::',
         '#else // EPHOTO_USE_SCOPED_ENUM',
-        '#define SCOPED_ENUM enum',
         '#define SCOPED_ENUM_TYPE(name)',
         '#endif // EPHOTO_USE_SCOPED_ENUM',
     ]
@@ -1989,6 +1986,10 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             'type': str,
             'help': "Suffix to use for members macro",
         },
+        explicit_values={
+            'action': 'store_true',
+            'help': "Explicitly define the value for each enum member",
+        },
     )
     added_file_classes = {
         'global': CEnumGeneratorGlobalHeader,
@@ -2073,16 +2074,35 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
         return self.added_maps + self.added_vectors
 
     def generate_member(self, x, width=None, width_val=None,
-                        name_only=False):
+                        name_only=False, explicit_values=False):
         assert width is not None and width_val is not None
         val = ''
         docs = ''
         if not name_only:
-            if x.get('explicit_idx', False):
+            if ((x.get('explicit_idx', False)
+                 or self.explicit_values or explicit_values)):
                 val = f" = {x['idx']}"
             if x.get('doc', False):
                 docs = f"  //!< {x['doc']}"
         return [f"  {x['name']:{width}}{val:{width_val}},{docs}"]
+
+    def generate_enum_class_helper(self, name, members, specialization='',
+                                   template_lines=[], enum_type='int',
+                                   as_class=False):
+        enum_name_ext = f'ENUM_{name}' if specialization else enum_type
+        lines = []
+        if specialization:
+            lines += self.generate_definition_enum(
+                name, members, enum_name=enum_name_ext,
+                enum_type=enum_type, as_class=as_class,
+                scoped_enum=True)
+        lines += template_lines
+        lines += [
+            f'struct enum_helper{specialization} {{',
+            f'  typedef {enum_name_ext} type;',
+            '};'
+        ]
+        return lines
 
     def generate_declaration(self, name, members, enum_name=None,
                              enum_type='int', members_only=False,
@@ -2115,20 +2135,36 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             enum_name_full = f'typename {enum_name_full}'
         if members_only:
             if specialization and not self.enum_in_source:
+                lines += ['#ifdef EPHOTO_USE_SCOPED_ENUM']
+                lines += self.generate_enum_class_helper(
+                    name, members, specialization=specialization,
+                    template_lines=template_lines, enum_type=enum_type,
+                    as_class=as_class)
+                lines += ['#else // EPHOTO_USE_SCOPED_ENUM']
                 lines += template_lines
                 lines += self.generate_definition_enum(
                     name, members, enum_name=enum_name,
                     enum_type=enum_type, enum_prefix=enum_prefix,
                     as_class=as_class)
+                lines += ['#endif // EPHOTO_USE_SCOPED_ENUM']
             else:
-                if as_class:
-                    member_prefix = 'SCOPED_ENUM '
-                else:
-                    member_prefix = 'enum '
+                if as_class and spec_var:
+                    lines += [
+                        '#ifdef EPHOTO_USE_SCOPED_ENUM',
+                        f'typedef typename '
+                        f'enum_helper<{", ".join(spec_var)}>::'
+                        f'type {enum_name};',
+                        '#else // EPHOTO_USE_SCOPED_ENUM',
+                    ]
+                member_prefix = 'enum '
                 lines += [
                     f'{template}{member_prefix}{enum_prefix}{enum_name} : '
                     f'{enum_type};',
                 ]
+                if as_class and spec_var:
+                    lines += [
+                        '#endif // EPHOTO_USE_SCOPED_ENUM',
+                    ]
             if spec_var and not specialization:
                 for p, t in zip(kwargs['spec_param'], spec_var):
                     lines += [f'{static}const {p} {p.lower()};']
@@ -2173,6 +2209,13 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             if specialization:
                 lines += ['']
             return lines
+        if spec_var and not specialization:
+            lines += ['#ifdef EPHOTO_USE_SCOPED_ENUM']
+            lines += self.generate_enum_class_helper(
+                name, members, specialization=specialization,
+                template_lines=template_lines, enum_type=enum_type,
+                as_class=as_class)
+            lines += ['#endif // EPHOTO_USE_SCOPED_ENUM']
         lines += template_lines
         lines += [
             f'class {class_name}{specialization} {{',
@@ -2210,7 +2253,7 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
 
     def generate_definition_enum(self, name, members, enum_name=None,
                                  enum_type='int', as_class=None,
-                                 enum_prefix=''):
+                                 enum_prefix='', scoped_enum=False):
         lines = []
         if as_class is None:
             as_class = self.as_class
@@ -2221,8 +2264,8 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 enum_name = name
         width = self.max_width(members)
         width_val = self.max_width(members, key='idx')
-        if as_class:
-            member_prefix = 'SCOPED_ENUM '
+        if as_class and scoped_enum:
+            member_prefix = 'enum class '
         else:
             member_prefix = 'enum '
         lines += [f'{member_prefix}{enum_prefix}{enum_name} : {enum_type} {{']

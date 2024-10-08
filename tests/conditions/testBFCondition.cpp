@@ -1,21 +1,10 @@
 //#include <random>
-#include "VariableFramework.hpp"
-#include "conditions/BFCondition.hpp"
+#include "BFModuleFramework.hpp"
 
 namespace {
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::test;
-
-class BFConditionTest : public VariableFramework {
-protected:
-    void SetUp() override {
-        BFCondition::setPS_connect(false);
-        BFCondition::setRROEA_connect(false);
-        BFCondition::setFI_connect(false);
-        VariableFramework::SetUp();
-    }
-};
 
 TEST_F(BFConditionTest, ConnectTest) {
     EXPECT_FALSE(BFCondition::getPS_connect());

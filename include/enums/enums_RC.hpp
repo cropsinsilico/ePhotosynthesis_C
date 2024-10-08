@@ -2,8 +2,8 @@
 // modified directly
 #pragma once
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_BF_RC : int {
     NONE         ,
     K1           ,  //!< The rate constant for formation of ISP.QH2 complex; unit:  per second
     K2           ,  //!< The rate constant for ISP.QH2-->QH(semi) + ISPH(red) ; unit:  per second
@@ -44,6 +44,54 @@ SCOPED_ENUM ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type : int {
     KE2          ,  //!< Equilibrium constant
     MAX          ,
 };
+template<>
+struct enum_helper<MODULE_BF, PARAM_TYPE_RC> {
+  typedef ENUM_BF_RC type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type : int {
+    NONE         ,
+    K1           ,  //!< The rate constant for formation of ISP.QH2 complex; unit:  per second
+    K2           ,  //!< The rate constant for ISP.QH2-->QH(semi) + ISPH(red) ; unit:  per second
+    K3           ,  //!< The rate constant for QH. + cytbL --> Q + cytbL- + H+ Unit: s-1
+    K4           ,  //!< The rate constant for cytbL- + cytbH --> cytbL + cytbH- Unit: s-1
+    K5           ,  //!< The rate constant for CytbH- + Q --> cytbH + Q- Unit: s-1
+    K6           ,  //!< The rate constant  for CytbH- + Q- --> cytbH + Q2- Unit: s-1
+    K7           ,  //!< The rate constant for Q binding to Qi site; which assumed half time as 200 us, following Croft's website Unit: s-1
+    K8           ,  //!< The rate constant for ISPH + CytC1 --> ISPH(ox) + CytC1+ Unit: s-1
+    K9           ,  //!< The rate constant for the electron transport from cytc1 to cytc2 Unit: s-1
+    K10          ,  //!< The rate constant for the electron transport from cytc2 to P700 Unit: s-1
+    Vmax11       ,  //!< The maximum rate of ATP synthesis Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+    Kqi          ,  //!< The rate constant for uptake of two protons from the stroma to Q2- s-1
+    PK           ,  //!< The permeability constant for K Unit: cm s-1
+    PMg          ,  //!< The permeability constant for Mg Unit: cm s-1
+    PCl          ,  //!< The permeability constant for Cl Unit: cm s-1
+    Kau          ,  //!< The rate constant for exciton transfer from perpheral antenna to core antenna, see FI Unit: s-1
+    Kua          ,  //!< The rate constant for exciton transfer from core antenna to peripheral antenna, SEE FI Unit: s-1
+    Kf           ,  //!< The rate constant for fluorescence emission, see the note in FI Unit: s-1
+    Kd           ,  //!< The rate constant for heat dissipation; see the note for FI Unit: s-1
+    K15          ,  //!< The rate constant for primary charge separation in PSI Unit: s-1
+    K16          ,  //!< The rate constant for electron tranfer from electron acceptor of PSI to Fd Unit: s-1
+    KE8          ,  //!< ISPHr + cytc1 --> ISPHox + cytc1-; Calculated from Em_IPS, Em_Cytf & Em_PG; Unit: s-1
+    KE9          ,  //!< cytc1- + cytc2 --> cytc1 + cytc2-; Calculated from Em_IPS, Em_Cytf & Em_PG; Unit: s-1
+    Em_IPS       ,  //!< ISPHr + cytc1 --> ISPHox + cytc1-
+    Em_Cytf      ,  //!< ISPHr + cytc1 --> ISPHox + cytc1-
+    Em_PG        ,  //!< cytc1- + cytc2 --> cytc1 + cytc2-
+    MemCap       ,  //!< The membrane capacity
+    RVA          ,  //!< The ratio of lumen volume to thylakoid membrane area
+    KBs          ,  //!< The buffer equilibrium constant in stroma
+    KBl          ,  //!< The buffer equilibrium constant in lumen
+    KM1ATP       ,  //!< The michaelis menton constant for ATP for ATP synthesis
+    KM1ADP       ,  //!< The michaelis menton constant for ATP for ADP synthesis
+    KM1PI        ,  //!< The michaelis menton constant for ATP for PI synthesis
+    KM2NADP      ,  //!< The michaelis menten constant for NADP Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+    KM2NADPH     ,  //!< The michaelis menten constant for NADPH Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+    V2M          ,  //!< The maximum rate of NADPH formation Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1
+    KE2          ,  //!< Equilibrium constant
+    MAX          ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_BFRC		\
     NONE         ,		\
     K1           ,		\
@@ -101,8 +149,8 @@ namespace RC {
   typedef ValueSetEnum<MODULE_BF, PARAM_TYPE_RC> BF;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_FI_RC : int {
     NONE         ,
     kA_d         ,  //!< The rate constant of heat dissipation from peripheral antenna Lazar (1999), 0.25~1 *10^(9)
     kA_f         ,  //!< The rate constant of fluorescence emission from peripheral antenna Lazar 1999, with a lifetime of 5 ns at closed reaction center
@@ -127,6 +175,38 @@ SCOPED_ENUM ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type : int {
     k_pq_oxy     ,  //!< The rate constant of the PQH2 oxidation Lazar (1999),50~500
     MAX          ,
 };
+template<>
+struct enum_helper<MODULE_FI, PARAM_TYPE_RC> {
+  typedef ENUM_FI_RC type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type : int {
+    NONE         ,
+    kA_d         ,  //!< The rate constant of heat dissipation from peripheral antenna Lazar (1999), 0.25~1 *10^(9)
+    kA_f         ,  //!< The rate constant of fluorescence emission from peripheral antenna Lazar 1999, with a lifetime of 5 ns at closed reaction center
+    kA_U         ,  //!< The rate constant of exciton transfer from periphral antenna to core antenna Reference needed, a guess
+    kU_A         ,  //!< The rate constant of exciton transfer from core antenna to peripheral antenna Reference needed, a guess
+    kU_d         ,  //!< The rate constant of heat emission from core antenna
+    kU_f         ,  //!< The rate constant of fluorescence emission from core antenna
+    k1           ,  //!< The rate constant of primary charge separation for open reaction center
+    k_r1         ,  //!< The rate constant of charge recombination for open reactoin center
+    kz           ,  //!< The rate constant of the Tyrosine oxidation Lazar (1999); 3.8~50 * 10^6
+    k12          ,  //!< The rate constant of the S1 to S2 transition Lazar (1999); 0.667~33.3 * 10^3
+    k23          ,  //!< The rate constant of the S2 to S3 transition Lazar (1999); 0.667~33.3 * 10^3
+    k30          ,  //!< The rate constant of the S3 to S0 transition Lazar (1999); 0.667~33.3 * 10^3
+    k01          ,  //!< The rate constant of the S0 to S1 transition Lazar (1999); 0.667~33.3 * 10^3
+    k2           ,  //!< The rate constant of the QA reduction by Pheo- Lazar (1999); 2~2.3 * 10^9
+    kAB1         ,  //!< The rate constant of QAQB-->QAQB- Lazar (1999); 2.5~5 * 10^3
+    kBA1         ,  //!< The rate constant of the QAQB- -->QAQB Lazar (1999)
+    kAB2         ,  //!< The rate constant of the QAQB- --> QAQB2- Lazar (1999); 1.25~3.33 * 10^3
+    kBA2         ,  //!< The rate constant of the QAQB2- --> QAQB- Lazar (1999), or same as kAB2 depend on the equilibium constant
+    k3           ,  //!< The rate constant of the exchange of PQ and QBH2 Lazar (1999),0.12~1 for the fast PQ pool, or 3~8 for the slow recycling PQ pool
+    k_r3         ,  //!< The rate constant of the exchange of QB and PQH2 Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
+    k_pq_oxy     ,  //!< The rate constant of the PQH2 oxidation Lazar (1999),50~500
+    MAX          ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_FIRC		\
     NONE         ,		\
     kA_d         ,		\
@@ -168,8 +248,8 @@ namespace RC {
   typedef ValueSetEnum<MODULE_FI, PARAM_TYPE_RC> FI;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_PR_RC : int {
     NONE           ,
     V111           ,  //!< Reaction 111: RUBP+O2<-->PGlycolate + PGA
     V112           ,  //!< Reaction 112: PGlycolate-->Pi+Glycolate;
@@ -230,6 +310,74 @@ SCOPED_ENUM ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type : int {
     Vf_T112        ,  //!< VfactorT used with GRNT & Tp > 25
     MAX            ,
 };
+template<>
+struct enum_helper<MODULE_PR, PARAM_TYPE_RC> {
+  typedef ENUM_PR_RC type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type : int {
+    NONE           ,
+    V111           ,  //!< Reaction 111: RUBP+O2<-->PGlycolate + PGA
+    V112           ,  //!< Reaction 112: PGlycolate-->Pi+Glycolate;
+    V113           ,  //!< Reaction 113: Gcea+ATP<-->ADP + PGA
+    V121           ,  //!< Reaction 121: Glycolate +O2<-->H2O2+Glyoxylate
+    V122           ,  //!< Reaction 122: Glyoxylate + Serine<--> Hydoxypyruvate + Glycine;
+    V123           ,  //!< Reaction 123: HydroxylPyruvate + NAD <--> NADH + Glycerate
+    V124           ,  //!< Reaction 124: Glyoxylate + Glu  <--> KG + Glycine;
+    V131           ,  //!< Reaction 131: NAD+Glycine <--> CO2+ NADH + NH3
+    NADHc          ,  //!< NADH concentration in cytosol
+    NADc           ,  //!< NAD concentration in cytosol
+    GLUc           ,  //!< GLU concentration in cytosol
+    KGc            ,  //!< KG concentration in cytosol
+    ADP            ,  //!< ADP concentration in chloroplast
+    ATP            ,  //!< ATP concentration in chloroplast
+    PGA            ,  //!< PGA in chloroplast (2.4 with C3)
+    KO             ,  //!< Michaelis constant for O2; ignored w/ PS_PR
+    KC             ,  //!< Michaelis constant for CO2; ignored w/ PS_PR
+    KR             ,  //!< Michaelis constant for RUBP
+    KM112          ,  //!< Km112 for PGlycolate;
+    KI1122         ,  //!< Inhibition constant for Glycolate;
+    KI1121         ,  //!< The competitive Pi inhibition for PGlycolate
+    KM1131         ,  //!< Km for ATP;
+    KM1132         ,  //!< Km for Gcea;
+    KI113          ,  //!< Competitive inhibition for ATP; in original paper it is 0.36;
+    KE113          ,  //!< New: Kleczkowski et al . 1985 Archives of Biochemistry and Biophysics  300, as default
+    KM121          ,  //!< Km for Glycolate
+    KM1221         ,  //!< Michaelis constant for glyoxylate;
+    KM1222         ,  //!< Michaelis constant for serinie;
+    KI1221         ,  //!< Inhibition constant for Glycine;
+    KE122          ,  //!< New: Guynn, R.W.; Arch. Biochem. Biophys.; 218, 14 (1982).; 0.24. At 25 degree.
+    KM123          ,  //!< Michaelis constant for hydroxylpyruvate;
+    KI123          ,  //!< Inhibition constant for hydroxypyruvate;
+    KE123          ,  //!< Equilibrium constant for hydroxypyruvate;
+    KM1241         ,  //!< Michaelis constant for glyoxylate
+    KM1242         ,  //!< Michaelis constant for Glu
+    KE124          ,  //!< New: Cooper, A.J.L.; Meister, A.; Biochemistry; 11, 661 (1972).; K' 607.
+    KM1311         ,  //!< Michaelis constant for Glycine;
+    KI1311         ,  //!< Inhibition constant for Serine
+    V1T            ,  //!< Multiplied by CE
+    KM1011         ,  //!< Michaelis constant for glycerate
+    KI1011         ,  //!< Inhibition constant for glycerate
+    V2T            ,  //!< Multiplied by CE, 6 for C3
+    KM1012         ,  //!< Michaelis constant for glycolate
+    KI1012         ,  //!< Inhibition constant for glycolate
+    Vfactor112     ,  //!< VfactorCp used with GRNC and CO2 > 0
+    Vfactor113     ,  //!< VfactorCp used with GRNC and CO2 > 0
+    Vfactor121     ,  //!< VfactorCp used with GRNC and CO2 > 0
+    Vfactor122     ,  //!< VfactorCp used with GRNC and CO2 > 0
+    Vfactor123     ,  //!< VfactorCp used with GRNC and CO2 > 0
+    Vfactor124     ,  //!< VfactorCp used with GRNC and CO2 > 0
+    Vfactor131     ,  //!< VfactorCp used with GRNC and CO2 > 0
+    Vf_T131        ,  //!< VfactorT used with GRNT & Tp > 25
+    Vf_T113        ,  //!< VfactorT used with GRNT & Tp > 25
+    Vf_T123        ,  //!< VfactorT used with GRNT & Tp > 25
+    Vf_T121        ,  //!< VfactorT used with GRNT & Tp > 25
+    Vf_T122        ,  //!< VfactorT used with GRNT & Tp > 25
+    Vf_T112        ,  //!< VfactorT used with GRNT & Tp > 25
+    MAX            ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_PRRC		\
     NONE           ,		\
     V111           ,		\
@@ -307,8 +455,8 @@ namespace RC {
   typedef ValueSetEnum<MODULE_PR, PARAM_TYPE_RC> PR;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_PS_RC : int {
     NONE          ,
     CP            ,  //!< Global constant for the total phosphate
     CA            ,  //!< Global constant for the total adenylates
@@ -424,6 +572,129 @@ SCOPED_ENUM ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type : int {
     Vf_T23        ,  //!< VfactorT used with GRNT & Tp > 25
     MAX           ,
 };
+template<>
+struct enum_helper<MODULE_PS, PARAM_TYPE_RC> {
+  typedef ENUM_PS_RC type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type : int {
+    NONE          ,
+    CP            ,  //!< Global constant for the total phosphate
+    CA            ,  //!< Global constant for the total adenylates
+    CN            ,  //!< Global constant for the cytosolic Phosphate concentration;
+    PEXT          ,  //!< Global constant for the cytosolic Phosphate concentration;
+    V1            ,  //!< (Harris & Koniger, 1997)
+    V2            ,  //!< (Harris & Koniger, 1997)
+    V3            ,  //!< 1.57*SC  (Harris & Koniger, 1997)
+    V5            ,  //!< (Harris & Koniger, 1997)
+    V6            ,  //!< (Harris & Koniger, 1997)
+    V7            ,  //!< (Harris & Koniger, 1997)
+    V8            ,  //!< (Harris & Koniger, 1997)
+    V9            ,  //!< 0.17*SC*FC (Harris & Koniger, 1997) *3.
+    V13           ,  //!< (Harris & Koniger, 1997)
+    V16           ,  //!< (Aflalo & Shavit, 1983, Davenport & McLeod, 1986)
+    V23           ,
+    V24           ,
+    V31           ,  //!< 3.73 / 3 for C3 (Lilley, Chon, Mosbach & Heldt, 1977b)
+    V32           ,  //!< 3.73 / 3 for C3 (Lilley, Chon, Mosbach & Heldt, 1977b)
+    V33           ,  //!< WY 2018103; 3.73 / 3 for C3 (Lilley, Chon, Mosbach & Heldt, 1977b)
+    KM11_A        ,  //!< Factor for KM11 calc
+    KM12_A        ,  //!< Factor for KM12 calc
+    KM13          ,  //!< RuBP 1 RuBP+CO2->2PGA
+    KI11          ,  //!< PGA
+    KI12          ,  //!< FBP
+    KI13          ,  //!< SBP
+    KI14          ,  //!< Pi
+    KI15          ,  //!< NADPH
+    KM21          ,  //!< PGA 2 PGA+ATP <-> ADP + DPGA
+    KM22          ,  //!< ATP 2 PGA+ATP <-> ADP + DPGA
+    KM23          ,  //!< ADP
+    KM31a         ,  //!< BPGA 3 DPGA+NADPH <->GAP + OP+NADP
+    KM32b         ,  //!< NADPH 3 DPGA+NADPH <->GAP + OP+NADP
+    KE4           ,  //!< Using the value from Patterson
+    KM51          ,  //!< GAP 5 GAP+DHAP <->FBP
+    KM52          ,  //!< DHAP 5 GAP+DHAP <->FBP
+    KM53          ,  //!< FBP 5 GAP+DHAP <->FBP
+    KE5           ,  //!< Defult: 7.1
+    KM61          ,  //!< FBP 6 FBP<->F6P+OP
+    KI61          ,  //!< F6P
+    KI62          ,  //!< Pi
+    KE6           ,  //!< The equilibrium constant for this reaction  New: mM Laisk or Bassham and Krause 1969 BBA
+    KM71          ,  //!< Xu5P 7 F6P+GAP<->E4P+Xu5P
+    KM72          ,  //!< E4P 7 F6P+GAP<->E4P+Xu5P
+    KM73          ,  //!< F6P This value was based on estimate
+    KM74          ,  //!< Estimate for GAP ORIGINAL 0.1
+    KE7           ,  //!< The equilibrium constant for this reaction  New: Laisk Bassham and Krause 1969 BBA
+    KM81          ,  //!< DHAP
+    KM82          ,  //!< E4P estimate
+    KE8           ,  //!< The equilibrium constant for this reaction  New: mM-1  Laisk  Bassham and Krause 1969 BBA. Default: 1.107
+    KM9           ,  //!< SBP 9 SBP<->S7P+OP
+    KI9           ,  //!< The inibintion constant for Pi;
+    KE9           ,  //!< The equilibrium constant of this reaction  New:  mM      Laisk  Bassham and Krause 1969 BBA
+    KM10          ,  //!< R5P 10 S7P+GAP<->Ri5P+Xu5P
+    KM101         ,  //!< Xu5P
+    KM102         ,  //!< Estimate for GAP
+    KM103         ,  //!< Estimate for S7P  New
+    KE10          ,  //!< The equilibrium constant for this reaction  New: From Laisk or Bassham and Krause 1969 BBA
+    KE11          ,  //!< Equilibrium Constant 11 Ri5P<-->Ru5P
+    KE12          ,  //!< Equilibrium Constant 12 Xu5P<-->Ru5P
+    KM131         ,  //!< Ru5P 13 Ru5P+ATP<->RuBP+ADP
+    KM132         ,  //!< ATP 13 Ru5P+ATP<->RuBP+ADP
+    KI131         ,  //!< PGA 13 Ru5P+ATP<->RuBP+ADP
+    KI132         ,  //!< RuBP 13 Ru5P+ATP<->RuBP+ADP
+    KI133         ,  //!< Pi 13 Ru5P+ATP<->RuBP+ADP
+    KI134         ,  //!< ADP 13 Ru5P+ATP<->RuBP+ADP
+    KI135         ,  //!< ADP 13 Ru5P+ATP<->RuBP+ADP
+    KE13          ,  //!< The equilibrium constant for this reaction  New: From Laisk or Bassham and Krause 1969 BBA
+    KM161         ,  //!< ADP 16 ADP+Pi<->ATP
+    KM162         ,  //!< Pi 16 ADP+Pi<-> ATP
+    KM163         ,  //!< ATP 16  ADP+Pi<-> ATP  New: Based on Laisk
+    KE16          ,  //!< The equilibrium constant for this reaction  New: From Laisk or Bassham and Krause 1969 BBA
+    KE21          ,  //!< Equilibrium constant 21 F6P<->G6P
+    KE22          ,  //!< Equilibrium constant 22 G6P<->G1P
+    KM311         ,  //!< DHAP 31 DHAPi<->DHAPo
+    KM312         ,  //!< Pi 31 DHAPi<->DHAPo
+    KM313         ,  //!< Pext 31 DHAPi<->DHAPo
+    KM32          ,  //!< PGA 32 PGAi<->PGAo
+    KM33          ,  //!< GAP 33 GAPi<->GAPo
+    KM231         ,  //!< G1P 23 G1P+ATP<->ADPG + PPi  Laisk et al 1989
+    KM232         ,  //!< ATP 23 G1P+ATP<->ADPG + PPi  Laisk et al 1989
+    KM233         ,  //!< ADPG 23 G1P+ATP<->ADPG + PPi  Laisk et al 1989
+    KM234         ,  //!< PPi 23 G1P+ATP<->ADPG + PPi  Laisk et al 1989
+    KE23          ,
+    KA231         ,  //!< PGA 23 G1P+ATP<->ADPG + PPi  Laisk et al 1989
+    KI231         ,  //!< Pi 23 G1P+ATP<->ADPG + PPi  Laisk et al 1989 WY201803
+    KVmo          ,  //!< The minimum maximum velocity  Laisk et al 1989
+    KM241         ,
+    KE25          ,
+    KE57          ,
+    Km8p5p        ,
+    Km5p5p        ,
+    KE810         ,
+    Km5gap        ,
+    Km8f6p        ,
+    Km8s7p        ,
+    Km8gap        ,
+    MaxCoeff      ,
+    Vfactor1      ,  //!< VfactorCp used with GRNC and CO2 > 0
+    Vfactor2      ,  //!< VfactorCp used with GRNC and CO2 > 0
+    Vfactor3      ,  //!< VfactorCp used with GRNC and CO2 > 0
+    Vfactor5      ,  //!< VfactorCp used with GRNC and CO2 > 0
+    Vfactor7      ,  //!< VfactorCp used with GRNC and CO2 > 0
+    Vfactor13     ,  //!< VfactorCp used with GRNC and CO2 > 0
+    Vfactor23     ,  //!< VfactorCp used with GRNC and CO2 > 0
+    Vf_T3         ,  //!< VfactorT used with GRNT & Tp > 25
+    Vf_T2         ,  //!< VfactorT used with GRNT & Tp > 25
+    Vf_T1         ,  //!< VfactorT used with GRNT & Tp > 25
+    Vf_T6         ,  //!< VfactorT used with GRNT & Tp > 25
+    Vf_T5         ,  //!< VfactorT used with GRNT & Tp > 25
+    Vf_T9         ,  //!< VfactorT used with GRNT & Tp > 25
+    Vf_T13        ,  //!< VfactorT used with GRNT & Tp > 25
+    Vf_T23        ,  //!< VfactorT used with GRNT & Tp > 25
+    MAX           ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_PSRC		\
     NONE          ,		\
     CP            ,		\
@@ -556,8 +827,8 @@ namespace RC {
   typedef ValueSetEnum<MODULE_PS, PARAM_TYPE_RC> PS;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_RROEA_RC : int {
     NONE            ,
     ke2GAPDH        ,  //!< *= Coeff / 60; The rate constant of electron transfer to GAPDH. From literature.
     ke2MDH          ,  //!< *= Coeff / 60; The rate constant of electront transfer to MDH, this rate is totally ASSUMED.
@@ -573,6 +844,29 @@ SCOPED_ENUM ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type : int {
     Coeff           ,  //!< [CONST] Used to scale electron transfer rate constants (with the exception of ke2ATPase)
     MAX             ,
 };
+template<>
+struct enum_helper<MODULE_RROEA, PARAM_TYPE_RC> {
+  typedef ENUM_RROEA_RC type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type : int {
+    NONE            ,
+    ke2GAPDH        ,  //!< *= Coeff / 60; The rate constant of electron transfer to GAPDH. From literature.
+    ke2MDH          ,  //!< *= Coeff / 60; The rate constant of electront transfer to MDH, this rate is totally ASSUMED.
+    ke2FBPase       ,  //!< *= Coeff / 60; The rate constant of electron transfer from thioredoxin to FBPase.
+    ke2SBPase       ,  //!< *= Coeff / 60; The rate constant of electron tranfer from thioredoxin to SBPase
+    ke2PRK          ,  //!< *= Coeff / 60; The rate constant of electron transfer from thioredoxin to PRK, Phosphoribulase kinase
+    ke2ATPase       ,  //!< [CONST] The rate constant of electron transfer to ATPase; This was constant in the code
+    ke2RubACT       ,  //!< *= Coeff / 60; The rate constant of electron transfer from thioredoxin to Rubisco activase
+    ke2Fd           ,  //!< *= Coeff; The rate constant of electron transfer to fe
+    keFd2Thio       ,  //!< *= Coeff; The rate constant of electron transfer from fd to thio
+    keFd2Calvin     ,  //!< *= Coeff; The rate constant of electron transfer from fd to Calvin cycle
+    ke2ATPGPP       ,  //!< *= Coeff / 60; The rate constant of electron transfer to ATPGPP
+    Coeff           ,  //!< [CONST] Used to scale electron transfer rate constants (with the exception of ke2ATPase)
+    MAX             ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_RROEARC		\
     NONE            ,		\
     ke2GAPDH        ,		\
@@ -605,8 +899,8 @@ namespace RC {
   typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC> RROEA;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_RedoxReg_RC : int {
     NONE               ,
     Fd_Thio_ET         ,
     ThioT              ,
@@ -614,6 +908,21 @@ SCOPED_ENUM ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type : int {
     Thion0             ,  //!< This is a wild guess
     MAX                ,
 };
+template<>
+struct enum_helper<MODULE_RedoxReg, PARAM_TYPE_RC> {
+  typedef ENUM_RedoxReg_RC type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type : int {
+    NONE               ,
+    Fd_Thio_ET         ,
+    ThioT              ,
+    Thio_Oxidation     ,
+    Thion0             ,  //!< This is a wild guess
+    MAX                ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_RedoxRegRC		\
     NONE               ,		\
     Fd_Thio_ET         ,		\
@@ -638,8 +947,8 @@ namespace RC {
   typedef ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC> RedoxReg;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_RuACT_RC : int {
     NONE     ,
     k1       ,  //!< The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco theVars->activase content or activity;
     kn1      ,  //!< The rate constant of E inactivation by binding of RuBP; Lazar 1999, with a lifetime of 5 ns at closed reaction center
@@ -653,6 +962,27 @@ SCOPED_ENUM ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type : int {
     kr       ,  //!< The apparaent michaelis menton constant for RuBP
     MAX      ,
 };
+template<>
+struct enum_helper<MODULE_RuACT, PARAM_TYPE_RC> {
+  typedef ENUM_RuACT_RC type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type : int {
+    NONE     ,
+    k1       ,  //!< The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco theVars->activase content or activity;
+    kn1      ,  //!< The rate constant of E inactivation by binding of RuBP; Lazar 1999, with a lifetime of 5 ns at closed reaction center
+    km1      ,  //!< The michaelis menton constant for RuBP with E.
+    Ke2      ,  //!< Data from Mate et al 1996. Unit: micormolar; Reference needed, a guess
+    Ke3      ,  //!< Data from Mate et al 1996. Unit: micormolar;
+    k6       ,  //!< micromolar per meter square per second, transfered to unit
+    kc       ,  //!< Michaelis menton constant for CO2
+    ko       ,  //!< Michaelis menton constant for O2
+    k7       ,  //!< The rate constant for ecm to ecmr
+    kr       ,  //!< The apparaent michaelis menton constant for RuBP
+    MAX      ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_RuACTRC		\
     NONE     ,		\
     k1       ,		\
@@ -683,8 +1013,8 @@ namespace RC {
   typedef ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC> RuACT;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_SUCS_RC : int {
     NONE         ,
     V51          ,  //!< DHAP+GAP --FBP; default 0.5
     V52          ,  //!< FBP --F6P + Pi
@@ -743,6 +1073,72 @@ SCOPED_ENUM ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type : int {
     KE60         ,  //!< Nucleoside Diphosphate Kinase 2.7.4.6 60 NI KE60  16 1.04 {Lynn, 1978 #2520}
     MAX          ,
 };
+template<>
+struct enum_helper<MODULE_SUCS, PARAM_TYPE_RC> {
+  typedef ENUM_SUCS_RC type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type : int {
+    NONE         ,
+    V51          ,  //!< DHAP+GAP --FBP; default 0.5
+    V52          ,  //!< FBP --F6P + Pi
+    V55          ,  //!< G1P+UTP --OPOP+UDPG
+    V56          ,  //!< UDPG+F6P--SUCP + UDP
+    V57          ,  //!< SUCP--Pi + SUC; 0.27 DEFALT
+    V58          ,  //!< F26BP--F6P + Pi
+    V59          ,  //!< F6P + ATP --ADP + F26BP; default 0.03
+    V62          ,  //!< SUC Sink        0.9 works.
+    Vdhap_in     ,  //!< DHAP export from chloroplast
+    Vgap_in      ,  //!< GAP export from chloroplast
+    Vpga_in      ,  //!< PGA export from chloropalst
+    KE501        ,  //!< 0.05 for C3; Equilibrium Constant  50  KE501  0.05  [Bassham, 1869 #832]
+    Km511        ,  //!< FBP 4.1.2.13 51  Km511 FBP 0.02 Pisum sativum (Anderson, Heinrikson et al. 1975)
+    Km512        ,  //!< FBP 4.1.2.13 51  Km512 GAP 0.3 Spinacia oleracea (Iwaki, Wadano et al. 1991)
+    Km513        ,  //!< FBP 4.1.2.13 51  Km513 DHAP 0.4 Spinacia oleracea (Iwaki, Wadano et al. 1991)
+    KE51         ,  //!< Based on Thomas et al 1997 Biochem Journal. The fifth citation in the paper.
+    Km521        ,  //!< FBPase[1] 3.1.3.11 52  Km521 FBP 0.0025 Pisum sativum (Jang, Lee et al. 2003)
+    KI521        ,  //!< FBPase 3.1.3.11 52  KI521 F6P 0.7  [Heldt, 1983 #841]
+    KI522        ,  //!< FBPase 3.1.3.11 52  KI522 Pi 12 Pisum sativum (Charles & Halliwell 1997)
+    KI523        ,  //!< FBPase 3.1.3.11 52  KI523 F26BP 7*10^(-5) Pisum sativum <Com> {Jang, 2003 #2523}
+    KE52         ,  //!< FBPase 3.1.3.11 52  KE52   6663 [Bassham, 1869 #832]
+    KE531        ,  //!< Equilibrium Constant 5.3.1.9 53  KE531  2.3[2]  [Bassham, 1869 #832]
+    KE541        ,  //!< Equilibrium Constant 5.4.2.2 54 G1P G6P KE541 G1P G6P 0.0584  [Bassham, 1869 #832]
+    Km551        ,  //!< UGPase 2.7.7.9 55  Km551 G1P 0.14 Solanum tuberosum (Nakano, Omura et al. 1989)
+    Km552        ,  //!< UDPase 2.7.7.9 55  Km552 UTP 0.1 Solanum tuberosum (Nakano, Omura et al. 1989)
+    Km553        ,  //!< UGPase 2.7.7.9 55  Km553 OPOP 0.11 Solanum tuberosum (Nakano, Omura et al. 1989)
+    Km554        ,  //!< UGPase 2.7.7.9 55  Km554 UDPGlu 0.12 Solanum tuberosum (Nakano, Omura et al. 1989)
+    KE55         ,  //!< UGPase 2.7.7.9 55  KE55 Equi 0.31  Lunn and Rees 1990
+    Km561        ,  //!< SPase 2.4.1.14 56  Km561 D-F6P 0.8 Pisum sativum (Lunn and Ap Rees 1990)
+    Km562        ,  //!< Spase 2.4.1.14 56  Km562 UDP-glucose 2.4 Pisum sativum (Lunn and Ap Rees 1990)
+    KI561        ,  //!< Inhibitor KI561 UDP 0.7 Spinacia oleracea (Harbron, Foyer et al. 1981)
+    KI562        ,  //!< Sucrose Synthesase   Inhibitor KI562 FBP 0.8 Spinacia oleracea (Harbron, Foyer et al. 1981)
+    KI563        ,  //!< Inhibitor KI563 SUCP 0.4 Spinacia oleracea (Harbron, Foyer et al. 1981)
+    KI564        ,  //!< 2.4.1.14 56 Inhibitor KI564 Pi 11 Spinacia oleracea (Harbron, Foyer et al. 1981)
+    KI565        ,  //!< 2.4.1.14 56 Inhibitor KI565 Sucrose 50 Spinacia oleracea {Salerno, 1978 #2525}
+    KE56         ,  //!< KE56  10 Pisum sativum Lunn and Rees, 1990
+    Km571        ,  //!< SPP 3.1.3.24 57.1  Km571 SUCP 0.35 Pisum sativum (Whitaker 1984)
+    Ki572        ,  //!< SPP 3.1.3.24 57.2  Ki572 SUC 80 Daucus carota (Whitaker 1984)
+    KE57         ,  //!< SPP 3.1.3.24 57.2  KE57 Equili 780  Lunn and Rees 1990
+    Km581        ,  //!< F26BPa 3.1.3.46 58  Km581 F26BP 0.032 Spinacia oleracea (Macdonald, Chou et al. 1989)
+    KI581        ,  //!< F26BPa 3.1.3.46 58  KI581 F6P 0.1 Arabidopsis thaliana (Villadsen and Nielsen 2001)
+    KI582        ,  //!< F26BPa 3.1.3.46 58  KI582 OP 0.5 Arabidopsis thaliana (Villadsen and Nielsen 2001)
+    Km591        ,  //!< 6PF2K 2.7.1.105 59  Km591 ATP 0.5 Spinacia oleracea (Walker and Huber 1987)
+    Km593        ,  //!< 6PF2K 2.7.1.105 59  Km593 F6P 0.5 Spinacia oleracea (Walker and Huber 1987)
+    KI591        ,  //!< 59  KI591 ADP 0.16 Rattus norvegicus (Kretschmer and Hofmann 1984)
+    KE61         ,  //!< Pyrophosphate hydrolysis    KE61  1.2*107  {Flodgaard, 1974 #2521}
+    Km621        ,  //!< Vsink   Notice: pH dependent Km621 Sucrose 5  {Weschke, 2000 #2522}
+    KE59         ,  //!< 6PF2K 2.7.1.105 59  KE59  590  Cornish-Bowden, 1997
+    Km592        ,  //!< 6PF2K 2.7.1.105 59  Km592 F26BP 0.021 Sparus aurate (Garcia de Frutos and Baanante 1995)
+    KI592        ,  //!< 6PF2K 2.7.1.105 59  KI592 DHAP 0.7 Spinacia oleracea {Markham, 2002 #2524}
+    Km601        ,  //!< Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km601 ADP 0.042 Rat Kamura and Shimada 1988
+    Km602        ,  //!< Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km602 ATP 1.66 Rat Kamura and Shimada 1988
+    Km603        ,  //!< Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km603 UDP 0.28 Saccharomyces cerevisiae {Jong, 1991 #2518}
+    Km604        ,  //!< Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km604 UTP 16 Rattus norvegicus {Fukuchi, 1994 #2519}
+    KE60         ,  //!< Nucleoside Diphosphate Kinase 2.7.4.6 60 NI KE60  16 1.04 {Lynn, 1978 #2520}
+    MAX          ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_SUCSRC		\
     NONE         ,		\
     V51          ,		\
@@ -818,8 +1214,8 @@ namespace RC {
   typedef ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC> SUCS;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_XanCycle_RC : int {
     NONE     ,
     kva      ,  //!< Ruth Frommolt et a; 2001; Planta
     kaz      ,  //!< Ruth Frommolt et a; 2001; Planta
@@ -827,6 +1223,21 @@ SCOPED_ENUM ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type : int {
     kav      ,  //!< Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
     MAX      ,
 };
+template<>
+struct enum_helper<MODULE_XanCycle, PARAM_TYPE_RC> {
+  typedef ENUM_XanCycle_RC type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type : int {
+    NONE     ,
+    kva      ,  //!< Ruth Frommolt et a; 2001; Planta
+    kaz      ,  //!< Ruth Frommolt et a; 2001; Planta
+    kza      ,  //!< Ruth Frommolt et a; 2001; Planta
+    kav      ,  //!< Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
+    MAX      ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_XanCycleRC		\
     NONE     ,		\
     kva      ,		\
@@ -851,11 +1262,22 @@ namespace RC {
   typedef ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC> XanCycle;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_NONE_RC : int {
     NONE   ,
     MAX    ,
 };
+template<>
+struct enum_helper<MODULE_NONE, PARAM_TYPE_RC> {
+  typedef ENUM_NONE_RC type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_NONERC		\
     NONE   ,		\
     MAX
@@ -876,11 +1298,22 @@ namespace RC {
   typedef ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC> NONE;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_MAX_RC : int {
     NONE   ,
     MAX    ,
 };
+template<>
+struct enum_helper<MODULE_MAX, PARAM_TYPE_RC> {
+  typedef ENUM_MAX_RC type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_MAXRC		\
     NONE   ,		\
     MAX

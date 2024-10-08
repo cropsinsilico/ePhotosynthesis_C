@@ -1,16 +1,11 @@
 #include <random>
-#include "VariableFramework.hpp"
-#include "conditions/XanCycleCondition.hpp"
+#include "XanCycleModuleFramework.hpp"
 
 namespace {
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 using namespace ePhotosynthesis::test;
-
-class XanCycleConditionTest : public VariableFramework {
-
-};
 
 TEST_F(XanCycleConditionTest, InitializeTest) {
     XanCycleCondition* xc = new XanCycleCondition();

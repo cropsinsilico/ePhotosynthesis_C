@@ -2,8 +2,8 @@
 // modified directly
 #pragma once
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_RROEA_KE : int {
     NONE           ,
     KEe2FBPase     ,
     KEe2SBPase     ,
@@ -16,6 +16,26 @@ SCOPED_ENUM ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type : int {
     KEeFd2Thio     ,
     MAX            ,
 };
+template<>
+struct enum_helper<MODULE_RROEA, PARAM_TYPE_KE> {
+  typedef ENUM_RROEA_KE type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type : int {
+    NONE           ,
+    KEe2FBPase     ,
+    KEe2SBPase     ,
+    KEe2PRK        ,
+    KEe2ATPase     ,  //!< [CONST] 2.177727336 was set in code, but not used
+    KEe2RuACT      ,
+    KEe2GAPDH      ,
+    KEe2MDH        ,
+    KEe2ATPGPP     ,
+    KEeFd2Thio     ,
+    MAX            ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_RROEAKE		\
     NONE           ,		\
     KEe2FBPase     ,		\
@@ -45,11 +65,22 @@ namespace KE {
   typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE> RROEA;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_NONE_KE : int {
     NONE   ,
     MAX    ,
 };
+template<>
+struct enum_helper<MODULE_NONE, PARAM_TYPE_KE> {
+  typedef ENUM_NONE_KE type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_NONEKE		\
     NONE   ,		\
     MAX
@@ -70,11 +101,22 @@ namespace KE {
   typedef ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE> NONE;
 }
 
-template<>
-SCOPED_ENUM ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type : int {
+#ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_MAX_KE : int {
     NONE   ,
     MAX    ,
 };
+template<>
+struct enum_helper<MODULE_MAX, PARAM_TYPE_KE> {
+  typedef ENUM_MAX_KE type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_MAXKE		\
     NONE   ,		\
     MAX

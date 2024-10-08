@@ -1,13 +1,22 @@
 #include "VariableFramework.hpp"
 #include "modules/RuACT.hpp"
+#include "conditions/RuACTCondition.hpp"
 
 namespace ePhotosynthesis {
 namespace test {
 
+class RuACTConditionTest : public virtual VariableFramework {
+protected:
+    void SetUp() override {
+        conditions::RuACTCondition::reset();
+        VariableFramework::SetUp();
+    }
+};
+
 class RuACTModuleTest : public virtual VariableFramework {
 protected:
     void SetUp() override {
-        modules::RuACT::setEPS_connect(false);
+        modules::RuACT::reset();
         VariableFramework::SetUp();
         theVars->CO2_in = 500.;
         theVars->TestLi = 14.;
