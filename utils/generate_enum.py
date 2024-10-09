@@ -2172,7 +2172,7 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 lines += self.generate_definition_macro(
                     name, members, enum_name=enum_name,
                     enum_prefix=enum_prefix)
-                lines += ['#ifndef _MSC_VER']
+                # lines += ['#ifndef _MSC_VER']
             lines += [
                 f'{template}{static}const std::vector<'
                 f'{enum_name_full}> {enum_prefix}all;'
@@ -2209,7 +2209,7 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                         enum_name=enum_name_full, enum_is_class=as_class)
             if specialization:
                 lines += [
-                    '#endif // _MSC_VER',
+                    # '#endif // _MSC_VER',
                     ''
                 ]
             return lines

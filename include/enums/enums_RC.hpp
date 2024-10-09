@@ -132,7 +132,6 @@ enum ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type : int {
     V2M          ,		\
     KE2          ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::all;
 template<> bool ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::names;
@@ -145,7 +144,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Ty
 template<> std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::initonce;
-#endif // _MSC_VER
 
 namespace RC {
   typedef ValueSetEnum<MODULE_BF, PARAM_TYPE_RC> BF;
@@ -233,7 +231,6 @@ enum ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type : int {
     k_r3         ,		\
     k_pq_oxy     ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::all;
 template<> bool ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::names;
@@ -246,7 +243,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Ty
 template<> std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::initonce;
-#endif // _MSC_VER
 
 namespace RC {
   typedef ValueSetEnum<MODULE_FI, PARAM_TYPE_RC> FI;
@@ -442,7 +438,6 @@ enum ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type : int {
     Vf_T122        ,		\
     Vf_T112        ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::all;
 template<> bool ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::names;
@@ -455,7 +450,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Ty
 template<> std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::initonce;
-#endif // _MSC_VER
 
 namespace RC {
   typedef ValueSetEnum<MODULE_PR, PARAM_TYPE_RC> PR;
@@ -816,7 +810,6 @@ enum ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type : int {
     Vf_T13        ,		\
     Vf_T23        ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::all;
 template<> bool ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::names;
@@ -829,7 +822,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Ty
 template<> std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::initonce;
-#endif // _MSC_VER
 
 namespace RC {
   typedef ValueSetEnum<MODULE_PS, PARAM_TYPE_RC> PS;
@@ -890,7 +882,6 @@ enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type : int {
     ke2ATPGPP       ,		\
     Coeff           ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::all;
 template<> bool ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::names;
@@ -903,7 +894,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>:
 template<> std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::initonce;
-#endif // _MSC_VER
 
 namespace RC {
   typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC> RROEA;
@@ -940,7 +930,6 @@ enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type : int {
     Thio_Oxidation     ,		\
     Thion0             ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::all;
 template<> bool ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::names;
@@ -953,7 +942,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_R
 template<> std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::initonce;
-#endif // _MSC_VER
 
 namespace RC {
   typedef ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC> RedoxReg;
@@ -1008,7 +996,6 @@ enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type : int {
     k7       ,		\
     kr       ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::all;
 template<> bool ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::names;
@@ -1021,7 +1008,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>:
 template<> std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::initonce;
-#endif // _MSC_VER
 
 namespace RC {
   typedef ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC> RuACT;
@@ -1211,7 +1197,6 @@ enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type : int {
     Km604        ,		\
     KE60         ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::all;
 template<> bool ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::names;
@@ -1224,7 +1209,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::
 template<> std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::initonce;
-#endif // _MSC_VER
 
 namespace RC {
   typedef ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC> SUCS;
@@ -1261,7 +1245,6 @@ enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type : int {
     kza      ,		\
     kav      ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::all;
 template<> bool ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::names;
@@ -1274,7 +1257,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_R
 template<> std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::initonce;
-#endif // _MSC_VER
 
 namespace RC {
   typedef ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC> XanCycle;
@@ -1299,7 +1281,6 @@ enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type : int {
 #define MEMBERS_NONERC		\
     NONE   ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::all;
 template<> bool ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::names;
@@ -1312,7 +1293,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::
 template<> std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::initonce;
-#endif // _MSC_VER
 
 namespace RC {
   typedef ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC> NONE;
@@ -1337,7 +1317,6 @@ enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type : int {
 #define MEMBERS_MAXRC		\
     NONE   ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::all;
 template<> bool ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::names;
@@ -1350,7 +1329,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::T
 template<> std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::initonce;
-#endif // _MSC_VER
 
 namespace RC {
   typedef ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC> MAX;

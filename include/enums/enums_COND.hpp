@@ -105,7 +105,6 @@ enum ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type : int {
     PHl         ,		\
     NADPH       ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::all;
 template<> bool ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::names;
@@ -118,7 +117,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::
 template<> std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::initonce;
-#endif // _MSC_VER
 
 namespace COND {
   typedef ValueSetEnum<MODULE_BF, PARAM_TYPE_COND> BF;
@@ -143,7 +141,6 @@ enum ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type : int {
 #define MEMBERS_CMCondition		\
     NONE   ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::all;
 template<> bool ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::names;
@@ -156,7 +153,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::
 template<> std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::initonce;
-#endif // _MSC_VER
 
 namespace COND {
   typedef ValueSetEnum<MODULE_CM, PARAM_TYPE_COND> CM;
@@ -181,7 +177,6 @@ enum ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type : int {
 #define MEMBERS_DynaPSCondition		\
     NONE   ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::all;
 template<> bool ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::names;
@@ -194,7 +189,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_CON
 template<> std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::initonce;
-#endif // _MSC_VER
 
 namespace COND {
   typedef ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND> DynaPS;
@@ -219,7 +213,6 @@ enum ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type : int {
 #define MEMBERS_EPSCondition		\
     NONE   ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::all;
 template<> bool ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::names;
@@ -232,7 +225,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>:
 template<> std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::initonce;
-#endif // _MSC_VER
 
 namespace COND {
   typedef ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND> EPS;
@@ -260,7 +252,6 @@ enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type : int {
     NONE     ,		\
     kd       ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::all;
 template<> bool ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::names;
@@ -273,7 +264,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>
 template<> std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::initonce;
-#endif // _MSC_VER
 
 namespace COND {
   typedef ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND> FIBF;
@@ -364,7 +354,6 @@ enum ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type : int {
     QAnQB2n        ,		\
     PQn            ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::all;
 template<> bool ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::names;
@@ -377,7 +366,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::
 template<> std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::initonce;
-#endif // _MSC_VER
 
 namespace COND {
   typedef ValueSetEnum<MODULE_FI, PARAM_TYPE_COND> FI;
@@ -435,7 +423,6 @@ enum ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type : int {
     RuBP      ,		\
     _v131     ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::all;
 template<> bool ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::names;
@@ -448,7 +435,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::
 template<> std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::initonce;
-#endif // _MSC_VER
 
 namespace COND {
   typedef ValueSetEnum<MODULE_PR, PARAM_TYPE_COND> PR;
@@ -518,7 +504,6 @@ enum ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type : int {
     _ADP     ,		\
     _v1      ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::all;
 template<> bool ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::names;
@@ -531,7 +516,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::
 template<> std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::initonce;
-#endif // _MSC_VER
 
 namespace COND {
   typedef ValueSetEnum<MODULE_PS, PARAM_TYPE_COND> PS;
@@ -556,7 +540,6 @@ enum ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type : int {
 #define MEMBERS_PS_PRCondition		\
     NONE   ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::all;
 template<> bool ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::names;
@@ -569,7 +552,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND
 template<> std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::initonce;
-#endif // _MSC_VER
 
 namespace COND {
   typedef ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND> PS_PR;
@@ -594,7 +576,6 @@ enum ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type : int {
 #define MEMBERS_RACondition		\
     NONE   ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::all;
 template<> bool ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::names;
@@ -607,7 +588,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::
 template<> std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::initonce;
-#endif // _MSC_VER
 
 namespace COND {
   typedef ValueSetEnum<MODULE_RA, PARAM_TYPE_COND> RA;
@@ -665,7 +645,6 @@ enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type : int {
     RuACT      ,		\
     Coeff      ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::all;
 template<> bool ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::names;
@@ -678,7 +657,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND
 template<> std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::initonce;
-#endif // _MSC_VER
 
 namespace COND {
   typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND> RROEA;
@@ -706,7 +684,6 @@ enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type : int {
     NONE      ,		\
     Thion     ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::all;
 template<> bool ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::names;
@@ -719,7 +696,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_C
 template<> std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::initonce;
-#endif // _MSC_VER
 
 namespace COND {
   typedef ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND> RedoxReg;
@@ -756,7 +732,6 @@ enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type : int {
     ECMR     ,		\
     RuBP     ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::all;
 template<> bool ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::names;
@@ -769,7 +744,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND
 template<> std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::initonce;
-#endif // _MSC_VER
 
 namespace COND {
   typedef ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND> RuACT;
@@ -818,7 +792,6 @@ enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type : int {
     SUC        ,		\
     PGAc       ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::all;
 template<> bool ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::names;
@@ -831,7 +804,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>
 template<> std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::initonce;
-#endif // _MSC_VER
 
 namespace COND {
   typedef ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND> SUCS;
@@ -868,7 +840,6 @@ enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type : int {
     Zx       ,		\
     ABA      ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::all;
 template<> bool ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::names;
@@ -881,7 +852,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_C
 template<> std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::initonce;
-#endif // _MSC_VER
 
 namespace COND {
   typedef ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND> XanCycle;
@@ -906,7 +876,6 @@ enum ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type : int {
 #define MEMBERS_trDynaPSCondition		\
     NONE   ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::all;
 template<> bool ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::names;
@@ -919,7 +888,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_C
 template<> std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::initonce;
-#endif // _MSC_VER
 
 namespace COND {
   typedef ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND> trDynaPS;
@@ -944,7 +912,6 @@ enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type : int {
 #define MEMBERS_NONECondition		\
     NONE   ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::all;
 template<> bool ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::names;
@@ -957,7 +924,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>
 template<> std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::initonce;
-#endif // _MSC_VER
 
 namespace COND {
   typedef ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND> NONE;
@@ -982,7 +948,6 @@ enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type : int {
 #define MEMBERS_MAXCondition		\
     NONE   ,		\
     MAX
-#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::all;
 template<> bool ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::names;
@@ -995,7 +960,6 @@ template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>:
 template<> std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::initonce;
-#endif // _MSC_VER
 
 namespace COND {
   typedef ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND> MAX;

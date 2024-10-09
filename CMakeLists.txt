@@ -52,7 +52,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     # conda-forge sundials only produces static libraries
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-    add_definitions(-D_CRT_SECURE_NO_WARNINGS=1)
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS=1 /permissive-)
     set(CMAKE_CXX_FLAGS_DEBUG "/Zi -DINCDEBUG${BUILD_FLAGS}")
     set(CMAKE_CXX_FLAGS_RELEASE "/O2 -DNDEBUG${BUILDINC}${BUILD_FLAGS}")
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/O2 /Zi -DINCDEBUG${BUILD_FLAGS}")
