@@ -62,7 +62,7 @@ jobs:
           miniforge-variant: Miniforge
           miniforge-version: latest
           use-mamba: true
-          mamba-version: "*"
+          mamba-version: "1.5.10"
       - name: Check mamba installation
         shell: bash -l {0}
         run: |
