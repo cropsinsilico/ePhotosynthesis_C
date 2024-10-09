@@ -2172,6 +2172,7 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 lines += self.generate_definition_macro(
                     name, members, enum_name=enum_name,
                     enum_prefix=enum_prefix)
+                lines += ['#ifndef _MSC_VER']
             lines += [
                 f'{template}{static}const std::vector<'
                 f'{enum_name_full}> {enum_prefix}all;'
@@ -2207,7 +2208,10 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                     lines += self.get_child(k).generate_additional_methods(
                         enum_name=enum_name_full, enum_is_class=as_class)
             if specialization:
-                lines += ['']
+                lines += [
+                    '#endif // _MSC_VER',
+                    ''
+                ]
             return lines
         if spec_var and not specialization:
             lines += ['#ifdef EPHOTO_USE_SCOPED_ENUM']

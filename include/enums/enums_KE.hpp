@@ -48,6 +48,7 @@ enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type : int {
     KEe2ATPGPP     ,		\
     KEeFd2Thio     ,		\
     MAX
+#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::all;
 template<> bool ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::names;
@@ -60,6 +61,7 @@ template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>:
 template<> std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::initonce;
+#endif // _MSC_VER
 
 namespace KE {
   typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE> RROEA;
@@ -84,6 +86,7 @@ enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type : int {
 #define MEMBERS_NONEKE		\
     NONE   ,		\
     MAX
+#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::all;
 template<> bool ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::names;
@@ -96,6 +99,7 @@ template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::
 template<> std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::initonce;
+#endif // _MSC_VER
 
 namespace KE {
   typedef ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE> NONE;
@@ -120,6 +124,7 @@ enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type : int {
 #define MEMBERS_MAXKE		\
     NONE   ,		\
     MAX
+#ifndef _MSC_VER
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::all;
 template<> bool ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::names;
@@ -132,6 +137,7 @@ template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::T
 template<> std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::skipped;
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::resetone;
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::initonce;
+#endif // _MSC_VER
 
 namespace KE {
   typedef ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE> MAX;

@@ -83,6 +83,15 @@ jobs:
           mamba install valgrind
 
       ###################################
+      # PIP INSTALL THINGS
+      ###################################
+      - name: Install packages not current on conda-forge (gcovr)
+        if: matrix.with-coverage == true
+        shell: bash -l {0}
+        run: |
+          pip install gcovr
+
+      ###################################
       # SET CONFIG FLAGS
       ###################################
       - name: Global config flags

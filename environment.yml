@@ -4,7 +4,7 @@ channels:
 dependencies:
   - boost
   - cmake
-  - gcovr
+  # - gcovr
   - gtest
   - ipython
   - lcov

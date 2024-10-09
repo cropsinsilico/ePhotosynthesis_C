@@ -447,11 +447,11 @@ if(BUILD_TESTS)
 	            "${COVERAGE_COMPILER_FLAGS} -fno-inline-small-functions -fno-default-inline")
 	    endif()
             append_coverage_compiler_flags()
-  	    # list(
-	    #     APPEND GCOVR_ADDITIONAL_ARGS
-	    # 	--gcov-executable=\"${CTEST_COVERAGE_COMMAND} ${CTEST_COVERAGE_EXTRA_FLAGS}\"
-	    # 	--coveralls=${COVERAGE_DIR}/coverage.info
-	    # )
+  	    list(
+	        APPEND GCOVR_ADDITIONAL_ARGS
+		# --gcov-executable=\"${CTEST_COVERAGE_COMMAND} ${CTEST_COVERAGE_EXTRA_FLAGS}\"
+		--coveralls=${COVERAGE_DIR}/coverage.info
+	    )
             set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
             set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")
         else()
