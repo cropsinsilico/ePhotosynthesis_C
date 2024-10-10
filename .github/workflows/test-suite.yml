@@ -64,7 +64,7 @@ jobs:
           use-mamba: true
           mamba-version: "1.5.10"
       - name: Check mamba installation
-        shell: bash -l {0}
+        shell: bash -el {0}
         run: |
           mamba info
           mamba list
