@@ -27,7 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
-#include "ValueSet.hpp"
+#include "PoolBase.hpp"
 
 namespace ePhotosynthesis {
 namespace pool {
@@ -35,11 +35,11 @@ namespace pool {
 /**
  Class for hoplding FI_Pool data
  */
-class FIPool : public ValueSet<MODULE_FI, PARAM_TYPE_POOL> {
+class FIPool : public PoolBase<FIPool, MODULE_FI> {
 public:
-    DECLARE_VALUE_SET(FIPool, ValueSet<MODULE_FI, PARAM_TYPE_POOL>)
+    DECLARE_VALUE_SET(FIPool, PoolBase<FIPool, MODULE_FI>)
     FIPool() :
-      ValueSet<MODULE_FI, PARAM_TYPE_POOL>() {
+      PoolBase<FIPool, MODULE_FI>() {
         initMembers();
     }
     /**
@@ -48,7 +48,7 @@ public:
       @param other The FIPool object to copy
       */
     FIPool(const FIPool &other) :
-      ValueSet<MODULE_FI, PARAM_TYPE_POOL>(other) {
+      PoolBase<FIPool, MODULE_FI>(other) {
         initMembers();
         QBt = other.QBt;
         PQT = other.PQT;

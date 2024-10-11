@@ -27,16 +27,16 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
-#include "ValueSet.hpp"
+#include "RCBase.hpp"
 
 namespace ePhotosynthesis {
 namespace RC {
 
 // class for holding FIRC data
-class FIRC : public ValueSet<MODULE_FI, PARAM_TYPE_RC> {
+class FIRC : public RCBase<FIRC, MODULE_FI> {
 public:
-    DECLARE_VALUE_SET(FIRC, ValueSet<MODULE_FI, PARAM_TYPE_RC>)
-    FIRC() : ValueSet<MODULE_FI, PARAM_TYPE_RC>() {
+    DECLARE_VALUE_SET(FIRC, RCBase<FIRC, MODULE_FI>)
+    FIRC() : RCBase<FIRC, MODULE_FI>() {
         initMembers();
     }
 
@@ -45,7 +45,7 @@ public:
 
       @param other The FIRC object to copy
       */
-    FIRC(const FIRC &other) : ValueSet<MODULE_FI, PARAM_TYPE_RC>(other) {
+    FIRC(const FIRC &other) : RCBase<FIRC, MODULE_FI>(other) {
       initMembers();
       *this = other;
     }

@@ -41,10 +41,10 @@ DEFINE_VALUE_SET(XanCycleCondition);
 
 XanCycleCondition* XanCycle::_init(Variables *theVars) {
 
-    XanCycle::kva = 0.163 / 60. * theVars->XanRatio[0]; // Ruth Frommolt et a; 2001; Planta
-    XanCycle::kaz = 0.691 / 60. * theVars->XanRatio[1]; // Ruth Frommolt et a; 2001; Planta
-    XanCycle::kza = 0.119 / 60. * theVars->XanRatio[2]; // Ruth Frommolt et a; 2001; Planta
-    XanCycle::kav = 0.119 / 60. * theVars->XanRatio[3]; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
+    XanCycle::kva = 0.163 / 60. * theVars->XanCycleRatio[0]; // Ruth Frommolt et a; 2001; Planta
+    XanCycle::kaz = 0.691 / 60. * theVars->XanCycleRatio[1]; // Ruth Frommolt et a; 2001; Planta
+    XanCycle::kza = 0.119 / 60. * theVars->XanCycleRatio[2]; // Ruth Frommolt et a; 2001; Planta
+    XanCycle::kav = 0.119 / 60. * theVars->XanCycleRatio[3]; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
     
     XanCycleCondition* XanCycle_con = new XanCycleCondition();
 
@@ -71,7 +71,7 @@ void XanCycle::_initAlt(Variables *theVars,
   
     int i = 0;
     for (XanCycle::iterator it = XanCycle::begin(); it != XanCycle::end(); it++, i++) {
-      it->second *= (theVars->XanRatio[i] / 60.0);
+      it->second *= (theVars->XanCycleRatio[i] / 60.0);
       if (i == 3)
 	break;
     }

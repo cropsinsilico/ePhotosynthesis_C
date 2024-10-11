@@ -1,6 +1,5 @@
 - Add rate constants to init
-- Initialize module level values
+- Add Variables constants to enum
 - Clean up comments for param files
-- Remove _toArray, _fromArray, & explicit copy constructor where value pointers can be used
-- Clean up unused macros
 - Add support for static parameters on ValueSets (Needed by RedoxRegCondition)
+- Use pointers/MEMBERS_ macros in copy operator/constructor, print, etc.?

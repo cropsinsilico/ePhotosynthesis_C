@@ -7,6 +7,10 @@ inline const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type>&
   return ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::initonce;
 }
 template<>
+inline const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type>& get_enum_initonce<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type>() {
+  return ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::initonce;
+}
+template<>
 inline const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type>& get_enum_initonce<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type>() {
   return ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::initonce;
 }

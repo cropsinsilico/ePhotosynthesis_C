@@ -27,6 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
+#include "VelBase.hpp"
 
 namespace ePhotosynthesis {
 namespace vel {
@@ -34,15 +35,19 @@ namespace vel {
 /**
  Class for holding the result of the BF_Rate calculations
  */
-class BFVel {
+class BFVel : public VelBase<BFVel, MODULE_BF> {
 public:
-    BFVel() {}
+    DECLARE_VALUE_SET(BFVel, VelBase<BFVel, MODULE_BF>)
+    BFVel() : VelBase<BFVel, MODULE_BF>() {
+	initMembers();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The BFVel object to copy
       */
-    BFVel(const BFVel &other) {
+    BFVel(const BFVel &other) : VelBase<BFVel, MODULE_BF>(other) {
+	initMembers();
         Vbf1 = other.Vbf1;
         Vbf2 = other.Vbf2;
         Vbf3 = other.Vbf3;
@@ -74,39 +79,8 @@ public:
         vbfn2 = other.vbfn2;
         VsNADPH = other.VsNADPH;
         vcet = other.vcet;
+	copyMembers(other);
     }
-
-    double Vbf1 = 0.;
-    double Vbf2 = 0.;
-    double Vbf3 = 0.;
-    double Vbf4 = 0.;
-    double Vbf5 = 0.;
-    double Vbf6 = 0.;
-    double Vbf7 = 0.;
-    double Vbf8 = 0.;
-    double Vbf9 = 0.;
-    double Vbf10 = 0.;
-    double Vbf11 = 0.;
-    double Vqi = 0.;
-    double Vipc = 0.;
-    double Vicp = 0.;
-    double Vinc = 0.;
-    double Vinp = 0.;
-    double Vdp = 0.;
-    double Vdc = 0.;
-    double Vfp = 0.;
-    double Vfc = 0.;
-    double Vsfd = 0.;
-    double VsATP = 0.;
-    double VgPQH2 = 0.;
-    double JKc = 0.;
-    double JMgc = 0.;
-    double JClc = 0.;
-    double Vbf15 = 0.;
-    double Vbf16 = 0.;
-    double vbfn2 = 0.;
-    double VsNADPH = 0.;
-    double vcet = 0.;
 
     friend std::ostream& operator<<(std::ostream& out, const BFVel &in);
 };

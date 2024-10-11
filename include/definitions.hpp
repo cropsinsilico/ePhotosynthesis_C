@@ -284,7 +284,7 @@ public:
       @param i The step to get the timestamp for, default is -1, which returns the timestamp of the last step
       @return The timestamp
       */
-    double timestamp(const int i = -1) {
+    double timestamp(const int i = -1) const {
         if (i < 0)
             return _timestamp[current];
         return _timestamp[i];
@@ -295,19 +295,19 @@ public:
 
       @return The data from the last step
       */
-    T getLastData() { return _data.back(); }
+    T getLastData() const { return _data.back(); }
 
     /**
       Retrieve the timestamp of the last step
 
       @return The timestep
       */
-    double getLastTime() { return _timestamp.back(); }
+    double getLastTime() const { return _timestamp.back(); }
 
     /**
       Get the number of steps in the series
       */
-    std::size_t size() { return _step.size(); }
+    std::size_t size() const { return _step.size(); }
 
     /**
       Write the data to the given stream

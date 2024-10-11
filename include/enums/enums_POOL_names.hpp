@@ -15,6 +15,14 @@ inline const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, s
   return ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::names;
 }
 template<>
+inline const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string>& get_enum_names<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type>() {
+  return ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::names;
+}
+template<>
+inline const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string>& get_enum_names<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type>() {
+  return ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::names;
+}
+template<>
 inline const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string>& get_enum_names<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type>() {
   return ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::names;
 }
@@ -29,4 +37,8 @@ inline const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type
 template<>
 inline const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string>& get_enum_names<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type>() {
   return ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::names;
+}
+template<>
+inline const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string>& get_enum_names<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type>() {
+  return ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::names;
 }

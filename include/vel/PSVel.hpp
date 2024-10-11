@@ -27,6 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
+#include "VelBase.hpp"
 
 namespace ePhotosynthesis {
 namespace vel {
@@ -34,15 +35,19 @@ namespace vel {
 /**
  Class for holding the results of PS_Rate calculations
  */
-class PSVel {
+class PSVel : public VelBase<PSVel, MODULE_PS> {
 public:
-    PSVel() {}
+    DECLARE_VALUE_SET(PSVel, VelBase<PSVel, MODULE_PS>)
+    PSVel() : VelBase<PSVel, MODULE_PS>() {
+	initMembers();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The PSVel object to copy
       */
-    PSVel(const PSVel &other) {
+    PSVel(const PSVel &other) : VelBase<PSVel, MODULE_PS>(other) {
+	initMembers();
         v1 = other.v1;
         v2 = other.v2;
         v3 = other.v3;
@@ -62,6 +67,7 @@ public:
         Pi = other.Pi;
         v24 = other.v24;
         v25 = other.v25;
+	copyMembers(other);
     }
     /**
       Overloaded time-equal operator to multiply all data mambers by a constant value
@@ -90,26 +96,6 @@ public:
         this->v25 *= val;
         return *this;
     }
-
-    double v1 = 0.;
-    double v2 = 0.;
-    double v3 = 0.;
-    double v4 = 0.;
-    double v5 = 0.;
-    double v6 = 0.;
-    double v7 = 0.;
-    double v8 = 0.;
-    double v9 = 0.;
-    double v10 = 0.;
-    double v13 = 0.;
-    double v16 = 0.;
-    double v23 = 0.;
-    double v31 = 0.;
-    double v32 = 0.;
-    double v33 = 0.;
-    double Pi = 0.;
-    double v24 = 0.;
-    double v25 = 0.;
 
     friend std::ostream& operator<<(std::ostream& out, const PSVel &in);
 };

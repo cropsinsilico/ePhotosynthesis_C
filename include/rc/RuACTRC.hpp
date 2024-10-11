@@ -27,7 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
-#include "ValueSet.hpp"
+#include "RCBase.hpp"
 
 namespace ePhotosynthesis {
 namespace RC {
@@ -35,10 +35,10 @@ namespace RC {
 /**
  Class for RuACT_RC data
  */
-class RuACTRC : public ValueSet<MODULE_RuACT, PARAM_TYPE_RC> {
+class RuACTRC : public RCBase<RuACTRC, MODULE_RuACT> {
 public:
-    DECLARE_VALUE_SET(RuACTRC, ValueSet<MODULE_RuACT, PARAM_TYPE_RC>)
-    RuACTRC() : ValueSet<MODULE_RuACT, PARAM_TYPE_RC>() {
+    DECLARE_VALUE_SET(RuACTRC, RCBase<RuACTRC, MODULE_RuACT>)
+    RuACTRC() : RCBase<RuACTRC, MODULE_RuACT>() {
         initMembers();
     }
     /**
@@ -46,7 +46,7 @@ public:
 
       @param other The RuACTRC object to copy
       */
-    RuACTRC(const RuACTRC &other) : ValueSet<MODULE_RuACT, PARAM_TYPE_RC>(other) {
+    RuACTRC(const RuACTRC &other) : RCBase<RuACTRC, MODULE_RuACT>(other) {
       initMembers();
       *this = other;
     }

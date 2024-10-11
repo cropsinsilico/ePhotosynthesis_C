@@ -27,6 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
+#include "VelBase.hpp"
 
 namespace ePhotosynthesis {
 namespace vel {
@@ -34,15 +35,19 @@ namespace vel {
 /**
  Class for holding the results of RROEA_Rate calculations
  */
-class RROEAVel {
+class RROEAVel : public VelBase<RROEAVel, MODULE_RROEA> {
 public:
-    RROEAVel() {}
+    DECLARE_VALUE_SET(RROEAVel, VelBase<RROEAVel, MODULE_RROEA>)
+    RROEAVel() : VelBase<RROEAVel, MODULE_RROEA>() {
+	initMembers();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The RROEAVel object to copy
       */
-    RROEAVel(const RROEAVel &other) {
+    RROEAVel(const RROEAVel &other) : VelBase<RROEAVel, MODULE_RROEA>(other) {
+	initMembers();
         ve2GAPDH = other.ve2GAPDH;
         ve2FBPase = other.ve2FBPase;
         ve2SBPase = other.ve2SBPase;
@@ -54,18 +59,8 @@ public:
         veFd2Thio = other.veFd2Thio;
         veFd2Calvin = other.veFd2Calvin;
         ve2RuACT = other.ve2RuACT;
+	copyMembers(other);
     }
-    double ve2GAPDH = 0.;
-    double ve2FBPase = 0.;
-    double ve2SBPase = 0.;
-    double ve2PRK = 0.;
-    double ve2ATPase = 0.;
-    double ve2ATPGPP = 0.;
-    double ve2MDH = 0.;
-    double ve2Fd = 0.;
-    double veFd2Thio = 0.;
-    double veFd2Calvin = 0.;
-    double ve2RuACT = 0.;
 
     friend std::ostream& operator<<(std::ostream& out, const RROEAVel &in);
 };

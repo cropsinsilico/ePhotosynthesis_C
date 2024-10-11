@@ -28,32 +28,12 @@
 #include <map>
 #include "definitions.hpp"
 #include "enums/enums_utils.hpp"
-#include "vel/FIVel.hpp"
-#include "vel/BFVel.hpp"
-#include "vel/PSVel.hpp"
-#include "vel/PRVel.hpp"
-#include "vel/RROEAVel.hpp"
-#include "vel/RuACTVel.hpp"
-#include "vel/XanCycleVel.hpp"
-#include "vel/RedoxRegVel.hpp"
-#include "vel/SUCSVel.hpp"
-#include "ke/RROEAKE.hpp"
 
-#include "pool/BFPool.hpp"
-#include "pool/FIBFPool.hpp"
-#include "pool/FIPool.hpp"
-#include "pool/RROEAPool.hpp"
-#include "pool/RuACTPool.hpp"
-#include "pool/SUCSPool.hpp"
-
-#include "rc/BFRC.hpp"
-#include "rc/FIRC.hpp"
-#include "rc/RROEARC.hpp"
-#include "rc/RuACTRC.hpp"
-#include "conditions/PSCondition.hpp"
-#include "conditions/PRCondition.hpp"
-#include "conditions/SUCSCondition.hpp"
-#include "conditions/XanCycleCondition.hpp"
+#include "vel/VelAll.hpp"
+#include "ke/KEAll.hpp"
+#include "pool/PoolAll.hpp"
+#include "rc/RCAll.hpp"
+#include "conditions/ConditionAll.hpp"
 
 #include <sundials/sundials_context.h>
 
@@ -97,6 +77,32 @@ public:
       if (it_mod == it_pt->second.end())
 	return;
       T::update_values(it_mod->second);
+    }
+
+    double getVar(const MODULE& mod, const PARAM_TYPE& pt,
+		  const std::string& name) const;
+    double getVar(const std::string& k) const {
+	std::string split="::", modS, ptS, name;
+	size_t idx1 = k.find(split);
+	MODULE mod = MODULE_NONE;
+	PARAM_TYPE pt = PARAM_TYPE_NONE;
+	if (idx1 == std::string::npos) {
+	    // TODO: Var
+	    throw std::runtime_error("Could not find 1st '::' marking module");
+	} else {
+	    modS = k.substr(0, idx1);
+	    size_t idx2 = k.find(split, idx1 + split.size());
+	    if (idx2 == std::string::npos)
+	      throw std::runtime_error("Could not find 2nd '::' marking parameter type");
+	    ptS = k.substr(idx1 + split.size(),
+			   idx2 - (idx1 + split.size()));
+	    name = k.substr(idx2 + split.size());
+	    mod = utils::enum_string2key<MODULE>(modS);
+	    pt = utils::enum_string2key<PARAM_TYPE>(ptS);
+	}
+	std::cerr << "getVar[" << mod << ", " << pt << ", " << name <<
+	  std::endl;
+	return getVar(mod, pt, name);
     }
 
     SUNContext* context = NULL;
@@ -146,77 +152,51 @@ public:
     // Files containing default conditions & constants
     std::map<PARAM_TYPE, std::map<MODULE, std::string> > files;
 
-    // Parameters
-    arr PR_Param = zeros(2);
-    arr BF_Param = zeros(2);
-    arr FI_PARAM = zeros(2);
-    arr FI_Param = zeros(2);
-    arr RROEA_Param = zeros(2);
-    arr RuACT_Param = zeros(2);
-    arr SUCS_Param = zeros(2);
-    arr XanCycle_Param = zeros(2);
-
-    // Vel
-    vel::BFVel BF_Vel;
-    vel::FIVel FI_Vel;
-    vel::PRVel PR_Vel;
-    vel::PSVel PS_Vel;
-    vel::RROEAVel RROEA_Vel;
-    vel::RedoxRegVel RedoxReg_Vel;
-    vel::RuACTVel RuACT_Vel;
-    vel::SUCSVel SUCS_Vel;
-    vel::XanCycleVel XanCycle_Vel;
-
-    // Ratio
-    arr BFRatio = ones(49);
-    arr FIRatio = ones(23);
-    arr PRRatio = ones(48);
-    arr PSRatio = ones(103);
-    arr RacRatio = ones(16);
-    arr SUCRatio = ones(66);
-    arr XanRatio = ones(4);
-
     std::map<std::string, double> EnzymeAct;
 
     arr VfactorCp = zeros(33);
     arr VfactorT = ones(28);
 
-    // Pool
-    pool::BFPool BF_Pool;
-    pool::FIBFPool FIBF_Pool;
-    pool::FIPool FI_Pool;
-    pool::RROEAPool RROEA_Pool;
-    pool::RuACTPool RuACT_Pool;
-    pool::SUCSPool SUCS_Pool;
-
-    // RC
-    RC::BFRC BF_RC;
-    RC::FIRC FI_RC;
-    RC::RROEARC RROEA_RC;
-    RC::RuACTRC RuACT_RC;
-
-    // OUT
-    arr BF2OUT = zeros(5);
-    conditions::PRCondition PR2OUT;
-    conditions::PSCondition PS2OUT;
-    conditions::SUCSCondition SUCS2OUT;
-    conditions::XanCycleCondition XanCycle2OUT;
-
     // misc
     arr FluxTR = {};
-    KE::RROEAKE RROEA_KE;
 
-    TimeSeries<vel::BFVel> BF_VEL = TimeSeries<vel::BFVel>();
     TimeSeries<std::vector<double> > CO2A = TimeSeries<std::vector<double> > ();
-    TimeSeries<vel::FIVel> FI_VEL = TimeSeries<vel::FIVel> ();
-    TimeSeries<vel::PRVel> PR_VEL = TimeSeries<vel::PRVel> ();
-    TimeSeries<vel::PSVel> PS_VEL = TimeSeries<vel::PSVel> ();
-    TimeSeries<vel::RROEAVel> RROEA_VEL = TimeSeries<vel::RROEAVel> ();
     std::vector<arr> RedoxReg_MP;
-    TimeSeries<vel::RedoxRegVel> RedoxReg_VEL = TimeSeries<vel::RedoxRegVel> ();
-    TimeSeries<vel::RuACTVel> RuACT_VEL = TimeSeries<vel::RuACTVel> ();
-    TimeSeries<vel::SUCSVel> SUCS_VEL = TimeSeries<vel::SUCSVel> ();
-    TimeSeries<vel::XanCycleVel> XanCycle_VEL = TimeSeries<vel::XanCycleVel> ();
+
+// #define MODULES_Pool BF, FIBF, FI, RROEA, RuACT, SUCS
+// #define MODULES_RC BF, FI, RROEA, RuACT
+// #define MODULES2OUT PR, PS, SUCS, XanCycle
+// #define MODULES_KE RROEA
+
+#define ADD_MOD_MEMBER(mod, type, suffix)	\
+    type mod ## suffix
+#define ADD_MOD_VALUE_SET(mod, ns, type_suffix, name_suffix)	\
+    ADD_MOD_MEMBER(mod, ns::mod ## type_suffix, name_suffix)
+#define ADD_MOD(mod, size)					\
+    arr mod ## _Param = zeros(2);				\
+    ADD_MOD_VALUE_SET(mod, vel, Vel, _Vel);			\
+    arr mod ## Ratio = ones(size);				\
+    ADD_MOD_VALUE_SET(mod, pool, Pool, _Pool);			\
+    ADD_MOD_VALUE_SET(mod, RC, RC, _RC);			\
+    ADD_MOD_VALUE_SET(mod, conditions, Condition, 2OUT);	\
+    ADD_MOD_VALUE_SET(mod, KE, KE, _KE);			\
+    TimeSeries<vel::mod ## Vel> mod ## _VEL = TimeSeries<vel::mod ## Vel> ()
+
+    ADD_MOD(BF, 49);
+    ADD_MOD(FI, 23);
+    ADD_MOD(PR, 48);
+    ADD_MOD(PS, 103);
+    ADD_MOD(RROEA, 0);
+    ADD_MOD(RedoxReg, 0);
+    ADD_MOD(RuACT, 16);
+    ADD_MOD(SUCS, 66);
+    ADD_MOD(XanCycle, 4);
+    // ADD_MOD(FIBF, 0);
+    pool::FIBFPool FIBF_Pool;
+
+#undef ADD_MOD
+#undef ADD_MOD_VALUE_SET
+#undef ADD_MOD_MEMBER
 
     bool useC3 = false;
 #ifdef INCDEBUG

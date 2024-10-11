@@ -171,7 +171,7 @@ set(ENUM_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/utils/generate_enum.py)
 
 # The last suffix must have a complete set of modules for the global
 # enum to be generated correctly
-foreach(suffix COND POOL KE MOD RC)
+foreach(suffix COND POOL KE MOD RC VEL)
   set(fsuffix ${suffix})
   set(ENUM_SRC_REGEX ${CMAKE_CURRENT_SOURCE_DIR}/param/*_${fsuffix}.txt)
   file(GLOB ENUM_SRC "${ENUM_SRC_REGEX}")
@@ -185,6 +185,8 @@ foreach(suffix COND POOL KE MOD RC)
     list(APPEND iARGS --macro-suffix-c="")
   elseif(suffix STREQUAL POOL)
     list(APPEND iARGS --macro-suffix-c=Pool)
+  elseif(suffix STREQUAL VEL)
+    list(APPEND iARGS --macro-suffix-c=Vel)
   else()
     list(APPEND iARGS --macro-suffix-c=${suffix})
   endif()

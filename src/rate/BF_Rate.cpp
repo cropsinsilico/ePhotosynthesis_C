@@ -29,6 +29,7 @@
 #include "modules/trDynaPS.hpp"
 #include "modules/FIBF.hpp"
 
+// TODO: Move these constants to param
 #define RT (298 * 8.314)             // Gas constnat and the temperature
 #define DeltaGo (7.3 * 4184)         //   The free energy change for ATP synthesis from ADP and Pi
 
@@ -237,10 +238,10 @@ void BF::_Rate(const double t, const BFCondition* const BF_con, Variables *theVa
             BF::TIME = t;
         }
         theVars->BF_VEL.insert(BF::N - 1, t, theVars->BF_Vel);
-        theVars->BF2OUT[0] = Fdn;
-        theVars->BF2OUT[1] = BF_con->PHs;
-        theVars->BF2OUT[2] = BF_con->PHl;
-        theVars->BF2OUT[3] = BF_con->NADPH;
-        theVars->BF2OUT[4] = ATP;
+        theVars->BF2OUT.Fdn = Fdn;
+        theVars->BF2OUT.PHs = BF_con->PHs;
+        theVars->BF2OUT.PHl = BF_con->PHl;
+        theVars->BF2OUT.NADPH = BF_con->NADPH;
+        theVars->BF2OUT.ATP = ATP;
     }
 }

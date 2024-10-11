@@ -36,6 +36,8 @@
 #define realtype sunrealtype
 #endif
 
+#define MODULES_COND BF, CM, DynaPS, EPS, FIBF, FI, PR, PS, PS_PR, RA, RROEA, RedoxReg, RuACT, SUCS, XanCycle, trDynaPS
+
 namespace ePhotosynthesis {
 namespace conditions {
 

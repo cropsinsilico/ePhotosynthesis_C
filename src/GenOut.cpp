@@ -48,11 +48,11 @@ void ePhotosynthesis::GenOut(double t, Variables *theVars) {
         double PHl = 0;
 
         if (theVars->FIBF_PSPR_com) {
-            Fdn = theVars->BF2OUT[0];
-            PHs = theVars->BF2OUT[1];
-            PHl = theVars->BF2OUT[2];
-            NADPH = theVars->BF2OUT[3];
-            ATP = theVars->BF2OUT[4];
+            Fdn = theVars->BF2OUT.Fdn;
+            PHs = theVars->BF2OUT.PHs;
+            PHl = theVars->BF2OUT.PHl;
+            NADPH = theVars->BF2OUT.NADPH;
+            ATP = theVars->BF2OUT.ATP;
         }
 
         arr co2a = zeros(100);

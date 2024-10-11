@@ -27,7 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
-#include "ValueSet.hpp"
+#include "PoolBase.hpp"
 
 namespace ePhotosynthesis {
 namespace pool {
@@ -35,11 +35,11 @@ namespace pool {
 /**
  Class for RROEA_Pool data
  */
-class RROEAPool : public ValueSet<MODULE_RROEA, PARAM_TYPE_POOL> {
+class RROEAPool : public PoolBase<RROEAPool, MODULE_RROEA> {
 public:
-    DECLARE_VALUE_SET(RROEAPool, ValueSet<MODULE_RROEA, PARAM_TYPE_POOL>)
+    DECLARE_VALUE_SET(RROEAPool, PoolBase<RROEAPool, MODULE_RROEA>)
     RROEAPool() :
-      ValueSet<MODULE_RROEA, PARAM_TYPE_POOL>() {
+      PoolBase<RROEAPool, MODULE_RROEA>() {
         initMembers();
     }
     /**
@@ -47,7 +47,7 @@ public:
 
       @param other The RROEAPool object to copy
       */
-    RROEAPool(const RROEAPool &other) : ValueSet<MODULE_RROEA, PARAM_TYPE_POOL>(other) {
+    RROEAPool(const RROEAPool &other) : PoolBase<RROEAPool, MODULE_RROEA>(other) {
       initMembers();
       *this = other;
     }

@@ -154,12 +154,12 @@ void SUCS::_Rate(const double t, const SUCSCondition* const SUCS_Con, Variables 
         const double temp58 = SUCS_Con->F26BPc + SUCS::Km581 * (1. + F6Pc / SUCS::KI581) *
                               (1. + SUCS_Con->FBPc / 0.08);
 
-        SUCS::Km591 = 5. * theVars->SUCRatio[60];
-        SUCS::Km593 = 0.55 * theVars->SUCRatio[61];
+        SUCS::Km591 = 5. * theVars->SUCSRatio[60];
+        SUCS::Km593 = 0.55 * theVars->SUCSRatio[61];
         const double temp59 = (F6Pc + SUCS::Km593) * (SUCS::ATPc + SUCS::Km591 *
                                                       (1. + SUCS::ADPc / SUCS::KI591));// This is the orginal equation
 
-        const double Km_in = 0.6 * theVars->SUCRatio[62];
+        const double Km_in = 0.6 * theVars->SUCSRatio[62];
 
         double vpga_in, vpga_use;
         if (!theVars->PSPR_SUCS_com) {
@@ -170,9 +170,9 @@ void SUCS::_Rate(const double t, const SUCSCondition* const SUCS_Con, Variables 
                 vpga_in = 0.;
                 vpga_use = 0.;
             } else {
-                const double Vpga_u = 1.05 * theVars->SUCRatio[63];
-                const double Kmpga_u = 0.6 * theVars->SUCRatio[64];
-                const double Kmpga_in = 0.6 * theVars->SUCRatio[65];
+                const double Vpga_u = 1.05 * theVars->SUCSRatio[63];
+                const double Kmpga_u = 0.6 * theVars->SUCSRatio[64];
+                const double Kmpga_in = 0.6 * theVars->SUCSRatio[65];
                 vpga_use = SUCS_Con->PGAc * Vpga_u / (SUCS_Con->PGAc + Kmpga_u);// WY201803
                 vpga_in = SUCS::Vpga_in * Pic / (Pic + Kmpga_in);// WY201803
             }

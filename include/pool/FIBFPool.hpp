@@ -27,7 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
-#include "ValueSet.hpp"
+#include "PoolBase.hpp"
 
 namespace ePhotosynthesis {
 namespace pool {
@@ -35,9 +35,9 @@ namespace pool {
 /**
  Class for FIBF_Pool data
  */
-class FIBFPool : public ValueSet<MODULE_FIBF, PARAM_TYPE_POOL> {
+class FIBFPool : public PoolBase<FIBFPool, MODULE_FIBF> {
 public:
-  DECLARE_VALUE_SET(FIBFPool, ValueSet<MODULE_FIBF, PARAM_TYPE_POOL>)
+  DECLARE_VALUE_SET(FIBFPool, PoolBase<FIBFPool, MODULE_FIBF>)
   FIBFPool() {
     initMembers();
   }
@@ -47,7 +47,7 @@ public:
 
     @param other The FIBFPool object to copy
     */
-  FIBFPool(const FIBFPool &other) : ValueSet<MODULE_FIBF, PARAM_TYPE_POOL>(other) {
+  FIBFPool(const FIBFPool &other) : PoolBase<FIBFPool, MODULE_FIBF>(other) {
     initMembers();
     *this = other;
   }

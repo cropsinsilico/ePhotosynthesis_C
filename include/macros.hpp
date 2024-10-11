@@ -7,6 +7,8 @@
 #define PACK_MACRO(...) PACK_MACRO_((__VA_ARGS__))
 #define UNPACK_MACRO(...) __VA_ARGS__
 #define UNPACK_PARENS(X) STRIP_PARENS( _Args X )
+#define ADD_PARENS(...) (__VA_ARGS__)
+#define STR_MACRO(X) #X
 #define CALL_WITH_PREFIX_ARGS(what, args, x)	\
   what(UNPACK_PARENS(args), x)
   
@@ -71,6 +73,7 @@ public:
   using __VA_ARGS__::print_vector;					\
   using __VA_ARGS__::string_map;					\
   using __VA_ARGS__::string_vector;					\
+  using __VA_ARGS__::fromName;						\
   INHERIT_METHOD_ENUM_MAP_NAMES(names, Names, Name, __VA_ARGS__);	\
   INHERIT_METHOD_ENUM_MAP(defaults, Defaults, Default, __VA_ARGS__);	\
   INHERIT_METHOD_ENUM_MAP(defaults_C3, Defaults_C3, Default_C3, __VA_ARGS__); \
@@ -1363,6 +1366,8 @@ public:
 #define FOR_EACH_WITH_ARGS_COMMA(what, args, x, ...) FOR_EACH_WITH_ARGS_COMMA_(FOR_EACH_NARG(x, __VA_ARGS__), what, args, x, __VA_ARGS__)
 #define FOR_EACH_WITH_ARGS_(...)	\
   FOR_EACH(STRIP_PARENS, __VA_ARGS__)
+#define FOR_EACH_WITH_ARGS_PACKED(what, args, x, ...)	\
+  FOR_EACH_(FOR_EACH_NARG(x, __VA_ARGS__), what, FOR_EACH_WITH_ARGS_COMMA(ADD_PARENS, args, x, __VA_ARGS__))
 #define FOR_EACH_WITH_ARGS(what, args, x, ...)	\
   FOR_EACH_WITH_ARGS_(FOR_EACH_WITH_ARGS_COMMA(what, args, x, __VA_ARGS__))
 #define PREFIX_EACH(prefix, ...)		\

@@ -44,17 +44,17 @@ void trDynaPSDriver::setup() {
     if (ParaNum <= 103) {
         inputVars->PSRatio[ParaNum] = Ratio;
     } else if (ParaNum <= 169) {
-        inputVars->SUCRatio[ParaNum - 103] = Ratio;
+        inputVars->SUCSRatio[ParaNum - 103] = Ratio;
     } else if (ParaNum <= 217) {
         inputVars->PRRatio[ParaNum - 169] = Ratio;
     } else if (ParaNum <= 233) {
-        inputVars->RacRatio[ParaNum - 217] = Ratio;
+        inputVars->RuACTRatio[ParaNum - 217] = Ratio;
     } else if (ParaNum <= 256) {
         inputVars->FIRatio[ParaNum - 233] = Ratio;
     } else if (ParaNum <= 305) {
         inputVars->BFRatio[ParaNum - 256] = Ratio;
     } else if (ParaNum <= 309) {
-        inputVars->XanRatio[ParaNum - 305] = Ratio;
+        inputVars->XanCycleRatio[ParaNum - 305] = Ratio;
     }
     SYSInitial(inputVars);
 

@@ -1103,6 +1103,8 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                                    no_return=False, utility=False,
                                    function_param=None):
         lines = []
+        if function_type == 'from' and self.value_type == 'double':
+            return lines
         if function_param is None:
             function_param = {}
         if enum_is_class is None:
@@ -1115,7 +1117,7 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 function_suffix = utility_suffix
             else:
                 function_suffix = self.collection_name.title()
-                if function_type in ['get', 'getdefault']:
+                if function_type in ['get', 'getdefault', 'from']:
                     function_suffix = function_suffix.rstrip('s')
                     function_suffix = function_suffix.replace('s_C3', '_C3')
         else:
@@ -1135,6 +1137,8 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             return_type = 'bool'
         elif function_type in ['get', 'getdefault']:
             return_type = self.value_type
+        elif function_type in ['from']:
+            return_type = enum_name
         elif function_type in ['print', 'operator<<']:
             return_type = 'std::ostream&'
         elif function_type in ['string', 'error_prefix']:
@@ -1176,6 +1180,9 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
         elif function_type == 'string':
             args += ['const unsigned int tab = 0']
             arg_names += ['tab']
+        elif function_type == 'from':
+            args += [f'const {self.value_type}& x']
+            arg_names += ['x']
         docs = []
         body = []
         if not enum_is_class:
@@ -1277,6 +1284,27 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 '\\return Value'
             ]
             body += [f"return {dref};"]
+        elif function_type == 'from':
+            assert hasattr(self, 'value_type')
+            body += [f"typename {collection_type}::const_iterator it;"]
+            body += self.generate_find(result, "x", "it",
+                                       from_value=True)
+            dref = self.generate_iterator_dref("it")[0]
+            docs += [
+                f'Get the enum key corresponding '
+                f'to a {function_suffix.lower()} values',
+                '\\param[in] x Value to get key for',
+                '\\return Key',
+            ]
+            conv = ('x' if self.value_type == 'std::string'
+                    else 'std::to_string(x)')
+            body += [
+                f'if (it == {result}.end()) {{',
+                f'  throw std::runtime_error("Could not locate '
+                f'{function_suffix} for \'" + {conv} + "\'");',
+                '}',
+                f"return {dref};",
+            ]
         elif function_type == 'error_prefix':
             docs += [
                 'Get a prefix for errors describing the class',
@@ -1545,7 +1573,7 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
     collection_type = 'std::map'
     _additional_functions = (
         CEnumGeneratorCollectionBase._additional_functions + [
-            'get', 'getdefault',
+            'get', 'getdefault', 'from'
         ]
     )
     _print_prefix = "space << \"{\" << std::endl;"
@@ -1598,7 +1626,16 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
     def generate_add(self, collection_name, key_name, val_name):
         return f"{collection_name}.emplace({key_name}, {val_name})"
 
-    def generate_find(self, collection_name, key_name, iter_name="it"):
+    def generate_find(self, collection_name, key_name, iter_name="it",
+                      from_value=False):
+        if from_value:
+            return [
+                f'for ({iter_name} = {collection_name}.begin(); '
+                f'{iter_name} != {collection_name}.end(); '
+                f'{iter_name}++) {{',
+                f'  if ({iter_name}->second == {key_name}) break;',
+                '}',
+            ]
         return [f"{iter_name} = {collection_name}.find({key_name});"]
 
     def generate_print(self, *args, space=None, out='std::cout'):
@@ -1825,6 +1862,8 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
                     else:
                         if x.strip().endswith(".hpp\""):
                             includes['global'].append(x.strip())
+                elif x.strip().endswith('\\'):
+                    continue
                 elif x.strip().startswith(f'{self.enum_name}_'):
                     new_val = x.split(
                         f'{self.enum_name}_')[-1].split(',')[0].strip()
@@ -1856,7 +1895,10 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
         lines += self.parent.generate_enum(
             self.enum_name, enum_members, as_class=False,
         )
+        lines += self.parent.generate_definition_macro(
+            self.enum_name, enum_members, macro_suffix='')
         # Param types
+        existing_enum_total = [[x['name'] for x in enum_members]]
         if self.accum_enum_name:
             new_accum_enum = self.strip_suffix.strip('_')
             if new_accum_enum not in existing_accum_enum:
@@ -1869,6 +1911,10 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
             lines += self.parent.generate_enum(
                 self.accum_enum_name, accum_enum_members, as_class=False,
             )
+            lines += self.parent.generate_definition_macro(
+                self.accum_enum_name, accum_enum_members, macro_suffix='')
+            existing_enum_total.append([x['name'] for x in
+                                        accum_enum_members])
         # Utility for getting module id from enum type
         lines += [
             f'// Utility for getting {self.enum_name.lower()} '
@@ -1945,6 +1991,48 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
         lines += self.generate_type_struct(
             self.enum_name, for_header=True)
         lines += [self.comment + ' ' + x for x in self.preserve_marker]
+        # Utility for getting name from enum
+        lines += [
+            '// Utility for getting name from enum',
+            'template<typename T>',
+            'std::string get_enum_name(const T& k) {',
+            '  return get_enum_names<T>().find(k)->second;',
+            '}',
+        ]
+        # Utility for getting enum from name
+        # spec_args = [f'{t} {n}' for t, n in zip(self.spec_param,
+        #                                         self.spec_var)]
+        # lines += [
+        #     '// Utility for getting enum from name',
+        #     f'int get_enum_from_name({", ".join(spec_args)}, '
+        #     f'const std::string& name) {{',
+        #     '  int out = -1;',
+        # ]
+        # for i, k in enumerate(itertools.product(*existing_enum_total)):
+        #     ift = 'if' if i == 0 else 'else if'
+        #     ifk = [
+        #         f'{var} == {val}' for var, val in zip(self.spec_var, k)]
+        #     lines += [
+        #         f'  {ift} ({" && ".join(ifk)}) {{',
+        #         f'    out = static_cast<int>(ValueSetEnum<{", ".join(k)}>'
+        #         f'::fromName(name));',
+        #         '  }',
+        #     ]
+        # lines += [
+        #     '  else {',
+        #     '     throw std::runtime_error(std::string("Unknown enum for")'
+        # ]
+        # lines += [
+        #     f'                              '
+        #     f'+ " {var} " + get_enum_name({var})'
+        #     for name, var in zip(self.spec_param, self.spec_var)
+        # ]
+        # lines[-1] += ');'
+        # lines += [
+        #     '  }',
+        #     '  return out;',
+        #     '}'
+        # ]
         if not self.parent.as_class:
             # Begin preserved lines
             for k, v in self.src.param.items():
@@ -2282,10 +2370,12 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
         return lines
 
     def generate_definition_macro(self, name, members, enum_name=None,
-                                  enum_prefix=''):
+                                  enum_prefix='', macro_suffix=None):
         macro_name = name
-        if self.macro_suffix is not None:
-            macro_name = name.rsplit('_', 1)[0] + self.macro_suffix
+        if macro_suffix is None:
+            macro_suffix = self.macro_suffix
+        if macro_suffix is not None:
+            macro_name = name.rsplit('_', 1)[0] + macro_suffix
         lines = [
             f'#define MEMBERS_{macro_name}'
         ]

@@ -27,6 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
+#include "VelBase.hpp"
 
 namespace ePhotosynthesis {
 namespace vel {
@@ -34,15 +35,19 @@ namespace vel {
 /**
  Class for holding the result of the PR_Rate calculations
  */
-class PRVel {
+class PRVel : public VelBase<PRVel, MODULE_PR> {
 public:
-    PRVel() {}
+    DECLARE_VALUE_SET(PRVel, VelBase<PRVel, MODULE_PR>)
+    PRVel() : VelBase<PRVel, MODULE_PR>() {
+	initMembers();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The PRVel object to copy
       */
-    PRVel(const PRVel &other) {
+    PRVel(const PRVel &other) : VelBase<PRVel, MODULE_PR>(other) {
+	initMembers();
         v111 = other.v111;
         v112 = other.v112;
         v113 = other.v113;
@@ -53,6 +58,7 @@ public:
         v131 = other.v131;
         v1in = other.v1in;
         v2out = other.v2out;
+	copyMembers(other);
     }
     /**
       Overload of the multiplication-equals operator to multiply all members of
@@ -73,17 +79,6 @@ public:
         this->v2out *= val;
         return *this;
     }
-
-    double v111 = 0.;
-    double v112 = 0.;
-    double v113 = 0.;
-    double v121 = 0.;
-    double v122 = 0.;
-    double v123 = 0.;
-    double v124 = 0.;
-    double v131 = 0.;
-    double v1in = 0.;
-    double v2out = 0.;
 
     friend std::ostream& operator<<(std::ostream& out, const PRVel &in);
 };

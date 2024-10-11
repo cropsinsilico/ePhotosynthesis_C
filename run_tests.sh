@@ -13,12 +13,17 @@ WITH_ASAN=""
 WITH_COVERAGE=""
 TEST_FLAGS="-C ${CMAKE_BUILD_TYPE_TEST}"
 NJOBS="8"
+RUN_EPHOTO=""
 
 while [[ $# -gt 0 ]]; do
     case $1 in
 	-j )
 	    NJOBS="$2"
 	    shift
+	    shift
+	    ;;
+	--ephoto )
+	    RUN_EPHOTO="TRUE"
 	    shift
 	    ;;
 	--build-dir )
@@ -101,6 +106,9 @@ if [ -n "$LIST_TESTS" ]; then
 fi
 if [ -n "$WITH_COVERAGE" ]; then
     make coverage
+fi
+if [ -n "$RUN_EPHOTO" ]; then
+    ./ePhoto -d 4 --enzyme ../InputEnzyme.txt
 fi
 
 if [ -n "$DO_DOCS" ]; then

@@ -150,6 +150,42 @@ namespace RC {
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
+enum class ENUM_FIBF_RC : int {
+    NONE   ,
+    MAX    ,
+};
+template<>
+struct enum_helper<MODULE_FIBF, PARAM_TYPE_RC> {
+  typedef ENUM_FIBF_RC type;
+};
+#else // EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type : int {
+    NONE   ,
+    MAX    ,
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
+#define MEMBERS_FIBFRC		\
+    NONE   ,		\
+    MAX
+template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::all;
+template<> bool ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::state_updated;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::defaults_C3;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::glymaids;
+template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::constant;
+template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::calculated;
+template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::nonvector;
+template<> std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::skipped;
+template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::resetone;
+template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::initonce;
+
+namespace RC {
+  typedef ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC> FIBF;
+}
+
+#ifdef EPHOTO_USE_SCOPED_ENUM
 enum class ENUM_FI_RC : int {
     NONE         ,
     kA_d         ,  //!< The rate constant of heat dissipation from peripheral antenna Lazar (1999), 0.25~1 *10^(9)

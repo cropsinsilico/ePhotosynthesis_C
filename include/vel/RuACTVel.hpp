@@ -27,6 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
+#include "VelBase.hpp"
 
 namespace ePhotosynthesis {
 namespace vel {
@@ -34,28 +35,28 @@ namespace vel {
 /**
  Class for holding the results of RuACT_Rate calculations
  */
-class RuACTVel {
+class RuACTVel : public VelBase<RuACTVel, MODULE_RuACT> {
 public:
-    RuACTVel() {}
+    DECLARE_VALUE_SET(RuACTVel, VelBase<RuACTVel, MODULE_RuACT>)
+    RuACTVel() : VelBase<RuACTVel, MODULE_RuACT>() {
+	initMembers();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The RuACTVel object to copy
       */
-    RuACTVel(const RuACTVel &other) {
+    RuACTVel(const RuACTVel &other) : VelBase<RuACTVel, MODULE_RuACT>(other) {
+	initMembers();
         v1 = other.v1;
         vn1 = other.vn1;
         v7 = other.v7;
         vn7 = other.vn7;
         v6_1 = other.v6_1;
         v6_2 = other.v6_2;
+	copyMembers(other);
     }
-    double v1 = 0.;
-    double vn1 = 0.;
-    double v7 = 0.;
-    double vn7 = 0.;
-    double v6_1 = 0.;
-    double v6_2 = 0.;
+  
     friend std::ostream& operator<<(std::ostream& out, const RuACTVel &in);
 };
 

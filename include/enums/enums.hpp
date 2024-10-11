@@ -23,24 +23,43 @@ namespace ePhotosynthesis {
   enum MODULE : int {
       MODULE_NONE       ,
       MODULE_BF         ,
-      MODULE_FI         ,
-      MODULE_PR         ,
-      MODULE_PS         ,
-      MODULE_RROEA      ,
-      MODULE_RuACT      ,
-      MODULE_SUCS       ,
-      MODULE_XanCycle   ,
-      MODULE_FIBF       ,
-      MODULE_RedoxReg   ,
       MODULE_CM         ,
       MODULE_DynaPS     ,
       MODULE_EPS        ,
-      MODULE_RA         ,
-      MODULE_trDynaPS   ,
+      MODULE_FIBF       ,
+      MODULE_FI         ,
+      MODULE_PR         ,
+      MODULE_PS         ,
       MODULE_PS_PR      ,
+      MODULE_RA         ,
+      MODULE_RROEA      ,
+      MODULE_RedoxReg   ,
+      MODULE_RuACT      ,
+      MODULE_SUCS       ,
+      MODULE_XanCycle   ,
+      MODULE_trDynaPS   ,
       MODULE_MAX        ,
   };
   
+  #define MEMBERS_MODULE		\
+      MODULE_NONE       ,		\
+      MODULE_BF         ,		\
+      MODULE_CM         ,		\
+      MODULE_DynaPS     ,		\
+      MODULE_EPS        ,		\
+      MODULE_FIBF       ,		\
+      MODULE_FI         ,		\
+      MODULE_PR         ,		\
+      MODULE_PS         ,		\
+      MODULE_PS_PR      ,		\
+      MODULE_RA         ,		\
+      MODULE_RROEA      ,		\
+      MODULE_RedoxReg   ,		\
+      MODULE_RuACT      ,		\
+      MODULE_SUCS       ,		\
+      MODULE_XanCycle   ,		\
+      MODULE_trDynaPS   ,		\
+      MODULE_MAX
   enum PARAM_TYPE : int {
       PARAM_TYPE_NONE   ,
       PARAM_TYPE_COND   ,
@@ -48,9 +67,19 @@ namespace ePhotosynthesis {
       PARAM_TYPE_KE     ,
       PARAM_TYPE_MOD    ,
       PARAM_TYPE_RC     ,
+      PARAM_TYPE_VEL    ,
       PARAM_TYPE_MAX    ,
   };
   
+  #define MEMBERS_PARAM		\
+      PARAM_TYPE_NONE   ,		\
+      PARAM_TYPE_COND   ,		\
+      PARAM_TYPE_POOL   ,		\
+      PARAM_TYPE_KE     ,		\
+      PARAM_TYPE_MOD    ,		\
+      PARAM_TYPE_RC     ,		\
+      PARAM_TYPE_VEL    ,		\
+      PARAM_TYPE_MAX
   // Utility for getting module id from enum type
   template<typename T>
   MODULE get_enum_module() {
@@ -74,21 +103,21 @@ namespace ePhotosynthesis {
   inline const std::map<MODULE, std::string>& get_enum_names<MODULE>() {
     static const std::map<MODULE, std::string> collection = {
       {MODULE_BF      , "BF"      },
-      {MODULE_FI      , "FI"      },
-      {MODULE_PR      , "PR"      },
-      {MODULE_PS      , "PS"      },
-      {MODULE_RROEA   , "RROEA"   },
-      {MODULE_RuACT   , "RuACT"   },
-      {MODULE_SUCS    , "SUCS"    },
-      {MODULE_XanCycle, "XanCycle"},
-      {MODULE_FIBF    , "FIBF"    },
-      {MODULE_RedoxReg, "RedoxReg"},
       {MODULE_CM      , "CM"      },
       {MODULE_DynaPS  , "DynaPS"  },
       {MODULE_EPS     , "EPS"     },
-      {MODULE_RA      , "RA"      },
-      {MODULE_trDynaPS, "trDynaPS"},
+      {MODULE_FIBF    , "FIBF"    },
+      {MODULE_FI      , "FI"      },
+      {MODULE_PR      , "PR"      },
+      {MODULE_PS      , "PS"      },
       {MODULE_PS_PR   , "PS_PR"   },
+      {MODULE_RA      , "RA"      },
+      {MODULE_RROEA   , "RROEA"   },
+      {MODULE_RedoxReg, "RedoxReg"},
+      {MODULE_RuACT   , "RuACT"   },
+      {MODULE_SUCS    , "SUCS"    },
+      {MODULE_XanCycle, "XanCycle"},
+      {MODULE_trDynaPS, "trDynaPS"},
     };
     return collection;
   }
@@ -100,6 +129,7 @@ namespace ePhotosynthesis {
       {PARAM_TYPE_KE  , "KE"  },
       {PARAM_TYPE_MOD , "MOD" },
       {PARAM_TYPE_RC  , "RC"  },
+      {PARAM_TYPE_VEL , "VEL" },
     };
     return collection;
   }
@@ -253,6 +283,21 @@ namespace ePhotosynthesis {
         return defaultV;
       }
       return it->second;
+    }
+    /**
+      Get the enum key corresponding to a name values
+      \param[in] x Value to get key for
+      \return Key
+    */
+    static Type fromName(const std::string& x) {
+      typename std::map<Type, std::string>::const_iterator it;
+      for (it = names.begin(); it != names.end(); it++) {
+        if (it->second == x) break;
+      }
+      if (it == names.end()) {
+        throw std::runtime_error("Could not locate Name for '" + x + "'");
+      }
+      return it->first;
     }
     /**
       Print the contents of a collection
@@ -413,6 +458,21 @@ namespace ePhotosynthesis {
         return defaultV;
       }
       return it->second;
+    }
+    /**
+      Get the enum key corresponding to a glymaid values
+      \param[in] x Value to get key for
+      \return Key
+    */
+    static Type fromGlymaid(const std::string& x) {
+      typename std::map<Type, std::string>::const_iterator it;
+      for (it = glymaids.begin(); it != glymaids.end(); it++) {
+        if (it->second == x) break;
+      }
+      if (it == glymaids.end()) {
+        throw std::runtime_error("Could not locate Glymaid for '" + x + "'");
+      }
+      return it->first;
     }
     /**
       Print the contents of a collection
@@ -837,25 +897,28 @@ namespace ePhotosynthesis {
   template<MODULE M, PARAM_TYPE PT>
   const std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::initonce = {};
   
-  #include "enums/enums_POOL.hpp"
   #include "enums/enums_COND.hpp"
+  #include "enums/enums_POOL.hpp"
   #include "enums/enums_KE.hpp"
-  #include "enums/enums_RC.hpp"
   #include "enums/enums_MOD.hpp"
+  #include "enums/enums_RC.hpp"
+  #include "enums/enums_VEL.hpp"
   
   // Specializations for get_enum_names
-  #include "enums/enums_POOL_names.hpp"
   #include "enums/enums_COND_names.hpp"
+  #include "enums/enums_POOL_names.hpp"
   #include "enums/enums_KE_names.hpp"
-  #include "enums/enums_RC_names.hpp"
   #include "enums/enums_MOD_names.hpp"
+  #include "enums/enums_RC_names.hpp"
+  #include "enums/enums_VEL_names.hpp"
   
   // Specializations for get_enum_values
-  #include "enums/enums_POOL_defaults.hpp"
   #include "enums/enums_COND_defaults.hpp"
+  #include "enums/enums_POOL_defaults.hpp"
   #include "enums/enums_KE_defaults.hpp"
-  #include "enums/enums_RC_defaults.hpp"
   #include "enums/enums_MOD_defaults.hpp"
+  #include "enums/enums_RC_defaults.hpp"
+  #include "enums/enums_VEL_defaults.hpp"
   
   // Specializations for get_enum_alternate_values
   #include "enums/enums_COND_defaults_C3.hpp"
@@ -863,6 +926,7 @@ namespace ePhotosynthesis {
   #include "enums/enums_KE_defaults_C3.hpp"
   #include "enums/enums_MOD_defaults_C3.hpp"
   #include "enums/enums_RC_defaults_C3.hpp"
+  #include "enums/enums_VEL_defaults_C3.hpp"
   
   // Specializations for get_enum_glymaids
   #include "enums/enums_COND_glymaids.hpp"
@@ -870,6 +934,7 @@ namespace ePhotosynthesis {
   #include "enums/enums_KE_glymaids.hpp"
   #include "enums/enums_MOD_glymaids.hpp"
   #include "enums/enums_RC_glymaids.hpp"
+  #include "enums/enums_VEL_glymaids.hpp"
   
   // Specializations for get_enum_constant
   #include "enums/enums_COND_constant.hpp"
@@ -877,6 +942,7 @@ namespace ePhotosynthesis {
   #include "enums/enums_KE_constant.hpp"
   #include "enums/enums_MOD_constant.hpp"
   #include "enums/enums_RC_constant.hpp"
+  #include "enums/enums_VEL_constant.hpp"
   
   // Specializations for get_enum_calculated
   #include "enums/enums_COND_calculated.hpp"
@@ -884,6 +950,7 @@ namespace ePhotosynthesis {
   #include "enums/enums_KE_calculated.hpp"
   #include "enums/enums_MOD_calculated.hpp"
   #include "enums/enums_RC_calculated.hpp"
+  #include "enums/enums_VEL_calculated.hpp"
   
   // Specializations for get_enum_nonvector
   #include "enums/enums_COND_nonvector.hpp"
@@ -891,6 +958,7 @@ namespace ePhotosynthesis {
   #include "enums/enums_KE_nonvector.hpp"
   #include "enums/enums_MOD_nonvector.hpp"
   #include "enums/enums_RC_nonvector.hpp"
+  #include "enums/enums_VEL_nonvector.hpp"
   
   // Specializations for get_enum_skipped
   #include "enums/enums_COND_skipped.hpp"
@@ -898,6 +966,7 @@ namespace ePhotosynthesis {
   #include "enums/enums_KE_skipped.hpp"
   #include "enums/enums_MOD_skipped.hpp"
   #include "enums/enums_RC_skipped.hpp"
+  #include "enums/enums_VEL_skipped.hpp"
   
   // Specializations for get_enum_resetone
   #include "enums/enums_COND_resetone.hpp"
@@ -905,6 +974,7 @@ namespace ePhotosynthesis {
   #include "enums/enums_KE_resetone.hpp"
   #include "enums/enums_MOD_resetone.hpp"
   #include "enums/enums_RC_resetone.hpp"
+  #include "enums/enums_VEL_resetone.hpp"
   
   // Specializations for get_enum_initonce
   #include "enums/enums_COND_initonce.hpp"
@@ -912,9 +982,15 @@ namespace ePhotosynthesis {
   #include "enums/enums_KE_initonce.hpp"
   #include "enums/enums_MOD_initonce.hpp"
   #include "enums/enums_RC_initonce.hpp"
+  #include "enums/enums_VEL_initonce.hpp"
   
   
   // Utility for getting enum type from module & param_type
   #define MODULE2Enum ValueSetEnum
   // Code after this line will be preserved
+  // Utility for getting name from enum
+  template<typename T>
+  std::string get_enum_name(const T& k) {
+    return get_enum_names<T>().find(k)->second;
+  }
 }

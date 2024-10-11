@@ -27,7 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
-#include "ValueSet.hpp"
+#include "RCBase.hpp"
 
 namespace ePhotosynthesis {
 namespace RC {
@@ -35,10 +35,10 @@ namespace RC {
 /**
  Class for RROEA_RC data
  */
-class RROEARC : public ValueSet<MODULE_RROEA, PARAM_TYPE_RC> {
+class RROEARC : public RCBase<RROEARC, MODULE_RROEA> {
 public:
-    DECLARE_VALUE_SET(RROEARC, ValueSet<MODULE_RROEA, PARAM_TYPE_RC>)
-    RROEARC() : ValueSet<MODULE_RROEA, PARAM_TYPE_RC>() {
+    DECLARE_VALUE_SET(RROEARC, RCBase<RROEARC, MODULE_RROEA>)
+    RROEARC() : RCBase<RROEARC, MODULE_RROEA>() {
         initMembers();
     }
     /**
@@ -46,7 +46,7 @@ public:
 
       @param other The RROEARC object to copy
       */
-    RROEARC(const RROEARC &other) : ValueSet<MODULE_RROEA, PARAM_TYPE_RC>(other) {
+    RROEARC(const RROEARC &other) : RCBase<RROEARC, MODULE_RROEA>(other) {
       initMembers();
       *this = other;
     }

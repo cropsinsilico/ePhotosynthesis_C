@@ -27,6 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
+#include "VelBase.hpp"
 
 namespace ePhotosynthesis {
 namespace vel {
@@ -34,15 +35,19 @@ namespace vel {
 /**
  Class to hold the results of the XanCycleRate calculations
  */
-class XanCycleVel {
+class XanCycleVel : VelBase<XanCycleVel, MODULE_XanCycle> {
 public:
-    XanCycleVel() {}
+    DECLARE_VALUE_SET(XanCycleVel, VelBase<XanCycleVel, MODULE_XanCycle>)
+    XanCycleVel() : VelBase<XanCycleVel, MODULE_XanCycle> () {
+	initMembers();
+    }
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The XanCycleVel object to copy
       */
-    XanCycleVel(const XanCycleVel &other) {
+    XanCycleVel(const XanCycleVel &other) : VelBase<XanCycleVel, MODULE_XanCycle>(other) {
+	initMembers();
         Vva = other.Vva;
         Vaz = other.Vaz;
         Vza = other.Vza;
@@ -50,14 +55,8 @@ public:
         Vvf = other.Vvf;
         Vv2ABA = other.Vv2ABA;
         VABAdg = other.VABAdg;
+	copyMembers(other);
     }
-    double Vva = 0.;    // The velocity of v to a conversion
-    double Vaz = 0.;    // The rate of A to z
-    double Vza = 0.;    // THe rate of z to a
-    double Vav = 0.;    // The rate of A to V
-    double Vvf = 0.;    // The rate of V formation
-    double Vv2ABA = 0.; // The rate of conversion from v to ABA.
-    double VABAdg = 0.; // The rate of ABA degradation
 
     friend std::ostream& operator<<(std::ostream& out, const XanCycleVel &in);
 };

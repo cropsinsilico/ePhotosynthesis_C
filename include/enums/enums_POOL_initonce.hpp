@@ -15,6 +15,14 @@ inline const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type
   return ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::initonce;
 }
 template<>
+inline const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type>& get_enum_initonce<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type>() {
+  return ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::initonce;
+}
+template<>
+inline const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type>& get_enum_initonce<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type>() {
+  return ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::initonce;
+}
+template<>
 inline const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type>& get_enum_initonce<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type>() {
   return ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::initonce;
 }
@@ -29,4 +37,8 @@ inline const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::T
 template<>
 inline const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type>& get_enum_initonce<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type>() {
   return ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::initonce;
+}
+template<>
+inline const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type>& get_enum_initonce<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type>() {
+  return ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::initonce;
 }

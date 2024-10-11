@@ -7,6 +7,10 @@ inline const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, dou
   return ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::defaults;
 }
 template<>
+inline const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, double>& get_enum_defaults<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type>() {
+  return ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::defaults;
+}
+template<>
 inline const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, double>& get_enum_defaults<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type>() {
   return ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::defaults;
 }

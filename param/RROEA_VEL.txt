@@ -1,0 +1,11 @@
+ve2GAPDH	0.0
+ve2FBPase	0.0
+ve2SBPase	0.0
+ve2PRK		0.0
+ve2ATPase	0.0
+ve2ATPGPP	0.0
+ve2MDH		0.0
+ve2Fd		0.0
+veFd2Thio	0.0
+veFd2Calvin	0.0
+ve2RuACT	0.0

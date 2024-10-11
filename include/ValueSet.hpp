@@ -1527,6 +1527,14 @@ private:								\
       CALL_STATIC_CONST(get_value_const, k);
     }
     /**
+       Get the value associated with a key.
+       \param name String representation of key to get value for.
+       \returns Value
+     */
+    double get(const std::string& name) const {
+      return get(fromName(name));
+    }
+    /**
        Add a value reference for the given key.
        \param k Key to update value for.
        \param v New value pointer for key.
@@ -1791,6 +1799,14 @@ private:								\
       CALL_STATIC(get_value_const, k);
     }
     /**
+       Get the value associated with a key.
+       \param name String representation of key to get value for.
+       \returns Value
+     */
+    static double get(const std::string& name) {
+      return get(fromName(name));
+    }
+    /**
        Add a value reference for the given key.
        \param k Key to update value for.
        \param v New value pointer for key.
@@ -1883,3 +1899,59 @@ private:								\
 }
     
 #undef CALL_STATIC
+
+
+#define DECLARE_PARAM_DUMMY_(suffix, mod)				\
+    class mod ## suffix :						\
+        public suffix ## Base<mod ## suffix, MODULE_ ## mod> {		\
+    public:								\
+	DECLARE_VALUE_SET_BASE(mod ## suffix, suffix ## Base<mod ## suffix, MODULE_ ## mod>) \
+	using suffix ## Base<mod ## suffix, MODULE_ ## mod>::memberCount; \
+	using suffix ## Base<mod ## suffix, MODULE_ ## mod>::memberState; \
+    }
+#define DECLARE_PARAM_DUMMY(suffix, mod)				\
+    DECLARE_PARAM_DUMMY_(suffix, mod)
+#define DECLARE_PARAM_DUMMY_PACKED(args)			\
+    DECLARE_PARAM_DUMMY args
+#define DECLARE_PARAM_DUMMIES(suffix, ...)				\
+    FOR_EACH_WITH_ARGS_PACKED(DECLARE_PARAM_DUMMY_PACKED,		\
+			      (suffix), __VA_ARGS__)
+#define DECLARE_PARAM_BASE_CLASS(name, pt)				\
+    template<typename T, MODULE ID = MODULE_NONE>			\
+    class name ## Base : public ValueSet<ID, PARAM_TYPE_ ## pt> {	\
+    public:								\
+        DECLARE_VALUE_SET_BASE(name ## Base, ValueSet<ID, PARAM_TYPE_ ## pt>) \
+	name ## Base() :						\
+	ValueSet<ID, PARAM_TYPE_ ## pt>() {}				\
+	virtual ~name ## Base() {}					\
+	name ## Base(const name ## Base &other) :			\
+	ValueSet<ID, PARAM_TYPE_ ## pt>(other) {}			\
+	name ## Base& operator=(const name ## Base& other) {		\
+	    return *this;						\
+	}								\
+    }
+#define DECLARE_PARAM_BASE_(namespc, name, pt, ...)			\
+    namespace ePhotosynthesis {						\
+    namespace namespc {					                \
+      DECLARE_PARAM_BASE_CLASS(name, pt);				\
+      DECLARE_PARAM_DUMMIES(name, __VA_ARGS__);				\
+    }									\
+    }
+#define DECLARE_PARAM_BASE(namespc, name, pt, dummies)			\
+    DECLARE_PARAM_BASE_(namespc, name, pt, UNPACK_MACRO dummies)
+#define DECLARE_PARAM_BASE_NODUMMIES(namespc, name, pt)			\
+    namespace ePhotosynthesis {						\
+    namespace namespc {					                \
+      DECLARE_PARAM_BASE_CLASS(name, pt);				\
+    }									\
+    }
+/*
+#define INCLUDE_MODULE_HEADER(suffix, name)		\
+  #include STR_MACRO(name ## suffix ##.hpp)
+#define INCLUDE_MODULE_HEADERS_(suffix, ...)	\
+  #include STR_MACRO(suffix ## Base.hpp)	\
+  FOR_EACH_WITH_ARGS(INCLUDE_MODULE_HEADER,	\
+		     (suffix), __VA_ARGS__)
+#define INCLUDE_MODULE_HEADERS(suffix, name)		\
+  INCLUDE_MODULE_HEADERS_(suffix, MEMBERS_ ## name)
+*/

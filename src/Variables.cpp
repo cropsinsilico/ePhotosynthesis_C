@@ -1,4 +1,5 @@
 #include "Variables.hpp"
+#include "modules/ModuleAll.hpp"
 
 using namespace ePhotosynthesis;
 
@@ -17,7 +18,6 @@ Variables* Variables::deepcopy() const {
   out->lightParam = this->lightParam;
   out->PR_Param = this->PR_Param;
   out->BF_Param = this->BF_Param;
-  out->FI_PARAM = this->FI_PARAM;
   out->FI_Param = this->FI_Param;
   out->RROEA_Param = this->RROEA_Param;
   out->RuACT_Param = this->RuACT_Param;
@@ -79,9 +79,9 @@ Variables& Variables::operator=(const Variables &other) {
     FIRatio = other.FIRatio;
     PRRatio = other.PRRatio;
     PSRatio = other.PSRatio;
-    RacRatio = other.RacRatio;
-    SUCRatio = other.SUCRatio;
-    XanRatio = other.XanRatio;
+    RuACTRatio = other.RuACTRatio;
+    SUCSRatio = other.SUCSRatio;
+    XanCycleRatio = other.XanCycleRatio;
     EnzymeAct = other.EnzymeAct;
     VfactorCp = other.VfactorCp;
     VfactorT = other.VfactorT;
@@ -153,10 +153,6 @@ out << std::endl;
 for (auto i : in->BF_Param)
     out << i << ", ";
 out << std::endl;
-    out << "FI_PARAM = ";
-for (auto i : in->FI_PARAM)
-    out << i << ", ";
-out << std::endl;
     out << "FI_Param = ";
 for (auto i : in->FI_Param)
     out << i << ", ";
@@ -206,16 +202,16 @@ out << std::endl;
 for (auto i : in->PSRatio)
     out << i << ", ";
 out << std::endl;
-    out << "RacRatio = ";
-for (auto i : in->RacRatio)
+    out << "RuACTRatio = ";
+for (auto i : in->RuACTRatio)
     out << i << ", ";
 out << std::endl;
-    out << "SUCRatio = ";
-for (auto i : in->SUCRatio)
+    out << "SUCSRatio = ";
+for (auto i : in->SUCSRatio)
     out << i << ", ";
 out << std::endl;
-    out << "XanRatio = ";
-for (auto i : in->XanRatio)
+    out << "XanCycleRatio = ";
+for (auto i : in->XanCycleRatio)
     out << i << ", ";
 out << std::endl;
 
@@ -237,3 +233,48 @@ out << std::endl;
     out << "useC3 = " << in->useC3 << std::endl;
     return out;
 }
+
+double Variables::getVar(const MODULE& module,
+			 const PARAM_TYPE& param_type,
+			 const std::string& name) const {
+#define ADD_SPEC(var, mod, pt)						\
+    if (module == MODULE_ ## mod && param_type == PARAM_TYPE_ ## pt) {	\
+	return var.get(name);						\
+    }
+#define ADD_SPEC_STATIC(var, mod, pt)					\
+    if (module == MODULE_ ## mod && param_type == PARAM_TYPE_ ## pt) {	\
+	return var::get(name);						\
+    }
+#define ADD_SPEC_VALUE_SET(mod, var_suffix, pt)	\
+    ADD_SPEC(mod ## var_suffix, mod, pt)
+#define ADD_SPEC_MOD(mod)						\
+    ADD_SPEC_VALUE_SET(mod, _Pool, POOL)				\
+    else ADD_SPEC_VALUE_SET(mod, _RC, RC)				\
+    else ADD_SPEC_VALUE_SET(mod, _KE, KE)				\
+    else ADD_SPEC(mod ## _VEL.getLastData(), mod, VEL)		\
+    else ADD_SPEC_STATIC(modules::mod, mod, MOD)
+  
+    ADD_SPEC_MOD(BF)
+    else ADD_SPEC_MOD(FI)
+    else ADD_SPEC_MOD(PR)
+    else ADD_SPEC_MOD(PS)
+    else ADD_SPEC_MOD(RROEA)
+    else ADD_SPEC_MOD(RedoxReg)
+    else ADD_SPEC_MOD(RuACT)
+    else ADD_SPEC_MOD(SUCS)
+    else ADD_SPEC_MOD(XanCycle)
+    // else ADD_SPEC_MOD(FIBF)
+    else ADD_SPEC_VALUE_SET(FIBF, _Pool, POOL)
+#undef ADD_SPEC_MOD
+#undef ADD_SPEC_VALUE_SET
+#undef ADD_SPEC_STATIC
+#undef ADD_SPEC
+    // else if (module == MODULE_NONE && PARAM_TYPE == PARAM_TYPE_NONE) {
+    // 	return get(name);
+    else {
+        throw std::runtime_error("Invalid MODULE (" + get_enum_name(module) + ") "
+				 + ", PARAM_TYPE (" + get_enum_name(param_type) + ") "
+				 + "or name (" + name + ")");
+    }
+}
+

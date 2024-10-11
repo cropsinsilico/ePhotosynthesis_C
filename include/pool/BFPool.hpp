@@ -27,7 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
-#include "ValueSet.hpp"
+#include "PoolBase.hpp"
 
 namespace ePhotosynthesis {
 namespace pool {
@@ -35,11 +35,11 @@ namespace pool {
 /**
  Class for holding BF_Pool data
  */
-class BFPool : public ValueSet<MODULE_BF, PARAM_TYPE_POOL> {
+class BFPool : public PoolBase<BFPool, MODULE_BF> {
 public:
-    DECLARE_VALUE_SET(BFPool, ValueSet<MODULE_BF, PARAM_TYPE_POOL>)
+    DECLARE_VALUE_SET(BFPool, PoolBase<BFPool, MODULE_BF>)
     BFPool() :
-      ValueSet<MODULE_BF, PARAM_TYPE_POOL>() {
+      PoolBase<BFPool, MODULE_BF>() {
         initMembers();
     }
     /**
@@ -47,7 +47,7 @@ public:
 
       @param other The BFPool object to copy
       */
-    BFPool(const BFPool &other) : ValueSet<MODULE_BF, PARAM_TYPE_POOL>(other) {
+    BFPool(const BFPool &other) : PoolBase<BFPool, MODULE_BF>(other) {
       initMembers();
       *this = other;
     }

@@ -27,7 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
-#include "ValueSet.hpp"
+#include "KEBase.hpp"
 
 namespace ePhotosynthesis {
 namespace KE {
@@ -35,20 +35,20 @@ namespace KE {
 /**
  Class for RROEA_KE data
  */
-class RROEAKE : public ValueSet<MODULE_RROEA, PARAM_TYPE_KE> {
+class RROEAKE : public KEBase<RROEAKE, MODULE_RROEA> {
 public:
-    DECLARE_VALUE_SET(RROEAKE, ValueSet<MODULE_RROEA, PARAM_TYPE_KE>)
-    RROEAKE() : ValueSet<MODULE_RROEA, PARAM_TYPE_KE>() {
-      initMembers();
+    DECLARE_VALUE_SET(RROEAKE, KEBase<RROEAKE, MODULE_RROEA>)
+    RROEAKE() : KEBase<RROEAKE, MODULE_RROEA>() {
+	initMembers();
     }
     /**
       Copy constructor that makes a deep copy of the given object
 
       @param other The RROEAKE object to copy
       */
-    RROEAKE(const RROEAKE &other) : ValueSet<MODULE_RROEA, PARAM_TYPE_KE>(other) {
-      initMembers();
-      *this = other;
+    RROEAKE(const RROEAKE &other) : KEBase<RROEAKE, MODULE_RROEA>(other) {
+	initMembers();
+	*this = other;
     }
     RROEAKE& operator=(const RROEAKE &other) {
         KEe2FBPase = other.KEe2FBPase;

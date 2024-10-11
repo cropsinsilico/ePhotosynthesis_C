@@ -27,6 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
+#include "VelBase.hpp"
 
 namespace ePhotosynthesis {
 namespace vel {
@@ -34,20 +35,24 @@ namespace vel {
 /**
  Class for holding the results of RedoxReg_Rate calculations
  */
-class RedoxRegVel {
-  public:
-  RedoxRegVel() {}
-  /**
-    Copy constructor that makes a deep copy of the given object
+class RedoxRegVel : public VelBase<RedoxRegVel, MODULE_RedoxReg> {
+public:
+    DECLARE_VALUE_SET(RedoxRegVel, VelBase<RedoxRegVel, MODULE_RedoxReg>)
+    RedoxRegVel() : VelBase<RedoxRegVel, MODULE_RedoxReg>() {
+	initMembers();
+    }
+    /**
+       Copy constructor that makes a deep copy of the given object
 
-    @param other The RedoxRegVel object to copy
+       @param other The RedoxRegVel object to copy
     */
-  RedoxRegVel(const RedoxRegVel &other) {
-      Vred = other.Vred;
-      Vox = other.Vox;
-  }
-    double Vred = 0.;
-    double Vox = 0.;
+    RedoxRegVel(const RedoxRegVel &other) : VelBase<RedoxRegVel, MODULE_RedoxReg>(other) {
+	initMembers();
+	Vred = other.Vred;
+	Vox = other.Vox;
+	copyMembers(other);
+    }
+    
     friend std::ostream& operator<<(std::ostream& out, const RedoxRegVel &in);
 };
 

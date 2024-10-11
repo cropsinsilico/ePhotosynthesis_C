@@ -1,0 +1,7 @@
+Vva	0.0	# The velocity of v to a conversion
+Vaz	0.0	# The rate of A to z
+Vza	0.0	# THe rate of z to a
+Vav	0.0	# The rate of A to V
+Vvf	0.0	# The rate of V formation
+Vv2ABA	0.0	# The rate of conversion from v to ABA.
+VABAdg	0.0	# The rate of ABA degradation

@@ -149,6 +149,39 @@ template<>
 const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::initonce = {
 };
 
+template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::all = {};
+template<> bool ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::state_updated = true;
+template<> 
+const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::names = {
+};
+template<> 
+const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::defaults = {
+};
+template<> 
+const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::defaults_C3 = {
+};
+template<> 
+const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::glymaids = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::constant = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::calculated = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::nonvector = {
+};
+template<> 
+std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::skipped = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::resetone = {
+};
+template<> 
+const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::initonce = {
+};
+
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::all = {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kA_d, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kA_f, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kA_U, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kU_A, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kU_d, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kU_f, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k1, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_r1, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kz, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k12, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k23, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k30, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k01, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k2, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kAB1, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kBA1, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kAB2, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kBA2, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k3, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_r3, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_pq_oxy};
 template<> bool ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::state_updated = true;
 template<> 
