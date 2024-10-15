@@ -42,7 +42,7 @@ class DynaPSCondition;
  */
 class RACondition : public ConditionBase<RACondition, DynaPSCondition, MODULE_RA> {
 public:
-    DECLARE_VALUE_SET_COMPOSITE(RACondition, (RuACTCondition, EPSCondition), ConditionBase<RACondition, DynaPSCondition, MODULE_RA>)
+    DECLARE_VALUE_SET_COMPOSITE(RACondition, (RuACTCondition, EPSCondition), (RuACT_con, EPS_con), ConditionBase<RACondition, DynaPSCondition, MODULE_RA>)
     RACondition(DynaPSCondition* par = nullptr) : RuACT_con(new RuACTCondition(this)), EPS_con(new EPSCondition(this)) {
         setParent(par);
         initMembers();

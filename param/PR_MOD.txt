@@ -55,13 +55,13 @@ KI1011		0.28
 V2T		6.4	       	        # *= CE if not C3
 KM1012		0.2		0.2
 KI1012		0.22		0.22
-Vfactor112	0.0		1.0
-Vfactor113	0.0		1.0
-Vfactor121	0.0		1.0
-Vfactor122	0.0		1.0
-Vfactor123	0.0		1.0
-Vfactor124	0.0		1.0
-Vfactor131	0.0		1.0
+Vfactor112	0.0		1.0	# [GLYMAID=Glyma.09G015500]
+Vfactor113	0.0		1.0	# [GLYMAID=Glyma.15G012500]
+Vfactor121	0.0		1.0	# [GLYMAID=Glyma.06G017900]
+Vfactor122	0.0		1.0	# [GLYMAID=Glyma.08G302600]
+Vfactor123	0.0		1.0	# [GLYMAID=Glyma.09G255200]
+Vfactor124	0.0		1.0	# [GLYMAID=Glyma.01G026700]
+Vfactor131	0.0		1.0	# [GLYMAID=Glyma.13G222300]
 Vf_T131		0.0		1.0
 Vf_T113		0.0		1.0
 Vf_T123		0.0		1.0

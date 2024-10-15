@@ -31,4 +31,5 @@
 #define MEMBERS_POOL BF, FIBF, FI, RROEA, RuACT, SUCS
 
 DECLARE_PARAM_BASE(pool, Pool, POOL,
-		   (PR, PS, RedoxReg, XanCycle))
+		   (CM, DynaPS, EPS, PR, PS, PS_PR, RA, RedoxReg,
+		    XanCycle, trDynaPS))

@@ -40,7 +40,6 @@ namespace ePhotosynthesis {
       MODULE_trDynaPS   ,
       MODULE_MAX        ,
   };
-  
   #define MEMBERS_MODULE		\
       MODULE_NONE       ,		\
       MODULE_BF         ,		\
@@ -60,6 +59,8 @@ namespace ePhotosynthesis {
       MODULE_XanCycle   ,		\
       MODULE_trDynaPS   ,		\
       MODULE_MAX
+  static const std::vector<MODULE> ALL_MODULE = {MODULE_BF, MODULE_CM, MODULE_DynaPS, MODULE_EPS, MODULE_FIBF, MODULE_FI, MODULE_PR, MODULE_PS, MODULE_PS_PR, MODULE_RA, MODULE_RROEA, MODULE_RedoxReg, MODULE_RuACT, MODULE_SUCS, MODULE_XanCycle, MODULE_trDynaPS};  /**< All enum values */
+  
   enum PARAM_TYPE : int {
       PARAM_TYPE_NONE   ,
       PARAM_TYPE_COND   ,
@@ -70,7 +71,6 @@ namespace ePhotosynthesis {
       PARAM_TYPE_VEL    ,
       PARAM_TYPE_MAX    ,
   };
-  
   #define MEMBERS_PARAM		\
       PARAM_TYPE_NONE   ,		\
       PARAM_TYPE_COND   ,		\
@@ -80,6 +80,8 @@ namespace ePhotosynthesis {
       PARAM_TYPE_RC     ,		\
       PARAM_TYPE_VEL    ,		\
       PARAM_TYPE_MAX
+  static const std::vector<PARAM_TYPE> ALL_PARAM_TYPE = {PARAM_TYPE_COND, PARAM_TYPE_POOL, PARAM_TYPE_KE, PARAM_TYPE_MOD, PARAM_TYPE_RC, PARAM_TYPE_VEL};  /**< All enum values */
+  
   // Utility for getting module id from enum type
   template<typename T>
   MODULE get_enum_module() {
@@ -214,7 +216,6 @@ namespace ePhotosynthesis {
     static const MODULE module;
     static const PARAM_TYPE param_type;
     static const std::vector<Type> all;  /**< All enum values */
-    static bool state_updated;  /** One of the editable collection(s) was updated */
     static const std::map<Type, std::string> names;  /**< Names for values */
     static const std::map<Type, double> defaults;  /**< Defaults for values */
     static const std::map<Type, double> defaults_C3;  /**< Defaults_C3 for values */
@@ -721,7 +722,6 @@ namespace ePhotosynthesis {
     */
     static void clearSkipped() {
       skipped.clear();
-      state_updated = true;
     }
     /**
       Add an element to skipped if it is not already present
@@ -731,7 +731,6 @@ namespace ePhotosynthesis {
       if (!isSkipped(x)) {
         skipped.push_back(x);
       }
-      state_updated = true;
     }
     /**
       Remove an element from skipped
@@ -745,7 +744,6 @@ namespace ePhotosynthesis {
       if (it != skipped.end()) {
         skipped.erase(it);
       }
-      state_updated = true;
     }
     /**
       Add multiple elements to skipped if they are not already present
@@ -756,7 +754,6 @@ namespace ePhotosynthesis {
       for (it = x.begin(); it != x.end(); it++) {
         addSkipped((*(it)));
       }
-      state_updated = true;
     }
     /**
       Remove multiple elements to skipped if they are not already present
@@ -767,7 +764,6 @@ namespace ePhotosynthesis {
       for (it = x.begin(); it != x.end(); it++) {
         removeSkipped((*(it)));
       }
-      state_updated = true;
     }
     /**
       Print the contents of resetone

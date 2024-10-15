@@ -48,7 +48,6 @@ void EPSDriver::setup() {
 
     SYSInitial(inputVars);
     //time = tglobal;
-    inputVars->Tp = this->Tp;
     inputVars->alfa = 0.85;
     PS::setJmax(inputVars->EnzymeAct.at("Jmax"));
     inputVars->fc = 0.15;

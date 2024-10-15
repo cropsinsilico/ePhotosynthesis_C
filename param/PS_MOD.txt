@@ -119,13 +119,13 @@ Theta		0.0	0.0	# [INIT_ONCE]
 beta		0.0	0.0	# [INIT_ONCE]
 Jmax		0.0	0.0	# [INIT_ONCE]
 # Variables only used for C3
-Vfactor1	1.0      1.0	# [RESET_ONE] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-Vfactor2	1.0	 1.0	# [RESET_ONE] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-Vfactor3	1.0	 1.0	# [RESET_ONE] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-Vfactor5	1.0	 1.0	# [RESET_ONE] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-Vfactor7	1.0	 1.0	# [RESET_ONE] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-Vfactor13	1.0	 1.0	# [RESET_ONE] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-Vfactor23	1.0	 1.0	# [RESET_ONE] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vfactor1	1.0      1.0	# [RESET_ONE,GLYMAID=Glyma.19G046800] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vfactor2	1.0	 1.0	# [RESET_ONE,GLYMAID=Glyma.08G165500] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vfactor3	1.0	 1.0	# [RESET_ONE,GLYMAID=Glyma.04G015900] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vfactor5	1.0	 1.0	# [RESET_ONE,GLYMAID=Glyma.10G268500] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vfactor7	1.0	 1.0	# [RESET_ONE,GLYMAID=Glyma.10G293500] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vfactor13	1.0	 1.0	# [RESET_ONE,GLYMAID=Glyma.19G089100] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
+Vfactor23	1.0	 1.0	# [RESET_ONE,GLYMAID=Glyma.17G015600] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
 Vf_T3		1.0	 1.0	# [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C4
 Vf_T2		1.0	 1.0	# [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
 Vf_T1		1.0	 1.0	# [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3

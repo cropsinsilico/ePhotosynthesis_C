@@ -24,6 +24,7 @@ while [[ $# -gt 0 ]]; do
 	    ;;
 	--ephoto )
 	    RUN_EPHOTO="TRUE"
+	    DONT_TEST="TRUE"
 	    shift
 	    ;;
 	--build-dir )
@@ -108,7 +109,9 @@ if [ -n "$WITH_COVERAGE" ]; then
     make coverage
 fi
 if [ -n "$RUN_EPHOTO" ]; then
-    ./ePhoto -d 4 --enzyme ../InputEnzyme.txt
+    cd ..
+    ./$BUILD_DIR/ePhoto -d 4 --enzyme InputEnzyme.txt --grn InputGRNC.txt -T 25
+    cd $BUILD_DIR
 fi
 
 if [ -n "$DO_DOCS" ]; then

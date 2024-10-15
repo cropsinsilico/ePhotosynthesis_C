@@ -41,7 +41,7 @@ class RACondition;
  */
 class EPSCondition : public ConditionBase<EPSCondition, RACondition, MODULE_EPS> {
 public:
-    DECLARE_VALUE_SET_COMPOSITE(EPSCondition, (CMCondition, FIBFCondition), ConditionBase<EPSCondition, RACondition, MODULE_EPS>)
+    DECLARE_VALUE_SET_COMPOSITE(EPSCondition, (CMCondition, FIBFCondition), (CM_con, FIBF_con), ConditionBase<EPSCondition, RACondition, MODULE_EPS>)
     EPSCondition(RACondition* par = nullptr) : CM_con(new CMCondition(this)), FIBF_con(new FIBFCondition(this)) {
         setParent(par);
         initMembers();

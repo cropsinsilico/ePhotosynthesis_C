@@ -42,7 +42,7 @@ class trDynaPSCondition;
  */
 class DynaPSCondition : public ConditionBase<DynaPSCondition, trDynaPSCondition, MODULE_DynaPS> {
 public:
-    DECLARE_VALUE_SET_COMPOSITE(DynaPSCondition, (RACondition, XanCycleCondition), ConditionBase<DynaPSCondition, trDynaPSCondition, MODULE_DynaPS>)
+    DECLARE_VALUE_SET_COMPOSITE(DynaPSCondition, (RACondition, XanCycleCondition), (RA_con, XanCycle_con), ConditionBase<DynaPSCondition, trDynaPSCondition, MODULE_DynaPS>)
     DynaPSCondition(trDynaPSCondition* par = nullptr) : RA_con(new RACondition(this)), XanCycle_con(new XanCycleCondition(this)) {
         setParent(par);
         initMembers();

@@ -38,7 +38,7 @@ namespace conditions {
  */
 class RedoxRegCondition : public ConditionBase<RedoxRegCondition, RedoxRegCondition, MODULE_RedoxReg> {
 public:
-    DECLARE_VALUE_SET_COMPOSITE(RedoxRegCondition, (RACondition), ConditionBase<RedoxRegCondition, RedoxRegCondition, MODULE_RedoxReg>)
+    DECLARE_VALUE_SET_COMPOSITE(RedoxRegCondition, (RACondition), (RA_con), ConditionBase<RedoxRegCondition, RedoxRegCondition, MODULE_RedoxReg>)
     RedoxRegCondition() : RA_con(new RACondition()) {
       initMembers();
     }

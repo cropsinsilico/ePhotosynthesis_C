@@ -47,12 +47,11 @@ public:
       \copydoc drivers::Driver::Driver
       \param para Input parameters
       \param ratio Input ratio.
-      \param Tp The initial temperature.
       */
 
     EPSDriver(Variables *theVars, const double startTime, const double stepSize, const double endTime,
               const int maxSubsteps, const double atol, const double rtol,
-              const std::size_t para, const double ratio, const double Tp,
+              const std::size_t para, const double ratio,
               const bool showWarn = false) :
         Driver(theVars, startTime, stepSize, endTime, maxSubsteps, atol, rtol, showWarn) {
 #ifdef INCDEBUG
@@ -60,7 +59,6 @@ public:
 #endif
         ParaNum = para;
         Ratio = ratio;
-        this->Tp = Tp;
     }
 
     ~EPSDriver() override;
@@ -98,7 +96,6 @@ private:
     double AtpCost;
     std::size_t ParaNum;
     double Ratio;
-    double Tp;
 };
 
 }  // namespace drivers

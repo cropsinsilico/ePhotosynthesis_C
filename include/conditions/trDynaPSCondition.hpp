@@ -40,7 +40,7 @@ namespace conditions {
  */
 class trDynaPSCondition : public ConditionBase<trDynaPSCondition, trDynaPSCondition, MODULE_trDynaPS> {
 public:
-    DECLARE_VALUE_SET_COMPOSITE(trDynaPSCondition, (RROEACondition, DynaPSCondition), ConditionBase<trDynaPSCondition, trDynaPSCondition, MODULE_trDynaPS>)
+    DECLARE_VALUE_SET_COMPOSITE(trDynaPSCondition, (RROEACondition, DynaPSCondition), (RROEA_con, DynaPS_con), ConditionBase<trDynaPSCondition, trDynaPSCondition, MODULE_trDynaPS>)
     trDynaPSCondition() : RROEA_con(new RROEACondition(this)), DynaPS_con(new DynaPSCondition(this)) {
         initMembers();
     }

@@ -1,0 +1,20 @@
+AVR		30.0	# [CONST]
+HPR		4.66	# [CONST]
+O2		210.0	# [CONST]
+CO2_cond	0.0
+GLight		0.0
+O2_cond		0.0
+PS12ratio	0.0
+ADP		0.0
+Pi		0.0
+TestATPCost	0.0
+CO2_in		0.0
+TestLi		0.0
+PS2BF_Pi	0.0
+PS_PR_Param	0.0
+Tp		0.0
+alfa		0.0
+fc		0.0
+lightParam	0.0
+alpha1		1.205	# [CONST]
+alpha2		2.06	# [CONST]

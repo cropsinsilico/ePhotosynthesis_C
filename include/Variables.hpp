@@ -42,7 +42,7 @@ namespace ePhotosynthesis {
 /**
   Structure to hold global variables
   */
-class Variables {
+class Variables { // : public ValueSet<MODULE_NONE, PARAM_TYPE_COND> {
 public:
     Variables(SUNContext* ctx = NULL) {
         context = ctx;
@@ -56,36 +56,42 @@ public:
     Variables* deepcopy() const;
     Variables& operator=(const Variables& other);
     friend std::ostream& operator<<(std::ostream &out, const Variables *in);
+  
+    template<typename T>
+    void initParamDefaults() {
+      std::string filename;
+      std::map<PARAM_TYPE, std::map<MODULE, std::string> >::iterator it_pt = files.find(T::param_type);
+      if (it_pt != files.end()) {
+	std::map<MODULE, std::string>::iterator it_mod = it_pt->second.find(T::module);
+	if (it_mod != it_pt->second.end()) {
+	  filename = it_mod->second;
+	  it_pt->second.erase(it_mod);
+	}
+      }
+      T::initDefaults(useC3, filename);
+    }
+    
     template<typename T>
     void initParam(T& param) {
-      param.initValues(useC3);
-      std::map<PARAM_TYPE, std::map<MODULE, std::string> >::iterator it_pt = files.find(param.param_type);
-      if (it_pt == files.end())
-	return;
-      std::map<MODULE, std::string>::iterator it_mod = it_pt->second.find(param.module);
-      if (it_mod == it_pt->second.end())
-	return;
-      param.update_values(it_mod->second);
+      initParamDefaults<T>();
+      param.initValues();
     }
     template<typename T>
     void initParamStatic() {
-      T::initValues(useC3);
-      std::map<PARAM_TYPE, std::map<MODULE, std::string> >::iterator it_pt = files.find(T::param_type);
-      if (it_pt == files.end())
-	return;
-      std::map<MODULE, std::string>::iterator it_mod = it_pt->second.find(T::module);
-      if (it_mod == it_pt->second.end())
-	return;
-      T::update_values(it_mod->second);
+      initParamDefaults<T>();
+      T::initValues();
     }
 
-    double getVar(const MODULE& mod, const PARAM_TYPE& pt,
-		  const std::string& name) const;
-    double getVar(const std::string& k) const {
+    static void initDefaults(const MODULE& module,
+			     const PARAM_TYPE& param_type,
+			     const bool useC3=false,
+			     const std::string& filename="");
+    std::string parseVar(const std::string& k,
+			 MODULE& mod, PARAM_TYPE& pt) const {
+	mod = MODULE_NONE;
+	pt = PARAM_TYPE_NONE;
 	std::string split="::", modS, ptS, name;
 	size_t idx1 = k.find(split);
-	MODULE mod = MODULE_NONE;
-	PARAM_TYPE pt = PARAM_TYPE_NONE;
 	if (idx1 == std::string::npos) {
 	    // TODO: Var
 	    throw std::runtime_error("Could not find 1st '::' marking module");
@@ -100,8 +106,28 @@ public:
 	    mod = utils::enum_string2key<MODULE>(modS);
 	    pt = utils::enum_string2key<PARAM_TYPE>(ptS);
 	}
-	std::cerr << "getVar[" << mod << ", " << pt << ", " << name <<
-	  std::endl;
+	std::cerr << "parseVar[" << k << ", " << mod << ", " <<
+	  pt << ", " << name << std::endl;
+	return name;
+    }
+
+    void setVar(const MODULE& mod, const PARAM_TYPE& pt,
+		const std::string& name, const double& value);
+    void setVar(const std::string& k, const double& value) {
+	std::string name;
+	MODULE mod = MODULE_NONE;
+	PARAM_TYPE pt = PARAM_TYPE_NONE;
+	name = parseVar(k, mod, pt);
+	return setVar(mod, pt, name, value);
+    }
+
+    double getVar(const MODULE& mod, const PARAM_TYPE& pt,
+		  const std::string& name) const;
+    double getVar(const std::string& k) const {
+	std::string name;
+	MODULE mod = MODULE_NONE;
+	PARAM_TYPE pt = PARAM_TYPE_NONE;
+	name = parseVar(k, mod, pt);
 	return getVar(mod, pt, name);
     }
 

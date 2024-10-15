@@ -44,6 +44,9 @@ Debug::DebugLevel EPSCondition::_dlevel = Debug::Middle;
 DEFINE_VALUE_SET(EPSCondition);
 
 EPSCondition* EPS::_init(Variables *theVars) {
+
+    theVars->CO2_cond = theVars->CO2_in / (3. * pow(10., 4.));
+  
     FIBFCondition* FIBF_con = FIBF::init(theVars);
 
     ////////////////////////////////////////////////

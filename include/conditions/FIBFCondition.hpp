@@ -44,7 +44,7 @@ class EPSCondition;
  */
 class FIBFCondition : public ConditionBase<FIBFCondition, EPSCondition, MODULE_FIBF> {
 public:
-    DECLARE_VALUE_SET_COMPOSITE(FIBFCondition, (BFCondition, FICondition), ConditionBase<FIBFCondition, EPSCondition, MODULE_FIBF>)
+    DECLARE_VALUE_SET_COMPOSITE(FIBFCondition, (BFCondition, FICondition), (BF_con, FI_con), ConditionBase<FIBFCondition, EPSCondition, MODULE_FIBF>)
     FIBFCondition(EPSCondition* par = nullptr) : BF_con(new BFCondition(this)), FI_con(new FICondition(this)) {
         setParent(par);
         initMembers();

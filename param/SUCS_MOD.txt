@@ -66,10 +66,10 @@ Vf_T57		0.0		1.0	# Set by VfactorT if GRNT & Tp > 25 for C3
 Vf_T51		0.0		1.0	# Set by VfactorT if GRNT & Tp > 25 for C3
 Vf_T56		0.0		1.0	# Set by VfactorT if GRNT & Tp > 25 for C3
 Vfactor51	0.0		1.0
-Vfactor52	0.0		1.0	# Set by VfactorCp if GRNC & CO2_cond > 0 for C3
-Vfactor56	0.0		1.0	# Set by VfactorCp if GRNC & CO2_cond > 0 for C3
-Vfactor57	0.0		1.0	# Set by VfactorCp if GRNC & CO2_cond > 0 for C3
-Vfactor59	0.0		1.0	# Set by VfactorCp if GRNC & CO2_cond > 0 for C3
+Vfactor52	0.0		1.0	# [GLYMAID=Glyma.16G168000] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
+Vfactor56	0.0		1.0	# [GLYMAID=Glyma.06G323700] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
+Vfactor57	0.0		1.0	# [GLYMAID=Glyma.10G086600] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
+Vfactor59	0.0		1.0	# [GLYMAID=Glyma.11G169700] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
 SUCSV51		0.0		0.0	# Set by calculation for C3
 SUCSV52		0.0     	0.0     # Set by calculation for C3
 SUCSV55		0.0     	0.0     # Set by calculation for C3

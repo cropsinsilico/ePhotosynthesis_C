@@ -41,7 +41,7 @@ class CMCondition;
  */
 class PS_PRCondition : public ConditionBase<PS_PRCondition, CMCondition, MODULE_PS_PR> {
 public:
-    DECLARE_VALUE_SET_COMPOSITE(PS_PRCondition, (PSCondition, PRCondition), ConditionBase<PS_PRCondition, CMCondition, MODULE_PS_PR>)
+    DECLARE_VALUE_SET_COMPOSITE(PS_PRCondition, (PSCondition, PRCondition), (PS_con, PR_con), ConditionBase<PS_PRCondition, CMCondition, MODULE_PS_PR>)
     PS_PRCondition(CMCondition* par = nullptr) : PS_con(new PSCondition(this)), PR_con(new PRCondition(this)) {
         setParent(par);
         initMembers();

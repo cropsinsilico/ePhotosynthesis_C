@@ -1252,7 +1252,6 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 f'Remove all entries from {self.collection_name}'
             ]
             body += [f"{result}.clear();"]
-            body += ['state_updated = true;']
         elif function_type in ['get', 'getdefault']:
             assert hasattr(self, 'value_type')
             body += [f"typename {collection_type}::const_iterator it;"]
@@ -1393,7 +1392,6 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 f"  {result}.erase(it);",
                 "}",
             ]
-            body += ['state_updated = true;']
         elif function_type == 'add':
             assert self.is_editable
             docs += [
@@ -1410,7 +1408,6 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                     f"  {self.generate_add(result, *arg_names)};",
                     "}"
                 ]
-            body += ['state_updated = true;']
         elif function_type.endswith('Multiple'):
             assert self.is_editable
             short = function_type.split('Multiple')[0]
@@ -1427,7 +1424,6 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 f"  {ftype}({itdref});",
                 "}"
             ]
-            body += ['state_updated = true;']
         else:
             raise NotImplementedError(
                 f"Unimplemented function_type \'{function_type}\' "
@@ -1895,8 +1891,8 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
         lines += self.parent.generate_enum(
             self.enum_name, enum_members, as_class=False,
         )
-        lines += self.parent.generate_definition_macro(
-            self.enum_name, enum_members, macro_suffix='')
+        # lines += self.parent.generate_definition_macro(
+        #     self.enum_name, enum_members, macro_suffix='')
         # Param types
         existing_enum_total = [[x['name'] for x in enum_members]]
         if self.accum_enum_name:
@@ -1911,8 +1907,8 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
             lines += self.parent.generate_enum(
                 self.accum_enum_name, accum_enum_members, as_class=False,
             )
-            lines += self.parent.generate_definition_macro(
-                self.accum_enum_name, accum_enum_members, macro_suffix='')
+            # lines += self.parent.generate_definition_macro(
+            #     self.accum_enum_name, accum_enum_members, macro_suffix='')
             existing_enum_total.append([x['name'] for x in
                                         accum_enum_members])
         # Utility for getting module id from enum type
@@ -2195,15 +2191,21 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
     def generate_declaration(self, name, members, enum_name=None,
                              enum_type='int', members_only=False,
                              as_class=None, **kwargs):
+        lines = []
         if as_class is None:
             as_class = self.as_class
         if not as_class:
-            return self.generate_definition_enum(
+            lines += self.generate_definition_enum(
                 name, members, enum_name=enum_name, enum_type=enum_type,
-                as_class=as_class)  # , **kwargs)
+                as_class=as_class)
+            lines += self.generate_definition_macro(
+                name, members, macro_suffix='')
+            lines += self.generate_definition_all(
+                name, members, enum_name=enum_name,
+                as_class=as_class)
+            return lines
         if enum_name is None:
             enum_name = 'Type'
-        lines = []
         template_lines = []
         class_name = as_class
         kwargs.setdefault('spec_param',
@@ -2261,20 +2263,9 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                     name, members, enum_name=enum_name,
                     enum_prefix=enum_prefix)
                 # lines += ['#ifndef _MSC_VER']
-            lines += [
-                f'{template}{static}const std::vector<'
-                f'{enum_name_full}> {enum_prefix}all;'
-            ]
-            if not specialization:
-                lines[-1] += '  /**< All enum values */'
-            lines += [
-                f'{template}{static}bool {enum_prefix}state_updated;'
-            ]
-            if not specialization:
-                lines[-1] += (
-                    '  /** One of the editable collection(s) was '
-                    'updated */'
-                )
+            lines += self.generate_definition_all(
+                name, members, enum_name=enum_name, as_class=as_class,
+                declare=True, specialization=specialization)
             for k in self.added_collections:
                 self.get_child(k).add_enum(enum_name)
                 collection_type = self.get_child(k).generate_collection_type(
@@ -2328,8 +2319,6 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 lines += [
                     f'const {p} {enum_prefix}{p.lower()} = {t};'
                 ]
-            # lines += template_lines
-            # lines += [f'bool {enum_prefix}state_updated = true;']
             for k in self.added_collections:
                 self.get_child(k).add_enum(enum_name)
                 collection_type = self.get_child(k).generate_collection_type(
@@ -2367,6 +2356,52 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 name, members, width=width, width_val=width_val)
         ]
         lines += ['};']
+        return lines
+
+    def generate_definition_all(self, name, members, enum_name=None,
+                                as_class=None, declare=False,
+                                specialization=False):
+        lines = []
+        if as_class is None:
+            as_class = self.as_class
+        template = 'template<> ' if specialization else ''
+        static = 'static ' if not specialization else ''
+        class_name = as_class if as_class else ''
+        if enum_name is None:
+            if as_class:
+                enum_name = 'Type'
+            else:
+                enum_name = name
+        enum_prefix = (
+            f'{class_name}{specialization}::' if specialization else '')
+        enum_name_full = f'{enum_prefix}{enum_name}'
+        if specialization:
+            enum_name_full = f'typename {enum_name_full}'
+        if as_class:
+            var_name = 'all'
+        else:
+            var_name = f'ALL_{enum_name}'
+        lines += [
+            f'{template}{static}'
+            f'const std::vector<{enum_name_full}> '
+            f'{enum_prefix}{var_name}'
+        ]
+        if declare:
+            lines[-1] += ';'
+        else:
+            enum_member_prefix = enum_prefix
+            if as_class:
+                enum_member_prefix += f'SCOPED_ENUM_TYPE({enum_name})'
+            members_core = [
+                x for x in members if x['abbr'] not in ["NONE", "MAX"]
+            ]
+            prefixed_names = [
+                enum_member_prefix + x["name"] for x in members_core
+            ]
+            lines[-1] += f' = {{{", ".join(prefixed_names)}}};'
+        docs = '  /**< All enum values */'
+        if (not as_class) or (declare and not specialization):
+            lines[-1] += docs
         return lines
 
     def generate_definition_macro(self, name, members, enum_name=None,
@@ -2412,9 +2447,6 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             members.insert(0, {'name': first, 'abbr': first})
         if (not members) or members[-1]['abbr'] != last:
             members.append({'name': last, 'abbr': last})
-        members_core = [
-            x for x in members if x['abbr'] not in skip_items
-        ]
         lines = []
         template_lines = []
         enum_prefix = ''
@@ -2430,30 +2462,16 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             specialization, spec_var = self.specialization(
                 template_lines, **kwargs)
             enum_prefix = f'{class_name}{specialization}::'
-        enum_member_prefix = enum_prefix
-        if as_class:
-            enum_member_prefix += f'SCOPED_ENUM_TYPE({enum_name})'
-        enum_name_full = f'{enum_prefix}{enum_name}'
-        if specialization:
-            enum_name_full = f'typename {enum_name_full}'
         if self.enum_in_source:
             lines += template_lines
             lines += self.generate_definition_enum(
                 name, members, enum_name=enum_name, enum_type=enum_type,
                 enum_prefix=enum_prefix, as_class=as_class)
         if as_class:
-            prefixed_names = [
-                enum_member_prefix + x["name"] for x in members_core
-            ]
             template = 'template<> ' if specialization else ''
-            lines += [
-                f'{template}const '
-                f'std::vector<{enum_name_full}> '
-                f'{enum_prefix}all = '
-                f'{{{", ".join(prefixed_names)}}};',
-                f'{template}bool '
-                f'{enum_prefix}state_updated = true;',
-            ]
+            lines += self.generate_definition_all(
+                name, members, enum_name=enum_name, as_class=as_class,
+                specialization=specialization)
             for k in self.added_collections:
                 self.get_child(k).add_enum(enum_name)
                 if template:

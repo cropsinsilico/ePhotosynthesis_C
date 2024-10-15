@@ -106,7 +106,6 @@ enum ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type : int {
     NADPH       ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::all;
-template<> bool ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::defaults_C3;
@@ -142,7 +141,6 @@ enum ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type : int {
     NONE   ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::all;
-template<> bool ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::defaults_C3;
@@ -178,7 +176,6 @@ enum ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type : int {
     NONE   ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::all;
-template<> bool ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::defaults_C3;
@@ -214,7 +211,6 @@ enum ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type : int {
     NONE   ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::all;
-template<> bool ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::defaults_C3;
@@ -253,7 +249,6 @@ enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type : int {
     kd       ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::all;
-template<> bool ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::defaults_C3;
@@ -355,7 +350,6 @@ enum ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type : int {
     PQn            ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::all;
-template<> bool ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::defaults_C3;
@@ -424,7 +418,6 @@ enum ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type : int {
     _v131     ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::all;
-template<> bool ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::defaults_C3;
@@ -505,7 +498,6 @@ enum ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type : int {
     _v1      ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::all;
-template<> bool ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::defaults_C3;
@@ -541,7 +533,6 @@ enum ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type : int {
     NONE   ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::all;
-template<> bool ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::defaults_C3;
@@ -577,7 +568,6 @@ enum ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type : int {
     NONE   ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::all;
-template<> bool ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::defaults_C3;
@@ -646,7 +636,6 @@ enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type : int {
     Coeff      ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::all;
-template<> bool ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::defaults_C3;
@@ -685,7 +674,6 @@ enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type : int {
     Thion     ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::all;
-template<> bool ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::defaults_C3;
@@ -733,7 +721,6 @@ enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type : int {
     RuBP     ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::all;
-template<> bool ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::defaults_C3;
@@ -793,7 +780,6 @@ enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type : int {
     PGAc       ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::all;
-template<> bool ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::defaults_C3;
@@ -841,7 +827,6 @@ enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type : int {
     ABA      ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::all;
-template<> bool ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::defaults_C3;
@@ -877,7 +862,6 @@ enum ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type : int {
     NONE   ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::all;
-template<> bool ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::defaults_C3;
@@ -913,7 +897,6 @@ enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type : int {
     NONE   ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::all;
-template<> bool ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::defaults_C3;
@@ -949,7 +932,6 @@ enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type : int {
     NONE   ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::all;
-template<> bool ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::state_updated;
 template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::defaults_C3;

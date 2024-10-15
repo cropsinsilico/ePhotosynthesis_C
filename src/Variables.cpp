@@ -231,7 +231,113 @@ for (auto i : in->FluxTR)
 out << std::endl;
 
     out << "useC3 = " << in->useC3 << std::endl;
+
+    // Conditions
+#define OUTPUT_COND(name)			\
+    out << #name "2OUT: " << std::endl << (in->name ## 2OUT) << std::endl
+    OUTPUT_COND(BF);
+    OUTPUT_COND(FI);
+    OUTPUT_COND(PR);
+    OUTPUT_COND(PS);
+    OUTPUT_COND(RROEA);
+    OUTPUT_COND(RedoxReg);
+    OUTPUT_COND(RuACT);
+    OUTPUT_COND(SUCS);
+    OUTPUT_COND(XanCycle);
+#undef OUTPUT_COND
     return out;
+}
+
+
+void Variables::initDefaults(const MODULE& module,
+			     const PARAM_TYPE& param_type,
+			     const bool useC3,
+			     const std::string& filename) {
+#define ADD_SPEC(var, mod, pt)						\
+    if (module == MODULE_ ## mod && param_type == PARAM_TYPE_ ## pt) {	\
+	var::initDefaults(useC3, filename);				\
+	return;								\
+    }
+#define ADD_SPEC_MOD(mod)						\
+    ADD_SPEC(conditions::mod ## Condition, mod, COND)			\
+    else ADD_SPEC(pool::mod ## Pool, mod, POOL)				\
+    else ADD_SPEC(RC::mod ## RC, mod, RC)				\
+    else ADD_SPEC(KE::mod ## KE, mod, KE)				\
+    else ADD_SPEC(vel::mod ## Vel, mod, VEL)				\
+    else ADD_SPEC(modules::mod, mod, MOD)
+  
+    ADD_SPEC_MOD(BF)
+    else ADD_SPEC_MOD(CM)
+    else ADD_SPEC_MOD(DynaPS)
+    else ADD_SPEC_MOD(EPS)
+    else ADD_SPEC_MOD(FIBF)
+    else ADD_SPEC_MOD(FI)
+    else ADD_SPEC_MOD(PR)
+    else ADD_SPEC_MOD(PS)
+    else ADD_SPEC_MOD(PS_PR)
+    else ADD_SPEC_MOD(RA)
+    else ADD_SPEC_MOD(RROEA)
+    else ADD_SPEC_MOD(RedoxReg)
+    else ADD_SPEC_MOD(RuACT)
+    else ADD_SPEC_MOD(SUCS)
+    else ADD_SPEC_MOD(XanCycle)
+    else ADD_SPEC_MOD(trDynaPS)
+#undef ADD_SPEC_MOD
+#undef ADD_SPEC
+    // else if (module == MODULE_NONE && PARAM_TYPE == PARAM_TYPE_NONE) {
+    // 	initDefaults(useC3, filename);
+    //  return;
+    else {
+        throw std::runtime_error("Invalid MODULE (" + get_enum_name(module) + ") "
+				 + " or PARAM_TYPE (" + get_enum_name(param_type) + ")");
+    }
+}
+
+void Variables::setVar(const MODULE& module,
+		       const PARAM_TYPE& param_type,
+		       const std::string& name,
+		       const double& value) {
+#define ADD_SPEC(var, mod, pt)						\
+    if (module == MODULE_ ## mod && param_type == PARAM_TYPE_ ## pt) {	\
+	var.set(name, value);						\
+	return;								\
+    }
+#define ADD_SPEC_STATIC(var, mod, pt)					\
+    if (module == MODULE_ ## mod && param_type == PARAM_TYPE_ ## pt) {	\
+	var::set(name, value);						\
+	return;								\
+    }
+#define ADD_SPEC_VALUE_SET(mod, var_suffix, pt)	\
+    ADD_SPEC(mod ## var_suffix, mod, pt)
+#define ADD_SPEC_MOD(mod)						\
+    ADD_SPEC_VALUE_SET(mod, _Pool, POOL)				\
+    else ADD_SPEC_VALUE_SET(mod, _RC, RC)				\
+    else ADD_SPEC_VALUE_SET(mod, _KE, KE)				\
+    else ADD_SPEC(mod ## _VEL.getLastData(), mod, VEL)		\
+    else ADD_SPEC_STATIC(modules::mod, mod, MOD)
+  
+    ADD_SPEC_MOD(BF)
+    else ADD_SPEC_MOD(FI)
+    else ADD_SPEC_MOD(PR)
+    else ADD_SPEC_MOD(PS)
+    else ADD_SPEC_MOD(RROEA)
+    else ADD_SPEC_MOD(RedoxReg)
+    else ADD_SPEC_MOD(RuACT)
+    else ADD_SPEC_MOD(SUCS)
+    else ADD_SPEC_MOD(XanCycle)
+    // else ADD_SPEC_MOD(FIBF)
+    else ADD_SPEC_VALUE_SET(FIBF, _Pool, POOL)
+#undef ADD_SPEC_MOD
+#undef ADD_SPEC_VALUE_SET
+#undef ADD_SPEC_STATIC
+#undef ADD_SPEC
+    // else if (module == MODULE_NONE && PARAM_TYPE == PARAM_TYPE_NONE) {
+    // 	return get(name);
+    else {
+        throw std::runtime_error("Invalid MODULE (" + get_enum_name(module) + ") "
+				 + ", PARAM_TYPE (" + get_enum_name(param_type) + ") "
+				 + "or name (" + name + ")");
+    }
 }
 
 double Variables::getVar(const MODULE& module,

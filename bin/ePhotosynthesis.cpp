@@ -46,51 +46,74 @@ using namespace ePhotosynthesis;
 #include <YggInterface.hpp>
 #endif
 
-// macros to get options from either the command line (has precedence) or an options file
-#define varSearchD(x) if (result.count(#x) == 0 && inputs.count(#x) > 0) \
-    x = stod(inputs.at(#x), nullptr);
-#define varSearchI(x) if (result.count(#x) == 0 && inputs.count(#x) > 0) \
-    x = stoi(inputs.at(#x), nullptr);
-#define varSearch(x) if (result.count(#x) == 0 && inputs.count(#x) > 0) \
-    x = inputs.at(#x);
-
+#define convD(x) static_cast<double>(stof(x, nullptr))
+#define convS(x) x
+#define convI(x) stoi(x, nullptr)
+#define convB(x) ((bool)(stoi(x, nullptr)))
 #define displayInputVar(fmt, src, val)				\
   printf("Input variable \"%s\" = " #fmt "\n", #src, val)
 
-#define assignInputVarD(src, dst) if (inputs.count(#src) > 0) {		\
-    theVars-> dst = static_cast<double>(stof(inputs.at(#src), nullptr)); \
-    displayInputVar(%lf, src, theVars-> dst);				\
-  } else								\
-    printf("Input variable \"%s\" not set\n", #src)
-#define assignInputVarI(src, dst) if (inputs.count(#src) > 0) {		\
-    theVars-> dst = stoi(inputs.at(#src), nullptr);			\
-    displayInputVar(%d, src, theVars-> dst);				\
-  } else								\
+#define handleInput(cli, input, local, dst, conv, fmt)	\
+  if (result.count(#cli) != 0) {			\
+    theVars-> dst = local;				\
+    displayInputVar(fmt, cli, theVars-> dst);		\
+  } else if (inputs.count(#input) > 0) {		\
+    theVars-> dst = conv(inputs.at(#input));		\
+    displayInputVar(fmt, src, theVars-> dst);		\
+  } else {						\
+    printf("Input variable \"%s\" not set\n", #input);	\
+  }
+#define handleInputD(cli, input, local, dst)	\
+  handleInput(cli, input, local, dst, convD, %lf)
+#define handleInputI(cli, input, local, dst)	\
+  handleInput(cli, input, local, dst, convI, %d)
+
+// macros to get options from either the command line (has precedence) or an options file
+#define varSearch(x, conv)						\
+  if (result.count(#x) == 0 && inputs.count(#x) > 0)			\
+    x = conv(inputs.at(#x))
+#define varSearchD(x) varSearch(x, convD)
+#define varSearchI(x) varSearch(x, convI)
+#define varSearchS(x) varSearch(x, convS)
+
+#define assignInputVar(src, dst, conv, fmt)		\
+  if (inputs.count(#src) > 0) {				\
+    theVars-> dst = conv(inputs.at(#src));		\
+    displayInputVar(fmt, src, theVars-> dst);		\
+  } else						\
     printf("Input variable \"%s\" not set\n", #src)
 
-#define setInputVarB(src, mod, dst) if (inputs.count(#src) > 0) {	\
-    modules::mod::set ## dst ((bool)(stoi(inputs.at(#src), nullptr)));	\
-    displayInputVar(%d, src, stoi(inputs.at(#src), nullptr));		\
-  } else								\
+#define assignInputVarD(src, dst) assignInputVar(src, dst, convD, %lf)
+#define assignInputVarI(src, dst) assignInputVar(src, dst, convI, %d)
+#define setInputVar(src, mod, dst, conv, fmt)		\
+  if (inputs.count(#src) > 0) {				\
+    modules::mod::set ## dst (conv(inputs.at(#src)));	\
+    displayInputVar(fmt, src, conv(inputs.at(#src)));	\
+  } else						\
     printf("Input variable \"%s\" not set\n", #src)
+#define setInputVarB(src, mod, dst) setInputVar(src, mod, dst, convB, %d)
 
 
 #ifdef WITH_YGGDRASIL
+#define convYggD(x) x.GetDouble()
+#define convYggS(x) x.GetString()
+#define convYggI(x) x.GetInt()
+#define convYggB(x) x.GetBool()
 #define displayYggInputVar(fmt, src, val)				\
   printf("Yggdrasil input variable \"%s\" = " #fmt "\n", #src, val)
-
-#define assignYggVarD(src, dst) if (new_state.HasMember(#src)) {	\
-    theVars->dst = new_state[#src].GetDouble();				\
-    displayYggInputVar(%lf, src, theVars->dst);				\
+#define assignYggVar(src, dst, conv, fmt)			\
+  if (new_state.HasMember(#src)) {				\
+    theVars->dst = conv(new_state[#src]);			\
+    displayYggInputVar(fmt, src, conv(new_state[#src]));	\
   }
-#define assignYggVarI(src, dst) if (new_state.HasMember(#src)) {	\
-    theVars->dst = new_state[#src].GetInt();				\
-    displayYggInputVar(%d, src, theVars->dst);				\
+#define setYggVar(src, mod, dst, conv, fmt)			\
+  if (new_state.HasMember(#src)) {				\
+    modules::mod::set ## dst (conv(new_state[#src]));		\
+    displayYggInputVar(fmt, src, conv(new_state[#src]));	\
   }
-#define setYggVarB(src, mod, dst) if (new_state.HasMember(#src)) {	\
-    modules::mod::set ## dst ((static_cast<int>(new_state[#src].GetBool()) == 1)); \
-    displayYggInputVar(%d, src, static_cast<int>(new_state[#src].GetBool())); \
-  }
+#define assignYggVarD(src, dst) assignYggVar(src, dst, convYggD, %lf)
+#define assignYggVarI(src, dst) assignYggVar(src, dst, convYggI, %d)
+#define setYggVarB(src, mod, dst) setYggVar(src, mod, dst, convYggB, %d)
 #endif // WITH_YGGDRASIL
 
 enum DriverType {
@@ -108,20 +131,8 @@ int main(int argc, const char* argv[]) {
         bool useC3 = false;
         cxxopts::Options options("ePhotosynthesis", "C++ implementation of the matlab original");
         options.show_positional_help();
-        std::string evn, atpcost, optionsFile, enzymeFile, grnFile;
-#define MODULE_FPARAM(name)			\
-	std::string f ## name ## _COND, f ## name ## _RC, f ## name ## _POOL, f ## name ## _KE, f ## name ## _MOD
-	MODULE_FPARAM(BF);
-	MODULE_FPARAM(FI);
-	MODULE_FPARAM(PR);
-	MODULE_FPARAM(PS);
-	MODULE_FPARAM(RROEA);
-	MODULE_FPARAM(RedoxReg);
-	MODULE_FPARAM(RuACT);
-	MODULE_FPARAM(SUCS);
-	MODULE_FPARAM(XanCycle);
-#undef MODULE_FPARAM
-	
+        std::string evn, atpcost, optionsFile, enzymeFile, grnFile,
+	  outputFile, outputVars, outputVarsPerStep;
         double stoptime, begintime, stepsize;
         double abstol, reltol;
         double Tp;
@@ -129,19 +140,7 @@ int main(int argc, const char* argv[]) {
         int driver, maxSubSteps;
         ushort dbglvl;
         bool debugDelta, debugInternal;
-#define MODULE_FPARAM_X(name, suffix, fsuffix, desc)			\
-	(#name #suffix, "File containing " desc " the " #name " module", cxxopts::value<std::string>(f ## name ## _ ## fsuffix)->default_value(""))
-#define MODULE_FPARAM(name)						\
-	MODULE_FPARAM_X(name, Conditions, COND,				\
-			"initial conditions tracked by")		\
-	MODULE_FPARAM_X(name, RateConstants, RC,			\
-			"rate constants that control the")		\
-	MODULE_FPARAM_X(name, Pool, POOL,				\
-			"pool constants that control the")		\
-	MODULE_FPARAM_X(name, EquilibriumConstants, KE,			\
-			"equilibrium constants that control the")	\
-	MODULE_FPARAM_X(name, ModuleConstants, MOD,			\
-			"top level constants that control the")
+	std::map<PARAM_TYPE, std::map<MODULE, std::string> > param_files;
         options.add_options()
                 ("v,verbose", "Record output values for all steps (this can significantly slow the program).", cxxopts::value<bool>(record)->default_value("false"))
                 ("e,evn", "The file (including path) containing environmental parameters", cxxopts::value<std::string>(evn)->default_value("InputEvn.txt"))
@@ -159,22 +158,62 @@ int main(int argc, const char* argv[]) {
                 ("r,reltol", "Relative tolerance for calculations", cxxopts::value<double>(reltol)->default_value("1e-4"))
                 ("T,Tp", "Input Temperature", cxxopts::value<double>(Tp)->default_value("0.0"))
                 ("o,options", "Name of a text file which specifies any of the above options. Command line arguments have priority.", cxxopts::value<std::string>(optionsFile)->default_value(""))
+	        ("x,output", "Name the the text file that outputs should be saved to.", cxxopts::value<std::string>(outputFile)->default_value("output.data"))
                 ("h,help", "Produce help message")
                 ("debug","Debug level", cxxopts::value<ushort>(dbglvl)->default_value("0"))
                 ("debugDelta", "Debug deltas", cxxopts::value<bool>(debugDelta)->default_value("false"))
                 ("debugInternal", "Debug internals", cxxopts::value<bool>(debugInternal)->default_value("false"))
-	  MODULE_FPARAM(BF)
-	  MODULE_FPARAM(FI)
-	  MODULE_FPARAM(PR)
-	  MODULE_FPARAM(PS)
-	  MODULE_FPARAM(RROEA)
-	  MODULE_FPARAM(RedoxReg)
-	  MODULE_FPARAM(RuACT)
-	  MODULE_FPARAM(SUCS)
-	  MODULE_FPARAM(XanCycle)
+	        // ("outputVars", "Comma separated list of names of variables that should be output at the end of a run. Variables for modules, equilibirium constants, etc. can be specified by including the C++ scope of the variable. (e.g. MOD:BF:cATPsyn would output the concentration of ATP synthase). If not provided the output variables will be determined by the driver.", cxxopts::value<std::string>(outputVars)->default_value(""))
+	        // ("outputVarsPerStep", "Comma separated list of names of variables that should be output for each time step. If not provided, variables will not be output at each time step.", cxxopts::value<std::string>(outputVarsPerStep)->default_value(""))
                 ;
-#undef MODULE_FPARAM
-#undef MODULE_FPARAM_X
+
+	for (std::vector<MODULE>::const_iterator m = ALL_MODULE.begin();
+	     m != ALL_MODULE.end(); m++) {
+	  std::string mS = utils::enum_key2string(*m);
+	  for (std::vector<PARAM_TYPE>::const_iterator pt = ALL_PARAM_TYPE.begin();
+	       pt != ALL_PARAM_TYPE.end(); pt++) {
+	    std::string ptS = utils::enum_key2string(*pt);
+	    std::string name = mS + "_" + ptS + "_constants";
+	    std::string desc = "File containing ";
+	    bool no_input = false;
+	    switch (*pt) {
+	    case PARAM_TYPE_COND: {
+	      desc += "initial conditions tracked by";
+	      break;
+	    }
+	    case PARAM_TYPE_RC: {
+	      desc += "rate constants that control the";
+	      break;
+	    }
+	    case PARAM_TYPE_POOL: {
+	      desc += "pool constants that control the";
+	      break;
+	    }
+	    case PARAM_TYPE_KE: {
+	      desc += "equilibrium constants that control the";
+	      break;
+	    }
+	    case PARAM_TYPE_MOD: {
+	      desc += "top level constants that control the";
+	      break;
+	    }
+	    case PARAM_TYPE_VEL: {
+	      no_input = true;
+	      break;
+	    }
+	    default : {
+	      throw std::runtime_error("No description for PARAM_TYPE " + ptS);
+	    }
+	    }
+	    desc += " the " + mS + " module";
+	    param_files[*pt][*m] = "";
+	    if (not no_input) {
+	      options.add_options()
+		(name, desc,
+		 cxxopts::value<std::string>(param_files[*pt][*m])->default_value(""));
+	    }
+	  }
+	}
 
         auto result = options.parse(argc, argv);
 
@@ -186,36 +225,21 @@ int main(int argc, const char* argv[]) {
         if (result.count("options")) {
             readFile(result["options"].as<std::string>(), inputs);
 
-            varSearch(evn)
-            varSearch(atpcost)
-	    varSearch(enzymeFile)
-	    varSearch(grnFile)
-            varSearchD(begintime)
-            varSearchD(stoptime)
-            varSearchD(stepsize)
-            varSearchI(maxSubSteps)
-            varSearchI(driver)
-            varSearchD(abstol)
-            varSearchD(reltol)
-#define MODULE_FPARAM_X(name, fsuffix)			\
-	    varSearch(f ## name ## _ ## fsuffix)
-#define MODULE_FPARAM(name)			\
-	    MODULE_FPARAM_X(name, COND)	\
-	    MODULE_FPARAM_X(name, RC)	\
-	    MODULE_FPARAM_X(name, POOL)	\
-	    MODULE_FPARAM_X(name, KE)	\
-	    MODULE_FPARAM_X(name, MOD)
-	    MODULE_FPARAM(BF)
-	    MODULE_FPARAM(FI)
-	    MODULE_FPARAM(PR)
-	    MODULE_FPARAM(PS)
-	    MODULE_FPARAM(RROEA)
-	    MODULE_FPARAM(RedoxReg)
-	    MODULE_FPARAM(RuACT)
-	    MODULE_FPARAM(SUCS)
-	    MODULE_FPARAM(XanCycle)
-#undef MODULE_FPARAM
-#undef MODULE_FPARAM_X
+            varSearchS(evn);
+            varSearchS(atpcost);
+	    varSearchS(enzymeFile);
+	    varSearchS(grnFile);
+	    varSearchS(outputFile);
+            varSearchD(begintime);
+            varSearchD(stoptime);
+            varSearchD(stepsize);
+	    varSearchD(Tp);
+            varSearchI(maxSubSteps);
+            varSearchI(driver);
+            varSearchD(abstol);
+            varSearchD(reltol);
+	    varSearchS(outputVars);
+	    varSearchS(outputVarsPerStep);
         }
         driverChoice = static_cast<DriverType>(driver);
 	if (driverChoice == EPS)
@@ -223,6 +247,22 @@ int main(int argc, const char* argv[]) {
 
         readFile(evn, inputs);
         readFile(atpcost, inputs);
+
+	for (std::vector<MODULE>::const_iterator m = ALL_MODULE.begin();
+	     m != ALL_MODULE.end(); m++) {
+	  std::string mS = utils::enum_key2string(*m);
+	  for (std::vector<PARAM_TYPE>::const_iterator pt = ALL_PARAM_TYPE.begin();
+	       pt != ALL_PARAM_TYPE.end(); pt++) {
+	    std::string ptS = utils::enum_key2string(*pt);
+	    std::string inName = mS + "_" + ptS + "_constants";
+	    if (param_files[*pt][*m].empty() && inputs.count(inName) > 0)
+	      param_files[*pt][*m] = inputs.at(inName);
+	    std::cerr << "initDefaults: " << *m << ", " << *pt << ", " <<
+	      useC3 << ", " << param_files[*pt][*m] << std::endl;
+	    Variables::initDefaults(*m, *pt, useC3, param_files[*pt][*m]);
+	  }
+	}
+
 	SUNContext context;
 	if (SUNContext_Create(NULL, &context) < 0) {
 	  std::cout << "SUNContext_Create failed" << std::endl;
@@ -237,34 +277,15 @@ int main(int argc, const char* argv[]) {
 	    throw std::runtime_error("Enzyme data required if --c3 set (automatically true for EPS driver)");
 	}
 
-#define MODULE_FPARAM_X(name, fsuffix)					\
-	if (f ## name ## _ ## fsuffix.size() > 0) {			\
-	  theVars->files[PARAM_TYPE_ ## fsuffix][MODULE_ ## name] = f ## name ## _ ## fsuffix; \
-	}
-	// theVars->files_ ## fsuffix[MODULE_ ## name] = f ## name ## _ ## fsuffix
-#define MODULE_FPARAM(name)			\
-	MODULE_FPARAM_X(name, COND);		\
-	MODULE_FPARAM_X(name, RC);		\
-	MODULE_FPARAM_X(name, POOL);		\
-	MODULE_FPARAM_X(name, KE);		\
-	MODULE_FPARAM_X(name, MOD)
-	MODULE_FPARAM(BF);
-	MODULE_FPARAM(FI);
-	MODULE_FPARAM(PR);
-	MODULE_FPARAM(PS);
-	MODULE_FPARAM(RROEA);
-	MODULE_FPARAM(RedoxReg);
-	MODULE_FPARAM(RuACT);
-	MODULE_FPARAM(SUCS);
-	MODULE_FPARAM(XanCycle);
-#undef MODULE_FPARAM
-#undef MODULE_FPARAM_X	
-
 	assignInputVarD(CO2, CO2_in);
 	assignInputVarD(Air_CO2, CO2_in);
 	assignInputVarD(PAR, TestLi);
 	assignInputVarD(Radiation_PAR, TestLi);
 	assignInputVarD(ATPCost, TestATPCost);
+	if (result.count("Tp") == 0) {
+	  assignInputVarD(WeatherTemperature, Tp);
+	  Tp = theVars->Tp;
+	}
 	assignInputVarI(GRNC, GRNC);
 	setInputVarB(SucPath, CM, TestSucPath);
 
@@ -289,9 +310,9 @@ int main(int argc, const char* argv[]) {
 	      // Do nothing
 	      printf("GlymaID \"%s\" not present.\n", it->c_str());
 	    }
-	    if (i < 33)
+	    if (i < 33) {
 	      theVars->VfactorCp[i] = iVfactor;
-	    else if (i == 33)
+	    } else if (i == 33)
 	      modules::BF::setcATPsyn(iVfactor);
 	    else if (i == 34)
 	      modules::BF::setCPSi(iVfactor);
@@ -306,6 +327,7 @@ int main(int argc, const char* argv[]) {
 	  }
 	}
 
+	theVars->Tp = Tp;
         theVars->record = record;
         theVars->useC3 = useC3;
         theVars->RUBISCOMETHOD = 1;
@@ -373,8 +395,8 @@ int main(int argc, const char* argv[]) {
 	  assignYggVarI(GRNC, GRNC);
 	  setYggVarB(SucPath, CM, TestSucPath);
 	  if (new_state.HasMember("Temp")) {
-	    Tp = new_state["Temp"].GetDouble();
-	    displayYggInputVar(%lf, Temp, Tp);
+	    theVars->Tp = new_state["Temp"].GetDouble();
+	    displayYggInputVar(%lf, Temp, theVars->Tp);
 	  }
 	  // TODO: inputs for driver
 
@@ -396,7 +418,7 @@ int main(int argc, const char* argv[]) {
                 break;
             case EPS:
                 maindriver = new drivers::EPSDriver(theVars, begintime, stepsize, stoptime,
-                                                    maxSubSteps, abstol, reltol, 1, 1, Tp);
+                                                    maxSubSteps, abstol, reltol, 1, 1);
                 break;
             default:
                 printf("Invalid driver choice given.\n");
@@ -430,8 +452,9 @@ int main(int argc, const char* argv[]) {
 	  printf("Error sending output.\n");
 	  exit(EXIT_FAILURE);
 	}
-#else	
-        std::ofstream outfile("output.data");
+#else
+	// std::cerr << theVars << std::endl;
+        std::ofstream outfile(outputFile);
 
         switch (driverChoice) {
             case trDynaPS:

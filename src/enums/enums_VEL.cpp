@@ -6,7 +6,6 @@
 using namespace ePhotosynthesis;
 
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::all = {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf1, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf2, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf3, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf4, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf5, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf6, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf7, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf8, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf9, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf10, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf11, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vqi, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vipc, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vicp, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vinc, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vinp, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vdp, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vdc, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vfp, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vfc, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vsfd, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)VsATP, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)VgPQH2, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)JKc, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)JMgc, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)JClc, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf15, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf16, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vbfn2, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)VsNADPH, ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vcet};
-template<> bool ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::names = {
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf1, "Vbf1"   },
@@ -132,7 +131,6 @@ const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::Type> ValueSetEnum<MO
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::all = {};
-template<> bool ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::names = {
 };
@@ -165,7 +163,6 @@ const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::Type> ValueSetEnum<
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::all = {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vA_d, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vA_f, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vA_U, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vU_A, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vU_f, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vU_d, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v1, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v_r1, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vS1_S2, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vS2_S3, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vS3_S0, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vS0_S1, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vz_1, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v1z_1, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2z_1, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v3z_1, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v0z_1, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vz_2, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v1z_2, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2z_2, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v3z_2, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v0z_2, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v1z, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2z, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v3z, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v0z, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vAB1, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vBA1, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vAB2, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vBA2, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v3, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v_r3, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v3_n, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v_r3_n, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v_pq_ox, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Ic, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Ia, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2_1, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2_2, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2_00_1, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2_01_1, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2_02_1, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2_00_2, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2_01_2, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2_02_2, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vr2_00_1, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vr2_01_1, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vr2_02_1, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vr2_1, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vr2_00_2, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vr2_01_2, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vr2_02_2, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vr2_2, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vP680qU, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vP680qA, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vU_P680, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vP680_d, ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vP680_f};
-template<> bool ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::names = {
   {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vA_d, "vA_d"    },
@@ -372,7 +369,6 @@ const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::Type> ValueSetEnum<MO
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::all = {ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v111, ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v112, ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v113, ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v121, ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v122, ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v123, ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v124, ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v131, ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v1in, ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2out};
-template<> bool ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::names = {
   {ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v111, "v111" },
@@ -435,7 +431,6 @@ const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::Type> ValueSetEnum<MO
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::all = {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v1, ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2, ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v3, ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v4, ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v5, ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v6, ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v7, ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v8, ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v9, ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v10, ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v13, ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v16, ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v23, ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v31, ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v32, ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v33, ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Pi, ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v24, ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v25};
-template<> bool ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::names = {
   {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v1, "v1"  },
@@ -525,7 +520,6 @@ const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::Type> ValueSetEnum<MO
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::all = {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)ve2GAPDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)ve2FBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)ve2SBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)ve2PRK, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)ve2ATPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)ve2ATPGPP, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)ve2MDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)ve2Fd, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)veFd2Thio, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)veFd2Calvin, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)ve2RuACT};
-template<> bool ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::names = {
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)ve2GAPDH, "ve2GAPDH"   },
@@ -591,7 +585,6 @@ const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::Type> ValueSetEnum
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::all = {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vred, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vox};
-template<> bool ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::names = {
   {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vred, "Vred"},
@@ -630,7 +623,6 @@ const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::Type> ValueSetE
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::all = {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v1, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vn1, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v7, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vn7, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v6_1, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v6_2};
-template<> bool ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::names = {
   {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v1, "v1"  },
@@ -681,7 +673,6 @@ const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::Type> ValueSetEnum
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::all = {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v51, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v52, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v55, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v56, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v57, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v58, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v59, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v60, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v61, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v62, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vdhap_in, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vgap_in, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vpga_in, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vpga_use, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vatpf};
-template<> bool ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::names = {
   {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v51, "v51"     },
@@ -759,7 +750,6 @@ const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::Type> ValueSetEnum<
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::all = {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vva, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vaz, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vza, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vav, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vvf, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vv2ABA, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)VABAdg};
-template<> bool ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::names = {
   {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vva, "Vva"   },
@@ -813,7 +803,6 @@ const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::Type> ValueSetE
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_VEL>::all = {};
-template<> bool ValueSetEnum<MODULE_NONE, PARAM_TYPE_VEL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_NONE, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_VEL>::names = {
 };
@@ -846,7 +835,6 @@ const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_VEL>::Type> ValueSetEnum<
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_VEL>::all = {};
-template<> bool ValueSetEnum<MODULE_MAX, PARAM_TYPE_VEL>::state_updated = true;
 template<> 
 const std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_VEL>::names = {
 };

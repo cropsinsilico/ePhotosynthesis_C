@@ -135,19 +135,35 @@ namespace ePhotosynthesis {
   out += child::memberCount()
 #define DECLARE_VALUE_SET_COMPOSITE_ADD_CHILDREN(...)	\
   FOR_EACH(DECLARE_VALUE_SET_COMPOSITE_ADD_CHILD, __VA_ARGS__, _EmptyMacroType)
-#define DECLARE_VALUE_SET_COMPOSITE(name, children, ...)	\
-  DECLARE_VALUE_SET_BASE(name, __VA_ARGS__)			\
-  DECLARE_VALUE_SET_MEMBERS(name)				\
-  static std::size_t memberCount() {				\
-    std::size_t out = ParentClass::memberCount();		\
-    DECLARE_VALUE_SET_COMPOSITE_ADD_CHILDREN children;		\
-    return out;							\
-  }								\
-  static std::string memberState() {				\
-    std::string out = ParentClass::memberState();		\
-    DECLARE_VALUE_SET_COMPOSITE_STATE_CHILDREN children;	\
-    return out;							\
+#define DECLARE_VALUE_SET_COMPOSITE_PRINT_CHILD(child)			\
+  child->print(out, tab + 1);						\
+  out << std::endl
+#define DECLARE_VALUE_SET_COMPOSITE_PRINT_CHILDREN(...)			\
+  FOR_EACH(DECLARE_VALUE_SET_COMPOSITE_PRINT_CHILD, __VA_ARGS__)
+#define DECLARE_VALUE_SET_COMPOSITE(name, children, childvars, ...)	\
+  DECLARE_VALUE_SET_BASE(name, __VA_ARGS__)				\
+  DECLARE_VALUE_SET_MEMBERS(name)					\
+  static std::size_t memberCount() {					\
+    std::size_t out = ParentClass::memberCount();			\
+    DECLARE_VALUE_SET_COMPOSITE_ADD_CHILDREN children;			\
+    return out;								\
+  }									\
+  static std::string memberState() {					\
+    std::string out = ParentClass::memberState();			\
+    DECLARE_VALUE_SET_COMPOSITE_STATE_CHILDREN children;		\
+    return out;								\
+  }									\
+  std::ostream& print(std::ostream &out, const uint tab = 0) const override { \
+    const std::string space(tab * 4, ' ');				\
+    out << space << #name << ":" << std::endl;				\
+    DECLARE_VALUE_SET_COMPOSITE_PRINT_CHILDREN childvars;		\
+    return ParentClass::print(out, tab);				\
   }
+  /*
+  friend std::ostream& operator<<(std::ostream& out, const name& x) {	\
+    return print(out);							\
+  }
+  */
   
 #define DEFINE_VALUE_SET_MEMBERS(mod, name)	\
   DEFINE_VALUE_SET_MEMBER_RECORD(mod, name)
@@ -233,9 +249,9 @@ namespace ePhotosynthesis {
     initMembers();						\
     ValueSetClass::initMembersState();				\
   }								\
-  static void initValues(const bool useC3) {			\
+  static void initValues() {					\
     initMembersState();						\
-    ParentClass::initValues(useC3);				\
+    ParentClass::initValues();					\
   }								\
   private:							\
   DECLARE_VALUE_SET_STATIC_MEMBERS_(MEMBERS_ ## name);		\
@@ -945,18 +961,72 @@ private:								\
          minus any values that are skipped.
        \tparam V Value map type.
        \param vals Value map to initialize.
-       \param useC3 If true, default values for a C3 will be used
      */
     template<typename V>
-    static void init_value_map(std::map<EnumType, V>& vals,
-			       const bool useC3) {
-      if (useC3) {
-	copy_value_map(vals, defaults_C3, "init_value_map[C3]: ",
-		       true, false, true, true);
-      } else {
-	copy_value_map(vals, defaults, "init_value_map: ",
-		       true, false, true, true);
+    static void init_value_map(std::map<EnumType, V>& vals) {
+      checkDefaults("init_value_map: ");
+      copy_value_map(vals, defaults, "init_value_map: ",
+		     true, false, true, true);
+    }
+    /**
+       Throw an error if the defaults have not been initialized.
+       \param context String providing context for error messages.
+     */
+    static void checkDefaults(const std::string& context="") {
+      if (defaults.empty() && !EnumBaseClass::defaults.empty())
+	throw std::runtime_error(error_prefix() + context
+				 + "defaults not initialized, call "
+				 + "initDefaults first");
+    }
+    /**
+       Initialize the defaults for the value set if they have not been
+         initialized.
+       \param useC3 If true, default values for a C3 will be used
+       \param filename File containing values to add to the defaults.
+     */
+    static void initDefaults(const bool useC3=false,
+			     const std::string& filename="") {
+      if (defaults.empty() && !EnumBaseClass::defaults.empty()) {
+	if (useC3)
+	  defaults.insert(EnumBaseClass::defaults_C3.begin(),
+			  EnumBaseClass::defaults_C3.end());
+	else
+	  defaults.insert(EnumBaseClass::defaults.begin(),
+			  EnumBaseClass::defaults.end());
       }
+      if (filename.empty())
+	return;
+      copy_value_map(defaults, filename, "initDefaults: ",
+		     false, true, true, true);
+    }
+    /**
+      Get the default value corresponding to an enum key
+      \param[in] x Key to get value for
+      \return Value
+    */
+    static double getDefault(const EnumType& x) {
+      checkDefaults("getDefault: ");
+      typename std::map<EnumType, double>::const_iterator it;
+      it = defaults.find(x);
+      if (it == defaults.end()) {
+        throw std::runtime_error("Could not locate Default for '" + names.find(x)->second + "'");
+      }
+      return it->second;
+    }
+    /**
+      Get the default value corresponding to an enum key
+      \param[in] x Key to get value for
+      \param[in] defaultV Value to return if x is not present
+      \return Value
+    */
+    static double getDefault(const EnumType& x, const double& defaultV) {
+      checkDefaults("getDefault[optional]: ");
+      typename std::map<EnumType, double>::const_iterator it;
+      it = defaults.find(x);
+      if (it == defaults.end()) {
+        return defaultV;
+      }
+      return it->second;
     }
     /**
        Get the reference for the value associated with a key from a value
@@ -1101,7 +1171,9 @@ private:								\
       if (vals.find(k) == vals.end()) {
 	vals.emplace(k, &(v[0]));
 	if (isInitonce(k)) {
-	  compareValues(k, defaults.find(k)->second, defaults_C3.find(k)->second);
+	  compareValues(k, EnumBaseClass::defaults.find(k)->second,
+			EnumBaseClass::defaults_C3.find(k)->second);
+	  checkDefaults("insert_value_orig: ");
 	  v[0] = defaults.find(k)->second;
 	  DEBUG_VALUE_SET(context, "initialized ", k, " = ",
 			  vals[k], " [", v, "]");
@@ -1226,6 +1298,7 @@ private:								\
     static void value_map_fromArray(std::map<EnumType, V>& vals,
 				    const arr &vec,
 				    const std::size_t offset = 0) {
+      checkDefaults("value_map_fromArray: ");
       size_t i = 0;
       size_t nexp = memberCount();
       size_t nact = vec.size() - offset;
@@ -1259,6 +1332,7 @@ private:								\
        \return Member counts.
      */
     static std::size_t memberCount() {
+      checkDefaults("memberCount: ");
       std::size_t out = defaults.size() - (skipped.size() + nonvector.size());
       return out;
     }
@@ -1274,8 +1348,12 @@ private:								\
 	", NONVECT = " + stringNonvector();
       return out;
     }
-    
+    static std::map<EnumType, double> defaults; /**< Default values */
   };
+  
+  template<MODULE ID, PARAM_TYPE PT>
+  std::map<typename ValueSetBase<ID, PT>::EnumType, double>
+  ValueSetBase<ID, PT>::defaults = {};
   
   /**
      Template class to provide methods for manipulating a set of values
@@ -1361,12 +1439,11 @@ private:								\
     /**
        Re-initialize the values to the default values, minus any values
          that are skipped.
-       \param useC3 If true, default values for a C3 will be used
      */
-    virtual void initValues(const bool useC3) {
+    virtual void initValues() {
       initMembersState(true);
 #ifdef CHECK_VALUE_SET_ALTS
-      init_value_map(alts, useC3);
+      init_value_map(alts);
 #endif // CHECK_VALUE_SET_ALTS
     }
 
@@ -1416,6 +1493,9 @@ private:								\
      */
     virtual std::ostream& print(std::ostream &out, const uint tab = 0) const {
       CALL_STATIC_CONST(print_value_map, out, tab);
+    }
+    friend std::ostream& operator<<(std::ostream& out, const ValueSet& x) {
+      return x.print(out);
     }
     /**
        Throw an error if a key is not present in the set.
@@ -1499,6 +1579,14 @@ private:								\
      */
     virtual void set(const EnumType k, const double v) {
       CALL_STATIC(set_value, k, v);
+    }
+    /**
+       Update the value associated with a key.
+       \param k Key to update value for.
+       \param v New value for key.
+     */
+    void set(const std::string& name, const double v) {
+	return set(fromName(name), v);
     }
     /**
        Update the value associated with a key in the value set from a map
@@ -1660,12 +1748,11 @@ private:								\
     /**
        Re-initialize the values to the default values, minus any values
          that are skipped.
-       \param useC3 If true, default values for a C3 will be used
      */
-    static void initValues(const bool useC3) {
+    static void initValues() {
       initMembersState();
 #ifdef CHECK_VALUE_SET_ALTS
-      init_value_map(alts, useC3);
+      init_value_map(alts);
 #endif // CHECK_VALUE_SET_ALTS
     }
 
@@ -1779,6 +1866,14 @@ private:								\
      */
     static void set(const EnumType k, const double v) {
       CALL_STATIC(set_value, k, v);
+    }
+    /**
+       Update the value associated with a key.
+       \param k Key to update value for.
+       \param v New value for key.
+     */
+    static void set(const std::string& name, const double v) {
+	return set(fromName(name), v);
     }
     /**
        Update the value associated with a key in the value set from a map
@@ -1945,6 +2040,78 @@ private:								\
       DECLARE_PARAM_BASE_CLASS(name, pt);				\
     }									\
     }
+
+#define CASE_MOD(mod, X, ...)			\
+  case (MODULE_ ## mod): {			\
+      X(__VA_ARGS__, mod);			\
+      break;					\
+  }
+#define CASE_MOD_PACKED(args)			\
+  CASE_MOD args
+#define SWITCH_MOD(mod, mod_members, ...)	\
+  switch (mod) {				\
+  FOR_EACH_WITH_SUFFIX_ARGS_PACKED(CASE_MOD_PACKED, (__VA_ARGS__), mod_members)	\
+  default: {					\
+    throw std::runtime_error("Unsupported module: " + utils::enum_key2string(module)); \
+  }									\
+  }
+#define SWITCH_MOD_ALL(mod, ...)		\
+  SWITCH_MOD(mod, MEMBERS_MODULE, __VA_ARGS__)
+
+/*
+  CASE_MOD(BF, __VA_ARGS__)			\
+  CASE_MOD(CM, __VA_ARGS__)			\
+  CASE_MOD(DynaPS, __VA_ARGS__)		\
+  CASE_MOD(EPS, __VA_ARGS__)		\
+  CASE_MOD(FIBF, __VA_ARGS__)			\
+  CASE_MOD(FI, __VA_ARGS__)			\
+  CASE_MOD(PR, __VA_ARGS__)			\
+  CASE_MOD(PS, __VA_ARGS__)			\
+  CASE_MOD(PS_PR, __VA_ARGS__)		\
+  CASE_MOD(RA, __VA_ARGS__)			\
+  CASE_MOD(RROEA, __VA_ARGS__)		\
+  CASE_MOD(RedoxReg, __VA_ARGS__)		\
+  CASE_MOD(RuACT, __VA_ARGS__)		\
+  CASE_MOD(SUCS, __VA_ARGS__)			\
+  CASE_MOD(XanCycle, __VA_ARGS__)		\
+  CASE_MOD(trDynaPS, __VA_ARGS__)		\
+ */
+
+#define PARAM_PT_COND conditions, Condition, 2OUT
+#define PARAM_PT_POOL pool, Pool, _Pool
+#define PARAM_PT_RC RC, RC, _RC
+#define PARAM_PT_KE KE, KE, _KE
+#define PARAM_PT_VEL vel, Vel, _VEL.getLastData()
+#define PARAM_PT_MOD modules, ,
+#define CASE_PT(pt, pt_param, X, ...)			\
+  case (PARAM_TYPE_ ## pt) {				\
+      X(__VA_ARGS__, pt, pt_param ## pt);		\
+      break;						\
+  }
+#define CASE_PT_PACKED(args)				\
+  CASE_PT args
+#define SWITCH_PT(pt, pt_members, pt_param, ...)	\
+  switch (pt) {						\
+  FOR_EACH_WITH_SUFFIX_ARGS_PACKED(CASE_PT_PACKED, (pt_param, __VA_ARGS__), pt_members)	\
+  default: {						\
+      throw std::runtime_error("Unsupported param type: " + utils::enum_key2string(param_type)); \
+  }							\
+  }
+#define SWITCH_PT_ALL(pt, ...)				\
+  SWITCH_PT(pt, MEMBERS_PARAM, PARAM_PT_, __VA_ARGS__)
+#define SWITCH_MOD_AND_PT(mod, mod_members, pt, pt_members, pt_param, X, __VA_ARGS__) \
+  SWITCH_MOD(mod, mod_members, SWITCH_PT, pt, pt_members, pt_param, X, __VA_ARGS__)
+// #define SWITCH_PT_AND_MOD(
+
+/*
+  CASE_PT(COND, __VA_ARGS__)			\
+  CASE_PT(POOL, __VA_ARGS__)			\
+  CASE_PT(RC, __VA_ARGS__)			\
+  CASE_PT(KE, __VA_ARGS__)			\
+  CASE_PT(VEL, __VA_ARGS__)			\
+  CASE_PT(MOD, __VA_ARGS__)			\
+ */
+
 /*
 #define INCLUDE_MODULE_HEADER(suffix, name)		\
   #include STR_MACRO(name ## suffix ##.hpp)

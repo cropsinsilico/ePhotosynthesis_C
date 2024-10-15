@@ -32,5 +32,5 @@
 #define MEMBERS_KE RROEA
 
 DECLARE_PARAM_BASE(KE, KE, KE,
-		   (BF, FI, PR, PS, RedoxReg, RuACT,
-		    SUCS, XanCycle, FIBF))
+		   (BF, CM, DynaPS, EPS, FIBF, FI, PR, PS, PS_PR,
+		    RA, RedoxReg, RuACT, SUCS, XanCycle, trDynaPS))

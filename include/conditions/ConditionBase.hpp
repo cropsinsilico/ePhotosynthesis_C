@@ -146,7 +146,7 @@ public:
       \returns The output stream.
       */
     friend std::ostream& operator<<(std::ostream &out, const T &in) {
-        return static_cast<T*>(in)->_print(out, 0);
+        return static_cast<const T*>(&in)->_print(out, 0);
     }
 
     /**
