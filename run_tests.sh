@@ -14,6 +14,7 @@ WITH_COVERAGE=""
 TEST_FLAGS="-C ${CMAKE_BUILD_TYPE_TEST}"
 NJOBS="8"
 RUN_EPHOTO=""
+PREPROCESS=""
 
 while [[ $# -gt 0 ]]; do
     case $1 in
@@ -79,6 +80,19 @@ while [[ $# -gt 0 ]]; do
 	    CMAKE_FLAGS_LIB="${CMAKE_FLAGS_LIB} -DWITH_ASAN=ON"
 	    shift # past argument with no value
 	    ;;
+	--preprocess )
+	    PREPROCESS="src/Variables.cpp"
+	    DONT_BUILD="TRUE"
+	    DONT_TEST="TRUE"
+	    shift # past argument with no value
+	    ;;
+	--preprocess-file )
+	    PREPROCESS="$2"
+	    DONT_BUILD="TRUE"
+	    DONT_TEST="TRUE"
+	    shift
+	    shift
+	    ;;
     esac
 done
 
@@ -89,6 +103,10 @@ if [ -n "$REBUILD" ]; then
 fi
 if [ ! -d "$BUILD_DIR" ]; then
     mkdir $BUILD_DIR
+fi
+
+if [ -n "$PREPROCESS" ]; then
+   gcc -E $PREPROCESS -I include/
 fi
 
 cd $BUILD_DIR
@@ -110,7 +128,7 @@ if [ -n "$WITH_COVERAGE" ]; then
 fi
 if [ -n "$RUN_EPHOTO" ]; then
     cd ..
-    ./$BUILD_DIR/ePhoto -d 4 --enzyme InputEnzyme.txt --grn InputGRNC.txt -T 25
+    ./$BUILD_DIR/ePhoto -d 4 --enzyme InputEnzyme.txt --grn InputGRNC.txt # -T 25
     cd $BUILD_DIR
 fi
 

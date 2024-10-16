@@ -1,2 +1,2 @@
 # Name		Value	C3Value
-cpsii		0.0	1.0
+cpsii		0.0	1.0	# [GLYMAID=Glyma.01G095900]

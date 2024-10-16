@@ -74,7 +74,6 @@ Variables& Variables::operator=(const Variables &other) {
     PS2BF_Pi = other.PS2BF_Pi;
     PS_PR_Param = other.PS_PR_Param;
     Tp = other.Tp;
-    files = other.files;
     BFRatio = other.BFRatio;
     FIRatio = other.FIRatio;
     PRRatio = other.PRRatio;
@@ -253,6 +252,12 @@ void Variables::initDefaults(const MODULE& module,
 			     const PARAM_TYPE& param_type,
 			     const bool useC3,
 			     const std::string& filename) {
+#define INIT_DEF(c3, fname, mod, pt)			\
+  VARS_CLASS_VAR(mod, pt)::initDefaults(c3, fname);	\
+  return
+    VARS_CLASS_SWITCH(module, param_type, INIT_DEF, useC3, filename)
+#undef INIT_DEF
+  /*
 #define ADD_SPEC(var, mod, pt)						\
     if (module == MODULE_ ## mod && param_type == PARAM_TYPE_ ## pt) {	\
 	var::initDefaults(useC3, filename);				\
@@ -291,96 +296,169 @@ void Variables::initDefaults(const MODULE& module,
         throw std::runtime_error("Invalid MODULE (" + get_enum_name(module) + ") "
 				 + " or PARAM_TYPE (" + get_enum_name(param_type) + ")");
     }
+  */
 }
 
+
+
+#define ADD_SPEC(var, mod, pt, body)					\
+    if (module == MODULE_ ## mod && param_type == PARAM_TYPE_ ## pt) {	\
+	body(var.);							\
+    }
+#define ADD_SPEC_STATIC(var, mod, pt, body)				\
+    if (module == MODULE_ ## mod && param_type == PARAM_TYPE_ ## pt) {	\
+	body(var::);							\
+    }
+#define ADD_SPEC_VALUE_SET(mod, var_suffix, pt, body)	\
+    ADD_SPEC(mod ## var_suffix, mod, pt, body)
+#define ADD_SPEC_MOD(mod, body)						\
+    ADD_SPEC_VALUE_SET(mod, _Pool, POOL, body)				\
+    else ADD_SPEC_VALUE_SET(mod, _RC, RC, body)				\
+    else ADD_SPEC_VALUE_SET(mod, _KE, KE, body)			\
+    else ADD_SPEC(mod ## _VEL.getLastData(), mod, VEL, body)	\
+    else ADD_SPEC_STATIC(modules::mod, mod, MOD, body)
+#define ADD_SPEC_ALL(body)				\
+    ADD_SPEC_MOD(BF, body)				\
+    else ADD_SPEC_MOD(FI, body)				\
+    else ADD_SPEC_MOD(PR, body)				\
+    else ADD_SPEC_MOD(PS, body)					\
+    else ADD_SPEC_MOD(RROEA, body)					\
+    else ADD_SPEC_MOD(RedoxReg, body)					\
+    else ADD_SPEC_MOD(RuACT, body)					\
+    else ADD_SPEC_MOD(SUCS, body)					\
+    else ADD_SPEC_MOD(XanCycle, body)					\
+    else ADD_SPEC_VALUE_SET(FIBF, _Pool, POOL, body)			\
+    else {								\
+	throw std::runtime_error("Invalid MODULE (" + get_enum_name(module) + ") " \
+				 + ", PARAM_TYPE (" + get_enum_name(param_type) + ") " \
+				 + "or name (" + name + ")");		\
+    }
+    // else ADD_SPEC_MOD(FIBF, body)
+
+std::string Variables::parseVar(const std::string& k,
+				MODULE& mod, PARAM_TYPE& pt) {
+    mod = MODULE_NONE;
+    pt = PARAM_TYPE_NONE;
+    std::string split="::", var1, var2, name;
+    bool var1_used = false, var2_used = false;
+    size_t idx1 = k.find(split);
+    if (idx1 != std::string::npos) {
+	var1 = k.substr(0, idx1);
+	try {
+	    mod = utils::enum_string2key<MODULE>(var1);
+	    var1_used = true;
+	} catch (...) {
+	    try {
+		pt = utils::enum_string2key<PARAM_TYPE>(var1);
+		var1_used = true;
+	    } catch (...) {
+	    }
+	}
+	size_t idx2 = k.find(split, idx1 + split.size());
+	if (idx2 == std::string::npos) {
+	    name = k.substr(idx1 + split.size());
+	} else {
+	    var2 = k.substr(idx1 + split.size(),
+			    idx2 - (idx1 + split.size()));
+	    if (mod == MODULE_NONE) {
+		try {
+		    mod = utils::enum_string2key<MODULE>(var2);
+		    var2_used = true;
+		} catch (...) {
+		}
+	    }
+	    if (pt == PARAM_TYPE_NONE && !var2_used) {
+		try {
+		    pt = utils::enum_string2key<PARAM_TYPE>(var2);
+		    var2_used = true;
+		} catch (...) {
+		}
+	    }
+	    name = k.substr(idx2 + split.size());
+	}
+    }
+    if (mod == MODULE_NONE || pt == PARAM_TYPE_NONE) {
+	std::vector<MODULE> check_modules;
+	std::vector<PARAM_TYPE> check_param_types;
+	if (mod != MODULE_NONE)
+	  check_modules.push_back(mod);
+	else
+	  check_modules = ALL_MODULE;
+	if (pt != PARAM_TYPE_NONE)
+	  check_param_types.push_back(pt);
+	else
+	  check_param_types = ALL_PARAM_TYPE;
+	std::vector<std::pair<MODULE, PARAM_TYPE> > matches;
+	for (std::vector<MODULE>::const_iterator it_mod = check_modules.begin();
+	     it_mod != ALL_MODULE.end(); it_mod++) {
+	    for (std::vector<PARAM_TYPE>::const_iterator it_pt = check_param_types.begin();
+		 it_pt != ALL_PARAM_TYPE.end(); it_pt++) {
+		if (hasVar(*it_mod, *it_pt, name)) {
+		    matches.emplace_back(*it_mod, *it_pt);
+		    // mod = *it_mod;
+		    // pt = *it_pt;
+		    // name = k;
+		    // break;
+		}
+	    }
+	}
+	if (matches.size() == 1) {
+	    mod = matches[0].first;
+	    pt = matches[0].second;
+	} else if (matches.size() > 1) {
+	    std::stringstream ss;
+	    for (std::vector<std::pair<MODULE, PARAM_TYPE> >::const_iterator it = matches.begin();
+		 it != matches.end(); it++) {
+		if (ss.tellp() > 0)
+		  ss << ", ";
+		ss << it->first << "::" << it->second << "::" << name;
+	    }
+	    throw std::runtime_error("More than one (" + std::to_string(matches.size()) + ") variable matches \"" + k + "\". Use a module & parameter type prefix to disambiguate [matches = " + ss.str() + "]");
+	} else {
+	    throw std::runtime_error("Could not find variable matching string \"" + k + "\"");
+	}
+    }
+    std::cerr << "parseVar[" << k << ", " << mod << ", " <<
+      pt << ", " << name << std::endl;
+    return name;
+}
+
+bool Variables::hasVar(const MODULE& mod, const PARAM_TYPE& pt,
+		       const std::string& name) {
+#define HAS_VAR(nme, mod, pt)			\
+    return VARS_CLASS_VAR(mod, pt)::has(name)
+    VARS_CLASS_SWITCH(mod, pt, HAS_VAR, name)
+#undef HAS_VAR
+    return false;
+}
 void Variables::setVar(const MODULE& module,
 		       const PARAM_TYPE& param_type,
 		       const std::string& name,
 		       const double& value) {
-#define ADD_SPEC(var, mod, pt)						\
-    if (module == MODULE_ ## mod && param_type == PARAM_TYPE_ ## pt) {	\
-	var.set(name, value);						\
-	return;								\
-    }
-#define ADD_SPEC_STATIC(var, mod, pt)					\
-    if (module == MODULE_ ## mod && param_type == PARAM_TYPE_ ## pt) {	\
-	var::set(name, value);						\
-	return;								\
-    }
-#define ADD_SPEC_VALUE_SET(mod, var_suffix, pt)	\
-    ADD_SPEC(mod ## var_suffix, mod, pt)
-#define ADD_SPEC_MOD(mod)						\
-    ADD_SPEC_VALUE_SET(mod, _Pool, POOL)				\
-    else ADD_SPEC_VALUE_SET(mod, _RC, RC)				\
-    else ADD_SPEC_VALUE_SET(mod, _KE, KE)				\
-    else ADD_SPEC(mod ## _VEL.getLastData(), mod, VEL)		\
-    else ADD_SPEC_STATIC(modules::mod, mod, MOD)
-  
-    ADD_SPEC_MOD(BF)
-    else ADD_SPEC_MOD(FI)
-    else ADD_SPEC_MOD(PR)
-    else ADD_SPEC_MOD(PS)
-    else ADD_SPEC_MOD(RROEA)
-    else ADD_SPEC_MOD(RedoxReg)
-    else ADD_SPEC_MOD(RuACT)
-    else ADD_SPEC_MOD(SUCS)
-    else ADD_SPEC_MOD(XanCycle)
-    // else ADD_SPEC_MOD(FIBF)
-    else ADD_SPEC_VALUE_SET(FIBF, _Pool, POOL)
-#undef ADD_SPEC_MOD
-#undef ADD_SPEC_VALUE_SET
-#undef ADD_SPEC_STATIC
-#undef ADD_SPEC
-    // else if (module == MODULE_NONE && PARAM_TYPE == PARAM_TYPE_NONE) {
-    // 	return get(name);
-    else {
-        throw std::runtime_error("Invalid MODULE (" + get_enum_name(module) + ") "
-				 + ", PARAM_TYPE (" + get_enum_name(param_type) + ") "
-				 + "or name (" + name + ")");
-    }
+#define SET_VAR(nme, val, mod, pt)		\
+    VARS_INST_VAR(mod, pt).set(nme, val);	\
+    return
+#define SET_VAR_STATIC(nme, val, mod)			\
+    modules::mod::set(nme, val);			\
+    return
+    VARS_INST_SWITCH(module, param_type, SET_VAR, name, value)
+#undef SET_VAR
+#undef SET_VAR_STATIC
 }
 
 double Variables::getVar(const MODULE& module,
 			 const PARAM_TYPE& param_type,
 			 const std::string& name) const {
-#define ADD_SPEC(var, mod, pt)						\
-    if (module == MODULE_ ## mod && param_type == PARAM_TYPE_ ## pt) {	\
-	return var.get(name);						\
-    }
-#define ADD_SPEC_STATIC(var, mod, pt)					\
-    if (module == MODULE_ ## mod && param_type == PARAM_TYPE_ ## pt) {	\
-	return var::get(name);						\
-    }
-#define ADD_SPEC_VALUE_SET(mod, var_suffix, pt)	\
-    ADD_SPEC(mod ## var_suffix, mod, pt)
-#define ADD_SPEC_MOD(mod)						\
-    ADD_SPEC_VALUE_SET(mod, _Pool, POOL)				\
-    else ADD_SPEC_VALUE_SET(mod, _RC, RC)				\
-    else ADD_SPEC_VALUE_SET(mod, _KE, KE)				\
-    else ADD_SPEC(mod ## _VEL.getLastData(), mod, VEL)		\
-    else ADD_SPEC_STATIC(modules::mod, mod, MOD)
-  
-    ADD_SPEC_MOD(BF)
-    else ADD_SPEC_MOD(FI)
-    else ADD_SPEC_MOD(PR)
-    else ADD_SPEC_MOD(PS)
-    else ADD_SPEC_MOD(RROEA)
-    else ADD_SPEC_MOD(RedoxReg)
-    else ADD_SPEC_MOD(RuACT)
-    else ADD_SPEC_MOD(SUCS)
-    else ADD_SPEC_MOD(XanCycle)
-    // else ADD_SPEC_MOD(FIBF)
-    else ADD_SPEC_VALUE_SET(FIBF, _Pool, POOL)
+#define GET_VAR(nme, mod, pt)			\
+    return VARS_INST_VAR(mod, pt).get(nme)
+#define GET_VAR_STATIC(nme, mod)		\
+    return modules::mod::get(nme)
+    VARS_INST_SWITCH(module, param_type, GET_VAR, name)
+#undef GET_VAR
+#undef GET_VAR_STATIC
+}
+
 #undef ADD_SPEC_MOD
 #undef ADD_SPEC_VALUE_SET
 #undef ADD_SPEC_STATIC
 #undef ADD_SPEC
-    // else if (module == MODULE_NONE && PARAM_TYPE == PARAM_TYPE_NONE) {
-    // 	return get(name);
-    else {
-        throw std::runtime_error("Invalid MODULE (" + get_enum_name(module) + ") "
-				 + ", PARAM_TYPE (" + get_enum_name(param_type) + ") "
-				 + "or name (" + name + ")");
-    }
-}
-

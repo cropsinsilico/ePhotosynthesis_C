@@ -47,6 +47,61 @@ DEFINE_VALUE_SET_NS(pool::, FIPool);
 // The following information is initialized sequentially 1) Rate constants; 2) Initial concentration ( or conditions); 3) THe maximum
 // concentration of components of photosystems.
 
+void FI::_initCalc(Variables *theVars, FICondition* FI_Con) {
+    if (theVars->useC3) {
+        if (theVars->lightParam == 0.) {
+            const double light_scaler = theVars->alfa * (1 - theVars->fc);
+            theVars->lightParam = theVars->TestLi * 30 * light_scaler;
+        }
+        theVars->FI_RC.kA_d = theVars->EnzymeAct.at("kA_d");         // The rate constant of heat dissipation from peripheral antenna Lazar (1999), 0.25~1 *10^(9)
+        theVars->FI_RC.kA_f = theVars->EnzymeAct.at("kA_f");         // The rate constant of fluorescence emission from peripheral antenna Lazar 1999, with a lifetime of 5 ns at closed reaction center
+        theVars->FI_RC.kA_U = theVars->EnzymeAct.at("kA_U");         // The rate constant of exciton transfer from periphral antenna to core antenna Reference needed, a guess
+        theVars->FI_RC.kU_A = theVars->EnzymeAct.at("kU_A");         // The rate constant of exciton transfer from core antenna to peripheral antenna Reference needed, a guess
+        theVars->FI_RC.kU_d = theVars->EnzymeAct.at("kU_d");         // The rate constant of  heat emission from core antenna
+        theVars->FI_RC.kU_f = theVars->EnzymeAct.at("kU_f");         // The rate constant of fluorescence emission from core antenna
+        theVars->FI_RC.k1 = theVars->EnzymeAct.at("k1") * FI::cpsii;        // WY201803  The rate constant of primary charge separation for open reaction center
+        theVars->FI_RC.k_r1 = theVars->EnzymeAct.at("k_r1");         // The rate constant of charge recombination for open reactoin center
+        theVars->FI_RC.kz = theVars->EnzymeAct.at("kz");           // The rate constant of the Tyrosine oxidation Lazar (1999); 3.8~50 * 10^6
+        theVars->FI_RC.k12 = theVars->EnzymeAct.at("k12");          // The rate constant of the S1 to S2 transition Lazar (1999); 0.667~33.3 * 10^3
+        theVars->FI_RC.k23 = theVars->EnzymeAct.at("k23");         // The rate constant of the S2 to S3 transition Lazar (1999); 0.667~33.3 * 10^3
+        theVars->FI_RC.k30 = theVars->EnzymeAct.at("k30");         // The rate constant of the S3 to S0 transition Lazar (1999); 0.667~33.3 * 10^3
+        theVars->FI_RC.k01 = theVars->EnzymeAct.at("k01");         // The rate constant of the S0 to S1 transition Lazar (1999); 0.667~33.3 * 10^3
+        theVars->FI_RC.k2 = theVars->EnzymeAct.at("k2");          // The rate constant of the QA reduction by Pheo- Lazar (1999); 2~2.3 * 10^9
+        theVars->FI_RC.kAB1 = theVars->EnzymeAct.at("kAB1");        // The rate constant of QAQB-->QAQB- Lazar (1999); 2.5~5 * 10^3
+        theVars->FI_RC.kBA1 = theVars->EnzymeAct.at("kBA1");        // The rate constant of the QAQB- -->QAQB Lazar (1999)
+        theVars->FI_RC.kAB2 = theVars->EnzymeAct.at("kAB2");        // The rate constant of the QAQB- --> QAQB2- Lazar (1999); 1.25~3.33 * 10^3
+        theVars->FI_RC.kBA2 = theVars->EnzymeAct.at("kBA2");        // The rate constant of the QAQB2- --> QAQB-  Lazar (1999), or same as 3300 * theVars->FIRatio[16] depend on the equilibium constant
+        theVars->FI_RC.k3 = theVars->EnzymeAct.at("k3");          // The rate constant of the exchange of PQ and QBH2 Lazar (1999),0.12~1 for the fast PQ pool,  or 3~8 for the slow recycling PQ pool
+        theVars->FI_RC.k_r3 = theVars->EnzymeAct.at("k_r3");        // The rate constant of the exchange of QB and PQH2 Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
+        theVars->FI_RC.k_pq_oxy = theVars->EnzymeAct.at("k_pq_oxy");    // The rate constant of the PQH2 oxidation Lazar (1999),50~500
+    } else {
+        theVars->FI_RC.kA_d *= theVars->FIRatio[0];         // The rate constant of heat dissipation from peripheral antenna Lazar (1999), 0.25~1 *10^(9)
+        theVars->FI_RC.kA_f *= theVars->FIRatio[1]; // The rate constant of fluorescence emission from peripheral antenna Lazar 1999, with a lifetime of 5 ns at closed reaction center
+        theVars->FI_RC.kA_U *= theVars->FIRatio[2];            // The rate constant of exciton transfer from periphral antenna to core antenna Reference needed, a guess
+        theVars->FI_RC.kU_A *= theVars->FIRatio[3];            // The rate constant of exciton transfer from core antenna to peripheral antenna Reference needed, a guess
+        theVars->FI_RC.kU_d *= theVars->FIRatio[4];         // The rate constant of  heat emission from core antenna
+        theVars->FI_RC.kU_f *= theVars->FIRatio[5]; // The rate constant of fluorescence emission from core antenna
+        theVars->FI_RC.k1 *= theVars->FIRatio[6];        // The rate constant of primary charge separation for open reaction center
+        theVars->FI_RC.k_r1 *= theVars->FIRatio[7];         // The rate constant of charge recombination for open reactoin center
+        theVars->FI_RC.kz *= theVars->FIRatio[8];           // The rate constant of the Tyrosine oxidation Lazar (1999); 3.8~50 * 10^6
+        theVars->FI_RC.k12 *= theVars->FIRatio[9];                   // The rate constant of the S1 to S2 transition Lazar (1999); 0.667~33.3 * 10^3
+        theVars->FI_RC.k23 *= theVars->FIRatio[10];                  // The rate constant of the S2 to S3 transition Lazar (1999); 0.667~33.3 * 10^3
+        theVars->FI_RC.k30 *= theVars->FIRatio[11];                   // The rate constant of the S3 to S0 transition Lazar (1999); 0.667~33.3 * 10^3
+        theVars->FI_RC.k01 *= theVars->FIRatio[12];                    // The rate constant of the S0 to S1 transition Lazar (1999); 0.667~33.3 * 10^3
+        theVars->FI_RC.k2 *= theVars->FIRatio[13];          // The rate constant of the QA reduction by Pheo- Lazar (1999); 2~2.3 * 10^9
+        theVars->FI_RC.kAB1 *= theVars->FIRatio[14];                  // The rate constant of QAQB-->QAQB- Lazar (1999); 2.5~5 * 10^3
+        theVars->FI_RC.kBA1 *= theVars->FIRatio[15];                   // The rate constant of the QAQB- -->QAQB Lazar (1999)
+        theVars->FI_RC.kAB2 *= theVars->FIRatio[16];                  // The rate constant of the QAQB- --> QAQB2- Lazar (1999); 1.25~3.33 * 10^3
+        theVars->FI_RC.kBA2 *= theVars->FIRatio[17];                   // The rate constant of the QAQB2- --> QAQB-  Lazar (1999), or same as 3300 * theVars->FIRatio[16] depend on the equilibium constant
+        theVars->FI_RC.k3 *= theVars->FIRatio[18];                     // The rate constant of the exchange of PQ and QBH2 Lazar (1999),0.12~1 for the fast PQ pool,  or 3~8 for the slow recycling PQ pool
+        theVars->FI_RC.k_r3 *= theVars->FIRatio[19];                    // The rate constant of the exchange of QB and PQH2 Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)
+        theVars->FI_RC.k_pq_oxy *= theVars->FIRatio[20];               // The rate constant of the PQH2 oxidation Lazar (1999),50~500
+
+        theVars->FI_Pool.QBt *= theVars->FIRatio[21]; // The total concentration of Qb site;
+        theVars->FI_Pool.PQT *= theVars->FIRatio[22]; // The total concentration of PQ;
+    }
+}
+
 FICondition* FI::_init(Variables *theVars) {
     //////////////////////////////////////////////////////////////////////////
     // Initilization of the rate constant //

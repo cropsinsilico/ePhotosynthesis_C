@@ -28,6 +28,7 @@
 #include <map>
 #include "definitions.hpp"
 #include "enums/enums_utils.hpp"
+#include "ValueSet.hpp"
 
 #include "vel/VelAll.hpp"
 #include "ke/KEAll.hpp"
@@ -36,6 +37,55 @@
 #include "conditions/ConditionAll.hpp"
 
 #include <sundials/sundials_context.h>
+
+// Parameters for param_types
+// 1. namespace of class
+// 2. class suffix
+// 3. variable suffix
+#define VARS_PARAM_PT_COND conditions, Condition, 2OUT
+#define VARS_PARAM_PT_POOL pool, Pool, _Pool
+#define VARS_PARAM_PT_RC RC, RC, _RC
+#define VARS_PARAM_PT_KE KE, KE, _KE
+#define VARS_PARAM_PT_VEL_SERIES vel, Vel, _VEL.getLastData()
+#define VARS_PARAM_PT_VEL vel, Vel, _Vel
+#define VARS_PARAM_PT_MOD modules, ,NONE
+#define VARS_PARAM_PT(pt) (VARS_PARAM_PT_ ## pt)
+#define VARS_PARAM_PT_NAMESPACE_(ns, cs, vs) ns
+#define VARS_PARAM_PT_CLASS_SUFFIX_(ns, cs, vs) cs
+#define VARS_PARAM_PT_VAR_SUFFIX_(ns, cs, vs) vs
+#define VARS_PARAM_PT_NAMESPACE(pt)		\
+  VARS_PARAM_PT_NAMESPACE_ VARS_PARAM_PT(pt)
+#define VARS_PARAM_PT_CLASS_SUFFIX(pt)		\
+  VARS_PARAM_PT_CLASS_SUFFIX_ VARS_PARAM_PT(pt)
+#define VARS_PARAM_PT_VAR_SUFFIX(pt)		\
+  VARS_PARAM_PT_VAR_SUFFIX_ VARS_PARAM_PT(pt)
+#define VARS_CLASS_VAR(mod, pt)			\
+  VARS_PARAM_PT_NAMESPACE(pt)::CONCATENATE(mod, VARS_PARAM_PT_CLASS_SUFFIX(pt))
+#define VARS_INST_VAR(mod, pt)			\
+  CONCATENATE(mod, VARS_PARAM_PT_VAR_SUFFIX(pt))
+
+#define VARS_INST_MODULES (BF, FI, PR, PS, RROEA, RedoxReg, RuACT, SUCS, XanCycle)
+#define VARS_INST_PARAM_TYPES (COND, POOL, RC, KE, VEL)
+
+#define VARS_CLASS_MODULES (PACK_MACRO(MEMBER_NAMES_MODULE))
+#define VARS_CLASS_PARAM_TYPES PACK_MACRO((MEMBER_NAMES_PARAM))
+
+// X ## _STATIC should have last arguments as ... mod
+#define VARS_INST_SWITCH(mod, pt, X, ...)				\
+    if (pt == PARAM_TYPE_MOD) {						\
+	SWITCH_MOD(mod, VARS_CLASS_MODULES, X ## _STATIC, __VA_ARGS__)	\
+    }								\
+    if (mod == MODULE_FIBF && pt == PARAM_TYPE_POOL) {			\
+	X(__VA_ARGS__, FIBF, POOL);					\
+    }									\
+    SWITCH_MOD_AND_PT(mod, VARS_INST_MODULES,				\
+		      pt, VARS_INST_PARAM_TYPES,			\
+		      X, __VA_ARGS__)
+
+#define VARS_CLASS_SWITCH(mod, pt, X, ...)				\
+    SWITCH_MOD_AND_PT(mod, VARS_CLASS_MODULES,				\
+		      pt, VARS_CLASS_PARAM_TYPES,			\
+		      PACK_MACRO(X), __VA_ARGS__)
 
 namespace ePhotosynthesis {
 
@@ -86,31 +136,10 @@ public:
 			     const PARAM_TYPE& param_type,
 			     const bool useC3=false,
 			     const std::string& filename="");
-    std::string parseVar(const std::string& k,
-			 MODULE& mod, PARAM_TYPE& pt) const {
-	mod = MODULE_NONE;
-	pt = PARAM_TYPE_NONE;
-	std::string split="::", modS, ptS, name;
-	size_t idx1 = k.find(split);
-	if (idx1 == std::string::npos) {
-	    // TODO: Var
-	    throw std::runtime_error("Could not find 1st '::' marking module");
-	} else {
-	    modS = k.substr(0, idx1);
-	    size_t idx2 = k.find(split, idx1 + split.size());
-	    if (idx2 == std::string::npos)
-	      throw std::runtime_error("Could not find 2nd '::' marking parameter type");
-	    ptS = k.substr(idx1 + split.size(),
-			   idx2 - (idx1 + split.size()));
-	    name = k.substr(idx2 + split.size());
-	    mod = utils::enum_string2key<MODULE>(modS);
-	    pt = utils::enum_string2key<PARAM_TYPE>(ptS);
-	}
-	std::cerr << "parseVar[" << k << ", " << mod << ", " <<
-	  pt << ", " << name << std::endl;
-	return name;
-    }
-
+    static std::string parseVar(const std::string& k,
+				MODULE& mod, PARAM_TYPE& pt);
+    static bool hasVar(const MODULE& mod, const PARAM_TYPE& pt,
+		       const std::string& name);
     void setVar(const MODULE& mod, const PARAM_TYPE& pt,
 		const std::string& name, const double& value);
     void setVar(const std::string& k, const double& value) {

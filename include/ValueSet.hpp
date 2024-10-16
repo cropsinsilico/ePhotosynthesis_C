@@ -126,6 +126,7 @@ namespace ePhotosynthesis {
   DECLARE_VALUE_SET_BASE(name, __VA_ARGS__)	\
   using __VA_ARGS__::memberCount;		\
   using __VA_ARGS__::memberState;		\
+  using __VA_ARGS__::select;			\
   DECLARE_VALUE_SET_MEMBERS(name)
 #define DECLARE_VALUE_SET_COMPOSITE_STATE_CHILD(child)	\
   out += "\n\t" + child::memberState()
@@ -136,10 +137,14 @@ namespace ePhotosynthesis {
 #define DECLARE_VALUE_SET_COMPOSITE_ADD_CHILDREN(...)	\
   FOR_EACH(DECLARE_VALUE_SET_COMPOSITE_ADD_CHILD, __VA_ARGS__, _EmptyMacroType)
 #define DECLARE_VALUE_SET_COMPOSITE_PRINT_CHILD(child)			\
-  child->print(out, tab + 1);						\
+  child->print(out, includePrefixes, tab + 1, noChildren);		\
   out << std::endl
 #define DECLARE_VALUE_SET_COMPOSITE_PRINT_CHILDREN(...)			\
   FOR_EACH(DECLARE_VALUE_SET_COMPOSITE_PRINT_CHILD, __VA_ARGS__)
+#define DECLARE_VALUE_SET_COMPOSITE_SELECT_CHILD(child)			\
+  child::select(x)
+#define DECLARE_VALUE_SET_COMPOSITE_SELECT_CHILDREN(...)		\
+  FOR_EACH(DECLARE_VALUE_SET_COMPOSITE_SELECT_CHILD, __VA_ARGS__, _EmptyMacroType)
 #define DECLARE_VALUE_SET_COMPOSITE(name, children, childvars, ...)	\
   DECLARE_VALUE_SET_BASE(name, __VA_ARGS__)				\
   DECLARE_VALUE_SET_MEMBERS(name)					\
@@ -153,11 +158,20 @@ namespace ePhotosynthesis {
     DECLARE_VALUE_SET_COMPOSITE_STATE_CHILDREN children;		\
     return out;								\
   }									\
-  std::ostream& print(std::ostream &out, const uint tab = 0) const override { \
+  std::ostream& print(std::ostream &out,				\
+		      bool includePrefixes = false,			\
+		      const uint tab = 0,				\
+		      bool noChildren = false) const override {		\
     const std::string space(tab * 4, ' ');				\
-    out << space << #name << ":" << std::endl;				\
-    DECLARE_VALUE_SET_COMPOSITE_PRINT_CHILDREN childvars;		\
-    return ParentClass::print(out, tab);				\
+    if (!noChildren) {							\
+      out << space << #name << ":" << std::endl;			\
+      DECLARE_VALUE_SET_COMPOSITE_PRINT_CHILDREN childvars;		\
+    }									\
+    return ParentClass::print(out, includePrefixes, tab, noChildren);	\
+  }									\
+  static void select(bool x = true) {					\
+      DECLARE_VALUE_SET_COMPOSITE_SELECT_CHILDREN children;		\
+      ParentClass::select(x);						\
   }
   /*
   friend std::ostream& operator<<(std::ostream& out, const name& x) {	\
@@ -191,13 +205,13 @@ namespace ePhotosynthesis {
   FOR_EACH_WITH_ARGS(DEFINE_VALUE_SET_STATIC_MEMBER,	\
 		     (name), __VA_ARGS__)
 #define DEFINE_VALUE_SET_STATIC_MEMBERS_NS(mod, name)		\
-  DEFINE_VALUE_SET_STATIC_MEMBERS_(name, MEMBERS_ ## name)	\
+  DEFINE_VALUE_SET_STATIC_MEMBERS_(name, MEMBERS_ ## name);	\
   DEFINE_VALUE_SET_STATIC_MODULE_CORE(mod, name)		\
   DEFINE_VALUE_SET_MEMBER_RECORD(mod, name)
 #define DEFINE_VALUE_SET_STATIC_MEMBERS(name)			\
   DEFINE_VALUE_SET_STATIC_MEMBERS_NS(, name)
 #define DEFINE_VALUE_SET_STATIC_MEMBERS_COMPOSITE_NS(mod, name)	\
-  DEFINE_VALUE_SET_STATIC_MEMBERS_(name, MEMBERS_ ## name)	\
+  DEFINE_VALUE_SET_STATIC_MEMBERS_(name, MEMBERS_ ## name);	\
   DEFINE_VALUE_SET_MEMBER_RECORD(mod, name)
 #define DEFINE_VALUE_SET_STATIC_MEMBERS_COMPOSITE(name)		\
   DEFINE_VALUE_SET_STATIC_MEMBERS_COMPOSITE_NS(, name)
@@ -301,7 +315,8 @@ private:								\
  /** \copydoc ConditionBase::_clear */					\
  void _clear() override;						\
  /** \copydoc ConditionBase::_reset */					\
- static void _reset();
+ static void _reset();							\
+public:
   
 #define DECLARE_CONDITION(name, parent)					\
   DECLARE_VALUE_SET(name ## Condition,					\
@@ -538,17 +553,23 @@ private:								\
        Display the values in a value map.
        \param vals Value map to display.
        \param out Output stream.
+       \param includePrefixes If true, the module & parameter type
+         prefixes will be added to the member names.
        \param tab Number of tabs to prefix each line in the output with.
        \returns Output stream.
      */
     static std::ostream& print_value_map(const std::map<EnumType, double*>& vals,
 					 std::ostream &out,
+					 bool includePrefixes=false,
 					 const uint tab=0,
 					 bool show_pointers=false) {
       const std::string space(tab * 4, ' ');
       for (typename std::map<EnumType, double*>::const_iterator it = vals.begin();
 	   it != vals.end(); it++) {
-	out << space << getName(it->first) << " = ";
+	out << space;
+	if (includePrefixes)
+	  out << module << "::" << param_type << "::";
+	out << getName(it->first); //  << " = ";
 	if (show_pointers) {
 	  out << it->second;
 	} else {
@@ -562,13 +583,16 @@ private:								\
        Display the values in a map.
        \param vals Value map to display.
        \param out Output stream.
+       \param includePrefixes If true, the module & parameter type
+         prefixes will be added to the member names.
        \param tab Number of tabs to prefix each line in the output with.
        \returns Output stream.
      */
     static std::ostream& print_value_map(const std::map<EnumType, double>& vals,
 					 std::ostream &out,
+					 bool includePrefixes=false,
 					 const uint tab = 0) {
-      return print_map(vals, out, tab);
+      return print_map(vals, out, includePrefixes, tab);
     }
     template <typename T>
     static std::string to_string_with_precision(const T a_value,
@@ -1000,6 +1024,27 @@ private:								\
 		     false, true, true, true);
     }
     /**
+       Check if a string names a member of the value set.
+       \param k Key to check for.
+       \returns true if k is a member, false otherwise.
+     */
+    static bool has(const std::string& name) {
+      try {
+	fromName(name);
+	return true;
+      } catch (...) {
+	return false;
+      }
+    }
+    /**
+      Get the default value corresponding to an enum key
+      \param[in] x Key to get value for
+      \return Value
+    */
+    static double getDefault(const std::string& x) {
+      return getDefault(fromName(x));
+    }
+    /**
       Get the default value corresponding to an enum key
       \param[in] x Key to get value for
       \return Value
@@ -1332,8 +1377,7 @@ private:								\
        \return Member counts.
      */
     static std::size_t memberCount() {
-      checkDefaults("memberCount: ");
-      std::size_t out = defaults.size() - (skipped.size() + nonvector.size());
+      std::size_t out = EnumBaseClass::defaults.size() - (skipped.size() + nonvector.size());
       return out;
     }
 
@@ -1348,8 +1392,20 @@ private:								\
 	", NONVECT = " + stringNonvector();
       return out;
     }
+    /**
+       Select the value set and any children.
+       \param[in] x true if value set should be selected, false if it
+         should be deselected.
+     */
+    static void select(bool x = true) {
+	selected = x;
+    }
+    static bool selected; /**< Is the value set selected */
     static std::map<EnumType, double> defaults; /**< Default values */
   };
+
+  template<MODULE ID, PARAM_TYPE PT>
+  bool ValueSetBase<ID, PT>::selected = false;
   
   template<MODULE ID, PARAM_TYPE PT>
   std::map<typename ValueSetBase<ID, PT>::EnumType, double>
@@ -1488,11 +1544,19 @@ private:								\
     /**
        Display the values in the set.
        \param out Output stream.
+       \param includePrefixes If true, the module & parameter type
+         prefixes will be added to the member names.
        \param tab Number of tabs to prefix each line in the output with.
+       \param noChildren If true, children of composite sets will not
+         be displayed.
        \returns Output stream.
      */
-    virtual std::ostream& print(std::ostream &out, const uint tab = 0) const {
-      CALL_STATIC_CONST(print_value_map, out, tab);
+    virtual std::ostream& print(std::ostream &out,
+				bool includePrefixes = false,
+				const uint tab = 0,
+				bool noChildren = false) const {
+      UNUSED(noChildren);
+      CALL_STATIC_CONST(print_value_map, out, includePrefixes, tab);
     }
     friend std::ostream& operator<<(std::ostream& out, const ValueSet& x) {
       return x.print(out);
@@ -1794,11 +1858,19 @@ private:								\
     /**
        Display the values in the set.
        \param out Output stream.
+       \param includePrefixes If true, the module & parameter type
+         prefixes will be added to the member names.
        \param tab Number of tabs to prefix each line in the output with.
+       \param noChildren If true, children of composite sets will not
+         be displayed.
        \returns Output stream.
      */
-    static std::ostream& print(std::ostream &out, const uint tab = 0) {
-      CALL_STATIC(print_value_map, out, tab);
+    static std::ostream& print(std::ostream &out,
+			       bool includePrefixes = false,
+			       const uint tab = 0,
+			       bool noChildren = false) {
+      UNUSED(noChildren);
+      CALL_STATIC(print_value_map, out, includePrefixes, tab);
     }
     /**
        Throw an error if a key is not present in the set.
@@ -2041,84 +2113,66 @@ private:								\
     }									\
     }
 
-#define CASE_MOD(mod, X, ...)			\
-  case (MODULE_ ## mod): {			\
-      X(__VA_ARGS__, mod);			\
-      break;					\
+#define CASE_MEMBER(mod, prefix, X, ...)				\
+  case (prefix ## mod) : {						\
+      X(__VA_ARGS__, mod);						\
+      break;								\
   }
-#define CASE_MOD_PACKED(args)			\
-  CASE_MOD args
-#define SWITCH_MOD(mod, mod_members, ...)	\
-  switch (mod) {				\
-  FOR_EACH_WITH_SUFFIX_ARGS_PACKED(CASE_MOD_PACKED, (__VA_ARGS__), mod_members)	\
-  default: {					\
-    throw std::runtime_error("Unsupported module: " + utils::enum_key2string(module)); \
+#define CASE_MEMBER_DEFER(mod, prefix, X, ...)				\
+  case (prefix ## mod) : {						\
+      DEFER(X)()(__VA_ARGS__, mod);					\
+      break;								\
+  }
+#define CASE_MEMBER_PACKED(args)					\
+  CASE_MEMBER args
+#define CASE_MEMBER_DEFER_PACKED(args)					\
+  CASE_MEMBER_DEFER args
+#define SWITCH_MEMBER_(mod, case_macro, args, ...)			\
+  switch (mod) {							\
+    FOR_EACH_WITH_SUFFIX_ARGS_PACKED(case_macro, args, __VA_ARGS__)	\
+  default: {								\
+      throw std::runtime_error(error_prefix() + "Unsupported member: " + utils::enum_key2string(mod)); \
   }									\
   }
-#define SWITCH_MOD_ALL(mod, ...)		\
-  SWITCH_MOD(mod, MEMBERS_MODULE, __VA_ARGS__)
+#define SWITCH_MEMBER(prefix, mod, members, ...)			\
+  SWITCH_MEMBER_(mod, CASE_MEMBER_PACKED,				\
+		 (prefix, __VA_ARGS__), UNPACK_PARENS(members))
+		 
+#define SWITCH_MEMBER_DEFER(prefix, mod, members, ...)		\
+  SWITCH_MEMBER_(mod, CASE_MEMBER_DEFER_PACKED,			\
+		 (prefix, __VA_ARGS__), UNPACK_PARENS(members))
 
-/*
-  CASE_MOD(BF, __VA_ARGS__)			\
-  CASE_MOD(CM, __VA_ARGS__)			\
-  CASE_MOD(DynaPS, __VA_ARGS__)		\
-  CASE_MOD(EPS, __VA_ARGS__)		\
-  CASE_MOD(FIBF, __VA_ARGS__)			\
-  CASE_MOD(FI, __VA_ARGS__)			\
-  CASE_MOD(PR, __VA_ARGS__)			\
-  CASE_MOD(PS, __VA_ARGS__)			\
-  CASE_MOD(PS_PR, __VA_ARGS__)		\
-  CASE_MOD(RA, __VA_ARGS__)			\
-  CASE_MOD(RROEA, __VA_ARGS__)		\
-  CASE_MOD(RedoxReg, __VA_ARGS__)		\
-  CASE_MOD(RuACT, __VA_ARGS__)		\
-  CASE_MOD(SUCS, __VA_ARGS__)			\
-  CASE_MOD(XanCycle, __VA_ARGS__)		\
-  CASE_MOD(trDynaPS, __VA_ARGS__)		\
- */
 
-#define PARAM_PT_COND conditions, Condition, 2OUT
-#define PARAM_PT_POOL pool, Pool, _Pool
-#define PARAM_PT_RC RC, RC, _RC
-#define PARAM_PT_KE KE, KE, _KE
-#define PARAM_PT_VEL vel, Vel, _VEL.getLastData()
-#define PARAM_PT_MOD modules, ,
-#define CASE_PT(pt, pt_param, X, ...)			\
-  case (PARAM_TYPE_ ## pt) {				\
-      X(__VA_ARGS__, pt, pt_param ## pt);		\
-      break;						\
-  }
-#define CASE_PT_PACKED(args)				\
-  CASE_PT args
-#define SWITCH_PT(pt, pt_members, pt_param, ...)	\
-  switch (pt) {						\
-  FOR_EACH_WITH_SUFFIX_ARGS_PACKED(CASE_PT_PACKED, (pt_param, __VA_ARGS__), pt_members)	\
-  default: {						\
-      throw std::runtime_error("Unsupported param type: " + utils::enum_key2string(param_type)); \
-  }							\
-  }
-#define SWITCH_PT_ALL(pt, ...)				\
-  SWITCH_PT(pt, MEMBERS_PARAM, PARAM_PT_, __VA_ARGS__)
-#define SWITCH_MOD_AND_PT(mod, mod_members, pt, pt_members, pt_param, X, __VA_ARGS__) \
-  SWITCH_MOD(mod, mod_members, SWITCH_PT, pt, pt_members, pt_param, X, __VA_ARGS__)
-// #define SWITCH_PT_AND_MOD(
+#define SWITCH_MOD(...)				\
+  SWITCH_MEMBER(MODULE_, __VA_ARGS__)
+#define SWITCH_PT(...)				\
+  SWITCH_MEMBER(PARAM_TYPE_, __VA_ARGS__)
+#define SWITCH_MOD_DEFER(...)				\
+  SWITCH_MEMBER_DEFER(MODULE_, __VA_ARGS__)
+#define SWITCH_PT_DEFER(...)				\
+  SWITCH_MEMBER_DEFER(PARAM_TYPE_, __VA_ARGS__)
+#define SWITCH_MOD_DEFERED() SWITCH_MOD
+#define SWITCH_PT_DEFERED() SWITCH_PT
+#define SWITCH_MOD_DEFER_DEFERED() SWITCH_MOD_DEFER
+#define SWITCH_PT_DEFER_DEFERED() SWITCH_PT_DEFER
 
-/*
-  CASE_PT(COND, __VA_ARGS__)			\
-  CASE_PT(POOL, __VA_ARGS__)			\
-  CASE_PT(RC, __VA_ARGS__)			\
-  CASE_PT(KE, __VA_ARGS__)			\
-  CASE_PT(VEL, __VA_ARGS__)			\
-  CASE_PT(MOD, __VA_ARGS__)			\
- */
+#define SWITCH_MOD_ALL(mod, X, ...)				\
+  SWITCH_MOD(mod, (MEMBER_NAMES_MODULE), X, __VA_ARGS__)
+#define SWITCH_PT_ALL(pt, X, ...)			\
+  SWITCH_PT(pt, (MEMBER_NAMES_PARAM), X, __VA_ARGS__)
 
-/*
-#define INCLUDE_MODULE_HEADER(suffix, name)		\
-  #include STR_MACRO(name ## suffix ##.hpp)
-#define INCLUDE_MODULE_HEADERS_(suffix, ...)	\
-  #include STR_MACRO(suffix ## Base.hpp)	\
-  FOR_EACH_WITH_ARGS(INCLUDE_MODULE_HEADER,	\
-		     (suffix), __VA_ARGS__)
-#define INCLUDE_MODULE_HEADERS(suffix, name)		\
-  INCLUDE_MODULE_HEADERS_(suffix, MEMBERS_ ## name)
-*/
+#define SWITCH_MOD_AND_PT(mod, mod_members, pt, pt_members, X, ...)	\
+  EVAL(SWITCH_MEMBER_DEFER(MODULE_, mod, mod_members, SWITCH_PT_DEFERED, \
+			   pt, pt_members, X, __VA_ARGS__))
+#define SWITCH_PT_AND_MOD(mod, mod_members, pt, pt_members, X, ...)	\
+  EVAL(SWITCH_MEMBER_DEFER(PARAM_TYPE_, pt, pt_members, SWITCH_MOD_DEFERED, \
+			   mod, mod_members, X, __VA_ARGS__))
+
+#define SWITCH_MOD_AND_PT_DEFERED(mod, mod_members, pt, pt_members, X, ...) \
+  EVAL(SWITCH_MEMBER_DEFER(MODULE_, mod, mod_members,			\
+			   SWITCH_PT_DEFER_DEFERED,			\
+			   pt, pt_members, X, __VA_ARGS__))
+#define SWITCH_PT_AND_MOD_DEFERED(mod, mod_members, pt, pt_members, X, ...)	\
+  EVAL(SWITCH_MEMBER_DEFER(PARAM_TYPE_, pt, pt_members,			\
+			   SWITCH_MOD_DEFER_DEFERED,			\
+			   mod, mod_members, X, __VA_ARGS__))

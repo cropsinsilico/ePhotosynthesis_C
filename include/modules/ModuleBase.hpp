@@ -33,9 +33,15 @@
 namespace ePhotosynthesis {
 namespace modules {
 
+#define MODULES_MOD BF, FI, PR, PS, RROEA, RedoxReg, RuACT, SUCS, XanCycle
+  
 #define MODULE_BASE(name)						\
   ModuleBase<name, conditions::name ## Condition, MODULE_ ## name>
 #define DECLARE_MODULE_BASE(name)					\
+  static void _initCalc(Variables *theVars,				\
+			conditions::name ## Condition* name ## _Con);	\
+  static void _initOrig(Variables *theVars,				\
+			conditions::name ## Condition* name ## _Con);	\
   static void _initAlt(Variables *theVars,				\
 		       conditions::name ## Condition* name ## _Con);	\
   static void _updateAlts(Variables *theVars,				\
@@ -84,6 +90,16 @@ namespace modules {
   }
   
 #define DEFINE_DEFAULT_INITALT(name)					\
+  void name::_initCalc(Variables *theVars,				\
+		      name ## Condition* name ## _Con) {		\
+    UNUSED(theVars);							\
+    UNUSED(name ## _Con);						\
+  }									\
+  void name::_initOrig(Variables *theVars,				\
+		      name ## Condition* name ## _Con) {		\
+    UNUSED(theVars);							\
+    UNUSED(name ## _Con);						\
+  }									\
   void name::_initAlt(Variables *theVars,				\
 		      name ## Condition* name ## _Con) {		\
     UNUSED(theVars);							\

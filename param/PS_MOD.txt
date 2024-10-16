@@ -1,4 +1,4 @@
-PS_C_CP		15.0	22.0		# Global constant for the total phosphate
+PS_C_CP		15.0	25.0		# Global constant for the total phosphate (22.0 was originally used in the C++ version)
 PS_C_CA		1.5	1.5		# Global constant for the total adenylates
 PS_C_CN		0.0	1.0		# Global constant for the cytosolic Phosphate concentration; langmm: 1.0 w/o C3 in Matlab version
 PS_PEXT		0.5	0.0		# Global constant for the cytosolic Phosphate concentration;

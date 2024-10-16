@@ -38,6 +38,9 @@ const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, double> ValueSetEn
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::glymaids = {
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)cATPsyn, "Glyma.13G204800"},
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)CPSi, "Glyma.10G042000"},
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)cNADPHsyn, "Glyma.09G024100"},
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::constant = {
@@ -223,6 +226,7 @@ const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, double> ValueSetEn
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::glymaids = {
+  {ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)cpsii, "Glyma.01G095900"},
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::constant = {
@@ -879,7 +883,7 @@ const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, double> ValueSetEn
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::defaults_C3 = {
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PS_C_CP, 22.0     },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PS_C_CP, 25.0     },
   {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PS_C_CA, 1.5      },
   {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PS_C_CN, 1.0      },
   {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PS_PEXT, 0.0      },

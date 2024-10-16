@@ -38,6 +38,7 @@ namespace ePhotosynthesis {
       MODULE_SUCS       ,
       MODULE_XanCycle   ,
       MODULE_trDynaPS   ,
+      MODULE_ALL        ,
       MODULE_MAX        ,
   };
   #define MEMBERS_MODULE		\
@@ -58,8 +59,26 @@ namespace ePhotosynthesis {
       MODULE_SUCS       ,		\
       MODULE_XanCycle   ,		\
       MODULE_trDynaPS   ,		\
+      MODULE_ALL        ,		\
       MODULE_MAX
-  static const std::vector<MODULE> ALL_MODULE = {MODULE_BF, MODULE_CM, MODULE_DynaPS, MODULE_EPS, MODULE_FIBF, MODULE_FI, MODULE_PR, MODULE_PS, MODULE_PS_PR, MODULE_RA, MODULE_RROEA, MODULE_RedoxReg, MODULE_RuACT, MODULE_SUCS, MODULE_XanCycle, MODULE_trDynaPS};  /**< All enum values */
+  #define MEMBER_NAMES_MODULE		\
+      BF         ,		\
+      CM         ,		\
+      DynaPS     ,		\
+      EPS        ,		\
+      FIBF       ,		\
+      FI         ,		\
+      PR         ,		\
+      PS         ,		\
+      PS_PR      ,		\
+      RA         ,		\
+      RROEA      ,		\
+      RedoxReg   ,		\
+      RuACT      ,		\
+      SUCS       ,		\
+      XanCycle   ,		\
+      trDynaPS
+  static const std::vector<MODULE> ALL_MODULE = {MODULE_BF, MODULE_CM, MODULE_DynaPS, MODULE_EPS, MODULE_FIBF, MODULE_FI, MODULE_PR, MODULE_PS, MODULE_PS_PR, MODULE_RA, MODULE_RROEA, MODULE_RedoxReg, MODULE_RuACT, MODULE_SUCS, MODULE_XanCycle, MODULE_trDynaPS, MODULE_ALL};  /**< All enum values */
   
   enum PARAM_TYPE : int {
       PARAM_TYPE_NONE   ,
@@ -69,6 +88,7 @@ namespace ePhotosynthesis {
       PARAM_TYPE_MOD    ,
       PARAM_TYPE_RC     ,
       PARAM_TYPE_VEL    ,
+      PARAM_TYPE_VARS   ,
       PARAM_TYPE_MAX    ,
   };
   #define MEMBERS_PARAM		\
@@ -79,8 +99,16 @@ namespace ePhotosynthesis {
       PARAM_TYPE_MOD    ,		\
       PARAM_TYPE_RC     ,		\
       PARAM_TYPE_VEL    ,		\
+      PARAM_TYPE_VARS   ,		\
       PARAM_TYPE_MAX
-  static const std::vector<PARAM_TYPE> ALL_PARAM_TYPE = {PARAM_TYPE_COND, PARAM_TYPE_POOL, PARAM_TYPE_KE, PARAM_TYPE_MOD, PARAM_TYPE_RC, PARAM_TYPE_VEL};  /**< All enum values */
+  #define MEMBER_NAMES_PARAM		\
+      COND   ,		\
+      POOL   ,		\
+      KE     ,		\
+      MOD    ,		\
+      RC     ,		\
+      VEL
+  static const std::vector<PARAM_TYPE> ALL_PARAM_TYPE = {PARAM_TYPE_COND, PARAM_TYPE_POOL, PARAM_TYPE_KE, PARAM_TYPE_MOD, PARAM_TYPE_RC, PARAM_TYPE_VEL, PARAM_TYPE_VARS};  /**< All enum values */
   
   // Utility for getting module id from enum type
   template<typename T>
@@ -120,6 +148,7 @@ namespace ePhotosynthesis {
       {MODULE_SUCS    , "SUCS"    },
       {MODULE_XanCycle, "XanCycle"},
       {MODULE_trDynaPS, "trDynaPS"},
+      {MODULE_ALL     , "ALL"     },
     };
     return collection;
   }
@@ -132,6 +161,7 @@ namespace ePhotosynthesis {
       {PARAM_TYPE_MOD , "MOD" },
       {PARAM_TYPE_RC  , "RC"  },
       {PARAM_TYPE_VEL , "VEL" },
+      {PARAM_TYPE_VARS, "VARS"},
     };
     return collection;
   }
@@ -304,17 +334,18 @@ namespace ePhotosynthesis {
       Print the contents of a collection
       \param[in] collection Object to print
       \param[in,out] out Stream to print to
+      \param[in] includePrefixes If true, the module & 
+        parameter type prefixes will be added to the member 
+        names.
       \param[in] tab Indentation to add to each line
       \return Updated stream
     */
-    static std::ostream& print_map(const std::map<Type, double>& collection, std::ostream& out, const unsigned int tab = 0) {
+    static std::ostream& print_map(const std::map<Type, double>& collection, std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
       const std::string space(tab * 4, ' ');
-      out << space << "{" << std::endl;;
       typename std::map<Type, double>::const_iterator it;
       for (it = collection.begin(); it != collection.end(); it++) {
-        out << space << "  " << names.find(it->first)->second << " = " << it->second << std::endl;
+        out << space << "  " << names.find(it->first)->second << "	" << it->second << std::endl;
       }
-      out << space << "}";
       return out;
     }
     /**
@@ -331,11 +362,14 @@ namespace ePhotosynthesis {
     /**
       Print the contents of defaults
       \param[in,out] out Stream to print to
+      \param[in] includePrefixes If true, the module & 
+        parameter type prefixes will be added to the member 
+        names.
       \param[in] tab Indentation to add to each line
       \return Updated stream
     */
-    static std::ostream& printDefaults(std::ostream& out, const unsigned int tab = 0) {
-      return print_map(defaults, out, tab);
+    static std::ostream& printDefaults(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
+      return print_map(defaults, out, includePrefixes, tab);
     }
     /**
       Serialize the contents of defaults
@@ -375,11 +409,14 @@ namespace ePhotosynthesis {
     /**
       Print the contents of defaults_C3
       \param[in,out] out Stream to print to
+      \param[in] includePrefixes If true, the module & 
+        parameter type prefixes will be added to the member 
+        names.
       \param[in] tab Indentation to add to each line
       \return Updated stream
     */
-    static std::ostream& printDefaults_C3(std::ostream& out, const unsigned int tab = 0) {
-      return print_map(defaults_C3, out, tab);
+    static std::ostream& printDefaults_C3(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
+      return print_map(defaults_C3, out, includePrefixes, tab);
     }
     /**
       Serialize the contents of defaults_C3
@@ -419,11 +456,14 @@ namespace ePhotosynthesis {
     /**
       Print the contents of glymaids
       \param[in,out] out Stream to print to
+      \param[in] includePrefixes If true, the module & 
+        parameter type prefixes will be added to the member 
+        names.
       \param[in] tab Indentation to add to each line
       \return Updated stream
     */
-    static std::ostream& printGlymaids(std::ostream& out, const unsigned int tab = 0) {
-      return print_map(glymaids, out, tab);
+    static std::ostream& printGlymaids(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
+      return print_map(glymaids, out, includePrefixes, tab);
     }
     /**
       Serialize the contents of glymaids
@@ -479,10 +519,13 @@ namespace ePhotosynthesis {
       Print the contents of a collection
       \param[in] collection Object to print
       \param[in,out] out Stream to print to
+      \param[in] includePrefixes If true, the module & 
+        parameter type prefixes will be added to the member 
+        names.
       \param[in] tab Indentation to add to each line
       \return Updated stream
     */
-    static std::ostream& print_vector(const std::vector<Type>& collection, std::ostream& out, const unsigned int tab = 0) {
+    static std::ostream& print_vector(const std::vector<Type>& collection, std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
       const std::string space(tab * 4, ' ');
       out << space << "[";
       typename std::vector<Type>::const_iterator it;
@@ -516,11 +559,14 @@ namespace ePhotosynthesis {
     /**
       Print the contents of constant
       \param[in,out] out Stream to print to
+      \param[in] includePrefixes If true, the module & 
+        parameter type prefixes will be added to the member 
+        names.
       \param[in] tab Indentation to add to each line
       \return Updated stream
     */
-    static std::ostream& printConstant(std::ostream& out, const unsigned int tab = 0) {
-      return print_vector(constant, out, tab);
+    static std::ostream& printConstant(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
+      return print_vector(constant, out, includePrefixes, tab);
     }
     /**
       Serialize the contents of constant
@@ -567,11 +613,14 @@ namespace ePhotosynthesis {
     /**
       Print the contents of calculated
       \param[in,out] out Stream to print to
+      \param[in] includePrefixes If true, the module & 
+        parameter type prefixes will be added to the member 
+        names.
       \param[in] tab Indentation to add to each line
       \return Updated stream
     */
-    static std::ostream& printCalculated(std::ostream& out, const unsigned int tab = 0) {
-      return print_vector(calculated, out, tab);
+    static std::ostream& printCalculated(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
+      return print_vector(calculated, out, includePrefixes, tab);
     }
     /**
       Serialize the contents of calculated
@@ -618,11 +667,14 @@ namespace ePhotosynthesis {
     /**
       Print the contents of nonvector
       \param[in,out] out Stream to print to
+      \param[in] includePrefixes If true, the module & 
+        parameter type prefixes will be added to the member 
+        names.
       \param[in] tab Indentation to add to each line
       \return Updated stream
     */
-    static std::ostream& printNonvector(std::ostream& out, const unsigned int tab = 0) {
-      return print_vector(nonvector, out, tab);
+    static std::ostream& printNonvector(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
+      return print_vector(nonvector, out, includePrefixes, tab);
     }
     /**
       Serialize the contents of nonvector
@@ -669,11 +721,14 @@ namespace ePhotosynthesis {
     /**
       Print the contents of skipped
       \param[in,out] out Stream to print to
+      \param[in] includePrefixes If true, the module & 
+        parameter type prefixes will be added to the member 
+        names.
       \param[in] tab Indentation to add to each line
       \return Updated stream
     */
-    static std::ostream& printSkipped(std::ostream& out, const unsigned int tab = 0) {
-      return print_vector(skipped, out, tab);
+    static std::ostream& printSkipped(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
+      return print_vector(skipped, out, includePrefixes, tab);
     }
     /**
       Serialize the contents of skipped
@@ -768,11 +823,14 @@ namespace ePhotosynthesis {
     /**
       Print the contents of resetone
       \param[in,out] out Stream to print to
+      \param[in] includePrefixes If true, the module & 
+        parameter type prefixes will be added to the member 
+        names.
       \param[in] tab Indentation to add to each line
       \return Updated stream
     */
-    static std::ostream& printResetone(std::ostream& out, const unsigned int tab = 0) {
-      return print_vector(resetone, out, tab);
+    static std::ostream& printResetone(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
+      return print_vector(resetone, out, includePrefixes, tab);
     }
     /**
       Serialize the contents of resetone
@@ -819,11 +877,14 @@ namespace ePhotosynthesis {
     /**
       Print the contents of initonce
       \param[in,out] out Stream to print to
+      \param[in] includePrefixes If true, the module & 
+        parameter type prefixes will be added to the member 
+        names.
       \param[in] tab Indentation to add to each line
       \return Updated stream
     */
-    static std::ostream& printInitonce(std::ostream& out, const unsigned int tab = 0) {
-      return print_vector(initonce, out, tab);
+    static std::ostream& printInitonce(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
+      return print_vector(initonce, out, includePrefixes, tab);
     }
     /**
       Serialize the contents of initonce
@@ -899,6 +960,7 @@ namespace ePhotosynthesis {
   #include "enums/enums_MOD.hpp"
   #include "enums/enums_RC.hpp"
   #include "enums/enums_VEL.hpp"
+  #include "enums/enums_VARS.hpp"
   
   // Specializations for get_enum_names
   #include "enums/enums_COND_names.hpp"
@@ -907,6 +969,7 @@ namespace ePhotosynthesis {
   #include "enums/enums_MOD_names.hpp"
   #include "enums/enums_RC_names.hpp"
   #include "enums/enums_VEL_names.hpp"
+  #include "enums/enums_VARS_names.hpp"
   
   // Specializations for get_enum_values
   #include "enums/enums_COND_defaults.hpp"
@@ -915,6 +978,7 @@ namespace ePhotosynthesis {
   #include "enums/enums_MOD_defaults.hpp"
   #include "enums/enums_RC_defaults.hpp"
   #include "enums/enums_VEL_defaults.hpp"
+  #include "enums/enums_VARS_defaults.hpp"
   
   // Specializations for get_enum_alternate_values
   #include "enums/enums_COND_defaults_C3.hpp"
@@ -923,6 +987,7 @@ namespace ePhotosynthesis {
   #include "enums/enums_MOD_defaults_C3.hpp"
   #include "enums/enums_RC_defaults_C3.hpp"
   #include "enums/enums_VEL_defaults_C3.hpp"
+  #include "enums/enums_VARS_defaults_C3.hpp"
   
   // Specializations for get_enum_glymaids
   #include "enums/enums_COND_glymaids.hpp"
@@ -931,6 +996,7 @@ namespace ePhotosynthesis {
   #include "enums/enums_MOD_glymaids.hpp"
   #include "enums/enums_RC_glymaids.hpp"
   #include "enums/enums_VEL_glymaids.hpp"
+  #include "enums/enums_VARS_glymaids.hpp"
   
   // Specializations for get_enum_constant
   #include "enums/enums_COND_constant.hpp"
@@ -939,6 +1005,7 @@ namespace ePhotosynthesis {
   #include "enums/enums_MOD_constant.hpp"
   #include "enums/enums_RC_constant.hpp"
   #include "enums/enums_VEL_constant.hpp"
+  #include "enums/enums_VARS_constant.hpp"
   
   // Specializations for get_enum_calculated
   #include "enums/enums_COND_calculated.hpp"
@@ -947,6 +1014,7 @@ namespace ePhotosynthesis {
   #include "enums/enums_MOD_calculated.hpp"
   #include "enums/enums_RC_calculated.hpp"
   #include "enums/enums_VEL_calculated.hpp"
+  #include "enums/enums_VARS_calculated.hpp"
   
   // Specializations for get_enum_nonvector
   #include "enums/enums_COND_nonvector.hpp"
@@ -955,6 +1023,7 @@ namespace ePhotosynthesis {
   #include "enums/enums_MOD_nonvector.hpp"
   #include "enums/enums_RC_nonvector.hpp"
   #include "enums/enums_VEL_nonvector.hpp"
+  #include "enums/enums_VARS_nonvector.hpp"
   
   // Specializations for get_enum_skipped
   #include "enums/enums_COND_skipped.hpp"
@@ -963,6 +1032,7 @@ namespace ePhotosynthesis {
   #include "enums/enums_MOD_skipped.hpp"
   #include "enums/enums_RC_skipped.hpp"
   #include "enums/enums_VEL_skipped.hpp"
+  #include "enums/enums_VARS_skipped.hpp"
   
   // Specializations for get_enum_resetone
   #include "enums/enums_COND_resetone.hpp"
@@ -971,6 +1041,7 @@ namespace ePhotosynthesis {
   #include "enums/enums_MOD_resetone.hpp"
   #include "enums/enums_RC_resetone.hpp"
   #include "enums/enums_VEL_resetone.hpp"
+  #include "enums/enums_VARS_resetone.hpp"
   
   // Specializations for get_enum_initonce
   #include "enums/enums_COND_initonce.hpp"
@@ -979,6 +1050,7 @@ namespace ePhotosynthesis {
   #include "enums/enums_MOD_initonce.hpp"
   #include "enums/enums_RC_initonce.hpp"
   #include "enums/enums_VEL_initonce.hpp"
+  #include "enums/enums_VARS_initonce.hpp"
   
   
   // Utility for getting enum type from module & param_type

@@ -11,30 +11,6 @@
 - Raise an error if value specified more than once
 - Handle variable aliases
 - Use GlymaIDs from param
-
-51 in EPS
-
-
-matlab has 3 vars before HexP
-
-CMs(10)	    =NADPH; 0.21
-CMs(11)	    = CO2;  0.0120
-CMs(12)	    = O2;   0.2640
-
-
-
-BF COND
-Qi = 0
-Q [missing from C++, 1 in matlab ]
-cytbH = 1
-Qn = 0
-Qr = 0
-QH2 = 5
-cytc2 = 1
-P700 = 0.5
-ADP = 0.82
-Pi [missing from C++, 0.9 in matlab]
-ATP [missing from C++, 0.68 in matlab]
-
-FI COND
-PQn [missing from C++, 5.0 in matlab]
+- Set up system for enabling/disabling variables based on the selected driver
+- Methods for dumping all variables
+- Track useC3 on value set to allow it to change during a session?

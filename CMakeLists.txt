@@ -171,7 +171,7 @@ set(ENUM_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/utils/generate_enum.py)
 
 # The last suffix must have a complete set of modules for the global
 # enum to be generated correctly
-foreach(suffix COND POOL KE MOD RC VEL)
+foreach(suffix COND POOL KE MOD RC VARS VEL)
   set(fsuffix ${suffix})
   set(ENUM_SRC_REGEX ${CMAKE_CURRENT_SOURCE_DIR}/param/*_${fsuffix}.txt)
   file(GLOB ENUM_SRC "${ENUM_SRC_REGEX}")
@@ -179,6 +179,11 @@ foreach(suffix COND POOL KE MOD RC VEL)
   set(iBYPRODUCTS)
   set(iGENERATED_SOURCES)
   set(iARGS)
+  list(
+       APPEND iARGS
+       --enum-macro-skip-global=ALL
+       --accum-enum-macro-skip-global=VARS
+  )
   if(suffix STREQUAL COND)
     list(APPEND iARGS --macro-suffix-c=Condition)
   elseif(suffix STREQUAL MOD)

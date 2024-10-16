@@ -2,7 +2,7 @@ RuBP		2.000	#
 PGA		2.400	#
 DPGA		0.0011	#
 T3P		0.5	#
-ADPG		0.005 	# (0.0 with C3)
+ADPG		0.005	0.0	# (0.0 with C3)
 FBP		0.670	#
 E4P		0.050	#
 S7P		2.000	#

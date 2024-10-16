@@ -42,6 +42,218 @@ arr PS::Param = {0., 0.};
 DEFINE_VALUE_SET_STATIC(PS);
 DEFINE_VALUE_SET(PSCondition);
 
+
+void PS::_initCalc(Variables *theVars, PSCondition* PS_con) {
+    if (theVars->useC3) {
+        if (theVars->GRNC == 1 && theVars->CO2_cond > 0) {
+            PS::Vfactor1 = theVars->VfactorCp[0];
+            PS::Vfactor2 = theVars->VfactorCp[2];
+            PS::Vfactor3 = theVars->VfactorCp[3];
+            PS::Vfactor5 = theVars->VfactorCp[5];
+            PS::Vfactor7 = theVars->VfactorCp[7];
+            PS::Vfactor13 = theVars->VfactorCp[12];
+            PS::Vfactor23 = theVars->VfactorCp[16];
+        }
+        if (theVars->GRNT == 1 && theVars->Tp > 25) {
+            PS::Vf_T3 = theVars->VfactorT[9];
+            PS::Vf_T2 = theVars->VfactorT[21];
+            PS::Vf_T1 = theVars->VfactorT[24];
+            PS::Vf_T6 = theVars->VfactorT[16];
+            PS::Vf_T9 = theVars->VfactorT[25];
+            PS::Vf_T5 = theVars->VfactorT[1];
+            PS::Vf_T23 = theVars->VfactorT[2];
+            PS::Vf_T13 = theVars->VfactorT[3];
+        }
+        PS::KM11 = 0.0097 * exp(PS::c_c - PS::dHa_c * 1000. / (PS::R * (theVars->Tp + 273.15))) / 272.38;
+        PS::KM12 = 0.244 * exp(PS::c_o - PS::dHa_o * 1000. / (PS::R * (theVars->Tp + 273.15))) / 165.82;
+	
+        if (theVars->GP == 0) {
+            PS::V1 = theVars->EnzymeAct.at("V1");
+            PS::V2 = theVars->EnzymeAct.at("V2");
+            PS::V3 = theVars->EnzymeAct.at("V3");
+            PS::V5 = theVars->EnzymeAct.at("V5");
+            PS::V6 = theVars->EnzymeAct.at("V6");
+            PS::V7 = theVars->EnzymeAct.at("V7");
+            PS::V8 = theVars->EnzymeAct.at("V8");
+            PS::V9 = theVars->EnzymeAct.at("V9");
+            PS::V10 = theVars->EnzymeAct.at("V10");
+            PS::V13 = theVars->EnzymeAct.at("V13");
+            PS::V23 = theVars->EnzymeAct.at("V23");
+            PS::V16 = theVars->EnzymeAct.at("V16");
+        }
+        PS::PsV1_0 = PS::V1 * PS::Vfactor1 * PS::Vf_T1 ;   //  1   Rubisco RuBP+CO2<->2PGA
+        PS::PsV2_0 = PS::V2 * PS::Vfactor2 * PS::Vf_T2 ;   //  2   PGA Kinase  PGA+ATP <-> ADP + DPGA
+        PS::PsV3_0 = PS::V3 * PS::Vfactor3 * PS::Vf_T3 ;   //  3   GAP dehydragenase   DPGA+NADPH <->GAP + OP+NADP
+
+        PS::PsV5_0 = PS::V5 * PS::Vfactor5 * PS::Vf_T5;    //  5   Aldolase    GAP+DHAP <->FBP
+        PS::PsV6_0 = PS::V6 * PS::Vf_T6;                   //  6   FBPase  FBP<->F6P+OP
+        PS::PsV7_0 = PS::V7 * PS::Vfactor7;                //  7   Transketolase   F6P+GAP<->E4P+Xu5P
+        PS::PsV8_0 = PS::V8 * PS::Vfactor5 * PS::Vf_T5;    //  8   Aldolase    E4P+DHAP<->SBP
+        PS::PsV9_0 = PS::V9 * PS::Vf_T9;                   //  9   SBPase  SBP<->S7P+OP
+        PS::PsV10_0 = PS::V10 * PS::Vfactor7;              //  10  Transketolase   S7P+GAP<->Ri5P+Xu5P
+
+        PS::PsV13_0 = PS::V13 * PS::Vfactor13 * PS::Vf_T13; //  13  Ribulosebiphosphate kinase  Ru5P+ATP<->RuBP+ADP
+        PS::PsV16 = PS::V16  ;                             //  16  ATP synthase    ADP+Pi<->ATP
+
+        PS::PsV23_0 = PS::V23 * PS::Vfactor23 * PS::Vf_T23;//  23  ADP-glucose pyrophosphorylase and   ADPG+Gn<->G(n+1)+ADP
+        PS::PsV31  =   PS::V31  * theVars->alpha2;         //  31  Phosphate translocator  DHAPi<->DHAPo
+        PS::PsV32  =   PS::V32  * theVars->alpha2;         //  32  Phosphate translocator  PGAi<->PGAo
+        PS::PsV33  =   PS::V33  * theVars->alpha2;         //  33  Phosphate translocator  GAPi<->GAPo
+        PS::Ru_Act = -3. * pow(10., -5.) * pow(theVars->Tp, 3.) + 0.0013 * pow(theVars->Tp, 2.) - 0.0106 * theVars->Tp + 0.8839; //Rubisco activition state   % SHARED
+        PS::PsV1 = PS::PsV1_0 * PS::Ru_Act * pow(PS::Q10_1, (theVars->Tp - 25.) / 10.);                     //   SHARED
+        PS::PsV2 = PS::PsV2_0 * pow(PS::Q10_2, (theVars->Tp - 25.) / 10.);
+        PS::PsV3 = PS::PsV3_0 * pow(PS::Q10_3, (theVars->Tp - 25.) / 10.);
+        PS::PsV5 = PS::PsV5_0 * pow(PS::Q10_5, (theVars->Tp - 25.) / 10.);
+        PS::PsV6 = PS::PsV6_0 * pow(PS::Q10_6, (theVars->Tp - 25.) / 10.);
+        PS::PsV7 = PS::PsV7_0 * pow(PS::Q10_7, (theVars->Tp - 25.) / 10.);
+        PS::PsV8 = PS::PsV8_0 * pow(PS::Q10_8, (theVars->Tp - 25.) / 10.);
+        PS::PsV9 = PS::PsV9_0 * pow(PS::Q10_9, (theVars->Tp - 25.) / 10.);
+        PS::PsV10 = PS::PsV10_0 * pow(PS::Q10_10, (theVars->Tp - 25.) / 10.);
+        PS::PsV13= PS::PsV13_0 * pow(PS::Q10_13, (theVars->Tp - 25.) / 10.);
+        PS::PsV23 = PS::PsV23_0 * pow(PS::Q10_23, (theVars->Tp - 25.) / 10.);
+        PS::I2 = theVars->TestLi * theVars->alfa * (1. - theVars->fc) / 2.;
+        PS::J = (I2 + PS::Jmax - sqrt(pow(I2 + PS::Jmax, 2.) - 4. * PS::Theta * I2 * PS::Jmax)) / (2. * PS::Theta);
+    } else {
+        PS::PS_C_CP *= theVars->PSRatio[0];  // Global constant for the total phosphate
+        PS::PS_C_CA *= theVars->PSRatio[1];  // Global constant for the total adenylates
+        // langmm: Present in Matlab version
+        // PS::PS_C_CN *= theVars->PSRatio[2];  // Global constant for the cytosolic Phosphate concentration;
+        PS::PS_PEXT *= theVars->PSRatio[3];  // Global constant for the cytosolic Phosphate concentration;
+
+        // Initialize the constants for the different reactions
+        PS::KM11 *= theVars->PSRatio[19]; // CO2 1 RuBP+CO2->2PGA
+        PS::KM12 *= theVars->PSRatio[20];  // O2 1 RuBP+CO2->2PGA
+        PS::KM13 *= theVars->PSRatio[21];   // RuBP 1 RuBP+CO2->2PGA
+
+        PS::KI11 *= theVars->PSRatio[22];   // PGA
+        PS::KI12 *= theVars->PSRatio[23];   // FBP
+        PS::KI13 *= theVars->PSRatio[24];  // SBP
+        PS::KI14 *= theVars->PSRatio[25];    // Pi
+        PS::KI15 *= theVars->PSRatio[26];   // NADPH
+
+        PS::KM21 *= theVars->PSRatio[27];  // PGA 2 PGA+ATP <-> ADP + DPGA
+        PS::KM22 *= theVars->PSRatio[28];  // ATP 2 PGA+ATP <-> ADP + DPGA
+        PS::KM23 *= theVars->PSRatio[29];   // ADP
+
+        PS::KM31a *= theVars->PSRatio[30]; // BPGA 3 DPGA+NADPH <->GAP + OP+NADP
+        PS::KM32b *= theVars->PSRatio[31];   // NADPH 3 DPGA+NADPH <->GAP + OP+NADP
+
+        PS::KE4 *= theVars->PSRatio[34]; // Using the value from Patterson
+
+        PS::KM51 *= theVars->PSRatio[35];    // GAP 5 GAP+DHAP <->FBP
+        PS::KM52 *= theVars->PSRatio[36];    // DHAP 5 GAP+DHAP <->FBP
+        PS::KM53 *= theVars->PSRatio[37];   // FBP 5 GAP+DHAP <->FBP     // Original Value: 0.02
+        PS::KE5 *= theVars->PSRatio[38];   // Defult: 7.1
+
+        PS::KM61 *= theVars->PSRatio[39];  // FBP 6 FBP<->F6P+OP
+        PS::KI61 *= theVars->PSRatio[40];    // F6P
+        PS::KI62 *= theVars->PSRatio[41];    // Pi
+        PS::KE6 *= theVars->PSRatio[42];
+
+        PS::KE7 *= theVars->PSRatio[47];     // The equilibrium constant for this reaction  New   Laisk  Bassham and Krause 1969 BBA
+
+        PS::KM81 *= theVars->PSRatio[49];    // DHAP
+        PS::KM82 *= theVars->PSRatio[50];    // E4P estimate
+        PS::KE8 *= theVars->PSRatio[51];   // The equilibrium constant for this reaction  New  mM-1  Laisk  Bassham and Krause 1969 BBA. Default: 1.107
+
+        PS::KM9 *= theVars->PSRatio[52];   // SBP 9 SBP<->S7P+OP
+        PS::KI9 *= theVars->PSRatio[53];    // The inibintion constant for Pi;
+        PS::KE9 *= theVars->PSRatio[54];
+
+        PS::KM10 *= theVars->PSRatio[55];    // R5P 10 S7P+GAP<->Ri5P+Xu5P
+        PS::KM101 *= theVars->PSRatio[56];   // Xu5P
+        PS::KM102 *= theVars->PSRatio[57];  // Estimate for GAP
+        PS::KM103 *= theVars->PSRatio[58]; // Estimate for S7P
+        //theVars->KE10 *= theVars->PSRatio[59];//   The equilibrium constant for this reaction          // New From Laisk or Bassham and Krause 1969 BBA
+
+        PS::KE11 *= theVars->PSRatio[60];    // Equilibrium Constant 11 Ri5P<-->Ru5P
+        PS::KE12 *= theVars->PSRatio[61];   // Equilibrium Constant 12 Xu5P<-->Ru5P
+
+        PS::KM131 *= theVars->PSRatio[62];  // Ru5P 13 Ru5P+ATP<->RuBP+ADP
+        PS::KM132 *= theVars->PSRatio[63]; //  ATP 13 Ru5P+ATP<->RuBP+ADP
+        PS::KI131 *= theVars->PSRatio[64];    // PGA 13 Ru5P+ATP<->RuBP+ADP
+        PS::KI132 *= theVars->PSRatio[65];   // RuBP 13 Ru5P+ATP<->RuBP+ADP
+        PS::KI133 *= theVars->PSRatio[66];    // Pi 13 Ru5P+ATP<->RuBP+ADP
+        PS::KI134 *= theVars->PSRatio[67];   // ADP 13 Ru5P+ATP<->RuBP+ADP
+        PS::KI135 *= theVars->PSRatio[68];   // ADP 13 Ru5P+ATP<->RuBP+ADP
+        PS::KE13 *= theVars->PSRatio[69];
+
+        PS::KM161 *= theVars->PSRatio[70]; // ADP 16 ADP+Pi<->ATP
+        PS::KM162 *= theVars->PSRatio[71];   // Pi 16 ADP+Pi<-> ATP
+        PS::KM163 *= theVars->PSRatio[72];   // ATP 16  ADP+Pi<-> ATP                           // New       Based on Laisk
+        PS::KE16 *= theVars->PSRatio[73];  // The equilibrium constant for this reaction      // NEW, From Laisk or Bassham and Krause 1969 BBA
+
+        PS::KE21 *= theVars->PSRatio[74];    // Equilibrium constant 21 F6P<->G6P
+        PS::KE22 *= theVars->PSRatio[75];  //  Equilibrium constant 22 G6P<->G1P
+
+        PS::KM311 *= theVars->PSRatio[76]; // DHAP 31 DHAPi<->DHAPo
+        //theVars->KM312 *= theVars->PSRatio[77];//  Pi 31 DHAPi<->DHAPo
+        PS::KM313 *= theVars->PSRatio[78];  // Pext 31 DHAPi<->DHAPo
+        PS::KM32 *= theVars->PSRatio[79];   // PGA 32 PGAi<->PGAo
+        PS::KM33 *= theVars->PSRatio[80];  // GAP 33 GAPi<->GAPo
+
+
+        // Now put in the constant for the new ADPG Pyrophosphorylase and starch
+        // synthase
+
+        // ATP + Glucose-1-Phosphate --> ADPG + PPi
+
+        PS::KM231 *= theVars->PSRatio[81]; // G1P 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
+        PS::KM232 *= theVars->PSRatio[82]; //  ATP 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
+        PS::KM233 *= theVars->PSRatio[83];  // ADPG 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
+        PS::KM234 *= theVars->PSRatio[84];   //  PPi 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
+        PS::KE23 *= theVars->PSRatio[85];
+
+
+        PS::KA231 *= theVars->PSRatio[86]; // PGA 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
+        PS::KI231 *= theVars->PSRatio[87];  //0.9 ;       //   Pi 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989 WY201803
+        PS::KVmo *= theVars->PSRatio[88]; //   The minimum maximum velocity        Laisk et al 1989
+        // ADPG --> ADP + Gn     // The starch synthesis reaction 24.     Laisk et al
+        // 1989
+
+        PS::KM241 *= theVars->PSRatio[89]; //   ADPG    ADPG --> ADP + Gn       Laisk et al 1989
+
+        PS::KE25 *= theVars->PSRatio[92];
+
+        // Initialize the Vmax for different reactions
+
+        if (theVars->GP == 0) {
+            PS::V1 = 2.93 * PS::SC1 / PS::STOM1 * theVars->PSRatio[4]; // (Harris & Koniger, 1997)
+            PS::V2 = 30.15 * PS::SC * PS::STOM2 * theVars->PSRatio[5]; // (Harris & Koniger, 1997)
+            PS::V3 = 4.04 * PS::SC * PS::STOM2 * theVars->PSRatio[6];  // 1.57*PS::SC     ; // (Harris & Koniger, 1997)
+            PS::V5 = 1.22 * PS::SC * theVars->PSRatio[7];          // (Harris & Koniger, 1997)
+            PS::V6 = 0.734 * PS::SC / PS::STOM1 * theVars->PSRatio[8]; // (Harris & Koniger, 1997)
+            PS::V7 = 3.12 * PS::SC * 4. * theVars->PSRatio[9];     // (Harris & Koniger, 1997)
+            PS::V8 = 1.22 * PS::SC * theVars->PSRatio[10];         // (Harris & Koniger, 1997)
+            PS::V9 = 0.32 * 3. * theVars->PSRatio[11];         // 0.17*PS::SC *FC ; // (Harris & Koniger, 1997) *3.
+            //theVars->V10 = theVars->V7; // (Harris & Koniger, 1997)
+            PS::V13 = 10.81 * PS::SC1 * theVars->PSRatio[12];      // (Harris & Koniger, 1997)
+            PS::V16 = 5.47 * theVars->PSRatio[13];             // (Aflalo & Shavit, 1983, Davenport & McLeod, 1986)
+            PS::V23 = 2. * theVars->PSRatio[14];
+        }
+        PS::V24 *= theVars->PSRatio[15];
+        PS::V31 *= theVars->PSRatio[16];
+        PS::V32 *= theVars->PSRatio[17];
+        PS::V33 *= theVars->PSRatio[18];//WY 2018103
+        PS::KE57 *= theVars->PSRatio[93];
+        PS::Km8p5p *= theVars->PSRatio[94];
+        PS::Km5p5p *= theVars->PSRatio[95];
+        PS::KE810 *= theVars->PSRatio[96];
+        PS::Km5gap *= theVars->PSRatio[97];
+        PS::Km8f6p *= theVars->PSRatio[98];
+        PS::Km8s7p *= theVars->PSRatio[99];
+        PS::Km8gap *= theVars->PSRatio[100];
+        PS::MaxCoeff *= theVars->PSRatio[101];
+        PS::PsV31 = PS::V31 * PS::RegFactor; // 31 Phosphate translocator DHAPi<->DHAPo
+        PS::PsV32 = PS::V32 * PS::RegFactor; // 32 Phosphate translocator PGAi<->PGAo
+        PS::PsV33 = PS::V33 * PS::RegFactor; // 33 Phosphate translocator GAPi<->GAPo
+    }
+    theVars->ADP = PS::PS_C_CA - PS_con->ATP;
+    PS::KE2Ratio = (1. + 1. / PS::KE21 + PS::KE22);
+    PS::KE1Ratio = (1. + 1. / PS::KE11 + 1. / PS::KE12);
+}
+
+
 PSCondition* PS::_init(Variables *theVars) {
     setC3(theVars->useC3);
     PSCondition* PS_con = new PSCondition();

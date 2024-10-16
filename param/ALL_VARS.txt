@@ -16,5 +16,5 @@ Tp		0.0
 alfa		0.0
 fc		0.0
 lightParam	0.0
-alpha1		1.205	# [CONST]
-alpha2		2.06	# [CONST]
+alpha1		1.0	# [CONST] originally 1.205 in C++ code
+alpha2		1.0	# [CONST] originally 2.06 in C++ code

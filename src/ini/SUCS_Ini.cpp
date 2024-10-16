@@ -40,6 +40,112 @@ DEFINE_VALUE_SET_STATIC(SUCS);
 DEFINE_VALUE_SET(SUCSCondition);
 DEFINE_VALUE_SET_NS(pool::, SUCSPool);
 
+void SUCS::_initCalc(Variables *theVars, SUCSCondition* SUCS_Con) {
+    if (theVars->useC3) {
+        if (theVars->GRNC == 1 && theVars->CO2_cond > 0.) {
+            SUCS::Vfactor52 = theVars->VfactorCp[19];
+            SUCS::Vfactor56 = theVars->VfactorCp[22];
+            SUCS::Vfactor57 = theVars->VfactorCp[23];
+            SUCS::Vfactor59 = theVars->VfactorCp[24];
+
+        }
+        if (theVars->GRNT == 1 && theVars->Tp > 25) {
+            SUCS::Vf_T52 = theVars->VfactorT[0];
+            SUCS::Vf_T59 = theVars->VfactorT[12];
+            SUCS::Vf_T57 = theVars->VfactorT[13];
+            SUCS::Vf_T51 = theVars->VfactorT[17];
+            SUCS::Vf_T56 = theVars->VfactorT[27];
+        }
+
+        if (theVars->GP == 0) {
+            SUCS::V51 = theVars->EnzymeAct.at("V51");
+            SUCS::V52 = theVars->EnzymeAct.at("V52");
+            SUCS::V55 = theVars->EnzymeAct.at("V55");
+            SUCS::V56 = theVars->EnzymeAct.at("V56");
+            SUCS::V57 = theVars->EnzymeAct.at("V57");
+            SUCS::V58 = theVars->EnzymeAct.at("V58");
+        }
+        SUCS::V59 = theVars->EnzymeAct.at("V59");
+	
+        const double tempRatio = (theVars->Tp - 25.) / 10.;
+
+        SUCS::SUCSV51 = SUCS::V51 * SUCS::Vfactor51 * SUCS::Vf_T51 *
+                        pow(SUCS::Q10_51, tempRatio);       //  DHAP+GAP --FBP
+        SUCS::SUCSV52 = SUCS::V52 * SUCS::Vfactor52 * SUCS::Vf_T52 *
+                        pow(SUCS::Q10_52, tempRatio);       //  FBP --F6P + Pi
+        SUCS::SUCSV55 = SUCS::V55 * pow(SUCS::Q10_55, tempRatio); //  G1P+UTP --OPOP+UDPG
+        SUCS::SUCSV56 = SUCS::V56 * SUCS::Vfactor56 * SUCS::Vf_T56 *
+                        pow(SUCS::Q10_56, tempRatio);       // UDPG+F6P--SUCP + UDP
+        SUCS::SUCSV57 = SUCS::V57 * SUCS::Vfactor57 * SUCS::Vf_T57 *
+                        pow(SUCS::Q10_57, tempRatio);       // SUCP--Pi + SUC
+        SUCS::SUCSV58 = SUCS::V58 * pow(SUCS::Q10_58, tempRatio); // F26BP--F6P + Pi
+    } else {
+        SUCS::KE501 *= theVars->SUCSRatio[15];
+        SUCS::Km511 *= theVars->SUCSRatio[16];
+        SUCS::Km512 *= theVars->SUCSRatio[17];
+        SUCS::Km513 *= theVars->SUCSRatio[18];
+        SUCS::KE51 *= theVars->SUCSRatio[19];
+        SUCS::Km521 *= theVars->SUCSRatio[21];
+        SUCS::KI521 *= theVars->SUCSRatio[22];
+        SUCS::KI522 *= theVars->SUCSRatio[23];
+        SUCS::KI523 *= theVars->SUCSRatio[24];
+        SUCS::KE52 *= theVars->SUCSRatio[25];
+        SUCS::KE531 *= theVars->SUCSRatio[26];
+        SUCS::KE541 *= theVars->SUCSRatio[27];
+        SUCS::Km551 *= theVars->SUCSRatio[28];
+        SUCS::Km552 *= theVars->SUCSRatio[29];
+        SUCS::Km553 *= theVars->SUCSRatio[30];
+        SUCS::Km554 *= theVars->SUCSRatio[31];
+        SUCS::KE55 *= theVars->SUCSRatio[32];
+        SUCS::Km561 *= theVars->SUCSRatio[33];
+        SUCS::Km562 *= theVars->SUCSRatio[34];
+        SUCS::KI561 *= theVars->SUCSRatio[35];
+        SUCS::KI562 *= theVars->SUCSRatio[36];
+        SUCS::KI563 *= theVars->SUCSRatio[37];
+        SUCS::KI564 *= theVars->SUCSRatio[38];
+        SUCS::KI565 *= theVars->SUCSRatio[39];
+        SUCS::KE56 *= theVars->SUCSRatio[40];
+        SUCS::Km571 *= theVars->SUCSRatio[41];
+        SUCS::Ki572 *= theVars->SUCSRatio[42];
+        SUCS::KE57 *= theVars->SUCSRatio[43];
+        SUCS::Km581 *= theVars->SUCSRatio[44];
+        SUCS::KI581 *= theVars->SUCSRatio[45];
+        SUCS::KI582 *= theVars->SUCSRatio[46];
+        SUCS::Km591 *= theVars->SUCSRatio[47];
+        SUCS::Km593 *= theVars->SUCSRatio[49];
+        SUCS::KI591 *= theVars->SUCSRatio[50];
+        SUCS::KE59 *= theVars->SUCSRatio[52];
+        SUCS::KE61 *= theVars->SUCSRatio[58];
+        SUCS::Km621 *= theVars->SUCSRatio[59];
+        if (theVars->GP == 0) {
+            // Unit: mmol l-1 s-1;
+            SUCS::V51 *= SC * theVars->SUCSRatio[0]; // DHAP+GAP --FBP     default 0.5
+            SUCS::V52 *= SC * theVars->SUCSRatio[1]; // FBP --F6P + Pi
+            SUCS::V55 *= SC * theVars->SUCSRatio[2]; // G1P+UTP --OPOP+UDPG
+            SUCS::V56 *= SC * theVars->SUCSRatio[3]; // UDPG+F6P--SUCP + UDP
+            SUCS::V57 *= SC1 * theVars->SUCSRatio[4]; // SUCP--Pi + SUC; 0.27 DEFALT
+            SUCS::V58 *= SC * theVars->SUCSRatio[5]; // F26BP--F6P + Pi
+        }
+
+        SUCS::V59 *= SC * theVars->SUCSRatio[6];            // F6P + ATP --ADP + F26BP // defalut 0.03  (* 0.3)
+        //theVars->V60 = 6.1 * theVars->SUCSRatio[7];// ATP+UDP --UTP + ADP
+        //theVars->V61 = 10000;         // POPO --2PO   // constant set in globals.hpp
+        SUCS::V62 *= SC1 * theVars->SUCSRatio[8];             // SUC Sink        0.9 works.
+        SUCS::Vdhap_in *= SC1 * theVars->SUCSRatio[9];      // DHAP export from chloroplast
+        SUCS::Vgap_in *= SC1 * theVars->SUCSRatio[10];      // GAP export from chloroplast
+        SUCS::Vpga_in *= SC1 * theVars->SUCSRatio[11];      // PGA export from chloropalst
+
+        //////////////////////////////////////////////////////////////////
+        // Here is some pool values      //
+        //////////////////////////////////////////////////////////////////
+        theVars->SUCS_Pool.ATc = 1.0 * theVars->SUCSRatio[12]; // mM
+        theVars->SUCS_Pool.UTc = 1.5 * theVars->SUCSRatio[13]; // mM
+        theVars->SUCS_Pool.PTc = 15. * theVars->SUCSRatio[14];  //
+    }
+    SUCS::KE5Ratio = 1. + SUCS::KE541 + 1. / SUCS::KE531;
+    SUCS::ADPc = theVars->SUCS_Pool.ATc - SUCS::ATPc;
+}
+
 SUCSCondition* SUCS::_init(Variables *theVars) {
     SUCSCondition* SUCS_Con = new SUCSCondition();
     SUCS::UTPc = 0.75;

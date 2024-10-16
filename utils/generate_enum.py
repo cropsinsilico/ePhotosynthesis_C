@@ -1168,8 +1168,9 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             args.append(f'const {collection_type}& x')
             arg_names.append('x')
         elif function_type == 'print':
-            args += ['std::ostream& out', 'const unsigned int tab = 0']
-            arg_names += ['out', 'tab']
+            args += ['std::ostream& out', 'bool includePrefixes = false',
+                     'const unsigned int tab = 0']
+            arg_names += ['out', 'includePrefixes', 'tab']
         elif function_type == 'operator<<':
             args += ['std::ostream& out']
             arg_names += ['out', 'x']
@@ -1203,6 +1204,9 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 docs += [
                     f'Print the contents of {self.collection_name}',
                     '\\param[in,out] out Stream to print to',
+                    '\\param[in] includePrefixes If true, the module & ',
+                    '  parameter type prefixes will be added to the member ',
+                    '  names.',
                     '\\param[in] tab Indentation to add to each line',
                     '\\return Updated stream',
                 ]
@@ -1347,6 +1351,9 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 'Print the contents of a collection',
                 '\\param[in] collection Object to print',
                 '\\param[in,out] out Stream to print to',
+                '\\param[in] includePrefixes If true, the module & ',
+                '  parameter type prefixes will be added to the member ',
+                '  names.',
                 '\\param[in] tab Indentation to add to each line',
                 '\\return Updated stream',
             ]
@@ -1572,8 +1579,8 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
             'get', 'getdefault', 'from'
         ]
     )
-    _print_prefix = "space << \"{\" << std::endl;"
-    _print_suffix = "space << \"}\""
+    _print_prefix = None  # "space << \"{\" << std::endl;"
+    _print_suffix = None  # "space << \"}\""
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault("value_type", self.default_value_type)
@@ -1642,7 +1649,9 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
         assert len(args) == 2
         key = f"names.find({args[0]})->second"
         val = f"{args[1]}"
-        return (f'{out}{space} << "  " << {key} << " = " << {val} '
+        # return (f'{out}{space} << "  " << {key} << " = " << {val} '
+        #         f'<< std::endl;')
+        return (f'{out}{space} << "  " << {key} << "\t" << {val} '
                 f'<< std::endl;')
 
 
@@ -1720,11 +1729,21 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
             'type': str,
             'help': "Name that should be used for the global enum",
         },
+        enum_macro_skip={
+            'action': 'append',
+            'help': ("Enum members that should be skipped in the "
+                     "members macros"),
+        },
         accum_enum_name={
             'type': str,
             'help': ("Name that should be used for enum accumulated "
                      "between calls"),
             'default': "PARAM_TYPE",
+        },
+        accum_enum_macro_skip={
+            'action': 'append',
+            'help': ("Accumulated enum members that should be skipped "
+                     "in the members macros"),
         },
         empty_enum_name={
             'type': str,
@@ -1890,9 +1909,8 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
         ]
         lines += self.parent.generate_enum(
             self.enum_name, enum_members, as_class=False,
+            macro_skip=self.enum_macro_skip,
         )
-        # lines += self.parent.generate_definition_macro(
-        #     self.enum_name, enum_members, macro_suffix='')
         # Param types
         existing_enum_total = [[x['name'] for x in enum_members]]
         if self.accum_enum_name:
@@ -1906,9 +1924,8 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
             ]
             lines += self.parent.generate_enum(
                 self.accum_enum_name, accum_enum_members, as_class=False,
+                macro_skip=self.accum_enum_macro_skip,
             )
-            # lines += self.parent.generate_definition_macro(
-            #     self.accum_enum_name, accum_enum_members, macro_suffix='')
             existing_enum_total.append([x['name'] for x in
                                         accum_enum_members])
         # Utility for getting module id from enum type
@@ -1944,6 +1961,23 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
                 self.enum_name, spec_param=['typename'],
                 specialize_direct=specialize_direct,
                 for_header=True, skip_items=['NONE', 'MAX'])
+        # lines += [
+        #     f'std::ostream& operator<<(std::ostream& out, '
+        #     f'const {self.enum_name}& x) {{',
+        #     f'  out << get_enum_names<{self.enum_name}>().find(x)'
+        #     f'->second;',
+        #     '  return out;',
+        #     '}',
+        # ]
+        # if self.accum_enum_name:
+        #     lines += [
+        #         f'std::ostream& operator<<(std::ostream& out, '
+        #         f'const {self.accum_enum_name}& x) {{',
+        #         f'  out << get_enum_names<{self.accum_enum_name}>().'
+        #         f'find(x)->second;',
+        #         '  return out;',
+        #         '}',
+        #     ]
         # Base class
         if self.parent.as_class:
             lines += ['// Unspecialized enum']
@@ -2190,7 +2224,7 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
 
     def generate_declaration(self, name, members, enum_name=None,
                              enum_type='int', members_only=False,
-                             as_class=None, **kwargs):
+                             as_class=None, macro_skip=[], **kwargs):
         lines = []
         if as_class is None:
             as_class = self.as_class
@@ -2199,7 +2233,12 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 name, members, enum_name=enum_name, enum_type=enum_type,
                 as_class=as_class)
             lines += self.generate_definition_macro(
-                name, members, macro_suffix='')
+                name, members, macro_suffix='', skip=macro_skip)
+            lines += self.generate_definition_macro(
+                name, members, macro_suffix='',
+                macro_prefix='MEMBER_NAMES_',
+                skip=(macro_skip + ['NONE', 'MAX']),
+                strip_member_prefix=(name + '_'))
             lines += self.generate_definition_all(
                 name, members, enum_name=enum_name,
                 as_class=as_class)
@@ -2405,17 +2444,23 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
         return lines
 
     def generate_definition_macro(self, name, members, enum_name=None,
-                                  enum_prefix='', macro_suffix=None):
+                                  enum_prefix='', macro_suffix=None,
+                                  macro_prefix='MEMBERS_', skip=[],
+                                  strip_member_prefix=False):
         macro_name = name
         if macro_suffix is None:
             macro_suffix = self.macro_suffix
         if macro_suffix is not None:
             macro_name = name.rsplit('_', 1)[0] + macro_suffix
         lines = [
-            f'#define MEMBERS_{macro_name}'
+            f'#define {macro_prefix}{macro_name}'
         ]
-        # members = [x for x in members
-        #            if not x['name'].endswith(('NONE', 'MAX'))]
+        if strip_member_prefix:
+            members = [
+                dict(x, name=x['name'].split(strip_member_prefix)[-1])
+                for x in members
+            ]
+        members = [x for x in members if x['name'] not in skip]
         if members:
             lines[-1] += '\t\t\\'
         width = self.max_width(members)

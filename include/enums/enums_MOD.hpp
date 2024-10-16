@@ -5,9 +5,9 @@
 #ifdef EPHOTO_USE_SCOPED_ENUM
 enum class ENUM_BF_MOD : int {
     NONE             ,
-    cATPsyn          ,  //!< cATPsyn=1.0447;%1.01866 WY201803
-    CPSi             ,  //!< CPSi=1.0131;% 1.0237 WY201803
-    cNADPHsyn        ,  //!< cNADPHsyn=1.094468408;%1.0388 WY201803
+    cATPsyn          ,  //!< [GLYMAID=Glyma.13G204800] cATPsyn=1.0447;%1.01866 WY201803
+    CPSi             ,  //!< [GLYMAID=Glyma.10G042000] CPSi=1.0131;% 1.0237 WY201803
+    cNADPHsyn        ,  //!< [GLYMAID=Glyma.09G024100] cNADPHsyn=1.094468408;%1.0388 WY201803
     EPS_ATP_Rate     ,  //!< Indicate in the beginning there is no ATP synthesis activity.
     _Pi              ,  //!< Phosphate in stroma
     PMODTEM          ,  //!< [CONST] ?; Used to scale RC parameters PK, PMg, & PCl
@@ -22,9 +22,9 @@ struct enum_helper<MODULE_BF, PARAM_TYPE_MOD> {
 template<>
 enum ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type : int {
     NONE             ,
-    cATPsyn          ,  //!< cATPsyn=1.0447;%1.01866 WY201803
-    CPSi             ,  //!< CPSi=1.0131;% 1.0237 WY201803
-    cNADPHsyn        ,  //!< cNADPHsyn=1.094468408;%1.0388 WY201803
+    cATPsyn          ,  //!< [GLYMAID=Glyma.13G204800] cATPsyn=1.0447;%1.01866 WY201803
+    CPSi             ,  //!< [GLYMAID=Glyma.10G042000] CPSi=1.0131;% 1.0237 WY201803
+    cNADPHsyn        ,  //!< [GLYMAID=Glyma.09G024100] cNADPHsyn=1.094468408;%1.0388 WY201803
     EPS_ATP_Rate     ,  //!< Indicate in the beginning there is no ATP synthesis activity.
     _Pi              ,  //!< Phosphate in stroma
     PMODTEM          ,  //!< [CONST] ?; Used to scale RC parameters PK, PMg, & PCl
@@ -216,7 +216,7 @@ namespace MOD {
 #ifdef EPHOTO_USE_SCOPED_ENUM
 enum class ENUM_FI_MOD : int {
     NONE      ,
-    cpsii     ,
+    cpsii     ,  //!< [GLYMAID=Glyma.01G095900]
     MAX       ,
 };
 template<>
@@ -227,7 +227,7 @@ struct enum_helper<MODULE_FI, PARAM_TYPE_MOD> {
 template<>
 enum ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type : int {
     NONE      ,
-    cpsii     ,
+    cpsii     ,  //!< [GLYMAID=Glyma.01G095900]
     MAX       ,
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
@@ -517,7 +517,7 @@ namespace MOD {
 #ifdef EPHOTO_USE_SCOPED_ENUM
 enum class ENUM_PS_MOD : int {
     NONE          ,
-    PS_C_CP       ,  //!< Global constant for the total phosphate
+    PS_C_CP       ,  //!< Global constant for the total phosphate (22.0 was originally used in the C++ version)
     PS_C_CA       ,  //!< Global constant for the total adenylates
     PS_C_CN       ,  //!< Global constant for the cytosolic Phosphate concentration; langmm: 1.0 w/o C3 in Matlab version
     PS_PEXT       ,  //!< Global constant for the cytosolic Phosphate concentration;
@@ -701,7 +701,7 @@ struct enum_helper<MODULE_PS, PARAM_TYPE_MOD> {
 template<>
 enum ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type : int {
     NONE          ,
-    PS_C_CP       ,  //!< Global constant for the total phosphate
+    PS_C_CP       ,  //!< Global constant for the total phosphate (22.0 was originally used in the C++ version)
     PS_C_CA       ,  //!< Global constant for the total adenylates
     PS_C_CN       ,  //!< Global constant for the cytosolic Phosphate concentration; langmm: 1.0 w/o C3 in Matlab version
     PS_PEXT       ,  //!< Global constant for the cytosolic Phosphate concentration;
