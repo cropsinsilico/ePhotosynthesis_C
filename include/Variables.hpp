@@ -127,6 +127,7 @@ public:
     double Q10_10 = 2.0;
     double Q10_13 = 2.0;
     double Q10_23 = 2.5;
+    double PS_scaling_factor = 1.0; //a parameter to scale the total P
     // Parameters
     arr PR_Param = zeros(2);
     arr BF_Param = zeros(2);

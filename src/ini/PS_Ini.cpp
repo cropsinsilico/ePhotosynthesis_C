@@ -28,12 +28,12 @@
 #include "modules/PS.hpp"
 
 //Yufeng: I changed these constants to match BioCro's
-#define R 8.314E-3 //KJ mole-1 K-1
-#define c_c 38.05
-#define dHa_c 79.43 
-#define c_o 20.30 
-#define dHa_o 36.38 
-#define RegFactor 1.
+#define R 8.314E-3   // ideal gas constant KJ mole-1 K-1
+#define c_c 38.05    // dimensionless
+#define dHa_c 79.43  // J / mol activation_energy 
+#define c_o 20.30    // dimensionless 
+#define dHa_o 36.38  // J / mol (enthalpy of activation) 
+#define RegFactor 1. // dimensionless
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
@@ -225,6 +225,7 @@ PSCondition* PS::_init(Variables *theVars) {
 
     if (theVars->useC3) {
         PS::PS_C_CP = 25.;    //   Global constant for the total phosphate
+        PS::PS_C_CP *= theVars->PS_scaling_factor;    
         PS::PS_C_CA = 1.5;   //   Global constant for the total adenylates
         PS::PS_C_CN = 1.;    //   Global constant for the cytosolic Phosphate concentration;
         if (theVars->GRNC == 1 && theVars->CO2_cond > 0) {
