@@ -31,13 +31,10 @@
 #include "definitions.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class FIBFModuleTest;
-}
-#endif
+
+FORWARD_DECLARE_MODULE_COMPOSITE(FIBF);
+  
 namespace modules {
-class EPS;
 
 /**
  Class for the FIBF Module functions.
@@ -46,24 +43,11 @@ class FIBF : public MODULE_BASE(FIBF) {
 public:
     DECLARE_MODULE_COMPOSITE(FIBF)
 private:
-    friend ModuleBase;
-    friend class modules::EPS;
-#ifdef TESTING
-    friend class test::FIBFModuleTest;
-#endif
     SET_GET(ChlPSI)
     SET_GET(ChlT)
     SET_GET(ChlT2)
     SET_GET(FIBF2FI_PQ)
     SET_GET(FIBF2FI_PQa)
-
-    /**
-      Function to set the initial state of the FIBFCondition class.
-
-      \param theVars Pointer to the global variables
-      \return A FIBFCondition object with values set based on the input
-      */
-    static conditions::FIBFCondition* _init(Variables *theVars);
 
     /**
       Function to calculate the dy/dt values for the FIBFCondition at the given time stamp.
@@ -107,7 +91,7 @@ private:
     static void _reset();
 };
 
-  DEFINE_VALUE_SET_STATIC_HEADER_COMPOSITE(FIBF);
+  DEFINE_MODULE_COMPOSITE_HEADER(FIBF);
   
 }  // namespace modules
 }  // namespace ePhotosynthesis

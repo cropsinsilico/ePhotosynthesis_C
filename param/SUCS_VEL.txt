@@ -1,15 +1,16 @@
-v51		0.0	# DHAP+GAP --FBP
-v52		0.0	# FBP --F6P + Pi
-v55		0.0	# G1P+UTP --OPOP+UDPG
-v56		0.0	# UDPG+F6P--SUCP + UDP
-v57		0.0	# SUCP--Pi + SUC
-v58		0.0	# F26BP--F6P + Pi
-v59		0.0	# F6P + ATP --ADP + F26BP
-v60		0.0	# ATP+UDP --UTP + ADP
-v61		0.0	# POPO --2PO
-v62		0.0	# SUC SINK
-vdhap_in	0.0	# DHAP IN
-vgap_in		0.0	# GAP Export from chloroplast
-vpga_in		0.0	# PGA export from chloroplast
-vpga_use	0.0	# PGA utilisation in chloroplast
-vatpf		0.0	# ATP synthesis rate
+# Name		Value	C3Value	Docs
+v51		0.0		# DHAP+GAP --FBP
+v52		0.0		# FBP --F6P + Pi
+v55		0.0		# G1P+UTP --OPOP+UDPG
+v56		0.0		# UDPG+F6P--SUCP + UDP
+v57		0.0		# SUCP--Pi + SUC
+v58		0.0		# F26BP--F6P + Pi
+v59		0.0		# F6P + ATP --ADP + F26BP
+v60		0.0		# ATP+UDP --UTP + ADP
+v61		0.0		# POPO --2PO
+v62		0.0		# SUC SINK
+vdhap_in	0.0		# DHAP IN
+vgap_in		0.0		# GAP Export from chloroplast
+vpga_in		0.0		# PGA export from chloroplast
+vpga_use	0.0		# PGA utilisation in chloroplast
+vatpf		0.0		# ATP synthesis rate

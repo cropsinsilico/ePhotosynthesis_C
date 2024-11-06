@@ -29,6 +29,11 @@
 #include "PSCondition.hpp"
 #include "PRCondition.hpp"
 
+#define PARENT_PS_PR CM
+#define CHILDREN_PS_PR PS, PR
+#define CONNECTIONS_PS_PR (PS, PS_RuBP)
+#define PARAM_TYPES_PS_PR COND
+
 namespace ePhotosynthesis {
 namespace modules {
 class PS_PR;
@@ -41,7 +46,7 @@ class CMCondition;
  */
 class PS_PRCondition : public ConditionBase<PS_PRCondition, CMCondition, MODULE_PS_PR> {
 public:
-    DECLARE_VALUE_SET_COMPOSITE(PS_PRCondition, (PSCondition, PRCondition), (PS_con, PR_con), ConditionBase<PS_PRCondition, CMCondition, MODULE_PS_PR>)
+    DECLARE_CONDITION_COMPOSITE(PS_PR)
     PS_PRCondition(CMCondition* par = nullptr) : PS_con(new PSCondition(this)), PR_con(new PRCondition(this)) {
         setParent(par);
         initMembers();
@@ -76,27 +81,7 @@ public:
     PSCondition* PS_con = nullptr;   // child Condition
     PRCondition* PR_con = nullptr;   // child Condition
 
-    /**
-      Write the contents of the instance to the output stream.
-
-      \param out output stream to write to.
-      \param tab The level of indentation to use.
-      \returns The output stream
-      */
-    std::ostream& _print(std::ostream &out, const uint tab = 0) const;
 private:
-    friend ConditionBase;
-    friend class modules::PS_PR;
-    /**
-      \copydoc ConditionBase::_fromArray
-      */
-    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
-
-    /**
-      \copydoc ConditionBase::_toArray
-      */
-    arr _toArray() const override;
-
     /**
       Get the size of the data vector
 
@@ -107,23 +92,9 @@ private:
         return count;
     }
 
-    /**
-      \copydoc ConditionBase::_clear
-      */
-    void _clear() override;
-
-    /**
-      Reset any static data members to their initial state
-      */
-    static void _reset() {
-        count = 0;
-    }
-
-    static std::size_t count;  // size of the current serialized output
-#ifdef INCDEBUG
-    const static Debug::DebugLevel _dlevel = Debug::Middle;
-#endif
 };
+
+  DEFINE_CONDITION_COMPOSITE_HEADER(PS_PR);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

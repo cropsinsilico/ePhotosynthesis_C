@@ -37,7 +37,8 @@ protected:
 
 namespace {
 TEST_F(EPSDriverTest, IniTest) {
-    driver = new EPSDriver(theVars, 0., 1., 100., 2500, 1e-4, 1e-4, 15, 1.5, 27.3);
+    theVars->Tp = 27.3;
+    driver = new EPSDriver(theVars, 0., 1., 100., 2500, 1e-4, 1e-4, 15, 1.5);
     EPSCondition* ec = ini();
     arr res = ec->toArray();
     arr comp = zeros(EPSCondition::size());
@@ -47,7 +48,8 @@ TEST_F(EPSDriverTest, IniTest) {
 }
 
 TEST_F(EPSDriverTest, setupTest) {
-    driver = new EPSDriver(theVars, 0., 1., 100., 2500, 1e-4, 1e-4, 15, 1.5, 27.3);
+    theVars->Tp = 27.3;
+    driver = new EPSDriver(theVars, 0., 1., 100., 2500, 1e-4, 1e-4, 15, 1.5);
     EXPECT_EQ(0, driver->constraints.size());
     driver->setup();
     EXPECT_NE(0, driver->constraints.size());
@@ -55,7 +57,8 @@ TEST_F(EPSDriverTest, setupTest) {
 }
 
 TEST_F(EPSDriverTest, getResultsTest) {
-    driver = new EPSDriver(theVars, 0., 1., 100., 2500, 1e-4, 1e-4, 15, 1.5, 27.3);
+    theVars->Tp = 27.3;
+    driver = new EPSDriver(theVars, 0., 1., 100., 2500, 1e-4, 1e-4, 15, 1.5);
     EXPECT_EQ(0, driver->constraints.size());
     driver->setup();
     EXPECT_NE(0, driver->constraints.size());
@@ -66,7 +69,8 @@ TEST_F(EPSDriverTest, getResultsTest) {
 }
 
 TEST_F(EPSDriverTest, MBTest) {
-    driver = new EPSDriver(theVars, 0., 1., 100., 2500, 1e-4, 1e-4, 15, 1.5, 27.3);
+    theVars->Tp = 27.3;
+    driver = new EPSDriver(theVars, 0., 1., 100., 2500, 1e-4, 1e-4, 15, 1.5);
     EXPECT_EQ(0, driver->constraints.size());
     driver->setup();
     EXPECT_NE(0, driver->constraints.size());

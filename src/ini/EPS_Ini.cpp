@@ -37,35 +37,5 @@ using namespace ePhotosynthesis::conditions;
 
 std::size_t EPSCondition::count = 0;
 
-#ifdef INCDEBUG
-Debug::DebugLevel EPSCondition::_dlevel = Debug::Middle;
-#endif
-
-DEFINE_VALUE_SET(EPSCondition);
-
-EPSCondition* EPS::_init(Variables *theVars) {
-
-    theVars->CO2_cond = theVars->CO2_in / (3. * pow(10., 4.));
-  
-    FIBFCondition* FIBF_con = FIBF::init(theVars);
-
-    ////////////////////////////////////////////////
-    //   Initialation step //
-    ////////////////////////////////////////////////
-
-    CMCondition* CM_con = CM::init(theVars);
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    //   Use the initialized variables to construct variables that will be transfered to the Drive file. ////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////
-    EPSCondition* EPS_con = new EPSCondition(FIBF_con, CM_con);
-
-    return EPS_con;
-}
-
+DEFINE_MODULE_COMPOSITE(EPS);
 DEFINE_DEFAULT_INITALT(EPS)
-
-void EPS::_reset() {
-    FIBF::reset();
-    CM::reset();
-    conditions::EPSCondition::reset();
-}

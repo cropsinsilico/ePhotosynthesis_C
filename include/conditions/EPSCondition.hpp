@@ -29,6 +29,10 @@
 #include "FIBFCondition.hpp"
 #include "CMCondition.hpp"
 
+#define PARENT_EPS RA
+#define CHILDREN_EPS FIBF, CM
+#define PARAM_TYPES_EPS COND
+
 namespace ePhotosynthesis {
 namespace modules {
 class EPS;
@@ -41,7 +45,7 @@ class RACondition;
  */
 class EPSCondition : public ConditionBase<EPSCondition, RACondition, MODULE_EPS> {
 public:
-    DECLARE_VALUE_SET_COMPOSITE(EPSCondition, (CMCondition, FIBFCondition), (CM_con, FIBF_con), ConditionBase<EPSCondition, RACondition, MODULE_EPS>)
+    DECLARE_CONDITION_COMPOSITE(EPS)
     EPSCondition(RACondition* par = nullptr) : CM_con(new CMCondition(this)), FIBF_con(new FIBFCondition(this)) {
         setParent(par);
         initMembers();
@@ -79,35 +83,10 @@ public:
       */
     EPSCondition(const arr &vec, const std::size_t offset = 0);
 
-#ifdef INCDEBUG
-    static void setTop() {EPSCondition::_dlevel = Debug::Top;}
-#endif
-
     CMCondition* CM_con = nullptr;       // child Condition
     FIBFCondition* FIBF_con = nullptr;   // child Condition
 
-    /**
-      Write the contents of the instance to the output stream.
-
-      \param out output stream to write to.
-      \param tab The level of indentation to use.
-      \returns The output stream
-      */
-    std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-
 private:
-    friend ConditionBase;
-    friend class modules::EPS;
-    /**
-      \copydoc ConditionBase::_fromArray
-      */
-    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
-
-    /**
-      \copydoc ConditionBase::_toArray
-      */
-    arr _toArray() const override;
-
     /**
       Get the size of the data vector
 
@@ -117,22 +96,9 @@ private:
         return CMCondition::size() + FIBFCondition::size();
     }
 
-    /**
-      Reset any static data members to their initial state
-      */
-    static void _reset() {
-        count = 0;
-    }
-    /**
-      \copydoc ConditionBase::_clear
-      */
-    void _clear() override;
-
-    EPHOTO_API static std::size_t count;  // size of the current serialized output
-#ifdef INCDEBUG
-    EPHOTO_API static Debug::DebugLevel _dlevel;
-#endif
 };
+
+  DEFINE_CONDITION_COMPOSITE_HEADER(EPS);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

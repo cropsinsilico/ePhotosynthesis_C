@@ -41,18 +41,25 @@ namespace drivers {
 /**
  Class for running the CM calculations in an ODE solver
  */
-class CMDriver : public Driver {
+class CMDriver : public DriverBase<CMDriver, MODULE_CM> {
 public:
+    DECLARE_DRIVER(CM)
     /**
       \copydoc drivers::Driver::Driver
+      \param para Input parameters. [Unused by this driver]
+      \param ratio Input ratio. [Unused by this driver]
       */
     CMDriver(Variables *theVars, const double startTime, const double stepSize, const double endTime,
              const int maxSubsteps, const double atol, const double rtol,
+	     const std::size_t para = 0, const double ratio = 0,
              const bool showWarn = false) :
-        Driver(theVars, startTime, stepSize, endTime, maxSubsteps, atol, rtol, showWarn) {
+	DriverBase(theVars, startTime, stepSize, endTime, maxSubsteps, atol, rtol, showWarn) {
+	UNUSED(para);
+	UNUSED(ratio);
 #ifdef INCDEBUG
-                ePhotosynthesis::conditions::CMCondition::setTop();
+	ePhotosynthesis::conditions::CMCondition::setTop();
 #endif
+	init(theVars->useC3);
 
     }
     ~CMDriver() override;

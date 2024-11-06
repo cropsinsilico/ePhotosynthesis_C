@@ -29,10 +29,6 @@
 #include "modules/trDynaPS.hpp"
 #include "modules/FIBF.hpp"
 
-// TODO: Move these constants to param
-#define RT (298 * 8.314)             // Gas constnat and the temperature
-#define DeltaGo (7.3 * 4184)         //   The free energy change for ATP synthesis from ADP and Pi
-
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
@@ -192,9 +188,9 @@ void BF::_Rate(const double t, const BFCondition* const BF_con, Variables *theVa
     ////////////////////////////////////////////////////////////////////////////////
 
     const double DiffPH = BF_con->PHs - BF_con->PHl;
-    const double DeltaG11 = DeltaGo - 2.3 * RT * theVars->HPR * DiffPH + theVars->HPR * MPotential *
+    const double DeltaG11 = BF::DeltaGo - 2.3 * BF::RT * theVars->HPR * DiffPH + theVars->HPR * MPotential *
                             9.6 * pow(10., 4.);
-    const double KE11 = exp(-DeltaG11 / (RT)); // The equilibrium constant of ATP synthesis
+    const double KE11 = exp(-DeltaG11 / (BF::RT)); // The equilibrium constant of ATP synthesis
 
     const double Temp = theVars->BF_RC.Vmax11 * (ADP * Pi - ATP / KE11) /
                         ((theVars->BF_RC.KM1ADP * theVars->BF_RC.KM1PI) *

@@ -4,29 +4,20 @@
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
 enum class ENUM_BF_POOL : int {
-    NONE         ,
-    kA_d         ,  //!< The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
-    kA_f         ,  //!< The total amount of cytc; Unit: micromole m-2 leaf area
-    kA_U         ,  //!< The total concentration of K in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant.
-    kU_A         ,  //!< The total concentration of Mg in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant.
-    kU_d         ,  //!< The total concentration of Cl in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant.
-    kU_f         ,  //!< The total concentration of Ferrodoxin
-    k1           ,  //!< The total concentration of the primary electron acceptor of PSI; Unit: micromole m-2 leaf area
-    k_r1         ,  //!< The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
-    kz           ,  //!< The total concentration of buffer in stroma; unit: mmol per liter
-    k12          ,  //!< The total concentration of buffer in lumen; unit: mmol per liter
-    k23          ,  //!< The total number of P700; unit: micromole m-2 leaf area
-    k30          ,  //!< The total concentration of NADPH in stroma; 1 is an guessed value;
-    k01          ,
-    k2           ,
-    kAB1         ,
-    kBA1         ,
-    kAB2         ,
-    kBA2         ,
-    k3           ,
-    k_r3         ,
-    k_pq_oxy     ,
-    MAX          ,
+    NONE     ,
+    kA_d     ,  //!< [ALIASES={Tcyt}] The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
+    kA_f     ,  //!< [ALIASES={Tcytc2}] The total amount of cytc; Unit: micromole m-2 leaf area
+    kA_U     ,  //!< [ALIASES={TK}] The total concentration of K in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant.
+    kU_A     ,  //!< [ALIASES={TMg}] The total concentration of Mg in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant.
+    kU_d     ,  //!< [ALIASES={TCl}] The total concentration of Cl in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant.
+    kU_f     ,  //!< [ALIASES={TFd}] The total concentration of Ferrodoxin
+    k1       ,  //!< [ALIASES={TA}] The total concentration of the primary electron acceptor of PSI; Unit: micromole m-2 leaf area
+    k_r1     ,  //!< [ALIASES={TQ}] The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
+    kz       ,  //!< [ALIASES={BFTs}] The total concentration of buffer in stroma; unit: mmol per liter
+    k12      ,  //!< [ALIASES={BFTl}] The total concentration of buffer in lumen; unit: mmol per liter
+    k23      ,  //!< [ALIASES={P700T}] The total number of P700; unit: micromole m-2 leaf area
+    k30      ,  //!< [ALIASES={NADPHT}]   The total concentration of NADPH in stroma; 1 is an guessed value;
+    MAX      ,
 };
 template<>
 struct enum_helper<MODULE_BF, PARAM_TYPE_POOL> {
@@ -35,60 +26,43 @@ struct enum_helper<MODULE_BF, PARAM_TYPE_POOL> {
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type : int {
-    NONE         ,
-    kA_d         ,  //!< The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
-    kA_f         ,  //!< The total amount of cytc; Unit: micromole m-2 leaf area
-    kA_U         ,  //!< The total concentration of K in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant.
-    kU_A         ,  //!< The total concentration of Mg in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant.
-    kU_d         ,  //!< The total concentration of Cl in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant.
-    kU_f         ,  //!< The total concentration of Ferrodoxin
-    k1           ,  //!< The total concentration of the primary electron acceptor of PSI; Unit: micromole m-2 leaf area
-    k_r1         ,  //!< The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
-    kz           ,  //!< The total concentration of buffer in stroma; unit: mmol per liter
-    k12          ,  //!< The total concentration of buffer in lumen; unit: mmol per liter
-    k23          ,  //!< The total number of P700; unit: micromole m-2 leaf area
-    k30          ,  //!< The total concentration of NADPH in stroma; 1 is an guessed value;
-    k01          ,
-    k2           ,
-    kAB1         ,
-    kBA1         ,
-    kAB2         ,
-    kBA2         ,
-    k3           ,
-    k_r3         ,
-    k_pq_oxy     ,
-    MAX          ,
+    NONE     ,
+    kA_d     ,  //!< [ALIASES={Tcyt}] The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
+    kA_f     ,  //!< [ALIASES={Tcytc2}] The total amount of cytc; Unit: micromole m-2 leaf area
+    kA_U     ,  //!< [ALIASES={TK}] The total concentration of K in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant.
+    kU_A     ,  //!< [ALIASES={TMg}] The total concentration of Mg in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant.
+    kU_d     ,  //!< [ALIASES={TCl}] The total concentration of Cl in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant.
+    kU_f     ,  //!< [ALIASES={TFd}] The total concentration of Ferrodoxin
+    k1       ,  //!< [ALIASES={TA}] The total concentration of the primary electron acceptor of PSI; Unit: micromole m-2 leaf area
+    k_r1     ,  //!< [ALIASES={TQ}] The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
+    kz       ,  //!< [ALIASES={BFTs}] The total concentration of buffer in stroma; unit: mmol per liter
+    k12      ,  //!< [ALIASES={BFTl}] The total concentration of buffer in lumen; unit: mmol per liter
+    k23      ,  //!< [ALIASES={P700T}] The total number of P700; unit: micromole m-2 leaf area
+    k30      ,  //!< [ALIASES={NADPHT}]   The total concentration of NADPH in stroma; 1 is an guessed value;
+    MAX      ,
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_BFPool		\
-    NONE         ,		\
-    kA_d         ,		\
-    kA_f         ,		\
-    kA_U         ,		\
-    kU_A         ,		\
-    kU_d         ,		\
-    kU_f         ,		\
-    k1           ,		\
-    k_r1         ,		\
-    kz           ,		\
-    k12          ,		\
-    k23          ,		\
-    k30          ,		\
-    k01          ,		\
-    k2           ,		\
-    kAB1         ,		\
-    kBA1         ,		\
-    kAB2         ,		\
-    kBA2         ,		\
-    k3           ,		\
-    k_r3         ,		\
-    k_pq_oxy     ,		\
+    NONE     ,		\
+    kA_d     ,		\
+    kA_f     ,		\
+    kA_U     ,		\
+    kU_A     ,		\
+    kU_d     ,		\
+    kU_f     ,		\
+    k1       ,		\
+    k_r1     ,		\
+    kz       ,		\
+    k12      ,		\
+    k23      ,		\
+    k30      ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::nonvector;
@@ -127,6 +101,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::T
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::nonvector;
@@ -168,6 +143,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Typ
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::nonvector;
@@ -203,6 +179,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Typ
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::nonvector;
@@ -238,6 +215,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Typ
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::nonvector;
@@ -348,6 +326,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::nonvector;
@@ -407,6 +386,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::nonvector;
@@ -457,6 +437,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::nonvector;
@@ -501,6 +482,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::T
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::nonvector;
@@ -536,6 +518,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::nonvector;
@@ -571,6 +554,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::T
 template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::nonvector;
@@ -606,6 +590,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Ty
 template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::nonvector;

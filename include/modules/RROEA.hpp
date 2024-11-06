@@ -29,13 +29,10 @@
 #include "conditions/RROEACondition.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class RROEAModuleTest;
-}
-#endif
+
+FORWARD_DECLARE_MODULE(RROEA);
+
 namespace modules {
-class trDynaPS;
 
 /**
  Class for RROEA related functions
@@ -44,18 +41,6 @@ class RROEA : public MODULE_BASE(RROEA) {
 public:
     DECLARE_MODULE(RROEA)
 private:
-    friend ModuleBase;
-    friend class modules::trDynaPS;
-#ifdef TESTING
-    friend class test::RROEAModuleTest;
-#endif
-    /**
-      Function to set the initial state of the RROEACondition class.
-
-      \param theVars Pointer to the global variables
-      \return A RROEACondition object with values set based on the input
-      */
-    static conditions::RROEACondition* _init(Variables *theVars);
 
     /**
       Function to calculate the dy/dt values for the RROEACondition at the given time stamp.

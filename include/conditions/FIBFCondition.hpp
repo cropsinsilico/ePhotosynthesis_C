@@ -31,6 +31,11 @@
 #include "FICondition.hpp"
 #include "BFCondition.hpp"
 
+#define PARENT_FIBF EPS
+#define NRATIO_FIBF 0
+#define CHILDREN_FIBF BF, FI
+#define PARAM_TYPES_FIBF COND, POOL
+
 namespace ePhotosynthesis {
 namespace modules {
 class FIBF;
@@ -44,7 +49,7 @@ class EPSCondition;
  */
 class FIBFCondition : public ConditionBase<FIBFCondition, EPSCondition, MODULE_FIBF> {
 public:
-    DECLARE_VALUE_SET_COMPOSITE(FIBFCondition, (BFCondition, FICondition), (BF_con, FI_con), ConditionBase<FIBFCondition, EPSCondition, MODULE_FIBF>)
+    DECLARE_CONDITION_COMPOSITE(FIBF)
     FIBFCondition(EPSCondition* par = nullptr) : BF_con(new BFCondition(this)), FI_con(new FICondition(this)) {
         setParent(par);
         initMembers();
@@ -79,28 +84,7 @@ public:
     BFCondition* BF_con = nullptr;  // child Condition
     FICondition* FI_con = nullptr;  // child Condition
 
-    /**
-      Write the contents of the instance to the output stream.
-
-      \param out output stream to write to.
-      \param tab The level of indentation to use.
-      \returns The output stream
-      */
-    std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-
 private:
-    friend ConditionBase;
-    friend class modules::FIBF;
-    /**
-      \copydoc ConditionBase::_fromArray
-      */
-    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
-
-    /**
-      \copydoc ConditionBase::_toArray
-      */
-    arr _toArray() const override;
-
     /**
       Get the size of the data vector
 
@@ -112,23 +96,9 @@ private:
         return count;
     }
 
-    /**
-      \copydoc ConditionBase::_clear
-      */
-    void _clear() override;
-
-    static std::size_t count;   // size of the current serialized output
-
-    /**
-      Reset any static data members to their initial state
-      */
-    static void _reset() {
-        count = 0;
-    }
-#ifdef INCDEBUG
-    const static Debug::DebugLevel _dlevel = Debug::Middle;
-#endif
 };
+
+  DEFINE_CONDITION_COMPOSITE_HEADER(FIBF);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

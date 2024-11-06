@@ -29,7 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET_SRC(DynaPSCondition);
+DEFINE_CONDITION_COMPOSITE(DynaPS);
 
 DynaPSCondition::DynaPSCondition(const DynaPSCondition* const other) {
     initMembers();
@@ -80,15 +80,4 @@ void DynaPSCondition::_fromArray(const arr &vec, const std::size_t offset) {
         XanCycle_con = new XanCycleCondition(this);
     RA_con->fromArray(vec, offset);
     XanCycle_con->fromArray(vec, offset + RA_con->size());
-}
-
-void DynaPSCondition::_clear() {
-    if (RA_con != nullptr) {
-        delete RA_con;
-        RA_con = nullptr;
-    }
-    if (XanCycle_con != nullptr) {
-        delete XanCycle_con;
-        XanCycle_con = nullptr;
-    }
 }

@@ -30,13 +30,10 @@
 #include "conditions/RuACTCondition.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class RuACTModuleTest;
-}
-#endif
+
+FORWARD_DECLARE_MODULE(RuACT);
+  
 namespace modules {
-class RA;
 
 /**
  Class for RuACT related functions
@@ -46,18 +43,6 @@ public:
     DECLARE_MODULE(RuACT)
     SET_GET_BOOL_MODULE(EPS_connect, conditions::RuACT)
 private:
-    friend ModuleBase;
-    friend class modules::RA;
-#ifdef TESTING
-    friend class test::RuACTModuleTest;
-#endif
-    /**
-      Function to set the initial state of the RuACTCondition class.
-
-      \param theVars Pointer to the global variables
-      \return A RuACTCondition object with values set based on the input
-      */
-    static conditions::RuACTCondition* _init(Variables *theVars);
 
     /**
       Function to calculate the dy/dt values for the RuACTCondition at the given time stamp.
@@ -97,14 +82,13 @@ private:
         activase = 0.;
         TIME = 0.;
         N = 1;
-        conditions::RuACTCondition::reset();
     }
     SET_GET(activase)
     static double TIME;    // The timestamp of the most recent call to _Rate
     static std::size_t N;  // The current size of the RuACT TimeSeries
 };
 
-  DEFINE_VALUE_SET_STATIC_HEADER(RuACT);
+  DEFINE_MODULE_HEADER(RuACT);
   
 }  // namespace modules
 }  // namespace ePhotosynthesis

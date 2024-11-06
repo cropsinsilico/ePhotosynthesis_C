@@ -1,4 +1,5 @@
 # Enzyme activities [Read from EnzymeAct for C3]
+# Name		Value	C3Value	Docs
 V111		0.24		# Reaction 111: RUBP+O2<-->PGlycolate + PGA
 V112		52.41992121	# Reaction 112: PGlycolate-->Pi+Glycolate;
 V113		5.715787563	# Reaction 113: Gcea+ATP<-->ADP + PGA

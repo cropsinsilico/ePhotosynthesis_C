@@ -38,36 +38,100 @@
 
 namespace ePhotosynthesis {
 
-#ifdef CHECK_VALUE_SET_ALTS
-#define DEBUG_VALUE_SET_MSG(x)			\
+#define CALL_CHILD_METHOD(child, method, args)				\
+  child->method args
+#define DO_VALUE_SET_CHILD_CLASSES_MACRO(macro, iter, ...)		\
+  if (!noChildren) {							\
+    size_t iChild = 0;							\
+    for (std::vector<ValueSetClass_t*>::iter it = child_classes.begin(); \
+	 it != child_classes.end(); it++, iChild++) {			\
+      if (*it) {							\
+	macro((*it), __VA_ARGS__);					\
+      }									\
+    }									\
+  }
+#define DO_VALUE_SET_CHILDREN_MACRO(macro, iter, ...)			\
+  if (!noChildren) {							\
+    size_t iChild = 0;							\
+    for (std::vector<ValueSet_t**>::iter it = children.begin();		\
+	 it != children.end(); it++, iChild++) {			\
+      if ((*it) && (**it)) {						\
+	macro((**it), __VA_ARGS__);					\
+      }									\
+    }									\
+  }
+#define DO_VALUE_SET_CHILD_CLASSES(method, args)			\
+  DO_VALUE_SET_CHILD_CLASSES_MACRO(CALL_CHILD_METHOD, iterator,		\
+				   method, args)
+#define DO_VALUE_SET_CHILD_CLASSES_CONST(method, args)			\
+  DO_VALUE_SET_CHILD_CLASSES_MACRO(CALL_CHILD_METHOD, const_iterator,	\
+				   method, args)
+#define DO_VALUE_SET_CHILDREN(method, args)				\
+  DO_VALUE_SET_CHILDREN_MACRO(CALL_CHILD_METHOD, iterator,		\
+			      method, args)
+#define DO_VALUE_SET_CHILDREN_CONST(method, args)			\
+  DO_VALUE_SET_CHILDREN_MACRO(CALL_CHILD_METHOD, const_iterator,	\
+			      method, args)
+
+  inline double __extract_value(const double& x) { return x; }
+  inline double __extract_value(const double* x) { return *x; }
+  template<typename T>
+  bool __contains(const std::vector<T>& v, const T& x) {
+    typename std::vector<T>::const_iterator it;
+    for (it = v.begin(); it != v.end(); it++){
+      if ((*(it)) == x) break;
+    }
+    return (it != v.end());
+  }
+  template<typename T>
+  std::string __make_string(const T& x,
+			    typename std::enable_if<!std::is_same<T, const char[]>::value >::type* = 0)
+  { return std::to_string(x); }
+  inline std::string __make_string(const std::string& x) { return x; }
+  inline std::string __make_string(const char* x) { return std::string(x); }
+  template<size_t N>
+  inline std::string __make_string(const char x[N]) { return std::string(x); }
+  
+#define ERROR_VALUE_SET(...)			\
+    throw std::runtime_error(error_prefix() + std::string(__func__) + ": " + FOR_EACH_JOIN(__make_string, SEP_ADD, __VA_ARGS__))
+#define ERROR_VALUE_SET_NESTED(err, msg)				\
+  throw std::runtime_error(std::string(err.what()) + msg)
+#define ERROR_VALUE_SET_NOARGS() ERROR_VALUE_SET("")
+#define INFO_VALUE_SET_MSG(x)			\
   std::cerr << x
-#define DEBUG_VALUE_SET_(...)			\
-  FOR_EACH(DEBUG_VALUE_SET_MSG, __VA_ARGS__)
-#define DEBUG_VALUE_SET(...)						\
-  DEBUG_VALUE_SET_(error_prefix(), ": ", __func__, ": ",		\
+#define INFO_VALUE_SET_(...)			\
+  FOR_EACH(INFO_VALUE_SET_MSG, __VA_ARGS__)
+#define INFO_VALUE_SET(...)						\
+  INFO_VALUE_SET_(error_prefix(), ": ", __func__, ": ",		\
 		   __VA_ARGS__, std::endl)
-#define DEBUG_VALUE_SET_NOARGS						\
-  DEBUG_VALUE_SET_(error_prefix(), ": ", __func__, std::endl)
-#define DEBUG_VALUE_SET_RAW(...)		\
-  DEBUG_VALUE_SET_(__VA_ARGS__, "")
-#define DEBUG_VALUE_SET_END(...)		\
-  DEBUG_VALUE_SET_(__VA_ARGS__, std::endl)
-#define DEBUG_VALUE_SET_NOEND(...)			\
-  DEBUG_VALUE_SET_(error_prefix(), ": ", __func__, ": ", __VA_ARGS__)
+#define INFO_VALUE_SET_NOARGS						\
+  INFO_VALUE_SET_(error_prefix(), ": ", __func__, std::endl)
+#define INFO_VALUE_SET_RAW(...)		\
+  INFO_VALUE_SET_(__VA_ARGS__, "")
+#define INFO_VALUE_SET_END(...)		\
+  INFO_VALUE_SET_(__VA_ARGS__, std::endl)
+#define INFO_VALUE_SET_NOEND(...)			\
+  INFO_VALUE_SET_(error_prefix(), ": ", __func__, ": ", __VA_ARGS__)
+  
+#ifdef VERBOSE_VALUE_SET_DEBUG
+#define DEBUG_VALUE_SET(...) INFO_VALUE_SET(__VA_ARGS__)
+#define DEBUG_VALUE_SET_NOARGS INFO_VALUE_SET_NOARGS
+#define DEBUG_VALUE_SET_RAW(...) INFO_VALUE_SET_RAW(__VA_ARGS__)
+#define DEBUG_VALUE_SET_END(...) INFO_VALUE_SET_END(__VA_ARGS__)
+#define DEBUG_VALUE_SET_NOEND(...) INFO_VALUE_SET_NOEND(__VA_ARGS__)
 #else
 #define DEBUG_VALUE_SET(...)
 #define DEBUG_VALUE_SET_NOARGS
 #define DEBUG_VALUE_SET_RAW(...)
 #define DEBUG_VALUE_SET_END(...)
 #define DEBUG_VALUE_SET_NOEND(...)
-#endif // CHECK_VALUE_SET_ALTS
+#endif // VERBOSE_VALUE_SET_DEBUG
+
+#define VALUE_SET_PARENT(cls, par, mod, pt) ValueSet<cls, par, mod, pt>
+#define VALUE_SET_STATIC_PARENT(cls, par, mod, pt) ValueSetStatic<cls, par, mod, pt>
   
 #define DECLARE_VALUE_SET_MEMBER_RECORD			\
   static const StaticMemberClass _adjustments
-  /*
-#define TYPED_VALUE_SET_MEMBERS(name, ...)		\
-  FOR_EACH_WITH_ARGS_COMMA(JOIN, (name::EnumClass::), __VA_ARGS__)
-  */
 #define DEFINE_VALUE_SET_MEMBER_RECORD(prefix, name)			\
   const typename prefix name::StaticMemberClass prefix name::_adjustments = \
     prefix name::StaticMemberClass()
@@ -76,114 +140,50 @@ namespace ePhotosynthesis {
   // Non-static value set
 #define INIT_VALUE_SET_MEMBER(name)				\
   ValueSetClass::insertOrig(EnumClass::name, &name, "INIT_VALUE_SET_MEMBER: ")
-#define INIT_VALUE_SET_MEMBERS_(...)		\
-  FOR_EACH(INIT_VALUE_SET_MEMBER, __VA_ARGS__)
-#define INIT_VALUE_SET_MEMBERS(name)					\
-  INIT_VALUE_SET_MEMBERS_(MEMBERS_ ## name)
+#define COPY_VALUE_SET_MEMBER(name)		\
+  name = other.name
 
 #define DECLARE_VALUE_SET_CORE(name)				\
   typedef _valueSetStaticMember<name> StaticMemberClass;	\
   DECLARE_VALUE_SET_MEMBER_RECORD;
-#define DEFINE_VALUE_SET_CORE(mod, name)
-  /*
-#define DECLARE_VALUE_SET_CORE(name)			\
-  name(const name& other);				\
-  name(const arr &vec, const std::size_t offset);
-#define DEFINE_VALUE_SET_CORE(name)				\
-  name::name(const name& other) {				\
-    initMembers();						\
-    copyMembers(other);						\
-  }								\
-  name::name(const arr &vec, const std::size_t offset) {	\
-    initMembers();						\
-    fromArray(vec, offset);					\
-  }
-  */
-#ifdef CHECK_VALUE_SET_ALTS
-#define DECLARE_VALUE_SET_INIT_MEMBERS(name)		\
-  void initMembers() override {				\
-    initMemberPointers();				\
-  }
-#else // CHECK_VALUE_SET_ALTS
-#define DECLARE_VALUE_SET_INIT_MEMBERS(name)	\
-  void initMembers() override {}
-#endif // CHECK_VALUE_SET_ALTS
-#define DECLARE_VALUE_SET_MEMBERS_(...)				\
-  FOR_EACH(DECLARE_VALUE_SET_MEMBER, __VA_ARGS__)
 #define DECLARE_VALUE_SET_MEMBERS(name)				\
-  DECLARE_VALUE_SET_MEMBERS_(MEMBERS_ ## name);			\
-  void initMemberPointers() override {				\
-    if (!values.empty()) return;				\
-    INIT_VALUE_SET_MEMBERS(name);				\
+  FOR_EACH(DECLARE_VALUE_SET_MEMBER, EXPAND(MEMBERS_ ## name));	\
+  void _initMemberPointers() override {				\
+    FOR_EACH(INIT_VALUE_SET_MEMBER, EXPAND(MEMBERS_ ## name));	\
   }								\
-  std::map<std::string, double*> getPointerMap() override {	\
-    initMemberPointers();					\
-    return get_pointer_map(values);				\
+  void _copyMembers(const name& other) override {		\
+    FOR_EACH(COPY_VALUE_SET_MEMBER, EXPAND(MEMBERS_ ## name));	\
   }								\
-  DECLARE_VALUE_SET_INIT_MEMBERS(name)				\
   DECLARE_VALUE_SET_CORE(name)
 #define DECLARE_VALUE_SET(name, ...)		\
   DECLARE_VALUE_SET_BASE(name, __VA_ARGS__)	\
-  using __VA_ARGS__::memberCount;		\
-  using __VA_ARGS__::memberState;		\
-  using __VA_ARGS__::select;			\
+  friend ValueSetBase;				\
+  friend ValueSetClass;				\
+  using __VA_ARGS__::_initStaticMembers;	\
+  using __VA_ARGS__::_initChildClasses;		\
+  using __VA_ARGS__::_initChildren;		\
   DECLARE_VALUE_SET_MEMBERS(name)
-#define DECLARE_VALUE_SET_COMPOSITE_STATE_CHILD(child)	\
-  out += "\n\t" + child::memberState()
-#define DECLARE_VALUE_SET_COMPOSITE_STATE_CHILDREN(...)	\
-  FOR_EACH(DECLARE_VALUE_SET_COMPOSITE_STATE_CHILD, __VA_ARGS__, _EmptyMacroType)
-#define DECLARE_VALUE_SET_COMPOSITE_ADD_CHILD(child)	\
-  out += child::memberCount()
-#define DECLARE_VALUE_SET_COMPOSITE_ADD_CHILDREN(...)	\
-  FOR_EACH(DECLARE_VALUE_SET_COMPOSITE_ADD_CHILD, __VA_ARGS__, _EmptyMacroType)
-#define DECLARE_VALUE_SET_COMPOSITE_PRINT_CHILD(child)			\
-  child->print(out, includePrefixes, tab + 1, noChildren);		\
-  out << std::endl
-#define DECLARE_VALUE_SET_COMPOSITE_PRINT_CHILDREN(...)			\
-  FOR_EACH(DECLARE_VALUE_SET_COMPOSITE_PRINT_CHILD, __VA_ARGS__)
-#define DECLARE_VALUE_SET_COMPOSITE_SELECT_CHILD(child)			\
-  child::select(x)
-#define DECLARE_VALUE_SET_COMPOSITE_SELECT_CHILDREN(...)		\
-  FOR_EACH(DECLARE_VALUE_SET_COMPOSITE_SELECT_CHILD, __VA_ARGS__, _EmptyMacroType)
+#define DECLARE_VALUE_SET_COMPOSITE_CLASS_CHILD(child)			\
+  addChildClass<child>()
+#define DECLARE_VALUE_SET_COMPOSITE_CLASS_CHILDREN(...)			\
+  FOR_EACH(DECLARE_VALUE_SET_COMPOSITE_CLASS_CHILD, __VA_ARGS__)
+#define DECLARE_VALUE_SET_COMPOSITE_INIT_CHILD(child)			\
+  addChild((ValueSet_t**)(&child))
 #define DECLARE_VALUE_SET_COMPOSITE(name, children, childvars, ...)	\
   DECLARE_VALUE_SET_BASE(name, __VA_ARGS__)				\
-  DECLARE_VALUE_SET_MEMBERS(name)					\
-  static std::size_t memberCount() {					\
-    std::size_t out = ParentClass::memberCount();			\
-    DECLARE_VALUE_SET_COMPOSITE_ADD_CHILDREN children;			\
-    return out;								\
+  using __VA_ARGS__::_initStaticMembers;				\
+  DECLARE_VALUE_SET_MEMBERS(name);					\
+  static void _initChildClasses() {					\
+    DECLARE_VALUE_SET_COMPOSITE_CLASS_CHILDREN children;		\
   }									\
-  static std::string memberState() {					\
-    std::string out = ParentClass::memberState();			\
-    DECLARE_VALUE_SET_COMPOSITE_STATE_CHILDREN children;		\
-    return out;								\
-  }									\
-  std::ostream& print(std::ostream &out,				\
-		      bool includePrefixes = false,			\
-		      const uint tab = 0,				\
-		      bool noChildren = false) const override {		\
-    const std::string space(tab * 4, ' ');				\
-    if (!noChildren) {							\
-      out << space << #name << ":" << std::endl;			\
-      DECLARE_VALUE_SET_COMPOSITE_PRINT_CHILDREN childvars;		\
-    }									\
-    return ParentClass::print(out, includePrefixes, tab, noChildren);	\
-  }									\
-  static void select(bool x = true) {					\
-      DECLARE_VALUE_SET_COMPOSITE_SELECT_CHILDREN children;		\
-      ParentClass::select(x);						\
+  void _initChildren() override {					\
+    FOR_EACH(DECLARE_VALUE_SET_COMPOSITE_INIT_CHILD, EXPAND childvars);	\
   }
-  /*
-  friend std::ostream& operator<<(std::ostream& out, const name& x) {	\
-    return print(out);							\
-  }
-  */
   
 #define DEFINE_VALUE_SET_MEMBERS(mod, name)	\
   DEFINE_VALUE_SET_MEMBER_RECORD(mod, name)
 #define DEFINE_VALUE_SET_NS(mod, name)			\
-  DEFINE_VALUE_SET_MEMBERS(mod, name)			\
-  DEFINE_VALUE_SET_CORE(mod, name)
+  DEFINE_VALUE_SET_MEMBERS(mod, name)
 #define DEFINE_VALUE_SET(name)			\
   DEFINE_VALUE_SET_NS(, name)
 #define DEFINE_VALUE_SET_HEADER(name)
@@ -192,37 +192,31 @@ namespace ePhotosynthesis {
   // Static value set
 #define INIT_VALUE_SET_STATIC_MEMBER(name)				\
   ValueSetClass::insertOrig(EnumClass::name, &name, "INIT_VALUE_SET_STATIC_MEMBER: ")
-#define INIT_VALUE_SET_STATIC_MEMBERS_(...)		\
-  FOR_EACH(INIT_VALUE_SET_STATIC_MEMBER, __VA_ARGS__)
-#define INIT_VALUE_SET_STATIC_MEMBERS(name)		\
-  INIT_VALUE_SET_STATIC_MEMBERS_(MEMBERS_ ## name)
-
-#define DEFINE_VALUE_SET_STATIC_MODULE_CORE0(mod, name)	\
-  double mod name::TIME = 0.;				\
-  std::size_t mod name::N = 1;
-#define DEFINE_VALUE_SET_STATIC_MODULE_CORE(mod, name)
 #define DEFINE_VALUE_SET_STATIC_MEMBERS_(name, ...)	\
   FOR_EACH_WITH_ARGS(DEFINE_VALUE_SET_STATIC_MEMBER,	\
 		     (name), __VA_ARGS__)
 #define DEFINE_VALUE_SET_STATIC_MEMBERS_NS(mod, name)		\
   DEFINE_VALUE_SET_STATIC_MEMBERS_(name, MEMBERS_ ## name);	\
-  DEFINE_VALUE_SET_STATIC_MODULE_CORE(mod, name)		\
   DEFINE_VALUE_SET_MEMBER_RECORD(mod, name)
 #define DEFINE_VALUE_SET_STATIC_MEMBERS(name)			\
   DEFINE_VALUE_SET_STATIC_MEMBERS_NS(, name)
-#define DEFINE_VALUE_SET_STATIC_MEMBERS_COMPOSITE_NS(mod, name)	\
-  DEFINE_VALUE_SET_STATIC_MEMBERS_(name, MEMBERS_ ## name);	\
-  DEFINE_VALUE_SET_MEMBER_RECORD(mod, name)
-#define DEFINE_VALUE_SET_STATIC_MEMBERS_COMPOSITE(name)		\
-  DEFINE_VALUE_SET_STATIC_MEMBERS_COMPOSITE_NS(, name)
+#define DEFINE_VALUE_SET_STATIC_MEMBERS_COMPOSITE_NS(mod, name, children) \
+  DEFINE_VALUE_SET_STATIC_MEMBERS_(name, MEMBERS_ ## name);		\
+  DEFINE_VALUE_SET_MEMBER_RECORD(mod, name);				\
+  void mod name::_initChildClasses() {					\
+    DECLARE_VALUE_SET_COMPOSITE_CLASS_CHILDREN children;		\
+  }
+  
+#define DEFINE_VALUE_SET_STATIC_MEMBERS_COMPOSITE(name, children)	\
+  DEFINE_VALUE_SET_STATIC_MEMBERS_COMPOSITE_NS(, name, children)
 #define DEFINE_VALUE_SET_STATIC_NS(mod, name)	\
   DEFINE_VALUE_SET_STATIC_MEMBERS_NS(mod, name)
 #define DEFINE_VALUE_SET_STATIC(name)		\
   DEFINE_VALUE_SET_STATIC_NS(, name)
-#define DEFINE_VALUE_SET_STATIC_COMPOSITE_NS(mod, name)	\
-  DEFINE_VALUE_SET_STATIC_MEMBERS_COMPOSITE_NS(mod, name)
-#define DEFINE_VALUE_SET_STATIC_COMPOSITE(name)	\
-  DEFINE_VALUE_SET_STATIC_COMPOSITE_NS(, name)
+#define DEFINE_VALUE_SET_STATIC_COMPOSITE_NS(mod, name, children)	\
+  DEFINE_VALUE_SET_STATIC_MEMBERS_COMPOSITE_NS(mod, name, children)
+#define DEFINE_VALUE_SET_STATIC_COMPOSITE(name, children)	\
+  DEFINE_VALUE_SET_STATIC_COMPOSITE_NS(, name, children)
 #define DEFINE_VALUE_SET_STATIC_HEADER_NS(mod, name)	\
   DEFINE_VALUE_SET_MEMBER_RECORD_HEADER(mod, name)
 #define DEFINE_VALUE_SET_STATIC_HEADER(name)		\
@@ -231,44 +225,13 @@ namespace ePhotosynthesis {
 #define DEFINE_VALUE_SET_STATIC_HEADER_COMPOSITE(name)	\
   DEFINE_VALUE_SET_STATIC_HEADER_COMPOSITE_NS(, name)
   
-#ifdef CHECK_VALUE_SET_ALTS
-#define DECLARE_VALUE_SET_STATIC_INIT_MEMBERS(name)	\
-  static void initMembers() {				\
-    initMemberPointers();				\
-  }
-#else // CHECK_VALUE_SET_ALTS
-#define DECLARE_VALUE_SET_STATIC_INIT_MEMBERS(name)	\
-  static void initMembers() {}
-#endif // CHECK_VALUE_SET_ALTS
-#define DECLARE_VALUE_SET_STATIC_MEMBERS_(...)			\
-  FOR_EACH(DECLARE_VALUE_SET_STATIC_MEMBER, __VA_ARGS__)
-#define DECLARE_VALUE_SET_STATIC_MEMBERS(name)			\
-  public:							\
-  static void initMemberPointers() {				\
-    if (!values.empty())					\
-      return;							\
-    INIT_VALUE_SET_STATIC_MEMBERS(name);			\
-  }								\
-  static std::map<std::string, double*> getPointerMap() {	\
-    initMemberPointers();					\
-    return get_pointer_map(values);				\
-  }								\
-  DECLARE_VALUE_SET_STATIC_INIT_MEMBERS(name)			\
-  static void initStaticMembers() {				\
-    initMembers();						\
-  }								\
-  static void initMembersState(bool force=false) {		\
-    if (!(force || values.empty()))				\
-      return;							\
-    initMembers();						\
-    ValueSetClass::initMembersState();				\
-  }								\
-  static void initValues() {					\
-    initMembersState();						\
-    ParentClass::initValues();					\
-  }								\
-  private:							\
-  DECLARE_VALUE_SET_STATIC_MEMBERS_(MEMBERS_ ## name);		\
+#define DECLARE_VALUE_SET_STATIC_MEMBERS(name)				\
+  public:								\
+  static void _initMemberPointers() {					\
+    FOR_EACH(INIT_VALUE_SET_STATIC_MEMBER, EXPAND(MEMBERS_ ## name));	\
+  }									\
+  private:								\
+  FOR_EACH(DECLARE_VALUE_SET_STATIC_MEMBER, EXPAND(MEMBERS_ ## name));	\
   public:
 #define DECLARE_VALUE_SET_STATIC_CORE(name, ...)		\
   DECLARE_VALUE_SET_STATIC_BASE(name, __VA_ARGS__)		\
@@ -276,133 +239,22 @@ namespace ePhotosynthesis {
   friend Value<name>;						\
   friend _valueSetStaticMember<name>;				\
   DECLARE_VALUE_SET_MEMBER_RECORD;
-#define DECLARE_VALUE_SET_STATIC_MODULE_CORE0(name, ...)		\
-  static double TIME;   /* The timestamp of the most recent call to _Rate */ \
-  static std::size_t N; /* The current size of the module TimeSeries */
-#define DECLARE_VALUE_SET_STATIC_MODULE_CORE(name, ...)
 #define DECLARE_VALUE_SET_STATIC(name, ...)			\
   DECLARE_VALUE_SET_STATIC_CORE(name, __VA_ARGS__)		\
-  DECLARE_VALUE_SET_STATIC_MODULE_CORE(name, __VA_ARGS__)	\
   DECLARE_VALUE_SET_STATIC_MEMBERS(name)
-#define DECLARE_VALUE_SET_STATIC_COMPOSITE(name, ...)	\
-  DECLARE_VALUE_SET_STATIC_CORE(name, __VA_ARGS__)	\
-  DECLARE_VALUE_SET_STATIC_MEMBERS(name)
+#define DECLARE_VALUE_SET_STATIC_COMPOSITE(name, children, ...)		\
+  DECLARE_VALUE_SET_STATIC_CORE(name, __VA_ARGS__)			\
+  DECLARE_VALUE_SET_STATIC_MEMBERS(name);				\
+  static void _initChildClasses();
 
-#define DECLARE_CONDITION_BASE(name)					\
-  public:								\
-  /** Copy constructor that makes a deep copy of the given object */	\
-  /** @param other The object to copy */				\
-  name ## Condition(const name ## Condition* const other);		\
-  /** Constructor to create an object from the input vector, starting */ \
-  /**   at the given offset.*/						\
-  /** @param vec Vector to create the object from */			\
-  /** @param offset The index in vec to start creating the object from */ \
-  name ## Condition(const arr &vec, const std::size_t offset = 0);	\
-  ~name ## Condition() override {					\
-    _clear();								\
-  }									\
-  /** \copydoc ConditionBase::_print */					\
-  std::ostream& _print(std::ostream &out, const uint tab = 0) const;	\
-private:								\
- friend ConditionBase;							\
- friend class modules::name;						\
- /** \copydoc ConditionBase::_fromArray */				\
- void _fromArray(const arr &vec, const std::size_t offset = 0) override; \
- /** \copydoc ConditionBase::_toArray */				\
- arr _toArray() const override;						\
- /** \copydoc ConditionBase::_size */					\
- static std::size_t _size();						\
- /** \copydoc ConditionBase::_clear */					\
- void _clear() override;						\
- /** \copydoc ConditionBase::_reset */					\
- static void _reset();							\
-public:
-  
-#define DECLARE_CONDITION(name, parent)					\
-  DECLARE_VALUE_SET(name ## Condition,					\
-		    ConditionBase<name ## Condition, parent,		\
-		    MODULE_ ## name>)					\
-  DECLARE_CONDITION_BASE(name)						\
-  name ## Condition(parent* par = nullptr) {				\
-    setParent(par);							\
-    initMembers();							\
-  }									\
-  /** The Maximum size of the serialized vector */			\
-  static const std::size_t count;
-  
-#define INIT_CONDITION_CHILD(name)					\
-  name ## _con(new name ## Condition(this))
-#define INIT_CONDITION_CHILDREN_(...) // TODO
-#define INIT_CONDITION_CHILDREN(...)					\
-  INIT_CONDITION_CHILDREN_(__VA_ARGS__)
-#define DECLARE_CONDITION_COMPOSITE(name, parent)			\
-  DECLARE_VALUE_SET_COMPOSITE(name ## Condition, (CHILDREN_ ## name),	\
-			      ConditionBase<name ## Condition, parent,	\
-			      MODULE_ ## name>)				\
-  DECLARE_CONDITION_BASE(name)						\
-  name ## Condition(parent* par = nullptr) :				\
-  INIT_CONDITION_CHILDREN(CHILDREN_ ## name) {				\
-    setParent(par);							\
-    initMembers();							\
-  }
-#define DEFINE_CONDITION_BASE(name)					\
-  name ## Condition::name ## Condition(const arr &vec,			\
-				       const std::size_t offset) {	\
-    initMembers();							\
-    fromArray(vec, offset);						\
-  }
-#define DEFINE_CONDITION(name)			\
-  void name ## Condition::_clear() {}
-  
-#define CLEAR_CONDITION_CHILD(name)		\
-  if (name ## _con != nullptr) {		\
-    delete name ## _con;			\
-    name ## _con = nullptr;			\
-  }
-#define CLEAR_CONDITION_CHILDREN_(...) // TODO
-#define CLEAR_CONDITION_CHILDREN(...)		\
-  CLEAR_CONDITION_CHILDREN_(__VA_ARGS__)
-#define DEFINE_CONDITION_COMPOSITE(name)	\
-  void name ## Condition::_clear() {		\
-    CLEAR_CONDITION_CHILDREN(CHILDREN_ ## name)	\
-  }
-
-#define DEFINE_MODULE_COMPOSITE(name, children)	\
-  void name::_reset() {				\
-    RESET_CHILDREN children;			\
-    conditions::name ## Condition::reset();	\
-  }
-
-#ifdef CHECK_VALUE_SET_ALTS
-#define CALL_STATIC(method, ...)		\
-  return method(alts, __VA_ARGS__)
-#define CALL_STATIC_CONST(method, ...)		\
-  CALL_STATIC(method, __VA_ARGS__)
-#define CALL_STATIC_NOARGS(method)		\
-  return method(alts)
-#define CALL_STATIC_NOARGS_CONST(method)	\
-  CALL_STATIC_NOARGS(method)
-#define CALL_STATIC_METHOD(method)		\
-  return alts.method()
-#define CALL_STATIC_METHOD_CONST(method)	\
-  CALL_STATIC_METHOD(method)
-#else // CHECK_VALUE_SET_ALTS
-#define CALL_STATIC(method, ...)		\
-  initMemberPointers();				\
-  return method(values, __VA_ARGS__)
-#define CALL_STATIC_CONST(method, ...)		\
-  return method(values, __VA_ARGS__)
-#define CALL_STATIC_NOARGS(method)		\
-  initMemberPointers();				\
-  return method(values)
-#define CALL_STATIC_NOARGS_CONST(method)	\
-  return method(values)
-#define CALL_STATIC_METHOD(method)		\
-  initMemberPointers();				\
-  return values.method()
-#define CALL_STATIC_METHOD_CONST(method)	\
-  return values.method()
-#endif // CHECK_VALUE_SET_ALTS
+#define ENSURE_VALUE_POINTERS			\
+  initMemberPointers()
+#define ENSURE_VALUE_POINTERS_CONST
+#define ENSURE_CHILD_POINTERS			\
+  initChildren();				\
+  createChildren()
+#define ENSURE_CHILD_CLASS_POINTERS		\
+  BaseClass::initChildClasses()
 
   template<typename T>
   class _valueSetStaticMember {
@@ -509,19 +361,428 @@ public:
 #undef ASSIGN_OP
   };
 
+#define STUB_STATIC_VALUE_SET(name, retT, argsT, args, retV, suffix)	\
+  static retT _static_ ## name argsT {					\
+    return name args;							\
+  }
+#define STUB_VIRTUAL_VALUE_SET(name, retT, argsT, args, retV, suffix)	\
+  retT _virtual_ ## name argsT suffix override {			\
+    return T::name args;						\
+  }
+
+/**
+   Use macro to define methods only in ValueSet
+   \param method Macro to define each method.
+*/
+#define ADD_METHODS_VALUE_SET_T_INST_ONLY(method)			\
+  /** \copydoc ValueSet::copyMembers */					\
+  method(copyMembers, void,						\
+	 (const ValueSet_t& other, const bool noChildren=false),	\
+	 (other, noChildren), , )					\
+  /** \copydoc ValueSet::initChildren */				\
+  method(initChildren, void,						\
+	 (const bool noChildren=false), (noChildren), , )		\
+  /** \copydoc ValueSet::createChildren */				\
+  method(createChildren, void,						\
+	 (const bool noChildren=false), (noChildren), , )		\
+  /** \copydoc ValueSet::getChildren */					\
+  method(getChildren, const std::vector<ValueSet_t**>&,			\
+         (), (), {}, const)						\
+  /** \copydoc ValueSet::resetInstance */				\
+  method(resetInstance, void,						\
+	 (const bool noChildren=false), (noChildren), , )		\
+  /** \copydoc ValueSet::setParent */					\
+  method(setParent, void, (ValueSet_t* par), (par), , )
+
+/**
+   Use macro to define static methods only in ValueSet without duplicates
+   \param method Macro to define each method.
+*/
+#define ADD_METHODS_VALUE_SET_T_INST_ONLY_STATIC_NODUP(method)	\
+  /** \copydoc ValueSet::newInstance */				\
+  method(newInstance, ValueSet_t*,				\
+	 (ValueSet_t* par=nullptr), (par), nullptr, )		\
+  method(getValueSetClass, ValueSet_t*,				\
+	 (), (), nullptr, )
+/**
+   Use macro to define static methods only in ValueSet with duplicates
+   \param method Macro to define each method.
+*/
+#define ADD_METHODS_VALUE_SET_T_INST_ONLY_STATIC(method)	\
+  ADD_METHODS_VALUE_SET_T_INST_ONLY_STATIC_NODUP(method)
+
+/**
+   Use macro to define methods only in ValueSetStatic
+   \param method Macro to define each method.
+*/
+#define ADD_METHODS_VALUE_SET_T_STATIC_ONLY(method)	\
+  /** \copydoc ValueSetEnum::error_prefix */		\
+  method(error_prefix, std::string, (), (), "", const)
+  
+/**
+   Use macro to define methods static in ValueSet & ValueSetStatic
+     without duplicates
+   \param method Macro to define each method.
+*/
+#define ADD_METHODS_VALUE_SET_T_STATIC_NODUP(method)			\
+  /** \copydoc ValueSetBase::get_module */				\
+  method(get_module, MODULE, (), (), MODULE_NONE, const)		\
+  /** \copydoc ValueSetBase::get_param_type */				\
+  method(get_param_type, PARAM_TYPE, (), (), PARAM_TYPE_NONE, const)	\
+  /** \copydoc ValueSetBase::get_parameter_types */			\
+  method(get_parameter_types,						\
+	 const std::vector<PARAM_TYPE>&, (), (), {}, const)		\
+  /** \copydoc ValueSetBase::initDefaults */				\
+  method(initDefaults, void,						\
+	 (const bool useC3=false, const std::string& filename="",	\
+	  const bool force=false, const bool noChildren=false),		\
+	 (useC3, filename, force, noChildren), , const)			\
+  /** \copydoc ValueSetBase::memberCount */				\
+  method(memberCount, std::size_t, (const bool noChildren=false),	\
+	 (noChildren), 0, const)					\
+  /** \copydoc ValueSetBase::memberState */				\
+  method(memberState, std::string, (const bool noChildren=false),	\
+	 (noChildren), "", const)					\
+  /** \copydoc ValueSetBase::initChildClasses */			\
+  method(initChildClasses, void, (const bool noChildren=false),		\
+	 (noChildren), , const)						\
+  /** \copydoc ValueSetBase::initStaticMembers */			\
+  method(initStaticMembers, void, (const bool noChildren=false),	\
+	 (noChildren), , const)						\
+  /** \copydoc ValueSetBase:selected */					\
+  method(selected, bool, (), (), false, const)				\
+  /** \copydoc ValueSetBase::select */					\
+  method(select, void,							\
+	 (const bool x = true, const bool noChildren = false),		\
+	 (x, noChildren), , const)					\
+  /** \copydoc ValueSetBase::enableC3 */				\
+  method(enableC3, void,						\
+	 (const bool x = true, const bool noChildren = false),		\
+	 (x, noChildren), , const)					\
+  /** \copydoc ValueSetBase::reset */					\
+  method(reset, void, (const bool noChildren = false),			\
+	 (noChildren), , const)						\
+  /** \copydoc ValueSetBase::size */					\
+  method(size, std::size_t, (), (), 0, const)				\
+  /** \copydoc ValueSetBase::max_field_width */				\
+  method(max_field_width, std::size_t,					\
+	 (bool noChildren = false), (noChildren), 0, const)		\
+  /** \copydoc ValueSetBase::max_default_value_width */			\
+  method(max_default_value_width, std::size_t,				\
+	 (bool noChildren = false), (noChildren), 0, const)		\
+  /** \copydoc ValueSetBase::has */					\
+  method(has, bool,							\
+	 (const std::string& name, const bool& isGlymaID = false),	\
+	 (name, isGlymaID), false, const)				\
+  /** \copydoc ValueSetBase::fromNameWithAliases */			\
+  method(fromNameWithAliases, int,					\
+	 (const std::string& name, const bool& isGlymaID = false),	\
+	 (name, isGlymaID), -1, const)					\
+  /** \copydoc ValueSetBase::setDefault */				\
+  method(setDefault, void,						\
+	 (const std::string& k, const double& v,			\
+	  const bool& isGlymaID = false,				\
+	  const bool dontPreserve = false),				\
+	 (k, v, isGlymaID, dontPreserve), , const)			\
+  /** \copydoc ValueSetBase::getDefault */				\
+  method(getDefault, double,						\
+	 (const std::string& x, const bool& isGlymaID = false),		\
+	 (x, isGlymaID), 0.0, const)
+/**
+   Use macro to define methods static in ValueSet & ValueSetStatic
+     with duplicates
+   \param method Macro to define each method.
+*/
+#define ADD_METHODS_VALUE_SET_T_STATIC(method)				\
+  ADD_METHODS_VALUE_SET_T_STATIC_NODUP(method)				\
+  /** \copydoc ValueSetBase::setDefault */				\
+  method(setDefault, void,						\
+	 (const int& k, const double& v,				\
+	  const bool dontPreserve = false),				\
+	 (k, v, dontPreserve), , const)					\
+  /** \copydoc ValueSetBase::getDefault */				\
+  method(getDefault, double,						\
+	 (const int& k), (k), 0.0, const)
+
+/**
+   Use macros to define methods static in ValueSetStatic and not static
+     in ValueSet without duplicates
+   \param method Macro to define each method.
+*/
+#define ADD_METHODS_VALUE_SET_T_BOTH_NODUP(method)			\
+  /** \copydoc ValueSet::getValueSet */					\
+  method(getValueSet, const ValueSet_t*, (), (),			\
+	 nullptr, const)						\
+  /** \copydoc ValueSet:getValueMap */					\
+  method(getValueMap, std::map ADD_BRACKETS(int, double),		\
+	 (), (), {}, const)						\
+  /** \copydoc ValueSet:setValueMap */					\
+  method(setValueMap, void,						\
+	 (const std::map<int, double>& map, const bool set_init=false), \
+	 (map, set_init), , )						\
+  /** \copydoc ValueSet::max_value_width */				\
+  method(max_value_width, std::size_t,					\
+	 (bool noChildren = false), (noChildren), 0, const)		\
+  /** \copydoc ValueSet::initMembers */					\
+  method(initMembers, void,						\
+	 (const bool noChildren=false), (noChildren), , )		\
+  /** \copydoc ValueSet::initMembersState */				\
+  method(initMembersState, void,					\
+	 (const bool force=false, const bool noChildren=false),		\
+	 (force, noChildren), , )					\
+  /** \copydoc ValueSet::resetValues */					\
+  method(resetValues, void,						\
+	 (const bool noChildren=false), (noChildren), , )		\
+  /** \copydoc ValueSet::initialized */					\
+  method(initialized, bool,						\
+	 (), (), false, const)						\
+  /** \copydoc ValueSet::initValues */					\
+  method(initValues, void,						\
+	 (bool noDefaults=false, const bool noChildren=false),		\
+	 (noDefaults, noChildren), , )					\
+  /** \copydoc ValueSet::initMemberPointers */				\
+  method(initMemberPointers, void,					\
+	 (const bool noChildren=false), (noChildren), , )		\
+  /** \copydoc ValueSet::diff */					\
+  method(diff, std::string,						\
+	 (const ValueSet_t& other, std::size_t padKeys=0,		\
+	  std::size_t padVals=0, bool includePrefixes=false,		\
+	  bool noChildren = false),					\
+	 (other, padKeys, padVals, includePrefixes, noChildren),	\
+	 "", const)							\
+  /** \copydoc ValueSet::print */					\
+  method(print, std::ostream&,						\
+	 (std::ostream &out, const uint tab = 0, std::size_t pad = 0,	\
+	  bool includePrefixes = false,					\
+	  bool includeSkipped = false,					\
+	  const std::vector<std::string>& skip_keys = {},		\
+	  const std::map<std::string, std::string>& key_aliases = {},	\
+	  bool noChildren = false),					\
+	 (out, tab, pad, includePrefixes, includeSkipped,		\
+	  skip_keys, key_aliases, noChildren),				\
+	 out, const)							\
+  /** \copydoc ValueSet::sizeArray */					\
+  method(sizeArray, std::size_t, (), (), 0, const)			\
+  /** \copydoc ValueSet::toArray */					\
+  method(toArray, arr, (), (), {}, const)				\
+  /** \copydoc ValueSet::fromArray */					\
+  method(fromArray, void,						\
+	 (const arr &vec, const std::size_t offset = 0),		\
+	 (vec, offset), , )						\
+  /** \copydoc ValueSetBase::set */					\
+  method(set, void,							\
+	 (const std::string& name, const double& v,			\
+	  const bool& isGlymaID = false),				\
+	 (name, v, isGlymaID), , )					\
+  /** \copydoc ValueSetBase::get */					\
+  method(get, double,							\
+	 (const std::string& name, const bool& isGlymaID = false),	\
+	 (name, isGlymaID), 0.0, const)
+/**
+   Use macros to define methods static in ValueSetStatic and not static
+     in ValueSet with duplicates
+   \param method Macro to define each method.
+*/
+#define ADD_METHODS_VALUE_SET_T_BOTH(method)				\
+  ADD_METHODS_VALUE_SET_T_BOTH_NODUP(method)				\
+  /** \copydoc ValueSetBase::set */					\
+  method(set, void,							\
+	 (const int& k, const double& v), (k, v), , )			\
+  /** \copydoc ValueSetBase::get */					\
+  method(get, double,							\
+	 (const int& k), (k), 0.0, const)
+
+  /**
+     Untemplated base class to allow storage of mixed value sets in
+       containers.
+   */
+  class ValueSet_t {
+  public:
+
+    template<typename T>
+    static const T& castValueSet(const ValueSet_t& x) {
+      if (typeid(const T&) != typeid(x))
+	std::runtime_error("Cannot cast between types");
+      return static_cast<const T&>(x);
+    }
+
+    /**
+       Check if another value set is equivalent to this one.
+       \param b Value set to compare against this one.
+       \param noChildren If true, child classes will not be checked.
+     */
+    virtual bool equals(const ValueSet_t& b0,
+			const bool noChildren = false) const {
+      UNUSED(noChildren);
+      if(typeid(*this) != typeid(b0)) {
+	std::cerr << "typeids not equal in ValueSet_t" << std::endl;
+	return false;
+      }
+      return true;
+    }
+    bool operator==(const ValueSet_t& b) const {
+      return equals(b);
+    }
+    bool operator!=(const ValueSet_t& b) const {
+      return !(this->operator==(b));
+    }
+    
+    
+#define ADD_METHOD(name, retT, argsT, args, retV, suffix)	\
+    virtual retT name argsT suffix {				\
+      FOR_EACH(UNUSED, EXPAND args);				\
+      IF_NOT_EMPTY(retV, static PACK_MACRO(retT) tmp_ = retV; return tmp_;) \
+    }
+#define ADD_METHOD_BOTH(name, retT, argsT, args, retV, suffix)		\
+    ADD_METHOD(name, PACK_MACRO(retT), argsT, args, retV, suffix)	\
+    static retT _static_ ## name argsT {				\
+      FOR_EACH(UNUSED, EXPAND args);					\
+      IF_NOT_EMPTY(retV, static PACK_MACRO(retT) tmp_ = retV; return tmp_;) \
+    }
+#define ADD_METHOD_STATIC(name, retT, argsT, args, retV, suffix)	\
+    virtual retT _virtual_ ## name argsT suffix {			\
+      FOR_EACH(UNUSED, EXPAND args);					\
+      IF_NOT_EMPTY(retV, static PACK_MACRO(retT) tmp_ = retV; return tmp_;) \
+    }
+    
+    // Methods specific to classes
+    ADD_METHODS_VALUE_SET_T_INST_ONLY(ADD_METHOD)
+    ADD_METHODS_VALUE_SET_T_INST_ONLY_STATIC(ADD_METHOD_STATIC)
+    
+    // Methods static in ValueSetStatic and not static in ValueSet
+    /** \copydoc ValueSet::getValueSet */
+    virtual ValueSet_t* getValueSet() {
+      return const_cast<ValueSet_t*>(const_cast<const ValueSet_t*>(this)->getValueSet());
+    }
+    /** \copydoc ValueSet getChildren */
+    virtual std::vector<ValueSet_t**>& getChildren() {
+      return const_cast<std::vector<ValueSet_t**>&>(const_cast<const ValueSet_t*>(this)->getChildren());
+    }
+    ADD_METHODS_VALUE_SET_T_BOTH(ADD_METHOD_BOTH)
+    
+    // Methods static in both classes
+    ADD_METHODS_VALUE_SET_T_STATIC(ADD_METHOD_STATIC)
+    
+#undef ADD_METHOD_BOTH
+#undef ADD_METHOD
+#undef ADD_METHOD_STATIC
+  };
+
+  /**
+     Template free base class to allow packaging of value set classes in
+       containers.
+   */
+  class ValueSetClass_t : public ValueSet_t {
+  public:
+#define ADD_METHOD_BOTH(name, ...) using ValueSet_t::name;
+#define ADD_METHOD(name, retT, argsT, args, retV, suffix)	\
+    virtual retT name argsT suffix {				\
+      FOR_EACH(UNUSED, EXPAND args);				\
+      IF_NOT_EMPTY(retV, static PACK_MACRO(retT) tmp_ = retV; return tmp_;) \
+    }
+#define DISABLE_METHOD(name, retT, argsT, args, retV, suffix)	\
+    retT name argsT suffix override {				\
+      FOR_EACH(UNUSED, EXPAND args);				\
+      throw std::runtime_error(std::string(__func__) +		\
+			       ": Not a static method");	\
+      IF_NOT_EMPTY(retV, static PACK_MACRO(retT) tmp_ = retV; return tmp_;) \
+    }
+#define ADD_METHOD_STATIC(name, ...) using ValueSet_t::_virtual_ ## name;
+    
+    // Methods specific to classes
+    ADD_METHODS_VALUE_SET_T_INST_ONLY(DISABLE_METHOD)
+    ADD_METHODS_VALUE_SET_T_INST_ONLY_STATIC_NODUP(ADD_METHOD_STATIC)
+    ADD_METHODS_VALUE_SET_T_INST_ONLY_STATIC(ADD_METHOD)
+    ADD_METHODS_VALUE_SET_T_STATIC_ONLY(ADD_METHOD)
+
+    // Methods static in ValueSetStatic and not static in ValueSet
+    ADD_METHODS_VALUE_SET_T_BOTH_NODUP(ADD_METHOD_BOTH)
+    
+    // Methods static in both classes
+    ADD_METHODS_VALUE_SET_T_STATIC_NODUP(ADD_METHOD_STATIC)
+    ADD_METHODS_VALUE_SET_T_STATIC(ADD_METHOD)
+
+#undef ADD_METHOD_STATIC
+#undef DISABLE_METHOD
+#undef ADD_METHOD_BOTH
+#undef ADD_METHOD
+  };
+
+  /**
+     Wrapper class to allow packaging of value set classes in containers.
+     \tparam T Class being wrapped.
+   */
+  template<typename T>
+  class ValueSetClassType : public ValueSetClass_t {
+  public:
+#define ADD_METHOD(name, retT, argsT, args, retV, suffix)		\
+    retT name argsT suffix override {					\
+      return T::name args;						\
+    }									\
+    STUB_VIRTUAL_VALUE_SET(name, retT, argsT, args, retV, suffix)
+#define ADD_METHOD_BOTH(name, retT, argsT, args, retV, suffix)	\
+    retT name argsT suffix override {				\
+      return T::_static_ ## name args;				\
+    }
+
+    // Methods specific to classes
+    ADD_METHODS_VALUE_SET_T_INST_ONLY_STATIC(ADD_METHOD)
+    
+    // Methods virtual in ValueSet & static in ValueSetStatic
+    ADD_METHODS_VALUE_SET_T_BOTH(ADD_METHOD_BOTH)
+
+    // Methods static in both classes
+    ADD_METHODS_VALUE_SET_T_STATIC(ADD_METHOD)
+
+#undef ADD_METHOD_BOTH
+#undef ADD_METHOD
+  };
+
+  /**
+     Wrapper class to allow packaging of static value set classes in
+       containers.
+     \tparam T Class being wrapped.
+   */
+  template<typename T>
+  class ValueSetStaticClassType : public ValueSetClassType<T> {
+  public:
+#define ADD_METHOD(name, retT, argsT, args, retV, suffix)	\
+    retT name argsT suffix override {				\
+      return T::name args;					\
+    }
+#define DISABLE_METHOD(name, retT, argsT, args, retV, suffix)		\
+    retT name argsT suffix override {					\
+      FOR_EACH(UNUSED, EXPAND args);					\
+      throw std::runtime_error(std::string(__func__) +			\
+			       ": Invalid for static value set");	\
+      return retV;							\
+    }
+
+    // Methods specific to classes
+    ADD_METHODS_VALUE_SET_T_INST_ONLY_STATIC(DISABLE_METHOD)
+    ADD_METHODS_VALUE_SET_T_STATIC_ONLY(ADD_METHOD)
+
+#undef DISABLE_METHOD
+#undef ADD_METHOD
+  };
+  
   /**
      Template class to provide core methods for manipulating sets of
      values used by a model run that can be set via input files.
 
+     \tparam T Child class with virtual & static methods.
+     \tparam U Parent class with virtual & static methods.
      \tparam ID Enum corresponding to the module that the values will be
        used by.
      \tparam PT Enum corresponding to the module component that the values
        will be used by.
    */
-  template<MODULE ID, PARAM_TYPE PT>
+  template<class T, class U, MODULE ID, PARAM_TYPE PT>
   class ValueSetBase : public ValueSetEnum<ID, PT> {
   public:
-    typedef ValueSetBase<ID, PT> BaseClass; /**< Specialized value set base class */
+    typedef T ThisClass; /** Inheriting class */
+    typedef U ThisParent; /** Parent class */
+    typedef ValueSetBase<T, U, ID, PT> BaseClass; /**< Specialized value set base class */
     typedef ValueSetEnum<ID, PT> EnumBaseClass; /**< Base class containing enum utilities */
     typedef typename EnumBaseClass::Type EnumType; /**< Enumerator type specifying keys for values in the set */
 #ifdef EPHOTO_USE_SCOPED_ENUM
@@ -530,15 +791,47 @@ public:
     typedef EnumBaseClass EnumClass; /**< Enumerator class specifying keys for values in the set */
 #endif // EPHOTO_USE_SCOPED_ENUM
     typedef Value<BaseClass> ValueType; /**< Class for storing values */
-#ifdef CHECK_VALUE_SET_ALTS    
-    typedef typename std::map<EnumType, double>::iterator iterator; /**< Iterator type for values in the set */
-    typedef typename std::map<EnumType, double>::const_iterator const_iterator; /**< Constant iterator type for values in the set */
-#else // CHECK_VALUE_SET_ALTS
     typedef typename std::map<EnumType, double*>::iterator iterator; /**< Iterator type for values in the set */
     typedef typename std::map<EnumType, double*>::const_iterator const_iterator; /**< Constant iterator type for values in the set */
-#endif // CHECK_VALUE_SET_ALTS
     INHERIT_METHOD_ENUM(EnumBaseClass);
 
+    /**
+       Get a ValueSetStaticClassType instance for this class.
+       \returns Reference to ValueSetStaticClassType instance.
+     */
+    static ValueSetClass_t* getValueSetClass() {
+      static ValueSetStaticClassType<T> out;
+      return &out;
+    }
+    /**
+       Convert an integer to an enum.
+       \param[in] k Integer key.
+       \returns Enum key.
+    */
+    static EnumType int2key(const int& k) {
+      if (k < 0)
+	ERROR_VALUE_SET("Cannot convert a negative value to an enum");
+      if (k > ValueSetEnum<ID, PT>::all.size())
+	ERROR_VALUE_SET("Integer (", k,
+			") exceeds maximum value in enum (",
+			std::to_string(ValueSetEnum<ID, PT>::all.size()),
+			")");
+      return ValueSetEnum<ID, PT>::all[k - 1]; // NONE not in all
+    }
+    /**
+       Convert a map with integer keys to a map with enum keys.
+       \tparam V Type of value in map.
+       \param[in] map Value map with integer keys.
+       \returns Value map with enum keys.
+    */
+    template<typename V>
+    static std::map<EnumType, V> int2key(const std::map<int, V>& map) {
+      std::map<EnumType, V> out;
+      for (typename std::map<int, double>::const_iterator it = map.begin();
+	   it != map.end(); it++)
+	out[int2key(it->first)] = it->second;
+      return out;
+    }
     /**
        Determine if a key is included in arrays.
        \param k Key to check.
@@ -548,54 +841,204 @@ public:
       return (!(isNonvector(k) || isSkipped(k)));
     }
 
+    enum VS_FLAGS : int {
+      VS_FLAG_SELECTED        = 0x00000001, //!< Value set selected by driver
+      VS_FLAG_DEFAULTS_C3     = 0x00000002, //!< Defaults initialized for C3 run
+      VS_FLAG_DEFAULTS_EDITED = 0x00000004, //!< Defaults editted
+      VS_FLAG_INIT_DEFAULTS   = 0x00000008, //!< Defaults initialized
+      VS_FLAG_INIT_POINTERS   = 0x00000010, //!< Pointers initialized
+      VS_FLAG_INIT_VALUES     = 0x00000020, //!< Values initialized
+      VS_FLAG_INIT_CHILDREN   = 0x00000040, //!< Children initialized
+    };
+
     // Inspection utilities
     /**
-       Display the values in a value map.
-       \param vals Value map to display.
-       \param out Output stream.
-       \param includePrefixes If true, the module & parameter type
-         prefixes will be added to the member names.
-       \param tab Number of tabs to prefix each line in the output with.
-       \returns Output stream.
+       Get the maximum width of the key names in a value map.
+       \tparam K Key type.
+       \tparam V Type of value in the provided map.
+       \param vals Value map.
+       \param includePrefixes If true, module & parameter type prefixes
+         should be included.
+       \returns Maximum key name width.
      */
-    static std::ostream& print_value_map(const std::map<EnumType, double*>& vals,
-					 std::ostream &out,
-					 bool includePrefixes=false,
-					 const uint tab=0,
-					 bool show_pointers=false) {
-      const std::string space(tab * 4, ' ');
-      for (typename std::map<EnumType, double*>::const_iterator it = vals.begin();
+    template <typename K, typename V>
+    static std::size_t field_width_value_map(const std::map<K, V>& vals,
+					     bool includePrefixes=false) {
+      std::size_t pad = 0;
+      std::string name;
+      for (typename std::map<K, V>::const_iterator it = vals.begin();
 	   it != vals.end(); it++) {
-	out << space;
-	if (includePrefixes)
-	  out << module << "::" << param_type << "::";
-	out << getName(it->first); //  << " = ";
-	if (show_pointers) {
-	  out << it->second;
-	} else {
-	  out << *(it->second);
-	}
-	out << std::endl;
+	name = getName(it->first);
+	if (name.size() > pad)
+	  pad = name.size();
+      }
+      if (includePrefixes) {
+	pad += 4; // "::" between param_type/module/key
+	pad += get_enum_names<PARAM_TYPE>().find(param_type)->second.size();
+	pad += get_enum_names<MODULE>().find(module)->second.size();
+      }
+      return pad;
+    }
+    /**
+       Get the maximum width of the values in a value map.
+       \tparam K Key type.
+       \tparam V Type of value in the provided map.
+       \param vals Value map.
+       \returns Maximum value width.
+     */
+    template <typename K, typename V>
+    static std::size_t value_width_value_map(const std::map<K, V>& vals) {
+      std::size_t pad = 7; // for "MISSING"
+      std::string name;
+      for (typename std::map<K, V>::const_iterator it = vals.begin();
+	   it != vals.end(); it++) {
+	name = to_string_with_precision(it->second);
+	if (name.size() > pad)
+	  pad = name.size();
+      }
+      return pad;
+    }
+    /**
+       Get the maximum width of the key names in the defaults map.
+       \param noChildren If true, children won't be included when
+         determining the maximum field width.
+       \returns Maximum key name width.
+     */
+    static std::size_t max_field_width(bool noChildren = false) {
+      static std::size_t out = 0;
+      static std::size_t outBase = 0;
+      if (outBase == 0) {
+	outBase = field_width_value_map(defaults, true);
+      }
+      if (noChildren) return outBase;
+      if (out == 0) {
+	out = outBase;
+	std::size_t iout = 0;
+#define DO_CHILD(child, dummy)						\
+	iout = child->max_field_width();				\
+	if (iout > out) out = iout
+	DO_VALUE_SET_CHILD_CLASSES_MACRO(DO_CHILD, const_iterator, );
+#undef DO_CHILD
       }
       return out;
     }
     /**
-       Display the values in a map.
-       \param vals Value map to display.
-       \param out Output stream.
-       \param includePrefixes If true, the module & parameter type
-         prefixes will be added to the member names.
-       \param tab Number of tabs to prefix each line in the output with.
+       Get the maximum width of the values in the defaults map.
+       \param noChildren If true, children won't be included when
+         determining the maximum value width.
+       \returns Maximum default value width.
+     */
+    static std::size_t max_default_value_width(bool noChildren = false) {
+      static std::size_t out = 0;
+      static std::size_t outBase = 0;
+      if (outBase == 0) {
+	outBase = value_width_value_map(defaults);
+      }
+      if (noChildren) return outBase;
+      if (out == 0) {
+	out = outBase;
+	std::size_t iout = 0;
+#define DO_CHILD(child, dummy)						\
+	iout = child->max_default_value_width();			\
+	if (iout > out) out = iout
+	DO_VALUE_SET_CHILD_CLASSES_MACRO(DO_CHILD, const_iterator, );
+#undef DO_CHILD
+      }
+      return out;
+    }
+    /**
+       Output a single value to an output stream.
+       \param val Value to ouput.
+       \param out Stream to output to.
+       \param show_pointers If true, the value pointer is output. If false,
+         the value is output.
        \returns Output stream.
      */
-    static std::ostream& print_value_map(const std::map<EnumType, double>& vals,
-					 std::ostream &out,
-					 bool includePrefixes=false,
-					 const uint tab = 0) {
-      return print_map(vals, out, includePrefixes, tab);
+    static std::ostream& print_value(const double& val, std::ostream &out,
+				     bool show_pointers = false) {
+      if (show_pointers)
+	out << &val;
+      else
+	out << val;
+      return out;
     }
-    template <typename T>
-    static std::string to_string_with_precision(const T a_value,
+    static std::ostream& print_value(const double* val, std::ostream &out,
+				     bool show_pointers = false) {
+      if (show_pointers)
+	out << val;
+      else
+	out << *val;
+      return out;
+    }
+    /**
+       Get a string version of a value.
+       \param val Value to ouput.
+       \param show_pointers If true, the value pointer is output. If false,
+         the value is output.
+       \returns String
+     */
+    template<typename V>
+    static std::string string_value(const V val,
+				    bool show_pointers = false) {
+      std::ostringstream out;
+      print_value(val, out, show_pointers);
+      return std::move(out).str();
+    }
+    /**
+       Display the values in a value map.
+       \tparam V Type of value in value map.
+       \param vals Value map to display.
+       \param out Output stream.
+       \param tab Number of tabs to prefix each line in the output with.
+       \param pad Number of characters that key names should be padded
+         to fill.
+       \param includePrefixes If true, the module & parameter type
+         prefixes will be added to the member names.
+       \param includeSkipped If true, skipped keys will be output.
+       \param skip_keys Key strings to skip in output.
+       \param key_aliases String aliases to use for keys.
+       \param show_pointers If true, the pointers will be displayed
+         instead of the values.
+       \returns Output stream.
+     */
+    template <typename V>
+    static std::ostream& print_value_map(const std::map<EnumType, V>& vals,
+					 std::ostream &out,
+					 const uint tab=0,
+					 std::size_t pad=0,
+					 bool includePrefixes=false,
+					 bool includeSkipped=false,
+					 const std::vector<std::string>& skip_keys={},
+					 const std::map<std::string, std::string>& key_aliases={},
+					 bool show_pointers=false) {
+      const std::string space(tab * tab_size, ' ');
+      check_value_map(vals, "print_value_map: ");
+      if (pad == 0)
+	pad = field_width_value_map(vals, includePrefixes);
+      for (typename std::map<EnumType, V>::const_iterator it = vals.begin();
+	   it != vals.end(); it++) {
+	if ((!includeSkipped) && (isSkipped(it->first) ||
+				  isConstant(it->first)))
+	  continue;
+	std::string iname;
+	if (includePrefixes)
+	  iname = getNameWithPrefix(it->first);
+	else
+	  iname = getName(it->first);
+	std::map<std::string, std::string>::const_iterator it_alias = key_aliases.find(iname);
+	if (!__contains(skip_keys, iname)) {
+	  out << space << std::setw(pad + tab_size) << std::left;
+	  if (it_alias != key_aliases.end())
+	    iname = it_alias->second;
+	  out << iname;
+	  print_value(it->second, out, show_pointers);
+	  out << std::endl;
+	}
+      }
+      return out;
+    }
+    template <typename V>
+    static std::string to_string_with_precision(const V a_value,
 						const int n = COMPARE_PRECISION) {
       std::ostringstream out;
       out.precision(n);
@@ -651,33 +1094,28 @@ public:
     static void valueSet(double& dst, const double* src,
 			 const std::string& context = "") {
       if (!src)
-	throw std::runtime_error(error_prefix() + context +
-				 "source pointer null");
+	ERROR_VALUE_SET(context, "source pointer null");
       dst = src[0];
     }
     static void valueSet(double* dst, const double& src,
 			 const std::string& context = "") {
       if (!dst)
-	throw std::runtime_error(error_prefix() + context +
-				 "destination pointer null");
+	ERROR_VALUE_SET(context, "destination pointer null");
       dst[0] = src;
     }
     static void valueSet(double* dst, const double* src,
 			 const std::string& context = "") {
       if (!dst)
-	throw std::runtime_error(error_prefix() + context +
-				 "pointer null");
+	ERROR_VALUE_SET(context, "pointer null");
       if (!src)
-	throw std::runtime_error(error_prefix() + context +
-				 "source pointer null");
+	ERROR_VALUE_SET(context, "source pointer null");
       dst[0] = src[0];
     }
     static void insertValue(std::map<EnumType, double*>& valsDst,
 			    const EnumType& k, const double* src,
 			    const std::string& context = "") {
       if (!src)
-	throw std::runtime_error(error_prefix() + context +
-				 "source pointer null");
+	ERROR_VALUE_SET(context, "source pointer null");
       valsDst[k] = const_cast<double*>(src);
     }
     static void insertValue(std::map<EnumType, double>& valsDst,
@@ -690,15 +1128,13 @@ public:
 			    const EnumType& k, const double* src,
 			    const std::string& context = "") {
       if (!src)
-	throw std::runtime_error(error_prefix() + context +
-				 "source pointer null");
+	ERROR_VALUE_SET(context, "source pointer null");
       valsDst[k] = src[0];
     }
     static void insertValue(std::map<EnumType, double*>&,
 			    const EnumType& k, const double&,
 			    const std::string& context = "") {
-      throw std::runtime_error(error_prefix() + context +
-			       "No value for \'" + getName(k) + "\'");
+      ERROR_VALUE_SET(context, "No value for \'", getName(k), "\'");
     }
     /**
        Throw an error if two values are not equivalent.
@@ -730,7 +1166,20 @@ public:
 	  ", relative = " + to_string_with_precision(relative) + ")";
 	if (!context.empty())
 	  msg = context + ": " + msg;
-	throw std::runtime_error(error_prefix() + msg);
+	ERROR_VALUE_SET(msg);
+      }
+    }
+    /**
+       Throw an error if a map is empty;
+       \tparam V Value map type.
+       \param vals Value map to check.
+       \param context String to prefix the error message with.
+     */
+    template<typename V>
+    static void check_value_map(const std::map<EnumType, V>& vals,
+				const std::string& context = "") {
+      if (vals.empty() && !defaults.empty()) {
+	ERROR_VALUE_SET(context, "Value map empty");
       }
     }
     /**
@@ -751,7 +1200,7 @@ public:
 	  "\' not present";
 	if (!context.empty())
 	  msg = context + ": " + msg;
-	throw std::runtime_error(error_prefix() + msg);
+	ERROR_VALUE_SET(msg);
       }
     }
     // Value manipulation
@@ -787,6 +1236,134 @@ public:
       return out;
     }
     /**
+       Get the diff between two value maps.
+       \tparam K Key type.
+       \tparam VDst Destination value type.
+       \tparam VSrc Source value type.
+       \param valsDst First map for comparison.
+       \param valsSrc Second map for comparison.
+       \param padKeys Number of characters that key names should be padded
+         to fill.
+       \param padVals Number of characters that values should be padded to
+         fill.
+       \param includePrefixes If true, the module & parameter type
+         prefixes will be added to the member names.
+       \returns String diff.
+     */
+    template<typename K, typename VSrc, typename VDst>
+    static std::string diff_value_maps(const std::map<K, VDst>& valsDst,
+				       const std::map<K, VSrc>& valsSrc,
+				       std::size_t padKeys=0,
+				       std::size_t padVals=0,
+				       bool includePrefixes=false) {
+      std::map<K, std::string> valStrDst, valStrSrc;
+#define GET_VAL(x) to_string_with_precision(__extract_value(x))
+      if (padKeys == 0) {
+	padKeys = field_width_value_map(valsDst, includePrefixes);
+	std::size_t padKeys2 = field_width_value_map(valsSrc, includePrefixes);
+	if (padKeys2 > padKeys)
+	  padKeys = padKeys2;
+      }
+      if (padVals == 0) {
+	padVals = value_width_value_map(valsDst);
+	std::size_t padVals2 = value_width_value_map(valsSrc);
+	if (padVals2 > padVals)
+	  padVals = padVals2;
+      }
+      for (typename std::map<K, VSrc>::const_iterator itSrc = valsSrc.begin();
+	   itSrc != valsSrc.end(); itSrc++) {
+	typename std::map<K, VDst>::const_iterator itDst = valsDst.find(itSrc->first);
+	if (itDst == valsDst.end()) {
+	  valStrDst[itSrc->first] = "MISSING";
+	  valStrSrc[itSrc->first] = GET_VAL(itSrc->second);
+	} else if (!valuesEqual(itDst->second, itSrc->second)) {
+	  valStrDst[itSrc->first] = GET_VAL(itDst->second);
+	  valStrSrc[itSrc->first] = GET_VAL(itSrc->second);
+	}
+      }
+      if (valsDst.size() != valsSrc.size()) {
+	for (typename std::map<K, VDst>::const_iterator itDst = valsDst.begin();
+	     itDst != valsDst.end(); itDst++) {
+	  typename std::map<K, VSrc>::const_iterator itSrc = valsSrc.find(itDst->first);
+	  if (itSrc == valsSrc.end()) {
+	    valStrDst[itDst->first] = GET_VAL(itDst->second);
+	    valStrSrc[itDst->first] = "MISSING";
+	  }
+	}
+      }
+      std::ostringstream out;
+      for (typename std::map<K, std::string>::const_iterator itSrc = valStrSrc.begin();
+	   itSrc != valStrSrc.end(); itSrc++) {
+	typename std::map<K, std::string>::const_iterator itDst = valStrDst.find(itSrc->first);
+	out << std::setw(padKeys + tab_size) << std::left;
+	if (includePrefixes)
+	  out << getNameWithPrefix(itSrc->first);
+	else
+	  out << getName(itSrc->first);
+	out << std::setw(padVals + tab_size) << std::left << itDst->second;
+	out << std::setw(padVals + tab_size) << std::left << itSrc->second << std::endl;
+      }
+#undef GET_VAL
+      return std::move(out.str());
+    }
+    /**
+       Check for equality between two value maps.
+       \tparam VDst Destination value type.
+       \tparam VSrc Source value type.
+       \param valsDst First map for comparison.
+       \param valsSrc Second map for comparison.
+       \param context String providing context for error messages.
+     */
+    template<typename VSrc, typename VDst>
+    static bool compare_value_maps(const std::map<EnumType, VDst>& valsDst,
+				   const std::map<EnumType, VSrc>& valsSrc,
+				   const std::string& context="") {
+      for (typename std::map<EnumType, VSrc>::const_iterator itSrc = valsSrc.begin();
+	   itSrc != valsSrc.end(); itSrc++) {
+	typename std::map<EnumType, VDst>::const_iterator itDst = valsDst.find(itSrc->first);
+	if (itDst == valsDst.end()) {
+	  INFO_VALUE_SET(context, itSrc->first,
+			 " value not present in a");
+	  return false;
+	}
+	if (!valuesEqual(itDst->second, itSrc->second)) {
+	  INFO_VALUE_SET(context, itDst->first,
+			 " values are not equal: ",
+			 valueString(itDst->second), ", ",
+			 valueString(itSrc->second));
+	  return false;
+	}
+      }
+      if (valsDst.size() != valsSrc.size()) {
+	for (typename std::map<EnumType, VDst>::const_iterator itDst = valsDst.begin();
+	     itDst != valsDst.end(); itDst++) {
+	  typename std::map<EnumType, VSrc>::const_iterator itSrc = valsSrc.find(itDst->first);
+	  if (itSrc == valsSrc.end()) {
+	    INFO_VALUE_SET(context, itDst->first,
+			   " value not present in b");
+	    return false;
+	  }
+	}
+      }
+      return true;
+    }
+    /**
+       Check for equality between two value maps with integer keys.
+       \tparam VDst Destination value type.
+       \tparam VSrc Source value type.
+       \param valsDst First map for comparison.
+       \param valsSrc Second map for comparison.
+       \param context String providing context for error messages.
+     */
+    template<typename VSrc, typename VDst>
+    static bool compare_value_maps(const std::map<int, VDst>& valsDst,
+				   const std::map<int, VSrc>& valsSrc,
+				   const std::string& context="") {
+      std::map<EnumType, VDst> kvalsDst = int2key(valsDst);
+      std::map<EnumType, VSrc> kvalsSrc = int2key(valsSrc);
+      return compare_value_maps(kvalsDst, kvalsSrc, context);
+    }
+    /**
        Compare two values maps, throwing an error if the keys do not
          match, valsSrc contains a constant value that is different than
 	 the value in valsDst, or either map contains a skipped value.
@@ -814,9 +1391,8 @@ public:
 	if (itDst == valsDst.end()) {
 	  if (ignore_extras)
 	    continue;
-	  throw std::runtime_error(error_prefix() + context +
-				   getName(itSrc->first) +
-				   " is not present in the destination");
+	  ERROR_VALUE_SET(context, getName(itSrc->first),
+			  " is not present in the destination");
 	}
 	if ((!ignore_constants) && isConstant(itSrc->first) &&
 	    (!valuesEqual(itDst->second, itSrc->second))) {
@@ -833,9 +1409,8 @@ public:
 	  if (itSrc == valsSrc.end()) {
 	    if (ignore_missing)
 	      continue;
-	    throw std::runtime_error(error_prefix() + context +
-				     getName(itDst->first) +
-				     " is not present in the source");
+	    ERROR_VALUE_SET(context, getName(itDst->first),
+			    " is not present in the source");
 	  }
 	}
       }
@@ -853,6 +1428,8 @@ public:
          ignored.
        \param ignore_constants If true, constant values can be changed.
        \param ignore_skipped If true, skipped values can be changed.
+       \param ignore_initonce If true, values initialized once can be
+         changed;
      */
     template<typename VSrc, typename VDst>
     static void copy_value_map(std::map<EnumType, VDst>& valsDst,
@@ -861,12 +1438,9 @@ public:
 			       bool ignore_extras=false,
 			       bool ignore_missing=false,
 			       bool ignore_constants=false,
-			       bool ignore_skipped=false) {
-#ifdef CHECK_VALUE_SET_ALTS
-      bool check = true;
-#else // CHECK_VALUE_SET_ALTS
+			       bool ignore_skipped=false,
+			       bool ignore_initonce=false) {
       bool check = false;
-#endif // CHECK_VALUE_SET_ALTS
       if (valsDst.size() != valsSrc.size())
 	check = true;
       if (check)
@@ -878,24 +1452,24 @@ public:
 	if (itDst == valsDst.end()) {
 	  if (ignore_extras)
 	    continue;
-	  throw std::runtime_error(error_prefix() + context +
-				   getName(itSrc->first) +
-				   " is not present in the destination");
+	  ERROR_VALUE_SET(context, getName(itSrc->first),
+			  " is not present in the destination");
 	}
-	if (((!ignore_skipped) && isSkipped(itSrc->first))
-	    || isInitonce(itSrc->first))
+	if (((!ignore_skipped) && isSkipped(itSrc->first)) ||
+	    ((!ignore_initonce) && isInitonce(itSrc->first))) {
 	  continue;
-#ifdef CHECK_VALUE_SET_ALTS
+	}
+#ifdef VERBOSE_VALUE_SET_DEBUG
 	std::string srcval = valueString(itSrc->second);
 	std::string dstval = valueString(itDst->second);
 	std::string dstptr = valuePointerString(itDst->second);
-#endif // CHECK_VALUE_SET_ALTS
+#endif // VERBOSE_VALUE_SET_DEBUG
 	valueSet(itDst->second, itSrc->second);
-#ifdef CHECK_VALUE_SET_ALTS
+#ifdef VERBOSE_VALUE_SET_DEBUG
 	DEBUG_VALUE_SET(context, itSrc->first, ": [", dstptr, "] ",
 			dstval, " -> ", srcval, " [AFTER = ",
 			valueString(itDst->second), "]");
-#endif // CHECK_VALUE_SET_ALTS
+#endif // VERBOSE_VALUE_SET_DEBUG
       }      
     }
     /**
@@ -910,6 +1484,8 @@ public:
          ignored.
        \param ignore_constants If true, constant values can be changed.
        \param ignore_skipped If true, skipped values can be changed.
+       \param ignore_initonce If true, values initialized once can be
+         changed;
      */
     template<typename V>
     static void copy_value_map(std::map<EnumType, V>& vals,
@@ -918,11 +1494,13 @@ public:
 			       bool ignore_extras=false,
 			       bool ignore_missing=false,
 			       bool ignore_constants=false,
-			       bool ignore_skipped=false) {
+			       bool ignore_skipped=false,
+			       bool ignore_initonce=false) {
       std::map<EnumType, double> new_values = utils::readEnumFile<EnumType, double>(filename);
       copy_value_map(vals, new_values, context + "[" + filename + "]: ",
 		     ignore_extras, ignore_missing,
-		     ignore_constants, ignore_skipped);
+		     ignore_constants, ignore_skipped,
+		     ignore_initonce);
     }
     /**
        Add values to a value map from another.
@@ -990,7 +1568,7 @@ public:
     static void init_value_map(std::map<EnumType, V>& vals) {
       checkDefaults("init_value_map: ");
       copy_value_map(vals, defaults, "init_value_map: ",
-		     true, false, true, true);
+		     true, false, true, true, true);
     }
     /**
        Throw an error if the defaults have not been initialized.
@@ -998,51 +1576,210 @@ public:
      */
     static void checkDefaults(const std::string& context="") {
       if (defaults.empty() && !EnumBaseClass::defaults.empty())
-	throw std::runtime_error(error_prefix() + context
-				 + "defaults not initialized, call "
-				 + "initDefaults first");
+	ERROR_VALUE_SET(context,
+			"defaults not initialized, call ",
+			"initDefaults first");
+    }
+    /**
+       Get the value set module enum.
+       \returns Module enum.
+     */
+    static MODULE get_module() { return module; }
+    /**
+       Get the value set parameter type enum.
+       \returns Parameter type enum.
+     */
+    static PARAM_TYPE get_param_type() { return param_type; }
+    /**
+       Get a vector containing the parameter types that are associated
+         with the module that this value set belongs to.
+       \returns Parameter types.
+     */
+    static const std::vector<PARAM_TYPE>& get_parameter_types() {
+      static std::vector<PARAM_TYPE> out = {};
+      return out;
     }
     /**
        Initialize the defaults for the value set if they have not been
          initialized.
        \param useC3 If true, default values for a C3 will be used
        \param filename File containing values to add to the defaults.
+       \param force If true, initialize the defaults even if the value
+         set is not selected. [this paramter will be removed]
+       \param noChildren If true, child classes will not be modified.
      */
     static void initDefaults(const bool useC3=false,
-			     const std::string& filename="") {
-      if (defaults.empty() && !EnumBaseClass::defaults.empty()) {
-	if (useC3)
+			     const std::string& filename="",
+			     const bool force=false,
+			     const bool noChildren=false) {
+      if (!(static_flags & VS_FLAG_INIT_DEFAULTS)) {
+	if (useC3) {
 	  defaults.insert(EnumBaseClass::defaults_C3.begin(),
 			  EnumBaseClass::defaults_C3.end());
-	else
+	  static_flags |= VS_FLAG_DEFAULTS_C3;
+	} else {
 	  defaults.insert(EnumBaseClass::defaults.begin(),
 			  EnumBaseClass::defaults.end());
+	  static_flags &= ~VS_FLAG_DEFAULTS_C3;
+	}
+	static_flags |= VS_FLAG_INIT_DEFAULTS;
       }
+      if (useC3 != bool(static_flags & VS_FLAG_DEFAULTS_C3)) {
+	if (static_flags & VS_FLAG_DEFAULTS_EDITED)
+	  ERROR_VALUE_SET("Defaults have been modified using "
+			  "values from a file. Changing the "
+			  "default value set to those for "
+			  "useC3 = ", useC3,
+			  " would overwrite those values.");
+	if (useC3) {
+	  copy_value_map(defaults, EnumBaseClass::defaults_C3,
+			 "initDefaults: ",
+			 false, false, true, true, true);
+	  static_flags |= VS_FLAG_DEFAULTS_C3;
+	} else {
+	  copy_value_map(defaults, EnumBaseClass::defaults,
+			 "initDefaults: ",
+			 false, false, true, true, true);
+	  static_flags &= ~VS_FLAG_DEFAULTS_C3;
+	}
+      }
+      T::_initDefaults();
+      DO_VALUE_SET_CHILD_CLASSES(initDefaults, (useC3, "", force));
       if (filename.empty())
 	return;
       copy_value_map(defaults, filename, "initDefaults: ",
-		     false, true, true, true);
+		     false, true, true, true, true);
+      static_flags |= VS_FLAG_DEFAULTS_EDITED;
+    }
+    /** \copydoc ValueSetEnum::getName */
+    static std::string getName(const int& k) {
+      return getName(int2key(k));
+    }
+    /**
+       Get the string associated with a variable including the module
+         and parameter type as a prefix.
+       \tparam K Key type.
+       \param[in] k Key to get name for.
+       \returns Key name with prefix.
+     */
+    template <typename K>
+    static std::string getNameWithPrefix(const K& k) {
+      std::ostringstream out;
+      out << module << "::" << param_type << "::" << getName(k);
+      return std::move(out).str();
+    }
+    /**
+       Get the enum key corresponding to a name value also checking for
+         aliases.
+       \param[in] name Value to get key for
+       \param[in] isGlymaID If true, name is a GlymaID.
+       \return Key
+    */
+    static EnumType fromNameWithAliases(const std::string& name,
+					bool isGlymaID = false) {
+      if (isGlymaID)
+	return fromGlymaid(name);
+      // TODO: Check for module/param_type prefix
+      if (aliases.size()) {
+        typename std::map<std::string, EnumType>::const_iterator it = aliases.find(name);
+        if (it != aliases.end())
+          return it->second;
+      }
+      try {
+        return fromName(name);
+      } catch (...) {
+        std::string split = "::";
+        size_t idx1 = name.find(split);
+        size_t idx2 = std::string::npos;
+        if (idx1 != std::string::npos) {
+          idx2 = name.find(split, idx1 + split.size());
+          if (idx2 != std::string::npos) {
+            std::string var1 = name.substr(0, idx1);
+            if (var1 == utils::enum_key2string(module)) {
+              std::string var2 = name.substr(idx1 + split.size(),
+                                             idx2 - (idx1 + split.size()));
+              if (var2 == utils::enum_key2string(param_type)) {
+                std::string name_alt = name.substr(idx2 + split.size());
+                return fromName(name_alt);
+              }
+            }
+          }
+        }
+        throw;
+      }
     }
     /**
        Check if a string names a member of the value set.
-       \param k Key to check for.
-       \returns true if k is a member, false otherwise.
+       \param name Key to check for.
+       \param[in] isGlymaID If true, name is a GlymaID.
+       \returns true if name is a member, false otherwise.
      */
-    static bool has(const std::string& name) {
+    static bool has(const std::string& name,
+		    const bool& isGlymaID = false) {
       try {
-	fromName(name);
+	if (isGlymaID)
+	  fromGlymaid(name);
+	else
+	  fromNameWithAliases(name);
 	return true;
       } catch (...) {
 	return false;
       }
     }
     /**
-      Get the default value corresponding to an enum key
-      \param[in] x Key to get value for
-      \return Value
-    */
-    static double getDefault(const std::string& x) {
-      return getDefault(fromName(x));
+       Check if a string names a GlymaID associated with a member of the
+         value set.
+       \param name GlymaID to check for.
+       \returns true if name is a GlymaID associated with the value set,
+         false otherwise.
+     */
+    static bool hasGlymaID(const std::string& name) {
+      try {
+	fromGlymaid(name);
+	return true;
+      } catch (...) {
+	return false;
+      }
+    }
+    /**
+       Set the default value corresponding to an enum key
+       \param[in] k Key to set value for.
+       \param[in] v Value that default should be set to.
+       \param[in] dontPreserve If true, the value will not be preserved
+         if initDefaults is called again.
+     */
+    static void setDefault(const EnumType& k, const double& v,
+			   const bool dontPreserve = false) {
+      checkDefaults("setDefault: ");
+      defaults[k] = v;
+      if (!dontPreserve)
+	static_flags |= VS_FLAG_DEFAULTS_EDITED;
+    }
+    /**
+       Set the default value corresponding to an enum key
+       \param[in] k Name of key to set value for.
+       \param[in] v Value that default should be set to.
+       \param[in] isGlymaID If true, k is a GlymaID.
+       \param[in] dontPreserve If true, the value will not be preserved
+         if initDefaults is called again.
+     */
+    static void setDefault(const std::string& k, const double& v,
+			   const bool& isGlymaID = false,
+			   const bool dontPreserve = false) {
+      if (isGlymaID)
+	return setDefault(fromGlymaid(k), v, dontPreserve);
+      return setDefault(fromNameWithAliases(k), v, dontPreserve);
+    }
+    /**
+       Set the default value corresponding to an enum key
+       \param[in] k Key to set value for.
+       \param[in] v Value that default should be set to.
+       \param[in] dontPreserve If true, the value will not be preserved
+         if initDefaults is called again.
+     */
+    static void setDefault(const int& k, const double& v,
+			   const bool dontPreserve = false) {
+      return setDefault(int2key(k), v, dontPreserve);
     }
     /**
       Get the default value corresponding to an enum key
@@ -1054,9 +1791,30 @@ public:
       typename std::map<EnumType, double>::const_iterator it;
       it = defaults.find(x);
       if (it == defaults.end()) {
-        throw std::runtime_error("Could not locate Default for '" + names.find(x)->second + "'");
+	ERROR_VALUE_SET("Could not locate Default for '",
+			names.find(x)->second, "'");
       }
       return it->second;
+    }
+    /**
+      Get the default value corresponding to an enum key
+      \param[in] x Key to get value for
+      \param[in] isGlymaID If true, x is a GlymaID.
+      \return Value
+    */
+    static double getDefault(const std::string& x,
+			     const bool& isGlymaID = false) {
+      if (isGlymaID)
+	return getDefault(fromGlymaid(x));
+      return getDefault(fromNameWithAliases(x));
+    }
+    /**
+      Get the default value corresponding to an enum key
+      \param[in] k Key to get value for
+      \return Value
+    */
+    static double getDefault(const int& k) {
+      return getDefault(int2key(k));
     }
     /**
       Get the default value corresponding to an enum key
@@ -1082,13 +1840,13 @@ public:
        \param context String providing context for error messages.
        \returns Value reference.
      */
-    template<typename T>
-    static ValueType get_value(std::map<EnumType, T>& vals,
+    template<typename V>
+    static ValueType get_value(std::map<EnumType, V>& vals,
 			       const EnumType k,
 			       const std::string& context="[]: ") {
       check_value_map(vals, k, context);
       return ValueType(k, vals.find(k)->second,
-		       context + "get_value[T]: "
+		       context + "get_value[V]: "
 		       + getName(k));
     }
     /**
@@ -1133,7 +1891,7 @@ public:
     static void set_value(std::map<EnumType, double>& vals,
 			  const EnumType k, const double v,
 			  const std::string& context="") {
-#ifdef CHECK_VALUE_SET_ALTS
+#ifdef VERBOSE_VALUE_SET_DEBUG
       DEBUG_VALUE_SET_NOEND(context, "[DOUBLE] ", k, "[",
 			    std::to_string(k), "]: ");
       if (vals.find(k) == vals.end()) {
@@ -1142,10 +1900,12 @@ public:
 	DEBUG_VALUE_SET_RAW(vals[k]);
       }
       DEBUG_VALUE_SET_RAW(" -> ", v);
-#endif // CHECK_VALUE_SET_ALTS
+#endif // VERBOSE_VALUE_SET_DEBUG
       checkNotConstant(k, context);
       vals[k] = v;
+#ifdef VERBOSE_VALUE_SET_DEBUG
       DEBUG_VALUE_SET_END(" [AFTER = ", vals[k], "]");
+#endif // VERBOSE_VALUE_SET_DEBUG
     }
     /**
        Update the value associated with a key in a value map.
@@ -1159,14 +1919,14 @@ public:
 			  const std::string& context="") {
       DEBUG_VALUE_SET_NOEND(context, "[DOUBLE*] ", k, "[",
 			    std::to_string(k), "]: ");
-#ifdef CHECK_VALUE_SET_ALTS
+#ifdef VERBOSE_VALUE_SET_DEBUG
       if (vals.find(k) == vals.end()) {
 	DEBUG_VALUE_SET_RAW("[NULL] 0");
       } else {
 	DEBUG_VALUE_SET_RAW("[", vals[k], "] ", *(vals[k]));
       }
       DEBUG_VALUE_SET_RAW(" -> ", v);
-#endif // CHECK_VALUE_SET_ALTS
+#endif // VERBOSE_VALUE_SET_DEBUG
       check_value_map(vals, k, context);
       *(vals[k]) = v;
       DEBUG_VALUE_SET_END(" [AFTER = ", *(vals[k]), "]");
@@ -1187,12 +1947,12 @@ public:
 		"set_value_from_EnzymeAct: ");
     }
     /**
-       Get the alternate value for the value associated with a
-         key from a value map.
+       Get the value pointer for the value associated with a key from a
+         value map.
        \param vals Value map.
        \param k Key to get value for.
        \param context String providing context for error messages.
-       \returns Alternate value.
+       \returns Value pointer.
      */
     static double*& get_value_orig(std::map<EnumType, double*>& vals,
 				   const EnumType k,
@@ -1216,6 +1976,8 @@ public:
       if (vals.find(k) == vals.end()) {
 	vals.emplace(k, &(v[0]));
 	if (isInitonce(k)) {
+	  // TODO: this check may not be necessary if the init once
+	  //   variables are reinitialized after a reset
 	  compareValues(k, EnumBaseClass::defaults.find(k)->second,
 			EnumBaseClass::defaults_C3.find(k)->second);
 	  checkDefaults("insert_value_orig: ");
@@ -1236,59 +1998,6 @@ public:
     static void set_value_orig(std::map<EnumType, double*>& vals,
 			       const EnumType k, double* v) {
       get_value_orig(vals, k, "set_orig") = v;
-    }
-    /**
-       Check that the value for a specified key in a value map matches
-         the value in an alternate map.
-       \param vals Value map.
-       \param alts Alternate value map.
-       \param k Key to check.
-       \param context String providing context for error messages.
-     */
-    static void check_value_alt(const std::map<EnumType, double*>& vals,
-				const std::map<EnumType, double>& alts,
-				const EnumType k,
-				const std::string& context="") {
-      typename std::map<EnumType, double>::const_iterator itp = alts.find(k);
-      if (itp == alts.end()) {
-	throw std::runtime_error(error_prefix() + context +
-				 "check_value_alt: Key \'" +
-				 getName(k) +
-				 "\' is missing from alts");
-      }
-      typename std::map<EnumType, double*>::const_iterator itv = vals.find(k);
-      if (itv == vals.end()) {
-	throw std::runtime_error(error_prefix() + context +
-				 "check_value_alt: Key \'" +
-				 getName(k) +
-				 "\' is missing from values");
-      }
-      compareValues(k, *(itv->second), itp->second,
-		    context +
-		    "Comparing \'" + getName(k) +
-		    "\' between old and new tracking methods");
-    }
-    /**
-       Check that the values in a value map match the values in an
-         original value map.
-       \param vals Value map.
-       \param alts Alternate value map.
-       \param context String providing context for error messages.
-     */
-    static void check_value_alts(const std::map<EnumType, double*>& vals,
-				 const std::map<EnumType, double>& alts,
-				 const std::string& context="") {
-      for (typename std::map<EnumType, double*>::const_iterator itv = vals.begin();
-	   itv != vals.end(); itv++) {
-	check_value_alt(vals, alts, itv->first, context);
-      }
-      for (typename std::map<EnumType, double>::const_iterator itp = alts.begin();
-	   itp != alts.end(); itp++) {
-	typename std::map<EnumType, double*>::const_iterator itv = vals.find(itp->first);
-	if (itv == vals.end()) {
-	  check_value_alt(vals, alts, itp->first, context);
-	}
-      }
     }
     /**
        Reset all of the values in a value map that are not constant to 0.
@@ -1314,13 +2023,13 @@ public:
          key order.
        \tparam V Value map type.
        \param vals Value map.
-       \returns Values array.
+       \param out Existing array that values should be added to.
      */
     template<typename V>
-    static arr value_map_toArray(const std::map<EnumType, V>& vals) {
-      arr out;
+    static void value_map_toArray(const std::map<EnumType, V>& vals,
+				  arr& out) {
       size_t i = 0;
-      out.resize(vals.size());
+      out.resize(out.size() + vals.size());
       for (typename std::map<EnumType, V>::const_iterator it = vals.begin();
 	   it != vals.end(); it++) {
 	if (inArrays(it->first)) {
@@ -1330,7 +2039,6 @@ public:
 	  i++;
 	}
       }
-      return out;
     }
     /**
        Update the values in a value map from an array.
@@ -1348,20 +2056,13 @@ public:
       size_t nexp = memberCount();
       size_t nact = vec.size() - offset;
       if (vals.size() != defaults.size())
-	throw std::runtime_error(error_prefix() +
-				 std::to_string(vals.size()) +
-				 " provided, but " +
-				 std::to_string(defaults.size()) +
-				 " expected");
+	ERROR_VALUE_SET(vals.size(), " provided, but ",
+			defaults.size(), " expected");
       if (nexp > nact)
-	throw std::runtime_error(error_prefix() +
-				 std::to_string(nexp) +
-				 " expected, but only " +
-				 std::to_string(nact) +
-				 " provided (vec.size() = " +
-				 std::to_string(vec.size()) +
-				 ", offset = "+
-				 std::to_string(offset) + ")");
+	ERROR_VALUE_SET(nexp, " expected, but only ",
+			nact, " provided (vec.size() = ",
+			vec.size(), ", offset = ",
+			offset, ")");
       for (typename std::map<EnumType, V>::iterator it = vals.begin();
 	   it != vals.end(); it++) {
 	if (inArrays(it->first)) {
@@ -1374,67 +2075,202 @@ public:
     }
     /**
        Get the number of members that will be used to populated vectors.
+       \param noChildren If true, child classes will not be included.
        \return Member counts.
      */
-    static std::size_t memberCount() {
+    static std::size_t memberCount(const bool noChildren = false) {
       std::size_t out = EnumBaseClass::defaults.size() - (skipped.size() + nonvector.size());
+#define DO_CHILD(child, dummy) out += child->memberCount()
+      DO_VALUE_SET_CHILD_CLASSES_MACRO(DO_CHILD, const_iterator, );
+#undef DO_CHILD
       return out;
     }
-
     /**
        Get a string representation of the class state.
+       \param noChildren If true, child classes will not be included.
        \return String representation.
      */
-    static std::string memberState() {
+    static std::string memberState(const bool noChildren = false) {
       std::string out = error_prefix() +
 	", COUNT = " + std::to_string(memberCount()) +
 	", SKIPPED = " + stringSkipped() +
 	", NONVECT = " + stringNonvector();
+      if (noChildren)
+	return out;
+      for (std::vector<ValueSetClass_t*>::const_iterator it = child_classes.begin();
+	   it != child_classes.end(); it++)
+	out += "\n\t" + (*it)->memberState();
       return out;
+    }
+
+    /**
+       Add a child class to this classes set.
+       \tparam C Child class.
+     */
+    template<typename C>
+    static void addChildClass() {
+      child_classes.push_back(new ValueSetClassType<C>());
+    }
+
+    static int static_flags; /**< Bitwise flags describing the value set  static state */
+    static std::map<EnumType, double> defaults; /**< Default values */
+    static std::map<EnumType, double*> static_values; /**< Static values */
+    static std::vector<ValueSetClass_t*> child_classes; /**< Child classes */
+    static const uint tab_size = 2;
+
+    // Methods that call inheriting class methods
+    /**
+       Initialize the child classes.
+       \param noChildren If true, child classes will not be initialized.
+       Common, public interface for the private _initChildClasses method.
+     */
+    static void initChildClasses(const bool noChildren = false) {
+      if (!child_classes.empty())
+	return;
+      T::_initChildClasses();
+      DO_VALUE_SET_CHILD_CLASSES(initChildClasses, ());
+    }
+    /**
+       \copydoc ValueSetClass_t::initStaticMembers
+       \param noChildren If true, child classes will not be initialized.
+       Common, public interface for the private _initStaticMembers method.
+     */
+    static void initStaticMembers(const bool noChildren = false) {
+      if (!static_values.empty())
+	return;
+      T::_initStaticMembers();
+      initChildClasses(true); // Children will be called in initStaticMembers
+      DO_VALUE_SET_CHILD_CLASSES(initStaticMembers, ());
+    }
+    /**
+       Check if the value set is selected by the current driver.
+       \returns true if the value set is selected, false otherwise.
+     */
+    static bool selected() {
+      return (static_flags & VS_FLAG_SELECTED);
     }
     /**
        Select the value set and any children.
        \param[in] x true if value set should be selected, false if it
          should be deselected.
+       \param noChildren If true, child classes will not be selected.
      */
-    static void select(bool x = true) {
-	selected = x;
+    static void select(const bool x = true, const bool noChildren = false) {
+      if (x) {
+	static_flags |= VS_FLAG_SELECTED;
+      } else {
+	static_flags &= ~VS_FLAG_SELECTED;
+      }
+      T::_select(x);
+      if (x) {
+	initStaticMembers(true);
+      }
+      DO_VALUE_SET_CHILD_CLASSES(select, (x));
     }
-    static bool selected; /**< Is the value set selected */
-    static std::map<EnumType, double> defaults; /**< Default values */
+    /**
+       Throw an error if the value set is not selected.
+     */
+    static void checkSelected() {
+      if (!(static_flags & VS_FLAG_SELECTED))
+	ERROR_VALUE_SET("Value set has not been selected");
+    }
+    /**
+       Check if the value set uses the C3 defaults.
+       \returns true if the C3 defaults are being used, false otherwise.
+     */
+    static bool usesC3() {
+      return (static_flags & VS_FLAG_DEFAULTS_C3);
+    }
+    /**
+       Set a flag so that the value set uses or does not use C3 defaults.
+       \param[in] x true if value set should use C3 defaults, false if it
+         should use non-C3 defaults.
+       \param noChildren If true, child classes will not be modified.
+    */
+    static void enableC3(const bool x = true,
+			 const bool noChildren = false) {
+      initDefaults(x, "", true);
+      if (x)
+	static_flags |= VS_FLAG_DEFAULTS_C3;
+      else
+	static_flags &= ~VS_FLAG_DEFAULTS_C3;
+      T::_enableC3(x);
+      DO_VALUE_SET_CHILD_CLASSES(enableC3, (x));
+    }
+    /**
+       Reset the static class members following the destruction of the
+         current driver so that additional runs start with a clean slate.
+       \param noChildren If true, child classes will not be reset.
+       Common, public interface for the private _reset method.
+     */
+    static void reset(const bool noChildren = false) {
+      clearSkipped();
+      T::_reset();
+      static_flags = 0;
+      defaults.clear();
+      DO_VALUE_SET_CHILD_CLASSES(reset, ());
+    }
+    /**
+       Number of elements in the value set.
+       \returns Element count.
+     */
+    static std::size_t size() {
+      return T::_size();
+    }
+    // Methods that can be overridden
+  protected:
+    static void _initDefaults() {}
+    static void _initChildClasses() {}
+    static void _initStaticMembers() {}
+    static void _select(const bool = true) {}
+    static void _enableC3(const bool = true) {}
+    static void _reset() {}
+    static std::size_t _size() {
+      return memberCount();
+    }
+    
   };
 
-  template<MODULE ID, PARAM_TYPE PT>
-  bool ValueSetBase<ID, PT>::selected = false;
+  template<class T, class U, MODULE ID, PARAM_TYPE PT>
+  int ValueSetBase<T, U, ID, PT>::static_flags = 0;
   
-  template<MODULE ID, PARAM_TYPE PT>
-  std::map<typename ValueSetBase<ID, PT>::EnumType, double>
-  ValueSetBase<ID, PT>::defaults = {};
+  template<class T, class U, MODULE ID, PARAM_TYPE PT>
+  std::map<typename ValueSetBase<T, U, ID, PT>::EnumType, double>
+  ValueSetBase<T, U, ID, PT>::defaults = {};
   
+  template<class T, class U, MODULE ID, PARAM_TYPE PT>
+  std::map<typename ValueSetBase<T, U, ID, PT>::EnumType, double*>
+  ValueSetBase<T, U, ID, PT>::static_values = {};
+  
+  template<class T, class U, MODULE ID, PARAM_TYPE PT>
+  std::vector<ValueSetClass_t*>
+  ValueSetBase<T, U, ID, PT>::child_classes = {};
+
   /**
      Template class to provide methods for manipulating a set of values
      used by a model run that can be set via input files.
 
+     \tparam T Child class with virtual & static methods.
+     \tparam U Parent class with virtual & static methods.
      \tparam ID Enum corresponding to the module that the values will be
        used by.
      \tparam PT Enum corresponding to the module component that the values
        will be used by.
    */
-  template<MODULE ID, PARAM_TYPE PT>
-  class ValueSet : public ValueSetBase<ID, PT> {
+  template<class T, class U, MODULE ID, PARAM_TYPE PT>
+  class EPHOTO_API ValueSet :
+    public ValueSet_t, public ValueSetBase<T, U, ID, PT> {
   public:
-    typedef ValueSet<ID, PT> ValueSetClass;
-    INHERIT_METHODS_VALUE_SET_BASE(ValueSetBase<ID, PT>)
+    typedef ValueSet<T, U, ID, PT> ValueSetClass;
+    INHERIT_METHODS_VALUE_SET_BASE(ValueSetBase<T, U, ID, PT>)
+    ADD_METHODS_VALUE_SET_T_INST_ONLY_STATIC(STUB_VIRTUAL_VALUE_SET)
+    ADD_METHODS_VALUE_SET_T_STATIC(STUB_VIRTUAL_VALUE_SET)
 
     /**
        Default constructor. Values will be initialized with default
          values, minus any values that are skipped.
      */
-    ValueSet() :
-#ifdef CHECK_VALUE_SET_ALTS
-      alts(),
-#endif // CHECK_VALUE_SET_ALTS
-      values() {}
+    ValueSet() : values() {}
     /**
        Copy constructor. Values will be updated from the values in the
          copied set.
@@ -1447,7 +2283,7 @@ public:
        \param other Value set to copy values from.
        \returns Updated value set.
      */
-    ValueSet& operator=(const ValueSet &other) {
+    ValueSet& operator=(const T& other) {
       copyMembers(other);
       return *this;
     }
@@ -1457,109 +2293,377 @@ public:
        \param offset Index into vec that copied values should start from.
      */
     ValueSet(const arr &vec, const std::size_t offset) : ValueSet() {}
+
+    /**
+       Get a constant ValueSet_t pointer for this instance/class.
+       \returns Pointer.
+     */
+    const ValueSet_t* getValueSet() const override {
+      return this;
+    }
+
+    /**
+       Get a copy of the value in the set.
+       \returns Map of values in the value set.
+     */
+    std::map<int, double> getValueMap() const override {
+      std::map<int, double> out;
+      for (typename std::map<EnumType, double*>::const_iterator it = values.begin();
+	   it != values.end(); it++)
+	out[it->first] = *(it->second);
+      return out;
+    }
+    /**
+       Set the values from a map.
+       \param[in] map Value map to update values from.
+       \param[in] set_init If true, set the flag indicating that the value
+         set is initialized.
+     */
+    void setValueMap(const std::map<int, double>& map,
+		     const bool set_init=false) override {
+      std::map<EnumType, double> kmap = BaseClass::int2key(map);
+      copy_value_map(values, kmap, "setValueMap: ",
+		     false, false, true, true, true);
+      if (set_init)
+	flags |= BaseClass::VS_FLAG_INIT_VALUES;
+    }
+    
+    // Methods that call inheriting class methods
     /**
        Copy values from another value set to this one.
+       Common, public interface for the private _copyMembers method.
        \param other Value set to copy values from.
+       \param noChildren If true, child classes will not be initialized.
      */
-    virtual void copyMembers(const ValueSet& other) {
-      initMembersState();
-#ifdef CHECK_VALUE_SET_ALTS
-      copy_value_map(alts, other.alts, "copyMembers[alts]: ", true);
-#else // CHECK_VALUE_SET_ALTS
+    void copyMembers(const ValueSet_t& other0,
+		     const bool noChildren=false) override {
+      const T& other = castValueSet<T>(other0);
+      initMembersState(false, true);
+      // TODO: Re-enable this only if more efficient than direct copy
       // copy_value_map(values, other.values, "copyMembers[vals]: ", true);
-#endif // CHECK_VALUE_SET_ALTS
+      static_cast<T*>(this)->_copyMembers(other);
+      if (children.size() != other.children.size()) {
+	ERROR_VALUE_SET("copyMembers: "
+			"This instance has ", children.size(),
+			" children, but the one being copied has ",
+			other.children.size());
+      }
+      DO_VALUE_SET_CHILDREN(copyMembers, (**(other.children[iChild])));
     }
     /**
        Initialize the members in the instance. This should be overriden
          by child classes with a method that adds pointers to values.
-     */
-    virtual void initMembers() {}
-    /**
-       Initialize the static values in the instance.
-     */
-    static void initStaticMembers() {}
+       Common, public interface for the private _initMembers method.
+       \param noChildren If true, child classes will not be initialized.
+    */
+    void initMembers(const bool noChildren=false) override {
+      initMemberPointers();
+      static_cast<T*>(this)->_initMembers();
+      initChildren(true);
+      DO_VALUE_SET_CHILDREN(initMembers, ());
+    }
     /**
        Initialize the members in the instance for the current state.
+       Common, public interface for the private _initMembersState method.
        \param force If true, the state will be updated reguardless of
          if the class has be updated since the last time the state was
 	 updated.
-     */
-    virtual void initMembersState(bool force=false) {
+       \param noChildren If true, child classes will not be initialized.
+    */
+    void initMembersState(const bool force=false,
+			  const bool noChildren=false) override {
       if (!(force || values.empty()))
 	return;
-      initMembers();
-#ifdef CHECK_VALUE_SET_ALTS
-      alts.insert(defaults.begin(), defaults.end());
-#endif // CHECK_VALUE_SET_ALTS
+      initMemberPointers(true);
+      initMembers(true);
+      static_cast<T*>(this)->_initMembersState(force);
+      DO_VALUE_SET_CHILDREN(initMembersState, (force));
     }
     /**
-       Re-initialize the values to the default values, minus any values
-         that are skipped.
+       Reset the values so that they can be re-initialized.
+       \param noChildren If true, child classes will not be initialized.
      */
-    virtual void initValues() {
-      initMembersState(true);
-#ifdef CHECK_VALUE_SET_ALTS
-      init_value_map(alts);
-#endif // CHECK_VALUE_SET_ALTS
+    void resetValues(const bool noChildren=false) override {
+      ENSURE_VALUE_POINTERS;
+      reset_value_map(values);
+      static_cast<T*>(this)->_resetValues();
+      DO_VALUE_SET_CHILDREN(resetValues, ());
+      flags &= ~BaseClass::VS_FLAG_INIT_VALUES;
     }
-
     /**
-       Copy values from member pointers into alternate value map.
-       \param context String to prefix the error message with.
+       Check if the value set has been initialized.
+       \returns true if the value set has been initialized, false otherwise.
      */
-    virtual void updateAlts(const std::string& context="") {
-#ifdef CHECK_VALUE_SET_ALTS
-      copy_value_map(alts, values, context + "updateAlts: ",
-		     false, false, false, false);
-#else // CHECK_VALUE_SET_ALTS
-      throw std::runtime_error(error_prefix() + context +
-			       "updateAlts: Alternates not enabled");
-#endif // CHECK_VALUE_SET_ALTS
+    bool initialized() const override {
+      return (flags & BaseClass::VS_FLAG_INIT_VALUES);
     }
-
+    /**
+       Initialize the values to the default values if they have not
+         already been initialized, minus any values that are skipped.
+       Common, public interface for the private _initValues method.
+       \param noDefaults If true, the value pointers will be initialized,
+         but the default values will not be assigned to those values.
+       \param noChildren If true, child classes will not be initialized.
+     */
+    void initValues(bool noDefaults=false,
+		    const bool noChildren=false) override {
+      if (flags & BaseClass::VS_FLAG_INIT_VALUES) return;
+      initMembersState(true, true);
+      if (!noDefaults)
+	init_value_map(values);
+      static_cast<T*>(this)->_initValues();
+      DO_VALUE_SET_CHILDREN(initValues, (noDefaults));
+      if (!preinit_values.empty()) {
+	copy_value_map(values, preinit_values, "initValues: ",
+		       false, true, false, false, true);
+      }
+      flags |= BaseClass::VS_FLAG_INIT_VALUES;
+      if (BaseClass::usesC3())
+	flags |= BaseClass::VS_FLAG_DEFAULTS_C3;
+      else
+	flags &= ~BaseClass::VS_FLAG_DEFAULTS_C3;
+    }
+    /**
+       Reset the instance so that it can be used again.
+       \param noChildren If true, child classes will not be reset.
+     */
+    void resetInstance(const bool noChildren=false) override {
+      T::reset(true);
+      int preserve_flags = 0;
+      if (flags & BaseClass::VS_FLAG_INIT_POINTERS)
+	preserve_flags |= BaseClass::VS_FLAG_INIT_POINTERS;
+      if (flags & BaseClass::VS_FLAG_INIT_CHILDREN)
+	preserve_flags |= BaseClass::VS_FLAG_INIT_CHILDREN;
+      flags = preserve_flags;
+      DO_VALUE_SET_CHILDREN(resetInstance, ());
+    }
     /**
        Initialize the map containing pointers to instance members.
+       Common, public interface for the private _initMemberPointers method.
+       \param noChildren If true, child classes will not be initialized.
      */
-    virtual void initMemberPointers() {}
-      
+    void initMemberPointers(const bool noChildren=false) override {
+      if (flags & BaseClass::VS_FLAG_INIT_POINTERS) return;
+      static_cast<T*>(this)->_initMemberPointers();
+      DO_VALUE_SET_CHILDREN(initMemberPointers, ());
+      flags |= BaseClass::VS_FLAG_INIT_POINTERS;
+    }
+    /**
+       Initialize the vector containing pointers to children.
+       Common, public interface for the private _initChildren method.
+     */
+    void initChildren(const bool noChildren=false) override {
+      if (flags & BaseClass::VS_FLAG_INIT_CHILDREN) return;
+      static_cast<T*>(this)->_initChildren();
+      DO_VALUE_SET_CHILDREN(initChildren, ());
+      flags |= BaseClass::VS_FLAG_INIT_CHILDREN;
+    } 
+    /**
+       Create any missing children.
+       Common, public interface for the private _createChildren method.
+     */
+    void createChildren(const bool noChildren=false) override {
+      BaseClass::initChildClasses(true);
+      initChildren(true);
+      static_cast<T*>(this)->_createChildren();
+      // if (child_classes.size() != children.size())
+      //        ERROR_VALUE_SET("Number of child classes (",
+      //                        child_classes.size(),
+      // 			") does not match the number of child pointers (",
+      //                        children.size(), ")");
+      // std::vector<ValueSetClass_t*>::iterator itCls = child_classes.begin();
+      // for (std::vector<ValueSet_t**>::iterator it = children.begin();
+      // 	   it != children.end(); it++, itCls++) {
+      // 	if (**it) continue;
+      // 	(*it)[0] = (*itCls)->newInstance(static_cast<ValueSet_t*>(this));
+      // 	// (*it)[0]->setParent(static_cast<ValueSet_t*>(this));
+      // }
+      DO_VALUE_SET_CHILDREN(createChildren, ());
+    }
+    /**
+       Get the vector of children.
+       \returns References to the values set children.
+     */
+    const std::vector<ValueSet_t**>& getChildren() const override {
+      return children;
+    }
+    /**
+       Create a new instance of the wrapped class.
+       \param par Pointer to parent instance.
+       \returns New instance.
+     */
+    static ValueSet_t* newInstance(ValueSet_t* par = nullptr) {
+      return T::_newInstance(par);
+    }
+    /**
+       Set the parent class pointer to the given value.
+       \param par Pointer to the parent class instance.
+    */
+    virtual void setParent(U* par) {
+      UNUSED(par);
+    }
+    /**
+       Set the parent class pointer to the given value.
+       \param par Pointer to the parent class instance.
+    */
+    void setParent(ValueSet_t* par) override {
+      // if (typeid(*par) != typeid(U))
+      //   ERROR_VALUE_SET("Type IDs do not match");
+      // static_cast<T*>(this)->setParent(static_cast<U*>(par));
+      UNUSED(par);
+    }
+
     /**
        Get the map containing pointers to the instance members.
        \return Map between member names and pointers to instance
          members.
      */
-    virtual std::map<std::string, double*> getPointerMap() {
-      std::map<std::string, double*> out;
-      return out;
+    std::map<std::string, double*> getPointerMap() {
+      initMemberPointers();
+      return get_pointer_map(values);
     }
 
     /** Get the iterator pointing to the start of the value set */
-    iterator begin() { CALL_STATIC_METHOD(begin); }
+    iterator begin() {
+      ENSURE_VALUE_POINTERS;
+      return values.begin();
+    }
     /** Get the iterator pointing to the end of the value set */
-    iterator end() { CALL_STATIC_METHOD(end); }
+    iterator end() {
+      ENSURE_VALUE_POINTERS;
+      return values.end();
+    }
     /** Get the constant iterator pointing to the start of the value set */
-    const_iterator begin() const { CALL_STATIC_METHOD_CONST(begin); }
+    const_iterator begin() const {
+      ENSURE_VALUE_POINTERS_CONST;
+      return values.begin();
+    }
     /** Get the constant iterator pointing to the end of the value set */
-    const_iterator end() const { CALL_STATIC_METHOD_CONST(end); }
+    const_iterator end() const {
+      ENSURE_VALUE_POINTERS_CONST;
+      return values.end();
+    }
     // Inspection utilities
     /**
-       Display the values in the set.
-       \param out Output stream.
+       Get the maximum width of the values in the value set.
+       \param noChildren If true, children won't be included when
+         determining the maximum value width.
+       \returns Maximum value width.
+     */
+    std::size_t max_value_width(bool noChildren = false) const override {
+      std::size_t out = BaseClass::value_width_value_map(values);
+      if (noChildren) return out;
+      std::size_t iout = 0;
+#define DO_CHILD(child, dummy)						\
+      iout = child->max_value_width();					\
+      if (iout > out) out = iout
+      DO_VALUE_SET_CHILDREN_MACRO(DO_CHILD, const_iterator, );
+#undef DO_CHILD
+      return out;
+    }
+    /**
+       Get the diff between this an another value set.
+       \param other Value set to compare against.
+       \param padKeys Number of characters that key names should be
+         padded to fill.
+       \param padVals Number of characters that values should be padded
+         to fill.
        \param includePrefixes If true, the module & parameter type
          prefixes will be added to the member names.
-       \param tab Number of tabs to prefix each line in the output with.
        \param noChildren If true, children of composite sets will not
          be displayed.
+       \returns String diff.
+     */
+    std::string diff(const ValueSet_t& other,
+		     std::size_t padKeys=0,
+		     std::size_t padVals=0,
+		     bool includePrefixes=false,
+		     bool noChildren = false) const override {
+      if (padKeys == 0) {
+	padKeys = max_field_width(noChildren);
+      }
+      if (padVals == 0) {
+	padVals = max_value_width(noChildren);
+	std::size_t padVals2 = other.max_value_width(noChildren);
+	if (padVals2 > padVals)
+	  padVals = padVals2;
+      }
+      return static_cast<const T*>(this)->_diff(static_cast<const T&>(other),
+						padKeys, padVals,
+						includePrefixes,
+						noChildren);
+    }
+    /**
+       Display the values in the set.
+       Common, public interface for the private _print method.
+       \param out Output stream.
+       \param tab Number of tabs to prefix each line in the output with.
+       \param pad Number of characters that key names should be padded
+         to fill.
+       \param includePrefixes If true, the module & parameter type
+         prefixes will be added to the member names.
+       \param includeSkipped If true, skipped keys will be output.
+       \param noChildren If true, children of composite sets will not
+         be displayed.
+       \param skip_keys Key strings to skip in output.
+       \param key_aliases String aliases to use for keys.
        \returns Output stream.
      */
-    virtual std::ostream& print(std::ostream &out,
-				bool includePrefixes = false,
-				const uint tab = 0,
-				bool noChildren = false) const {
-      UNUSED(noChildren);
-      CALL_STATIC_CONST(print_value_map, out, includePrefixes, tab);
+    std::ostream& print(std::ostream &out,
+			const uint tab = 0, std::size_t pad = 0,
+			bool includePrefixes = false,
+			bool includeSkipped = false,
+			const std::vector<std::string>& skip_keys = {},
+			const std::map<std::string, std::string>& key_aliases = {},
+			bool noChildren = false) const override {
+      if (pad == 0) pad = max_field_width(noChildren);
+      return static_cast<const T*>(this)->_print(out, tab, pad,
+						 includePrefixes,
+						 includeSkipped,
+						 skip_keys,
+						 key_aliases,
+						 noChildren);
     }
-    friend std::ostream& operator<<(std::ostream& out, const ValueSet& x) {
+    friend std::ostream& operator<<(std::ostream& out, const ValueSetClass& x) {
       return x.print(out);
+    }
+    friend std::ostream& operator<<(std::ostream& out, const ValueSetClass* x) {
+      return x->print(out);
+    }
+    /**
+       Check if another value set is equivalent to this one.
+       \param b Value set to compare against this one.
+       \param noChildren If true, child classes will not be checked.
+     */
+    bool equals(const ValueSet_t& b0,
+		const bool noChildren = false) const override {
+      if(typeid(*this) != typeid(b0)) {
+	std::cerr << "typeids not equal in ValueSet_t" << std::endl;
+	return false;
+      }
+      // if (!ValueSet_t::equals(b0, noChildren)) {
+      // 	INFO_VALUE_SET("typeids not equal");
+      // 	return false;
+      // }
+      const ValueSetClass& b = static_cast<const ValueSetClass&>(b0);
+      if (!this->compare_value_maps(values, b.values, "values: "))
+	return false;
+      if (this->children.size() != b.children.size()) {
+	INFO_VALUE_SET("number of children not equal: ",
+		       this->children.size(), ", ", b.children.size());
+	return false;
+      }
+#define DO_CHILD(child, dummy)					\
+      if (*child != **(b.children[iChild])) return false
+      DO_VALUE_SET_CHILDREN_MACRO(DO_CHILD, const_iterator, );
+#undef DO_CHILD
+      return true;
+    }
+    bool operator==(const T& other) const {
+      return static_cast<const T*>(this)->equals(static_cast<const ValueSet_t&>(other));
+    }
+    bool operator!=(const T& other) const {
+      return !(operator==(other));
     }
     /**
        Throw an error if a key is not present in the set.
@@ -1567,7 +2671,8 @@ public:
        \param context String to prefix the error message with.
      */
     void check(const EnumType k, const std::string& context = "") const {
-      CALL_STATIC_CONST(check_value_map, k, context);
+      ENSURE_VALUE_POINTERS_CONST;
+      check_value_map(values, k, context);
     }
     // Value manipulation
     /**
@@ -1590,10 +2695,11 @@ public:
 		       bool no_missing=false,
 		       bool no_constants=false,
 		       bool no_skipped=false) {
-      CALL_STATIC(update_value_map, new_values,
-		  context + "update_values: ",
-		  allow_extras, no_missing,
-		  no_constants, no_skipped);
+      ENSURE_VALUE_POINTERS;
+      update_value_map(values, new_values,
+		       context + "update_values: ",
+		       allow_extras, no_missing,
+		       no_constants, no_skipped);
     }
     /**
        Add values to the set by reading a parameter file.
@@ -1615,10 +2721,11 @@ public:
 		       bool no_missing=false,
 		       bool no_constants=false,
 		       bool no_skipped=false) {
-      CALL_STATIC(update_value_map, filename,
-		  context + "update_values[" + filename + "]: ",
-		  allow_extras, no_missing,
-		  no_constants, no_skipped);
+      ENSURE_VALUE_POINTERS;
+      update_value_map(values, filename,
+		       context + "update_values[" + filename + "]: ",
+		       allow_extras, no_missing,
+		       no_constants, no_skipped);
     }
     /**
        Get the reference for the value associated with a key.
@@ -1626,7 +2733,8 @@ public:
        \returns Value reference.
      */
     ValueType operator[](const EnumType k) {
-      CALL_STATIC(get_value, k);
+      ENSURE_VALUE_POINTERS;
+      get_value(values, k);
     }
     /**
        Get the constant reference for the value associated with a key.
@@ -1634,23 +2742,47 @@ public:
        \returns Constant value reference.
      */
     const double& operator[](const EnumType k) const {
-      CALL_STATIC_CONST(get_value_const, k);
+      ENSURE_VALUE_POINTERS_CONST;
+      get_value_const(values, k);
+    }
+    /**
+       Record a value set before the value set is initialized so it can
+         be ensured once the values are initialized.
+       \param k Key to update value for.
+       \param v New value for key.
+     */
+    void setPreInit(const EnumType& k, const double& v) {
+      if (initialized()) return;
+      preinit_values[k] = v;
     }
     /**
        Update the value associated with a key.
        \param k Key to update value for.
        \param v New value for key.
      */
-    virtual void set(const EnumType k, const double v) {
-      CALL_STATIC(set_value, k, v);
+    void set(const EnumType& k, const double& v) {
+      ENSURE_VALUE_POINTERS;
+      set_value(values, k, v);
+    }
+    /**
+       Update the value associated with a key.
+       \param k Key to update value for.
+       \param v New value for key.
+       \param[in] isGlymaID If true, k is a GlymaID.
+     */
+    void set(const std::string& name, const double& v,
+	     const bool& isGlymaID = false) override {
+      if (isGlymaID)
+	return set(fromGlymaid(name), v);
+      return set(fromNameWithAliases(name), v);
     }
     /**
        Update the value associated with a key.
        \param k Key to update value for.
        \param v New value for key.
      */
-    void set(const std::string& name, const double v) {
-	return set(fromName(name), v);
+    void set(const int& k, const double& v) override {
+      return set(BaseClass::int2key(k), v);
     }
     /**
        Update the value associated with a key in the value set from a map
@@ -1658,33 +2790,48 @@ public:
        \param k Key to update value for.
        \param EnzymeAct Enzyme activities.
      */
-    virtual void setFromEnzymeAct(const EnumType k,
-				  const std::map<std::string, double>& EnzymeAct) {
-      CALL_STATIC(set_value_from_EnzymeAct, k, EnzymeAct);
+    void setFromEnzymeAct(const EnumType k,
+			  const std::map<std::string, double>& EnzymeAct) {
+      ENSURE_VALUE_POINTERS;
+      set_value_from_EnzymeAct(values, k, EnzymeAct);
     }
     /**
        Get the value associated with a key.
        \param k Key to get value for.
        \returns Value
      */
-    virtual ValueType get(const EnumType k) {
-      CALL_STATIC(get_value, k);
+    ValueType get(const EnumType& k) {
+      ENSURE_VALUE_POINTERS;
+      return get_value(values, k);
     }
     /**
        Get the value associated with a key.
        \param k Key to get value for.
        \returns Value
      */
-    virtual double get(const EnumType k) const {
-      CALL_STATIC_CONST(get_value_const, k);
+    double get(const EnumType& k) const {
+      ENSURE_VALUE_POINTERS_CONST;
+      return get_value_const(values, k);
     }
     /**
        Get the value associated with a key.
        \param name String representation of key to get value for.
+       \param[in] isGlymaID If true, k is a GlymaID.
        \returns Value
      */
-    double get(const std::string& name) const {
-      return get(fromName(name));
+    double get(const std::string& name,
+	       const bool& isGlymaID = false) const override {
+      if (isGlymaID)
+	return get(fromGlymaid(name));
+      return get(fromNameWithAliases(name));
+    }
+    /**
+       Get the value associated with a key.
+       \param k Key to get value for.
+       \returns Value
+     */
+    double get(const int& k) const override {
+      return get(BaseClass::int2key(k));
     }
     /**
        Add a value reference for the given key.
@@ -1692,152 +2839,251 @@ public:
        \param v New value pointer for key.
        \param context String providing context for error messages.
      */
-    virtual void insertOrig(const EnumType k, double* v,
-			    const std::string& context="") {
+    void insertOrig(const EnumType k, double* v,
+		    const std::string& context="") {
       if (k == EnumClass::NONE || k == EnumClass::MAX)
 	return;
-#ifdef CHECK_VALUE_SET_ALTS
-      if (alts.find(k) == alts.end())
-	alts[k] = *v;
-#endif // CHECK_VALUE_SET_ALTS
       insert_value_orig(values, k, v, context);
-    }
-    /**
-       Check if the value using the original code matches the value
-         calculated using only dynamic value methods.
-       \param k Key to check.
-       \param context String providing context for error messages.
-     */
-    virtual void checkAlt(const EnumType k,
-			  const std::string& context="") const {
-#ifdef CHECK_VALUE_SET_ALTS
-      check_value_alt(values, alts, k, context);
-#else // CHECK_VALUE_SET_ALTS
-      UNUSED(k);
-      throw std::runtime_error(error_prefix() + context + "Alternates not enabled");
-#endif // CHECK_VALUE_SET_ALTS
-    }
-    /**
-       Check if the values using the original code match the values
-         calculated using only dynamic value methods.
-       \param context String providing context for error messages.
-     */
-    virtual void checkAlts(const std::string& context="") const {
-#ifdef CHECK_VALUE_SET_ALTS
-      check_value_alts(values, alts, context);
-#else // CHECK_VALUE_SET_ALTS
-      throw std::runtime_error(error_prefix() + context +
-			       "checkAlts: Alternates not enabled");
-#endif // CHECK_VALUE_SET_ALTS
-    }
-    /**
-       Reset the static class members.
-     */
-    static void reset() {
-      clearSkipped();
-    }
-    /**
-       Reset all of the values to 0;
-     */
-    virtual void resetValues() {
-      CALL_STATIC_NOARGS(reset_value_map);
     }
     /**
        Get the number of values in the set that would be included in an
          array produced by toArray.
+       Common, public interface for the private _sizeArray function.
        \returns Value count.
      */
-    virtual std::size_t sizeArray() const {
-      CALL_STATIC_METHOD_CONST(size);
+    std::size_t sizeArray() const override {
+      // TODO: include children here instead of in overridden method?
+      return static_cast<const T*>(this)->_sizeArray();
     }
     /**
        Get the values in an array ordering based on key order.
+       Common, public interface for the private _toArray function.
        \returns Values array.
      */
-    virtual arr toArray() const {
-      CALL_STATIC_NOARGS_CONST(value_map_toArray);
+    arr toArray() const override {
+      // TODO: include children here instead of in overridden method?
+      return static_cast<const T*>(this)->_toArray();
     }
     /**
        Update the values in the set from an array.
+       Common, public interface for the private _fromArray method.
        \param vec Array to update values from.
        \param offset Index in vec to start from.
      */
-    virtual void fromArray(const arr &vec, const std::size_t offset = 0) {
-      CALL_STATIC(value_map_fromArray, vec, offset);
+    void fromArray(const arr &vec, const std::size_t offset = 0) override {
+      // TODO: include children here instead of in overridden method?
+      static_cast<T*>(this)->_fromArray(vec, offset);
     }
-#ifdef CHECK_VALUE_SET_ALTS
-    std::map<EnumType, double> alts; /**< Alternate copy of values in the set calculated using only the updated dynamic values */
-#endif // CHECK_VALUE_SET_ALTS
+
+    /**
+       Add a child to this instance.
+       \param[in] C Child.
+     */
+    void addChild(ValueSet_t** C) {
+      children.push_back(C);
+    }
+
+    int flags = 0; /**< Bitwise flags describing the value set */
     std::map<EnumType, double*> values; /**< Values in the set. */
+    std::map<EnumType, double> preinit_values; /**< Value set pre-initialization */
+    std::vector<ValueSet_t**> children; /**< Child value sets. */
+
+    // Methods that can be overridden by the inheriting class
+  protected:
+    virtual void _copyMembers(const T& other) {}
+    virtual void _initMembers() {}
+    virtual void _initMembersState(bool=false) {}
+    virtual void _resetValues() {}
+    virtual void _initValues() {}
+    virtual void _initMemberPointers() {}
+    virtual void _initChildren() {}
+    virtual void _createChildren() {}
+    static ValueSet_t* _newInstance(ValueSet_t* par=nullptr) {
+      UNUSED(par);
+      return nullptr;
+    }
+    virtual std::string _diff(const T& other,
+			      std::size_t padKeys=0,
+			      std::size_t padVals=0,
+			      bool includePrefixes=false,
+			      bool noChildren = false) const {
+      ENSURE_VALUE_POINTERS_CONST;
+      std::string out;
+#define DO_CHILD(child, dummy)						\
+      out += child->diff(**other.children[iChild], padKeys, padVals,	\
+			 includePrefixes);
+      DO_VALUE_SET_CHILDREN_MACRO(DO_CHILD, const_iterator, );
+#undef DO_CHILD
+      out += BaseClass::diff_value_maps(values, other.values,
+					padKeys, padVals,
+					includePrefixes);
+      return out;
+    }
+    virtual std::ostream& _print(std::ostream &out,
+				 const uint tab = 0, std::size_t pad = 0,
+				 bool includePrefixes = false,
+				 bool includeSkipped = false,
+				 const std::vector<std::string>& skip_keys = {},
+				 const std::map<std::string, std::string>& key_aliases = {},
+				 bool noChildren = false) const {
+      ENSURE_VALUE_POINTERS_CONST;
+      uint child_tab = tab;
+      if (!(noChildren || includePrefixes)) {
+	const std::string space(tab * BaseClass::tab_size, ' ');
+	out << space << error_prefix() << std::endl;
+	child_tab++;
+      }
+#define DO_CHILD(child, dummy)						\
+      child->print(out, child_tab, pad, includePrefixes, includeSkipped, \
+		   skip_keys, key_aliases)
+      DO_VALUE_SET_CHILDREN_MACRO(DO_CHILD, const_iterator, );
+#undef DO_CHILD
+      return print_value_map(values, out, child_tab, pad,
+			     includePrefixes, includeSkipped,
+			     skip_keys, key_aliases);
+    }
+    virtual std::size_t _sizeArray() const {
+      ENSURE_VALUE_POINTERS_CONST;
+      bool noChildren = false;
+      std::size_t out = values.size();
+#define DO_CHILD(child, dummy) out += child->sizeArray()
+      DO_VALUE_SET_CHILDREN_MACRO(DO_CHILD, const_iterator, );
+#undef DO_CHILD
+      return out;
+    }
+    virtual arr _toArray() const {
+      ENSURE_VALUE_POINTERS_CONST;
+      bool noChildren = false;
+      arr out;
+#define DO_CHILD(child, dummy)						\
+      arr ivec = child->toArray();					\
+      out.insert(out.end(), ivec.begin(), ivec.end())
+      DO_VALUE_SET_CHILDREN_MACRO(DO_CHILD, const_iterator, );
+#undef DO_CHILD
+      value_map_toArray(values, out);
+      return out;
+    }
+    virtual void _fromArray(const arr &vec, const std::size_t offset = 0) {
+      ENSURE_VALUE_POINTERS;
+      ENSURE_CHILD_POINTERS;
+      bool noChildren = false;
+      std::size_t ioffset = offset;
+#define DO_CHILD(child, dummy)						\
+      child->fromArray(vec, ioffset);					\
+      ioffset += child->sizeArray()
+      DO_VALUE_SET_CHILDREN_MACRO(DO_CHILD, iterator, );
+#undef DO_CHILD
+      value_map_fromArray(values, vec, ioffset);
+    }
   };
   
   /**
      Template class to provide methods for manipulating a set of static
      class values used by a model run that can be set via input files.
 
+     \tparam T Child class with virtual & static methods.
+     \tparam U Parent class with virtual & static methods.
      \tparam ID Enum corresponding to the module that the values will be
        used by.
      \tparam PT Enum corresponding to the module component that the values
        will be used by.
    */
-  template<MODULE ID, PARAM_TYPE PT>
-  class ValueSetStatic : public ValueSetBase<ID, PT> {
+  template<class T, class U, MODULE ID, PARAM_TYPE PT>
+  class EPHOTO_API ValueSetStatic : public ValueSetBase<T, U, ID, PT> {
   public:
-    typedef ValueSetStatic<ID, PT> ValueSetClass;
-    INHERIT_METHODS_VALUE_SET_BASE(ValueSetBase<ID, PT>)
+    typedef ValueSetStatic<T, U, ID, PT> ValueSetClass;
+    INHERIT_METHODS_VALUE_SET_BASE(ValueSetBase<T, U, ID, PT>)
+    ADD_METHODS_VALUE_SET_T_BOTH(STUB_STATIC_VALUE_SET)
+
+    /** \copydoc ValueSet::getValueSet */
+    static const ValueSet_t* getValueSet() {
+      return getValueSetClass();
+    }
     
-    /**
-       Initialize the values in the instance. This should be overriden
-         by child classes with a method that adds pointers to values.
-     */
-    static void initMembers() {}
-    /**
-       Initialize the static values in the instance.
-     */
-    static void initStaticMembers() {}
-    /**
-       Initialize the members in the instance for the current state.
-       \param force If true, the state will be updated reguardless of
-         if the class has be updated since the last time the state was
-	 updated.
-     */
-    static void initMembersState(bool force=false) {
+    /** \copydoc ValueSet::getValueMap */
+    static std::map<int, double> getValueMap() {
+      std::map<int, double> out;
+      for (typename std::map<EnumType, double*>::const_iterator it = values.begin();
+	   it != values.end(); it++)
+	out[it->first] = *(it->second);
+      return out;
+    }
+    /** \copydoc ValueSet::setValueMap */
+    static void setValueMap(const std::map<int, double>& map,
+			    const bool set_init=false) {
+      std::map<EnumType, double> kmap = BaseClass::int2key(map);
+      copy_value_map(values, kmap, "setValueMap: ",
+		     false, false, true, true, true);
+      if (set_init)
+	static_flags |= BaseClass::VS_FLAG_INIT_VALUES;
+    }
+    
+    /** \copydoc ValueSet::initMembers */
+    static void initMembers(const bool noChildren=false) {
+      initMemberPointers();
+      T::_initMembers();
+      DO_VALUE_SET_CHILD_CLASSES(initMembers, ());
+    }
+    /** \copydoc ValueSet::initMembersState */
+    static void initMembersState(bool force=false,
+				 const bool noChildren=false) {
       if (!(force || values.empty()))
 	return;
-      initMembers();
-#ifdef CHECK_VALUE_SET_ALTS
-      alts.insert(defaults.begin(), defaults.end());
-#endif // CHECK_VALUE_SET_ALTS
+      initMembers(true);
+      T::_initMembersState(force);
+      DO_VALUE_SET_CHILD_CLASSES(initMembersState, (force));
     }
-    /**
-       Re-initialize the values to the default values, minus any values
-         that are skipped.
-     */
-    static void initValues() {
-      initMembersState();
-#ifdef CHECK_VALUE_SET_ALTS
-      init_value_map(alts);
-#endif // CHECK_VALUE_SET_ALTS
+    /** \copydoc ValueSet::resetValues */
+    static void resetValues(const bool noChildren=false) {
+      ENSURE_VALUE_POINTERS;
+      reset_value_map(values);
+      T::_resetValues();
+      DO_VALUE_SET_CHILD_CLASSES(resetValues, ());
+      static_flags &= ~BaseClass::VS_FLAG_INIT_VALUES;
+    }
+    /** \copydoc ValueSet::initialized */
+    static bool initialized() {
+      return (static_flags & BaseClass::VS_FLAG_INIT_VALUES);
+    }
+    /** \copydoc ValueSet::initValues */
+    static void initValues(bool noDefaults=false,
+			   const bool noChildren=false) {
+      if (static_flags & BaseClass::VS_FLAG_INIT_VALUES) return;
+      initMembersState(false, true); // force state initialization?
+      if (!noDefaults)
+	init_value_map(values);
+      T::_initValues();
+      // T::_initMembersState(force);
+      DO_VALUE_SET_CHILD_CLASSES(initValues, (noDefaults));
+      if (!preinit_values.empty()) {
+	copy_value_map(values, preinit_values, "initValues: ",
+		       false, true, false, false, true);
+      }
+      static_flags |= BaseClass::VS_FLAG_INIT_VALUES;
+    }
+
+    /** \copydoc ValueSet::initMemberPointers */
+    static void initMemberPointers(const bool noChildren=false) {
+      if (static_flags & BaseClass::VS_FLAG_INIT_POINTERS) return;
+      BaseClass::initDefaults();
+      T::_initMemberPointers();
+      DO_VALUE_SET_CHILD_CLASSES(initMemberPointers, ());
+      static_flags |= BaseClass::VS_FLAG_INIT_POINTERS;
+    }
+    /** \copydoc ValueSetBase::initStaticMembers */
+    static void initStaticMembers(const bool noChildren = false) {
+      initMemberPointers(true);
+      ParentClass::initStaticMembers(noChildren);
     }
 
     /**
-       Copy values from member pointers into alternate value map.
-       \param context String to prefix the error message with.
+       Disabled method to create an instance of the class.
      */
-    static void updateAlts(const std::string& context="") {
-#ifdef CHECK_VALUE_SET_ALTS
-      copy_value_map(alts, values, context + "updateAlts: ",
-		     false, false, false, false);
-#else // CHECK_VALUE_SET_ALTS
-      throw std::runtime_error(error_prefix() + context +
-			       "updateAlts: Alternates not enabled");
-#endif // CHECK_VALUE_SET_ALTS
+    static ValueSet_t* newInstance(ValueSet_t* par = nullptr) {
+      UNUSED(par);
+      ERROR_VALUE_SET("Cannot create instances of ValueSetStatic subclasses");
+      return nullptr;
     }
-    
-    /**
-       Initialize the map containing pointers to instance members.
-     */
-    static void initMemberPointers() {}
       
     /**
        Get the map containing pointers to the static class members.
@@ -1845,32 +3091,66 @@ public:
          members.
      */
     static std::map<std::string, double*> getPointerMap() {
-      std::map<std::string, double*> out;
-      return out;
+      return get_pointer_map(values);
     }
 
     /** Get the iterator pointing to the start of the value set */
-    static iterator begin() { CALL_STATIC_METHOD(begin); }
+    static iterator begin() {
+      ENSURE_VALUE_POINTERS;
+      return values.begin();
+    }
     /** Get the iterator pointing to the end of the value set */
-    static iterator end() { CALL_STATIC_METHOD(end); }
+    static iterator end() {
+      ENSURE_VALUE_POINTERS;
+      return values.end();
+    }
     /** Get the constant iterator pointing to the start of the value set */
     // Inspection utilities
-    /**
-       Display the values in the set.
-       \param out Output stream.
-       \param includePrefixes If true, the module & parameter type
-         prefixes will be added to the member names.
-       \param tab Number of tabs to prefix each line in the output with.
-       \param noChildren If true, children of composite sets will not
-         be displayed.
-       \returns Output stream.
-     */
+    /** \copydoc ValueSetClass_t::max_value_width */
+    static std::size_t max_value_width(bool noChildren = false) {
+      static std::size_t out = 0;
+      static std::size_t outBase = 0;
+      if (outBase == 0) {
+	outBase = BaseClass::value_width_value_map(values);
+      }
+      if (noChildren) return outBase;
+      if (out == 0) {
+	out = outBase;
+	std::size_t iout = 0;
+#define DO_CHILD(child, dummy)						\
+	iout = child->max_value_width();				\
+	if (iout > out) out = iout
+	DO_VALUE_SET_CHILD_CLASSES_MACRO(DO_CHILD, const_iterator, );
+#undef DO_CHILD
+      }
+      return out;
+    }
+    /** \copydoc ValueSet::diff */
+    static std::string diff(const ValueSet_t& other,
+			    std::size_t padKeys=0,
+			    std::size_t padVals=0,
+			    bool includePrefixes=false,
+			    bool noChildren = false) {
+      UNUSED(other);
+      if (padKeys == 0) {
+	padKeys = max_field_width(noChildren);
+      }
+      if (padVals == 0) {
+	padVals = max_value_width(noChildren);
+      }
+      return T::_diff(padKeys, padVals, includePrefixes, noChildren);
+    }
+    /** \copydoc ValueSet::print */
     static std::ostream& print(std::ostream &out,
+			       const uint tab = 0, std::size_t pad = 0,
 			       bool includePrefixes = false,
-			       const uint tab = 0,
+			       bool includeSkipped = false,
+			       const std::vector<std::string>& skip_keys = {},
+			       const std::map<std::string, std::string>& key_aliases = {},
 			       bool noChildren = false) {
-      UNUSED(noChildren);
-      CALL_STATIC(print_value_map, out, includePrefixes, tab);
+      if (pad == 0) pad = max_field_width(noChildren);
+      return T::_print(out, tab, pad, includePrefixes, includeSkipped,
+		       skip_keys, key_aliases, noChildren);
     }
     /**
        Throw an error if a key is not present in the set.
@@ -1878,7 +3158,8 @@ public:
        \param context String to prefix the error message with.
      */
     static void check(const EnumType k, const std::string& context = "") {
-      CALL_STATIC(check_value_map, k, context);
+      ENSURE_VALUE_POINTERS;
+      check_value_map(values, k, context);
     }
     // Value manipulation
     /**
@@ -1901,10 +3182,11 @@ public:
 			      bool no_missing=false,
 			      bool no_constants=false,
 			      bool no_skipped=false) {
-      CALL_STATIC(update_value_map, new_values,
-		  context + "update_values: ",
-		  allow_extras, no_missing,
-		  no_constants, no_skipped);
+      ENSURE_VALUE_POINTERS;
+      update_value_map(values, new_values,
+		       context + "update_values: ",
+		       allow_extras, no_missing,
+		       no_constants, no_skipped);
     }
     /**
        Add values to the set by reading a parameter file.
@@ -1926,26 +3208,45 @@ public:
 			      bool no_missing=false,
 			      bool no_constants=false,
 			      bool no_skipped=false) {
-      CALL_STATIC(update_value_map, filename,
-		  context + "update_values[" + filename + "]: ",
-		  allow_extras, no_missing,
-		  no_constants, no_skipped);
+      ENSURE_VALUE_POINTERS;
+      update_value_map(values, filename,
+		       context + "update_values[" + filename + "]: ",
+		       allow_extras, no_missing,
+		       no_constants, no_skipped);
+    }
+    /** \copydoc ValueSet::setPreInit */
+    static void setPreInit(const EnumType& k, const double& v) {
+      if (initialized()) return;
+      preinit_values[k] = v;
     }
     /**
        Update the value associated with a key.
        \param k Key to update value for.
        \param v New value for key.
      */
-    static void set(const EnumType k, const double v) {
-      CALL_STATIC(set_value, k, v);
+    static void set(const EnumType& k, const double& v) {
+      ENSURE_VALUE_POINTERS;
+      set_value(values, k, v);
+    }
+    /**
+       Update the value associated with a key.
+       \param k Key to update value for.
+       \param v New value for key.
+       \param[in] isGlymaID If true, k is a GlymaID.
+     */
+    static void set(const std::string& name, const double& v,
+		    const bool& isGlymaID = false) {
+      if (isGlymaID)
+	return set(fromGlymaid(name), v);
+      return set(fromNameWithAliases(name), v);
     }
     /**
        Update the value associated with a key.
        \param k Key to update value for.
        \param v New value for key.
      */
-    static void set(const std::string& name, const double v) {
-	return set(fromName(name), v);
+    static void set(const int& k, const double& v) {
+      return set(BaseClass::int2key(k), v);
     }
     /**
        Update the value associated with a key in the value set from a map
@@ -1955,23 +3256,37 @@ public:
      */
     static void setFromEnzymeAct(const EnumType k,
 				 const std::map<std::string, double>& EnzymeAct) {
-      CALL_STATIC(set_value_from_EnzymeAct, k, EnzymeAct);
+      ENSURE_VALUE_POINTERS;
+      set_value_from_EnzymeAct(values, k, EnzymeAct);
     }
     /**
        Get the value associated with a key.
        \param k Key to get value for.
        \returns Value.
      */
-    static double get(const EnumType k) {
-      CALL_STATIC(get_value_const, k);
+    static double get(const EnumType& k) {
+      ENSURE_VALUE_POINTERS;
+      return get_value_const(values, k);
     }
     /**
        Get the value associated with a key.
        \param name String representation of key to get value for.
+       \param[in] isGlymaID If true, k is a GlymaID.
        \returns Value
      */
-    static double get(const std::string& name) {
-      return get(fromName(name));
+    static double get(const std::string& name,
+		      const bool& isGlymaID = false) {
+      if (isGlymaID)
+	return get(fromGlymaid(name));
+      return get(fromNameWithAliases(name));
+    }
+    /**
+       Get the value associated with a key.
+       \param k Key to get value for.
+       \returns Value.
+     */
+    static double get(const int& k) {
+      return get(BaseClass::int2key(k));
     }
     /**
        Add a value reference for the given key.
@@ -1983,61 +3298,28 @@ public:
 			   const std::string& context="") {
       if (k == EnumClass::NONE || k == EnumClass::MAX)
 	return;
-#ifdef CHECK_VALUE_SET_ALTS
-      if (alts.find(k) == alts.end()) {
-	alts[k] = *v;
-      }
-#endif // CHECK_VALUE_SET_ALTS
       insert_value_orig(values, k, v, context);
     }
-    /**
-       Check if the value using the original code matches the value
-         calculated using only dynamic value methods.
-       \param k Key to check.
-       \param context String providing context for error messages.
-     */
-    static void checkAlt(const EnumType k,
-			 const std::string& context="") {
-#ifdef CHECK_VALUE_SET_ALTS
-      check_value_alt(values, alts, k, context);
-#else // CHECK_VALUE_SET_ALTS
-      UNUSED(k);
-      throw std::runtime_error(error_prefix() + context + "Alternates not enabled");
-#endif // CHECK_VALUE_SET_ALTS
-    }
-    /**
-       Check if the values using the original code match the values
-         calculated using only dynamic value methods.
-       \param context String providing context for error messages.
-     */
-    static void checkAlts(const std::string& context="") {
-#ifdef CHECK_VALUE_SET_ALTS
-      check_value_alts(values, alts, context);
-#else // CHECK_VALUE_SET_ALTS
-      throw std::runtime_error(error_prefix() + context + "Alternates not enabled");
-#endif // CHECK_VALUE_SET_ALTS
-    }
-    /**
-       Reset the static class members to 0.
-     */
-    static void reset() {
-      clearSkipped();
-      CALL_STATIC_NOARGS(reset_value_map);
+    /** \copydoc ValueSetBase::reset */
+    static void reset(const bool noChildren = false) {
+      ENSURE_VALUE_POINTERS;
+      reset_value_map(values);
+      ParentClass::reset(noChildren);
     }
     /**
        Get the number of values in the set that would be included in an
          array produced by toArray.
        \returns Value count.
      */
-    virtual std::size_t sizeArray() const {
-      CALL_STATIC_METHOD(size);
+    static std::size_t sizeArray() {
+      return T::_sizeArray();
     }
     /**
        Get the values in an array ordering based on key order.
        \returns Values array.
      */
     static arr toArray() {
-      CALL_STATIC_NOARGS(value_map_toArray);
+      return T::_toArray();
     }
     /**
        Update the values in the set from an array.
@@ -2045,36 +3327,113 @@ public:
        \param offset Index in vec to start from.
      */
     static void fromArray(const arr &vec, const std::size_t offset = 0) {
-      CALL_STATIC(fromArray, vec, offset);
+      T::_fromArray(vec, offset);
     }
-#ifdef CHECK_VALUE_SET_ALTS
-    static std::map<EnumType, double> alts; /**< Alternate copy of values in the set calculated using only the updated dynamic values */
-#endif // CHECK_VALUE_SET_ALTS
+    
+    /**
+       Add a child class to this classes set.
+       \tparam C Child class.
+     */
+    template<typename C>
+    static void addChildClass() {
+      child_classes.push_back(new ValueSetStaticClassType<C>());
+    }
+
     static std::map<EnumType, double*> values; /**< Values in the set. */
+    static std::map<EnumType, double> preinit_values; /**< Value set pre-initialization */
+
+    // Methods that can be overridden by the inheriting class
+  protected:
+    static void _initMembers() {}
+    static void _initMembersState(bool=false) {}
+    static void _resetValues() {}
+    static void _initValues() {}
+    static std::string _diff(std::size_t padKeys=0,
+			     std::size_t padVals=0,
+			     bool includePrefixes=false,
+			     bool noChildren = false) {
+      UNUSED(padKeys);
+      UNUSED(padVals);
+      UNUSED(includePrefixes);
+      UNUSED(noChildren);
+      return "";
+    }
+    static std::ostream& _print(std::ostream &out,
+				const uint tab = 0, std::size_t pad = 0,
+				bool includePrefixes = false,
+				bool includeSkipped = false,
+				const std::vector<std::string>& skip_keys = {},
+				const std::map<std::string, std::string>& key_aliases = {},
+				bool noChildren = false) {
+      ENSURE_VALUE_POINTERS;
+      uint child_tab = tab;
+      if (!(noChildren || includePrefixes)) {
+	const std::string space(tab * BaseClass::tab_size, ' ');
+	out << space << error_prefix() << std::endl;
+	child_tab++;
+      }
+#define DO_CHILD(child, dummy)						\
+      child->print(out, child_tab, pad, includePrefixes, includeSkipped,\
+		   skip_keys, key_aliases)
+      DO_VALUE_SET_CHILD_CLASSES_MACRO(DO_CHILD, const_iterator, );
+#undef DO_CHILD
+      return print_value_map(values, out, child_tab, pad,
+			     includePrefixes, includeSkipped,
+			     skip_keys, key_aliases);
+    }
+    static void _initMemberPointers() {}
+    static std::size_t _sizeArray() {
+      ENSURE_VALUE_POINTERS;
+      bool noChildren = false;
+      std::size_t out = values.size();
+#define DO_CHILD(child, dummy) out += child->sizeArray()
+      DO_VALUE_SET_CHILD_CLASSES_MACRO(DO_CHILD, iterator, );
+#undef DO_CHILD
+      return out;
+    }
+    static arr _toArray() {
+      ENSURE_VALUE_POINTERS;
+      bool noChildren = false;
+      arr out;
+#define DO_CHILD(child, dummy)						\
+      arr ivec = child->toArray();					\
+      out.insert(out.end(), ivec.begin(), ivec.end())
+      DO_VALUE_SET_CHILD_CLASSES_MACRO(DO_CHILD, const_iterator, );
+#undef DO_CHILD
+      value_map_toArray(values, out);
+      return out;
+    }
+    static void _fromArray(const arr &vec, const std::size_t offset = 0) {
+      ENSURE_VALUE_POINTERS;
+      ENSURE_CHILD_CLASS_POINTERS;
+      bool noChildren = false;
+      std::size_t ioffset = offset;
+#define DO_CHILD(child, dummy)						\
+      child->fromArray(vec, ioffset);					\
+      ioffset += child->sizeArray()
+      DO_VALUE_SET_CHILD_CLASSES_MACRO(DO_CHILD, iterator, );
+#undef DO_CHILD
+      value_map_fromArray(values, vec, ioffset);
+    }
+    
   };
 
-#ifdef CHECK_VALUE_SET_ALTS
-  template<MODULE ID, PARAM_TYPE PT>
-  std::map<typename ValueSetStatic<ID, PT>::EnumType, double>
-  ValueSetStatic<ID, PT>::alts = {};
-#endif // CHECK_VALUE_SET_ALTS
-
-  template<MODULE ID, PARAM_TYPE PT>
-  std::map<typename ValueSetStatic<ID, PT>::EnumType, double*>
-  ValueSetStatic<ID, PT>::values = {};
+  template<class T, class U, MODULE ID, PARAM_TYPE PT>
+  std::map<typename ValueSetStatic<T, U, ID, PT>::EnumType, double*>
+  ValueSetStatic<T, U, ID, PT>::values = {};
+  
+  template<class T, class U, MODULE ID, PARAM_TYPE PT>
+  std::map<typename ValueSetStatic<T, U, ID, PT>::EnumType, double>
+  ValueSetStatic<T, U, ID, PT>::preinit_values = {};
   
 }
     
-#undef CALL_STATIC
-
 
 #define DECLARE_PARAM_DUMMY_(suffix, mod)				\
     class mod ## suffix :						\
         public suffix ## Base<mod ## suffix, MODULE_ ## mod> {		\
     public:								\
 	DECLARE_VALUE_SET_BASE(mod ## suffix, suffix ## Base<mod ## suffix, MODULE_ ## mod>) \
-	using suffix ## Base<mod ## suffix, MODULE_ ## mod>::memberCount; \
-	using suffix ## Base<mod ## suffix, MODULE_ ## mod>::memberState; \
     }
 #define DECLARE_PARAM_DUMMY(suffix, mod)				\
     DECLARE_PARAM_DUMMY_(suffix, mod)
@@ -2085,17 +3444,17 @@ public:
 			      (suffix), __VA_ARGS__)
 #define DECLARE_PARAM_BASE_CLASS(name, pt)				\
     template<typename T, MODULE ID = MODULE_NONE>			\
-    class name ## Base : public ValueSet<ID, PARAM_TYPE_ ## pt> {	\
+    class name ## Base : public ValueSet<T, T, ID, PARAM_TYPE_ ## pt> {	\
     public:								\
-        DECLARE_VALUE_SET_BASE(name ## Base, ValueSet<ID, PARAM_TYPE_ ## pt>) \
-	name ## Base() :						\
-	ValueSet<ID, PARAM_TYPE_ ## pt>() {}				\
-	virtual ~name ## Base() {}					\
-	name ## Base(const name ## Base &other) :			\
-	ValueSet<ID, PARAM_TYPE_ ## pt>(other) {}			\
-	name ## Base& operator=(const name ## Base& other) {		\
-	    return *this;						\
-	}								\
+    DECLARE_VALUE_SET_BASE(name ## Base, ValueSet<T, T, ID, PARAM_TYPE_ ## pt>) \
+    name ## Base() :							\
+    ValueSet<T, T, ID, PARAM_TYPE_ ## pt>() {}				\
+    virtual ~name ## Base() {}						\
+    name ## Base(const name ## Base &other) :				\
+    ValueSet<T, T, ID, PARAM_TYPE_ ## pt>(other) {}			\
+    name ## Base& operator=(const name ## Base& other) {		\
+      return *this;							\
+    }									\
     }
 #define DECLARE_PARAM_BASE_(namespc, name, pt, ...)			\
     namespace ePhotosynthesis {						\
@@ -2113,6 +3472,20 @@ public:
     }									\
     }
 
+#define CASE_MEMBER_NESTED(mod, prefix, fdefault2, prefix2, mod2, fmembers2, X, ...) \
+  case (prefix ## mod) : {						\
+      try {								\
+	DEFER(SWITCH_MEMBER_DEFERED)()(PACK_MACRO(fdefault2),		\
+				       prefix2, mod2,			\
+				       (fmembers2(mod)),		\
+				       PACK_MACRO(X),			\
+				       __VA_ARGS__, mod);		\
+      } catch (const std::runtime_error& ex) {				\
+	ERROR_VALUE_SET_NESTED(ex, ", " +				\
+			       utils::enum_key2string(prefix ## mod));	\
+      }									\
+      break;								\
+  }
 #define CASE_MEMBER(mod, prefix, X, ...)				\
   case (prefix ## mod) : {						\
       X(__VA_ARGS__, mod);						\
@@ -2127,52 +3500,254 @@ public:
   CASE_MEMBER args
 #define CASE_MEMBER_DEFER_PACKED(args)					\
   CASE_MEMBER_DEFER args
-#define SWITCH_MEMBER_(mod, case_macro, args, ...)			\
+#define CASE_MEMBER_NESTED_PACKED(args)					\
+  CASE_MEMBER_NESTED args
+#define DEFAULT_ERROR(mod)						\
+  ERROR_VALUE_SET("Unsupported member: ",				\
+		  utils::enum_key2string(mod))
+#define SWITCH_MEMBER_(fdefault, mod, case_macro, args, ...)		\
   switch (mod) {							\
     FOR_EACH_WITH_SUFFIX_ARGS_PACKED(case_macro, args, __VA_ARGS__)	\
   default: {								\
-      throw std::runtime_error(error_prefix() + "Unsupported member: " + utils::enum_key2string(mod)); \
+      fdefault(mod);							\
   }									\
   }
-#define SWITCH_MEMBER(prefix, mod, members, ...)			\
-  SWITCH_MEMBER_(mod, CASE_MEMBER_PACKED,				\
-		 (prefix, __VA_ARGS__), UNPACK_PARENS(members))
+#define SWITCH_MEMBER_ERROR(prefix, mod, members, ...)	\
+    SWITCH_MEMBER_(DEFAULT_ERROR, mod, CASE_MEMBER_PACKED,		\
+		   (prefix, __VA_ARGS__), UNPACK_PARENS(members))
+#define SWITCH_MEMBER(fdefault, prefix, mod, members, ...)		\
+    SWITCH_MEMBER_(PACK_MACRO(fdefault), mod, CASE_MEMBER_PACKED,	\
+		   (prefix, __VA_ARGS__), UNPACK_PARENS(members))
 		 
-#define SWITCH_MEMBER_DEFER(prefix, mod, members, ...)		\
-  SWITCH_MEMBER_(mod, CASE_MEMBER_DEFER_PACKED,			\
-		 (prefix, __VA_ARGS__), UNPACK_PARENS(members))
+#define SWITCH_MEMBER_DEFER(fdefault, prefix, mod, members, ...)	\
+    SWITCH_MEMBER_(PACK_MACRO(fdefault), mod, CASE_MEMBER_DEFER_PACKED,	\
+		   (prefix, __VA_ARGS__), UNPACK_PARENS(members))
+#define SWITCH_MEMBER_NESTED(fdefault, prefix, mod, members, fdefault2, prefix2, mod2, fmembers2, X, ...) \
+    SWITCH_MEMBER_(PACK_MACRO(fdefault), mod, CASE_MEMBER_NESTED_PACKED, \
+		   (prefix, PACK_MACRO(fdefault2), prefix2, mod2, PACK_MACRO(fmembers2), \
+		    PACK_MACRO(X), __VA_ARGS__),			\
+		   UNPACK_PARENS(members))
 
+#define SWITCH_MEMBER_DEFERED() SWITCH_MEMBER
 
-#define SWITCH_MOD(...)				\
-  SWITCH_MEMBER(MODULE_, __VA_ARGS__)
-#define SWITCH_PT(...)				\
-  SWITCH_MEMBER(PARAM_TYPE_, __VA_ARGS__)
-#define SWITCH_MOD_DEFER(...)				\
-  SWITCH_MEMBER_DEFER(MODULE_, __VA_ARGS__)
-#define SWITCH_PT_DEFER(...)				\
-  SWITCH_MEMBER_DEFER(PARAM_TYPE_, __VA_ARGS__)
+#define SWITCH_MOD(...)					\
+    SWITCH_MEMBER(DEFAULT_ERROR, MODULE_, __VA_ARGS__)
+#define SWITCH_PT(...)						\
+    SWITCH_MEMBER(DEFAULT_ERROR, PARAM_TYPE_, __VA_ARGS__)
+
+#define SWITCH_MOD_DEFER(...)					\
+    SWITCH_MEMBER_DEFER(DEFAULT_ERROR, MODULE_, __VA_ARGS__)
+#define SWITCH_PT_DEFER(...)						\
+    SWITCH_MEMBER_DEFER(DEFAULT_ERROR, PARAM_TYPE_, __VA_ARGS__)
+
 #define SWITCH_MOD_DEFERED() SWITCH_MOD
 #define SWITCH_PT_DEFERED() SWITCH_PT
 #define SWITCH_MOD_DEFER_DEFERED() SWITCH_MOD_DEFER
 #define SWITCH_PT_DEFER_DEFERED() SWITCH_PT_DEFER
+
+#define SWITCH_MOD_AND_PT_ERROR(mod, mod_members, pt, pt_fmembers, X, ...) \
+    EVAL(SWITCH_MEMBER_NESTED(DEFAULT_ERROR, MODULE_, mod, mod_members,	\
+			      DEFAULT_ERROR, PARAM_TYPE_, pt, PACK_MACRO(pt_fmembers), \
+			      PACK_MACRO(X), __VA_ARGS__))
+#define SWITCH_MOD_AND_PT(mod, mod_members, pt, pt_fmembers, X, ...)	\
+    EVAL(SWITCH_MEMBER_NESTED(EMPTY, MODULE_, mod, mod_members,		\
+			      EMPTY, PARAM_TYPE_, pt, PACK_MACRO(pt_fmembers), \
+			      PACK_MACRO(X), __VA_ARGS__))
 
 #define SWITCH_MOD_ALL(mod, X, ...)				\
   SWITCH_MOD(mod, (MEMBER_NAMES_MODULE), X, __VA_ARGS__)
 #define SWITCH_PT_ALL(pt, X, ...)			\
   SWITCH_PT(pt, (MEMBER_NAMES_PARAM), X, __VA_ARGS__)
 
-#define SWITCH_MOD_AND_PT(mod, mod_members, pt, pt_members, X, ...)	\
-  EVAL(SWITCH_MEMBER_DEFER(MODULE_, mod, mod_members, SWITCH_PT_DEFERED, \
-			   pt, pt_members, X, __VA_ARGS__))
-#define SWITCH_PT_AND_MOD(mod, mod_members, pt, pt_members, X, ...)	\
-  EVAL(SWITCH_MEMBER_DEFER(PARAM_TYPE_, pt, pt_members, SWITCH_MOD_DEFERED, \
-			   mod, mod_members, X, __VA_ARGS__))
+#define CASE_PAIR__(mod, mod2, prefix, prefix2, var, var2, X, ...)	\
+  if (var == CONCATENATE(prefix, mod) && var2 == CONCATENATE(prefix2, mod2)) { \
+    X(__VA_ARGS__, mod, mod2);						\
+  } else
+#define CASE_PAIR_(...) CASE_PAIR__(__VA_ARGS__)
+#define CASE_PAIR(pair, ...) CASE_PAIR_(EXPAND pair, __VA_ARGS__)
+#define SWITCH_PAIRS_(fdefault, mod, mod2, args, ...)			\
+  FOR_EACH_WITH_SUFFIX_ARGS(CASE_PAIR, args, __VA_ARGS__)		\
+  {									\
+    fdefault(mod, mod2);						\
+  }
+#define SWITCH_PAIRS_ERROR(prefix, mod, prefix2, mod2, members, ...)	\
+  SWITCH_PAIRS_(DEFAULT_ERROR, mod, mod2,				\
+		(prefix, prefix2, mod, mod2, __VA_ARGS__),		\
+		UNPACK_PARENS(members))
+#define SWITCH_PAIRS(fdefault, prefix, mod, prefix2, mod2, members, ...) \
+  SWITCH_PAIRS_(PACK_MACRO(fdefault), mod, mod2,			\
+		(prefix, prefix2, mod, mod2, __VA_ARGS__),		\
+		UNPACK_PARENS(members))
+#define SWITCH_MOD_AND_PT_PAIRS(mod, pt, members, ...)			\
+  SWITCH_PAIRS(EMPTY, MODULE_, mod, PARAM_TYPE_, pt,			\
+	       members, __VA_ARGS__)
+  
 
-#define SWITCH_MOD_AND_PT_DEFERED(mod, mod_members, pt, pt_members, X, ...) \
-  EVAL(SWITCH_MEMBER_DEFER(MODULE_, mod, mod_members,			\
-			   SWITCH_PT_DEFER_DEFERED,			\
-			   pt, pt_members, X, __VA_ARGS__))
-#define SWITCH_PT_AND_MOD_DEFERED(mod, mod_members, pt, pt_members, X, ...)	\
-  EVAL(SWITCH_MEMBER_DEFER(PARAM_TYPE_, pt, pt_members,			\
-			   SWITCH_MOD_DEFER_DEFERED,			\
-			   mod, mod_members, X, __VA_ARGS__))
+// Parameters for param_types
+// 1. namespace of class
+// 2. class suffix
+// 3. variable suffix
+// 4. variable suffix in module
+// 5. variable prefix in module
+#define VARS_PARAM_PT_COND(idx) conditions, Condition, 2OUT, _con ## idx, *
+#define VARS_PARAM_PT_POOL(idx) pool, Pool, _Pool, _Pool, theVars ## idx->
+#define VARS_PARAM_PT_RC(idx) RC, RC, _RC, _RC, theVars ## idx->
+#define VARS_PARAM_PT_KE(idx) KE, KE, _KE, _KE, theVars ## idx->
+#define VARS_PARAM_PT_VEL_SERIES(idx)			\
+    TimeSeries<vel, Vel>, _VEL, _VEL, theVars ## idx->
+#define VARS_PARAM_PT_VEL(idx) vel, Vel, _Vel, _Vel, theVars ## idx->
+#define VARS_PARAM_PT_MOD(idx) modules, , , , NONE
+#define VARS_PARAM_PT(pt, idx) (VARS_PARAM_PT_ ## pt(idx))
+#define VARS_PARAM_PT_NAMESPACE_(ns, cs, vs, ms, mp) ns
+#define VARS_PARAM_PT_CLASS_SUFFIX_(ns, cs, vs, ms, mp) cs
+#define VARS_PARAM_PT_VAR_SUFFIX_(ns, cs, vs, ms, mp) vs
+#define VARS_PARAM_PT_MOD_PREFIX_(ns, cs, vs, ms, mp) mp
+#define VARS_PARAM_PT_MOD_SUFFIX_(ns, cs, vs, ms, mp) ms
+#define VARS_PARAM_PT_NAMESPACE(pt, idx)			\
+  EXPAND(VARS_PARAM_PT_NAMESPACE_ VARS_PARAM_PT(pt, idx))
+#define VARS_PARAM_PT_CLASS_SUFFIX(pt, idx)		\
+  VARS_PARAM_PT_CLASS_SUFFIX_ VARS_PARAM_PT(pt, idx)
+#define VARS_PARAM_PT_VAR_SUFFIX(pt, idx)		\
+  VARS_PARAM_PT_VAR_SUFFIX_ VARS_PARAM_PT(pt, idx)
+#define VARS_PARAM_PT_MOD_PREFIX(pt, idx)		\
+  EXPAND(VARS_PARAM_PT_MOD_PREFIX_ VARS_PARAM_PT(pt, idx))
+#define VARS_PARAM_PT_MOD_SUFFIX(pt, idx)		\
+  VARS_PARAM_PT_MOD_SUFFIX_ VARS_PARAM_PT(pt, idx)
+#define VARS_CLASS_VAR_LOCAL(mod, pt)		\
+  CONCATENATE(mod, VARS_PARAM_PT_CLASS_SUFFIX(pt,))
+#define VARS_CLASS_VAR(mod, pt)			\
+  VARS_PARAM_PT_NAMESPACE(pt,)::VARS_CLASS_VAR_LOCAL(mod, pt)
+#define VARS_INST_VAR(mod, pt)			\
+  CONCATENATE(mod, VARS_PARAM_PT_VAR_SUFFIX(pt,))
+#define VARS_INST_VAR_MOD_IDX(mod, pt, idx)				\
+  VARS_PARAM_PT_MOD_PREFIX(pt, idx)					\
+  CONCATENATE(mod,							\
+	      VARS_PARAM_PT_MOD_SUFFIX(pt, idx))
+#define VARS_INST_VAR_MOD_BASE_IDX(mod, pt, idx)			\
+  CONCATENATE(mod,							\
+	      VARS_PARAM_PT_MOD_SUFFIX(pt, idx))
+#define VARS_INST_VAR_MOD(mod, pt)					\
+  VARS_INST_VAR_MOD_IDX(mod, pt, )
+#define VARS_INST_VAR_MOD_BASE(mod, pt)					\
+  VARS_INST_VAR_MOD_BASE_IDX(mod, pt, )
+#define MOD2PT(mod) PARAM_TYPES_ ## mod
+#define MOD2PT_COND(mod)						\
+  CALL_MACRO(FIRST_ARG, MOD2PT(mod))
+#define MOD2PT_NO_COND(mod)			\
+  CALL_MACRO(GET_ARGS_AFTER_1, MOD2PT(mod))
+#define MOD2PT_CLASS(mod) MOD, MOD2PT(mod)
+#define MOD2PT_DEFERED() MOD2PT
+#define MOD2PT_PAIRS(mod, X)						\
+    FOR_EACH_WITH_PREFIX_ARGS_COMMA(ADD_PARENS, (mod),			\
+       				    X(mod))
+#define MOD2PT_PAIRS_DEFERED() MOD2PT_PAIRS
+#define ALL_MOD_PT_PAIRS						\
+    EVAL(FOR_EACH_GENERIC(MOD2PT_PAIRS_DEFERED,				\
+			  CALL_WITH_SUFFIX_ARGS_DEFER,			\
+			  SEP_COMMA, (MOD2PT),				\
+			  EXPAND VARS_CLASS_MODULES))
+#define INST_MOD_PT_PAIRS						\
+    EVAL(FOR_EACH_GENERIC(MOD2PT_PAIRS_DEFERED,				\
+			  CALL_WITH_SUFFIX_ARGS_DEFER,			\
+			  SEP_COMMA, (MOD2PT_COND),			\
+			  EXPAND VARS_INST_MODULES)),			\
+    EVAL(FOR_EACH_GENERIC(MOD2PT_PAIRS_DEFERED,				\
+			  CALL_WITH_SUFFIX_ARGS_DEFER,			\
+			  SEP_COMMA, (MOD2PT_NO_COND),			\
+			  EXPAND VARS_INST_MODULES, FIBF))
+
+#define VARS_INST_MODULES (BF, FI, PR, PS, RROEA, RedoxReg, RuACT, SUCS, XanCycle)
+#define VARS_INST_PARAM_TYPES (COND, POOL, RC, KE, VEL)
+#define VARS_INST_CONNECTIONS				\
+  BF_FI, EPS_SUCS, FIBF_PSPR, PR_PS, PSPR_SUCS,		\
+    RROEA_EPS, RedoxReg_RA, RuACT_EPS, XanCycle_BF
+
+#define VARS_CLASS_MODULES (PACK_MACRO(MEMBER_NAMES_MODULE))
+#define VARS_CLASS_PARAM_TYPES PACK_MACRO((MEMBER_NAMES_PARAM))
+#define GET_VALUE_SET(mod, pt)			\
+  getValueSet(mod, pt, false, std::string(__func__) + ": ")
+#define GET_VALUE_SET_CLASS(mod, pt)				\
+  getValueSetClass(mod, pt, false, std::string(__func__) + ": ")
+
+#define VARS_INST_IS_MODULE(var)				\
+    VAR_IN_PREFIXED_LIST(var, MODULE_, EXPAND VARS_INST_MODULES)
+#define VARS_INST_IS_PARAM_TYPE(var)					\
+    VAR_IN_PREFIXED_LIST(var, PARAM_TYPE_, EXPAND VARS_INST_PARAM_TYPES)
+#define VARS_IS_SKIPPED(mod, pt)		\
+    (mod != MODULE_RROEA && pt == PARAM_TYPE_KE)
+#define VARS_CLASS_APPLY_TO_MEMBERS(X)				\
+  FOR_EACH(CONCATENATE(X, _PACKED), ALL_MOD_PT_PAIRS);		\
+  FOR_EACH(CONCATENATE(X, _CORE), EXPAND VARS_INST_MODULES);	\
+  FOR_EACH(CONCATENATE(X, _CONNECTION), VARS_INST_CONNECTIONS)
+#define VARS_INST_APPLY_TO_MEMBERS(X)				\
+  FOR_EACH(CONCATENATE(X, _PACKED), INST_MOD_PT_PAIRS);		\
+  FOR_EACH(CONCATENATE(X, _CORE), EXPAND VARS_INST_MODULES);	\
+  FOR_EACH(CONCATENATE(X, _CONNECTION), VARS_INST_CONNECTIONS)
+
+#define VARS_INST_CALL(X, args, mod, pt)	\
+    VARS_INST_VAR(mod, pt).X args
+#define VARS_INST_CALL_STATIC(X, args, mod)	\
+    modules::mod::X args
+#define VARS_INST_CALL_VARS(X, args)		\
+    X args
+#define VARS_CLASS_CALL(X, args, mod, pt)	\
+    VARS_CLASS_VAR(mod, pt)::X args
+#define VARS_CLASS_CALL_STATIC VARS_INST_CALL_STATIC
+#define VARS_CLASS_CALL_VARS VARS_INST_CALL_VARS
+#define VARS_RETURN_CALL(X, ...)		\
+  return X(__VA_ARGS__)
+  
+#define VARS_ITER_ALL_BASE(for_instance, include_cond, m, pt, X, ...)	\
+  for (std::vector<MODULE>::const_iterator m = ALL_MODULE.begin();	\
+       m != ALL_MODULE.end(); m++) {					\
+    if (*m == MODULE_ALL) {						\
+      X(*m, PARAM_TYPE_VARS, __VA_ARGS__);				\
+    } else {								\
+      X(*m, PARAM_TYPE_MOD, __VA_ARGS__);				\
+      const std::vector<PARAM_TYPE> param_types = getParamTypes(*m, for_instance, include_cond); \
+      for (std::vector<PARAM_TYPE>::const_iterator pt = param_types.begin(); \
+	   pt != param_types.end(); pt++) {				\
+	X(*m, *pt, __VA_ARGS__);					\
+      }									\
+    }									\
+    }
+#define VARS_ITER_ALL_CLASS(...) VARS_ITER_ALL_BASE(false, false, __VA_ARGS__)
+
+#define VARS_ITER_ALL_MACRO_BASE(Xget, for_instance, include_cond, m, pt, X, X_STATIC, X_VARS, ...) \
+  for (std::vector<MODULE>::const_iterator m = ALL_MODULE.begin();	\
+       m != ALL_MODULE.end(); m++) {					\
+    std::vector<PARAM_TYPE>::const_iterator pt;				\
+    if (*m == MODULE_ALL) {						\
+      auto _tmp = Xget(MODULE_ALL, PARAM_TYPE_VARS);			\
+      if (_tmp) {							\
+	X_VARS(_tmp, __VA_ARGS__);					\
+      }									\
+    } else {								\
+      ValueSetClass_t* module = getModule(*m, false, std::string(__func__) + ": "); \
+      X_STATIC(module, __VA_ARGS__);					\
+      const std::vector<PARAM_TYPE> param_types = getParamTypes(*m, for_instance, include_cond); \
+      for (std::vector<PARAM_TYPE>::const_iterator pt = param_types.begin(); \
+	   pt != param_types.end(); pt++) {				\
+	auto _tmp = Xget(*m, *pt);					\
+	if (_tmp) {							\
+	  X(_tmp, __VA_ARGS__);						\
+	}								\
+      }									\
+    }									\
+  }
+#define VARS_ITER_MACRO(X, ...)						\
+  VARS_ITER_ALL_MACRO_BASE(GET_VALUE_SET, true, false, m, pt,		\
+			   PACK_MACRO(X), PACK_MACRO(X), PACK_MACRO(X),	\
+			   __VA_ARGS__)
+#define VARS_ITER_MACRO_COND(X, ...)					\
+  VARS_ITER_ALL_MACRO_BASE(GET_VALUE_SET, true, true, m, pt,		\
+			   PACK_MACRO(X), PACK_MACRO(X), PACK_MACRO(X),	\
+			   __VA_ARGS__)
+#define VARS_ITER_MACRO_INST(X, ...)					\
+  VARS_ITER_ALL_MACRO_BASE(GET_VALUE_SET, true, false, m, pt,		\
+			   PACK_MACRO(X), EMPTY, PACK_MACRO(X),		\
+			   __VA_ARGS__)
+#define VARS_ITER_MACRO_CLASS(X, ...)					\
+  VARS_ITER_ALL_MACRO_BASE(GET_VALUE_SET_CLASS, false, false, m, pt,	\
+			   PACK_MACRO(X), PACK_MACRO(X), PACK_MACRO(X),	\
+			   __VA_ARGS__)

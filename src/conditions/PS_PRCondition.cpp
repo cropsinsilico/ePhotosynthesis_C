@@ -29,7 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET_SRC(PS_PRCondition);
+DEFINE_CONDITION_COMPOSITE(PS_PR);
 
 std::size_t PS_PRCondition::count = 0;
 PS_PRCondition::PS_PRCondition(const PS_PRCondition* const other) {
@@ -76,15 +76,4 @@ arr PS_PRCondition::_toArray() const {
     arr prvec = PR_con->toArray();
     psvec.insert(psvec.end(), prvec.begin(), prvec.end());
     return psvec;
-}
-
-void PS_PRCondition::_clear() {
-    if (PS_con != nullptr) {
-        delete PS_con;
-        PS_con = nullptr;
-    }
-    if (PR_con != nullptr) {
-        delete PR_con;
-        PR_con = nullptr;
-    }
 }

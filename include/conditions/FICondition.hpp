@@ -28,6 +28,10 @@
 
 #include "ConditionBase.hpp"
 
+#define PARENT_FI FIBF
+#define NRATIO_FI 23
+#define PARAM_TYPES_FI COND, POOL, RC, VEL
+
 namespace ePhotosynthesis {
 namespace modules {
 class FI;
@@ -41,7 +45,7 @@ class FIBFCondition;
  */
 class FICondition : public ConditionBase<FICondition, FIBFCondition, MODULE_FI> {
 public:
-    DECLARE_VALUE_SET(FICondition, ConditionBase<FICondition, FIBFCondition, MODULE_FI>)
+    DECLARE_CONDITION(FI)
     FICondition(FIBFCondition* par = nullptr) {
         setParent(par);
         initMembers();
@@ -61,29 +65,8 @@ public:
       */
     FICondition(const arr &vec, const std::size_t offset = 0);
 
-    /**
-      Write the contents of the instance to the output stream.
-
-      \param out output stream to write to.
-      \param tab The level of indentation to use.
-      \returns The output stream
-      */
-    std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-
     SET_GET_BOOL(BF_connect, PQn)
 private:
-    friend ConditionBase;
-    friend modules::FI;
-    /**
-      \copydoc ConditionBase::_fromArray
-      */
-    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
-
-    /**
-      \copydoc ConditionBase::_toArray
-      */
-    arr _toArray() const override;
-
     /**
       Get the size of the data vector
 
@@ -96,11 +79,6 @@ private:
     }
 
     /**
-      \copydoc ConditionBase::_clear
-      */
-    void _clear() override {}
-
-    /**
       Reset any static data members to their initial state
       */
     static void _reset(){
@@ -108,13 +86,9 @@ private:
     }
 
     static const std::size_t count;  // size of the current serialized output
-
-#ifdef INCDEBUG
-    const static Debug::DebugLevel _dlevel = Debug::Low;
-#endif
 };
 
-  DEFINE_VALUE_SET_HEADER(FICondition);
+    DEFINE_CONDITION_HEADER(FI);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

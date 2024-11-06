@@ -28,6 +28,10 @@
 
 #include "ConditionBase.hpp"
 
+#define PARENT_RROEA trDynaPS
+#define NRATIO_RROEA 0
+#define PARAM_TYPES_RROEA COND, POOL, KE, RC, VEL
+
 namespace ePhotosynthesis {
 namespace modules {
 class RROEA;
@@ -41,7 +45,7 @@ class trDynaPSCondition;
  */
 class RROEACondition : public ConditionBase<RROEACondition, trDynaPSCondition, MODULE_RROEA> {
 public:
-    DECLARE_VALUE_SET(RROEACondition, ConditionBase<RROEACondition, trDynaPSCondition, MODULE_RROEA>)
+    DECLARE_CONDITION(RROEA)
     RROEACondition(trDynaPSCondition* par = nullptr) {
         setParent(par);
         initMembers();
@@ -61,23 +65,7 @@ public:
       */
     RROEACondition(const arr &vec, const std::size_t offset = 0);
 
-    /**
-      Write the contents of the instance to the output stream.
-
-      \param out output stream to write to.
-      \param tab The level of indentation to use.
-      \returns The output stream
-      */
-    std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-
 private:
-    friend ConditionBase;
-    friend class modules::RROEA;
-    /**
-      \copydoc ConditionBase::_fromArray
-      */
-    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
-
     /**
       Get the size of the data vector
 
@@ -88,27 +76,14 @@ private:
     }
 
     /**
-      \copydoc ConditionBase::_toArray
-      */
-    arr _toArray() const override;
-
-    /**
-      \copydoc ConditionBase::_clear
-      */
-    void _clear() override {}
-
-    /**
       Reset any static data members to their initial state
       */
     static void _reset() {}
 
     static const std::size_t count; // size of the current serialized output
-#ifdef INCDEBUG
-    const static Debug::DebugLevel _dlevel = Debug::Low;
-#endif
 };
 
-  DEFINE_VALUE_SET_HEADER(RROEACondition);
+    DEFINE_CONDITION_HEADER(RROEA);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

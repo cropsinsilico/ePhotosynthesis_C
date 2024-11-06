@@ -29,6 +29,10 @@
 #include "RROEACondition.hpp"
 #include "DynaPSCondition.hpp"
 
+#define PARENT_trDynaPS trDynaPS
+#define CHILDREN_trDynaPS DynaPS, RROEA
+#define PARAM_TYPES_trDynaPS COND
+
 namespace ePhotosynthesis {
 namespace modules {
 class trDynaPS;
@@ -40,7 +44,7 @@ namespace conditions {
  */
 class trDynaPSCondition : public ConditionBase<trDynaPSCondition, trDynaPSCondition, MODULE_trDynaPS> {
 public:
-    DECLARE_VALUE_SET_COMPOSITE(trDynaPSCondition, (RROEACondition, DynaPSCondition), (RROEA_con, DynaPS_con), ConditionBase<trDynaPSCondition, trDynaPSCondition, MODULE_trDynaPS>)
+    DECLARE_CONDITION_COMPOSITE(trDynaPS)
     trDynaPSCondition() : RROEA_con(new RROEACondition(this)), DynaPS_con(new DynaPSCondition(this)) {
         initMembers();
     }
@@ -81,37 +85,11 @@ public:
     RROEACondition* RROEA_con = nullptr;   // child Condition
     DynaPSCondition* DynaPS_con = nullptr;   // child Condition
 
-    void setParent(trDynaPSCondition* par) {
+    void setParent(trDynaPSCondition* par) override {
         (void)par;
     }
 
-    /**
-      Write the contents of the instance to the output stream.
-
-      \param out output stream to write to.
-      \param tab The level of indentation to use.
-      \returns The output stream
-      */
-    std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-
 private:
-    friend ConditionBase;
-    friend class modules::trDynaPS;
-    /**
-      \copydoc ConditionBase::_fromArray
-      */
-    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
-
-    /**
-      \copydoc ConditionBase::_toArray
-      */
-    arr _toArray() const override;
-
-    /**
-      \copydoc ConditionBase::_clear
-      */
-    void _clear() override;
-
     /**
       Get the size of the data vector
 
@@ -123,18 +101,9 @@ private:
         return count;
     }
 
-    /**
-      Reset any static data members to their initial state
-      */
-    static void _reset() {
-        count = 0;
-    }
-
-    static std::size_t count;  // size of the current serialized output
-#ifdef INCDEBUG
-    const static Debug::DebugLevel _dlevel = Debug::Top;
-#endif
 };
+
+  DEFINE_CONDITION_COMPOSITE_HEADER(trDynaPS);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

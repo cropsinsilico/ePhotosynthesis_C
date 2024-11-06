@@ -27,12 +27,6 @@
 #include "Variables.hpp"
 #include "modules/FIBF.hpp"
 #include "globals.hpp"
-const double input_LHCI = 6.;
-const double input_LHCII = 13.;
-const double input_PSI = 1.;
-const double input_PSIIcore = 1.;
-const double PSIIantennaSize = 37.;
-const double PSIantennaSize = 95.;
 
 // This routine initialze the parameters used for all the routines.
 
@@ -42,9 +36,9 @@ using namespace ePhotosynthesis::conditions;
 
 void ePhotosynthesis::SYSInitial(Variables *theVars) {
 
-    theVars->PS12ratio = input_PSI / input_PSIIcore;
+    theVars->PS12ratio = theVars->input_PSI / theVars->input_PSIIcore;
 
-    FIBF::setChlT2(input_PSIIcore * (PSIIantennaSize + 13 * input_LHCII)); // U and A, PSII and LHCII
-    FIBF::setChlT(PSIIantennaSize * input_PSIIcore);  // U , PSII
-    FIBF::setChlPSI(input_PSI * (PSIantennaSize + 13 * input_LHCI));       // U and A of PSI, total Chl in PSI
+    FIBF::setChlT2(theVars->input_PSIIcore * (theVars->PSIIantennaSize + 13 * theVars->input_LHCII)); // U and A, PSII and LHCII
+    FIBF::setChlT(theVars->PSIIantennaSize * theVars->input_PSIIcore);  // U , PSII
+    FIBF::setChlPSI(theVars->input_PSI * (theVars->PSIantennaSize + 13 * theVars->input_LHCI));       // U and A of PSI, total Chl in PSI
 }

@@ -5,7 +5,7 @@
 
 using namespace ePhotosynthesis;
 
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::all = {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K1, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K2, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K3, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K4, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K5, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K6, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K7, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K8, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K9, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K10, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vmax11, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kqi, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)PK, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)PMg, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)PCl, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kau, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kua, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kf, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kd, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K15, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K16, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE8, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE9, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_IPS, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_Cytf, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_PG, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)MemCap, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RVA, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KBs, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KBl, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1ATP, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1ADP, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1PI, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM2NADP, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM2NADPH, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V2M, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE2};
+template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::all = {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K1, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K2, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K3, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K4, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K5, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K6, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K7, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K8, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K9, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K10, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vmax11, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kqi, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)PK, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)PMg, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)PCl, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kau, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kua, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kf, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kd, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE8, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE9, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K15, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K16, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_IPS, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_Cytf, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_PG, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)MemCap, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RVA, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KBs, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KBl, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1ATP, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1ADP, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1PI, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM2NADP, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM2NADPH, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V2M, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE2};
 template<> 
 const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::names = {
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K1, "K1"      },
@@ -27,10 +27,10 @@ const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueS
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kua, "Kua"     },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kf, "Kf"      },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kd, "Kd"      },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K15, "K15"     },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K16, "K16"     },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE8, "KE8"     },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE9, "KE9"     },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K15, "K15"     },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K16, "K16"     },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_IPS, "Em_IPS"  },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_Cytf, "Em_Cytf" },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_PG, "Em_PG"   },
@@ -67,10 +67,10 @@ const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, double> ValueSetEnu
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kua, 1.0e10 },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kf, 6.3e6  },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kd, 2.0e8  },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K15, 1.0e10 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K16, 1.0e5  },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE8, 0.0    },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE9, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K15, 1.0e10 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K16, 1.0e5  },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_IPS, 0.31   },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_Cytf, 0.27   },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_PG, 0.35   },
@@ -107,10 +107,10 @@ const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, double> ValueSetEnu
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kua, 1.0e10 },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kf, 6.3e6  },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kd, 2.0e8  },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K15, 1.0e10 },
-  {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K16, 1.0e5  },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE8, 0.0    },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE9, 0.0    },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K15, 1.0e10 },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K16, 1.0e5  },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_IPS, 0.31   },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_Cytf, 0.27   },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_PG, 0.35   },
@@ -130,10 +130,18 @@ template<>
 const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::constant = {
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_IPS,
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_Cytf,
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_PG,
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::calculated = {
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE8,
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE9,
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::nonvector = {
@@ -160,6 +168,9 @@ const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, double> ValueSetE
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::constant = {
@@ -255,6 +266,9 @@ const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, double> ValueSetEnu
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::constant = {
@@ -458,6 +472,9 @@ const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, double> ValueSetEnu
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::constant = {
@@ -828,6 +845,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::constant = {
 };
 template<> 
@@ -896,6 +916,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::constant = {
   ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ke2ATPase,
   ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Coeff,
@@ -940,6 +963,9 @@ const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, double> Value
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::constant = {
@@ -1002,6 +1028,9 @@ const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, double> ValueSet
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::constant = {
@@ -1201,6 +1230,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::constant = {
 };
 template<> 
@@ -1245,6 +1277,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::constant = {
 };
 template<> 
@@ -1277,6 +1312,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::constant = {
 };
 template<> 
@@ -1307,6 +1345,9 @@ const std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type, double> ValueSetEn
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::constant = {

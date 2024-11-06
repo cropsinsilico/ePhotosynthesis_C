@@ -1,3 +1,4 @@
+# Name		Value	C3Value	Docs
 ke2GAPDH	22.0		# *= Coeff / 60; The rate constant of electron transfer to GAPDH. From literature.
 ke2MDH		20.0		# *= Coeff / 60; The rate constant of electront transfer to MDH, this rate is totally ASSUMED.
 ke2FBPase	1.38		# *= Coeff / 60; The rate constant of electron transfer from thioredoxin to FBPase.

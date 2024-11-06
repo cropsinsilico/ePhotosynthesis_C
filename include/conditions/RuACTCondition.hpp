@@ -28,6 +28,10 @@
 
 #include "ConditionBase.hpp"
 
+#define PARENT_RuACT RA
+#define NRATIO_RuACT 16
+#define PARAM_TYPES_RuACT COND, POOL, RC, VEL
+
 namespace ePhotosynthesis {
 namespace modules {
 class RuACT;
@@ -41,7 +45,7 @@ class RACondition;
  */
 class RuACTCondition : public ConditionBase<RuACTCondition, RACondition, MODULE_RuACT> {
 public:
-    DECLARE_VALUE_SET(RuACTCondition, ConditionBase<RuACTCondition, RACondition, MODULE_RuACT>)
+    DECLARE_CONDITION(RuACT)
     RuACTCondition(RACondition* par = nullptr) {
         setParent(par);
         initMembers();
@@ -61,27 +65,7 @@ public:
       */
     RuACTCondition(const arr vec, const std::size_t offset = 0);
 
-    /**
-      Write the contents of the instance to the output stream.
-
-      \param out output stream to write to.
-      \param tab The level of indentation to use.
-      \returns The output stream
-      */
-    std::ostream& _print(std::ostream &out, const uint tab = 0) const;
 private:
-    friend ConditionBase;
-    friend class modules::RuACT;
-    /**
-      \copydoc ConditionBase::_fromArray
-      */
-    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
-
-    /**
-      \copydoc ConditionBase::_toArray
-      */
-    arr _toArray() const override;
-
     /**
       Get the size of the data vector
 
@@ -94,11 +78,6 @@ private:
     }
 
     /**
-      \copydoc ConditionBase::_clear
-      */
-    void _clear() override {}
-
-    /**
       Reset any static data members to their initial state
       */
     static void _reset() {
@@ -107,12 +86,9 @@ private:
     SET_GET_BOOL(EPS_connect, RuBP)
 
     static const std::size_t count;  // size of the current serialized output
-#ifdef INCDEBUG
-    const static Debug::DebugLevel _dlevel = Debug::Low;
-#endif
 };
 
-  DEFINE_VALUE_SET_HEADER(RuACTCondition);
+    DEFINE_CONDITION_HEADER(RuACT);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

@@ -31,13 +31,10 @@
 #include "definitions.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class XanCycleModuleTest;
-}
-#endif
+
+FORWARD_DECLARE_MODULE(XanCycle);
+
 namespace modules {
-class DynaPS;
 
 /**
  Class for XanCycle code and internal variables
@@ -46,11 +43,6 @@ class XanCycle : public MODULE_BASE(XanCycle) {
 public:
     DECLARE_MODULE(XanCycle)
 private:
-    friend ModuleBase;
-    friend class modules::DynaPS;
-#ifdef TESTING
-    friend class test::XanCycleModuleTest;
-#endif
     /**
       Function to set the initial state of the XanCycleCondition class.
 
@@ -102,7 +94,6 @@ private:
         kza = 0.;
         TIME = 0.;
         N = 1;
-        conditions::XanCycleCondition::reset();
     }
 
     SET_GET(kav)
@@ -115,7 +106,7 @@ private:
     static std::size_t N;  // The current size of the XanCycle TimeSeries
 };
 
-  DEFINE_VALUE_SET_STATIC_HEADER(XanCycle);
+  DEFINE_MODULE_HEADER(XanCycle);
   
 }  // namespace modules
 }  // namespace ePhotosynthesis

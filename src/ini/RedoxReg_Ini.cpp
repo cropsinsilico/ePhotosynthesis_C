@@ -41,16 +41,13 @@ double RedoxReg::TIME = 0.;
 std::size_t RedoxReg::N = 1;
 bool RedoxReg::trDynaPS2RedReg_cal = false;
 
-DEFINE_VALUE_SET_STATIC(RedoxReg);
-DEFINE_VALUE_SET(RedoxRegCondition);
+DEFINE_MODULE_COMPOSITE(RedoxReg);
 
-RedoxRegCondition* RedoxReg::_init(Variables *theVars) {
-
-    RACondition* RA_con = RA::init(theVars);
+void RedoxReg::_initOrig(Variables *theVars,
+			 RedoxRegCondition* RedoxReg_con) {
 
     const double Thion = 0.25;     // This is a wild guess
     
-    RedoxRegCondition* RedoxReg_con = new RedoxRegCondition(RA_con, Thion);
     RedoxReg_con->Thion = Thion;
     RedoxReg::Fd_Thio_ET = 500.;
     RedoxReg::ThioT = 0.5;
@@ -84,27 +81,56 @@ RedoxRegCondition* RedoxReg::_init(Variables *theVars) {
     theVars->RedoxReg_MP[4][2] = 0.5;
 
     //theVars->BF2RedoxReg_Fdt = theVars->BF_Pool.kU_f;
-
-    return RedoxReg_con;
 }
 
-void RedoxReg::_initAlt(Variables *theVars,
-			RedoxRegCondition* RedoxReg_con) {
-#ifdef CHECK_VALUE_SET_ALTS
-    theVars->initParamStatic<RedoxReg>();
-    theVars->initParam(*RedoxReg_con);
+void RedoxReg::_initCalc(Variables *theVars, RedoxRegCondition* RedoxReg_con) {
+    RedoxReg::RedoxReg_VMAX6 = PS::getV6();
+    RedoxReg::RedoxReg_VMAX9 = PS::getV9();
+    RedoxReg::RedoxReg_VMAX13 = PS::getV13();
+    RedoxReg::RedoxReg_VMAX16 = PS::getV16();
+
+    for (int i = 0; i < 5; i++)
+        theVars->RedoxReg_MP.push_back(zeros(3));
+    theVars->RedoxReg_MP[0][0] = 1000.;
+    theVars->RedoxReg_MP[0][1] = - 0.3;
+    theVars->RedoxReg_MP[0][2] = 0.5;
+
+    theVars->RedoxReg_MP[1][0] = 6.;             // FBPase
+    theVars->RedoxReg_MP[1][1] = - 0.305;
+    theVars->RedoxReg_MP[1][2] = 0.5;
+
+    theVars->RedoxReg_MP[2][0] = 9.;             // SBPase
+    theVars->RedoxReg_MP[2][1] = - 0.3;
+    theVars->RedoxReg_MP[2][2] = 0.5;
+
+    theVars->RedoxReg_MP[3][0] = 13.;            // PRK
+    theVars->RedoxReg_MP[3][1] = - 0.295;
+    theVars->RedoxReg_MP[3][2] = 0.5;
+
+    theVars->RedoxReg_MP[4][0] = 16.;            // ATPase
+    theVars->RedoxReg_MP[4][1] = - 0.28;
+    theVars->RedoxReg_MP[4][2] = 0.5;
+
+    //theVars->BF2RedoxReg_Fdt = theVars->BF_Pool.kU_f;
+}
+
+// void RedoxReg::_initAlt(Variables *theVars,
+// 			RedoxRegCondition* RedoxReg_con) {
+// #ifdef CHECK_VALUE_SET_ALTS
+//     theVars->initParamStatic<RedoxReg>();
+//     theVars->initParam(*RedoxReg_con);
   
-    RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX6, PS::getV6());
-    RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX9, PS::getV9());
-    RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX13, PS::getV13());
-    RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX16, PS::getV16());
+//     RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX6, PS::getV6());
+//     RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX9, PS::getV9());
+//     RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX13, PS::getV13());
+//     RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX16, PS::getV16());
 
-    // TODO: Read RedoxReg_MP from file?
+//     // TODO: Read RedoxReg_MP from file?
     
-#else // CHECK_VALUE_SET_ALTS
-    UNUSED(theVars);
-    UNUSED(RedoxReg_con);
-#endif // CHECK_VALUE_SET_ALTS
-}
+// #else // CHECK_VALUE_SET_ALTS
+//     UNUSED(theVars);
+//     UNUSED(RedoxReg_con);
+// #endif // CHECK_VALUE_SET_ALTS
+// }
 
 DEFINE_DEFAULT_CHECKALT(RedoxReg)

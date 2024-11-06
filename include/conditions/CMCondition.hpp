@@ -30,6 +30,10 @@
 #include "PS_PRCondition.hpp"
 #include "SUCSCondition.hpp"
 
+#define PARENT_CM EPS
+#define CHILDREN_CM PS_PR, SUCS
+#define PARAM_TYPES_CM COND
+
 namespace ePhotosynthesis {
 namespace modules {
 class CM;
@@ -42,7 +46,7 @@ class EPSCondition;
  */
 class CMCondition : public ConditionBase<CMCondition, EPSCondition, MODULE_CM> {
 public:
-    DECLARE_VALUE_SET_COMPOSITE(CMCondition, (PS_PRCondition, SUCSCondition), (PS_PR_con, SUCS_con), ConditionBase<CMCondition, EPSCondition, MODULE_CM>)
+    DECLARE_CONDITION_COMPOSITE(CM)
     CMCondition(EPSCondition* par = nullptr) : PS_PR_con(new PS_PRCondition(this)), SUCS_con(new SUCSCondition(this)) {
         setParent(par);
         initMembers();
@@ -83,30 +87,7 @@ public:
     PS_PRCondition* PS_PR_con = nullptr;   // child Condition
     SUCSCondition* SUCS_con = nullptr;     // child Condition
 
-    /**
-      Write the contents of the instance to the output stream.
-
-      \param out output stream to write to.
-      \param tab The level of indentation to use.
-      \returns The output stream
-      */
-    std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-#ifdef INCDEBUG
-    static void setTop() {CMCondition::_dlevel = Debug::Top;}
-#endif
 private:
-    friend ConditionBase;
-    friend class modules::CM;
-    /**
-      \copydoc ConditionBase::_fromArray
-      */
-    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
-
-    /**
-      \copydoc ConditionBase::_toArray
-      */
-    arr _toArray() const override;
-
     /**
       Get the size of the data vector
 
@@ -116,24 +97,9 @@ private:
         count = PS_PRCondition::size() + SUCSCondition::size();
         return count;
     }
-
-    /**
-      \copydoc ConditionBase::_clear
-      */
-    void _clear() override;
-
-    /**
-      Reset any static data members to their initial state
-      */
-    static void _reset() {
-        count = 0;
-    }
-
-    EPHOTO_API static std::size_t count;  // size of the current serialized output
-#ifdef INCDEBUG
-    EPHOTO_API static Debug::DebugLevel _dlevel;
-#endif
 };
+
+  DEFINE_CONDITION_COMPOSITE_HEADER(CM);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

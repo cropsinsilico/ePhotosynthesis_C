@@ -1,3 +1,4 @@
+# Name		Value	C3Value	Docs
 K1		1.0e6		# The rate constant for formation of ISP.QH2 complex; unit:  per second
 K2		500.0		# The rate constant for ISP.QH2-->QH(semi) + ISPH(red) ; unit:  per second
 K3		5.0e7		# The rate constant for QH. + cytbL --> Q + cytbL- + H+ Unit: s-1
@@ -17,13 +18,13 @@ Kau		1.0e10		# The rate constant for exciton transfer from perpheral antenna to 
 Kua		1.0e10		# The rate constant for exciton transfer from core antenna to peripheral antenna, SEE FI Unit: s-1
 Kf		6.3e6		# The rate constant for fluorescence emission, see the note in FI Unit: s-1
 Kd		2.0e8		# The rate constant for heat dissipation; see the note for FI Unit: s-1
+KE8		0.0		# [CALC] ISPHr + cytc1 --> ISPHox + cytc1-; Calculated from Em_IPS, Em_Cytf & Em_PG; Unit: s-1
+KE9		0.0		# [CALC] cytc1- + cytc2 --> cytc1 + cytc2-; Calculated from Em_IPS, Em_Cytf & Em_PG; Unit: s-1
 K15		1.0e10		# The rate constant for primary charge separation in PSI Unit: s-1
 K16		1.0e5		# The rate constant for electron tranfer from electron acceptor of PSI to Fd Unit: s-1
-KE8		0.0		# ISPHr + cytc1 --> ISPHox + cytc1-; Calculated from Em_IPS, Em_Cytf & Em_PG; Unit: s-1
-KE9		0.0		# cytc1- + cytc2 --> cytc1 + cytc2-; Calculated from Em_IPS, Em_Cytf & Em_PG; Unit: s-1
-Em_IPS		0.31		# ISPHr + cytc1 --> ISPHox + cytc1-
-Em_Cytf		0.27		# ISPHr + cytc1 --> ISPHox + cytc1-
-Em_PG		0.35		# cytc1- + cytc2 --> cytc1 + cytc2-
+Em_IPS		0.31		# [CONST] ISPHr + cytc1 --> ISPHox + cytc1-
+Em_Cytf		0.27		# [CONST] ISPHr + cytc1 --> ISPHox + cytc1-
+Em_PG		0.35		# [CONST] cytc1- + cytc2 --> cytc1 + cytc2-
 MemCap		0.6e-6		# The membrane capacity
 RVA		8.0e-10		# The ratio of lumen volume to thylakoid membrane area
 KBs		1.1e-8 		# The buffer equilibrium constant in stroma

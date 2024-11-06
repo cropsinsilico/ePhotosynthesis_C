@@ -5,4 +5,5 @@ cNADPHsyn	0.0	1.0	# [GLYMAID=Glyma.09G024100] cNADPHsyn=1.094468408;%1.0388 WY20
 EPS_ATP_Rate	0.0	0.0	# Indicate in the beginning there is no ATP synthesis activity.
 _Pi		0.9	0.9	# Phosphate in stroma
 PMODTEM		1.0		# [CONST] ?; Used to scale RC parameters PK, PMg, & PCl
-RT		2477.572	# [CONST] ?; 8.314 * 298.; Used to calculate RC parameters KE8 & KE9
+RT		2477.572	# [CONST] 8.314 * 298.; Gas constant and the temperature. Used to calculate RC parameters KE8, KE9 & KE11
+DeltaGo		30543.2		# [CONST] 7.3 * 4184; The free energy change for ATP synthesis from ADP and Pi; Used to calculate KE11

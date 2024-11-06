@@ -27,6 +27,11 @@
  **********************************************************************************************************************************************/
 #include "RACondition.hpp"
 
+#define PARENT_RedoxReg RedoxReg
+#define NRATIO_RedoxReg 0
+#define CHILDREN_RedoxReg RA
+#define PARAM_TYPES_RedoxReg COND, VEL
+
 namespace ePhotosynthesis {
 namespace modules {
 class RedoxReg;
@@ -38,7 +43,7 @@ namespace conditions {
  */
 class RedoxRegCondition : public ConditionBase<RedoxRegCondition, RedoxRegCondition, MODULE_RedoxReg> {
 public:
-    DECLARE_VALUE_SET_COMPOSITE(RedoxRegCondition, (RACondition), (RA_con), ConditionBase<RedoxRegCondition, RedoxRegCondition, MODULE_RedoxReg>)
+    DECLARE_CONDITION_COMPOSITE(RedoxReg)
     RedoxRegCondition() : RA_con(new RACondition()) {
       initMembers();
     }
@@ -66,7 +71,7 @@ public:
       */
     RedoxRegCondition(const arr &vec, const std::size_t offset = 0);
 
-    void setParent(RedoxRegCondition* par) {(void)par;}
+    void setParent(RedoxRegCondition* par) override {(void)par;}
 
     RACondition* RA_con = nullptr;     // child Condition
 
@@ -83,23 +88,6 @@ public:
     SET_GET_NOVS(V13)
     SET_GET_NOVS(V16)
 private:
-    friend ConditionBase;
-    friend class modules::RedoxReg;
-    /**
-      \copydoc ConditionBase::_fromArray
-      */
-    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
-
-    /**
-      \copydoc ConditionBase::_toArray
-      */
-    arr _toArray() const override;
-
-    /**
-      \copydoc ConditionBase::_clear
-      */
-    void _clear() override;
-
     /**
       Get the size of the data vector
 
@@ -109,21 +97,9 @@ private:
         return RACondition::size() + 1;
     }
 
-    /**
-      Reset any static data members to their initial state
-      */
-    static void _reset() {
-        V6 = 0.;
-        V9 = 0.;
-        V13 = 0.;
-        V16 = 0.;
-    }
-#ifdef INCDEBUG
-    const static Debug::DebugLevel _dlevel = Debug::Middle;
-#endif
 };
 
-  DEFINE_VALUE_SET_HEADER(RedoxRegCondition);
+  DEFINE_CONDITION_COMPOSITE_HEADER(RedoxReg);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

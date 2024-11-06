@@ -64,15 +64,15 @@ public:
         k12 = other.k12;
         k23 = other.k23;
         k30 = other.k30;
-        k01 = other.k01;
-        k2 = other.k2;
-        kAB1 = other.kAB1;
-        kBA1 = other.kBA1;
-        kAB2 = other.kAB2;
-        kBA2 = other.kBA2;
-        k3 = other.k3;
-        k_r3 = other.k_r3;
-        k_pq_oxy = other.k_pq_oxy;
+        // k01 = other.k01;
+        // k2 = other.k2;
+        // kAB1 = other.kAB1;
+        // kBA1 = other.kBA1;
+        // kAB2 = other.kAB2;
+        // kBA2 = other.kBA2;
+        // k3 = other.k3;
+        // k_r3 = other.k_r3;
+        // k_pq_oxy = other.k_pq_oxy;
 	copyMembers(other);
 	return *this;
     }

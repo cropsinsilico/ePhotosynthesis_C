@@ -29,7 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET_SRC(RedoxRegCondition);
+DEFINE_CONDITION_COMPOSITE_BASE(RedoxReg);
 
 RedoxRegCondition::RedoxRegCondition(const RedoxRegCondition* const other) {
     initMembers();
@@ -58,6 +58,11 @@ RedoxRegCondition::RedoxRegCondition(const arr &vec, const std::size_t offset) {
     fromArray(vec, offset);
 }
 
+void RedoxRegCondition::_createChildren() {
+    if (RA_con == nullptr)
+        RA_con = new RACondition();
+}
+
 void RedoxRegCondition::_fromArray(const arr &vec, const std::size_t offset) {
     if (RA_con == nullptr)
         RA_con = new RACondition();
@@ -69,6 +74,13 @@ arr RedoxRegCondition::_toArray() const {
     arr rvec = RA_con->toArray();
     rvec.push_back(Thion);
     return rvec;
+}
+
+void RedoxRegCondition::_reset() {
+    V6 = 0.;
+    V9 = 0.;
+    V13 = 0.;
+    V16 = 0.;
 }
 
 void RedoxRegCondition::_clear() {

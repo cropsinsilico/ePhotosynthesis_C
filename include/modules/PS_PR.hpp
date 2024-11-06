@@ -30,13 +30,10 @@
 #include "conditions/PS_PRCondition.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class PS_PRModuleTest;
-}
-#endif
+
+FORWARD_DECLARE_MODULE_COMPOSITE(PS_PR);
+
 namespace modules {
-class CM;
 
 /**
  Class for the PS_PR Module functions.
@@ -45,18 +42,6 @@ class PS_PR : public MODULE_BASE(PS_PR) {
 public:
     DECLARE_MODULE_COMPOSITE(PS_PR)
 private:
-    friend ModuleBase;
-    friend class modules::CM;
-#ifdef TESTING
-    friend class test::PS_PRModuleTest;
-#endif
-    /**
-      Function to set the initial state of the PS_PRCondition class.
-
-      \param theVars Pointer to the global variables
-      \return A PS_PRCondition object with values set based on the input
-      */
-    static conditions::PS_PRCondition* _init(Variables *theVars);
 
     /**
       Function to calculate the dy/dt values for the PS_PRCondition at the given time stamp.
@@ -92,12 +77,9 @@ private:
         (void)PS_PRs;
         (void)theVars;
     }
-
-    /**
-      Reset the static member variables to their default values.
-      */
-    static void _reset();
 };
+
+  DEFINE_MODULE_COMPOSITE_HEADER(PS_PR);
 
 }  // namespace modules
 }  // namespace ePhotosynthesis

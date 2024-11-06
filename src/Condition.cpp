@@ -47,7 +47,11 @@ void ePhotosynthesis::Condition(double t, Variables *theVars) {
 
     theVars->CO2_cond = CO2Temp / (3. * pow(10., 4.));
     theVars->O2_cond = O2Temp * 1.26;
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+    const double light = theVars->TestLi; // light umol m-2 s-1
+#else // MAKE_EQUIVALENT_TO_MATLAB
     const double light = theVars->TestLi * 0.85 * 0.85;// light umol m-2 s-1
+#endif // MAKE_EQUIVALENT_TO_MATLAB
 
     // Here the time dependent variable is regulated.
 

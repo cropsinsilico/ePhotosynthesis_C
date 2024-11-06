@@ -1,4 +1,5 @@
+# Name		Value	C3Value	Docs
 Fd_Thio_ET	500
 ThioT		0.5
 Thio_Oxidation	0.1
-Thion0		0.25 # This is a wild guess
+Thion0		0.25		# This is a wild guess

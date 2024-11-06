@@ -1,16 +1,14 @@
-- Add rate constants to init
-- Add Variables constants to enum
-- Clean up comments for param files
 - Add support for static parameters on ValueSets (Needed by RedoxRegCondition)
 - Use pointers/MEMBERS_ macros in copy operator/constructor, print, etc.?
 - Replace static constants in RedoxRegCondition.hpp
-- Replace constants in SYSInitial
 - Cleared of constants: conditions
 - Set variables directly from evn, enzyme
 - Set Vfactor variables from grn
 - Raise an error if value specified more than once
-- Handle variable aliases
 - Use GlymaIDs from param
-- Set up system for enabling/disabling variables based on the selected driver
-- Methods for dumping all variables
-- Track useC3 on value set to allow it to change during a session?
+- Remove unnecessary explicit use of parent class members in INHERIT_ macros
+- Change defaults_C3 to only specify values that are different when useC3 is true
+- Use of macros for modules
+- Use of macros for conditions
+- Tests for dynamic inputs of variables from files
+- Remove velocity output

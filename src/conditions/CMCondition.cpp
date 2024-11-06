@@ -29,7 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET_SRC(CMCondition);
+DEFINE_CONDITION_COMPOSITE(CM);
 
 CMCondition::CMCondition(const CMCondition* const other) {
     initMembers();
@@ -81,15 +81,4 @@ arr CMCondition::_toArray() const {
     arr svec = SUCS_con->toArray();
     psprvec.insert(psprvec.end(), svec.begin(), svec.end());
     return psprvec;
-}
-
-void CMCondition::_clear() {
-    if (PS_PR_con != nullptr) {
-        delete PS_PR_con;
-        PS_PR_con = nullptr;
-    }
-    if (SUCS_con != nullptr) {
-        delete SUCS_con;
-        SUCS_con = nullptr;
-    }
 }

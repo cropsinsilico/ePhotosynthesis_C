@@ -30,11 +30,9 @@
 #include "conditions/RedoxRegCondition.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class RedoxRegModuleTest;
-}
-#endif
+
+FORWARD_DECLARE_MODULE_COMPOSITE(RedoxReg);
+  
 namespace modules {
 
 /**
@@ -42,20 +40,9 @@ namespace modules {
  */
 class RedoxReg : public MODULE_BASE(RedoxReg) {
 public:
-    DECLARE_MODULE(RedoxReg)
+    DECLARE_MODULE_TOP(RedoxReg) // RedoxReg is special case
     SET_GET_BOOL_NOSKIP(trDynaPS2RedReg_cal)
 private:
-    friend ModuleBase;
-#ifdef TESTING
-    friend class test::RedoxRegModuleTest;
-#endif
-    /**
-      Function to set the initial state of the RedoxRegCondition class.
-
-      \param theVars Pointer to the global variables
-      \return A RedoxRegCondition object with values set based on the input
-      */
-    static conditions::RedoxRegCondition* _init(Variables *theVars);
 
     /**
       Calculate the Rates of RedoxReg based on the input RedoxRegCondition.
@@ -102,7 +89,6 @@ private:
         RedoxReg_VMAX9 = 0.;
         TIME = 0.;
         N = 1;
-        conditions::RedoxRegCondition::reset();
     }
     SET_GET(RedoxReg_VMAX13)
     SET_GET(RedoxReg_VMAX16)
@@ -112,7 +98,7 @@ private:
     static std::size_t N;  // The current size of the RedoxReg TimeSeries
 };
 
-  DEFINE_VALUE_SET_STATIC_HEADER(RedoxReg);
+  DEFINE_MODULE_COMPOSITE_HEADER(RedoxReg);
   
 }  // namespace modules
 }  // namespace ePhotosynthesis

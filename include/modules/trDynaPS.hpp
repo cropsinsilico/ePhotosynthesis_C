@@ -30,33 +30,19 @@
 #include "conditions/trDynaPSCondition.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class trDynaPSModuleTest;
-}
-#endif
+
+FORWARD_DECLARE_MODULE_TOP(trDynaPS); // trDynaPS never has parent
+  
 namespace drivers {
 class trDynaPSDriver;
 }
+  
 namespace modules {
 
 class trDynaPS : public MODULE_BASE(trDynaPS) {
 public:
-    DECLARE_MODULE_COMPOSITE(trDynaPS)
+    DECLARE_MODULE_DRIVER(trDynaPS)
 private:
-    friend ModuleBase;
-    friend drivers::trDynaPSDriver;
-#ifdef TESTING
-    friend class test::trDynaPSModuleTest;
-#endif
-
-    /**
-      Function to set the initial state of the trDynaPSCondition class.
-
-      \param theVars Pointer to the global variables
-      \return A trDynaPSCondition object with values set based on the input
-      */
-    static conditions::trDynaPSCondition* _init(Variables *theVars);
 
     /**
       Function to calculate the dy/dt values for the trDynaPSCondition at the given time stamp.
@@ -94,11 +80,6 @@ private:
         (void)trDynaPS_con;
         (void)theVars;
     }
-
-    /**
-      Reset the static member variables to their default values.
-      */
-    static void _reset();
 };
 
 }  // namespace modules

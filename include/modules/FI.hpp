@@ -30,11 +30,9 @@
 #include "conditions/FIBFCondition.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class FIModuleTest;
-}
-#endif
+
+FORWARD_DECLARE_MODULE(FI);
+  
 namespace modules {
 
 /**
@@ -45,11 +43,6 @@ public:
     DECLARE_MODULE(FI)
     SET_GET_BOOL_MODULE(BF_connect, conditions::FI)
 private:
-    friend ModuleBase;
-    friend class modules::FIBF;
-#ifdef TESTING
-    friend class test::FIModuleTest;
-#endif
 
     /**
       Function to set the initial state of the FICondition class.
@@ -98,13 +91,12 @@ private:
         cpsii = 0.;
         N = 1;
         TIME = 0.;
-        conditions::FICondition::reset();
     }
     static double TIME;    // The timestamp of the most recent call to _Rate
     static std::size_t N;  // The current size of the FI TimeSeries
 };
 
-  DEFINE_VALUE_SET_STATIC_HEADER(FI);
+  DEFINE_MODULE_HEADER(FI);
   
 }  // namespace modules
 }  // namespace ePhotosynthesis

@@ -30,6 +30,10 @@
 #include "XanCycleCondition.hpp"
 #include <sundials/sundials_types.h>
 
+#define PARENT_DynaPS trDynaPS
+#define CHILDREN_DynaPS RA, XanCycle
+#define PARAM_TYPES_DynaPS COND
+
 namespace ePhotosynthesis {
 namespace modules {
 class DynaPS;
@@ -42,7 +46,7 @@ class trDynaPSCondition;
  */
 class DynaPSCondition : public ConditionBase<DynaPSCondition, trDynaPSCondition, MODULE_DynaPS> {
 public:
-    DECLARE_VALUE_SET_COMPOSITE(DynaPSCondition, (RACondition, XanCycleCondition), (RA_con, XanCycle_con), ConditionBase<DynaPSCondition, trDynaPSCondition, MODULE_DynaPS>)
+    DECLARE_CONDITION_COMPOSITE(DynaPS)
     DynaPSCondition(trDynaPSCondition* par = nullptr) : RA_con(new RACondition(this)), XanCycle_con(new XanCycleCondition(this)) {
         setParent(par);
         initMembers();
@@ -81,34 +85,10 @@ public:
       */
     DynaPSCondition(const arr &vec, const std::size_t offset = 0);
 
-#ifdef INCDEBUG
-    static void setTop() {DynaPSCondition::_dlevel = Debug::Top;}
-#endif
     RACondition* RA_con = nullptr;                // child Condition
     XanCycleCondition* XanCycle_con = nullptr;    // child Condition
 
-    /**
-      Write the contents of the instance to the output stream.
-
-      \param out output stream to write to.
-      \param tab The level of indentation to use.
-      \returns The output stream
-      */
-    std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-
 private:
-    friend ConditionBase;
-    friend class modules::DynaPS;
-    /**
-      \copydoc ConditionBase::_fromArray
-      */
-    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
-
-    /**
-      \copydoc ConditionBase::_toArray
-      */
-    arr _toArray() const override;
-
     /**
       Get the size of the data vector
 
@@ -120,23 +100,9 @@ private:
         return count;
     }
 
-    /**
-      \copydoc ConditionBase::_clear
-      */
-    void _clear() override;
-
-    /**
-      Reset any static data members to their initial state
-      */
-    static void _reset() {
-        count = 0;
-    }
-    EPHOTO_API static std::size_t count;  // size of the current serialized output
-#ifdef INCDEBUG
-    EPHOTO_API static Debug::DebugLevel _dlevel;
-#endif
-
 };
+
+  DEFINE_CONDITION_COMPOSITE_HEADER(DynaPS);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

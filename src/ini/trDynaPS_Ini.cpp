@@ -32,34 +32,17 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET(trDynaPSCondition);
+DEFINE_MODULE_COMPOSITE(trDynaPS);
 
-trDynaPSCondition* trDynaPS::_init(Variables *theVars) {
-    DynaPSCondition* DynaPS_con = DynaPS::init(theVars);
-
-    RROEACondition* RROEA_con = RROEA::init(theVars);
-    if (theVars->RROEA_EPS_com)
-        RROEA_con->Fd = DynaPS_con->RA_con->EPS_con->FIBF_con->BF_con->Fdn;
-    trDynaPSCondition* trDynaPS_Con = new trDynaPSCondition(DynaPS_con, RROEA_con);
-    return trDynaPS_Con;
+void trDynaPS::_initOrig(Variables *theVars,
+			 trDynaPSCondition* trDynaPS_con) {
+    _initCalc(theVars, trDynaPS_con);
 }
 
-void trDynaPS::_initAlt(Variables *theVars,
-			trDynaPSCondition* trDynaPS_Con) {
-#ifdef CHECK_VALUE_SET_ALTS
+void trDynaPS::_initCalc(Variables *theVars,
+			 trDynaPSCondition* trDynaPS_con) {
     if (theVars->RROEA_EPS_com)
-	trDynaPS_Con->RROEA_con->set(COND::RROEA::Fd,
-				     trDynaPS_Con->DynaPS_con->RA_con->EPS_con->FIBF_con->BF_con->Fdn);
-#else // CHECK_VALUE_SET_ALTS
-    UNUSED(theVars);
-    UNUSED(trDynaPS_Con);
-#endif // CHECK_VALUE_SET_ALTS
+        trDynaPS_con->RROEA_con->Fd = trDynaPS_con->DynaPS_con->RA_con->EPS_con->FIBF_con->BF_con->Fdn;
 }
 
 DEFINE_DEFAULT_CHECKALT(trDynaPS)
-
-void trDynaPS::_reset() {
-    DynaPS::reset();
-    RROEA::reset();
-    conditions::trDynaPSCondition::reset();
-}

@@ -35,6 +35,8 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::drivers;
 using namespace ePhotosynthesis::conditions;
 
+DEFINE_DRIVER(EPS);
+
 EPSDriver::~EPSDriver() {
     modules::EPS::reset();
 }
@@ -81,6 +83,9 @@ void EPSDriver::setup() {
     //   Calculation  step //
     /////////////////////////
     EPSCondition* EPS_Con = EPS_Init();
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+    dump("EPS_init.txt", inputVars, EPS_Con, true);
+#endif // MAKE_EQUIVALENT_TO_MATLAB
 
     int va1 = 0;
     inputVars->BF_Param[0] = va1;
@@ -126,6 +131,9 @@ arr EPSDriver::MB(realtype t, N_Vector u) {
     EPSCondition* EPS_con = new EPSCondition(x);
 
     arr dxdt = EPS::MB(t, EPS_con, inputVars);
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+    dump("EPS_rate.txt", inputVars, EPS_con);
+#endif // MAKE_EQUIVALENT_TO_MATLAB
     delete EPS_con;
 
     return dxdt;

@@ -36,9 +36,7 @@ std::size_t SUCS::N = 1;
 
 const std::size_t SUCSCondition::count = 8;
 
-DEFINE_VALUE_SET_STATIC(SUCS);
-DEFINE_VALUE_SET(SUCSCondition);
-DEFINE_VALUE_SET_NS(pool::, SUCSPool);
+DEFINE_MODULE(SUCS);
 
 void SUCS::_initCalc(Variables *theVars, SUCSCondition* SUCS_Con) {
     if (theVars->useC3) {
@@ -146,11 +144,18 @@ void SUCS::_initCalc(Variables *theVars, SUCSCondition* SUCS_Con) {
     SUCS::ADPc = theVars->SUCS_Pool.ATc - SUCS::ATPc;
 }
 
-SUCSCondition* SUCS::_init(Variables *theVars) {
-    SUCSCondition* SUCS_Con = new SUCSCondition();
+void SUCS::_initOrig(Variables *theVars, SUCSCondition* SUCS_Con) {
     SUCS::UTPc = 0.75;
     if (theVars->useC3) {
 
+#ifdef CHECK_NEW_MATCHES_ORIG
+	// Explicitly initialize these variables to zero here for
+	//   comparison w/ new method of initialization
+#define INIT_ZERO(x) SUCS::x = 0.
+	FOR_EACH(INIT_ZERO, Vdhap_in, Vgap_in, Vpga_in);
+#undef INIT_ZERO
+#endif // CHECK_NEW_MATCHES_ORIG
+	
         SUCS::Vf_T52 = 1.;
         SUCS::Vf_T59 = 1.;
         SUCS::Vf_T57 = 1.;
@@ -364,7 +369,6 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
     SUCS::KE5Ratio = 1. + SUCS::KE541 + 1. / SUCS::KE531;
     SUCS::ADPc = theVars->SUCS_Pool.ATc - SUCS::ATPc;
     
-    return SUCS_Con;
 }
 
 void SUCS::_initAlt(Variables *theVars, SUCSCondition* SUCS_Con) {
@@ -538,19 +542,10 @@ void SUCS::_initAlt(Variables *theVars, SUCSCondition* SUCS_Con) {
               SUCS::get(MOD::SUCS::ATPc));
 
     
-    theVars->SUCS_Pool.checkAlts("SUCS::_init:SUCS_Pool: ");
 #else // CHECK_VALUE_SET_ALTS
     UNUSED(theVars);
     UNUSED(SUCS_Con);
 #endif // CHECK_VALUE_SET_ALTS
-}
-
-void SUCS::_checkAlts(Variables *theVars, const std::string& context) {
-    theVars->SUCS_Pool.checkAlts(context + "SUCS_Pool:");
-}
-
-void SUCS::_updateAlts(Variables *theVars, const std::string& context) {
-    theVars->SUCS_Pool.updateAlts(context + "SUCS_Pool:");
 }
 
 void SUCS::_reset() {

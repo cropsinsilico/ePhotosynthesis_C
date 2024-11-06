@@ -29,7 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET_SRC(FICondition);
+DEFINE_CONDITION(FI);
 
 FICondition::FICondition(const FICondition* const other) :
   ConditionBase<FICondition, FIBFCondition, MODULE_FI>(other) {

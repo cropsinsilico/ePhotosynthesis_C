@@ -29,6 +29,10 @@
 #include "EPSCondition.hpp"
 #include "RuACTCondition.hpp"
 
+#define PARENT_RA DynaPS
+#define CHILDREN_RA EPS, RuACT
+#define PARAM_TYPES_RA COND
+
 namespace ePhotosynthesis {
 namespace modules {
 class RA;
@@ -42,7 +46,7 @@ class DynaPSCondition;
  */
 class RACondition : public ConditionBase<RACondition, DynaPSCondition, MODULE_RA> {
 public:
-    DECLARE_VALUE_SET_COMPOSITE(RACondition, (RuACTCondition, EPSCondition), (RuACT_con, EPS_con), ConditionBase<RACondition, DynaPSCondition, MODULE_RA>)
+    DECLARE_CONDITION_COMPOSITE(RA)
     RACondition(DynaPSCondition* par = nullptr) : RuACT_con(new RuACTCondition(this)), EPS_con(new EPSCondition(this)) {
         setParent(par);
         initMembers();
@@ -76,28 +80,7 @@ public:
     RuACTCondition* RuACT_con = nullptr;     // child Condition
     EPSCondition* EPS_con = nullptr;     // child Condition
 
-    /**
-      Write the contents of the instance to the output stream.
-
-      \param out output stream to write to.
-      \param tab The level of indentation to use.
-      \returns The output stream
-      */
-    std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-
 private:
-    friend ConditionBase;
-    friend class modules::RA;
-    /**
-      \copydoc ConditionBase::_fromArray
-      */
-    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
-
-    /**
-      \copydoc ConditionBase::_toArray
-      */
-    arr _toArray() const override;
-
     /**
       Get the size of the data vector
 
@@ -109,23 +92,9 @@ private:
         return count;
     }
 
-    /**
-      \copydoc ConditionBase::_clear
-      */
-    void _clear() override;
-
-    static std::size_t count;   // size of the current serialized output
-
-    /**
-      Reset any static data members to their initial state
-      */
-    static void _reset() {
-        count = 0;
-    }
-#ifdef INCDEBUG
-    const static Debug::DebugLevel _dlevel = Debug::Middle;
-#endif
 };
+
+  DEFINE_CONDITION_COMPOSITE_HEADER(RA);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

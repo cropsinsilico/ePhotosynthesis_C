@@ -31,8 +31,11 @@
 #include "globals.hpp"
 
 using namespace ePhotosynthesis;
-using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::drivers;
+
+DEFINE_DRIVER(DynaPS);
+
+using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 DynaPSDriver::~DynaPSDriver() {

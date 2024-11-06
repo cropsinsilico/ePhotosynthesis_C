@@ -197,10 +197,11 @@ foreach(suffix COND POOL KE MOD RC VARS VEL)
   endif()
   foreach(ftype names defaults defaults_C3
           constant calculated nonvector skipped glymaids resetone
-	  initonce)
+	  initonce aliases)
     if(ftype STREQUAL "defaults_C3")
       set(ftype_key "alternate-values")
-      list(APPEND iARGS --collection-name-${ftype_key}=${ftype})
+      list(APPEND iARGS --collection-name-${ftype_key}=${ftype}
+           --singular-collection-name-${ftype_key}=default_C3)
     elseif(ftype STREQUAL "defaults")
       set(ftype_key "values")
       list(APPEND iARGS --collection-name-${ftype_key}=${ftype})
@@ -209,6 +210,12 @@ foreach(suffix COND POOL KE MOD RC VARS VEL)
     endif()
     if(ftype STREQUAL skipped)
       list(APPEND iARGS --is-editable-${ftype_key})
+    elseif(ftype STREQUAL aliases)
+      list(APPEND iARGS --reversed-${ftype_key}
+           --explicit-${ftype_key}
+	   --singular-collection-name-${ftype_key}=alias)
+    elseif(ftype STREQUAL glymaids)
+      list(APPEND iARGS --explicit-${ftype_key})
     endif()
     set(ENUM_${ftype} ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_${ftype}.cpp)
     set(ENUM_${ftype}_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_${ftype}.hpp)

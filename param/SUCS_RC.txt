@@ -1,3 +1,4 @@
+# Name		Value	C3Value	Docs
 # ATPc		0.4
 # Unit: mmol l-1 s-1;
 V51		0.107376831	# DHAP+GAP --FBP; default 0.5

@@ -103,6 +103,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::constant = {
 };
 template<> 
@@ -133,6 +136,9 @@ const std::map<ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, double> ValueSetE
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::constant = {
@@ -167,6 +173,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::constant = {
 };
 template<> 
@@ -197,6 +206,9 @@ const std::map<ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, double> ValueSet
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::constant = {
@@ -232,6 +244,9 @@ const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, double> ValueSe
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::constant = {
@@ -332,6 +347,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::constant = {
 };
 template<> 
@@ -395,6 +413,9 @@ const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, double> ValueSetE
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::constant = {
@@ -476,6 +497,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::constant = {
   ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_Pi,
   ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_ADP,
@@ -514,6 +538,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::constant = {
 };
 template<> 
@@ -544,6 +571,9 @@ const std::map<ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, double> ValueSetE
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::constant = {
@@ -611,6 +641,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::constant = {
   ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff,
 };
@@ -652,6 +685,9 @@ const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, double> Val
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::constant = {
@@ -698,6 +734,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::constant = {
 };
 template<> 
@@ -741,17 +780,20 @@ const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, double> ValueSe
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::defaults_C3 = {
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3Pc, 2.0   },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3Pc, 2.3   },
   {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPc, 2.0   },
   {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HexPc, 5.8   },
   {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)F26BPc, 7.8e-6},
   {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)UDPGc, 0.57  },
   {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUCP, 0.0   },
   {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUC, 0.0   },
-  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGAc, 0.5   },
+  {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGAc, 0.0   },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::constant = {
@@ -798,6 +840,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::constant = {
 };
 template<> 
@@ -834,6 +879,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::constant = {
 };
 template<> 
@@ -866,6 +914,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_COND>::constant = {
 };
 template<> 
@@ -896,6 +947,9 @@ const std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type, double> ValueSet
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_COND>::constant = {

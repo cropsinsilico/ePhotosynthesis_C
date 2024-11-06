@@ -1,2 +1,3 @@
-Vred	0.0
-Vox	0.0
+# Name		Value	C3Value	Docs
+Vred		0.0
+Vox		0.0

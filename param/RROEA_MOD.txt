@@ -1,3 +1,4 @@
-SC		1.0	# [CONST] Used to scale PS module parameters V3, V6, V9, V13, V16, & V23 if RROEA is used without EPS
-fc16		1.0	# [CONST] Used to scale PS module parameter V16 if RROEA is used without EPS
-FC		1.0	# [CONST] Used to scale PS module parameters V9 & V23 if RROEA is used without EPS
+# Name		Value	C3Value	Docs
+SC		1.0		# [CONST] Used to scale PS module parameters V3, V6, V9, V13, V16, & V23 if RROEA is used without EPS
+fc16		1.0		# [CONST] Used to scale PS module parameter V16 if RROEA is used without EPS
+FC		1.0		# [CONST] Used to scale PS module parameters V9 & V23 if RROEA is used without EPS

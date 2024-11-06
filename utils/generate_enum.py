@@ -1,4 +1,5 @@
 import os
+import re
 import glob
 import pprint
 import argparse
@@ -389,7 +390,14 @@ class EnumGeneratorBase(EnumBase):
         if len(members) == 0:
             return 0
         if func is not None:
-            width = len(func(max(members, key=lambda x: len(func(x)))))
+            def fw(x):
+                y = func(x)
+                if y is None:
+                    return ''
+                if isinstance(y, list):
+                    y = max(y, key=len)
+                return y
+            width = len(fw(max(members, key=lambda x: len(fw(x)))))
         elif key == 'name':
             width = len(self.add_member(
                 max(members, key=lambda x:
@@ -585,6 +593,10 @@ class ParamFileParser(EnumParserBase):
     file_extension = '.txt'
     required_keys = ['name', 'val']
     optional_keys = ['doc', 'val_alt', 'qualifiers']
+    qualifier_regex = re.compile(
+        r'\s*(?P<name>\w+)(?:\s*=\s*(?P<value>(?:[\w\.]+)|(?:'
+        r'\{\s*\w+\s*(?:\,\w+\s*)*\})))?'
+    )
 
     def parse(self, src, **kwargs):
         k = os.path.basename(os.path.splitext(src)[0])
@@ -606,11 +618,16 @@ class ParamFileParser(EnumParserBase):
                     member['qualifiers'] = member['doc'].split(
                         ']')[0].lstrip('[')
                     qualifiers = {}
-                    for x in member['qualifiers'].split(','):
-                        val = True
-                        if '=' in x:
-                            x, val = x.split('=')
-                        qualifiers[x.strip().upper()] = val
+                    for match in self.qualifier_regex.finditer(
+                            member['qualifiers']):
+                        x = match.group('name').upper()
+                        val = match.group('value')
+                        if val is None:
+                            val = True
+                        elif val.startswith('{') and val.endswith('}'):
+                            val = [v.strip() for v in
+                                   val[1:-1].split(',')]
+                        qualifiers[x] = val
                     valid_qualifiers = get_registered_value_keys()
                     for k in self.required_keys + self.optional_keys:
                         if k in valid_qualifiers:
@@ -622,6 +639,7 @@ class ParamFileParser(EnumParserBase):
                     if invalid_qualifiers:
                         raise AssertionError(
                             f"Invalid qualifiers: {invalid_qualifiers} "
+                            f"in {member['qualifiers']}"
                             f" (available options: {valid_qualifiers})")
                     member.update(qualifiers)
             rem = rem[0].split()
@@ -856,6 +874,12 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             'help': ("Name that should be used for collection. Defaults "
                      "to class name"),
         },
+        singular_collection_name={
+            'type': str,
+            'help': ("Name that should be used for singular elements in "
+                     "the collection. Defaults to collection_name with "
+                     "any trailing 's' characters removed"),
+        },
         function_suffix={
             'type': str,
             'help': ("Suffix that should be added the the end of the "
@@ -911,6 +935,8 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault("collection_name", self.name)
+        kwargs.setdefault("singular_collection_name",
+                          kwargs["collection_name"].rstrip('s'))
         kwargs.setdefault("function_suffix", kwargs['collection_name'])
         kwargs.setdefault("is_editable", self.default_is_editable)
         kwargs.setdefault("value_key", self.default_value_key)
@@ -939,10 +965,6 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
         return CEnumGeneratorCollectionCreated
 
     @property
-    def add_value_args(self):
-        return []
-
-    @property
     def utility_functions(self):
         return self._utility_functions
 
@@ -957,9 +979,11 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
     def generate_value(self, x):
         if self.value_key is None:
             raise NotImplementedError
-        out = str(x.get(self.value_key, ''))
+        out = x.get(self.value_key, '')
         if (not out) and self.secondary_value_key is not None:
-            out = str(x.get(self.secondary_value_key, ''))
+            out = x.get(self.secondary_value_key, '')
+        if not isinstance(out, list):
+            out = str(out)
         return out
 
     def generate_member(self, *args, **kwargs):
@@ -1103,7 +1127,9 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                                    no_return=False, utility=False,
                                    function_param=None):
         lines = []
-        if function_type == 'from' and self.value_type == 'double':
+        if function_type == 'from' and (
+                self.value_type == 'double'
+                or self.value_key == 'ALIASES'):
             return lines
         if function_param is None:
             function_param = {}
@@ -1111,6 +1137,15 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             enum_is_class = self.parent.as_class
         if result is None:
             result = self.collection_name
+        ktype = enum_name
+        vtype = None
+        if hasattr(self, 'value_type'):
+            if self.reversed:
+                ktype = self.value_type
+                vtype = enum_name
+            else:
+                ktype = enum_name
+                vtype = self.value_type
         utility_suffix = '_' + self.collection_type.split('::')[-1]
         if enum_is_class:
             if utility:
@@ -1118,8 +1153,7 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             else:
                 function_suffix = self.collection_name.title()
                 if function_type in ['get', 'getdefault', 'from']:
-                    function_suffix = function_suffix.rstrip('s')
-                    function_suffix = function_suffix.replace('s_C3', '_C3')
+                    function_suffix = self.singular_collection_name.title()
         else:
             function_suffix = f"_enum_{self.function_suffix}"
         collection_type = self.generate_collection_type(enum_name)
@@ -1136,9 +1170,9 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
         if function_type == 'is':
             return_type = 'bool'
         elif function_type in ['get', 'getdefault']:
-            return_type = self.value_type
+            return_type = vtype
         elif function_type in ['from']:
-            return_type = enum_name
+            return_type = ktype
         elif function_type in ['print', 'operator<<']:
             return_type = 'std::ostream&'
         elif function_type in ['string', 'error_prefix']:
@@ -1153,16 +1187,16 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             arg_names.append('collection')
         if function_type in ['add', 'remove', 'is', 'get', 'getdefault',
                              'check', 'checkNot']:
-            args.append(f'const {enum_name}& x')
+            args.append(f'const {ktype}& x')
             arg_names.append('x')
             if function_type == 'add' and hasattr(self, 'value_type'):
-                args.append(f'const {self.value_type}& y')
+                args.append(f'const {vtype}& y')
                 arg_names.append('y')
             elif function_type in ['check', 'checkNot']:
                 args.append('const std::string& context = ""')
                 arg_names.append('context')
             elif function_type == 'getdefault':
-                args.append(f'const {self.value_type}& defaultV')
+                args.append(f'const {vtype}& defaultV')
                 arg_names.append('defaultV')
         elif function_type in ['addMultiple', 'removeMultiple']:
             args.append(f'const {collection_type}& x')
@@ -1182,7 +1216,7 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             args += ['const unsigned int tab = 0']
             arg_names += ['tab']
         elif function_type == 'from':
-            args += [f'const {self.value_type}& x']
+            args += [f'const {vtype}& x']
             arg_names += ['x']
         docs = []
         body = []
@@ -1476,14 +1510,22 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             class_type = self.parent.get_child('global').item2specialize(
                 name, return_class=True)
             key_type = f'typename {class_type}::Type'
+        ktype = key_type
+        vtype = None
+        if hasattr(self, 'value_type'):
+            if self.reversed:
+                vtype = key_type
+                ktype = self.value_type
+            else:
+                vtype = self.value_type
         collection_type = self.generate_collection_type(key_type)
         args = []
         arg_names = []
         if function_type in ['add', 'remove', 'is']:
-            args.append(f'const {key_type}& x')
+            args.append(f'const {ktype}& x')
             arg_names.append('x')
             if function_type == 'add' and hasattr(self, 'value_type'):
-                args.append(f'const {self.value_type}& y')
+                args.append(f'const {vtype}& y')
                 arg_names.append('y')
         elif function_type in ['addMultiple', 'removeMultiple']:
             args.append(f'const {collection_type}& x')
@@ -1571,8 +1613,18 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
             'type': str,
             'help': "C++ type of values in the map",
         },
+        reversed={
+            'action': 'store_true',
+            'help': "Use value type as key and enum as value",
+        },
+        explicit={
+            'action': 'store_true',
+            'help': "Only include keys with explicit values in map",
+        },
     )
     default_value_type = None
+    default_reversed = False
+    default_explicit = False
     collection_type = 'std::map'
     _additional_functions = (
         CEnumGeneratorCollectionBase._additional_functions + [
@@ -1584,11 +1636,9 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault("value_type", self.default_value_type)
+        kwargs.setdefault("reversed", self.default_reversed)
+        kwargs.setdefault("explicit", self.default_explicit)
         super(CEnumGeneratorMapBase, self).__init__(*args, **kwargs)
-
-    @property
-    def add_value_args(self):
-        return [(f"const {self.value_type}&", "value")]
 
     def generate_docs(self, name):
         name_doc = self.collection_name.title()
@@ -1597,25 +1647,49 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
     def generate_collection_param(self, *args, **kwargs):
         out = super(CEnumGeneratorMapBase, self).generate_collection_param(
             *args, **kwargs)
-        out.append(self.value_type)
+        if self.reversed:
+            out = [self.value_type] + out
+        else:
+            out.append(self.value_type)
         return out
 
     def generate_value(self, x):
         out = super(CEnumGeneratorMapBase, self).generate_value(x)
-        if out and self.value_type == 'std::string':
-            out = f"\"{out}\""
+        if self.explicit and (not out):
+            return None
+        if self.value_type == 'std::string':
+            if isinstance(out, list):
+                out = [f"\"{xx}\"" for xx in out]
+            else:
+                out = f"\"{out}\""
         return out
 
     def generate_member(self, x, width=None, width_value=None,
-                        enum_prefix='', member_suffix=''):
+                        enum_prefix='', member_suffix='', value=None):
         assert width is not None and width_value is not None
-        value = self.generate_value(x)
+        if value is None:
+            value = self.generate_value(x)
         if not value:
             return []
-        pad = (width_value - len(value)) * ' '
-        return [
-            f"  {{{(enum_prefix + x['name']):{width}}, {value}{pad}}},"
-            f"{member_suffix}"]
+        if isinstance(value, list):
+            out = []
+            for v in value:
+                out += self.generate_member(x, width=width,
+                                            width_value=width_value,
+                                            enum_prefix=enum_prefix,
+                                            member_suffix=member_suffix,
+                                            value=v)
+            return out
+        if self.reversed:
+            pad = (width - len(enum_prefix + x['name'])) * ' '
+            return [
+                f"  {{{value:{width_value}}, "
+                f"{(enum_prefix + x['name'])}{pad}}},{member_suffix}"]
+        else:
+            pad = (width_value - len(value)) * ' '
+            return [
+                f"  {{{(enum_prefix + x['name']):{width}}, "
+                f"{value}{pad}}},{member_suffix}"]
 
     def generate_definition(self, name, members, **kwargs):
         width_value = self.max_width(members, func=self.generate_value)
@@ -1627,7 +1701,10 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
         return [f"{iter_name}->first", f"{iter_name}->second"]
 
     def generate_add(self, collection_name, key_name, val_name):
-        return f"{collection_name}.emplace({key_name}, {val_name})"
+        if self.reversed:
+            return f"{collection_name}.emplace({val_name}, {key_name})"
+        else:
+            return f"{collection_name}.emplace({key_name}, {val_name})"
 
     def generate_find(self, collection_name, key_name, iter_name="it",
                       from_value=False):
@@ -2134,6 +2211,13 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             'glymaids': {
                 'default_value_type': 'std::string',
                 'default_value_key': 'GLYMAID',
+                'default_explicit': True,
+            },
+            'aliases': {
+                'default_value_type': 'std::string',
+                'default_value_key': 'ALIASES',
+                'default_reversed': True,
+                'default_explicit': True,
             },
         },
         'vector': {
@@ -2351,13 +2435,19 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
         lines += ["};"]
         # Definition of static members for unspecialized class
         if spec_var and not specialization:
-            enum_prefix = f'{class_name}<{", ".join(spec_var)}>::'
+            unspecialization = f'<{", ".join(spec_var)}>'
+            enum_prefix = f'{class_name}{unspecialization}::'
             enum_name_full = f'typename {enum_prefix}{enum_name}'
             for p, t in zip(kwargs['spec_param'], spec_var):
                 lines += template_lines
                 lines += [
                     f'const {p} {enum_prefix}{p.lower()} = {t};'
                 ]
+            lines += template_lines
+            lines += self.generate_definition_all(
+                name, members, enum_name=enum_name,
+                as_class=as_class, specialization=unspecialization,
+                template='')
             for k in self.added_collections:
                 self.get_child(k).add_enum(enum_name)
                 collection_type = self.get_child(k).generate_collection_type(
@@ -2399,11 +2489,12 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
 
     def generate_definition_all(self, name, members, enum_name=None,
                                 as_class=None, declare=False,
-                                specialization=False):
+                                specialization=False, template=None):
         lines = []
         if as_class is None:
             as_class = self.as_class
-        template = 'template<> ' if specialization else ''
+        if template is None:
+            template = 'template<> ' if specialization else ''
         static = 'static ' if not specialization else ''
         class_name = as_class if as_class else ''
         if enum_name is None:

@@ -28,6 +28,10 @@
 
 #include "ConditionBase.hpp"
 
+#define PARENT_SUCS CM
+#define NRATIO_SUCS 66
+#define PARAM_TYPES_SUCS COND, POOL, VEL
+
 namespace ePhotosynthesis {
 namespace modules {
 class SUCS;
@@ -40,7 +44,7 @@ class CMCondition;
  */
 class SUCSCondition : public ConditionBase<SUCSCondition, CMCondition, MODULE_SUCS> {
 public:
-    DECLARE_VALUE_SET(SUCSCondition, ConditionBase<SUCSCondition, CMCondition, MODULE_SUCS>)
+    DECLARE_CONDITION(SUCS)
     SUCSCondition(CMCondition* par = nullptr) {
         setParent(par);
         initMembers();
@@ -60,32 +64,10 @@ public:
       */
     SUCSCondition(const arr &vec, const std::size_t offset = 0);
 
-    /**
-      Write the contents of the instance to the output stream.
-
-      \param out output stream to write to.
-      \param tab The level of indentation to use.
-      \returns The output stream
-      */
-    std::ostream& _print(std::ostream &out, const uint tab = 0) const;
 private:
-    friend ConditionBase;
-    friend class modules::SUCS;
-    /**
-      \copydoc ConditionBase::_fromArray
-      */
-    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
-
-    /**
-      \copydoc ConditionBase::_clear
-      */
+    /** \copydoc ConditionBase::_clear */
     void _clear() override;
-
-    /**
-      \copydoc ConditionBase::_toArray
-      */
-    arr _toArray() const override;
-
+  
     /**
       Get the size of the data vector
 
@@ -101,12 +83,9 @@ private:
     static void _reset() {}
 
     static const std::size_t count;  // size of the current serialized output
-#ifdef INCDEBUG
-    const static Debug::DebugLevel _dlevel = Debug::Low;
-#endif
 };
 
-  DEFINE_VALUE_SET_HEADER(SUCSCondition);
+    DEFINE_CONDITION_HEADER(SUCS);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

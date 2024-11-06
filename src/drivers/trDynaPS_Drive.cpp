@@ -36,6 +36,8 @@ using namespace ePhotosynthesis::conditions;
 
 Variables* Driver::inputVars = nullptr;
 
+DEFINE_DRIVER(trDynaPS);
+
 trDynaPSDriver::~trDynaPSDriver() {
     trDynaPS::reset();
 }

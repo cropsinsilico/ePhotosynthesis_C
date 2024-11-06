@@ -38,16 +38,21 @@ const std::size_t FICondition::count = 22;
 bool FICondition::BF_connect = false;
 bool FI::BF_connect = false;
 
-DEFINE_VALUE_SET_STATIC(FI);
-DEFINE_VALUE_SET(FICondition);
-DEFINE_VALUE_SET_NS(RC::, FIRC);
-DEFINE_VALUE_SET_NS(pool::, FIPool);
+DEFINE_MODULE(FI);
 
 // This is the routine that initialize the parameters, initial conditions for simulation of fluorescence induction curve.
 // The following information is initialized sequentially 1) Rate constants; 2) Initial concentration ( or conditions); 3) THe maximum
 // concentration of components of photosystems.
 
 void FI::_initCalc(Variables *theVars, FICondition* FI_Con) {
+    //////////////////////////////////////////////////////////////////////////
+    // Initilization of the rate constant //
+    ////////////////////////////////////////////////////////////////////////////
+    FI::setBF_connect(theVars->BF_FI_com);
+    // The rate constant used in the model
+    // Reference
+    // The rate constant used in the model
+
     if (theVars->useC3) {
         if (theVars->lightParam == 0.) {
             const double light_scaler = theVars->alfa * (1 - theVars->fc);
@@ -102,7 +107,7 @@ void FI::_initCalc(Variables *theVars, FICondition* FI_Con) {
     }
 }
 
-FICondition* FI::_init(Variables *theVars) {
+void FI::_initOrig(Variables *theVars, FICondition* FI_Con) {
     //////////////////////////////////////////////////////////////////////////
     // Initilization of the rate constant //
     ////////////////////////////////////////////////////////////////////////////
@@ -112,7 +117,8 @@ FICondition* FI::_init(Variables *theVars) {
     // The rate constant used in the model
 
     if (theVars->useC3) {
-        FI::cpsii = 1.;
+	// Using new method to set here in case GRN value used
+	FI::cpsii = getDefault(MOD::FI::cpsii); // 1.;
         if (theVars->lightParam == 0.) {
             const double light_scaler = theVars->alfa * (1 - theVars->fc);
             theVars->lightParam = theVars->TestLi * 30 * light_scaler;
@@ -177,7 +183,6 @@ FICondition* FI::_init(Variables *theVars) {
 
     // Assign the value to a array
     // This is the program that initialize the major variables used in the fluorescence induction system.In this file, the n represent negative charges, _red represent that the components are associated with the closed reaction center; while _ox represent a system with open reaction center.
-    FICondition* FI_Con = new FICondition();
     FI_Con->A = 0;          // The concentration of excitons in the peripheral antenna
     FI_Con->U = 0;          // The concentration fo excitons in the core antenna
     FI_Con->P680ePheo = 1;  // The concentration of the P680Pheo
@@ -208,7 +213,6 @@ FICondition* FI::_init(Variables *theVars) {
         theVars->FI_Pool.PQT = 8 * theVars->FIRatio[22]; // The total concentration of PQ;
     }
 
-    return FI_Con;
 }
 
 void FI::_initAlt(Variables *theVars, FICondition* FI_Con) {
@@ -255,20 +259,8 @@ void FI::_initAlt(Variables *theVars, FICondition* FI_Con) {
       theVars->FI_Pool[POOL::FI::PQT] *= theVars->FIRatio[22];
     }
     
-    theVars->FI_RC.checkAlts("FI::_init::FI_RC: ");
-    theVars->FI_Pool.checkAlts("FI::_init::FI_Pool: ");
 #else // CHECK_VALUE_SET_ALTS
     UNUSED(theVars);
     UNUSED(FI_Con);
 #endif // CHECK_VALUE_SET_ALTS
-}
-
-void FI::_checkAlts(Variables *theVars, const std::string& context) {
-    theVars->FI_RC.checkAlts(context + "FI_RC:");
-    theVars->FI_Pool.checkAlts(context + "FI_RC:");
-}
-
-void FI::_updateAlts(Variables *theVars, const std::string& context) {
-    theVars->FI_RC.updateAlts(context + "FI_RC:");
-    theVars->FI_Pool.updateAlts(context + "FI_RC:");
 }

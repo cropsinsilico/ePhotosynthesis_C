@@ -41,8 +41,9 @@ namespace drivers {
 /**
  Class for running DynaPS through an ODE solver
  */
-class DynaPSDriver : public Driver {
+class DynaPSDriver : public DriverBase<DynaPSDriver, MODULE_DynaPS> {
 public:
+    DECLARE_DRIVER(DynaPS)
     /**
       \copydoc drivers::Driver::Driver
       \param para Input parameters
@@ -51,10 +52,11 @@ public:
     DynaPSDriver(Variables *theVars, const double startTime, const double stepSize, const double endTime,
                 const int maxSubsteps, const double atol, const double rtol, const std::size_t para,
                 const double ratio, const bool showWarn = false) :
-        Driver(theVars, startTime, stepSize, endTime, maxSubsteps, atol, rtol, showWarn) {
+        DriverBase(theVars, startTime, stepSize, endTime, maxSubsteps, atol, rtol, showWarn) {
 #ifdef INCDEBUG
                 ePhotosynthesis::conditions::DynaPSCondition::setTop();
 #endif
+	init(theVars->useC3);
 
         ParaNum = para;
         Ratio = ratio;

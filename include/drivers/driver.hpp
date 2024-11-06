@@ -31,13 +31,34 @@
 #include <nvector/nvector_serial.h>
 #include <sundials/sundials_types.h>
 #include "globals.hpp"
+#include "enums/enums_utils.hpp"
 
 #ifndef realtype
 #define realtype sunrealtype
 #endif
 
+#define MEMBERS_DRIVER trDynaPS, DynaPS, CM, EPS
+
 namespace ePhotosynthesis {
+  
+enum DriverType : int {
+  None, MEMBERS_DRIVER
+};
+  
+template<>
+inline const std::map<DriverType, std::string>& get_enum_names<DriverType>() {
+  static const std::map<DriverType, std::string> collection = {
+    {trDynaPS, "trDynaPS"},
+    {DynaPS  , "DynaPS"  },
+    {CM      , "CM"      },
+    {EPS     , "EPS"     },
+  };
+  return collection;
+}
+
+class ValueSet_t;
 class Variables;
+  
 namespace drivers {
 
 class Driver;
@@ -81,6 +102,7 @@ inline CalcData *alloc_calc_data() {
   */
 class Driver {
 public:
+
     /**
       Generate the initial parameter Condition class for the solver to use.
       */
@@ -94,6 +116,17 @@ public:
       */
     arr run();
 
+    /**
+       Dump out the current set of variables to a file.
+       \param[in] filename Name of file where parameters should be written.
+       \param[in] theVars Current copy of variables.
+       \param[in] con Current copy of conditions.
+       \param[in] is_init If true, this is just after initialization and
+         velocities should not be included.
+     */
+    void dump(const std::string& filename, const Variables* theVars,
+	      const ValueSet_t* con, const bool is_init = false);
+  
     /**
       Runs the solver one more time on the intermediate results to get the solution at the end time
       stamp.
@@ -162,6 +195,84 @@ private:
     Driver() {}
     Variables* origVars;
 };
+
+/**
+  Base class for all drivers with an associated module. These classes
+  handle taking the input data, feeding it to the ODE solver,
+  iterating until the solver reaches its stopping time or fails, and
+  returning the results.
+  \tparam T Inheriting driver class.
+  \tparam M Module ID associated with the driver.
+  */
+template<class T, MODULE M>
+class DriverBase : public Driver {
+public:
+    static const MODULE module; /** Module associated with the driver */
+
+    /**
+       Initialize the driver class and associated value sets.
+     */
+    static void init(const bool useC3 = false) {
+	T::enableC3(useC3);
+	T::select();
+    }
+    /**
+       Select value sets associated with this driver.
+       \param[in] x If true, select the driver and associated value sets,
+         if false, deselect them.
+     */
+    static void select(const bool x = true) {
+	throw std::runtime_error("Cannot select the base driver.");
+    }
+    /**
+       Enable/disable C3 defaults for value sets associated with this
+         driver.
+       \param[in] x If true, values sets will use C3 defaults, otherwise
+         non-C3 defaults will be used.
+     */
+    static void enableC3(const bool x = true) {
+	throw std::runtime_error("Cannot call enableC3 on the base driver.");
+    }
+
+    /**
+      Get a prefix for errors describing the class
+      \return Prefix
+    */
+    static std::string error_prefix() {
+      std::string out;
+      out += get_enum_names<MODULE>().find(module)->second;
+      out += ": ";
+      return out;
+    }
+    
+    // virtual ~DriverBase();
+
+protected:
+    /** \copydoc drivers::Driver::Driver */
+    DriverBase(Variables *theVars,
+	       const double startTime, const double stepSize,
+	       const double endTime, const int maxSubsteps,
+	       const double atol, const double rtol,
+	       const bool showWarn = false) :
+      Driver(theVars, startTime, stepSize, endTime,
+	     maxSubsteps, atol, rtol, showWarn) {}
+};
+  
+template<class T, MODULE M>
+const MODULE DriverBase<T, M>::module = M;
+
+#define DECLARE_DRIVER(name)			\
+  /** \copydoc drivers::DriverBase::select */	\
+  static void select(const bool x = true);	\
+  /** \copydoc drivers::DriverBase::enableC3 */	\
+  static void enableC3(const bool x = true);
+#define DEFINE_DRIVER(name)				\
+  void name ## Driver::select(const bool x) {		\
+    return VARS_CLASS_CALL(select, (x), name, MOD);	\
+  }							\
+  void name ## Driver::enableC3(const bool x) {		\
+    return VARS_CLASS_CALL(enableC3, (x), name, MOD);	\
+  }
 
 }  // namespace drivers
 }  // namespace ePhotosynthesis

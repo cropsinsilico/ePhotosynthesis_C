@@ -30,38 +30,18 @@
 #include "conditions/DynaPSCondition.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class DynaPSModuleTest;
-}
-#endif
-namespace drivers {
-class DynaPSDriver;
-}
+
+FORWARD_DECLARE_MODULE_DRIVER(DynaPS);
+  
 namespace modules {
-class trDynaPS;
 
 /**
  Class for the DynaPS Module functions.
  */
 class DynaPS : public MODULE_BASE(DynaPS) {
 public:
-    DECLARE_MODULE_COMPOSITE(DynaPS)
+    DECLARE_MODULE_DRIVER(DynaPS)
 private:
-    friend ModuleBase;
-    friend class modules::trDynaPS;
-    friend class drivers::DynaPSDriver;
-#ifdef TESTING
-    friend class test::DynaPSModuleTest;
-#endif
-
-    /**
-      Initialize the variables
-
-      \param theVars The global variables
-      \return A DynaPSCon object for input into calculations
-      */
-    static conditions::DynaPSCondition* _init(Variables *theVars);
 
     /**
       Function to calculate the dy/dt values for the DynaPSCondition at the given time stamp.
@@ -99,12 +79,10 @@ private:
         (void)DynaPS_con;
         (void)theVars;
     }
-
-    /**
-      Reset the static member variables to their default values.
-      */
-    static void _reset();
+    
 };
+
+  DEFINE_MODULE_COMPOSITE_HEADER(DynaPS);
 
 }  // namespace modules
 }  // namespace ePhotosynthesis

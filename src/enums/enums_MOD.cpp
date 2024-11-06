@@ -5,7 +5,7 @@
 
 using namespace ePhotosynthesis;
 
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::all = {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)cATPsyn, ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)CPSi, ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)cNADPHsyn, ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)EPS_ATP_Rate, ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)_Pi, ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PMODTEM, ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)RT};
+template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::all = {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)cATPsyn, ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)CPSi, ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)cNADPHsyn, ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)EPS_ATP_Rate, ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)_Pi, ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PMODTEM, ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)RT, ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)DeltaGo};
 template<> 
 const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::names = {
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)cATPsyn, "cATPsyn"     },
@@ -15,6 +15,7 @@ const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> Value
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)_Pi, "_Pi"         },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PMODTEM, "PMODTEM"     },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)RT, "RT"          },
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)DeltaGo, "DeltaGo"     },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::defaults = {
@@ -25,6 +26,7 @@ const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, double> ValueSetEn
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)_Pi, 0.9     },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PMODTEM, 1.0     },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)RT, 2477.572},
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)DeltaGo, 30543.2 },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::defaults_C3 = {
@@ -35,6 +37,7 @@ const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, double> ValueSetEn
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)_Pi, 0.9     },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PMODTEM, 1.0     },
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)RT, 2477.572},
+  {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)DeltaGo, 30543.2 },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::glymaids = {
@@ -43,9 +46,13 @@ const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> Value
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)cNADPHsyn, "Glyma.09G024100"},
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::constant = {
   ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PMODTEM,
   ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)RT,
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)DeltaGo,
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::calculated = {
@@ -75,6 +82,9 @@ const std::map<ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, double> ValueSetEn
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::constant = {
@@ -109,6 +119,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::constant = {
 };
 template<> 
@@ -139,6 +152,9 @@ const std::map<ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, double> ValueSetE
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::constant = {
@@ -188,10 +204,18 @@ template<>
 const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::constant = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::calculated = {
+  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)ChlPSI,
+  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)ChlT,
+  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)ChlT2,
+  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)FIBF2FI_PQ,
+  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)FIBF2FI_PQa,
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::nonvector = {
@@ -227,6 +251,9 @@ const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, double> ValueSetEn
 template<> 
 const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::glymaids = {
   {ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)cpsii, "Glyma.01G095900"},
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::constant = {
@@ -494,6 +521,9 @@ const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> Value
   {ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor123, "Glyma.09G255200"},
   {ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor124, "Glyma.01G026700"},
   {ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor131, "Glyma.13G222300"},
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::constant = {
@@ -883,180 +913,180 @@ const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, double> ValueSetEn
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::defaults_C3 = {
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PS_C_CP, 25.0     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PS_C_CA, 1.5      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PS_C_CN, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PS_PEXT, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V1, 2.93     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V2, 30.15    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V3, 4.04     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V5, 1.22     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V6, 0.734    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V7, 12.48    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V8, 1.22     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V9, 0.96     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V10, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V13, 10.81    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V16, 5.47     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V23, 2.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V24, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V31, 1.24333  },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V32, 1.24333  },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V33, 1.24333  },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM11, 0.0115   },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM12, 0.222    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM13, 0.02     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI11, 0.84     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI12, 0.04     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI13, 0.075    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI14, 0.9      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI15, 0.07     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM21, 0.240    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM22, 0.390    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM23, 0.23     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM31a, 0.004    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM32b, 0.1      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE4, 0.05     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM51, 0.3      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM52, 0.4      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM53, 0.02     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE5, 7.100    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM61, 0.033    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI61, 0.7      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI62, 12.0     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE6, 6.66e5   },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM71, 0.100    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM72, 0.100    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM73, 0.1      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM74, 0.1000   },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE7, 10.0     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM81, 0.4      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM82, 0.2      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE8, 1.017    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM9, 0.05     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI9, 12.0     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE9, 6.66e5   },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM10, 1.5      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM101, 0.1      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM102, 0.072    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM103, 0.46     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE10, 1.1764706},
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE11, 0.4      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE12, 0.67     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM131, 0.05     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM132, 0.059    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI131, 2.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI132, 0.7      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI133, 4.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI134, 2.5      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI135, 0.4      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE13, 6.846e3  },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM161, 0.014    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM162, 0.3      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM163, 0.3      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE16, 5.734    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE21, 2.3      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE22, 0.058    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM311, 0.077    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM312, 0.63     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM313, 0.74     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM32, 0.25     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM33, 0.075    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM231, 0.08     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM232, 0.08     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM233, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM234, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE23, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KA231, 0.08     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI231, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KVmo, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM241, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KA232, 0.02     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KA233, 0.02     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI23, 10.0     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE25, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE57, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Km8p5p, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Km5p5p, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE810, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Km5gap, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Km8f6p, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Km8s7p, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Km8gap, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)MaxCoeff, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)_NADPH, 0.21     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE1Ratio, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE2Ratio, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Ru_Act, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV31, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV32, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV33, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PiTc, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V1Reg, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Theta, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)beta, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Jmax, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor1, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor2, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor3, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor5, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor7, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor13, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor23, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vf_T3, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vf_T2, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vf_T1, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vf_T6, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vf_T5, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vf_T9, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vf_T13, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vf_T23, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV1, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV2, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV3, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV5, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV6, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV7, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV8, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV9, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV10, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV13, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV16, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV23, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV1_0, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV2_0, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV3_0, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV5_0, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV6_0, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV7_0, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV8_0, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV9_0, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV10_0, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV13_0, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV23_0, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)I2, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)J, 0.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_1, 1.93     },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_2, 2.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_3, 2.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_5, 2.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_6, 2.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_7, 2.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_8, 2.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_9, 2.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_10, 2.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_13, 2.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_23, 2.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)R, 8.314    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)c_c, 38.28    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)dHa_c, 80.99    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)c_o, 14.68    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)dHa_o, 23.72    },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)RegFactor, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)SC, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)SC1, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)STOM1, 1.0      },
-  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)STOM2, 1.0      },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PS_C_CP, 25.0              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PS_C_CA, 1.5               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PS_C_CN, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PS_PEXT, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V1, 2.93              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V2, 30.15             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V3, 4.04              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V5, 1.22              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V6, 0.734             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V7, 12.48             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V8, 1.22              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V9, 0.96              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V10, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V13, 10.81             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V16, 5.47              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V23, 2.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V24, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V31, 1.2433333333333333},
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V32, 1.2433333333333333},
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V33, 1.2433333333333333},
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM11, 0.0115            },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM12, 0.222             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM13, 0.02              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI11, 0.84              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI12, 0.04              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI13, 0.075             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI14, 0.9               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI15, 0.07              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM21, 0.240             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM22, 0.390             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM23, 0.23              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM31a, 0.004             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM32b, 0.1               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE4, 0.05              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM51, 0.3               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM52, 0.4               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM53, 0.02              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE5, 7.100             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM61, 0.033             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI61, 0.7               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI62, 12.0              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE6, 6.66e5            },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM71, 0.100             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM72, 0.100             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM73, 0.1               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM74, 0.1000            },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE7, 10.0              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM81, 0.4               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM82, 0.2               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE8, 1.017             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM9, 0.05              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI9, 12.0              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE9, 6.66e5            },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM10, 1.5               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM101, 0.1               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM102, 0.072             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM103, 0.46              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE10, 1.176470588235294 },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE11, 0.4               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE12, 0.67              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM131, 0.05              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM132, 0.059             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI131, 2.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI132, 0.7               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI133, 4.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI134, 2.5               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI135, 0.4               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE13, 6.846e3           },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM161, 0.014             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM162, 0.3               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM163, 0.3               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE16, 5.734             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE21, 2.3               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE22, 0.058             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM311, 0.077             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM312, 0.63              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM313, 0.74              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM32, 0.25              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM33, 0.075             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM231, 0.08              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM232, 0.08              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM233, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM234, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE23, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KA231, 0.1               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI231, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KVmo, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KM241, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KA232, 0.02              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KA233, 0.02              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI23, 10.0              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE25, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE57, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Km8p5p, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Km5p5p, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE810, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Km5gap, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Km8f6p, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Km8s7p, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Km8gap, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)MaxCoeff, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)_NADPH, 0.21              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE1Ratio, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KE2Ratio, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Ru_Act, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV31, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV32, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV33, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PiTc, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V1Reg, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Theta, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)beta, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Jmax, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor1, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor2, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor3, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor5, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor7, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor13, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor23, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vf_T3, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vf_T2, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vf_T1, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vf_T6, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vf_T5, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vf_T9, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vf_T13, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vf_T23, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV1, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV2, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV3, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV5, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV6, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV7, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV8, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV9, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV10, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV13, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV16, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV23, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV1_0, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV2_0, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV3_0, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV5_0, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV6_0, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV7_0, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV8_0, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV9_0, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV10_0, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV13_0, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PsV23_0, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)I2, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)J, 0.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_1, 1.93              },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_2, 2.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_3, 2.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_5, 2.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_6, 2.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_7, 2.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_8, 2.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_9, 2.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_10, 2.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_13, 2.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_23, 2.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)R, 8.314             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)c_c, 38.28             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)dHa_c, 80.99             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)c_o, 14.68             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)dHa_o, 23.72             },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)RegFactor, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)SC, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)SC1, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)STOM1, 1.0               },
+  {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)STOM2, 1.0               },
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::glymaids = {
@@ -1067,6 +1097,9 @@ const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> Value
   {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor7, "Glyma.10G293500"},
   {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor13, "Glyma.19G089100"},
   {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor23, "Glyma.17G015600"},
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::constant = {
@@ -1142,6 +1175,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::constant = {
 };
 template<> 
@@ -1172,6 +1208,9 @@ const std::map<ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, double> ValueSetEn
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::constant = {
@@ -1213,6 +1252,9 @@ const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, double> ValueSe
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::constant = {
@@ -1271,6 +1313,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::constant = {
   ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Fd_Thio_ET,
   ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)ThioT,
@@ -1310,6 +1355,9 @@ const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, double> ValueSe
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::constant = {
@@ -1613,6 +1661,9 @@ const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> Val
   {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor59, "Glyma.11G169700"},
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::constant = {
   ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)KI583,
   ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vmatpf,
@@ -1682,6 +1733,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::constant = {
   ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vx_,
   ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Ax_,
@@ -1723,6 +1777,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::constant = {
 };
 template<> 
@@ -1755,6 +1812,9 @@ template<>
 const std::map<ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::glymaids = {
 };
 template<> 
+const std::map<std::string, ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::aliases = {
+};
+template<> 
 const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::constant = {
 };
 template<> 
@@ -1785,6 +1845,9 @@ const std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type, double> ValueSetE
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::glymaids = {
+};
+template<> 
+const std::map<std::string, ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::aliases = {
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::constant = {

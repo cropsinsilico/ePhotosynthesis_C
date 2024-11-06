@@ -1,7 +1,8 @@
-RedoxReg_VMAX6	0.0	# Taken from PS::V6
-RedoxReg_VMAX9	0.0	# Taken from PS::V9
-RedoxReg_VMAX13	0.0	# Taken from PS::V13
-RedoxReg_VMAX16	0.0	# Taken from PS::V16
-Fd_Thio_ET	500.0	# [CONST]
-ThioT		0.5	# [CONST]
-Thio_Oxidation	0.1	# [CONST]
+# Name		Value	C3Value	Docs
+RedoxReg_VMAX6	0.0		# Taken from PS::V6
+RedoxReg_VMAX9	0.0		# Taken from PS::V9
+RedoxReg_VMAX13	0.0		# Taken from PS::V13
+RedoxReg_VMAX16	0.0		# Taken from PS::V16
+Fd_Thio_ET	500.0		# [CONST]
+ThioT		0.5		# [CONST]
+Thio_Oxidation	0.1		# [CONST]

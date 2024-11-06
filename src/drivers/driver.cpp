@@ -142,6 +142,46 @@ arr Driver::run() {
     throw std::runtime_error("No valid solution found");
 }
 
+void Driver::dump(const std::string& filename, const Variables* theVars,
+		  const ValueSet_t* con, const bool is_init) {
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+    static std::map<std::string, std::string> key_aliases = {
+	{"BF::POOL::kA_d", "BF::POOL::Tcyt"},
+	{"BF::POOL::kA_f", "BF::POOL::Tcytc2"},
+	{"BF::POOL::kA_U", "BF::POOL::TK"},
+	{"BF::POOL::kU_A", "BF::POOL::TMg"},
+	{"BF::POOL::kU_d", "BF::POOL::TCl"},
+	{"BF::POOL::kU_f", "BF::POOL::TFd"},
+	{"BF::POOL::k1", "BF::POOL::TA"},
+	{"BF::POOL::k_r1", "BF::POOL::TQ"},
+	{"BF::POOL::kz", "BF::POOL::BFTs"},
+	{"BF::POOL::k12", "BF::POOL::BFTl"},
+	{"BF::POOL::k23", "BF::POOL::P700T"},
+	{"BF::POOL::k30", "BF::POOL::NADPHT"}
+    };
+    static std::vector<std::string> skip_keys = {
+	"BF::RC::Em_IPS",
+	"BF::RC::Em_Cytf",
+	"BF::RC::Em_PG",
+    };
+#else // MAKE_EQUIVALENT_TO_MATLAB
+    static std::map<std::string, std::string> key_aliases = {};
+    static std::vector<std::string> skip_keys = {};
+#endif // MAKE_EQUIVALENT_TO_MATLAB
+    if (con) {
+      Variables* theVars2 = theVars->deepcopy();
+      theVars2->setRecord(con);
+      dump(filename, theVars2, nullptr, is_init);
+      delete theVars2;
+      return;
+    }
+    std::vector<PARAM_TYPE> skip_param_types;
+    if (is_init)
+      skip_param_types.push_back(PARAM_TYPE_VEL);
+    theVars->dump(filename, true, {}, skip_param_types,
+		  skip_keys, key_aliases);
+}
+
 Driver::~Driver() {
     if (origVars != nullptr)
         delete origVars;
@@ -155,3 +195,4 @@ int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
         dxdt[index] = ddxdt[index];
     return 0;
 }
+

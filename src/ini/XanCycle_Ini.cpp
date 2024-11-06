@@ -36,18 +36,16 @@ std::size_t XanCycle::N = 1;
 
 const std::size_t XanCycleCondition::count = 4;
 
-DEFINE_VALUE_SET_STATIC(XanCycle);
-DEFINE_VALUE_SET(XanCycleCondition);
+DEFINE_MODULE(XanCycle);
 
-XanCycleCondition* XanCycle::_init(Variables *theVars) {
+void XanCycle::_initOrig(Variables *theVars,
+			 XanCycleCondition* XanCycle_con) {
 
     XanCycle::kva = 0.163 / 60. * theVars->XanCycleRatio[0]; // Ruth Frommolt et a; 2001; Planta
     XanCycle::kaz = 0.691 / 60. * theVars->XanCycleRatio[1]; // Ruth Frommolt et a; 2001; Planta
     XanCycle::kza = 0.119 / 60. * theVars->XanCycleRatio[2]; // Ruth Frommolt et a; 2001; Planta
     XanCycle::kav = 0.119 / 60. * theVars->XanCycleRatio[3]; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
     
-    XanCycleCondition* XanCycle_con = new XanCycleCondition();
-
     XanCycle::Vx_ = 160.;
     XanCycle::Ax_ = 10.;
     XanCycle::Zx_ = 5.;
@@ -60,7 +58,22 @@ XanCycleCondition* XanCycle::_init(Variables *theVars) {
     XanCycle::XanCycle2FIBF_Xstate = XanCycle::Zx_ /
       (XanCycle::Ax_ + XanCycle::Vx_ + XanCycle::Zx_);
 
-    return XanCycle_con;
+}
+
+void XanCycle::_initCalc(Variables *theVars,
+			 XanCycleCondition* XanCycle_con) {
+    XanCycle::kva *= theVars->XanCycleRatio[0] / 60.; // Ruth Frommolt et a; 2001; Planta
+    XanCycle::kaz *= theVars->XanCycleRatio[1] / 60.; // Ruth Frommolt et a; 2001; Planta
+    XanCycle::kza *= theVars->XanCycleRatio[2] / 60.; // Ruth Frommolt et a; 2001; Planta
+    XanCycle::kav *= theVars->XanCycleRatio[3]; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
+    
+    XanCycle_con->Vx = XanCycle::Vx_ * 0.37;
+    XanCycle_con->Ax = XanCycle::Ax_ * 0.37;
+    XanCycle_con->Zx = XanCycle::Zx_ * 0.37;
+    XanCycle_con->ABA = XanCycle::ABA_;
+
+    XanCycle::XanCycle2FIBF_Xstate = XanCycle::Zx_ /
+      (XanCycle::Ax_ + XanCycle::Vx_ + XanCycle::Zx_);
 }
 
 void XanCycle::_initAlt(Variables *theVars,

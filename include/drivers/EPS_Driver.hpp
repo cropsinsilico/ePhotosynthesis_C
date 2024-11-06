@@ -41,22 +41,23 @@ namespace drivers {
 /**
  Class for running EPD with an ODE solver
  */
-class EPSDriver : public Driver {
+class EPSDriver : public DriverBase<EPSDriver, MODULE_EPS> {
 public:
+    DECLARE_DRIVER(EPS)
     /**
       \copydoc drivers::Driver::Driver
       \param para Input parameters
       \param ratio Input ratio.
       */
-
     EPSDriver(Variables *theVars, const double startTime, const double stepSize, const double endTime,
               const int maxSubsteps, const double atol, const double rtol,
               const std::size_t para, const double ratio,
               const bool showWarn = false) :
-        Driver(theVars, startTime, stepSize, endTime, maxSubsteps, atol, rtol, showWarn) {
+        DriverBase(theVars, startTime, stepSize, endTime, maxSubsteps, atol, rtol, showWarn) {
 #ifdef INCDEBUG
                 ePhotosynthesis::conditions::EPSCondition::setTop();
 #endif
+	init(theVars->useC3);
         ParaNum = para;
         Ratio = ratio;
     }

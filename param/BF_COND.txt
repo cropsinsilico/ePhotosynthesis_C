@@ -1,28 +1,29 @@
-ISPHr	0.0	# The reduced ion sulfer protein (ISPH); unit: micromole per m2
-cytc1	1.0	# The oxidized state of cytc1; unit: micromole per meter square
-ISPo	1.0	# The oxidized ion sulfer protein (ISP); unit: micromole per meter square
-ISPoQH2	0.0	# The complex of oxidized ion sulfer protein and reduced quinone; unit: micromole per meter square
-QHsemi	0.0	# Semiquinone; micromole per meter square
-cytbL	1.0	# The oxidized cytbL; micromole per meter square
-Qi	0.0	# The binding Quinone; micromole per meter square
-Q	1.0	# Quinone; micromole per meter square
-cytbH	1.0	# The oxidized form of cytbH; micromole per meter square
-Qn	0.0	# Q-; unit: micromole per meter square
-Qr	0.0	# The reduced quinone Q2-; micromole per meter square
-QH2	5.0	# The reduced quinone PQH2; micromole per meter square
-cytc2	1.0	# oxidized cytc2; micromole per meter square
-P700	0.5	# The reduced state of P700, including both P700 and excited P700; micromole per meter square
-ADP	0.82	# ADP in stroma, from the earlier photorespiration model; mmol l-1
-ATP	0.68	# ATP in stroma, from the photorespiration model; mmol l-1
-Ks	10.0	# K ions in stroma, mM, from the literature; mmol l-1; 90 might be an default;
-Mgs	5.0	# Mg ions in stroma, mM, from the literature of the ion estimate
-Cls	1.0	# Cl ions in stroma, mM, from the literature of the ion estimate
-Aip	0.0	# The number of photons in peripheral antenna; micromole per meter square
-U	0.0	# The number of photons in core antenna; micromole per meter square
-An	0.0	# The reduced electron acceptor in PSI; micromole per meter square
-Fdn	0.3	# The reduced ferrodoxin; micromole per meter square leaf area
-BFHs	19.0001	# The protonated buffer species  and free proton together in stroma; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number.; default 25
-BFHl	19.0001	# The protonated buffer species and free proton together in lumen; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number. ; default 5
-PHs	7.0	# The PH value of the stroma
-PHl	7.0	# The PH value of the lumen
-NADPH	0.21	# The NADPH concentration in stroma, Unit: mmol l-1;
+# Name		Value	C3Value	Docs
+ISPHr		0.0		# The reduced ion sulfer protein (ISPH); unit: micromole per m2
+cytc1		1.0		# The oxidized state of cytc1; unit: micromole per meter square
+ISPo		1.0		# The oxidized ion sulfer protein (ISP); unit: micromole per meter square
+ISPoQH2		0.0		# The complex of oxidized ion sulfer protein and reduced quinone; unit: micromole per meter square
+QHsemi		0.0		# Semiquinone; micromole per meter square
+cytbL		1.0		# The oxidized cytbL; micromole per meter square
+Qi		0.0		# The binding Quinone; micromole per meter square
+Q		1.0		# Quinone; micromole per meter square
+cytbH		1.0		# The oxidized form of cytbH; micromole per meter square
+Qn		0.0		# Q-; unit: micromole per meter square
+Qr		0.0		# The reduced quinone Q2-; micromole per meter square
+QH2		5.0		# The reduced quinone PQH2; micromole per meter square
+cytc2		1.0		# oxidized cytc2; micromole per meter square
+P700		0.5		# The reduced state of P700, including both P700 and excited P700; micromole per meter square
+ADP		0.82		# ADP in stroma, from the earlier photorespiration model; mmol l-1
+ATP		0.68		# ATP in stroma, from the photorespiration model; mmol l-1
+Ks		10.0		# K ions in stroma, mM, from the literature; mmol l-1; 90 might be an default;
+Mgs		5.0		# Mg ions in stroma, mM, from the literature of the ion estimate
+Cls		1.0		# Cl ions in stroma, mM, from the literature of the ion estimate
+Aip		0.0		# The number of photons in peripheral antenna; micromole per meter square
+U		0.0		# The number of photons in core antenna; micromole per meter square
+An		0.0		# The reduced electron acceptor in PSI; micromole per meter square
+Fdn		0.3		# The reduced ferrodoxin; micromole per meter square leaf area
+BFHs		19.0001		# The protonated buffer species  and free proton together in stroma; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number.; default 25
+BFHl		19.0001		# The protonated buffer species and free proton together in lumen; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number. ; default 5
+PHs		7.0		# The PH value of the stroma
+PHl		7.0		# The PH value of the lumen
+NADPH		0.21		# The NADPH concentration in stroma, Unit: mmol l-1;

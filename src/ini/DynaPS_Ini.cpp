@@ -33,28 +33,6 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 std::size_t DynaPSCondition::count = 0;
-#ifdef INCDEBUG
-Debug::DebugLevel DynaPSCondition::_dlevel = Debug::Middle;
-#endif
 
-DEFINE_VALUE_SET(DynaPSCondition);
-
-DynaPSCondition* DynaPS::_init(Variables *theVars) {
-
-    //////////////////////////////////////////////////////////////////////////////////
-    //   Clear up memory for simulation       //
-    //////////////////////////////////////////////////////////////////////////////////
-
-    RACondition* RA_con = RA::init(theVars);
-    XanCycleCondition* XanCycle_con = XanCycle::init(theVars);
-    DynaPSCondition* DynaPS_con = new DynaPSCondition(RA_con, XanCycle_con);
-    return DynaPS_con;
-}
-
+DEFINE_MODULE_COMPOSITE(DynaPS);
 DEFINE_DEFAULT_INITALT(DynaPS)
-
-void DynaPS::_reset() {
-    RA::reset();
-    XanCycle::reset();
-    conditions::DynaPSCondition::reset();
-}

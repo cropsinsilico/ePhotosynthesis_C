@@ -28,6 +28,10 @@
 
 #include "ConditionBase.hpp"
 
+#define PARENT_XanCycle DynaPS
+#define NRATIO_XanCycle 4
+#define PARAM_TYPES_XanCycle COND, VEL
+
 namespace ePhotosynthesis {
 namespace modules {
 class XanCycle;
@@ -41,7 +45,7 @@ class DynaPSCondition;
  */
 class XanCycleCondition : public ConditionBase<XanCycleCondition, DynaPSCondition, MODULE_XanCycle> {
 public:
-    DECLARE_VALUE_SET(XanCycleCondition, ConditionBase<XanCycleCondition, DynaPSCondition, MODULE_XanCycle>)
+    DECLARE_CONDITION(XanCycle)
     XanCycleCondition(DynaPSCondition* par = nullptr) {
         setParent(par);
         initMembers();
@@ -61,33 +65,10 @@ public:
       */
     XanCycleCondition(const arr &vec, const std::size_t offset = 0);
 
-    /**
-      Write the contents of the instance to the output stream.
-
-      \param out output stream to write to.
-      \param tab The level of indentation to use.
-      \returns The output stream
-      */
-    std::ostream& _print(std::ostream &out, const uint tab = 0) const;
-
 private:
-    friend ConditionBase;
-    friend class modules::XanCycle;
-    /**
-      \copydoc ConditionBase::_fromArray
-      */
-    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
-
-    /**
-      \copydoc ConditionBase::_toArray
-      */
-    arr _toArray() const override;
-
-    /**
-      \copydoc ConditionBase::_clear
-      */
+    /** \copydoc ConditionBase::_clear */
     void _clear() override;
-
+  
     /**
       Get the size of the data vector
 
@@ -103,12 +84,9 @@ private:
     static void _reset() {}
 
     static const std::size_t count;  // size of the current serialized output
-#ifdef INCDEBUG
-    const static Debug::DebugLevel _dlevel = Debug::Low;
-#endif
 };
 
-  DEFINE_VALUE_SET_HEADER(XanCycleCondition);
+    DEFINE_CONDITION_HEADER(XanCycle);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

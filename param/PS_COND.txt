@@ -1,16 +1,17 @@
-RuBP		2.000	#
-PGA		2.400	#
-DPGA		0.0011	#
-T3P		0.5	#
+# Name		Value	C3Value	Docs
+RuBP		2.000		#
+PGA		2.400		#
+DPGA		0.0011		#
+T3P		0.5		#
 ADPG		0.005	0.0	# (0.0 with C3)
-FBP		0.670	#
-E4P		0.050	#
-S7P		2.000	#
-SBP		0.300	#
-ATP		0.68	#
-# _NADPH	0.21	#
-HexP		2.2	#
-PenP		0.25	#
-_Pi		0.0	# [CONST, NON_VECTOR] ?
-_ADP		0.0	# [CONST, NON_VECTOR] ?
-_v1		0.0	# [CONST, NON_VECTOR] ?
+FBP		0.670		#
+E4P		0.050		#
+S7P		2.000		#
+SBP		0.300		#
+ATP		0.68		#
+# _NADPH	0.21		#
+HexP		2.2		#
+PenP		0.25		#
+_Pi		0.0		# [CONST, NON_VECTOR] ?
+_ADP		0.0		# [CONST, NON_VECTOR] ?
+_v1		0.0		# [CONST, NON_VECTOR] ?

@@ -34,27 +34,10 @@ using namespace ePhotosynthesis::conditions;
 
 std::size_t CMCondition::count = 0;
 bool CM::TestSucPath = false;
-#ifdef INCDEBUG
-Debug::DebugLevel CMCondition::_dlevel = Debug::Middle;
-#endif
 
-DEFINE_VALUE_SET(CMCondition);
-
-CMCondition* CM::_init(Variables *theVars) {
-
-    PS_PRCondition* PS_PR_con = PS_PR::init(theVars);
-
-    SUCSCondition* SUCS_Con = SUCS::init(theVars);
-
-    CMCondition* CMs = new CMCondition(PS_PR_con, SUCS_Con);
-    return CMs;
-}
-
+DEFINE_MODULE_COMPOSITE(CM);
 DEFINE_DEFAULT_INITALT(CM)
 
 void CM::_reset() {
     CM::TestSucPath = false;
-    PS_PR::reset();
-    SUCS::reset();
-    conditions::CMCondition::reset();
 }

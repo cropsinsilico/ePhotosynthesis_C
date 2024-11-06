@@ -30,38 +30,18 @@
 #include "conditions/EPSCondition.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class EPSModuleTest;
-}
-#endif
-namespace drivers {
-class EPSDriver;
-}
+
+FORWARD_DECLARE_MODULE_DRIVER(EPS);
+  
 namespace modules {
-class RA;
 
 /**
  Class for the EPS Module functions.
  */
 class EPS : public MODULE_BASE(EPS) {
 public:
-    DECLARE_MODULE_COMPOSITE(EPS);
+    DECLARE_MODULE_DRIVER(EPS);
 private:
-    friend ModuleBase;
-    friend class modules::RA;
-    friend class drivers::EPSDriver;
-#ifdef TESTING
-    friend class test::EPSModuleTest;
-#endif
-
-    /**
-      Function to set the initial state of the EPSCondition class.
-
-      \param theVars Pointer to the global variables
-      \return A EPSCondition object with values set based on the input
-      */
-    static conditions::EPSCondition* _init(Variables *theVars);
 
     /**
       Function to calculate the dy/dt values for the EPSCondition at the given time stamp.
@@ -97,12 +77,9 @@ private:
         (void)EPS_Con;
         (void)theVars;
     }
-
-    /**
-      Reset the static member variables to their default values.
-      */
-    static void _reset();
 };
+
+  DEFINE_MODULE_COMPOSITE_HEADER(EPS);
 
 }  // namespace modules
 }  // namespace ePhotosynthesis

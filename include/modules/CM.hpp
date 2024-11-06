@@ -29,37 +29,18 @@
 #include "conditions/CMCondition.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class CMModuleTest;
-}
-#endif
-namespace drivers {
-class CMDriver;
-}
+
+FORWARD_DECLARE_MODULE_DRIVER(CM);
+  
 namespace modules {
-class EPS;
+
 /**
 Class for the CM Module functions.
   */
 class CM : public MODULE_BASE(CM) {
 public:
-    DECLARE_MODULE_COMPOSITE(CM)
+    DECLARE_MODULE_DRIVER(CM)
 private:
-    friend ModuleBase;
-    friend class modules::EPS;
-    friend class drivers::CMDriver;
-#ifdef TESTING
-    friend class test::CMModuleTest;
-#endif
-
-    /**
-      Initialize the variables
-
-      \param theVars The global variables
-      \return A CMCondition object for input into calculations
-      */
-    static conditions::CMCondition* _init(Variables *theVars);
 
     /**
       Function to calculate the dy/dt values for the CMCondition at the given time stamp.
@@ -102,6 +83,8 @@ private:
     static void _reset();
     SET_GET_BOOL_NOSKIP(TestSucPath)
 };
+
+  DEFINE_MODULE_COMPOSITE_HEADER(CM);
 
 }  // namespace modules
 }  // namespace ePhotosynthesis

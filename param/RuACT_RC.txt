@@ -1,10 +1,11 @@
-k1	0.006		# The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco theVars->activase content or activity;
-kn1	1.6e-3		# The rate constant of E inactivation by binding of RuBP; Lazar 1999, with a lifetime of 5 ns at closed reaction center
-km1	20e-6		# The michaelis menton constant for RuBP with E.
-Ke2	0.1		# Data from Mate et al 1996. Unit: micormolar; Reference needed, a guess
-Ke3	1.600		# Data from Mate et al 1996. Unit: micormolar;
-k6	2.5		# micromolar per meter square per second, transfered to unit
-kc	0.016		# Michaelis menton constant for CO2
-ko	0.448		# Michaelis menton constant for O2
-k7	10.0		# The rate constant for ecm to ecmr
-kr	20.0e-3		# The apparaent michaelis menton constant for RuBP
+# Name		Value	C3Value	Docs
+k1		0.006		# The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco theVars->activase content or activity;
+kn1		1.6e-3		# The rate constant of E inactivation by binding of RuBP; Lazar 1999, with a lifetime of 5 ns at closed reaction center
+km1		20e-6		# The michaelis menton constant for RuBP with E.
+Ke2		0.1		# Data from Mate et al 1996. Unit: micormolar; Reference needed, a guess
+Ke3		1.600		# Data from Mate et al 1996. Unit: micormolar;
+k6		2.5		# micromolar per meter square per second, transfered to unit
+kc		0.016		# Michaelis menton constant for CO2
+ko		0.448		# Michaelis menton constant for O2
+k7		10.0		# The rate constant for ecm to ecmr
+kr		20.0e-3		# The apparaent michaelis menton constant for RuBP

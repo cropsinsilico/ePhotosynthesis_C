@@ -36,43 +36,34 @@ using namespace ePhotosynthesis::conditions;
 
 std::size_t FIBFCondition::count = 0;
 
-DEFINE_VALUE_SET_STATIC_COMPOSITE(FIBF);
-DEFINE_VALUE_SET(FIBFCondition);
-DEFINE_VALUE_SET_NS(pool::, FIBFPool);
+DEFINE_MODULE_COMPOSITE(FIBF);
 
-FIBFCondition* FIBF::_init(Variables *theVars) {
+void FIBF::_initOrig(Variables *theVars, FIBFCondition* FIBF_con) {
 
     const double FIBF_PQT = 8.;
     theVars->FIBF_Pool.PQT = FIBF_PQT;
-    FICondition* FI_Con = FI::init(theVars);
-    BFCondition* BF_con = BF::init(theVars);
-    FIBFCondition* FIBF_con = new FIBFCondition(BF_con, FI_Con);
+    _initCalc(theVars, FIBF_con);
+
+}
+
+void FIBF::_initCalc(Variables *theVars, FIBFCondition* FIBF_con) {
+    UNUSED(FIBF_con);
     theVars->FI_Pool.PQT = theVars->FIBF_Pool.PQT;
     theVars->BF_Pool.k_r1 = theVars->FIBF_Pool.PQT;
-
-    return FIBF_con;
 }
 
-void FIBF::_initAlt(Variables *theVars, FIBFCondition* FIBF_con) {
-#ifdef CHECK_VALUE_SET_ALTS
-    theVars->initParamStatic<FIBF>();
-    theVars->initParam(theVars->FIBF_Pool);
-    theVars->initParam(*FIBF_con);
-    theVars->FI_Pool[POOL::FI::PQT] = theVars->FIBF_Pool[POOL::FIBF::PQT];
-    theVars->BF_Pool[POOL::BF::k_r1] = theVars->FIBF_Pool[POOL::FIBF::PQT];
-#else // CHECK_VALUE_SET_ALTS
-    UNUSED(theVars);
-    UNUSED(FIBF_con);
-#endif // CHECK_VALUE_SET_ALTS
-}
-
-void FIBF::_checkAlts(Variables *theVars, const std::string& context) {
-    theVars->FIBF_Pool.checkAlts(context + "FIBF_Pool:");
-}
-
-void FIBF::_updateAlts(Variables *theVars, const std::string& context) {
-    theVars->FIBF_Pool.updateAlts(context + "FIBF_Pool:");
-}
+// void FIBF::_initAlt(Variables *theVars, FIBFCondition* FIBF_con) {
+// #ifdef CHECK_VALUE_SET_ALTS
+//     theVars->initParamStatic<FIBF>();
+//     theVars->initParam(theVars->FIBF_Pool);
+//     theVars->initParam(*FIBF_con);
+//     theVars->FI_Pool[POOL::FI::PQT] = theVars->FIBF_Pool[POOL::FIBF::PQT];
+//     theVars->BF_Pool[POOL::BF::k_r1] = theVars->FIBF_Pool[POOL::FIBF::PQT];
+// #else // CHECK_VALUE_SET_ALTS
+//     UNUSED(theVars);
+//     UNUSED(FIBF_con);
+// #endif // CHECK_VALUE_SET_ALTS
+// }
 
 void FIBF::_reset()  {
     ChlPSI = 0.;
@@ -80,7 +71,4 @@ void FIBF::_reset()  {
     ChlT2 = 0.;
     FIBF2FI_PQ = 0.;
     FIBF2FI_PQa = 0.;
-    FI::reset();
-    BF::reset();
-    conditions::FIBFCondition::reset();
 }

@@ -29,7 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET_SRC(RuACTCondition);
+DEFINE_CONDITION(RuACT);
 
 RuACTCondition::RuACTCondition(const RuACTCondition* const other) :
   ConditionBase<RuACTCondition, RACondition, MODULE_RuACT>(other) {

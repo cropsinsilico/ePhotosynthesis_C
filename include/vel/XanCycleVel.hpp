@@ -35,7 +35,7 @@ namespace vel {
 /**
  Class to hold the results of the XanCycleRate calculations
  */
-class XanCycleVel : VelBase<XanCycleVel, MODULE_XanCycle> {
+class XanCycleVel : public VelBase<XanCycleVel, MODULE_XanCycle> {
 public:
     DECLARE_VALUE_SET(XanCycleVel, VelBase<XanCycleVel, MODULE_XanCycle>)
     XanCycleVel() : VelBase<XanCycleVel, MODULE_XanCycle> () {

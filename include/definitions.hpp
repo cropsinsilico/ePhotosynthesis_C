@@ -133,6 +133,10 @@ enum RequestedDebug : uint {None = 0,
 #define DEBUG_MESSAGE(x) if (x->debugLevel() & theVars->debuglevel) std::cout << (x) << std::endl;
 #define DEBUG_INTERNAL(x) if (Debug::Internal & theVars->debuglevel) std::cout << (x) << std::endl;
 #define DEBUG_DELTA(x) if (Debug::Delta & theVars->debuglevel) std::cout << "DELTA" << std::endl << (x) << std::endl << "END DELTA" << std::endl;
+#else
+#define DEBUG_MESSAGE(x)
+#define DEBUG_INTERNAL(x)
+#define DEBUG_DELTA(x)
 #endif
 
 /**
@@ -148,33 +152,18 @@ enum RequestedDebug : uint {None = 0,
   Creates a *static boolean* private data member and public setter and getter functions for a module class
   */
 
-// #ifdef CHECK_VALUE_SET_ALTS
-// #define CHECK_SET_GET(NAME, CONTEXT)			\
-//   checkAlt(EnumClass::NAME, CONTEXT);
-// #else // CHECK_VALUE_SET_ALTS
-#define CHECK_SET_GET(NAME, CONTEXT)
-// #endif // CHECK_VALUE_SET_ALTS
-  
-// #ifdef CHECK_VALUE_SET_ALTS
-// #define SET_ALT(name) set(EnumClass::name, val);
-// #else // CHECK_VALUE_SET_ALTS
-#define SET_ALT(name)
-// #endif // CHECK_VALUE_SET_ALTS
-
 //! [SET_GET]
 #define SET_GET(NAME) public:						\
   /** Get the value of NAME \returns The current value */		\
   static double get ## NAME() {						\
     initStaticMembers();						\
-    CHECK_SET_GET(NAME, "get: ")					\
-    /* return get(EnumClass::NAME); */					\
     return NAME;							\
   }									\
   /** Set the value of NAME \param val The value to set NAME to */	\
   static void set ## NAME(const double val) {				\
     initStaticMembers();						\
+    setPreInit(ValueSetClass::NAME, val);				\
     NAME = val;								\
-    SET_ALT(NAME)							\
   }
 //! [SET_GET]
 
@@ -316,6 +305,17 @@ public:
       */
     void write(std::ofstream &of);
 
+    /**
+       Comparison operator.
+       @param[in] other TimeSeries to compare against this one
+       @returns true if other is equivalent to this instance, false
+         otherwise.
+     */
+    bool operator==(const TimeSeries<T>& other) const;
+    bool operator!=(const TimeSeries<T>& other) const {
+	return (!operator==(other));
+    }
+
 private:
     std::size_t current = 0;
     std::vector<T> _data;            // a vector of the accumulated data
@@ -352,6 +352,21 @@ void TimeSeries<T>::write(std::ofstream &of) {
     }
 }
 
+template <typename T>
+bool TimeSeries<T>::operator==(const TimeSeries<T>& other) const {
+    if (current != other.current) return false;
+#define CHECK(name)					\
+    if (name.size() != other.name.size())		\
+      return false;					\
+    for (std::size_t i = 0; i < name.size(); i++) {	\
+      if (name[i] != other.name[i]) return false;	\
+    }
+    CHECK(_data);
+    CHECK(_step);
+    CHECK(_timestamp);
+#undef CHECK
+    return true;
+}
 
 inline void report(arr values) {
     std::cout << values[0] << "  =  ";

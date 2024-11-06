@@ -33,35 +33,15 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET(RACondition);
+DEFINE_MODULE_COMPOSITE(RA);
 
-RACondition* RA::_init(Variables *theVars) {
-    EPSCondition* EPS_con = EPS::init(theVars);
-    RuACTCondition* RuACT_con = RuACT::init(theVars);
-
-    if (theVars->RuACT_EPS_com)
-        RuACT_con->RuBP = EPS_con->CM_con->PS_PR_con->PS_con->RuBP;
-
-    // Now get the combined total concentration of different concentration variables.
-    RACondition* RA_con = new RACondition(EPS_con, RuACT_con);
-    return RA_con;
+void RA::_initOrig(Variables *theVars, RACondition* RA_con) {
+    _initCalc(theVars, RA_con);
 }
 
-void RA::_initAlt(Variables *theVars, RACondition* RA_con) {
-#ifdef CHECK_VALUE_SET_ALTS
+void RA::_initCalc(Variables *theVars, RACondition* RA_con) {
     if (theVars->RuACT_EPS_com)
-	RA_con->RuACT_con->set(COND::RuACT::RuBP,
-			       RA_con->EPS_con->CM_con->PS_PR_con->PS_con->RuBP);
-#else // CHECK_VALUE_SET_ALTS
-    UNUSED(theVars);
-    UNUSED(RA_con);
-#endif // CHECK_VALUE_SET_ALTS
+        RA_con->RuACT_con->RuBP = RA_con->EPS_con->CM_con->PS_PR_con->PS_con->RuBP;
 }
 
 DEFINE_DEFAULT_CHECKALT(RA)
-
-void RA::_reset() {
-    EPS::reset();
-    RuACT::reset();
-    conditions::RACondition::reset();
-}

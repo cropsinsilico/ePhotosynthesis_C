@@ -1,3 +1,4 @@
+# Name		Value	C3Value	Docs
 FBPase_Coeff	-0.305
 FBPase0		0.5
 SBPase_Coeff	-0.3

@@ -43,12 +43,12 @@ bool BFCondition::RROEA_connect = false;
 double BF::TIME = 0.;
 std::size_t BF::N = 1;
 
-DEFINE_VALUE_SET_STATIC(BF);
-DEFINE_VALUE_SET(BFCondition);
-DEFINE_VALUE_SET_NS(RC::, BFRC);
-DEFINE_VALUE_SET_NS(pool::, BFPool);
+DEFINE_MODULE(BF);
 
 void BF::_initCalc(Variables *theVars, BFCondition* BF_con) {
+    BF::setFI_connect(theVars->BF_FI_com);
+    BF::setPS_connect(theVars->FIBF_PSPR_com);
+    BF::setRROEA_connect(theVars->RROEA_EPS_com);
     if (theVars->useC3) {
         if (theVars->lightParam == 0.) {
             const double light_scaler = theVars->alfa * (1. - theVars->fc);
@@ -119,8 +119,8 @@ void BF::_initCalc(Variables *theVars, BFCondition* BF_con) {
         theVars->BF_RC.Kua *= theVars->BFRatio[16];     // The rate constant for exciton transfer from core antenna to peripheral antenna, SEE FI Unit: s-1
         theVars->BF_RC.Kf *= theVars->BFRatio[17]; // The rate constant for fluorescence emission, see the note in FI Unit: s-1
         theVars->BF_RC.Kd *= theVars->BFRatio[18];   // The rate constant for heat dissipation; see the note for FI Unit: s-1
-        theVars->BF_RC.KE8 *= KE8; // ISPHr + cytc1 --> ISPHox + cytc1- Unit: s-1
-        theVars->BF_RC.KE9 *= KE9; // cytc1- + cytc2 --> cytc1 + cytc2- Unit: s-1
+        theVars->BF_RC.KE8 = KE8; // ISPHr + cytc1 --> ISPHox + cytc1- Unit: s-1
+        theVars->BF_RC.KE9 = KE9; // cytc1- + cytc2 --> cytc1 + cytc2- Unit: s-1
         theVars->BF_RC.K15 *= theVars->BFRatio[19];     // The rate constant for primary charge separation in PSI Unit: s-1
         theVars->BF_RC.K16 *= theVars->BFRatio[20];      // The rate constant for electron tranfer from electron acceptor of PSI to Fd Unit: s-1
         theVars->BF_RC.MemCap *= theVars->BFRatio[26]; // The membrane capacity
@@ -151,7 +151,7 @@ void BF::_initCalc(Variables *theVars, BFCondition* BF_con) {
     }
 }
 
-BFCondition* BF::_init(Variables *theVars) {
+void BF::_initOrig(Variables *theVars, BFCondition* BF_con) {
 
     BF::setFI_connect(theVars->BF_FI_com);
     BF::setPS_connect(theVars->FIBF_PSPR_com);
@@ -165,9 +165,19 @@ BFCondition* BF::_init(Variables *theVars) {
     theVars->BF_RC.Em_PG = 0.35;
 
     if (theVars->useC3) {
-        BF::cNADPHsyn = 1.;
-        BF::CPSi = 1.;
-        BF::cATPsyn = 1.;
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+	// The old version would always overwrite values read from the
+	//   provided grn file
+	if (theVars->GRNC == 0) {
+	    BF::cNADPHsyn = 1.;
+	    BF::CPSi = 1.;
+	    BF::cATPsyn = 1.;
+	}
+#else // MAKE_EQUIVALENT_TO_MATLAB
+	BF::cNADPHsyn = 1.;
+	BF::CPSi = 1.;
+	BF::cATPsyn = 1.;
+#endif // MAKE_EQUIVALENT_TO_MATLAB
         // cATPsyn=1.0447;%1.01866 WY201803
         // CPSi=1.0131;% 1.0237 WY201803
         // cNADPHsyn=1.094468408;%1.0388 WY201803
@@ -282,7 +292,6 @@ BFCondition* BF::_init(Variables *theVars) {
 
     //  This is the initialization step for the module of the Q cycle, and ATP synthesis steps
 
-    BFCondition* BF_con = new BFCondition();
     BF_con->ISPHr = 0.;     // The reduced ion sulfer protein (ISPH)
     BF_con->cytc1 = 1.;     // The oxidized state of cytc1
     BF_con->ISPo = 1.;      // The oxidized ion sulfer protein (ISP)
@@ -350,7 +359,6 @@ BFCondition* BF::_init(Variables *theVars) {
         theVars->BF_Pool.k23 = 1. * theVars->BFRatio[47];   // The total number of P700; unit: micromole m-2 leaf area
         theVars->BF_Pool.k30 = 1. * theVars->BFRatio[48];   //   The total concentration of NADPH in stroma; 1 is an guessed value;
     }
-    return BF_con;
 }
 
 void BF::_initAlt(Variables *theVars, BFCondition* BF_con) {
@@ -447,14 +455,4 @@ void BF::_initAlt(Variables *theVars, BFCondition* BF_con) {
     UNUSED(theVars);
     UNUSED(BF_con);
 #endif // CHECK_VALUE_SET_ALTS
-}
-
-void BF::_checkAlts(Variables *theVars, const std::string& context) {
-    theVars->BF_RC.checkAlts(context + "BF_RC:");
-    theVars->BF_Pool.checkAlts(context + "BF_Pool:");
-}
-
-void BF::_updateAlts(Variables *theVars, const std::string& context) {
-    theVars->BF_RC.updateAlts(context + "BF_RC:");
-    theVars->BF_Pool.updateAlts(context + "BF_Pool:");
 }

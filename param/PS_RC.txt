@@ -1,3 +1,4 @@
+# Name		Value	C3Value	Docs
 # _NADPH	0.21		#
 CP		22.0		# Global constant for the total phosphate
 CA		1.5		# Global constant for the total adenylates

@@ -31,14 +31,11 @@
 #include "conditions/BFCondition.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class BFModuleTest;
-}
-#endif
+
+FORWARD_DECLARE_MODULE(BF);
+  
 namespace modules {
 
-class FIBF;
 /**
  Class for the BF Module functions.
  */
@@ -51,19 +48,6 @@ public:
     SET_GET_BOOL_MODULE(PS_connect, conditions::BF)
     SET_GET_BOOL_MODULE(RROEA_connect, conditions::BF)
 private:
-    friend ModuleBase;
-    friend class modules::FIBF;
-#ifdef TESTING
-    friend class test::BFModuleTest;
-#endif
-    /**
-      Function to set the initial state of the BFCondition class.
-
-      \param theVars Pointer to the global variables
-      \return A BFCondition object with values set based on the input
-      */
-    static conditions::BFCondition* _init(Variables *theVars);
-
     /**
       Function to calculate the dy/dt values for the BFCondition at the given time stamp.
 
@@ -114,11 +98,10 @@ private:
         setRROEA_connect(false);
         N = 0;
         TIME = 0.;
-        conditions::BFCondition::reset();
     }
 };
 
-  DEFINE_VALUE_SET_STATIC_HEADER(BF);
+  DEFINE_MODULE_HEADER(BF);
 
 }  // namespace modules
 }  // namespace ePhotosynthesis

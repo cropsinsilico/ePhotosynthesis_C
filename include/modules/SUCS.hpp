@@ -31,13 +31,10 @@
 #include "definitions.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class SUCSModuleTest;
-}
-#endif
+
+FORWARD_DECLARE_MODULE(SUCS);
+  
 namespace modules {
-class CM;
 
 /**
  Class for SUCS related functions and common variables
@@ -46,18 +43,6 @@ class SUCS : public MODULE_BASE(SUCS) {
 public:
     DECLARE_MODULE(SUCS)
 private:
-    friend ModuleBase;
-    friend class modules::CM;
-#ifdef TESTING
-    friend class test::SUCSModuleTest;
-#endif
-    /**
-      Function to set the initial state of the SUCSCondition class.
-
-      \param theVars Pointer to the global variables
-      \return A SUCSCondition object with values set based on the input
-      */
-    static conditions::SUCSCondition* _init(Variables *theVars);
 
     /**
       Function to calculate the dy/dt values for the SUCSCondition at the given time stamp.
@@ -170,7 +155,7 @@ private:
     static std::size_t N;  // The current size of the SUCS TimeSeries
 };
 
-  DEFINE_VALUE_SET_STATIC_HEADER(SUCS);
+  DEFINE_MODULE_HEADER(SUCS);
 
 }  // namespace modules
 }  // namespace ePhotosynthesis

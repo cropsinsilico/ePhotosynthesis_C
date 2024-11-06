@@ -29,7 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET_SRC(SUCSCondition);
+DEFINE_CONDITION(SUCS);
 
 SUCSCondition::SUCSCondition(const SUCSCondition* const other) :
   ConditionBase<SUCSCondition, CMCondition, MODULE_SUCS>(other) {

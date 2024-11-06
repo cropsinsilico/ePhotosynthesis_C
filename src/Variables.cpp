@@ -3,6 +3,13 @@
 
 using namespace ePhotosynthesis;
 
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+void Variables::_initDefaults() {
+    setDefault(ValueSetClass::alpha1, 1.0, true);
+    setDefault(ValueSetClass::alpha2, 1.0, true);
+}
+#endif // MAKE_EQUIVALENT_TO_MATLAB
+
 Variables::Variables(const Variables& other) : Variables(other.context) {
     *this = other;
 }
@@ -16,106 +23,124 @@ Variables* Variables::deepcopy() const {
   out->alfa = this->alfa;
   out->fc = this->fc;
   out->lightParam = this->lightParam;
-  out->PR_Param = this->PR_Param;
-  out->BF_Param = this->BF_Param;
-  out->FI_Param = this->FI_Param;
-  out->RROEA_Param = this->RROEA_Param;
-  out->RuACT_Param = this->RuACT_Param;
-  out->SUCS_Param = this->SUCS_Param;
-  out->XanCycle_Param = this->XanCycle_Param;
-  out->BF_Vel = this->BF_Vel;
-  out->FI_Vel = this->FI_Vel;
-  out->PR_Vel = this->PR_Vel;
-  out->PS_Vel = this->PS_Vel;
-  out->RROEA_Vel = this->RROEA_Vel;
-  out->RedoxReg_Vel = this->RedoxReg_Vel;
-  out->RuACT_Vel = this->RuACT_Vel;
-  out->SUCS_Vel = this->SUCS_Vel;
-  out->XanCycle_Vel = this->XanCycle_Vel;
-  out->BF_VEL = this->BF_VEL;
   out->CO2A = this->CO2A;
-  out->FI_VEL = this->FI_VEL;
-  out->PR_VEL = this->PR_VEL;
-  out->PS_VEL = this->PS_VEL;
-  out->RROEA_VEL = this->RROEA_VEL;
   out->RedoxReg_MP = this->RedoxReg_MP;
-  out->RedoxReg_VEL = this->RedoxReg_VEL;
-  out->RuACT_VEL = this->RuACT_VEL;
-  out->SUCS_VEL = this->SUCS_VEL;
-  out->XanCycle_VEL = this->XanCycle_VEL;
+#define DO_MEMBERS(mod, pt)
+#define DO_MEMBERS_PACKED(args) DO_MEMBERS args
+#define DO_MEMBERS_CORE(mod)						\
+  out->CONCATENATE(mod, _Param) = this->CONCATENATE(mod, _Param)
+#define DO_MEMBERS_CONNECTION(mod)
+  VARS_INST_APPLY_TO_MEMBERS(DO_MEMBERS);
+#undef DO_MEMBERS
+#undef DO_MEMBERS_PACKED
+#undef DO_MEMBERS_CORE
+#undef DO_MEMBERS_CONNECTION
+#define DO_MOD(mod)							\
+  out->CONCATENATE(mod, _Vel) = this->CONCATENATE(mod, _Vel);		\
+  out->CONCATENATE(mod, _VEL) = this->CONCATENATE(mod, _VEL)
+  FOR_EACH(DO_MOD, EXPAND VARS_INST_MODULES);
+#undef DO_MOD
   return out;
 }
 
 Variables& Variables::operator=(const Variables &other) {
     context = other.context;
     record = other.record;
-    BF_FI_com = other.BF_FI_com;
-    EPS_SUCS_com = other.EPS_SUCS_com;
-    FIBF_PSPR_com = other.FIBF_PSPR_com;
-    PR_PS_com = other.PR_PS_com;
-    PSPR_SUCS_com = other.PSPR_SUCS_com;
-    RROEA_EPS_com = other.RROEA_EPS_com;
-    RedoxReg_RA_com = other.RedoxReg_RA_com;
-    RuACT_EPS_com = other.RuACT_EPS_com;
-    XanCycle_BF_com = other.XanCycle_BF_com;
     GP = other.GP;
     GRNC = other.GRNC;
     GRNT = other.GRNT;
     RUBISCOMETHOD = other.RUBISCOMETHOD;
-    CO2_cond = other.CO2_cond;
-    GLight = other.GLight;
-    O2_cond = other.O2_cond;
-    PS12ratio = other.PS12ratio;
-    ADP = other.ADP;
-    Pi = other.Pi;
-    TestATPCost = other.TestATPCost;
-    CO2_in = other.CO2_in;
-    TestLi = other.TestLi;
-    PS2BF_Pi = other.PS2BF_Pi;
-    PS_PR_Param = other.PS_PR_Param;
-    Tp = other.Tp;
-    BFRatio = other.BFRatio;
-    FIRatio = other.FIRatio;
-    PRRatio = other.PRRatio;
-    PSRatio = other.PSRatio;
-    RuACTRatio = other.RuACTRatio;
-    SUCSRatio = other.SUCSRatio;
-    XanCycleRatio = other.XanCycleRatio;
+    // CO2_cond = other.CO2_cond;
+    // GLight = other.GLight;
+    // O2_cond = other.O2_cond;
+    // PS12ratio = other.PS12ratio;
+    // ADP = other.ADP;
+    // Pi = other.Pi;
+    // TestATPCost = other.TestATPCost;
+    // CO2_in = other.CO2_in;
+    // TestLi = other.TestLi;
+    // PS2BF_Pi = other.PS2BF_Pi;
+    // PS_PR_Param = other.PS_PR_Param;
+    // Tp = other.Tp;
+#define DO_MEMBERS(mod, pt)						\
+    VARS_INST_VAR(mod, pt) = other.VARS_INST_VAR(mod, pt)
+#define DO_MEMBERS_PACKED(args) DO_MEMBERS args
+#define DO_MEMBERS_CORE(mod)			\
+    mod ## Ratio = other.mod ## Ratio
+#define DO_MEMBERS_CONNECTION(mod)		\
+    mod ## _com = other.mod ## _com
+    VARS_INST_APPLY_TO_MEMBERS(DO_MEMBERS);
+#undef DO_MEMBERS
+#undef DO_MEMBERS_PACKED
+#undef DO_MEMBERS_CORE
+#undef DO_MEMBERS_CONNECTION
+    
     EnzymeAct = other.EnzymeAct;
     VfactorCp = other.VfactorCp;
     VfactorT = other.VfactorT;
-    BF_Pool = other.BF_Pool;
-    FIBF_Pool = other.FIBF_Pool;
-    FI_Pool = other.FI_Pool;
-    RROEA_Pool = other.RROEA_Pool;
-    RuACT_Pool = other.RuACT_Pool;
-    SUCS_Pool = other.SUCS_Pool;
-    BF_RC = other.BF_RC;
-    FI_RC = other.FI_RC;
-    RROEA_RC = other.RROEA_RC;
-    RuACT_RC = other.RuACT_RC;
-    BF2OUT = other.BF2OUT;
-    PR2OUT = other.PR2OUT;
-    PS2OUT = other.PS2OUT;
-    SUCS2OUT = other.SUCS2OUT;
-    XanCycle2OUT = other.XanCycle2OUT;
     FluxTR = other.FluxTR;
-    RROEA_KE = other.RROEA_KE;
     useC3 = other.useC3;
+    copyMembers(other);
     return *this;
+}
+
+std::string Variables::_diff(const Variables& other,
+			     std::size_t padKeys, std::size_t padVals,
+			     bool includePrefixes,
+			     bool noChildren) const {
+    std::string out = ValueSetClass::_diff(other, padKeys, padVals,
+					   includePrefixes, noChildren);
+#define FITER(V, ...)							\
+    if (V->_virtual_get_param_type() == PARAM_TYPE_VARS) continue;	\
+    const ValueSet_t* V2 = other.GET_VALUE_SET(V->_virtual_get_module(), \
+	 				       V->_virtual_get_param_type()); \
+    out += V->diff(*V2, __VA_ARGS__);
+    VARS_ITER_MACRO_INST(FITER, padKeys, padVals,
+			 includePrefixes, noChildren);
+#undef FITER
+    return out;
+}
+bool Variables::equals(const ValueSet_t &b0,
+		       const bool noChildren) const {
+  if (!ValueSetClass::equals(b0)) {
+    std::cerr << "ValueSetClass::equals returned false" << std::endl;
+    return false;
+  }
+  const Variables& b = static_cast<const Variables&>(b0);
+#define CHECK(name)					\
+    if (name != b.name) {				\
+      std::cerr << #name << " not equal" << std::endl;	\
+      return false;					\
+    }
+    FOR_EACH(CHECK, context, record, GP, GRNC, GRNT, RUBISCOMETHOD, useC3,
+	     EnzymeAct, VfactorCp, VfactorT, FluxTR, CO2A, RedoxReg_MP,
+	     FIBF_Pool);
+#define CHECK_COM(name) CHECK(name ## _com)
+    FOR_EACH(CHECK_COM, EXPAND(VARS_INST_CONNECTIONS));
+#undef CHECK_COM
+#undef CHECK
+#define FITER(V, other, ...)						\
+    const ValueSet_t* V2 = other.GET_VALUE_SET(V->_virtual_get_module(), \
+					       V->_virtual_get_param_type()); \
+    if (V->_virtual_selected() != V2->_virtual_selected()) {		\
+	std::cerr << "isEqual(" << V->_virtual_get_module() <<		\
+	  ", " << V->_virtual_get_param_type() <<			\
+	  "): isSelected differs" << std::endl;				\
+	return false;							\
+    }									\
+    if (!V->_virtual_selected()) return true;				\
+    if (!V->equals(*V2, __VA_ARGS__)) return false
+    VARS_ITER_MACRO_COND(FITER, b, noChildren);
+#undef FITER
+    return true;
 }
 
 std::ostream& ePhotosynthesis::operator<<(std::ostream &out, const Variables *in) {
     out << "record = " << in->record << std::endl;
-    out << "BF_FI_com = " << in->BF_FI_com << std::endl;
-    out << "EPS_SUCS_com = " << in->EPS_SUCS_com << std::endl;
-    out << "FIBF_PSPR_com = " << in->FIBF_PSPR_com << std::endl;
-    out << "PR_PS_com = " << in->PR_PS_com << std::endl;
-    out << "PSPR_SUCS_com = " << in->PSPR_SUCS_com << std::endl;
-    out << "RROEA_EPS_com = " << in->RROEA_EPS_com << std::endl;
-    out << "RedoxReg_RA_com = " << in->RedoxReg_RA_com << std::endl;
-    out << "RuACT_EPS_com = " << in->RuACT_EPS_com << std::endl;
-    out << "XanCycle_BF_com = " << in->XanCycle_BF_com << std::endl;
+#define DO_CONN(mod)						\
+    out << #mod << "_com = " << in->mod ## _com << std::endl
+    FOR_EACH(DO_CONN, VARS_INST_CONNECTIONS);
+#undef DO_CONN
 
     out << "GP = " << in->GP << std::endl;
     out << "GRNC = " << in->GRNC << std::endl;
@@ -144,75 +169,27 @@ std::ostream& ePhotosynthesis::operator<<(std::ostream &out, const Variables *in
     out << "lightParam = " << in->lightParam << std::endl;
 
     // Parameters
-    out << "PR_Param = ";
-for (auto i : in->PR_Param)
-    out << i << ", ";
-out << std::endl;
-    out << "BF_Param = ";
-for (auto i : in->BF_Param)
-    out << i << ", ";
-out << std::endl;
-    out << "FI_Param = ";
-for (auto i : in->FI_Param)
-    out << i << ", ";
-out << std::endl;
-    out << "RROEA_Param = ";
-for (auto i : in->RROEA_Param)
-    out << i << ", ";
-out << std::endl;
-    out << "RuACT_Param = ";
-for (auto i : in->RuACT_Param)
-    out << i << ", ";
-out << std::endl;
-    out << "SUCS_Param = ";
-for (auto i : in->SUCS_Param)
-    out << i << ", ";
-out << std::endl;
-    out << "XanCycle_Param = ";
-for (auto i : in->XanCycle_Param)
-    out << i << ", ";
-out << std::endl;
+#define DO_PARAM(mod)				\
+    out << #mod << "_Param = ";			\
+    for (auto i : in->CONCATENATE(mod, _Param))	\
+      out << i << ", ";				\
+    out << std::endl
+    FOR_EACH(DO_PARAM, EXPAND VARS_INST_MODULES);
+#undef DO_PARAM
 
     // Vel
-    out << in->BF_Vel;
-    out << in->FI_Vel;
-    out << in->PR_Vel;
-    out << in->PS_Vel;
-    out << in->RROEA_Vel;
-    out << in->RedoxReg_Vel;
-    out << in->RuACT_Vel;
-    out << in->SUCS_Vel;
-    out << in->XanCycle_Vel;
+#define DO_VEL(mod) out << in->CONCATENATE(mod, _Vel)
+    FOR_EACH(DO_VEL, EXPAND VARS_INST_MODULES);
+#undef DO_VEL
 
     // Ratio
-    out << "BFRatio = ";
-for (auto i : in->BFRatio)
-    out << i << ", ";
-out << std::endl;
-    out << "FIRatio = ";
-for (auto i : in->FIRatio)
-    out << i << ", ";
-out << std::endl;
-    out << "PRRatio = ";
-for (auto i : in->PRRatio)
-    out << i << ", ";
-out << std::endl;
-    out << "PSRatio = ";
-for (auto i : in->PSRatio)
-    out << i << ", ";
-out << std::endl;
-    out << "RuACTRatio = ";
-for (auto i : in->RuACTRatio)
-    out << i << ", ";
-out << std::endl;
-    out << "SUCSRatio = ";
-for (auto i : in->SUCSRatio)
-    out << i << ", ";
-out << std::endl;
-    out << "XanCycleRatio = ";
-for (auto i : in->XanCycleRatio)
-    out << i << ", ";
-out << std::endl;
+#define DO_RATIO(mod)					\
+    out << #mod << "Ratio = ";				\
+    for (auto i : in->CONCATENATE(mod, Ratio))		\
+      out << i << ", ";					\
+    out << std::endl
+    FOR_EACH(DO_RATIO, EXPAND VARS_INST_MODULES);
+#undef DO_RATIO
 
     out << "VfactorCp = ";
 for (auto i : in->VfactorCp)
@@ -232,111 +209,141 @@ out << std::endl;
     out << "useC3 = " << in->useC3 << std::endl;
 
     // Conditions
-#define OUTPUT_COND(name)			\
-    out << #name "2OUT: " << std::endl << (in->name ## 2OUT) << std::endl
-    OUTPUT_COND(BF);
-    OUTPUT_COND(FI);
-    OUTPUT_COND(PR);
-    OUTPUT_COND(PS);
-    OUTPUT_COND(RROEA);
-    OUTPUT_COND(RedoxReg);
-    OUTPUT_COND(RuACT);
-    OUTPUT_COND(SUCS);
-    OUTPUT_COND(XanCycle);
-#undef OUTPUT_COND
+#define DO_COND(mod)							\
+    out << #mod "2OUT: " << std::endl << (in->mod ## 2OUT) << std::endl
+    FOR_EACH(DO_COND, EXPAND VARS_INST_MODULES);
+#undef DO_COND
     return out;
 }
 
-
-void Variables::initDefaults(const MODULE& module,
-			     const PARAM_TYPE& param_type,
-			     const bool useC3,
-			     const std::string& filename) {
-#define INIT_DEF(c3, fname, mod, pt)			\
-  VARS_CLASS_VAR(mod, pt)::initDefaults(c3, fname);	\
-  return
-    VARS_CLASS_SWITCH(module, param_type, INIT_DEF, useC3, filename)
-#undef INIT_DEF
-  /*
-#define ADD_SPEC(var, mod, pt)						\
-    if (module == MODULE_ ## mod && param_type == PARAM_TYPE_ ## pt) {	\
-	var::initDefaults(useC3, filename);				\
-	return;								\
+void Variables::dump(const std::string& filename,
+		     const bool includeSkipped,
+		     const std::vector<MODULE>& skip_modules,
+		     const std::vector<PARAM_TYPE>& skip_param_types,
+		     const std::vector<std::string>& skip_keys,
+		     const std::map<std::string, std::string>& key_aliases) const {
+    std::ofstream fd;
+    fd.open(filename);
+    dump(fd, includeSkipped, skip_modules, skip_param_types,
+	 skip_keys, key_aliases);
+    dump(std::cerr, false, skip_modules, skip_param_types,
+	 skip_keys, key_aliases);
+    fd.close();
+}
+std::ostream& Variables::dump(std::ostream& out,
+			      const bool includeSkipped,
+			      const std::vector<MODULE>& skip_modules,
+			      const std::vector<PARAM_TYPE>& skip_param_types,
+			      const std::vector<std::string>& skip_keys,
+			      const std::map<std::string, std::string>& key_aliases) const {
+    std::size_t pad = max_field_width_all();
+#define FITER(V, ...)							\
+    if (V->_virtual_selected() &&					\
+	!__contains(skip_modules, V->_virtual_get_module()) &&		\
+        !__contains(skip_param_types, V->_virtual_get_param_type())) {	\
+	V->print(__VA_ARGS__);						\
     }
-#define ADD_SPEC_MOD(mod)						\
-    ADD_SPEC(conditions::mod ## Condition, mod, COND)			\
-    else ADD_SPEC(pool::mod ## Pool, mod, POOL)				\
-    else ADD_SPEC(RC::mod ## RC, mod, RC)				\
-    else ADD_SPEC(KE::mod ## KE, mod, KE)				\
-    else ADD_SPEC(vel::mod ## Vel, mod, VEL)				\
-    else ADD_SPEC(modules::mod, mod, MOD)
-  
-    ADD_SPEC_MOD(BF)
-    else ADD_SPEC_MOD(CM)
-    else ADD_SPEC_MOD(DynaPS)
-    else ADD_SPEC_MOD(EPS)
-    else ADD_SPEC_MOD(FIBF)
-    else ADD_SPEC_MOD(FI)
-    else ADD_SPEC_MOD(PR)
-    else ADD_SPEC_MOD(PS)
-    else ADD_SPEC_MOD(PS_PR)
-    else ADD_SPEC_MOD(RA)
-    else ADD_SPEC_MOD(RROEA)
-    else ADD_SPEC_MOD(RedoxReg)
-    else ADD_SPEC_MOD(RuACT)
-    else ADD_SPEC_MOD(SUCS)
-    else ADD_SPEC_MOD(XanCycle)
-    else ADD_SPEC_MOD(trDynaPS)
-#undef ADD_SPEC_MOD
-#undef ADD_SPEC
-    // else if (module == MODULE_NONE && PARAM_TYPE == PARAM_TYPE_NONE) {
-    // 	initDefaults(useC3, filename);
-    //  return;
-    else {
-        throw std::runtime_error("Invalid MODULE (" + get_enum_name(module) + ") "
-				 + " or PARAM_TYPE (" + get_enum_name(param_type) + ")");
+    VARS_ITER_MACRO_COND(FITER, out, 0, pad, true, includeSkipped,
+			 skip_keys, key_aliases, true);
+#undef FITER
+    return out;
+}
+std::ostream& Variables::dump(const MODULE& module,
+			      const PARAM_TYPE& param_type,
+			      std::ostream& out, std::size_t pad,
+			      const bool includeSkipped,
+			      const std::vector<MODULE>& skip_modules,
+			      const std::vector<PARAM_TYPE>& skip_param_types,
+			      const std::vector<std::string>& skip_keys,
+			      const std::map<std::string, std::string>& key_aliases) const {
+    if (!isSelected(module, param_type)) {
+	return out;
     }
-  */
+    if (!skip_modules.empty()) {
+      for (std::vector<MODULE>::const_iterator it = skip_modules.begin();
+	   it != skip_modules.end(); it++)
+	if (*it == module) return out;
+    }
+    if (!skip_param_types.empty()) {
+      for (std::vector<PARAM_TYPE>::const_iterator it = skip_param_types.begin();
+	   it != skip_param_types.end(); it++)
+	if (*it == param_type) return out;
+    }
+    return GET_VALUE_SET(module, param_type)->print(out, 0, pad, true, includeSkipped, skip_keys, key_aliases, true);
 }
 
+void Variables::initParam(const MODULE& mod, const PARAM_TYPE& pt,
+			  const bool noDefaults, ValueSet_t* value_set) {
+    GET_VALUE_SET_CLASS(mod, pt)->initDefaults(useC3);
+    if (!value_set) value_set = GET_VALUE_SET(mod, pt);
+    value_set->initValues(noDefaults, true);
+}
+void Variables::initAllDefaults(const bool useC3) {
+    VARS_ITER_ALL_CLASS(m, pt, initDefaults, useC3, "", true);
+}
+void Variables::initDefaults(const MODULE& mod,
+			     const PARAM_TYPE& pt,
+			     const bool useC3,
+			     const std::string& filename,
+			     const bool force) {
+    if ((!force) && !isSelected(mod, pt)) {
+      if (!filename.empty()) {
+	INFO_VALUE_SET(utils::enum_key2string(mod), "[",
+		       utils::enum_key2string(pt),
+		       "] value set not selected, but file \"",
+		       filename, "\" provided containing defaults. The "
+		       "values in the file will not be used.");
+      } else {
+	INFO_VALUE_SET(utils::enum_key2string(mod), "[",
+		       utils::enum_key2string(pt),
+		       "] value set not selected, the defaults will not "
+		       "be initialized");
+      }
+      return;
+    }
+    GET_VALUE_SET_CLASS(mod, pt)->initDefaults(useC3, filename);
+}
 
+bool Variables::isSelected(const MODULE& mod, const PARAM_TYPE& pt) {
+    return GET_VALUE_SET_CLASS(mod, pt)->selected();
+}
 
-#define ADD_SPEC(var, mod, pt, body)					\
-    if (module == MODULE_ ## mod && param_type == PARAM_TYPE_ ## pt) {	\
-	body(var.);							\
+std::size_t Variables::max_field_width_all() {
+    static std::size_t pad = 0;
+    if (pad == 0) {
+#define MAX_WIDTH(V, dummy)					\
+	std::size_t ipad = V->max_field_width(true);		\
+	if (ipad > pad) pad = ipad
+	VARS_ITER_MACRO_CLASS(MAX_WIDTH, )
+#undef MAX_WIDTH
+	std::cerr << "VARS max_field_width_all = " << pad << std::endl;
     }
-#define ADD_SPEC_STATIC(var, mod, pt, body)				\
-    if (module == MODULE_ ## mod && param_type == PARAM_TYPE_ ## pt) {	\
-	body(var::);							\
+    return pad;
+}
+std::size_t Variables::max_value_width_all() const {
+    static std::size_t pad = 0;
+    if (pad == 0) {
+	std::size_t ipad = 0;
+	for (std::vector<MODULE>::const_iterator m = ALL_MODULE.begin();
+	     m != ALL_MODULE.end(); m++) {
+	    if (*m == MODULE_ALL) continue;
+	    ipad = GET_VALUE_SET_CLASS(*m, PARAM_TYPE_COND)->max_default_value_width();
+	    if (ipad > pad) pad = ipad;
+	}
+#define MAX_WIDTH(V, dummy)					\
+	ipad = V->max_value_width();				\
+	if (ipad > pad) pad = ipad
+	VARS_ITER_MACRO(MAX_WIDTH, );
+#undef MAX_WIDTH
+	std::cerr << "VARS max_value_width_all = " << pad << std::endl;
     }
-#define ADD_SPEC_VALUE_SET(mod, var_suffix, pt, body)	\
-    ADD_SPEC(mod ## var_suffix, mod, pt, body)
-#define ADD_SPEC_MOD(mod, body)						\
-    ADD_SPEC_VALUE_SET(mod, _Pool, POOL, body)				\
-    else ADD_SPEC_VALUE_SET(mod, _RC, RC, body)				\
-    else ADD_SPEC_VALUE_SET(mod, _KE, KE, body)			\
-    else ADD_SPEC(mod ## _VEL.getLastData(), mod, VEL, body)	\
-    else ADD_SPEC_STATIC(modules::mod, mod, MOD, body)
-#define ADD_SPEC_ALL(body)				\
-    ADD_SPEC_MOD(BF, body)				\
-    else ADD_SPEC_MOD(FI, body)				\
-    else ADD_SPEC_MOD(PR, body)				\
-    else ADD_SPEC_MOD(PS, body)					\
-    else ADD_SPEC_MOD(RROEA, body)					\
-    else ADD_SPEC_MOD(RedoxReg, body)					\
-    else ADD_SPEC_MOD(RuACT, body)					\
-    else ADD_SPEC_MOD(SUCS, body)					\
-    else ADD_SPEC_MOD(XanCycle, body)					\
-    else ADD_SPEC_VALUE_SET(FIBF, _Pool, POOL, body)			\
-    else {								\
-	throw std::runtime_error("Invalid MODULE (" + get_enum_name(module) + ") " \
-				 + ", PARAM_TYPE (" + get_enum_name(param_type) + ") " \
-				 + "or name (" + name + ")");		\
-    }
-    // else ADD_SPEC_MOD(FIBF, body)
+    return pad;
+}
 
 std::string Variables::parseVar(const std::string& k,
-				MODULE& mod, PARAM_TYPE& pt) {
+				MODULE& mod, PARAM_TYPE& pt,
+				const bool& isGlymaID,
+				const bool& use_1st_match) {
     mod = MODULE_NONE;
     pt = PARAM_TYPE_NONE;
     std::string split="::", var1, var2, name;
@@ -391,14 +398,23 @@ std::string Variables::parseVar(const std::string& k,
 	std::vector<std::pair<MODULE, PARAM_TYPE> > matches;
 	for (std::vector<MODULE>::const_iterator it_mod = check_modules.begin();
 	     it_mod != ALL_MODULE.end(); it_mod++) {
+	    if (use_1st_match && !matches.empty())
+		break;
 	    for (std::vector<PARAM_TYPE>::const_iterator it_pt = check_param_types.begin();
 		 it_pt != ALL_PARAM_TYPE.end(); it_pt++) {
-		if (hasVar(*it_mod, *it_pt, name)) {
-		    matches.emplace_back(*it_mod, *it_pt);
-		    // mod = *it_mod;
-		    // pt = *it_pt;
-		    // name = k;
-		    // break;
+		if (use_1st_match && !matches.empty())
+		    break;
+		if (hasVar(*it_mod, *it_pt, name, isGlymaID)) {
+		    if (!isSelected(*it_mod, *it_pt)) {
+			INFO_VALUE_SET("Variable \"", k, "\" matches ",
+				       name, " in ",
+				       utils::enum_key2string(*it_mod),
+				       " ",
+				       utils::enum_key2string(*it_pt),
+				       " value set, but it is not selected by the current driver");
+		    } else {
+			matches.emplace_back(*it_mod, *it_pt);
+		    }
 		}
 	    }
 	}
@@ -413,52 +429,195 @@ std::string Variables::parseVar(const std::string& k,
 		  ss << ", ";
 		ss << it->first << "::" << it->second << "::" << name;
 	    }
-	    throw std::runtime_error("More than one (" + std::to_string(matches.size()) + ") variable matches \"" + k + "\". Use a module & parameter type prefix to disambiguate [matches = " + ss.str() + "]");
+	    ERROR_VALUE_SET("More than one (", matches.size(),
+			    ") variable matches \"", k,
+			    "\". Use a module & parameter type prefix to disambiguate [matches = ",
+			    ss.str(), "]");
 	} else {
-	    throw std::runtime_error("Could not find variable matching string \"" + k + "\"");
+	    ERROR_VALUE_SET("Could not find variable matching string \"",
+			    k, "\"");
 	}
     }
-    std::cerr << "parseVar[" << k << ", " << mod << ", " <<
-      pt << ", " << name << std::endl;
+    DEBUG_VALUE_SET("parseVar[", k, ", ", mod, ", ", pt, ", ", name);
     return name;
 }
 
 bool Variables::hasVar(const MODULE& mod, const PARAM_TYPE& pt,
-		       const std::string& name) {
-#define HAS_VAR(nme, mod, pt)			\
-    return VARS_CLASS_VAR(mod, pt)::has(name)
-    VARS_CLASS_SWITCH(mod, pt, HAS_VAR, name)
-#undef HAS_VAR
-    return false;
+		       const std::string& name,
+		       const bool& isGlymaID) {
+    return GET_VALUE_SET_CLASS(mod, pt)->has(name, isGlymaID);
+}
+bool Variables::hasVar(const std::string& k,
+		       const bool& isGlymaID) {
+    std::string name;
+    MODULE mod = MODULE_NONE;
+    PARAM_TYPE pt = PARAM_TYPE_NONE;
+    name = parseVar(k, mod, pt, isGlymaID);
+    return hasVar(mod, pt, name, isGlymaID);
+}
+int Variables::getKey(const MODULE& mod, const PARAM_TYPE& pt,
+		      const std::string& name,
+		      const bool& isGlymaID) {
+    return GET_VALUE_SET_CLASS(mod, pt)->fromNameWithAliases(name, isGlymaID);
+}
+void Variables::setDefault(const MODULE& mod, const PARAM_TYPE& pt,
+			   const std::string& name, const double& value,
+			   const bool& isGlymaID) {
+    GET_VALUE_SET_CLASS(mod, pt)->setDefault(name, value, isGlymaID);
+}
+void Variables::setDefault(const MODULE& mod, const PARAM_TYPE& pt,
+			   const int& key, const double& value) {
+    GET_VALUE_SET_CLASS(mod, pt)->setDefault(key, value);
+}
+void Variables::setDefault(const std::string& k, const double& value,
+			   const bool& isGlymaID) {
+    std::string name;
+    MODULE mod = MODULE_NONE;
+    PARAM_TYPE pt = PARAM_TYPE_NONE;
+    name = parseVar(k, mod, pt, isGlymaID);
+    return setDefault(mod, pt, name, value, isGlymaID);
 }
 void Variables::setVar(const MODULE& module,
 		       const PARAM_TYPE& param_type,
 		       const std::string& name,
-		       const double& value) {
-#define SET_VAR(nme, val, mod, pt)		\
-    VARS_INST_VAR(mod, pt).set(nme, val);	\
-    return
-#define SET_VAR_STATIC(nme, val, mod)			\
-    modules::mod::set(nme, val);			\
-    return
-    VARS_INST_SWITCH(module, param_type, SET_VAR, name, value)
-#undef SET_VAR
-#undef SET_VAR_STATIC
+		       const double& value,
+		       const bool& isGlymaID) {
+    GET_VALUE_SET(module, param_type)->set(name, value, isGlymaID);
 }
-
+void Variables::setVar(const MODULE& module,
+		       const PARAM_TYPE& param_type,
+		       const int& key, const double& value) {
+    GET_VALUE_SET(module, param_type)->set(key, value);
+}
+void Variables::setVar(const std::string& k, const double& value,
+		       const bool& isGlymaID) {
+    std::string name;
+    MODULE mod = MODULE_NONE;
+    PARAM_TYPE pt = PARAM_TYPE_NONE;
+    name = parseVar(k, mod, pt, isGlymaID);
+    return setVar(mod, pt, name, value, isGlymaID);
+}
 double Variables::getVar(const MODULE& module,
 			 const PARAM_TYPE& param_type,
-			 const std::string& name) const {
-#define GET_VAR(nme, mod, pt)			\
-    return VARS_INST_VAR(mod, pt).get(nme)
-#define GET_VAR_STATIC(nme, mod)		\
-    return modules::mod::get(nme)
-    VARS_INST_SWITCH(module, param_type, GET_VAR, name)
-#undef GET_VAR
-#undef GET_VAR_STATIC
+			 const std::string& name,
+			 const bool& isGlymaID) const {
+    return GET_VALUE_SET(module, param_type)->get(name, isGlymaID);
 }
-
-#undef ADD_SPEC_MOD
-#undef ADD_SPEC_VALUE_SET
-#undef ADD_SPEC_STATIC
-#undef ADD_SPEC
+double Variables::getVar(const MODULE& module,
+			 const PARAM_TYPE& param_type,
+			 const int& key) const {
+    return GET_VALUE_SET(module, param_type)->get(key);
+}
+double Variables::getVar(const std::string& k,
+			 const bool& isGlymaID) const {
+    std::string name;
+    MODULE mod = MODULE_NONE;
+    PARAM_TYPE pt = PARAM_TYPE_NONE;
+    name = parseVar(k, mod, pt, isGlymaID);
+    return getVar(mod, pt, name, isGlymaID);
+}
+std::vector<PARAM_TYPE> Variables::getParamTypes(const MODULE& mod,
+						 const bool for_instance,
+						 const bool include_cond) {
+    std::vector<PARAM_TYPE> out;
+    ValueSetClass_t* module = getModule(mod, false, "getParamTypes: ");
+    const std::vector<PARAM_TYPE>& all = module->get_parameter_types();
+    if (for_instance && ((!include_cond) ||
+			 (include_cond && !VARS_INST_IS_MODULE(mod)))) {
+	for (typename std::vector<PARAM_TYPE>::const_iterator it = all.begin();
+	     it != all.end(); it++) {
+	    if (*it != PARAM_TYPE_COND)
+	      out.push_back(*it);
+	}
+    } else {
+	out.insert(out.begin(), all.begin(), all.end());
+    }
+    return out;
+}
+ValueSetClass_t* Variables::getModule(const MODULE& mod,
+				      const bool no_error_on_invalid,
+				      const std::string& error_context) {
+    return getValueSetClass(mod, PARAM_TYPE_MOD, no_error_on_invalid,
+			    error_context);
+}
+ValueSetClass_t* Variables::getValueSetClass(const MODULE& mod,
+					     const PARAM_TYPE& pt,
+					     const bool no_error_on_invalid,
+					     const std::string& error_context) {
+    bool force_error = false;
+    if (mod == MODULE_ALL || pt == PARAM_TYPE_VARS) {
+	if (mod == MODULE_ALL && pt == PARAM_TYPE_VARS) {
+	    return getValueSetClass();
+	}
+	force_error = true;
+    } else if (pt == PARAM_TYPE_MOD) {
+	SWITCH_MOD(mod, VARS_CLASS_MODULES, VARS_RETURN_CALL,
+		   VARS_CLASS_CALL_STATIC,
+		   getValueSetClass, ());
+    } else {
+	SWITCH_MOD_AND_PT(mod, VARS_CLASS_MODULES,
+			  pt, MOD2PT, VARS_RETURN_CALL, VARS_CLASS_CALL,
+			  getValueSetClass, ());
+    }
+    if ((!no_error_on_invalid) || force_error)
+      ERROR_VALUE_SET(error_context, "Invalid combination of module (",
+		      utils::enum_key2string(mod),
+		      ") and parameter type (",
+		      utils::enum_key2string(pt), ")");
+    return nullptr;
+}
+ValueSet_t* Variables::getValueSet(const MODULE& mod,
+				   const PARAM_TYPE& pt,
+				   const bool no_error_on_invalid,
+				   const std::string& error_context) {
+    return const_cast<ValueSet_t*>(const_cast<const Variables*>(this)->getValueSet(mod, pt, no_error_on_invalid, error_context));
+}
+const ValueSet_t* Variables::getValueSet(const MODULE& mod,
+					 const PARAM_TYPE& pt,
+					 const bool no_error_on_invalid,
+					 const std::string& error_context) const {
+    bool force_error = false;
+    if (mod == MODULE_ALL || pt == PARAM_TYPE_VARS) {
+	if (mod == MODULE_ALL && pt == PARAM_TYPE_VARS) {
+	    return getValueSet();
+	}
+	force_error = true;
+    } else if (pt == PARAM_TYPE_MOD) {
+	SWITCH_MOD(mod, VARS_CLASS_MODULES, VARS_RETURN_CALL,
+		   VARS_INST_CALL_STATIC,
+		   getValueSet, ());
+    } else if (pt == PARAM_TYPE_COND) {
+	SWITCH_MOD_AND_PT(mod, VARS_INST_MODULES,
+			  pt, MOD2PT_COND, VARS_RETURN_CALL,
+			  VARS_INST_CALL,
+			  getValueSet, ());
+    } else {
+	SWITCH_MOD_AND_PT(mod, VARS_CLASS_MODULES,
+			  pt, MOD2PT_NO_COND, VARS_RETURN_CALL,
+			  VARS_INST_CALL,
+			  getValueSet, ());
+	// SWITCH_MOD_AND_PT_PAIRS(mod, pt, (INST_MOD_PT_PAIRS),
+	//        VARS_RETURN_CALL, VARS_INST_CALL,
+	//        getValueSet, ());
+    }
+    if ((!no_error_on_invalid) || force_error)
+      ERROR_VALUE_SET(error_context, "Invalid combination of module (",
+		      utils::enum_key2string(mod),
+		      ") and parameter type (",
+		      utils::enum_key2string(pt), ")");
+    return nullptr;
+}
+void Variables::setRecord(const ValueSet_t* x) {
+    MODULE m = x->_virtual_get_module();
+    PARAM_TYPE pt = x->_virtual_get_param_type();
+    if (pt == PARAM_TYPE_MOD) return;
+    const std::vector<ValueSet_t**>& children = x->getChildren();
+    for (typename std::vector<ValueSet_t**>::const_iterator it = children.begin();
+	 it != children.end(); it++) {
+      setRecord(**it);
+    }
+#define DO_ASSIGN(dummy, mod, pt)					\
+    VARS_INST_VAR(mod, pt) = *static_cast<const VARS_CLASS_VAR(mod, pt)*>(x)
+    SWITCH_MOD_AND_PT_PAIRS(m, pt, (INST_MOD_PT_PAIRS), DO_ASSIGN, );
+#undef DO_ASSIGN
+}

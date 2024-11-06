@@ -116,15 +116,6 @@ using namespace ePhotosynthesis;
 #define setYggVarB(src, mod, dst) setYggVar(src, mod, dst, convYggB, %d)
 #endif // WITH_YGGDRASIL
 
-enum DriverType {
-    None,
-    trDynaPS,
-    DynaPS,
-    CM,
-    EPS
-};
-
-
 int main(int argc, const char* argv[]) {
     try {
         bool record = false;
@@ -257,7 +248,10 @@ int main(int argc, const char* argv[]) {
         driverChoice = static_cast<DriverType>(driver);
 	if (driverChoice == EPS)
 	  useC3 = true;
-	Variables::initAllDefaults(useC3);
+	// Select driver prior to updating values from user provided files
+	//   so that warnings can be generated when a file is provided
+	//   that will not be used by the selected driver.
+	drivers::select_driver(driverChoice, useC3);
 
         readFile(evn, inputs);
         readFile(atpcost, inputs);
@@ -417,29 +411,20 @@ int main(int argc, const char* argv[]) {
 
 #endif
 
-        //DEBUG_MESSAGE("TESTING",0)
-        switch (driverChoice) {
-            case trDynaPS:
-                maindriver = new drivers::trDynaPSDriver(theVars, begintime, stepsize, stoptime,
-                                                         maxSubSteps, abstol, reltol, 1, 1);
-                break;
-            case DynaPS:
-                maindriver = new drivers::DynaPSDriver(theVars, begintime, stepsize, stoptime,
-                                                       maxSubSteps, abstol, reltol, 1, 1);
-                break;
-            case CM:
-                maindriver = new drivers::CMDriver(theVars, begintime, stepsize, stoptime,
-                                                   maxSubSteps, abstol, reltol);
-                break;
-            case EPS:
-                maindriver = new drivers::EPSDriver(theVars, begintime, stepsize, stoptime,
-                                                    maxSubSteps, abstol, reltol, 1, 1);
-                break;
-            default:
-                printf("Invalid driver choice given.\n");
-                exit(EXIT_FAILURE);
-        }
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+	  // Conversion from Air_CO2 ppm to intercellular CO2
+	  theVars->CO2_cond = theVars->CO2_in / (3. * pow(10., 4.));
+	  if (!useC3)
+	    theVars->CO2_cond *= 0.7;
 
+	  // Conversion from W m^{-2} to u moles m^{-2} s^{-1}
+	  theVars->TestLi *= 1.0e6 / 2.35e5;
+#endif // MAKE_EQUIVALENT_TO_MATLAB
+
+	  maindriver = drivers::create_driver(driverChoice, theVars,
+					      begintime, stepsize,
+					      stoptime, maxSubSteps,
+					      abstol, reltol, 1, 1);
         std::vector<double> ResultRate = maindriver->run();
 
 #ifdef WITH_YGGDRASIL

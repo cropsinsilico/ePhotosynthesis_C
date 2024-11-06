@@ -31,7 +31,7 @@ using namespace ePhotosynthesis::conditions;
 
 std::size_t trDynaPSCondition::count = 0;
 
-DEFINE_VALUE_SET_SRC(trDynaPSCondition);
+DEFINE_CONDITION_COMPOSITE(trDynaPS);
 
 trDynaPSCondition::trDynaPSCondition(const trDynaPSCondition* const other) {
     initMembers();
@@ -82,15 +82,4 @@ arr trDynaPSCondition::_toArray() const {
     arr rrvec = RROEA_con->toArray();
     dyvec.insert(dyvec.end(), rrvec.begin(), rrvec.end());
     return dyvec;
-}
-
-void trDynaPSCondition::_clear() {
-    if (RROEA_con != nullptr) {
-        delete RROEA_con;
-        RROEA_con = nullptr;
-    }
-    if (DynaPS_con != nullptr) {
-        delete DynaPS_con;
-        DynaPS_con = nullptr;
-    }
 }

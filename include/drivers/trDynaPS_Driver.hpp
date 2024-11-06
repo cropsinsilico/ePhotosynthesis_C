@@ -41,8 +41,9 @@ namespace drivers {
 /**
  Class for running trDynaPS with an ODE solver
  */
-class trDynaPSDriver : public Driver {
+class trDynaPSDriver : public DriverBase<trDynaPSDriver, MODULE_trDynaPS> {
 public:
+    DECLARE_DRIVER(trDynaPS)
     /**
       \copydoc drivers::Driver::Driver
       \param para Input parameters
@@ -51,7 +52,8 @@ public:
     trDynaPSDriver(Variables *theVars, const double startTime, const double stepSize, const double endTime,
                    const int maxSubsteps, const double atol, const double rtol, const std::size_t para,
                    const double ratio, const bool showWarn = false) :
-        Driver(theVars, startTime, stepSize, endTime, maxSubsteps, atol, rtol, showWarn) {
+        DriverBase(theVars, startTime, stepSize, endTime, maxSubsteps, atol, rtol, showWarn) {
+	init(theVars->useC3);
         ParaNum = para;
         Ratio = ratio;
     }

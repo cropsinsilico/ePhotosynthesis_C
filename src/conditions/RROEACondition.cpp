@@ -29,7 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET_SRC(RROEACondition);
+DEFINE_CONDITION(RROEA);
 
 RROEACondition::RROEACondition(const RROEACondition* const other) :
   ConditionBase<RROEACondition, trDynaPSCondition, MODULE_RROEA>(other) {

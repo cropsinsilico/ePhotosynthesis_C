@@ -1,4 +1,5 @@
-kva	0.163	# Ruth Frommolt et a; 2001; Planta
-kaz	0.691	# Ruth Frommolt et a; 2001; Planta
-kza	0.119	# Ruth Frommolt et a; 2001; Planta
-kav	0.119	# Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
+# Name		Value	C3Value	Docs
+kva		0.163		# Ruth Frommolt et a; 2001; Planta
+kaz		0.691		# Ruth Frommolt et a; 2001; Planta
+kza		0.119		# Ruth Frommolt et a; 2001; Planta
+kav		0.119		# Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.

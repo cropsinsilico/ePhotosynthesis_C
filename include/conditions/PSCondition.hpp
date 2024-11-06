@@ -29,6 +29,10 @@
 //#include "definitions.hpp"
 #include "ConditionBase.hpp"
 
+#define PARENT_PS PS_PR
+#define NRATIO_PS 103
+#define PARAM_TYPES_PS COND, VEL
+
 namespace ePhotosynthesis {
 namespace modules {
 class PS;
@@ -42,8 +46,7 @@ class PS_PRCondition;
  */
 class PSCondition : public ConditionBase<PSCondition, PS_PRCondition, MODULE_PS> {
 public:
-    DECLARE_VALUE_SET(PSCondition, ConditionBase<PSCondition, PS_PRCondition, MODULE_PS>)
-
+    DECLARE_CONDITION(PS)
     PSCondition(PS_PRCondition* par = nullptr) {
         setParent(par);
 	initMembers();
@@ -62,28 +65,8 @@ public:
       */
     PSCondition(const arr &vec, const std::size_t offset = 0);
 
-    /**
-      Write the contents of the instance to the output stream.
-
-      \param out output stream to write to.
-      \param tab The level of indentation to use.
-      \returns The output stream
-      */
-    std::ostream& _print(std::ostream &out, const uint tab = 0) const;
     SET_GET_BOOL(C3, ADPG)
 private:
-    friend ConditionBase;
-    friend class modules::PS;
-    /**
-      \copydoc ConditionBase::_fromArray
-      */
-    void _fromArray(const arr &vec, const std::size_t offset = 0) override;
-
-    /**
-      \copydoc ConditionBase::_toArray
-      */
-    arr _toArray() const override;
-
     /**
       Get the size of the data vector
 
@@ -94,12 +77,6 @@ private:
             return count - 1;
         return count;
     }
-
-    /**
-      \copydoc ConditionBase::_clear
-      */
-    void _clear() override {}
-
     /**
       Reset any static data members to their initial state
       */
@@ -108,12 +85,9 @@ private:
     }
 
     static const std::size_t count;  // size of the current serialized output
-#ifdef INCDEBUG
-    const static Debug::DebugLevel _dlevel = Debug::Low;
-#endif
 };
 
-  DEFINE_VALUE_SET_HEADER(PSCondition);
+    DEFINE_CONDITION_HEADER(PS);
 
 }  // namespace conditions
 }  // namespace ePhotosynthesis

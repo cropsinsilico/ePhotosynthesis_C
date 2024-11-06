@@ -29,7 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET_SRC(FIBFCondition);
+DEFINE_CONDITION_COMPOSITE(FIBF);
 
 FIBFCondition::FIBFCondition(const FIBFCondition* const other) {
     initMembers();
@@ -81,15 +81,4 @@ arr FIBFCondition::_toArray() const {
     arr fivec = {kd};
     bvec.insert(bvec.end(), fivec.begin(), fivec.end());
     return bvec;
-}
-
-void FIBFCondition::_clear() {
-    if (BF_con != nullptr){
-        delete BF_con;
-        BF_con = nullptr;
-    }
-    if (FI_con != nullptr) {
-        delete FI_con;
-        FI_con = nullptr;
-    }
 }

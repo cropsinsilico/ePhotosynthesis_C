@@ -39,12 +39,9 @@ std::size_t RuACT::N = 1;
 
 const std::size_t RuACTCondition::count = 4;
 
-DEFINE_VALUE_SET_STATIC(RuACT);
-DEFINE_VALUE_SET(RuACTCondition);
-DEFINE_VALUE_SET_NS(RC::, RuACTRC);
-DEFINE_VALUE_SET_NS(pool::, RuACTPool);
+DEFINE_MODULE(RuACT);
 
-RuACTCondition* RuACT::_init(Variables *theVars) {
+void RuACT::_initOrig(Variables *theVars, RuACTCondition* RuACT_con) {
     RuACT::setEPS_connect(theVars->RuACT_EPS_com);
     RuACT::activase = 80. * theVars->RuACTRatio[10];
 
@@ -76,8 +73,36 @@ RuACTCondition* RuACT::_init(Variables *theVars) {
     theVars->RuACT_Pool.C = 0.012 * theVars->RuACTRatio[13];             // mM
     theVars->RuACT_Pool.O = 0.260 * theVars->RuACTRatio[14];             // mM
     theVars->RuACT_Pool.M = 5. * theVars->RuACTRatio[15];
+}
 
-    return RuACT_Con;
+void RuACT::_initCalc(Variables *theVars, RuACTCondition* RuACT_Con) {
+    RuACT::setEPS_connect(theVars->RuACT_EPS_com);
+    RuACT::activase *= theVars->RuACTRatio[10];
+
+    // The rate constant used in the model
+    theVars->RuACT_RC.k1 *= theVars->RuACTRatio[0];                // The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco theVars->activase content or activity;
+    theVars->RuACT_RC.kn1 *= theVars->RuACTRatio[1]; // The rate constant of E inactivation by binding of RuBP;
+    theVars->RuACT_RC.km1 *= theVars->RuACTRatio[2];  // The michaelis menton constant for RuBP with E.
+    theVars->RuACT_RC.Ke2 *= theVars->RuACTRatio[3];                 // Data from Mate et al 1996. Unit: micormolar;
+    theVars->RuACT_RC.Ke3 *= theVars->RuACTRatio[4];               // Data from Mate et al 1996. Unit: micormolar;
+    theVars->RuACT_RC.k6 *= theVars->RuACTRatio[5] * 4. / 3.;          // micromolar per meter square per second, transfered to unit
+    theVars->RuACT_RC.kc *= theVars->RuACTRatio[6];                // Michaelis menton constant for CO2
+    theVars->RuACT_RC.ko *= theVars->RuACTRatio[7];                // Michaelis menton constant for O2
+    theVars->RuACT_RC.k7 *= theVars->RuACTRatio[8]; // The rate constant for ecm to ecmr
+    theVars->RuACT_RC.kr *= theVars->RuACTRatio[9];   // The apparaent michaelis menton constant for RuBP
+
+    //factor = 0.224/0.3;
+    const double factor = RuACT::factor;
+    
+    RuACT_Con->ER *= factor;  // The concentration of inactive ER
+    RuACT_Con->Eaf *= factor; // The total concentration of E, EC, AND ECM
+    RuACT_Con->ECMR *= factor; // The concentration of ECMR
+
+    theVars->RuACT_Pool.ET *= factor * theVars->RuACTRatio[11]; //  The total concentraiton of E, ER, EC, ECM, ECMR , mM;
+    theVars->RuACT_Pool.Rac *= theVars->RuACTRatio[12];          // The concentration of the activase, mM
+    theVars->RuACT_Pool.C *= theVars->RuACTRatio[13];             // mM
+    theVars->RuACT_Pool.O *= theVars->RuACTRatio[14];             // mM
+    theVars->RuACT_Pool.M *= theVars->RuACTRatio[15];
 }
 
 void RuACT::_initAlt(Variables *theVars, RuACTCondition* RuACT_Con) {
@@ -136,20 +161,8 @@ void RuACT::_initAlt(Variables *theVars, RuACTCondition* RuACT_Con) {
       }
     }
 
-    theVars->RuACT_RC.checkAlts("RuACT::_init::RuACT_RC: ");
-    theVars->RuACT_Pool.checkAlts("RuACT::_init::RuACT_Pool: ");
 #else // CHECK_VALUE_SET_ALTS
     UNUSED(theVars);
     UNUSED(RuACT_Con);
 #endif // CHECK_VALUE_SET_ALTS
-}
-
-void RuACT::_checkAlts(Variables *theVars, const std::string& context) {
-    theVars->RuACT_RC.checkAlts(context + "RuACT_RC:");
-    theVars->RuACT_Pool.checkAlts(context + "RuACT_Pool:");
-}
-
-void RuACT::_updateAlts(Variables *theVars, const std::string& context) {
-    theVars->RuACT_RC.updateAlts(context + "RuACT_RC:");
-    theVars->RuACT_Pool.updateAlts(context + "RuACT_Pool:");
 }

@@ -1,1 +1,2 @@
-kd	0.5e8	# The initialization of the initial rate constant for heat dissipation
+# Name		Value	C3Value	Docs
+kd		0.5e8		# The initialization of the initial rate constant for heat dissipation

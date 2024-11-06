@@ -31,7 +31,7 @@ using namespace ePhotosynthesis::conditions;
 
 std::size_t RACondition::count = 0;
 
-DEFINE_VALUE_SET_SRC(RACondition);
+DEFINE_CONDITION_COMPOSITE(RA);
 
 RACondition::RACondition(const RACondition* const other) {
     initMembers();
@@ -63,18 +63,6 @@ RACondition::RACondition(const arr &vec, const std::size_t offset) {
     fromArray(vec, offset);
 }
 
-
-void RACondition::_clear() {
-    if (RuACT_con != nullptr) {
-        delete RuACT_con;
-        RuACT_con = nullptr;
-    }
-    if (EPS_con != nullptr) {
-        delete EPS_con;
-        EPS_con = nullptr;
-    }
-    count = 0;
-}
 
 void RACondition::_fromArray(const arr &vec, const std::size_t offset) {
     if (EPS_con == nullptr)

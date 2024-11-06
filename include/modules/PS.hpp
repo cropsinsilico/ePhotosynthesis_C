@@ -31,13 +31,10 @@
 #include "definitions.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class PSModuleTest;
-}
-#endif
+
+FORWARD_DECLARE_MODULE(PS);
+  
 namespace modules {
-class PS_PR;
 
 /**
  Class to for PS related functions and common variables
@@ -61,11 +58,6 @@ public:
       */
     static std::size_t getN() {return N;}
 private:
-    friend ModuleBase;
-    friend class modules::PS_PR;
-#ifdef TESTING
-    friend class test::PSModuleTest;
-#endif
     /**
       Function to calculate the dy/dt values for the PSCondition at the given time stamp.
 
@@ -86,14 +78,6 @@ private:
       */
     static conditions::PSCondition* _MB_con(const double t, const conditions::PSCondition* const PSs,
                                             Variables *theVars);
-
-    /**
-      Function to set the initial state of the PSCondition class.
-
-      \param theVars Pointer to the global variables
-      \return A PSCondition object with values set based on the input
-      */
-    static conditions::PSCondition* _init(Variables *theVars);
 
     /**
       Calculate the Rates of PS based on the input PSCondition.
@@ -230,7 +214,7 @@ private:
     static std::size_t N;  // The current size of the PS TimeSeries
 };
 
-  DEFINE_VALUE_SET_STATIC_HEADER(PS);
+  DEFINE_MODULE_HEADER(PS);
 
 }  // namespace modules
 }  // namespace ePhotosynthesis

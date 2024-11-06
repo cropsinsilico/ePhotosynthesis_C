@@ -67,8 +67,9 @@ namespace ePhotosynthesis {
       const std::map<T, std::string>& map = get_enum_names<T>();
       std::string val;
       if (!enum_key_search(map, key, val))
-	throw std::runtime_error("Could not locate enum for \"" + val
-				 + "\"");
+	throw std::runtime_error("Could not locate enum for " +
+				 // T::error_prefix() +
+				 std::to_string((int)key));
       return val;
     }
 

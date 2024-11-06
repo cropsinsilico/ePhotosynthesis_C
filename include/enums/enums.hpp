@@ -186,6 +186,13 @@ namespace ePhotosynthesis {
     throw std::runtime_error("No enum glymaids collection could be found");
     return result;
   }
+  // Utility for getting aliases from enum
+  template<typename T>
+  const std::map<std::string, T>& get_enum_aliases() {
+    static const std::map<std::string, T> result;
+    throw std::runtime_error("No enum aliases collection could be found");
+    return result;
+  }
   // Utility for getting constant from enum
   template<typename T>
   const std::vector<T>& get_enum_constant() {
@@ -250,6 +257,7 @@ namespace ePhotosynthesis {
     static const std::map<Type, double> defaults;  /**< Defaults for values */
     static const std::map<Type, double> defaults_C3;  /**< Defaults_C3 for values */
     static const std::map<Type, std::string> glymaids;  /**< Glymaids for values */
+    static const std::map<std::string, Type> aliases;  /**< Aliases for values */
     static const std::vector<Type> constant;  /**< Values that are constant */
     static const std::vector<Type> calculated;  /**< Values that are calculated */
     static const std::vector<Type> nonvector;  /**< Values that are nonvector */
@@ -514,6 +522,53 @@ namespace ePhotosynthesis {
         throw std::runtime_error("Could not locate Glymaid for '" + x + "'");
       }
       return it->first;
+    }
+    /**
+      Print the contents of aliases
+      \param[in,out] out Stream to print to
+      \param[in] includePrefixes If true, the module & 
+        parameter type prefixes will be added to the member 
+        names.
+      \param[in] tab Indentation to add to each line
+      \return Updated stream
+    */
+    static std::ostream& printAliases(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
+      return print_map(aliases, out, includePrefixes, tab);
+    }
+    /**
+      Serialize the contents of aliases
+      \param[in] tab Indentation to add to each line
+      \return Serialized collection
+    */
+    static std::string stringAliases(const unsigned int tab = 0) {
+      return string_map(aliases, tab);
+    }
+    /**
+      Get the alias value corresponding to an enum key
+      \param[in] x Key to get value for
+      \return Value
+    */
+    static Type getAlias(const std::string& x) {
+      typename std::map<std::string, Type>::const_iterator it;
+      it = aliases.find(x);
+      if (it == aliases.end()) {
+        throw std::runtime_error("Could not locate Alias for '" + names.find(x)->second + "'");
+      }
+      return it->second;
+    }
+    /**
+      Get the alias value corresponding to an enum key
+      \param[in] x Key to get value for
+      \param[in] defaultV Value to return if x is not present
+      \return Value
+    */
+    static Type getAlias(const std::string& x, const Type& defaultV) {
+      typename std::map<std::string, Type>::const_iterator it;
+      it = aliases.find(x);
+      if (it == aliases.end()) {
+        return defaultV;
+      }
+      return it->second;
     }
     /**
       Print the contents of a collection
@@ -934,6 +989,8 @@ namespace ePhotosynthesis {
   template<MODULE M, PARAM_TYPE PT>
   const PARAM_TYPE ValueSetEnum<M, PT>::param_type = PT;
   template<MODULE M, PARAM_TYPE PT>
+  const std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::all = {};
+  template<MODULE M, PARAM_TYPE PT>
   const std::map<typename ValueSetEnum<M, PT>::Type, std::string> ValueSetEnum<M, PT>::names = {};
   template<MODULE M, PARAM_TYPE PT>
   const std::map<typename ValueSetEnum<M, PT>::Type, double> ValueSetEnum<M, PT>::defaults = {};
@@ -941,6 +998,8 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<M, PT>::Type, double> ValueSetEnum<M, PT>::defaults_C3 = {};
   template<MODULE M, PARAM_TYPE PT>
   const std::map<typename ValueSetEnum<M, PT>::Type, std::string> ValueSetEnum<M, PT>::glymaids = {};
+  template<MODULE M, PARAM_TYPE PT>
+  const std::map<std::string, typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::aliases = {};
   template<MODULE M, PARAM_TYPE PT>
   const std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::constant = {};
   template<MODULE M, PARAM_TYPE PT>
@@ -997,6 +1056,15 @@ namespace ePhotosynthesis {
   #include "enums/enums_RC_glymaids.hpp"
   #include "enums/enums_VEL_glymaids.hpp"
   #include "enums/enums_VARS_glymaids.hpp"
+  
+  // Specializations for get_enum_aliases
+  #include "enums/enums_COND_aliases.hpp"
+  #include "enums/enums_POOL_aliases.hpp"
+  #include "enums/enums_KE_aliases.hpp"
+  #include "enums/enums_MOD_aliases.hpp"
+  #include "enums/enums_RC_aliases.hpp"
+  #include "enums/enums_VARS_aliases.hpp"
+  #include "enums/enums_VEL_aliases.hpp"
   
   // Specializations for get_enum_constant
   #include "enums/enums_COND_constant.hpp"

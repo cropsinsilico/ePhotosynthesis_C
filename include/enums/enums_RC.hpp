@@ -24,13 +24,13 @@ enum class ENUM_BF_RC : int {
     Kua          ,  //!< The rate constant for exciton transfer from core antenna to peripheral antenna, SEE FI Unit: s-1
     Kf           ,  //!< The rate constant for fluorescence emission, see the note in FI Unit: s-1
     Kd           ,  //!< The rate constant for heat dissipation; see the note for FI Unit: s-1
+    KE8          ,  //!< [CALC] ISPHr + cytc1 --> ISPHox + cytc1-; Calculated from Em_IPS, Em_Cytf & Em_PG; Unit: s-1
+    KE9          ,  //!< [CALC] cytc1- + cytc2 --> cytc1 + cytc2-; Calculated from Em_IPS, Em_Cytf & Em_PG; Unit: s-1
     K15          ,  //!< The rate constant for primary charge separation in PSI Unit: s-1
     K16          ,  //!< The rate constant for electron tranfer from electron acceptor of PSI to Fd Unit: s-1
-    KE8          ,  //!< ISPHr + cytc1 --> ISPHox + cytc1-; Calculated from Em_IPS, Em_Cytf & Em_PG; Unit: s-1
-    KE9          ,  //!< cytc1- + cytc2 --> cytc1 + cytc2-; Calculated from Em_IPS, Em_Cytf & Em_PG; Unit: s-1
-    Em_IPS       ,  //!< ISPHr + cytc1 --> ISPHox + cytc1-
-    Em_Cytf      ,  //!< ISPHr + cytc1 --> ISPHox + cytc1-
-    Em_PG        ,  //!< cytc1- + cytc2 --> cytc1 + cytc2-
+    Em_IPS       ,  //!< [CONST] ISPHr + cytc1 --> ISPHox + cytc1-
+    Em_Cytf      ,  //!< [CONST] ISPHr + cytc1 --> ISPHox + cytc1-
+    Em_PG        ,  //!< [CONST] cytc1- + cytc2 --> cytc1 + cytc2-
     MemCap       ,  //!< The membrane capacity
     RVA          ,  //!< The ratio of lumen volume to thylakoid membrane area
     KBs          ,  //!< The buffer equilibrium constant in stroma
@@ -71,13 +71,13 @@ enum ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type : int {
     Kua          ,  //!< The rate constant for exciton transfer from core antenna to peripheral antenna, SEE FI Unit: s-1
     Kf           ,  //!< The rate constant for fluorescence emission, see the note in FI Unit: s-1
     Kd           ,  //!< The rate constant for heat dissipation; see the note for FI Unit: s-1
+    KE8          ,  //!< [CALC] ISPHr + cytc1 --> ISPHox + cytc1-; Calculated from Em_IPS, Em_Cytf & Em_PG; Unit: s-1
+    KE9          ,  //!< [CALC] cytc1- + cytc2 --> cytc1 + cytc2-; Calculated from Em_IPS, Em_Cytf & Em_PG; Unit: s-1
     K15          ,  //!< The rate constant for primary charge separation in PSI Unit: s-1
     K16          ,  //!< The rate constant for electron tranfer from electron acceptor of PSI to Fd Unit: s-1
-    KE8          ,  //!< ISPHr + cytc1 --> ISPHox + cytc1-; Calculated from Em_IPS, Em_Cytf & Em_PG; Unit: s-1
-    KE9          ,  //!< cytc1- + cytc2 --> cytc1 + cytc2-; Calculated from Em_IPS, Em_Cytf & Em_PG; Unit: s-1
-    Em_IPS       ,  //!< ISPHr + cytc1 --> ISPHox + cytc1-
-    Em_Cytf      ,  //!< ISPHr + cytc1 --> ISPHox + cytc1-
-    Em_PG        ,  //!< cytc1- + cytc2 --> cytc1 + cytc2-
+    Em_IPS       ,  //!< [CONST] ISPHr + cytc1 --> ISPHox + cytc1-
+    Em_Cytf      ,  //!< [CONST] ISPHr + cytc1 --> ISPHox + cytc1-
+    Em_PG        ,  //!< [CONST] cytc1- + cytc2 --> cytc1 + cytc2-
     MemCap       ,  //!< The membrane capacity
     RVA          ,  //!< The ratio of lumen volume to thylakoid membrane area
     KBs          ,  //!< The buffer equilibrium constant in stroma
@@ -113,10 +113,10 @@ enum ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type : int {
     Kua          ,		\
     Kf           ,		\
     Kd           ,		\
-    K15          ,		\
-    K16          ,		\
     KE8          ,		\
     KE9          ,		\
+    K15          ,		\
+    K16          ,		\
     Em_IPS       ,		\
     Em_Cytf      ,		\
     Em_PG        ,		\
@@ -137,6 +137,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type,
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::nonvector;
@@ -172,6 +173,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Typ
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::nonvector;
@@ -270,6 +272,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type,
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::nonvector;
@@ -476,6 +479,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type,
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::nonvector;
@@ -847,6 +851,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type,
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::nonvector;
@@ -918,6 +923,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Ty
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::nonvector;
@@ -965,6 +971,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>:
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::nonvector;
@@ -1030,6 +1037,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Ty
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::nonvector;
@@ -1230,6 +1238,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Typ
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::nonvector;
@@ -1277,6 +1286,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>:
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::nonvector;
@@ -1312,6 +1322,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Typ
 template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_RC>::nonvector;
@@ -1347,6 +1358,7 @@ template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type
 template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::aliases;
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::constant;
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::calculated;
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_RC>::nonvector;

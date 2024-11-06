@@ -38,176 +38,458 @@
 
 #include <sundials/sundials_context.h>
 
-// Parameters for param_types
-// 1. namespace of class
-// 2. class suffix
-// 3. variable suffix
-#define VARS_PARAM_PT_COND conditions, Condition, 2OUT
-#define VARS_PARAM_PT_POOL pool, Pool, _Pool
-#define VARS_PARAM_PT_RC RC, RC, _RC
-#define VARS_PARAM_PT_KE KE, KE, _KE
-#define VARS_PARAM_PT_VEL_SERIES vel, Vel, _VEL.getLastData()
-#define VARS_PARAM_PT_VEL vel, Vel, _Vel
-#define VARS_PARAM_PT_MOD modules, ,NONE
-#define VARS_PARAM_PT(pt) (VARS_PARAM_PT_ ## pt)
-#define VARS_PARAM_PT_NAMESPACE_(ns, cs, vs) ns
-#define VARS_PARAM_PT_CLASS_SUFFIX_(ns, cs, vs) cs
-#define VARS_PARAM_PT_VAR_SUFFIX_(ns, cs, vs) vs
-#define VARS_PARAM_PT_NAMESPACE(pt)		\
-  VARS_PARAM_PT_NAMESPACE_ VARS_PARAM_PT(pt)
-#define VARS_PARAM_PT_CLASS_SUFFIX(pt)		\
-  VARS_PARAM_PT_CLASS_SUFFIX_ VARS_PARAM_PT(pt)
-#define VARS_PARAM_PT_VAR_SUFFIX(pt)		\
-  VARS_PARAM_PT_VAR_SUFFIX_ VARS_PARAM_PT(pt)
-#define VARS_CLASS_VAR(mod, pt)			\
-  VARS_PARAM_PT_NAMESPACE(pt)::CONCATENATE(mod, VARS_PARAM_PT_CLASS_SUFFIX(pt))
-#define VARS_INST_VAR(mod, pt)			\
-  CONCATENATE(mod, VARS_PARAM_PT_VAR_SUFFIX(pt))
-
-#define VARS_INST_MODULES (BF, FI, PR, PS, RROEA, RedoxReg, RuACT, SUCS, XanCycle)
-#define VARS_INST_PARAM_TYPES (COND, POOL, RC, KE, VEL)
-
-#define VARS_CLASS_MODULES (PACK_MACRO(MEMBER_NAMES_MODULE))
-#define VARS_CLASS_PARAM_TYPES PACK_MACRO((MEMBER_NAMES_PARAM))
-
-// X ## _STATIC should have last arguments as ... mod
-#define VARS_INST_SWITCH(mod, pt, X, ...)				\
-    if (pt == PARAM_TYPE_MOD) {						\
-	SWITCH_MOD(mod, VARS_CLASS_MODULES, X ## _STATIC, __VA_ARGS__)	\
-    }								\
-    if (mod == MODULE_FIBF && pt == PARAM_TYPE_POOL) {			\
-	X(__VA_ARGS__, FIBF, POOL);					\
-    }									\
-    SWITCH_MOD_AND_PT(mod, VARS_INST_MODULES,				\
-		      pt, VARS_INST_PARAM_TYPES,			\
-		      X, __VA_ARGS__)
-
-#define VARS_CLASS_SWITCH(mod, pt, X, ...)				\
-    SWITCH_MOD_AND_PT(mod, VARS_CLASS_MODULES,				\
-		      pt, VARS_CLASS_PARAM_TYPES,			\
-		      PACK_MACRO(X), __VA_ARGS__)
-
 namespace ePhotosynthesis {
+
+#define MEMBERS_Variables MEMBERS_ALLVARS
+#define PARAM_TYPES_ALL VARS
 
 /**
   Structure to hold global variables
   */
-class Variables { // : public ValueSet<MODULE_NONE, PARAM_TYPE_COND> {
+class Variables : public VALUE_SET_PARENT(Variables, Variables, MODULE_ALL, PARAM_TYPE_VARS) {
 public:
+    DECLARE_VALUE_SET(Variables, VALUE_SET_PARENT(Variables, Variables, MODULE_ALL, PARAM_TYPE_VARS))
+
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+    static void _initDefaults();
+#endif // MAKE_EQUIVALENT_TO_MATLAB
+      
+    /**
+       Construct a new variables instance for a given sundials context
+       \param[in, out] ctx Sundials context.
+    */
     Variables(SUNContext* ctx = NULL) {
         context = ctx;
 	if (!ctx) {
 	    std::cout << "SUNContext is NULL" << std::endl;
 	    throw  std::runtime_error("SUNContext is NULL");
 	}
+	select();
+        initMembers();
     }
+    /**
+       Copy constructor for a pointer to another variables instance.
+         Some variables are not included in the default copy (e.g. alfa, 
+	 fc, lightParam, CO2A, RedoxReg_MP, module *_Param values, & 
+	 rates). To include these, use deepcopy.
+       \param[in] other Variables instance to copy.
+     */
     Variables(const Variables* other);
+    /**
+       Copy constructor.
+         Some variables are not included in the default copy (e.g. alfa, 
+	 fc, lightParam, CO2A, RedoxReg_MP, module *_Param values, & 
+	 rates). To include these, use deepcopy.
+       \param[in] other Variables instance to copy.
+     */
     Variables(const Variables& other);
+    /**
+       Create a deep copy of this instance including variables excluded
+         from a default copy.
+       \returns New instance with all parameters copied.
+     */
     Variables* deepcopy() const;
+    /**
+       Assignment operator.
+         Some variables are not included in the default copy (e.g. alfa, 
+	 fc, lightParam, CO2A, RedoxReg_MP, module *_Param values, & 
+	 rates). To include these, use deepcopy.
+       \param[in] other Variables instance to copy.
+       \returns Update instance.
+     */
     Variables& operator=(const Variables& other);
+    /** \copydoc ValueSet::diff */
+    std::string _diff(const Variables& other,
+		      std::size_t padKeys=0,
+		      std::size_t padVals=0,
+		      bool includePrefixes=false,
+		      bool noChildren = false) const override;
+    /** \copydoc ValueSet::equals */
+    bool equals(const ValueSet_t& b,
+		const bool noChildren = false) const override;
+    /**
+       Serialization operator.
+       \param[in, out] out Output stream.
+       \param[in] in Instance to serialize.
+       \returns Updated output stream.
+    */
     friend std::ostream& operator<<(std::ostream &out, const Variables *in);
+    /**
+       Record a value set by copying it into this set of Variables.
+       \param[in] x Value set to record.
+     */
+    void setRecord(const ValueSet_t* x);
+    /**
+       Serialize all parameters attached to this instance to a file.
+       \param[in] filename Name of file where parameters should be written.
+       \param[in] includeSkipped If true, skipped keys will be output.
+       \param[in] skip_modules Vector of IDs for modules that should not
+         be serialized.
+       \param[in] skip_param_types Vector of IDs for parameter types that
+         should not be serialized.
+       \param skip_keys Key strings to skip in output.
+       \param key_aliases String aliases to use for keys.
+     */
+    void dump(const std::string& filename,
+	      const bool includeSkipped = false,
+	      const std::vector<MODULE>& skip_modules={},
+	      const std::vector<PARAM_TYPE>& skip_param_types={},
+	      const std::vector<std::string>& skip_keys={},
+	      const std::map<std::string, std::string>& key_aliases={}) const;
+    /**
+       Serialize all parameters attached to this instance to an output
+         stream.
+       \param[in, out] out Output stream.
+       \param[in] includeSkipped If true, skipped keys will be output.
+       \param[in] skip_modules Vector of IDs for modules that should not
+         be serialized.
+       \param[in] skip_param_types Vector of IDs for parameter types that
+         should not be serialized.
+       \param skip_keys Key strings to skip in output.
+       \param key_aliases String aliases to use for keys.
+       \returns Updated output stream.
+     */
+    std::ostream& dump(std::ostream& out,
+		       const bool includeSkipped = false,
+		       const std::vector<MODULE>& skip_modules={},
+		       const std::vector<PARAM_TYPE>& skip_param_types={},
+		       const std::vector<std::string>& skip_keys={},
+		       const std::map<std::string, std::string>& key_aliases={}) const;
+    /**
+       Serialize parameters for a single value set to an output stream.
+       \param[in] module ID for module that should be serialized.
+       \param[in] param_type ID for parameter type that should be serialized.
+       \param[in, out] out Output stream.
+       \param pad Number of characters that key names should be padded
+         to fill.
+       \param[in] includeSkipped If true, skipped keys will be output.
+       \param[in] skip_modules Vector of IDs for modules that should not
+         be serialized.
+       \param[in] skip_param_types Vector of IDs for parameter types that
+         should not be serialized.
+       \param skip_keys Key strings to skip in output.
+       \param key_aliases String aliases to use for keys.
+       \returns Updated output stream.
+     */
+    std::ostream& dump(const MODULE& module,
+		       const PARAM_TYPE& param_type,
+		       std::ostream& out, std::size_t pad,
+		       const bool includeSkipped = false,
+		       const std::vector<MODULE>& skip_modules={},
+		       const std::vector<PARAM_TYPE>& skip_param_types={},
+		       const std::vector<std::string>& skip_keys={},
+		       const std::map<std::string, std::string>& key_aliases={}) const;
   
     template<typename T>
-    void initParamDefaults() {
-      std::string filename;
-      std::map<PARAM_TYPE, std::map<MODULE, std::string> >::iterator it_pt = files.find(T::param_type);
-      if (it_pt != files.end()) {
-	std::map<MODULE, std::string>::iterator it_mod = it_pt->second.find(T::module);
-	if (it_mod != it_pt->second.end()) {
-	  filename = it_mod->second;
-	  it_pt->second.erase(it_mod);
-	}
-      }
-      T::initDefaults(useC3, filename);
-    }
-    
-    template<typename T>
-    void initParam(T& param) {
-      initParamDefaults<T>();
-      param.initValues();
+    void initParam(T& param, const bool noDefaults=false) {
+      T::initDefaults(useC3);
+      param.initValues(noDefaults);
     }
     template<typename T>
-    void initParamStatic() {
-      initParamDefaults<T>();
-      T::initValues();
+    void initParamStatic(const bool noDefaults=false) {
+      T::initDefaults(useC3);
+      T::initValues(noDefaults);
     }
+    /**
+       Initialize the parameters for a value set.
+       \param mod Value set module.
+       \param pt Value set parameter type.
+       \param noDefaults If true, the value pointers will be initialized,
+         but the default values will not be assigned to those values.
+       \param value_set Pointer to the value set that should be
+         initialized if different than the default version attached to
+	 Variables.
+     */
+    void initParam(const MODULE& mod, const PARAM_TYPE& pt,
+		   const bool noDefaults=false,
+		   ValueSet_t* value_set=nullptr);
 
+    /**
+       Initialize the default values for all value sets selected by the
+         current driver.
+       \param useC3 If true, C3 defaults should be used.
+     */
+    static void initAllDefaults(const bool useC3=false);
+    /**
+       Initialize the default values for a value set.
+       \param module Value set module.
+       \param param_type Value set parameter type.
+       \param useC3 If true, C3 defaults should be used.
+       \param filename Full path to a file containing values that should
+         be used as defaults in the value set.
+       \param force If true, the defaults will be initialized reguardless
+         of if the value set is selected by the current driver or not. If
+	 false, a warning will be generated when the value set is not
+	 selected and the defaults will not be initialized.
+     */
     static void initDefaults(const MODULE& module,
 			     const PARAM_TYPE& param_type,
 			     const bool useC3=false,
-			     const std::string& filename="");
+			     const std::string& filename="",
+			     const bool force=true);
+    /**
+       Check if a value set is selected by the current driver.
+       \param[in] mod Module type of value set to check.
+       \param[in] pt Parameter type of value set to check.
+       \returns true if the value set is selected, false otherwise.
+     */
+    static bool isSelected(const MODULE& mod, const PARAM_TYPE& pt);
+    /**
+       Get the maximum field width of all selected value sets for use
+         in aligning field names.
+       \returns Maximum field width.
+     */
+    static std::size_t max_field_width_all();
+    /**
+       Get the maximum value width of all selected value sets for use
+         in aligning values.
+       \returns Maximum value width.
+     */
+    std::size_t max_value_width_all() const;
+    /**
+       Parse a variable string, checking if there is a prefix containing
+         information on the module and/or parameter type associated with
+	 the value set that the variable belongs to. If this information
+	 is not provided, all value sets will be checked.
+       \param[in] k String to parse.
+       \param[out] mod Module that the variable was determined to belong
+         to.
+       \param[out] pt Parameter type that the variable was determined to
+         belong to.
+       \param[in] isGlymaID If true, k is assumed to contain a GlymaID
+         instead of a variable name.
+       \param[in] use_1st_match If true, the first variable matching the
+         provided string will be returned. If false and there is more
+	 than one match, an error will be thrown.
+       \returns Variable name extracted from k.
+     */
     static std::string parseVar(const std::string& k,
-				MODULE& mod, PARAM_TYPE& pt);
+				MODULE& mod, PARAM_TYPE& pt,
+				const bool& isGlymaID = false,
+				const bool& use_1st_match=false);
+    /**
+       Check if a value set has a variable that matches the provided
+         string.
+       \param[in] mod Module associated with the value set that should
+         be checked.
+       \param[in] pt Parameter type associated with the value set that
+         should be checked.
+       \param[in] name String to check against variables in the value set.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
+       \returns true if the variable is part of the value set, false
+         otherwise.
+     */
     static bool hasVar(const MODULE& mod, const PARAM_TYPE& pt,
-		       const std::string& name);
+		       const std::string& name,
+		       const bool& isGlymaID = false);
+    /**
+       Check if there is a variable that matches the provided string.
+       \param[in] name String to check against variables.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
+       \returns true if the variable is part of a value set, false
+         otherwise.
+     */
+    static bool hasVar(const std::string& name,
+		       const bool& isGlymaID = false);
+
+    /**
+       Get the integer key for a value set variable.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] name String identifying the variable.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
+       \returns Variable key.
+     */
+    static int getKey(const MODULE& mod, const PARAM_TYPE& pt,
+		      const std::string& name,
+		      const bool& isGlymaID = false);
+
+    /**
+       Set the default value for a variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] name String identifying the variable.
+       \param[in] value The new default value.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
+     */
+    static void setDefault(const MODULE& mod, const PARAM_TYPE& pt,
+			   const std::string& name, const double& value,
+			   const bool& isGlymaID = false);
+    /**
+       Set the default value for a variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] key Key identifying the variable.
+       \param[in] value The new default value.
+     */
+    static void setDefault(const MODULE& mod, const PARAM_TYPE& pt,
+			   const int& key, const double& value);
+    /**
+       Set the default value for a variable in a value set.
+       \param[in] k String identifying the variable.
+       \param[in] value The new default value.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
+     */
+    static void setDefault(const std::string& k, const double& value,
+			   const bool& isGlymaID = false);
+    
+    /**
+       Set the value for a variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] name String identifying the variable.
+       \param[in] value The new value.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
+     */
     void setVar(const MODULE& mod, const PARAM_TYPE& pt,
-		const std::string& name, const double& value);
-    void setVar(const std::string& k, const double& value) {
-	std::string name;
-	MODULE mod = MODULE_NONE;
-	PARAM_TYPE pt = PARAM_TYPE_NONE;
-	name = parseVar(k, mod, pt);
-	return setVar(mod, pt, name, value);
-    }
+		const std::string& name, const double& value,
+		const bool& isGlymaID = false);
+    /**
+       Set the value for a variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] key Key identifying the variable.
+       \param[in] value The new value.
+     */
+    void setVar(const MODULE& mod, const PARAM_TYPE& pt,
+		const int& key, const double& value);
+    /**
+       Set the value for a variable in a value set.
+       \param[in] k String identifying the variable.
+       \param[in] value The new value.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
+     */
+    void setVar(const std::string& k, const double& value,
+		const bool& isGlymaID = false);
 
+    /**
+       Get the value of a variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] name String identifying the variable.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
+       \returns Variable value.
+     */
     double getVar(const MODULE& mod, const PARAM_TYPE& pt,
-		  const std::string& name) const;
-    double getVar(const std::string& k) const {
-	std::string name;
-	MODULE mod = MODULE_NONE;
-	PARAM_TYPE pt = PARAM_TYPE_NONE;
-	name = parseVar(k, mod, pt);
-	return getVar(mod, pt, name);
-    }
+		  const std::string& name,
+		  const bool& isGlymaID = false) const;
+    /**
+       Get the value of a variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] key Key identifying the variable.
+       \returns Variable value.
+     */
+    double getVar(const MODULE& mod, const PARAM_TYPE& pt,
+		  const int& key) const;
+    /**
+       Get the value of a variable in a value set.
+       \param[in] k String identifying the variable.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
+       \returns Variable value.
+     */
+    double getVar(const std::string& k,
+		  const bool& isGlymaID = false) const;
 
-    SUNContext* context = NULL;
-    bool record = false;
-    bool BF_FI_com = false;
-    bool EPS_SUCS_com = false;
-    bool FIBF_PSPR_com = false;
-    bool PR_PS_com = false;
-    bool PSPR_SUCS_com = false;
-    bool RROEA_EPS_com = false;
-    bool RedoxReg_RA_com = false;
-    bool RuACT_EPS_com = false;
-    bool XanCycle_BF_com = false;
+    /**
+       Get the set of parameters types for a module.
+       \param[in] mod Module ID.
+       \param[in] for_instance If true, parameter types that do not
+         have instances in Variables will be excluded.
+       \param[in] include_cond If true, local copies of conditions will
+         be included.
+     */
+    static std::vector<PARAM_TYPE> getParamTypes(const MODULE& mod,
+						 const bool for_instance = false,
+						 const bool include_cond = false);
+    /**
+       Get a ValueSetClass_t instance for a module that can be used to
+         call virtual methods.
+       \param[in] mod Module ID.
+       \param[in] no_error_on_invalid If true, no error will be thrown if the
+         combination of mod & pt are unrecognized.
+       \param[in] error_context String providing context for errors.
+       \returns Pointer to ValueSetClass_t instance.
+     */
+    static ValueSetClass_t* getModule(const MODULE& mod,
+				      const bool no_error_on_invalid = false,
+				      const std::string& error_context = "");
+    /**
+       Get a constant ValueSetClass_t instance for a value set that can
+         be used to call static methods.
+       \param[in] mod Module associated with the value set.
+       \param[in] pt Parameter type associated with the value set.
+       \param[in] no_error_on_invalid If true, no error will be thrown if the
+         combination of mod & pt are unrecognized.
+       \param[in] error_context String providing context for errors.
+       \returns Pointer to ValueSetClass_t instance.
+     */
+    static ValueSetClass_t* getValueSetClass(const MODULE& mod,
+					     const PARAM_TYPE& pt = PARAM_TYPE_MOD,
+					     const bool no_error_on_invalid = false,
+					     const std::string& error_context = "");
+    /**
+       Get a ValueSet_t* instance for a value set that can be used to
+         call virtual methods.
+       \param[in] mod Module associated with the value set.
+       \param[in] pt Parameter type associated with the value set.
+       \param[in] no_error_on_invalid If true, no error will be thrown if the
+         combination of mod & pt are unrecognized.
+       \param[in] error_context String providing context for errors.
+       \returns Pointer to ValueSet_t instance.
+     */
+    ValueSet_t* getValueSet(const MODULE& mod,
+			    const PARAM_TYPE& pt = PARAM_TYPE_MOD,
+			    const bool no_error_on_invalid = false,
+			    const std::string& error_context = "");
+    /**
+       Get a constant ValueSet_t* instance for a value set that can be
+         used to call virtual methods.
+       \param[in] mod Module associated with the value set.
+       \param[in] pt Parameter type associated with the value set.
+       \param[in] no_error_on_invalid If true, no error will be thrown if the
+         combination of mod & pt are unrecognized.
+       \param[in] error_context String providing context for errors.
+       \returns Constant pointer to ValueSet_t instance.
+     */
+    const ValueSet_t* getValueSet(const MODULE& mod,
+				  const PARAM_TYPE& pt = PARAM_TYPE_MOD,
+				  const bool no_error_on_invalid = false,
+				  const std::string& error_context = "") const;
+    
+    SUNContext* context = NULL; /**< Sundials context */
+    bool record = false; /**< If true, each step should be recorded */
 
     int GP = 0;
-    int GRNC = 0;
-    int GRNT = 0;
+    int GRNC = 0; /**< Control parameter; if 1, VfactorCp values will be used to scale enzyme activities in the PS, PR, & SUCS modules when CO2 > 0 */
+    int GRNT = 0; /**< Control parameter; if 1, VfactorT values will be used to scale enzyme activities in the PS, PR, & SUCS modules when T > 25 */
 
     int RUBISCOMETHOD = 1;
 
-    const double AVR = 30.;
-    const double HPR = 4.66;
-    const double O2 = 210.;
-
-    double CO2_cond = 0.;
-
-    double GLight = 0.;
-    double O2_cond = 0.;
-    double PS12ratio = 0.;
-    double ADP = 0.;
-
-    double Pi = 0.;
-
-    double TestATPCost = 0.;
-    double CO2_in = 0.;
-    double TestLi = 0.;
-    double PS2BF_Pi = 0.;
-    double PS_PR_Param = 0;
-
-    double Tp = 0;
-    double alfa = 0.;
-    double fc = 0.;
-    double lightParam = 0.;
-    const double alpha1 = 1.205;
-    const double alpha2 = 2.06;
-
-    // Files containing default conditions & constants
-    std::map<PARAM_TYPE, std::map<MODULE, std::string> > files;
-
-    std::map<std::string, double> EnzymeAct;
+    std::map<std::string, double> EnzymeAct; /**< Map of enzyme activity levels used when GP == 0 */
 
     arr VfactorCp = zeros(33);
     arr VfactorT = ones(28);
@@ -218,40 +500,21 @@ public:
     TimeSeries<std::vector<double> > CO2A = TimeSeries<std::vector<double> > ();
     std::vector<arr> RedoxReg_MP;
 
-// #define MODULES_Pool BF, FIBF, FI, RROEA, RuACT, SUCS
-// #define MODULES_RC BF, FI, RROEA, RuACT
-// #define MODULES2OUT PR, PS, SUCS, XanCycle
-// #define MODULES_KE RROEA
-
-#define ADD_MOD_MEMBER(mod, type, suffix)	\
-    type mod ## suffix
-#define ADD_MOD_VALUE_SET(mod, ns, type_suffix, name_suffix)	\
-    ADD_MOD_MEMBER(mod, ns::mod ## type_suffix, name_suffix)
-#define ADD_MOD(mod, size)					\
-    arr mod ## _Param = zeros(2);				\
-    ADD_MOD_VALUE_SET(mod, vel, Vel, _Vel);			\
-    arr mod ## Ratio = ones(size);				\
-    ADD_MOD_VALUE_SET(mod, pool, Pool, _Pool);			\
-    ADD_MOD_VALUE_SET(mod, RC, RC, _RC);			\
-    ADD_MOD_VALUE_SET(mod, conditions, Condition, 2OUT);	\
-    ADD_MOD_VALUE_SET(mod, KE, KE, _KE);			\
-    TimeSeries<vel::mod ## Vel> mod ## _VEL = TimeSeries<vel::mod ## Vel> ()
-
-    ADD_MOD(BF, 49);
-    ADD_MOD(FI, 23);
-    ADD_MOD(PR, 48);
-    ADD_MOD(PS, 103);
-    ADD_MOD(RROEA, 0);
-    ADD_MOD(RedoxReg, 0);
-    ADD_MOD(RuACT, 16);
-    ADD_MOD(SUCS, 66);
-    ADD_MOD(XanCycle, 4);
-    // ADD_MOD(FIBF, 0);
-    pool::FIBFPool FIBF_Pool;
-
-#undef ADD_MOD
-#undef ADD_MOD_VALUE_SET
-#undef ADD_MOD_MEMBER
+#define DO_MEMBERS(mod, pt)				\
+    VARS_CLASS_VAR(mod, pt) VARS_INST_VAR(mod, pt)
+#define DO_MEMBERS_PACKED(args)					\
+    DO_MEMBERS args
+#define DO_MEMBERS_CORE(mod)						\
+    arr mod ## _Param = zeros(2);					\
+    arr mod ## Ratio = ones(NRATIO_ ## mod);				\
+    DO_MEMBERS(mod, VEL_SERIES) = VARS_CLASS_VAR(mod, VEL_SERIES)()
+#define DO_MEMBERS_CONNECTION(mod)		\
+    bool mod ## _com = false
+    VARS_INST_APPLY_TO_MEMBERS(DO_MEMBERS);
+#undef DO_MEMBERS_CONNECTION
+#undef DO_MEMBERS_CORE
+#undef DO_MEMBERS_PACKED
+#undef DO_MEMBERS
 
     bool useC3 = false;
 #ifdef INCDEBUG

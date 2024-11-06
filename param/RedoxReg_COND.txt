@@ -1,5 +1,6 @@
-Thion	0.25	# This is a wild guess
-# V6	0.0	# [CALC, NON_VECTOR]
-# V9	0.0	# [CALC, NON_VECTOR]
-# V13	0.0	# [CALC, NON_VECTOR]
-# V16	0.0	# [CALC, NON_VECTOR]
+# Name		Value	C3Value	Docs
+Thion		0.25		# This is a wild guess
+# V6		0.0		# [CALC, NON_VECTOR]
+# V9		0.0		# [CALC, NON_VECTOR]
+# V13		0.0		# [CALC, NON_VECTOR]
+# V16		0.0		# [CALC, NON_VECTOR]

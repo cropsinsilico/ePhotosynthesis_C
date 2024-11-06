@@ -4,7 +4,8 @@ CMAKE_BUILD_TYPE_TEST="Debug"
 REBUILD=""
 BUILD_DIR="build"
 DONT_BUILD=""
-CMAKE_FLAGS="-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DBUILD_TESTS:BOOL=ON"
+DONT_BUILD_TESTS=""
+CMAKE_FLAGS="-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON"
 INSTALL_DIR="$(pwd)/_install"
 DO_DOCS=""
 DONT_TEST=""
@@ -25,6 +26,7 @@ while [[ $# -gt 0 ]]; do
 	    ;;
 	--ephoto )
 	    RUN_EPHOTO="TRUE"
+	    DONT_BUILD_TESTS="TRUE"
 	    DONT_TEST="TRUE"
 	    shift
 	    ;;
@@ -40,6 +42,10 @@ while [[ $# -gt 0 ]]; do
 	--dont-build )
 	    DONT_BUILD="TRUE"
 	    shift # past argument with no value
+	    ;;
+	--dont-build-tests )
+	    DONT_BUILD_TESTS="TRUE"
+	    shift
 	    ;;
 	--install-dir )
 	    INSTALL_DIR="$2"
@@ -109,6 +115,12 @@ if [ -n "$PREPROCESS" ]; then
    gcc -E $PREPROCESS -I include/
 fi
 
+if [ -n "$DONT_BUILD_TESTS" ]; then
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DBUILD_TESTS:BOOL=OFF"
+else
+    CMAKE_FLAGS="${CMAKE_FLAGS} -DBUILD_TESTS:BOOL=ON"
+fi
+
 cd $BUILD_DIR
 if [ ! -n "$DONT_BUILD" ]; then
     cmake .. $CMAKE_FLAGS $CMAKE_FLAGS_LIB
@@ -128,7 +140,9 @@ if [ -n "$WITH_COVERAGE" ]; then
 fi
 if [ -n "$RUN_EPHOTO" ]; then
     cd ..
-    ./$BUILD_DIR/ePhoto -d 4 --enzyme InputEnzyme.txt --grn InputGRNC.txt # -T 25
+    ./$BUILD_DIR/ePhoto -d 4 --enzyme InputEnzyme.txt --grn InputGRNC_MATLAB.txt # -T 25
+    diff ../ePhotosynthesis/EPS_init.txt EPS_init.txt &> diff_EPS_init.txt
+    # diff ../ePhotosynthesis/EPS_rate.txt EPS_rate.txt &> diff_EPS_rate.txt
     cd $BUILD_DIR
 fi
 

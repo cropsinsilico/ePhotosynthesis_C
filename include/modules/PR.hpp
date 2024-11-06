@@ -31,13 +31,10 @@
 #include "definitions.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class PRModuleTest;
-}
-#endif
+
+FORWARD_DECLARE_MODULE(PR);
+
 namespace modules {
-class PS_PR;
 
 /**
   Class for grouping PR related functions and common variables
@@ -46,19 +43,11 @@ class PR : public MODULE_BASE(PR) {
 public:
     DECLARE_MODULE(PR)
 private:
-    friend ModuleBase;
-    friend class modules::PS_PR;
-#ifdef TESTING
-    friend class test::PRModuleTest;
-#endif
-    /**
-      Function to set the initial state of the PRCondition class.
 
-      \param theVars Pointer to the global variables
-      \return A PRCondition object with values set based on the input
-      */
-    static conditions::PRCondition* _init(Variables *theVars);
-
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+    static void _initDefaults();
+#endif // MAKE_EQUIVALENT_TO_MATLAB
+    
     /**
       Function to calculate the dy/dt values for the PRCondition at the given time stamp.
 
@@ -161,7 +150,7 @@ private:
     static std::size_t N;  // The current size of the PR TimeSeries
 };
 
-  DEFINE_VALUE_SET_STATIC_HEADER(PR);
+  DEFINE_MODULE_HEADER(PR);
 
 }  // namespace modules
 }  // namespace ePhotosynthesis

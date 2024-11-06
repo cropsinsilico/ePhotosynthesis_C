@@ -29,7 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET_SRC(EPSCondition);
+DEFINE_CONDITION_COMPOSITE(EPS);
 
 EPSCondition::EPSCondition(const EPSCondition* const other) {
     initMembers();
@@ -80,16 +80,4 @@ arr EPSCondition::_toArray() const {
     arr cvec = CM_con->toArray();
     fvec.insert(fvec.end(), cvec.begin(), cvec.end());
     return fvec;
-}
-
-void EPSCondition::_clear() {
-    if (CM_con != nullptr) {
-        delete CM_con;
-        CM_con = nullptr;
-    }
-    if (FIBF_con != nullptr) {
-        delete FIBF_con;
-        FIBF_con = nullptr;
-    }
-    count = 0;
 }

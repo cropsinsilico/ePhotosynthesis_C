@@ -32,20 +32,14 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET(PS_PRCondition);
+DEFINE_MODULE_COMPOSITE(PS_PR);
 
-PS_PRCondition* PS_PR::_init(Variables *theVars) {
-    PSCondition* PS_con = PS::init(theVars);
-    PRCondition* PR_con = PR::init(theVars);
+void PS_PR::_initOrig(Variables *theVars, PS_PRCondition* PS_PR_con) {
+  _initCalc(theVars, PS_PR_con);
+}
+
+void PS_PR::_initCalc(Variables *theVars, PS_PRCondition* PS_PR_con) {
     PR::setPS_RuBP(true);
-    PS_PRCondition* PS_PR_con = new PS_PRCondition(PS_con, PR_con);
-    return PS_PR_con;
 }
 
-DEFINE_DEFAULT_INITALT(PS_PR)
-
-void PS_PR::_reset() {
-    PS::reset();
-    PR::reset();
-    conditions::PS_PRCondition::reset();
-}
+DEFINE_DEFAULT_CHECKALT(PS_PR)

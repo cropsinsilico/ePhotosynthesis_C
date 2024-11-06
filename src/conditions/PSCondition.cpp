@@ -29,7 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET_SRC(PSCondition);
+DEFINE_CONDITION(PS);
 
 PSCondition::PSCondition(const PSCondition* const other) :
   ConditionBase<PSCondition, PS_PRCondition, MODULE_PS>(other) {

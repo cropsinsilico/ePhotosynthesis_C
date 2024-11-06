@@ -29,7 +29,7 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-DEFINE_VALUE_SET_SRC(XanCycleCondition);
+DEFINE_CONDITION(XanCycle);
 
 XanCycleCondition::XanCycleCondition(const XanCycleCondition* const other) :
   ConditionBase<XanCycleCondition, DynaPSCondition, MODULE_XanCycle>(other) {

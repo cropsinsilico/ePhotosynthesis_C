@@ -30,13 +30,10 @@
 #include "conditions/RACondition.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class RAModuleTest;
-}
-#endif
+
+FORWARD_DECLARE_MODULE_COMPOSITE(RA);
+
 namespace modules {
-class DynaPS;
 
 /**
  Class for the RA Module functions.
@@ -45,19 +42,6 @@ class RA : public MODULE_BASE(RA) {
 public:
     DECLARE_MODULE_COMPOSITE(RA)
 private:
-    friend ModuleBase;
-    friend class modules::DynaPS;
-#ifdef TESTING
-    friend class test::RAModuleTest;
-#endif
-
-    /**
-      Function to set the initial state of the RACondition class.
-
-      \param theVars Pointer to the global variables
-      \return A RACondition object with values set based on the input
-      */
-    static conditions::RACondition* _init(Variables *theVars);
 
     /**
       Function to calculate the dy/dt values for the RACondition at the given time stamp.
@@ -92,12 +76,9 @@ private:
         (void)RA_Con;
         (void)theVars;
     }
-
-    /**
-      Reset the static member variables to their default values.
-      */
-    static void _reset();
 };
+
+  DEFINE_MODULE_COMPOSITE_HEADER(RA);
 
 }  // namespace modules
 }  // namespace ePhotosynthesis
