@@ -124,7 +124,7 @@ void EPSDriver::setup() {
 void EPSDriver::getResults() {
     EPSCondition* eps_int_con = new EPSCondition(intermediateRes);
     arr temp = EPS::MB(time, eps_int_con, inputVars);
-    results = zeros(3);
+    results = zeros(4);
     const double Arate = (inputVars->PS_Vel.v1 - inputVars->PR_Vel.v131) * inputVars->AVR;
     delete eps_int_con;
 

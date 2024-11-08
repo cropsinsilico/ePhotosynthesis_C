@@ -78,6 +78,7 @@ public:
     bool RuACT_EPS_com = false;
     bool XanCycle_BF_com = false;
     bool saveMetabolite  = false;
+    bool runBioCro       = false; //whether this is coupled run with BioCro
 
     int GP = 0;
     int GRNC = 0;

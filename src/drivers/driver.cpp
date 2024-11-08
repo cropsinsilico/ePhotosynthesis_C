@@ -139,7 +139,7 @@ arr Driver::run() {
                 difference[i] = (lastData2[i] - lastData1[i])/100.;//divide delta t
             }
           }
-        }//end while
+        }//end while (t <= endtime)
 
 // Threshold value for checking steady-state metabolite
         double threshold = 1e-4;
@@ -205,7 +205,12 @@ arr Driver::run() {
             std::cout << "results[0] "<<results[0]<<" Penalty "<<penalty<<
             " multiplier "<<multiplier<<" assim_penalty "<<penalty_assim<<std::endl;
           }
-          results[0] = results[0] - multiplier * penalty;
+//when record = false, the penalty is always zero despite being calculated
+//when runBioCro = true, don't substract the penalties
+          results[3] = penalty;
+          if(inputVars->runBioCro==false){
+            results[0] = results[0] - multiplier * penalty;
+          }
           return results;
         }
 
