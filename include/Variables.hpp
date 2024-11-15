@@ -117,17 +117,17 @@ public:
     double sensitivity_sf = 1.0; //a scaling factor for enzymes
 
     //YH:Q10 values come from my Q10 fitting for LD11
-    double Q10_1  = 2.26;
-    double Q10_2  = 1.5;
-    double Q10_3  = 2.0;
-    double Q10_5  = 2.5;
-    double Q10_6  = 2.025;
-    double Q10_7  = 1.728;
-    double Q10_8  = 2.0;
-    double Q10_9  = 2.0;
-    double Q10_10 = 2.0;
-    double Q10_13 = 2.0;
-    double Q10_23 = 2.5;
+    double Q10_1  = 2.21;
+    double Q10_2  = 1.69;
+    double Q10_3  = 2.00;
+    double Q10_5  = 2.50;
+    double Q10_6  = 2.17;
+    double Q10_7  = 1.76;
+    double Q10_8  = 1.91;
+    double Q10_9  = 1.98;
+    double Q10_10 = 2.02;
+    double Q10_13 = 2.08;
+    double Q10_23 = 2.50;
     double PS_scaling_factor = 1.0; //a parameter to scale the total P
     // Parameters
     arr PR_Param = zeros(2);
