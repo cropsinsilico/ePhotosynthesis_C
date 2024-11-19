@@ -98,16 +98,20 @@ const std::map<ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::string> Val
 };
 template<> 
 const std::map<std::string, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::aliases = {
-  {"Air_CO2"      , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_in},
-  {"CO2"          , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_in},
-  {"PAR"          , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi},
-  {"Radiation_PAR", ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi},
+  {"Air_CO2"           , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_in},
+  {"CO2"               , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_in},
+  {"PAR"               , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi},
+  {"Radiation_PAR"     , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi},
+  {"Temp"              , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Tp},
+  {"WeatherTemperature", ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Tp},
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::constant = {
   ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)AVR,
   ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)HPR,
   ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2,
+  ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)alfa,
+  ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)fc,
   ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)alpha1,
   ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)alpha2,
   ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_LHCI,
@@ -122,6 +126,7 @@ const std::vector<ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<
   ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_cond,
   ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS12ratio,
   ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Pi,
+  ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)lightParam,
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::nonvector = {

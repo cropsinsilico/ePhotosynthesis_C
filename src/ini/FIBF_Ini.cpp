@@ -52,19 +52,6 @@ void FIBF::_initCalc(Variables *theVars, FIBFCondition* FIBF_con) {
     theVars->BF_Pool.k_r1 = theVars->FIBF_Pool.PQT;
 }
 
-// void FIBF::_initAlt(Variables *theVars, FIBFCondition* FIBF_con) {
-// #ifdef CHECK_VALUE_SET_ALTS
-//     theVars->initParamStatic<FIBF>();
-//     theVars->initParam(theVars->FIBF_Pool);
-//     theVars->initParam(*FIBF_con);
-//     theVars->FI_Pool[POOL::FI::PQT] = theVars->FIBF_Pool[POOL::FIBF::PQT];
-//     theVars->BF_Pool[POOL::BF::k_r1] = theVars->FIBF_Pool[POOL::FIBF::PQT];
-// #else // CHECK_VALUE_SET_ALTS
-//     UNUSED(theVars);
-//     UNUSED(FIBF_con);
-// #endif // CHECK_VALUE_SET_ALTS
-// }
-
 void FIBF::_reset()  {
     ChlPSI = 0.;
     ChlT = 0.;

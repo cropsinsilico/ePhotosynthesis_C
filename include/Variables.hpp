@@ -117,8 +117,14 @@ public:
     /**
        Record a value set by copying it into this set of Variables.
        \param[in] x Value set to record.
+       \param[in] conditions Map that conditions for composite modules
+         that are not stored on Variables instances should be added to.
      */
+    void setRecord(const ValueSet_t* x,
+		   std::map<MODULE, const ValueSet_t*>& conditions);
     void setRecord(const ValueSet_t* x);
+    void setRecord(ValueSet_t* x,
+		   std::map<MODULE, ValueSet_t*>& conditions);
     /**
        Serialize all parameters attached to this instance to a file.
        \param[in] filename Name of file where parameters should be written.
@@ -127,15 +133,18 @@ public:
          be serialized.
        \param[in] skip_param_types Vector of IDs for parameter types that
          should not be serialized.
-       \param skip_keys Key strings to skip in output.
-       \param key_aliases String aliases to use for keys.
+       \param[in] skip_keys Key strings to skip in output.
+       \param[in] key_aliases String aliases to use for keys.
+       \param[in] conditions Map of conditions for composite modules that
+         are not stored on Variables instances.
      */
     void dump(const std::string& filename,
 	      const bool includeSkipped = false,
 	      const std::vector<MODULE>& skip_modules={},
 	      const std::vector<PARAM_TYPE>& skip_param_types={},
 	      const std::vector<std::string>& skip_keys={},
-	      const std::map<std::string, std::string>& key_aliases={}) const;
+	      const std::map<std::string, std::string>& key_aliases={},
+	      const std::map<MODULE, const ValueSet_t*>& conditions={}) const;
     /**
        Serialize all parameters attached to this instance to an output
          stream.
@@ -145,8 +154,10 @@ public:
          be serialized.
        \param[in] skip_param_types Vector of IDs for parameter types that
          should not be serialized.
-       \param skip_keys Key strings to skip in output.
-       \param key_aliases String aliases to use for keys.
+       \param[in] skip_keys Key strings to skip in output.
+       \param[in] key_aliases String aliases to use for keys.
+       \param[in] conditions Map of conditions for composite modules that
+         are not stored on Variables instances.
        \returns Updated output stream.
      */
     std::ostream& dump(std::ostream& out,
@@ -154,7 +165,8 @@ public:
 		       const std::vector<MODULE>& skip_modules={},
 		       const std::vector<PARAM_TYPE>& skip_param_types={},
 		       const std::vector<std::string>& skip_keys={},
-		       const std::map<std::string, std::string>& key_aliases={}) const;
+		       const std::map<std::string, std::string>& key_aliases={},
+		       const std::map<MODULE, const ValueSet_t*>& conditions={}) const;
     /**
        Serialize parameters for a single value set to an output stream.
        \param[in] module ID for module that should be serialized.
@@ -167,8 +179,10 @@ public:
          be serialized.
        \param[in] skip_param_types Vector of IDs for parameter types that
          should not be serialized.
-       \param skip_keys Key strings to skip in output.
-       \param key_aliases String aliases to use for keys.
+       \param[in] skip_keys Key strings to skip in output.
+       \param[in] key_aliases String aliases to use for keys.
+       \param[in] conditions Map of conditions for composite modules that
+         are not stored on Variables instances.
        \returns Updated output stream.
      */
     std::ostream& dump(const MODULE& module,
@@ -178,30 +192,24 @@ public:
 		       const std::vector<MODULE>& skip_modules={},
 		       const std::vector<PARAM_TYPE>& skip_param_types={},
 		       const std::vector<std::string>& skip_keys={},
-		       const std::map<std::string, std::string>& key_aliases={}) const;
+		       const std::map<std::string, std::string>& key_aliases={},
+		       const std::map<MODULE, const ValueSet_t*>& conditions={}) const;
   
-    template<typename T>
-    void initParam(T& param, const bool noDefaults=false) {
-      T::initDefaults(useC3);
-      param.initValues(noDefaults);
-    }
-    template<typename T>
-    void initParamStatic(const bool noDefaults=false) {
-      T::initDefaults(useC3);
-      T::initValues(noDefaults);
-    }
     /**
        Initialize the parameters for a value set.
        \param mod Value set module.
        \param pt Value set parameter type.
        \param noDefaults If true, the value pointers will be initialized,
          but the default values will not be assigned to those values.
+       \param force If true, initialize the values even if they have
+         already been initialized.
        \param value_set Pointer to the value set that should be
          initialized if different than the default version attached to
 	 Variables.
      */
     void initParam(const MODULE& mod, const PARAM_TYPE& pt,
 		   const bool noDefaults=false,
+		   const bool force=false,
 		   ValueSet_t* value_set=nullptr);
 
     /**
@@ -421,10 +429,13 @@ public:
          have instances in Variables will be excluded.
        \param[in] include_cond If true, local copies of conditions will
          be included.
+       \param[in] conditions Map of conditions for composite modules that
+         are not stored on Variables instances.
      */
     static std::vector<PARAM_TYPE> getParamTypes(const MODULE& mod,
 						 const bool for_instance = false,
-						 const bool include_cond = false);
+						 const bool include_cond = false,
+						 const std::map<MODULE, const ValueSet_t*>& conditions = {});
     /**
        Get a ValueSetClass_t instance for a module that can be used to
          call virtual methods.
@@ -458,12 +469,15 @@ public:
        \param[in] pt Parameter type associated with the value set.
        \param[in] no_error_on_invalid If true, no error will be thrown if the
          combination of mod & pt are unrecognized.
+       \param[in] conditions Map of conditions for composite modules that
+         are not stored on Variables instances.
        \param[in] error_context String providing context for errors.
        \returns Pointer to ValueSet_t instance.
      */
     ValueSet_t* getValueSet(const MODULE& mod,
 			    const PARAM_TYPE& pt = PARAM_TYPE_MOD,
 			    const bool no_error_on_invalid = false,
+			    const std::map<MODULE, ValueSet_t*>& conditions = {},
 			    const std::string& error_context = "");
     /**
        Get a constant ValueSet_t* instance for a value set that can be
@@ -472,12 +486,15 @@ public:
        \param[in] pt Parameter type associated with the value set.
        \param[in] no_error_on_invalid If true, no error will be thrown if the
          combination of mod & pt are unrecognized.
+       \param[in] conditions Map of conditions for composite modules that
+         are not stored on Variables instances.
        \param[in] error_context String providing context for errors.
        \returns Constant pointer to ValueSet_t instance.
      */
     const ValueSet_t* getValueSet(const MODULE& mod,
 				  const PARAM_TYPE& pt = PARAM_TYPE_MOD,
 				  const bool no_error_on_invalid = false,
+				  const std::map<MODULE, const ValueSet_t*>& conditions = {},
 				  const std::string& error_context = "") const;
     
     SUNContext* context = NULL; /**< Sundials context */
@@ -487,7 +504,11 @@ public:
     int GRNC = 0; /**< Control parameter; if 1, VfactorCp values will be used to scale enzyme activities in the PS, PR, & SUCS modules when CO2 > 0 */
     int GRNT = 0; /**< Control parameter; if 1, VfactorT values will be used to scale enzyme activities in the PS, PR, & SUCS modules when T > 25 */
 
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+    int RUBISCOMETHOD = 2;
+#else // MAKE_EQUIVALENT_TO_MATLAB
     int RUBISCOMETHOD = 1;
+#endif // MAKE_EQUIVALENT_TO_MATLAB
 
     std::map<std::string, double> EnzymeAct; /**< Map of enzyme activity levels used when GP == 0 */
 

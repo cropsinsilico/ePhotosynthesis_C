@@ -114,6 +114,7 @@ public:
 #ifdef CHECK_NEW_MATCHES_ORIG
 	bool init0 = initialized();
 	std::map<int, double> map0 = getValueMap();
+	std::map<int, double> preinit_map0 = getValueMap(true);
 	Variables *theVars2 = theVars->deepcopy();
 	if ((*theVars2) != (*theVars)) {
 	  ERROR_VALUE_SET("Copied variables does not match\n",
@@ -123,6 +124,8 @@ public:
 	std::map<int, double> map = getValueMap();
 	ValueSetClass::resetValues(true);
 	setValueMap(map0, init0); // TODO: Set initialized
+	if (!init0)
+	  setValueMap(preinit_map0, false, true);
 	U* out2 = initNew(theVars2);
 	std::map<int, double> map2 = getValueMap();
 	if (!compareState(theVars, theVars2, out, out2, map, map2)) {
@@ -151,8 +154,8 @@ public:
     static U* initAllValues(Variables *theVars,
 			    const bool noDefaults=false) {
       U* out = T::_createCondition(theVars);
-      theVars->initParam(ID, PARAM_TYPE_MOD, noDefaults);
-      theVars->initParam(ID, PARAM_TYPE_COND, noDefaults,
+      theVars->initParam(ID, PARAM_TYPE_MOD, noDefaults, true);
+      theVars->initParam(ID, PARAM_TYPE_COND, noDefaults, false,
 			 static_cast<ValueSet_t*>(out));
       const std::vector<PARAM_TYPE>& param_types = get_parameter_types();
       for (typename std::vector<PARAM_TYPE>::const_iterator it = param_types.begin();
@@ -271,22 +274,6 @@ public:
     static U* _createCondition(Variables *theVars) {
       UNUSED(theVars);
       return nullptr;
-    }
-
-    /**
-      Function to initialize the value set pointers and set values to
-        defaults.
-
-      \param theVars Pointer to the global variables
-       \param noDefaults If true, the value pointers will be initialized,
-         but the default values will not be assigned to those values.
-      \return A Condition object with values set based on the input
-      */
-    static U* _initAllValues(Variables *theVars,
-			     const bool noDefaults=false) {
-	UNUSED(theVars);
-	UNUSED(noDefaults);
-	return nullptr;
     }
 
     /**
@@ -435,8 +422,6 @@ public:
   }									\
   static void _initStaticMembers();					\
   static VARS_CLASS_VAR(name, COND)* _createCondition(Variables *theVars); \
-  static VARS_CLASS_VAR(name, COND)* _initAllValues(Variables *theVars,	\
-						    const bool noDefaults=false); \
   static void _initOrig(Variables *theVars,				\
 			VARS_CLASS_VAR(name, COND)*			\
 			VARS_INST_VAR_MOD_BASE(name, COND));		\
@@ -464,10 +449,7 @@ public:
   DECLARE_VALUE_SET_STATIC(name, ModuleBase<name,			\
 			   VARS_CLASS_VAR(name, COND),		\
 			   MODULE_ ## name>)				\
-  DECLARE_MODULE_BASE(name);						\
-  void _initAlt(Variables *theVars,					\
-		VARS_CLASS_VAR(name, COND)*				\
-		VARS_INST_VAR_MOD_BASE(name, COND));
+  DECLARE_MODULE_BASE(name);
 #define DECLARE_MODULE2(name)						\
   static void _Rate(const double t,					\
 		    const VARS_CLASS_VAR(name, COND)*			\
@@ -566,14 +548,6 @@ public:
 		     UNPACK_MACRO(PARAM_TYPES_ ## name));		\
   DEFINE_MODULE_BASE(name);						\
   VARS_CLASS_VAR_LOCAL(name, COND)* VARS_CLASS_VAR_LOCAL(name, MOD)::	\
-    _initAllValues(Variables *theVars, const bool noDefaults) {		\
-    theVars->initParamStatic<VARS_CLASS_VAR_LOCAL(name, MOD)>(noDefaults); \
-    VARS_CLASS_VAR_LOCAL(name, COND)* VARS_INST_VAR_MOD_BASE(name, COND) = new VARS_CLASS_VAR_LOCAL(name, COND)(); \
-    FOR_EACH_WITH_ARGS(DEFINE_MODULE_INIT_ADDED, (name),		\
-		       UNPACK_MACRO(PARAM_TYPES_ ## name));		\
-    return VARS_INST_VAR_MOD_BASE(name, COND);				\
-  }									\
-  VARS_CLASS_VAR_LOCAL(name, COND)* VARS_CLASS_VAR_LOCAL(name, MOD)::	\
     _createCondition(Variables *theVars) {				\
     VARS_CLASS_VAR_LOCAL(name, COND)* VARS_INST_VAR_MOD_BASE(name, COND) = new VARS_CLASS_VAR_LOCAL(name, COND)(); \
     return VARS_INST_VAR_MOD_BASE(name, COND);				\
@@ -599,15 +573,6 @@ public:
   FOR_EACH_WITH_ARGS(DEFINE_MODULE_PARAM_TYPE, (name),			\
 		     UNPACK_MACRO(PARAM_TYPES_ ## name));		\
   DEFINE_MODULE_BASE(name)						\
-  VARS_CLASS_VAR_LOCAL(name, COND)* VARS_CLASS_VAR_LOCAL(name, MOD)::	\
-    _initAllValues(Variables *theVars, const bool noDefaults) {		\
-    theVars->initParamStatic<VARS_CLASS_VAR_LOCAL(name, MOD)>(noDefaults); \
-    FOR_EACH(DEFINE_MODULE_COMPOSITE_CHILD_COND, CHILDREN_ ## name);	\
-    VARS_CLASS_VAR_LOCAL(name, COND)* VARS_INST_VAR_MOD_BASE(name, COND) = new VARS_CLASS_VAR_LOCAL(name, COND)( FOR_EACH_COMMA(DEFINE_MODULE_COMPOSITE_CHILD_COND_ARG, CHILDREN_ ## name) ); \
-    FOR_EACH_WITH_ARGS(DEFINE_MODULE_INIT_ADDED, (name),		\
-		       UNPACK_MACRO(PARAM_TYPES_ ## name));		\
-    return VARS_INST_VAR_MOD_BASE(name, COND);				\
-  }									\
   VARS_CLASS_VAR_LOCAL(name, COND)* VARS_CLASS_VAR_LOCAL(name, MOD)::	\
     _createCondition(Variables *theVars) {				\
     FOR_EACH(DEFINE_MODULE_COMPOSITE_CHILD_COND, CHILDREN_ ## name);	\

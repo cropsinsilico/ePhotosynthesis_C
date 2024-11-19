@@ -31,19 +31,15 @@
 #include "conditions/trDynaPSCondition.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class trDynaPSDriverTest;
-}
-#endif
+  FORWARD_DECLARE_DRIVER(trDynaPS);
 namespace drivers {
 
 /**
  Class for running trDynaPS with an ODE solver
  */
 class trDynaPSDriver : public DriverBase<trDynaPSDriver, MODULE_trDynaPS> {
-public:
     DECLARE_DRIVER(trDynaPS)
+public:
     /**
       \copydoc drivers::Driver::Driver
       \param para Input parameters
@@ -57,7 +53,6 @@ public:
         ParaNum = para;
         Ratio = ratio;
     }
-    ~trDynaPSDriver() override;
 
     /**
       \copydoc drivers::Driver::setup
@@ -70,21 +65,6 @@ public:
     void getResults() override;
 
 private:
-#ifdef TESTING
-    friend class test::trDynaPSDriverTest;
-#endif
-
-    /**
-      \copydoc drivers::Driver::MB
-      */
-    arr MB(realtype t, N_Vector u) override;
-
-    /**
-      Initialize the variables
-
-      @return A trDynaPSCondition object for input into calculations
-      */
-    conditions::trDynaPSCondition* trDynaPS_Ini();
 
     std::size_t ParaNum;
     double Ratio;

@@ -123,14 +123,14 @@ int main(int argc, const char* argv[]) {
         cxxopts::Options options("ePhotosynthesis", "C++ implementation of the matlab original");
         options.show_positional_help();
         std::string evn, atpcost, optionsFile, enzymeFile, grnFile,
-	  outputFile, outputVars, outputVarsPerStep;
+	  outputFile, outputVars, outputVarsPerStep, outputParamBase;
         double stoptime, begintime, stepsize;
         double abstol, reltol;
         double Tp;
         DriverType driverChoice;
         int driver, maxSubSteps, RUBISCOMETHOD;
         ushort dbglvl;
-        bool debugDelta, debugInternal;
+        bool debugDelta, debugInternal, outputParam;
 	std::map<PARAM_TYPE, std::map<MODULE, std::string> > param_files;
         options.add_options()
 	  ("v,verbose", "Record output values for all steps (this can significantly slow the program).", cxxopts::value<bool>(record)->default_value("false"))
@@ -158,6 +158,9 @@ int main(int argc, const char* argv[]) {
 	  ("debug","Debug level", cxxopts::value<ushort>(dbglvl)->default_value("0"))
 	  ("debugDelta", "Debug deltas", cxxopts::value<bool>(debugDelta)->default_value("false"))
 	  ("debugInternal", "Debug internals", cxxopts::value<bool>(debugInternal)->default_value("false"))
+	  ("outputParam", "Output the initial and final parameter values", cxxopts::value<bool>(outputParam)->default_value("false"))
+	  ("outputParamBase", "Base name for files that initial and final parameter values should be output to",
+	   cxxopts::value<std::string>(outputParamBase)->default_value(""))
 	  // ("outputVars", "Comma separated list of names of variables that should be output at the end of a run. Variables for modules, equilibirium constants, etc. can be specified by including the C++ scope of the variable. (e.g. MOD:BF:cATPsyn would output the concentration of ATP synthase). If not provided the output variables will be determined by the driver.", cxxopts::value<std::string>(outputVars)->default_value(""))
 	  // ("outputVarsPerStep", "Comma separated list of names of variables that should be output for each time step. If not provided, variables will not be output at each time step.", cxxopts::value<std::string>(outputVarsPerStep)->default_value(""))
 	  ;
@@ -309,7 +312,7 @@ int main(int argc, const char* argv[]) {
 	    pcfactor = 1.0 / static_cast<double>(stof(inputs.at("ProteinTotalRatio"), nullptr));
 	  size_t i = 0;
 	  for (auto it = glymaID_order.begin(); it != glymaID_order.end(); it ++, i++) {
-	    double iVfactor = 1.0;
+	    double iVfactor = pcfactor;
 	    try {
 	      if ((i >= 33) && (theVars->GRNC == 0))
 		iVfactor = 1.0;
@@ -321,9 +324,9 @@ int main(int argc, const char* argv[]) {
 	    }
 	    if (i < 33) {
 	      theVars->VfactorCp[i] = iVfactor;
-	    } else if (i == 33)
+	    } else if (i == 33) {
 	      modules::BF::setcATPsyn(iVfactor);
-	    else if (i == 34)
+	    } else if (i == 34)
 	      modules::BF::setCPSi(iVfactor);
 	    else if (i == 35)
 	      modules::FI::setcpsii(iVfactor);
@@ -413,9 +416,10 @@ int main(int argc, const char* argv[]) {
 
 #ifdef MAKE_EQUIVALENT_TO_MATLAB
 	  // Conversion from Air_CO2 ppm to intercellular CO2
+	  theVars->CO2_in *= 0.7;
 	  theVars->CO2_cond = theVars->CO2_in / (3. * pow(10., 4.));
-	  if (!useC3)
-	    theVars->CO2_cond *= 0.7;
+	  // if (!useC3)
+	  //   theVars->CO2_cond *= 0.7;
 
 	  // Conversion from W m^{-2} to u moles m^{-2} s^{-1}
 	  theVars->TestLi *= 1.0e6 / 2.35e5;
@@ -425,6 +429,10 @@ int main(int argc, const char* argv[]) {
 					      begintime, stepsize,
 					      stoptime, maxSubSteps,
 					      abstol, reltol, 1, 1);
+	  if (!outputParamBase.empty())
+	    outputParam = true;
+	  if (outputParam)
+	    maindriver->outputParam(outputParamBase);
         std::vector<double> ResultRate = maindriver->run();
 
 #ifdef WITH_YGGDRASIL

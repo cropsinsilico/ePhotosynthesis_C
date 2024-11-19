@@ -19,10 +19,10 @@ enum class ENUM_ALL_VARS : int {
     TestLi              ,  //!< [ALIASES={PAR,Radiation_PAR}] Light intensity (input in units of W m^{-2} converted to umoles m^{-2} s^{-1} during runtime)
     PS2BF_Pi            ,  //!< Pi Shared by PS & BF modules when useC3 is false and EPS module is selected
     PS_PR_Param         ,  //!< Seems to unused currently
-    Tp                  ,  //!< Temperature
-    alfa                ,
-    fc                  ,
-    lightParam          ,
+    Tp                  ,  //!< [ALIASES={Temp,WeatherTemperature}] Temperature
+    alfa                ,  //!< [CONST] Used for scaling light (*= alpha * (1 - fc))
+    fc                  ,  //!< [CONST] Used for scaling light (*= alpha * (1 - fc))
+    lightParam          ,  //!< [CALC]
     alpha1              ,  //!< [CONST] originally 1.205 in C++ code, 1 for Matlab equivalent
     alpha2              ,  //!< [CONST] originally 2.06 in C++ code, 1 for Matlab equivalent
     input_LHCI          ,  //!< [CONST] Used to set FIBF::ChlPSI in SYSInitial
@@ -55,10 +55,10 @@ enum ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type : int {
     TestLi              ,  //!< [ALIASES={PAR,Radiation_PAR}] Light intensity (input in units of W m^{-2} converted to umoles m^{-2} s^{-1} during runtime)
     PS2BF_Pi            ,  //!< Pi Shared by PS & BF modules when useC3 is false and EPS module is selected
     PS_PR_Param         ,  //!< Seems to unused currently
-    Tp                  ,  //!< Temperature
-    alfa                ,
-    fc                  ,
-    lightParam          ,
+    Tp                  ,  //!< [ALIASES={Temp,WeatherTemperature}] Temperature
+    alfa                ,  //!< [CONST] Used for scaling light (*= alpha * (1 - fc))
+    fc                  ,  //!< [CONST] Used for scaling light (*= alpha * (1 - fc))
+    lightParam          ,  //!< [CALC]
     alpha1              ,  //!< [CONST] originally 1.205 in C++ code, 1 for Matlab equivalent
     alpha2              ,  //!< [CONST] originally 2.06 in C++ code, 1 for Matlab equivalent
     input_LHCI          ,  //!< [CONST] Used to set FIBF::ChlPSI in SYSInitial

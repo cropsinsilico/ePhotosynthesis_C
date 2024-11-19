@@ -32,15 +32,10 @@
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::drivers;
-
-DEFINE_DRIVER(DynaPS);
-
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-DynaPSDriver::~DynaPSDriver() {
-    modules::DynaPS::reset();
-}
+DEFINE_DRIVER(DynaPS);
 
 void DynaPSDriver::setup() {
     // This part include the function to begin the simulation.
@@ -163,24 +158,3 @@ void DynaPSDriver::getResults() {
     //save FDC2
 }
 
-DynaPSCondition* DynaPSDriver::DynaPS_Ini() {
-    return DynaPS::init(inputVars);
-}
-
-// DynaPS_mb.m  This model includes the mass balance equations for the full model of photosynthesis.
-
-arr DynaPSDriver::MB(realtype t, N_Vector u) {
-
-    // Try out one new way of calculating the mass balance equation.
-    // In this new way, all the previous calcuations of mass balance equation is preserved and only the necessary changes are made.
-
-    // Step One: Get the initialization of the concentrations for the RedoxReg model which will be used in the calculation of mb of RedoxReg.
-    realtype *x = N_VGetArrayPointer(u);
-
-    DynaPSCondition* DynaPS_con = new DynaPSCondition(x);
-
-    arr dxdt = DynaPS::MB(t, DynaPS_con, inputVars);
-
-    delete DynaPS_con;
-    return dxdt;
-}

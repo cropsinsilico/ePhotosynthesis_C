@@ -55,6 +55,8 @@ Driver::Driver(Variables *theVars, const double startTime, const double stepSize
   maxStep = 20. * step;
   data = nullptr;
   origVars = nullptr;
+  intermediateRes = nullptr;
+  _dumpStep = true; // Output the first step
 }
 
 arr Driver::run() {
@@ -123,6 +125,7 @@ arr Driver::run() {
         if (runOK) {
             intermediateRes = N_VGetArrayPointer(y);
             time = t;
+	    _dumpStep = true;
             getResults();
         }
 
@@ -142,9 +145,30 @@ arr Driver::run() {
     throw std::runtime_error("No valid solution found");
 }
 
+void Driver::outputParam(const std::string& fname_init,
+			 const std::string& fname_final) {
+    fname_vars_init = fname_init;
+    fname_vars_final = fname_final;
+}
+void Driver::outputParam(const std::string& fname_base) {
+    std::string fname_base_cpy = fname_base;
+    if (fname_base_cpy.empty()) {
+	fname_base_cpy = "NOMODULE_";
+    }
+    outputParam(fname_base_cpy + "init.txt",
+		fname_base_cpy + "final.txt");
+}
+
 void Driver::dump(const std::string& filename, const Variables* theVars,
 		  const ValueSet_t* con, const bool is_init) {
+    bool con_created = false;
+    if (!theVars) theVars = inputVars;
+    if (!con) {
+	con = currentConditions();
+	con_created = true;
+    }
 #ifdef MAKE_EQUIVALENT_TO_MATLAB
+    // Matlab uses different names for the pool variables
     static std::map<std::string, std::string> key_aliases = {
 	{"BF::POOL::kA_d", "BF::POOL::Tcyt"},
 	{"BF::POOL::kA_f", "BF::POOL::Tcytc2"},
@@ -160,31 +184,62 @@ void Driver::dump(const std::string& filename, const Variables* theVars,
 	{"BF::POOL::k30", "BF::POOL::NADPHT"}
     };
     static std::vector<std::string> skip_keys = {
+        // Not used by either model
+	"ALL::VARS::GLight",
+	// Not named variables in Matlab
 	"BF::RC::Em_IPS",
 	"BF::RC::Em_Cytf",
 	"BF::RC::Em_PG",
+	"PS::MOD::KE1Ratio",
+	"PS::MOD::KE2Ratio",
+	"SUCS::MOD::KE5Ratio",
     };
+    // Only used if useC3 false which is incompatible with C3 matlab
+    if (theVars->useC3) {
+	skip_keys.push_back("PS::MOD::KE57");
+	skip_keys.push_back("PS::COND::ADPG");
+	skip_keys.push_back("SUCS::MOD::KI583");
+	skip_keys.push_back("SUCS::MOD::SC");
+	skip_keys.push_back("SUCS::MOD::SC1");
+    }
 #else // MAKE_EQUIVALENT_TO_MATLAB
     static std::map<std::string, std::string> key_aliases = {};
     static std::vector<std::string> skip_keys = {};
 #endif // MAKE_EQUIVALENT_TO_MATLAB
-    if (con) {
-      Variables* theVars2 = theVars->deepcopy();
-      theVars2->setRecord(con);
-      dump(filename, theVars2, nullptr, is_init);
-      delete theVars2;
-      return;
-    }
     std::vector<PARAM_TYPE> skip_param_types;
     if (is_init)
-      skip_param_types.push_back(PARAM_TYPE_VEL);
-    theVars->dump(filename, true, {}, skip_param_types,
-		  skip_keys, key_aliases);
+	skip_param_types.push_back(PARAM_TYPE_VEL);
+    std::map<MODULE, const ValueSet_t*> conditions;
+    if (con) {
+	// theVars->getCompositeValueSets(con, conditions);
+	Variables* theVars2 = theVars->deepcopy();
+	theVars2->setRecord(con, conditions);
+	theVars2->dump(filename, true, {}, skip_param_types,
+		       skip_keys, key_aliases, conditions);
+	delete theVars2;
+    } else {
+	theVars->dump(filename, true, {}, skip_param_types,
+		      skip_keys, key_aliases, conditions);
+    }
+    if (con_created && con)
+	delete con;
 }
 
 Driver::~Driver() {
     if (origVars != nullptr)
         delete origVars;
+}
+
+void Driver::_dump(realtype t, ValueSet_t* con) {
+    if (!_dumpStep) return;
+    if (t == 0) {
+	if (!fname_vars_init.empty())
+	    dump(fname_vars_init, nullptr, con, true);
+    } else {
+	if (!fname_vars_final.empty())
+	    dump(fname_vars_final, nullptr, con, true);
+    }
+    _dumpStep = false;
 }
 
 int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {

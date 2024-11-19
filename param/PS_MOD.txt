@@ -116,9 +116,9 @@ PsV33		0.0	0.0	# Set by scaling V33
 # Variables only set during calculation
 PiTc		0.0	0.0	# [INIT_ONCE]
 V1Reg		0.0	0.0	# [INIT_ONCE]
-Theta		0.0	0.0	# [INIT_ONCE]
-beta		0.0	0.0	# [INIT_ONCE]
-Jmax		0.0	0.0	# [INIT_ONCE]
+Theta		0.0	0.0	# [INIT_ONCE, CONST]
+beta		0.0	0.0	# [INIT_ONCE, CONST]
+Jmax		0.0	0.0	# [INIT_ONCE, CONST]
 # Variables only used for C3
 Vfactor1	1.0      1.0	# [RESET_ONE,GLYMAID=Glyma.19G046800] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
 Vfactor2	1.0	 1.0	# [RESET_ONE,GLYMAID=Glyma.08G165500] Set by VfactorCp for C3 if GRNC and CO2_cond > 0

@@ -131,7 +131,11 @@ void ePhotosynthesis::Condition(double t, Variables *theVars) {
     //     light = 1000.;
     // }
 
+// #ifdef MAKE_EQUIVALENT_TO_MATLAB
+//     theVars->GLight = 1000;
+// #else // MAKE_EQUIVALENT_TO_MATLAB
     theVars->GLight = light;
+// #endif // MAKE_EQUIVALENT_TO_MATLAB
 }
 
 void ePhotosynthesis::readFile(const std::string &filename, std::map<std::string, std::string> &mapper) {

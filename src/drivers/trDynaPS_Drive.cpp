@@ -38,9 +38,6 @@ Variables* Driver::inputVars = nullptr;
 
 DEFINE_DRIVER(trDynaPS);
 
-trDynaPSDriver::~trDynaPSDriver() {
-    trDynaPS::reset();
-}
 void trDynaPSDriver::setup() {
 
     if (ParaNum <= 103) {
@@ -117,17 +114,4 @@ void trDynaPSDriver::getResults() {
     }
     delete trDynaPS_res;
     IniModelCom(inputVars);
-}
-
-trDynaPSCondition* trDynaPSDriver::trDynaPS_Ini() {
-    return trDynaPS::init(inputVars);
-}
-
-arr trDynaPSDriver::MB(realtype t, N_Vector u) {
-    realtype *x = N_VGetArrayPointer(u);
-
-    trDynaPSCondition* trDynaPS_con = new trDynaPSCondition(x);
-    arr dxdt = trDynaPS::MB(t, trDynaPS_con, inputVars);
-    delete trDynaPS_con;
-    return dxdt;
 }

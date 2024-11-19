@@ -118,7 +118,15 @@ void FI::_initOrig(Variables *theVars, FICondition* FI_Con) {
 
     if (theVars->useC3) {
 	// Using new method to set here in case GRN value used
-	FI::cpsii = getDefault(MOD::FI::cpsii); // 1.;
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+	// The old version would always overwrite values read from the
+	//   provided grn file
+	if (theVars->GRNC == 0) {
+	    FI::cpsii = 1.;
+	}
+#else // MAKE_EQUIVALENT_TO_MATLAB
+	FI::cpsii = 1.;
+#endif // MAKE_EQUIVALENT_TO_MATLAB
         if (theVars->lightParam == 0.) {
             const double light_scaler = theVars->alfa * (1 - theVars->fc);
             theVars->lightParam = theVars->TestLi * 30 * light_scaler;
@@ -213,54 +221,4 @@ void FI::_initOrig(Variables *theVars, FICondition* FI_Con) {
         theVars->FI_Pool.PQT = 8 * theVars->FIRatio[22]; // The total concentration of PQ;
     }
 
-}
-
-void FI::_initAlt(Variables *theVars, FICondition* FI_Con) {
-#ifdef CHECK_VALUE_SET_ALTS
-    theVars->initParamStatic<FI>();
-    theVars->initParam(theVars->FI_RC);
-    theVars->initParam(theVars->FI_Pool);
-    theVars->initParam(*FI_Con);
-
-    if (theVars->useC3) {
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kA_d, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kA_f, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kA_U, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kA_d, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kU_A, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kU_d, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kU_f, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k1, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k_r1, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kz, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k12, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k23, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k30, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k01, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k2, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kAB1, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kBA1, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kAB2, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::kBA2, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k3, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k_r3, theVars->EnzymeAct);
-      theVars->FI_RC.setFromEnzymeAct(RC::FI::k_pq_oxy, theVars->EnzymeAct);
-      theVars->FI_RC[RC::FI::k1] *= FI::get(MOD::FI::cpsii);
-    } else {
-      size_t i = 0;
-      for (RC::FIRC::iterator it = theVars->FI_RC.begin();
-	   it != theVars->FI_RC.end(); it++, i++) {
-	if (i == 21)
-	  break;
-	CHECK_RATIO_IDX(i, 6, RC::FI::k1);
-	it->second *= theVars->FIRatio[i];
-      }
-      theVars->FI_Pool[POOL::FI::QBt] *= theVars->FIRatio[21];
-      theVars->FI_Pool[POOL::FI::PQT] *= theVars->FIRatio[22];
-    }
-    
-#else // CHECK_VALUE_SET_ALTS
-    UNUSED(theVars);
-    UNUSED(FI_Con);
-#endif // CHECK_VALUE_SET_ALTS
 }

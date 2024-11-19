@@ -84,6 +84,7 @@
 
 // Control parameters
 // #define VERBOSE_VALUE_SET_DEBUG 1
+// #define VALUE_SET_VAL_MEMBERS 1
 #define COMPARE_PRECISION 15
 #define COMPARE_RELATIVE_EPSILON			\
   std::numeric_limits<double>::epsilon()
@@ -209,20 +210,29 @@
 
 #define DEFAULT_VALUE(cls, name)		\
   cls EnumBaseClass::getDefault(cls EnumClass::name, 0.0)
+#ifdef VALUE_SET_VAL_MEMBERS
+#define DECLARE_VALUE_SET_STATIC_MEMBER(name)	\
+  static Value name
+#define DECLARE_VALUE_SET_STATIC_MEMBER_CONST(name)	\
+  static const Value name
+#define DECLARE_VALUE_SET_MEMBER(name)		\
+  Value name = DEFAULT_VALUE(, name)
+#define DEFINE_VALUE_SET_STATIC_MEMBER(cls, name)			\
+  Value cls::name = DEFAULT_VALUE(cls::, name)
+#define DEFINE_VALUE_SET_STATIC_MEMBER_CONST(cls, name)			\
+  const Value cls::name = DEFAULT_VALUE(cls::, name)
+#else // VALUE_SET_VAL_MEMBERS
 #define DECLARE_VALUE_SET_STATIC_MEMBER(name)	\
   static double name
 #define DECLARE_VALUE_SET_STATIC_MEMBER_CONST(name)	\
   static const double name
-
 #define DECLARE_VALUE_SET_MEMBER(name)		\
   double name = DEFAULT_VALUE(, name)
-#define DEFINE_VALUE_SET_MEMBER(name)					\
-  name = DEFAULT_VALUE(, name);						\
-  ValueSetClass::insertOrig(EnumClass::name, &name, "DEFINE_VALUE_SET_MEMBER: ")
 #define DEFINE_VALUE_SET_STATIC_MEMBER(cls, name)			\
   double cls::name = DEFAULT_VALUE(cls::, name)
 #define DEFINE_VALUE_SET_STATIC_MEMBER_CONST(cls, name)			\
   const double cls::name = DEFAULT_VALUE(cls::, name)
+#endif // VALUE_SET_VAL_MEMBERS
 
 #define GET_ARGS_AFTER_1(_0, ...) __VA_ARGS__
 #define GET_ARGS_AFTER_10(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, ...) __VA_ARGS__

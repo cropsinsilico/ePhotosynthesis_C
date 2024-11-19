@@ -76,33 +76,4 @@ void XanCycle::_initCalc(Variables *theVars,
       (XanCycle::Ax_ + XanCycle::Vx_ + XanCycle::Zx_);
 }
 
-void XanCycle::_initAlt(Variables *theVars,
-			XanCycleCondition* XanCycle_con) {
-#ifdef CHECK_VALUE_SET_ALTS
-    theVars->initParamStatic<XanCycle>();
-    theVars->initParam(*XanCycle_con);
-  
-    int i = 0;
-    for (XanCycle::iterator it = XanCycle::begin(); it != XanCycle::end(); it++, i++) {
-      it->second *= (theVars->XanCycleRatio[i] / 60.0);
-      if (i == 3)
-	break;
-    }
-
-    (*XanCycle_con)[COND::XanCycle::Vx] = 0.37 * XanCycle::get(MOD::XanCycle::Vx_);
-    (*XanCycle_con)[COND::XanCycle::Ax] = 0.37 * XanCycle::get(MOD::XanCycle::Ax_);
-    (*XanCycle_con)[COND::XanCycle::Zx] = 0.37 * XanCycle::get(MOD::XanCycle::Zx_);
-    
-    XanCycle::set(MOD::XanCycle::XanCycle2FIBF_Xstate,
-		  XanCycle::get(MOD::XanCycle::Zx_) /
-		  (XanCycle::get(MOD::XanCycle::Ax_) +
-		   XanCycle::get(MOD::XanCycle::Vx_) +
-		   XanCycle::get(MOD::XanCycle::Zx_)));
-
-#else // CHECK_VALUE_SET_ALTS
-    UNUSED(theVars);
-    UNUSED(XanCycle_con);
-#endif // CHECK_VALUE_SET_ALTS
-}
-
 DEFINE_DEFAULT_CHECKALT(XanCycle)

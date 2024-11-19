@@ -31,19 +31,15 @@
 #include "conditions/CMCondition.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class CMDriverTest;
-}
-#endif
+  FORWARD_DECLARE_DRIVER(CM);
 namespace drivers {
 
 /**
  Class for running the CM calculations in an ODE solver
  */
 class CMDriver : public DriverBase<CMDriver, MODULE_CM> {
-public:
     DECLARE_DRIVER(CM)
+public:
     /**
       \copydoc drivers::Driver::Driver
       \param para Input parameters. [Unused by this driver]
@@ -62,7 +58,6 @@ public:
 	init(theVars->useC3);
 
     }
-    ~CMDriver() override;
 
     /**
       \copydoc drivers::Driver::setup
@@ -73,22 +68,7 @@ public:
       \copydoc drivers::Driver::getResults
       */
     void getResults() override;
-private:
-#ifdef TESTING
-    friend class test::CMDriverTest;
-#endif
-
-    /**
-      Initialize the variables
-
-      @return A CMCondition object for input into calculations
-      */
-    conditions::CMCondition* CM_Ini();
-
-    /**
-      \copydoc drivers::Driver::MB
-      */
-    arr MB(realtype t, N_Vector u) override;
+  
 };
 
 }  // namespace drivers

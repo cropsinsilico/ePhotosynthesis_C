@@ -31,19 +31,15 @@
 #include "conditions/DynaPSCondition.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class DynaPSDriverTest;
-}
-#endif
+  FORWARD_DECLARE_DRIVER(DynaPS);
 namespace drivers {
 
 /**
  Class for running DynaPS through an ODE solver
  */
 class DynaPSDriver : public DriverBase<DynaPSDriver, MODULE_DynaPS> {
-public:
     DECLARE_DRIVER(DynaPS)
+public:
     /**
       \copydoc drivers::Driver::Driver
       \param para Input parameters
@@ -61,7 +57,6 @@ public:
         ParaNum = para;
         Ratio = ratio;
     }
-    ~DynaPSDriver() override;
 
     /**
       \copydoc drivers::Driver::setup
@@ -74,21 +69,7 @@ public:
     void getResults() override;
 
 private:
-#ifdef TESTING
-    friend class test::DynaPSDriverTest;
-#endif
-
-    /**
-      \copydoc drivers::Driver::MB
-      */
-    arr MB(realtype t, N_Vector u) override;
-
-    /**
-      Initialize the variables
-
-      @return A CMCondition object for input into calculations
-      */
-    conditions::DynaPSCondition* DynaPS_Ini();
+  
     std::size_t ParaNum;
     double Ratio;
 };

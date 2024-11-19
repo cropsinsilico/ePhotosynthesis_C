@@ -31,19 +31,15 @@
 #include "conditions/EPSCondition.hpp"
 
 namespace ePhotosynthesis {
-#ifdef TESTING
-namespace test {
-class EPSDriverTest;
-}
-#endif
+  FORWARD_DECLARE_DRIVER(EPS);
 namespace drivers {
 
 /**
  Class for running EPD with an ODE solver
  */
 class EPSDriver : public DriverBase<EPSDriver, MODULE_EPS> {
-public:
     DECLARE_DRIVER(EPS)
+public:
     /**
       \copydoc drivers::Driver::Driver
       \param para Input parameters
@@ -62,8 +58,6 @@ public:
         Ratio = ratio;
     }
 
-    ~EPSDriver() override;
-
     /**
       \copydoc drivers::Driver::setup
       */
@@ -73,24 +67,8 @@ public:
       \copydoc drivers::Driver::getResults
       */
     void getResults() override;
-    //arr trDynaPS_Drive(size_t ParaNum, double Ratio);
 
 private:
-#ifdef TESTING
-    friend class test::EPSDriverTest;
-#endif
-
-    /**
-      \copydoc drivers::Driver::MB
-      */
-    arr MB(realtype t, N_Vector u) override;
-
-    /**
-      Initialize the variables
-
-      @return An EPSCondition object for input into calculations
-      */
-    conditions::EPSCondition* EPS_Init();
 
     //double Ca;
     //double Li;

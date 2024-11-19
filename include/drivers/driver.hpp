@@ -119,19 +119,35 @@ public:
     /**
        Dump out the current set of variables to a file.
        \param[in] filename Name of file where parameters should be written.
-       \param[in] theVars Current copy of variables.
-       \param[in] con Current copy of conditions.
+       \param[in] theVars Current copy of variables. If not provided,
+         inputVars will be used.
+       \param[in] con Current copy of conditions. If not provided,
+         the result from currentCondition will be used.
        \param[in] is_init If true, this is just after initialization and
          velocities should not be included.
      */
-    void dump(const std::string& filename, const Variables* theVars,
-	      const ValueSet_t* con, const bool is_init = false);
+    void dump(const std::string& filename,
+	      const Variables* theVars = nullptr,
+	      const ValueSet_t* con = nullptr,
+	      const bool is_init = false);
   
     /**
       Runs the solver one more time on the intermediate results to get the solution at the end time
       stamp.
       */
     virtual void getResults() = 0;
+
+    /**
+       Gets the current conditions as a value set class based on the
+         current conditions.
+       \param[in] x Array of condition values that condition instance
+         should be created from.
+       \returns Conditions value set.
+     */
+    virtual ValueSet_t* currentConditions(realtype *x = nullptr) {
+	UNUSED(x);
+	return nullptr;
+    }
 
     /**
       Wrapper for the underlying Module MB function. Takes the inputs and converts them to the
@@ -143,8 +159,26 @@ public:
       */
     virtual arr MB(realtype t, N_Vector u) = 0;
     virtual ~Driver();
-    static Variables *inputVars;  // the instance of Variables to use for all calculations.
-    arr constraints;   // serialized version of the Condition class being used.
+    static Variables *inputVars;  /**< the instance of Variables to use for all calculations. */
+    arr constraints;   /**< serialized version of the Condition class being used. */
+    std::string fname_vars_init; /**< Name of file where initial parameter values should be be output */
+    std::string fname_vars_final; /**< Name of file where final parameter values should be be output */
+    /**
+       Turn on parameter output.
+       \param[in] fname_init Name of the file that initial parameter
+         values should be output to. If empty, values will not be output.
+       \param[in] fname_final Name of the file that final parameter
+         values should be output to. If empty, values will not be output.
+     */
+    void outputParam(const std::string& fname_init,
+		     const std::string& fname_final);
+    /**
+       Turn on parameter output.
+       \param[in] fname_base Base name that should be used for files that
+         initial and final parameters should be output to. If not provided,
+	 the name of the driver module will be used.
+     */
+    virtual void outputParam(const std::string& fname_base = "");
 
 protected:
     friend CVodeMem;
@@ -191,9 +225,12 @@ protected:
     double maxStep;
     void *cvode_mem;
     static bool showWarnings;
+protected:
+    void _dump(realtype t, ValueSet_t* con);
 private:
     Driver() {}
     Variables* origVars;
+    bool _dumpStep;
 };
 
 /**
@@ -246,7 +283,15 @@ public:
     }
     
     // virtual ~DriverBase();
-
+    /** \copydoc Driver::outputParam */
+    void outputParam(const std::string& fname_base = "") override {
+	std::string fname_base_cpy = fname_base;
+	if (fname_base_cpy.empty()) {
+	  fname_base_cpy = get_enum_names<MODULE>().find(module)->second;
+	  fname_base_cpy += "_";
+	}
+      Driver::outputParam(fname_base_cpy);
+    }
 protected:
     /** \copydoc drivers::Driver::Driver */
     DriverBase(Variables *theVars,
@@ -256,22 +301,68 @@ protected:
 	       const bool showWarn = false) :
       Driver(theVars, startTime, stepSize, endTime,
 	     maxSubsteps, atol, rtol, showWarn) {}
+
 };
   
 template<class T, MODULE M>
 const MODULE DriverBase<T, M>::module = M;
 
-#define DECLARE_DRIVER(name)			\
-  /** \copydoc drivers::DriverBase::select */	\
-  static void select(const bool x = true);	\
-  /** \copydoc drivers::DriverBase::enableC3 */	\
-  static void enableC3(const bool x = true);
-#define DEFINE_DRIVER(name)				\
-  void name ## Driver::select(const bool x) {		\
-    return VARS_CLASS_CALL(select, (x), name, MOD);	\
-  }							\
-  void name ## Driver::enableC3(const bool x) {		\
-    return VARS_CLASS_CALL(enableC3, (x), name, MOD);	\
+#ifdef TESTING
+#define FORWARD_DECLARE_DRIVER(name)		\
+    namespace test {				\
+      class name ## DriverTest;			\
+    }
+#define DECLARE_DRIVER_TESTING(name)		\
+    friend class test::name ## DriverTest
+#else
+#define FORWARD_DECLARE_DRIVER(name)
+#define DECLARE_DRIVER_TESTING(name)
+#endif
+#define DECLARE_DRIVER(name)						\
+ public:								\
+  ~name ## Driver() override;						\
+  /** \copydoc drivers::DriverBase::select */				\
+  static void select(const bool x = true);				\
+  /** \copydoc drivers::DriverBase::enableC3 */				\
+  static void enableC3(const bool x = true);				\
+  /** \copydoc drivers::Driver::currentConditions */			\
+  ValueSet_t* currentConditions(realtype *x = nullptr) override;	\
+  /** Initialize the variables */					\
+private:								\
+  DECLARE_DRIVER_TESTING(name);						\
+  /** \returns A condition object for input into calculations */	\
+  VARS_CLASS_VAR(name, COND)* name ## _Ini();				\
+  /** \copydoc drivers::Driver::MB */					\
+  arr MB(realtype t, N_Vector u) override;
+#define DEFINE_DRIVER(name)					\
+  name ## Driver::~name ## Driver() {				\
+      VARS_CLASS_CALL(reset, (), name, MOD);			\
+  }								\
+  void name ## Driver::select(const bool x) {			\
+      return VARS_CLASS_CALL(select, (x), name, MOD);		\
+  }								\
+  void name ## Driver::enableC3(const bool x) {			\
+      return VARS_CLASS_CALL(enableC3, (x), name, MOD);		\
+  }								\
+  ValueSet_t* name ## Driver::currentConditions(realtype *x) {		\
+      if (x) {								\
+	return new VARS_CLASS_VAR(name, COND)(x);			\
+      }									\
+      if (intermediateRes) {						\
+	return new VARS_CLASS_VAR(name, COND)(intermediateRes);		\
+      }									\
+      return new VARS_CLASS_VAR(name, COND)(constraints);		\
+  }									\
+  VARS_CLASS_VAR(name, COND)* name ## Driver::name ## _Ini() {		\
+      return VARS_CLASS_VAR(name, MOD)::init(inputVars);		\
+  }									\
+  arr name ## Driver::MB(realtype t, N_Vector u) {			\
+      realtype *x = N_VGetArrayPointer(u);				\
+      VARS_CLASS_VAR(name, COND)* name ## _con = new VARS_CLASS_VAR(name, COND)(x); \
+      arr dxdt = VARS_CLASS_VAR(name, MOD)::MB(t, name ## _con, inputVars); \
+      _dump(t, name ## _con);						\
+      delete name ## _con;						\
+      return dxdt;							\
   }
 
 }  // namespace drivers

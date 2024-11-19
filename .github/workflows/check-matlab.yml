@@ -1,0 +1,70 @@
+name: Verify that MATLAB & C++ versions return the same answers
+'on':
+  push:
+    branches-ignore:
+     - gh-pages
+    tags:
+     - '*'
+  schedule:
+  - cron: 0 10 * * 1
+jobs:
+  build_cxx:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Check out MATLAB repository code
+        run: |
+          git clone https://github.com/cropsinsilico/ePhotosynthesis.git
+          git checkout C3-metabolic-and-leaf-model-compare
+      - name: Set up MATLAB
+        uses: matlab-actions/setup-matlab@v2
+      - name: Set up miniconda test environment
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-environment: ephoto
+          environment-file: environment.yml
+          auto-update-conda: true
+          channels: conda-forge
+          channel-priority: strict
+          # miniforge-variant: Mambaforge
+          miniforge-version: latest
+          use-mamba: true
+          mamba-version: "1.5.10"
+      - name: Install compilers using conda on Linux/Mac
+        run: |
+          mamba install c-compiler cxx-compiler
+      - name: Global config flags
+        shell: bash -l {0}
+        run: |
+          CMAKE_BUILD_TYPE_TEST="Debug"
+          echo "CMAKE_BUILD_TYPE_TEST=Debug" >> "$GITHUB_ENV"
+          echo "CMAKE_ARGS=-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON" >> "$GITHUB_ENV"
+          echo "CMAKE_ARGS_TEST=-DBUILD_TESTS=OFF" >> "$GITHUB_ENV"
+      - name: Configure (CONDA)
+        shell: bash -l {0}
+        run: |
+          mkdir build
+          cd build
+          which cmake
+          cmake .. ${{ env.CMAKE_ARGS }} ${{ env.CMAKE_ARGS_NO_PYTHON }} ${{ env.CMAKE_ARGS_TEST }}
+      - name: Build C++ & C (CONDA)
+        shell: bash -l {0}
+        run: |
+          cd build
+          cmake --build . --config ${{ env.CMAKE_BUILD_TYPE_TEST }}
+      - name: Run MATLAB version
+        uses: matlab-actions/run-command@v2
+        with:
+          command: addpath("ePhotosynthesis"), RunOutputParam
+      - name: Run C++ version
+        shell: bash -l {0}
+        run: |
+          ./build/ePhoto -d 4 --enzyme InputEnzyme.txt --grn InputGRNC_MATLAB.txt --outputParam
+      - name: Get diff
+        shell: bash -l {0}
+        run: |
+          diff ePhotosynthesis/EPS_init.txt EPS_init.txt &> diff_EPS_init.txt
+          python utils/compare_matlab.py -d 4 --dont-run-matlab

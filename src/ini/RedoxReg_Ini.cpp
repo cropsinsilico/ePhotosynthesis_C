@@ -114,23 +114,4 @@ void RedoxReg::_initCalc(Variables *theVars, RedoxRegCondition* RedoxReg_con) {
     //theVars->BF2RedoxReg_Fdt = theVars->BF_Pool.kU_f;
 }
 
-// void RedoxReg::_initAlt(Variables *theVars,
-// 			RedoxRegCondition* RedoxReg_con) {
-// #ifdef CHECK_VALUE_SET_ALTS
-//     theVars->initParamStatic<RedoxReg>();
-//     theVars->initParam(*RedoxReg_con);
-  
-//     RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX6, PS::getV6());
-//     RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX9, PS::getV9());
-//     RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX13, PS::getV13());
-//     RedoxReg::set(MOD::RedoxReg::RedoxReg_VMAX16, PS::getV16());
-
-//     // TODO: Read RedoxReg_MP from file?
-    
-// #else // CHECK_VALUE_SET_ALTS
-//     UNUSED(theVars);
-//     UNUSED(RedoxReg_con);
-// #endif // CHECK_VALUE_SET_ALTS
-// }
-
 DEFINE_DEFAULT_CHECKALT(RedoxReg)

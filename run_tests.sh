@@ -140,9 +140,11 @@ if [ -n "$WITH_COVERAGE" ]; then
 fi
 if [ -n "$RUN_EPHOTO" ]; then
     cd ..
-    ./$BUILD_DIR/ePhoto -d 4 --enzyme InputEnzyme.txt --grn InputGRNC_MATLAB.txt # -T 25
-    diff ../ePhotosynthesis/EPS_init.txt EPS_init.txt &> diff_EPS_init.txt
+    # ./$BUILD_DIR/ePhoto -d 4 --enzyme InputEnzyme.txt --grn InputGRNC_MATLAB.txt --outputParam  # -T 25
+    python utils/compare_matlab.py ../ePhotosynthesis -d 4 --matlab /Applications/MATLAB_R2024b.app/bin/matlab
+    # diff ../ePhotosynthesis/EPS_init.txt EPS_init.txt &> diff_EPS_init.txt
     # diff ../ePhotosynthesis/EPS_rate.txt EPS_rate.txt &> diff_EPS_rate.txt
+    diff ../ePhotosynthesis/EPS_final.txt EPS_final.txt &> diff_EPS_final.txt
     cd $BUILD_DIR
 fi
 

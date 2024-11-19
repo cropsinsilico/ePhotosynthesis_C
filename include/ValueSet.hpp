@@ -73,6 +73,17 @@ namespace ePhotosynthesis {
   DO_VALUE_SET_CHILDREN_MACRO(CALL_CHILD_METHOD, const_iterator,	\
 			      method, args)
 
+  inline bool __values_equal(const double& a, const double& b) {
+    if (std::isnan(a) && std::isnan(b))
+      return true;
+    double relative_max = std::max(std::fabs(a), std::fabs(b));
+    double relative = std::fabs(a - b);
+    if (relative_max > COMPARE_RELATIVE_EPSILON)
+      relative = relative / relative_max;
+    double absolute = std::fabs(a - b);
+    return ((relative <= COMPARE_RELATIVE_EPSILON) &&
+	    (absolute <= COMPARE_ABSOLUTE_EPSILON));
+  }
   inline double __extract_value(const double& x) { return x; }
   inline double __extract_value(const double* x) { return *x; }
   template<typename T>
@@ -91,7 +102,8 @@ namespace ePhotosynthesis {
   inline std::string __make_string(const char* x) { return std::string(x); }
   template<size_t N>
   inline std::string __make_string(const char x[N]) { return std::string(x); }
-  
+
+#define CONTEXT_VALUE_SET std::string(__func__) + ": "
 #define ERROR_VALUE_SET(...)			\
     throw std::runtime_error(error_prefix() + std::string(__func__) + ": " + FOR_EACH_JOIN(__make_string, SEP_ADD, __VA_ARGS__))
 #define ERROR_VALUE_SET_NESTED(err, msg)				\
@@ -138,8 +150,13 @@ namespace ePhotosynthesis {
 #define DEFINE_VALUE_SET_MEMBER_RECORD_HEADER(prefix, name)
 
   // Non-static value set
+#ifdef VALUE_SET_VAL_MEMBERS
+#define INIT_VALUE_SET_MEMBER(name)				\
+  ValueSetClass::insertOrig(EnumClass::name, name.getPtr(), "INIT_VALUE_SET_MEMBER: ")
+#else // VALUE_SET_VAL_MEMBERS
 #define INIT_VALUE_SET_MEMBER(name)				\
   ValueSetClass::insertOrig(EnumClass::name, &name, "INIT_VALUE_SET_MEMBER: ")
+#endif // VALUE_SET_VAL_MEMBERS
 #define COPY_VALUE_SET_MEMBER(name)		\
   name = other.name
 
@@ -268,26 +285,35 @@ namespace ePhotosynthesis {
   template<typename T>
   class Value {
   public:
+    enum VALUE_FLAGS : int {
+      VALUE_FLAG_INIT      = 0x00000001, //!< Value has been initialized
+      VALUE_FLAG_SKIPPED   = 0x00000002, //!< Value has been skipped
+      VALUE_FLAG_INIT_ONCE = 0x00000004, //!< Value should only be initialized once
+      VALUE_FLAG_CONSTANT  = 0x00000008, //!< Value is constant and cannot be modified after init
+      VALUE_FLAG_CALC      = 0x00000010, //!< Value is calculated so initializing the value directly has no effect
+    };
+
 #ifdef VALUE_X_PTR
     Value(typename T::EnumType k0, double& v,
 	  const std::string& context="") : x(&v), k(k0), ctx(context) {}
     Value(typename T::EnumType k0, double* v,
 	  const std::string& context="") : x(v), k(k0), ctx(context) {}
+    double* getPtr() { return x; }
+    const double* getPtr() const { return x; }
     double* x = nullptr;
 #else // VALUE_X_PTR
     Value(typename T::EnumType k0=T::EnumClass::NONE,
 	  const std::string& context="") : x(0.0), k(k0), ctx(context) {}
     Value(typename T::EnumType k0, const double& v,
-	  const std::string& context="") : x(v), k(k0), ctx(context) {
-      init();
-    }
-    void init(const std::string& context="") {
-      T::insertOrig(k, &x, context + "Value::init: ");
-    }
+	  const std::string& context="") : x(v), k(k0), ctx(context) {}
+    double* getPtr() { return &x; }
+    const double* getPtr() const { return &x; }
     double x = 0.0;
 #endif // VALUE_X_PTR
+    double x0 = 0.0;
     typename T::EnumType k;
     std::string ctx;
+    int flags = 0;
     static std::string error_prefix() {
       return T::error_prefix();
     }
@@ -348,8 +374,8 @@ namespace ePhotosynthesis {
     BINARY_OP(bool, <=)
     BINARY_OP(bool, >)
     BINARY_OP(bool, >=)
-    BINARY_OP(bool, ==)
-    BINARY_OP(bool, !=)
+    // BINARY_OP(bool, ==)
+    // BINARY_OP(bool, !=)
     ARITH_OP2(+)
     ARITH_OP2(-)
     ARITH_OP2(*)
@@ -359,6 +385,18 @@ namespace ePhotosynthesis {
 #undef ARITH_OP2
 #undef BINARY_OP
 #undef ASSIGN_OP
+    template<typename T2>
+    friend bool operator==(const Value<T>& a, const Value<T2>& b) {
+      return __values_equal(a.get("lhs: =="), b.get("rhs: =="));
+    }
+    template<typename T2>
+    friend bool operator==(const Value<T>& a, const T2& b) {
+      return __values_equal(a.get("lhs: =="), b);
+    }
+    template<typename T2>
+    friend bool operator!=(const Value<T>& a, const T2& b) {
+      return !(a == b);
+    }
   };
 
 #define STUB_STATIC_VALUE_SET(name, retT, argsT, args, retV, suffix)	\
@@ -515,11 +553,12 @@ namespace ePhotosynthesis {
 	 nullptr, const)						\
   /** \copydoc ValueSet:getValueMap */					\
   method(getValueMap, std::map ADD_BRACKETS(int, double),		\
-	 (), (), {}, const)						\
+	 (const bool preinit=false), (preinit), {}, const)		\
   /** \copydoc ValueSet:setValueMap */					\
   method(setValueMap, void,						\
-	 (const std::map<int, double>& map, const bool set_init=false), \
-	 (map, set_init), , )						\
+	 (const std::map<int, double>& map, const bool setinit=false,	\
+	  const bool preinit=false),					\
+	 (map, setinit, preinit), , )					\
   /** \copydoc ValueSet::max_value_width */				\
   method(max_value_width, std::size_t,					\
 	 (bool noChildren = false), (noChildren), 0, const)		\
@@ -538,8 +577,9 @@ namespace ePhotosynthesis {
 	 (), (), false, const)						\
   /** \copydoc ValueSet::initValues */					\
   method(initValues, void,						\
-	 (bool noDefaults=false, const bool noChildren=false),		\
-	 (noDefaults, noChildren), , )					\
+	 (const bool noDefaults=false, const bool force=false,		\
+	  const bool noChildren=false),					\
+	 (noDefaults, force, noChildren), , )				\
   /** \copydoc ValueSet::initMemberPointers */				\
   method(initMemberPointers, void,					\
 	 (const bool noChildren=false), (noChildren), , )		\
@@ -1051,15 +1091,7 @@ namespace ePhotosynthesis {
        \param b Second value for comparison.
      */
     static bool valuesEqual(const double& a, const double& b) {
-      if (std::isnan(a) && std::isnan(b))
-	return true;
-      double relative_max = std::max(std::fabs(a), std::fabs(b));
-      double relative = std::fabs(a - b);
-      if (relative_max > COMPARE_RELATIVE_EPSILON)
-	relative = relative / relative_max;
-      double absolute = std::fabs(a - b);
-      return ((relative <= COMPARE_RELATIVE_EPSILON) &&
-	      (absolute <= COMPARE_ABSOLUTE_EPSILON));
+      return __values_equal(a, b);
     }
     static bool valuesEqual(const double* a, const double* b) {
       return valuesEqual(*a, *b);
@@ -1070,6 +1102,25 @@ namespace ePhotosynthesis {
     static bool valuesEqual(const double* a, const double& b) {
       return valuesEqual(*a, b);
     }
+    static bool valuesEqual(const Value<T>& a, const Value<T>& b) {
+      return valuesEqual(a.x, b.x);
+    }
+    template<typename V>
+    static bool valuesEqual(const Value<T>& a, const V& b) {
+      return valuesEqual(a.x, b);
+    }
+    template<typename V>
+    static bool valuesEqual(const V& a, const Value<T>& b) {
+      return valuesEqual(a, b.x);
+    }
+    /**
+       Convert a value to a string.
+       \param a Value to make into a string.
+       \returns String version of value.
+     */
+    static std::string valueString(const Value<T>& a) {
+      return valueString(a.x);
+    }
     static std::string valueString(const double& a) {
       return std::to_string(a);
     }
@@ -1078,6 +1129,11 @@ namespace ePhotosynthesis {
 	return "NULL";
       return std::to_string(*a);
     }
+    /**
+       Convert a value pointer to a string.
+       \param a Value to make into a string.
+       \returns String version of value.
+     */
     static std::string valuePointerString(const double& a) {
       return "N/A";
     }
@@ -1086,6 +1142,15 @@ namespace ePhotosynthesis {
       oss << a;
       return oss.str();
     }
+    static std::string valuePointerString(const Value<T>& a) {
+      return valuePointerString(a.x);
+    }
+    /**
+       Set a value.
+       \param dst Destination for value.
+       \param src Source to copy into value.
+       \param context Context to use for error messages.
+     */
     static void valueSet(double& dst, const double& src,
 			 const std::string& context = "") {
       UNUSED(context);
@@ -1111,6 +1176,27 @@ namespace ePhotosynthesis {
 	ERROR_VALUE_SET(context, "source pointer null");
       dst[0] = src[0];
     }
+    template<typename V>
+    static void valueSet(Value<T>& dst, const V& src,
+			 const std::string& context = "") {
+      UNUSED(context);
+      dst = src;
+    }
+    /**
+       Get value contents.
+       \param[in] x Value to get contents of.
+       \returns Value contents.
+     */
+    static double valueGet(const double* x) { return *x; }
+    static double valueGet(const double& x) { return x; }
+    static double valueGet(const Value<T>& x) { return valueGet(x.x); }
+    /**
+       Insert a value into a value set map.
+       \param[in, out] valsDst Value set map to add value to.
+       \param[in] k Key where value should be inserted.
+       \param[in] src Value to insert.
+       \param[in] context Context for error messages.
+     */
     static void insertValue(std::map<EnumType, double*>& valsDst,
 			    const EnumType& k, const double* src,
 			    const std::string& context = "") {
@@ -1135,6 +1221,13 @@ namespace ePhotosynthesis {
 			    const EnumType& k, const double&,
 			    const std::string& context = "") {
       ERROR_VALUE_SET(context, "No value for \'", getName(k), "\'");
+    }
+    template<typename V>
+    static void insertValue(std::map<EnumType, Value<T> >& valsDst,
+			    const EnumType& k, const V& src,
+			    const std::string& context = "") {
+      UNUSED(context);
+      valsDst[k] = src;
     }
     /**
        Throw an error if two values are not equivalent.
@@ -1558,17 +1651,46 @@ namespace ePhotosynthesis {
 		     allow_extras, !no_missing,
 		     !no_constants, !no_skipped);
     }
+    template<typename V>
+    static std::map<int, double> export_value_map(const std::map<EnumType, V>& vals,
+						  const std::string& context="") {
+      std::map<int, double> out;
+      for (typename std::map<EnumType, V>::const_iterator it = vals.begin();
+	   it != vals.end(); it++) {
+	out[it->first] = valueGet(it->second);
+      }
+      return out;
+    }
+    template<typename V>
+    static void import_value_map(std::map<EnumType, V>& dst,
+				 const std::map<int, double>& src,
+				 const std::string& context="") {
+      std::map<EnumType, double> ksrc = BaseClass::int2key(src);
+      copy_value_map(dst, ksrc, context,
+		     false, false, true, true, true);
+    }
+    template<>
+    static void import_value_map(std::map<EnumType, double>& dst,
+				 const std::map<int, double>& src,
+				 const std::string& context) {
+      std::map<EnumType, double> ksrc = BaseClass::int2key(src);
+      dst.clear();
+      dst.insert(ksrc.begin(), ksrc.end());
+    }
     /**
        Re-initialize the values in a value map to the default values,
          minus any values that are skipped.
        \tparam V Value map type.
        \param vals Value map to initialize.
+       \param isinit If true, the values are initialized as if they
+         were already initialized.
      */
     template<typename V>
-    static void init_value_map(std::map<EnumType, V>& vals) {
+    static void init_value_map(std::map<EnumType, V>& vals,
+			       const bool isinit=false) {
       checkDefaults("init_value_map: ");
       copy_value_map(vals, defaults, "init_value_map: ",
-		     true, false, true, true, true);
+		     true, false, !isinit, true, !isinit);
     }
     /**
        Throw an error if the defaults have not been initialized.
@@ -2304,27 +2426,34 @@ namespace ePhotosynthesis {
 
     /**
        Get a copy of the value in the set.
+       \param[in] preinit If true, the values in preinit_values will be
+         returned.
        \returns Map of values in the value set.
      */
-    std::map<int, double> getValueMap() const override {
-      std::map<int, double> out;
-      for (typename std::map<EnumType, double*>::const_iterator it = values.begin();
-	   it != values.end(); it++)
-	out[it->first] = *(it->second);
-      return out;
+    std::map<int, double> getValueMap(const bool preinit=false) const override {
+      if (preinit)
+	return BaseClass::export_value_map(preinit_values, CONTEXT_VALUE_SET);
+      return BaseClass::export_value_map(values, CONTEXT_VALUE_SET);
     }
     /**
        Set the values from a map.
        \param[in] map Value map to update values from.
-       \param[in] set_init If true, set the flag indicating that the value
+       \param[in] setinit If true, set the flag indicating that the value
          set is initialized.
+       \param[in] preinit If true, the values in preinit_values will be
+         updated. preinit & setinit cannot both be true.
      */
     void setValueMap(const std::map<int, double>& map,
-		     const bool set_init=false) override {
-      std::map<EnumType, double> kmap = BaseClass::int2key(map);
-      copy_value_map(values, kmap, "setValueMap: ",
-		     false, false, true, true, true);
-      if (set_init)
+		     const bool setinit=false,
+		     const bool preinit=false) override {
+      if (preinit) {
+	if (setinit)
+	  ERROR_VALUE_SET("preinit and setinit cannot both be true");
+	BaseClass::import_value_map(preinit_values, map, CONTEXT_VALUE_SET);
+	return;
+      }
+      BaseClass::import_value_map(values, map, CONTEXT_VALUE_SET);
+      if (setinit)
 	flags |= BaseClass::VS_FLAG_INIT_VALUES;
     }
     
@@ -2403,19 +2532,23 @@ namespace ePhotosynthesis {
        Common, public interface for the private _initValues method.
        \param noDefaults If true, the value pointers will be initialized,
          but the default values will not be assigned to those values.
+       \param force If true, initialize the values even if they have
+         already been initialized.
        \param noChildren If true, child classes will not be initialized.
      */
-    void initValues(bool noDefaults=false,
+    void initValues(const bool noDefaults=false,
+		    const bool force=false,
 		    const bool noChildren=false) override {
-      if (flags & BaseClass::VS_FLAG_INIT_VALUES) return;
+      if ((!force) && initialized()) return;
       initMembersState(true, true);
       if (!noDefaults)
-	init_value_map(values);
+	init_value_map(values, initialized());
       static_cast<T*>(this)->_initValues();
-      DO_VALUE_SET_CHILDREN(initValues, (noDefaults));
+      DO_VALUE_SET_CHILDREN(initValues, (noDefaults, force));
       if (!preinit_values.empty()) {
+	INFO_VALUE_SET(preinit_values.size());
 	copy_value_map(values, preinit_values, "initValues: ",
-		       false, true, false, false, true);
+		       false, true, true, false, true);
       }
       flags |= BaseClass::VS_FLAG_INIT_VALUES;
       if (BaseClass::usesC3())
@@ -2753,6 +2886,7 @@ namespace ePhotosynthesis {
      */
     void setPreInit(const EnumType& k, const double& v) {
       if (initialized()) return;
+      INFO_VALUE_SET(k, " = ", v);
       preinit_values[k] = v;
     }
     /**
@@ -2762,6 +2896,7 @@ namespace ePhotosynthesis {
      */
     void set(const EnumType& k, const double& v) {
       ENSURE_VALUE_POINTERS;
+      setPreInit(k, v);
       set_value(values, k, v);
     }
     /**
@@ -3001,20 +3136,23 @@ namespace ePhotosynthesis {
     }
     
     /** \copydoc ValueSet::getValueMap */
-    static std::map<int, double> getValueMap() {
-      std::map<int, double> out;
-      for (typename std::map<EnumType, double*>::const_iterator it = values.begin();
-	   it != values.end(); it++)
-	out[it->first] = *(it->second);
-      return out;
+    static std::map<int, double> getValueMap(const bool preinit=false) {
+      if (preinit)
+	return BaseClass::export_value_map(preinit_values, CONTEXT_VALUE_SET);
+      return BaseClass::export_value_map(values, CONTEXT_VALUE_SET);
     }
     /** \copydoc ValueSet::setValueMap */
     static void setValueMap(const std::map<int, double>& map,
-			    const bool set_init=false) {
-      std::map<EnumType, double> kmap = BaseClass::int2key(map);
-      copy_value_map(values, kmap, "setValueMap: ",
-		     false, false, true, true, true);
-      if (set_init)
+			    const bool setinit=false,
+			    const bool preinit=false) {
+      if (preinit) {
+	if (setinit)
+	  ERROR_VALUE_SET("preinit and setinit cannot both be true");
+	BaseClass::import_value_map(preinit_values, map, CONTEXT_VALUE_SET);
+	return;
+      }
+      BaseClass::import_value_map(values, map, CONTEXT_VALUE_SET);
+      if (setinit)
 	static_flags |= BaseClass::VS_FLAG_INIT_VALUES;
     }
     
@@ -3046,18 +3184,19 @@ namespace ePhotosynthesis {
       return (static_flags & BaseClass::VS_FLAG_INIT_VALUES);
     }
     /** \copydoc ValueSet::initValues */
-    static void initValues(bool noDefaults=false,
+    static void initValues(const bool noDefaults=false,
+			   const bool force=false,
 			   const bool noChildren=false) {
-      if (static_flags & BaseClass::VS_FLAG_INIT_VALUES) return;
+      if ((!force) && initialized()) return;
       initMembersState(false, true); // force state initialization?
       if (!noDefaults)
-	init_value_map(values);
+	init_value_map(values, initialized());
       T::_initValues();
       // T::_initMembersState(force);
-      DO_VALUE_SET_CHILD_CLASSES(initValues, (noDefaults));
+      DO_VALUE_SET_CHILD_CLASSES(initValues, (noDefaults, force));
       if (!preinit_values.empty()) {
 	copy_value_map(values, preinit_values, "initValues: ",
-		       false, true, false, false, true);
+		       false, true, true, false, true);
       }
       static_flags |= BaseClass::VS_FLAG_INIT_VALUES;
     }
@@ -3217,6 +3356,7 @@ namespace ePhotosynthesis {
     /** \copydoc ValueSet::setPreInit */
     static void setPreInit(const EnumType& k, const double& v) {
       if (initialized()) return;
+      INFO_VALUE_SET(k, " = ", v);
       preinit_values[k] = v;
     }
     /**
@@ -3226,6 +3366,7 @@ namespace ePhotosynthesis {
      */
     static void set(const EnumType& k, const double& v) {
       ENSURE_VALUE_POINTERS;
+      setPreInit(k, v);
       set_value(values, k, v);
     }
     /**
@@ -3665,9 +3806,12 @@ namespace ePhotosynthesis {
 #define VARS_CLASS_MODULES (PACK_MACRO(MEMBER_NAMES_MODULE))
 #define VARS_CLASS_PARAM_TYPES PACK_MACRO((MEMBER_NAMES_PARAM))
 #define GET_VALUE_SET(mod, pt)			\
-  getValueSet(mod, pt, false, std::string(__func__) + ": ")
+  getValueSet(mod, pt, false, {}, std::string(__func__) + ": ")
 #define GET_VALUE_SET_CLASS(mod, pt)				\
   getValueSetClass(mod, pt, false, std::string(__func__) + ": ")
+#define GET_VALUE_SET_COND(mod, pt)		\
+  getValueSet(mod, pt, false, conditions, std::string(__func__) + ": ")
+
 
 #define VARS_INST_IS_MODULE(var)				\
     VAR_IN_PREFIXED_LIST(var, MODULE_, EXPAND VARS_INST_MODULES)
@@ -3713,7 +3857,7 @@ namespace ePhotosynthesis {
     }
 #define VARS_ITER_ALL_CLASS(...) VARS_ITER_ALL_BASE(false, false, __VA_ARGS__)
 
-#define VARS_ITER_ALL_MACRO_BASE(Xget, for_instance, include_cond, m, pt, X, X_STATIC, X_VARS, ...) \
+#define VARS_ITER_ALL_MACRO_BASE(Xget, PT_ARGS, m, pt, X, X_STATIC, X_VARS, ...) \
   for (std::vector<MODULE>::const_iterator m = ALL_MODULE.begin();	\
        m != ALL_MODULE.end(); m++) {					\
     std::vector<PARAM_TYPE>::const_iterator pt;				\
@@ -3725,7 +3869,7 @@ namespace ePhotosynthesis {
     } else {								\
       ValueSetClass_t* module = getModule(*m, false, std::string(__func__) + ": "); \
       X_STATIC(module, __VA_ARGS__);					\
-      const std::vector<PARAM_TYPE> param_types = getParamTypes(*m, for_instance, include_cond); \
+      const std::vector<PARAM_TYPE> param_types = getParamTypes(*m, EXPAND PT_ARGS); \
       for (std::vector<PARAM_TYPE>::const_iterator pt = param_types.begin(); \
 	   pt != param_types.end(); pt++) {				\
 	auto _tmp = Xget(*m, *pt);					\
@@ -3736,18 +3880,19 @@ namespace ePhotosynthesis {
     }									\
   }
 #define VARS_ITER_MACRO(X, ...)						\
-  VARS_ITER_ALL_MACRO_BASE(GET_VALUE_SET, true, false, m, pt,		\
+  VARS_ITER_ALL_MACRO_BASE(GET_VALUE_SET, (true, false), m, pt,		\
 			   PACK_MACRO(X), PACK_MACRO(X), PACK_MACRO(X),	\
 			   __VA_ARGS__)
 #define VARS_ITER_MACRO_COND(X, ...)					\
-  VARS_ITER_ALL_MACRO_BASE(GET_VALUE_SET, true, true, m, pt,		\
+  VARS_ITER_ALL_MACRO_BASE(GET_VALUE_SET_COND,				\
+			   (true, true, conditions), m, pt,		\
 			   PACK_MACRO(X), PACK_MACRO(X), PACK_MACRO(X),	\
 			   __VA_ARGS__)
 #define VARS_ITER_MACRO_INST(X, ...)					\
-  VARS_ITER_ALL_MACRO_BASE(GET_VALUE_SET, true, false, m, pt,		\
+  VARS_ITER_ALL_MACRO_BASE(GET_VALUE_SET, (true, false), m, pt,		\
 			   PACK_MACRO(X), EMPTY, PACK_MACRO(X),		\
 			   __VA_ARGS__)
 #define VARS_ITER_MACRO_CLASS(X, ...)					\
-  VARS_ITER_ALL_MACRO_BASE(GET_VALUE_SET_CLASS, false, false, m, pt,	\
+  VARS_ITER_ALL_MACRO_BASE(GET_VALUE_SET_CLASS, (false, false), m, pt,	\
 			   PACK_MACRO(X), PACK_MACRO(X), PACK_MACRO(X),	\
 			   __VA_ARGS__)

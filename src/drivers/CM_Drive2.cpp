@@ -36,9 +36,6 @@ using namespace ePhotosynthesis::conditions;
 
 DEFINE_DRIVER(CM);
 
-CMDriver::~CMDriver() {
-    modules::CM::reset();
-}
 void CMDriver::setup() {
 
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -82,17 +79,4 @@ void CMDriver::getResults() {
 
 
     results = {CO2AR};
-}
-
-CMCondition* CMDriver::CM_Ini() {
-    return CM::init(inputVars);
-}
-
-arr CMDriver::MB(realtype t, N_Vector u) {
-    realtype *x = N_VGetArrayPointer(u);
-
-    CMCondition* CMs = new CMCondition(x);
-    arr dxdt = CM::MB(t, CMs, inputVars);
-    delete CMs;
-    return dxdt;
 }

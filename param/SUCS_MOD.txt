@@ -77,7 +77,7 @@ SUCSV56		0.0     	0.0     	# Set by calculation for C3
 SUCSV57		0.0     	0.0     	# Set by calculation for C3
 SUCSV58		0.0     	0.0     	# Set by calculation for C3
 # Variables only set during calculations
-SUCS2PS_Pic	0.0		0.0
+SUCS2PS_Pic	0.0		0.0		# [INIT_ONCE]
 KE5Ratio	0.0		0.0		# Calculated from KE541 & KE531
 ADPc		0.0		0.0		# Calculated from ATc & ATPc
 Vmatpf		0.25		0.25		# [CONST] Previously stored as constant

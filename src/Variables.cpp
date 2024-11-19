@@ -50,18 +50,6 @@ Variables& Variables::operator=(const Variables &other) {
     GRNC = other.GRNC;
     GRNT = other.GRNT;
     RUBISCOMETHOD = other.RUBISCOMETHOD;
-    // CO2_cond = other.CO2_cond;
-    // GLight = other.GLight;
-    // O2_cond = other.O2_cond;
-    // PS12ratio = other.PS12ratio;
-    // ADP = other.ADP;
-    // Pi = other.Pi;
-    // TestATPCost = other.TestATPCost;
-    // CO2_in = other.CO2_in;
-    // TestLi = other.TestLi;
-    // PS2BF_Pi = other.PS2BF_Pi;
-    // PS_PR_Param = other.PS_PR_Param;
-    // Tp = other.Tp;
 #define DO_MEMBERS(mod, pt)						\
     VARS_INST_VAR(mod, pt) = other.VARS_INST_VAR(mod, pt)
 #define DO_MEMBERS_PACKED(args) DO_MEMBERS args
@@ -119,6 +107,7 @@ bool Variables::equals(const ValueSet_t &b0,
     FOR_EACH(CHECK_COM, EXPAND(VARS_INST_CONNECTIONS));
 #undef CHECK_COM
 #undef CHECK
+    const std::map<MODULE, const ValueSet_t*> conditions;
 #define FITER(V, other, ...)						\
     const ValueSet_t* V2 = other.GET_VALUE_SET(V->_virtual_get_module(), \
 					       V->_virtual_get_param_type()); \
@@ -221,13 +210,12 @@ void Variables::dump(const std::string& filename,
 		     const std::vector<MODULE>& skip_modules,
 		     const std::vector<PARAM_TYPE>& skip_param_types,
 		     const std::vector<std::string>& skip_keys,
-		     const std::map<std::string, std::string>& key_aliases) const {
+		     const std::map<std::string, std::string>& key_aliases,
+		     const std::map<MODULE, const ValueSet_t*>& conditions) const {
     std::ofstream fd;
     fd.open(filename);
     dump(fd, includeSkipped, skip_modules, skip_param_types,
-	 skip_keys, key_aliases);
-    dump(std::cerr, false, skip_modules, skip_param_types,
-	 skip_keys, key_aliases);
+	 skip_keys, key_aliases, conditions);
     fd.close();
 }
 std::ostream& Variables::dump(std::ostream& out,
@@ -235,7 +223,8 @@ std::ostream& Variables::dump(std::ostream& out,
 			      const std::vector<MODULE>& skip_modules,
 			      const std::vector<PARAM_TYPE>& skip_param_types,
 			      const std::vector<std::string>& skip_keys,
-			      const std::map<std::string, std::string>& key_aliases) const {
+			      const std::map<std::string, std::string>& key_aliases,
+			      const std::map<MODULE, const ValueSet_t*>& conditions) const {
     std::size_t pad = max_field_width_all();
 #define FITER(V, ...)							\
     if (V->_virtual_selected() &&					\
@@ -255,7 +244,8 @@ std::ostream& Variables::dump(const MODULE& module,
 			      const std::vector<MODULE>& skip_modules,
 			      const std::vector<PARAM_TYPE>& skip_param_types,
 			      const std::vector<std::string>& skip_keys,
-			      const std::map<std::string, std::string>& key_aliases) const {
+			      const std::map<std::string, std::string>& key_aliases,
+			      const std::map<MODULE, const ValueSet_t*>& conditions) const {
     if (!isSelected(module, param_type)) {
 	return out;
     }
@@ -269,14 +259,21 @@ std::ostream& Variables::dump(const MODULE& module,
 	   it != skip_param_types.end(); it++)
 	if (*it == param_type) return out;
     }
+    if (param_type == PARAM_TYPE_COND) {
+      std::map<MODULE, const ValueSet_t*>::const_iterator it = conditions.find(module);
+      if (it != conditions.end())
+	return it->second->print(out, 0, pad, true, includeSkipped,
+				 skip_keys, key_aliases, true);
+    }
     return GET_VALUE_SET(module, param_type)->print(out, 0, pad, true, includeSkipped, skip_keys, key_aliases, true);
 }
 
 void Variables::initParam(const MODULE& mod, const PARAM_TYPE& pt,
-			  const bool noDefaults, ValueSet_t* value_set) {
+			  const bool noDefaults, const bool force,
+			  ValueSet_t* value_set) {
     GET_VALUE_SET_CLASS(mod, pt)->initDefaults(useC3);
     if (!value_set) value_set = GET_VALUE_SET(mod, pt);
-    value_set->initValues(noDefaults, true);
+    value_set->initValues(noDefaults, force, true);
 }
 void Variables::initAllDefaults(const bool useC3) {
     VARS_ITER_ALL_CLASS(m, pt, initDefaults, useC3, "", true);
@@ -518,12 +515,16 @@ double Variables::getVar(const std::string& k,
 }
 std::vector<PARAM_TYPE> Variables::getParamTypes(const MODULE& mod,
 						 const bool for_instance,
-						 const bool include_cond) {
+						 const bool include_cond,
+						 const std::map<MODULE, const ValueSet_t*>& conditions) {
     std::vector<PARAM_TYPE> out;
     ValueSetClass_t* module = getModule(mod, false, "getParamTypes: ");
     const std::vector<PARAM_TYPE>& all = module->get_parameter_types();
+    std::map<MODULE, const ValueSet_t*>::const_iterator itCond = conditions.find(mod);
     if (for_instance && ((!include_cond) ||
-			 (include_cond && !VARS_INST_IS_MODULE(mod)))) {
+			 (include_cond &&
+			  (!VARS_INST_IS_MODULE(mod)) &&
+			  (itCond == conditions.end())))) {
 	for (typename std::vector<PARAM_TYPE>::const_iterator it = all.begin();
 	     it != all.end(); it++) {
 	    if (*it != PARAM_TYPE_COND)
@@ -569,12 +570,18 @@ ValueSetClass_t* Variables::getValueSetClass(const MODULE& mod,
 ValueSet_t* Variables::getValueSet(const MODULE& mod,
 				   const PARAM_TYPE& pt,
 				   const bool no_error_on_invalid,
+				   const std::map<MODULE, ValueSet_t*>& conditions,
 				   const std::string& error_context) {
-    return const_cast<ValueSet_t*>(const_cast<const Variables*>(this)->getValueSet(mod, pt, no_error_on_invalid, error_context));
+    std::map<MODULE, const ValueSet_t*> conditionsC;
+    for (std::map<MODULE, ValueSet_t*>::const_iterator it = conditions.begin();
+	 it != conditions.end(); it++)
+      conditionsC[it->first] = it->second;
+    return const_cast<ValueSet_t*>(const_cast<const Variables*>(this)->getValueSet(mod, pt, no_error_on_invalid, conditionsC, error_context));
 }
 const ValueSet_t* Variables::getValueSet(const MODULE& mod,
 					 const PARAM_TYPE& pt,
 					 const bool no_error_on_invalid,
+					 const std::map<MODULE, const ValueSet_t*>& conditions,
 					 const std::string& error_context) const {
     bool force_error = false;
     if (mod == MODULE_ALL || pt == PARAM_TYPE_VARS) {
@@ -587,6 +594,9 @@ const ValueSet_t* Variables::getValueSet(const MODULE& mod,
 		   VARS_INST_CALL_STATIC,
 		   getValueSet, ());
     } else if (pt == PARAM_TYPE_COND) {
+	std::map<MODULE, const ValueSet_t*>::const_iterator it = conditions.find(mod);
+	if (it != conditions.end())
+	  return it->second;
 	SWITCH_MOD_AND_PT(mod, VARS_INST_MODULES,
 			  pt, MOD2PT_COND, VARS_RETURN_CALL,
 			  VARS_INST_CALL,
@@ -607,17 +617,35 @@ const ValueSet_t* Variables::getValueSet(const MODULE& mod,
 		      utils::enum_key2string(pt), ")");
     return nullptr;
 }
-void Variables::setRecord(const ValueSet_t* x) {
+void Variables::setRecord(const ValueSet_t* x,
+			  std::map<MODULE, const ValueSet_t*>& conditions) {
     MODULE m = x->_virtual_get_module();
     PARAM_TYPE pt = x->_virtual_get_param_type();
     if (pt == PARAM_TYPE_MOD) return;
     const std::vector<ValueSet_t**>& children = x->getChildren();
+    if (children.size() > 0) {
+	conditions[m] = x;
+    }
     for (typename std::vector<ValueSet_t**>::const_iterator it = children.begin();
 	 it != children.end(); it++) {
-      setRecord(**it);
+	setRecord(**it, conditions);
     }
 #define DO_ASSIGN(dummy, mod, pt)					\
     VARS_INST_VAR(mod, pt) = *static_cast<const VARS_CLASS_VAR(mod, pt)*>(x)
     SWITCH_MOD_AND_PT_PAIRS(m, pt, (INST_MOD_PT_PAIRS), DO_ASSIGN, );
 #undef DO_ASSIGN
+}
+
+void Variables::setRecord(const ValueSet_t* x) {
+    std::map<MODULE, const ValueSet_t*> conditions;
+    setRecord(x, conditions);
+}
+void Variables::setRecord(ValueSet_t* x,
+			  std::map<MODULE, ValueSet_t*>& conditions) {
+    std::map<MODULE, const ValueSet_t*> conditionsC;
+    setRecord(const_cast<const ValueSet_t*>(x), conditionsC);
+    for (std::map<MODULE, const ValueSet_t*>::iterator it = conditionsC.begin();
+	 it != conditionsC.end(); it++) {
+	conditions[it->first] = const_cast<ValueSet_t*>(it->second);
+    }
 }

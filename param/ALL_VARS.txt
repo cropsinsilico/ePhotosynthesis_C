@@ -13,10 +13,10 @@ CO2_in		0.0		# [ALIASES={Air_CO2,CO2}] Air CO2 concentration in ppm
 TestLi		0.0		# [ALIASES={PAR,Radiation_PAR}] Light intensity (input in units of W m^{-2} converted to umoles m^{-2} s^{-1} during runtime)
 PS2BF_Pi	0.0		# Pi Shared by PS & BF modules when useC3 is false and EPS module is selected
 PS_PR_Param	0.0		# Seems to unused currently
-Tp		0.0		# Temperature
-alfa		0.0
-fc		0.0
-lightParam	0.0
+Tp		0.0		# [ALIASES={Temp,WeatherTemperature}] Temperature
+alfa		0.0		# [CONST] Used for scaling light (*= alpha * (1 - fc))
+fc		0.0		# [CONST] Used for scaling light (*= alpha * (1 - fc))
+lightParam	0.0		# [CALC]
 alpha1		1.205		# [CONST] originally 1.205 in C++ code, 1 for Matlab equivalent
 alpha2		2.06		# [CONST] originally 2.06 in C++ code, 1 for Matlab equivalent
 input_LHCI	6.0		# [CONST] Used to set FIBF::ChlPSI in SYSInitial

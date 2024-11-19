@@ -1103,6 +1103,9 @@ const std::map<std::string, ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> Value
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::constant = {
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Theta,
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)beta,
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Jmax,
   ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_1,
   ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_2,
   ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_3,
@@ -1690,6 +1693,7 @@ const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::initonce = {
+  ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)SUCS2PS_Pic,
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::all = {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kva, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kaz, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kza, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kav, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vx_, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Ax_, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Zx_, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)ABA_, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)XanCycle2FIBF_Xstate};

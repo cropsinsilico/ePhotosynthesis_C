@@ -306,7 +306,7 @@ enum class ENUM_PR_MOD : int {
     V1T              ,  //!< *= CE if not C3
     KM1011           ,
     KI1011           ,
-    V2T              ,  //!< *= CE if not C3; 6.0 for MATLAB, 6.4 in C++
+    V2T              ,  //!< *= CE if not C3
     KM1012           ,
     KI1012           ,
     Vfactor112       ,  //!< [GLYMAID=Glyma.09G015500]
@@ -392,7 +392,7 @@ enum ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type : int {
     V1T              ,  //!< *= CE if not C3
     KM1011           ,
     KI1011           ,
-    V2T              ,  //!< *= CE if not C3; 6.0 for MATLAB, 6.4 in C++
+    V2T              ,  //!< *= CE if not C3
     KM1012           ,
     KI1012           ,
     Vfactor112       ,  //!< [GLYMAID=Glyma.09G015500]
@@ -637,9 +637,9 @@ enum class ENUM_PS_MOD : int {
     PsV33         ,  //!< Set by scaling V33
     PiTc          ,  //!< [INIT_ONCE]
     V1Reg         ,  //!< [INIT_ONCE]
-    Theta         ,  //!< [INIT_ONCE]
-    beta          ,  //!< [INIT_ONCE]
-    Jmax          ,  //!< [INIT_ONCE]
+    Theta         ,  //!< [INIT_ONCE, CONST]
+    beta          ,  //!< [INIT_ONCE, CONST]
+    Jmax          ,  //!< [INIT_ONCE, CONST]
     Vfactor1      ,  //!< [RESET_ONE,GLYMAID=Glyma.19G046800] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
     Vfactor2      ,  //!< [RESET_ONE,GLYMAID=Glyma.08G165500] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
     Vfactor3      ,  //!< [RESET_ONE,GLYMAID=Glyma.04G015900] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
@@ -821,9 +821,9 @@ enum ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type : int {
     PsV33         ,  //!< Set by scaling V33
     PiTc          ,  //!< [INIT_ONCE]
     V1Reg         ,  //!< [INIT_ONCE]
-    Theta         ,  //!< [INIT_ONCE]
-    beta          ,  //!< [INIT_ONCE]
-    Jmax          ,  //!< [INIT_ONCE]
+    Theta         ,  //!< [INIT_ONCE, CONST]
+    beta          ,  //!< [INIT_ONCE, CONST]
+    Jmax          ,  //!< [INIT_ONCE, CONST]
     Vfactor1      ,  //!< [RESET_ONE,GLYMAID=Glyma.19G046800] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
     Vfactor2      ,  //!< [RESET_ONE,GLYMAID=Glyma.08G165500] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
     Vfactor3      ,  //!< [RESET_ONE,GLYMAID=Glyma.04G015900] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
@@ -1377,7 +1377,7 @@ enum class ENUM_SUCS_MOD : int {
     SUCSV56         ,  //!< Set by calculation for C3
     SUCSV57         ,  //!< Set by calculation for C3
     SUCSV58         ,  //!< Set by calculation for C3
-    SUCS2PS_Pic     ,
+    SUCS2PS_Pic     ,  //!< [INIT_ONCE]
     KE5Ratio        ,  //!< Calculated from KE541 & KE531
     ADPc            ,  //!< Calculated from ATc & ATPc
     Vmatpf          ,  //!< [CONST] Previously stored as constant
@@ -1475,7 +1475,7 @@ enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type : int {
     SUCSV56         ,  //!< Set by calculation for C3
     SUCSV57         ,  //!< Set by calculation for C3
     SUCSV58         ,  //!< Set by calculation for C3
-    SUCS2PS_Pic     ,
+    SUCS2PS_Pic     ,  //!< [INIT_ONCE]
     KE5Ratio        ,  //!< Calculated from KE541 & KE531
     ADPc            ,  //!< Calculated from ATc & ATPc
     Vmatpf          ,  //!< [CONST] Previously stored as constant
