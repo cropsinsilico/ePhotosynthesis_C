@@ -10,12 +10,56 @@ void Variables::_initDefaults() {
 }
 #endif // MAKE_EQUIVALENT_TO_MATLAB
 
-Variables::Variables(const Variables& other) : Variables(other.context) {
-    *this = other;
+void Variables::_initStaticMembers() {
+    select(true); // Variables always selected
+    ValueSetClass::_initStaticMembers();
 }
 
-Variables::Variables(const Variables* other) : Variables(other->context) {
-    *this = *other;
+Variables::Variables(SUNContext* ctx) :
+  ValueSet(), context(ctx) {
+    if (!ctx) {
+	std::cout << "SUNContext is NULL" << std::endl;
+	throw  std::runtime_error("SUNContext is NULL");
+    }
+    select();
+    initValues();
+    useC3 = usesC3();
+}
+Variables::Variables(const Variables& other) :
+  ValueSet(other) {
+    copyInstance(other);
+}
+
+Variables::Variables(const Variables* other) :
+  ValueSet(*other) {
+    copyInstance(*other);
+}
+
+void Variables::__copyMembers(const Variables& other) {
+    context = other.context;
+    record = other.record;
+    GP = other.GP;
+    GRNC = other.GRNC;
+    GRNT = other.GRNT;
+    RUBISCOMETHOD = other.RUBISCOMETHOD;
+#define DO_MEMBERS(mod, pt)						\
+    VARS_INST_VAR(mod, pt) = other.VARS_INST_VAR(mod, pt)
+#define DO_MEMBERS_PACKED(args) DO_MEMBERS args
+#define DO_MEMBERS_CORE(mod)			\
+    mod ## Ratio = other.mod ## Ratio
+#define DO_MEMBERS_CONNECTION(mod)		\
+    mod ## _com = other.mod ## _com
+    VARS_INST_APPLY_TO_MEMBERS(DO_MEMBERS);
+#undef DO_MEMBERS
+#undef DO_MEMBERS_PACKED
+#undef DO_MEMBERS_CORE
+#undef DO_MEMBERS_CONNECTION
+    
+    EnzymeAct = other.EnzymeAct;
+    VfactorCp = other.VfactorCp;
+    VfactorT = other.VfactorT;
+    FluxTR = other.FluxTR;
+    useC3 = other.useC3;
 }
 
 Variables* Variables::deepcopy() const {
@@ -41,35 +85,6 @@ Variables* Variables::deepcopy() const {
   FOR_EACH(DO_MOD, EXPAND VARS_INST_MODULES);
 #undef DO_MOD
   return out;
-}
-
-Variables& Variables::operator=(const Variables &other) {
-    context = other.context;
-    record = other.record;
-    GP = other.GP;
-    GRNC = other.GRNC;
-    GRNT = other.GRNT;
-    RUBISCOMETHOD = other.RUBISCOMETHOD;
-#define DO_MEMBERS(mod, pt)						\
-    VARS_INST_VAR(mod, pt) = other.VARS_INST_VAR(mod, pt)
-#define DO_MEMBERS_PACKED(args) DO_MEMBERS args
-#define DO_MEMBERS_CORE(mod)			\
-    mod ## Ratio = other.mod ## Ratio
-#define DO_MEMBERS_CONNECTION(mod)		\
-    mod ## _com = other.mod ## _com
-    VARS_INST_APPLY_TO_MEMBERS(DO_MEMBERS);
-#undef DO_MEMBERS
-#undef DO_MEMBERS_PACKED
-#undef DO_MEMBERS_CORE
-#undef DO_MEMBERS_CONNECTION
-    
-    EnzymeAct = other.EnzymeAct;
-    VfactorCp = other.VfactorCp;
-    VfactorT = other.VfactorT;
-    FluxTR = other.FluxTR;
-    useC3 = other.useC3;
-    copyMembers(other);
-    return *this;
 }
 
 std::string Variables::_diff(const Variables& other,
@@ -313,7 +328,6 @@ std::size_t Variables::max_field_width_all() {
 	if (ipad > pad) pad = ipad
 	VARS_ITER_MACRO_CLASS(MAX_WIDTH, )
 #undef MAX_WIDTH
-	std::cerr << "VARS max_field_width_all = " << pad << std::endl;
     }
     return pad;
 }

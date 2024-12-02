@@ -170,6 +170,7 @@ namespace ePhotosynthesis {
   }								\
   void _copyMembers(const name& other) override {		\
     FOR_EACH(COPY_VALUE_SET_MEMBER, EXPAND(MEMBERS_ ## name));	\
+    __copyMembers(other);					\
   }								\
   DECLARE_VALUE_SET_CORE(name)
 #define DECLARE_VALUE_SET(name, ...)		\
@@ -565,10 +566,6 @@ namespace ePhotosynthesis {
   /** \copydoc ValueSet::initMembers */					\
   method(initMembers, void,						\
 	 (const bool noChildren=false), (noChildren), , )		\
-  /** \copydoc ValueSet::initMembersState */				\
-  method(initMembersState, void,					\
-	 (const bool force=false, const bool noChildren=false),		\
-	 (force, noChildren), , )					\
   /** \copydoc ValueSet::resetValues */					\
   method(resetValues, void,						\
 	 (const bool noChildren=false), (noChildren), , )		\
@@ -888,7 +885,8 @@ namespace ePhotosynthesis {
       VS_FLAG_INIT_DEFAULTS   = 0x00000008, //!< Defaults initialized
       VS_FLAG_INIT_POINTERS   = 0x00000010, //!< Pointers initialized
       VS_FLAG_INIT_VALUES     = 0x00000020, //!< Values initialized
-      VS_FLAG_INIT_CHILDREN   = 0x00000040, //!< Children initialized
+      VS_FLAG_INIT_STATIC     = 0x00000040, //!< Static members initialized
+      VS_FLAG_INIT_CHILDREN   = 0x00000080, //!< Children initialized
     };
 
     // Inspection utilities
@@ -1697,6 +1695,7 @@ namespace ePhotosynthesis {
        \param context String providing context for error messages.
      */
     static void checkDefaults(const std::string& context="") {
+      // initDefaults();
       if (defaults.empty() && !EnumBaseClass::defaults.empty())
 	ERROR_VALUE_SET(context,
 			"defaults not initialized, call ",
@@ -1724,13 +1723,20 @@ namespace ePhotosynthesis {
     /**
        Initialize the defaults for the value set if they have not been
          initialized.
+     */
+    static void initDefaults() {
+      initDefaults(static_flags & VS_FLAG_DEFAULTS_C3);
+    }
+    /**
+       Initialize the defaults for the value set if they have not been
+         initialized.
        \param useC3 If true, default values for a C3 will be used
        \param filename File containing values to add to the defaults.
        \param force If true, initialize the defaults even if the value
          set is not selected. [this paramter will be removed]
        \param noChildren If true, child classes will not be modified.
      */
-    static void initDefaults(const bool useC3=false,
+    static void initDefaults(const bool useC3,
 			     const std::string& filename="",
 			     const bool force=false,
 			     const bool noChildren=false) {
@@ -2247,10 +2253,10 @@ namespace ePhotosynthesis {
        Common, public interface for the private _initChildClasses method.
      */
     static void initChildClasses(const bool noChildren = false) {
-      if (!child_classes.empty())
-	return;
+      if (static_flags & VS_FLAG_INIT_CHILDREN) return;
       T::_initChildClasses();
       DO_VALUE_SET_CHILD_CLASSES(initChildClasses, ());
+      static_flags |= VS_FLAG_INIT_CHILDREN;
     }
     /**
        \copydoc ValueSetClass_t::initStaticMembers
@@ -2258,11 +2264,11 @@ namespace ePhotosynthesis {
        Common, public interface for the private _initStaticMembers method.
      */
     static void initStaticMembers(const bool noChildren = false) {
-      if (!static_values.empty())
-	return;
+      if (static_flags & VS_FLAG_INIT_STATIC) return;
       T::_initStaticMembers();
       initChildClasses(true); // Children will be called in initStaticMembers
       DO_VALUE_SET_CHILD_CLASSES(initStaticMembers, ());
+      static_flags |= VS_FLAG_INIT_STATIC;
     }
     /**
        Check if the value set is selected by the current driver.
@@ -2284,9 +2290,6 @@ namespace ePhotosynthesis {
 	static_flags &= ~VS_FLAG_SELECTED;
       }
       T::_select(x);
-      if (x) {
-	initStaticMembers(true);
-      }
       DO_VALUE_SET_CHILD_CLASSES(select, (x));
     }
     /**
@@ -2398,7 +2401,46 @@ namespace ePhotosynthesis {
          copied set.
        \param other Value set to copy values from.
      */
-    ValueSet(const ValueSet& other) : ValueSet() {}
+    ValueSet(const ValueSet& other) : ValueSet() {
+      copyValueSet(other);
+    }
+    /**
+       Copy ValueSet members from another value set to this one.
+       \param other Value set to copy values from.
+     */
+    void copyValueSet(const ValueSet& other) {
+      int flags0 = flags;
+      flags = other.flags;
+      preinit_values = other.preinit_values;
+      if (!(flags0 & BaseClass::VS_FLAG_INIT_POINTERS))
+	flags &= ~BaseClass::VS_FLAG_INIT_POINTERS;
+      if (!(flags0 & BaseClass::VS_FLAG_INIT_CHILDREN))
+	flags &= ~BaseClass::VS_FLAG_INIT_CHILDREN;
+    }
+    /**
+       Copy another instance of this value set.
+       \param other Value set to copy values from.
+       \param noChildren If true, child classes will not be initialized.
+     */
+    void copyInstance(const T& other, const bool noChildren=false) {
+      initMembers();
+      static_cast<T*>(this)->_copyMembers(other);
+      copyChildren(other, noChildren);
+    }
+    /**
+       Copy children.
+       \param other Value set to copy values from.
+       \param noChildren If true, child classes will not be initialized.
+     */
+    void copyChildren(const T& other, const bool noChildren=false) {
+      if (children.size() != other.children.size()) {
+	ERROR_VALUE_SET("copyMembers: "
+			"This instance has ", children.size(),
+			" children, but the one being copied has ",
+			other.children.size());
+      }
+      DO_VALUE_SET_CHILDREN(copyMembers, (**(other.children[iChild])));
+    }
     /**
        Assignment operator. Values will be updated from the values in the
          copied set.
@@ -2467,17 +2509,10 @@ namespace ePhotosynthesis {
     void copyMembers(const ValueSet_t& other0,
 		     const bool noChildren=false) override {
       const T& other = castValueSet<T>(other0);
-      initMembersState(false, true);
+      copyValueSet(other);
       // TODO: Re-enable this only if more efficient than direct copy
       // copy_value_map(values, other.values, "copyMembers[vals]: ", true);
-      static_cast<T*>(this)->_copyMembers(other);
-      if (children.size() != other.children.size()) {
-	ERROR_VALUE_SET("copyMembers: "
-			"This instance has ", children.size(),
-			" children, but the one being copied has ",
-			other.children.size());
-      }
-      DO_VALUE_SET_CHILDREN(copyMembers, (**(other.children[iChild])));
+      copyInstance(other, noChildren);
     }
     /**
        Initialize the members in the instance. This should be overriden
@@ -2486,27 +2521,11 @@ namespace ePhotosynthesis {
        \param noChildren If true, child classes will not be initialized.
     */
     void initMembers(const bool noChildren=false) override {
-      initMemberPointers();
+      ParentClass::initStaticMembers(true);
+      initMemberPointers(true);
       static_cast<T*>(this)->_initMembers();
       initChildren(true);
       DO_VALUE_SET_CHILDREN(initMembers, ());
-    }
-    /**
-       Initialize the members in the instance for the current state.
-       Common, public interface for the private _initMembersState method.
-       \param force If true, the state will be updated reguardless of
-         if the class has be updated since the last time the state was
-	 updated.
-       \param noChildren If true, child classes will not be initialized.
-    */
-    void initMembersState(const bool force=false,
-			  const bool noChildren=false) override {
-      if (!(force || values.empty()))
-	return;
-      initMemberPointers(true);
-      initMembers(true);
-      static_cast<T*>(this)->_initMembersState(force);
-      DO_VALUE_SET_CHILDREN(initMembersState, (force));
     }
     /**
        Reset the values so that they can be re-initialized.
@@ -2540,13 +2559,12 @@ namespace ePhotosynthesis {
 		    const bool force=false,
 		    const bool noChildren=false) override {
       if ((!force) && initialized()) return;
-      initMembersState(true, true);
+      initMembers(true);
       if (!noDefaults)
 	init_value_map(values, initialized());
       static_cast<T*>(this)->_initValues();
       DO_VALUE_SET_CHILDREN(initValues, (noDefaults, force));
       if (!preinit_values.empty()) {
-	INFO_VALUE_SET(preinit_values.size());
 	copy_value_map(values, preinit_values, "initValues: ",
 		       false, true, true, false, true);
       }
@@ -2886,7 +2904,7 @@ namespace ePhotosynthesis {
      */
     void setPreInit(const EnumType& k, const double& v) {
       if (initialized()) return;
-      INFO_VALUE_SET(k, " = ", v);
+      // INFO_VALUE_SET(k, " = ", v);
       preinit_values[k] = v;
     }
     /**
@@ -3026,8 +3044,8 @@ namespace ePhotosynthesis {
     // Methods that can be overridden by the inheriting class
   protected:
     virtual void _copyMembers(const T& other) {}
+    virtual void __copyMembers(const T& other) {}
     virtual void _initMembers() {}
-    virtual void _initMembersState(bool=false) {}
     virtual void _resetValues() {}
     virtual void _initValues() {}
     virtual void _initMemberPointers() {}
@@ -3158,18 +3176,10 @@ namespace ePhotosynthesis {
     
     /** \copydoc ValueSet::initMembers */
     static void initMembers(const bool noChildren=false) {
-      initMemberPointers();
+      initStaticMembers(true);
+      // initMemberPointers(true); // Called by initStaticMembers
       T::_initMembers();
       DO_VALUE_SET_CHILD_CLASSES(initMembers, ());
-    }
-    /** \copydoc ValueSet::initMembersState */
-    static void initMembersState(bool force=false,
-				 const bool noChildren=false) {
-      if (!(force || values.empty()))
-	return;
-      initMembers(true);
-      T::_initMembersState(force);
-      DO_VALUE_SET_CHILD_CLASSES(initMembersState, (force));
     }
     /** \copydoc ValueSet::resetValues */
     static void resetValues(const bool noChildren=false) {
@@ -3188,11 +3198,10 @@ namespace ePhotosynthesis {
 			   const bool force=false,
 			   const bool noChildren=false) {
       if ((!force) && initialized()) return;
-      initMembersState(false, true); // force state initialization?
+      initMembers(true);
       if (!noDefaults)
 	init_value_map(values, initialized());
       T::_initValues();
-      // T::_initMembersState(force);
       DO_VALUE_SET_CHILD_CLASSES(initValues, (noDefaults, force));
       if (!preinit_values.empty()) {
 	copy_value_map(values, preinit_values, "initValues: ",
@@ -3356,7 +3365,7 @@ namespace ePhotosynthesis {
     /** \copydoc ValueSet::setPreInit */
     static void setPreInit(const EnumType& k, const double& v) {
       if (initialized()) return;
-      INFO_VALUE_SET(k, " = ", v);
+      // INFO_VALUE_SET(k, " = ", v);
       preinit_values[k] = v;
     }
     /**
@@ -3486,7 +3495,6 @@ namespace ePhotosynthesis {
     // Methods that can be overridden by the inheriting class
   protected:
     static void _initMembers() {}
-    static void _initMembersState(bool=false) {}
     static void _resetValues() {}
     static void _initValues() {}
     static std::string _diff(std::size_t padKeys=0,

@@ -38,6 +38,16 @@ Variables* Driver::inputVars = nullptr;
 
 DEFINE_DRIVER(trDynaPS);
 
+trDynaPSDriver::trDynaPSDriver(Variables *theVars, const double startTime,
+			       const double stepSize, const double endTime,
+			       const int maxSubsteps,
+			       const double atol, const double rtol,
+			       const std::size_t para,
+			       const double ratio, const bool showWarn) :
+    DriverBase(theVars, startTime, stepSize, endTime, maxSubsteps,
+	       atol, rtol, para, ratio, showWarn) {
+    init(theVars->useC3);
+}
 void trDynaPSDriver::setup() {
 
     if (ParaNum <= 103) {

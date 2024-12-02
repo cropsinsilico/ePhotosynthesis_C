@@ -40,23 +40,11 @@ namespace drivers {
 class EPSDriver : public DriverBase<EPSDriver, MODULE_EPS> {
     DECLARE_DRIVER(EPS)
 public:
-    /**
-      \copydoc drivers::Driver::Driver
-      \param para Input parameters
-      \param ratio Input ratio.
-      */
+    /** \copydoc drivers::Driver::Driver */
     EPSDriver(Variables *theVars, const double startTime, const double stepSize, const double endTime,
               const int maxSubsteps, const double atol, const double rtol,
               const std::size_t para, const double ratio,
-              const bool showWarn = false) :
-        DriverBase(theVars, startTime, stepSize, endTime, maxSubsteps, atol, rtol, showWarn) {
-#ifdef INCDEBUG
-                ePhotosynthesis::conditions::EPSCondition::setTop();
-#endif
-	init(theVars->useC3);
-        ParaNum = para;
-        Ratio = ratio;
-    }
+              const bool showWarn = false);
 
     /**
       \copydoc drivers::Driver::setup
@@ -73,8 +61,6 @@ private:
     //double Ca;
     //double Li;
     double AtpCost;
-    std::size_t ParaNum;
-    double Ratio;
 };
 
 }  // namespace drivers

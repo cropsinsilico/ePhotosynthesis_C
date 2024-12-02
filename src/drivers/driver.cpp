@@ -37,21 +37,19 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::drivers;
 using namespace ePhotosynthesis::conditions;
 
-bool Driver::showWarnings = false;
+bool DriverParam::showWarnings = false;
 
-Driver::Driver(Variables *theVars, const double startTime, const double stepSize, const double endTime,
-	       const int maxSubsteps, const double atol, const double rtol,
-	       const bool showWarn) {
+Driver::Driver(Variables *theVars, const double startTime,
+	       const double stepSize, const double endTime,
+	       const int maxSubsteps,
+	       const double atol, const double rtol,
+	       const std::size_t para, const double ratio,
+	       const bool showWarn) :
+  DriverParam(startTime, stepSize, endTime, maxSubsteps,
+	      atol, rtol, para, ratio, showWarn) {
   this->context = theVars->context;
   this->inputVars = theVars;
-  this->start = startTime;
-  this->step = stepSize;
   initialStep = stepSize;
-  this->endtime = endTime;
-  this->maxSubSteps = maxSubsteps;
-  this->showWarnings = showWarn;
-  abstol = atol;
-  reltol = rtol;
   maxStep = 20. * step;
   data = nullptr;
   origVars = nullptr;

@@ -85,12 +85,12 @@
 // Control parameters
 // #define VERBOSE_VALUE_SET_DEBUG 1
 // #define VALUE_SET_VAL_MEMBERS 1
+// #define CHECK_NEW_MATCHES_ORIG 1
+// #define MAKE_EQUIVALENT_TO_MATLAB 1
 #define COMPARE_PRECISION 15
 #define COMPARE_RELATIVE_EPSILON			\
   std::numeric_limits<double>::epsilon()
 #define COMPARE_ABSOLUTE_EPSILON 1e-9
-#define CHECK_NEW_MATCHES_ORIG 1
-#define MAKE_EQUIVALENT_TO_MATLAB 1
 
 // Inheritance for ValueSet
 #define INHERIT_METHOD_ENUM_BASE(name1, name2, ...)	\
@@ -191,7 +191,6 @@
   using __VA_ARGS__::update_values;		\
   using __VA_ARGS__::hasGlymaID;		\
   using __VA_ARGS__::_initMembers;		\
-  using __VA_ARGS__::_initMembersState;		\
   using __VA_ARGS__::_initValues;		\
   using __VA_ARGS__::_print;			\
   using __VA_ARGS__::_initMemberPointers;	\

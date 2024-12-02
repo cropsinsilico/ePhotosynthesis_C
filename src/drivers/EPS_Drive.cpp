@@ -37,6 +37,19 @@ using namespace ePhotosynthesis::conditions;
 
 DEFINE_DRIVER(EPS);
 
+EPSDriver::EPSDriver(Variables *theVars, const double startTime,
+		     const double stepSize, const double endTime,
+		     const int maxSubsteps,
+		     const double atol, const double rtol,
+		     const std::size_t para, const double ratio,
+		     const bool showWarn) :
+    DriverBase(theVars, startTime, stepSize, endTime, maxSubsteps,
+	       atol, rtol, para, ratio, showWarn) {
+#ifdef INCDEBUG
+    ePhotosynthesis::conditions::EPSCondition::setTop();
+#endif
+    init(theVars->useC3);
+}
 void EPSDriver::setup() {
     //Ca = theVars->TestCa;
     inputVars->TestLi /= 30.;

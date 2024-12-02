@@ -15,6 +15,7 @@ WITH_COVERAGE=""
 TEST_FLAGS="-C ${CMAKE_BUILD_TYPE_TEST}"
 NJOBS="8"
 RUN_EPHOTO=""
+COMPARE_MATLAB=""
 PREPROCESS=""
 
 while [[ $# -gt 0 ]]; do
@@ -26,6 +27,13 @@ while [[ $# -gt 0 ]]; do
 	    ;;
 	--ephoto )
 	    RUN_EPHOTO="TRUE"
+	    DONT_BUILD_TESTS="TRUE"
+	    DONT_TEST="TRUE"
+	    shift
+	    ;;
+        --compare-matlab )
+	    CMAKE_FLAGS_LIB="${CMAKE_FLAGS_LIB} -DMAKE_EQUIVALENT_TO_MATLAB=ON"
+            COMPARE_MATLAB="TRUE"
 	    DONT_BUILD_TESTS="TRUE"
 	    DONT_TEST="TRUE"
 	    shift
@@ -138,13 +146,16 @@ fi
 if [ -n "$WITH_COVERAGE" ]; then
     make coverage
 fi
+if [ -n "$COMPARE_MATLAB" ]; then
+    cd ..
+    python utils/compare_matlab.py ../ePhotosynthesis -d 4 --matlab /Applications/MATLAB_R2024b.app/bin/matlab
+    diff ../ePhotosynthesis/EPS_init.txt EPS_init.txt &> diff_EPS_init.txt
+    diff ../ePhotosynthesis/EPS_final.txt EPS_final.txt &> diff_EPS_final.txt
+    cd $BUILD_DIR
+fi
 if [ -n "$RUN_EPHOTO" ]; then
     cd ..
-    # ./$BUILD_DIR/ePhoto -d 4 --enzyme InputEnzyme.txt --grn InputGRNC_MATLAB.txt --outputParam  # -T 25
-    python utils/compare_matlab.py ../ePhotosynthesis -d 4 --matlab /Applications/MATLAB_R2024b.app/bin/matlab
-    # diff ../ePhotosynthesis/EPS_init.txt EPS_init.txt &> diff_EPS_init.txt
-    # diff ../ePhotosynthesis/EPS_rate.txt EPS_rate.txt &> diff_EPS_rate.txt
-    diff ../ePhotosynthesis/EPS_final.txt EPS_final.txt &> diff_EPS_final.txt
+    ./$BUILD_DIR/ePhoto -d 4 --enzyme InputEnzyme.txt --grn InputGRNC_MATLAB.txt --outputParam  # -T 25
     cd $BUILD_DIR
 fi
 

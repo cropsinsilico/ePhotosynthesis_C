@@ -40,24 +40,11 @@ namespace drivers {
 class CMDriver : public DriverBase<CMDriver, MODULE_CM> {
     DECLARE_DRIVER(CM)
 public:
-    /**
-      \copydoc drivers::Driver::Driver
-      \param para Input parameters. [Unused by this driver]
-      \param ratio Input ratio. [Unused by this driver]
-      */
+    /** \copydoc drivers::Driver::Driver */
     CMDriver(Variables *theVars, const double startTime, const double stepSize, const double endTime,
              const int maxSubsteps, const double atol, const double rtol,
 	     const std::size_t para = 0, const double ratio = 0,
-             const bool showWarn = false) :
-	DriverBase(theVars, startTime, stepSize, endTime, maxSubsteps, atol, rtol, showWarn) {
-	UNUSED(para);
-	UNUSED(ratio);
-#ifdef INCDEBUG
-	ePhotosynthesis::conditions::CMCondition::setTop();
-#endif
-	init(theVars->useC3);
-
-    }
+             const bool showWarn = false);
 
     /**
       \copydoc drivers::Driver::setup

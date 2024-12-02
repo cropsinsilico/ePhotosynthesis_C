@@ -74,6 +74,7 @@ option(WITH_ASAN "Enable Clang address sanitizer and undefined behavior sanitize
 option(TEST_VALGRIND "Enable valgrind tests")
 option(BUILD_DOCS "Create HTML and PDF API documentation for ePhotosynthesis (requires Doxygen)")
 option(BUILD_PYTHON "Build python bindings for the library.")
+option(MAKE_EQUIVALENT_TO_MATLAB "Build with settings that make this model equivalent to the Matlab C3 model")
 
 if(NOT BUILD_PYTHON)
     set(BUILD_PYTHON OFF)
@@ -149,6 +150,10 @@ if(WITH_ASAN)
         add_compile_options(${ASAN_COMPILE_FLAGS})
         add_link_options(${ASAN_LINK_FLAGS})
     endif()
+endif()
+
+if(MAKE_EQUIVALENT_TO_MATLAB)
+    add_compile_options(-DMAKE_EQUIVALENT_TO_MATLAB=1)
 endif()
 
 if(NOT WIN32)

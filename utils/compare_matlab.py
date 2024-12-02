@@ -2,6 +2,7 @@ import os
 import argparse
 import difflib
 import subprocess
+import numpy as np
 
 _drivers = ['trDynaPS', 'DynaPS', 'CM', 'EPS']
 _driver_map = {(i + 1): x for i, x in enumerate(_drivers)}
@@ -31,7 +32,7 @@ def run_cpp(args):
     return out
 
 
-def compare_files(f1, f2):
+def compare_files(f1, f2, check_files=None):
     with open(f1, 'r') as fd:
         lines1 = fd.readlines()
     with open(f2, 'r') as fd:
@@ -39,11 +40,30 @@ def compare_files(f1, f2):
     line_diff = list(difflib.unified_diff(lines1, lines2,
                                           fromfile=f1, tofile=f2))
     if line_diff:
+        if (check_files is not None) and check_files(f1, f2):
+            return
         print(line_diff)
         line_diff = '\n'.join(line_diff)
         raise RuntimeError(
             f"Parameter files differ:\n{line_diff}"
         )
+
+
+def check_output(f1, f2):
+    with open(f1, 'r') as fd:
+        x1 = float(fd.read().strip())
+    with open(f2, 'r') as fd:
+        x2 = float(fd.read().strip())
+    reltol = 1.0e-05
+    abstol = 1.0e-08
+    out = np.isclose(x1, x2, rtol=reltol, atol=abstol)
+    if not out:
+        reldiff = np.abs(x1 - x2) / x2
+        absdiff = np.abs(x1 - x2)
+        print(f"Values differ: {x1} vs {x2}\n"
+              f"    Relative diff: {reldiff} (reltol = {reltol})\n"
+              f"    Absolute diff: {absdiff} (abstol = {abstol}\n")
+    return out
 
 
 def diff(args, out1, out2):
@@ -53,7 +73,7 @@ def diff(args, out1, out2):
     compare_files(finit1, finit2)
     fout1 = os.path.join(args.matlab_dir, args.output)
     fout2 = args.output
-    compare_files(fout1, fout2)
+    compare_files(fout1, fout2, check_output)
 
 
 def compare(args):

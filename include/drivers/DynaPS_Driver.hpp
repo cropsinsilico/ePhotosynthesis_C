@@ -40,23 +40,13 @@ namespace drivers {
 class DynaPSDriver : public DriverBase<DynaPSDriver, MODULE_DynaPS> {
     DECLARE_DRIVER(DynaPS)
 public:
-    /**
-      \copydoc drivers::Driver::Driver
-      \param para Input parameters
-      \param ratio Input ratio.
-      */
-    DynaPSDriver(Variables *theVars, const double startTime, const double stepSize, const double endTime,
-                const int maxSubsteps, const double atol, const double rtol, const std::size_t para,
-                const double ratio, const bool showWarn = false) :
-        DriverBase(theVars, startTime, stepSize, endTime, maxSubsteps, atol, rtol, showWarn) {
-#ifdef INCDEBUG
-                ePhotosynthesis::conditions::DynaPSCondition::setTop();
-#endif
-	init(theVars->useC3);
-
-        ParaNum = para;
-        Ratio = ratio;
-    }
+    /** \copydoc drivers::Driver::Driver */
+    DynaPSDriver(Variables *theVars, const double startTime,
+		 const double stepSize, const double endTime,
+		 const int maxSubsteps,
+		 const double atol, const double rtol,
+		 const std::size_t para, const double ratio,
+		 const bool showWarn = false);
 
     /**
       \copydoc drivers::Driver::setup
@@ -68,10 +58,6 @@ public:
       */
     void getResults() override;
 
-private:
-  
-    std::size_t ParaNum;
-    double Ratio;
 };
 
 }  // namespace drivers

@@ -53,20 +53,12 @@ public:
 #ifdef MAKE_EQUIVALENT_TO_MATLAB
     static void _initDefaults();
 #endif // MAKE_EQUIVALENT_TO_MATLAB
-      
+
     /**
        Construct a new variables instance for a given sundials context
        \param[in, out] ctx Sundials context.
     */
-    Variables(SUNContext* ctx = NULL) {
-        context = ctx;
-	if (!ctx) {
-	    std::cout << "SUNContext is NULL" << std::endl;
-	    throw  std::runtime_error("SUNContext is NULL");
-	}
-	select();
-        initMembers();
-    }
+    Variables(SUNContext* ctx);
     /**
        Copy constructor for a pointer to another variables instance.
          Some variables are not included in the default copy (e.g. alfa, 
@@ -83,21 +75,26 @@ public:
        \param[in] other Variables instance to copy.
      */
     Variables(const Variables& other);
+    
+ protected:
+    static void _initStaticMembers();
+    
+    /**
+       Copy additional members.
+         Some variables are not included in the default copy (e.g. alfa, 
+	 fc, lightParam, CO2A, RedoxReg_MP, module *_Param values, & 
+	 rates). To include these, use deepcopy.
+       \param[in] other Variables instance to copy.
+     */
+    void __copyMembers(const Variables& other) override;
+ public:
+      
     /**
        Create a deep copy of this instance including variables excluded
          from a default copy.
        \returns New instance with all parameters copied.
      */
     Variables* deepcopy() const;
-    /**
-       Assignment operator.
-         Some variables are not included in the default copy (e.g. alfa, 
-	 fc, lightParam, CO2A, RedoxReg_MP, module *_Param values, & 
-	 rates). To include these, use deepcopy.
-       \param[in] other Variables instance to copy.
-       \returns Update instance.
-     */
-    Variables& operator=(const Variables& other);
     /** \copydoc ValueSet::diff */
     std::string _diff(const Variables& other,
 		      std::size_t padKeys=0,

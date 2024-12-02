@@ -21,15 +21,7 @@ namespace ePhotosynthesis {
 namespace drivers {
   
   void select_driver(const DriverType& driverChoice,
-		     const bool useC3, const bool x = true) {
-    std::cerr << "SELECTING DRIVER: " << driverChoice << std::endl;
-#define CASE_DRIVER(drv)			\
-    drivers::drv ## Driver::enableC3(useC3);	\
-    drivers::drv ## Driver::select(x);		\
-    std::cerr << "DRIVER SELECTED: " << #drv << std::endl
-    SWITCH_DRIVER(driverChoice, CASE_DRIVER);
-#undef CASE_DRIVER
-  }
+		     const bool useC3, const bool x = true);
 
   drivers::Driver* create_driver(const DriverType& driverChoice,
 				 Variables *theVars,
@@ -41,15 +33,9 @@ namespace drivers {
 				 const double reltol,
 				 const std::size_t para = 1,
 				 const double ratio = 1,
-				 const bool showWarn = false) {
-    drivers::Driver* out = nullptr;
-#define CASE_DRIVER(drv)						\
-    out = new drivers::drv ## Driver(theVars, begintime, stepsize,	\
-				     stoptime, maxSubSteps, abstol,	\
-				     reltol, para, ratio, showWarn)
-    SWITCH_DRIVER(driverChoice, CASE_DRIVER);
-#undef CASE_DRIVER
-    return out;
-  }
+				 const bool showWarn = false);
+  drivers::Driver* create_driver(const DriverType& driverChoice,
+				 Variables *theVars,
+				 const DriverParam& param);
 }
 }

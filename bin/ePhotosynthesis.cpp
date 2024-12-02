@@ -341,7 +341,7 @@ int main(int argc, const char* argv[]) {
 
 	theVars->Tp = Tp;
         theVars->record = record;
-        theVars->useC3 = useC3;
+        theVars->useC3 = useC3; // Redundant after select_driver
         theVars->RUBISCOMETHOD = RUBISCOMETHOD;
         modules::PR::setRUBISCOTOTAL(3);
         if (debugDelta)

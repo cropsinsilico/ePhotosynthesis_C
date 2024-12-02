@@ -44,6 +44,53 @@ namespace ePhotosynthesis {
 enum DriverType : int {
   None, MEMBERS_DRIVER
 };
+
+class DriverParam {
+public:
+    
+    /** Default constructor */
+    DriverParam() :
+      start(0.0), step(1.0), endtime(5000.0),
+      maxSubSteps(750), abstol(1e-5), reltol(1e-4),
+      ParaNum(1), Ratio(1) {}
+    
+    /**
+       Constructor.
+       \param startTime The timestamp to start the solver at. Typically
+         this is 0.
+       \param stepSize The optimal step size for the solver to use.
+       \param endTime The timestamp to end the calculations.
+       \param maxSubsteps The maximum number of sub-iterations to make
+         between steps.
+       \param atol The absolute tolerance the ODE solver should use.
+       \param rtol The relative tolerance the ODE solver should use.
+       \param para Input parameters. Not used by CM or EPS drivers.
+       \param ratio Input ratio. Not used by CM or EPS drivers.
+       \param showWarn Whether or not to send solver warnings to stdout.
+         If `true` then all warning messages are sent. If `false`, the
+	 default, warning messages are not sent, reducing clutter in
+	 production output.
+     */
+    DriverParam(const double startTime, const double stepSize,
+		const double endTime, const int maxSubsteps,
+		const double atol, const double rtol,
+		const std::size_t para, const double ratio,
+		const bool showWarn = false) :
+      start(startTime), step(stepSize), endtime(endTime),
+      maxSubSteps(maxSubsteps), abstol(atol), reltol(rtol),
+      ParaNum(para), Ratio(ratio) {
+	this->showWarnings = showWarn;
+    }
+    double start;        /**< The timestamp to start the solver at. */
+    double step;         /**< The optimal step size for the solver to use. */
+    double endtime;      /**< The timestamp to end the calculations. */
+    int maxSubSteps;     /**< The maximum number of sub-iterations to make between steps. */
+    realtype abstol;     /**< The absolute tolerance the ODE solver should use. */
+    realtype reltol;     /**< The relative tolerance the ODE solver should use. */
+    std::size_t ParaNum; /**< Index of parameter that should be scaled by Ratio */
+    double Ratio;        /**< Ratio to scale selected parameter by */
+    static bool showWarnings; /**< Whether or not to send solver warnings to stdout. */
+};
   
 template<>
 inline const std::map<DriverType, std::string>& get_enum_names<DriverType>() {
@@ -100,7 +147,7 @@ inline CalcData *alloc_calc_data() {
   Base class for all drivers. These classes handle taking the input data, feeding it to the ODE solver,
   iterating until the solver reaches its stopping time or fails, and returning the results.
   */
-class Driver {
+class Driver : protected DriverParam {
 public:
 
     /**
@@ -193,13 +240,26 @@ protected:
       \param maxSubsteps The maximum number of sub-iterations to make between steps.
       \param atol The absolute tolerance the ODE solver should use.
       \param rtol The relative tolerance the ODE solver should use.
+      \param para Input parameters
+      \param ratio Input ratio.
       \param showWarn Whether or not to send solver warnings to stdout. If `true` then all
              warning messages are sent. If `false`, the default, warning messages are not sent,
              reducing clutter in production output.
       */
     Driver(Variables *theVars, const double startTime, const double stepSize, const double endTime,
            const int maxSubsteps, const double atol, const double rtol,
+	   const std::size_t para, const double ratio,
            const bool showWarn = false);
+    /**
+       Construct the driver from a set of driver parameters.
+       \param[in, out] theVars Instance of the Variables class, which
+         holds global scope variables and intermediate results.
+       \param[in] param Parameters.
+     */
+    Driver(Variables *theVars, const DriverParam& param) :
+      Driver(theVars, param.start, param.step, param.endtime,
+	     param.maxSubSteps, param.abstol, param.reltol,
+	     param.ParaNum, param.Ratio, param.showWarnings) {}
     /**
       Does the computations and generates the results for each step or sub-step in the solver.
       A pointer to this function is passed to the ODE solver. The API of the function cannot change
@@ -213,18 +273,13 @@ protected:
     static int calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
 
     SUNContext* context;
-    realtype abstol;            // absolute tolerance
-    realtype reltol;            // relative tolerance
-    double start, step, endtime; // time stuff
     double initialStep;         // used to store the initial step size
-    int maxSubSteps;
     realtype *intermediateRes;
     arr results;
     realtype time;
     CalcData* data;
     double maxStep;
     void *cvode_mem;
-    static bool showWarnings;
 protected:
     void _dump(realtype t, ValueSet_t* con);
 private:
@@ -298,9 +353,10 @@ protected:
 	       const double startTime, const double stepSize,
 	       const double endTime, const int maxSubsteps,
 	       const double atol, const double rtol,
+	       const std::size_t para, const double ratio,
 	       const bool showWarn = false) :
       Driver(theVars, startTime, stepSize, endTime,
-	     maxSubsteps, atol, rtol, showWarn) {}
+	     maxSubsteps, atol, rtol, para, ratio, showWarn) {}
 
 };
   
@@ -319,7 +375,8 @@ const MODULE DriverBase<T, M>::module = M;
 #define DECLARE_DRIVER_TESTING(name)
 #endif
 #define DECLARE_DRIVER(name)						\
- public:								\
+  public:								\
+  name ## Driver(Variables *theVars, const DriverParam& param);	\
   ~name ## Driver() override;						\
   /** \copydoc drivers::DriverBase::select */				\
   static void select(const bool x = true);				\
@@ -334,16 +391,23 @@ private:								\
   VARS_CLASS_VAR(name, COND)* name ## _Ini();				\
   /** \copydoc drivers::Driver::MB */					\
   arr MB(realtype t, N_Vector u) override;
-#define DEFINE_DRIVER(name)					\
-  name ## Driver::~name ## Driver() {				\
-      VARS_CLASS_CALL(reset, (), name, MOD);			\
-  }								\
-  void name ## Driver::select(const bool x) {			\
-      return VARS_CLASS_CALL(select, (x), name, MOD);		\
-  }								\
+#define DEFINE_DRIVER(name)						\
+  name ## Driver::name ## Driver(Variables *theVars,			\
+				 const DriverParam& param) :		\
+    name ## Driver(theVars, param.start, param.step, param.endtime,	\
+		   param.maxSubSteps, param.abstol, param.reltol,	\
+		   param.ParaNum, param.Ratio,				\
+		   param.showWarnings) {}				\
+  name ## Driver::~name ## Driver() {					\
+    VARS_CLASS_CALL(reset, (), name, MOD);				\
+  }									\
+  void name ## Driver::select(const bool x) {				\
+    return VARS_CLASS_CALL(select, (x), name, MOD);			\
+  }									\
   void name ## Driver::enableC3(const bool x) {			\
-      return VARS_CLASS_CALL(enableC3, (x), name, MOD);		\
-  }								\
+    Variables::enableC3(x);						\
+    return VARS_CLASS_CALL(enableC3, (x), name, MOD);			\
+  }									\
   ValueSet_t* name ## Driver::currentConditions(realtype *x) {		\
       if (x) {								\
 	return new VARS_CLASS_VAR(name, COND)(x);			\

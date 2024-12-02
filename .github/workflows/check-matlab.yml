@@ -39,17 +39,15 @@ jobs:
       - name: Global config flags
         shell: bash -l {0}
         run: |
-          CMAKE_BUILD_TYPE_TEST="Debug"
           echo "CMAKE_BUILD_TYPE_TEST=Debug" >> "$GITHUB_ENV"
-          echo "CMAKE_ARGS=-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON" >> "$GITHUB_ENV"
-          echo "CMAKE_ARGS_TEST=-DBUILD_TESTS=OFF" >> "$GITHUB_ENV"
+          echo "CMAKE_ARGS=-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DMAKE_EQUIVALENT_TO_MATLAB:BOOL=ON" >> "$GITHUB_ENV"
       - name: Configure (CONDA)
         shell: bash -l {0}
         run: |
           mkdir build
           cd build
           which cmake
-          cmake .. ${{ env.CMAKE_ARGS }} ${{ env.CMAKE_ARGS_NO_PYTHON }} ${{ env.CMAKE_ARGS_TEST }}
+          cmake .. ${{ env.CMAKE_ARGS }}
       - name: Build C++ & C (CONDA)
         shell: bash -l {0}
         run: |
@@ -58,13 +56,12 @@ jobs:
       - name: Run MATLAB version
         uses: matlab-actions/run-command@v2
         with:
-          command: addpath("ePhotosynthesis"), RunOutputParam
-      - name: Run C++ version
-        shell: bash -l {0}
-        run: |
-          ./build/ePhoto -d 4 --enzyme InputEnzyme.txt --grn InputGRNC_MATLAB.txt --outputParam
+          command: addpath("ePhotosynthesis"), ePhotosynthesis(4, "InputEvn_MATLAB.txt", "InputEnzyme.txt", "InputGRNC_MATLAB.txt", "output.data", 1)
+      # - name: Run C++ version
+      #   shell: bash -l {0}
+      #   run: |
+      #     ./build/ePhoto -d 4 --enzyme InputEnzyme.txt --grn InputGRNC_MATLAB.txt --outputParam
       - name: Get diff
         shell: bash -l {0}
         run: |
-          diff ePhotosynthesis/EPS_init.txt EPS_init.txt &> diff_EPS_init.txt
           python utils/compare_matlab.py -d 4 --dont-run-matlab
