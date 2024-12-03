@@ -41,45 +41,6 @@ namespace modules {
 class DynaPS : public MODULE_BASE(DynaPS) {
 public:
     DECLARE_MODULE_DRIVER(DynaPS)
-private:
-
-    /**
-      Function to calculate the dy/dt values for the DynaPSCondition at the given time stamp.
-
-      \param t The current timestamp
-      \param DynaPS_con DynaPSCondition object giving the input parameters
-      \param theVars The global variables
-      \return A vector containing the dy/dt values for this time stamp.
-      */
-    static arr _MB(const double t, const conditions::DynaPSCondition* const DynaPS_con,
-                   Variables *theVars);
-
-    /**
-      Function to calculate the dy/dt values for the DynaPSCondition at the given time stamp.
-
-      \param t The current timestamp
-      \param DynaPS_con DynaPSCondition object giving the input parameters
-      \param theVars The global variables
-      \return A DynaPSCondition instance containing the dy/dt values for this time stamp.
-      */
-    static conditions::DynaPSCondition* _MB_con(const double t,
-                                                const conditions::DynaPSCondition* const DynaPS_con,
-                                                Variables *theVars);
-
-    /**
-      Calculate the Rates of DynaPS based on the input DynaPSCondition.
-
-      \param t The current timestamp
-      \param DynaPS_con DynaPSCondition object giving the input parameters
-      \param theVars The global variables
-      */
-    static void _Rate(const double t, const conditions::DynaPSCondition* const DynaPS_con,
-                      Variables *theVars) {
-        (void)t;
-        (void)DynaPS_con;
-        (void)theVars;
-    }
-    
 };
 
   DEFINE_MODULE_COMPOSITE_HEADER(DynaPS);

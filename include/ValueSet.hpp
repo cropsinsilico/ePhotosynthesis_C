@@ -28,6 +28,7 @@
 
 #include "definitions.hpp"
 #include "enums/enums_utils.hpp"
+#include <iomanip>
 
 #define CHECK_RATIO_IDX(act, exp, key)					\
   if (it->first == key && act != exp) {					\
@@ -158,7 +159,8 @@ namespace ePhotosynthesis {
   ValueSetClass::insertOrig(EnumClass::name, &name, "INIT_VALUE_SET_MEMBER: ")
 #endif // VALUE_SET_VAL_MEMBERS
 #define COPY_VALUE_SET_MEMBER(name)		\
-  name = other.name
+  if (!isSkipped(EnumClass::name))		\
+    name = other.name
 
 #define DECLARE_VALUE_SET_CORE(name)				\
   typedef _valueSetStaticMember<name> StaticMemberClass;	\
@@ -279,6 +281,9 @@ namespace ePhotosynthesis {
   public:
     _valueSetStaticMember() {
       T::initStaticMembers();
+    }
+    ~_valueSetStaticMember() {
+      T::cleanupStaticMembers();
     }
   };
 
@@ -485,8 +490,14 @@ namespace ePhotosynthesis {
   /** \copydoc ValueSetBase::initChildClasses */			\
   method(initChildClasses, void, (const bool noChildren=false),		\
 	 (noChildren), , const)						\
+  /** \copydoc ValueSetBase::cleanupChildClasses */			\
+  method(cleanupChildClasses, void, (const bool noChildren=false),	\
+	 (noChildren), , const)						\
   /** \copydoc ValueSetBase::initStaticMembers */			\
   method(initStaticMembers, void, (const bool noChildren=false),	\
+	 (noChildren), , const)						\
+  /** \copydoc ValueSetBase::cleanupStaticMembers */			\
+  method(cleanupStaticMembers, void, (const bool noChildren=false),	\
 	 (noChildren), , const)						\
   /** \copydoc ValueSetBase:selected */					\
   method(selected, bool, (), (), false, const)				\
@@ -636,6 +647,8 @@ namespace ePhotosynthesis {
   class ValueSet_t {
   public:
 
+    virtual ~ValueSet_t() {}
+
     template<typename T>
     static const T& castValueSet(const ValueSet_t& x) {
       if (typeid(const T&) != typeid(x))
@@ -752,6 +765,7 @@ namespace ePhotosynthesis {
   template<typename T>
   class ValueSetClassType : public ValueSetClass_t {
   public:
+    ~ValueSetClassType() override {}
 #define ADD_METHOD(name, retT, argsT, args, retV, suffix)		\
     retT name argsT suffix override {					\
       return T::name args;						\
@@ -1667,7 +1681,6 @@ namespace ePhotosynthesis {
       copy_value_map(dst, ksrc, context,
 		     false, false, true, true, true);
     }
-    template<>
     static void import_value_map(std::map<EnumType, double>& dst,
 				 const std::map<int, double>& src,
 				 const std::string& context) {
@@ -1686,7 +1699,8 @@ namespace ePhotosynthesis {
     template<typename V>
     static void init_value_map(std::map<EnumType, V>& vals,
 			       const bool isinit=false) {
-      checkDefaults("init_value_map: ");
+      // checkDefaults("init_value_map: ");
+      initDefaults();
       copy_value_map(vals, defaults, "init_value_map: ",
 		     true, false, !isinit, true, !isinit);
     }
@@ -2220,6 +2234,7 @@ namespace ePhotosynthesis {
      */
     static std::string memberState(const bool noChildren = false) {
       std::string out = error_prefix() +
+	", NCHILD = " + std::to_string(child_classes.size()) +
 	", COUNT = " + std::to_string(memberCount()) +
 	", SKIPPED = " + stringSkipped() +
 	", NONVECT = " + stringNonvector();
@@ -2259,7 +2274,25 @@ namespace ePhotosynthesis {
       static_flags |= VS_FLAG_INIT_CHILDREN;
     }
     /**
-       \copydoc ValueSetClass_t::initStaticMembers
+       Clean up the child classes.
+       \param noChildren If true, children of child classes will not be
+         finalized.
+       Common, public interface for the private _cleanupChildClasses
+         method.
+     */
+    static void cleanupChildClasses(const bool noChildren = false) {
+      if (!(static_flags & VS_FLAG_INIT_CHILDREN)) return;
+      T::_cleanupChildClasses();
+      DO_VALUE_SET_CHILD_CLASSES(cleanupChildClasses, ());
+      for (std::size_t i = 0; i < child_classes.size(); i++) {
+	delete child_classes[i];
+	child_classes[i] = nullptr;
+      }
+      child_classes.clear();
+      static_flags &= ~VS_FLAG_INIT_CHILDREN;
+    }
+    /**
+       Initialize the static class members including child classes.
        \param noChildren If true, child classes will not be initialized.
        Common, public interface for the private _initStaticMembers method.
      */
@@ -2269,6 +2302,18 @@ namespace ePhotosynthesis {
       initChildClasses(true); // Children will be called in initStaticMembers
       DO_VALUE_SET_CHILD_CLASSES(initStaticMembers, ());
       static_flags |= VS_FLAG_INIT_STATIC;
+    }
+    /**
+       Finalize the static class members.
+       Common, public interface for the private _cleanupStaticMembers
+         method.
+     */
+    static void cleanupStaticMembers(const bool noChildren = false) {
+      if (!(static_flags & VS_FLAG_INIT_STATIC)) return;
+      T::_cleanupStaticMembers();
+      DO_VALUE_SET_CHILD_CLASSES(cleanupStaticMembers, ());
+      cleanupChildClasses(true);
+      static_flags &= ~VS_FLAG_INIT_STATIC;
     }
     /**
        Check if the value set is selected by the current driver.
@@ -2289,7 +2334,7 @@ namespace ePhotosynthesis {
       } else {
 	static_flags &= ~VS_FLAG_SELECTED;
       }
-      T::_select(x);
+      T::_select(x, noChildren);
       DO_VALUE_SET_CHILD_CLASSES(select, (x));
     }
     /**
@@ -2319,7 +2364,7 @@ namespace ePhotosynthesis {
 	static_flags |= VS_FLAG_DEFAULTS_C3;
       else
 	static_flags &= ~VS_FLAG_DEFAULTS_C3;
-      T::_enableC3(x);
+      T::_enableC3(x, noChildren);
       DO_VALUE_SET_CHILD_CLASSES(enableC3, (x));
     }
     /**
@@ -2329,9 +2374,14 @@ namespace ePhotosynthesis {
        Common, public interface for the private _reset method.
      */
     static void reset(const bool noChildren = false) {
+      int flags0 = static_flags;
       clearSkipped();
-      T::_reset();
+      T::_reset(noChildren);
       static_flags = 0;
+      if (flags0 & VS_FLAG_INIT_CHILDREN)
+	static_flags |= VS_FLAG_INIT_CHILDREN;
+      if (flags0 & VS_FLAG_INIT_POINTERS)
+	static_flags |= VS_FLAG_INIT_POINTERS;
       defaults.clear();
       DO_VALUE_SET_CHILD_CLASSES(reset, ());
     }
@@ -2344,12 +2394,26 @@ namespace ePhotosynthesis {
     }
     // Methods that can be overridden
   protected:
+    /** Perform class specific default initialization */
     static void _initDefaults() {}
+    /** Perform class specific child class initialization */
     static void _initChildClasses() {}
+    /** Perform class specific child class cleanup */
+    static void _cleanupChildClasses() {}
+    /** Perform class specific static member initialization */
     static void _initStaticMembers() {}
-    static void _select(const bool = true) {}
-    static void _enableC3(const bool = true) {}
-    static void _reset() {}
+    /** Perform class specific static member cleanup */
+    static void _cleanupStaticMembers() {}
+    /** Perform class specific value set selection */
+    static void _select(const bool = true, const bool = false) {}
+    /** Perform class specific actions to enable C3 */
+    static void _enableC3(const bool = true, const bool = false) {}
+    /** Perform class specific class reset */
+    static void _reset(const bool = false) {}
+    /**
+       Get class specific size
+       \returns Number of members in the value set.
+    */
     static std::size_t _size() {
       return memberCount();
     }
@@ -2885,7 +2949,7 @@ namespace ePhotosynthesis {
      */
     ValueType operator[](const EnumType k) {
       ENSURE_VALUE_POINTERS;
-      get_value(values, k);
+      return get_value(values, k);
     }
     /**
        Get the constant reference for the value associated with a key.
@@ -2894,7 +2958,7 @@ namespace ePhotosynthesis {
      */
     const double& operator[](const EnumType k) const {
       ENSURE_VALUE_POINTERS_CONST;
-      get_value_const(values, k);
+      return get_value_const(values, k);
     }
     /**
        Record a value set before the value set is initialized so it can

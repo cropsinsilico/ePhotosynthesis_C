@@ -1070,10 +1070,12 @@
 */
 #define FIRST_ARG(a, ...) a
 #define FIRST_ARG_DEFERED() FIRST_ARG
+#define FIRST_ARG_PACKED(args) FIRST_ARG args
 #define LAST_ARG(...)							\
   FOR_EACH_DIFF_CALLERS_(FOR_EACH_NARG(__VA_ARGS__),			\
 			 PASS_THROUGH, CALL_DO_NOTHING,			\
 			 CALL_WITH_EMPTY_ARGS, SEP_EMPTY, (), __VA_ARGS__)
+#define LAST_ARG_PACKED(args) LAST_ARG args
 #define FOR_EACH_DIFF_CALLERS_(N, what, caller, caller0, sep, args, ...)		\
   CONCATENATE(FOR_EACH_WITH_ARGS_, N)(what, caller, caller0, sep, args, __VA_ARGS__)
 #define FOR_EACH_(N, what, caller, sep, args, ...)			\
@@ -1139,3 +1141,11 @@
   VAR_IN_LIST(var, PREFIX_EACH(prefix, __VA_ARGS__))
 #define IF_NOT_EMPTY(cond, body)				\
   FOR_EACH_WITH_PREFIX_ARGS_COMMA(FIRST_ARG, (body), cond)
+#define PASS_IF_NOT_EMPTY(x) IF_NOT_EMPTY(x, x)
+#define PREFIX_IF_NOT_EMPTY(prefix, x)		\
+  IF_NOT_EMPTY(x, PACK_MACRO(prefix()) x)
+#define SUFFIX_IF_NOT_EMPTY(x, suffix)	\
+  IF_NOT_EMPTY(x, x PACK_MACRO(suffix()))
+#define JOIN_MACROS(...)				\
+  FOR_EACH_SUFFIX_ARGS(SUFFIX_IF_NOT_EMPTY, SEP_EMPTY,	\
+		       (SEP_COMMA), __VA_ARGS__)

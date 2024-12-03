@@ -35,12 +35,11 @@
 #define PARAM_TYPES_PS_PR COND
 
 namespace ePhotosynthesis {
-namespace modules {
-class PS_PR;
-}
+
+  FORWARD_DECLARE_CONDITION(PS_PR);
+  
 namespace conditions {
 
-class CMCondition;
 /**
  Class to hold inputs to PS_PR_mb
  */

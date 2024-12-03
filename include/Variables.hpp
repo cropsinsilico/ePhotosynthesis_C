@@ -88,7 +88,11 @@ public:
      */
     void __copyMembers(const Variables& other) override;
  public:
-      
+
+    /**
+       Finalize variables read from input including any unit changes.
+     */
+    void finalizeInputs();
     /**
        Create a deep copy of this instance including variables excluded
          from a default copy.

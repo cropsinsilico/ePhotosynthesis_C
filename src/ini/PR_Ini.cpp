@@ -415,7 +415,7 @@ void PR::_initCalc(Variables *theVars, PRCondition* PR_con) {
 
 DEFINE_DEFAULT_CHECKALT(PR)
 
-void PR::_reset() {
+void PR::_reset(const bool noChildren) {
     PR::KC = 0.;
     PR::KE113 = 0.;
     PR::KE122 = 0.;
@@ -487,5 +487,6 @@ void PR::_reset() {
 
     PR::TIME = 0.;
     PR::N = 1;
-    conditions::PRCondition::reset();
+    ParentClass::_reset(noChildren);
+    // conditions::PRCondition::reset();
 }

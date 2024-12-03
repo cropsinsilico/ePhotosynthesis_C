@@ -34,12 +34,10 @@
 #define PARAM_TYPES_RA COND
 
 namespace ePhotosynthesis {
-namespace modules {
-class RA;
-}
-namespace conditions {
 
-class DynaPSCondition;
+  FORWARD_DECLARE_CONDITION(RA);
+  
+namespace conditions {
 
 /**
  Class for holding input for RA_mb

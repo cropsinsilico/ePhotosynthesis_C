@@ -31,14 +31,16 @@
 #define PARENT_FI FIBF
 #define NRATIO_FI 23
 #define PARAM_TYPES_FI COND, POOL, RC, VEL
+#define CONNECT_FI BF
+#define COUNT_FI 22
+#define CONTROL_FI (BF_connect, PQn)
+#define BOOL_MEMBERS_FI
 
 namespace ePhotosynthesis {
-namespace modules {
-class FI;
-}
-namespace conditions {
 
-class FIBFCondition;
+  FORWARD_DECLARE_CONDITION(FI);
+
+namespace conditions {
 
 /**
  Class for holding the inputs to FI_mb
@@ -46,10 +48,6 @@ class FIBFCondition;
 class FICondition : public ConditionBase<FICondition, FIBFCondition, MODULE_FI> {
 public:
     DECLARE_CONDITION(FI)
-    FICondition(FIBFCondition* par = nullptr) {
-        setParent(par);
-        initMembers();
-    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -81,11 +79,11 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void _reset(){
+    static void _reset(const bool noChildren = false) {
+	ParentClass::_reset(noChildren);
         setBF_connect(false);
     }
 
-    static const std::size_t count;  // size of the current serialized output
 };
 
     DEFINE_CONDITION_HEADER(FI);

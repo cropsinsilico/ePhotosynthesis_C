@@ -49,39 +49,9 @@ private:
 #endif // MAKE_EQUIVALENT_TO_MATLAB
     
     /**
-      Function to calculate the dy/dt values for the PRCondition at the given time stamp.
-
-      \param t The current timestamp
-      \param PR_con PRCondition object giving the input parameters
-      \param theVars The global variables
-      \return A vector containing the dy/dt values for this time stamp.
-      */
-    static arr _MB(const double t, const conditions::PRCondition* const PR_con, Variables *theVars);
-
-    /**
-      Function to calculate the dy/dt values for the PRCondition at the given time stamp.
-
-      \param t The current timestamp
-      \param PR_con PRCondition object giving the input parameters
-      \param theVars The global variables
-      \return A PRCondition instance containing the dy/dt values for this time stamp.
-      */
-    static conditions::PRCondition* _MB_con(const double t,
-                                            const conditions::PRCondition* const PR_con,
-                                            Variables *theVars);
-    /**
-      Calculate the Rates of PR based on the input PRCondition.
-
-      \param t The current timestamp
-      \param PR_con PRCondition object giving the input parameters
-      \param theVars The global variables
-      */
-    static void _Rate(const double t, const conditions::PRCondition* const PR_con, Variables *theVars);
-
-    /**
       Reset the static member variables to their default values.
       */
-    static void _reset();
+    static void _reset(const bool noChildren = false);
     SET_GET(KC)
     SET_GET(KE113)
     SET_GET(KE122)
@@ -146,8 +116,6 @@ private:
     SET_GET_BOOL_MODULE(PS_RuBP, conditions::PR)
     SET_GET(RUBISCOTOTAL)
 
-    static double TIME;    // The timestamp of the most recent call to _Rate
-    static std::size_t N;  // The current size of the PR TimeSeries
 };
 
   DEFINE_MODULE_HEADER(PR);

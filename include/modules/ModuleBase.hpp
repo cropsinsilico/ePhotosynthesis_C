@@ -199,27 +199,52 @@ public:
     }
 
     /** \copydoc ValueSetBase::select */
-    static void select(const bool x = true,
-		       const bool noChildren = false) {
-	ParentClass::select(x, noChildren);
+    static void _select(const bool x = true,
+			const bool noChildren = false) {
+	ParentClass::_select(x, noChildren);
 	for (std::vector<ValueSetClass_t*>::const_iterator it = added_classes.begin();
 	     it != added_classes.end(); it++)
-	  (*it)->select(x, noChildren);
+	  if (*it)
+	    (*it)->select(x, noChildren);
     }
     /** \copydoc ValueSetBase::enableC3 */
-    static void enableC3(const bool x = true,
-			 const bool noChildren = false) {
-	ParentClass::enableC3(x, noChildren);
+    static void _enableC3(const bool x = true,
+			  const bool noChildren = false) {
+	ParentClass::_enableC3(x, noChildren);
 	for (std::vector<ValueSetClass_t*>::const_iterator it = added_classes.begin();
 	     it != added_classes.end(); it++)
-	  (*it)->enableC3(x, noChildren);
+	  if (*it)
+	    (*it)->enableC3(x, noChildren);
     }
     /** \copydoc ValueSetBase::reset */
-    static void reset(const bool noChildren = false) {
-	ParentClass::reset(noChildren);
+    static void _reset(const bool noChildren = false) {
+	ParentClass::_reset(noChildren);
+	if (ParentClass::child_classes.size() > 0)
+	  return;
 	for (std::vector<ValueSetClass_t*>::const_iterator it = added_classes.begin();
 	     it != added_classes.end(); it++)
-	  (*it)->reset(noChildren);
+	  if (*it) {
+	    (*it)->reset(noChildren);
+	  }
+    }
+
+    /**
+       Add an associated class to this classes set.
+       \tparam C Associated class.
+     */
+    template<typename C>
+    static void addClass() {
+	added_classes.push_back(new ValueSetClassType<C>());
+    }
+
+    /**
+       Initialize the set of added classes.
+
+       Common, public interface for the private _initAddedClasses function.
+     */
+    static void initAddedClasses() {
+	if (!added_classes.empty()) return;
+	T::_initAddedClasses();
     }
 
     /** Wrappers for value set classes associated with this module */
@@ -334,6 +359,18 @@ public:
 	UNUSED(con);
 	UNUSED(theVars);
     }
+
+ protected:
+
+    /** Initialized the added classes */
+    static void _initAddedClasses() {}
+
+    /** \copydoc ValueSetBase::_initStaticMembers */
+    static void _initStaticMembers() {
+	ParentClass::_initStaticMembers();
+	initAddedClasses();
+    }
+
 };
 
   template<class T, class U, MODULE ID>
@@ -420,15 +457,14 @@ public:
     };									\
     return out;								\
   }									\
-  static void _initStaticMembers();					\
+  static void _initAddedClasses();					\
   static VARS_CLASS_VAR(name, COND)* _createCondition(Variables *theVars); \
   static void _initOrig(Variables *theVars,				\
 			VARS_CLASS_VAR(name, COND)*			\
 			VARS_INST_VAR_MOD_BASE(name, COND));		\
   static void _initCalc(Variables *theVars,				\
 			VARS_CLASS_VAR(name, COND)*			\
-			VARS_INST_VAR_MOD_BASE(name, COND));
-#define DECLARE_MODULE_BASE2(name)					\
+			VARS_INST_VAR_MOD_BASE(name, COND));		\
   static arr _MB(const double t,					\
 		 const VARS_CLASS_VAR(name, COND)*			\
 		 const VARS_INST_VAR_MOD_BASE(name, COND),		\
@@ -449,8 +485,8 @@ public:
   DECLARE_VALUE_SET_STATIC(name, ModuleBase<name,			\
 			   VARS_CLASS_VAR(name, COND),		\
 			   MODULE_ ## name>)				\
-  DECLARE_MODULE_BASE(name);
-#define DECLARE_MODULE2(name)						\
+  DECLARE_MODULE_BASE(name);						\
+  /** \copydoc ModuleBase::_Rate */					\
   static void _Rate(const double t,					\
 		    const VARS_CLASS_VAR(name, COND)*			\
 		    const VARS_INST_VAR_MOD_BASE(name, COND),		\
@@ -477,8 +513,8 @@ public:
   private:								\
   friend class modules::PARENT_ ## name;				\
   public:							       	\
-  DECLARE_MODULE_TOP(name)
-#define DECLARE_MODULE_COMPOSITE2(name)					\
+  DECLARE_MODULE_TOP(name)						\
+  /** \copydoc ModuleBase::_Rate */					\
   static void _Rate(const double t,					\
 		    const VARS_CLASS_VAR(name, COND)*			\
 		    const VARS_INST_VAR_MOD_BASE(name, COND),		\
@@ -505,15 +541,14 @@ public:
    \param pt Parameter type name defining the type of value set to add
  */
 #define DEFINE_MODULE_COMPOSITE_ADDED_CLASS(mod, pt)			\
-  added_classes.push_back(new ValueSetClassType<VARS_CLASS_VAR(mod, pt)>)
+  addClass<VARS_CLASS_VAR(mod, pt)>()
 /**
    Macro for boiler plate defining a singular or composite module class
    \param name Name of module
  */
 #define DEFINE_MODULE_BASE(name)					\
-  void name::_initStaticMembers() {					\
-      ParentClass::_initStaticMembers();				\
-      if (!added_classes.empty()) return;				\
+  /** \copydoc ModuleBase::_initAddedClasses */				\
+  void name::_initAddedClasses() {					\
       FOR_EACH_WITH_ARGS(DEFINE_MODULE_COMPOSITE_ADDED_CLASS,		\
 			 (name), UNPACK_MACRO(PARAM_TYPES_ ## name));	\
       size_t exp = FOR_EACH_NARG(PARAM_TYPES_ ## name);			\
@@ -552,6 +587,10 @@ public:
     VARS_CLASS_VAR_LOCAL(name, COND)* VARS_INST_VAR_MOD_BASE(name, COND) = new VARS_CLASS_VAR_LOCAL(name, COND)(); \
     return VARS_INST_VAR_MOD_BASE(name, COND);				\
   }
+#define DEFINE_MODULE2(name)				\
+  double VARS_CLASS_VAR_LOCAL(name, MOD)::TIME = 0.;	\
+  std::size_t VARS_CLASS_VAR_LOCAL(name, MOD)::N = 1;	\
+  DEFINE_CONDITION_INI(name)
 /**
    Utility to create a child condition instance
    \param name Name of the child module

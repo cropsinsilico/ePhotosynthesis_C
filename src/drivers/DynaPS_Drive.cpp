@@ -42,13 +42,25 @@ DynaPSDriver::DynaPSDriver(Variables *theVars, const double startTime,
 			   const int maxSubsteps,
 			   const double atol, const double rtol,
 			   const std::size_t para,
-			   const double ratio, const bool showWarn) :
+			   const double ratio, const bool showWarn,
+			   const std::vector<std::string>& outVars) :
     DriverBase(theVars, startTime, stepSize, endTime, maxSubsteps,
-	       atol, rtol, para, ratio, showWarn) {
+	       atol, rtol, para, ratio, showWarn, outVars) {
 #ifdef INCDEBUG
     ePhotosynthesis::conditions::DynaPSCondition::setTop();
 #endif
     init(theVars->useC3);
+    if (outputVars.empty()) {
+      outputVars.push_back("Light intensity");
+      outputVars.push_back("PSIIabs");
+      outputVars.push_back("PSIabs");
+      outputVars.push_back("Vc");
+      outputVars.push_back("Vo");
+      outputVars.push_back("VPGA");
+      outputVars.push_back("Vstarch");
+      outputVars.push_back("Vsucrose");
+      outputVars.push_back("CO2AR");
+    }
 }
 void DynaPSDriver::setup() {
     // This part include the function to begin the simulation.
@@ -167,6 +179,7 @@ void DynaPSDriver::getResults() {
     inputVars->RedoxReg_RA_com = false;
     inputVars->XanCycle_BF_com = false;
 
+    delete dyna_int_con;
     IniModelCom(inputVars);
     //save FDC2
 }

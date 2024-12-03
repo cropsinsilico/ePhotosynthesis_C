@@ -35,12 +35,11 @@
 #define PARAM_TYPES_CM COND
 
 namespace ePhotosynthesis {
-namespace modules {
-class CM;
-}
+
+  FORWARD_DECLARE_CONDITION(CM);
+  
 namespace conditions {
 
-class EPSCondition;
 /**
  Class for holding the inputs to CM_mb
  */

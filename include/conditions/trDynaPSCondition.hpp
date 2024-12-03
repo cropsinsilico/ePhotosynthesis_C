@@ -34,9 +34,9 @@
 #define PARAM_TYPES_trDynaPS COND
 
 namespace ePhotosynthesis {
-namespace modules {
-class trDynaPS;
-}
+
+  FORWARD_DECLARE_CONDITION_TOP(trDynaPS);
+  
 namespace conditions {
 
 /**
@@ -44,7 +44,7 @@ namespace conditions {
  */
 class trDynaPSCondition : public ConditionBase<trDynaPSCondition, trDynaPSCondition, MODULE_trDynaPS> {
 public:
-    DECLARE_CONDITION_COMPOSITE(trDynaPS)
+    DECLARE_CONDITION_TOP(trDynaPS)
     trDynaPSCondition() : RROEA_con(new RROEACondition(this)), DynaPS_con(new DynaPSCondition(this)) {
         initMembers();
     }
@@ -84,10 +84,6 @@ public:
 
     RROEACondition* RROEA_con = nullptr;   // child Condition
     DynaPSCondition* DynaPS_con = nullptr;   // child Condition
-
-    void setParent(trDynaPSCondition* par) override {
-        (void)par;
-    }
 
 private:
     /**

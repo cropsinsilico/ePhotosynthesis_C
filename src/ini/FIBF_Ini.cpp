@@ -52,10 +52,11 @@ void FIBF::_initCalc(Variables *theVars, FIBFCondition* FIBF_con) {
     theVars->BF_Pool.k_r1 = theVars->FIBF_Pool.PQT;
 }
 
-void FIBF::_reset()  {
+void FIBF::_reset(const bool noChildren)  {
     ChlPSI = 0.;
     ChlT = 0.;
     ChlT2 = 0.;
     FIBF2FI_PQ = 0.;
     FIBF2FI_PQa = 0.;
+    ParentClass::_reset(noChildren);
 }

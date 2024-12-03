@@ -31,14 +31,16 @@
 #define PARENT_PR PS_PR
 #define NRATIO_PR 48
 #define PARAM_TYPES_PR COND, VEL
+#define CONNECT_PR PS
+#define COUNT_PR 10
+#define BOOL_MEMBERS_PR 
+#define CONTROL_PR (PS_RuBP, RuBP)
 
 namespace ePhotosynthesis {
-namespace modules {
-class PR;
-}
+  
+  FORWARD_DECLARE_CONDITION(PR);
+  
 namespace conditions {
-
-class PS_PRCondition;
 
 /**
  Class for holding the inputs to PR_mb
@@ -46,10 +48,6 @@ class PS_PRCondition;
 class PRCondition : public ConditionBase<PRCondition, PS_PRCondition, MODULE_PR> {
 public:
     DECLARE_CONDITION(PR)
-    PRCondition(PS_PRCondition* par = nullptr) {
-        setParent(par);
-	initMembers();
-    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -82,11 +80,11 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void _reset() {
+    static void _reset(const bool noChildren = false) {
+      ParentClass::_reset(noChildren);
       setPS_connect(false);
       setPS_RuBP(false);
     }
-    static const std::size_t count;  // size of the current serialized output
 };
 
     DEFINE_CONDITION_HEADER(PR);

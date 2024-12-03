@@ -20,22 +20,22 @@
 namespace ePhotosynthesis {
 namespace drivers {
   
-  void select_driver(const DriverType& driverChoice,
-		     const bool useC3, const bool x = true);
+  EPHOTO_API void select_driver(const DriverType& driverChoice,
+				const bool useC3, const bool x = true);
 
-  drivers::Driver* create_driver(const DriverType& driverChoice,
-				 Variables *theVars,
-				 const double begintime,
-				 const double stepsize,
-				 const double stoptime,
-				 const int maxSubSteps,
-				 const double abstol,
-				 const double reltol,
-				 const std::size_t para = 1,
-				 const double ratio = 1,
-				 const bool showWarn = false);
-  drivers::Driver* create_driver(const DriverType& driverChoice,
-				 Variables *theVars,
-				 const DriverParam& param);
+  EPHOTO_API drivers::Driver* create_driver(const DriverType& driverChoice,
+					    Variables *theVars,
+					    const double begintime,
+					    const double stepsize,
+					    const double stoptime,
+					    const int maxSubSteps,
+					    const double abstol,
+					    const double reltol,
+					    const std::size_t para = 1,
+					    const double ratio = 1,
+					    const bool showWarn = false);
+  EPHOTO_API drivers::Driver* create_driver(const DriverType& driverChoice,
+					    Variables *theVars,
+					    const DriverParam& param);
 }
 }

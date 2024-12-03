@@ -31,14 +31,16 @@
 #define PARENT_RuACT RA
 #define NRATIO_RuACT 16
 #define PARAM_TYPES_RuACT COND, POOL, RC, VEL
+#define CONNECT_RuACT EPS
+#define COUNT_RuACT 4
+#define CONTROL_RuACT (EPS_connect, RuBP)
+#define BOOL_MEMBERS_RuACT
 
 namespace ePhotosynthesis {
-namespace modules {
-class RuACT;
-}
-namespace conditions {
 
-class RACondition;
+  FORWARD_DECLARE_CONDITION(RuACT);
+  
+namespace conditions {
 
 /**
  Class for holding the inputs to RuACT_mb
@@ -46,10 +48,6 @@ class RACondition;
 class RuACTCondition : public ConditionBase<RuACTCondition, RACondition, MODULE_RuACT> {
 public:
     DECLARE_CONDITION(RuACT)
-    RuACTCondition(RACondition* par = nullptr) {
-        setParent(par);
-        initMembers();
-    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -80,12 +78,12 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void _reset() {
+    static void _reset(const bool noChildren = false) {
+      ParentClass::_reset(noChildren);
       setEPS_connect(false);
     }
     SET_GET_BOOL(EPS_connect, RuBP)
 
-    static const std::size_t count;  // size of the current serialized output
 };
 
     DEFINE_CONDITION_HEADER(RuACT);

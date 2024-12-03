@@ -76,11 +76,12 @@ arr RedoxRegCondition::_toArray() const {
     return rvec;
 }
 
-void RedoxRegCondition::_reset() {
+void RedoxRegCondition::_reset(const bool noChildren) {
     V6 = 0.;
     V9 = 0.;
     V13 = 0.;
     V16 = 0.;
+    ParentClass::_reset(noChildren);
 }
 
 void RedoxRegCondition::_clear() {

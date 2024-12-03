@@ -21,7 +21,7 @@ protected:
         driver = nullptr;
     }
     EPSCondition* ini() {
-        return driver->EPS_Init();
+        return driver->EPS_Ini();
     }
     arr MB(realtype t, N_Vector& u) {
         return driver->MB(t, u);

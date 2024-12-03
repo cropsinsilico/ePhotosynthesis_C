@@ -12,11 +12,31 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        sundials-version: [latest]
         os: [ubuntu-latest, macos-latest, windows-latest]
         with-coverage: [false, true]
         with-asan: [false, true]
         with-elf: [false]
         with-valgrind: [false, true]
+        include:
+          - sundials-version: "5.7.0"
+            os: ubuntu-latest
+            with-coverage: false
+            with-asan: false
+            with-elf: false
+            with-valgrind: false
+          - sundials-version: "6.7.0"
+            os: ubuntu-latest
+            with-coverage: false
+            with-asan: false
+            with-elf: false
+            with-valgrind: false
+          - sundials-version: "7.1.1"
+            os: ubuntu-latest
+            with-coverage: false
+            with-asan: false
+            with-elf: false
+            with-valgrind: false
         exclude:
           - os: windows-latest
             with-asan: true
@@ -68,6 +88,11 @@ jobs:
         shell: bash -el {0}
         run: |
           echo "USERPROFILE=${{ github.workspace }}" >> "$GITHUB_ENV"
+      - name: Install specific version of Sundials
+        if: matrix.sundials-version != 'latest'
+        shell: bash -l {0}
+        run: |
+          mamba install sundials==${{ matrix.sundials-version }} -y
       - name: Check mamba installation
         shell: bash -el {0}
         run: |

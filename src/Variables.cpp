@@ -22,9 +22,10 @@ Variables::Variables(SUNContext* ctx) :
 	throw  std::runtime_error("SUNContext is NULL");
     }
     select();
-    initValues();
     useC3 = usesC3();
+    initValues();
 }
+
 Variables::Variables(const Variables& other) :
   ValueSet(other) {
     copyInstance(other);
@@ -60,6 +61,29 @@ void Variables::__copyMembers(const Variables& other) {
     VfactorT = other.VfactorT;
     FluxTR = other.FluxTR;
     useC3 = other.useC3;
+}
+
+void Variables::finalizeInputs() {
+    // Conversion from Air_CO2 ppm to intercellular CO2
+    CO2_in = Air_CO2;
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+    CO2_in *= 0.7;
+#endif // MAKE_EQUIVALENT_TO_MATLAB
+  
+    // Conversion to umoles
+    CO2_cond = CO2_in / (3. * pow(10., 4.));
+#ifndef MAKE_EQUIVALENT_TO_MATLAB
+    if (!useC3)
+      CO2_cond *= 0.7;
+#endif // MAKE_EQUIVALENT_TO_MATLAB
+    
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+    // Conversion from W m^{-2} to u moles m^{-2} s^{-1}
+    PPFD_in = Radiation_PAR * 1.0e6 / 2.35e5;
+    TestLi = PPFD_in;
+#else // MAKE_EQUIVALENT_TO_MATLAB
+    TestLi = Radiation_PAR;
+#endif // MAKE_EQUIVALENT_TO_MATLAB
 }
 
 Variables* Variables::deepcopy() const {

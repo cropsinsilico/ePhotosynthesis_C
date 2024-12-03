@@ -31,24 +31,23 @@
 #define PARENT_SUCS CM
 #define NRATIO_SUCS 66
 #define PARAM_TYPES_SUCS COND, POOL, VEL
+#define CONNECT_SUCS
+#define COUNT_SUCS 8
+#define CONTROL_SUCS
+#define BOOL_MEMBERS_SUCS
 
 namespace ePhotosynthesis {
-namespace modules {
-class SUCS;
-}
+
+  FORWARD_DECLARE_CONDITION(SUCS);
+  
 namespace conditions {
 
-class CMCondition;
 /**
  Class for holding the inputs for SUCS_mb
  */
 class SUCSCondition : public ConditionBase<SUCSCondition, CMCondition, MODULE_SUCS> {
 public:
     DECLARE_CONDITION(SUCS)
-    SUCSCondition(CMCondition* par = nullptr) {
-        setParent(par);
-        initMembers();
-    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -80,9 +79,10 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void _reset() {}
+    static void _reset(const bool noChildren = false) {
+      ParentClass::_reset(noChildren);
+    }
 
-    static const std::size_t count;  // size of the current serialized output
 };
 
     DEFINE_CONDITION_HEADER(SUCS);

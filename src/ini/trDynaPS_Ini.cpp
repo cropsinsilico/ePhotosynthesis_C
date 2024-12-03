@@ -32,6 +32,8 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
+std::size_t trDynaPSCondition::count = 0;
+
 DEFINE_MODULE_COMPOSITE(trDynaPS);
 
 void trDynaPS::_initOrig(Variables *theVars,

@@ -31,11 +31,16 @@
 #define NRATIO_RedoxReg 0
 #define CHILDREN_RedoxReg RA
 #define PARAM_TYPES_RedoxReg COND, VEL
+#define CONNECT_RedoxReg
+#define COUNT_RedoxReg
+#define CONTROL_RedoxReg
+#define BOOL_MEMBERS_RedoxReg
+#define STATIC_MEMBERS_RedoxReg V6, V9, V13, V16
 
 namespace ePhotosynthesis {
-namespace modules {
-class RedoxReg;
-}
+
+  FORWARD_DECLARE_CONDITION_TOP(RedoxReg);
+  
 namespace conditions {
 
 /**
@@ -43,7 +48,7 @@ namespace conditions {
  */
 class RedoxRegCondition : public ConditionBase<RedoxRegCondition, RedoxRegCondition, MODULE_RedoxReg> {
 public:
-    DECLARE_CONDITION_COMPOSITE(RedoxReg)
+    DECLARE_CONDITION_TOP(RedoxReg)
     RedoxRegCondition() : RA_con(new RACondition()) {
       initMembers();
     }
@@ -70,8 +75,6 @@ public:
       @param offset The index in vec to start creating the object from
       */
     RedoxRegCondition(const arr &vec, const std::size_t offset = 0);
-
-    void setParent(RedoxRegCondition* par) override {(void)par;}
 
     RACondition* RA_con = nullptr;     // child Condition
 

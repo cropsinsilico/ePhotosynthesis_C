@@ -31,14 +31,16 @@
 #define PARENT_XanCycle DynaPS
 #define NRATIO_XanCycle 4
 #define PARAM_TYPES_XanCycle COND, VEL
+#define CONNECT_XanCycle
+#define COUNT_XanCycle 4
+#define CONTROL_XanCycle
+#define BOOL_MEMBERS_XanCycle
 
 namespace ePhotosynthesis {
-namespace modules {
-class XanCycle;
-}
-namespace conditions {
 
-class DynaPSCondition;
+  FORWARD_DECLARE_CONDITION(XanCycle);
+  
+namespace conditions {
 
 /**
  Class to hold the inputs to XanCycle_mb
@@ -46,10 +48,6 @@ class DynaPSCondition;
 class XanCycleCondition : public ConditionBase<XanCycleCondition, DynaPSCondition, MODULE_XanCycle> {
 public:
     DECLARE_CONDITION(XanCycle)
-    XanCycleCondition(DynaPSCondition* par = nullptr) {
-        setParent(par);
-        initMembers();
-    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -81,9 +79,10 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void _reset() {}
+    static void _reset(const bool noChildren = false) {
+      ParentClass::_reset(noChildren);
+    }
 
-    static const std::size_t count;  // size of the current serialized output
 };
 
     DEFINE_CONDITION_HEADER(XanCycle);

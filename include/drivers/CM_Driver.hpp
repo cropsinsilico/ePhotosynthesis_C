@@ -44,7 +44,8 @@ public:
     CMDriver(Variables *theVars, const double startTime, const double stepSize, const double endTime,
              const int maxSubsteps, const double atol, const double rtol,
 	     const std::size_t para = 0, const double ratio = 0,
-             const bool showWarn = false);
+             const bool showWarn = false,
+	     const std::vector<std::string>& outVars = {});
 
     /**
       \copydoc drivers::Driver::setup

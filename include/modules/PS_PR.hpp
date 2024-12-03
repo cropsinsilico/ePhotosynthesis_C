@@ -41,42 +41,6 @@ namespace modules {
 class PS_PR : public MODULE_BASE(PS_PR) {
 public:
     DECLARE_MODULE_COMPOSITE(PS_PR)
-private:
-
-    /**
-      Function to calculate the dy/dt values for the PS_PRCondition at the given time stamp.
-
-      \param t The current timestamp
-      \param PS_PRs PS_PRCondition object giving the input parameters
-      \param theVars The global variables
-      \return A vector containing the dy/dt values for this time stamp.
-      */
-    static arr _MB(const double t, const conditions::PS_PRCondition* const PS_PRs, Variables *theVars);
-
-    /**
-      Function to calculate the dy/dt values for the PS_PRCondition at the given time stamp.
-
-      \param t The current timestamp
-      \param PS_PRs PS_PRCondition object giving the input parameters
-      \param theVars The global variables
-      \return A PS_PRCondition instance containing the dy/dt values for this time stamp.
-      */
-    static conditions::PS_PRCondition* _MB_con(const double t,
-                                               const conditions::PS_PRCondition* const PS_PRs,
-                                               Variables *theVars);
-
-    /**
-      Calculate the Rates of PS_PR based on the input PS_PRCondition.
-
-      \param t The current timestamp
-      \param PS_PRs PS_PRCondition object giving the input parameters
-      \param theVars The global variables
-      */
-    static void _Rate(const double t, const conditions::PS_PRCondition* const PS_PRs, Variables *theVars) {
-        (void)t;
-        (void)PS_PRs;
-        (void)theVars;
-    }
 };
 
   DEFINE_MODULE_COMPOSITE_HEADER(PS_PR);

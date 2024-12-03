@@ -58,40 +58,11 @@ public:
       */
     static std::size_t getN() {return N;}
 private:
-    /**
-      Function to calculate the dy/dt values for the PSCondition at the given time stamp.
-
-      \param t The current timestamp
-      \param PSs PSCondition object giving the input parameters
-      \param theVars The global variables
-      \return A vector containing the dy/dt values for this time stamp.
-      */
-    static arr _MB(const double t, const conditions::PSCondition* const PSs, Variables *theVars);
-
-    /**
-      Function to calculate the dy/dt values for the PSCondition at the given time stamp.
-
-      \param t The current timestamp
-      \param PSs PSCondition object giving the input parameters
-      \param theVars The global variables
-      \return A PSCondition instance containing the dy/dt values for this time stamp.
-      */
-    static conditions::PSCondition* _MB_con(const double t, const conditions::PSCondition* const PSs,
-                                            Variables *theVars);
-
-    /**
-      Calculate the Rates of PS based on the input PSCondition.
-
-      \param t The current timestamp
-      \param PSs PSCondition object giving the input parameters
-      \param theVars The global variables
-      */
-    static void _Rate(const double t, const conditions::PSCondition* const PSs, Variables *theVars);
 
     /**
       Reset the static member variables to their default values.
       */
-    static void _reset();
+    static void _reset(const bool noChildren = false);
     SET_GET(PiTc)
     SET_GET(V1)
     SET_GET(KM12)
@@ -210,8 +181,6 @@ private:
     SET_GET(_NADPH)
 
     static arr Param;
-    static double TIME;    // The timestamp of the most recent call to _Rate
-    static std::size_t N;  // The current size of the PS TimeSeries
 };
 
   DEFINE_MODULE_HEADER(PS);

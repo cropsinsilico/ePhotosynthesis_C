@@ -12,3 +12,4 @@
 - Use of macros for conditions
 - Tests for dynamic inputs of variables from files
 - Remove velocity output
+- Add method for cleaning up static members created via new (e.g. classes & added_classes in modules)

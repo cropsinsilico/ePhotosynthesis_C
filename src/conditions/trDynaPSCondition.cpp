@@ -29,8 +29,6 @@
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
 
-std::size_t trDynaPSCondition::count = 0;
-
 DEFINE_CONDITION_COMPOSITE(trDynaPS);
 
 trDynaPSCondition::trDynaPSCondition(const trDynaPSCondition* const other) {

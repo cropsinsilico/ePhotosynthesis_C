@@ -31,14 +31,16 @@
 #define PARENT_RROEA trDynaPS
 #define NRATIO_RROEA 0
 #define PARAM_TYPES_RROEA COND, POOL, KE, RC, VEL
+#define CONNECT_RROEA
+#define COUNT_RROEA 10
+#define CONTROL_RROEA
+#define BOOL_MEMBERS_RROEA
 
 namespace ePhotosynthesis {
-namespace modules {
-class RROEA;
-}
-namespace conditions {
 
-class trDynaPSCondition;
+  FORWARD_DECLARE_CONDITION(RROEA);
+  
+namespace conditions {
 
 /**
  Class for holding the inputs to RROEA_mb
@@ -46,10 +48,6 @@ class trDynaPSCondition;
 class RROEACondition : public ConditionBase<RROEACondition, trDynaPSCondition, MODULE_RROEA> {
 public:
     DECLARE_CONDITION(RROEA)
-    RROEACondition(trDynaPSCondition* par = nullptr) {
-        setParent(par);
-        initMembers();
-    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -78,9 +76,10 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void _reset() {}
+    static void _reset(const bool noChildren = false) {
+      ParentClass::_reset(noChildren);
+    }
 
-    static const std::size_t count; // size of the current serialized output
 };
 
     DEFINE_CONDITION_HEADER(RROEA);

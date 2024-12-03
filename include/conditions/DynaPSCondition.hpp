@@ -35,12 +35,11 @@
 #define PARAM_TYPES_DynaPS COND
 
 namespace ePhotosynthesis {
-namespace modules {
-class DynaPS;
-}
+
+  FORWARD_DECLARE_CONDITION(DynaPS);
+  
 namespace conditions {
 
-class trDynaPSCondition;
 /**
  Class for holding inputs to DynaPS_mb
  */

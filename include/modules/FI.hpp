@@ -42,6 +42,7 @@ class FI : public MODULE_BASE(FI) {
 public:
     DECLARE_MODULE(FI)
     SET_GET_BOOL_MODULE(BF_connect, conditions::FI)
+    SET_GET(cpsii)
 private:
 
     /**
@@ -52,48 +53,15 @@ private:
       */
     static conditions::FICondition* _init(Variables *theVars);
 
-    /**
-      Function to calculate the dy/dt values for the FICondition at the given time stamp.
-
-      \param t The current timestamp
-      \param FI_Con FICondition object giving the input parameters
-      \param theVars The global variables
-      \return A vector containing the dy/dt values for this time stamp.
-      */
-    static arr _MB(const double t, const conditions::FICondition* const FI_Con, Variables *theVars);
-
-    /**
-      Function to calculate the dy/dt values for the FICondition at the given time stamp.
-
-      \param t The current timestamp
-      \param FI_Con FICondition object giving the input parameters
-      \param theVars The global variables
-      \return A FICondition instance containing the dy/dt values for this time stamp.
-      */
-    static conditions::FICondition* _MB_con(const double t,
-                                            const conditions::FICondition* FI_Con,
-                                            Variables *theVars);
-    /**
-      Calculate the Rates of FI based on the input FICondition.
-
-      \param t The current timestamp
-      \param FI_Con FICondition object giving the input parameters
-      \param theVars The global variables
-      */
-    static void _Rate(const double t, const conditions::FICondition* const FI_Con, Variables *theVars);
-    SET_GET(cpsii)
-
-    /**
-      Reset the static member variables to their default values.
-      */
-    static void _reset() {
+    /** \copydoc ValueSetBase::_reset */
+    static void _reset(const bool noChildren = false) {
         BF_connect = false;
         cpsii = 0.;
         N = 1;
         TIME = 0.;
+	ParentClass::_reset(noChildren);
     }
-    static double TIME;    // The timestamp of the most recent call to _Rate
-    static std::size_t N;  // The current size of the FI TimeSeries
+
 };
 
   DEFINE_MODULE_HEADER(FI);

@@ -48,46 +48,15 @@ public:
     SET_GET_BOOL_MODULE(PS_connect, conditions::BF)
     SET_GET_BOOL_MODULE(RROEA_connect, conditions::BF)
 private:
-    /**
-      Function to calculate the dy/dt values for the BFCondition at the given time stamp.
-
-      \param t The current timestamp
-      \param BF_con BFCondition object giving the input parameters
-      \param theVars The global variables
-      \return A vector containing the dy/dt values for this time stamp.
-      */
-    static arr _MB(const double t, const conditions::BFCondition* const BF_con, Variables *theVars);
-
-    /**
-      Function to calculate the dy/dt values for the BFCondition at the given time stamp.
-
-      \param t The current timestamp
-      \param BF_con BFCondition object giving the input parameters
-      \param theVars The global variables
-      \return A BFCondition instance containing the dy/dt values for this time stamp.
-      */
-    static conditions::BFCondition* _MB_con(const double t, const conditions::BFCondition* const BF_con,
-                                            Variables *theVars);
-
-    /**
-      Calculate the Rates of BF based on the input BFCondition.
-
-      \param t The current timestamp
-      \param BF_con BFCondition object giving the input parameters
-      \param theVars The global variables
-      */
-    static void _Rate(const double t, const conditions::BFCondition* const BF_con, Variables *theVars);
 
     SET_GET(cATPsyn)
     SET_GET(CPSi)
     SET_GET(cNADPHsyn)
-    static double TIME;    // The timestamp of the most recent call to _Rate
-    static std::size_t N;  // The current size of the BF TimeSeries
 
     /**
       Reset the static member variables to their default values.
       */
-    static void _reset() {
+    static void _reset(const bool noChildren = false) {
         setcATPsyn(0.);
         setCPSi(0.);
         setcNADPHsyn(0.);
@@ -98,6 +67,7 @@ private:
         setRROEA_connect(false);
         N = 0;
         TIME = 0.;
+	ParentClass::_reset(noChildren);
     }
 };
 

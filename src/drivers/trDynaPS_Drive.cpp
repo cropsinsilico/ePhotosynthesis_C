@@ -43,10 +43,22 @@ trDynaPSDriver::trDynaPSDriver(Variables *theVars, const double startTime,
 			       const int maxSubsteps,
 			       const double atol, const double rtol,
 			       const std::size_t para,
-			       const double ratio, const bool showWarn) :
+			       const double ratio, const bool showWarn,
+			       const std::vector<std::string>& outVars) :
     DriverBase(theVars, startTime, stepSize, endTime, maxSubsteps,
-	       atol, rtol, para, ratio, showWarn) {
+	       atol, rtol, para, ratio, showWarn, outVars) {
     init(theVars->useC3);
+    if (outputVars.empty()) {
+      outputVars.push_back("Light intensity");
+      outputVars.push_back("Vc");
+      outputVars.push_back("Vo");
+      outputVars.push_back("VPGA");
+      outputVars.push_back("VT3P");
+      outputVars.push_back("Vstarch");
+      outputVars.push_back("Vt_glycerate");
+      outputVars.push_back("Vt_glycolate");
+      outputVars.push_back("CO2AR");
+    }
 }
 void trDynaPSDriver::setup() {
 

@@ -35,7 +35,7 @@ protected:
     arr getResultsVal() {
         return driver->results;
     }
-    trDynaPSDriver* driver = nullptr;
+    trDynaPSDriver* driver;
 };
 
 namespace {

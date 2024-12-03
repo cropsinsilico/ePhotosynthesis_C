@@ -271,12 +271,13 @@ int main(int argc, const char* argv[]) {
 	      std::cerr << "initDefaults: " << *m << ", " << *pt << ", " <<
 		useC3 << ", " << param_files[*pt][*m] << std::endl;
 	      Variables::initDefaults(*m, *pt, useC3, param_files[*pt][*m]);
+	      inputs.erase(inName);
 	    }
 	  }
 	}
 
 	SUNContext context;
-	if (SUNContext_Create(NULL, &context) < 0) {
+	if (SUNContext_Create(0, &context) < 0) {
 	  std::cout << "SUNContext_Create failed" << std::endl;
 	  throw std::runtime_error("SUNContext_Create");
 	}

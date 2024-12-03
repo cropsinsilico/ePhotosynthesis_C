@@ -42,13 +42,17 @@ EPSDriver::EPSDriver(Variables *theVars, const double startTime,
 		     const int maxSubsteps,
 		     const double atol, const double rtol,
 		     const std::size_t para, const double ratio,
-		     const bool showWarn) :
+		     const bool showWarn,
+		     const std::vector<std::string>& outVars) :
     DriverBase(theVars, startTime, stepSize, endTime, maxSubsteps,
-	       atol, rtol, para, ratio, showWarn) {
+	       atol, rtol, para, ratio, showWarn, outVars) {
 #ifdef INCDEBUG
     ePhotosynthesis::conditions::EPSCondition::setTop();
 #endif
     init(theVars->useC3);
+    if (outputVars.empty()) {
+      outputVars.push_back("CO2AR");
+    }
 }
 void EPSDriver::setup() {
     //Ca = theVars->TestCa;

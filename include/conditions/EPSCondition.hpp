@@ -34,12 +34,11 @@
 #define PARAM_TYPES_EPS COND
 
 namespace ePhotosynthesis {
-namespace modules {
-class EPS;
-}
+
+  FORWARD_DECLARE_CONDITION(EPS);
+  
 namespace conditions {
 
-class RACondition;
 /**
  Class for holding the inputs to EPS_mb
  */

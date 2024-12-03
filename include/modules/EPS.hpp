@@ -41,42 +41,6 @@ namespace modules {
 class EPS : public MODULE_BASE(EPS) {
 public:
     DECLARE_MODULE_DRIVER(EPS);
-private:
-
-    /**
-      Function to calculate the dy/dt values for the EPSCondition at the given time stamp.
-
-      \param t The current timestamp
-      \param EPS_Con EPSCondition object giving the input parameters
-      \param theVars The global variables
-      \return A vector containing the dy/dt values for this time stamp.
-      */
-    static arr _MB(const double t, const conditions::EPSCondition* const EPS_Con, Variables *theVars);
-
-    /**
-      Function to calculate the dy/dt values for the EPSCondition at the given time stamp.
-
-      \param t The current timestamp
-      \param EPS_Con EPSCondition object giving the input parameters
-      \param theVars The global variables
-      \return A EPSCondition instance containing the dy/dt values for this time stamp.
-      */
-    static conditions::EPSCondition* _MB_con(const double t,
-                                             const conditions::EPSCondition* const EPS_Con,
-                                             Variables *theVars);
-
-    /**
-      Calculate the Rates of EPS based on the input EPSCondition.
-
-      \param t The current timestamp
-      \param EPS_Con EPSCondition object giving the input parameters
-      \param theVars The global variables
-      */
-    static void _Rate(const double t, const conditions::EPSCondition* const EPS_Con, Variables *theVars) {
-        (void)t;
-        (void)EPS_Con;
-        (void)theVars;
-    }
 };
 
   DEFINE_MODULE_COMPOSITE_HEADER(EPS);

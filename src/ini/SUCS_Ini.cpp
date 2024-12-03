@@ -371,7 +371,7 @@ void SUCS::_initOrig(Variables *theVars, SUCSCondition* SUCS_Con) {
     
 }
 
-void SUCS::_reset() {
+void SUCS::_reset(const bool noChildren) {
     SUCS::KE501 = 0.;
     SUCS::KE51 = 0.;
     SUCS::KE52 = 0.;
@@ -454,5 +454,6 @@ void SUCS::_reset() {
     SUCS::SUCSV58 = 0.;
     SUCS::TIME = 0.;
     SUCS::N = 0;
-    conditions::SUCSCondition::reset();
+    ParentClass::_reset(noChildren);
+    // conditions::SUCSCondition::reset();
 }

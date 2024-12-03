@@ -44,9 +44,10 @@ Driver::Driver(Variables *theVars, const double startTime,
 	       const int maxSubsteps,
 	       const double atol, const double rtol,
 	       const std::size_t para, const double ratio,
-	       const bool showWarn) :
+	       const bool showWarn,
+	       const std::vector<std::string>& outVars) :
   DriverParam(startTime, stepSize, endTime, maxSubsteps,
-	      atol, rtol, para, ratio, showWarn) {
+	      atol, rtol, para, ratio, showWarn, outVars) {
   this->context = theVars->context;
   this->inputVars = theVars;
   initialStep = stepSize;
@@ -125,6 +126,7 @@ arr Driver::run() {
             time = t;
 	    _dumpStep = true;
             getResults();
+	    getOutputVars(inputVars);
         }
 
         SUNNonlinSolFree(NLS);
@@ -155,6 +157,59 @@ void Driver::outputParam(const std::string& fname_base) {
     }
     outputParam(fname_base_cpy + "init.txt",
 		fname_base_cpy + "final.txt");
+}
+
+void Driver::getOutputVars(Variables* inputVars) {
+    output.clear();
+    for (typename std::vector<std::string>::const_iterator it = outputVars.begin();
+	 it != outputVars.end(); it++) {
+	output[*it] = getVar(inputVars, *it);
+    }
+}
+void Driver::writeOutputTable(std::ostream& s) const {
+    typename std::map<std::string, double>::const_iterator it = output.begin();
+    if (output.size() > 1) {
+	s << it->first;
+	it++;
+	for (; it != output.end(); it++)
+	    s << "," << it->first;
+	s << std::endl;
+	it = output.begin();
+    }
+    s << it->second;
+    it++;
+    for (; it != output.end(); it++)
+	s << "," << it->second;
+    s << std::endl;
+}
+
+double Driver::getVar(Variables* inputVars, const std::string& k) {
+    if (k == "Light intensity")
+	return inputVars->TestLi;
+    else if (k == "Vc")
+	return inputVars->RuACT_Vel.v6_1 * inputVars->AVR;
+    else if (k == "Vo")
+	return inputVars->RuACT_Vel.v6_2 * inputVars->AVR;
+    else if (k == "VPGA")
+	return inputVars->SUCS_Vel.vpga_use * inputVars->AVR;
+    else if (k == "Vstarch")
+	return (inputVars->PS_Vel.v23 - inputVars->PS_Vel.v25) * inputVars->AVR;
+    else if (k == "Vsucrose")
+	return inputVars->SUCS_Vel.vdhap_in * inputVars->AVR;
+    else if (k == "VT3P")
+	return (inputVars->PS_Vel.v31 + inputVars->PS_Vel.v33) * inputVars->AVR;
+    else if (k == "Vt_glycerate")
+	return inputVars->PR_Vel.v1in * inputVars->AVR;
+    else if (k == "Vt_glycolate")
+	return inputVars->PR_Vel.v2out * inputVars->AVR;
+    else if (k == "PSIIabs")
+	return inputVars->FI_Vel.vP680_d;
+    else if (k == "PSIabs")
+	return inputVars->BF_Vel.Vbf11;
+    else if (k == "CO2AR")
+	return TargetFunVal(inputVars);
+    else
+	return inputVars->getVar(k);
 }
 
 void Driver::dump(const std::string& filename, const Variables* theVars,

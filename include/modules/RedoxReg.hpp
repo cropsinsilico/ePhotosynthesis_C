@@ -44,51 +44,21 @@ public:
     SET_GET_BOOL_NOSKIP(trDynaPS2RedReg_cal)
 private:
 
-    /**
-      Calculate the Rates of RedoxReg based on the input RedoxRegCondition.
-
-      \param t The current timestamp
-      \param RedoxReg_Con RedoxRegCondition object giving the input parameters
-      \param theVars The global variables
-      */
+    /** \copydoc ModuleBase::_Rate */
     static void _Rate(const double t, const conditions::RedoxRegCondition* RedoxReg_Con,
                       Variables *theVars);
 
-    /**
-      Function to calculate the dy/dt values for the RedoxRegCondition at the given time stamp.
-
-      \param t The current timestamp
-      \param RedoxReg_Con RedoxRegCondition object giving the input parameters
-      \param theVars The global variables
-      \return A vector containing the dy/dt values for this time stamp.
-      */
-    static arr _MB(const double t, const conditions::RedoxRegCondition* RedoxReg_Con,
-                   Variables *theVars);
-
-    /**
-      Function to calculate the dy/dt values for the RedoxRegCondition at the given time stamp.
-
-      \param t The current timestamp
-      \param RedoxReg_Con RedoxRegCondition object giving the input parameters
-      \param theVars The global variables
-      \return A RedoxRegCondition instance containing the dy/dt values for this time stamp.
-      */
-    static conditions::RedoxRegCondition* _MB_con(const double t,
-                                                  const conditions::RedoxRegCondition* RedoxReg_Con,
-                                                  Variables *theVars);
-
     static int RedoxReg_FPercent(N_Vector u, N_Vector f_val, void *user_data);
 
-    /**
-      Reset the static member variables to their default values.
-      */
-    static void _reset() {
+    /** \copydoc ValueSetBase::_reset */
+    static void _reset(const bool noChildren = false) {
         RedoxReg_VMAX13 = 0.;
         RedoxReg_VMAX16 = 0.;
         RedoxReg_VMAX6 = 0.;
         RedoxReg_VMAX9 = 0.;
         TIME = 0.;
         N = 1;
+	ParentClass::_reset(noChildren);
     }
     SET_GET(RedoxReg_VMAX13)
     SET_GET(RedoxReg_VMAX16)

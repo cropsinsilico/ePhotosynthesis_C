@@ -52,7 +52,7 @@ public:
     DriverParam() :
       start(0.0), step(1.0), endtime(5000.0),
       maxSubSteps(750), abstol(1e-5), reltol(1e-4),
-      ParaNum(1), Ratio(1) {}
+      ParaNum(1), Ratio(1), outputVars() {}
     
     /**
        Constructor.
@@ -70,16 +70,19 @@ public:
          If `true` then all warning messages are sent. If `false`, the
 	 default, warning messages are not sent, reducing clutter in
 	 production output.
+       \param outVars Set of variables that should be output by the driver.
      */
     DriverParam(const double startTime, const double stepSize,
 		const double endTime, const int maxSubsteps,
 		const double atol, const double rtol,
 		const std::size_t para, const double ratio,
-		const bool showWarn = false) :
+		const bool showWarn = false,
+		const std::vector<std::string>& outVars = {}) :
       start(startTime), step(stepSize), endtime(endTime),
       maxSubSteps(maxSubsteps), abstol(atol), reltol(rtol),
       ParaNum(para), Ratio(ratio) {
 	this->showWarnings = showWarn;
+	outputVars.insert(outputVars.begin(), outVars.begin(), outVars.end());
     }
     double start;        /**< The timestamp to start the solver at. */
     double step;         /**< The optimal step size for the solver to use. */
@@ -89,6 +92,7 @@ public:
     realtype reltol;     /**< The relative tolerance the ODE solver should use. */
     std::size_t ParaNum; /**< Index of parameter that should be scaled by Ratio */
     double Ratio;        /**< Ratio to scale selected parameter by */
+    std::vector<std::string> outputVars; /**< Names of variables that should be output by the driver */
     static bool showWarnings; /**< Whether or not to send solver warnings to stdout. */
 };
   
@@ -177,6 +181,24 @@ public:
 	      const Variables* theVars = nullptr,
 	      const ValueSet_t* con = nullptr,
 	      const bool is_init = false);
+
+    /**
+       Get output variables.
+     */
+    void getOutputVars(Variables* inputVars);
+
+    /**
+       Write the output to a stream as a table.
+       \param[in, out] s Stream to write table to.
+    */
+    void writeOutputTable(std::ostream& s) const;
+
+    /**
+       Get a variable given the current state defined by inputVars.
+       \param[in] inputVars Current variable state.
+       \param[in] k Name of variable to return.
+     */
+    double getVar(Variables* inputVars, const std::string& k);
   
     /**
       Runs the solver one more time on the intermediate results to get the solution at the end time
@@ -245,11 +267,13 @@ protected:
       \param showWarn Whether or not to send solver warnings to stdout. If `true` then all
              warning messages are sent. If `false`, the default, warning messages are not sent,
              reducing clutter in production output.
+       \param outVars Set of variables that should be output by the driver.
       */
     Driver(Variables *theVars, const double startTime, const double stepSize, const double endTime,
            const int maxSubsteps, const double atol, const double rtol,
 	   const std::size_t para, const double ratio,
-           const bool showWarn = false);
+           const bool showWarn = false,
+	   const std::vector<std::string>& outVars = {});
     /**
        Construct the driver from a set of driver parameters.
        \param[in, out] theVars Instance of the Variables class, which
@@ -259,7 +283,8 @@ protected:
     Driver(Variables *theVars, const DriverParam& param) :
       Driver(theVars, param.start, param.step, param.endtime,
 	     param.maxSubSteps, param.abstol, param.reltol,
-	     param.ParaNum, param.Ratio, param.showWarnings) {}
+	     param.ParaNum, param.Ratio, param.showWarnings,
+	     param.outputVars) {}
     /**
       Does the computations and generates the results for each step or sub-step in the solver.
       A pointer to this function is passed to the ODE solver. The API of the function cannot change
@@ -276,6 +301,7 @@ protected:
     double initialStep;         // used to store the initial step size
     realtype *intermediateRes;
     arr results;
+    std::map<std::string, double> output;
     realtype time;
     CalcData* data;
     double maxStep;
@@ -354,9 +380,11 @@ protected:
 	       const double endTime, const int maxSubsteps,
 	       const double atol, const double rtol,
 	       const std::size_t para, const double ratio,
-	       const bool showWarn = false) :
+	       const bool showWarn = false,
+	       const std::vector<std::string>& outVars = {}) :
       Driver(theVars, startTime, stepSize, endTime,
-	     maxSubsteps, atol, rtol, para, ratio, showWarn) {}
+	     maxSubsteps, atol, rtol, para, ratio, showWarn,
+	     outVars) {}
 
 };
   
@@ -397,7 +425,7 @@ private:								\
     name ## Driver(theVars, param.start, param.step, param.endtime,	\
 		   param.maxSubSteps, param.abstol, param.reltol,	\
 		   param.ParaNum, param.Ratio,				\
-		   param.showWarnings) {}				\
+		   param.showWarnings, param.outputVars) {}		\
   name ## Driver::~name ## Driver() {					\
     VARS_CLASS_CALL(reset, (), name, MOD);				\
   }									\
@@ -405,7 +433,6 @@ private:								\
     return VARS_CLASS_CALL(select, (x), name, MOD);			\
   }									\
   void name ## Driver::enableC3(const bool x) {			\
-    Variables::enableC3(x);						\
     return VARS_CLASS_CALL(enableC3, (x), name, MOD);			\
   }									\
   ValueSet_t* name ## Driver::currentConditions(realtype *x) {		\

@@ -42,45 +42,9 @@ namespace modules {
 class trDynaPS : public MODULE_BASE(trDynaPS) {
 public:
     DECLARE_MODULE_DRIVER(trDynaPS)
-private:
-
-    /**
-      Function to calculate the dy/dt values for the trDynaPSCondition at the given time stamp.
-
-      \param t The current timestamp
-      \param trDynaPS_con trDynaPSCondition object giving the input parameters
-      \param theVars The global variables
-      \return A vector containing the dy/dt values for this time stamp.
-      */
-    static arr _MB(const double t, const conditions::trDynaPSCondition* trDynaPS_con,
-                   Variables *theVars);
-
-    /**
-      Function to calculate the dy/dt values for the trDynaPSCondition at the given time stamp.
-
-      \param t The current timestamp
-      \param trDynaPS_con trDynaPSCondition object giving the input parameters
-      \param theVars The global variables
-      \return A trDynaPSCondition instance containing the dy/dt values for this time stamp.
-      */
-    static conditions::trDynaPSCondition* _MB_con(const double t,
-                                                  const conditions::trDynaPSCondition* trDynaPS_con,
-                                                  Variables *theVars);
-
-    /**
-      Calculate the Rates of trDynaPS based on the input trDynaPSCondition.
-
-      \param t The current timestamp
-      \param trDynaPS_con trDynaPSCondition object giving the input parameters
-      \param theVars The global variables
-      */
-    static void _Rate(const double t, const conditions::trDynaPSCondition* trDynaPS_con,
-                      Variables *theVars) {
-        (void)t;
-        (void)trDynaPS_con;
-        (void)theVars;
-    }
 };
 
+  DEFINE_MODULE_COMPOSITE_HEADER(trDynaPS);
+  
 }  // namespace modules
 }  // namespace ePhotosynthesis

@@ -41,8 +41,10 @@ void ePhotosynthesis::Condition(double t, Variables *theVars) {
     (void)t;
     // This variable is transfered from PSInitial for modificatin of V16, the rate of ATP synthesis.
     double CO2Temp = theVars->CO2_in;//280;          // CO2 concentation  // ppm
+#ifndef MAKE_EQUIVALENT_TO_MATLAB
     if (!theVars->useC3)
         CO2Temp *= 0.7;
+#endif // MAKE_EQUIVALENT_TO_MATLAB
     const double O2Temp = 0.21;          // O2 concentration  //default is 0.21, i.e. 21//.
 
     theVars->CO2_cond = CO2Temp / (3. * pow(10., 4.));

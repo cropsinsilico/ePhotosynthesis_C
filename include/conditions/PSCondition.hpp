@@ -32,14 +32,16 @@
 #define PARENT_PS PS_PR
 #define NRATIO_PS 103
 #define PARAM_TYPES_PS COND, VEL
+#define CONNECT_PS
+#define COUNT_PS 12
+#define CONTROL_PS (C3, ADPG)
+#define BOOL_MEMBERS_PS
 
 namespace ePhotosynthesis {
-namespace modules {
-class PS;
-}
-namespace conditions {
 
-class PS_PRCondition;
+  FORWARD_DECLARE_CONDITION(PS);
+  
+namespace conditions {
 
 /**
  Class for holding the inputs to PS_mb
@@ -47,10 +49,6 @@ class PS_PRCondition;
 class PSCondition : public ConditionBase<PSCondition, PS_PRCondition, MODULE_PS> {
 public:
     DECLARE_CONDITION(PS)
-    PSCondition(PS_PRCondition* par = nullptr) {
-        setParent(par);
-	initMembers();
-    }
     /**
       Copy constructor that makes a deep copy of the given object
 
@@ -80,11 +78,11 @@ private:
     /**
       Reset any static data members to their initial state
       */
-    static void _reset() {
+    static void _reset(const bool noChildren = false) {
+      ParentClass::_reset(noChildren);
       setC3(false);
     }
 
-    static const std::size_t count;  // size of the current serialized output
 };
 
     DEFINE_CONDITION_HEADER(PS);

@@ -38,6 +38,7 @@ bool CM::TestSucPath = false;
 DEFINE_MODULE_COMPOSITE(CM);
 DEFINE_DEFAULT_INITALT(CM)
 
-void CM::_reset() {
+void CM::_reset(const bool noChildren) {
     CM::TestSucPath = false;
+    ParentClass::_reset(noChildren);
 }

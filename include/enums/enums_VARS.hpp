@@ -15,8 +15,11 @@ enum class ENUM_ALL_VARS : int {
     ADP                 ,
     Pi                  ,  //!< [CALC] Pi used when useC3 is true and EPS module selected
     TestATPCost         ,  //!< Extra ATP cost when useC3 is false (in units per area)
-    CO2_in              ,  //!< [ALIASES={Air_CO2,CO2}] Air CO2 concentration in ppm
-    TestLi              ,  //!< [ALIASES={PAR,Radiation_PAR}] Light intensity (input in units of W m^{-2} converted to umoles m^{-2} s^{-1} during runtime)
+    Air_CO2             ,  //!< [ALIASES={CO2}] Air CO2 concentration in ppm
+    CO2_in              ,  //!< [CALC] Intercellular CO2
+    Radiation_PAR       ,  //!< [ALIASES={PAR}] Light intensity (in units of W m^{-2})
+    PPFD_in             ,  //!< [CALC] Light intensity (in units of umoles m^{-2} s^{-1})
+    TestLi              ,  //!< [CALC] Light intensity (in units of umoles m^{-2} s^{-1})
     PS2BF_Pi            ,  //!< Pi Shared by PS & BF modules when useC3 is false and EPS module is selected
     PS_PR_Param         ,  //!< Seems to unused currently
     Tp                  ,  //!< [ALIASES={Temp,WeatherTemperature}] Temperature
@@ -51,8 +54,11 @@ enum ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type : int {
     ADP                 ,
     Pi                  ,  //!< [CALC] Pi used when useC3 is true and EPS module selected
     TestATPCost         ,  //!< Extra ATP cost when useC3 is false (in units per area)
-    CO2_in              ,  //!< [ALIASES={Air_CO2,CO2}] Air CO2 concentration in ppm
-    TestLi              ,  //!< [ALIASES={PAR,Radiation_PAR}] Light intensity (input in units of W m^{-2} converted to umoles m^{-2} s^{-1} during runtime)
+    Air_CO2             ,  //!< [ALIASES={CO2}] Air CO2 concentration in ppm
+    CO2_in              ,  //!< [CALC] Intercellular CO2
+    Radiation_PAR       ,  //!< [ALIASES={PAR}] Light intensity (in units of W m^{-2})
+    PPFD_in             ,  //!< [CALC] Light intensity (in units of umoles m^{-2} s^{-1})
+    TestLi              ,  //!< [CALC] Light intensity (in units of umoles m^{-2} s^{-1})
     PS2BF_Pi            ,  //!< Pi Shared by PS & BF modules when useC3 is false and EPS module is selected
     PS_PR_Param         ,  //!< Seems to unused currently
     Tp                  ,  //!< [ALIASES={Temp,WeatherTemperature}] Temperature
@@ -82,7 +88,10 @@ enum ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type : int {
     ADP                 ,		\
     Pi                  ,		\
     TestATPCost         ,		\
+    Air_CO2             ,		\
     CO2_in              ,		\
+    Radiation_PAR       ,		\
+    PPFD_in             ,		\
     TestLi              ,		\
     PS2BF_Pi            ,		\
     PS_PR_Param         ,		\

@@ -37,12 +37,10 @@
 #define PARAM_TYPES_FIBF COND, POOL
 
 namespace ePhotosynthesis {
-namespace modules {
-class FIBF;
-}
-namespace conditions {
 
-class EPSCondition;
+  FORWARD_DECLARE_CONDITION(FIBF);
+  
+namespace conditions {
 
 /**
  Class for input to FIBF_mb

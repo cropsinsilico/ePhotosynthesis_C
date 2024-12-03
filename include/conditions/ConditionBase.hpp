@@ -52,7 +52,7 @@ template<class T, class U, MODULE ID = MODULE_NONE>
 class ConditionBase : public VALUE_SET_PARENT(T, U, ID, PARAM_TYPE_COND) {
 public:
     DECLARE_VALUE_SET_BASE(ConditionBase, VALUE_SET_PARENT(T, U, ID, PARAM_TYPE_COND))
-    virtual ~ConditionBase() {}
+    ~ConditionBase() override {}
 
     /**
       Common, public interface for the private _size function.
@@ -66,7 +66,7 @@ public:
 	    if (alt != out) {
 		ERROR_VALUE_SET("Size of default_values (", alt,
 				") does not match expected count (", out,
-				T::memberState(), ")");
+				") ", T::memberState());
 	    }
 	}
         return out;
@@ -229,18 +229,26 @@ private:								\
     _clear();								\
   }									\
 private:								\
- /** The Maximum size of the serialized vector */			\
- EPHOTO_API static std::size_t count;					\
  /** \copydoc ValueSet::_print */					\
  std::ostream& _print(std::ostream &out,				\
 		      const uint tab = 0,				\
 		      bool includePrefixes = false,			\
 		      bool noChildren = false) const override;		\
  /** \copydoc ConditionBase::_reset */					\
- static void _reset();							\
+ static void _reset(const bool noChildren = false);			\
  /** \copydoc ConditionBase::_size */					\
- static std::size_t _size();
+ static std::size_t _size();						\
+public:
 
+/**
+   Utility macro to decrement the size based on a control parameter.
+   \param name Name of control parameter.
+   \param var Name of variable that control parameter disables.
+ */
+#define DECLARE_CONDITION_CONTROL_SIZE(name, var)	\
+  if (name) c--
+#define DECLARE_CONDITION_CONTROL_SIZE_PACKED(args)	\
+  DECLARE_CONDITION_CONTROL_SIZE args
 /**
    Boiler plate for declaring members of a singular condition class.
    \param name Name of the module the condition class is associated with.
@@ -250,15 +258,40 @@ private:								\
 		    ConditionBase<VARS_CLASS_VAR_LOCAL(name, COND),	\
 		    VARS_CLASS_VAR_LOCAL(PARENT_ ## name, COND),	\
 		    MODULE_ ## name>)					\
-  DECLARE_CONDITION_BASE(name)
-
-#define DECLARE_CONDITION2(name)					\
+  DECLARE_CONDITION_BASE(name)						\
   /** Construct from parent */						\
   /** @param par Pointer to parent instance */				\
   VARS_CLASS_VAR_LOCAL(name, COND)(VARS_CLASS_VAR_LOCAL(PARENT_ ## name, COND)* par = nullptr) { \
     setParent(par);							\
     initMembers();							\
-  }
+  }									\
+private:								\
+  /** The Maximum size of the serialized vector */			\
+  EPHOTO_API static const std::size_t count;				\
+public:
+
+/**
+   Utility macro for getting the set of control parameters in a condition
+     class.
+   \param name Name of the module the condition class is associated with.
+ */
+#define CONDITION_CONTROL_NAMES(name)				\
+  FOR_EACH_COMMA(FIRST_ARG_PACKED, EXPAND(CONTROL_ ## name))
+/**
+   Utility macro for getting the set of control parameter regulated
+     variables in a condition class.
+   \param name Name of the module the condition class is associated with.
+ */
+#define CONDITION_CONTROL_VARS(name)				\
+  FOR_EACH_COMMA(LAST_ARG_PACKED, EXPAND(CONTROL_ ## name))
+/**
+   Utility macro for getting the set of boolean parameters in a condition
+     class.
+   \param name Name of the module the condition class is associated with.
+ */
+#define CONDITION_BOOL_MEMBERS(name)					\
+  JOIN_MACROS(SEP_COMMA, BOOL_MEMBERS_BF, CONDITION_CONTROL_NAMES(name))
+
 #define DECLARE_CONDITION_COMPOSITE_CHILD(name)				\
   VARS_CLASS_VAR_LOCAL(name, COND)* name ## _con = nullptr; /**< Child condition */
 #define DECLARE_CONDITION_COMPOSITE_CHILD_VARS(name)	\
@@ -269,7 +302,7 @@ private:								\
    Boiler plate for declaring members of a composite condition class.
    \param name Name of the module the condition class is associated with.
 */
-#define DECLARE_CONDITION_COMPOSITE(name)				\
+#define DECLARE_CONDITION_COMPOSITE_BASE(name)				\
   DECLARE_VALUE_SET_COMPOSITE(VARS_CLASS_VAR_LOCAL(name, COND),		\
 			      (SUFFIX_EACH(Condition, CHILDREN_ ## name)), \
 			      (SUFFIX_EACH(_con, CHILDREN_ ## name)),	\
@@ -282,12 +315,14 @@ private:								\
   /** \copydoc ConditionBase::_clear */					\
   void _clear() override;						\
   /** \copydoc ConditionBase::_reset */					\
-  static void _reset();							\
+  static void _reset(const bool noChildren = false);			\
   /** \copydoc ValueSet::_createChildren */				\
   void _createChildren() override;					\
   /** Number of elements in the current array version of this condition */ \
   EPHOTO_API static std::size_t count;					\
   public:
+#define DECLARE_CONDITION_COMPOSITE(name)	\
+  DECLARE_CONDITION_COMPOSITE_BASE(name)
   
 #define DECLARE_CONDITION_COMPOSITE2(name)				\
   /** Construct from parent */						\
@@ -302,6 +337,17 @@ private:								\
   VARS_CLASS_VAR_LOCAL(name, COND)(FOR_EACH_COMMA(DECLARE_CONDITION_COMPOSITE_CHILD_VARS, \
 				   EXPAND(CHILDREN_ ## name)));		\
   FOR_EACH(DECLARE_CONDITION_COMPOSITE_CHILD, EXPAND(CHILDREN_ ## name));
+/**
+   Macro for boiler plate declaring a composite condition class w/o a
+       parent module
+   \param name Name of the module the condition class is associated with.
+ */
+#define DECLARE_CONDITION_TOP(name)					\
+  DECLARE_CONDITION_COMPOSITE_BASE(name)				\
+  /** \copydoc ModuleBase::setParent */					\
+  void setParent(VARS_CLASS_VAR_LOCAL(name, COND)* par) override {	\
+    UNUSED(par);							\
+  }
 /**
    Boiler plate for defining members of a singular or composite condition
      class.
@@ -332,7 +378,30 @@ private:								\
     VARS_CLASS_VAR_LOCAL(name, COND)(const VARS_CLASS_VAR_LOCAL(name, COND)* const other) { \
     initMembers();							\
     copyMembers(*other);						\
+  }									\
+  std::size_t VARS_CLASS_VAR_LOCAL(name, COND)::_size() {		\
+    std::size_t c = count;						\
+    FOR_EACH(DECLARE_CONDITION_CONTROL_SIZE_PACKED,			\
+	     EXPAND(CONTROL_ ## name));					\
+    return c;								\
   }
+/**
+   Utility macro for initializing static boolean class members for a
+     condition class.
+   \param name Name of the module the condition class is associated with.
+   \param var Name of the boolean member.
+ */
+#define DEFINE_CONDITION_BOOL_MEMBER(name, var)		\
+  bool VARS_CLASS_VAR_LOCAL(name, COND)::var = false
+/**
+   Boiler plate for defining members of a singular condition class in
+     the ini compilation unit.
+   \param name Name of the module the condition class is associated with.
+ */
+#define DEFINE_CONDITION_INI(name)					\
+  FOR_EACH_WITH_PREFIX_ARGS(DEFINE_CONDITION_BOOL_MEMBER, (name),	\
+			    CONDITION_BOOL_MEMBERS(name))
+  
 /**
    Boiler plate for defining members of a singular condition class in the
      header.
@@ -397,20 +466,20 @@ private:								\
    Boiler plate for defining members of a composite condition class.
    \param name Name of the module the condition class is associated with.
  */
-#define DEFINE_CONDITION_COMPOSITE(name)		\
-  DEFINE_CONDITION_COMPOSITE_BASE(name);		\
-  void VARS_CLASS_VAR_LOCAL(name, COND)::		\
-    _createChildren() {					\
-      FOR_EACH(DEFINE_CONDITION_COMPOSITE_CHILD_CREATE,	\
-	       EXPAND(CHILDREN_ ## name));		\
-  }							\
-  void VARS_CLASS_VAR_LOCAL(name, COND)::_reset() {	\
-    count = 0;						\
-  }							\
-  void VARS_CLASS_VAR_LOCAL(name, COND)::_clear() {	\
-    FOR_EACH(DEFINE_CONDITION_COMPOSITE_CHILD_CLEAR,	\
-	     EXPAND(CHILDREN_ ## name));		\
-    count = 0;						\
+#define DEFINE_CONDITION_COMPOSITE(name)			\
+  DEFINE_CONDITION_COMPOSITE_BASE(name);			\
+  void VARS_CLASS_VAR_LOCAL(name, COND)::			\
+    _createChildren() {						\
+    FOR_EACH(DEFINE_CONDITION_COMPOSITE_CHILD_CREATE,		\
+	     EXPAND(CHILDREN_ ## name));			\
+  }								\
+  void VARS_CLASS_VAR_LOCAL(name, COND)::_reset(const bool) {	\
+    count = 0;							\
+  }								\
+  void VARS_CLASS_VAR_LOCAL(name, COND)::_clear() {		\
+    FOR_EACH(DEFINE_CONDITION_COMPOSITE_CHILD_CLEAR,		\
+	     EXPAND(CHILDREN_ ## name));			\
+    count = 0;							\
   }
   
 #define DEFINE_CONDITION_COMPOSITE2(name)				\

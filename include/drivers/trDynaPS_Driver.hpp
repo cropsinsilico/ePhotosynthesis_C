@@ -46,7 +46,8 @@ public:
                    const int maxSubsteps,
 		   const double atol, const double rtol,
 		   const std::size_t para, const double ratio,
-		   const bool showWarn = false);
+		   const bool showWarn = false,
+		   const std::vector<std::string>& outVars = {});
 
     /**
       \copydoc drivers::Driver::setup

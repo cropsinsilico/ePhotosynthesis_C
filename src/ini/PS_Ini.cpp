@@ -604,7 +604,7 @@ void PS::_initCalc(Variables *theVars, PSCondition* PS_con) {
 
 DEFINE_DEFAULT_CHECKALT(PS)
 
-void PS::_reset() {
+void PS::_reset(const bool noChildren) {
     PS::PiTc = 0.;
     PS::V1 = 0.;
     PS::KM12 = 0.;
@@ -765,5 +765,6 @@ void PS::_reset() {
     PS::Param = {0., 0.};
     PS::TIME = 0.;
     PS::N = 1;
-    conditions::PSCondition::reset();
+    ParentClass::_reset(noChildren);
+    // conditions::PSCondition::reset();
 }

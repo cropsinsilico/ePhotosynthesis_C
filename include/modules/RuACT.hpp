@@ -43,49 +43,15 @@ public:
     DECLARE_MODULE(RuACT)
     SET_GET_BOOL_MODULE(EPS_connect, conditions::RuACT)
 private:
-
-    /**
-      Function to calculate the dy/dt values for the RuACTCondition at the given time stamp.
-
-      \param t The current timestamp
-      \param RuACT_Con RuACTCondition object giving the input parameters
-      \param theVars The global variables
-      \return A vector containing the dy/dt values for this time stamp.
-      */
-    static arr _MB(const double t, const conditions::RuACTCondition* const RuACT_Con, Variables *theVars);
-
-    /**
-      Function to calculate the dy/dt values for the RuACTCondition at the given time stamp.
-
-      \param t The current timestamp
-      \param RuACT_Con RuACTCondition object giving the input parameters
-      \param theVars The global variables
-      \return A RuACTCondition instance containing the dy/dt values for this time stamp.
-      */
-    static conditions::RuACTCondition* _MB_con(const double t,
-                                               const conditions::RuACTCondition* const RuACT_Con,
-                                               Variables *theVars);
-    /**
-      Calculate the Rates of RuACT based on the input RuACTCondition.
-
-      \param t The current timestamp
-      \param RuACT_Con RuACTCondition object giving the input parameters
-      \param theVars The global variables
-      */
-    static void _Rate(const double t, const conditions::RuACTCondition* const RuACT_Con,
-                      Variables *theVars);
-
-    /**
-      Reset the static member variables to their default values.
-      */
-    static void _reset() {
+  
+    /** \copydoc ValueSetBase::_reset */
+    static void _reset(const bool noChildren = false) {
         activase = 0.;
         TIME = 0.;
         N = 1;
+	ParentClass::_reset(noChildren);
     }
     SET_GET(activase)
-    static double TIME;    // The timestamp of the most recent call to _Rate
-    static std::size_t N;  // The current size of the RuACT TimeSeries
 };
 
   DEFINE_MODULE_HEADER(RuACT);
