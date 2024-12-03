@@ -126,9 +126,9 @@ private:
       */
     void _clear() override;
 
-    static std::size_t count;  // size of the current serialized output
+    EPHOTO_API static std::size_t count;  // size of the current serialized output
 #ifdef INCDEBUG
-    static Debug::DebugLevel _dlevel;
+    EPHOTO_API static Debug::DebugLevel _dlevel;
 #endif
 };
 

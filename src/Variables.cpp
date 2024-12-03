@@ -2,15 +2,64 @@
 
 using namespace ePhotosynthesis;
 
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+Variables::Variables(const Variables& other) : Variables(other.context) {
+    *this = other;
+}
+Variables::Variables(const Variables* other) : Variables(other->context) {
+    *this = *other;
+}
+#else // SUNDIALS_CONTEXT_REQUIRED
 Variables::Variables(const Variables& other) : Variables() {
     *this = other;
 }
-
 Variables::Variables(const Variables* other) : Variables() {
     *this = *other;
 }
+#endif // SUNDIALS_CONTEXT_REQUIRED
+
+Variables* Variables::deepcopy() const {
+  Variables* out = new Variables(*this);
+  out->alfa = this->alfa;
+  out->fc = this->fc;
+  out->Phi_max = this->Phi_max;
+  out->sensitivity_sf = this->sensitivity_sf;
+  out->lightParam = this->lightParam;
+  out->PR_Param = this->PR_Param;
+  out->BF_Param = this->BF_Param;
+  out->FI_PARAM = this->FI_PARAM;
+  out->FI_Param = this->FI_Param;
+  out->RROEA_Param = this->RROEA_Param;
+  out->RuACT_Param = this->RuACT_Param;
+  out->SUCS_Param = this->SUCS_Param;
+  out->XanCycle_Param = this->XanCycle_Param;
+  out->BF_Vel = this->BF_Vel;
+  out->FI_Vel = this->FI_Vel;
+  out->PR_Vel = this->PR_Vel;
+  out->PS_Vel = this->PS_Vel;
+  out->RROEA_Vel = this->RROEA_Vel;
+  out->RedoxReg_Vel = this->RedoxReg_Vel;
+  out->RuACT_Vel = this->RuACT_Vel;
+  out->SUCS_Vel = this->SUCS_Vel;
+  out->XanCycle_Vel = this->XanCycle_Vel;
+  out->BF_VEL = this->BF_VEL;
+  out->CO2A = this->CO2A;
+  out->FI_VEL = this->FI_VEL;
+  out->PR_VEL = this->PR_VEL;
+  out->PS_VEL = this->PS_VEL;
+  out->RROEA_VEL = this->RROEA_VEL;
+  out->RedoxReg_MP = this->RedoxReg_MP;
+  out->RedoxReg_VEL = this->RedoxReg_VEL;
+  out->RuACT_VEL = this->RuACT_VEL;
+  out->SUCS_VEL = this->SUCS_VEL;
+  out->XanCycle_VEL = this->XanCycle_VEL;
+  return out;
+}
 
 Variables& Variables::operator=(const Variables &other) {
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+    context = other.context;
+#endif // SUNDIALS_CONTEXT_REQUIRED
     record = other.record;
     BF_FI_com = other.BF_FI_com;
     EPS_SUCS_com = other.EPS_SUCS_com;
@@ -32,8 +81,11 @@ Variables& Variables::operator=(const Variables &other) {
     ADP = other.ADP;
     Pi = other.Pi;
     TestATPCost = other.TestATPCost;
+    Air_CO2 = other.Air_CO2;
     CO2_in = other.CO2_in;
     TestLi = other.TestLi;
+    Radiation_PAR = other.Radiation_PAR;
+    PPFD_in = other.PPFD_in;
     PS2BF_Pi = other.PS2BF_Pi;
     PS_PR_Param = other.PS_PR_Param;
     Tp = other.Tp;

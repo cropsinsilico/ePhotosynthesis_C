@@ -28,8 +28,8 @@
 
 #include <vector>
 
+#include "definitions.hpp"
 #include <nvector/nvector_serial.h>
-#include <sundials/sundials_types.h>
 #include "globals.hpp"
 
 namespace ePhotosynthesis {
@@ -128,20 +128,7 @@ protected:
       */
     Driver(Variables *theVars, const double startTime, const double stepSize, const double endTime,
            const int maxSubsteps, const double atol, const double rtol,
-           const bool showWarn = false) {
-        this->inputVars = theVars;
-        this->start = startTime;
-        this->step = stepSize;
-        initialStep = stepSize;
-        this->endtime = endTime;
-        this->maxSubSteps = maxSubsteps;
-        this->showWarnings = showWarn;
-        abstol = atol;
-        reltol = rtol;
-        maxStep = 20. * step;
-        data = nullptr;
-        origVars = nullptr;
-    }
+           const bool showWarn = false);
     /**
       Does the computations and generates the results for each step or sub-step in the solver.
       A pointer to this function is passed to the ODE solver. The API of the function cannot change
@@ -154,6 +141,9 @@ protected:
       */
     static int calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
 
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+    SUNContext* context;
+#endif // SUNDIALS_CONTEXT_REQUIRED
     realtype abstol;            // absolute tolerance
     realtype reltol;            // relative tolerance
     double start, step, endtime; // time stuff

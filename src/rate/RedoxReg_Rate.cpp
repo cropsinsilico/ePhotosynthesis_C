@@ -57,18 +57,31 @@ void RedoxReg::_Rate(const double t, const RedoxRegCondition* const RedoxReg_Con
         data->coeffs[0] = theVars->RedoxReg_MP[0][1] - 0.03 * log10(TEMP / (1. - TEMP));
 
         N_Vector y, constraints, scaling;
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+        y = N_VNew_Serial(1, theVars->context[0]);
+        constraints = N_VNew_Serial(1, theVars->context[0]);
+        scaling = N_VNew_Serial(1, theVars->context[0]);
+#else // SUNDIALS_CONTEXT_REQUIRED
         y = N_VNew_Serial(1);
         constraints = N_VNew_Serial(1);
         scaling = N_VNew_Serial(1);
+#endif // SUNDIALS_CONTEXT_REQUIRED
         N_VConst(ONE, scaling);
         realtype abstol = 1e-5;
         //realtype reltol = 1e-4;
         NV_Ith_S(constraints, 0) = ZERO;
         void *kmem = nullptr;
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+        kmem = KINCreate(theVars->context[0]);
+
+        SUNMatrix A = SUNDenseMatrix(1, 1, theVars->context[0]);
+        SUNLinearSolver LS = SUNLinSol_Dense(y, A, theVars->context[0]);
+#else // SUNDIALS_CONTEXT_REQUIRED
         kmem = KINCreate();
 
         SUNMatrix A = SUNDenseMatrix(1, 1);
-        SUNLinearSolver LS = SUNDenseLinearSolver(y, A);
+        SUNLinearSolver LS = SUNLinSol_Dense(y, A);
+#endif // SUNDIALS_CONTEXT_REQUIRED
         KINSetLinearSolver(kmem, LS, A);
 
         for (std::size_t index = 1; index < 5; index++) {

@@ -1,0 +1,280 @@
+name: Test of package installation & execution
+'on':
+  push:
+    branches-ignore:
+     - gh-pages
+    tags:
+     - '*'
+  schedule:
+  - cron: 0 10 * * 1
+jobs:
+  build_cxx:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        sundials-version: [latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        with-coverage: [false, true]
+        with-asan: [false, true]
+        with-elf: [false]
+        with-valgrind: [false, true]
+        include:
+          - sundials-version: "5.7.0"
+            os: ubuntu-latest
+            with-coverage: false
+            with-asan: false
+            with-elf: false
+            with-valgrind: false
+          - sundials-version: "6.7.0"
+            os: ubuntu-latest
+            with-coverage: false
+            with-asan: false
+            with-elf: false
+            with-valgrind: false
+          - sundials-version: "7.1.1"
+            os: ubuntu-latest
+            with-coverage: false
+            with-asan: false
+            with-elf: false
+            with-valgrind: false
+        exclude:
+          - os: windows-latest
+            with-asan: true
+          - os: ubuntu-latest
+            with-asan: true
+          - os: windows-latest
+            with-valgrind: true
+          - os: windows-latest
+            with-elf: true
+          - os: macos-latest
+            with-valgrind: true
+          - os: macos-latest
+            with-elf: true
+          - with-valgrind: true
+            with-elf: true
+          - with-valgrind: true
+            with-asan: true
+          - with-coverage: true
+            with-valgrind: true
+          - with-coverage: true
+            with-asan: true
+      fail-fast: false
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      ###################################
+      # CONDA SETUP
+      ###################################
+      - name: Set up MSVC Compiler on windows
+        uses: ilammy/msvc-dev-cmd@v1
+        if: matrix.os == 'windows-latest'
+      - name: Set up miniconda test environment
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-environment: ephoto
+          environment-file: environment.yml
+          auto-update-conda: true
+          channels: conda-forge
+          channel-priority: strict
+          # miniforge-variant: Mambaforge
+          miniforge-version: latest
+          use-mamba: true
+          mamba-version: "1.5.10"
+      - name: Set USERPROFILE
+        if: matrix.os == 'windows-latest'
+        shell: bash -el {0}
+        run: |
+          echo "USERPROFILE=${{ github.workspace }}" >> "$GITHUB_ENV"
+      - name: Install specific version of Sundials
+        if: matrix.sundials-version != 'latest'
+        shell: bash -l {0}
+        run: |
+          mamba install sundials==${{ matrix.sundials-version }} -y
+      - name: Check mamba installation
+        shell: bash -el {0}
+        run: |
+          mamba info
+          mamba list
+      - name: Install doxgen on unix systems
+        if: matrix.os != 'windows-latest'
+        shell: bash -l {0}
+        run: |
+          mamba install doxygen>=1.9.2 graphviz -y
+      - name: Install compilers using conda on Linux/Mac
+        if: matrix.os != 'windows-latest'
+        shell: bash -l {0}
+        run: |
+          mamba install c-compiler cxx-compiler
+      - name: Install valgrind on unix systems
+        if: matrix.os != 'windows-latest' && matrix.with-valgrind == true
+        shell: bash -l {0}
+        run: |
+          mamba install valgrind
+
+      ###################################
+      # PIP INSTALL THINGS
+      ###################################
+      - name: Install packages not current on conda-forge (gcovr)
+        if: matrix.with-coverage == true
+        shell: bash -l {0}
+        run: |
+          pip install gcovr
+
+      ###################################
+      # SET CONFIG FLAGS
+      ###################################
+      - name: Global config flags
+        shell: bash -l {0}
+        run: |
+          CMAKE_BUILD_TYPE_TEST="Debug"
+          echo "CMAKE_BUILD_TYPE_TEST=Debug" >> "$GITHUB_ENV"
+          echo "CMAKE_ARGS=-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON" >> "$GITHUB_ENV"
+          echo "CMAKE_ARGS_TEST=-DBUILD_TESTS=ON" >> "$GITHUB_ENV"
+          echo "TEST_FLAGS=-C ${CMAKE_BUILD_TYPE_TEST} --output-on-failure -VV" >> "$GITHUB_ENV"
+      - name: Coverage config flags
+        if: matrix.with-coverage == true && matrix.os != 'windows-latest'
+        shell: bash -l {0}
+        run: |
+          echo "CMAKE_ARGS_TEST=${{ env.CMAKE_ARGS_TEST }} -DTEST_COVERAGE=ON" >> "$GITHUB_ENV"
+      - name: ASAN config flags
+        if: matrix.with-asan == true
+        shell: bash -l {0}
+        run: |
+          echo "CMAKE_ARGS=${{ env.CMAKE_ARGS }} -DWITH_ASAN=ON" >> "$GITHUB_ENV"
+          echo "ASAN_OPTIONS=detect_odr_violation=0:detect_container_overflow=0" >> $GITHUB_ENV
+          echo "TEST_FLAGS=${{ env.TEST_FLAGS }} -E valgrind*" >> "$GITHUB_ENV"
+      - name: ASAN dynamic library
+        if: matrix.with-asan == true && matrix.os == 'macos-latest'
+        shell: bash -l {0}
+        run: |
+          echo "DYLD_INSERT_LIBRARIES=$(clang -print-file-name=libclang_rt.asan_osx_dynamic.dylib)" >> "$GITHUB_ENV"
+      - name: ELF config flags
+        if: matrix.with-elf == true
+        shell: bash -l {0}
+        run: |
+          echo "CMAKE_ARGS_TEST=${{ env.CMAKE_ARGS_TEST }} -DTEST_ELF=ON" >> "$GITHUB_ENV"
+      - name: Valgrind off config flags
+        if: matrix.with-valgrind == true
+        shell: bash -l {0}
+        run: |
+          echo "CMAKE_ARGS_TEST=${{ env.CMAKE_ARGS_TEST }} -DTEST_VALGRIND=ON" >> "$GITHUB_ENV"
+
+      ###################################
+      # Add paths for Windows dlls
+      ###################################
+      - name: Conda library paths on Windows
+        if: matrix.os == 'windows-latest'
+        shell: bash -l {0}
+        run: |
+          # This isn't necessary, but it speeds up the build
+          LIB_DIRECTORY="${CONDA_PREFIX}/Library/lib"
+          ls ${LIB_DIRECTORY}
+          echo "${LIB_DIRECTORY}" >> $GITHUB_PATH
+          DLL_DIRECTORY="${CONDA_PREFIX}/Library/bin"
+          ls ${DLL_DIRECTORY}
+          echo "${DLL_DIRECTORY}" >> $GITHUB_PATH
+      
+      ###################################
+      # Configure
+      ###################################
+      - name: Configure (CONDA)
+        shell: bash -l {0}
+        run: |
+          mkdir build
+          cd build
+          which cmake
+          cmake .. ${{ env.CMAKE_ARGS }} ${{ env.CMAKE_ARGS_NO_PYTHON }} ${{ env.CMAKE_ARGS_TEST }}
+      
+      ###################################
+      # Build CXX
+      ###################################
+      - name: Build C++ & C in parallel (CONDA, UNIX)
+        if: matrix.os != 'windows-latest'
+        shell: bash -l {0}
+        run: |
+          cd build
+          cmake --build . --config ${{ env.CMAKE_BUILD_TYPE_TEST }} -- -j 4
+      - name: Build C++ & C in serial (CONDA, WINDOWS)
+        if: matrix.os == 'windows-latest'
+        shell: bash -l {0}
+        run: |
+          cd build
+          cmake --build . --config ${{ env.CMAKE_BUILD_TYPE_TEST }}
+      
+      ###################################
+      # Test CXX
+      ###################################
+      - name: Test C++
+        if: matrix.with-coverage != true
+        shell: bash -l {0}
+        run: |
+          mamba list
+          echo "PATH=$PATH"
+          cd build
+          which ctest
+          ctest ${{ env.TEST_FLAGS }}
+      - name: Test C++ (COVERAGE)
+        if: matrix.with-coverage && matrix.os != 'windows-latest'
+        shell: bash -l {0}
+        run: |
+          mamba list
+          echo "PATH=$PATH"
+          cd build
+          make coverage
+      - name: Preserve coverage information
+        if: matrix.with-coverage && matrix.os != 'windows-latest'
+        shell: bash -l {0}
+        run: |
+          cp -r build/coverage coverage
+
+      ###################################
+      # Build Python
+      ###################################
+      # - name: Set CMAKE_ARGS for Python build
+      #   shell: bash -l {0}
+      #   run: |
+      #     echo "OLD_CMAKE_ARGS=${{ env.CMAKE_ARGS }}" >> "$GITHUB_ENV"
+      #     echo "CMAKE_ARGS=${{ env.CMAKE_ARGS }} -DBUILD_PYTHON=ON" >> "$GITHUB_ENV"
+      # - name: Build Python (CONDA)
+      #   shell: bash -l {0}
+      #   run: |
+      #     cd build
+      #     which cmake
+      #     cmake .. ${{ env.CMAKE_ARGS }} ${{ env.CMAKE_ARGS_TEST }}
+      # - name: Unset CMAKE_ARGS for Python build
+      #   shell: bash -l {0}
+      #   run: |
+      #     echo "CMAKE_ARGS=${{ env.OLD_CMAKE_ARGS }}" >> "$GITHUB_ENV"
+
+      ###################################
+      # Test Python
+      ###################################
+      # - name: Test Python Interfaces (CONDA)
+      #   if: matrix.with-elf == false && matrix.with-valgrind == false
+      #   shell: bash -l {0}
+      #   run: |
+      #     pytest -sv tests/python
+
+      ###################################
+      # Docs tests
+      ###################################
+      - name: Build docs
+        if: matrix.os != 'windows-latest'
+        shell: bash -l {0}
+        run: |
+          ./run_tests.sh --rebuild --docs
+      
+      ###################################
+      # Coverage
+      ###################################
+      - name: Upload coverage report
+        if: matrix.with-coverage == true && matrix.os != 'windows-latest'
+        uses: codecov/codecov-action@v4
+        with:
+          name: ${{ matrix.os }}-${{ matrix.with-coverage }}-${{ matrix.with-asan }}-${{ matrix.with-elf }}-${{ matrix.with-valgrind }}
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: coverage/coverage.info
+          functionalities: gcov

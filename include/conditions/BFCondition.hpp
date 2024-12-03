@@ -140,9 +140,9 @@ private:
         RROEA_connect = false;
         FI_connect = false;
     }
-    static const std::size_t count;  // The Maximum size of the serialized vector.
+    EPHOTO_API static const std::size_t count;  // The Maximum size of the serialized vector.
 #ifdef INCDEBUG
-    const static Debug::DebugLevel _dlevel = Debug::Low;
+    EPHOTO_API const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif
 };
 

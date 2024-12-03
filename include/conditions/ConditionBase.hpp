@@ -97,7 +97,7 @@ public:
 
       \param par Pointer to the parent class instance.
       */
-    void setParent(U* par) {parent = par;}
+    virtual void setParent(U* par) {parent = par;}
 
     /**
       Common, public interface for the private _print function.

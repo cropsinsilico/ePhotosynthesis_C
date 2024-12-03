@@ -63,7 +63,7 @@ public:
       */
     RedoxRegCondition(const arr &vec, const std::size_t offset = 0);
 
-    void setParent(RedoxRegCondition* par) {(void)par;}
+    void setParent(RedoxRegCondition* par) override {(void)par;}
 
     RACondition* RA_con = nullptr;     // child Condition
 
@@ -118,7 +118,7 @@ private:
         V16 = 0.;
     }
 #ifdef INCDEBUG
-    const static Debug::DebugLevel _dlevel = Debug::Middle;
+    EPHOTO_API const static Debug::DebugLevel _dlevel = Debug::Middle;
 #endif
 };
 

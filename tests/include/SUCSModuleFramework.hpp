@@ -13,9 +13,8 @@ protected:
         theVars->TestLi = 14.;
         theVars->TestATPCost = 4.5;
         theVars->EnzymeAct = Emap;
-        std::vector<double> ratio(50, 1.5);
-        theVars->VfactorCp = ratio;
-        theVars->SUCRatio = ratio;
+        theVars->VfactorCp = std::vector<double>(theVars->VfactorCp.size(), 1.5);
+        theVars->SUCRatio = std::vector<double>(theVars->SUCRatio.size(), 1.5);
     }
 
     void Rate(const double t, const conditions::SUCSCondition* SUCS_con, Variables *theVars) {

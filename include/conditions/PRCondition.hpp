@@ -117,9 +117,9 @@ private:
         PS_connect = false;
         PS_RuBP = false;
     }
-    static const std::size_t count;  // size of the current serialized output
+    EPHOTO_API static const std::size_t count;  // size of the current serialized output
 #ifdef INCDEBUG
-    const static Debug::DebugLevel _dlevel = Debug::Low;
+    EPHOTO_API const static Debug::DebugLevel _dlevel = Debug::Low;
 #endif
 };
 
