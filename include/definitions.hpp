@@ -34,13 +34,16 @@
 #include "macros.hpp"
 #include <cmath>
 #include <cstdlib>
+#include <sundials/sundials_types.h>
 #include <sundials/sundials_config.h>
 
 #if ((SUNDIALS_VERSION_MAJOR > 6) || (SUNDIALS_VERSION_MAJOR == 6 && SUNDIALS_VERSION_MINOR >= 7))
 #include <sundials/sundials_context.h>
 #define SUNDIALS_CONTEXT_REQUIRED 1
 #else
+#ifndef sunrealtype
 #define sunrealtype double
+#endif
 #endif // 
 
 #ifndef uint
@@ -48,6 +51,9 @@
 #endif
 #ifndef ushort
 #define ushort unsigned short int
+#endif
+#ifndef realtype
+#define realtype sunrealtype
 #endif
 
 namespace ePhotosynthesis {

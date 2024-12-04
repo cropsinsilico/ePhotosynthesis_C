@@ -1,10 +1,6 @@
 #pragma once
 
-#include <sundials/sundials_types.h>
-
-#ifndef realtype
-#define realtype sunrealtype
-#endif
+#include "definitions.hpp"
 
 namespace ePhotosynthesis {
 namespace drivers {

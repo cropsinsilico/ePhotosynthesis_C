@@ -13,3 +13,4 @@
 - Tests for dynamic inputs of variables from files
 - Remove velocity output
 - Improve speed of tests by streamlining variable access & value set initialization/copying
+- Integration tests

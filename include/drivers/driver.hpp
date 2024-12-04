@@ -28,14 +28,10 @@
 
 #include <vector>
 
+#include "definitions.hpp"
 #include <nvector/nvector_serial.h>
-#include <sundials/sundials_types.h>
 #include "globals.hpp"
 #include "enums/enums_utils.hpp"
-
-#ifndef realtype
-#define realtype sunrealtype
-#endif
 
 #define MEMBERS_DRIVER trDynaPS, DynaPS, CM, EPS
 
