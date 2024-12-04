@@ -1636,6 +1636,13 @@ namespace cxxopts
 
         if (*current == '\n')
         {
+          stringAppend(result, startLine, current + 1);
+          stringAppend(result, std::string(start, ' '));
+          startLine = current + 1;
+          size = 0;
+        }
+        else if (*current == '\0')
+        {
           startLine = current + 1;
           lastSpace = startLine;
         }

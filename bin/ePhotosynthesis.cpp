@@ -120,7 +120,7 @@ int main(int argc, const char* argv[]) {
     try {
         bool record = false;
         bool useC3 = false;
-        cxxopts::Options options("ePhotosynthesis", "C++ implementation of the matlab original");
+        cxxopts::Options options("ePhoto", "Command line interface to C++ implementation of the matlab original");
         options.show_positional_help();
         std::string evn, atpcost, optionsFile, enzymeFile, grnFile,
 	  outputFile, outputVars, outputVarsPerStep, outputParamBase;
@@ -128,31 +128,42 @@ int main(int argc, const char* argv[]) {
         double abstol, reltol;
         double Tp;
         DriverType driverChoice;
-        int driver, maxSubSteps, RUBISCOMETHOD;
+        int driver = 1, maxSubSteps, RUBISCOMETHOD = 2;
         ushort dbglvl;
         bool debugDelta, debugInternal, outputParam;
 	std::map<PARAM_TYPE, std::map<MODULE, std::string> > param_files;
         options.add_options()
-	  ("v,verbose", "Record output values for all steps (this can significantly slow the program).", cxxopts::value<bool>(record)->default_value("false"))
-	  ("e,evn", "The file (including path) containing environmental parameters", cxxopts::value<std::string>(evn)->default_value("InputEvn.txt"))
-	  ("a,atpcost", "The file (including path) containing the ATP cost", cxxopts::value<std::string>(atpcost)->default_value("InputATPCost.txt"))
-	  ("n,enzyme", "The file (including path) containing enzyme activities like InputEnzyme.txt", cxxopts::value<std::string>(enzymeFile)->default_value(""))
-	  ("g,grn", "The file (including path) containing protein ratios for relevant genes like InputGRNC.txt",
-	   cxxopts::value<std::string>(grnFile)->default_value(""))
-	  ("b,begintime", "The starting time for the calculations.", cxxopts::value<double>(begintime)->default_value("0.0"))
-	  ("s,stoptime", "The time to stop calculations.", cxxopts::value<double>(stoptime)->default_value("5000.0"))
-	  ("z,stepsize", "The step size to use in the calculations.", cxxopts::value<double>(stepsize)->default_value("1.0"))
-	  ("m,maxSubSteps", "The maximum number of iterations at each time step.", cxxopts::value<int>(maxSubSteps)->default_value("750"))
-	  ("d,driver", "The driver to use. Choices are:                        1 - trDynaPS: PS, PR, FI, BF, SUCS, RuACT,                 XanCycle, RROEA                                2 - DynaPS: PS, PR, FI, BF, SUCS, XanCycle           3 - CM: PS, PR, SUCS                                 4 - EPS: PS, PR, FI, BF, SUCS                    ",
-	   cxxopts::value<int>(driver)->default_value("1"))
+          ("v,verbose", "Record output values for all steps (this can significantly slow the program).", cxxopts::value<bool>(record)->default_value("false"))
+          ("e,evn", "The file (including path) containing environmental parameters", cxxopts::value<std::string>(evn)->default_value("InputEvn.txt"))
+          ("a,atpcost", "The file (including path) containing the ATP cost", cxxopts::value<std::string>(atpcost)->default_value("InputATPCost.txt"))
+          ("n,enzyme", "The file (including path) containing enzyme activities like InputEnzyme.txt", cxxopts::value<std::string>(enzymeFile)->default_value(""))
+          ("g,grn", "The file (including path) containing protein ratios for relevant genes like InputGRNC.txt",
+           cxxopts::value<std::string>(grnFile)->default_value(""))
+          ("b,begintime", "The starting time for the calculations.", cxxopts::value<double>(begintime)->default_value("0.0"))
+          ("s,stoptime", "The time to stop calculations.", cxxopts::value<double>(stoptime)->default_value("5000.0"))
+          ("z,stepsize", "The step size to use in the calculations.", cxxopts::value<double>(stepsize)->default_value("1.0"))
+          ("m,maxSubSteps", "The maximum number of iterations at each time step.", cxxopts::value<int>(maxSubSteps)->default_value("750"))
+          ("d,driver",
+           "The driver to use. Choices are:\n"
+           "1 - trDynaPS (default): PS, PR, FI, BF, SUCS,\n"
+           "       RuACT, XanCycle, RROEA\n"
+           "2 - DynaPS: PS, PR, FI, BF, SUCS, XanCycle\n"
+           "3 - CM: PS, PR, SUCS\n"
+           "4 - EPS: PS, PR, FI, BF, SUCS",
+           cxxopts::value<int>(driver))
 	  ("c,c3", "Use the C3 model, automatically set to true for EPS driver. If false, the Farquar model is used instead",
 	   cxxopts::value<bool>(useC3)->default_value("false"))
-	  ("rubiscomethod", "The method to use for rubisco calculations. Choices are: 1 - Use enzyme concentration for calculation          2 - Use the michaelis menton and enzyme concentration together for calculation",
-	   cxxopts::value<int>(RUBISCOMETHOD)->default_value("2"))
-	  ("t,abstol", "Absolute tolerance for calculations", cxxopts::value<double>(abstol)->default_value("1e-5"))
-	  ("r,reltol", "Relative tolerance for calculations", cxxopts::value<double>(reltol)->default_value("1e-4"))
-	  ("T,Tp", "Input Temperature", cxxopts::value<double>(Tp)->default_value("0.0"))
-	  ("o,options", "Name of a text file which specifies any of the above options. Command line arguments have priority.", cxxopts::value<std::string>(optionsFile)->default_value(""))
+          ("rubiscomethod",
+           "The method to use for rubisco calculations. Choices are:\n"
+           "1 - (default) Use enzyme concentration for\n"
+           "    calculation\n"
+           "2 - Use the michaelis menton and enzyme\n"
+           "    concentration together for calculation",
+           cxxopts::value<int>(RUBISCOMETHOD))
+          ("t,abstol", "Absolute tolerance for calculations", cxxopts::value<double>(abstol)->default_value("1e-5"))
+          ("r,reltol", "Relative tolerance for calculations", cxxopts::value<double>(reltol)->default_value("1e-4"))
+          ("T,Tp", "Input Temperature", cxxopts::value<double>(Tp)->default_value("0.0"))
+          ("o,options", "Name of a text file which specifies any of the above options. Command line arguments have priority.", cxxopts::value<std::string>(optionsFile)->default_value(""))
 	  ("x,output", "Name the the text file that outputs should be saved to.", cxxopts::value<std::string>(outputFile)->default_value("output.data"))
 	  ("h,help", "Produce help message")
 	  ("debug","Debug level", cxxopts::value<ushort>(dbglvl)->default_value("0"))
