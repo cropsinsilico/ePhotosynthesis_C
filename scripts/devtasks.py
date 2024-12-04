@@ -143,20 +143,30 @@ class update_readme(BuildSubTask):
             f'{execFile} -h'
         ]
         helpFile = os.path.join(os.getcwd(), 'help_output.txt')
-        super(update_readme, self).__init__(args, cmds=cmds,
-                                            output_file=helpFile)
-        with open(helpFile, 'r') as fd:
-            helpMsg = fd.read()
-        helpMsg = helpMsg.split(':', 1)[-1]
-        readme = os.path.join(_source_dir, "README.md")
-        with open(readme, 'r') as fd:
-            contents = fd.read()
-        idx1 = contents.index("### Command line interface")
-        idx2 = idx1 + contents[idx1:].index('```')
-        base = contents[:idx2]
-        contents = base + '```' + helpMsg + '```'
-        with open(readme, 'w') as fd:
-            fd.write(contents)
+        try:
+            super(update_readme, self).__init__(args, cmds=cmds,
+                                                output_file=helpFile)
+            with open(helpFile, 'r') as fd:
+                helpMsg = fd.read()
+            helpMsg = helpMsg.split(':', 1)[-1]
+            readme = os.path.join(_source_dir, "README.md")
+            with open(readme, 'r') as fd:
+                contents = fd.read()
+            idx1 = contents.index("### Command line interface")
+            idx2 = idx1 + contents[idx1:].index('```')
+            idx3 = contents[idx2:].find('#')
+            suffix = ''
+            if idx3 >= 0:
+                idx3 += idx2
+                suffix = '\n\n' + contents[idx3:]
+            prefix = contents[:idx2]
+            contents = prefix + '```' + helpMsg + '```' + suffix
+            with open(readme, 'w') as fd:
+                fd.write(contents)
+        except BaseException:
+            if os.path.isfile(helpFile):
+                os.remove(helpFile)
+            raise
 
 
 class test(BuildSubTask):

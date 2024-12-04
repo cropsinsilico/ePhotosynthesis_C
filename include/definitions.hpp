@@ -197,7 +197,7 @@ enum RequestedDebug : uint {None = 0,
     /** Set the value of NAME \param val The value to set NAME to */\
     static void set ## NAME(const double val) {NAME = val;}\
     private:\
-        static double NAME;
+        EPHOTO_API static double NAME;
 //! [SET_GET]
 
 //! [SET_GET_BOOL]
@@ -207,7 +207,7 @@ enum RequestedDebug : uint {None = 0,
     /** Set the value of NAME \param val The value to set NAME to */\
     static void set ## NAME(const bool val) {NAME = val;}\
     private:\
-        static bool NAME;
+        EPHOTO_API static bool NAME;
 //! [SET_GET_BOOL]
 
 //! [SET_GET_BOOL_MODULE]
@@ -220,7 +220,7 @@ enum RequestedDebug : uint {None = 0,
         CON ## Condition::set ## NAME(val);\
     }\
     private:\
-        static bool NAME;
+        EPHOTO_API static bool NAME;
 //! [SET_GET_BOOL_MODULE]
 
 /**
@@ -322,7 +322,7 @@ void TimeSeries<T>::insert(std::size_t step, double time, T &input) {
     std::vector<int>::iterator it = std::find(_step.begin(), _step.end(), step);
     T vec(input);
     if (it == _step.end()) {
-        _step.push_back(step);
+        _step.push_back(static_cast<int>(step));
         _timestamp.push_back(time);
         _data.push_back(vec);
     } else {

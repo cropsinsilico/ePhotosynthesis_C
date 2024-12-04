@@ -106,7 +106,7 @@ public:
       */
     virtual arr MB(realtype t, N_Vector u) = 0;
     virtual ~Driver();
-    static Variables *inputVars;  // the instance of Variables to use for all calculations.
+    EPHOTO_API static Variables *inputVars;  // the instance of Variables to use for all calculations.
     arr constraints;   // serialized version of the Condition class being used.
 
 protected:
@@ -155,7 +155,7 @@ protected:
     CalcData* data;
     double maxStep;
     void *cvode_mem;
-    static bool showWarnings;
+    EPHOTO_API static bool showWarnings;
 private:
     Driver() {}
     Variables* origVars;

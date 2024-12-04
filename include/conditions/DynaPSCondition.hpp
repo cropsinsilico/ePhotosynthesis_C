@@ -113,8 +113,7 @@ private:
       \returns The size of the serialized vector.
       */
     static std::size_t _size() {
-        if (count == 0)
-            count = RACondition::size() + XanCycleCondition::size();
+        count = RACondition::size() + XanCycleCondition::size();
         return count;
     }
 

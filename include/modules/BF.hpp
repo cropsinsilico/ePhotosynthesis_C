@@ -95,8 +95,8 @@ private:
     SET_GET(cATPsyn)
     SET_GET(CPSi)
     SET_GET(cNADPHsyn)
-    static double TIME;    // The timestamp of the most recent call to _Rate
-    static std::size_t N;  // The current size of the BF TimeSeries
+    EPHOTO_API static double TIME;    // The timestamp of the most recent call to _Rate
+    EPHOTO_API static std::size_t N;  // The current size of the BF TimeSeries
 
     /**
       Reset the static member variables to their default values.

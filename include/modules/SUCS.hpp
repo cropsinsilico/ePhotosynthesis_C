@@ -163,16 +163,16 @@ private:
 
     SET_GET(SUCS2PS_Pic)
 
-    static double KE5Ratio;
-    static double ADPc;
-    static double SUCSV51;
-    static double SUCSV52;
-    static double SUCSV55;
-    static double SUCSV56;
-    static double SUCSV57;
-    static double SUCSV58;
-    static double TIME;    // The timestamp of the most recent call to _Rate
-    static std::size_t N;  // The current size of the SUCS TimeSeries
+    EPHOTO_API static double KE5Ratio;
+    EPHOTO_API static double ADPc;
+    EPHOTO_API static double SUCSV51;
+    EPHOTO_API static double SUCSV52;
+    EPHOTO_API static double SUCSV55;
+    EPHOTO_API static double SUCSV56;
+    EPHOTO_API static double SUCSV57;
+    EPHOTO_API static double SUCSV58;
+    EPHOTO_API static double TIME;    // The timestamp of the most recent call to _Rate
+    EPHOTO_API static std::size_t N;  // The current size of the SUCS TimeSeries
 };
 
 }  // namespace modules
