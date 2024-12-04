@@ -290,10 +290,10 @@ int main(int argc, const char* argv[]) {
 	    throw std::runtime_error("Enzyme data required if --c3 set (automatically true for EPS driver)");
 	}
 
-	assignInputVarD(CO2, CO2_in);
-	assignInputVarD(Air_CO2, CO2_in);
-	assignInputVarD(PAR, TestLi);
-	assignInputVarD(Radiation_PAR, TestLi);
+	assignInputVarD(CO2, Air_CO2);
+	assignInputVarD(Air_CO2, Air_CO2);
+	assignInputVarD(PAR, Radiation_PAR);
+	assignInputVarD(Radiation_PAR, Radiation_PAR);
 	assignInputVarD(ATPCost, TestATPCost);
 	if (result.count("Tp") == 0) {
 	  assignInputVarD(WeatherTemperature, Tp);
@@ -400,10 +400,10 @@ int main(int argc, const char* argv[]) {
 	  }
 
 	  std::cout << "state = " << new_state << std::endl;
-	  assignYggVarD(CO2, CO2_in);
-	  assignYggVarD(Air_CO2, CO2_in);
-	  assignYggVarD(PAR, TestLi);
-	  assignYggVarD(Radiation_PAR, TestLi);
+	  assignYggVarD(CO2, Air_CO2);
+	  assignYggVarD(Air_CO2, Air_CO2);
+	  assignYggVarD(PAR, Radiation_PAR);
+	  assignYggVarD(Radiation_PAR, Radiation_PAR);
 	  assignYggVarD(ATPCost, TestATPCost);
 	  assignYggVarI(GRNC, GRNC);
 	  setYggVarB(SucPath, CM, TestSucPath);
@@ -411,21 +411,9 @@ int main(int argc, const char* argv[]) {
 	    theVars->Tp = new_state["Temp"].GetDouble();
 	    displayYggInputVar(%lf, Temp, theVars->Tp);
 	  }
-	  // TODO: inputs for driver
-
 #endif
 
-#ifdef MAKE_EQUIVALENT_TO_MATLAB
-	  // Conversion from Air_CO2 ppm to intercellular CO2
-	  theVars->CO2_in *= 0.7;
-	  theVars->CO2_cond = theVars->CO2_in / (3. * pow(10., 4.));
-	  // if (!useC3)
-	  //   theVars->CO2_cond *= 0.7;
-
-	  // Conversion from W m^{-2} to u moles m^{-2} s^{-1}
-	  theVars->TestLi *= 1.0e6 / 2.35e5;
-#endif // MAKE_EQUIVALENT_TO_MATLAB
-
+	  theVars->finalizeInputs();
 	  maindriver = drivers::create_driver(driverChoice, theVars,
 					      begintime, stepsize,
 					      stoptime, maxSubSteps,
@@ -464,31 +452,32 @@ int main(int argc, const char* argv[]) {
 #else
 	// std::cerr << theVars << std::endl;
         std::ofstream outfile(outputFile);
+	maindriver->writeOutputTable(outfile);
 
-        switch (driverChoice) {
-            case trDynaPS:
-                outfile << "Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate,CO2AR" << std::endl;
-                outfile << theVars->TestLi << "," << ResultRate[0] << ",";
-                outfile << ResultRate[1] << "," << ResultRate[2] << "," << ResultRate[3] << ",";
-                outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << "," << ResultRate[7] << std::endl;
-                break;
-            case DynaPS:
-                outfile << "Light intensity,PSIIabs,PSIabs,Vc,Vo,VPGA,Vsucrose,Vstarch,CO2AR" << std::endl;
-                outfile << theVars->TestLi << "," << ResultRate[0] << ",";
-                outfile << ResultRate[1] << "," << ResultRate[2] << "," << ResultRate[3] << ",";
-                outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << "," << ResultRate[7] << std::endl;
-                break;
-            case CM:
-                outfile << "Light intensity,CO2AR" << std::endl;
-                outfile << theVars->TestLi << "," << ResultRate[0] << std::endl;
-                break;
-            case EPS:
-	      std::cerr << "Arate = " << ResultRate[0] << std::endl;
-	        outfile << ResultRate[0] << std::endl;
-                break;
-            default:
-                break;
-        }
+        // switch (driverChoice) {
+        //     case trDynaPS:
+        //         outfile << "Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate,CO2AR" << std::endl;
+        //         outfile << theVars->TestLi << "," << ResultRate[0] << ",";
+        //         outfile << ResultRate[1] << "," << ResultRate[2] << "," << ResultRate[3] << ",";
+        //         outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << "," << ResultRate[7] << std::endl;
+        //         break;
+        //     case DynaPS:
+        //         outfile << "Light intensity,PSIIabs,PSIabs,Vc,Vo,VPGA,Vsucrose,Vstarch,CO2AR" << std::endl;
+        //         outfile << theVars->TestLi << "," << ResultRate[0] << ",";
+        //         outfile << ResultRate[1] << "," << ResultRate[2] << "," << ResultRate[3] << ",";
+        //         outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << "," << ResultRate[7] << std::endl;
+        //         break;
+        //     case CM:
+        //         outfile << "Light intensity,CO2AR" << std::endl;
+        //         outfile << theVars->TestLi << "," << ResultRate[0] << std::endl;
+        //         break;
+        //     case EPS:
+        //       std::cerr << "Arate = " << ResultRate[0] << std::endl;
+        //         outfile << ResultRate[0] << std::endl;
+        //         break;
+        //     default:
+        //         break;
+        // }
         outfile.close();
 #endif
 	

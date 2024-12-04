@@ -41,7 +41,9 @@ namespace modules {
 
 class trDynaPS : public MODULE_BASE(trDynaPS) {
 public:
-    DECLARE_MODULE_DRIVER(trDynaPS)
+    // Prevent trDynaPS from being friends with itself :(
+    // DECLARE_MODULE_DRIVER(trDynaPS)
+    DECLARE_MODULE_COMPOSITE(trDynaPS)
 };
 
   DEFINE_MODULE_COMPOSITE_HEADER(trDynaPS);

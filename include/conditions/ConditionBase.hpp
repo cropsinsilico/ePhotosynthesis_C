@@ -117,6 +117,14 @@ protected:
  protected:
 #endif // INCDEBUG
 
+    static void _initStaticMembers() {
+	ParentClass::_initStaticMembers();
+#ifdef INCDEBUG
+	if (ParentClass::child_classes.size() > 0)
+	    T::_dlevel = Debug::Middle;
+#endif // INCDEBUG
+    }
+
     /**
       Serialize the data members of this object to a vector of double's. This is the opposite of
       _fromArray().
@@ -147,29 +155,6 @@ Debug::DebugLevel ConditionBase<T, U, ID>::_dlevel = Debug::Low;
 }  // namespace conditions
 }  // namespace ePhotosynthesis
 
-
-#ifdef INCDEBUG
-#define DECLARE_CONDITION_BASE_DEBUG(name)				\
-  public:								\
-  static void setTop() {VARS_CLASS_VAR_LOCAL(name, COND)::_dlevel = Debug::Top;} \
-private:								\
- EPHOTO_API static Debug::DebugLevel _dlevel;
-#define DEFINE_CONDITION_DEBUG(name)				\
-  Debug::DebugLevel VARS_CLASS_VAR_LOCAL(name, COND)::_dlevel = Debug::Low;
-#define DEFINE_CONDITION_DEBUG_COMPOSITE(name)				\
-  template<>								\
-  Debug::DebugLevel conditions::ConditionBase<VARS_CLASS_VAR(name, COND), \
-					      VARS_CLASS_VAR(PARENT_ ## name, COND), \
-					      MODULE_ ## name>::_dlevel = Debug::Middle;
-/*
-#define DEFINE_CONDITION_DEBUG_COMPOSITE(name)			\
-  Debug::DebugLevel VARS_CLASS_VAR_LOCAL(name, COND)::_dlevel = Debug::Middle;
-*/
-#else
-#define DECLARE_CONDITION_BASE_DEBUG(name)
-#define DEFINE_CONDITION_DEBUG(name)
-#define DEFINE_CONDITION_DEBUG_COMPOSITE(name)
-#endif
 
 /**
    Macro for boiler plate forward declaring classes required to declare a
@@ -460,7 +445,6 @@ public:
    \param name Name of the module the condition class is associated with.
  */
 #define DEFINE_CONDITION_COMPOSITE_BASE(name)	\
-  DEFINE_CONDITION_DEBUG_COMPOSITE(name);	\
   DEFINE_CONDITION_BASE(name)
 /**
    Boiler plate for defining members of a composite condition class.
