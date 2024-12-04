@@ -33,6 +33,10 @@
 #include <sunlinsol/sunlinsol_dense.h> /* access to dense SUNLinearSolver */
 #include <sundials/sundials_types.h>   /* defs. of realtype, sunindextype */
 
+#ifndef RCONST
+#define RCONST(X) SUN_RCONST(X)
+#endif
+
 #define ONE    RCONST(1.0)
 #define ZERO   RCONST(0.0)
 

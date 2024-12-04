@@ -94,7 +94,8 @@ int main(int argc, const char* argv[]) {
         bool useC3 = false;
         cxxopts::Options options("ePhoto", "Command line interface to C++ implementation of the matlab original");
         options.show_positional_help();
-        std::string evn, atpcost, optionsFile, enzymeFile, grnFile;
+        std::string evn, atpcost, optionsFile, enzymeFile, grnFile,
+          outputFile;
         double stoptime, begintime, stepsize;
         double abstol, reltol;
         double Tp;
@@ -133,6 +134,8 @@ int main(int argc, const char* argv[]) {
                 ("r,reltol", "Relative tolerance for calculations", cxxopts::value<double>(reltol)->default_value("1e-4"))
                 ("T,Tp", "Input Temperature", cxxopts::value<double>(Tp)->default_value("0.0"))
                 ("o,options", "Name of a text file which specifies any of the above options. Command line arguments have priority.", cxxopts::value<std::string>(optionsFile)->default_value(""))
+                ("x,output", "Name the the text file that outputs should be saved to.",
+                 cxxopts::value<std::string>(outputFile)->default_value("output.data"))
                 ("h,help", "Produce help message")
                 ("debug","Debug level", cxxopts::value<ushort>(dbglvl)->default_value("0"))
                 ("debugDelta", "Debug deltas", cxxopts::value<bool>(debugDelta)->default_value("false"))
@@ -153,6 +156,7 @@ int main(int argc, const char* argv[]) {
             varSearch(atpcost)
             varSearch(enzymeFile)
             varSearch(grnFile)
+            varSearch(outputFile)
             varSearchD(begintime)
             varSearchD(stoptime)
             varSearchD(stepsize)
@@ -286,7 +290,7 @@ int main(int argc, const char* argv[]) {
 
         std::vector<double> ResultRate = maindriver->run();
 
-        std::ofstream outfile("output.data");
+        std::ofstream outfile(outputFile);
 
         switch (driverChoice) {
             case trDynaPS:
