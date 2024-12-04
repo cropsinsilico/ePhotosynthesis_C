@@ -39,6 +39,8 @@
 #if ((SUNDIALS_VERSION_MAJOR > 6) || (SUNDIALS_VERSION_MAJOR == 6 && SUNDIALS_VERSION_MINOR >= 7))
 #include <sundials/sundials_context.h>
 #define SUNDIALS_CONTEXT_REQUIRED 1
+#else
+#define sunrealtype double
 #endif // 
 
 #ifndef uint
