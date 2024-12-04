@@ -92,10 +92,14 @@ class VariableFramework: public testing::Test {
 protected:
     void SetUp() override {
         if (theVars == nullptr) {
-	    if (SUNContext_Create(NULL, &context) < 0) {
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+	    if (SUNContext_Create(0, &context) < 0) {
 	      throw std::runtime_error("SUNContext_Create failed");
 	    }
             theVars = new Variables(&context);
+#else // SUNDIALS_CONTEXT_REQUIRED
+            theVars = new Variables();
+#endif // SUNDIALS_CONTEXT_REQUIRED
 	}
         IniModelCom(theVars);
     }
@@ -104,12 +108,16 @@ protected:
         if (theVars != nullptr) {
             delete theVars;
             theVars = nullptr;
+#ifdef SUNDIALS_CONTEXT_REQUIRED
 	    SUNContext_Free(&context);
+#endif // SUNDIALS_CONTEXT_REQUIRED
         }
     }
 
     Variables* theVars = nullptr;
+#ifdef SUNDIALS_CONTEXT_REQUIRED
     SUNContext context = nullptr;
+#endif // SUNDIALS_CONTEXT_REQUIRED
 };
 
 inline arr get_random(const size_t size) {

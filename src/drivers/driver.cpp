@@ -48,7 +48,9 @@ Driver::Driver(Variables *theVars, const double startTime,
 	       const std::vector<std::string>& outVars) :
   DriverParam(startTime, stepSize, endTime, maxSubsteps,
 	      atol, rtol, para, ratio, showWarn, outVars) {
+#ifdef SUNDIALS_CONTEXT_REQUIRED
   this->context = theVars->context;
+#endif // SUNDIALS_CONTEXT_REQUIRED
   this->inputVars = theVars;
   initialStep = stepSize;
   maxStep = 20. * step;
@@ -69,7 +71,11 @@ arr Driver::run() {
 
         sunindextype N =  static_cast<long>(constraints.size());
         N_Vector y;
+#ifdef SUNDIALS_CONTEXT_REQUIRED
         y = N_VNew_Serial(N, *context);
+#else // SUNDIALS_CONTEXT_REQUIRED
+	y = N_VNew_Serial(N);
+#endif // SUNDIALS_CONTEXT_REQUIRED
 	sunrealtype* y_ptr = N_VGetArrayPointer(y);
 
         for (std::size_t i = 0; i < constraints.size(); i++)
@@ -88,9 +94,15 @@ arr Driver::run() {
 
         data->drv = this;
 
+#ifdef SUNDIALS_CONTEXT_REQUIRED
         SUNMatrix A = SUNDenseMatrix(N, N, *context);
         SUNNonlinearSolver NLS = SUNNonlinSol_Newton(y, *context);
         SUNLinearSolver LS = SUNLinSol_Dense(y, A, *context);
+#else // SUNDIALS_CONTEXT_REQUIRED
+        SUNMatrix A = SUNDenseMatrix(N, N);
+        SUNNonlinearSolver NLS = SUNNonlinSol_Newton(y);
+        SUNLinearSolver LS = SUNLinSol_Dense(y, A);
+#endif // SUNDIALS_CONTEXT_REQUIRED
 
         try {
             if (CVodeSetNonlinearSolver(cvode_mem, NLS) != CV_SUCCESS) {

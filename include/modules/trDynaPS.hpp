@@ -40,10 +40,12 @@ class trDynaPSDriver;
 namespace modules {
 
 class trDynaPS : public MODULE_BASE(trDynaPS) {
+private:
+    friend class trDynaPSDriver;
 public:
     // Prevent trDynaPS from being friends with itself :(
     // DECLARE_MODULE_DRIVER(trDynaPS)
-    DECLARE_MODULE_COMPOSITE(trDynaPS)
+    DECLARE_MODULE_TOP(trDynaPS)
 };
 
   DEFINE_MODULE_COMPOSITE_HEADER(trDynaPS);

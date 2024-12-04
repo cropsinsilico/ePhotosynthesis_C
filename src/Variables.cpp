@@ -15,6 +15,7 @@ void Variables::_initStaticMembers() {
     ValueSetClass::_initStaticMembers();
 }
 
+#ifdef SUNDIALS_CONTEXT_REQUIRED
 Variables::Variables(SUNContext* ctx) :
   ValueSet(), context(ctx) {
     if (!ctx) {
@@ -25,6 +26,14 @@ Variables::Variables(SUNContext* ctx) :
     useC3 = usesC3();
     initValues();
 }
+#else // SUNDIALS_CONTEXT_REQUIRED
+Variables::Variables() :
+  ValueSet() {
+    select();
+    useC3 = usesC3();
+    initValues();
+}
+#endif // SUNDIALS_CONTEXT_REQUIRED
 
 Variables::Variables(const Variables& other) :
   ValueSet(other) {
@@ -37,7 +46,9 @@ Variables::Variables(const Variables* other) :
 }
 
 void Variables::__copyMembers(const Variables& other) {
+#ifdef SUNDIALS_CONTEXT_REQUIRED
     context = other.context;
+#endif // SUNDIALS_CONTEXT_REQUIRED
     record = other.record;
     GP = other.GP;
     GRNC = other.GRNC;
@@ -139,7 +150,10 @@ bool Variables::equals(const ValueSet_t &b0,
       std::cerr << #name << " not equal" << std::endl;	\
       return false;					\
     }
-    FOR_EACH(CHECK, context, record, GP, GRNC, GRNT, RUBISCOMETHOD, useC3,
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+    CHECK(context);
+#endif // SUNDIALS_CONTEXT_REQUIRED
+    FOR_EACH(CHECK, record, GP, GRNC, GRNT, RUBISCOMETHOD, useC3,
 	     EnzymeAct, VfactorCp, VfactorT, FluxTR, CO2A, RedoxReg_MP,
 	     FIBF_Pool);
 #define CHECK_COM(name) CHECK(name ## _com)

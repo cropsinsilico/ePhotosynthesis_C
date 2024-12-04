@@ -11,7 +11,11 @@ TEST_F(PRModuleTest, InitTest) {
 
     PRCondition* PRc = PR::init(theVars);
 
+#ifdef SUNDIALS_CONTEXT_REQUIRED
     Variables* theVars2 = new Variables(&context);
+#else // SUNDIALS_CONTEXT_REQUIRED
+    Variables* theVars2 = new Variables();
+#endif // SUNDIALS_CONTEXT_REQUIRED
     theVars2->CO2_in = 500.;
     theVars2->TestLi = 14.;
     theVars2->TestATPCost = 4.5;

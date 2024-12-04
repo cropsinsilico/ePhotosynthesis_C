@@ -34,7 +34,11 @@ TEST_F(trDynaPSConditionTest, ArrayTest) {
     arr output = trDynaPS.toArray();
     COMPARE(input, output)
 
+#ifdef SUNDIALS_CONTEXT_REQUIRED
     N_Vector y = N_VNew_Serial(static_cast<sunindextype>(input.size()), context);
+#else // SUNDIALS_CONTEXT_REQUIRED
+    N_Vector y = N_VNew_Serial(input.size());
+#endif // SUNDIALS_CONTEXT_REQUIRED
     sunrealtype* y_ptr = N_VGetArrayPointer(y);
     for (size_t i = 0; i < input.size(); i++)
       y_ptr[i] = input[i];

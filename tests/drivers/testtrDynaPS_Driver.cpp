@@ -75,7 +75,11 @@ TEST_F(trDynaPSDriverTest, MBTest) {
     EXPECT_EQ(0, driver->constraints.size());
     driver->setup();
     EXPECT_NE(0, driver->constraints.size());
+#ifdef SUNDIALS_CONTEXT_REQUIRED
     N_Vector y = N_VNew_Serial(static_cast<sunindextype>(driver->constraints.size()), context);
+#else // SUNDIALS_CONTEXT_REQUIRED
+    N_Vector y = N_VNew_Serial(driver->constraints.size());
+#endif // SUNDIALS_CONTEXT_REQUIRED
     sunrealtype* y_ptr = N_VGetArrayPointer(y);
     for (size_t i = 0; i < driver->constraints.size(); i++)
       y_ptr[i] = driver->constraints[i];

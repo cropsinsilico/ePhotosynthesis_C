@@ -36,8 +36,6 @@
 #include "rc/RCAll.hpp"
 #include "conditions/ConditionAll.hpp"
 
-#include <sundials/sundials_context.h>
-
 namespace ePhotosynthesis {
 
 #define MEMBERS_Variables MEMBERS_ALLVARS
@@ -54,11 +52,18 @@ public:
     static void _initDefaults();
 #endif // MAKE_EQUIVALENT_TO_MATLAB
 
+#ifdef SUNDIALS_CONTEXT_REQUIRED
     /**
        Construct a new variables instance for a given sundials context
        \param[in, out] ctx Sundials context.
     */
     Variables(SUNContext* ctx);
+#else // SUNDIALS_CONTEXT_REQUIRED
+    /**
+       Construct a new variables instance for a given sundials context
+    */
+    Variables();
+#endif // SUNDIALS_CONTEXT_REQUIRED
     /**
        Copy constructor for a pointer to another variables instance.
          Some variables are not included in the default copy (e.g. alfa, 
@@ -497,8 +502,10 @@ public:
 				  const bool no_error_on_invalid = false,
 				  const std::map<MODULE, const ValueSet_t*>& conditions = {},
 				  const std::string& error_context = "") const;
-    
+
+#ifdef SUNDIALS_CONTEXT_REQUIRED
     SUNContext* context = NULL; /**< Sundials context */
+#endif // SUNDIALS_CONTEXT_REQUIRED
     bool record = false; /**< If true, each step should be recorded */
 
     int GP = 0;
