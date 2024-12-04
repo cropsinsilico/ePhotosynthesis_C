@@ -92,7 +92,7 @@ int main(int argc, const char* argv[]) {
     try {
         bool record = false;
         bool useC3 = false;
-        cxxopts::Options options("ePhotosynthesis", "C++ implementation of the matlab original");
+        cxxopts::Options options("ePhoto", "Command line interface to C++ implementation of the matlab original");
         options.show_positional_help();
         std::string evn, atpcost, optionsFile, enzymeFile, grnFile;
         double stoptime, begintime, stepsize;

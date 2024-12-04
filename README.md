@@ -20,7 +20,10 @@ All of the packages required to build & run the library, tests, & documentation 
 - [LCOV](https://wiki.documentfoundation.org/Development/Lcov) - (optional) needed to get test coverage
 
 ### Building
-This can be built using a conda environment. This way, the cmake should be able to find the boost and sundial automatically. Of course, be sure to activate the related env the next time after login.
+This can be built using a conda environment. This way, the cmake should be able to find the boost and sundials dependencies automatically. When using conda to manage the dependencies:
+
+1. Be sure to activate the related env the next time after login.
+1. Rebuild fresh (after removing the existing build files) after new versions of the dependencies are installed to the environment.
 
 1. Initialize a new conda env so that the package path is on your local drive with r/w permissons. You can use the `environment.yml` provided to create a conda environment with the required packages via `conda env create -f environment.yml`. If you use this method you can skip to building ePhotosynthesis.
 1. Install both boost and sundial through conda.
