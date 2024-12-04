@@ -196,7 +196,7 @@ jobs:
         shell: bash -l {0}
         run: |
           cd build
-          cmake --build . --config ${{ env.CMAKE_BUILD_TYPE_TEST }} -- -j 8
+          cmake --build . --config ${{ env.CMAKE_BUILD_TYPE_TEST }} -- -j 4
       - name: Build C++ & C in serial (CONDA, WINDOWS)
         if: matrix.os == 'windows-latest'
         shell: bash -l {0}
