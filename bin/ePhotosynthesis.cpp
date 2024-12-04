@@ -99,7 +99,7 @@ int main(int argc, const char* argv[]) {
         double abstol, reltol;
         double Tp;
         DriverType driverChoice;
-        int driver, maxSubSteps, RUBISCOMETHOD = 2;
+        int driver = 1, maxSubSteps, RUBISCOMETHOD = 2;
         ushort dbglvl;
         bool debugDelta, debugInternal;
         options.add_options()
@@ -113,10 +113,22 @@ int main(int argc, const char* argv[]) {
                 ("s,stoptime", "The time to stop calculations.", cxxopts::value<double>(stoptime)->default_value("5000.0"))
                 ("z,stepsize", "The step size to use in the calculations.", cxxopts::value<double>(stepsize)->default_value("1.0"))
                 ("m,maxSubSteps", "The maximum number of iterations at each time step.", cxxopts::value<int>(maxSubSteps)->default_value("750"))
-                ("d,driver", "The driver to use. Choices are:                        1 - trDynaPS: PS, PR, FI, BF, SUCS, RuACT,                 XanCycle, RROEA                                2 - DynaPS: PS, PR, FI, BF, SUCS, XanCycle           3 - CM: PS, PR, SUCS                                 4 - EPS: PS, PR, FI, BF, SUCS                    ", cxxopts::value<int>(driver)->default_value("1"))
+                ("d,driver",
+                 "The driver to use. Choices are:\n"
+                 "1 - trDynaPS (default): PS, PR, FI, BF, SUCS,\n"
+                 "       RuACT, XanCycle, RROEA\n"
+                 "2 - DynaPS: PS, PR, FI, BF, SUCS, XanCycle\n"
+                 "3 - CM: PS, PR, SUCS\n"
+                 "4 - EPS: PS, PR, FI, BF, SUCS",
+                 cxxopts::value<int>(driver))
                 ("c,c3", "Use the C3 model, automatically set to true for EPS driver", cxxopts::value<bool>(useC3)->default_value("false"))
-	        ("rubiscomethod", "The method to use for rubisco calculations. Choices are: 1 - Use enzyme concentration for calculation          2 - Use the michaelis menton and enzyme concentration together for calculation",
-                 cxxopts::value<int>(RUBISCOMETHOD)->default_value("2"))
+	        ("rubiscomethod",
+                 "The method to use for rubisco calculations. Choices are:\n"
+                 "1 - (default) Use enzyme concentration for\n"
+                 "    calculation\n"
+                 "2 - Use the michaelis menton and enzyme\n"
+                 "    concentration together for calculation",
+                 cxxopts::value<int>(RUBISCOMETHOD))
                 ("t,abstol", "Absolute tolerance for calculations", cxxopts::value<double>(abstol)->default_value("1e-5"))
                 ("r,reltol", "Relative tolerance for calculations", cxxopts::value<double>(reltol)->default_value("1e-4"))
                 ("T,Tp", "Input Temperature", cxxopts::value<double>(Tp)->default_value("0.0"))
