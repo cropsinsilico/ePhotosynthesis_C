@@ -18,7 +18,9 @@ jobs:
       - name: Check out MATLAB repository code
         run: |
           git clone https://github.com/cropsinsilico/ePhotosynthesis.git
+          cd ePhotosynthesis
           git checkout C3-metabolic-and-leaf-model-compare
+          cd ..
       - name: Set up MATLAB
         uses: matlab-actions/setup-matlab@v2
       - name: Set up miniconda test environment
