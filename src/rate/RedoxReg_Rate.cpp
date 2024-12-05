@@ -24,6 +24,7 @@
  *
  **********************************************************************************************************************************************/
 #include <math.h>
+#include <string>
 #include "Variables.hpp"
 #include "modules/RedoxReg.hpp"
 #include "drivers/driver.hpp"
