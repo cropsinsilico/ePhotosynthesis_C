@@ -103,8 +103,9 @@ void DynaPSDriver::setup() {
     inputVars->FIBF_PSPR_com = true;
 
     // A global variable to indicate whether the RuACT is run by itself or combined with others.
-    // langmm: This is true in MATLAB version
-    inputVars->RuACT_EPS_com = false;        // Since this is run within this program, it is combinbed, therefore, it is assigned value true, otherwise, assign value false.
+    // langmm: This is true in the MATLAB code, but was false in the
+    //   original translation to C++
+    inputVars->RuACT_EPS_com = true;        // Since this is run within this program, it is combinbed, therefore, it is assigned value true, otherwise, assign value false.
 
     // This is the connection between Redox and RA.
     inputVars->RedoxReg_RA_com = false;        // This means that the connection is not provided there.
@@ -129,6 +130,8 @@ void DynaPSDriver::setup() {
 
     inputVars->FI_Param[0] = va1;
     inputVars->FI_Param[1] = inputVars->PS12ratio;
+
+    inputVars->PS_PR_Param = 0.;
 
     inputVars->RuACT_Param[0] = va1;
     inputVars->RuACT_Param[1] = inputVars->PS12ratio;

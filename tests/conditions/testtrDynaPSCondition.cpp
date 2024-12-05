@@ -48,4 +48,8 @@ TEST_F(trDynaPSConditionTest, ArrayTest) {
     COMPARE(input, output2)
     N_VDestroy(y);
 }
+TEST_F(trDynaPSConditionTest, OutputTest) {
+    trDynaPSCondition trDynaPS;
+    std::cout << trDynaPS << std::endl;
+}
 }

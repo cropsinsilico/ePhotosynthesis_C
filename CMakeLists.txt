@@ -432,6 +432,57 @@ endif()
 # Tests #
 #########
 
+function(add_ePhoto_tests)
+    set(oneValueArgs PREFIX)
+    set(multiValueArgs COMMAND_PREFIX)
+    cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+    set(ePhoto_TEST_DIR ${CMAKE_CURRENT_BINARY_DIR})
+    set(TEST_DATA_DIR ${PROJECT_SOURCE_DIR}/tests/data)
+    set(ePhoto_TEST_DRIVERS trDynaPS DynaPS CM EPS)
+    foreach(DRIVER RANGE 1 4)
+      math(EXPR IDX ${DRIVER}-1)
+      list(GET ePhoto_TEST_DRIVERS ${IDX} DRIVER_NAME)
+      set(TEST_NAME ${ARGS_PREFIX}ePhoto_${DRIVER_NAME})
+      set(CHECK_NAME ${TEST_NAME}_CHECK)
+      set(EXPECTED_OUTPUT ${TEST_DATA_DIR}/ePhotoOutput_${DRIVER_NAME}.txt)
+      set(ACTUAL_OUTPUT ${ePhoto_TEST_DIR}/output_${DRIVER_NAME}.data)
+      list(APPEND ePhoto_TESTS ${TEST_NAME})
+      list(APPEND ePhoto_TESTS_CHECK ${CHECK_NAME})
+      list(APPEND ePhoto_TEST_EXPECTED ${EXPECTED_OUTPUT})
+      list(APPEND ePhoto_TEST_ACTUAL ${ACTUAL_OUTPUT})
+      add_test(
+        NAME ${TEST_NAME} COMMAND ${ARGS_COMMAND_PREFIX}
+        $<TARGET_FILE:ePhoto>
+        -d ${DRIVER}
+        --evn ${TEST_DATA_DIR}/InputEvn.txt
+        --grn ${TEST_DATA_DIR}/InputGRNC.txt
+        --enzyme ${TEST_DATA_DIR}/InputEnzyme.txt
+        --atpcost ${TEST_DATA_DIR}/InputATPCost.txt
+        --output ${ACTUAL_OUTPUT}
+        ${ADDED_ARGS}
+        WORKING_DIRECTORY ${ePhoto_TEST_DIR}
+        COMMAND_EXPAND_LISTS
+      )
+      add_test(
+        NAME ${CHECK_NAME} COMMAND
+        ${CMAKE_COMMAND} -E compare_files ${EXPECTED_OUTPUT} ${ACTUAL_OUTPUT}
+      )
+      set_tests_properties(
+        ${CHECK_NAME} PROPERTIES
+        DEPENDS ${TEST_NAME}
+      )
+    endforeach()
+    add_test(
+      NAME ${ARGS_PREFIX}ePhoto_cleanup COMMAND
+      ${CMAKE_COMMAND} -E remove ${ePhoto_TEST_ACTUAL}
+    )
+    list(JOIN ePhoto_TESTS_CHECK "\\;" ePhoto_TESTS_CHECK)
+    set_tests_properties(
+      ${ARGS_PREFIX}ePhoto_cleanup PROPERTIES
+      DEPENDS ${ePhoto_TESTS_CHECK}
+    )
+endfunction()
+
 if(BUILD_TESTS)
     message(STATUS "Building tests")
     enable_testing()
@@ -494,6 +545,9 @@ if(BUILD_TESTS)
         include(GoogleTest)
     endif()
     gtest_discover_tests(testRunner PROPERTIES DISCOVERY_TIMEOUT 1200)
+
+    add_ePhoto_tests()
+
 endif()
 
 if(TEST_COVERAGE)
@@ -516,9 +570,13 @@ if(TEST_VALGRIND)
     if(NOT VALGRIND_FOUND)
         message(FATAL_ERROR "valgrind could not be located")
     endif()
-    add_test(NAME valgrind_tests
-             COMMAND valgrind --suppressions=${CMAKE_CURRENT_SOURCE_DIR}/valgrind.supp --suppressions=${CMAKE_CURRENT_SOURCE_DIR}/valgrind-python.supp --leak-check=full --error-exitcode=1 --track-origins=yes --dsymutil=no --keep-debuginfo=yes --read-var-info=yes ${CMAKE_CURRENT_BINARY_DIR}/testRunner --gtest_filter=-SIMD.*
-             WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+    add_ePhoto_tests(
+        PREFIX valgrind_ COMMAND_PREFIX
+        valgrind --suppressions=${CMAKE_CURRENT_SOURCE_DIR}/valgrind.supp --suppressions=${CMAKE_CURRENT_SOURCE_DIR}/valgrind-python.supp --leak-check=full --error-exitcode=1 --track-origins=yes --dsymutil=no --keep-debuginfo=yes --read-var-info=yes
+    )
+    # add_test(NAME valgrind_tests
+    #          COMMAND valgrind --suppressions=${CMAKE_CURRENT_SOURCE_DIR}/valgrind.supp --suppressions=${CMAKE_CURRENT_SOURCE_DIR}/valgrind-python.supp --leak-check=full --error-exitcode=1 --track-origins=yes --dsymutil=no --keep-debuginfo=yes --read-var-info=yes ${CMAKE_CURRENT_BINARY_DIR}/testRunner --gtest_filter=-SIMD.*
+    #          WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endif()
 
 

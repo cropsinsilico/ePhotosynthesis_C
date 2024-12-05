@@ -91,6 +91,9 @@ void trDynaPSDriver::setup() {
     inputVars->RuACT_EPS_com = true;        // Since this is run within this program, it is combinbed, therefore, it is assigned value true, otherwise, assign value false.
 
     // This is the connection between Redox and RA.
+    // langmm: I believe this should be true, but the RedoxReg module
+    //   solver problem does not appear to be well solved and is always
+    //   solved by the initial guess.
     inputVars->RedoxReg_RA_com = false;        // This means that the connection is there.
 
     inputVars->XanCycle_BF_com = true;

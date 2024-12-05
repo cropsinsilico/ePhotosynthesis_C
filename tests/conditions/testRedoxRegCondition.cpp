@@ -41,4 +41,10 @@ TEST_F(RedoxRegConditionTest, ArrayTest) {
     arr output = pc.toArray();
     COMPARE(input, output)
 }
+
+TEST_F(RedoxRegConditionTest, OutputTest) {
+  RedoxRegCondition RedoxReg;
+  std::cout << RedoxReg << std::endl;
+}
+  
 }
