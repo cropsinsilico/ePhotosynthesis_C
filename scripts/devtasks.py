@@ -238,7 +238,7 @@ class compare_matlab(BuildSubTask):
             config_args = []
         if build_args is None:
             build_args = []
-        config_args += ['-DMAKE_EQUIVALENT_TO_MATLAB']
+        config_args += ['-DMAKE_EQUIVALENT_TO_MATLAB:BOOL=ON']
         cmds = [
             f'python utils/compare_matlab.py {args.matlab_repo}'
             f' -d 4 --matlab {args.matlab}',

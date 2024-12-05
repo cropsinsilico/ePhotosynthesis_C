@@ -89,7 +89,7 @@ public:
     std::size_t ParaNum; /**< Index of parameter that should be scaled by Ratio */
     double Ratio;        /**< Ratio to scale selected parameter by */
     std::vector<std::string> outputVars; /**< Names of variables that should be output by the driver */
-    static bool showWarnings; /**< Whether or not to send solver warnings to stdout. */
+    EPHOTO_API static bool showWarnings; /**< Whether or not to send solver warnings to stdout. */
 };
   
 template<>
@@ -224,7 +224,7 @@ public:
       */
     virtual arr MB(realtype t, N_Vector u) = 0;
     virtual ~Driver();
-    static Variables *inputVars;  /**< the instance of Variables to use for all calculations. */
+    EPHOTO_API static Variables *inputVars;  /**< the instance of Variables to use for all calculations. */
     arr constraints;   /**< serialized version of the Condition class being used. */
     std::string fname_vars_init; /**< Name of file where initial parameter values should be be output */
     std::string fname_vars_final; /**< Name of file where final parameter values should be be output */

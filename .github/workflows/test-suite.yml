@@ -104,14 +104,16 @@ jobs:
         run: |
           mamba install doxygen>=1.9.2 graphviz -y
       - name: Install compilers using conda on Linux/Mac
-        if: matrix.os != 'windows-latest'
+        if: matrix.os != 'windows-latest' && matrix.with-valgrind != true
         shell: bash -l {0}
         run: |
           mamba install c-compiler cxx-compiler
-      - name: Install valgrind on unix systems
+      - name: Install valgrind on unix systems (and required debug symbols)
         if: matrix.os != 'windows-latest' && matrix.with-valgrind == true
         shell: bash -l {0}
         run: |
+          sudo apt-get update
+          sudo apt-get install libc6-dbg
           mamba install valgrind
 
       ###################################

@@ -11,7 +11,7 @@ The script is provided for convenience and is not used in the build process.
 All of the packages required to build & run the library, tests, & documentation are included in the `environment.yml` file that can be installed via conda. However, you should be able to build using your favorite package manager.
 - [CMake](https://cmake.org/) (3.5 or newer) - required to build
 - [Boost](https://www.boost.org/) (1.36 or newer) - only the algorithm headers are needed
-- [Sundials>=6.7.0](https://computing.llnl.gov/projects/sundials) - Only the following modules are used:
+- [Sundials>=5.7.0](https://computing.llnl.gov/projects/sundials) - Only the following modules are used:
   - CVode
   - Kinsol
 - [Doxygen](https://www.doxygen.nl/index.html) - (optional) needed to build the documentation

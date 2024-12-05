@@ -85,8 +85,7 @@ private:
       \returns The size of the serialized vector.
       */
     static std::size_t _size() {
-        if (count == 0)
-            count = EPSCondition::size() + RuACTCondition::size();
+        count = EPSCondition::size() + RuACTCondition::size();
         return count;
     }
 

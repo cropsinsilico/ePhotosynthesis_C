@@ -89,8 +89,7 @@ private:
       \returns The size of the serialized vector.
       */
     static std::size_t _size() {
-        if (count == 0)
-            count = BFCondition::size() + FICondition::size() + 1;
+        count = BFCondition::size() + FICondition::size() + 1;
         return count;
     }
 

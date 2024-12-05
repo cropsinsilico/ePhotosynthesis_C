@@ -66,4 +66,4 @@ jobs:
       - name: Get diff
         shell: bash -l {0}
         run: |
-          python utils/compare_matlab.py -d 4 --dont-run-matlab
+          python utils/compare_matlab.py ./ePhotosynthesis -d 4 --dont-run-matlab

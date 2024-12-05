@@ -92,8 +92,7 @@ private:
       \returns The size of the serialized vector.
       */
     static std::size_t _size() {
-        if (count == 0)
-            count = RROEACondition::size() + DynaPSCondition::size();
+        count = RROEACondition::size() + DynaPSCondition::size();
         return count;
     }
 

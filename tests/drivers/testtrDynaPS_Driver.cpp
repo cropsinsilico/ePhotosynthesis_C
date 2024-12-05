@@ -91,7 +91,7 @@ TEST_F(trDynaPSDriverTest, MBTest) {
 TEST_F(trDynaPSDriverTest, FullTest) {
     theVars->CO2_in = 500.;
     theVars->TestLi = 1.;
-    theVars->TestATPCost = 4.5;
+    theVars->TestATPCost = 14.5;
     theVars->EnzymeAct = Emap;
     theVars->RUBISCOMETHOD = 1;
     Variables* orig = new Variables(theVars);
