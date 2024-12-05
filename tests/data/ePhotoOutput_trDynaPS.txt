@@ -1,2 +1,2 @@
-Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate
-1445,24.2218,8.17484,0.00385337,1.55774,2.57492,4.08742,8.17484
+CO2AR,Light intensity,VPGA,VT3P,Vc,Vo,Vstarch,Vt_glycerate,Vt_glycolate
+17.1838,1445,0.00306325,1.35917,22.1102,7.4622,2.38207,3.7311,7.4622
