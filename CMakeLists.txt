@@ -340,6 +340,7 @@ function(add_ePhoto_tests)
       list(GET ePhoto_TEST_DRIVERS ${IDX} DRIVER_NAME)
       set(TEST_NAME ${ARGS_PREFIX}ePhoto_${DRIVER_NAME})
       if (DRIVER_NAME STREQUAL "DynaPS")
+        # list(APPEND ADDED_ARGS --maxSubSteps 1000 --c3)
         continue()
       endif()
       set(CHECK_NAME ${TEST_NAME}_CHECK)
@@ -358,6 +359,7 @@ function(add_ePhoto_tests)
         --enzyme ${TEST_DATA_DIR}/InputEnzyme.txt
         --atpcost ${TEST_DATA_DIR}/InputATPCost.txt
         --output ${ACTUAL_OUTPUT}
+        ${ADDED_ARGS}
         WORKING_DIRECTORY ${ePhoto_TEST_DIR}
         COMMAND_EXPAND_LISTS
       )
