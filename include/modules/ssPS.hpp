@@ -26,6 +26,14 @@
  *
  **********************************************************************************************************************************************/
 
+/*
+  langmm: This module does not appear to be used anywhere else in the
+    code and so is disabled for now until tests can be designed to verify
+    that it is behaving correctly (however that may be).
+*/
+
+#ifdef ENABLE_ssPS
+
 #include "definitions.hpp"
 
 namespace ePhotosynthesis {
@@ -53,3 +61,5 @@ private:
 
 }  // namespace modules
 }  // namespace ePhotosynthesis
+
+#endif

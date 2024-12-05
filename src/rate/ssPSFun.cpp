@@ -23,6 +23,15 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
+
+/*
+  langmm: This module does not appear to be used anywhere else in the
+    code and so is disabled for now until tests can be designed to verify
+    that it is behaving correctly (however that may be).
+*/
+
+#ifdef ENABLE_ssPS
+
 #include <math.h>
 #include "modules/ssPS.hpp"
 #include "Variables.hpp"
@@ -61,3 +70,5 @@ arr ssPS::ssPSFun(double VcmaxT, double JmaxT, double temp, double CO2, Variable
     rval[1] = w;
     return rval;
 }
+
+#endif

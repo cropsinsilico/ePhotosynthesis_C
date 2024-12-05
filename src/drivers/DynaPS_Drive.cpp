@@ -157,6 +157,7 @@ void DynaPSDriver::getResults() {
     inputVars->RedoxReg_RA_com = false;
     inputVars->XanCycle_BF_com = false;
 
+    delete dyna_int_con;
     IniModelCom(inputVars);
     //save FDC2
 }
