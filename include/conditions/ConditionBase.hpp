@@ -105,7 +105,9 @@ public:
       \param out output stream to write to.
       \param tab The level of indentation to use.
       */
-    std::ostream& print(std::ostream &out, const uint tab = 0) {return static_cast<T*>(this)->_print(out, tab);}
+    std::ostream& print(std::ostream &out, const uint tab = 0) const {
+        return static_cast<const T*>(this)->_print(out, tab);
+    }
 
     /**
       Overloaded output stream function.
@@ -115,7 +117,7 @@ public:
       \returns The output stream.
       */
     friend std::ostream& operator<<(std::ostream &out, const T &in) {
-        return static_cast<T*>(in)->_print(out, 0);
+        return in.print(out, 0);
     }
 
     /**
@@ -148,6 +150,12 @@ protected:
       */
     virtual void _clear() = 0;
 
+    /**
+       Output the conditions to a stream.
+       \param out output stream to write to.
+       \param tab The level of indentation to use.
+     */
+    virtual std::ostream& _print(std::ostream &out, const uint tab = 0) const = 0;
     /**
       De-serialize the given vector into this object. This is the opposite of _toArray()
 

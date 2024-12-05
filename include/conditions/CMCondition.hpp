@@ -88,7 +88,7 @@ public:
       \param tab The level of indentation to use.
       \returns The output stream
       */
-    std::ostream& _print(std::ostream &out, const uint tab = 0) const;
+    std::ostream& _print(std::ostream &out, const uint tab = 0) const override;
 #ifdef INCDEBUG
     static void setTop() {CMCondition::_dlevel = Debug::Top;}
 #endif
