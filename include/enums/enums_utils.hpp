@@ -19,6 +19,8 @@ namespace ePhotosynthesis {
 
     EPHOTO_API std::string str_toupper(const std::string& inStr);
     EPHOTO_API std::string str_tolower(const std::string& inStr);
+    EPHOTO_API std::vector<std::string> str_split(const std::string& inStr,
+                                                  const std::string& sep);
 
     template<typename T1>
     bool enum_key_search(const std::map<T1, std::string> map,

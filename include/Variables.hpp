@@ -131,6 +131,7 @@ public:
     void setRecord(const ValueSet_t* x);
     void setRecord(ValueSet_t* x,
 		   std::map<MODULE, ValueSet_t*>& conditions);
+
     /**
        Serialize all parameters attached to this instance to a file.
        \param[in] filename Name of file where parameters should be written.
@@ -143,14 +144,16 @@ public:
        \param[in] key_aliases String aliases to use for keys.
        \param[in] conditions Map of conditions for composite modules that
          are not stored on Variables instances.
+       \param[in] subset Subset of parameters to output.
      */
     void dump(const std::string& filename,
-	      const bool includeSkipped = false,
-	      const std::vector<MODULE>& skip_modules={},
-	      const std::vector<PARAM_TYPE>& skip_param_types={},
-	      const std::vector<std::string>& skip_keys={},
-	      const std::map<std::string, std::string>& key_aliases={},
-	      const std::map<MODULE, const ValueSet_t*>& conditions={}) const;
+              const bool includeSkipped = false,
+              const std::vector<MODULE>& skip_modules={},
+              const std::vector<PARAM_TYPE>& skip_param_types={},
+              const std::vector<std::string>& skip_keys={},
+              const std::map<std::string, std::string>& key_aliases={},
+              const std::map<MODULE, const ValueSet_t*>& conditions={},
+              const std::vector<std::string>& subset={}) const;
     /**
        Serialize all parameters attached to this instance to an output
          stream.
@@ -164,15 +167,17 @@ public:
        \param[in] key_aliases String aliases to use for keys.
        \param[in] conditions Map of conditions for composite modules that
          are not stored on Variables instances.
+       \param[in] subset Subset of parameters to output.
        \returns Updated output stream.
      */
     std::ostream& dump(std::ostream& out,
-		       const bool includeSkipped = false,
-		       const std::vector<MODULE>& skip_modules={},
-		       const std::vector<PARAM_TYPE>& skip_param_types={},
-		       const std::vector<std::string>& skip_keys={},
-		       const std::map<std::string, std::string>& key_aliases={},
-		       const std::map<MODULE, const ValueSet_t*>& conditions={}) const;
+                       const bool includeSkipped = false,
+                       const std::vector<MODULE>& skip_modules={},
+                       const std::vector<PARAM_TYPE>& skip_param_types={},
+                       const std::vector<std::string>& skip_keys={},
+                       const std::map<std::string, std::string>& key_aliases={},
+                       const std::map<MODULE, const ValueSet_t*>& conditions={},
+                       const std::vector<std::string>& subset={}) const;
     /**
        Serialize parameters for a single value set to an output stream.
        \param[in] module ID for module that should be serialized.
@@ -192,14 +197,14 @@ public:
        \returns Updated output stream.
      */
     std::ostream& dump(const MODULE& module,
-		       const PARAM_TYPE& param_type,
-		       std::ostream& out, std::size_t pad,
-		       const bool includeSkipped = false,
-		       const std::vector<MODULE>& skip_modules={},
-		       const std::vector<PARAM_TYPE>& skip_param_types={},
-		       const std::vector<std::string>& skip_keys={},
-		       const std::map<std::string, std::string>& key_aliases={},
-		       const std::map<MODULE, const ValueSet_t*>& conditions={}) const;
+                       const PARAM_TYPE& param_type,
+                       std::ostream& out, std::size_t pad,
+                       const bool includeSkipped = false,
+                       const std::vector<MODULE>& skip_modules={},
+                       const std::vector<PARAM_TYPE>& skip_param_types={},
+                       const std::vector<std::string>& skip_keys={},
+                       const std::map<std::string, std::string>& key_aliases={},
+                       const std::map<MODULE, const ValueSet_t*>& conditions={}) const;
   
     /**
        Initialize the parameters for a value set.
@@ -211,7 +216,7 @@ public:
          already been initialized.
        \param value_set Pointer to the value set that should be
          initialized if different than the default version attached to
-	 Variables.
+         Variables.
      */
     void initParam(const MODULE& mod, const PARAM_TYPE& pt,
 		   const bool noDefaults=false,

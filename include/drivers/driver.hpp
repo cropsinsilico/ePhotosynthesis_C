@@ -41,6 +41,13 @@ enum DriverType : int {
   None, MEMBERS_DRIVER
 };
 
+enum OutputFreq : int {
+  OUTPUT_FREQ_NEVER,
+  OUTPUT_FREQ_FIRST,
+  OUTPUT_FREQ_FIRST_AND_LAST,
+  OUTPUT_FREQ_STEPS,
+};
+
 class DriverParam {
 public:
     
@@ -180,8 +187,15 @@ public:
 
     /**
        Get output variables.
+       \param inputVars Structure containing current variables.
      */
     void getOutputVars(Variables* inputVars);
+
+    /**
+       Set the output variables.
+       \param newVars New set of output variables.
+     */
+    void setOutputVars(const std::vector<std::string>& newVars);
 
     /**
        Write the output to a stream as a table.
@@ -227,23 +241,38 @@ public:
     EPHOTO_API static Variables *inputVars;  /**< the instance of Variables to use for all calculations. */
     arr constraints;   /**< serialized version of the Condition class being used. */
     std::string fname_vars_init; /**< Name of file where initial parameter values should be be output */
-    std::string fname_vars_final; /**< Name of file where final parameter values should be be output */
+    std::string fname_vars_last; /**< Name of file where final parameter values should be be output */
+    std::string fname_vars_step; /**< Base name for files where step parameter values should be be output */
+    std::vector<std::string> param_vars; /** Set of variables that should be output when _dump is called */
     /**
        Turn on parameter output.
        \param[in] fname_init Name of the file that initial parameter
-         values should be output to. If empty, values will not be output.
-       \param[in] fname_final Name of the file that final parameter
-         values should be output to. If empty, values will not be output.
+         values should be output to. If empty, initial values will not
+         be output.
+       \param[in] fname_last Name of the file that final parameter
+         values should be output to. If empty, final values will not be
+         output.
+       \param[in] fname_step Base name that should be used as a base
+         for files that step parameter values are output to. If empty,
+         step values will not be output.
+       \param[in] vars Set of paramters that should be output.
      */
     void outputParam(const std::string& fname_init,
-		     const std::string& fname_final);
+                     const std::string& fname_last = "",
+                     const std::string& fname_step = "",
+                     const std::vector<std::string>& vars = {});
     /**
        Turn on parameter output.
+       \param[in] frequency Flag specifying how often parameters should
+         be output.
        \param[in] fname_base Base name that should be used for files that
          initial and final parameters should be output to. If not provided,
 	 the name of the driver module will be used.
+       \param[in] vars Set of paramters that should be output.
      */
-    virtual void outputParam(const std::string& fname_base = "");
+    virtual void outputParam(const OutputFreq& frequency = OUTPUT_FREQ_NEVER,
+                             const std::string& fname_base = "",
+                             const std::vector<std::string>& vars = {});
 
 protected:
     friend CVodeMem;
@@ -309,6 +338,7 @@ protected:
 private:
     Driver() {}
     Variables* origVars;
+    bool _lastStep;
     bool _dumpStep;
 };
 
@@ -363,13 +393,15 @@ public:
     
     // virtual ~DriverBase();
     /** \copydoc Driver::outputParam */
-    void outputParam(const std::string& fname_base = "") override {
+    void outputParam(const OutputFreq& frequency = OUTPUT_FREQ_NEVER,
+                     const std::string& fname_base = "",
+                     const std::vector<std::string>& vars = {}) override {
 	std::string fname_base_cpy = fname_base;
 	if (fname_base_cpy.empty()) {
 	  fname_base_cpy = get_enum_names<MODULE>().find(module)->second;
 	  fname_base_cpy += "_";
 	}
-      Driver::outputParam(fname_base_cpy);
+        Driver::outputParam(frequency, fname_base_cpy, vars);
     }
 protected:
     /** \copydoc drivers::Driver::Driver */

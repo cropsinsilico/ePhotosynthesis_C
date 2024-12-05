@@ -520,6 +520,18 @@ namespace ePhotosynthesis {
   /** \copydoc ValueSetBase::max_default_value_width */			\
   method(max_default_value_width, std::size_t,				\
 	 (bool noChildren = false), (noChildren), 0, const)		\
+  /** \copydoc ValueSetBase::print_value */                             \
+  method(print_value, std::ostream&,                                    \
+	 (const std::string& name, const double& val,                   \
+          std::ostream &out, const uint tab = 0, std::size_t pad = 0,   \
+	  bool includePrefixes = false,					\
+	  bool includeSkipped = false,					\
+	  const std::vector<std::string>& skip_keys = {},		\
+	  const std::map<std::string, std::string>& key_aliases = {},	\
+	  bool show_pointers = false),					\
+	 (name, val, out, tab, pad, includePrefixes, includeSkipped,    \
+	  skip_keys, key_aliases, show_pointers),                       \
+	 out, const)							\
   /** \copydoc ValueSetBase::has */					\
   method(has, bool,							\
 	 (const std::string& name, const bool& isGlymaID = false),	\
@@ -1037,6 +1049,90 @@ namespace ePhotosynthesis {
       return std::move(out).str();
     }
     /**
+       Display a single value from a value map.
+       \tparam V Type of value in value map.
+       \param key Parameter enum.
+       \param val Parameter value.
+       \param out Output stream.
+       \param tab Number of tabs to prefix each line in the output with.
+       \param pad Number of characters that key names should be padded
+         to fill.
+       \param includePrefixes If true, the module & parameter type
+         prefixes will be added to the member names.
+       \param includeSkipped If true, skipped keys will be output.
+       \param skip_keys Key strings to skip in output.
+       \param key_aliases String aliases to use for keys.
+       \param show_pointers If true, the pointers will be displayed
+         instead of the values.
+       \returns Output stream.
+     */
+    template <typename V>
+    static std::ostream& print_value(const EnumType& key,
+                                     const V& val,
+                                     std::ostream &out,
+                                     const uint tab=0,
+                                     std::size_t pad=0,
+                                     bool includePrefixes=false,
+                                     bool includeSkipped=false,
+                                     const std::vector<std::string>& skip_keys={},
+                                     const std::map<std::string, std::string>& key_aliases={},
+                                     bool show_pointers=false) {
+      if ((!includeSkipped) && (isSkipped(key) ||
+                                isConstant(key)))
+        return out;
+      const std::string space(tab * tab_size, ' ');
+      std::string iname;
+      if (includePrefixes)
+        iname = getNameWithPrefix(key);
+      else
+        iname = getName(key);
+      std::map<std::string, std::string>::const_iterator it_alias = key_aliases.find(iname);
+      if (!__contains(skip_keys, iname)) {
+        out << space << std::setw(pad + tab_size) << std::left;
+        if (it_alias != key_aliases.end())
+          iname = it_alias->second;
+        out << iname;
+        print_value(val, out, show_pointers);
+        out << std::endl;
+      }
+      return out;
+    }
+    /**
+       Display a single value from a value map.
+       \tparam V Type of value in value map.
+       \param name Parameter name.
+       \param val Parameter value.
+       \param out Output stream.
+       \param tab Number of tabs to prefix each line in the output with.
+       \param pad Number of characters that key names should be padded
+         to fill.
+       \param includePrefixes If true, the module & parameter type
+         prefixes will be added to the member names.
+       \param includeSkipped If true, skipped keys will be output.
+       \param skip_keys Key strings to skip in output.
+       \param key_aliases String aliases to use for keys.
+       \param show_pointers If true, the pointers will be displayed
+         instead of the values.
+       \returns Output stream.
+     */
+    template <typename V>
+    static std::ostream& print_value(const std::string& name,
+                                     const V& val,
+                                     std::ostream &out,
+                                     const uint tab=0,
+                                     std::size_t pad=0,
+                                     bool includePrefixes=false,
+                                     bool includeSkipped=false,
+                                     const std::vector<std::string>& skip_keys={},
+                                     const std::map<std::string, std::string>& key_aliases={},
+                                     bool show_pointers=false) {
+      EnumType key = fromNameWithAliases(name);
+      if (pad == 0) pad = max_field_width();
+      return print_value(key, val, out, tab, pad,
+                         includePrefixes, includeSkipped,
+                         skip_keys, key_aliases, show_pointers);
+    }
+    /**
        Display the values in a value map.
        \tparam V Type of value in value map.
        \param vals Value map to display.
@@ -1063,29 +1159,14 @@ namespace ePhotosynthesis {
 					 const std::vector<std::string>& skip_keys={},
 					 const std::map<std::string, std::string>& key_aliases={},
 					 bool show_pointers=false) {
-      const std::string space(tab * tab_size, ' ');
       check_value_map(vals, "print_value_map: ");
       if (pad == 0)
 	pad = field_width_value_map(vals, includePrefixes);
       for (typename std::map<EnumType, V>::const_iterator it = vals.begin();
 	   it != vals.end(); it++) {
-	if ((!includeSkipped) && (isSkipped(it->first) ||
-				  isConstant(it->first)))
-	  continue;
-	std::string iname;
-	if (includePrefixes)
-	  iname = getNameWithPrefix(it->first);
-	else
-	  iname = getName(it->first);
-	std::map<std::string, std::string>::const_iterator it_alias = key_aliases.find(iname);
-	if (!__contains(skip_keys, iname)) {
-	  out << space << std::setw(pad + tab_size) << std::left;
-	  if (it_alias != key_aliases.end())
-	    iname = it_alias->second;
-	  out << iname;
-	  print_value(it->second, out, show_pointers);
-	  out << std::endl;
-	}
+        print_value(it->first, it->second,
+                    out, tab, pad, includePrefixes, includeSkipped,
+                    skip_keys, key_aliases, show_pointers);
       }
       return out;
     }
@@ -1452,6 +1533,7 @@ namespace ePhotosynthesis {
       }
       return true;
     }
+#ifndef EPHOTO_USE_SCOPED_ENUM
     /**
        Check for equality between two value maps with integer keys.
        \tparam VDst Destination value type.
@@ -1468,6 +1550,7 @@ namespace ePhotosynthesis {
       std::map<EnumType, VSrc> kvalsSrc = int2key(valsSrc);
       return compare_value_maps(kvalsDst, kvalsSrc, context);
     }
+#endif // EPHOTO_USE_SCOPED_ENUM
     /**
        Compare two values maps, throwing an error if the keys do not
          match, valsSrc contains a constant value that is different than
@@ -1912,6 +1995,7 @@ namespace ePhotosynthesis {
 	return setDefault(fromGlymaid(k), v, dontPreserve);
       return setDefault(fromNameWithAliases(k), v, dontPreserve);
     }
+#ifndef EPHOTO_USE_SCOPED_ENUM
     /**
        Set the default value corresponding to an enum key
        \param[in] k Key to set value for.
@@ -1923,6 +2007,7 @@ namespace ePhotosynthesis {
 			   const bool dontPreserve = false) {
       return setDefault(int2key(k), v, dontPreserve);
     }
+#endif // EPHOTO_USE_SCOPED_ENUM
     /**
       Get the default value corresponding to an enum key
       \param[in] x Key to get value for
@@ -1950,6 +2035,7 @@ namespace ePhotosynthesis {
 	return getDefault(fromGlymaid(x));
       return getDefault(fromNameWithAliases(x));
     }
+#ifndef EPHOTO_USE_SCOPED_ENUM
     /**
       Get the default value corresponding to an enum key
       \param[in] k Key to get value for
@@ -1958,6 +2044,7 @@ namespace ePhotosynthesis {
     static double getDefault(const int& k) {
       return getDefault(int2key(k));
     }
+#endif // EPHOTO_USE_SCOPED_ENUM
     /**
       Get the default value corresponding to an enum key
       \param[in] x Key to get value for
@@ -2993,6 +3080,7 @@ namespace ePhotosynthesis {
 	return set(fromGlymaid(name), v);
       return set(fromNameWithAliases(name), v);
     }
+#ifndef EPHOTO_USE_SCOPED_ENUM
     /**
        Update the value associated with a key.
        \param k Key to update value for.
@@ -3001,6 +3089,7 @@ namespace ePhotosynthesis {
     void set(const int& k, const double& v) override {
       return set(BaseClass::int2key(k), v);
     }
+#endif // EPHOTO_USE_SCOPED_ENUM
     /**
        Update the value associated with a key in the value set from a map
          containing enzyme activity values.
@@ -3042,6 +3131,7 @@ namespace ePhotosynthesis {
 	return get(fromGlymaid(name));
       return get(fromNameWithAliases(name));
     }
+#ifndef EPHOTO_USE_SCOPED_ENUM
     /**
        Get the value associated with a key.
        \param k Key to get value for.
@@ -3050,6 +3140,7 @@ namespace ePhotosynthesis {
     double get(const int& k) const override {
       return get(BaseClass::int2key(k));
     }
+#endif // EPHOTO_USE_SCOPED_ENUM
     /**
        Add a value reference for the given key.
        \param k Key to update value for.

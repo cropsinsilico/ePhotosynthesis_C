@@ -123,14 +123,14 @@ int main(int argc, const char* argv[]) {
         cxxopts::Options options("ePhoto", "Command line interface to C++ implementation of the matlab original");
         options.show_positional_help();
         std::string evn, atpcost, optionsFile, enzymeFile, grnFile,
-	  outputFile, outputVars, outputVarsPerStep, outputParamBase;
+	  outputFile, outputVars, outputParamVars, outputParamBase;
         double stoptime, begintime, stepsize;
         double abstol, reltol;
         double Tp;
         DriverType driverChoice;
-        int driver = 1, maxSubSteps, RUBISCOMETHOD = 2;
+        int driver = 1, maxSubSteps, RUBISCOMETHOD = 2, outputParam = 0;
         ushort dbglvl;
-        bool debugDelta, debugInternal, outputParam;
+        bool debugDelta, debugInternal;
 	std::map<PARAM_TYPE, std::map<MODULE, std::string> > param_files;
         options.add_options()
           ("v,verbose", "Record output values for all steps (this can significantly slow the program).", cxxopts::value<bool>(record)->default_value("false"))
@@ -165,15 +165,23 @@ int main(int argc, const char* argv[]) {
           ("T,Tp", "Input Temperature", cxxopts::value<double>(Tp)->default_value("0.0"))
           ("o,options", "Name of a text file which specifies any of the above options. Command line arguments have priority.", cxxopts::value<std::string>(optionsFile)->default_value(""))
 	  ("x,output", "Name the the text file that outputs should be saved to.", cxxopts::value<std::string>(outputFile)->default_value("output.data"))
+	  ("outputVars", "Comma separated list of names of variables that should be output to the table created at the end of a run. Variables for modules, equilibirium constants, etc. can be specified by including the C++ scope of the variable. (e.g. MOD:BF:cATPsyn would output the concentration of ATP synthase). If not provided the output variables will be determined by the driver.",
+           cxxopts::value<std::string>(outputVars)->default_value(""))
+	  ("outputParam",
+           "Output model parameters at different times throughout the run. Choices are:\n"
+           "0 - (default) Don't output parameters during the run.\n"
+           "1 - Output the initial parameter values.\n"
+           "2 - Output the initial and final parameter values.\n"
+           "3 - Output the parameter values for each step in addition to the initial and final values.",
+           cxxopts::value<int>(outputParam))
+	  ("outputParamBase", "Base name for files parameter values should be output to at times through the run as specified by outputParam",
+	   cxxopts::value<std::string>(outputParamBase)->default_value(""))
+	  ("outputParamVars", "Comma separated list of names of variables that should be output at various times during the run based on the value of outputParam. If not provided, all variables will be output.",
+           cxxopts::value<std::string>(outputParamVars)->default_value(""))
 	  ("h,help", "Produce help message")
 	  ("debug","Debug level", cxxopts::value<ushort>(dbglvl)->default_value("0"))
 	  ("debugDelta", "Debug deltas", cxxopts::value<bool>(debugDelta)->default_value("false"))
 	  ("debugInternal", "Debug internals", cxxopts::value<bool>(debugInternal)->default_value("false"))
-	  ("outputParam", "Output the initial and final parameter values", cxxopts::value<bool>(outputParam)->default_value("false"))
-	  ("outputParamBase", "Base name for files that initial and final parameter values should be output to",
-	   cxxopts::value<std::string>(outputParamBase)->default_value(""))
-	  // ("outputVars", "Comma separated list of names of variables that should be output at the end of a run. Variables for modules, equilibirium constants, etc. can be specified by including the C++ scope of the variable. (e.g. MOD:BF:cATPsyn would output the concentration of ATP synthase). If not provided the output variables will be determined by the driver.", cxxopts::value<std::string>(outputVars)->default_value(""))
-	  // ("outputVarsPerStep", "Comma separated list of names of variables that should be output for each time step. If not provided, variables will not be output at each time step.", cxxopts::value<std::string>(outputVarsPerStep)->default_value(""))
 	  ;
 
 	for (std::vector<MODULE>::const_iterator m = ALL_MODULE.begin();
@@ -244,20 +252,22 @@ int main(int argc, const char* argv[]) {
 
             varSearchS(evn);
             varSearchS(atpcost);
-	    varSearchS(enzymeFile);
-	    varSearchS(grnFile);
-	    varSearchS(outputFile);
+            varSearchS(enzymeFile);
+            varSearchS(grnFile);
+            varSearchS(outputFile);
             varSearchD(begintime);
             varSearchD(stoptime);
             varSearchD(stepsize);
-	    varSearchD(Tp);
+            varSearchD(Tp);
             varSearchI(maxSubSteps);
             varSearchI(driver);
-	    varSearchI(RUBISCOMETHOD);
+            varSearchI(RUBISCOMETHOD);
             varSearchD(abstol);
             varSearchD(reltol);
-	    varSearchS(outputVars);
-	    varSearchS(outputVarsPerStep);
+            varSearchS(outputVars);
+            varSearchI(outputParam);
+            varSearchS(outputParamBase);
+            varSearchS(outputParamVars);
         }
         driverChoice = static_cast<DriverType>(driver);
 	if (driverChoice == EPS)
@@ -433,10 +443,17 @@ int main(int argc, const char* argv[]) {
 					      begintime, stepsize,
 					      stoptime, maxSubSteps,
 					      abstol, reltol, 1, 1);
-	  if (!outputParamBase.empty())
-	    outputParam = true;
-	  if (outputParam)
-	    maindriver->outputParam(outputParamBase);
+	  if ((outputParam == 0) && !(outputParamBase.empty() &&
+                                      outputParamVars.empty()))
+	    outputParam = 1;
+	  if (outputParam) {
+            std::vector<std::string> outputParamVarsV;
+            if (!outputParamVars.empty())
+              outputParamVarsV = utils::str_split(outputParamVars, ",");
+	    maindriver->outputParam(static_cast<OutputFreq>(outputParam),
+                                    outputParamBase,
+                                    outputParamVarsV);
+          }
         std::vector<double> ResultRate = maindriver->run();
 
 #ifdef WITH_YGGDRASIL
@@ -467,6 +484,10 @@ int main(int argc, const char* argv[]) {
 #else
 	// std::cerr << theVars << std::endl;
         std::ofstream outfile(outputFile);
+        if (!outputVars.empty()) {
+          std::vector<std::string> outputVarsV = utils::str_split(outputVars, ",");
+          maindriver->setOutputVars(outputVarsV);
+        }
 	maindriver->writeOutputTable(outfile);
 
         // switch (driverChoice) {

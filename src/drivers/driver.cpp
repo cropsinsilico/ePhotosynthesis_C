@@ -57,6 +57,7 @@ Driver::Driver(Variables *theVars, const double startTime,
   data = nullptr;
   origVars = nullptr;
   intermediateRes = nullptr;
+  _lastStep = false;
   _dumpStep = true; // Output the first step
 }
 
@@ -136,6 +137,7 @@ arr Driver::run() {
         if (runOK) {
             intermediateRes = N_VGetArrayPointer(y);
             time = t;
+            _lastStep = true;
 	    _dumpStep = true;
             getResults();
 	    getOutputVars(inputVars);
@@ -158,17 +160,29 @@ arr Driver::run() {
 }
 
 void Driver::outputParam(const std::string& fname_init,
-			 const std::string& fname_final) {
+			 const std::string& fname_last,
+                         const std::string& fname_step,
+                         const std::vector<std::string>& vars) {
     fname_vars_init = fname_init;
-    fname_vars_final = fname_final;
+    fname_vars_last = fname_last;
+    fname_vars_step = fname_step;
+    param_vars = vars;
 }
-void Driver::outputParam(const std::string& fname_base) {
+void Driver::outputParam(const OutputFreq& frequency,
+                         const std::string& fname_base,
+                         const std::vector<std::string>& vars) {
     std::string fname_base_cpy = fname_base;
     if (fname_base_cpy.empty()) {
 	fname_base_cpy = "NOMODULE_";
     }
-    outputParam(fname_base_cpy + "init.txt",
-		fname_base_cpy + "final.txt");
+    std::string finit, flast, fstep;
+    if (frequency >= OUTPUT_FREQ_FIRST)
+        finit = fname_base_cpy + "init.txt";
+    if (frequency >= OUTPUT_FREQ_FIRST_AND_LAST)
+        flast = fname_base_cpy + "last.txt";
+    if (frequency >= OUTPUT_FREQ_STEPS)
+        fstep = fname_base_cpy + "step";
+    outputParam(finit, flast, fstep, vars);
 }
 
 void Driver::getOutputVars(Variables* inputVars) {
@@ -178,6 +192,12 @@ void Driver::getOutputVars(Variables* inputVars) {
 	output[*it] = getVar(inputVars, *it);
     }
 }
+
+void Driver::setOutputVars(const std::vector<std::string>& newVars) {
+  outputVars.clear();
+  outputVars = newVars;
+}
+
 void Driver::writeOutputTable(std::ostream& s) const {
     typename std::map<std::string, double>::const_iterator it = output.begin();
     if (output.size() > 1) {
@@ -280,11 +300,11 @@ void Driver::dump(const std::string& filename, const Variables* theVars,
 	Variables* theVars2 = theVars->deepcopy();
 	theVars2->setRecord(con, conditions);
 	theVars2->dump(filename, true, {}, skip_param_types,
-		       skip_keys, key_aliases, conditions);
+		       skip_keys, key_aliases, conditions, param_vars);
 	delete theVars2;
     } else {
 	theVars->dump(filename, true, {}, skip_param_types,
-		      skip_keys, key_aliases, conditions);
+		      skip_keys, key_aliases, conditions, param_vars);
     }
     if (con_created && con)
 	delete con;
@@ -300,11 +320,16 @@ void Driver::_dump(realtype t, ValueSet_t* con) {
     if (t == 0) {
 	if (!fname_vars_init.empty())
 	    dump(fname_vars_init, nullptr, con, true);
+    } else if (_lastStep) {
+	if (!fname_vars_last.empty())
+	    dump(fname_vars_last, nullptr, con, true);
     } else {
-	if (!fname_vars_final.empty())
-	    dump(fname_vars_final, nullptr, con, true);
+        if (!fname_vars_step.empty()) {
+            std::string ifile = fname_vars_step + std::to_string(t) + ".txt";
+        }
     }
-    _dumpStep = false;
+    if (fname_vars_step.empty())
+        _dumpStep = false;
 }
 
 int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {

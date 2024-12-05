@@ -12,6 +12,13 @@ std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::PARAM_TYPE& x
   return out;
 }
 
+std::vector<std::string>
+ePhotosynthesis::utils::str_split(const std::string& inStr,
+                                  const std::string& sep) {
+  std::vector<std::string> out;
+  return out;
+}
+
 std::string ePhotosynthesis::utils::str_toupper(const std::string& inStr) {
   std::string outStr(inStr);
   std::transform(inStr.begin(), inStr.end(), outStr.begin(),

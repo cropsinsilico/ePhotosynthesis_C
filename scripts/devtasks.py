@@ -70,13 +70,21 @@ class SubTask:
         output_str = b''
         if output_file:
             kwargs.update(capture_output=True)
+        self.results = []
         for x in cmds:
             ires = subprocess.run(x.split(), **kwargs)
             if output_file:
                 output_str += ires.stdout
+            self.results.append(ires)
+            if ires.returncode != 0:
+                break
         if output_file:
             with open(output_file, 'wb') as fd:
                 fd.write(output_str)
+
+    @property
+    def successful(self):
+        return all(x.returncode == 0 for x in self.results)
 
     @classmethod
     def adjust_args(cls, args):
@@ -91,8 +99,10 @@ class BuildSubTask(SubTask):
         if build_kwargs is None:
             build_kwargs = {}
         if not args.dont_build:
-            build(args, config_args=config_args, build_args=build_args,
-                  **build_kwargs)
+            res = build(args, config_args=config_args,
+                        build_args=build_args, **build_kwargs)
+            if not res.successful:
+                raise RuntimeError("Build failed. Cannot continue.")
         kwargs.setdefault('cwd', args.build_dir)
         super(BuildSubTask, self).__init__(args, **kwargs)
 

@@ -18,6 +18,8 @@ def run_matlab(args):
         f'ePhotosynthesis {args.driver} {args.env} {args.grn}'
         f' {args.enzyme} {args.output} 1, exit',
     ]
+    if not os.path.isabs(args.matlab_dir):
+        args.matlab_dir = os.path.join(_repo_dir, args.matlab_dir)
     out = subprocess.run(cmd, cwd=args.matlab_dir)
     return out
 
@@ -26,13 +28,14 @@ def run_cpp(args):
     cmd = [
         os.path.join(args.cpp_dir, 'ePhoto'), '-d', str(args.driver),
         '--evn', args.env, '--grn', args.grn, '--enzyme', args.enzyme,
-        '--output', args.output, '--outputParam', '--stoptime', '3000',
+        '--output', args.output, '--outputParam', '2',
+        '--stoptime', '3000',
     ]
     out = subprocess.run(cmd)
     return out
 
 
-def compare_files(f1, f2, check_files=None):
+def compare_files(f1, f2, check_files=None, ftype='parameter'):
     with open(f1, 'r') as fd:
         lines1 = fd.readlines()
     with open(f2, 'r') as fd:
@@ -45,7 +48,7 @@ def compare_files(f1, f2, check_files=None):
         print(line_diff)
         line_diff = '\n'.join(line_diff)
         raise RuntimeError(
-            f"Parameter files differ:\n{line_diff}"
+            f"{ftype.title()} files differ:\n{line_diff}"
         )
 
 
@@ -73,7 +76,7 @@ def diff(args, out1, out2):
     compare_files(finit1, finit2)
     fout1 = os.path.join(args.matlab_dir, args.output)
     fout2 = args.output
-    compare_files(fout1, fout2, check_output)
+    compare_files(fout1, fout2, check_files=check_output, ftype='output')
 
 
 def compare(args):

@@ -259,26 +259,43 @@ out << std::endl;
 }
 
 void Variables::dump(const std::string& filename,
-		     const bool includeSkipped,
-		     const std::vector<MODULE>& skip_modules,
-		     const std::vector<PARAM_TYPE>& skip_param_types,
-		     const std::vector<std::string>& skip_keys,
-		     const std::map<std::string, std::string>& key_aliases,
-		     const std::map<MODULE, const ValueSet_t*>& conditions) const {
+                     const bool includeSkipped,
+                     const std::vector<MODULE>& skip_modules,
+                     const std::vector<PARAM_TYPE>& skip_param_types,
+                     const std::vector<std::string>& skip_keys,
+                     const std::map<std::string, std::string>& key_aliases,
+                     const std::map<MODULE, const ValueSet_t*>& conditions,
+                     const std::vector<std::string>& subset) const {
     std::ofstream fd;
     fd.open(filename);
     dump(fd, includeSkipped, skip_modules, skip_param_types,
-	 skip_keys, key_aliases, conditions);
+	 skip_keys, key_aliases, conditions, subset);
     fd.close();
 }
 std::ostream& Variables::dump(std::ostream& out,
-			      const bool includeSkipped,
-			      const std::vector<MODULE>& skip_modules,
-			      const std::vector<PARAM_TYPE>& skip_param_types,
-			      const std::vector<std::string>& skip_keys,
-			      const std::map<std::string, std::string>& key_aliases,
-			      const std::map<MODULE, const ValueSet_t*>& conditions) const {
+                              const bool includeSkipped,
+                              const std::vector<MODULE>& skip_modules,
+                              const std::vector<PARAM_TYPE>& skip_param_types,
+                              const std::vector<std::string>& skip_keys,
+                              const std::map<std::string, std::string>& key_aliases,
+                              const std::map<MODULE, const ValueSet_t*>& conditions,
+                              const std::vector<std::string>& subset) const {
     std::size_t pad = max_field_width_all();
+    if (!subset.empty()) {
+        for (typename std::vector<std::string>::const_iterator it = subset.begin();
+             it != subset.end(); it++) {
+            MODULE mod = MODULE_NONE;
+            PARAM_TYPE pt = PARAM_TYPE_NONE;
+            std::string name = parseVar(*it, mod, pt);
+            const ValueSetClass_t* vs = getValueSetClass(mod, pt, false,
+                                                         // conditions,
+                                                         "dump");
+            double val = vs->get(name);
+            vs->print_value(name, val, out, 0, pad, true, includeSkipped,
+                            skip_keys, key_aliases);
+        }
+        return out;
+    }
 #define FITER(V, ...)							\
     if (V->_virtual_selected() &&					\
 	!__contains(skip_modules, V->_virtual_get_module()) &&		\
@@ -291,14 +308,14 @@ std::ostream& Variables::dump(std::ostream& out,
     return out;
 }
 std::ostream& Variables::dump(const MODULE& module,
-			      const PARAM_TYPE& param_type,
-			      std::ostream& out, std::size_t pad,
-			      const bool includeSkipped,
-			      const std::vector<MODULE>& skip_modules,
-			      const std::vector<PARAM_TYPE>& skip_param_types,
-			      const std::vector<std::string>& skip_keys,
-			      const std::map<std::string, std::string>& key_aliases,
-			      const std::map<MODULE, const ValueSet_t*>& conditions) const {
+                              const PARAM_TYPE& param_type,
+                              std::ostream& out, std::size_t pad,
+                              const bool includeSkipped,
+                              const std::vector<MODULE>& skip_modules,
+                              const std::vector<PARAM_TYPE>& skip_param_types,
+                              const std::vector<std::string>& skip_keys,
+                              const std::map<std::string, std::string>& key_aliases,
+                              const std::map<MODULE, const ValueSet_t*>& conditions) const {
     if (!isSelected(module, param_type)) {
 	return out;
     }
