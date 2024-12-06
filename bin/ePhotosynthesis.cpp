@@ -315,10 +315,10 @@ int main(int argc, const char* argv[]) {
 	    throw std::runtime_error("Enzyme data required if --c3 set (automatically true for EPS driver)");
 	}
 
-	assignInputVarD(CO2, Air_CO2);
-	assignInputVarD(Air_CO2, Air_CO2);
-	assignInputVarD(PAR, Radiation_PAR);
-	assignInputVarD(Radiation_PAR, Radiation_PAR);
+	assignInputVarD(CO2, CO2_in);
+	assignInputVarD(Air_CO2, CO2_in);
+	assignInputVarD(PAR, TestLi);
+	assignInputVarD(Radiation_PAR, TestLi);
 	assignInputVarD(ATPCost, TestATPCost);
 	if (result.count("Tp") == 0) {
 	  assignInputVarD(WeatherTemperature, Tp);

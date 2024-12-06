@@ -20,3 +20,4 @@
 - Transfer integration tests for executable from cvode_7.1.1 branch
 - Add ELF tests for Sundials errors
 - Add coverage requirement for repo
+- Line 296 in FI_Rate.m add calc to driver output

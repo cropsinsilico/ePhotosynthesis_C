@@ -70,6 +70,7 @@ set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${PROJECT_SOURCE_DIR}/cmake")
 
 option(BUILD_TESTS "Build ePhotosynthesis tests.")
 option(TEST_COVERAGE "Include test coverage in the tests (turns BUILD_TESTS ON)")
+option(PRESERVE_TEST_OUTPUT "Don't clean up test output after the test runs")
 option(WITH_ASAN "Enable Clang address sanitizer and undefined behavior sanitizer if available")
 option(TEST_VALGRIND "Enable valgrind tests")
 option(BUILD_DOCS "Create HTML and PDF API documentation for ePhotosynthesis (requires Doxygen)")
@@ -443,6 +444,7 @@ function(add_ePhoto_tests)
       math(EXPR IDX ${DRIVER}-1)
       list(GET ePhoto_TEST_DRIVERS ${IDX} DRIVER_NAME)
       set(TEST_NAME ${ARGS_PREFIX}ePhoto_${DRIVER_NAME})
+      set(SHOW_NAME ${TEST_NAME}_SHOW)
       set(CHECK_NAME ${TEST_NAME}_CHECK)
       set(EXPECTED_OUTPUT ${TEST_DATA_DIR}/ePhotoOutput_${DRIVER_NAME}.txt)
       set(ACTUAL_OUTPUT ${ePhoto_TEST_DIR}/output_${DRIVER_NAME}.data)
@@ -464,23 +466,41 @@ function(add_ePhoto_tests)
         COMMAND_EXPAND_LISTS
       )
       add_test(
+        NAME ${SHOW_NAME}_EXPECTED COMMAND
+        ${CMAKE_COMMAND} -E cat ${EXPECTED_OUTPUT}
+      )
+      set_tests_properties(
+        ${SHOW_NAME}_EXPECTED PROPERTIES
+        DEPENDS ${TEST_NAME}
+      )
+      add_test(
+        NAME ${SHOW_NAME}_ACTUAL COMMAND
+        ${CMAKE_COMMAND} -E cat ${ACTUAL_OUTPUT}
+      )
+      set_tests_properties(
+        ${SHOW_NAME}_ACTUAL PROPERTIES
+        DEPENDS ${TEST_NAME}
+      )
+      add_test(
         NAME ${CHECK_NAME} COMMAND
         ${CMAKE_COMMAND} -E compare_files ${EXPECTED_OUTPUT} ${ACTUAL_OUTPUT}
       )
       set_tests_properties(
         ${CHECK_NAME} PROPERTIES
-        DEPENDS ${TEST_NAME}
+        DEPENDS "${TEST_NAME};${SHOW_NAME}_EXPECTED;${SHOW_NAME}_ACTUAL"
       )
     endforeach()
-    add_test(
-      NAME ${ARGS_PREFIX}ePhoto_cleanup COMMAND
-      ${CMAKE_COMMAND} -E remove ${ePhoto_TEST_ACTUAL}
-    )
-    list(JOIN ePhoto_TESTS_CHECK "\\;" ePhoto_TESTS_CHECK)
-    set_tests_properties(
-      ${ARGS_PREFIX}ePhoto_cleanup PROPERTIES
-      DEPENDS ${ePhoto_TESTS_CHECK}
-    )
+    if(NOT PRESERVE_TEST_OUTPUT)
+      add_test(
+        NAME ${ARGS_PREFIX}ePhoto_cleanup COMMAND
+        ${CMAKE_COMMAND} -E remove ${ePhoto_TEST_ACTUAL}
+      )
+      list(JOIN ePhoto_TESTS_CHECK "\\;" ePhoto_TESTS_CHECK)
+      set_tests_properties(
+        ${ARGS_PREFIX}ePhoto_cleanup PROPERTIES
+        DEPENDS ${ePhoto_TESTS_CHECK}
+      )
+    endif()
 endfunction()
 
 if(BUILD_TESTS)

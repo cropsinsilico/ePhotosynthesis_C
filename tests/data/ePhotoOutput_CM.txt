@@ -1,2 +1,2 @@
-CO2AR,Light intensity
-17.6568,1445
+Light intensity,CO2AR
+1445,17.6568

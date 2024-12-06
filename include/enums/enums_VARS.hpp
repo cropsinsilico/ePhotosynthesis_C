@@ -8,18 +8,16 @@ enum class ENUM_ALL_VARS : int {
     AVR                 ,  //!< [CONST] The conversion factor between volume and area (micromole per meter square per second and milimole per liter per second).
     HPR                 ,  //!< [CONST]
     O2                  ,  //!< [CONST] Seems to be unused currently
-    CO2_cond            ,  //!< [CALC] Intercellular CO2, calculated from air CO2 (CO2_in)
+    CO2_cond            ,  //!< [CALC] Intercellular CO2 in umoles m^{-3}, calculated from air CO2 (CO2_in)
     GLight              ,
     O2_cond             ,
     PS12ratio           ,  //!< [CALC] Calcualted from input_PSI & input_PSIIcore in SYSInitial
     ADP                 ,
     Pi                  ,  //!< [CALC] Pi used when useC3 is true and EPS module selected
     TestATPCost         ,  //!< Extra ATP cost when useC3 is false (in units per area)
-    Air_CO2             ,  //!< [ALIASES={CO2}] Air CO2 concentration in ppm
-    CO2_in              ,  //!< [CALC] Intercellular CO2
-    Radiation_PAR       ,  //!< [ALIASES={PAR}] Light intensity (in units of W m^{-2})
-    PPFD_in             ,  //!< [CALC] Light intensity (in units of umoles m^{-2} s^{-1})
-    TestLi              ,  //!< [CALC] Light intensity (in units of umoles m^{-2} s^{-1})
+    CO2_in              ,  //!< [CALC,ALIASES={CO2,Air_CO2}] Air CO2 concentration in ppm
+    TestLi_Wps          ,  //!< [CALC] Light intensity (in units of W s^{-1})
+    TestLi              ,  //!< [CALC,ALIASES={PAR,Radiation_PAR}] Light intensity (in units of umoles m^{-2} s^{-1})
     PS2BF_Pi            ,  //!< Pi Shared by PS & BF modules when useC3 is false and EPS module is selected
     PS_PR_Param         ,  //!< Seems to unused currently
     Tp                  ,  //!< [ALIASES={Temp,WeatherTemperature}] Temperature
@@ -47,18 +45,16 @@ enum ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type : int {
     AVR                 ,  //!< [CONST] The conversion factor between volume and area (micromole per meter square per second and milimole per liter per second).
     HPR                 ,  //!< [CONST]
     O2                  ,  //!< [CONST] Seems to be unused currently
-    CO2_cond            ,  //!< [CALC] Intercellular CO2, calculated from air CO2 (CO2_in)
+    CO2_cond            ,  //!< [CALC] Intercellular CO2 in umoles m^{-3}, calculated from air CO2 (CO2_in)
     GLight              ,
     O2_cond             ,
     PS12ratio           ,  //!< [CALC] Calcualted from input_PSI & input_PSIIcore in SYSInitial
     ADP                 ,
     Pi                  ,  //!< [CALC] Pi used when useC3 is true and EPS module selected
     TestATPCost         ,  //!< Extra ATP cost when useC3 is false (in units per area)
-    Air_CO2             ,  //!< [ALIASES={CO2}] Air CO2 concentration in ppm
-    CO2_in              ,  //!< [CALC] Intercellular CO2
-    Radiation_PAR       ,  //!< [ALIASES={PAR}] Light intensity (in units of W m^{-2})
-    PPFD_in             ,  //!< [CALC] Light intensity (in units of umoles m^{-2} s^{-1})
-    TestLi              ,  //!< [CALC] Light intensity (in units of umoles m^{-2} s^{-1})
+    CO2_in              ,  //!< [CALC,ALIASES={CO2,Air_CO2}] Air CO2 concentration in ppm
+    TestLi_Wps          ,  //!< [CALC] Light intensity (in units of W s^{-1})
+    TestLi              ,  //!< [CALC,ALIASES={PAR,Radiation_PAR}] Light intensity (in units of umoles m^{-2} s^{-1})
     PS2BF_Pi            ,  //!< Pi Shared by PS & BF modules when useC3 is false and EPS module is selected
     PS_PR_Param         ,  //!< Seems to unused currently
     Tp                  ,  //!< [ALIASES={Temp,WeatherTemperature}] Temperature
@@ -88,10 +84,8 @@ enum ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type : int {
     ADP                 ,		\
     Pi                  ,		\
     TestATPCost         ,		\
-    Air_CO2             ,		\
     CO2_in              ,		\
-    Radiation_PAR       ,		\
-    PPFD_in             ,		\
+    TestLi_Wps          ,		\
     TestLi              ,		\
     PS2BF_Pi            ,		\
     PS_PR_Param         ,		\

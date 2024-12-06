@@ -199,19 +199,19 @@ void Driver::setOutputVars(const std::vector<std::string>& newVars) {
 }
 
 void Driver::writeOutputTable(std::ostream& s) const {
-    typename std::map<std::string, double>::const_iterator it = output.begin();
+    typename std::vector<std::string>::const_iterator it = outputVars.begin();
     if (output.size() > 1) {
-	s << it->first;
+	s << *it;
 	it++;
-	for (; it != output.end(); it++)
-	    s << "," << it->first;
+	for (; it != outputVars.end(); it++)
+	    s << "," << *it;
 	s << std::endl;
-	it = output.begin();
+	it = outputVars.begin();
     }
-    s << it->second;
+    s << output.find(*it)->second;
     it++;
-    for (; it != output.end(); it++)
-	s << "," << it->second;
+    for (; it != outputVars.end(); it++)
+	s << "," << output.find(*it)->second;
     s << std::endl;
 }
 

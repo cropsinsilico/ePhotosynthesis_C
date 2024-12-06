@@ -58,7 +58,7 @@ jobs:
       - name: Run MATLAB version
         uses: matlab-actions/run-command@v2
         with:
-          command: addpath("ePhotosynthesis"), ePhotosynthesis(4, "InputEvn_MATLAB.txt", "InputEnzyme.txt", "InputGRNC_MATLAB.txt", "output.data", 1)
+          command: cd("ePhotosynthesis"), ePhotosynthesis(4, "../InputEvn_MATLAB.txt", "../InputEnzyme.txt", "../InputGRNC_MATLAB.txt", "../InputATPCost.txt", "output.data", 1)
       # - name: Run C++ version
       #   shell: bash -l {0}
       #   run: |
@@ -66,4 +66,4 @@ jobs:
       - name: Get diff
         shell: bash -l {0}
         run: |
-          python utils/compare_matlab.py ePhotosynthesis -d 4 --dont-run-matlab
+          python scripts/devtasks.py compare-matlab --driver 4 --dont-run-matlab --dont-build

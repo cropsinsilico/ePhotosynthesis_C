@@ -76,7 +76,6 @@ void Variables::__copyMembers(const Variables& other) {
 
 void Variables::finalizeInputs() {
     // Conversion from Air_CO2 ppm to intercellular CO2
-    CO2_in = Air_CO2;
 #ifdef MAKE_EQUIVALENT_TO_MATLAB
     CO2_in *= 0.7;
 #endif // MAKE_EQUIVALENT_TO_MATLAB
@@ -90,10 +89,10 @@ void Variables::finalizeInputs() {
     
 #ifdef MAKE_EQUIVALENT_TO_MATLAB
     // Conversion from W m^{-2} to u moles m^{-2} s^{-1}
-    PPFD_in = Radiation_PAR * 1.0e6 / 2.35e5;
-    TestLi = PPFD_in;
+    TestLi_Wps = TestLi;
+    TestLi = TestLi_Wps * 1.0e6 / 2.35e5;
 #else // MAKE_EQUIVALENT_TO_MATLAB
-    TestLi = Radiation_PAR;
+    TestLi_Wps = TestLi / (1.0e6 / 2.35e5);
 #endif // MAKE_EQUIVALENT_TO_MATLAB
 }
 
