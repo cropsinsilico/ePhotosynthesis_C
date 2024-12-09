@@ -1,5 +1,5 @@
 CO2                     400.0
-PAR                     2000.0  # umol s**-1 m**-2
+PAR                     1445.0  # 2000 * 0.85 * 0.85 umol s**-1 m**-2
 SucPath	                0
 WeatherTemperature	25.0
 ProteinTotalRatio	0.973

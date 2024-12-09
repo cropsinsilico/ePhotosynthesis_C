@@ -181,6 +181,10 @@ class test(BuildSubTask):
             build_args = []
         config_args += ['-DBUILD_TESTS:BOOL=ON']
         test_flags += ['-C', args.build_type]
+        if args.preserve_output:
+            config_args += ['-DPRESERVE_TEST_OUTPUT:BOOL=ON']
+        if args.stop_on_error:
+            test_flags += ['--stop-on-failure']
         if args.verbose:
             test_flags += ['--output-on-failure', '-VV']
         if args.show_tests:
@@ -189,7 +193,7 @@ class test(BuildSubTask):
             ]
         else:
             cmds = [
-                f"ctest {' '.join(test_flags)} --stop-on-failure"
+                f"ctest {' '.join(test_flags)}"
             ]
         super(test, self).__init__(args, cmds=cmds,
                                    config_args=config_args,
@@ -318,6 +322,12 @@ if __name__ == "__main__":
     parser_test.add_argument(
         '--verbose', action='store_true',
         help="Turn on verbose test output")
+    parser_test.add_argument(
+        '--stop-on-error', action='store_true',
+        help="Stop running tests after the first error")
+    parser_test.add_argument(
+        '--preserve-output', action='store_true',
+        help="Preserve test output")
     parser_ephoto = subparsers.add_parser(
         'ephoto', help="Run ephoto executable",
         func=ephoto)
