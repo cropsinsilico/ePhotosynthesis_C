@@ -120,10 +120,7 @@ public:
     double Pi = 0.;
 
     double TestATPCost = 0.;
-    double Air_CO2 = 0.;
     double CO2_in = 0.;
-    double Radiation_PAR = 0.;
-    double PPFD_in = 0.;
     double TestLi = 0.;
     double PS2BF_Pi = 0.;
     double PS_PR_Param = 0;

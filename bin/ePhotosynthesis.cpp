@@ -193,10 +193,8 @@ int main(int argc, const char* argv[]) {
                 throw std::runtime_error("Enzyme data required if --c3 set (automatically true for EPS driver)");
         }
 
-        assignInputVarD(CO2, Air_CO2);
-        assignInputVarD(Air_CO2, Air_CO2);
-        assignInputVarD(PAR, Radiation_PAR);
-        assignInputVarD(Radiation_PAR, Radiation_PAR);
+        assignInputVarD(CO2, CO2_in);
+        assignInputVarD(PAR, TestLi);
         assignInputVarD(ATPCost, TestATPCost);
         if (result.count("Tp") == 0) {
             assignInputVarD(WeatherTemperature, Tp);
@@ -247,10 +245,6 @@ int main(int argc, const char* argv[]) {
         theVars->record = record;
         theVars->useC3 = useC3;
         theVars->RUBISCOMETHOD = RUBISCOMETHOD;
-        theVars->CO2_in = theVars->Air_CO2;
-        theVars->CO2_cond = theVars->CO2_in / (3. * pow(10., 4.));
-        theVars->PPFD_in = theVars->Radiation_PAR * 1.0e6 / 2.35e5;
-        theVars->TestLi = theVars->PPFD_in;
         modules::PR::setRUBISCOTOTAL(3);
         if (debugDelta)
             dbglvl += 8;
