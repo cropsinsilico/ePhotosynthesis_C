@@ -43,6 +43,7 @@ jobs:
         run: |
           echo "CMAKE_BUILD_TYPE_TEST=Debug" >> "$GITHUB_ENV"
           echo "CMAKE_ARGS=-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DMAKE_EQUIVALENT_TO_MATLAB:BOOL=ON" >> "$GITHUB_ENV"
+          echo "DEVTASKS_ARGS=--driver 4 --matlab-repo ePhotosynthesis" >> "$GITHUB_ENV"
       - name: Configure (CONDA)
         shell: bash -l {0}
         run: |
@@ -55,15 +56,20 @@ jobs:
         run: |
           cd build
           cmake --build . --config ${{ env.CMAKE_BUILD_TYPE_TEST }} -- -j 4
+      - name: Run C++ version & Generate MATLAB script
+        shell: bash -l {0}
+        run: |
+          python scripts/devtasks.py compare-matlab ${{ env.DEVTASKS_ARGS }} --generate-matlab-script run_ephoto.m --dont-run-matlab
+          # ./build/ePhoto -d 4 --enzyme InputEnzyme.txt --grn InputGRNC_MATLAB.txt --outputParam
       - name: Run MATLAB version
         uses: matlab-actions/run-command@v2
         with:
-          command: cd("ePhotosynthesis"), ePhotosynthesis(4, "../InputEvn_MATLAB.txt", "../InputEnzyme.txt", "../InputGRNC_MATLAB.txt", "../InputATPCost.txt", "output.data", 1)
-      # - name: Run C++ version
-      #   shell: bash -l {0}
-      #   run: |
-      #     ./build/ePhoto -d 4 --enzyme InputEnzyme.txt --grn InputGRNC_MATLAB.txt --outputParam
+          # command: cd("ePhotosynthesis"), ePhotosynthesis(4, "../InputEvn_MATLAB.txt", "../InputEnzyme.txt", "../InputGRNC_MATLAB.txt", "../InputATPCost.txt", "output.data", 1)
+          command: run_ephoto
+          startup-options: -nodisplay -nosplash -nodesktop -nojvm -logfile matlab_log.txt
+      - name: Display MATLAB log
+        run: cat matlab_log.txt
       - name: Get diff
         shell: bash -l {0}
         run: |
-          python scripts/devtasks.py compare-matlab --driver 4 --dont-run-matlab --dont-build
+          python scripts/devtasks.py compare-matlab ${{ env.DEVTASKS_ARGS }} --diff

@@ -12,15 +12,19 @@ import numpy as np
 _source_dir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 
 
-def find_matlab():
+def find_matlab(required=False):
     if shutil.which('matlab'):
         return shutil.which('matlab')
     if sys.platform == 'darwin':
         template = '/Applications/MATLAB_*.app/bin/matlab'
     else:
+        if not required:
+            return None
         raise Exception('No guess at location of installed MATLAB')
     locations = glob.glob(template)
     if not locations:
+        if not required:
+            return None
         raise Exception('MATLAB could not be located')
     return sorted(locations)[-1]  # Return newest version
 
@@ -68,6 +72,13 @@ class InstrumentedParser(argparse.ArgumentParser):
         subparser_defaults = kwargs.pop('subparser_defaults', {})
         if subparsers:
             for k, v in subparsers.items():
+                if v == 'all':
+                    unique_prog = []
+                    v = []
+                    for kk, vv in self._subparser_classes[k].choices.items():
+                        if vv.prog not in unique_prog:
+                            unique_prog.append(vv.prog)
+                            v.append(kk)
                 for x in v:
                     ikw = dict(**kwargs)
                     if x in subparser_defaults:
@@ -80,10 +91,64 @@ class InstrumentedParser(argparse.ArgumentParser):
 
 class SubTask:
 
-    def __init__(self, args, cmds=None, output_file=None, **kwargs):
+    _drivers = ['trDynaPS', 'DynaPS', 'CM', 'EPS']
+    _driver_map = {(i + 1): x for i, x in enumerate(_drivers)}
+
+    def __init__(self, args, dont_cleanup=False, **kwargs):
+        self.current_args = args
+        self.dont_cleanup = dont_cleanup
+        self._generated_files = []
         self.adjust_args(args)
+        self.run_commands(args, **kwargs)
+
+    def __del__(self):
+        self.cleanup_files()
+
+    @classmethod
+    def adjust_args(cls, args):
+        pass
+
+    def cleanup_files(self):
+        if self.dont_cleanup or self.current_args.dont_cleanup:
+            return
+        for x in self._generated_files:
+            if os.path.isfile(x):
+                os.remove(x)
+            elif os.path.isdir(x) and not glob.glob(os.path.join(x, '*')):
+                os.rmdir(x)
+
+    @classmethod
+    def prefix_path_args(cls, args, names, prefix=None):
+        for k in names:
+            v = getattr(args, k)
+            if v:
+                if not os.path.isabs(v):
+                    if prefix:
+                        v = os.path.join(prefix, v)
+                    if not os.path.isabs(v):
+                        v = os.path.abspath(v)
+                setattr(args, k, os.path.expanduser(v))
+
+    @classmethod
+    def suffix_path_args(cls, args, names, suffix):
+        for k in names:
+            k0 = f'original_{k}'
+            if not hasattr(args, k0):
+                setattr(args, k0, getattr(args, k))
+            v0 = getattr(args, k0)
+            if v0:
+                parts = os.path.splitext(v0)
+                if suffix.startswith('_') and parts[0].endswith('_'):
+                    v = suffix.lstrip('_').join(os.path.splitext(v0))
+                else:
+                    v = suffix.join(os.path.splitext(v0))
+                setattr(args, k, v)
+
+    def run_commands(self, args, cmds=None, output_file=None, **kwargs):
         if cmds is None:
             cmds = []
+        if not cmds:
+            return
         cmdS = '\n\t'.join(cmds)
         print(f"Running\n{cmdS}\n"
               f"with {pprint.pformat(kwargs)}")
@@ -97,10 +162,6 @@ class SubTask:
         if output_file:
             with open(output_file, 'wb') as fd:
                 fd.write(output_str)
-
-    @classmethod
-    def adjust_args(cls, args):
-        pass
 
 
 class BuildSubTask(SubTask):
@@ -118,10 +179,7 @@ class BuildSubTask(SubTask):
 
     @classmethod
     def adjust_args(cls, args):
-        if not os.path.isabs(args.build_dir):
-            args.build_dir = os.path.abspath(args.build_dir)
-        if not os.path.isabs(args.install_dir):
-            args.install_dir = os.path.abspath(args.install_dir)
+        cls.prefix_path_args(args, ['build_dir', 'install_dir'])
 
 
 class build(SubTask):
@@ -165,10 +223,12 @@ class update_readme(BuildSubTask):
             f'{execFile} -h'
         ]
         helpFile = os.path.join(os.getcwd(), 'help_output.txt')
+        self._generated_files.append(helpFile)
         super(update_readme, self).__init__(args, cmds=cmds,
                                             output_file=helpFile)
         with open(helpFile, 'r') as fd:
             helpMsg = fd.read()
+        os.remove(helpFile)
         helpMsg = helpMsg.split(':', 1)[-1]
         readme = os.path.join(_source_dir, "README.md")
         with open(readme, 'r') as fd:
@@ -221,6 +281,7 @@ class test(BuildSubTask):
                                         'data', f'ePhotoOutput_{drv}.txt')
                     if os.path.isfile(fsrc):
                         shutil.copy2(fsrc, fdst)
+                        self._generated_files.append(fsrc)
                     else:
                         print(f"MISSING OUTPUT {fsrc}")
 
@@ -233,48 +294,56 @@ class test(BuildSubTask):
 
 class ephoto(BuildSubTask):
 
-    def __init__(self, args, config_args=None, build_args=None,
-                 ephoto_args=None):
-        self.adjust_args(args)
-        if config_args is None:
-            config_args = []
-        if build_args is None:
-            build_args = []
-        if ephoto_args is None:
-            ephoto_args = []
-        execFile = os.path.join(args.build_dir, 'ePhoto')
-        assert args.driver != 0
-        cmds = [
-            f'{execFile} -d {args.driver} '
-            f'--enzyme {args.enzyme_file} --grn {args.grn_file} '
-            f'--evn {args.evn_file} --atpcost {args.atpcost_file} '
-            f'--output {args.output_file} '
-            f'{" ".join(ephoto_args)}',
-            f'cat {args.output_file}'
-        ]
-        super(ephoto, self).__init__(
-            args, cmds=cmds, config_args=config_args,
-            build_args=build_args, cwd=_source_dir,
-        )
-
     @classmethod
     def adjust_args(cls, args):
-        for k in ['enzyme_file', 'grn_file', 'evn_file', 'atpcost_file']:
-            if not os.path.isabs(getattr(args, k)):
-                if k == 'output_file':
-                    setattr(args, k, os.path.join(
-                        _source_dir, getattr(args, k)))
-                else:
-                    setattr(args, k, os.path.join(
-                        args.input_dir, getattr(args, k)))
-            setattr(args, k, os.path.expanduser(getattr(args, k)))
+        cls.prefix_path_args(args, ['input_dir', 'output_dir'])
+        cls.prefix_path_args(args, ['enzyme_file', 'grn_file',
+                                    'evn_file', 'atpcost_file'],
+                             prefix=args.input_dir)
+        cls.prefix_path_args(args, ['output_file', 'output_param_base'],
+                             prefix=args.output_dir)
+        if not os.path.isdir(args.output_dir):
+            os.mkdir(args.output_dir)
         super(ephoto, cls).adjust_args(args)
+
+    def run_commands(self, args, cmds=None, ephoto_args=None, **kwargs):
+        if args.driver == 0 and cmds is None:
+            self.iter_drivers(args, self.run_commands, **kwargs)
+            return
+        if ephoto_args is None:
+            ephoto_args = []
+        if cmds is None:
+            execFile = os.path.join(args.build_dir, 'ePhoto')
+            cmds = [
+                f'{execFile} -d {args.driver} '
+                f'--enzyme {args.enzyme_file} --grn {args.grn_file} '
+                f'--evn {args.evn_file} --atpcost {args.atpcost_file} '
+                f'--output {args.output_file} '
+                f'{" ".join(ephoto_args)}',
+                f'cat {args.output_file}'
+            ]
+            self._generated_files += [args.output_file]
+            if args.output_param_base:
+                cmds[0] += f' --outputParamBase {args.output_param_base}'
+                self._generated_files += [
+                    args.output_param_base + 'init.txt',
+                    args.output_param_base + 'last.txt',
+                ]
+        return super(ephoto, self).run_commands(args, cmds=cmds, **kwargs)
+
+    @classmethod
+    def iter_drivers(cls, func, args, suffix_paths=None, **kwargs):
+        if suffix_paths is None:
+            suffix_paths = []
+        suffix_paths += ['output_file', 'output_param_base']
+        for i in range(len(cls._drivers)):
+            args.driver = i + 1
+            cls.suffix_path_args(args, suffix_paths,
+                                 '_' + cls._driver_map[args.driver])
+            func(args, **kwargs)
 
 
 class compare_matlab(BuildSubTask):
-
-    _drivers = ['trDynaPS', 'DynaPS', 'CM', 'EPS']
-    _driver_map = {(i + 1): x for i, x in enumerate(_drivers)}
 
     def __init__(self, args, config_args=None, build_args=None):
         self.adjust_args(args)
@@ -294,77 +363,128 @@ class compare_matlab(BuildSubTask):
     @classmethod
     def adjust_args(cls, args):
         args.make_equivalent_to_matlab = True
+        if not args.matlab:
+            args.matlab = find_matlab(required=True)
         ephoto.adjust_args(args)
-        if not os.path.isabs(args.matlab_repo):
-            args.matlab_repo = os.path.join(_source_dir, args.matlab_repo)
-        if not os.path.isabs(args.matlab_output_file):
-            args.matlab_output_file = os.path.join(
-                args.matlab_repo, args.matlab_output_file)
+        cls.prefix_path_args(
+            args, ['matlab_repo'], prefix=_source_dir)
+        cls.prefix_path_args(
+            args, ['matlab_output_dir', 'generate_matlab_script'])
+        cls.prefix_path_args(
+            args, ['matlab_output_file', 'matlab_output_param_base'],
+            prefix=args.matlab_output_dir)
+        if args.generate_matlab_script and args.dont_run_matlab:
+            args.no_diff = True
+        if args.diff:
+            args.dont_run_matlab = True
+            args.dont_run_cpp = True
+        if args.no_diff:
+            args.dont_cleanup = True
+        if args.dont_run_cpp:
+            args.dont_build = True
+        assert args.output_file != args.matlab_output_file
+        assert args.output_param_base != args.matlab_output_param_base
+        if not os.path.isdir(args.matlab_output_dir):
+            os.mkdir(args.matlab_output_dir)
 
-    @classmethod
-    def compare(cls, args):
+    def compare(self, args):
         if args.driver == 0:
-            outCP = args.output_file
-            outML = args.matlab_output_file
-            for i in range(len(cls._drivers)):
-                args.driver = i + 1
-                args.output_file = (
-                    '_' + cls._driver_map[args.driver]).join(
-                        os.path.splitext(outCP))
-                args.matlab_output_file = (
-                    '_' + cls._driver_map[args.driver]).join(
-                        os.path.splitext(outML))
-                cls.compare(args)
+            ephoto.iter_drivers(
+                self.compare, args,
+                suffix_paths=['matlab_output_file',
+                              'matlab_output_param_base'])
             return
+        if args.generate_matlab_script:
+            self.generate_matlab_script(args)
         if args.dont_run_matlab:
             out_matlab = False
         else:
-            out_matlab = cls.run_matlab(args)
+            out_matlab = self.run_matlab(args)
         if args.dont_run_cpp:
             out_cpp = False
         else:
-            out_cpp = cls.run_cpp(args)
-        cls.diff(args, out_matlab, out_cpp)
+            out_cpp = self.run_cpp(args)
+        if not args.no_diff:
+            self.diff(args, out_matlab, out_cpp)
 
     @classmethod
-    def run_matlab(cls, args, **kwargs):
+    def generate_matlab_script(cls, args):
+        lines = [
+            f'addpath("{args.matlab_repo}");',
+            f'driver = {args.driver};',
+            f'evn_file = "{args.evn_file}";',
+            f'grn_file = "{args.grn_file}";',
+            f'enzyme_file = "{args.enzyme_file}";',
+            f'atpcost_file = "{args.atpcost_file}";',
+            f'output_file = "{args.matlab_output_file}";',
+            f'output_param_base = "{args.matlab_output_param_base}";',
+            'Arate = ePhotosynthesis(driver, evn_file, grn_file,'
+            ' enzyme_file, atpcost_file, output_file, output_param_base)'
+        ]
+        contents = '\n'.join(lines)
+        print(f'{80*"="}\n'
+              f'Writing script to {args.generate_matlab_script}:\n'
+              f'{80*"-"}\n{contents}\n{80*"="}')
+        with open(args.generate_matlab_script, 'w') as fd:
+            fd.write(contents)
+
+    def run_matlab(self, args, **kwargs):
         cmd = [
             args.matlab, '-nodisplay', '-nosplash', '-nodesktop',
-            '-nojvm', '-r',
-            f'ePhotosynthesis {args.driver} {args.evn_file} '
-            f'{args.grn_file} {args.enzyme_file} {args.atpcost_file} '
-            f'{args.matlab_output_file} 1, exit'
+            '-nojvm',
         ]
+        if args.generate_matlab_script:
+            script_dir, script_name = os.path.split(
+                args.generate_matlab_script)
+            cmd += [
+                '-batch', os.path.splitext(script_name)[0],
+            ]
+            kwargs.setdefault('cwd', script_dir)
+            self._generated_files += [args.generate_matlab_script]
+        else:
+            cmd += [
+                '-r', f'ePhotosynthesis {args.driver} {args.evn_file} '
+                f'{args.grn_file} {args.enzyme_file} {args.atpcost_file} '
+                f'{args.matlab_output_file} {args.matlab_output_param_base}'
+                f', exit'
+            ]
+            kwargs.setdefault('cwd', args.matlab_repo)
         cmds = [' '.join(cmd)]
-        kwargs.setdefault('cwd', args.matlab_repo)
         cmdS = '\n\t'.join(cmds)
         print(f"Running\n{cmdS}\n"
               f"with {pprint.pformat(kwargs)}")
         out = subprocess.run(cmd, **kwargs)
         return out
 
-    @classmethod
-    def run_cpp(cls, args, ephoto_args=None):
+    def run_cpp(self, args, ephoto_args=None):
         if ephoto_args is None:
             ephoto_args = []
         ephoto_args += [
-            '--outputParam', '2', '--stoptime', '3000'
+            '--outputParam', '2', '--stoptime', '3000',
         ]
-        return ephoto(
+        out = ephoto(
             args, config_args=['-DMAKE_EQUIVALENT_TO_MATLAB:BOOL=ON'],
-            ephoto_args=ephoto_args)
+            ephoto_args=ephoto_args, dont_cleanup=True)
+        return out
 
-    @classmethod
-    def diff(cls, args, out1, out2):
-        finit = os.path.join(_source_dir,  # args.build_dir,
-                             cls._driver_map[args.driver] + '_init.txt')
-        finit1 = os.path.join(args.matlab_repo, finit)
-        finit2 = finit
-        cls.compare_files(finit1, finit2)
+    def diff(self, args, out1, out2):
+        self._generated_files += [
+            args.output_file,
+            args.output_param_base + 'init.txt',
+            args.output_param_base + 'last.txt',
+            args.output_dir,
+            args.matlab_output_file,
+            args.matlab_output_param_base + "init.txt",
+            args.matlab_output_param_base + "last.txt",
+            args.matlab_output_dir,
+        ]
+        finit1 = args.matlab_output_param_base + 'init.txt'
+        finit2 = args.output_param_base + 'init.txt'
+        self.compare_files(finit1, finit2)
         fout1 = args.matlab_output_file
         fout2 = args.output_file
-        cls.compare_files(fout1, fout2, check_files=cls.check_output,
-                          ftype='output')
+        self.compare_files(fout1, fout2, check_files=self.check_output,
+                           ftype='output')
 
     @classmethod
     def compare_files(cls, f1, f2, check_files=None, ftype='parameter'):
@@ -499,6 +619,8 @@ if __name__ == "__main__":
     parser_ephoto = subparsers.add_parser(
         'ephoto', help="Run ephoto executable",
         func=ephoto)
+
+    # MATLAB/C++ Comparison
     parser_matlab = subparsers.add_parser(
         'compare-matlab', help="Compare C++ & MATLAB versions",
         func=compare_matlab)
@@ -511,9 +633,19 @@ if __name__ == "__main__":
             os.path.dirname(_source_dir), 'ePhotosynthesis'),
         help="Path to the MATLAB version of the model")
     parser_matlab.add_argument(
+        '--matlab-output-dir', type=str, default='output_MTL',
+        help="Directory where MATLAB output should be saved")
+    parser_matlab.add_argument(
         '--matlab-output-file', '--matlab-output',
         type=str, default='output.data',
-        help="File where output should be saved")
+        help="File where MATLAB driver output should be saved")
+    parser_matlab.add_argument(
+        "--matlab-output-param-base", type=str, default='output_param_',
+        help="File prefix for MATLAB output parameter files")
+    parser_matlab.add_argument(
+        "--generate-matlab-script", type=str,
+        help=("Path where MATLAB script should be generated to run "
+              "the MATLAB version of the model"))
     parser_matlab.add_argument(
         "--dont-run-matlab", action='store_true',
         help=("Don't run MATLAB, but assume it has "
@@ -524,6 +656,13 @@ if __name__ == "__main__":
         help=("Don't run C++, but assume it has "
               "already been run with the required "
               "parameters "))
+    parser_matlab.add_argument(
+        "--no-diff", action='store_true',
+        help="Don't perform the diff on the output from the two models")
+    parser_matlab.add_argument(
+        "--diff", action='store_true',
+        help=("Just perform the diff on the output from the two models "
+              "assuming that it was already generated"))
 
     parser_docs = subparsers.add_parser(
         'docs', help="Build the docs",
@@ -624,9 +763,25 @@ if __name__ == "__main__":
         help="File containing ATP cost",
         subparsers={'task': ephoto_tasks})
     parser.add_argument(
+        '--output-dir', type=str, default=os.getcwd(),
+        help="Directory where output should be saved",
+        subparsers={'task': ephoto_tasks},
+        subparser_defaults={'compare-matlab': 'output_CPP'})
+    parser.add_argument(
         '--output-file', '--output', type=str, default='output.data',
-        help="File where output should be saved",
+        help="File where driver output should be saved",
         subparsers={'task': ephoto_tasks})
+    parser.add_argument(
+        "--output-param-base", type=str, default="param_",
+        help="File prefix for output parameter files",
+        subparsers={'task': ephoto_tasks},
+        subparser_defaults={'compare-matlab': 'output_param_'})
+
+    # Universal arguments
+    parser.add_argument(
+        "--dont-cleanup", action='store_true',
+        help="Don't clean up any files generated by the task",
+        subparsers={'task': 'all'})
 
     args = parser.parse_args()
     parser.run_subparser('task', args)
