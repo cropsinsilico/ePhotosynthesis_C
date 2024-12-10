@@ -545,9 +545,6 @@ class compare_matlab(BuildSubTask):
 class docs(BuildSubTask):
 
     def __init__(self, args, config_args=None, build_args=None):
-        args.with_asan = False
-        args.build_type = 'Debug'
-        args.dont_build = False
         if config_args is None:
             config_args = []
         if build_args is None:
@@ -558,6 +555,14 @@ class docs(BuildSubTask):
             args, config_args=config_args,
             build_args=build_args,
         )
+
+    @classmethod
+    def adjust_args(cls, args):
+        args.with_asan = False
+        args.build_type = 'Debug'
+        args.dont_build = False
+        args.dont_install = True
+        super(docs, cls).adjust_args(args)
 
 
 class coverage(BuildSubTask):
@@ -726,7 +731,7 @@ if __name__ == "__main__":
         '--make-equivalent-to-matlab', action='store_true',
         help=("Build with changes enabled to make the model equivalent "
               "to the MATLAB version of the model"),
-        subparsers={'task': [x for x in build_tasks
+        subparsers={'task': [x for x in build_tasks + ['docs']
                              if x != 'compare-matlab']})
 
     parser.add_argument(

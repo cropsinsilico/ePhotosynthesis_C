@@ -247,6 +247,18 @@ public:
 	T::_initAddedClasses();
     }
 
+    /**
+       Clean up the set of added classes.
+     */
+    static void cleanupAddedClasses() {
+        if (added_classes.empty()) return;
+        for (std::size_t i = 0; i < added_classes.size(); i++) {
+            delete added_classes[i];
+            added_classes[i] = nullptr;
+        }
+        added_classes.clear();
+    }
+
     /** Wrappers for value set classes associated with this module */
     static std::vector<ValueSetClass_t*> added_classes;
     
@@ -369,6 +381,12 @@ public:
     static void _initStaticMembers() {
 	ParentClass::_initStaticMembers();
 	initAddedClasses();
+    }
+
+    /** \copydoc ValueSetBase::_cleanupStaticMembers */
+    static void _cleanupStaticMembers() {
+        ParentClass::_cleanupStaticMembers();
+        cleanupAddedClasses();
     }
 
 };

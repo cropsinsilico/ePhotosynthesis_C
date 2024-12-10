@@ -1890,7 +1890,8 @@ namespace ePhotosynthesis {
     template <typename K>
     static std::string getNameWithPrefix(const K& k) {
       std::ostringstream out;
-      out << module << "::" << param_type << "::" << getName(k);
+      out << utils::enum_key2string(module) << "::" <<
+        utils::enum_key2string(param_type) << "::" << getName(k);
       return std::move(out).str();
     }
     /**
