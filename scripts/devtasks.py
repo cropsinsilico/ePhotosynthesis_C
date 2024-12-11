@@ -483,11 +483,17 @@ class compare_matlab(BuildSubTask):
         self.compare_files(finit1, finit2)
         fout1 = args.matlab_output_file
         fout2 = args.output_file
+        check_output_kws = {
+            'reltol': args.reltol,
+            'abstol': args.abstol,
+        }
         self.compare_files(fout1, fout2, check_files=self.check_output,
+                           check_files_kwargs=check_output_kws,
                            ftype='output')
 
     @classmethod
-    def compare_files(cls, f1, f2, check_files=None, ftype='parameter'):
+    def compare_files(cls, f1, f2, check_files=None, ftype='parameter',
+                      check_files_kwargs={}):
         with open(f1, 'r') as fd:
             lines1 = fd.readlines()
         with open(f2, 'r') as fd:
@@ -495,7 +501,8 @@ class compare_matlab(BuildSubTask):
         line_diff = list(difflib.unified_diff(lines1, lines2,
                                               fromfile=f1, tofile=f2))
         if line_diff:
-            if (check_files is not None) and check_files(f1, f2):
+            if (((check_files is not None)
+                 and check_files(f1, f2, **check_files_kwargs))):
                 return
             print(line_diff)
             line_diff = '\n'.join(line_diff)
@@ -516,11 +523,9 @@ class compare_matlab(BuildSubTask):
         return out
 
     @classmethod
-    def check_output(cls, f1, f2):
+    def check_output(cls, f1, f2, reltol=1.0e-05, abstol=1.0e-08):
         x1dict = cls.read_output_table(f1)
         x2dict = cls.read_output_table(f2)
-        reltol = 1.0e-05
-        abstol = 1.0e-08
         out = True
         for k in x1dict.keys():
             if k not in x2dict:
@@ -668,6 +673,12 @@ if __name__ == "__main__":
         "--diff", action='store_true',
         help=("Just perform the diff on the output from the two models "
               "assuming that it was already generated"))
+    parser_matlab.add_argument(
+        "--reltol", type=float, default=1.0e-05,
+        help="Relative tolerance to use when comparing C++ & MATLAB")
+    parser_matlab.add_argument(
+        "--abstol", type=float, default=1.0e-08,
+        help="Absolute tolerance to use when comparing C++ & MATLAB")
 
     parser_docs = subparsers.add_parser(
         'docs', help="Build the docs",

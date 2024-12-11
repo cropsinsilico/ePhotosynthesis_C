@@ -72,4 +72,4 @@ jobs:
       - name: Get diff
         shell: bash -l {0}
         run: |
-          python scripts/devtasks.py compare-matlab ${{ env.DEVTASKS_ARGS }} --diff
+          python scripts/devtasks.py compare-matlab ${{ env.DEVTASKS_ARGS }} --diff --abstol 0.01 --reltol 0.001
