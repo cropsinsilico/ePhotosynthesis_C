@@ -4,7 +4,52 @@
 # define DEFER(...) __VA_ARGS__ EMPTY()
 # define OBSTRUCT(...) __VA_ARGS__ DEFER(EMPTY)()
 # define EXPAND(...) __VA_ARGS__
+# define OBSTRUCT_INDIRECT() OBSTRUCT
+
+#define CAT(a, ...) a ## __VA_ARGS__
+#define CHECK_EMPTY_N(x, n, ...) n
+#define CHECK_EMPTY(...) CHECK_EMPTY_N(__VA_ARGS__, 0,)
+#define NOT(x) CHECK_EMPTY(CONCATENATE_MAX(NOT_, x))
+#define NOT_0 ~, 1,
+#define NOT_1
+#define COMPL(b) CONCATENATE_MAX(COMPL_, b)
+#define COMPL_0 1
+#define COMPL_1 0
+#define BOOL(x) COMPL(NOT(x))
+#define IIF(c) CONCATENATE_MAX(IIF_, c)
+#define IIF_0(t, ...) __VA_ARGS__
+#define IIF_1(t, ...) t
+#define IF(c) IIF(BOOL(c))
+#define WHEN(c) IF(c)(EXPAND, EMPTY)
+#define REPEAT(count, macro, ...)                       \
+  WHEN(count)(                                          \
+    OBSTRUCT(REPEAT_INDIRECT) () (                      \
+      DEC(count), macro, __VA_ARGS__                    \
+    )                                                   \
+    OBSTRUCT(macro) (                                   \
+      DEC(count), __VA_ARGS__                           \
+    )                                                   \
+  )
+#define REPEAT_INDIRECT() REPEAT
+#define NEST(count, macro, ...)                         \
+  WHEN(count) (                                         \
+    OBSTRUCT(NEST_INDIRECT) () (                        \
+      DEC(count), macro,                                \
+      OBSTRUCT(macro) (                                 \
+        __VA_ARGS__                                     \
+      )                                                 \
+    )                                                   \
+  )                                                     \
+  WHEN(NOT(count)) (                                    \
+    __VA_ARGS__                                         \
+  )
+#define NEST_INDIRECT() NEST
+
 #define ADD_BRACKETS(...) <JOIN_ARGS(SEP_COMMA, __VA_ARGS__)>
+#define ADD_BRACKETS1(...) ADD_BRACKETS(__VA_ARGS__)
+#define ADD_BRACKETS2(...) ADD_BRACKETS1(__VA_ARGS__)
+#define ADD_BRACKETS3(...) ADD_BRACKETS2(__VA_ARGS__)
+#define ADD_BRACKETS_DEFERED() ADD_BRACKETS
 #define _OPTION1(X, ...) __VA_ARGS__
 #define _OPTION2(X, ...) X
 #define OPTIONAL_VA_ARGS(...) OPTIONAL_VA_ARGS1(__VA_ARGS__)
@@ -18,7 +63,8 @@
 #define EVAL2(...) EVAL3(EVAL3(EVAL3(__VA_ARGS__)))
 #define EVAL3(...) EVAL4(EVAL4(EVAL4(__VA_ARGS__)))
 #define EVAL4(...) EVAL5(EVAL5(EVAL5(__VA_ARGS__)))
-#define EVAL5(...) __VA_ARGS__
+#define EVAL5(...) EVAL6(EVAL6(EVAL6(__VA_ARGS__)))
+#define EVAL6(...) __VA_ARGS__
 #define SEP_COMMA() ,
 #define SEP_SEMICOLON() ;
 #define SEP_EMPTY()
@@ -28,6 +74,8 @@
 #define SEP_BITWISE_AND() &
 #define SEP_ADD() +
 #define SEP_MULTIPLY() *
+#define MAP_TYPE_MACRO(...)                                     \
+  std::map OBSTRUCT(ADD_BRACKETS_DEFERED) () ( __VA_ARGS__ )
 
 #define _Args(...) __VA_ARGS__
 #define PASS_THROUGH(X) X
@@ -78,9 +126,10 @@
 #define JOIN1(arg1, arg2) JOIN2(arg1, arg2)
 #define JOIN2(arg1, arg2) arg1 arg2
 
-#define CONCATENATE(arg1, arg2)   CONCATENATE1(arg1, arg2)
-#define CONCATENATE1(arg1, arg2)  CONCATENATE2(arg1, arg2)
-#define CONCATENATE2(arg1, arg2)  arg1##arg2
+#define CONCATENATE(arg1, ...)   CONCATENATE1(arg1, __VA_ARGS__)
+#define CONCATENATE1(arg1, ...)  CONCATENATE2(arg1, __VA_ARGS__)
+#define CONCATENATE2(arg1, ...)  CAT(arg1, __VA_ARGS__)
+#define CONCATENATE_MAX(...) CONCATENATE(__VA_ARGS__)
 
 // Control parameters
 // #define VERBOSE_VALUE_SET_DEBUG 1
@@ -233,6 +282,137 @@
   const double cls::name = DEFAULT_VALUE(cls::, name)
 #endif // VALUE_SET_VAL_MEMBERS
 
+
+#define INC_INDIRECT() INC
+#define DEC_INDIRECT() DEC
+#define ADD(N, M) NEST(M, INC, N)
+#define SUBTRACT(N, M) NEST(M, DEC, N)
+
+#define INC(N) CONCATENATE_MAX(INC_, N)
+#define INC_0   1
+#define INC_1   2
+#define INC_2   3
+#define INC_3   4
+#define INC_4   5
+#define INC_5   6
+#define INC_6   7
+#define INC_7   8
+#define INC_8   9
+#define INC_9  10
+#define INC_10 11
+#define INC_11 12
+#define INC_12 13
+#define INC_13 14
+#define INC_14 15
+#define INC_15 16
+#define INC_16 17
+#define INC_17 18
+#define INC_18 19
+#define INC_19 20
+#define INC_20 21
+#define INC_21 22
+#define INC_22 23
+#define INC_23 24
+#define INC_24 25
+#define INC_25 26
+#define INC_26 27
+#define INC_27 28
+#define INC_28 29
+#define INC_29 30
+#define INC_30 31
+#define INC_31 32
+#define INC_32 33
+#define INC_33 34
+#define INC_34 35
+#define INC_35 36
+#define INC_36 37
+#define INC_37 38
+#define INC_38 39
+#define INC_39 30
+#define INC_40 41
+#define INC_41 42
+#define INC_42 43
+#define INC_43 44
+#define INC_44 45
+#define INC_45 46
+#define INC_46 47
+#define INC_47 48
+#define INC_48 49
+#define INC_49 50
+#define INC_50 51
+#define INC_51 52
+#define INC_52 53
+#define INC_53 54
+#define INC_54 55
+#define INC_55 56
+#define INC_56 57
+#define INC_57 58
+#define INC_58 59
+#define INC_59 60
+
+#define DEC(N) CONCATENATE_MAX(DEC_, N)
+// #define DEC_0
+#define DEC_1 0
+#define DEC_2 1
+#define DEC_3 2
+#define DEC_4 3
+#define DEC_5 4
+#define DEC_6 5
+#define DEC_7 6
+#define DEC_8 7
+#define DEC_9 8
+#define DEC_10 9
+#define DEC_11 10
+#define DEC_12 11
+#define DEC_13 12
+#define DEC_14 13
+#define DEC_15 14
+#define DEC_16 15
+#define DEC_17 16
+#define DEC_18 17
+#define DEC_19 18
+#define DEC_20 19
+#define DEC_21 20
+#define DEC_22 21
+#define DEC_23 22
+#define DEC_24 23
+#define DEC_25 24
+#define DEC_26 25
+#define DEC_27 26
+#define DEC_28 27
+#define DEC_29 28
+#define DEC_30 29
+#define DEC_31 30
+#define DEC_32 31
+#define DEC_33 32
+#define DEC_34 33
+#define DEC_35 34
+#define DEC_36 35
+#define DEC_37 36
+#define DEC_38 37
+#define DEC_39 38
+#define DEC_40 39
+#define DEC_41 40
+#define DEC_42 41
+#define DEC_43 42
+#define DEC_44 43
+#define DEC_45 44
+#define DEC_46 45
+#define DEC_47 46
+#define DEC_48 47
+#define DEC_49 48
+#define DEC_50 49
+#define DEC_51 50
+#define DEC_52 51
+#define DEC_53 52
+#define DEC_54 53
+#define DEC_55 54
+#define DEC_56 55
+#define DEC_57 56
+#define DEC_58 57
+#define DEC_59 58
+#define DEC_60 59
+
 #define GET_ARGS_AFTER_1(_0, ...) __VA_ARGS__
 #define GET_ARGS_AFTER_10(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, ...) __VA_ARGS__
 #define GET_ARGS_AFTER_20(...) GET_ARGS_AFTER_10(GET_ARGS_AFTER_10(__VA_ARGS__)
@@ -250,6 +430,20 @@
 #define GET_ARG_N_AFTER_100(N, ...) GET_ARG_N_AFTER_M(100, N, __VA_ARGS__)
 #define GET_ARG_N_AFTER_110(N, ...) GET_ARG_N_AFTER_M(110, N, __VA_ARGS__)
 
+#define GET_ARGS_BEFORE_10(_0, _1, _2, _3, _4, _5, _6, _7, _8, _9, ...) \
+  _0, _1, _2, _3, _4, _5, _6, _7, _8, _9
+
+#define GET_ARG_N_BEFORE_END(N, ...)                            \
+  OBSTRUCT(GET_ARG_N)(SUBTRACT(NARGS(__VA_ARGS__), INC(N)), __VA_ARGS__)
+#define GET_ARG_N_COMMA(N, ...) , GET_ARG_N(N, __VA_ARGS__)
+#define FIRST_N_ARGS(N, _0, ...)                    \
+  WHEN(N) (                                         \
+    _0 REPEAT(DEC(N), GET_ARG_N_COMMA, __VA_ARGS__) \
+  )
+#define DROP_N_ARGS(N, ...)                     \
+  OBSTRUCT(FIRST_N_ARGS)(SUBTRACT(NARGS(__VA_ARGS__), N), __VA_ARGS__)
+
+#define GET_ARG_N_DEFERED() GET_ARG_N
 #define GET_ARG_N(N, ...) CONCATENATE(GET_ARG_, N)(__VA_ARGS__)
 #define GET_ARG_0(_0, ...) _0
 #define GET_ARG_1(_0, _1, ...) _1

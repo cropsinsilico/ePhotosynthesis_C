@@ -717,3 +717,12 @@ void Variables::setRecord(ValueSet_t* x,
 	conditions[it->first] = const_cast<ValueSet_t*>(it->second);
     }
 }
+
+void Variables::cleanupValueSets() {
+    VARS_ITER_ALL_CLASS(m, pt, cleanupValueSet, true);
+}
+void Variables::cleanupValueSet(const MODULE& mod,
+                                const PARAM_TYPE& pt,
+                                const bool noChildren) {
+    GET_VALUE_SET_CLASS(mod, pt)->cleanupStaticMembers(noChildren);
+}

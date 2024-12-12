@@ -30,6 +30,9 @@
 #include "enums/enums_utils.hpp"
 #include <iomanip>
 
+void cleanup_value_sets();
+void register_value_set_cleanup();
+
 #define CHECK_RATIO_IDX(act, exp, key)					\
   if (it->first == key && act != exp) {					\
     throw std::runtime_error("CHECK[" + utils::enum_key2string(key)	\
@@ -162,6 +165,12 @@ namespace ePhotosynthesis {
   if (!isSkipped(EnumClass::name))		\
     name = other.name
 
+  /*
+#define DECLARE_VALUE_SET_TEMPLATE(name)                        \
+  extern ValueSetClassType<name> temp;
+#define DECLARE_VALUE_SET_STATIC_TEMPLATE(name) \
+  extern ValueSetStaticClassType<name>
+  */
 #define DECLARE_VALUE_SET_CORE(name)				\
   typedef _valueSetStaticMember<name> StaticMemberClass;	\
   DECLARE_VALUE_SET_MEMBER_RECORD;
@@ -405,14 +414,51 @@ namespace ePhotosynthesis {
     }
   };
 
-#define STUB_STATIC_VALUE_SET(name, retT, argsT, args, retV, suffix)	\
-  static retT _static_ ## name argsT {					\
-    return name args;							\
+#define _GET_ARG_TYPE(arg) DROP_N_ARGS(2, EXPAND arg)
+#define _GET_ARG_NAME(arg) GET_ARG_N_BEFORE_END(1, EXPAND arg)
+#define _GET_ARG_DEFV(arg)                              \
+  __GET_ARG_DEFV(GET_ARG_N_BEFORE_END(0, EXPAND arg))
+#define __GET_ARG_DEFV(defV)                            \
+  OBSTRUCT(IF_NOT_EMPTY)(defV, = defV)
+#define MAKE_ARG(arg) _GET_ARG_NAME(arg)
+#define MAKE_ARG_T(arg)                                         \
+  _GET_ARG_TYPE(arg) _GET_ARG_NAME(arg) _GET_ARG_DEFV(arg)
+#define MAKE_ARG_T_NODEF(arg)                   \
+  _GET_ARG_TYPE(arg) _GET_ARG_NAME(arg)
+#define VS_ARGS(args)                                   \
+  EVAL(ADD_PARENS(FOR_EACH_COMMA(MAKE_ARG, EXPAND args)))
+#define VS_ARGS_T(args)                                 \
+  EVAL(ADD_PARENS(FOR_EACH_COMMA(MAKE_ARG_T, EXPAND args)))
+#define VS_ARGS_T_NODEF(args)                                   \
+  EVAL(ADD_PARENS(FOR_EACH_COMMA(MAKE_ARG_T_NODEF, EXPAND args)))
+
+#define STUB_STATIC_VALUE_SET_DECLARE(name, retT, args, retV, suffix)   \
+  static retT _static_ ## name VS_ARGS_T(args) {                        \
+    return name VS_ARGS(args);                                          \
   }
-#define STUB_VIRTUAL_VALUE_SET(name, retT, argsT, args, retV, suffix)	\
-  retT _virtual_ ## name argsT suffix override {			\
-    return T::name args;						\
+#define STUB_STATIC_VALUE_SET_DEFINE(cls, name, retT, args, retV, suffix)
+  /*
+#define STUB_STATIC_VALUE_SET_DECLARE(name, retT, args, retV, suffix)   \
+  static retT _static_ ## name VS_ARGS_T(args);
+#define STUB_STATIC_VALUE_SET_DEFINE(name, retT, args, retV, suffix)    \
+  static retT cls::_static_ ## name VS_ARGS_T_NODEF(args) {             \
+    return name VS_ARGS(args);                                          \
   }
+   */
+#define STUB_VIRTUAL_VALUE_SET_DECLARE(name, retT, args, retV, suffix)  \
+  retT _virtual_ ## name VS_ARGS_T(args) suffix override {              \
+    return T::name VS_ARGS(args);                                       \
+  }
+#define STUB_VIRTUAL_VALUE_SET_DEFINE(cls, name, retT, args, retV, suffix)
+  /*
+#define STUB_VIRTUAL_VALUE_SET_DECLARE(name, retT, args, retV, suffix) \
+  retT _virtual_ ## name VS_ARGS_T(args) suffix override;
+#define STUB_VIRTUAL_VALUE_SET_DEFINE(cls, name, retT, args, retV, suffix) \
+  retT cls::_virtual_ ## name VS_ARGS_T_NODEF(args) suffix override {   \
+    return T::name VS_ARGS(args);                                       \
+  }
+  */
+
 
 /**
    Use macro to define methods only in ValueSet
@@ -421,22 +467,22 @@ namespace ePhotosynthesis {
 #define ADD_METHODS_VALUE_SET_T_INST_ONLY(method)			\
   /** \copydoc ValueSet::copyMembers */					\
   method(copyMembers, void,						\
-	 (const ValueSet_t& other, const bool noChildren=false),	\
-	 (other, noChildren), , )					\
+         ((const ValueSet_t&, other, ),                                 \
+          (const bool, noChildren, false)), , )                         \
   /** \copydoc ValueSet::initChildren */				\
   method(initChildren, void,						\
-	 (const bool noChildren=false), (noChildren), , )		\
+         ((const bool, noChildren, false)), , )                         \
   /** \copydoc ValueSet::createChildren */				\
   method(createChildren, void,						\
-	 (const bool noChildren=false), (noChildren), , )		\
+         ((const bool, noChildren, false)), , )                         \
   /** \copydoc ValueSet::getChildren */					\
   method(getChildren, const std::vector<ValueSet_t**>&,			\
-         (), (), {}, const)						\
+         (), {}, const)                                                 \
   /** \copydoc ValueSet::resetInstance */				\
   method(resetInstance, void,						\
-	 (const bool noChildren=false), (noChildren), , )		\
+	 ((const bool, noChildren, false)), , )                         \
   /** \copydoc ValueSet::setParent */					\
-  method(setParent, void, (ValueSet_t* par), (par), , )
+  method(setParent, void, ((ValueSet_t*, par, )), , )
 
 /**
    Use macro to define static methods only in ValueSet without duplicates
@@ -445,9 +491,9 @@ namespace ePhotosynthesis {
 #define ADD_METHODS_VALUE_SET_T_INST_ONLY_STATIC_NODUP(method)	\
   /** \copydoc ValueSet::newInstance */				\
   method(newInstance, ValueSet_t*,				\
-	 (ValueSet_t* par=nullptr), (par), nullptr, )		\
+         ((ValueSet_t*, par, nullptr)), nullptr, )		\
   method(getValueSetClass, ValueSet_t*,				\
-	 (), (), nullptr, )
+	 (), nullptr, )
 /**
    Use macro to define static methods only in ValueSet with duplicates
    \param method Macro to define each method.
@@ -461,7 +507,7 @@ namespace ePhotosynthesis {
 */
 #define ADD_METHODS_VALUE_SET_T_STATIC_ONLY(method)	\
   /** \copydoc ValueSetEnum::error_prefix */		\
-  method(error_prefix, std::string, (), (), "", const)
+  method(error_prefix, std::string, (), "", const)
   
 /**
    Use macro to define methods static in ValueSet & ValueSetStatic
@@ -470,86 +516,86 @@ namespace ePhotosynthesis {
 */
 #define ADD_METHODS_VALUE_SET_T_STATIC_NODUP(method)			\
   /** \copydoc ValueSetBase::get_module */				\
-  method(get_module, MODULE, (), (), MODULE_NONE, const)		\
+  method(get_module, MODULE, (), MODULE_NONE, const)                    \
   /** \copydoc ValueSetBase::get_param_type */				\
-  method(get_param_type, PARAM_TYPE, (), (), PARAM_TYPE_NONE, const)	\
+  method(get_param_type, PARAM_TYPE, (), PARAM_TYPE_NONE, const)	\
   /** \copydoc ValueSetBase::get_parameter_types */			\
   method(get_parameter_types,						\
-	 const std::vector<PARAM_TYPE>&, (), (), {}, const)		\
+	 const std::vector<PARAM_TYPE>&, (), {}, const)                 \
   /** \copydoc ValueSetBase::initDefaults */				\
   method(initDefaults, void,						\
-	 (const bool useC3=false, const std::string& filename="",	\
-	  const bool force=false, const bool noChildren=false),		\
-	 (useC3, filename, force, noChildren), , const)			\
+         ((const bool, useC3, false),                                   \
+          (const std::string&, filename, ""),                           \
+	  (const bool, force, false),                                   \
+          (const bool, noChildren, false)), , const)                    \
   /** \copydoc ValueSetBase::memberCount */				\
-  method(memberCount, std::size_t, (const bool noChildren=false),	\
-	 (noChildren), 0, const)					\
+  method(memberCount, std::size_t,                                      \
+         ((const bool, noChildren, false)), 0, const)                   \
   /** \copydoc ValueSetBase::memberState */				\
-  method(memberState, std::string, (const bool noChildren=false),	\
-	 (noChildren), "", const)					\
+  method(memberState, std::string,                                      \
+         ((const bool, noChildren, false)), "", const)                  \
   /** \copydoc ValueSetBase::initChildClasses */			\
-  method(initChildClasses, void, (const bool noChildren=false),		\
-	 (noChildren), , const)						\
+  method(initChildClasses, void,                                        \
+         ((const bool, noChildren, false)), , const)                    \
   /** \copydoc ValueSetBase::cleanupChildClasses */			\
-  method(cleanupChildClasses, void, (const bool noChildren=false),	\
-	 (noChildren), , const)						\
+  method(cleanupChildClasses, void,                                     \
+         ((const bool, noChildren, false)), , const)                    \
   /** \copydoc ValueSetBase::initStaticMembers */			\
-  method(initStaticMembers, void, (const bool noChildren=false),	\
-	 (noChildren), , const)						\
+  method(initStaticMembers, void,                                       \
+         ((const bool, noChildren, false)), , const)                    \
   /** \copydoc ValueSetBase::cleanupStaticMembers */			\
-  method(cleanupStaticMembers, void, (const bool noChildren=false),	\
-	 (noChildren), , const)						\
+  method(cleanupStaticMembers, void,                                    \
+         ((const bool, noChildren, false)), , const)                    \
   /** \copydoc ValueSetBase:selected */					\
-  method(selected, bool, (), (), false, const)				\
+  method(selected, bool, (), false, const)				\
   /** \copydoc ValueSetBase::select */					\
   method(select, void,							\
-	 (const bool x = true, const bool noChildren = false),		\
-	 (x, noChildren), , const)					\
+	 ((const bool, x, true), (const bool, noChildren, false)),      \
+         , const)                                                       \
   /** \copydoc ValueSetBase::enableC3 */				\
   method(enableC3, void,						\
-	 (const bool x = true, const bool noChildren = false),		\
-	 (x, noChildren), , const)					\
+	 ((const bool, x, true), (const bool, noChildren, false)),      \
+         , const)                                                       \
   /** \copydoc ValueSetBase::reset */					\
-  method(reset, void, (const bool noChildren = false),			\
-	 (noChildren), , const)						\
+  method(reset, void,                                                   \
+         ((const bool, noChildren, false)), , const)                    \
   /** \copydoc ValueSetBase::size */					\
-  method(size, std::size_t, (), (), 0, const)				\
+  method(size, std::size_t, (), 0, const)				\
   /** \copydoc ValueSetBase::max_field_width */				\
   method(max_field_width, std::size_t,					\
-	 (bool noChildren = false), (noChildren), 0, const)		\
+	 ((bool, noChildren, false)), 0, const)                         \
   /** \copydoc ValueSetBase::max_default_value_width */			\
   method(max_default_value_width, std::size_t,				\
-	 (bool noChildren = false), (noChildren), 0, const)		\
+	 ((bool, noChildren, false)), 0, const)                         \
   /** \copydoc ValueSetBase::print_value */                             \
   method(print_value, std::ostream&,                                    \
-	 (const std::string& name, const double& val,                   \
-          std::ostream &out, const uint tab = 0, std::size_t pad = 0,   \
-	  bool includePrefixes = false,					\
-	  bool includeSkipped = false,					\
-	  const std::vector<std::string>& skip_keys = {},		\
-	  const std::map<std::string, std::string>& key_aliases = {},	\
-	  bool show_pointers = false),					\
-	 (name, val, out, tab, pad, includePrefixes, includeSkipped,    \
-	  skip_keys, key_aliases, show_pointers),                       \
+	 ((const std::string&, name, ),                                 \
+          (const double&, val, ),                                       \
+          (std::ostream&, out, ), (const uint, tab, 0),                 \
+          (std::size_t, pad, 0),                                        \
+	  (bool, includePrefixes, false),                               \
+	  (bool, includeSkipped, false),                                \
+	  (const std::vector<std::string>, skip_keys, {}),		\
+	  (const std::map<std::string, std::string>&, key_aliases, {}),	\
+	  (bool, show_pointers, false)),                                \
 	 out, const)							\
   /** \copydoc ValueSetBase::has */					\
   method(has, bool,							\
-	 (const std::string& name, const bool& isGlymaID = false),	\
-	 (name, isGlymaID), false, const)				\
+	 ((const std::string&, name, ),                                 \
+          (const bool&, isGlymaID, false)), false, const)               \
   /** \copydoc ValueSetBase::fromNameWithAliases */			\
   method(fromNameWithAliases, int,					\
-	 (const std::string& name, const bool& isGlymaID = false),	\
-	 (name, isGlymaID), -1, const)					\
+	 ((const std::string&, name, ),                                 \
+          (const bool&, isGlymaID, false)), -1, const)                  \
   /** \copydoc ValueSetBase::setDefault */				\
   method(setDefault, void,						\
-	 (const std::string& k, const double& v,			\
-	  const bool& isGlymaID = false,				\
-	  const bool dontPreserve = false),				\
-	 (k, v, isGlymaID, dontPreserve), , const)			\
+	 ((const std::string&, k, ), (const double&, v, ),              \
+	  (const bool&, isGlymaID, false),				\
+	  (const bool, dontPreserve, false)), , const)                  \
   /** \copydoc ValueSetBase::getDefault */				\
   method(getDefault, double,						\
-	 (const std::string& x, const bool& isGlymaID = false),		\
-	 (x, isGlymaID), 0.0, const)
+	 ((const std::string&, x, ),                                    \
+          (const bool&, isGlymaID, false)), 0.0, const)
 /**
    Use macro to define methods static in ValueSet & ValueSetStatic
      with duplicates
@@ -559,12 +605,11 @@ namespace ePhotosynthesis {
   ADD_METHODS_VALUE_SET_T_STATIC_NODUP(method)				\
   /** \copydoc ValueSetBase::setDefault */				\
   method(setDefault, void,						\
-	 (const int& k, const double& v,				\
-	  const bool dontPreserve = false),				\
-	 (k, v, dontPreserve), , const)					\
+         ((const int&, k, ), (const double&, v, ),                      \
+	  (const bool, dontPreserve, false)), , const)                  \
   /** \copydoc ValueSetBase::getDefault */				\
   method(getDefault, double,						\
-	 (const int& k), (k), 0.0, const)
+         ((const int&, k, )), 0.0, const)
 
 /**
    Use macros to define methods static in ValueSetStatic and not static
@@ -573,71 +618,68 @@ namespace ePhotosynthesis {
 */
 #define ADD_METHODS_VALUE_SET_T_BOTH_NODUP(method)			\
   /** \copydoc ValueSet::getValueSet */					\
-  method(getValueSet, const ValueSet_t*, (), (),			\
+  method(getValueSet, const ValueSet_t*, (),                            \
 	 nullptr, const)						\
   /** \copydoc ValueSet:getValueMap */					\
-  method(getValueMap, std::map ADD_BRACKETS(int, double),		\
-	 (const bool preinit=false), (preinit), {}, const)		\
+  method(getValueMap, std::map ADD_BRACKETS(OBSTRUCT(int, double)),     \
+	 ((const bool, preinit, false)), {}, const)                     \
   /** \copydoc ValueSet:setValueMap */					\
   method(setValueMap, void,						\
-	 (const std::map<int, double>& map, const bool setinit=false,	\
-	  const bool preinit=false),					\
-	 (map, setinit, preinit), , )					\
+         ((const MAP_TYPE_MACRO(int, double)&, map, ),                  \
+          (const bool, setinit, false),                                 \
+	  (const bool, preinit, false)), , )                            \
   /** \copydoc ValueSet::max_value_width */				\
   method(max_value_width, std::size_t,					\
-	 (bool noChildren = false), (noChildren), 0, const)		\
+	 ((bool, noChildren, false)), 0, const)                         \
   /** \copydoc ValueSet::initMembers */					\
   method(initMembers, void,						\
-	 (const bool noChildren=false), (noChildren), , )		\
+	 ((const bool, noChildren, false)), , )                         \
   /** \copydoc ValueSet::resetValues */					\
   method(resetValues, void,						\
-	 (const bool noChildren=false), (noChildren), , )		\
+	 ((const bool, noChildren, false)), , )                         \
   /** \copydoc ValueSet::initialized */					\
-  method(initialized, bool,						\
-	 (), (), false, const)						\
+  method(initialized, bool, (), false, const)                           \
   /** \copydoc ValueSet::initValues */					\
   method(initValues, void,						\
-	 (const bool noDefaults=false, const bool force=false,		\
-	  const bool noChildren=false),					\
-	 (noDefaults, force, noChildren), , )				\
+	 ((const bool, noDefaults, false),                              \
+          (const bool, force, false),                                   \
+	  (const bool, noChildren, false)), , )                         \
   /** \copydoc ValueSet::initMemberPointers */				\
   method(initMemberPointers, void,					\
-	 (const bool noChildren=false), (noChildren), , )		\
+	 ((const bool, noChildren, false)), , )                         \
   /** \copydoc ValueSet::diff */					\
   method(diff, std::string,						\
-	 (const ValueSet_t& other, std::size_t padKeys=0,		\
-	  std::size_t padVals=0, bool includePrefixes=false,		\
-	  bool noChildren = false),					\
-	 (other, padKeys, padVals, includePrefixes, noChildren),	\
-	 "", const)							\
+	 ((const ValueSet_t&, other, ),                                 \
+          (std::size_t, padKeys, 0),                                    \
+	  (std::size_t, padVals, 0),                                    \
+          (bool, includePrefixes, false),                               \
+	  (bool, noChildren, false)), "", const)                        \
   /** \copydoc ValueSet::print */					\
   method(print, std::ostream&,						\
-	 (std::ostream &out, const uint tab = 0, std::size_t pad = 0,	\
-	  bool includePrefixes = false,					\
-	  bool includeSkipped = false,					\
-	  const std::vector<std::string>& skip_keys = {},		\
-	  const std::map<std::string, std::string>& key_aliases = {},	\
-	  bool noChildren = false),					\
-	 (out, tab, pad, includePrefixes, includeSkipped,		\
-	  skip_keys, key_aliases, noChildren),				\
+	 ((std::ostream&, out, ), (const uint, tab, 0),                 \
+          (std::size_t, pad, 0),                                        \
+	  (bool, includePrefixes, false),                               \
+	  (bool, includeSkipped, false),                                \
+	  (const std::vector<std::string>&, skip_keys, {}),		\
+	  (const std::map<std::string, std::string>&, key_aliases, {}),	\
+	  (bool, noChildren, false)),					\
 	 out, const)							\
   /** \copydoc ValueSet::sizeArray */					\
-  method(sizeArray, std::size_t, (), (), 0, const)			\
+  method(sizeArray, std::size_t, (), 0, const)                          \
   /** \copydoc ValueSet::toArray */					\
-  method(toArray, arr, (), (), {}, const)				\
+  method(toArray, arr, (), {}, const)                                   \
   /** \copydoc ValueSet::fromArray */					\
   method(fromArray, void,						\
-	 (const arr &vec, const std::size_t offset = 0),		\
-	 (vec, offset), , )						\
+	 ((const arr&, vec, ),                                          \
+          (const std::size_t, offset, 0)), , )                          \
   /** \copydoc ValueSetBase::set */					\
   method(set, void,							\
-	 (const std::string& name, const double& v,			\
-	  const bool& isGlymaID = false),				\
-	 (name, v, isGlymaID), , )					\
+	 ((const std::string&, name, ), (const double&, v, ),           \
+	  (const bool&, isGlymaID, false)), , )				\
   /** \copydoc ValueSetBase::get */					\
   method(get, double,							\
-	 (const std::string& name, const bool& isGlymaID = false),	\
-	 (name, isGlymaID), 0.0, const)
+	 ((const std::string&, name, ),                                 \
+          (const bool&, isGlymaID, false)), 0.0, const)
 /**
    Use macros to define methods static in ValueSetStatic and not static
      in ValueSet with duplicates
@@ -647,10 +689,10 @@ namespace ePhotosynthesis {
   ADD_METHODS_VALUE_SET_T_BOTH_NODUP(method)				\
   /** \copydoc ValueSetBase::set */					\
   method(set, void,							\
-	 (const int& k, const double& v), (k, v), , )			\
+         ((const int&, k, ), (const double&, v, )), , )                 \
   /** \copydoc ValueSetBase::get */					\
   method(get, double,							\
-	 (const int& k), (k), 0.0, const)
+         ((const int&, k, )), 0.0, const)
 
   /**
      Untemplated base class to allow storage of mixed value sets in
@@ -674,38 +716,18 @@ namespace ePhotosynthesis {
        \param noChildren If true, child classes will not be checked.
      */
     virtual bool equals(const ValueSet_t& b0,
-			const bool noChildren = false) const {
-      UNUSED(noChildren);
-      if(typeid(*this) != typeid(b0)) {
-	std::cerr << "typeids not equal in ValueSet_t" << std::endl;
-	return false;
-      }
-      return true;
-    }
-    bool operator==(const ValueSet_t& b) const {
-      return equals(b);
-    }
-    bool operator!=(const ValueSet_t& b) const {
-      return !(this->operator==(b));
-    }
+			const bool noChildren = false) const;
+    bool operator==(const ValueSet_t& b) const;
+    bool operator!=(const ValueSet_t& b) const;
     
     
-#define ADD_METHOD(name, retT, argsT, args, retV, suffix)	\
-    virtual retT name argsT suffix {				\
-      FOR_EACH(UNUSED, EXPAND args);				\
-      IF_NOT_EMPTY(retV, static PACK_MACRO(retT) tmp_ = retV; return tmp_;) \
-    }
-#define ADD_METHOD_BOTH(name, retT, argsT, args, retV, suffix)		\
-    ADD_METHOD(name, PACK_MACRO(retT), argsT, args, retV, suffix)	\
-    static retT _static_ ## name argsT {				\
-      FOR_EACH(UNUSED, EXPAND args);					\
-      IF_NOT_EMPTY(retV, static PACK_MACRO(retT) tmp_ = retV; return tmp_;) \
-    }
-#define ADD_METHOD_STATIC(name, retT, argsT, args, retV, suffix)	\
-    virtual retT _virtual_ ## name argsT suffix {			\
-      FOR_EACH(UNUSED, EXPAND args);					\
-      IF_NOT_EMPTY(retV, static PACK_MACRO(retT) tmp_ = retV; return tmp_;) \
-    }
+#define ADD_METHOD(name, retT, args, retV, suffix)	\
+    virtual retT name VS_ARGS_T(args) suffix;
+#define ADD_METHOD_BOTH(name, retT, args, retV, suffix)                 \
+    ADD_METHOD(name, PACK_MACRO(retT), args, retV, suffix)              \
+    static retT _static_ ## name VS_ARGS_T(args);
+#define ADD_METHOD_STATIC(name, retT, args, retV, suffix)	\
+    virtual retT _virtual_ ## name VS_ARGS_T(args) suffix;
     
     // Methods specific to classes
     ADD_METHODS_VALUE_SET_T_INST_ONLY(ADD_METHOD)
@@ -713,13 +735,9 @@ namespace ePhotosynthesis {
     
     // Methods static in ValueSetStatic and not static in ValueSet
     /** \copydoc ValueSet::getValueSet */
-    virtual ValueSet_t* getValueSet() {
-      return const_cast<ValueSet_t*>(const_cast<const ValueSet_t*>(this)->getValueSet());
-    }
+    virtual ValueSet_t* getValueSet();
     /** \copydoc ValueSet getChildren */
-    virtual std::vector<ValueSet_t**>& getChildren() {
-      return const_cast<std::vector<ValueSet_t**>&>(const_cast<const ValueSet_t*>(this)->getChildren());
-    }
+    virtual std::vector<ValueSet_t**>& getChildren();
     ADD_METHODS_VALUE_SET_T_BOTH(ADD_METHOD_BOTH)
     
     // Methods static in both classes
@@ -737,18 +755,10 @@ namespace ePhotosynthesis {
   class ValueSetClass_t : public ValueSet_t {
   public:
 #define ADD_METHOD_BOTH(name, ...) using ValueSet_t::name;
-#define ADD_METHOD(name, retT, argsT, args, retV, suffix)	\
-    virtual retT name argsT suffix {				\
-      FOR_EACH(UNUSED, EXPAND args);				\
-      IF_NOT_EMPTY(retV, static PACK_MACRO(retT) tmp_ = retV; return tmp_;) \
-    }
-#define DISABLE_METHOD(name, retT, argsT, args, retV, suffix)	\
-    retT name argsT suffix override {				\
-      FOR_EACH(UNUSED, EXPAND args);				\
-      throw std::runtime_error(std::string(__func__) +		\
-			       ": Not a static method");	\
-      IF_NOT_EMPTY(retV, static PACK_MACRO(retT) tmp_ = retV; return tmp_;) \
-    }
+#define ADD_METHOD(name, retT, args, retV, suffix)	\
+    virtual retT name VS_ARGS_T(args) suffix;
+#define DISABLE_METHOD(name, retT, args, retV, suffix)          \
+    retT name VS_ARGS_T(args) suffix override;
 #define ADD_METHOD_STATIC(name, ...) using ValueSet_t::_virtual_ ## name;
     
     // Methods specific to classes
@@ -778,14 +788,14 @@ namespace ePhotosynthesis {
   class ValueSetClassType : public ValueSetClass_t {
   public:
     ~ValueSetClassType() override {}
-#define ADD_METHOD(name, retT, argsT, args, retV, suffix)		\
-    retT name argsT suffix override {					\
-      return T::name args;						\
+#define ADD_METHOD(name, retT, args, retV, suffix)                      \
+    retT name VS_ARGS_T(args) suffix override {                         \
+      return T::name VS_ARGS(args);                                     \
     }									\
-    STUB_VIRTUAL_VALUE_SET(name, retT, argsT, args, retV, suffix)
-#define ADD_METHOD_BOTH(name, retT, argsT, args, retV, suffix)	\
-    retT name argsT suffix override {				\
-      return T::_static_ ## name args;				\
+    STUB_VIRTUAL_VALUE_SET_DECLARE(name, retT, args, retV, suffix)
+#define ADD_METHOD_BOTH(name, retT, args, retV, suffix)         \
+    retT name VS_ARGS_T(args) suffix override {                 \
+      return T::_static_ ## name VS_ARGS(args);                 \
     }
 
     // Methods specific to classes
@@ -809,13 +819,13 @@ namespace ePhotosynthesis {
   template<typename T>
   class ValueSetStaticClassType : public ValueSetClassType<T> {
   public:
-#define ADD_METHOD(name, retT, argsT, args, retV, suffix)	\
-    retT name argsT suffix override {				\
-      return T::name args;					\
+#define ADD_METHOD(name, retT, args, retV, suffix)	\
+    retT name VS_ARGS_T(args) suffix override {                 \
+      return T::name VS_ARGS(args);                             \
     }
-#define DISABLE_METHOD(name, retT, argsT, args, retV, suffix)		\
-    retT name argsT suffix override {					\
-      FOR_EACH(UNUSED, EXPAND args);					\
+#define DISABLE_METHOD(name, retT, args, retV, suffix)                  \
+    retT name VS_ARGS_T(args) suffix override {                         \
+      FOR_EACH(UNUSED, EXPAND VS_ARGS(args));                           \
       throw std::runtime_error(std::string(__func__) +			\
 			       ": Invalid for static value set");	\
       return retV;							\
@@ -2390,6 +2400,7 @@ namespace ePhotosynthesis {
       initChildClasses(true); // Children will be called in initStaticMembers
       DO_VALUE_SET_CHILD_CLASSES(initStaticMembers, ());
       static_flags |= VS_FLAG_INIT_STATIC;
+      register_value_set_cleanup();
     }
     /**
        Finalize the static class members.
@@ -2540,8 +2551,8 @@ namespace ePhotosynthesis {
   public:
     typedef ValueSet<T, U, ID, PT> ValueSetClass;
     INHERIT_METHODS_VALUE_SET_BASE(ValueSetBase<T, U, ID, PT>)
-    ADD_METHODS_VALUE_SET_T_INST_ONLY_STATIC(STUB_VIRTUAL_VALUE_SET)
-    ADD_METHODS_VALUE_SET_T_STATIC(STUB_VIRTUAL_VALUE_SET)
+    ADD_METHODS_VALUE_SET_T_INST_ONLY_STATIC(STUB_VIRTUAL_VALUE_SET_DECLARE)
+    ADD_METHODS_VALUE_SET_T_STATIC(STUB_VIRTUAL_VALUE_SET_DECLARE)
 
     /**
        Default constructor. Values will be initialized with default
@@ -3302,7 +3313,7 @@ namespace ePhotosynthesis {
   public:
     typedef ValueSetStatic<T, U, ID, PT> ValueSetClass;
     INHERIT_METHODS_VALUE_SET_BASE(ValueSetBase<T, U, ID, PT>)
-    ADD_METHODS_VALUE_SET_T_BOTH(STUB_STATIC_VALUE_SET)
+    ADD_METHODS_VALUE_SET_T_BOTH(STUB_STATIC_VALUE_SET_DECLARE)
 
     /** \copydoc ValueSet::getValueSet */
     static const ValueSet_t* getValueSet() {
@@ -4060,3 +4071,6 @@ namespace ePhotosynthesis {
   VARS_ITER_ALL_MACRO_BASE(GET_VALUE_SET_CLASS, (false, false), m, pt,	\
 			   PACK_MACRO(X), PACK_MACRO(X), PACK_MACRO(X),	\
 			   __VA_ARGS__)
+
+#undef STUB_VIRTUAL_VALUE_SET_DECLARE
+

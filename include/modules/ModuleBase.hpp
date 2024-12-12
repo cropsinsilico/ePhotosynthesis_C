@@ -386,6 +386,10 @@ public:
     /** \copydoc ValueSetBase::_cleanupStaticMembers */
     static void _cleanupStaticMembers() {
         ParentClass::_cleanupStaticMembers();
+	for (std::vector<ValueSetClass_t*>::const_iterator it = added_classes.begin();
+	     it != added_classes.end(); it++)
+            if (*it)
+                (*it)->cleanupStaticMembers();
         cleanupAddedClasses();
     }
 
