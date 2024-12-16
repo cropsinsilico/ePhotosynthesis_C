@@ -48,7 +48,13 @@ void RuACT::_Rate(const double t, const RuACTCondition* const RuACT_Con, Variabl
         ADP = 1.5 - ATP;
         RuBP = RuACT_Con->RuBP;
     } else {
-        RuACT::activase = RuACT_Con->parent->parent->parent->RROEA_con->RuACT * 14364.;
+        // langmm: The top level parent will only have RROEA if it is
+        //   trDynaPS, but when the DynaPS driver has RuACT_EPS_com=true,
+        //   RROEA will not be present. The result needs to be checked
+        //   against the MATLAB code to determine if activase needs
+        //   to be calculated differently when running the DynaPS driver.
+        if (theVars->RROEA_EPS_com)
+            RuACT::activase = RuACT_Con->parent->parent->parent->RROEA_con->RuACT * 14364.;
         RuBP = RuACT_Con->parent->EPS_con->CM_con->PS_PR_con->PS_con->RuBP;
         C = theVars->CO2_cond;
         O = theVars->O2_cond;

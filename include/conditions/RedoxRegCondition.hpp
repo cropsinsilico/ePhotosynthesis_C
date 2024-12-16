@@ -63,7 +63,7 @@ public:
       */
     RedoxRegCondition(const arr &vec, const std::size_t offset = 0);
 
-    void setParent(RedoxRegCondition* par) {(void)par;}
+    void setParent(RedoxRegCondition* par) override {(void)par;}
 
     RACondition* RA_con = nullptr;     // child Condition
 
@@ -76,7 +76,7 @@ public:
       \param tab The level of indentation to use.
       \returns The output stream
       */
-    std::ostream& _print(std::ostream &out, const uint tab = 0) const;
+    std::ostream& _print(std::ostream &out, const uint tab = 0) const override;
     SET_GET(V6)
     SET_GET(V9)
     SET_GET(V13)
@@ -118,7 +118,7 @@ private:
         V16 = 0.;
     }
 #ifdef INCDEBUG
-    const static Debug::DebugLevel _dlevel = Debug::Middle;
+    EPHOTO_API const static Debug::DebugLevel _dlevel = Debug::Middle;
 #endif
 };
 

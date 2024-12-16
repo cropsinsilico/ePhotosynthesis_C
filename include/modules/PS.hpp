@@ -223,49 +223,49 @@ private:
     SET_GET_BOOL_MODULE(C3, conditions::PS)
     SET_GET(_NADPH)
 
-    static double KE1Ratio;
-    static double KE2Ratio;
-    static double PsV1_0;
-    static double PsV2_0;
-    static double PsV3_0;
-    static double PsV5_0;
-    static double PsV6_0;
-    static double PsV7_0;
-    static double PsV8_0;
-    static double PsV9_0;
-    static double PsV10_0;
-    static double PsV13_0;
-    static double PsV16;
-    static double PsV23_0;
-    static double PsV31;
-    static double PsV32;
-    static double PsV33;
-    static double Ru_Act;
-    static double PsV2;
-    static double PsV3;
-    static double PsV5;
-    static double PsV6;
-    static double PsV7;
-    static double PsV8;
-    static double PsV9;
-    static double PsV10;
-    static double PsV13;
-    static double PsV23;
-    static double I2;
-    static double J;
-    static double KE57;
-    static double Km8p5p;
-    static double Km5p5p;
-    static double KE810;
-    static double Km5gap;
-    static double Km8f6p;
-    static double Km8s7p;
-    static double Km8gap;
-    static double MaxCoeff;
+    EPHOTO_API static double KE1Ratio;
+    EPHOTO_API static double KE2Ratio;
+    EPHOTO_API static double PsV1_0;
+    EPHOTO_API static double PsV2_0;
+    EPHOTO_API static double PsV3_0;
+    EPHOTO_API static double PsV5_0;
+    EPHOTO_API static double PsV6_0;
+    EPHOTO_API static double PsV7_0;
+    EPHOTO_API static double PsV8_0;
+    EPHOTO_API static double PsV9_0;
+    EPHOTO_API static double PsV10_0;
+    EPHOTO_API static double PsV13_0;
+    EPHOTO_API static double PsV16;
+    EPHOTO_API static double PsV23_0;
+    EPHOTO_API static double PsV31;
+    EPHOTO_API static double PsV32;
+    EPHOTO_API static double PsV33;
+    EPHOTO_API static double Ru_Act;
+    EPHOTO_API static double PsV2;
+    EPHOTO_API static double PsV3;
+    EPHOTO_API static double PsV5;
+    EPHOTO_API static double PsV6;
+    EPHOTO_API static double PsV7;
+    EPHOTO_API static double PsV8;
+    EPHOTO_API static double PsV9;
+    EPHOTO_API static double PsV10;
+    EPHOTO_API static double PsV13;
+    EPHOTO_API static double PsV23;
+    EPHOTO_API static double I2;
+    EPHOTO_API static double J;
+    EPHOTO_API static double KE57;
+    EPHOTO_API static double Km8p5p;
+    EPHOTO_API static double Km5p5p;
+    EPHOTO_API static double KE810;
+    EPHOTO_API static double Km5gap;
+    EPHOTO_API static double Km8f6p;
+    EPHOTO_API static double Km8s7p;
+    EPHOTO_API static double Km8gap;
+    EPHOTO_API static double MaxCoeff;
 
-    static arr Param;
-    static double TIME;    // The timestamp of the most recent call to _Rate
-    static std::size_t N;  // The current size of the PS TimeSeries
+    EPHOTO_API static arr Param;
+    EPHOTO_API static double TIME;    // The timestamp of the most recent call to _Rate
+    EPHOTO_API static std::size_t N;  // The current size of the PS TimeSeries
 };
 
 }  // namespace modules

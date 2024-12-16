@@ -61,12 +61,34 @@ namespace ePhotosynthesis {
   */
 class Variables {
 public:
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+    /**
+       Construct a new variables instance for a given sundials context
+       \param[in, out] ctx Sundials context.
+    */
+    Variables(SUNContext* ctx) : context(ctx) {}
+#else // SUNDIALS_CONTEXT_REQUIRED
+    /**
+       Construct a new variables instance for a given sundials context
+    */
     Variables() {}
+#endif // SUNDIALS_CONTEXT_REQUIRED
+    /**
+       Copy constructor for a pointer to another variables instance.
+         Some variables are not included in the default copy (e.g. alfa, 
+	 fc, lightParam, CO2A, RedoxReg_MP, module *_Param values, & 
+	 rates). To include these, use deepcopy.
+       \param[in] other Variables instance to copy.
+     */
     Variables(const Variables* other);
     Variables(const Variables& other);
+    Variables* deepcopy() const;
     Variables& operator=(const Variables& other);
     friend std::ostream& operator<<(std::ostream &out, const Variables *in);
 
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+    SUNContext* context = NULL; /**< Sundials context */
+#endif // SUNDIALS_CONTEXT_REQUIRED
     bool record = false;
     bool BF_FI_com = false;
     bool EPS_SUCS_com = false;

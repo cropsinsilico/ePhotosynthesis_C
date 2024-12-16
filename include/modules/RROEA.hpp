@@ -94,8 +94,8 @@ private:
         N = 1;
         conditions::RROEACondition::reset();
     }
-    static double TIME;    // The timestamp of the most recent call to _Rate
-    static std::size_t N;  // The current size of the RROEA TimeSeries
+    EPHOTO_API static double TIME;    // The timestamp of the most recent call to _Rate
+    EPHOTO_API static std::size_t N;  // The current size of the RROEA TimeSeries
 };
 
 }  // namespace modules

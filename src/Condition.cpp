@@ -28,6 +28,7 @@
 #include "globals.hpp"
 #include <boost/algorithm/string_regex.hpp>
 #include <boost/regex.hpp>
+#include <string>
 #include <sstream>
 
 const boost::regex token("\\s+");
@@ -147,7 +148,7 @@ void ePhotosynthesis::readFile(const std::string &filename, std::map<std::string
     }
 }
 
-void ePhotosynthesis::readFile(const std::string &filename, std::map<std::string, double> &mapper) {
+void ePhotosynthesis::readFile(const std::string &filename, std::map<std::string, double> &mapper, bool enzymes) {
     std::vector<std::string> tempVec;
     std::string input;
     std::ifstream inputfile(filename);
@@ -163,10 +164,10 @@ void ePhotosynthesis::readFile(const std::string &filename, std::map<std::string
         double d;
         std::stringstream ss(tempVec[1]);
         ss >> d;
-        if (count < 27)
+        if (enzymes && (count < 27))
 //30 is to convert micromole m-s s-1 to mmol L-1 s-1
 //This is an assumption based on: https://doi.org/10.1104/pp.107.103713
-            d /= 30.; 
+            d /= 30.;
         count++;
         mapper.insert(std::pair<std::string, double>(tempVec[0], d));
     }

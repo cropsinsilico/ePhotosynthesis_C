@@ -91,7 +91,7 @@ public:
       \param tab The level of indentation to use.
       \returns The output stream
       */
-    std::ostream& _print(std::ostream &out, const uint tab = 0) const;
+    std::ostream& _print(std::ostream &out, const uint tab = 0) const override;
 
 private:
     friend ConditionBase;
@@ -126,9 +126,9 @@ private:
       */
     void _clear() override;
 
-    static std::size_t count;  // size of the current serialized output
+    EPHOTO_API static std::size_t count;  // size of the current serialized output
 #ifdef INCDEBUG
-    static Debug::DebugLevel _dlevel;
+    EPHOTO_API static Debug::DebugLevel _dlevel;
 #endif
 };
 

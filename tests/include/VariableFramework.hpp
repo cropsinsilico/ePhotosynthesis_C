@@ -46,53 +46,61 @@ const std::map<std::string, double> Emap = {{"V1", 120},
 {"V57", 16.65},
 {"V58", 0.5},
 {"V59", 3.03},
-{"Jmax", 180},
-{"K1", 1000000},
-{"K2", 500},
-{"K3", 50000000},
-{"K4", 50000000},
-{"K5", 50000000},
-{"K6", 50000000},
-{"K7", 10000},
-{"K8", 1000},
-{"K9", 8300000},
-{"K10", 800000000},
+{"Jmax", 180.0},
+{"K1", 1000000.0},
+{"K2", 500.0},
+{"K3", 50000000.0},
+{"K4", 50000000.0},
+{"K5", 50000000.0},
+{"K6", 50000000.0},
+{"K7", 10000.0},
+{"K8", 1000.0},
+{"K9", 8300000.0},
+{"K10", 800000000.0},
 {"Vmax11", 6},
-{"Kau", 10000000000},
-{"Kua", 10000000000},
-{"Kf", 6300000},
-{"Kd",  200000000},
-{"K15", 10000000000},
-{"K16", 100000},
+{"Kau", 10000000000.0},
+{"Kua", 10000000000.0},
+{"Kf", 6300000.0},
+{"Kd",  200000000.0},
+{"K15", 10000000000.0},
+{"K16", 100000.0},
 {"V2M", 27.8},
-{"kA_d", 200000000},
-{"kA_f", 1260000},
-{"kA_U", 10000000000},
-{"kU_A", 10000000000},
-{"kU_d", 200000000},
-{"kU_f", 1260000},
+{"kA_d", 200000000.0},
+{"kA_f", 1260000.0},
+{"kA_U", 10000000000.0},
+{"kU_A", 10000000000.0},
+{"kU_d", 200000000.0},
+{"kU_f", 1260000.0},
 {"k1", 2.5E+11},
-{"k_r1", 300000000},
-{"kz", 5000000},
-{"k12", 30000},
-{"k23", 10000},
-{"k30", 3000},
-{"k01", 500},
-{"k2", 2000000000},
-{"kAB1", 2500},
-{"kBA1", 200},
-{"kAB2", 3300},
-{"kBA2", 250},
-{"k3", 800},
-{"k_r3", 80},
-{"k_pq_oxy", 500}};
+{"k_r1", 300000000.0},
+{"kz", 5000000.0},
+{"k12", 30000.0},
+{"k23", 10000.0},
+{"k30", 3000.0},
+{"k01", 500.0},
+{"k2", 2000000000.0},
+{"kAB1", 2500.0},
+{"kBA1", 200.0},
+{"kAB2", 3300.0},
+{"kBA2", 250.0},
+{"k3", 800.0},
+{"k_r3", 80.0},
+{"k_pq_oxy", 500.0}};
 
 
 class VariableFramework: public testing::Test {
 protected:
     void SetUp() override {
-        if (theVars == nullptr)
+        if (theVars == nullptr) {
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+	    if (SUNContext_Create(0, &context) < 0) {
+	      throw std::runtime_error("SUNContext_Create failed");
+	    }
+            theVars = new Variables(&context);
+#else // SUNDIALS_CONTEXT_REQUIRED
             theVars = new Variables();
+#endif // SUNDIALS_CONTEXT_REQUIRED
+	}
         IniModelCom(theVars);
     }
 
@@ -100,10 +108,16 @@ protected:
         if (theVars != nullptr) {
             delete theVars;
             theVars = nullptr;
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+	    SUNContext_Free(&context);
+#endif // SUNDIALS_CONTEXT_REQUIRED
         }
     }
 
     Variables* theVars = nullptr;
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+    SUNContext context = nullptr;
+#endif // SUNDIALS_CONTEXT_REQUIRED
 };
 
 inline arr get_random(const size_t size) {

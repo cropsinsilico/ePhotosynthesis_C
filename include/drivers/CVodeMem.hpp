@@ -1,11 +1,12 @@
 #pragma once
-#include <cvode/cvode_direct.h>
+
+#include "definitions.hpp"
 
 namespace ePhotosynthesis {
 namespace drivers {
 
 class Driver;
-class CalcData;
+struct CalcData;
 
 class CVodeMem {
 public:

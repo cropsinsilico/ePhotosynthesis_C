@@ -151,16 +151,16 @@ private:
     SET_GET_BOOL_MODULE(PS_RuBP, conditions::PR)
     SET_GET(RUBISCOTOTAL)
 
-    static double PrV112;
-    static double PrV113;
-    static double PrV121;
-    static double PrV122;
-    static double PrV123;
-    static double PrV124;
-    static double PrV131;
+    EPHOTO_API static double PrV112;
+    EPHOTO_API static double PrV113;
+    EPHOTO_API static double PrV121;
+    EPHOTO_API static double PrV122;
+    EPHOTO_API static double PrV123;
+    EPHOTO_API static double PrV124;
+    EPHOTO_API static double PrV131;
 
-    static double TIME;    // The timestamp of the most recent call to _Rate
-    static std::size_t N;  // The current size of the PR TimeSeries
+    EPHOTO_API static double TIME;    // The timestamp of the most recent call to _Rate
+    EPHOTO_API static std::size_t N;  // The current size of the PR TimeSeries
 };
 
 }  // namespace modules

@@ -1,0 +1,13 @@
+name: ephoto
+channels:
+  - conda-forge
+dependencies:
+  - boost
+  - cmake
+  - gtest
+  - ipython
+  - lcov
+  - pytest
+  - python
+  - sundials
+
