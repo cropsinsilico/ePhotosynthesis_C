@@ -31,22 +31,6 @@ using namespace ePhotosynthesis::conditions;
 
 DEFINE_CONDITION(RROEA);
 
-RROEACondition::RROEACondition(const RROEACondition* const other) :
-  ConditionBase<RROEACondition, trDynaPSCondition, MODULE_RROEA>(other) {
-    initMembers();
-    GAPDH = other->GAPDH;
-    FBPase = other->FBPase;
-    SBPase = other->SBPase;
-    PRK = other->PRK;
-    ATPase = other->ATPase;
-    ATPGPP = other->ATPGPP;
-    MDH = other->MDH;
-    Thio = other->Thio;
-    Fd = other->Fd;
-    RuACT = other->RuACT;
-    copyMembers(*other);
-}
-
 RROEACondition:: RROEACondition(const arr &vec, const std::size_t offset) {
     initMembers();
     fromArray(vec, offset);

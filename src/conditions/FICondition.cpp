@@ -31,35 +31,6 @@ using namespace ePhotosynthesis::conditions;
 
 DEFINE_CONDITION(FI);
 
-FICondition::FICondition(const FICondition* const other) :
-  ConditionBase<FICondition, FIBFCondition, MODULE_FI>(other) {
-    initMembers();
-    A = other->A;
-    U = other->U;
-    P680ePheo = other->P680ePheo;
-    P680pPheon = other->P680pPheon;
-    P680pPheo = other->P680pPheo;
-    P680Pheon = other->P680Pheon;
-    Yz = other->Yz;
-    S1T = other->S1T;
-    S2T = other->S2T;
-    S3T = other->S3T;
-    S0T = other->S0T;
-    S1Tp = other->S1Tp;
-    S2Tp = other->S2Tp;
-    S3Tp = other->S3Tp;
-    S0Tp = other->S0Tp;
-    QAQB = other->QAQB;
-    QAnQB = other->QAnQB;
-    QAQBn = other->QAQBn;
-    QAnQBn = other->QAnQBn;
-    QAQB2n = other->QAQB2n;
-    QAnQB2n = other->QAnQB2n;
-    if (!FICondition::BF_connect)
-        PQn = other->PQn;
-    copyMembers(*other);
-}
-
 FICondition::FICondition(const arr &vec, const std::size_t offset) {
     initMembers();
     fromArray(vec, offset);

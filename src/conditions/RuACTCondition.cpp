@@ -31,17 +31,6 @@ using namespace ePhotosynthesis::conditions;
 
 DEFINE_CONDITION(RuACT);
 
-RuACTCondition::RuACTCondition(const RuACTCondition* const other) :
-  ConditionBase<RuACTCondition, RACondition, MODULE_RuACT>(other) {
-    initMembers();
-    ER = other->ER;
-    Eaf = other->Eaf;
-    ECMR = other->ECMR;
-    if (!EPS_connect)
-        RuBP = other->RuBP;
-    copyMembers(*other);
-}
-
 RuACTCondition::RuACTCondition(const arr vec, const std::size_t offset) {
     initMembers();
     fromArray(vec, offset);

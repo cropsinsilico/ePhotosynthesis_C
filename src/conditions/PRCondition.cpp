@@ -31,23 +31,6 @@ using namespace ePhotosynthesis::conditions;
 
 DEFINE_CONDITION(PR);
 
-PRCondition::PRCondition(const PRCondition* const other) :
-  ConditionBase<PRCondition, PS_PRCondition, MODULE_PR>(other) {
-    initMembers();
-    GCEA = other->GCEA;
-    GCA = other->GCA;
-    PGCA = other->PGCA;
-    GCAc = other->GCAc;
-    GOAc = other->GOAc;
-    SERc = other->SERc;
-    GLYc = other->GLYc;
-    HPRc = other->HPRc;
-    GCEAc = other->GCEAc;
-    if (!PS_RuBP)
-        RuBP = other->RuBP;
-    copyMembers(*other);
-}
-
 PRCondition::PRCondition(const arr vec, const std::size_t offset)  {
     initMembers();
     fromArray(vec, offset);

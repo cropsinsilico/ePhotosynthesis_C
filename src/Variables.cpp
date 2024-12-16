@@ -87,13 +87,13 @@ void Variables::finalizeInputs() {
       CO2_cond *= 0.7;
 #endif // MAKE_EQUIVALENT_TO_MATLAB
     
-#ifdef MAKE_EQUIVALENT_TO_MATLAB
-    // Conversion from W m^{-2} to u moles m^{-2} s^{-1}
-    TestLi_Wps = TestLi;
-    TestLi = TestLi_Wps * 1.0e6 / 2.35e5;
-#else // MAKE_EQUIVALENT_TO_MATLAB
-    TestLi_Wps = TestLi / (1.0e6 / 2.35e5);
-#endif // MAKE_EQUIVALENT_TO_MATLAB
+    if (PAR_in_Wpm2) {
+      // Conversion from W m^{-2} to u moles m^{-2} s^{-1}
+      TestLi_Wps = TestLi;
+      TestLi = TestLi_Wps * 1.0e6 / 2.35e5;
+    } else {
+      TestLi_Wps = TestLi / (1.0e6 / 2.35e5);
+    }
 }
 
 Variables* Variables::deepcopy() const {

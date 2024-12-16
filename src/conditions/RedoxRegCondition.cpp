@@ -31,22 +31,14 @@ using namespace ePhotosynthesis::conditions;
 
 DEFINE_CONDITION_COMPOSITE_BASE(RedoxReg);
 
-RedoxRegCondition::RedoxRegCondition(const RedoxRegCondition* const other) {
-    initMembers();
-    RA_con = new RACondition(other->RA_con);
-    Thion = other->Thion;
-    //RA_con.setParent(this);
-    copyMembers(*other);
-}
-
 RedoxRegCondition::RedoxRegCondition(RACondition* rother, double thio) {
     initMembers();
-    if (rother->parent == nullptr) {
+    if (rother && rother->parent == nullptr && rother->parentRedoxReg == nullptr) {
         RA_con = rother;
     } else {
         RA_con = new RACondition(rother);
     }
-    //RA_con->setParent(this);
+    RA_con->setParentRedoxReg(this);
     Thion = thio;
 #ifdef CHECK_VALUE_SET_ALTS
     set(COND::RedoxReg::Thion, thio);
@@ -59,13 +51,14 @@ RedoxRegCondition::RedoxRegCondition(const arr &vec, const std::size_t offset) {
 }
 
 void RedoxRegCondition::_createChildren() {
-    if (RA_con == nullptr)
+    if (RA_con == nullptr) {
         RA_con = new RACondition();
+        RA_con->setParentRedoxReg(this);
+    }
 }
 
 void RedoxRegCondition::_fromArray(const arr &vec, const std::size_t offset) {
-    if (RA_con == nullptr)
-        RA_con = new RACondition();
+    _createChildren();
     RA_con->fromArray(vec, offset);
     Thion = vec[offset + RACondition::size()];
 }
@@ -85,7 +78,7 @@ void RedoxRegCondition::_reset(const bool noChildren) {
 }
 
 void RedoxRegCondition::_clear() {
-    if (RA_con != nullptr) {
+    if (RA_con) {
         delete RA_con;
         RA_con = nullptr;
     }

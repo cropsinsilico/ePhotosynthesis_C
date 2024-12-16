@@ -195,13 +195,23 @@ private:								\
  void _fromArray(const arr &vec, const std::size_t offset = 0) override; \
  /** \copydoc ConditionBase::_toArray */				\
  arr _toArray() const override;						\
- public:
+public:                                                                 \
+ /** Assignment operator */                                             \
+ /** @param other The object to copy */                                 \
+ /** @returns Updated condition */                                      \
+ VARS_CLASS_VAR_LOCAL(name, COND)& operator=(const VARS_CLASS_VAR_LOCAL(name, COND)& other); \
+ /** Copy constructor that makes a deep copy of the given object */	\
+ /** @param other The object to copy */                                 \
+ VARS_CLASS_VAR_LOCAL(name, COND)(const VARS_CLASS_VAR_LOCAL(name, COND)* const other) { \
+     *this = *other;                                                    \
+ }                                                                      \
+ /** Copy constructor that makes a deep copy of the given object */	\
+ /** @param other The object to copy */                                 \
+ VARS_CLASS_VAR_LOCAL(name, COND)(const VARS_CLASS_VAR_LOCAL(name, COND)& other) : \
+   VARS_CLASS_VAR_LOCAL(name, COND)(&other) {}
   
 #define DECLARE_CONDITION_BASE2(name)					\
   public:								\
-  /** Copy constructor that makes a deep copy of the given object */	\
-  /** @param other The object to copy */				\
-  VARS_CLASS_VAR_LOCAL(name, COND)(const VARS_CLASS_VAR_LOCAL(name, COND)* const other); \
   /** Constructor to create an object from the input vector, starting */ \
   /**   at the given offset.*/						\
   /** @param vec Vector to create the object from */			\
@@ -247,8 +257,8 @@ public:
   /** Construct from parent */						\
   /** @param par Pointer to parent instance */				\
   VARS_CLASS_VAR_LOCAL(name, COND)(VARS_CLASS_VAR_LOCAL(PARENT_ ## name, COND)* par = nullptr) { \
-    setParent(par);							\
-    initMembers();							\
+      setParent(par);							\
+      initMembers();							\
   }									\
 private:								\
   /** The Maximum size of the serialized vector */			\
@@ -315,8 +325,8 @@ public:
   VARS_CLASS_VAR_LOCAL(name, COND)(VARS_CLASS_VAR_LOCAL(PARENT_ ## name, COND)* par = nullptr) : \
   FOR_EACH_COMMA(DECLARE_CONDITION_COMPOSITE_CHILD_INIT,		\
 		 EXPAND(CHILDREN_ ## name)) {				\
-    setParent(par);							\
-    initMembers();							\
+      setParent(par);							\
+      initMembers();							\
   }									\
   /** Constructor to create an object from the contained classes*/	\
   VARS_CLASS_VAR_LOCAL(name, COND)(FOR_EACH_COMMA(DECLARE_CONDITION_COMPOSITE_CHILD_VARS, \
@@ -331,7 +341,7 @@ public:
   DECLARE_CONDITION_COMPOSITE_BASE(name)				\
   /** \copydoc ModuleBase::setParent */					\
   void setParent(VARS_CLASS_VAR_LOCAL(name, COND)* par) override {	\
-    UNUSED(par);							\
+      UNUSED(par);							\
   }
 /**
    Boiler plate for defining members of a singular or composite condition
@@ -344,31 +354,32 @@ public:
   VARS_CLASS_VAR_LOCAL(name, COND)::					\
     VARS_CLASS_VAR_LOCAL(name, COND)(const arr &vec,			\
 				     const std::size_t offset) {	\
-    initMembers();							\
-    fromArray(vec, offset);						\
+      initMembers();							\
+      fromArray(vec, offset);						\
   }									\
   VARS_CLASS_VAR_LOCAL(name, COND)::					\
     VARS_CLASS_VAR_LOCAL(name, COND)(realtype *x) {			\
-    initMembers();							\
-    fromArray(x);							\
+      initMembers();							\
+      fromArray(x);							\
   }
 /**
    Boiler plate for defining members of a singular condition class.
    \param name Name of the module the condition class is associated with.
  */
 #define DEFINE_CONDITION(name)						\
-  DEFINE_CONDITION_BASE(name)
+  DEFINE_CONDITION_BASE(name)                                           \
+  VARS_CLASS_VAR_LOCAL(name, COND)& VARS_CLASS_VAR_LOCAL(name, COND)::  \
+  operator=(const VARS_CLASS_VAR_LOCAL(name, COND)& other) {            \
+      initMembers();							\
+      copyMembers(other);                                               \
+      return *this;                                                     \
+  }
 #define DEFINE_CONDITION2(name)						\
-  VARS_CLASS_VAR_LOCAL(name, COND)::					\
-    VARS_CLASS_VAR_LOCAL(name, COND)(const VARS_CLASS_VAR_LOCAL(name, COND)* const other) { \
-    initMembers();							\
-    copyMembers(*other);						\
-  }									\
   std::size_t VARS_CLASS_VAR_LOCAL(name, COND)::_size() {		\
-    std::size_t c = count;						\
-    FOR_EACH(DECLARE_CONDITION_CONTROL_SIZE_PACKED,			\
-	     EXPAND(CONTROL_ ## name));					\
-    return c;								\
+      std::size_t c = count;						\
+      FOR_EACH(DECLARE_CONDITION_CONTROL_SIZE_PACKED,			\
+               EXPAND(CONTROL_ ## name));                               \
+      return c;								\
   }
 /**
    Utility macro for initializing static boolean class members for a
@@ -410,13 +421,13 @@ public:
    \param name Name of the module the child condition is associated with.
  */
 #define DEFINE_CONDITION_COMPOSITE_CHILD_CREATE_OTHER(name)		\
-  name ## _con = new VARS_CLASS_VAR_LOCAL(name, COND)(other->name ## _con); \
+  name ## _con = new VARS_CLASS_VAR_LOCAL(name, COND)(other.name ## _con); \
   name ## _con->setParent(this)
 /**
    Utility to initialize a child condition from another child condition.
    \param name Name of the module the child condition is associated with.
  */
-#define DEFINE_CONDITION_COMPOSITE_CHILD_CREATE_OTHER_CHILD(name)			\
+#define DEFINE_CONDITION_COMPOSITE_CHILD_CREATE_OTHER_CHILD(name)       \
   if (name ## _other->parent == nullptr) {				\
     name ## _con = name ## _other;					\
   } else {								\
@@ -444,47 +455,48 @@ public:
      including those with specialized methods (RedoxReg).
    \param name Name of the module the condition class is associated with.
  */
-#define DEFINE_CONDITION_COMPOSITE_BASE(name)	\
-  DEFINE_CONDITION_BASE(name)
+#define DEFINE_CONDITION_COMPOSITE_BASE(name)                           \
+  DEFINE_CONDITION_BASE(name);                                          \
+  VARS_CLASS_VAR_LOCAL(name, COND)& VARS_CLASS_VAR_LOCAL(name, COND)::  \
+    operator=(const VARS_CLASS_VAR_LOCAL(name, COND)& other) {          \
+      initMembers();							\
+      FOR_EACH(DEFINE_CONDITION_COMPOSITE_CHILD_CREATE_OTHER,		\
+               EXPAND(CHILDREN_ ## name));				\
+      copyMembers(other);						\
+      return *this;                                                     \
+  }
 /**
    Boiler plate for defining members of a composite condition class.
    \param name Name of the module the condition class is associated with.
  */
-#define DEFINE_CONDITION_COMPOSITE(name)			\
-  DEFINE_CONDITION_COMPOSITE_BASE(name);			\
-  void VARS_CLASS_VAR_LOCAL(name, COND)::			\
-    _createChildren() {						\
-    FOR_EACH(DEFINE_CONDITION_COMPOSITE_CHILD_CREATE,		\
-	     EXPAND(CHILDREN_ ## name));			\
-  }								\
-  void VARS_CLASS_VAR_LOCAL(name, COND)::_reset(const bool) {	\
-    count = 0;							\
-  }								\
-  void VARS_CLASS_VAR_LOCAL(name, COND)::_clear() {		\
-    FOR_EACH(DEFINE_CONDITION_COMPOSITE_CHILD_CLEAR,		\
-	     EXPAND(CHILDREN_ ## name));			\
-    count = 0;							\
+#define DEFINE_CONDITION_COMPOSITE(name)                                \
+  DEFINE_CONDITION_COMPOSITE_BASE(name);                                \
+  void VARS_CLASS_VAR_LOCAL(name, COND)::                               \
+    _createChildren() {                                                 \
+      FOR_EACH(DEFINE_CONDITION_COMPOSITE_CHILD_CREATE,                 \
+               EXPAND(CHILDREN_ ## name));                              \
+  }                                                                     \
+  void VARS_CLASS_VAR_LOCAL(name, COND)::_reset(const bool) {           \
+      count = 0;							\
+  }                                                                     \
+  void VARS_CLASS_VAR_LOCAL(name, COND)::_clear() {                     \
+      FOR_EACH(DEFINE_CONDITION_COMPOSITE_CHILD_CLEAR,                  \
+               EXPAND(CHILDREN_ ## name));                              \
+      count = 0;                                                        \
   }
   
 #define DEFINE_CONDITION_COMPOSITE2(name)				\
   VARS_CLASS_VAR_LOCAL(name, COND)::					\
-    VARS_CLASS_VAR_LOCAL(name, COND)(const VARS_CLASS_VAR_LOCAL(name, COND)* const other) { \
-    initMembers();							\
-    FOR_EACH(DEFINE_CONDITION_COMPOSITE_CHILD_CREATE_OTHER,		\
-	     EXPAND(CHILDREN_ ## name));				\
-    copyMembers(*other);						\
-  }									\
-  VARS_CLASS_VAR_LOCAL(name, COND)::					\
     VARS_CLASS_VAR_LOCAL(name, COND)(FOR_EACH_COMMA(DECLARE_CONDITION_COMPOSITE_CHILD_VARS, \
 						    EXPAND(CHILDREN_ ## name))) { \
-    initMembers();							\
-    FOR_EACH(DEFINE_CONDITION_COMPOSITE_CHILD_CREATE_OTHER_CHILD,	\
-	     EXPAND(CHILDREN_ ## name));				\
+      initMembers();							\
+      FOR_EACH(DEFINE_CONDITION_COMPOSITE_CHILD_CREATE_OTHER_CHILD,	\
+               EXPAND(CHILDREN_ ## name));				\
   }									\
   std::size_t VARS_CLASS_VAR_LOCAL(name, COND)::_size() {		\
-    count = FOR_EACH_JOIN(DEFINE_CONDITION_COMPOSITE_CHILD_SIZE, +,	\
-			  CHILDREN_ ## name);				\
-    return count;							\
+      count = FOR_EACH_JOIN(DEFINE_CONDITION_COMPOSITE_CHILD_SIZE, +,	\
+                            CHILDREN_ ## name);				\
+      return count;							\
   }
 /**
    Boiler plate for defining members of a composite condition class in the

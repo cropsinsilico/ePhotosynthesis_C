@@ -35,9 +35,11 @@
 
 namespace ePhotosynthesis {
 
-  FORWARD_DECLARE_CONDITION(RA);
+    FORWARD_DECLARE_CONDITION(RA);
   
 namespace conditions {
+    
+    class RedoxRegCondition;
 
 /**
  Class for holding input for RA_mb
@@ -45,6 +47,7 @@ namespace conditions {
 class RACondition : public ConditionBase<RACondition, DynaPSCondition, MODULE_RA> {
 public:
     DECLARE_CONDITION_COMPOSITE(RA)
+    using ConditionBase<RACondition, DynaPSCondition, MODULE_RA>::setParent;
     RACondition(DynaPSCondition* par = nullptr) : RuACT_con(new RuACTCondition(this)), EPS_con(new EPSCondition(this)) {
         setParent(par);
         initMembers();
@@ -52,12 +55,6 @@ public:
     ~RACondition() override {
         _clear();
     }
-    /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The RACon object to copy
-      */
-    RACondition(const RACondition *other);
 
     /**
       Constructor to create an object from the contained classes
@@ -78,7 +75,19 @@ public:
     RuACTCondition* RuACT_con = nullptr;     // child Condition
     EPSCondition* EPS_con = nullptr;     // child Condition
 
+    /** \copydoc ConditionBase::setParent */
+    void setParent(DynaPSCondition* par) override;
+    /** \copydoc ConditionBase::setParent */
+    void setParentRedoxReg(RedoxRegCondition* par);
+    /** \copydoc ConditionBase::setParent */
+    void setParent(RedoxRegCondition* par) {
+        setParentRedoxReg(par);
+    }
+
+    RedoxRegCondition* parentRedoxReg = nullptr; //!< Parent RedoxReg condition
+
 private:
+
     /**
       Get the size of the data vector
 

@@ -48,12 +48,6 @@ namespace conditions {
 class RROEACondition : public ConditionBase<RROEACondition, trDynaPSCondition, MODULE_RROEA> {
 public:
     DECLARE_CONDITION(RROEA)
-    /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The RROEACon object to copy
-      */
-    RROEACondition(const RROEACondition* const other);
 
     /**
       Constructor to create an object from the input vector, starting at the given index

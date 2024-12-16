@@ -31,15 +31,6 @@ using namespace ePhotosynthesis::conditions;
 
 DEFINE_CONDITION_COMPOSITE(EPS);
 
-EPSCondition::EPSCondition(const EPSCondition* const other) {
-    initMembers();
-    CM_con = new CMCondition(other->CM_con);
-    FIBF_con = new FIBFCondition(other->FIBF_con);
-    CM_con->setParent(this);
-    FIBF_con->setParent(this);
-    copyMembers(*other);
-}
-
 EPSCondition::EPSCondition(realtype *x) {
     initMembers();
     fromArray(x);

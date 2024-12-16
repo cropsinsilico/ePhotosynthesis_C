@@ -52,12 +52,6 @@ public:
     ~trDynaPSCondition() override {
         _clear();
     }
-    /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The trDynaPSCon object to copy
-      */
-    trDynaPSCondition(const trDynaPSCondition* const other);
 
     /**
       Constructor to create an object from the contained classes

@@ -31,15 +31,6 @@ using namespace ePhotosynthesis::conditions;
 
 DEFINE_CONDITION_COMPOSITE(CM);
 
-CMCondition::CMCondition(const CMCondition* const other) {
-    initMembers();
-    PS_PR_con = new PS_PRCondition(other->PS_PR_con);
-    SUCS_con = new SUCSCondition(other->SUCS_con);
-    PS_PR_con->setParent(this);
-    SUCS_con->setParent(this);
-    copyMembers(*other);
-}
-
 CMCondition::CMCondition(const arr &vec, const std::size_t offset) {
     initMembers();
     fromArray(vec, offset);

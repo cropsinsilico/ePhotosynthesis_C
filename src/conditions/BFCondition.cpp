@@ -31,43 +31,6 @@ using namespace ePhotosynthesis::conditions;
 
 DEFINE_CONDITION(BF);
 
-BFCondition::BFCondition(const BFCondition* const other) :
-  ConditionBase<BFCondition, FIBFCondition, MODULE_BF>(other) {
-    initMembers();
-    ISPHr = other->ISPHr;
-    cytc1 = other->cytc1;
-    ISPo = other->ISPo;
-    ISPoQH2 = other->ISPoQH2;
-    QHsemi = other->QHsemi;
-    cytbL = other->cytbL;
-    Qi = other->Qi;
-    if (!FI_connect)
-        Q = other->Q;
-    cytbH = other->cytbH;
-    Qn = other->Qn;
-    Qr = other->Qr;
-    QH2 = other->QH2;
-    cytc2 = other->cytc2;
-    P700 = other->P700;
-    ADP = other->ADP;
-    if (!PS_connect)
-        ATP = other->ATP;
-    Ks = other->Ks;
-    Mgs = other->Mgs;
-    Cls = other->Cls;
-    Aip = other->Aip;
-    U = other->U;
-    An = other->An;
-    if (!RROEA_connect)
-        Fdn = other->Fdn;
-    BFHs = other->BFHs;
-    BFHl = other->BFHl;
-    PHs = other->PHs;
-    PHl = other->PHl;
-    NADPH = other->NADPH;
-    copyMembers(*other);
-}
-
 BFCondition::BFCondition(const arr &vec, const std::size_t offset) {
     initMembers();
     fromArray(vec, offset);

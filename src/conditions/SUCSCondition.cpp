@@ -31,20 +31,6 @@ using namespace ePhotosynthesis::conditions;
 
 DEFINE_CONDITION(SUCS);
 
-SUCSCondition::SUCSCondition(const SUCSCondition* const other) :
-  ConditionBase<SUCSCondition, CMCondition, MODULE_SUCS>(other) {
-    initMembers();
-    T3Pc = other->T3Pc;
-    FBPc = other->FBPc;
-    HexPc = other->HexPc;
-    F26BPc = other->F26BPc;
-    UDPGc = other->UDPGc;
-    SUCP = other->SUCP;
-    SUC = other->SUC;
-    PGAc = other->PGAc;
-    copyMembers(*other);
-}
-
 SUCSCondition::SUCSCondition(const arr &vec, const std::size_t offset) {
     initMembers();
     fromArray(vec, offset);

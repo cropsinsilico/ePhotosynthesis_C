@@ -31,15 +31,6 @@ using namespace ePhotosynthesis::conditions;
 
 DEFINE_CONDITION_COMPOSITE(trDynaPS);
 
-trDynaPSCondition::trDynaPSCondition(const trDynaPSCondition* const other) {
-    initMembers();
-    RROEA_con = new RROEACondition(other->RROEA_con);
-    DynaPS_con = new DynaPSCondition(other->DynaPS_con);
-    RROEA_con->setParent(this);
-    DynaPS_con->setParent(this);
-    copyMembers(*other);
-}
-
 trDynaPSCondition::trDynaPSCondition(DynaPSCondition* dother, RROEACondition* rother) {
     initMembers();
     if (dother->parent == nullptr) {

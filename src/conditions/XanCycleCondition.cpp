@@ -31,16 +31,6 @@ using namespace ePhotosynthesis::conditions;
 
 DEFINE_CONDITION(XanCycle);
 
-XanCycleCondition::XanCycleCondition(const XanCycleCondition* const other) :
-  ConditionBase<XanCycleCondition, DynaPSCondition, MODULE_XanCycle>(other) {
-    initMembers();
-    Vx = other->Vx;
-    Ax = other->Ax;
-    Zx = other->Zx;
-    ABA = other->ABA;
-    copyMembers(*other);
-}
-
 XanCycleCondition::XanCycleCondition(const arr &vec, const std::size_t offset) {
     initMembers();
     fromArray(vec, offset);

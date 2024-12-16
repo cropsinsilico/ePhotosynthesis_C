@@ -326,6 +326,7 @@ int main(int argc, const char* argv[]) {
 	}
 	assignInputVarI(GRNC, GRNC);
 	setInputVarB(SucPath, CM, TestSucPath);
+        assignInputVarI(PAR_in_Wpm2, PAR_in_Wpm2);
 
 	// Read the GRN data and assign it into the correct positions
 	// based on the expected order

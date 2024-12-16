@@ -54,12 +54,6 @@ public:
     ~PS_PRCondition() override {
         _clear();
     }
-    /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The PS_PRCon object to copy
-      */
-    PS_PRCondition(const PS_PRCondition* const other);
 
     /**
       Constructor to create an object from the contained classes

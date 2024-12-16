@@ -31,16 +31,6 @@ using namespace ePhotosynthesis::conditions;
 
 DEFINE_CONDITION_COMPOSITE(FIBF);
 
-FIBFCondition::FIBFCondition(const FIBFCondition* const other) {
-    initMembers();
-    BF_con = new BFCondition(other->BF_con);
-    FI_con = new FICondition(other->FI_con);
-    BF_con->setParent(this);
-    FI_con->setParent(this);
-    kd = other->kd;
-    copyMembers(*other);
-}
-
 FIBFCondition::FIBFCondition(BFCondition* bother, FICondition* fother) {
     initMembers();
     if (bother->parent == nullptr) {

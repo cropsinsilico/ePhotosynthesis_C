@@ -50,12 +50,6 @@ class PSCondition : public ConditionBase<PSCondition, PS_PRCondition, MODULE_PS>
 public:
     DECLARE_CONDITION(PS)
     /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The PSCon object to copy
-      */
-    PSCondition(const PSCondition* const other);
-    /**
       Constructor to create an object from the input vector, starting at the given index
 
       @param vec Vector to create the object from

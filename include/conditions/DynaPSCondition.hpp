@@ -54,12 +54,6 @@ public:
     ~DynaPSCondition() override {
         _clear();
     }
-    /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The DynaPSCondition object to copy
-      */
-    DynaPSCondition(const DynaPSCondition* const other);
 
     /**
       Constructor to create an object from the input pointer

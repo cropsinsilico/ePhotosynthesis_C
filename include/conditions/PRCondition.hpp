@@ -48,12 +48,6 @@ namespace conditions {
 class PRCondition : public ConditionBase<PRCondition, PS_PRCondition, MODULE_PR> {
 public:
     DECLARE_CONDITION(PR)
-    /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The PRCondition object to copy
-      */
-    PRCondition(const PRCondition* const other);
 
     /**
       Constructor to create an object from the input vector, starting at the given index

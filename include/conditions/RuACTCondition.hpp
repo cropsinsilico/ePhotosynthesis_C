@@ -48,12 +48,6 @@ namespace conditions {
 class RuACTCondition : public ConditionBase<RuACTCondition, RACondition, MODULE_RuACT> {
 public:
     DECLARE_CONDITION(RuACT)
-    /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The RuACTCon object to copy
-      */
-    RuACTCondition(const RuACTCondition* const other);
 
     /**
       Constructor to create an object from the input vector, starting at the given index

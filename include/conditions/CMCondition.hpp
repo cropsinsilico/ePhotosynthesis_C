@@ -53,12 +53,6 @@ public:
     ~CMCondition() {
         _clear();
     }
-    /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The CMCondition object to copy
-      */
-    CMCondition(const CMCondition* const other);
 
     /**
       Constructor to create an object from the input vector, starting at the given index

@@ -25,6 +25,8 @@
  **********************************************************************************************************************************************/
 
 #include "conditions/RACondition.hpp"
+#include "conditions/RedoxRegCondition.hpp"
+#include "conditions/DynaPSCondition.hpp"
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::conditions;
@@ -32,15 +34,6 @@ using namespace ePhotosynthesis::conditions;
 std::size_t RACondition::count = 0;
 
 DEFINE_CONDITION_COMPOSITE(RA);
-
-RACondition::RACondition(const RACondition* const other) {
-    initMembers();
-    RuACT_con = new RuACTCondition(other->RuACT_con);
-    EPS_con = new EPSCondition(other->EPS_con);
-    RuACT_con->setParent(this);
-    EPS_con->setParent(this);
-    copyMembers(*other);
-}
 
 RACondition::RACondition(EPSCondition* eother, RuACTCondition* rother) {
     initMembers();
@@ -63,6 +56,19 @@ RACondition::RACondition(const arr &vec, const std::size_t offset) {
     fromArray(vec, offset);
 }
 
+void RACondition::setParent(DynaPSCondition* par) {
+    if (parentRedoxReg) {
+      throw std::runtime_error("RACondition already has RedoxReg parent");
+    }
+    parent = par;
+}
+
+void RACondition::setParentRedoxReg(RedoxRegCondition* par) {
+    if (parent) {
+      throw std::runtime_error("RACondition already has DynaPS parent");
+    }
+    parentRedoxReg = par;
+}
 
 void RACondition::_fromArray(const arr &vec, const std::size_t offset) {
     if (EPS_con == nullptr)

@@ -31,28 +31,6 @@ using namespace ePhotosynthesis::conditions;
 
 DEFINE_CONDITION(PS);
 
-PSCondition::PSCondition(const PSCondition* const other) :
-  ConditionBase<PSCondition, PS_PRCondition, MODULE_PS>(other) {
-    initMembers();
-    RuBP = other->RuBP;
-    PGA = other->PGA;
-    DPGA = other->DPGA;
-    T3P = other->T3P;
-    if (!C3)
-        ADPG = other->ADPG;
-    FBP = other->FBP;
-    E4P = other->E4P;
-    S7P = other->S7P;
-    SBP = other->SBP;
-    ATP = other->ATP;
-    HexP = other->HexP;
-    PenP = other->PenP;
-    _Pi = other->_Pi;
-    _ADP = other->_ADP;
-    _v1 = other->_v1;
-    copyMembers(*other);
-}
-
 PSCondition::PSCondition(const arr &vec, const std::size_t offset) {
     initMembers();
     fromArray(vec, offset);

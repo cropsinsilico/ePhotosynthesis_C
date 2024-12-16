@@ -31,15 +31,6 @@ using namespace ePhotosynthesis::conditions;
 
 DEFINE_CONDITION_COMPOSITE(DynaPS);
 
-DynaPSCondition::DynaPSCondition(const DynaPSCondition* const other) {
-    initMembers();
-    RA_con = new RACondition(other->RA_con);
-    XanCycle_con = new XanCycleCondition(other->XanCycle_con);
-    RA_con->setParent(this);
-    XanCycle_con->setParent(this);
-    copyMembers(*other);
-}
-
 DynaPSCondition::DynaPSCondition(realtype *x) {
     initMembers();
     fromArray(x);
@@ -47,7 +38,7 @@ DynaPSCondition::DynaPSCondition(realtype *x) {
 
 DynaPSCondition::DynaPSCondition(RACondition* rother, XanCycleCondition* xother) {
     initMembers();
-    if (rother->parent == nullptr) {
+    if (rother->parent == nullptr && rother->parentRedoxReg == nullptr) {
         RA_con = rother;
     } else {
         RA_con = new RACondition(rother);

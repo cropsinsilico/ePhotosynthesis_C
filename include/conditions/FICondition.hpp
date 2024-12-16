@@ -48,12 +48,6 @@ namespace conditions {
 class FICondition : public ConditionBase<FICondition, FIBFCondition, MODULE_FI> {
 public:
     DECLARE_CONDITION(FI)
-    /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The FICondition object to copy
-      */
-    FICondition(const FICondition* const other);
 
     /**
       Constructor to create an object from the input vector, starting at the given index

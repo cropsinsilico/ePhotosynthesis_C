@@ -192,6 +192,23 @@ namespace ePhotosynthesis {
   using __VA_ARGS__::_initChildClasses;		\
   using __VA_ARGS__::_initChildren;		\
   DECLARE_VALUE_SET_MEMBERS(name)
+#define FORWARD_DECLARE_VALUE_SET_CLASS_BASE(m, pt)
+#define FORWARD_DECLARE_VALUE_SET_CLASS(m, pt)                          \
+  FORWARD_DECLARE_VALUE_SET_CLASS_BASE(m, pt)                           \
+  namespace VARS_NAMESPACE_PT(pt) {                                     \
+    class VARS_CLASS_VAR_LOCAL(PARENT_ ## m, pt);                       \
+  }
+#define DECLARE_VALUE_SET_CLASS_BASE(m, pt)                             \
+  DECLARE_VALUE_SET(VARS_CLASS_VAR_LOCAL(m, pt),                        \
+                    ValueSet<VARS_CLASS_VAR_LOCAL(m, pt),               \
+                    VARS_CLASS_VAR_LOCAL(PARENT_ ## m, pt),             \
+                    MODULE_ ## m,                                       \
+                    PARAM_TYPE_ ## pt>)
+#define DECLARE_VALUE_SET_CLASS(m, pt)                                  \
+  DECLARE_VALUE_SET_CLASS_BASE(m, pt)                                   \
+  private:                                                              \
+  friend class VARS_CLASS_VAR_LOCAL(PARENT_ ## m, pt);                  \
+  public:
 #define DECLARE_VALUE_SET_COMPOSITE_CLASS_CHILD(child)			\
   addChildClass<child>()
 #define DECLARE_VALUE_SET_COMPOSITE_CLASS_CHILDREN(...)			\
@@ -2610,9 +2627,9 @@ namespace ePhotosynthesis {
        \param other Value set to copy values from.
        \returns Updated value set.
      */
-    ValueSet& operator=(const T& other) {
+    T& operator=(const T& other) {
       copyMembers(other);
-      return *this;
+      return *static_cast<T>(this);
     }
     /**
        Copy values from an array.
@@ -2942,6 +2959,10 @@ namespace ePhotosynthesis {
       return x.print(out);
     }
     friend std::ostream& operator<<(std::ostream& out, const ValueSetClass* x) {
+      if (!x) {
+        out << "0x0" << std::endl;
+        return out;
+      }
       return x->print(out);
     }
     /**

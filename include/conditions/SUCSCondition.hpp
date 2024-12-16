@@ -48,12 +48,6 @@ namespace conditions {
 class SUCSCondition : public ConditionBase<SUCSCondition, CMCondition, MODULE_SUCS> {
 public:
     DECLARE_CONDITION(SUCS)
-    /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The SUCSCon object to copy
-      */
-    SUCSCondition(const SUCSCondition* const other);
 
     /**
       Constructor to create an object from the input vector, starting at the given index

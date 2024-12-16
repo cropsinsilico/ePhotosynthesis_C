@@ -50,12 +50,6 @@ class BFCondition : public ConditionBase<BFCondition, FIBFCondition, MODULE_BF> 
 public:
     DECLARE_CONDITION(BF)
     /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The BFCondition object to copy
-      */
-    BFCondition(const BFCondition* const other);
-    /**
       Constructor to create an object from the input vector, starting at the given index
 
       @param vec Vector to create the object from

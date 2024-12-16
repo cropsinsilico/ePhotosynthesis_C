@@ -15,6 +15,15 @@ TEST_F(RedoxRegConditionTest, InitializerTest) {
     RedoxRegCondition RedoxReg1(&RedoxReg);
     EXPECT_DOUBLE_EQ(RedoxReg.Thion, RedoxReg1.Thion);
     EXPECT_DOUBLE_EQ(RedoxReg.RA_con->RuACT_con->ER, RedoxReg1.RA_con->RuACT_con->ER);
+    EXPECT_NE(RedoxReg.RA_con, RedoxReg1.RA_con);
+
+    RedoxRegCondition RedoxReg2;
+    RedoxReg2 = RedoxReg;
+    EXPECT_DOUBLE_EQ(RedoxReg.Thion, RedoxReg2.Thion);
+    EXPECT_DOUBLE_EQ(RedoxReg.RA_con->RuACT_con->ER, RedoxReg2.RA_con->RuACT_con->ER);
+    EXPECT_NE((void*)(RedoxReg.RA_con), (void*)(RedoxReg2.RA_con));
+    EXPECT_NE(RedoxReg.RA_con, RedoxReg2.RA_con);
+    
 
     RACondition* rc = new RACondition();
     rc->RuACT_con->ER = 0.0054;
@@ -26,7 +35,7 @@ TEST_F(RedoxRegConditionTest, InitializerTest) {
     RedoxRegCondition* rr2 = new RedoxRegCondition(rr->RA_con, thio);
     EXPECT_DOUBLE_EQ(rc->RuACT_con->ER, rr2->RA_con->RuACT_con->ER);
     EXPECT_DOUBLE_EQ(thio, rr2->Thion);
-    //EXPECT_NE(rr2->RA_con, rr->RA_con);
+    EXPECT_NE(rr2->RA_con, rr->RA_con);
 
     delete rr;
     delete rr2;

@@ -52,12 +52,6 @@ public:
     ~EPSCondition() override {
         _clear();
     }
-    /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The EPSCondition object to copy
-      */
-    EPSCondition(const EPSCondition* const other);
 
     /**
       Constructor to create an object from the input pointer

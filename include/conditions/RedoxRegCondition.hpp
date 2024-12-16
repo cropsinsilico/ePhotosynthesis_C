@@ -50,15 +50,12 @@ class RedoxRegCondition : public ConditionBase<RedoxRegCondition, RedoxRegCondit
 public:
     DECLARE_CONDITION_TOP(RedoxReg)
     RedoxRegCondition() : RA_con(new RACondition()) {
-      initMembers();
+        RA_con->setParentRedoxReg(this);
+        initMembers();
     }
-
-    /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The RedoxRegCon object to copy
-      */
-    RedoxRegCondition(const RedoxRegCondition* const other);
+    ~RedoxRegCondition() override {
+        _clear();
+    }
 
     /**
       Constructor to create an object from the contained classes

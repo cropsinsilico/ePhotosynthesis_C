@@ -48,12 +48,6 @@ namespace conditions {
 class XanCycleCondition : public ConditionBase<XanCycleCondition, DynaPSCondition, MODULE_XanCycle> {
 public:
     DECLARE_CONDITION(XanCycle)
-    /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The XanCycleCon object to copy
-      */
-    XanCycleCondition(const XanCycleCondition* const other);
 
     /**
       Constructor to create an object from the input vector, starting at the given index

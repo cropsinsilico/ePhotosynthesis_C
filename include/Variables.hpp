@@ -531,6 +531,7 @@ public:
     int GP = 0;
     int GRNC = 0; /**< Control parameter; if 1, VfactorCp values will be used to scale enzyme activities in the PS, PR, & SUCS modules when CO2 > 0 */
     int GRNT = 0; /**< Control parameter; if 1, VfactorT values will be used to scale enzyme activities in the PS, PR, & SUCS modules when T > 25 */
+    int PAR_in_Wpm2 = 0; /**< Control parameter; if 1, the input TestLi will be taken to be in units of W/m**2 */
 
 #ifdef MAKE_EQUIVALENT_TO_MATLAB
     int RUBISCOMETHOD = 2;
