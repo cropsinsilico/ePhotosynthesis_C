@@ -63,7 +63,13 @@ extern std::shared_ptr<SUNContext> global_context; //!< Global context
 /**
    Initialize the global SUNContext.
 */
-static void init_global_sundials_context();
+void init_global_sundials_context();
+
+/**
+   Destroy the global SUNContext.
+ */
+void cleanup_global_sundials_context();
+  
 #endif // SUNDIALS_CONTEXT_REQUIRED
     
 /**

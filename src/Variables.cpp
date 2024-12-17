@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include "Variables.hpp"
 
 #ifdef SUNDIALS_CONTEXT_REQUIRED
@@ -12,8 +13,16 @@ void ePhotosynthesis::init_global_sundials_context() {
                                      std::string(SUNGetErrMsg(error_code)));
         }
         global_context.reset(context);
+        std::atexit(cleanup_global_sundials_context);
     }
 }
+
+void ePhotosynthesis::cleanup_global_sundials_context() {
+    if (global_context) {
+        global_context.reset();
+    }
+}
+
 #endif // SUNDIALS_CONTEXT_REQUIRED
 
 using namespace ePhotosynthesis;
