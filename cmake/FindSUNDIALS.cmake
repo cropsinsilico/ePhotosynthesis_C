@@ -98,8 +98,9 @@ find_path(SUNDIALS_INCLUDE_DIR sundials_types.h
         include
         include/sundials
 )
+cmake_path(GET SUNDIALS_INCLUDE_DIR PARENT_PATH SUNDIALS_INCLUDE_DIR_PARENT)
 set(SUNDIALS_INCLUDE_DIRS
-    "${SUNDIALS_INCLUDE_DIR}/.."
+    "${SUNDIALS_INCLUDE_DIR_PARENT}"
     "${SUNDIALS_INCLUDE_DIR}"
 )
 

@@ -43,7 +43,7 @@ Driver::Driver(Variables *theVars, const double startTime, const double stepSize
 	       const int maxSubsteps, const double atol, const double rtol,
 	       const bool showWarn) {
 #ifdef SUNDIALS_CONTEXT_REQUIRED
-  context = theVars->context;
+  _context = theVars->context_ptr();
 #endif // SUNDIALS_CONTEXT_REQUIRED
   inputVars = theVars;
   start = startTime;
@@ -72,7 +72,7 @@ arr Driver::run() {
         sunindextype N =  static_cast<long>(constraints.size());
         N_Vector y;
 #ifdef SUNDIALS_CONTEXT_REQUIRED
-        y = N_VNew_Serial(N, *context);
+        y = N_VNew_Serial(N, context());
 #else // SUNDIALS_CONTEXT_REQUIRED
         y = N_VNew_Serial(N);
 #endif // SUNDIALS_CONTEXT_REQUIRED
@@ -95,9 +95,9 @@ arr Driver::run() {
         data->drv = this;
 
 #ifdef SUNDIALS_CONTEXT_REQUIRED
-        SUNMatrix A = SUNDenseMatrix(N, N, *context);
-        SUNNonlinearSolver NLS = SUNNonlinSol_Newton(y, *context);
-        SUNLinearSolver LS = SUNLinSol_Dense(y, A, *context);
+        SUNMatrix A = SUNDenseMatrix(N, N, context());
+        SUNNonlinearSolver NLS = SUNNonlinSol_Newton(y, context());
+        SUNLinearSolver LS = SUNLinSol_Dense(y, A, context());
 #else // SUNDIALS_CONTEXT_REQUIRED
         SUNMatrix A = SUNDenseMatrix(N, N);
         SUNNonlinearSolver NLS = SUNNonlinSol_Newton(y);

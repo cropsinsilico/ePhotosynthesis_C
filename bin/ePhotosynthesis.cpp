@@ -175,16 +175,7 @@ int main(int argc, const char* argv[]) {
           readFile(evn, inputs);
         if (fileProvided(atpcost, atpcost))
           readFile(atpcost, inputs);
-#ifdef SUNDIALS_CONTEXT_REQUIRED
-        SUNContext context;
-        if (SUNContext_Create(0, &context) < 0) {
-          std::cout << "SUNContext_Create failed" << std::endl;
-          throw std::runtime_error("SUNContext_Create");
-        }
-        Variables *theVars = new Variables(&context);
-#else // SUNDIALS_CONTEXT_REQUIRED
-	Variables *theVars = new Variables();
-#endif // SUNDIALS_CONTEXT_REQUIRED
+        Variables *theVars = new Variables();
         if (fileProvided(enzyme, enzymeFile)) {
             std::cerr << "ENZYME DATA PROVIDED" << std::endl;
             readFile(enzymeFile, theVars->EnzymeAct, true);
@@ -316,9 +307,6 @@ int main(int argc, const char* argv[]) {
             delete theVars;
         }
         delete maindriver;
-#ifdef SUNDIALS_CONTEXT_REQUIRED
-        SUNContext_Free(&context);
-#endif // SUNDIALS_CONTEXT_REQUIRED
         return (EXIT_SUCCESS);
     } catch (std::exception& e) {
         std::cout << "An error occurred: " << e.what() << std:: endl;

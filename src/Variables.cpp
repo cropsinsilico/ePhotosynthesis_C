@@ -1,12 +1,40 @@
 #include "Variables.hpp"
 
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+std::shared_ptr<SUNContext> ePhotosynthesis::global_context(NULL);
+
+void ePhotosynthesis::init_global_sundials_context() {
+    if (!global_context) {
+        SUNContext* context = new SUNContext();
+        SUNErrCode error_code = SUNContext_Create(SUN_COMM_NULL, context);
+        if (error_code) {
+            throw std::runtime_error("SUNContext_Create failed: " +
+                                     std::string(SUNGetErrMsg(error_code)));
+        }
+        global_context.reset(context);
+    }
+}
+#endif // SUNDIALS_CONTEXT_REQUIRED
+
 using namespace ePhotosynthesis;
 
 #ifdef SUNDIALS_CONTEXT_REQUIRED
-Variables::Variables(const Variables& other) : Variables(other.context) {
+
+Variables::Variables(SUNContext* ctx) : _context(), _context_flags(0) {
+    if (_context == nullptr) {
+        init_global_sundials_context();
+        _context = global_context;
+        _context_flags |= CONTEXT_FLAG_GLOBAL;
+    } else {
+        _context.reset(ctx);
+    }
+}
+Variables::Variables(const Variables& other) :
+  _context(other._context), _context_flags(other._context_flags) {
     *this = other;
 }
-Variables::Variables(const Variables* other) : Variables(other->context) {
+Variables::Variables(const Variables* other) :
+  _context(other->_context), _context_flags(other->_context_flags) {
     *this = *other;
 }
 #else // SUNDIALS_CONTEXT_REQUIRED
@@ -58,7 +86,8 @@ Variables* Variables::deepcopy() const {
 
 Variables& Variables::operator=(const Variables &other) {
 #ifdef SUNDIALS_CONTEXT_REQUIRED
-    context = other.context;
+    _context = other._context;
+    _context_flags = other._context_flags;
 #endif // SUNDIALS_CONTEXT_REQUIRED
     record = other.record;
     BF_FI_com = other.BF_FI_com;

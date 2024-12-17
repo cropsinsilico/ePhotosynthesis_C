@@ -63,9 +63,9 @@ void RedoxReg::_Rate(const double t, const RedoxRegCondition* const RedoxReg_Con
 
         N_Vector y, constraints, scaling;
 #ifdef SUNDIALS_CONTEXT_REQUIRED
-        y = N_VNew_Serial(1, theVars->context[0]);
-        constraints = N_VNew_Serial(1, theVars->context[0]);
-        scaling = N_VNew_Serial(1, theVars->context[0]);
+        y = N_VNew_Serial(1, theVars->context());
+        constraints = N_VNew_Serial(1, theVars->context());
+        scaling = N_VNew_Serial(1, theVars->context());
 #else // SUNDIALS_CONTEXT_REQUIRED
         y = N_VNew_Serial(1);
         constraints = N_VNew_Serial(1);
@@ -79,10 +79,10 @@ void RedoxReg::_Rate(const double t, const RedoxRegCondition* const RedoxReg_Con
         constraints_ptr[0] = ZERO;
         void *kmem = nullptr;
 #ifdef SUNDIALS_CONTEXT_REQUIRED
-        kmem = KINCreate(theVars->context[0]);
+        kmem = KINCreate(theVars->context());
 
-        SUNMatrix A = SUNDenseMatrix(1, 1, theVars->context[0]);
-        SUNLinearSolver LS = SUNLinSol_Dense(y, A, theVars->context[0]);
+        SUNMatrix A = SUNDenseMatrix(1, 1, theVars->context());
+        SUNLinearSolver LS = SUNLinSol_Dense(y, A, theVars->context());
 #else // SUNDIALS_CONTEXT_REQUIRED
         kmem = KINCreate();
 

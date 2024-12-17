@@ -47,7 +47,14 @@
 #ifndef sunrealtype
 #define sunrealtype double
 #endif
-#endif // 
+#endif //
+
+#if (SUNDIALS_VERSION_MAJOR >= 7)
+#include <sundials/sundials_errors.h>
+#else
+typedef int SUNErrCode;
+const char* SUNGetErrMsg(const SUNErrCode&) { return ""; }
+#endif
 
 #ifndef uint
 #define uint unsigned int
