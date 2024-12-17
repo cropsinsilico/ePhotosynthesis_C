@@ -53,7 +53,7 @@
 #include <sundials/sundials_errors.h>
 #else
 typedef int SUNErrCode;
-const char* SUNGetErrMsg(const SUNErrCode&) { return ""; }
+inline const char* SUNGetErrMsg(const SUNErrCode&) { return ""; }
 #endif
 
 #ifndef uint
@@ -64,6 +64,9 @@ const char* SUNGetErrMsg(const SUNErrCode&) { return ""; }
 #endif
 #ifndef realtype
 #define realtype sunrealtype
+#endif
+#ifndef SUN_COMM_NULL
+#define SUN_COMM_NULL 0
 #endif
 
 namespace ePhotosynthesis {
