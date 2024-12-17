@@ -27,6 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include <vector>
+#include <memory>
 
 #include "definitions.hpp"
 #include <nvector/nvector_serial.h>
@@ -146,7 +147,13 @@ protected:
     double smoothPenalty(const std::vector<double>& x, double threshold);
 
 #ifdef SUNDIALS_CONTEXT_REQUIRED
-    SUNContext* context;
+private:
+    std::shared_ptr<SUNContext> _context;
+public:
+    /** Get the context */
+    SUNContext& context() {
+        return *(_context.get());
+    }
 #endif // SUNDIALS_CONTEXT_REQUIRED
     realtype abstol;            // absolute tolerance
     realtype reltol;            // relative tolerance

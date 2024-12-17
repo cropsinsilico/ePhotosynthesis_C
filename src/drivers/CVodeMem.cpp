@@ -12,7 +12,7 @@ void CVodeMem::cvode_mem_init(Driver* driver, realtype t0, N_Vector y) {
     if (!initialized) {
         data = alloc_calc_data();
 #ifdef SUNDIALS_CONTEXT_REQUIRED
-        _cvode_mem = CVodeCreate(CV_BDF, driver->context[0]);
+        _cvode_mem = CVodeCreate(CV_BDF, driver->context());
 #else // SUNDIALS_CONTEXT_REQUIRED
 	_cvode_mem = CVodeCreate(CV_BDF);
 #endif // SUNDIALS_CONTEXT_REQUIRED

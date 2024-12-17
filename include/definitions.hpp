@@ -47,7 +47,14 @@
 #ifndef sunrealtype
 #define sunrealtype double
 #endif
-#endif // 
+#endif //
+
+#if (SUNDIALS_VERSION_MAJOR >= 7)
+#include <sundials/sundials_errors.h>
+#else
+typedef int SUNErrCode;
+inline const char* SUNGetErrMsg(const SUNErrCode&) { return ""; }
+#endif
 
 #ifndef uint
 #define uint unsigned int
@@ -57,6 +64,9 @@
 #endif
 #ifndef realtype
 #define realtype sunrealtype
+#endif
+#ifndef SUN_COMM_NULL
+#define SUN_COMM_NULL 0
 #endif
 
 namespace ePhotosynthesis {

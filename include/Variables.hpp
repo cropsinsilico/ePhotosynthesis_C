@@ -26,6 +26,7 @@
  *
  **********************************************************************************************************************************************/
 #include <map>
+#include <memory>
 #include "definitions.hpp"
 #include "vel/FIVel.hpp"
 #include "vel/BFVel.hpp"
@@ -56,17 +57,55 @@
 
 namespace ePhotosynthesis {
 
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+extern std::shared_ptr<SUNContext> global_context; //!< Global context
+
+/**
+   Initialize the global SUNContext.
+*/
+void init_global_sundials_context();
+
+/**
+   Destroy the global SUNContext.
+ */
+void cleanup_global_sundials_context();
+  
+#endif // SUNDIALS_CONTEXT_REQUIRED
+    
 /**
   Structure to hold global variables
   */
 class Variables {
 public:
 #ifdef SUNDIALS_CONTEXT_REQUIRED
+
+private:
+    std::shared_ptr<SUNContext> _context; /**< Sundials context */
+    int _context_flags = 0; /**< Flags describing the context */
+    /** Flags describing context traits */
+    enum CONTEXT_FLAGS : int {
+        CONTEXT_FLAG_GLOBAL = 0x00000001, //< The context is global
+    };
+public:
     /**
        Construct a new variables instance for a given sundials context
        \param[in, out] ctx Sundials context.
     */
-    Variables(SUNContext* ctx) : context(ctx) {}
+    Variables(SUNContext* ctx = nullptr);
+    /**
+       Get the shared pointer to the Sundials context.
+       \return Sundials context shared pointer.
+     */
+    std::shared_ptr<SUNContext> context_ptr() {
+      return _context;
+    }
+    /**
+       Get the Sundials context.
+       \return Sundials context.
+     */
+    SUNContext& context() {
+      return *(_context.get());
+    }
 #else // SUNDIALS_CONTEXT_REQUIRED
     /**
        Construct a new variables instance for a given sundials context
@@ -86,9 +125,6 @@ public:
     Variables& operator=(const Variables& other);
     friend std::ostream& operator<<(std::ostream &out, const Variables *in);
 
-#ifdef SUNDIALS_CONTEXT_REQUIRED
-    SUNContext* context = NULL; /**< Sundials context */
-#endif // SUNDIALS_CONTEXT_REQUIRED
     bool record = false;
     bool BF_FI_com = false;
     bool EPS_SUCS_com = false;
