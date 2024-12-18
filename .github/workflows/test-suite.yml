@@ -64,7 +64,7 @@ jobs:
             with-asan: false
             with-elf: false
             with-valgrind: false
-            with-mpi: tru
+            with-mpi: true
         exclude:
           - os: windows-latest
             with-asan: true
@@ -192,7 +192,7 @@ jobs:
         if: matrix.with-mpi == true
         run: |
           cd sundials/build
-          cmake --install .
+          cmake --install . --prefix /home/runner/miniconda3/envs/ephoto
 
       ###################################
       # PIP INSTALL THINGS
