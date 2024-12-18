@@ -49,47 +49,6 @@
 # This module exports the target SUNDIALS::<component> if it was found.
 
 
-# List of the valid SUNDIALS components
-set(SUNDIALS_VALID_COMPONENTS
-    core
-    cvode
-    cvodes
-    ida
-    idas
-    kinsol
-    sunlinsolklu
-    sunlinsoldense
-    sunlinsolspbcgs
-    sunlinsollapackdense
-    sunmatrixsparse
-    sunmatrixdense
-    sunmatrixband
-    nvecserial
-    nvecopenmp
-    nvecpthreads
-)
-
-if (NOT SUNDIALS_FIND_COMPONENTS)
-    set(SUNDIALS_WANT_COMPONENTS ${SUNDIALS_VALID_COMPONENTS})
-else()
-    # add the extra specified components, ensuring that they are valid.
-    foreach(_COMPONENT ${SUNDIALS_FIND_COMPONENTS})
-        string(TOLOWER ${_COMPONENT} _COMPONENT_LOWER)
-        string(FIND _COMPONENT_LOWER "sundials_" IDX_PREFIX)
-        if(IDX_PREFIX EQUAL 0)
-          string(SUBSTRING _COMPONENT_LOWER 9 -1 _COMPONENT_LOWER)
-        endif()
-        list(FIND SUNDIALS_VALID_COMPONENTS ${_COMPONENT_LOWER} COMPONENT_LOCATION)
-        if (${COMPONENT_LOCATION} EQUAL -1)
-            message(FATAL_ERROR "\"${_COMPONENT_LOWER}\" is not a valid SUNDIALS component.")
-        else()
-            list(APPEND SUNDIALS_WANT_COMPONENTS ${_COMPONENT_LOWER})
-        endif()
-    endforeach()
-endif()
-
-
-
 find_package(PkgConfig QUIET)
 if (PKG_CONFIG_FOUND)
     pkg_check_modules(PKGCONFIG_SUNDIALS QUIET sundials)
@@ -173,6 +132,52 @@ if (SUNDIALS_INCLUDE_DIR)
       endif()
     endforeach()
 endif()
+
+
+
+# List of the valid SUNDIALS components
+set(SUNDIALS_VALID_COMPONENTS
+    cvode
+    cvodes
+    ida
+    idas
+    kinsol
+    sunlinsolklu
+    sunlinsoldense
+    sunlinsolspbcgs
+    sunlinsollapackdense
+    sunmatrixsparse
+    sunmatrixdense
+    sunmatrixband
+    nvecserial
+    nvecopenmp
+    nvecpthreads
+)
+if(SUNDIALS_VERSION VERSION_GREATER_EQUAL "7.0.0")
+    list(APPEND SUNDIALS_VALID_COMPONENTS core)
+else()
+    list(APPEND SUNDIALS_VALID_COMPONENTS generic)
+endif()
+
+if (NOT SUNDIALS_FIND_COMPONENTS)
+    set(SUNDIALS_WANT_COMPONENTS ${SUNDIALS_VALID_COMPONENTS})
+else()
+    # add the extra specified components, ensuring that they are valid.
+    foreach(_COMPONENT ${SUNDIALS_FIND_COMPONENTS})
+        string(TOLOWER ${_COMPONENT} _COMPONENT_LOWER)
+        string(FIND _COMPONENT_LOWER "sundials_" IDX_PREFIX)
+        if(IDX_PREFIX EQUAL 0)
+          string(SUBSTRING _COMPONENT_LOWER 9 -1 _COMPONENT_LOWER)
+        endif()
+        list(FIND SUNDIALS_VALID_COMPONENTS ${_COMPONENT_LOWER} COMPONENT_LOCATION)
+        if (${COMPONENT_LOCATION} EQUAL -1)
+            message(FATAL_ERROR "\"${_COMPONENT_LOWER}\" is not a valid SUNDIALS component.")
+        else()
+            list(APPEND SUNDIALS_WANT_COMPONENTS ${_COMPONENT_LOWER})
+        endif()
+    endforeach()
+endif()
+
 
 
 # find the SUNDIALS libraries
