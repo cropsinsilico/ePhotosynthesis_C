@@ -36,6 +36,8 @@
 #include <sundials/sundials_types.h>
 #include <sundials/sundials_config.h>
 
+#define STRINGIZE(x) #x
+
 #if ((SUNDIALS_VERSION_MAJOR < 6) || (SUNDIALS_VERSION_MAJOR == 6 && SUNDIALS_VERSION_MINOR <= 7))
 #include <cvode/cvode_direct.h>
 #endif

@@ -91,7 +91,7 @@ public:
        Construct a new variables instance for a given sundials context
        \param[in, out] ctx Sundials context.
     */
-    Variables(SUNContext* ctx = nullptr);
+    Variables(SUNContext* ctx);
     /**
        Get the shared pointer to the Sundials context.
        \return Sundials context shared pointer.
@@ -106,12 +106,11 @@ public:
     SUNContext& context() {
       return *(_context.get());
     }
-#else // SUNDIALS_CONTEXT_REQUIRED
+#endif // SUNDIALS_CONTEXT_REQUIRED
     /**
        Construct a new variables instance for a given sundials context
     */
-    Variables() {}
-#endif // SUNDIALS_CONTEXT_REQUIRED
+    Variables();
     /**
        Copy constructor for a pointer to another variables instance.
          Some variables are not included in the default copy (e.g. alfa, 
@@ -124,6 +123,30 @@ public:
     Variables* deepcopy() const;
     Variables& operator=(const Variables& other);
     friend std::ostream& operator<<(std::ostream &out, const Variables *in);
+
+    /**
+       Read parameters from a file.
+       \param[in] File to read.
+     */
+    void readParam(const std::string& fname);
+    /**
+       Read parameters from a file, checking for duplicates
+       \param[in] File to read.
+       \param[in, out] Map that read variables should be checked
+         against for duplicates and copied into.
+     */
+    void readParam(const std::string& fname,
+                   std::map<std::string, std::string>& inputs);
+    /**
+       Read Enzyme activities from a file.
+       \param[in] File to read.
+    */
+    void readEnzymeAct(const std::string& fname);
+    /**
+       Read genetic regulatory network expression data from a file.
+       \param[in] File to read.
+    */
+    void readGRN(const std::string& fname);
 
     bool record = false;
     bool BF_FI_com = false;
@@ -168,7 +191,8 @@ public:
     double lightParam = 0.;
     const double alpha1 = 0.87;
     const double alpha2 = 1.03;
-    double sensitivity_sf = 1.0; //a scaling factor for enzymes
+    double sensitivity_sf = 1.0; //!< a scaling factor for enzymes
+    double ProteinTotalRatio = 0.973; //!< Scaling factor for CM GRN expression levels
 
     // Parameters
     arr PR_Param = zeros(2);
