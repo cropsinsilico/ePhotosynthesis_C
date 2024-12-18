@@ -177,7 +177,7 @@ jobs:
           cd sundials
           mkdir build
           cd build
-          cmake .. -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+          cmake .. ${{ env.CMAKE_ARGS }}
       - name: Build Sundials W/ MPI in parallel (CONDA, UNIX)
         if: matrix.with-mpi == true && matrix.os != 'windows-latest'
         run: |
