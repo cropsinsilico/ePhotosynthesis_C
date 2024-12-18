@@ -24,7 +24,7 @@
 
 cmake_minimum_required(VERSION 3.5)
 
-project(ePhotosynthesisProject LANGUAGES CXX)
+project(ePhotosynthesisProject LANGUAGES C CXX)
 
 set(PACKAGE_NAME "ePhotosynthesis")
 set(PACKAGE_STRING "ePhotosynthesis 1.0.0")
@@ -175,6 +175,9 @@ add_library(EPhotosynthesis SHARED ${SOURCES})
 add_executable(ePhoto bin/ePhotosynthesis.cpp)
 
 find_package(Boost 1.36.0 REQUIRED COMPONENTS regex)
+# Find MPI
+find_package(MPI REQUIRED COMPONENTS C CXX)
+
 find_package(SUNDIALS REQUIRED CONFIG COMPONENTS kinsol cvode)
 if (NOT SUNDIALS_LIBRARIES)
   set(SUNDIALS_LIBRARIES SUNDIALS::kinsol SUNDIALS::cvode)
