@@ -176,7 +176,7 @@ add_executable(ePhoto bin/ePhotosynthesis.cpp)
 
 find_package(Boost 1.36.0 REQUIRED COMPONENTS regex)
 # Find MPI
-find_package(MPI REQUIRED COMPONENTS C CXX)
+find_package(MPI COMPONENTS C CXX)
 
 find_package(SUNDIALS REQUIRED CONFIG COMPONENTS kinsol cvode)
 if (NOT SUNDIALS_LIBRARIES)
