@@ -161,7 +161,7 @@ jobs:
         run: |
           CMAKE_BUILD_TYPE_TEST="RelWithDebInfo"
           echo "CMAKE_BUILD_TYPE_TEST=RelWithDebInfo" >> "$GITHUB_ENV"
-          echo "CMAKE_ARGS=-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DENABLE_MPI:BOOL=ON" >> "$GITHUB_ENV"
+          echo "CMAKE_ARGS=-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON -DENABLE_MPI:BOOL=ON -DEXAMPLES_ENABLE_C:BOOL=OFF -DEXAMPLES_ENABLE_CXX:BOOL=OFF" >> "$GITHUB_ENV"
       - name: Clone Sundials for build W/ MPI
         if: matrix.with-mpi == true
         run: |
