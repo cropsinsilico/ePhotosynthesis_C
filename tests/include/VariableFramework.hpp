@@ -93,7 +93,7 @@ protected:
     void SetUp() override {
         if (theVars == nullptr) {
 #ifdef SUNDIALS_CONTEXT_REQUIRED
-	    if (SUNContext_Create(0, &context) < 0) {
+	    if (SUNContext_Create(SUN_COMM_NULL, &context) < 0) {
 	      throw std::runtime_error("SUNContext_Create failed");
 	    }
             theVars = new Variables(&context);

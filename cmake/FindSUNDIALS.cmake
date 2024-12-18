@@ -10,14 +10,22 @@
 # find the specified components.
 #
 # Valid components are
-#   * sundials_cvode
-#   * sundials_cvodes
-#   * sundials_ida
-#   * sundials_idas
-#   * sundials_kinsol
-#   * sundials_nvecserial
-#   * sundials_nvecopenmp
-#   * sundials_nvecpthreads
+#   * core
+#   * cvode
+#   * cvodes
+#   * ida
+#   * idas
+#   * kinsol
+#   * sunlinsolklu
+#   * sunlinsoldense
+#   * sunlinsolspbcgs
+#   * sunlinsollapackdense
+#   * sunmatrixsparse
+#   * sunmatrixdense
+#   * sunmatrixband
+#   * nvecserial
+#   * nvecopenmp
+#   * nvecpthreads
 #
 #
 # On UNIX systems, this module will read the variable SUNDIALS_PREFER_STATIC_LIBRARIES
@@ -40,41 +48,6 @@
 #
 # This module exports the target SUNDIALS::<component> if it was found.
 
-
-# List of the valid SUNDIALS components
-set(SUNDIALS_VALID_COMPONENTS
-    sundials_core
-    sundials_cvode
-    sundials_cvodes
-    sundials_ida
-    sundials_idas
-    sundials_kinsol
-    sundials_sunlinsolklu
-    sundials_sunlinsoldense
-    sundials_sunlinsolspbcgs
-    sundials_sunlinsollapackdense
-    sundials_sunmatrixsparse
-    sundials_sunmatrixdense
-    sundials_sunmatrixband
-    sundials_nvecserial
-    sundials_nvecopenmp
-    sundials_nvecpthreads
-)
-
-if (NOT SUNDIALS_FIND_COMPONENTS)
-    set(SUNDIALS_WANT_COMPONENTS ${SUNDIALS_VALID_COMPONENTS})
-else()
-    # add the extra specified components, ensuring that they are valid.
-    foreach(_COMPONENT ${SUNDIALS_FIND_COMPONENTS})
-        string(TOLOWER ${_COMPONENT} _COMPONENT_LOWER)
-        list(FIND SUNDIALS_VALID_COMPONENTS ${_COMPONENT_LOWER} COMPONENT_LOCATION)
-        if (${COMPONENT_LOCATION} EQUAL -1)
-            message(FATAL_ERROR "\"${_COMPONENT_LOWER}\" is not a valid SUNDIALS component.")
-        else()
-            list(APPEND SUNDIALS_WANT_COMPONENTS ${_COMPONENT_LOWER})
-        endif()
-    endforeach()
-endif()
 
 find_package(PkgConfig QUIET)
 if (PKG_CONFIG_FOUND)
@@ -161,17 +134,64 @@ if (SUNDIALS_INCLUDE_DIR)
 endif()
 
 
+
+# List of the valid SUNDIALS components
+set(SUNDIALS_VALID_COMPONENTS
+    cvode
+    cvodes
+    ida
+    idas
+    kinsol
+    sunlinsolklu
+    sunlinsoldense
+    sunlinsolspbcgs
+    sunlinsollapackdense
+    sunmatrixsparse
+    sunmatrixdense
+    sunmatrixband
+    nvecserial
+    nvecopenmp
+    nvecpthreads
+)
+if(SUNDIALS_VERSION VERSION_GREATER_EQUAL "7.0.0")
+    list(APPEND SUNDIALS_VALID_COMPONENTS core)
+else()
+    list(APPEND SUNDIALS_VALID_COMPONENTS generic)
+endif()
+
+if (NOT SUNDIALS_FIND_COMPONENTS)
+    set(SUNDIALS_WANT_COMPONENTS ${SUNDIALS_VALID_COMPONENTS})
+else()
+    # add the extra specified components, ensuring that they are valid.
+    foreach(_COMPONENT ${SUNDIALS_FIND_COMPONENTS})
+        string(TOLOWER ${_COMPONENT} _COMPONENT_LOWER)
+        string(FIND _COMPONENT_LOWER "sundials_" IDX_PREFIX)
+        if(IDX_PREFIX EQUAL 0)
+          string(SUBSTRING _COMPONENT_LOWER 9 -1 _COMPONENT_LOWER)
+        endif()
+        list(FIND SUNDIALS_VALID_COMPONENTS ${_COMPONENT_LOWER} COMPONENT_LOCATION)
+        if (${COMPONENT_LOCATION} EQUAL -1)
+            message(FATAL_ERROR "\"${_COMPONENT_LOWER}\" is not a valid SUNDIALS component.")
+        else()
+            list(APPEND SUNDIALS_WANT_COMPONENTS ${_COMPONENT_LOWER})
+        endif()
+    endforeach()
+endif()
+
+
+
 # find the SUNDIALS libraries
 foreach(LIB ${SUNDIALS_WANT_COMPONENTS})
+    set(PREFIXED_LIB "sundials_${LIB}")
     if (UNIX AND SUNDIALS_PREFER_STATIC_LIBRARIES)
         # According to bug 1643 on the CMake bug tracker, this is the
         # preferred method for searching for a static library.
         # See http://www.cmake.org/Bug/view.php?id=1643.  We search
         # first for the full static library name, but fall back to a
         # generic search on the name if the static search fails.
-        set(THIS_LIBRARY_SEARCH lib${LIB}.a ${LIB})
+        set(THIS_LIBRARY_SEARCH lib${PREFIXED_LIB}.a ${PREFIXED_LIB})
     else()
-        set(THIS_LIBRARY_SEARCH ${LIB})
+        set(THIS_LIBRARY_SEARCH ${PREFIXED_LIB})
     endif()
 
     find_library(SUNDIALS_${LIB}_LIBRARY
@@ -192,6 +212,7 @@ foreach(LIB ${SUNDIALS_WANT_COMPONENTS})
 
     set(SUNDIALS_${LIB}_FOUND FALSE)
     if (SUNDIALS_${LIB}_LIBRARY)
+        list(APPEND SUNDIALS_COMPONENTS SUNDIALS::${LIB})
         list(APPEND SUNDIALS_LIBRARIES ${SUNDIALS_${LIB}_LIBRARY})
         set(SUNDIALS_${LIB}_FOUND TRUE)
     endif()
@@ -214,7 +235,7 @@ set_package_properties(SUNDIALS PROPERTIES
 
 if (SUNDIALS_FOUND)
     foreach(LIB ${SUNDIALS_WANT_COMPONENTS})
-        if (SUNDIALS_${LIB}_LIBRARY)
+        if (SUNDIALS_${LIB}_LIBRARY AND NOT TARGET SUNDIALS::${LIB})
             add_library(SUNDIALS::${LIB} UNKNOWN IMPORTED)
             set_target_properties(SUNDIALS::${LIB} PROPERTIES
                 INTERFACE_INCLUDE_DIRECTORIES "${SUNDIALS_INCLUDE_DIRS}"
@@ -229,4 +250,5 @@ mark_as_advanced(
     SUNDIALS_LIBRARIES
     SUNDIALS_INCLUDE_DIR
     SUNDIALS_INCLUDE_DIRS
+    SUNDIALS_COMPONENTS
 )

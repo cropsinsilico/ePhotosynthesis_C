@@ -19,6 +19,7 @@ void ePhotosynthesis::init_global_sundials_context() {
 
 void ePhotosynthesis::cleanup_global_sundials_context() {
     if (global_context) {
+        SUNContext_Free(global_context.get());
         global_context.reset();
     }
 }
