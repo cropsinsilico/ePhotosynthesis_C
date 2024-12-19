@@ -1,4 +1,6 @@
 #include <cstdlib>
+#include <string>
+#include <stdexcept>
 #include "Variables.hpp"
 #include "modules/CM.hpp"
 #include "modules/BF.hpp"
@@ -305,9 +307,9 @@ void Variables::readParam(const std::string& fname,
     if (fname.empty())
       return;
     std::cout << "PARAMETER FILE PROVIDED: " << fname << std::endl;
-#define convD(x) static_cast<double>(stof(x, nullptr))
-#define convI(x) stoi(x, nullptr)
-#define convB(x) ((bool)(stoi(x, nullptr)))
+#define convD(x) static_cast<double>(std::stof(x, nullptr))
+#define convI(x) std::stoi(x, nullptr)
+#define convB(x) ((bool)(std::stoi(x, nullptr)))
 #define setInputVar(dst, x, dummy) this-> dst = x
 #define setModVar(dst, x, mod) modules::mod::set ## dst(x)
 #define assign(src, dst, set, conv, ...)                                \
@@ -405,8 +407,8 @@ void Variables::readGRN(const std::string& fname) {
         } else if (i == 36) {
             modules::BF::setcNADPHsyn(iVfactor);
         } else {
-            throw std::runtime_error("More GlymaIDs than expected "
-                                     " (expected <= 37, provided "
+            throw std::runtime_error(std::string("More GlymaIDs than expected "
+                                                 " (expected <= 37, provided ")
                                      + std::to_string(glymaID_order.size())
                                      + ")");
         }

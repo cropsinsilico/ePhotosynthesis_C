@@ -320,6 +320,7 @@ class docs(BuildSubTask):
         args.with_asan = False
         args.build_type = 'Debug'
         args.dont_build = False
+        args.only_python = False
         if config_args is None:
             config_args = []
         if build_args is None:
