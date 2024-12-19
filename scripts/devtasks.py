@@ -91,14 +91,15 @@ class SubTask:
 class BuildSubTask(SubTask):
 
     def __init__(self, args, config_args=None, build_args=None,
-                 build_kwargs=None, build_env=None, **kwargs):
+                 install_args=None, build_kwargs=None, build_env=None,
+                 **kwargs):
         self.adjust_args(args)
         if build_kwargs is None:
             build_kwargs = {}
         build_kwargs.setdefault('env', build_env)
         if not args.dont_build:
             build(args, config_args=config_args, build_args=build_args,
-                  **build_kwargs)
+                  install_args=install_args, **build_kwargs)
         kwargs.setdefault('cwd', args.build_dir)
         super(BuildSubTask, self).__init__(args, **kwargs)
 
@@ -316,7 +317,8 @@ class compare_matlab(BuildSubTask):
 
 class docs(BuildSubTask):
 
-    def __init__(self, args, config_args=None, build_args=None):
+    def __init__(self, args, config_args=None, build_args=None,
+                 install_args=None):
         args.with_asan = False
         args.build_type = 'Debug'
         args.dont_build = False
@@ -325,11 +327,15 @@ class docs(BuildSubTask):
             config_args = []
         if build_args is None:
             build_args = []
+        if install_args is None:
+            install_args = []
         config_args += ['-DBUILD_DOCS=ON', '-DDOXYGEN_CHECK_MISSING=ON']
         build_args += ['--target', 'docs']
+        install_args += ['--component', 'docs']
         super(docs, self).__init__(
             args, config_args=config_args,
             build_args=build_args,
+            install_args=install_args,
         )
 
 

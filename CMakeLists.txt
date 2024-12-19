@@ -328,6 +328,7 @@ if(BUILD_DOCS)
         DIRECTORY ${DOXYGEN_BUILD_DIR}/
 	DESTINATION ${CMAKE_INSTALL_PREFIX}/share/doc/ephotosynthesis
 	OPTIONAL
+        COMPONENT docs
     )
 endif()
 
@@ -553,11 +554,13 @@ if(BUILD_PYTHON)
         TARGETS ${PYTHON_LIBRARY_NAME}
         DESTINATION "${EPHOTOSYNTHESIS_INSTALL_PYTHONDIR}"
         COMPONENT Python
+        EXCLUDE_FROM_ALL
     )
     configure_file(cmake/__init__.py.in __init__.py @ONLY)
     install(
         FILES ${CMAKE_CURRENT_BINARY_DIR}/__init__.py
         DESTINATION "${EPHOTOSYNTHESIS_INSTALL_PYTHONDIR}"
         COMPONENT Python
+        EXCLUDE_FROM_ALL
     )
 endif()
