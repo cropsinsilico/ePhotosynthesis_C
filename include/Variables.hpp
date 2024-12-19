@@ -61,6 +61,12 @@ namespace ePhotosynthesis {
 extern std::shared_ptr<SUNContext> global_context; //!< Global context
 
 /**
+   Create a new SUNContext instance.
+   \returns SUNContext instance.
+*/
+SUNContext* create_sundials_context();
+
+/**
    Initialize the global SUNContext.
 */
 void init_global_sundials_context();
@@ -69,7 +75,7 @@ void init_global_sundials_context();
    Destroy the global SUNContext.
  */
 void cleanup_global_sundials_context();
-  
+
 #endif // SUNDIALS_CONTEXT_REQUIRED
     
 /**
@@ -90,8 +96,10 @@ public:
     /**
        Construct a new variables instance for a given sundials context
        \param[in, out] ctx Sundials context.
+       \param[in] flags Bitwise CONTEXT_FLAGS flags describing how the
+         context was/should be created.
     */
-    Variables(SUNContext* ctx = nullptr);
+    Variables(SUNContext* ctx, const int flags = 0);
     /**
        Get the shared pointer to the Sundials context.
        \return Sundials context shared pointer.
@@ -106,12 +114,13 @@ public:
     SUNContext& context() {
       return *(_context.get());
     }
-#else // SUNDIALS_CONTEXT_REQUIRED
+#endif // SUNDIALS_CONTEXT_REQUIRED
     /**
        Construct a new variables instance for a given sundials context
     */
-    Variables() {}
-#endif // SUNDIALS_CONTEXT_REQUIRED
+    Variables();
+    /** Destructor */
+    ~Variables();
     /**
        Copy constructor for a pointer to another variables instance.
          Some variables are not included in the default copy (e.g. alfa, 
@@ -124,6 +133,30 @@ public:
     Variables* deepcopy() const;
     Variables& operator=(const Variables& other);
     friend std::ostream& operator<<(std::ostream &out, const Variables *in);
+
+    /**
+       Read parameters from a file.
+       \param[in] File to read.
+     */
+    void readParam(const std::string& fname);
+    /**
+       Read parameters from a file, checking for duplicates
+       \param[in] File to read.
+       \param[in, out] Map that read variables should be checked
+         against for duplicates and copied into.
+     */
+    void readParam(const std::string& fname,
+                   std::map<std::string, std::string>& inputs);
+    /**
+       Read Enzyme activities from a file.
+       \param[in] File to read.
+    */
+    void readEnzymeAct(const std::string& fname);
+    /**
+       Read genetic regulatory network expression data from a file.
+       \param[in] File to read.
+    */
+    void readGRN(const std::string& fname);
 
     bool record = false;
     bool BF_FI_com = false;
@@ -172,7 +205,8 @@ public:
     //You need to update the text input file if you change Vmax
     //const double alpha1 = 0.87;
     //const double alpha2 = 1.03;
-    double sensitivity_sf = 1.0; //a scaling factor for enzymes
+    double sensitivity_sf = 1.0; //!< a scaling factor for enzymes
+    double ProteinTotalRatio = 0.973; //!< Scaling factor for CM GRN expression levels
 
     //YH:Q10 values come from my Q10 fitting for LD11
     double Q10_1  = 2.21;

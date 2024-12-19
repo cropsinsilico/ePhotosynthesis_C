@@ -110,7 +110,7 @@ private:
         FI_connect = false;
         PS_connect = false;
         RROEA_connect = false;
-        N = 0;
+        N = 1;
         TIME = 0.;
         conditions::BFCondition::reset();
     }

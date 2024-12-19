@@ -55,29 +55,6 @@ using namespace ePhotosynthesis;
     if (result.count(#x) == 0 && inputs.count(#x) > 0)  \
         x = inputs.at(#x);
 
-#define displayInputVar(fmt, src, val)				\
-    printf("Input variable \"%s\" = " #fmt "\n", #src, val)
-
-#define assignInputVarD(src, dst)                                       \
-    if (inputs.count(#src) > 0) {                                       \
-        theVars-> dst = static_cast<double>(stof(inputs.at(#src), nullptr)); \
-        displayInputVar(%lf, src, theVars-> dst);                       \
-    } else								\
-        printf("Input variable \"%s\" not set\n", #src)
-#define assignInputVarI(src, dst)                                       \
-    if (inputs.count(#src) > 0) {                                       \
-        theVars-> dst = stoi(inputs.at(#src), nullptr);			\
-        displayInputVar(%d, src, theVars-> dst);                        \
-    } else								\
-        printf("Input variable \"%s\" not set\n", #src)
-
-#define setInputVarB(src, mod, dst)                                     \
-    if (inputs.count(#src) > 0) {                                       \
-        modules::mod::set ## dst ((bool)(stoi(inputs.at(#src), nullptr))); \
-        displayInputVar(%d, src, stoi(inputs.at(#src), nullptr));       \
-    } else								\
-        printf("Input variable \"%s\" not set\n", #src)
-
 
 enum DriverType {
     None,
@@ -125,9 +102,9 @@ int main(int argc, const char* argv[]) {
                 ("c,c3", "Use the C3 model, automatically set to true for EPS driver", cxxopts::value<bool>(useC3)->default_value("false"))
 	        ("rubiscomethod",
                  "The method to use for rubisco calculations. Choices are:\n"
-                 "1 - (default) Use enzyme concentration for\n"
+                 "1 - Use enzyme concentration for\n"
                  "    calculation\n"
-                 "2 - Use the michaelis menton and enzyme\n"
+                 "2 - (default) Use the michaelis menton and enzyme\n"
                  "    concentration together for calculation",
                  cxxopts::value<int>(RUBISCOMETHOD))
                 ("t,abstol", "Absolute tolerance for calculations", cxxopts::value<double>(abstol)->default_value("1e-5"))
@@ -171,68 +148,29 @@ int main(int argc, const char* argv[]) {
         if (driverChoice == EPS)
             useC3 = true;
 
-        if (fileProvided(evn, evn))
-          readFile(evn, inputs);
-        if (fileProvided(atpcost, atpcost))
-          readFile(atpcost, inputs);
         Variables *theVars = new Variables();
+        // Ensure that command line argument takes precedence
+        if (result.count("Tp") != 0) {
+            theVars->Tp = Tp;
+            inputs["Tp_SET"] = std::to_string(Tp);
+        }
+        if (fileProvided(evn, evn))
+            theVars->readParam(evn, inputs);
+        if (fileProvided(atpcost, atpcost))
+            theVars->readParam(atpcost, inputs);
         if (fileProvided(enzyme, enzymeFile)) {
-            std::cerr << "ENZYME DATA PROVIDED" << std::endl;
-            readFile(enzymeFile, theVars->EnzymeAct, true);
+            theVars->readEnzymeAct(enzymeFile);
         } else {
             if (useC3)
                 throw std::runtime_error("Enzyme data required if --c3 set (automatically true for EPS driver)");
         }
 
-        assignInputVarD(CO2, CO2_in);
-        assignInputVarD(PAR, TestLi);
-        assignInputVarD(ATPCost, TestATPCost);
-        if (result.count("Tp") == 0) {
-            assignInputVarD(WeatherTemperature, Tp);
-            Tp = theVars->Tp;
-        }
-        assignInputVarI(GRNC, GRNC);
-        setInputVarB(SucPath, CM, TestSucPath);
-
         // Read the GRN data and assign it into the correct positions
         // based on the expected order
-        if (fileProvided(grn, grnFile)) {
-            std::cerr << "GRN DATA PROVIDED" << std::endl;
-            std::map<std::string, double> glymaID_map;
-            readFile(grnFile, glymaID_map);
-            double pcfactor = 1.0 / 0.973;
-            if (inputs.count("ProteinTotalRatio") > 0)
-                pcfactor = 1.0 / static_cast<double>(stof(inputs.at("ProteinTotalRatio"), nullptr));
-            size_t i = 0;
-            for (auto it = glymaID_order.begin(); it != glymaID_order.end(); it ++, i++) {
-                double iVfactor = pcfactor;
-                try {
-                    if ((i >= 33) && (theVars->GRNC == 0))
-                        iVfactor = 1.0;
-                    else
-                        iVfactor = pcfactor * glymaID_map.at(*it);
-                } catch (const std::out_of_range&) {
-                    // Do nothing
-                    printf("GlymaID \"%s\" not present.\n", it->c_str());
-                }
-                if (i < 33) {
-                    theVars->VfactorCp[i] = iVfactor;
-                } else if (i == 33) {
-                    modules::BF::setcATPsyn(iVfactor);
-                } else if (i == 34) {
-                    modules::BF::setCPSi(iVfactor);
-                } else if (i == 35) {
-                    modules::FI::setcpsii(iVfactor);
-                } else if (i == 36) {
-                    modules::BF::setcNADPHsyn(iVfactor);
-                } else {
-                    printf("More GlymaIDs than expected.\n");
-                    exit(EXIT_FAILURE);
-                }
-            }
-        }
+        if (fileProvided(grn, grnFile))
+            theVars->readGRN(grnFile);
 
-        theVars->Tp = Tp;
+        Tp = theVars->Tp;
         theVars->record = record;
         theVars->useC3 = useC3;
         theVars->RUBISCOMETHOD = RUBISCOMETHOD;

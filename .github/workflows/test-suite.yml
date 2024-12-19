@@ -22,6 +22,7 @@ jobs:
         with-elf: [false]
         with-valgrind: [false, true]
         with-mpi: [false]
+        with-python: [false]
         include:
           - sundials-version: "5.7.0"
             os: ubuntu-latest
@@ -30,6 +31,7 @@ jobs:
             with-elf: false
             with-valgrind: false
             with-mpi: false
+            with-python: false
           - sundials-version: "6.7.0"
             os: ubuntu-latest
             with-coverage: false
@@ -37,6 +39,7 @@ jobs:
             with-elf: false
             with-valgrind: false
             with-mpi: false
+            with-python: false
           - sundials-version: "7.1.1"
             os: ubuntu-latest
             with-coverage: false
@@ -44,6 +47,7 @@ jobs:
             with-elf: false
             with-valgrind: false
             with-mpi: false
+            with-python: false
           - sundials-version: latest
             os: ubuntu-latest
             with-coverage: false
@@ -51,6 +55,7 @@ jobs:
             with-elf: false
             with-valgrind: false
             with-mpi: true
+            with-python: false
           - sundials-version: "6.7.0"
             os: ubuntu-latest
             with-coverage: false
@@ -58,6 +63,7 @@ jobs:
             with-elf: false
             with-valgrind: false
             with-mpi: true
+            with-python: false
           - sundials-version: "7.1.1"
             os: ubuntu-latest
             with-coverage: false
@@ -65,6 +71,15 @@ jobs:
             with-elf: false
             with-valgrind: false
             with-mpi: true
+            with-python: false
+          - sundials-version: latest
+            os: ubuntu-latest
+            with-coverage: false
+            with-asan: false
+            with-elf: false
+            with-valgrind: false
+            with-mpi: false
+            with-python: true
         exclude:
           - os: windows-latest
             with-asan: true
@@ -212,6 +227,11 @@ jobs:
           echo "CMAKE_ARGS=-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON" >> "$GITHUB_ENV"
           echo "CMAKE_ARGS_TEST=-DBUILD_TESTS=ON" >> "$GITHUB_ENV"
           echo "TEST_FLAGS=-C ${CMAKE_BUILD_TYPE_TEST} --output-on-failure -VV" >> "$GITHUB_ENV"
+          echo "BUILD_ARGS=--config ${CMAKE_BUILD_TYPE_TEST}" >> "$GITHUB_ENV"
+      - name: Set flags to build in parallel (UNIX)
+        if: matrix.os != 'windows-latest'
+        run: |
+          echo "BUILD_ARGS=${{ env.BUILD_ARGS }} -- -j 4" >> "$GITHUB_ENV"
       - name: Coverage config flags
         if: matrix.with-coverage == true && matrix.os != 'windows-latest'
         run: |
@@ -257,21 +277,15 @@ jobs:
           mkdir build
           cd build
           which cmake
-          cmake .. ${{ env.CMAKE_ARGS }} ${{ env.CMAKE_ARGS_NO_PYTHON }} ${{ env.CMAKE_ARGS_TEST }}
+          cmake .. ${{ env.CMAKE_ARGS }} ${{ env.CMAKE_ARGS_TEST }}
       
       ###################################
       # Build CXX
       ###################################
-      - name: Build C++ & C in parallel (CONDA, UNIX)
-        if: matrix.os != 'windows-latest'
+      - name: Build C++ & C
         run: |
           cd build
-          cmake --build . --config ${{ env.CMAKE_BUILD_TYPE_TEST }} -- -j 4
-      - name: Build C++ & C in serial (CONDA, WINDOWS)
-        if: matrix.os == 'windows-latest'
-        run: |
-          cd build
-          cmake --build . --config ${{ env.CMAKE_BUILD_TYPE_TEST }}
+          cmake --build . ${{ env.BUILD_ARGS }}
       
       ###################################
       # Test CXX
@@ -299,26 +313,25 @@ jobs:
       ###################################
       # Build Python
       ###################################
-      # - name: Set CMAKE_ARGS for Python build
-      #   run: |
-      #     echo "OLD_CMAKE_ARGS=${{ env.CMAKE_ARGS }}" >> "$GITHUB_ENV"
-      #     echo "CMAKE_ARGS=${{ env.CMAKE_ARGS }} -DBUILD_PYTHON=ON" >> "$GITHUB_ENV"
-      # - name: Build Python (CONDA)
-      #   run: |
-      #     cd build
-      #     which cmake
-      #     cmake .. ${{ env.CMAKE_ARGS }} ${{ env.CMAKE_ARGS_TEST }}
-      # - name: Unset CMAKE_ARGS for Python build
-      #   run: |
-      #     echo "CMAKE_ARGS=${{ env.OLD_CMAKE_ARGS }}" >> "$GITHUB_ENV"
+      - name: Configure Python
+        if: matrix.with-python == true
+        run: |
+          cd build
+          cmake .. -DBUILD_PYTHON=ON ${{ env.CMAKE_ARGS }}
+      - name: Build & install Python
+        if: matrix.with-python == true
+        run: |
+          cd build
+          cmake --build . --target pyPhotosynthesis ${{ env.BUILD_ARGS }}
+          cmake --install . --prefix /home/runner/miniconda3/envs/ephoto --component Python
 
       ###################################
       # Test Python
       ###################################
-      # - name: Test Python Interfaces (CONDA)
-      #   if: matrix.with-elf == false && matrix.with-valgrind == false
-      #   run: |
-      #     pytest -sv tests/python
+      - name: Test Python Interfaces
+        if: matrix.with-python == true
+        run: |
+          pytest -sv tests/python
 
       ###################################
       # Docs tests
@@ -335,7 +348,7 @@ jobs:
         if: matrix.with-coverage == true && matrix.os != 'windows-latest'
         uses: codecov/codecov-action@v4
         with:
-          name: ${{ matrix.os }}-${{ matrix.with-coverage }}-${{ matrix.with-asan }}-${{ matrix.with-elf }}-${{ matrix.with-valgrind }}
+          name: ${{ matrix.os }}-${{ matrix.sundials-version }}-${{ matrix.with-coverage }}-${{ matrix.with-asan }}-${{ matrix.with-elf }}-${{ matrix.with-valgrind }}-${{ matrix.with-mpi }}-${{ matrix.with-python }}
           token: ${{ secrets.CODECOV_TOKEN }}
           file: coverage/coverage.info
           functionalities: gcov

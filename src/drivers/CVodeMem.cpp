@@ -59,6 +59,14 @@ void CVodeMem::cvode_mem_init(Driver* driver, realtype t0, N_Vector y) {
     driver->cvode_mem = _cvode_mem;
 
 }
+void CVodeMem::cvode_mem_free() {
+    if (initialized) {
+        CVodeFree(&_cvode_mem);
+        delete data;
+        data = nullptr;
+        initialized = false;
+    }
+}
 
 CVodeMem::~CVodeMem() {
     if (initialized) {

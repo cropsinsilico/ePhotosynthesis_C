@@ -36,6 +36,8 @@
 #include <sundials/sundials_types.h>
 #include <sundials/sundials_config.h>
 
+#define STRINGIZE(x) #x
+
 #if ((SUNDIALS_VERSION_MAJOR < 6) || (SUNDIALS_VERSION_MAJOR == 6 && SUNDIALS_VERSION_MINOR <= 7))
 #include <cvode/cvode_direct.h>
 #endif
@@ -336,7 +338,7 @@ void TimeSeries<T>::insert(std::size_t step, double time, T &input) {
         _timestamp.push_back(time);
         _data.push_back(vec);
     } else {
-        int index = std::distance(_step.begin(), it);
+        std::size_t index = std::distance(_step.begin(), it);
         _timestamp[index] = time;
         _data[index] = vec;
     }

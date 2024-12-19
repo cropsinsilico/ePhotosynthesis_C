@@ -58,6 +58,8 @@ Driver::Driver(Variables *theVars, const double startTime, const double stepSize
   data = nullptr;
   origVars = nullptr;
   intermediateRes = nullptr;
+  if (inputVars->useC3 && inputVars->EnzymeAct.empty())
+      throw std::runtime_error("EnzymeAct must be set if useC3 is True (automatically set for EPS driver)");
 }
 
 arr Driver::run() {
@@ -82,7 +84,7 @@ arr Driver::run() {
             y_ptr[i] = constraints[i];
         realtype t0 = start;
 
-        CVodeMem *cmem;
+        CVodeMem *cmem = nullptr;
         try {
             cmem = &CVodeMem::create();
             cmem->cvode_mem_init(this, t0, y);
@@ -266,6 +268,15 @@ arr Driver::run() {
 Driver::~Driver() {
     if (origVars != nullptr)
         delete origVars;
+    CVodeMem *cmem = nullptr;
+    cmem = &CVodeMem::create();
+    cmem->cvode_mem_free();
+    cvode_mem = nullptr;
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+    if (_context.use_count() == 1)
+        SUNContext_Free(_context.get());
+    _context.reset();
+#endif // SUNDIALS_CONTEXT_REQUIRED
 }
 
 int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {

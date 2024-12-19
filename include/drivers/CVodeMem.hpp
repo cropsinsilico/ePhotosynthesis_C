@@ -32,6 +32,10 @@ public:
       \param y Specialized data vector containing the inputs for the solver.
       */
     void cvode_mem_init(Driver* driver, realtype t0, N_Vector y);
+    /**
+       Destroy the ODE solver.
+     */
+    void cvode_mem_free();
 private:
     CVodeMem() {
         initialized = false;

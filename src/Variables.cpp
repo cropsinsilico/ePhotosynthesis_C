@@ -1,17 +1,29 @@
 #include <cstdlib>
+#include <string>
+#include <stdexcept>
 #include "Variables.hpp"
+#include "modules/CM.hpp"
+#include "modules/BF.hpp"
+#include "modules/FI.hpp"
+#include "globals.hpp"
+
 
 #ifdef SUNDIALS_CONTEXT_REQUIRED
 std::shared_ptr<SUNContext> ePhotosynthesis::global_context(NULL);
 
+SUNContext* ePhotosynthesis::create_sundials_context() {
+    SUNContext* context = new SUNContext();
+    SUNErrCode error_code = SUNContext_Create(SUN_COMM_NULL, context);
+    if (error_code) {
+        throw std::runtime_error("SUNContext_Create failed: " +
+                                 std::string(SUNGetErrMsg(error_code)));
+    }
+    return context;
+}
+
 void ePhotosynthesis::init_global_sundials_context() {
     if (!global_context) {
-        SUNContext* context = new SUNContext();
-        SUNErrCode error_code = SUNContext_Create(SUN_COMM_NULL, context);
-        if (error_code) {
-            throw std::runtime_error("SUNContext_Create failed: " +
-                                     std::string(SUNGetErrMsg(error_code)));
-        }
+        SUNContext* context = create_sundials_context();
         global_context.reset(context);
         std::atexit(cleanup_global_sundials_context);
     }
@@ -30,15 +42,21 @@ using namespace ePhotosynthesis;
 
 #ifdef SUNDIALS_CONTEXT_REQUIRED
 
-Variables::Variables(SUNContext* ctx) : _context(), _context_flags(0) {
+Variables::Variables(SUNContext* ctx, const int flags) :
+  _context(), _context_flags(flags) {
     if (_context == nullptr) {
-        init_global_sundials_context();
-        _context = global_context;
-        _context_flags |= CONTEXT_FLAG_GLOBAL;
+        if (flags & CONTEXT_FLAG_GLOBAL) {
+            init_global_sundials_context();
+            _context = global_context;
+            _context_flags |= CONTEXT_FLAG_GLOBAL;
+        } else {
+            _context.reset(create_sundials_context());
+        }
     } else {
         _context.reset(ctx);
     }
 }
+Variables::Variables() : Variables((SUNContext*)nullptr) {}
 Variables::Variables(const Variables& other) :
   _context(other._context), _context_flags(other._context_flags) {
     *this = other;
@@ -47,13 +65,22 @@ Variables::Variables(const Variables* other) :
   _context(other->_context), _context_flags(other->_context_flags) {
     *this = *other;
 }
+Variables::~Variables() {
+    if (!(_context_flags & CONTEXT_FLAG_GLOBAL)) {
+        if (_context.use_count() == 1)
+          SUNContext_Free(_context.get());
+        _context.reset();
+    }
+}
 #else // SUNDIALS_CONTEXT_REQUIRED
+Variables::Variables() {}
 Variables::Variables(const Variables& other) : Variables() {
     *this = other;
 }
 Variables::Variables(const Variables* other) : Variables() {
     *this = *other;
 }
+Variables::~Variables() {}
 #endif // SUNDIALS_CONTEXT_REQUIRED
 
 Variables* Variables::deepcopy() const {
@@ -153,6 +180,7 @@ Variables& Variables::operator=(const Variables &other) {
     FluxTR = other.FluxTR;
     RROEA_KE = other.RROEA_KE;
     useC3 = other.useC3;
+    ProteinTotalRatio = other.ProteinTotalRatio;
     return *this;
 }
 
@@ -286,4 +314,121 @@ out << std::endl;
 
     out << "useC3 = " << in->useC3 << std::endl;
     return out;
+}
+
+void Variables::readParam(const std::string& fname) {
+    std::map<std::string, std::string> inputs;
+    readParam(fname, inputs);
+}
+void Variables::readParam(const std::string& fname,
+                          std::map<std::string, std::string>& inputs) {
+    if (fname.empty())
+      return;
+    std::cout << "PARAMETER FILE PROVIDED: " << fname << std::endl;
+#define convD(x) static_cast<double>(std::stof(x, nullptr))
+#define convI(x) std::stoi(x, nullptr)
+#define convB(x) ((bool)(std::stoi(x, nullptr)))
+#define setInputVar(dst, x, dummy) this-> dst = x
+#define setModVar(dst, x, mod) modules::mod::set ## dst(x)
+#define assign(src, dst, set, conv, ...)                                \
+    {                                                                   \
+      std::string ikey, ival;                                           \
+      if (inputs.count(#src) > 0) {                                     \
+          ikey = #src;                                                  \
+      } else if (inputs.count(#dst) > 0) {                              \
+          ikey = #dst;                                                  \
+      }                                                                 \
+      if (!ikey.empty()) {                                              \
+          ival = inputs.at(ikey);                                       \
+          if (inputs.count(#dst "_SET") > 0) {                          \
+              if (ival != inputs.at(#dst "_SET")) {                     \
+                  std::cout << "readParam: " <<                         \
+                    "Parameter \"" << #dst << "\" already set." <<      \
+                    " Using previous value." << std::endl <<            \
+                    "    Previous value :    " <<                       \
+                    inputs.at(#dst "_SET") << std::endl <<              \
+                    "    Discarded value:    " << ival << std::endl;    \
+              }                                                         \
+              inputs.erase(ikey);                                       \
+          } else {                                                      \
+              set(dst, conv(inputs.at(#src)), __VA_ARGS__);             \
+              std::cout << "readParam: " <<                             \
+                "Parameter \"" << #dst << "\" (" <<                     \
+                ival << ") read from \"" << ikey <<                     \
+                "\"" << std::endl;                                      \
+              inputs[#dst "_SET"] = ival;                               \
+          }                                                             \
+      }                                                                 \
+}
+#define assignInputVar(src, dst, conv)                                  \
+    assign(src, dst, setInputVar, conv, )
+#define assignModVar(src, mod, dst, conv)                               \
+    assign(src, dst, setModVar, conv, mod)
+#define assignInputVarD(src, dst) assignInputVar(src, dst, convD)
+#define assignInputVarI(src, dst) assignInputVar(src, dst, convI)
+#define setInputVarB(src, mod, dst) assignModVar(src, mod, dst, convB)
+    readFile(fname, inputs);
+    assignInputVarD(CO2, CO2_in);
+    assignInputVarD(PAR, TestLi);
+    assignInputVarD(ATPCost, TestATPCost);
+    assignInputVarD(WeatherTemperature, Tp);
+    assignInputVarD(ProteinTotalRatio, ProteinTotalRatio);
+    assignInputVarI(GRNC, GRNC);
+    setInputVarB(SucPath, CM, TestSucPath);
+#undef setInputVarB
+#undef assignInputVarD
+#undef assignInputVarI
+#undef assignModVar
+#undef assignInputVar
+#undef assign
+#undef setInputVar
+#undef setModVar
+#undef convD
+#undef convI
+#undef convB
+}
+void Variables::readEnzymeAct(const std::string& fname) {
+    if (fname.empty())
+      return;
+    std::cout << "ENZYME DATA PROVIDED: " << fname << std::endl;
+    readFile(fname, EnzymeAct, true);
+}
+void Variables::readGRN(const std::string& fname) {
+    if (fname.empty())
+      return;
+    // Read the GRN data and assign it into the correct positions
+    // based on the expected order
+    std::cout << "GRN DATA PROVIDED: " << fname << std::endl;
+    std::map<std::string, double> glymaID_map;
+    readFile(fname, glymaID_map);
+    double pcfactor = 1.0 / this->ProteinTotalRatio;
+    size_t i = 0;
+    for (auto it = glymaID_order.begin(); it != glymaID_order.end(); it ++, i++) {
+        double iVfactor = pcfactor;
+        try {
+            if ((i >= 33) && (this->GRNC == 0))
+              iVfactor = 1.0;
+            else
+              iVfactor = pcfactor * glymaID_map.at(*it);
+        } catch (const std::out_of_range&) {
+            // Do nothing
+            std::cerr << "GlymaID \"" << *it << "\" not present." << std::endl;
+        }
+        if (i < 33) {
+            this->VfactorCp[i] = iVfactor;
+        } else if (i == 33) {
+            modules::BF::setcATPsyn(iVfactor);
+        } else if (i == 34) {
+            modules::BF::setCPSi(iVfactor);
+        } else if (i == 35) {
+            modules::FI::setcpsii(iVfactor);
+        } else if (i == 36) {
+            modules::BF::setcNADPHsyn(iVfactor);
+        } else {
+            throw std::runtime_error(std::string("More GlymaIDs than expected "
+                                                 " (expected <= 37, provided ")
+                                     + std::to_string(glymaID_order.size())
+                                     + ")");
+        }
+    }
 }
