@@ -49,7 +49,7 @@ Driver::Driver(Variables *theVars, const double startTime,
   DriverParam(startTime, stepSize, endTime, maxSubsteps,
 	      atol, rtol, para, ratio, showWarn, outVars) {
 #ifdef SUNDIALS_CONTEXT_REQUIRED
-  this->context = theVars->context;
+  this->_context = theVars->context_ptr();
 #endif // SUNDIALS_CONTEXT_REQUIRED
   this->inputVars = theVars;
   initialStep = stepSize;
@@ -59,6 +59,8 @@ Driver::Driver(Variables *theVars, const double startTime,
   intermediateRes = nullptr;
   _lastStep = false;
   _dumpStep = true; // Output the first step
+  if (inputVars->useC3 && inputVars->EnzymeAct.empty())
+      throw std::runtime_error("EnzymeAct must be set if useC3 is True (automatically set for EPS driver)");
 }
 
 arr Driver::run() {
@@ -73,17 +75,17 @@ arr Driver::run() {
         sunindextype N =  static_cast<long>(constraints.size());
         N_Vector y;
 #ifdef SUNDIALS_CONTEXT_REQUIRED
-        y = N_VNew_Serial(N, *context);
+        y = N_VNew_Serial(N, context());
 #else // SUNDIALS_CONTEXT_REQUIRED
-	y = N_VNew_Serial(N);
+        y = N_VNew_Serial(N);
 #endif // SUNDIALS_CONTEXT_REQUIRED
 	sunrealtype* y_ptr = N_VGetArrayPointer(y);
 
         for (std::size_t i = 0; i < constraints.size(); i++)
-	  y_ptr[i] = constraints[i];
+            y_ptr[i] = constraints[i];
         realtype t0 = start;
 
-        CVodeMem *cmem;
+        CVodeMem *cmem = nullptr;
         try {
             cmem = &CVodeMem::create();
             cmem->cvode_mem_init(this, t0, y);
@@ -96,9 +98,9 @@ arr Driver::run() {
         data->drv = this;
 
 #ifdef SUNDIALS_CONTEXT_REQUIRED
-        SUNMatrix A = SUNDenseMatrix(N, N, *context);
-        SUNNonlinearSolver NLS = SUNNonlinSol_Newton(y, *context);
-        SUNLinearSolver LS = SUNLinSol_Dense(y, A, *context);
+        SUNMatrix A = SUNDenseMatrix(N, N, context());
+        SUNNonlinearSolver NLS = SUNNonlinSol_Newton(y, context());
+        SUNLinearSolver LS = SUNLinSol_Dense(y, A, context());
 #else // SUNDIALS_CONTEXT_REQUIRED
         SUNMatrix A = SUNDenseMatrix(N, N);
         SUNNonlinearSolver NLS = SUNNonlinSol_Newton(y);
@@ -313,6 +315,15 @@ void Driver::dump(const std::string& filename, const Variables* theVars,
 Driver::~Driver() {
     if (origVars != nullptr)
         delete origVars;
+    CVodeMem *cmem = nullptr;
+    cmem = &CVodeMem::create();
+    cmem->cvode_mem_free();
+    cvode_mem = nullptr;
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+    if (_context.use_count() == 1)
+        SUNContext_Free(_context.get());
+    _context.reset();
+#endif // SUNDIALS_CONTEXT_REQUIRED
 }
 
 void Driver::_dump(realtype t, ValueSet_t* con) {

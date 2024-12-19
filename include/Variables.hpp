@@ -26,6 +26,7 @@
  *
  **********************************************************************************************************************************************/
 #include <map>
+#include <memory>
 #include "definitions.hpp"
 #include "enums/enums_utils.hpp"
 #include "ValueSet.hpp"
@@ -41,6 +42,27 @@ namespace ePhotosynthesis {
 #define MEMBERS_Variables MEMBERS_ALLVARS
 #define PARAM_TYPES_ALL VARS
 
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+extern std::shared_ptr<SUNContext> global_context; //!< Global context
+
+/**
+   Create a new SUNContext instance.
+   \returns SUNContext instance.
+*/
+SUNContext* create_sundials_context();
+
+/**
+   Initialize the global SUNContext.
+*/
+void init_global_sundials_context();
+
+/**
+   Destroy the global SUNContext.
+ */
+void cleanup_global_sundials_context();
+
+#endif // SUNDIALS_CONTEXT_REQUIRED
+    
 /**
   Structure to hold global variables
   */
@@ -53,17 +75,43 @@ public:
 #endif // MAKE_EQUIVALENT_TO_MATLAB
 
 #ifdef SUNDIALS_CONTEXT_REQUIRED
+
+private:
+    std::shared_ptr<SUNContext> _context; /**< Sundials context */
+    int _context_flags = 0; /**< Flags describing the context */
+    /** Flags describing context traits */
+    enum CONTEXT_FLAGS : int {
+        CONTEXT_FLAG_GLOBAL = 0x00000001, //< The context is global
+    };
+public:
     /**
        Construct a new variables instance for a given sundials context
        \param[in, out] ctx Sundials context.
+       \param[in] flags Bitwise CONTEXT_FLAGS flags describing how the
+         context was/should be created.
     */
-    Variables(SUNContext* ctx);
-#else // SUNDIALS_CONTEXT_REQUIRED
+    Variables(SUNContext* ctx, const int flags = 0);
+    /**
+       Get the shared pointer to the Sundials context.
+       \return Sundials context shared pointer.
+     */
+    std::shared_ptr<SUNContext> context_ptr() {
+      return _context;
+    }
+    /**
+       Get the Sundials context.
+       \return Sundials context.
+     */
+    SUNContext& context() {
+      return *(_context.get());
+    }
+#endif // SUNDIALS_CONTEXT_REQUIRED
     /**
        Construct a new variables instance for a given sundials context
     */
     Variables();
-#endif // SUNDIALS_CONTEXT_REQUIRED
+    /** Destructor */
+    ~Variables();
     /**
        Copy constructor for a pointer to another variables instance.
          Some variables are not included in the default copy (e.g. alfa, 
@@ -523,11 +571,31 @@ public:
     static void cleanupValueSet(const MODULE& mod, const PARAM_TYPE& pt,
                                 const bool noChildren = false);
 
-#ifdef SUNDIALS_CONTEXT_REQUIRED
-    SUNContext* context = NULL; /**< Sundials context */
-#endif // SUNDIALS_CONTEXT_REQUIRED
-    bool record = false; /**< If true, each step should be recorded */
+    /**
+       Read parameters from a file.
+       \param[in] File to read.
+     */
+    void readParam(const std::string& fname);
+    /**
+       Read parameters from a file, checking for duplicates
+       \param[in] File to read.
+       \param[in, out] Map that read variables should be checked
+         against for duplicates and copied into.
+     */
+    void readParam(const std::string& fname,
+                   std::map<std::string, std::string>& inputs);
+    /**
+       Read Enzyme activities from a file.
+       \param[in] File to read.
+    */
+    void readEnzymeAct(const std::string& fname);
+    /**
+       Read genetic regulatory network expression data from a file.
+       \param[in] File to read.
+    */
+    void readGRN(const std::string& fname);
 
+    bool record = false;
     int GP = 0;
     int GRNC = 0; /**< Control parameter; if 1, VfactorCp values will be used to scale enzyme activities in the PS, PR, & SUCS modules when CO2 > 0 */
     int GRNT = 0; /**< Control parameter; if 1, VfactorT values will be used to scale enzyme activities in the PS, PR, & SUCS modules when T > 25 */

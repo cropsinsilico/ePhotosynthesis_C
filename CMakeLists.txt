@@ -22,9 +22,13 @@
 # *
 # **********************************************************************************************************************************************
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
 
-project(ePhotosynthesisProject LANGUAGES CXX)
+if(POLICY CMP0167)
+  cmake_policy(SET CMP0167 NEW)
+endif()
+
+project(ePhotosynthesisProject LANGUAGES C CXX)
 
 set(PACKAGE_NAME "ePhotosynthesis")
 set(PACKAGE_STRING "ePhotosynthesis 1.0.0")
@@ -63,7 +67,7 @@ else()
 endif()
 # Prohibit in-source build
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
-  message(FATAL_ERROR "In-source build prohibited.")
+  message(FATAL_ERROR "In-source build prohibited.\nCMAKE_SOURCE_DIR = ${CMAKE_SOURCE_DIR}\nCMAKE_BINARY_DIR = ${CMAKE_BINARY_DIR}")
 endif("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
 
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${PROJECT_SOURCE_DIR}/cmake")
@@ -275,9 +279,12 @@ add_library(EPhotosynthesis SHARED ${SOURCES})
 add_executable(ePhoto bin/ePhotosynthesis.cpp)
 
 find_package(Boost 1.36.0 REQUIRED COMPONENTS regex)
-find_package(SUNDIALS REQUIRED)
-if(NOT SUNDIALS_LIBRARIES)
-    message(FATAL_ERROR "Failed to find sundials libraries")
+# Find MPI
+find_package(MPI COMPONENTS C CXX)
+
+find_package(SUNDIALS REQUIRED CONFIG COMPONENTS kinsol cvode)
+if (NOT SUNDIALS_LIBRARIES)
+  set(SUNDIALS_LIBRARIES SUNDIALS::kinsol SUNDIALS::cvode)
 endif()
 message(STATUS "SUNDIALS_LIBRARIES = ${SUNDIALS_LIBRARIES}")
 message(STATUS "SUNDIALS_INCLUDE_DIRS = ${SUNDIALS_INCLUDE_DIRS}")
@@ -339,17 +346,20 @@ install(
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    PUBLIC_HEADER DESTINATION ${EPHOTOSYNTHESIS_INSTALL_INCLUDEDIR}
+    PUBLIC_HEADER DESTINATION EPHOTOSYNTHESIS_INSTALL_INCLUDEDIR
+    COMPONENT CXX
 )
 install(
     EXPORT ePhotosynthesisTargets
     FILE ePhotosynthesisTargets.cmake
     NAMESPACE ePhotosynthesis::
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ePhotosynthesis
+    COMPONENT CXX
 )
 install(
     DIRECTORY include/
     DESTINATION ${EPHOTOSYNTHESIS_INSTALL_INCLUDEDIR}
+    COMPONENT CXX
 )
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
@@ -365,10 +375,12 @@ install(
     FILES "${CMAKE_CURRENT_BINARY_DIR}/ePhotosynthesisConfig.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/ePhotosynthesisConfigVersion.cmake"
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ePhotosynthesis
+    COMPONENT CXX
 )
 install(
     FILES ${CMAKE_CURRENT_BINARY_DIR}/ePhotosynthesis_export.h
     DESTINATION ${EPHOTOSYNTHESIS_INSTALL_INCLUDEDIR}
+    COMPONENT CXX
 )
 # install(
 #      DIRECTORY param
@@ -425,6 +437,7 @@ if(BUILD_DOCS)
         DIRECTORY ${DOXYGEN_BUILD_DIR}/
 	DESTINATION ${CMAKE_INSTALL_PREFIX}/share/doc/ephotosynthesis
 	OPTIONAL
+        COMPONENT docs
     )
 endif()
 
@@ -605,15 +618,73 @@ endif()
 ##########
 
 if(BUILD_PYTHON)
-    find_package(PythonInterp 3)
-    find_package(PythonLibs 3 REQUIRED)
-    add_library(pyPhotosynthesis MODULE ${SOURCES})
-    include_directories(${PYTHON_INCLUDE_DIRS})
-    find_package(Boost 1.36.0 REQUIRED COMPONENTS regex python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
-    target_link_libraries(pyPhotosynthesis boost_python${PYTHON_VERSION_MAJOR}${PYTHON_VERSION_MINOR})
-    target_link_libraries(pyPhotosynthesis boost_regex)
-    target_link_libraries(pyPhotosynthesis ${PYTHON_LIBRARIES})
-    target_link_libraries(pyPhotosynthesis ${SUNDIALS_LIBRARIES})
-    target_compile_options(pyPhotosynthesis PRIVATE -DBUILD_PYTHON)
-    set_target_properties(pyPhotosynthesis PROPERTIES PREFIX "")
+    set(PYTHON_PACKAGE_NAME ePhotosynthesis)
+    set(PYTHON_LIBRARY_NAME pyPhotosynthesis)
+    find_package(
+        Python REQUIRED COMPONENTS
+        Interpreter Development.Module
+    )
+    find_package(
+        Boost 1.36.0 REQUIRED COMPONENTS
+        regex python${Python_VERSION_MAJOR}${Python_VERSION_MINOR}
+    )
+    add_library(${PYTHON_LIBRARY_NAME} MODULE ${SOURCES})
+    target_link_libraries(
+        ${PYTHON_LIBRARY_NAME}
+        ${Boost_LIBRARIES}
+        Python::Module
+        ${SUNDIALS_LIBRARIES}
+    )
+    target_include_directories(
+        ${PYTHON_LIBRARY_NAME} PUBLIC
+        ${Boost_INCLUDE_DIRS}
+        ${Python_INCLUDE_DIRS}
+        ${SUNDIALS_INCLUDE_DIRS}
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
+        $<INSTALL_INTERFACE:include/ePhotosynthesis>
+    )
+    target_compile_options(
+        ${PYTHON_LIBRARY_NAME} PRIVATE -DBUILD_PYTHON
+        -DPYTHON_LIBRARY_NAME=${PYTHON_LIBRARY_NAME}
+    )
+    set_target_properties(${PYTHON_LIBRARY_NAME} PROPERTIES PREFIX "")
+
+    # Tests (requires the Python package actually be installed)
+    add_test(NAME python_tests
+             COMMAND pytest -svx ${PROJECT_SOURCE_DIR}/tests/python)
+
+    # Installation
+    # set(PYTHON_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR})
+    cmake_path(
+        APPEND CMAKE_CURRENT_BINARY_DIR ${PYTHON_PACKAGE_NAME}
+        OUTPUT_VARIABLE PYTHON_BUILD_DIR
+    )
+    cmake_path(
+        APPEND Python_SITEARCH ${PYTHON_PACKAGE_NAME}
+        OUTPUT_VARIABLE PYTHON_INSTALL_DIR
+    )
+    message(STATUS "Python_SITEARCH = ${Python_SITEARCH}")
+    message(STATUS "PYTHON_PACKAGE_NAME = ${PYTHON_PACKAGE_NAME}")
+    message(STATUS "PYTHON_INSTALL_DIR = ${PYTHON_INSTALL_DIR}")
+    message(STATUS "PYTHON_BUILD_DIR = ${PYTHON_BUILD_DIR}")
+    install(
+        TARGETS ${PYTHON_LIBRARY_NAME}
+        DESTINATION "${PYTHON_INSTALL_DIR}"
+        COMPONENT Python
+    )
+    set_target_properties(
+        ${PYTHON_LIBRARY_NAME} PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY ${PYTHON_BUILD_DIR}
+        RUNTIME_OUTPUT_DIRECTORY ${PYTHON_BUILD_DIR}
+    )
+    configure_file(
+        cmake/__init__.py.in
+        ${PYTHON_BUILD_DIR}/__init__.py @ONLY
+    )
+    install(
+        FILES ${PYTHON_BUILD_DIR}/__init__.py
+        DESTINATION "${PYTHON_INSTALL_DIR}"
+        COMPONENT Python
+    )
 endif()

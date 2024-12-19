@@ -144,6 +144,7 @@ void ePhotosynthesis::readFile(const std::string &filename, std::map<std::string
     std::vector<std::string> tempVec;
     std::string input;
     std::ifstream inputfile(filename);
+    typename std::map<std::string, std::string>::iterator existing;
     if(inputfile.fail()) {
         std::string errmsg = "Could not open " + filename + " for reading";
         throw std::runtime_error(errmsg);
@@ -152,6 +153,12 @@ void ePhotosynthesis::readFile(const std::string &filename, std::map<std::string
         if (input.empty())
             continue;
         boost::algorithm::split_regex(tempVec, input, token);
+        existing = mapper.find(tempVec[0]);
+        if (existing != mapper.end()) {
+          std::cerr << "readFile[" << filename << "]: " << tempVec[0] <<
+            " already set. Using previous value." << std::endl;
+          continue;
+        }
         mapper.insert(std::pair<std::string, std::string>(tempVec[0], tempVec[1]));
     }
 }
@@ -160,6 +167,7 @@ void ePhotosynthesis::readFile(const std::string &filename, std::map<std::string
     std::vector<std::string> tempVec;
     std::string input;
     std::ifstream inputfile(filename);
+    typename std::map<std::string, double>::iterator existing;
     if(inputfile.fail()) {
         std::string errmsg = "Could not open " + filename + " for reading";
         throw std::runtime_error(errmsg);
@@ -175,6 +183,12 @@ void ePhotosynthesis::readFile(const std::string &filename, std::map<std::string
         if (enzymes && (count < 27))
             d /= 30.;
         count++;
+        existing = mapper.find(tempVec[0]);
+        if (existing != mapper.end()) {
+          std::cerr << "readFile[" << filename << "]: " << tempVec[0] <<
+            " already set. Using previous value." << std::endl;
+          continue;
+        }
         mapper.insert(std::pair<std::string, double>(tempVec[0], d));
     }
 }

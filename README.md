@@ -19,7 +19,7 @@ All of the packages required to build & run the library, tests, & documentation 
 - [GoogleTest](https://google.github.io/googletest/) - (optional) needed to build the tests
 - [LCOV](https://wiki.documentfoundation.org/Development/Lcov) - (optional) needed to get test coverage
 
-### Building
+### Building the C++ library & executable
 This can be built using a conda environment. This way, the cmake should be able to find the boost and sundials dependencies automatically. When using conda to manage the dependencies:
 
 1. Be sure to activate the related env the next time after login.
@@ -37,8 +37,35 @@ cmake --build .
 cmake --install . (if desired)
 ```
 
+### Building the Python extension
+Similar to building the C++ library & executable, with the exception that the Python cmake target (pyPhotosynthesis) should be passed to the build command and the ``Python`` component should be specified in the install command if only the Python extension should be installed.
+
+```
+mkdir build
+cd build
+cmake .. -DBUILD_PYTHON:BOOL=ON
+cmake --build . --target pyPhotosynthesis
+cmake --install . --component Python (if desired)
+```
+
+The Python extension has the name ``ePhotosynthesis`` and can be used to run drivers from Python. E.g.
+
+```
+import ePhotosynthesis
+theVars = ePhotosynthesis.Variables()
+theVars.readParam("InputEvn.txt")
+theVars.readParam("InputATPCost.txt")
+theVars.readEnzymeAct("InputEnzyme.txt")
+theVars.readGRN("InputGRNC.txt")
+theVars.RUBISCOMETHOD = 2
+theVars.debuglevel = 0
+ePhotosynthesis.modules.PR.setRUBISCOTOTAL(3)
+drv = ePhotosynthesis.drivers.EPSDriver(theVars, 0, 1, 5000, 750, 1e-5, 1e-4, 1, 1 25.0)
+results = drv.run()
+```
+
 ### Documentation
-The documentation is not automatically built. To build the docs run the following from the build directory
+The documentation is not automatically built. To build the docs run the following from the build directory (requires Doxygen)
 ```
 cmake .. -DBUILD_DOCS:BOOL=ON
 cmake --build . --target docs
@@ -47,7 +74,7 @@ cmake --build . --target docs
 This will build the documentation and put the resulting files in the doc directory.
 
 ### Tests
-The tests are not automatically built. To build and run the tests, can be run the following from the build directory (requires GoogleTest)
+The tests are not automatically built. To build and run the tests, can be run the following from the build directory (requires GoogleTest). If ``-DBUILD_PYTHON:BOOL=ON`` is passed to the configuration step, the Python tests will also be run.
 ```
 cmake .. -DBUILD_TESTS:BOOL=ON
 cmake --build .
@@ -425,4 +452,59 @@ ePhoto(CO2=410, PAR=339.575, ATPCost=0, GRNC=1, SucPath=False)
 ePhoto.reload()
 ePhoto(CO2=400, PAR=339.575, ATPCost=0, GRNC=1, SucPath=False)
 ePhoto.stop()
+```
+
+### Command line interface
+
+The ePhotosynthesis executable is named `ePhoto` and takes the following arguments:
+```
+  ePhoto [OPTION...]
+
+  -v, --verbose            Record output values for all steps (this can
+                           significantly slow the program).
+  -e, --evn arg            The file (including path) containing environmental
+                           parameters (default: InputEvn.txt)
+  -a, --atpcost arg        The file (including path) containing the ATP cost
+                           (default: InputATPCost.txt)
+  -n, --enzyme arg         The file (including path) containing enzyme
+                           activities like InputEnzyme.txt (default: "")
+  -g, --grn arg            The file (including path) containing protein
+                           ratios for relevant genes like InputGRNC.txt (default:
+                           "")
+  -b, --begintime arg      The starting time for the calculations. (default:
+                           0.0)
+  -s, --stoptime arg       The time to stop calculations. (default: 5000.0)
+  -z, --stepsize arg       The step size to use in the calculations.
+                           (default: 1.0)
+  -m, --maxSubSteps arg    The maximum number of iterations at each time
+                           step. (default: 750)
+  -d, --driver arg         The driver to use. Choices are:
+                           1 - trDynaPS (default): PS, PR, FI, BF, SUCS,
+                                  RuACT, XanCycle, RROEA
+                           2 - DynaPS: PS, PR, FI, BF, SUCS, XanCycle
+                           3 - CM: PS, PR, SUCS
+                           4 - EPS: PS, PR, FI, BF, SUCS
+  -c, --c3                 Use the C3 model, automatically set to true for
+                           EPS driver
+      --rubiscomethod arg  The method to use for rubisco calculations.
+                           Choices are:
+                           1 - (default) Use enzyme concentration for
+                               calculation
+                           2 - Use the michaelis menton and enzyme
+                               concentration together for calculation
+  -t, --abstol arg         Absolute tolerance for calculations (default:
+                           1e-5)
+  -r, --reltol arg         Relative tolerance for calculations (default:
+                           1e-4)
+  -T, --Tp arg             Input Temperature (default: 0.0)
+  -o, --options arg        Name of a text file which specifies any of the
+                           above options. Command line arguments have priority.
+                           (default: "")
+  -x, --output arg         Name the the text file that outputs should be
+                           saved to. (default: output.data)
+  -h, --help               Produce help message
+      --debug arg          Debug level (default: 0)
+      --debugDelta         Debug deltas
+      --debugInternal      Debug internals
+
 ```

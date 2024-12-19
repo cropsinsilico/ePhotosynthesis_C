@@ -75,6 +75,8 @@ using namespace ePhotosynthesis;
 #define varSearchD(x) varSearch(x, convD)
 #define varSearchI(x) varSearch(x, convI)
 #define varSearchS(x) varSearch(x, convS)
+#define varSet(xcli, xfile) (result.count(#xcli) || inputs.count(#xfile))
+#define fileProvided(xcli, xfile) varSet(xcli, xfile)
 
 #define assignInputVar(src, dst, conv, fmt)		\
   if (inputs.count(#src) > 0) {				\
@@ -133,56 +135,56 @@ int main(int argc, const char* argv[]) {
         bool debugDelta, debugInternal;
 	std::map<PARAM_TYPE, std::map<MODULE, std::string> > param_files;
         options.add_options()
-          ("v,verbose", "Record output values for all steps (this can significantly slow the program).", cxxopts::value<bool>(record)->default_value("false"))
-          ("e,evn", "The file (including path) containing environmental parameters", cxxopts::value<std::string>(evn)->default_value("InputEvn.txt"))
-          ("a,atpcost", "The file (including path) containing the ATP cost", cxxopts::value<std::string>(atpcost)->default_value("InputATPCost.txt"))
-          ("n,enzyme", "The file (including path) containing enzyme activities like InputEnzyme.txt", cxxopts::value<std::string>(enzymeFile)->default_value(""))
-          ("g,grn", "The file (including path) containing protein ratios for relevant genes like InputGRNC.txt",
-           cxxopts::value<std::string>(grnFile)->default_value(""))
-          ("b,begintime", "The starting time for the calculations.", cxxopts::value<double>(begintime)->default_value("0.0"))
-          ("s,stoptime", "The time to stop calculations.", cxxopts::value<double>(stoptime)->default_value("5000.0"))
-          ("z,stepsize", "The step size to use in the calculations.", cxxopts::value<double>(stepsize)->default_value("1.0"))
-          ("m,maxSubSteps", "The maximum number of iterations at each time step.", cxxopts::value<int>(maxSubSteps)->default_value("750"))
-          ("d,driver",
-           "The driver to use. Choices are:\n"
-           "1 - trDynaPS (default): PS, PR, FI, BF, SUCS,\n"
-           "       RuACT, XanCycle, RROEA\n"
-           "2 - DynaPS: PS, PR, FI, BF, SUCS, XanCycle\n"
-           "3 - CM: PS, PR, SUCS\n"
-           "4 - EPS: PS, PR, FI, BF, SUCS",
-           cxxopts::value<int>(driver))
-	  ("c,c3", "Use the C3 model, automatically set to true for EPS driver. If false, the Farquar model is used instead",
-	   cxxopts::value<bool>(useC3)->default_value("false"))
-          ("rubiscomethod",
-           "The method to use for rubisco calculations. Choices are:\n"
-           "1 - (default) Use enzyme concentration for\n"
-           "    calculation\n"
-           "2 - Use the michaelis menton and enzyme\n"
-           "    concentration together for calculation",
-           cxxopts::value<int>(RUBISCOMETHOD))
-          ("t,abstol", "Absolute tolerance for calculations", cxxopts::value<double>(abstol)->default_value("1e-5"))
-          ("r,reltol", "Relative tolerance for calculations", cxxopts::value<double>(reltol)->default_value("1e-4"))
-          ("T,Tp", "Input Temperature", cxxopts::value<double>(Tp)->default_value("0.0"))
-          ("o,options", "Name of a text file which specifies any of the above options. Command line arguments have priority.", cxxopts::value<std::string>(optionsFile)->default_value(""))
-	  ("x,output", "Name the the text file that outputs should be saved to.", cxxopts::value<std::string>(outputFile)->default_value("output.data"))
-	  ("outputVars", "Comma separated list of names of variables that should be output to the table created at the end of a run. Variables for modules, equilibirium constants, etc. can be specified by including the C++ scope of the variable. (e.g. MOD:BF:cATPsyn would output the concentration of ATP synthase). If not provided the output variables will be determined by the driver.",
-           cxxopts::value<std::string>(outputVars)->default_value(""))
-	  ("outputParam",
-           "Output model parameters at different times throughout the run. Choices are:\n"
-           "0 - (default) Don't output parameters during the run.\n"
-           "1 - Output the initial parameter values.\n"
-           "2 - Output the initial and final parameter values.\n"
-           "3 - Output the parameter values for each step in addition to the initial and final values.",
-           cxxopts::value<int>(outputParam))
-	  ("outputParamBase", "Base name for files parameter values should be output to at times through the run as specified by outputParam",
-	   cxxopts::value<std::string>(outputParamBase)->default_value(""))
-	  ("outputParamVars", "Comma separated list of names of variables that should be output at various times during the run based on the value of outputParam. If not provided, all variables will be output.",
-           cxxopts::value<std::string>(outputParamVars)->default_value(""))
-	  ("h,help", "Produce help message")
-	  ("debug","Debug level", cxxopts::value<ushort>(dbglvl)->default_value("0"))
-	  ("debugDelta", "Debug deltas", cxxopts::value<bool>(debugDelta)->default_value("false"))
-	  ("debugInternal", "Debug internals", cxxopts::value<bool>(debugInternal)->default_value("false"))
-	  ;
+                ("v,verbose", "Record output values for all steps (this can significantly slow the program).", cxxopts::value<bool>(record)->default_value("false"))
+                ("e,evn", "The file (including path) containing environmental parameters", cxxopts::value<std::string>(evn)->default_value("InputEvn.txt"))
+                ("a,atpcost", "The file (including path) containing the ATP cost", cxxopts::value<std::string>(atpcost)->default_value("InputATPCost.txt"))
+                ("n,enzyme", "The file (including path) containing enzyme activities like InputEnzyme.txt", cxxopts::value<std::string>(enzymeFile)->default_value(""))
+                ("g,grn", "The file (including path) containing protein ratios for relevant genes like InputGRNC.txt",
+		 cxxopts::value<std::string>(grnFile)->default_value(""))
+                ("b,begintime", "The starting time for the calculations.", cxxopts::value<double>(begintime)->default_value("0.0"))
+                ("s,stoptime", "The time to stop calculations.", cxxopts::value<double>(stoptime)->default_value("5000.0"))
+                ("z,stepsize", "The step size to use in the calculations.", cxxopts::value<double>(stepsize)->default_value("1.0"))
+                ("m,maxSubSteps", "The maximum number of iterations at each time step.", cxxopts::value<int>(maxSubSteps)->default_value("750"))
+                ("d,driver",
+                 "The driver to use. Choices are:\n"
+                 "1 - trDynaPS (default): PS, PR, FI, BF, SUCS,\n"
+                 "       RuACT, XanCycle, RROEA\n"
+                 "2 - DynaPS: PS, PR, FI, BF, SUCS, XanCycle\n"
+                 "3 - CM: PS, PR, SUCS\n"
+                 "4 - EPS: PS, PR, FI, BF, SUCS",
+                 cxxopts::value<int>(driver))
+                ("c,c3", "Use the C3 model, automatically set to true for EPS driver", cxxopts::value<bool>(useC3)->default_value("false"))
+	        ("rubiscomethod",
+                 "The method to use for rubisco calculations. Choices are:\n"
+                 "1 - Use enzyme concentration for\n"
+                 "    calculation\n"
+                 "2 - (default) Use the michaelis menton and enzyme\n"
+                 "    concentration together for calculation",
+                 cxxopts::value<int>(RUBISCOMETHOD))
+                ("t,abstol", "Absolute tolerance for calculations", cxxopts::value<double>(abstol)->default_value("1e-5"))
+                ("r,reltol", "Relative tolerance for calculations", cxxopts::value<double>(reltol)->default_value("1e-4"))
+                ("T,Tp", "Input Temperature", cxxopts::value<double>(Tp)->default_value("0.0"))
+                ("o,options", "Name of a text file which specifies any of the above options. Command line arguments have priority.", cxxopts::value<std::string>(optionsFile)->default_value(""))
+                ("x,output", "Name the the text file that outputs should be saved to.",
+                 cxxopts::value<std::string>(outputFile)->default_value("output.data"))
+	        ("outputVars", "Comma separated list of names of variables that should be output to the table created at the end of a run. Variables for modules, equilibirium constants, etc. can be specified by including the C++ scope of the variable. (e.g. MOD:BF:cATPsyn would output the concentration of ATP synthase). If not provided the output variables will be determined by the driver.",
+                 cxxopts::value<std::string>(outputVars)->default_value(""))
+	        ("outputParam",
+                 "Output model parameters at different times throughout the run. Choices are:\n"
+                 "0 - (default) Don't output parameters during the run.\n"
+                 "1 - Output the initial parameter values.\n"
+                 "2 - Output the initial and final parameter values.\n"
+                 "3 - Output the parameter values for each step in addition to the initial and final values.",
+                 cxxopts::value<int>(outputParam))
+	        ("outputParamBase", "Base name for files parameter values should be output to at times through the run as specified by outputParam",
+                 cxxopts::value<std::string>(outputParamBase)->default_value(""))
+	        ("outputParamVars", "Comma separated list of names of variables that should be output at various times during the run based on the value of outputParam. If not provided, all variables will be output.",
+                 cxxopts::value<std::string>(outputParamVars)->default_value(""))
+                ("h,help", "Produce help message")
+                ("debug","Debug level", cxxopts::value<ushort>(dbglvl)->default_value("0"))
+                ("debugDelta", "Debug deltas", cxxopts::value<bool>(debugDelta)->default_value("false"))
+                ("debugInternal", "Debug internals", cxxopts::value<bool>(debugInternal)->default_value("false"))
+                ;
 
 	for (std::vector<MODULE>::const_iterator m = ALL_MODULE.begin();
 	     m != ALL_MODULE.end(); m++) {
@@ -270,15 +272,14 @@ int main(int argc, const char* argv[]) {
             varSearchS(outputParamVars);
         }
         driverChoice = static_cast<DriverType>(driver);
+	// TODO: Do yggdrasil initial input before this point so driver
+	//   choice can be an input
 	if (driverChoice == EPS)
 	  useC3 = true;
 	// Select driver prior to updating values from user provided files
 	//   so that warnings can be generated when a file is provided
 	//   that will not be used by the selected driver.
 	drivers::select_driver(driverChoice, useC3);
-
-        readFile(evn, inputs);
-        readFile(atpcost, inputs);
 
 	for (std::vector<MODULE>::const_iterator m = ALL_MODULE.begin();
 	     m != ALL_MODULE.end(); m++) {
@@ -296,77 +297,30 @@ int main(int argc, const char* argv[]) {
 	    }
 	  }
 	}
-
-#ifdef SUNDIALS_CONTEXT_REQUIRED
-	SUNContext context;
-	if (SUNContext_Create(0, &context) < 0) {
-	  std::cout << "SUNContext_Create failed" << std::endl;
-	  throw std::runtime_error("SUNContext_Create");
-	}
-        Variables *theVars = new Variables(&context);
-#else // SUNDIALS_CONTEXT_REQUIRED
-	Variables *theVars = new Variables();
-#endif // SUNDIALS_CONTEXT_REQUIRED
-        if (result.count("enzyme")) {
-	    std::cerr << "ENZYME DATA PROVIDED" << std::endl;
-	    readFile(enzymeFile, theVars->EnzymeAct, true);
+      
+        Variables *theVars = new Variables();
+        // Ensure that command line argument takes precedence
+        if (result.count("Tp") != 0) {
+            theVars->Tp = Tp;
+            inputs["Tp_SET"] = std::to_string(Tp);
+        }
+        if (fileProvided(evn, evn))
+            theVars->readParam(evn, inputs);
+        if (fileProvided(atpcost, atpcost))
+            theVars->readParam(atpcost, inputs);
+        if (fileProvided(enzyme, enzymeFile)) {
+            theVars->readEnzymeAct(enzymeFile);
         } else {
-	  if (useC3)
-	    throw std::runtime_error("Enzyme data required if --c3 set (automatically true for EPS driver)");
-	}
+            if (useC3)
+                throw std::runtime_error("Enzyme data required if --c3 set (automatically true for EPS driver)");
+        }
 
-	assignInputVarD(CO2, CO2_in);
-	assignInputVarD(Air_CO2, CO2_in);
-	assignInputVarD(PAR, TestLi);
-	assignInputVarD(Radiation_PAR, TestLi);
-	assignInputVarD(ATPCost, TestATPCost);
-	if (result.count("Tp") == 0) {
-	  assignInputVarD(WeatherTemperature, Tp);
-	  Tp = theVars->Tp;
-	}
-	assignInputVarI(GRNC, GRNC);
-	setInputVarB(SucPath, CM, TestSucPath);
-        assignInputVarI(PAR_in_Wpm2, PAR_in_Wpm2);
+        // Read the GRN data and assign it into the correct positions
+        // based on the expected order
+        if (fileProvided(grn, grnFile))
+            theVars->readGRN(grnFile);
 
-	// Read the GRN data and assign it into the correct positions
-	// based on the expected order
-	if (result.count("grn")) {
-	  std::cerr << "GRN DATA PROVIDED" << std::endl;
-	  std::map<std::string, double> glymaID_map;
-	  readFile(grnFile, glymaID_map);
-	  double pcfactor = 1.0 / 0.973;
-	  if (inputs.count("ProteinTotalRatio") > 0)
-	    pcfactor = 1.0 / static_cast<double>(stof(inputs.at("ProteinTotalRatio"), nullptr));
-	  size_t i = 0;
-	  for (auto it = glymaID_order.begin(); it != glymaID_order.end(); it ++, i++) {
-	    double iVfactor = pcfactor;
-	    try {
-	      if ((i >= 33) && (theVars->GRNC == 0))
-		iVfactor = 1.0;
-	      else
-		iVfactor = pcfactor * glymaID_map.at(*it);
-	    } catch (const std::out_of_range&) {
-	      // Do nothing
-	      printf("GlymaID \"%s\" not present.\n", it->c_str());
-	    }
-	    if (i < 33) {
-	      theVars->VfactorCp[i] = iVfactor;
-	    } else if (i == 33) {
-	      modules::BF::setcATPsyn(iVfactor);
-	    } else if (i == 34)
-	      modules::BF::setCPSi(iVfactor);
-	    else if (i == 35)
-	      modules::FI::setcpsii(iVfactor);
-	    else if (i == 36)
-	      modules::BF::setcNADPHsyn(iVfactor);
-	    else {
-	      printf("More GlymaIDs than expected.\n");
-	      exit(EXIT_FAILURE);
-	    }
-	  }
-	}
-
-	theVars->Tp = Tp;
+        Tp = theVars->Tp;
         theVars->record = record;
         theVars->useC3 = useC3; // Redundant after select_driver
         theVars->RUBISCOMETHOD = RUBISCOMETHOD;
@@ -491,30 +445,6 @@ int main(int argc, const char* argv[]) {
         }
 	maindriver->writeOutputTable(outfile);
 
-        // switch (driverChoice) {
-        //     case trDynaPS:
-        //         outfile << "Light intensity,Vc,Vo,VPGA,VT3P,Vstarch,Vt_glycerate,Vt_glycolate,CO2AR" << std::endl;
-        //         outfile << theVars->TestLi << "," << ResultRate[0] << ",";
-        //         outfile << ResultRate[1] << "," << ResultRate[2] << "," << ResultRate[3] << ",";
-        //         outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << "," << ResultRate[7] << std::endl;
-        //         break;
-        //     case DynaPS:
-        //         outfile << "Light intensity,PSIIabs,PSIabs,Vc,Vo,VPGA,Vsucrose,Vstarch,CO2AR" << std::endl;
-        //         outfile << theVars->TestLi << "," << ResultRate[0] << ",";
-        //         outfile << ResultRate[1] << "," << ResultRate[2] << "," << ResultRate[3] << ",";
-        //         outfile << ResultRate[4] << "," << ResultRate[5] << "," << ResultRate[6] << "," << ResultRate[7] << std::endl;
-        //         break;
-        //     case CM:
-        //         outfile << "Light intensity,CO2AR" << std::endl;
-        //         outfile << theVars->TestLi << "," << ResultRate[0] << std::endl;
-        //         break;
-        //     case EPS:
-        //       std::cerr << "Arate = " << ResultRate[0] << std::endl;
-        //         outfile << ResultRate[0] << std::endl;
-        //         break;
-        //     default:
-        //         break;
-        // }
         outfile.close();
 #endif
 	
@@ -532,9 +462,6 @@ int main(int argc, const char* argv[]) {
 	if (origVars != nullptr)
 	  delete origVars;
 #endif
-#ifdef SUNDIALS_CONTEXT_REQUIRED
-	SUNContext_Free(&context);
-#endif // SUNDIALS_CONTEXT_REQUIRED
         return (EXIT_SUCCESS);
     } catch (std::exception& e) {
         std::cout << "An error occurred: " << e.what() << std:: endl;

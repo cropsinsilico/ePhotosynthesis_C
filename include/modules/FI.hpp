@@ -61,7 +61,6 @@ private:
         TIME = 0.;
 	ParentClass::_reset(noChildren);
     }
-
 };
 
   DEFINE_MODULE_HEADER(FI);

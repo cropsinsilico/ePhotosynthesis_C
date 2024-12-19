@@ -4,35 +4,36 @@
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
 enum class ENUM_ALL_VARS : int {
-    NONE                ,
-    AVR                 ,  //!< [CONST] The conversion factor between volume and area (micromole per meter square per second and milimole per liter per second).
-    HPR                 ,  //!< [CONST]
-    O2                  ,  //!< [CONST] Seems to be unused currently
-    CO2_cond            ,  //!< [CALC] Intercellular CO2 in umoles m^{-3}, calculated from air CO2 (CO2_in)
-    GLight              ,
-    O2_cond             ,
-    PS12ratio           ,  //!< [CALC] Calcualted from input_PSI & input_PSIIcore in SYSInitial
-    ADP                 ,
-    Pi                  ,  //!< [CALC] Pi used when useC3 is true and EPS module selected
-    TestATPCost         ,  //!< Extra ATP cost when useC3 is false (in units per area)
-    CO2_in              ,  //!< [CALC,ALIASES={CO2,Air_CO2}] Air CO2 concentration in ppm
-    TestLi_Wps          ,  //!< [CALC] Light intensity (in units of W s^{-1})
-    TestLi              ,  //!< [CALC,ALIASES={PAR,Radiation_PAR}] Light intensity (in units of umoles m^{-2} s^{-1})
-    PS2BF_Pi            ,  //!< Pi Shared by PS & BF modules when useC3 is false and EPS module is selected
-    PS_PR_Param         ,  //!< Seems to unused currently
-    Tp                  ,  //!< [ALIASES={Temp,WeatherTemperature}] Temperature
-    alfa                ,  //!< [CONST] Used for scaling light (*= alpha * (1 - fc))
-    fc                  ,  //!< [CONST] Used for scaling light (*= alpha * (1 - fc))
-    lightParam          ,  //!< [CALC]
-    alpha1              ,  //!< [CONST] originally 1.205 in C++ code, 1 for Matlab equivalent
-    alpha2              ,  //!< [CONST] originally 2.06 in C++ code, 1 for Matlab equivalent
-    input_LHCI          ,  //!< [CONST] Used to set FIBF::ChlPSI in SYSInitial
-    input_LHCII         ,  //!< [CONST] Used to set FIBF::ChlT in SYSInitial
-    input_PSI           ,  //!< [CONST] Used to set FIBF::ChlPSI & PS12ratio in SYSInitial
-    input_PSIIcore      ,  //!< [CONST] Used to set FIBF::ChlT2, FIBF::ChlT & PS12ratio in SYSInitial
-    PSIIantennaSize     ,  //!< [CONST] Used to set FIBF::ChlT2 & FIBF::ChlT in SYSInitial
-    PSIantennaSize      ,  //!< [CONST] Used to set FIBF::ChlPSI in SYSInitial
-    MAX                 ,
+    NONE                  ,
+    AVR                   ,  //!< [CONST] The conversion factor between volume and area (micromole per meter square per second and milimole per liter per second).
+    HPR                   ,  //!< [CONST]
+    O2                    ,  //!< [CONST] Seems to be unused currently
+    CO2_cond              ,  //!< [CALC] Intercellular CO2 in umoles m^{-3}, calculated from air CO2 (CO2_in)
+    GLight                ,
+    O2_cond               ,
+    PS12ratio             ,  //!< [CALC] Calcualted from input_PSI & input_PSIIcore in SYSInitial
+    ADP                   ,
+    Pi                    ,  //!< [CALC] Pi used when useC3 is true and EPS module selected
+    TestATPCost           ,  //!< Extra ATP cost when useC3 is false (in units per area)
+    CO2_in                ,  //!< [CALC,ALIASES={CO2,Air_CO2}] Air CO2 concentration in ppm
+    TestLi_Wps            ,  //!< [CALC] Light intensity (in units of W s^{-1})
+    TestLi                ,  //!< [CALC,ALIASES={PAR,Radiation_PAR}] Light intensity (in units of umoles m^{-2} s^{-1})
+    PS2BF_Pi              ,  //!< Pi Shared by PS & BF modules when useC3 is false and EPS module is selected
+    PS_PR_Param           ,  //!< Seems to unused currently
+    Tp                    ,  //!< [ALIASES={Temp,WeatherTemperature}] Temperature
+    alfa                  ,  //!< [CONST] Used for scaling light (*= alpha * (1 - fc))
+    fc                    ,  //!< [CONST] Used for scaling light (*= alpha * (1 - fc))
+    lightParam            ,  //!< [CALC]
+    alpha1                ,  //!< [CONST] originally 1.205 in C++ code, 1 for Matlab equivalent
+    alpha2                ,  //!< [CONST] originally 2.06 in C++ code, 1 for Matlab equivalent
+    input_LHCI            ,  //!< [CONST] Used to set FIBF::ChlPSI in SYSInitial
+    input_LHCII           ,  //!< [CONST] Used to set FIBF::ChlT in SYSInitial
+    input_PSI             ,  //!< [CONST] Used to set FIBF::ChlPSI & PS12ratio in SYSInitial
+    input_PSIIcore        ,  //!< [CONST] Used to set FIBF::ChlT2, FIBF::ChlT & PS12ratio in SYSInitial
+    PSIIantennaSize       ,  //!< [CONST] Used to set FIBF::ChlT2 & FIBF::ChlT in SYSInitial
+    PSIantennaSize        ,  //!< [CONST] Used to set FIBF::ChlPSI in SYSInitial
+    ProteinTotalRatio     ,  //!< [CONST] Scaling factor for CM GRN expression levels
+    MAX                   ,
 };
 template<>
 struct enum_helper<MODULE_ALL, PARAM_TYPE_VARS> {
@@ -41,66 +42,68 @@ struct enum_helper<MODULE_ALL, PARAM_TYPE_VARS> {
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type : int {
-    NONE                ,
-    AVR                 ,  //!< [CONST] The conversion factor between volume and area (micromole per meter square per second and milimole per liter per second).
-    HPR                 ,  //!< [CONST]
-    O2                  ,  //!< [CONST] Seems to be unused currently
-    CO2_cond            ,  //!< [CALC] Intercellular CO2 in umoles m^{-3}, calculated from air CO2 (CO2_in)
-    GLight              ,
-    O2_cond             ,
-    PS12ratio           ,  //!< [CALC] Calcualted from input_PSI & input_PSIIcore in SYSInitial
-    ADP                 ,
-    Pi                  ,  //!< [CALC] Pi used when useC3 is true and EPS module selected
-    TestATPCost         ,  //!< Extra ATP cost when useC3 is false (in units per area)
-    CO2_in              ,  //!< [CALC,ALIASES={CO2,Air_CO2}] Air CO2 concentration in ppm
-    TestLi_Wps          ,  //!< [CALC] Light intensity (in units of W s^{-1})
-    TestLi              ,  //!< [CALC,ALIASES={PAR,Radiation_PAR}] Light intensity (in units of umoles m^{-2} s^{-1})
-    PS2BF_Pi            ,  //!< Pi Shared by PS & BF modules when useC3 is false and EPS module is selected
-    PS_PR_Param         ,  //!< Seems to unused currently
-    Tp                  ,  //!< [ALIASES={Temp,WeatherTemperature}] Temperature
-    alfa                ,  //!< [CONST] Used for scaling light (*= alpha * (1 - fc))
-    fc                  ,  //!< [CONST] Used for scaling light (*= alpha * (1 - fc))
-    lightParam          ,  //!< [CALC]
-    alpha1              ,  //!< [CONST] originally 1.205 in C++ code, 1 for Matlab equivalent
-    alpha2              ,  //!< [CONST] originally 2.06 in C++ code, 1 for Matlab equivalent
-    input_LHCI          ,  //!< [CONST] Used to set FIBF::ChlPSI in SYSInitial
-    input_LHCII         ,  //!< [CONST] Used to set FIBF::ChlT in SYSInitial
-    input_PSI           ,  //!< [CONST] Used to set FIBF::ChlPSI & PS12ratio in SYSInitial
-    input_PSIIcore      ,  //!< [CONST] Used to set FIBF::ChlT2, FIBF::ChlT & PS12ratio in SYSInitial
-    PSIIantennaSize     ,  //!< [CONST] Used to set FIBF::ChlT2 & FIBF::ChlT in SYSInitial
-    PSIantennaSize      ,  //!< [CONST] Used to set FIBF::ChlPSI in SYSInitial
-    MAX                 ,
+    NONE                  ,
+    AVR                   ,  //!< [CONST] The conversion factor between volume and area (micromole per meter square per second and milimole per liter per second).
+    HPR                   ,  //!< [CONST]
+    O2                    ,  //!< [CONST] Seems to be unused currently
+    CO2_cond              ,  //!< [CALC] Intercellular CO2 in umoles m^{-3}, calculated from air CO2 (CO2_in)
+    GLight                ,
+    O2_cond               ,
+    PS12ratio             ,  //!< [CALC] Calcualted from input_PSI & input_PSIIcore in SYSInitial
+    ADP                   ,
+    Pi                    ,  //!< [CALC] Pi used when useC3 is true and EPS module selected
+    TestATPCost           ,  //!< Extra ATP cost when useC3 is false (in units per area)
+    CO2_in                ,  //!< [CALC,ALIASES={CO2,Air_CO2}] Air CO2 concentration in ppm
+    TestLi_Wps            ,  //!< [CALC] Light intensity (in units of W s^{-1})
+    TestLi                ,  //!< [CALC,ALIASES={PAR,Radiation_PAR}] Light intensity (in units of umoles m^{-2} s^{-1})
+    PS2BF_Pi              ,  //!< Pi Shared by PS & BF modules when useC3 is false and EPS module is selected
+    PS_PR_Param           ,  //!< Seems to unused currently
+    Tp                    ,  //!< [ALIASES={Temp,WeatherTemperature}] Temperature
+    alfa                  ,  //!< [CONST] Used for scaling light (*= alpha * (1 - fc))
+    fc                    ,  //!< [CONST] Used for scaling light (*= alpha * (1 - fc))
+    lightParam            ,  //!< [CALC]
+    alpha1                ,  //!< [CONST] originally 1.205 in C++ code, 1 for Matlab equivalent
+    alpha2                ,  //!< [CONST] originally 2.06 in C++ code, 1 for Matlab equivalent
+    input_LHCI            ,  //!< [CONST] Used to set FIBF::ChlPSI in SYSInitial
+    input_LHCII           ,  //!< [CONST] Used to set FIBF::ChlT in SYSInitial
+    input_PSI             ,  //!< [CONST] Used to set FIBF::ChlPSI & PS12ratio in SYSInitial
+    input_PSIIcore        ,  //!< [CONST] Used to set FIBF::ChlT2, FIBF::ChlT & PS12ratio in SYSInitial
+    PSIIantennaSize       ,  //!< [CONST] Used to set FIBF::ChlT2 & FIBF::ChlT in SYSInitial
+    PSIantennaSize        ,  //!< [CONST] Used to set FIBF::ChlPSI in SYSInitial
+    ProteinTotalRatio     ,  //!< [CONST] Scaling factor for CM GRN expression levels
+    MAX                   ,
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
 #define MEMBERS_ALLVARS		\
-    NONE                ,		\
-    AVR                 ,		\
-    HPR                 ,		\
-    O2                  ,		\
-    CO2_cond            ,		\
-    GLight              ,		\
-    O2_cond             ,		\
-    PS12ratio           ,		\
-    ADP                 ,		\
-    Pi                  ,		\
-    TestATPCost         ,		\
-    CO2_in              ,		\
-    TestLi_Wps          ,		\
-    TestLi              ,		\
-    PS2BF_Pi            ,		\
-    PS_PR_Param         ,		\
-    Tp                  ,		\
-    alfa                ,		\
-    fc                  ,		\
-    lightParam          ,		\
-    alpha1              ,		\
-    alpha2              ,		\
-    input_LHCI          ,		\
-    input_LHCII         ,		\
-    input_PSI           ,		\
-    input_PSIIcore      ,		\
-    PSIIantennaSize     ,		\
-    PSIantennaSize      ,		\
+    NONE                  ,		\
+    AVR                   ,		\
+    HPR                   ,		\
+    O2                    ,		\
+    CO2_cond              ,		\
+    GLight                ,		\
+    O2_cond               ,		\
+    PS12ratio             ,		\
+    ADP                   ,		\
+    Pi                    ,		\
+    TestATPCost           ,		\
+    CO2_in                ,		\
+    TestLi_Wps            ,		\
+    TestLi                ,		\
+    PS2BF_Pi              ,		\
+    PS_PR_Param           ,		\
+    Tp                    ,		\
+    alfa                  ,		\
+    fc                    ,		\
+    lightParam            ,		\
+    alpha1                ,		\
+    alpha2                ,		\
+    input_LHCI            ,		\
+    input_LHCII           ,		\
+    input_PSI             ,		\
+    input_PSIIcore        ,		\
+    PSIIantennaSize       ,		\
+    PSIantennaSize        ,		\
+    ProteinTotalRatio     ,		\
     MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::names;

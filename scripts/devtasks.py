@@ -152,11 +152,15 @@ class SubTask:
         cmdS = '\n\t'.join(cmds)
         print(f"Running\n{cmdS}\n"
               f"with {pprint.pformat(kwargs)}")
+        if kwargs.get('env', None):
+            kwargs['env'] = dict(os.environ, **kwargs['env'])
         output_str = b''
         if output_file:
             kwargs.update(capture_output=True)
         for x in cmds:
             ires = subprocess.run(x.split(), **kwargs)
+            if ires.returncode != 0:
+                raise RuntimeError(f'Error in running \'{x}\'')
             if output_file:
                 output_str += ires.stdout
         if output_file:
@@ -167,13 +171,15 @@ class SubTask:
 class BuildSubTask(SubTask):
 
     def __init__(self, args, config_args=None, build_args=None,
-                 build_kwargs=None, **kwargs):
+                 install_args=None, build_kwargs=None, build_env=None,
+                 **kwargs):
         self.adjust_args(args)
         if build_kwargs is None:
             build_kwargs = {}
+        build_kwargs.setdefault('env', build_env)
         if not args.dont_build:
             build(args, config_args=config_args, build_args=build_args,
-                  **build_kwargs)
+                  install_args=install_args, **build_kwargs)
         kwargs.setdefault('cwd', args.build_dir)
         super(BuildSubTask, self).__init__(args, **kwargs)
 
@@ -184,17 +190,28 @@ class BuildSubTask(SubTask):
 
 class build(SubTask):
 
-    def __init__(self, args, config_args=None, build_args=None):
+    def __init__(self, args, config_args=None, build_args=None,
+                 install_args=None, **kwargs):
         BuildSubTask.adjust_args(args)
         if config_args is None:
             config_args = []
         if build_args is None:
             build_args = []
+        if install_args is None:
+            install_args = []
         config_args += ['-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON']
         if args.make_equivalent_to_matlab:
             config_args += ['-DMAKE_EQUIVALENT_TO_MATLAB:BOOL=ON']
         if args.with_asan:
             config_args += ['-DWITH_ASAN=ON']
+        if args.only_python:
+            build_args += ['--target pyPhotosynthesis']
+            install_args += ['--component', 'Python']
+            args.with_python = True
+        if args.with_python:
+            config_args += ['-DBUILD_PYTHON:BOOL=ON']
+        if not args.dont_install:
+            config_args += [f'-DCMAKE_INSTALL_PREFIX={args.install_dir}']
         if sys.platform != 'win32':
             build_args += ['--', '-j', str(args.njobs)]
         cmds = [
@@ -202,16 +219,33 @@ class build(SubTask):
             f"cmake --build . --config {args.build_type}"
             f" {' '.join(build_args)}",
         ]
-        if not args.dont_install:
+        if args.with_python and not args.only_python:
             cmds += [
-                f"cmake --install . --prefix {args.install_dir}"
+                f"cmake --build . --config {args.build_type} "
+                f"--target pyPhotosynthesis"
             ]
-        if args.rebuild and os.path.isdir(args.build_dir):
-            shutil.rmtree(args.build_dir)
+        if not args.dont_install:
+            if not os.path.isdir(args.install_dir):
+                os.mkdir(args.install_dir)
+            cmds += [
+                f"cmake --install . --prefix {args.install_dir} "
+                f"{' '.join(install_args)}"
+            ]
+            if args.with_python and not getattr(args, 'only_python', False):
+                cmds += [
+                    f"cmake --install . --prefix {args.install_dir} "
+                    f"--component Python {' '.join(install_args)}"
+                ]
+        if ((args.rebuild and (not args.dont_install) and
+             os.path.isdir(args.install_dir))):
+            subdir = glob.glob(os.path.join(args.install_dir, '*'))
+            if (not subdir) or subdir == [os.path.join(args.install_dir,
+                                                       'ePhotosynthesis')]:
+                shutil.rmtree(args.install_dir)
         if not os.path.isdir(args.build_dir):
             os.mkdir(args.build_dir)
-        super(build, self).__init__(args, cmds=cmds,
-                                    cwd=args.build_dir)
+        kwargs.setdefault('cwd', args.build_dir)
+        super(build, self).__init__(args, cmds=cmds, **kwargs)
 
 
 class update_readme(BuildSubTask):
@@ -224,27 +258,37 @@ class update_readme(BuildSubTask):
         ]
         helpFile = os.path.join(os.getcwd(), 'help_output.txt')
         self._generated_files.append(helpFile)
-        super(update_readme, self).__init__(args, cmds=cmds,
-                                            output_file=helpFile)
-        with open(helpFile, 'r') as fd:
-            helpMsg = fd.read()
-        os.remove(helpFile)
-        helpMsg = helpMsg.split(':', 1)[-1]
-        readme = os.path.join(_source_dir, "README.md")
-        with open(readme, 'r') as fd:
-            contents = fd.read()
-        idx1 = contents.index("### Command line interface")
-        idx2 = idx1 + contents[idx1:].index('```')
-        base = contents[:idx2]
-        contents = base + '```' + helpMsg + '```'
-        with open(readme, 'w') as fd:
-            fd.write(contents)
+        try:
+            super(update_readme, self).__init__(args, cmds=cmds,
+                                                output_file=helpFile)
+            with open(helpFile, 'r') as fd:
+                helpMsg = fd.read()
+            os.remove(helpFile)
+            helpMsg = helpMsg.split(':', 1)[-1]
+            readme = os.path.join(_source_dir, "README.md")
+            with open(readme, 'r') as fd:
+                contents = fd.read()
+            idx1 = contents.index("### Command line interface")
+            idx2 = idx1 + contents[idx1:].index('```')
+            idx3 = contents[idx2:].find('#')
+            suffix = ''
+            if idx3 >= 0:
+                idx3 += idx2
+                suffix = '\n\n' + contents[idx3:]
+            prefix = contents[:idx2]
+            contents = prefix + '```' + helpMsg + '```' + suffix
+            with open(readme, 'w') as fd:
+                fd.write(contents)
+        except BaseException:
+            if os.path.isfile(helpFile):
+                os.remove(helpFile)
+            raise
 
 
 class test(BuildSubTask):
 
     def __init__(self, args, test_flags=None,
-                 config_args=None, build_args=None):
+                 config_args=None, build_args=None, **kwargs):
         self.adjust_args(args)
         if test_flags is None:
             test_flags = []
@@ -254,24 +298,43 @@ class test(BuildSubTask):
             build_args = []
         config_args += ['-DBUILD_TESTS:BOOL=ON']
         test_flags += ['-C', args.build_type]
+        pytest_flags = ['-sv']
         if args.preserve_output:
             config_args += ['-DPRESERVE_TEST_OUTPUT:BOOL=ON']
         if args.stop_on_error:
             test_flags += ['--stop-on-failure']
+            pytest_flags += ['-x']
         if args.verbose:
             test_flags += ['--output-on-failure', '-VV']
-        if args.show_tests:
-            cmds = [
-                'ctest -N'
-            ]
+            pytest_flags += ['-v']
+        if args.only_python:
+            args.with_python = True
+        if args.with_python and args.dont_install:
+            kwargs.setdefault('env', {})
+            kwargs['env'].setdefault(
+                'PYTHONPATH', os.environ.get('PYTHONPATH', ''))
+            kwargs['env']['PYTHONPATH'] = os.pathsep.join([
+                x for x in
+                [args.build_dir,
+                 kwargs['env']['PYTHONPATH']]
+                if x
+            ])
+        if args.only_python:
+            testdir = os.path.join(_source_dir, 'tests', 'python')
+            cmds = [f"python -m pytest {' '.join(pytest_flags)} {testdir}"]
         else:
-            cmds = [
-                f"ctest {' '.join(test_flags)}"
-            ]
+            if args.show_tests:
+                cmds = [
+                    'ctest -N'
+                ]
+            else:
+                cmds = [
+                    f"ctest {' '.join(test_flags)}"
+                ]
         try:
             super(test, self).__init__(args, cmds=cmds,
                                        config_args=config_args,
-                                       build_args=build_args)
+                                       build_args=build_args, **kwargs)
         finally:
             if args.refresh_output:
                 for drv in compare_matlab._drivers:
@@ -549,16 +612,22 @@ class compare_matlab(BuildSubTask):
 
 class docs(BuildSubTask):
 
-    def __init__(self, args, config_args=None, build_args=None):
+    def __init__(self, args, config_args=None, build_args=None,
+                 install_args=None):
+        self.adjust_args(args)
         if config_args is None:
             config_args = []
         if build_args is None:
             build_args = []
+        if install_args is None:
+            install_args = []
         config_args += ['-DBUILD_DOCS=ON', '-DDOXYGEN_CHECK_MISSING=ON']
         build_args += ['--target', 'docs']
+        install_args += ['--component', 'docs']
         super(docs, self).__init__(
             args, config_args=config_args,
             build_args=build_args,
+            install_args=install_args,
         )
 
     @classmethod
@@ -567,6 +636,7 @@ class docs(BuildSubTask):
         args.build_type = 'Debug'
         args.dont_build = False
         args.dont_install = True
+        args.only_python = False
         super(docs, cls).adjust_args(args)
 
 
@@ -618,7 +688,7 @@ if __name__ == "__main__":
         '--verbose', action='store_true',
         help="Turn on verbose test output")
     parser_test.add_argument(
-        '--stop-on-error', action='store_true',
+        '--stop-on-error', '-x', action='store_true',
         help="Stop running tests after the first error")
     parser_test.add_argument(
         '--preserve-output', action='store_true',
@@ -744,6 +814,14 @@ if __name__ == "__main__":
               "to the MATLAB version of the model"),
         subparsers={'task': [x for x in build_tasks + ['docs']
                              if x != 'compare-matlab']})
+    parser.add_argument(
+        '--with-python', action='store_true',
+        help="Build the Python interface",
+        subparsers={'task': build_tasks + ['docs']})
+    parser.add_argument(
+        '--only-python', action='store_true',
+        help="Only run the Python tests",
+        subparsers={'task': build_tasks})
 
     parser.add_argument(
         '--dont-build', action='store_true',

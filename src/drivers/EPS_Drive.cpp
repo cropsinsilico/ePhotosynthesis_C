@@ -53,6 +53,8 @@ EPSDriver::EPSDriver(Variables *theVars, const double startTime,
     if (outputVars.empty()) {
       outputVars.push_back("CO2AR");
     }
+    if (inputVars->useC3 && inputVars->EnzymeAct.empty())
+        throw std::runtime_error("EnzymeAct must be set if useC3 is True (automatically set for EPS driver)");
 }
 void EPSDriver::setup() {
     //Ca = theVars->TestCa;

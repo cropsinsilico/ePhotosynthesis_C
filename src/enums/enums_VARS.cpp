@@ -5,36 +5,37 @@
 
 using namespace ePhotosynthesis;
 
-template<> const std::vector<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::all = {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)AVR, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)HPR, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_cond, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)GLight, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2_cond, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS12ratio, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)ADP, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Pi, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestATPCost, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_in, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi_Wps, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS2BF_Pi, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS_PR_Param, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Tp, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)alfa, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)fc, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)lightParam, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)alpha1, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)alpha2, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_LHCI, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_LHCII, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_PSI, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_PSIIcore, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PSIIantennaSize, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PSIantennaSize};
+template<> const std::vector<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::all = {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)AVR, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)HPR, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_cond, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)GLight, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2_cond, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS12ratio, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)ADP, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Pi, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestATPCost, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_in, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi_Wps, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS2BF_Pi, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS_PR_Param, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Tp, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)alfa, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)fc, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)lightParam, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)alpha1, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)alpha2, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_LHCI, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_LHCII, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_PSI, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_PSIIcore, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PSIIantennaSize, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PSIantennaSize, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)ProteinTotalRatio};
 template<> 
 const std::map<ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::names = {
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)AVR, "AVR"            },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)HPR, "HPR"            },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2, "O2"             },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_cond, "CO2_cond"       },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)GLight, "GLight"         },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2_cond, "O2_cond"        },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS12ratio, "PS12ratio"      },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)ADP, "ADP"            },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Pi, "Pi"             },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestATPCost, "TestATPCost"    },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_in, "CO2_in"         },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi_Wps, "TestLi_Wps"     },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi, "TestLi"         },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS2BF_Pi, "PS2BF_Pi"       },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS_PR_Param, "PS_PR_Param"    },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Tp, "Tp"             },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)alfa, "alfa"           },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)fc, "fc"             },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)lightParam, "lightParam"     },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)alpha1, "alpha1"         },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)alpha2, "alpha2"         },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_LHCI, "input_LHCI"     },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_LHCII, "input_LHCII"    },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_PSI, "input_PSI"      },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_PSIIcore, "input_PSIIcore" },
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PSIIantennaSize, "PSIIantennaSize"},
-  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PSIantennaSize, "PSIantennaSize" },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)AVR, "AVR"              },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)HPR, "HPR"              },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2, "O2"               },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_cond, "CO2_cond"         },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)GLight, "GLight"           },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2_cond, "O2_cond"          },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS12ratio, "PS12ratio"        },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)ADP, "ADP"              },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Pi, "Pi"               },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestATPCost, "TestATPCost"      },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_in, "CO2_in"           },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi_Wps, "TestLi_Wps"       },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi, "TestLi"           },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS2BF_Pi, "PS2BF_Pi"         },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS_PR_Param, "PS_PR_Param"      },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Tp, "Tp"               },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)alfa, "alfa"             },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)fc, "fc"               },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)lightParam, "lightParam"       },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)alpha1, "alpha1"           },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)alpha2, "alpha2"           },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_LHCI, "input_LHCI"       },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_LHCII, "input_LHCII"      },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_PSI, "input_PSI"        },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_PSIIcore, "input_PSIIcore"   },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PSIIantennaSize, "PSIIantennaSize"  },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PSIantennaSize, "PSIantennaSize"   },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)ProteinTotalRatio, "ProteinTotalRatio"},
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, double> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::defaults = {
@@ -65,6 +66,7 @@ const std::map<ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, double> ValueSet
   {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_PSIIcore, 1.0  },
   {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PSIIantennaSize, 37.0 },
   {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PSIantennaSize, 95.0 },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)ProteinTotalRatio, 0.973},
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, double> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::defaults_C3 = {
@@ -95,6 +97,7 @@ const std::map<ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, double> ValueSet
   {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_PSIIcore, 1.0  },
   {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PSIIantennaSize, 37.0 },
   {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PSIantennaSize, 95.0 },
+  {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)ProteinTotalRatio, 0.973},
 };
 template<> 
 const std::map<ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::glymaids = {
@@ -123,6 +126,7 @@ const std::vector<ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<
   ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_PSIIcore,
   ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PSIIantennaSize,
   ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PSIantennaSize,
+  ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)ProteinTotalRatio,
 };
 template<> 
 const std::vector<ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::calculated = {

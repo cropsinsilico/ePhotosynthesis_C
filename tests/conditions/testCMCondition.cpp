@@ -41,7 +41,7 @@ TEST_F(CMConditionTest, ArrayTest) {
 #endif // SUNDIALS_CONTEXT_REQUIRED
     sunrealtype* y_ptr = N_VGetArrayPointer(y);
     for (size_t i = 0; i < input.size(); i++)
-      y_ptr[i] = input[i];
+        y_ptr[i] = input[i];
 
     CMCondition cm2(N_VGetArrayPointer(y));
     arr output2 = cm2.toArray();

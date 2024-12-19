@@ -27,6 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include <vector>
+#include <memory>
 
 #include "definitions.hpp"
 #include <nvector/nvector_serial.h>
@@ -323,7 +324,13 @@ protected:
     static int calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
 
 #ifdef SUNDIALS_CONTEXT_REQUIRED
-    SUNContext* context;
+private:
+    std::shared_ptr<SUNContext> _context;
+public:
+    /** Get the context */
+    SUNContext& context() {
+        return *(_context.get());
+    }
 #endif // SUNDIALS_CONTEXT_REQUIRED
     double initialStep;         // used to store the initial step size
     realtype *intermediateRes;

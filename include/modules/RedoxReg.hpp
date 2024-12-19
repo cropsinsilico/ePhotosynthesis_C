@@ -64,8 +64,8 @@ private:
     SET_GET(RedoxReg_VMAX16)
     SET_GET(RedoxReg_VMAX6)
     SET_GET(RedoxReg_VMAX9)
-    static double TIME;    // The timestamp of the most recent call to _Rate
-    static std::size_t N;  // The current size of the RedoxReg TimeSeries
+    EPHOTO_API static double TIME;    // The timestamp of the most recent call to _Rate
+    EPHOTO_API static std::size_t N;  // The current size of the RedoxReg TimeSeries
 };
 
   DEFINE_MODULE_COMPOSITE_HEADER(RedoxReg);

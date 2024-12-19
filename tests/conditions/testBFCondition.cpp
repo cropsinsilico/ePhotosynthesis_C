@@ -68,6 +68,12 @@ TEST_F(BFConditionTest, InitializerTest) {
         EXPECT_DOUBLE_EQ(bfc->cytbH, bfc4.cytbH);
         EXPECT_NE(bfc->ATP, bfc4.ATP);
         EXPECT_NE(bfc->Fdn, bfc4.Fdn);
+
+	// Value from default parameter files
+	bfc4.initValues();
+	EXPECT_NE(bfc->cytbH, bfc4.cytbH);
+	EXPECT_DOUBLE_EQ(bfc4.cytbH, 1.0);
+	
         delete bfc;
     }
     catch(...) {

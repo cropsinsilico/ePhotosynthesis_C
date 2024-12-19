@@ -94,6 +94,6 @@ void readFile(const std::string &filename, std::map<std::string, std::string> &m
   @param[in] enzymes If True, the inputs are scales like enzymes.
   @exception std::runtime_error If the opening of the file fails.
   */
-  void readFile(const std::string &filename, std::map<std::string, double> &mapper, bool enzymes=false);
+void readFile(const std::string &filename, std::map<std::string, double> &mapper, bool enzymes=false);
 
 }  // namespace ePhotosynthesis

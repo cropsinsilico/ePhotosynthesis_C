@@ -65,7 +65,7 @@ private:
         setFI_connect(false);
         setPS_connect(false);
         setRROEA_connect(false);
-        N = 0;
+        N = 1;
         TIME = 0.;
 	ParentClass::_reset(noChildren);
     }

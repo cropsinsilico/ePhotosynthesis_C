@@ -4,12 +4,10 @@ channels:
 dependencies:
   - boost
   - cmake
-  # - gcovr
   - gtest
   - ipython
   - lcov
   - pytest
   - python
-  - sundials
-  - yggdrasil
-  - numpy
+  - openmpi
+

@@ -48,7 +48,14 @@
 #ifndef sunrealtype
 #define sunrealtype double
 #endif
-#endif // 
+#endif //
+
+#if (SUNDIALS_VERSION_MAJOR >= 7)
+#include <sundials/sundials_errors.h>
+#else
+typedef int SUNErrCode;
+inline const char* SUNGetErrMsg(const SUNErrCode&) { return ""; }
+#endif
 
 #ifndef uint
 #define uint unsigned int
@@ -58,6 +65,9 @@
 #endif
 #ifndef realtype
 #define realtype sunrealtype
+#endif
+#ifndef SUN_COMM_NULL
+#define SUN_COMM_NULL 0
 #endif
 
 namespace ePhotosynthesis {
@@ -72,42 +82,42 @@ class Variables;
 typedef std::vector<double> arr;  // Shortcut for std::vector<double>
 
 static std::vector<std::string> glymaID_order {
-    "Glyma.19G046800", 
-    "Glyma.08G165400",
-    "Glyma.08G165500",
-    "Glyma.04G015900",
-    "Glyma.03G185800", // 5
-    "Glyma.10G268500",
-    "Glyma.07G142700",
-    "Glyma.10G293500",
-    "Glyma.11G226900",
-    "Glyma.15G136200", // 10
-    "Glyma.05G025300",
-    "Glyma.01G026700",
-    "Glyma.19G089100",
-    "Glyma.06G094300",
-    "Glyma.10G210700", // 15
-    "Glyma.04G011900",
-    "Glyma.17G015600",
-    "Glyma.19G022900",
-    "Glyma.07G028500",
-    "Glyma.16G168000", // 20
-    "Glyma.19G017200",
-    "Glyma.08G044100",
-    "Glyma.06G323700",
-    "Glyma.10G086600",
-    "Glyma.11G169700", // 25
-    "Glyma.09G015500",
-    "Glyma.15G012500",
-    "Glyma.08G097300",
-    "Glyma.06G017900",
-    "Glyma.08G302600", // 30
-    "Glyma.09G255200",
-    "Glyma.04G051200",
-    "Glyma.13G222300",
-    "Glyma.13G204800",
-    "Glyma.10G042000", // 35
-    "Glyma.01G095900",
+    "Glyma.19G046800", //  1: PS V1 RuBP
+    "Glyma.08G165400", //  2:
+    "Glyma.08G165500", //  3: PS V2
+    "Glyma.04G015900", //  4: PS V3
+    "Glyma.03G185800", //  5:
+    "Glyma.10G268500", //  6: PS V5 
+    "Glyma.07G142700", //  7: 
+    "Glyma.10G293500", //  8: PS V7
+    "Glyma.11G226900", //  9:
+    "Glyma.15G136200", // 10:
+    "Glyma.05G025300", // 11:
+    "Glyma.01G026700", // 12: PR V124
+    "Glyma.19G089100", // 13: PS V13
+    "Glyma.06G094300", // 14:
+    "Glyma.10G210700", // 15:
+    "Glyma.04G011900", // 16:
+    "Glyma.17G015600", // 17: PS V23
+    "Glyma.19G022900", // 18:
+    "Glyma.07G028500", // 19: 
+    "Glyma.16G168000", // 20: SUCS V52
+    "Glyma.19G017200", // 21:
+    "Glyma.08G044100", // 22:
+    "Glyma.06G323700", // 23: SUCS V56
+    "Glyma.10G086600", // 24: SUCS V57
+    "Glyma.11G169700", // 25: SUCS V59
+    "Glyma.09G015500", // 26: PR V112
+    "Glyma.15G012500", // 27: PR V113
+    "Glyma.08G097300", // 28: 
+    "Glyma.06G017900", // 29: PR V121
+    "Glyma.08G302600", // 30: PR V122
+    "Glyma.09G255200", // 31: PR V123
+    "Glyma.04G051200", // 32: 
+    "Glyma.13G222300", // 33: PR V131
+    "Glyma.13G204800", // 24: 
+    "Glyma.10G042000", // 35: 
+    "Glyma.01G095900", // 36: 
     "Glyma.09G024100"};
 
 #ifdef INCDEBUG
@@ -353,7 +363,7 @@ void TimeSeries<T>::insert(std::size_t step, double time, T &input) {
         _timestamp.push_back(time);
         _data.push_back(vec);
     } else {
-        size_t index = static_cast<size_t>(std::distance(_step.begin(), it));
+        std::size_t index = std::distance(_step.begin(), it);
         _timestamp[index] = time;
         _data[index] = vec;
     }

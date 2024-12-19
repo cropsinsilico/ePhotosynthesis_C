@@ -79,7 +79,7 @@ TEST_F(DynaPSDriverTest, MBTest) {
 #endif // SUNDIALS_CONTEXT_REQUIRED
     sunrealtype* y_ptr = N_VGetArrayPointer(y);
     for (size_t i = 0; i < driver->constraints.size(); i++)
-      y_ptr[i] = driver->constraints[i];
+        y_ptr[i] = driver->constraints[i];
     arr res = MB(1.5, y);
     EXPECT_NE(0, res.size());
     N_VDestroy(y);
