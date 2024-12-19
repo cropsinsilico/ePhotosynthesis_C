@@ -22,7 +22,11 @@
 # *
 # **********************************************************************************************************************************************
 
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.10)
+
+if(POLICY CMP0167)
+  cmake_policy(SET CMP0167 NEW)
+endif()
 
 project(ePhotosynthesisProject LANGUAGES C CXX)
 
@@ -550,6 +554,9 @@ if(BUILD_PYTHON)
         APPEND Python_SITEARCH ${PYTHON_PACKAGE_NAME}
         OUTPUT_VARIABLE EPHOTOSYNTHESIS_INSTALL_PYTHONDIR
     )
+    message(STATUS "Python_SITEARCH = ${Python_SITEARCH}")
+    message(STATUS "PYTHON_PACKAGE_NAME = ${PYTHON_PACKAGE_NAME}")
+    message(STATUS "EPHOTOSYNTHESIS_INSTALL_PYTHONDIR = ${EPHOTOSYNTHESIS_INSTALL_PYTHONDIR}")
     install(
         TARGETS ${PYTHON_LIBRARY_NAME}
         DESTINATION "${EPHOTOSYNTHESIS_INSTALL_PYTHONDIR}"

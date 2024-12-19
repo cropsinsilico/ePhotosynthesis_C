@@ -323,7 +323,7 @@ jobs:
         run: |
           cd build
           cmake --build . --target pyPhotosynthesis ${{ env.BUILD_ARGS }}
-          cmake --install . --prefix /home/runner/miniconda3/envs/ephoto
+          cmake --install . --prefix /home/runner/miniconda3/envs/ephoto --component Python
 
       ###################################
       # Test Python
