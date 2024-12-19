@@ -137,28 +137,33 @@ void python::exportDrivers() {
     bp::scope driverScope = driverModule;
     bp::class_<std::vector<double> >("stl_vector_double")
             .def(bp::vector_indexing_suite<std::vector<double> >());
+#define ADD_DRIVER_METHODS(mod)                                         \
+    .def("run", &drivers::mod ## Driver::run)                           \
+        .def("setup", &drivers::mod ## Driver::setup)                   \
+        .def("getResults", &drivers::mod ## Driver::getResults)         \
+        .def_readwrite("abstol", &drivers::mod ## Driver::abstol)       \
+        .def_readwrite("reltol", &drivers::mod ## Driver::reltol)       \
+        .def_readwrite("start", &drivers::mod ## Driver::start)         \
+        .def_readwrite("step", &drivers::mod ## Driver::step)           \
+        .def_readwrite("endtime", &drivers::mod ## Driver::endtime)     \
+        .def_readwrite("initialStep", &drivers::mod ## Driver::initialStep) \
+        .def_readwrite("time", &drivers::mod ## Driver::time)           \
+        .def_readwrite("maxStep", &drivers::mod ## Driver::maxStep)     \
+        .def_readwrite("results", &drivers::mod ## Driver::results)
     bp::class_<DriverWrap, boost::noncopyable>("Driver", bp::no_init)
-            .def("run", &drivers::Driver::run)
-            .def("setup", bp::pure_virtual(&drivers::Driver::setup))
-            .def("getResults", bp::pure_virtual(&drivers::Driver::getResults))
-            .def("MB", bp::pure_virtual(&drivers::Driver::MB));
+        .def("run", &drivers::Driver::run)
+        .def("setup", bp::pure_virtual(&drivers::Driver::setup))
+        .def("getResults", bp::pure_virtual(&drivers::Driver::getResults))
+        .def("MB", bp::pure_virtual(&drivers::Driver::MB));
     bp::class_<drivers::EPSDriver, bp::bases<DriverWrap>, boost::noncopyable>("EPSDriver", bp::init<Variables*, double, double, double, int, double, double, std::size_t, double, double, bool>()[bp::with_custodian_and_ward_postcall<0,2>()])
-            .def("run", &drivers::EPSDriver::run)
-            .def("setup", &drivers::EPSDriver::setup)
-            .def("getResults", &drivers::EPSDriver::getResults);
+        ADD_DRIVER_METHODS(EPS);
     bp::class_<drivers::trDynaPSDriver, bp::bases<DriverWrap>, boost::noncopyable>("trDynaPSDriver", bp::init<Variables*, double, double, double, int, double, double, std::size_t, double, bool>()[bp::with_custodian_and_ward_postcall<0,2>()])
-            .def("run", &drivers::trDynaPSDriver::run)
-            .def("setup", &drivers::trDynaPSDriver::setup)
-            .def("getResults", &drivers::trDynaPSDriver::getResults);
+        ADD_DRIVER_METHODS(trDynaPS);
     bp::class_<drivers::DynaPSDriver, bp::bases<DriverWrap>, boost::noncopyable>("DynaPSDriver", bp::init<Variables*, double, double, double, int, double, double, std::size_t, double, bool>()[bp::with_custodian_and_ward_postcall<0,2>()])
-            .def("run", &drivers::DynaPSDriver::run)
-            .def("setup", &drivers::DynaPSDriver::setup)
-            .def("getResults", &drivers::DynaPSDriver::getResults);
+        ADD_DRIVER_METHODS(DynaPS);
     bp::class_<drivers::CMDriver, bp::bases<DriverWrap>, boost::noncopyable>("CMDriver", bp::init<Variables*, double, double, double, int, double, double, bool>()[bp::with_custodian_and_ward_postcall<0,2>()])
-            .def("run", &drivers::CMDriver::run)
-            .def("setup", &drivers::CMDriver::setup)
-            .def("getResults", &drivers::CMDriver::getResults);
-
+        ADD_DRIVER_METHODS(CM);
+#undef ADD_DRIVER_METHODS
 }
 
 #endif

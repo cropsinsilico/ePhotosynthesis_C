@@ -229,17 +229,16 @@ class test(BuildSubTask):
             pytest_flags += ['-v']
         if args.only_python:
             args.with_python = True
-        if args.with_python:
-            assert not args.dont_install
-            # kwargs.setdefault('env', {})
-            # kwargs['env'].setdefault(
-            #     'PYTHONPATH', os.environ.get('PYTHONPATH', ''))
-            # kwargs['env']['PYTHONPATH'] = os.pathsep.join([
-            #     x for x in
-            #     [args.install_dir,
-            #      kwargs['env']['PYTHONPATH']]
-            #     if x
-            # ])
+        if args.with_python and args.dont_install:
+            kwargs.setdefault('env', {})
+            kwargs['env'].setdefault(
+                'PYTHONPATH', os.environ.get('PYTHONPATH', ''))
+            kwargs['env']['PYTHONPATH'] = os.pathsep.join([
+                x for x in
+                [args.build_dir,
+                 kwargs['env']['PYTHONPATH']]
+                if x
+            ])
         if args.only_python:
             testdir = os.path.join(_source_dir, 'tests', 'python')
             cmds = [f"python -m pytest {' '.join(pytest_flags)} {testdir}"]

@@ -11,14 +11,19 @@
 #ifdef SUNDIALS_CONTEXT_REQUIRED
 std::shared_ptr<SUNContext> ePhotosynthesis::global_context(NULL);
 
+SUNContext* ePhotosynthesis::create_sundials_context() {
+    SUNContext* context = new SUNContext();
+    SUNErrCode error_code = SUNContext_Create(SUN_COMM_NULL, context);
+    if (error_code) {
+        throw std::runtime_error("SUNContext_Create failed: " +
+                                 std::string(SUNGetErrMsg(error_code)));
+    }
+    return context;
+}
+
 void ePhotosynthesis::init_global_sundials_context() {
     if (!global_context) {
-        SUNContext* context = new SUNContext();
-        SUNErrCode error_code = SUNContext_Create(SUN_COMM_NULL, context);
-        if (error_code) {
-            throw std::runtime_error("SUNContext_Create failed: " +
-                                     std::string(SUNGetErrMsg(error_code)));
-        }
+        SUNContext* context = create_sundials_context();
         global_context.reset(context);
         std::atexit(cleanup_global_sundials_context);
     }
@@ -37,11 +42,17 @@ using namespace ePhotosynthesis;
 
 #ifdef SUNDIALS_CONTEXT_REQUIRED
 
-Variables::Variables(SUNContext* ctx) : _context(), _context_flags(0) {
+Variables::Variables(SUNContext* ctx, const int flags) :
+  _context(), _context_flags(flags) {
     if (_context == nullptr) {
-        init_global_sundials_context();
-        _context = global_context;
-        _context_flags |= CONTEXT_FLAG_GLOBAL;
+        if (flags & CONTEXT_FLAG_GLOBAL) {
+            std::cerr << "Using global context" << std::endl;
+            init_global_sundials_context();
+            _context = global_context;
+            _context_flags |= CONTEXT_FLAG_GLOBAL;
+        } else {
+            _context.reset(create_sundials_context());
+        }
     } else {
         _context.reset(ctx);
     }
@@ -55,6 +66,13 @@ Variables::Variables(const Variables* other) :
   _context(other->_context), _context_flags(other->_context_flags) {
     *this = *other;
 }
+Variables::~Variables() {
+    if (!(_context_flags & CONTEXT_FLAG_GLOBAL)) {
+        if (_context.use_count() == 1)
+          SUNContext_Free(_context.get());
+        _context.reset();
+    }
+}
 #else // SUNDIALS_CONTEXT_REQUIRED
 Variables::Variables() {}
 Variables::Variables(const Variables& other) : Variables() {
@@ -63,6 +81,7 @@ Variables::Variables(const Variables& other) : Variables() {
 Variables::Variables(const Variables* other) : Variables() {
     *this = *other;
 }
+Variables::~Variables() {}
 #endif // SUNDIALS_CONTEXT_REQUIRED
 
 Variables* Variables::deepcopy() const {

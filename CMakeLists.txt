@@ -550,24 +550,36 @@ if(BUILD_PYTHON)
              COMMAND pytest -svx ${PROJECT_SOURCE_DIR}/tests/python)
 
     # Installation
+    # set(PYTHON_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR})
+    cmake_path(
+        APPEND CMAKE_CURRENT_BINARY_DIR ${PYTHON_PACKAGE_NAME}
+        OUTPUT_VARIABLE PYTHON_BUILD_DIR
+    )
     cmake_path(
         APPEND Python_SITEARCH ${PYTHON_PACKAGE_NAME}
-        OUTPUT_VARIABLE EPHOTOSYNTHESIS_INSTALL_PYTHONDIR
+        OUTPUT_VARIABLE PYTHON_INSTALL_DIR
     )
     message(STATUS "Python_SITEARCH = ${Python_SITEARCH}")
     message(STATUS "PYTHON_PACKAGE_NAME = ${PYTHON_PACKAGE_NAME}")
-    message(STATUS "EPHOTOSYNTHESIS_INSTALL_PYTHONDIR = ${EPHOTOSYNTHESIS_INSTALL_PYTHONDIR}")
+    message(STATUS "PYTHON_INSTALL_DIR = ${PYTHON_INSTALL_DIR}")
+    message(STATUS "PYTHON_BUILD_DIR = ${PYTHON_BUILD_DIR}")
     install(
         TARGETS ${PYTHON_LIBRARY_NAME}
-        DESTINATION "${EPHOTOSYNTHESIS_INSTALL_PYTHONDIR}"
+        DESTINATION "${PYTHON_INSTALL_DIR}"
         COMPONENT Python
-        EXCLUDE_FROM_ALL
     )
-    configure_file(cmake/__init__.py.in __init__.py @ONLY)
+    set_target_properties(
+        ${PYTHON_LIBRARY_NAME} PROPERTIES
+        LIBRARY_OUTPUT_DIRECTORY ${PYTHON_BUILD_DIR}
+        RUNTIME_OUTPUT_DIRECTORY ${PYTHON_BUILD_DIR}
+    )
+    configure_file(
+        cmake/__init__.py.in
+        ${PYTHON_BUILD_DIR}/__init__.py @ONLY
+    )
     install(
-        FILES ${CMAKE_CURRENT_BINARY_DIR}/__init__.py
-        DESTINATION "${EPHOTOSYNTHESIS_INSTALL_PYTHONDIR}"
+        FILES ${PYTHON_BUILD_DIR}/__init__.py
+        DESTINATION "${PYTHON_INSTALL_DIR}"
         COMPONENT Python
-        EXCLUDE_FROM_ALL
     )
 endif()

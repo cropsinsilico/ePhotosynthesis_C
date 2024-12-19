@@ -84,7 +84,7 @@ arr Driver::run() {
             y_ptr[i] = constraints[i];
         realtype t0 = start;
 
-        CVodeMem *cmem;
+        CVodeMem *cmem = nullptr;
         try {
             cmem = &CVodeMem::create();
             cmem->cvode_mem_init(this, t0, y);
@@ -160,6 +160,10 @@ arr Driver::run() {
 Driver::~Driver() {
     if (origVars != nullptr)
         delete origVars;
+    CVodeMem *cmem = nullptr;
+    cmem = &CVodeMem::create();
+    cmem->cvode_mem_free();
+    cvode_mem = nullptr;
 }
 
 int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {

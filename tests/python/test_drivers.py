@@ -5,21 +5,6 @@ import ePhotosynthesis
 from ePhotosynthesis import Variables
 
 
-def test_Variables():
-    x = Variables()
-    assert not x.useC3
-
-
-def test_Modules():
-    assert hasattr(ePhotosynthesis, 'modules')
-    ePhotosynthesis.modules.CM.setTestSucPath(1)
-    ePhotosynthesis.modules.PR.setRUBISCOTOTAL(3)
-
-
-def test_drivers():
-    assert hasattr(ePhotosynthesis, 'drivers')
-
-
 @pytest.fixture(scope="module")
 def datadir():
     testsdir = os.path.dirname(os.path.dirname(__file__))
@@ -55,62 +40,99 @@ def fname_expected_output(datadir):
     return wrapped_fname_expected_output
 
 
-@pytest.fixture
-def default_vars():
-    x = Variables()
-    x.RUBISCOMETHOD = 2
-    return x
+@pytest.fixture(scope="module")
+def driver_vars(fname_InputEvn, fname_InputATPCost,
+                fname_InputEnzyme, fname_InputGRNC):
+
+    def wrapped_driver_vars(driver):
+        x = Variables()
+        x.readParam(fname_InputEvn)
+        if driver == "EPS":
+            # x.useC3 = True
+            x.readParam(fname_InputATPCost)
+            x.readEnzymeAct(fname_InputEnzyme)
+            x.readGRN(fname_InputGRNC)
+            x.RUBISCOMETHOD = 2
+            x.debuglevel = 0
+        ePhotosynthesis.modules.PR.setRUBISCOTOTAL(3)
+        return x
+
+    return wrapped_driver_vars
 
 
-@pytest.fixture
-def C3_vars(fname_InputEvn, fname_InputATPCost,
-            fname_InputEnzyme, fname_InputGRNC):
+@pytest.fixture(scope="module")
+def driver_args(driver_vars):
+
+    def wrapped_driver_args(driver, theVars=None):
+        if theVars is None:
+            theVars = driver_vars(driver)
+        startTime = 0.0
+        stepSize = 1.0
+        endTime = 5000.0
+        maxSubsteps = 750
+        atol = 1e-5
+        rtol = 1e-4
+        param = 1
+        ratio = 1.0
+        Tp = theVars.Tp
+        showWarn = False
+        if driver == "EPS":
+            return (theVars, startTime, stepSize, endTime, maxSubsteps,
+                    atol, rtol, param, ratio, Tp, showWarn)
+        elif driver == "CM":
+            return (theVars, startTime, stepSize, endTime, maxSubsteps,
+                    atol, rtol, showWarn)
+        else:
+            return (theVars, startTime, stepSize, endTime, maxSubsteps,
+                    atol, rtol, param, ratio, showWarn)
+
+    return wrapped_driver_args
+
+
+@pytest.fixture(scope="module")
+def driver_class():
+
+    def wrapped_driver_class(driver):
+        return getattr(ePhotosynthesis.drivers, f"{driver}Driver")
+
+    return wrapped_driver_class
+
+
+def test_Variables():
     x = Variables()
-    x.useC3 = True
-    x.readParam(fname_InputEvn)
-    x.readParam(fname_InputATPCost)
-    x.readEnzymeAct(fname_InputEnzyme)
-    x.readGRN(fname_InputGRNC)
-    x.RUBISCOMETHOD = 2
-    x.debuglevel = 0
+    assert not x.useC3
+
+
+def test_Modules():
+    assert hasattr(ePhotosynthesis, 'modules')
+    ePhotosynthesis.modules.CM.setTestSucPath(1)
     ePhotosynthesis.modules.PR.setRUBISCOTOTAL(3)
-    return x
 
 
-def test_EPS_error(default_vars):
-    startTime = 0.0
-    stepSize = 1.0
-    endTime = 5000.0
-    maxSubsteps = 750
-    atol = 1e-5
-    rtol = 1e-4
-    param = 1
-    ratio = 1.0
-    Tp = 25.0
-    showWarn = False
-    with pytest.raises(RuntimeError):
-        ePhotosynthesis.drivers.EPSDriver(
-            default_vars, startTime, stepSize, endTime, maxSubsteps,
-            atol, rtol, param, ratio, Tp, showWarn)
-
-
-def test_EPS(C3_vars, fname_expected_output):
-    startTime = 0.0
-    stepSize = 1.0
-    endTime = 5000.0
-    maxSubsteps = 750
-    atol = 1e-5
-    rtol = 1e-4
-    param = 1
-    ratio = 1.0
-    Tp = C3_vars.Tp
-    showWarn = False
-    # TODO: Actually read the file?
-    # expectedFile = fname_expected_output("EPS")
-    expected = np.array([30.3325, 33.50430665237476, 3.1717867365048513])
-    x = ePhotosynthesis.drivers.EPSDriver(
-        C3_vars, startTime, stepSize, endTime, maxSubsteps,
-        atol, rtol, param, ratio, Tp, showWarn)
+@pytest.mark.parametrize("driver", ["trDynaPS", "DynaPS", "CM", "EPS"])
+def test_drivers(driver, driver_class, driver_args, fname_expected_output):
+    assert hasattr(ePhotosynthesis, 'drivers')
+    cls = driver_class(driver)
+    args = driver_args(driver)
+    expectedFile = fname_expected_output(driver)
+    kws = {'skiprows': 1, 'delimiter': ','}
+    if driver == "EPS":
+        kws['skiprows'] = 0
+    expected = np.loadtxt(expectedFile, **kws)
+    x = cls(*args)
     result = list(x.run())
+    if driver == "EPS":
+        result = [result[0]]
+    else:
+        result.insert(0, args[0].TestLi)
     actual = np.array(result)
-    np.testing.assert_allclose(actual, expected, rtol=rtol, atol=atol)
+    np.testing.assert_allclose(actual, expected,
+                               rtol=x.reltol, atol=x.abstol)
+    del args
+    del driver
+
+
+def test_EPS_error(driver_vars, driver_args):
+    args = driver_args("EPS", theVars=driver_vars("CM"))
+    with pytest.raises(RuntimeError):
+        ePhotosynthesis.drivers.EPSDriver(*args)

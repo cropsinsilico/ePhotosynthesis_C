@@ -19,7 +19,7 @@ All of the packages required to build & run the library, tests, & documentation 
 - [GoogleTest](https://google.github.io/googletest/) - (optional) needed to build the tests
 - [LCOV](https://wiki.documentfoundation.org/Development/Lcov) - (optional) needed to get test coverage
 
-### Building
+### Building the C++ library & executable
 This can be built using a conda environment. This way, the cmake should be able to find the boost and sundials dependencies automatically. When using conda to manage the dependencies:
 
 1. Be sure to activate the related env the next time after login.
@@ -37,6 +37,33 @@ cmake --build .
 cmake --install . (if desired)
 ```
 
+### Building the Python extension
+Similar to building the C++ library & executable, with the exception that the Python cmake target (pyPhotosynthesis) should be passed to the build command and the ``Python`` component should be specified in the install command if only the Python extension should be installed.
+
+```
+mkdir build
+cd build
+cmake .. -DBUILD_PYTHON:BOOL=ON
+cmake --build . --target pyPhotosynthesis
+cmake --install . --component Python (if desired)
+```
+
+The Python extension has the name ``ePhotosynthesis`` and can be used to run drivers from Python. E.g.
+
+```
+import ePhotosynthesis
+theVars = ePhotosynthesis.Variables()
+theVars.readParam("InputEvn.txt")
+theVars.readParam("InputATPCost.txt")
+theVars.readEnzymeAct("InputEnzyme.txt")
+theVars.readGRN("InputGRNC.txt")
+theVars.RUBISCOMETHOD = 2
+theVars.debuglevel = 0
+ePhotosynthesis.modules.PR.setRUBISCOTOTAL(3)
+drv = ePhotosynthesis.drivers.EPSDriver(theVars, 0, 1, 5000, 750, 1e-5, 1e-4, 1, 1 25.0)
+results = drv.run()
+```
+
 ### Documentation
 The documentation is not automatically built. To build the docs run the following from the build directory (requires Doxygen)
 ```
@@ -47,7 +74,7 @@ cmake --build . --target docs
 This will build the documentation and put the resulting files in the doc directory.
 
 ### Tests
-The tests are not automatically built. To build and run the tests, can be run the following from the build directory (requires GoogleTest)
+The tests are not automatically built. To build and run the tests, can be run the following from the build directory (requires GoogleTest). If ``-DBUILD_PYTHON:BOOL=ON`` is passed to the configuration step, the Python tests will also be run.
 ```
 cmake .. -DBUILD_TESTS:BOOL=ON
 cmake --build .

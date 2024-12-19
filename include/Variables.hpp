@@ -61,6 +61,12 @@ namespace ePhotosynthesis {
 extern std::shared_ptr<SUNContext> global_context; //!< Global context
 
 /**
+   Create a new SUNContext instance.
+   \returns SUNContext instance.
+*/
+SUNContext* create_sundials_context();
+
+/**
    Initialize the global SUNContext.
 */
 void init_global_sundials_context();
@@ -69,7 +75,7 @@ void init_global_sundials_context();
    Destroy the global SUNContext.
  */
 void cleanup_global_sundials_context();
-  
+
 #endif // SUNDIALS_CONTEXT_REQUIRED
     
 /**
@@ -90,8 +96,10 @@ public:
     /**
        Construct a new variables instance for a given sundials context
        \param[in, out] ctx Sundials context.
+       \param[in] flags Bitwise CONTEXT_FLAGS flags describing how the
+         context was/should be created.
     */
-    Variables(SUNContext* ctx);
+    Variables(SUNContext* ctx, const int flags = 0);
     /**
        Get the shared pointer to the Sundials context.
        \return Sundials context shared pointer.
@@ -111,6 +119,8 @@ public:
        Construct a new variables instance for a given sundials context
     */
     Variables();
+    /** Destructor */
+    ~Variables();
     /**
        Copy constructor for a pointer to another variables instance.
          Some variables are not included in the default copy (e.g. alfa, 
