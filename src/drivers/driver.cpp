@@ -164,9 +164,11 @@ Driver::~Driver() {
     cmem = &CVodeMem::create();
     cmem->cvode_mem_free();
     cvode_mem = nullptr;
+#ifdef SUNDIALS_CONTEXT_REQUIRED
     if (_context.use_count() == 1)
         SUNContext_Free(_context.get());
     _context.reset();
+#endif // SUNDIALS_CONTEXT_REQUIRED
 }
 
 int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
