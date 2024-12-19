@@ -48,7 +48,6 @@ def driver_vars(fname_InputEvn, fname_InputATPCost,
         x = Variables()
         x.readParam(fname_InputEvn)
         if driver == "EPS":
-            # x.useC3 = True
             x.readParam(fname_InputATPCost)
             x.readEnzymeAct(fname_InputEnzyme)
             x.readGRN(fname_InputGRNC)

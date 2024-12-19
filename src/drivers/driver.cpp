@@ -164,6 +164,9 @@ Driver::~Driver() {
     cmem = &CVodeMem::create();
     cmem->cvode_mem_free();
     cvode_mem = nullptr;
+    if (_context.use_count() == 1)
+        SUNContext_Free(_context.get());
+    _context.reset();
 }
 
 int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {

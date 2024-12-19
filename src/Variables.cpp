@@ -46,7 +46,6 @@ Variables::Variables(SUNContext* ctx, const int flags) :
   _context(), _context_flags(flags) {
     if (_context == nullptr) {
         if (flags & CONTEXT_FLAG_GLOBAL) {
-            std::cerr << "Using global context" << std::endl;
             init_global_sundials_context();
             _context = global_context;
             _context_flags |= CONTEXT_FLAG_GLOBAL;
