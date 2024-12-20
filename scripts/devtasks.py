@@ -175,9 +175,7 @@ class BuildSubTask(SubTask):
         cls.prefix_path_args(args, ['build_dir', 'install_dir'])
         super(BuildSubTask, cls).adjust_args(args)
 
-    def __init__(self, args, config_args=None, build_args=None,
-                 install_args=None, build_kwargs=None, build_env=None,
-                 **kwargs):
+    def __init__(self, args, **kwargs):
         self.adjust_args(args)
         kwargs.setdefault('cwd', args.build_dir)
         super(BuildSubTask, self).__init__(args, **kwargs)
