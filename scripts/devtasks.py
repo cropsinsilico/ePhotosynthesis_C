@@ -94,6 +94,10 @@ class SubTask:
     _drivers = ['trDynaPS', 'DynaPS', 'CM', 'EPS']
     _driver_map = {(i + 1): x for i, x in enumerate(_drivers)}
 
+    @classmethod
+    def adjust_args(cls, args):
+        pass
+
     def __init__(self, args, dont_cleanup=False, **kwargs):
         self.current_args = args
         self.dont_cleanup = dont_cleanup
@@ -103,10 +107,6 @@ class SubTask:
 
     def __del__(self):
         self.cleanup_files()
-
-    @classmethod
-    def adjust_args(cls, args):
-        pass
 
     def cleanup_files(self):
         if self.dont_cleanup or self.current_args.dont_cleanup:
@@ -170,29 +170,40 @@ class SubTask:
 
 class BuildSubTask(SubTask):
 
+    @classmethod
+    def adjust_args(cls, args):
+        cls.prefix_path_args(args, ['build_dir', 'install_dir'])
+        super(BuildSubTask, cls).adjust_args(args)
+
     def __init__(self, args, config_args=None, build_args=None,
                  install_args=None, build_kwargs=None, build_env=None,
                  **kwargs):
         self.adjust_args(args)
+        kwargs.setdefault('cwd', args.build_dir)
+        super(BuildSubTask, self).__init__(args, **kwargs)
+
+    def run_commands(self, args, config_args=None, build_args=None,
+                     install_args=None, build_kwargs=None, build_env=None,
+                     **kwargs):
         if build_kwargs is None:
             build_kwargs = {}
         build_kwargs.setdefault('env', build_env)
         if not args.dont_build:
             build(args, config_args=config_args, build_args=build_args,
                   install_args=install_args, **build_kwargs)
-        kwargs.setdefault('cwd', args.build_dir)
-        super(BuildSubTask, self).__init__(args, **kwargs)
-
-    @classmethod
-    def adjust_args(cls, args):
-        cls.prefix_path_args(args, ['build_dir', 'install_dir'])
+        super(BuildSubTask, self).run_commands(args, **kwargs)
 
 
 class build(SubTask):
 
+    @classmethod
+    def adjust_args(cls, args):
+        BuildSubTask.adjust_args(args)
+        super(build, cls).adjust_args(args)
+
     def __init__(self, args, config_args=None, build_args=None,
                  install_args=None, **kwargs):
-        BuildSubTask.adjust_args(args)
+        self.adjust_args(args)
         if config_args is None:
             config_args = []
         if build_args is None:
@@ -287,6 +298,12 @@ class update_readme(BuildSubTask):
 
 class test(BuildSubTask):
 
+    @classmethod
+    def adjust_args(cls, args):
+        if args.refresh_output:
+            args.preserve_output = True
+        super(test, cls).adjust_args(args)
+
     def __init__(self, args, test_flags=None,
                  config_args=None, build_args=None, **kwargs):
         self.adjust_args(args)
@@ -348,12 +365,6 @@ class test(BuildSubTask):
                     else:
                         print(f"MISSING OUTPUT {fsrc}")
 
-    @classmethod
-    def adjust_args(cls, args):
-        if args.refresh_output:
-            args.preserve_output = True
-        super(test, cls).adjust_args(args)
-
 
 class ephoto(BuildSubTask):
 
@@ -408,21 +419,6 @@ class ephoto(BuildSubTask):
 
 class compare_matlab(BuildSubTask):
 
-    def __init__(self, args, config_args=None, build_args=None):
-        self.adjust_args(args)
-        if config_args is None:
-            config_args = []
-        if build_args is None:
-            build_args = []
-        cmds = []
-        super(compare_matlab, self).__init__(
-            args, cmds=cmds, config_args=config_args,
-            build_args=build_args, cwd=_source_dir,
-        )
-        args.rebuild = False
-        args.dont_build = True
-        self.compare(args)
-
     @classmethod
     def adjust_args(cls, args):
         args.make_equivalent_to_matlab = True
@@ -449,6 +445,21 @@ class compare_matlab(BuildSubTask):
         assert args.output_param_base != args.matlab_output_param_base
         if not os.path.isdir(args.matlab_output_dir):
             os.mkdir(args.matlab_output_dir)
+
+    def __init__(self, args, config_args=None, build_args=None):
+        self.adjust_args(args)
+        if config_args is None:
+            config_args = []
+        if build_args is None:
+            build_args = []
+        cmds = []
+        super(compare_matlab, self).__init__(
+            args, cmds=cmds, config_args=config_args,
+            build_args=build_args, cwd=_source_dir,
+        )
+        args.rebuild = False
+        args.dont_build = True
+        self.compare(args)
 
     def compare(self, args):
         if args.driver == 0:
@@ -612,6 +623,15 @@ class compare_matlab(BuildSubTask):
 
 class docs(BuildSubTask):
 
+    @classmethod
+    def adjust_args(cls, args):
+        args.with_asan = False
+        args.build_type = 'Debug'
+        args.dont_build = False
+        args.dont_install = True
+        args.only_python = False
+        super(docs, cls).adjust_args(args)
+
     def __init__(self, args, config_args=None, build_args=None,
                  install_args=None):
         self.adjust_args(args)
@@ -629,15 +649,6 @@ class docs(BuildSubTask):
             build_args=build_args,
             install_args=install_args,
         )
-
-    @classmethod
-    def adjust_args(cls, args):
-        args.with_asan = False
-        args.build_type = 'Debug'
-        args.dont_build = False
-        args.dont_install = True
-        args.only_python = False
-        super(docs, cls).adjust_args(args)
 
 
 class coverage(BuildSubTask):

@@ -145,6 +145,103 @@ protected:
         return W::_MB(t, conditions, theVars);
     }
 };
+
+class TempParamFile {
+public:
+  TempParamFile(const std::string& n,
+                const MODULE& m = MODULE_NONE,
+                const PARAM_TYPE& pt = PARAM_TYPE_NONE,
+                const double& v = 999.0) :
+    names(), value(v), fd(-1) {
+      addName(n, m, pt);
+      create_filename();
+      write();
+  }
+  TempParamFile(const std::vector<std::string>& n,
+                const MODULE& m = MODULE_NONE,
+                const PARAM_TYPE& pt = PARAM_TYPE_NONE,
+                const double& v = 999.0) :
+    names(), value(v), fd(-1) {
+      addNames(n, m, pt);
+      create_filename();
+      write();
+  }
+  ~TempParamFile() {
+      remove();
+  }
+  void create_filename() {
+#ifdef _WIN32
+      int err = _mktemp_s(filename, 16);
+      if (err != 0)
+          throw std::runtime_error("Error creating file: " +
+                                   std::string(filename));
+#else
+      fd = mkstemp(filename);
+      if (fd < 0)
+          throw std::runtime_error("Error creating file: " +
+                                   std::string(filename));
+#endif
+  }
+  void remove() {
+#ifndef _WIN32
+      if (fd >= 0)
+          close(fd);
+#endif
+      if (exists()) {
+          std::remove(filename);
+      }
+  }
+  bool exists() const {
+      std::ifstream infile(filename);
+      return infile.good();
+  }
+  void clear() {
+      names.clear();
+  }
+  void addName(const std::string& n,
+               const MODULE& m = MODULE_NONE,
+               const PARAM_TYPE& pt = PARAM_TYPE_NONE) {
+      std::string n_cpy = n;
+      if (m != MODULE_NONE && pt != PARAM_TYPE_NONE) {
+          n_cpy = utils::enum_key2string(m) + "::" +
+            utils::enum_key2string(pt) + "::" + n_cpy;
+      }
+      names.push_back(n_cpy);
+  }
+  void addNames(const std::vector<std::string>& n,
+                const MODULE& m = MODULE_NONE,
+                const PARAM_TYPE& pt = PARAM_TYPE_NONE) {
+      for (typename std::vector<std::string>::const_iterator it = n.begin();
+           it != n.end(); it++) {
+          addName(*it, m, pt);
+      }
+  }
+  void write() {
+      remove();
+      std::ofstream fd;
+      fd.open(filename);
+      for (typename std::vector<std::string>::const_iterator it = names.begin();
+           it != names.end(); it++) {
+          fd << *it << "\t" << value << std::endl;
+      }
+      fd.close();
+  }
+  void write(const std::string& n) {
+      clear();
+      addName(n);
+      write();
+  }
+  void write(const std::vector<std::string>& new_names) {
+      clear();
+      addNames(new_names);
+      write();
+  }
+  double value;
+  std::vector<std::string> names;
+  char filename[16] = "tempParamXXXXXX";
+  int fd;
+  // std::string filename;
+};
 }  // namespace test
 }  // namspace ePhotosynthesis
 

@@ -452,7 +452,6 @@ std::size_t Variables::max_value_width_all() const {
 	if (ipad > pad) pad = ipad
 	VARS_ITER_MACRO(MAX_WIDTH, );
 #undef MAX_WIDTH
-	std::cerr << "VARS max_value_width_all = " << pad << std::endl;
     }
     return pad;
 }
@@ -460,7 +459,8 @@ std::size_t Variables::max_value_width_all() const {
 std::string Variables::parseVar(const std::string& k,
 				MODULE& mod, PARAM_TYPE& pt,
 				const bool& isGlymaID,
-				const bool& use_1st_match) {
+				const bool& use_1st_match,
+                                const bool& allow_no_match) {
     mod = MODULE_NONE;
     pt = PARAM_TYPE_NONE;
     std::string split="::", var1, var2, name;
@@ -500,6 +500,8 @@ std::string Variables::parseVar(const std::string& k,
 	    }
 	    name = k.substr(idx2 + split.size());
 	}
+    } else {
+        name = k;
     }
     if (mod == MODULE_NONE || pt == PARAM_TYPE_NONE) {
 	std::vector<MODULE> check_modules;
@@ -514,11 +516,14 @@ std::string Variables::parseVar(const std::string& k,
 	  check_param_types = ALL_PARAM_TYPE;
 	std::vector<std::pair<MODULE, PARAM_TYPE> > matches;
 	for (std::vector<MODULE>::const_iterator it_mod = check_modules.begin();
-	     it_mod != ALL_MODULE.end(); it_mod++) {
+	     it_mod != check_modules.end(); it_mod++) {
 	    if (use_1st_match && !matches.empty())
 		break;
 	    for (std::vector<PARAM_TYPE>::const_iterator it_pt = check_param_types.begin();
-		 it_pt != ALL_PARAM_TYPE.end(); it_pt++) {
+		 it_pt != check_param_types.end(); it_pt++) {
+                if ((((*it_mod) == MODULE_ALL) || ((*it_pt) == PARAM_TYPE_VARS)) &&
+                    (((*it_mod) != MODULE_ALL) || ((*it_pt) != PARAM_TYPE_VARS)))
+                    continue;
 		if (use_1st_match && !matches.empty())
 		    break;
 		if (hasVar(*it_mod, *it_pt, name, isGlymaID)) {
@@ -551,31 +556,58 @@ std::string Variables::parseVar(const std::string& k,
 			    "\". Use a module & parameter type prefix to disambiguate [matches = ",
 			    ss.str(), "]");
 	} else {
+            if (allow_no_match)
+                return "";
 	    ERROR_VALUE_SET("Could not find variable matching string \"",
 			    k, "\"");
 	}
     }
     DEBUG_VALUE_SET("parseVar[", k, ", ", mod, ", ", pt, ", ", name);
+    if (mod != MODULE_NONE && pt != PARAM_TYPE_NONE && !name.empty())
+        return GET_VALUE_SET_CLASS(mod, pt)->getAliasedName(name);
     return name;
 }
 
 bool Variables::hasVar(const MODULE& mod, const PARAM_TYPE& pt,
 		       const std::string& name,
 		       const bool& isGlymaID) {
-    return GET_VALUE_SET_CLASS(mod, pt)->has(name, isGlymaID);
+    ValueSetClass_t* vs = getValueSetClass(mod, pt, true);
+    if (!vs) return false;
+    return vs->has(name, isGlymaID);
 }
 bool Variables::hasVar(const std::string& k,
 		       const bool& isGlymaID) {
     std::string name;
     MODULE mod = MODULE_NONE;
     PARAM_TYPE pt = PARAM_TYPE_NONE;
-    name = parseVar(k, mod, pt, isGlymaID);
+    name = parseVar(k, mod, pt, isGlymaID, false, true);
+    if (name.empty())
+      return false;
     return hasVar(mod, pt, name, isGlymaID);
 }
 int Variables::getKey(const MODULE& mod, const PARAM_TYPE& pt,
 		      const std::string& name,
 		      const bool& isGlymaID) {
     return GET_VALUE_SET_CLASS(mod, pt)->fromNameWithAliases(name, isGlymaID);
+}
+double Variables::getDefault(const MODULE& mod, const PARAM_TYPE& pt,
+                             const std::string& name,
+                             const bool& isGlymaID) {
+    if (mod == MODULE_ALL && pt == PARAM_TYPE_VARS)
+      return ValueSetClass::getDefault(name, isGlymaID);
+    return GET_VALUE_SET_CLASS(mod, pt)->getDefault(name, isGlymaID);
+}
+double Variables::getDefault(const MODULE& mod, const PARAM_TYPE& pt,
+                             const int& key) {
+    return GET_VALUE_SET_CLASS(mod, pt)->getDefault(key);
+}
+double Variables::getDefault(const std::string& k,
+                             const bool& isGlymaID) {
+    std::string name;
+    MODULE mod = MODULE_NONE;
+    PARAM_TYPE pt = PARAM_TYPE_NONE;
+    name = parseVar(k, mod, pt, isGlymaID);
+    return getDefault(mod, pt, name, isGlymaID);
 }
 void Variables::setDefault(const MODULE& mod, const PARAM_TYPE& pt,
 			   const std::string& name, const double& value,
@@ -680,11 +712,12 @@ ValueSetClass_t* Variables::getValueSetClass(const MODULE& mod,
 			  pt, MOD2PT, VARS_RETURN_CALL, VARS_CLASS_CALL,
 			  getValueSetClass, ());
     }
-    if ((!no_error_on_invalid) || force_error)
+    if ((!no_error_on_invalid) || force_error) {
       ERROR_VALUE_SET(error_context, "Invalid combination of module (",
 		      utils::enum_key2string(mod),
 		      ") and parameter type (",
 		      utils::enum_key2string(pt), ")");
+    }
     return nullptr;
 }
 ValueSet_t* Variables::getValueSet(const MODULE& mod,
@@ -779,79 +812,100 @@ void Variables::cleanupValueSet(const MODULE& mod,
     GET_VALUE_SET_CLASS(mod, pt)->cleanupStaticMembers(noChildren);
 }
 
-void Variables::readParam(const std::string& fname) {
-    std::map<std::string, std::string> inputs;
-    readParam(fname, inputs);
-}
-void Variables::readParam(const std::string& fname,
-                          std::map<std::string, std::string>& inputs) {
+void Variables::_readParam(const std::string& fname,
+                           std::map<std::string, std::string>& inputs,
+                           Variables* theVars,
+                           const std::string& context) {
     if (fname.empty())
-      return;
+        return;
     std::cout << "PARAMETER FILE PROVIDED: " << fname << std::endl;
 #define convD(x) static_cast<double>(std::stof(x, nullptr))
 #define convI(x) std::stoi(x, nullptr)
 #define convB(x) ((bool)(std::stoi(x, nullptr)))
-#define setInputVar(dst, x, dummy) this-> dst = x
-#define setModVar(dst, x, mod) modules::mod::set ## dst(x)
-#define assign(src, dst, set, conv, ...)                                \
-    {                                                                   \
-      std::string ikey, ival;                                           \
-      if (inputs.count(#src) > 0) {                                     \
-          ikey = #src;                                                  \
-      } else if (inputs.count(#dst) > 0) {                              \
-          ikey = #dst;                                                  \
-      }                                                                 \
-      if (!ikey.empty()) {                                              \
-          ival = inputs.at(ikey);                                       \
-          if (inputs.count(#dst "_SET") > 0) {                          \
-              if (ival != inputs.at(#dst "_SET")) {                     \
-                  std::cout << "readParam: " <<                         \
-                    "Parameter \"" << #dst << "\" already set." <<      \
-                    " Using previous value." << std::endl <<            \
-                    "    Previous value :    " <<                       \
-                    inputs.at(#dst "_SET") << std::endl <<              \
-                    "    Discarded value:    " << ival << std::endl;    \
-              }                                                         \
-              inputs.erase(ikey);                                       \
-          } else {                                                      \
-              set(dst, conv(inputs.at(#src)), __VA_ARGS__);             \
-              std::cout << "readParam: " <<                             \
-                "Parameter \"" << #dst << "\" (" <<                     \
-                ival << ") read from \"" << ikey <<                     \
-                "\"" << std::endl;                                      \
-              inputs[#dst "_SET"] = ival;                               \
-          }                                                             \
-      }                                                                 \
-}
-#define assignInputVar(src, dst, conv)                                  \
-    assign(src, dst, setInputVar, conv, )
-#define assignModVar(src, mod, dst, conv)                               \
-    assign(src, dst, setModVar, conv, mod)
-#define assignInputVarD(src, dst) assignInputVar(src, dst, convD)
-#define assignInputVarI(src, dst) assignInputVar(src, dst, convI)
-#define setInputVarB(src, mod, dst) assignModVar(src, mod, dst, convB)
+#define CASE_I(mod_, pt_, src, dst)                                     \
+    if (it->first == #src || it->first == (#mod_ "::" #pt_ "::" #src) || \
+        it->first == #dst || it->first == (#mod_ "::" #pt_ "::" #dst)) { \
+        name = #dst;                                                    \
+        valueI = convI(it->second);                                     \
+        mod = MODULE_ ## mod_;                                          \
+        pt = PARAM_TYPE_ ## pt_;                                        \
+    }
+#define ASSIGN_I(mod_, pt_, src, dst)                                   \
+    if (name == #dst) {                                                 \
+        if (theVars) {                                                  \
+            theVars-> dst = valueI;                                     \
+        } else {                                                        \
+            throw std::runtime_error("Cannot set a default for the parameter \"" #dst "\""); \
+        }                                                               \
+    }
+#define ASSIGN_MODB(mod_, pt_, src, dst)                                \
+    if (name == #dst) {                                                 \
+      modules::mod_::set ## dst(valueI);                                \
+    }
     readFile(fname, inputs);
-    assignInputVarD(CO2, CO2_in);
-    assignInputVarD(Air_CO2, CO2_in);
-    assignInputVarD(PAR, TestLi);
-    assignInputVarD(Radiation_PAR, TestLi);
-    assignInputVarD(ATPCost, TestATPCost);
-    assignInputVarD(WeatherTemperature, Tp);
-    assignInputVarD(ProteinTotalRatio, ProteinTotalRatio);
-    assignInputVarI(GRNC, GRNC);
-    setInputVarB(SucPath, CM, TestSucPath);
-    assignInputVarI(PAR_in_Wpm2, PAR_in_Wpm2);
-#undef setInputVarB
-#undef assignInputVarD
-#undef assignInputVarI
-#undef assignModVar
-#undef assignInputVar
-#undef assign
-#undef setInputVar
-#undef setModVar
+    std::map<std::string, std::string> add_values;
+    std::vector<std::string> rm_values;
+    MODULE mod = MODULE_NONE;
+    PARAM_TYPE pt = PARAM_TYPE_NONE;
+    std::string name, name_SET, name_FULL;
+    double valueD = 0.0;
+    int valueI = 0;
+    static std::string set_suffix = "_SETXXX";
+
+    for (typename std::map<std::string, std::string>::const_iterator it = inputs.begin();
+         it != inputs.end(); it++) {
+        if (__endswith(it->first, set_suffix))
+            continue;
+        mod = MODULE_NONE;
+        pt = PARAM_TYPE_NONE;
+        CASE_I(ALL, VARS, GRNC, GRNC)
+        else CASE_I(ALL, VARS, PAR_in_Wpm2, PAR_in_Wpm2)
+        else CASE_I(CM, MOD, SucPath, TestSucPath)
+        else {
+            name = parseVar(it->first, mod, pt, false, false, true);
+            if (name.empty()) {
+                std::cout << context << ": String \"" << it->first <<
+                  "\" does not match any known parameters." << std::endl;
+                continue;
+            }
+            valueD = convD(it->second);
+        }
+        name_FULL = utils::enum_key2string(mod) + "::" +
+            utils::enum_key2string(pt) + "::" + name;
+        name_SET = name_FULL + set_suffix;
+        if (inputs.find(name_SET) == inputs.end()) {
+            std::cout << context << ": Parameter \"" << name_FULL <<
+                "\" (" << it->second << ") read from \"" << it->first <<
+                "\"" << std::endl;
+            add_values[name_SET] = it->second;
+            ASSIGN_I(ALL, VARS, GRNC, GRNC)
+            else ASSIGN_I(ALL, VARS, PAR_in_Wpm2, PAR_in_Wpm2)
+            else ASSIGN_MODB(CM, MOD, SucPath, TestSucPath)
+            else if (theVars) {
+                theVars->setVar(mod, pt, name, valueD);
+            } else {
+                setDefault(mod, pt, name, valueD);
+            }
+        } else {
+            std::cout << context << ": Parameter \"" << name_FULL <<
+                "\" already set. Using previous value." << std::endl <<
+                "    Previous value :    " << inputs.at(name_SET) << std::endl <<
+                "    Discarded value:    " << it->second << std::endl;
+            rm_values.push_back(name);
+        }
+        rm_values.push_back(it->first);
+    }
+    for (typename std::vector<std::string>::iterator it = rm_values.begin();
+         it != rm_values.end(); it++) {
+        inputs.erase(*it);
+    }
+    inputs.insert(add_values.begin(), add_values.end());
 #undef convD
 #undef convI
 #undef convB
+#undef CASE_I
+#undef ASSIGN_I
+#undef ASSIGN_MODB
 }
 void Variables::readEnzymeAct(const std::string& fname) {
     if (fname.empty())
@@ -897,4 +951,21 @@ void Variables::readGRN(const std::string& fname) {
                                      + ")");
         }
     }
+}
+
+void Variables::readDefaults(const std::string& fname) {
+    std::map<std::string, std::string> inputs;
+    _readParam(fname, inputs, nullptr, "readDefaults");
+}
+void Variables::readDefaults(const std::string& fname,
+                             std::map<std::string, std::string>& inputs) {
+    _readParam(fname, inputs, nullptr, "readDefaults");
+}
+void Variables::readParam(const std::string& fname) {
+    std::map<std::string, std::string> inputs;
+    _readParam(fname, inputs, this, "readParam");
+}
+void Variables::readParam(const std::string& fname,
+                          std::map<std::string, std::string>& inputs) {
+    _readParam(fname, inputs, this, "readParam");
 }

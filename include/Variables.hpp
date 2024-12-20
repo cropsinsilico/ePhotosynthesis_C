@@ -328,12 +328,15 @@ public:
        \param[in] use_1st_match If true, the first variable matching the
          provided string will be returned. If false and there is more
 	 than one match, an error will be thrown.
+       \param[in] allow_no_match If true, an empty string will be
+         returned if there is not match.
        \returns Variable name extracted from k.
      */
     static std::string parseVar(const std::string& k,
 				MODULE& mod, PARAM_TYPE& pt,
 				const bool& isGlymaID = false,
-				const bool& use_1st_match=false);
+				const bool& use_1st_match=false,
+                                const bool& allow_no_match=false);
     /**
        Check if a value set has a variable that matches the provided
          string.
@@ -375,6 +378,38 @@ public:
     static int getKey(const MODULE& mod, const PARAM_TYPE& pt,
 		      const std::string& name,
 		      const bool& isGlymaID = false);
+    
+    /**
+       Get the default value for a variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] name String identifying the variable.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
+     */
+    static double getDefault(const MODULE& mod, const PARAM_TYPE& pt,
+                             const std::string& name,
+                             const bool& isGlymaID = false);
+    /**
+       Get the default value for a variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] key Key identifying the variable.
+     */
+    static double getDefault(const MODULE& mod, const PARAM_TYPE& pt,
+                             const int& key);
+    /**
+       Set the default value for a variable in a value set.
+       \param[in] k String identifying the variable.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
+     */
+    static double getDefault(const std::string& k,
+                             const bool& isGlymaID = false);
 
     /**
        Set the default value for a variable in a value set.
@@ -570,16 +605,35 @@ public:
      */
     static void cleanupValueSet(const MODULE& mod, const PARAM_TYPE& pt,
                                 const bool noChildren = false);
-
+ private:
+    static void _readParam(const std::string& fname,
+                           std::map<std::string, std::string>& inputs,
+                           Variables* theVars = nullptr,
+                           const std::string& context="_readParam");
+ public:
+    
+    /**
+       Read default parameters from a file.
+       \param[in] fname File to read.
+     */
+    static void readDefaults(const std::string& fname);
+    /**
+       Read default parameters from a file, checking for duplicates
+       \param[in] fname File to read.
+       \param[in, out] inputs Map that read variables should be checked
+         against for duplicates and copied into.
+     */
+    static void readDefaults(const std::string& fname,
+                             std::map<std::string, std::string>& inputs);
     /**
        Read parameters from a file.
-       \param[in] File to read.
+       \param[in] fname File to read.
      */
     void readParam(const std::string& fname);
     /**
        Read parameters from a file, checking for duplicates
-       \param[in] File to read.
-       \param[in, out] Map that read variables should be checked
+       \param[in] fname File to read.
+       \param[in, out] inputs Map that read variables should be checked
          against for duplicates and copied into.
      */
     void readParam(const std::string& fname,

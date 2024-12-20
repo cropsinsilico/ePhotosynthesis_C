@@ -98,6 +98,16 @@ namespace ePhotosynthesis {
     }
     return (it != v.end());
   }
+  inline bool __startswith(std::string const& value,
+                           std::string const& prefix) {
+    if (prefix.size() > value.size()) return false;
+    return std::equal(prefix.begin(), prefix.end(), value.begin());
+  }
+  inline bool __endswith(std::string const& value,
+                         std::string const& suffix) {
+    if (suffix.size() > value.size()) return false;
+    return std::equal(suffix.rbegin(), suffix.rend(), value.rbegin());
+  }
   template<typename T>
   std::string __make_string(const T& x,
 			    typename std::enable_if<!std::is_same<T, const char[]>::value >::type* = 0)
@@ -600,6 +610,9 @@ namespace ePhotosynthesis {
   method(has, bool,							\
 	 ((const std::string&, name, ),                                 \
           (const bool&, isGlymaID, false)), false, const)               \
+  /** \copydoc ValueSetBase::getAliasedName */                          \
+  method(getAliasedName, std::string,                                   \
+         ((const std::string&, name, )), "", const)                     \
   /** \copydoc ValueSetBase::fromNameWithAliases */			\
   method(fromNameWithAliases, int,					\
 	 ((const std::string&, name, ),                                 \
@@ -1920,6 +1933,15 @@ namespace ePhotosynthesis {
       out << utils::enum_key2string(module) << "::" <<
         utils::enum_key2string(param_type) << "::" << getName(k);
       return std::move(out).str();
+    }
+    /**
+       Get the name that an alias points to.
+       \param[in] name Alias to get name for.
+       \return Aliased key name.
+     */
+    static std::string getAliasedName(const std::string& name) {
+      EnumType k = fromNameWithAliases(name);
+      return getName(k);
     }
     /**
        Get the enum key corresponding to a name value also checking for
