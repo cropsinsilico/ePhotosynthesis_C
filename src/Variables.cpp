@@ -38,6 +38,8 @@ void ePhotosynthesis::cleanup_global_sundials_context() {
 
 using namespace ePhotosynthesis;
 
+DEFINE_VALUE_SET(Variables);
+
 #ifdef MAKE_EQUIVALENT_TO_MATLAB
 void Variables::_initDefaults() {
     setDefault(ValueSetClass::alpha1, 1.0, true);
@@ -801,15 +803,6 @@ void Variables::setRecord(ValueSet_t* x,
 	 it != conditionsC.end(); it++) {
 	conditions[it->first] = const_cast<ValueSet_t*>(it->second);
     }
-}
-
-void Variables::cleanupValueSets() {
-    VARS_ITER_ALL_CLASS(m, pt, cleanupValueSet, true);
-}
-void Variables::cleanupValueSet(const MODULE& mod,
-                                const PARAM_TYPE& pt,
-                                const bool noChildren) {
-    GET_VALUE_SET_CLASS(mod, pt)->cleanupStaticMembers(noChildren);
 }
 
 void Variables::_readParam(const std::string& fname,

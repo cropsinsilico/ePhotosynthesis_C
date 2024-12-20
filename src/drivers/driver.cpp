@@ -64,6 +64,10 @@ Driver::Driver(Variables *theVars, const double startTime,
 }
 
 arr Driver::run() {
+    if (origVars != nullptr) {
+        delete origVars;
+        origVars = nullptr;
+    }
     origVars = new Variables(inputVars);
     uint count = 0;
 

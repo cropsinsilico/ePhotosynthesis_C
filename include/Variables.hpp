@@ -591,20 +591,6 @@ public:
 				  const std::map<MODULE, const ValueSet_t*>& conditions = {},
 				  const std::string& error_context = "") const;
 
-    /**
-       Cleanup any static variables allocated for all registered value
-         sets.
-     */
-    static void cleanupValueSets();
-    /**
-       Cleanup any static variables allocated for a value set.
-       \param[in] mod Module associated with the value set.
-       \param[in] pt Parameter type associated with the value set.
-       \param[in] noChildren If true, child classes will not be cleaned
-         up.
-     */
-    static void cleanupValueSet(const MODULE& mod, const PARAM_TYPE& pt,
-                                const bool noChildren = false);
  private:
     static void _readParam(const std::string& fname,
                            std::map<std::string, std::string>& inputs,

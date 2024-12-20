@@ -30,9 +30,6 @@
 #include "enums/enums_utils.hpp"
 #include <iomanip>
 
-void cleanup_value_sets();
-void register_value_set_cleanup();
-
 #define CHECK_RATIO_IDX(act, exp, key)					\
   if (it->first == key && act != exp) {					\
     throw std::runtime_error("CHECK[" + utils::enum_key2string(key)	\
@@ -47,7 +44,7 @@ namespace ePhotosynthesis {
 #define DO_VALUE_SET_CHILD_CLASSES_MACRO(macro, iter, ...)		\
   if (!noChildren) {							\
     size_t iChild = 0;							\
-    for (std::vector<ValueSetClass_t*>::iter it = child_classes.begin(); \
+    for (std::vector<ValueSetClassWrapper>::iter it = child_classes.begin(); \
 	 it != child_classes.end(); it++, iChild++) {			\
       if (*it) {							\
 	macro((*it), __VA_ARGS__);					\
@@ -155,7 +152,7 @@ namespace ePhotosynthesis {
 
 #define VALUE_SET_PARENT(cls, par, mod, pt) ValueSet<cls, par, mod, pt>
 #define VALUE_SET_STATIC_PARENT(cls, par, mod, pt) ValueSetStatic<cls, par, mod, pt>
-  
+
 #define DECLARE_VALUE_SET_MEMBER_RECORD			\
   static const StaticMemberClass _adjustments
 #define DEFINE_VALUE_SET_MEMBER_RECORD(prefix, name)			\
@@ -182,7 +179,6 @@ namespace ePhotosynthesis {
   extern ValueSetStaticClassType<name>
   */
 #define DECLARE_VALUE_SET_CORE(name)				\
-  typedef _valueSetStaticMember<name> StaticMemberClass;	\
   DECLARE_VALUE_SET_MEMBER_RECORD;
 #define DECLARE_VALUE_SET_MEMBERS(name)				\
   FOR_EACH(DECLARE_VALUE_SET_MEMBER, EXPAND(MEMBERS_ ## name));	\
@@ -291,7 +287,6 @@ namespace ePhotosynthesis {
   public:
 #define DECLARE_VALUE_SET_STATIC_CORE(name, ...)		\
   DECLARE_VALUE_SET_STATIC_BASE(name, __VA_ARGS__)		\
-  typedef _valueSetStaticMember<name> StaticMemberClass;	\
   friend Value<name>;						\
   friend _valueSetStaticMember<name>;				\
   DECLARE_VALUE_SET_MEMBER_RECORD;
@@ -317,9 +312,6 @@ namespace ePhotosynthesis {
   public:
     _valueSetStaticMember() {
       T::initStaticMembers();
-    }
-    ~_valueSetStaticMember() {
-      T::cleanupStaticMembers();
     }
   };
 
@@ -564,14 +556,8 @@ namespace ePhotosynthesis {
   /** \copydoc ValueSetBase::initChildClasses */			\
   method(initChildClasses, void,                                        \
          ((const bool, noChildren, false)), , const)                    \
-  /** \copydoc ValueSetBase::cleanupChildClasses */			\
-  method(cleanupChildClasses, void,                                     \
-         ((const bool, noChildren, false)), , const)                    \
   /** \copydoc ValueSetBase::initStaticMembers */			\
   method(initStaticMembers, void,                                       \
-         ((const bool, noChildren, false)), , const)                    \
-  /** \copydoc ValueSetBase::cleanupStaticMembers */			\
-  method(cleanupStaticMembers, void,                                    \
          ((const bool, noChildren, false)), , const)                    \
   /** \copydoc ValueSetBase:selected */					\
   method(selected, bool, (), false, const)				\
@@ -868,6 +854,28 @@ namespace ePhotosynthesis {
 #undef DISABLE_METHOD
 #undef ADD_METHOD
   };
+
+  /**
+     Wrapper for handling destruction of ValueSet pointers.
+   */
+  template<typename T>
+  class ValueSetWrapperBase {
+  public:
+    ValueSetWrapperBase(T* ptr);
+    ValueSetWrapperBase(ValueSetWrapperBase&& other);
+    ~ValueSetWrapperBase();
+    ValueSetWrapperBase<T>& operator=(ValueSetWrapperBase&& other);
+    T* operator->();
+    const T* operator->() const;
+    T& operator*();
+    const T& operator*() const;
+    operator bool() const;
+  private:
+    T* ptr_;
+  };
+
+  typedef ValueSetWrapperBase<ValueSet_t> ValueSetWrapper;
+  typedef ValueSetWrapperBase<ValueSetClass_t> ValueSetClassWrapper;
   
   /**
      Template class to provide core methods for manipulating sets of
@@ -896,6 +904,7 @@ namespace ePhotosynthesis {
     typedef Value<BaseClass> ValueType; /**< Class for storing values */
     typedef typename std::map<EnumType, double*>::iterator iterator; /**< Iterator type for values in the set */
     typedef typename std::map<EnumType, double*>::const_iterator const_iterator; /**< Constant iterator type for values in the set */
+    typedef _valueSetStaticMember<T> StaticMemberClass;
     INHERIT_METHOD_ENUM(EnumBaseClass);
 
     /**
@@ -2377,7 +2386,7 @@ namespace ePhotosynthesis {
 	", NONVECT = " + stringNonvector();
       if (noChildren)
 	return out;
-      for (std::vector<ValueSetClass_t*>::const_iterator it = child_classes.begin();
+      for (std::vector<ValueSetClassWrapper>::const_iterator it = child_classes.begin();
 	   it != child_classes.end(); it++)
 	out += "\n\t" + (*it)->memberState();
       return out;
@@ -2389,13 +2398,13 @@ namespace ePhotosynthesis {
      */
     template<typename C>
     static void addChildClass() {
-      child_classes.push_back(new ValueSetClassType<C>());
+      child_classes.emplace_back(new ValueSetClassType<C>());
     }
 
     static int static_flags; /**< Bitwise flags describing the value set  static state */
     static std::map<EnumType, double> defaults; /**< Default values */
     static std::map<EnumType, double*> static_values; /**< Static values */
-    static std::vector<ValueSetClass_t*> child_classes; /**< Child classes */
+    static std::vector<ValueSetClassWrapper> child_classes; /**< Child classes */
     static const uint tab_size = 2;
 
     // Methods that call inheriting class methods
@@ -2411,24 +2420,6 @@ namespace ePhotosynthesis {
       static_flags |= VS_FLAG_INIT_CHILDREN;
     }
     /**
-       Clean up the child classes.
-       \param noChildren If true, children of child classes will not be
-         finalized.
-       Common, public interface for the private _cleanupChildClasses
-         method.
-     */
-    static void cleanupChildClasses(const bool noChildren = false) {
-      if (!(static_flags & VS_FLAG_INIT_CHILDREN)) return;
-      T::_cleanupChildClasses();
-      DO_VALUE_SET_CHILD_CLASSES(cleanupChildClasses, ());
-      for (std::size_t i = 0; i < child_classes.size(); i++) {
-	delete child_classes[i];
-	child_classes[i] = nullptr;
-      }
-      child_classes.clear();
-      static_flags &= ~VS_FLAG_INIT_CHILDREN;
-    }
-    /**
        Initialize the static class members including child classes.
        \param noChildren If true, child classes will not be initialized.
        Common, public interface for the private _initStaticMembers method.
@@ -2439,19 +2430,6 @@ namespace ePhotosynthesis {
       initChildClasses(true); // Children will be called in initStaticMembers
       DO_VALUE_SET_CHILD_CLASSES(initStaticMembers, ());
       static_flags |= VS_FLAG_INIT_STATIC;
-      register_value_set_cleanup();
-    }
-    /**
-       Finalize the static class members.
-       Common, public interface for the private _cleanupStaticMembers
-         method.
-     */
-    static void cleanupStaticMembers(const bool noChildren = false) {
-      if (!(static_flags & VS_FLAG_INIT_STATIC)) return;
-      T::_cleanupStaticMembers();
-      DO_VALUE_SET_CHILD_CLASSES(cleanupStaticMembers, ());
-      cleanupChildClasses(true);
-      static_flags &= ~VS_FLAG_INIT_STATIC;
     }
     /**
        Check if the value set is selected by the current driver.
@@ -2536,12 +2514,8 @@ namespace ePhotosynthesis {
     static void _initDefaults() {}
     /** Perform class specific child class initialization */
     static void _initChildClasses() {}
-    /** Perform class specific child class cleanup */
-    static void _cleanupChildClasses() {}
     /** Perform class specific static member initialization */
     static void _initStaticMembers() {}
-    /** Perform class specific static member cleanup */
-    static void _cleanupStaticMembers() {}
     /** Perform class specific value set selection */
     static void _select(const bool = true, const bool = false) {}
     /** Perform class specific actions to enable C3 */
@@ -2570,7 +2544,7 @@ namespace ePhotosynthesis {
   ValueSetBase<T, U, ID, PT>::static_values = {};
   
   template<class T, class U, MODULE ID, PARAM_TYPE PT>
-  std::vector<ValueSetClass_t*>
+  std::vector<ValueSetClassWrapper>
   ValueSetBase<T, U, ID, PT>::child_classes = {};
 
   /**
@@ -2824,7 +2798,7 @@ namespace ePhotosynthesis {
       //                        child_classes.size(),
       // 			") does not match the number of child pointers (",
       //                        children.size(), ")");
-      // std::vector<ValueSetClass_t*>::iterator itCls = child_classes.begin();
+      // std::vector<ValueSetClassWrapper>::iterator itCls = child_classes.begin();
       // for (std::vector<ValueSet_t**>::iterator it = children.begin();
       // 	   it != children.end(); it++, itCls++) {
       // 	if (**it) continue;
@@ -3464,7 +3438,7 @@ namespace ePhotosynthesis {
     }
     /** Get the constant iterator pointing to the start of the value set */
     // Inspection utilities
-    /** \copydoc ValueSetClass_t::max_value_width */
+    /** \copydoc ValueSet::max_value_width */
     static std::size_t max_value_width(bool noChildren = false) {
       static std::size_t out = 0;
       static std::size_t outBase = 0;

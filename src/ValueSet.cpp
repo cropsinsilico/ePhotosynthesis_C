@@ -6,18 +6,9 @@
 
 using namespace ePhotosynthesis;
 
-void cleanup_value_sets() {
-  Variables::cleanupValueSets();
-}
-void register_value_set_cleanup() {
-  static bool cleanup_value_sets_registered = false;
-  if (!cleanup_value_sets_registered) {
-    std::atexit(cleanup_value_sets);
-    cleanup_value_sets_registered = true;
-  }
-}
-
-/* ValueSet_t */
+//////////////////////////////////////////////////////////
+// ValueSet_t
+//////////////////////////////////////////////////////////
 bool ValueSet_t::equals(const ValueSet_t& b0,
 			const bool noChildren) const {
   UNUSED(noChildren);
@@ -72,7 +63,9 @@ ADD_METHODS_VALUE_SET_T_STATIC(ADD_METHOD_STATIC)
 #undef ADD_METHOD_STATIC
 
 
-/* ValueSetClass_t */
+//////////////////////////////////////////////////////////
+// ValueSetClass_t 
+//////////////////////////////////////////////////////////
 #define ADD_METHOD_BOTH(name, ...)
 #define ADD_METHOD(name, retT, args, retV, suffix)	\
   retT ValueSetClass_t::name VS_ARGS_T_NODEF(args) suffix {             \
@@ -106,7 +99,9 @@ ADD_METHODS_VALUE_SET_T_STATIC(ADD_METHOD)
 #undef ADD_METHOD_BOTH
 #undef ADD_METHOD
 
-/* ValueSetClassType */
+//////////////////////////////////////////////////////////
+// ValueSetClassType
+//////////////////////////////////////////////////////////
 #define ADD_METHOD(name, retT, args, retV, suffix)                      \
   template<typename T>                                                  \
   retT ValueSetClassType<T>::                                           \
@@ -136,7 +131,9 @@ ADD_METHODS_VALUE_SET_T_STATIC(ADD_METHOD)
 #undef ADD_METHOD
 
 
-/* ValueSetStaticClassType */
+//////////////////////////////////////////////////////////
+// ValueSetStaticClassType
+//////////////////////////////////////////////////////////
 #define ADD_METHOD(name, retT, args, retV, suffix)              \
   template<typename T>                                          \
   retT ValueSetStaticClassType<T>::                             \
@@ -159,6 +156,65 @@ ADD_METHODS_VALUE_SET_T_STATIC(ADD_METHOD)
 
 #undef DISABLE_METHOD
 #undef ADD_METHOD
+
+//////////////////////////////////////////////////////////
+// ValueSetWrapperBase
+//////////////////////////////////////////////////////////
+template<typename T>
+ValueSetWrapperBase<T>::ValueSetWrapperBase(T* ptr) :
+ptr_(ptr) {
+}
+template<typename T>
+ValueSetWrapperBase<T>::ValueSetWrapperBase(ValueSetWrapperBase&& other) :
+  ptr_(nullptr) {
+  std::swap(other.ptr_, ptr_);
+}
+template<typename T>
+ValueSetWrapperBase<T>::~ValueSetWrapperBase() {
+  if (ptr_) {
+    delete ptr_;
+    ptr_ = nullptr;
+  }
+}
+template<typename T>
+ValueSetWrapperBase<T>& ValueSetWrapperBase<T>::operator=(ValueSetWrapperBase&& other) {
+  if (this != &other) {
+    this->~ValueSetWrapperBase();
+    ptr_ = other.ptr_;
+    other.ptr_ = nullptr;
+  }
+  return *this;
+}
+template<typename T>
+T* ValueSetWrapperBase<T>::operator->() {
+  if (ptr_ == nullptr)
+    throw std::runtime_error("T pointer is null");
+  return ptr_;
+}
+template<typename T>
+const T* ValueSetWrapperBase<T>::operator->() const {
+  if (ptr_ == nullptr)
+    throw std::runtime_error("T pointer is null");
+  return ptr_;
+}
+template<typename T>
+T& ValueSetWrapperBase<T>::operator*() {
+  return *ptr_;
+}
+template<typename T>
+const T& ValueSetWrapperBase<T>::operator*() const {
+  return *ptr_;
+}
+template<typename T>
+ValueSetWrapperBase<T>::operator bool() const {
+  return (bool)(ptr_);
+}
+
+// Explicit template instantiation
+namespace ePhotosynthesis {
+  template class ValueSetWrapperBase<ValueSet_t>;
+  template class ValueSetWrapperBase<ValueSetClass_t>;
+}
 
 // #define VS_EXPLICIT_TEMPLATE_INSTANTIATION_(m, pt)   \
 //   template class ValueSetClassType<VARS_CLASS_VAR(m, pt)>;

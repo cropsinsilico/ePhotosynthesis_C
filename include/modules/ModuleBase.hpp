@@ -202,7 +202,7 @@ public:
     static void _select(const bool x = true,
 			const bool noChildren = false) {
 	ParentClass::_select(x, noChildren);
-	for (std::vector<ValueSetClass_t*>::const_iterator it = added_classes.begin();
+	for (std::vector<ValueSetClassWrapper>::const_iterator it = added_classes.begin();
 	     it != added_classes.end(); it++)
 	  if (*it)
 	    (*it)->select(x, noChildren);
@@ -211,7 +211,7 @@ public:
     static void _enableC3(const bool x = true,
 			  const bool noChildren = false) {
 	ParentClass::_enableC3(x, noChildren);
-	for (std::vector<ValueSetClass_t*>::const_iterator it = added_classes.begin();
+	for (std::vector<ValueSetClassWrapper>::const_iterator it = added_classes.begin();
 	     it != added_classes.end(); it++)
 	  if (*it)
 	    (*it)->enableC3(x, noChildren);
@@ -221,7 +221,7 @@ public:
 	ParentClass::_reset(noChildren);
 	if (ParentClass::child_classes.size() > 0)
 	  return;
-	for (std::vector<ValueSetClass_t*>::const_iterator it = added_classes.begin();
+	for (std::vector<ValueSetClassWrapper>::const_iterator it = added_classes.begin();
 	     it != added_classes.end(); it++)
 	  if (*it) {
 	    (*it)->reset(noChildren);
@@ -234,7 +234,7 @@ public:
      */
     template<typename C>
     static void addClass() {
-	added_classes.push_back(new ValueSetClassType<C>());
+	added_classes.emplace_back(new ValueSetClassType<C>());
     }
 
     /**
@@ -247,20 +247,8 @@ public:
 	T::_initAddedClasses();
     }
 
-    /**
-       Clean up the set of added classes.
-     */
-    static void cleanupAddedClasses() {
-        if (added_classes.empty()) return;
-        for (std::size_t i = 0; i < added_classes.size(); i++) {
-            delete added_classes[i];
-            added_classes[i] = nullptr;
-        }
-        added_classes.clear();
-    }
-
     /** Wrappers for value set classes associated with this module */
-    static std::vector<ValueSetClass_t*> added_classes;
+    static std::vector<ValueSetClassWrapper> added_classes;
     
  protected:
     ModuleBase() {}
@@ -383,20 +371,10 @@ public:
 	initAddedClasses();
     }
 
-    /** \copydoc ValueSetBase::_cleanupStaticMembers */
-    static void _cleanupStaticMembers() {
-        ParentClass::_cleanupStaticMembers();
-	for (std::vector<ValueSetClass_t*>::const_iterator it = added_classes.begin();
-	     it != added_classes.end(); it++)
-            if (*it)
-                (*it)->cleanupStaticMembers();
-        cleanupAddedClasses();
-    }
-
 };
 
   template<class T, class U, MODULE ID>
-  std::vector<ValueSetClass_t*> ModuleBase<T, U, ID>::added_classes = {};
+  std::vector<ValueSetClassWrapper> ModuleBase<T, U, ID>::added_classes = {};
 
 }  // namespace modules
 }  // namespace ePhotosynthesis
