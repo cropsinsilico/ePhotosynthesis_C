@@ -69,7 +69,7 @@ void ParamSet(Variables *theVars);
   */
 void SYSInitial(Variables *theVars);
 
-double TargetFunVal(Variables *theVars);
+double TargetFunVal(const Variables *theVars);
 
 void makeFluxTR(Variables *theVars);
 

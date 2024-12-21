@@ -155,7 +155,7 @@ inline CalcData *alloc_calc_data() {
   Base class for all drivers. These classes handle taking the input data, feeding it to the ODE solver,
   iterating until the solver reaches its stopping time or fails, and returning the results.
   */
-class Driver : protected DriverParam {
+class Driver : public DriverParam {
 public:
 
     /**
@@ -209,7 +209,7 @@ public:
        \param[in] inputVars Current variable state.
        \param[in] k Name of variable to return.
      */
-    double getVar(Variables* inputVars, const std::string& k);
+    double getVar(const Variables* inputVars, const std::string& k);
   
     /**
       Runs the solver one more time on the intermediate results to get the solution at the end time

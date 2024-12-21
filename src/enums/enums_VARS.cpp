@@ -104,6 +104,7 @@ const std::map<ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::string> Val
 };
 template<> 
 const std::map<std::string, ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::aliases = {
+  {"ATPCost"           , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestATPCost},
   {"CO2"               , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_in},
   {"Air_CO2"           , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_in},
   {"PAR"               , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi},

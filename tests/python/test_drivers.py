@@ -53,6 +53,8 @@ def driver_vars(fname_InputEvn, fname_InputATPCost,
             x.readGRN(fname_InputGRNC)
             x.RUBISCOMETHOD = 2
             x.debuglevel = 0
+        elif driver == "CM":
+            x.RUBISCOMETHOD = 2
         ePhotosynthesis.modules.PR.setRUBISCOTOTAL(3)
         return x
 
@@ -65,25 +67,18 @@ def driver_args(driver_vars):
     def wrapped_driver_args(driver, theVars=None):
         if theVars is None:
             theVars = driver_vars(driver)
-        startTime = 0.0
-        stepSize = 1.0
-        endTime = 5000.0
-        maxSubsteps = 750
-        atol = 1e-5
-        rtol = 1e-4
-        param = 1
-        ratio = 1.0
-        Tp = theVars.Tp
-        showWarn = False
-        if driver == "EPS":
-            return (theVars, startTime, stepSize, endTime, maxSubsteps,
-                    atol, rtol, param, ratio, Tp, showWarn)
-        elif driver == "CM":
-            return (theVars, startTime, stepSize, endTime, maxSubsteps,
-                    atol, rtol, showWarn)
-        else:
-            return (theVars, startTime, stepSize, endTime, maxSubsteps,
-                    atol, rtol, param, ratio, showWarn)
+        # startTime = 0.0
+        # stepSize = 1.0
+        # endTime = 5000.0
+        # maxSubsteps = 750
+        # atol = 1e-5
+        # rtol = 1e-4
+        # param = 1
+        # ratio = 1.0
+        # showWarn = False
+        # return (theVars, startTime, stepSize, endTime, maxSubsteps,
+        #         atol, rtol, param, ratio, showWarn, [])
+        return (theVars, )
 
     return wrapped_driver_args
 
@@ -109,7 +104,8 @@ def test_Modules():
 
 
 @pytest.mark.parametrize("driver", ["trDynaPS", "DynaPS", "CM", "EPS"])
-def test_drivers(driver, driver_class, driver_args, fname_expected_output):
+def test_drivers(driver, driver_class, driver_args,
+                 fname_expected_output):
     assert hasattr(ePhotosynthesis, 'drivers')
     cls = driver_class(driver)
     args = driver_args(driver)
@@ -119,7 +115,7 @@ def test_drivers(driver, driver_class, driver_args, fname_expected_output):
         kws['skiprows'] = 0
     expected = np.loadtxt(expectedFile, **kws)
     x = cls(*args)
-    result = list(x.run())
+    result = x.run()
     if driver == "EPS":
         result = [result[0]]
     else:

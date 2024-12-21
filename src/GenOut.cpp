@@ -268,6 +268,10 @@ void ePhotosynthesis::makeFluxTR(Variables *theVars) {
     theVars->FluxTR[141] = theVars->RROEA_VEL.getLastData().ve2RuACT;
     for (std::size_t x = 0; x < 36; x++)
         theVars->FluxTR[x] = theVars->FluxTR[x] * theVars->AVR;
+    if (!theVars->VolRatioStCyto) {
+        for (std::size_t x = 14; x < 23; x++)
+            theVars->FluxTR[x] = theVars->FluxTR[x] * 4. / 9.;
+    }
     theVars->FluxTR[46] = theVars->FluxTR[46] * theVars->AVR;
     theVars->FluxTR[64] = theVars->FluxTR[64] * theVars->AVR / 2.;
 

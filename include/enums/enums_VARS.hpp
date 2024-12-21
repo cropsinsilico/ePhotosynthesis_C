@@ -14,7 +14,7 @@ enum class ENUM_ALL_VARS : int {
     PS12ratio             ,  //!< [CALC] Calcualted from input_PSI & input_PSIIcore in SYSInitial
     ADP                   ,
     Pi                    ,  //!< [CALC] Pi used when useC3 is true and EPS module selected
-    TestATPCost           ,  //!< Extra ATP cost when useC3 is false (in units per area)
+    TestATPCost           ,  //!< [ALIASES={ATPCost}] Extra ATP cost when useC3 is false (in units per area)
     CO2_in                ,  //!< [CALC,ALIASES={CO2,Air_CO2}] Air CO2 concentration in ppm
     TestLi_Wps            ,  //!< [CALC] Light intensity (in units of W s^{-1})
     TestLi                ,  //!< [CALC,ALIASES={PAR,Radiation_PAR}] Light intensity (in units of umoles m^{-2} s^{-1})
@@ -52,7 +52,7 @@ enum ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type : int {
     PS12ratio             ,  //!< [CALC] Calcualted from input_PSI & input_PSIIcore in SYSInitial
     ADP                   ,
     Pi                    ,  //!< [CALC] Pi used when useC3 is true and EPS module selected
-    TestATPCost           ,  //!< Extra ATP cost when useC3 is false (in units per area)
+    TestATPCost           ,  //!< [ALIASES={ATPCost}] Extra ATP cost when useC3 is false (in units per area)
     CO2_in                ,  //!< [CALC,ALIASES={CO2,Air_CO2}] Air CO2 concentration in ppm
     TestLi_Wps            ,  //!< [CALC] Light intensity (in units of W s^{-1})
     TestLi                ,  //!< [CALC,ALIASES={PAR,Radiation_PAR}] Light intensity (in units of umoles m^{-2} s^{-1})

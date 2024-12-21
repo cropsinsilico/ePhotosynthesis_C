@@ -153,13 +153,13 @@ TEST_F(TargetFunValTest, TestGeneral) {
     theVars->record = true;
     EXPECT_NE(0., TargetFunVal(theVars));
     for (size_t i = 0; i < theVars->PS_VEL.size(); i++) {
-        EXPECT_NE(1.5, theVars->PS_VEL[i].v1);
-        EXPECT_NE(2.6, theVars->PS_VEL[i].v5);
+        EXPECT_DOUBLE_EQ(1.5, theVars->PS_VEL[i].v1);
+        EXPECT_DOUBLE_EQ(2.6, theVars->PS_VEL[i].v5);
         EXPECT_DOUBLE_EQ(0., theVars->PS_VEL[i].v6);
     }
     for (size_t i = 0; i < theVars->PR_VEL.size(); i++) {
-        EXPECT_NE(1.5, theVars->PR_VEL[i].v111);
-        EXPECT_NE(2.6, theVars->PR_VEL[i].v113);
+        EXPECT_DOUBLE_EQ(1.5, theVars->PR_VEL[i].v111);
+        EXPECT_DOUBLE_EQ(2.6, theVars->PR_VEL[i].v113);
         EXPECT_DOUBLE_EQ(0., theVars->PR_VEL[i].v123);
     }
 }

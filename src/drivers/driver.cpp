@@ -52,6 +52,7 @@ Driver::Driver(Variables *theVars, const double startTime,
   this->_context = theVars->context_ptr();
 #endif // SUNDIALS_CONTEXT_REQUIRED
   this->inputVars = theVars;
+  theVars->finalizeInputs();
   initialStep = stepSize;
   maxStep = 20. * step;
   data = nullptr;
@@ -145,8 +146,8 @@ arr Driver::run() {
             time = t;
             _lastStep = true;
 	    _dumpStep = true;
+	    getOutputVars(inputVars); // Before reset called from getResults
             getResults();
-	    getOutputVars(inputVars);
         }
 
         SUNNonlinSolFree(NLS);
@@ -221,7 +222,7 @@ void Driver::writeOutputTable(std::ostream& s) const {
     s << std::endl;
 }
 
-double Driver::getVar(Variables* inputVars, const std::string& k) {
+double Driver::getVar(const Variables* inputVars, const std::string& k) {
     if (k == "Light intensity")
 	return inputVars->TestLi;
     else if (k == "Vc")

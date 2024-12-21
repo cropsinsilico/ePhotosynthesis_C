@@ -144,7 +144,8 @@ class SubTask:
                     v = suffix.join(os.path.splitext(v0))
                 setattr(args, k, v)
 
-    def run_commands(self, args, cmds=None, output_file=None, **kwargs):
+    def run_commands(self, args, cmds=None, output_file=None,
+                     allow_error=False, **kwargs):
         if cmds is None:
             cmds = []
         if not cmds:
@@ -159,7 +160,7 @@ class SubTask:
             kwargs.update(capture_output=True)
         for x in cmds:
             ires = subprocess.run(x.split(), **kwargs)
-            if ires.returncode != 0:
+            if ires.returncode != 0 and not allow_error:
                 raise RuntimeError(f'Error in running \'{x}\'')
             if output_file:
                 output_str += ires.stdout
@@ -671,7 +672,8 @@ class preprocess(SubTask):
             f'gcc -E {args.file} -I {_source_dir}/include/'
         ]
         super(preprocess, self).__init__(args, cmds=cmds,
-                                         output_file=args.output_file)
+                                         output_file=args.output_file,
+                                         allow_error=True)
 
 
 if __name__ == "__main__":

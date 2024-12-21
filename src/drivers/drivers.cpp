@@ -24,12 +24,13 @@ ePhotosynthesis::drivers::create_driver(const DriverType& driverChoice,
 					const double reltol,
 					const std::size_t para,
 					const double ratio,
-					const bool showWarn) {
+					const bool showWarn,
+                                        const std::vector<std::string>& outVars) {
   ePhotosynthesis::drivers::Driver* out = nullptr;
 #define CASE_DRIVER(drv)						\
   out = new ePhotosynthesis::drivers::drv ## Driver(theVars, begintime, stepsize,	\
 						    stoptime, maxSubSteps, abstol, \
-						    reltol, para, ratio, showWarn)
+						    reltol, para, ratio, showWarn, outVars)
   SWITCH_DRIVER(driverChoice, CASE_DRIVER);
 #undef CASE_DRIVER
   return out;

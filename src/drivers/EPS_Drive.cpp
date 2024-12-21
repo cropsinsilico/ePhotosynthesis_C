@@ -49,6 +49,7 @@ EPSDriver::EPSDriver(Variables *theVars, const double startTime,
 #ifdef INCDEBUG
     ePhotosynthesis::conditions::EPSCondition::setTop();
 #endif
+    theVars->useC3 = true;
     init(theVars->useC3);
     if (outputVars.empty()) {
       outputVars.push_back("CO2AR");
@@ -128,6 +129,8 @@ void EPSDriver::getResults() {
     arr temp = EPS::MB(time, eps_int_con, inputVars);
     results = zeros(1);
     const double Arate = TargetFunVal(inputVars);
-    delete eps_int_con;
     results[0] = Arate;
+    
+    delete eps_int_con;
+    IniModelCom(inputVars);
 }

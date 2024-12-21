@@ -29,8 +29,7 @@
 
 using namespace ePhotosynthesis;
 
-const bool VolRatioStCyto = true;
-double ePhotosynthesis::TargetFunVal(Variables *theVars) {
+double ePhotosynthesis::TargetFunVal(const Variables *theVars) {
     if (!theVars->record) {
       if (theVars->RuACT_EPS_com)
 	return (theVars->RuACT_Vel.v6_1 - theVars->PR_Vel.v131) * theVars->AVR;
@@ -38,23 +37,17 @@ double ePhotosynthesis::TargetFunVal(Variables *theVars) {
     }
 
 
-    const double PSVCOEFF = 30.;
+    const double PSVCOEFF = theVars->AVR;
 
-    for (std::size_t i = 0; i < theVars->PS_VEL.size(); i++)
-        theVars->PS_VEL[i] *= PSVCOEFF;
-
-    //PSVEL = PS_VEL';// --unused
     double ratio;
-    if (VolRatioStCyto) {
+    if (theVars->VolRatioStCyto) {
         ratio = PSVCOEFF;
     } else {
         ratio = PSVCOEFF * 4. / 9.;
     }
-    for (std::size_t i = 0; i < theVars->PR_VEL.size(); i++)
-        theVars->PR_VEL[i] *= ratio;
 
-    const double a = theVars->PS_VEL.getLastData().v1;
-    const double b = theVars->PR_VEL.getLastData().v1in;
+    const double a = theVars->PS_VEL.getLastData().v1 * PSVCOEFF;
+    const double b = theVars->PR_VEL.getLastData().v1in * ratio;
 
     const double CO2AR = a - b;
 

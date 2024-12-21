@@ -89,7 +89,6 @@ Variables::Variables() :
 Variables::Variables(const Variables& other) :
   ValueSet(other) {
     copyInstance(other);
-    *this = other;
 }
 Variables::~Variables() {}
 #endif // SUNDIALS_CONTEXT_REQUIRED
@@ -102,10 +101,13 @@ void Variables::__copyMembers(const Variables& other) {
     _context = other._context;
     _context_flags = other._context_flags;
 #endif // SUNDIALS_CONTEXT_REQUIRED
+    inputsFinalized = other.inputsFinalized;
     record = other.record;
     GP = other.GP;
     GRNC = other.GRNC;
     GRNT = other.GRNT;
+    PAR_in_Wpm2 = other.PAR_in_Wpm2;
+    VolRatioStCyto = other.VolRatioStCyto;
     RUBISCOMETHOD = other.RUBISCOMETHOD;
 #define DO_MEMBERS(mod, pt)						\
     VARS_INST_VAR(mod, pt) = other.VARS_INST_VAR(mod, pt)
@@ -129,6 +131,8 @@ void Variables::__copyMembers(const Variables& other) {
 }
 
 void Variables::finalizeInputs() {
+    if (inputsFinalized)
+        return;
     // Conversion from Air_CO2 ppm to intercellular CO2
 #ifdef MAKE_EQUIVALENT_TO_MATLAB
     CO2_in *= 0.7;
@@ -145,9 +149,11 @@ void Variables::finalizeInputs() {
       // Conversion from W m^{-2} to u moles m^{-2} s^{-1}
       TestLi_Wps = TestLi;
       TestLi = TestLi_Wps * 1.0e6 / 2.35e5;
+      PAR_in_Wpm2 = 0;
     } else {
       TestLi_Wps = TestLi / (1.0e6 / 2.35e5);
     }
+    inputsFinalized = true;
 }
 
 Variables* Variables::deepcopy() const {
@@ -206,7 +212,8 @@ bool Variables::equals(const ValueSet_t &b0,
 #ifdef SUNDIALS_CONTEXT_REQUIRED
     CHECK(_context);
 #endif // SUNDIALS_CONTEXT_REQUIRED
-    FOR_EACH(CHECK, record, GP, GRNC, GRNT, RUBISCOMETHOD, useC3,
+    FOR_EACH(CHECK, inputsFinalized, record, GP, GRNC, GRNT, PAR_in_Wpm2,
+             VolRatioStCyto, RUBISCOMETHOD, useC3,
 	     EnzymeAct, VfactorCp, VfactorT, FluxTR, CO2A, RedoxReg_MP,
 	     FIBF_Pool);
 #define CHECK_COM(name) CHECK(name ## _com)
@@ -231,6 +238,7 @@ bool Variables::equals(const ValueSet_t &b0,
 }
 
 std::ostream& ePhotosynthesis::operator<<(std::ostream &out, const Variables *in) {
+    out << "inputsFinalized = " << in->inputsFinalized << std::endl;
     out << "record = " << in->record << std::endl;
 #define DO_CONN(mod)						\
     out << #mod << "_com = " << in->mod ## _com << std::endl
@@ -240,6 +248,8 @@ std::ostream& ePhotosynthesis::operator<<(std::ostream &out, const Variables *in
     out << "GP = " << in->GP << std::endl;
     out << "GRNC = " << in->GRNC << std::endl;
     out << "GRNT = " << in->GRNT << std::endl;
+    out << "PAR_in_Wpm2 = " << in->PAR_in_Wpm2 << std::endl;
+    out << "VolRatioStCyto = " << in->VolRatioStCyto << std::endl;
 
     out << "RUBISCOMETHOD = " << in->RUBISCOMETHOD << std::endl;
 
@@ -852,7 +862,10 @@ void Variables::_readParam(const std::string& fname,
         mod = MODULE_NONE;
         pt = PARAM_TYPE_NONE;
         CASE_I(ALL, VARS, GRNC, GRNC)
+        else CASE_I(ALL, VARS, GRNT, GRNT)
         else CASE_I(ALL, VARS, PAR_in_Wpm2, PAR_in_Wpm2)
+        else CASE_I(ALL, VARS, VolRatioStCyto, VolRatioStCyto)
+        else CASE_I(ALL, VARS, RUBISCOMETHOD, RUBISCOMETHOD)
         else CASE_I(CM, MOD, SucPath, TestSucPath)
         else {
             name = parseVar(it->first, mod, pt, false, false, true);
@@ -872,7 +885,10 @@ void Variables::_readParam(const std::string& fname,
                 "\"" << std::endl;
             add_values[name_SET] = it->second;
             ASSIGN_I(ALL, VARS, GRNC, GRNC)
+            else ASSIGN_I(ALL, VARS, GRNT, GRNT)
             else ASSIGN_I(ALL, VARS, PAR_in_Wpm2, PAR_in_Wpm2)
+            else ASSIGN_I(ALL, VARS, VolRatioStCyto, VolRatioStCyto)
+            else ASSIGN_I(ALL, VARS, RUBISCOMETHOD, RUBISCOMETHOD)
             else ASSIGN_MODB(CM, MOD, SucPath, TestSucPath)
             else if (theVars) {
                 theVars->setVar(mod, pt, name, valueD);

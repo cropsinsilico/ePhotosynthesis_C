@@ -38,6 +38,8 @@ BOOST_PYTHON_MODULE(PYTHON_LIBRARY_NAME) {
         .def_readwrite("GP", &Variables::GP)
         .def_readwrite("GRNC", &Variables::GRNC)
         .def_readwrite("GRNT", &Variables::GRNT)
+        .def_readwrite("PAR_in_Wpm2", &Variables::PAR_in_Wpm2)
+        .def_readwrite("VolRatioStCyto", &Variables::VolRatioStCyto)
         .def_readwrite("RUBISCOMETHOD", &Variables::RUBISCOMETHOD)
         .def_readonly("AVR", &Variables::AVR)
         .def_readonly("HPR", &Variables::HPR)
@@ -61,7 +63,6 @@ BOOST_PYTHON_MODULE(PYTHON_LIBRARY_NAME) {
         .def_readonly("alpha2", &Variables::alpha2)
         .def_readwrite("PR_Param", &Variables::PR_Param)
         .def_readwrite("BF_Param", &Variables::BF_Param)
-        .def_readwrite("FI_PARAM", &Variables::FI_PARAM)
         .def_readwrite("FI_Param", &Variables::FI_Param)
         .def_readwrite("RROEA_Param", &Variables::RROEA_Param)
         .def_readwrite("RuACT_Param", &Variables::RuACT_Param)
@@ -80,9 +81,9 @@ BOOST_PYTHON_MODULE(PYTHON_LIBRARY_NAME) {
         .def_readwrite("FIRatio", &Variables::FIRatio)
         .def_readwrite("PRRatio", &Variables::PRRatio)
         .def_readwrite("PSRatio", &Variables::PSRatio)
-        .def_readwrite("RacRatio", &Variables::RacRatio)
-        .def_readwrite("SUCRatio", &Variables::SUCRatio)
-        .def_readwrite("XanRatio", &Variables::XanRatio)
+        .def_readwrite("RuACTRatio", &Variables::RuACTRatio)
+        .def_readwrite("SUCSRatio", &Variables::SUCSRatio)
+        .def_readwrite("XanCycleRatio", &Variables::XanCycleRatio)
         .def_readwrite("EnzymeAct", &Variables::EnzymeAct)
         .def_readwrite("VfactorCp", &Variables::VfactorCp)
         .def_readwrite("VfactorT", &Variables::VfactorT)
@@ -131,14 +132,48 @@ void python::exportModules() {
             .staticmethod("setRUBISCOTOTAL");
 }
 
-void python::exportDrivers() {
+template<class T>
+std::shared_ptr<T>
+python::Driver_Init(PYTHON_DRIVER_ARG_DEFS) {
+  std::vector<std::string> outVars_vect;
+  if (!outVars.is_none()) {
+    for (int i = 0; i < len(outVars); i++) {
+      outVars_vect.push_back(bp::extract<std::string>(outVars[i]));
+    }
+  }
+  return std::shared_ptr<T>(new T(theVars, startTime, stepSize, endTime,
+                                  maxSubsteps, atol, rtol, para, ratio,
+                                  showWarn, outVars_vect));
+}
+template<typename T>
+bp::object python::Driver_Run(T& drv) {
+  std::vector<double> out_vect = drv.run();
+  bp::object get_iter = bp::iterator<std::vector<double> >();
+  bp::object iter = get_iter(out_vect);
+  bp::list out(iter);
+  return out;
+}
+
+#define ADD_DRIVER(mod)                                                 \
+  std::shared_ptr<drivers::mod ## Driver>                               \
+  python::mod ## Driver_Init(PYTHON_DRIVER_ARG_DEFS) {                  \
+    return Driver_Init<drivers::mod ## Driver>(PYTHON_DRIVER_ARGS);     \
+  }                                                                     \
+  bp::object python::mod ## Driver_Run(drivers::mod ## Driver& drv) {   \
+    return Driver_Run(drv);                                             \
+  }
+FOR_EACH(ADD_DRIVER, EXPAND(MEMBERS_DRIVER))
+#undef ADD_DRIVER
+
+    void python::exportDrivers() {
     bp::object driverModule(bp::handle<>(bp::borrowed(PyImport_AddModule(STRINGIZE(PYTHON_LIBRARY_NAME) ".drivers"))));
     bp::scope().attr("drivers") = driverModule;
     bp::scope driverScope = driverModule;
     bp::class_<std::vector<double> >("stl_vector_double")
             .def(bp::vector_indexing_suite<std::vector<double> >());
+    
 #define ADD_DRIVER_METHODS(mod)                                         \
-    .def("run", &drivers::mod ## Driver::run)                           \
+    .def("run", &python::mod ## Driver_Run)                             \
         .def("setup", &drivers::mod ## Driver::setup)                   \
         .def("getResults", &drivers::mod ## Driver::getResults)         \
         .def_readwrite("abstol", &drivers::mod ## Driver::abstol)       \
@@ -150,19 +185,26 @@ void python::exportDrivers() {
         .def_readwrite("time", &drivers::mod ## Driver::time)           \
         .def_readwrite("maxStep", &drivers::mod ## Driver::maxStep)     \
         .def_readwrite("results", &drivers::mod ## Driver::results)
-    bp::class_<DriverWrap, boost::noncopyable>("Driver", bp::no_init)
-        .def("run", &drivers::Driver::run)
-        .def("setup", bp::pure_virtual(&drivers::Driver::setup))
-        .def("getResults", bp::pure_virtual(&drivers::Driver::getResults))
-        .def("MB", bp::pure_virtual(&drivers::Driver::MB));
-    bp::class_<drivers::EPSDriver, bp::bases<DriverWrap>, boost::noncopyable>("EPSDriver", bp::init<Variables*, double, double, double, int, double, double, std::size_t, double, double, bool>()[bp::with_custodian_and_ward_postcall<0,2>()])
-        ADD_DRIVER_METHODS(EPS);
-    bp::class_<drivers::trDynaPSDriver, bp::bases<DriverWrap>, boost::noncopyable>("trDynaPSDriver", bp::init<Variables*, double, double, double, int, double, double, std::size_t, double, bool>()[bp::with_custodian_and_ward_postcall<0,2>()])
-        ADD_DRIVER_METHODS(trDynaPS);
-    bp::class_<drivers::DynaPSDriver, bp::bases<DriverWrap>, boost::noncopyable>("DynaPSDriver", bp::init<Variables*, double, double, double, int, double, double, std::size_t, double, bool>()[bp::with_custodian_and_ward_postcall<0,2>()])
-        ADD_DRIVER_METHODS(DynaPS);
-    bp::class_<drivers::CMDriver, bp::bases<DriverWrap>, boost::noncopyable>("CMDriver", bp::init<Variables*, double, double, double, int, double, double, bool>()[bp::with_custodian_and_ward_postcall<0,2>()])
-        ADD_DRIVER_METHODS(CM);
+#define ADD_DRIVER(mod)                                                 \
+    bp::class_<drivers::mod ## Driver,                                  \
+               std::shared_ptr<drivers::mod ## Driver>,                 \
+               boost::noncopyable>(#mod "Driver",                       \
+                                   bp::no_init)                         \
+      .def("__init__", bp::make_constructor(& mod ## Driver_Init,       \
+      bp::default_call_policies(), (bp::arg("theVars"),                 \
+      bp::arg("startTime")=0.0,                                         \
+      bp::arg("stepSize")=1.0,                                          \
+      bp::arg("endTime")=5000.0,                                        \
+      bp::arg("maxSubsteps")=750,                                       \
+      bp::arg("abstol")=1.0e-5,                                         \
+      bp::arg("reltol")=1.0e-4,                                         \
+      bp::arg("param")=1,                                               \
+      bp::arg("ratio")=1.0,                                             \
+      bp::arg("showWarn")=false,                                        \
+      bp::arg("outVars")=bp::object())))                                \
+      ADD_DRIVER_METHODS(mod)
+    FOR_EACH(ADD_DRIVER, EXPAND(MEMBERS_DRIVER));
+#undef ADD_DRIVER
 #undef ADD_DRIVER_METHODS
 }
 

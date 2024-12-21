@@ -21,3 +21,5 @@
 - Add ELF tests for Sundials errors
 - Add coverage requirement for repo
 - Line 296 in FI_Rate.m add calc to driver output
+- Standardize setVar for control parameters on Variables
+- Update variables from yggdrasil document

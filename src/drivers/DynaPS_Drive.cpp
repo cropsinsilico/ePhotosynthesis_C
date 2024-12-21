@@ -57,8 +57,8 @@ DynaPSDriver::DynaPSDriver(Variables *theVars, const double startTime,
       outputVars.push_back("Vc");
       outputVars.push_back("Vo");
       outputVars.push_back("VPGA");
-      outputVars.push_back("Vstarch");
       outputVars.push_back("Vsucrose");
+      outputVars.push_back("Vstarch");
       outputVars.push_back("CO2AR");
     }
 }

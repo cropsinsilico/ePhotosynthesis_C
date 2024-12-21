@@ -61,7 +61,8 @@ namespace drivers {
 				   const double reltol,
 				   const std::size_t para = 1,
 				   const double ratio = 1,
-				   const bool showWarn = false);
+				   const bool showWarn = false,
+                                   const std::vector<std::string>& outVars = {});
   EPHOTO_API Driver* create_driver(const DriverType& driverChoice,
 				   Variables *theVars,
 				   const DriverParam& param);

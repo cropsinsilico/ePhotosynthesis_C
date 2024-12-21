@@ -8,7 +8,7 @@ O2_cond		  0.0
 PS12ratio	  0.0		# [CALC] Calcualted from input_PSI & input_PSIIcore in SYSInitial
 ADP		  0.0
 Pi		  0.0		# [CALC] Pi used when useC3 is true and EPS module selected
-TestATPCost	  0.0		# Extra ATP cost when useC3 is false (in units per area)
+TestATPCost	  0.0		# [ALIASES={ATPCost}] Extra ATP cost when useC3 is false (in units per area)
 CO2_in		  0.0		# [CALC,ALIASES={CO2,Air_CO2}] Air CO2 concentration in ppm
 TestLi_Wps	  0.0		# [CALC] Light intensity (in units of W s^{-1})
 TestLi		  0.0		# [CALC,ALIASES={PAR,Radiation_PAR}] Light intensity (in units of umoles m^{-2} s^{-1})

@@ -393,7 +393,6 @@ int main(int argc, const char* argv[]) {
 	  }
 #endif
 
-	  theVars->finalizeInputs();
 	  maindriver = drivers::create_driver(driverChoice, theVars,
 					      begintime, stepsize,
 					      stoptime, maxSubSteps,
