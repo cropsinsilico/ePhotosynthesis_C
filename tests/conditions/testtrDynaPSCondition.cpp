@@ -38,13 +38,26 @@ TEST_F(trDynaPSConditionTest, ArrayTest) {
     arr output = trDynaPS.toArray();
     COMPARE(input, output)
 
+    // TODO: Check for older versions of Sundials for backwards compat
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+    N_Vector y = N_VNew_Serial(static_cast<sunindextype>(input.size()), context);
+#else // SUNDIALS_CONTEXT_REQUIRED
     N_Vector y = N_VNew_Serial(input.size());
+#endif // SUNDIALS_CONTEXT_REQUIRED
+    sunrealtype* y_ptr = N_VGetArrayPointer(y);
     for (size_t i = 0; i < input.size(); i++)
-        NV_Ith_S(y, i) = input[i];
+        y_ptr[i] = input[i];
+    // N_Vector y = N_VNew_Serial(input.size(), context);
+    // for (size_t i = 0; i < input.size(); i++)
+    //     NV_Ith_S(y, i) = input[i];
 
     trDynaPSCondition trDynaPS2(N_VGetArrayPointer(y));
     arr output2 = trDynaPS2.toArray();
     COMPARE(input, output2)
     N_VDestroy(y);
+}
+TEST_F(trDynaPSConditionTest, OutputTest) {
+    trDynaPSCondition trDynaPS;
+    std::cout << trDynaPS << std::endl;
 }
 }

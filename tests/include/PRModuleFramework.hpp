@@ -14,8 +14,7 @@ protected:
         theVars->TestLi = 14.;
         theVars->TestATPCost = 4.5;
         theVars->EnzymeAct = Emap;
-        std::vector<double> ratio(50, 1.5);
-        theVars->PRRatio = ratio;
+        theVars->PRRatio = std::vector<double>(theVars->PRRatio.size(), 1.5);
     }
 
     void Rate(const double t, const conditions::PRCondition* PR_con, Variables *theVars) {

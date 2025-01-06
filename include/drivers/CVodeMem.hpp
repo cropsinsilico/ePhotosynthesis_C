@@ -1,11 +1,12 @@
 #pragma once
-#include <cvode/cvode_direct.h>
+
+#include "definitions.hpp"
 
 namespace ePhotosynthesis {
 namespace drivers {
 
 class Driver;
-class CalcData;
+struct CalcData;
 
 class CVodeMem {
 public:
@@ -31,6 +32,10 @@ public:
       \param y Specialized data vector containing the inputs for the solver.
       */
     void cvode_mem_init(Driver* driver, realtype t0, N_Vector y);
+    /**
+       Destroy the ODE solver.
+     */
+    void cvode_mem_free();
 private:
     CVodeMem() {
         initialized = false;

@@ -97,8 +97,8 @@ private:
         conditions::RuACTCondition::reset();
     }
     SET_GET(activase)
-    static double TIME;    // The timestamp of the most recent call to _Rate
-    static std::size_t N;  // The current size of the RuACT TimeSeries
+    EPHOTO_API static double TIME;    // The timestamp of the most recent call to _Rate
+    EPHOTO_API static std::size_t N;  // The current size of the RuACT TimeSeries
 };
 
 }  // namespace modules

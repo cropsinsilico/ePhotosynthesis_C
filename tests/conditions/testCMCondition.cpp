@@ -38,9 +38,18 @@ TEST_F(CMConditionTest, ArrayTest) {
     arr output = cm.toArray();
     COMPARE(input, output)
 
+    // TODO: Check for older versions of Sundials for backwards compat
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+    N_Vector y = N_VNew_Serial(static_cast<sunindextype>(input.size()), context);
+#else // SUNDIALS_CONTEXT_REQUIRED
     N_Vector y = N_VNew_Serial(input.size());
+#endif // SUNDIALS_CONTEXT_REQUIRED
+    sunrealtype* y_ptr = N_VGetArrayPointer(y);
     for (size_t i = 0; i < input.size(); i++)
-        NV_Ith_S(y, i) = input[i];
+        y_ptr[i] = input[i];
+    // N_Vector y = N_VNew_Serial(input.size(), context);
+    // for (size_t i = 0; i < input.size(); i++)
+    //     NV_Ith_S(y, i) = input[i];
 
     CMCondition cm2(N_VGetArrayPointer(y));
     arr output2 = cm2.toArray();

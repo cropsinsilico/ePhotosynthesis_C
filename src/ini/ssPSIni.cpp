@@ -24,6 +24,14 @@
  *
  **********************************************************************************************************************************************/
 
+/*
+  langmm: This module does not appear to be used anywhere else in the
+    code and so is disabled for now until tests can be designed to verify
+    that it is behaving correctly (however that may be).
+*/
+
+#ifdef ENABLE_ssPS
+
 #include "Variables.hpp"
 #include <math.h>
 #include "modules/ssPS.hpp"
@@ -42,3 +50,5 @@ void ssPS::ssPSIni(const double t, Variables *theVars) {
     kmCO2 = exp(38.05 - 79.43 / RT);
     kmO2 = exp(20.30 - 36.38 / RT);
 }
+
+#endif

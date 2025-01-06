@@ -106,11 +106,11 @@ private:
     SET_GET(RedoxReg_VMAX16)
     SET_GET(RedoxReg_VMAX6)
     SET_GET(RedoxReg_VMAX9)
-    static double TIME;    // The timestamp of the most recent call to _Rate
-    static std::size_t N;  // The current size of the RedoxReg TimeSeries
-    static const double Fd_Thio_ET;
-    static const double ThioT;
-    static const double Thio_Oxidation;
+    EPHOTO_API static double TIME;    // The timestamp of the most recent call to _Rate
+    EPHOTO_API static std::size_t N;  // The current size of the RedoxReg TimeSeries
+    EPHOTO_API static const double Fd_Thio_ET;
+    EPHOTO_API static const double ThioT;
+    EPHOTO_API static const double Thio_Oxidation;
 };
 
 }  // namespace modules

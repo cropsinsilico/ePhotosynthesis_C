@@ -78,7 +78,7 @@ public:
     RROEACondition* RROEA_con = nullptr;   // child Condition
     DynaPSCondition* DynaPS_con = nullptr;   // child Condition
 
-    void setParent(trDynaPSCondition* par) {
+    void setParent(trDynaPSCondition* par) override {
         (void)par;
     }
 
@@ -89,7 +89,7 @@ public:
       \param tab The level of indentation to use.
       \returns The output stream
       */
-    std::ostream& _print(std::ostream &out, const uint tab = 0) const;
+    std::ostream& _print(std::ostream &out, const uint tab = 0) const override;
 
 private:
     friend ConditionBase;
@@ -115,8 +115,7 @@ private:
       \returns The size of the serialized vector.
       */
     static std::size_t _size() {
-        if (count == 0)
-            count = RROEACondition::size() + DynaPSCondition::size();
+        count = RROEACondition::size() + DynaPSCondition::size();
         return count;
     }
 
@@ -127,9 +126,9 @@ private:
         count = 0;
     }
 
-    static std::size_t count;  // size of the current serialized output
+    EPHOTO_API static std::size_t count;  // size of the current serialized output
 #ifdef INCDEBUG
-    const static Debug::DebugLevel _dlevel = Debug::Top;
+    EPHOTO_API const static Debug::DebugLevel _dlevel = Debug::Top;
 #endif
 };
 

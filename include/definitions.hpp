@@ -30,6 +30,46 @@
 #include <iostream>
 #include <algorithm>
 #include <fstream>
+#include "ePhotosynthesis_export.h"
+#include <cmath>
+#include <cstdlib>
+#include <sundials/sundials_types.h>
+#include <sundials/sundials_config.h>
+
+#define STRINGIZE(x) #x
+
+#if ((SUNDIALS_VERSION_MAJOR < 6) || (SUNDIALS_VERSION_MAJOR == 6 && SUNDIALS_VERSION_MINOR <= 7))
+#include <cvode/cvode_direct.h>
+#endif
+
+#if ((SUNDIALS_VERSION_MAJOR > 6) || (SUNDIALS_VERSION_MAJOR == 6 && SUNDIALS_VERSION_MINOR >= 7))
+#include <sundials/sundials_context.h>
+#define SUNDIALS_CONTEXT_REQUIRED 1
+#else
+#ifndef sunrealtype
+#define sunrealtype double
+#endif
+#endif //
+
+#if (SUNDIALS_VERSION_MAJOR >= 7)
+#include <sundials/sundials_errors.h>
+#else
+typedef int SUNErrCode;
+inline const char* SUNGetErrMsg(const SUNErrCode&) { return ""; }
+#endif
+
+#ifndef uint
+#define uint unsigned int
+#endif
+#ifndef ushort
+#define ushort unsigned short int
+#endif
+#ifndef realtype
+#define realtype sunrealtype
+#endif
+#ifndef SUN_COMM_NULL
+#define SUN_COMM_NULL 0
+#endif
 
 namespace ePhotosynthesis {
 
@@ -66,6 +106,45 @@ typedef std::vector<double> arr;  // Shortcut for std::vector<double>
 #define Q10_56 2.
 #define Q10_57 2.
 #define Q10_58 2.
+
+static std::vector<std::string> glymaID_order {
+    "Glyma.19G046800",
+    "Glyma.08G165400",
+    "Glyma.08G165500",
+    "Glyma.04G015900",
+    "Glyma.03G185800",
+    "Glyma.10G268500",
+    "Glyma.07G142700",
+    "Glyma.10G293500",
+    "Glyma.11G226900",
+    "Glyma.15G136200",
+    "Glyma.05G025300",
+    "Glyma.01G026700",
+    "Glyma.19G089100",
+    "Glyma.06G094300",
+    "Glyma.10G210700",
+    "Glyma.04G011900",
+    "Glyma.17G015600",
+    "Glyma.19G022900",
+    "Glyma.07G028500",
+    "Glyma.16G168000",
+    "Glyma.19G017200",
+    "Glyma.08G044100",
+    "Glyma.06G323700",
+    "Glyma.10G086600",
+    "Glyma.11G169700",
+    "Glyma.09G015500",
+    "Glyma.15G012500",
+    "Glyma.08G097300",
+    "Glyma.06G017900",
+    "Glyma.08G302600",
+    "Glyma.09G255200",
+    "Glyma.04G051200",
+    "Glyma.13G222300",
+    "Glyma.13G204800",
+    "Glyma.10G042000",
+    "Glyma.01G095900",
+    "Glyma.09G024100"};
 
 #ifdef INCDEBUG
 namespace Debug {
@@ -130,7 +209,7 @@ enum RequestedDebug : uint {None = 0,
     /** Set the value of NAME \param val The value to set NAME to */\
     static void set ## NAME(const double val) {NAME = val;}\
     private:\
-        static double NAME;
+        EPHOTO_API static double NAME;
 //! [SET_GET]
 
 //! [SET_GET_BOOL]
@@ -140,7 +219,7 @@ enum RequestedDebug : uint {None = 0,
     /** Set the value of NAME \param val The value to set NAME to */\
     static void set ## NAME(const bool val) {NAME = val;}\
     private:\
-        static bool NAME;
+        EPHOTO_API static bool NAME;
 //! [SET_GET_BOOL]
 
 //! [SET_GET_BOOL_MODULE]
@@ -153,7 +232,7 @@ enum RequestedDebug : uint {None = 0,
         CON ## Condition::set ## NAME(val);\
     }\
     private:\
-        static bool NAME;
+        EPHOTO_API static bool NAME;
 //! [SET_GET_BOOL_MODULE]
 
 /**
@@ -255,11 +334,11 @@ void TimeSeries<T>::insert(std::size_t step, double time, T &input) {
     std::vector<int>::iterator it = std::find(_step.begin(), _step.end(), step);
     T vec(input);
     if (it == _step.end()) {
-        _step.push_back(step);
+        _step.push_back(static_cast<int>(step));
         _timestamp.push_back(time);
         _data.push_back(vec);
     } else {
-        int index = std::distance(_step.begin(), it);
+        std::size_t index = std::distance(_step.begin(), it);
         _timestamp[index] = time;
         _data[index] = vec;
     }

@@ -60,3 +60,7 @@ Doxyfile
 
 doc/html
 doc/latex
+
+*~
+
+__pycache__

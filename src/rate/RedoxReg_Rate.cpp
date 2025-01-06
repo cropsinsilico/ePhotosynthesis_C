@@ -24,6 +24,7 @@
  *
  **********************************************************************************************************************************************/
 #include <math.h>
+#include <string>
 #include "Variables.hpp"
 #include "modules/RedoxReg.hpp"
 #include "drivers/driver.hpp"
@@ -32,6 +33,10 @@
 #include <sunmatrix/sunmatrix_dense.h> /* access to dense SUNMatrix       */
 #include <sunlinsol/sunlinsol_dense.h> /* access to dense SUNLinearSolver */
 #include <sundials/sundials_types.h>   /* defs. of realtype, sunindextype */
+
+#ifndef RCONST
+#define RCONST(X) SUN_RCONST(X)
+#endif
 
 #define ONE    RCONST(1.0)
 #define ZERO   RCONST(0.0)
@@ -57,30 +62,61 @@ void RedoxReg::_Rate(const double t, const RedoxRegCondition* const RedoxReg_Con
         data->coeffs[0] = theVars->RedoxReg_MP[0][1] - 0.03 * log10(TEMP / (1. - TEMP));
 
         N_Vector y, constraints, scaling;
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+        y = N_VNew_Serial(1, theVars->context());
+        constraints = N_VNew_Serial(1, theVars->context());
+        scaling = N_VNew_Serial(1, theVars->context());
+#else // SUNDIALS_CONTEXT_REQUIRED
         y = N_VNew_Serial(1);
         constraints = N_VNew_Serial(1);
         scaling = N_VNew_Serial(1);
+#endif // SUNDIALS_CONTEXT_REQUIRED
+        realtype* y_ptr = N_VGetArrayPointer(y);
+        realtype* constraints_ptr = N_VGetArrayPointer(constraints);
         N_VConst(ONE, scaling);
         realtype abstol = 1e-5;
         //realtype reltol = 1e-4;
-        NV_Ith_S(constraints, 0) = ZERO;
+        constraints_ptr[0] = ZERO;
         void *kmem = nullptr;
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+        kmem = KINCreate(theVars->context());
+
+        SUNMatrix A = SUNDenseMatrix(1, 1, theVars->context());
+        SUNLinearSolver LS = SUNLinSol_Dense(y, A, theVars->context());
+#else // SUNDIALS_CONTEXT_REQUIRED
         kmem = KINCreate();
 
         SUNMatrix A = SUNDenseMatrix(1, 1);
-        SUNLinearSolver LS = SUNDenseLinearSolver(y, A);
-        KINSetLinearSolver(kmem, LS, A);
+        SUNLinearSolver LS = SUNLinSol_Dense(y, A);
+#endif // SUNDIALS_CONTEXT_REQUIRED
+#define RUN_CHECK(func, args, success)                          \
+        {                                                       \
+          int error_code = func args;                           \
+          if (error_code != success) {                           \
+              std::cout << #func << " failed: " << error_code << std::endl; \
+              throw std::runtime_error(#func " failed: " + std::to_string(error_code)); \
+          }                                                             \
+        }
 
+        if (kmem == nullptr) {
+            throw std::runtime_error("KINCreate failed");
+        }
+
+        try {
         for (std::size_t index = 1; index < 5; index++) {
 
-            NV_Ith_S(y, 0) = theVars->RedoxReg_MP[index][2];
+            y_ptr[0] = theVars->RedoxReg_MP[index][2];
             data->coeffs[1] = theVars->RedoxReg_MP[index][1];
-            KINSetUserData(kmem, data);
-            KINSetConstraints(kmem, constraints);
-            KINSetFuncNormTol(kmem, abstol);
-            KINSetScaledStepTol(kmem, abstol);
-            KINInit(kmem, RedoxReg_FPercent, y);
-            KINSol(kmem, y, KIN_LINESEARCH, scaling, scaling);
+            RUN_CHECK(KINInit, (kmem, RedoxReg_FPercent, y), KIN_SUCCESS);
+            RUN_CHECK(KINSetLinearSolver, (kmem, LS, A), KINLS_SUCCESS);
+            RUN_CHECK(KINSetUserData, (kmem, data), KIN_SUCCESS);
+            RUN_CHECK(KINSetConstraints, (kmem, constraints), KIN_SUCCESS);
+            RUN_CHECK(KINSetFuncNormTol, (kmem, abstol), KIN_SUCCESS);
+            RUN_CHECK(KINSetScaledStepTol, (kmem, abstol), KIN_SUCCESS);
+            int err = KINSol(kmem, y, KIN_LINESEARCH, scaling, scaling);
+            if (err > KIN_INITIAL_GUESS_OK) {
+                throw std::runtime_error("KinSol failed: " + std::to_string(err));
+            }
             realtype *retvals = N_VGetArrayPointer(y);
             //pr = fsolve(@RedoxReg_FPercent, RedPercent, optimset('Display', 'off'), RedP, MPE);
             theVars->RedoxReg_MP[index][2] = retvals[0];
@@ -95,6 +131,15 @@ void RedoxReg::_Rate(const double t, const RedoxRegCondition* const RedoxReg_Con
             } else if (static_cast<int>(theVars->RedoxReg_MP[index][0]) == 16) {
                 RedoxRegCondition::setV16(RedoxReg_VMAX16 * theVars->RedoxReg_MP[index][2]);
             }
+        }
+        } catch(...) {
+            std::exception_ptr eptr = std::current_exception();
+            N_VDestroy(y);
+            N_VDestroy(constraints);
+            N_VDestroy(scaling);
+            KINFree(&kmem);
+            SUNLinSolFree(LS);
+            std::rethrow_exception(eptr);
         }
         N_VDestroy(y);
         N_VDestroy(constraints);

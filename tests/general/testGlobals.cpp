@@ -77,7 +77,7 @@ TEST_F(ConditionTest, TestReadFile) {
     }
     temp1.close();
     std::map<std::string, double> map2;
-    readFile(filename2, map2);
+    readFile(filename2, map2, true);
     for (int i = 0; i < 27; i++) {
         EXPECT_DOUBLE_EQ(map2.at(std::to_string(i)), i/30.);
     }

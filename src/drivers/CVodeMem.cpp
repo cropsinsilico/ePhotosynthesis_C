@@ -1,7 +1,6 @@
 #include <cvode/cvode.h>
 #include <sunmatrix/sunmatrix_dense.h>
 #include <sunlinsol/sunlinsol_dense.h>
-#include <cvode/cvode_direct.h>
 
 #include "drivers/CVodeMem.hpp"
 #include "drivers/driver.hpp"
@@ -12,7 +11,11 @@ using namespace ePhotosynthesis::drivers;
 void CVodeMem::cvode_mem_init(Driver* driver, realtype t0, N_Vector y) {
     if (!initialized) {
         data = alloc_calc_data();
-        _cvode_mem = CVodeCreate(CV_BDF);
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+        _cvode_mem = CVodeCreate(CV_BDF, driver->context());
+#else // SUNDIALS_CONTEXT_REQUIRED
+	_cvode_mem = CVodeCreate(CV_BDF);
+#endif // SUNDIALS_CONTEXT_REQUIRED
         if (CVodeInit(_cvode_mem, driver->calculate, t0, y) != CV_SUCCESS) {
             std::cout << "CVodeInit failed" << std::endl;
             throw std::runtime_error("CVodeInit failed");
@@ -55,6 +58,14 @@ void CVodeMem::cvode_mem_init(Driver* driver, realtype t0, N_Vector y) {
     driver->data = data;
     driver->cvode_mem = _cvode_mem;
 
+}
+void CVodeMem::cvode_mem_free() {
+    if (initialized) {
+        CVodeFree(&_cvode_mem);
+        delete data;
+        data = nullptr;
+        initialized = false;
+    }
 }
 
 CVodeMem::~CVodeMem() {

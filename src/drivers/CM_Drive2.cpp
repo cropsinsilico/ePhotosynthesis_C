@@ -74,6 +74,7 @@ void CMDriver::getResults() {
     arr temp = CM::MB(time, CM_int_con, inputVars);
     // Reinitialize some values of global variables.
     inputVars->PSPR_SUCS_com = false;
+    delete CM_int_con;
     IniModelCom(inputVars);
 
     const double CO2AR = TargetFunVal(inputVars);

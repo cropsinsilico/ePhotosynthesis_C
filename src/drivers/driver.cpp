@@ -31,7 +31,6 @@
 #include <sunmatrix/sunmatrix_dense.h>
 #include <sunlinsol/sunlinsol_dense.h>
 #include <sunnonlinsol/sunnonlinsol_newton.h>
-#include <cvode/cvode_direct.h>
 #include "drivers/CVodeMem.hpp"
 
 using namespace ePhotosynthesis;
@@ -40,9 +39,33 @@ using namespace ePhotosynthesis::conditions;
 
 bool Driver::showWarnings = false;
 
+Driver::Driver(Variables *theVars, const double startTime, const double stepSize, const double endTime,
+	       const int maxSubsteps, const double atol, const double rtol,
+	       const bool showWarn) {
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+  _context = theVars->context_ptr();
+#endif // SUNDIALS_CONTEXT_REQUIRED
+  inputVars = theVars;
+  start = startTime;
+  step = stepSize;
+  initialStep = stepSize;
+  endtime = endTime;
+  maxSubSteps = maxSubsteps;
+  showWarnings = showWarn;
+  abstol = atol;
+  reltol = rtol;
+  maxStep = 20. * step;
+  data = nullptr;
+  origVars = nullptr;
+  intermediateRes = nullptr;
+  if (inputVars->useC3 && inputVars->EnzymeAct.empty())
+      throw std::runtime_error("EnzymeAct must be set if useC3 is True (automatically set for EPS driver)");
+}
+
 arr Driver::run() {
     origVars = new Variables(inputVars);
     uint count = 0;
+
     while (count < 10){
         maxStep = 20. * step;
 
@@ -50,13 +73,18 @@ arr Driver::run() {
 
         sunindextype N =  static_cast<long>(constraints.size());
         N_Vector y;
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+        y = N_VNew_Serial(N, context());
+#else // SUNDIALS_CONTEXT_REQUIRED
         y = N_VNew_Serial(N);
+#endif // SUNDIALS_CONTEXT_REQUIRED
+	sunrealtype* y_ptr = N_VGetArrayPointer(y);
 
         for (std::size_t i = 0; i < constraints.size(); i++)
-            NV_Ith_S(y, i) =  constraints[i];
+            y_ptr[i] = constraints[i];
         realtype t0 = start;
 
-        CVodeMem *cmem;
+        CVodeMem *cmem = nullptr;
         try {
             cmem = &CVodeMem::create();
             cmem->cvode_mem_init(this, t0, y);
@@ -68,18 +96,24 @@ arr Driver::run() {
 
         data->drv = this;
 
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+        SUNMatrix A = SUNDenseMatrix(N, N, context());
+        SUNNonlinearSolver NLS = SUNNonlinSol_Newton(y, context());
+        SUNLinearSolver LS = SUNLinSol_Dense(y, A, context());
+#else // SUNDIALS_CONTEXT_REQUIRED
         SUNMatrix A = SUNDenseMatrix(N, N);
         SUNNonlinearSolver NLS = SUNNonlinSol_Newton(y);
-        SUNLinearSolver LS = SUNDenseLinearSolver(y, A);
+        SUNLinearSolver LS = SUNLinSol_Dense(y, A);
+#endif // SUNDIALS_CONTEXT_REQUIRED
 
         try {
             if (CVodeSetNonlinearSolver(cvode_mem, NLS) != CV_SUCCESS) {
                 std::cout << "CVodeSetNonlinearSolver failed" << std::endl;
                 throw std::runtime_error("CVodeSetNonlinearSolver failed");
             }
-            if (CVDlsSetLinearSolver(cvode_mem, LS, A) != CV_SUCCESS) {
-                std::cout << "CVDlsSetLinearSolver failed" << std::endl;
-                throw std::runtime_error("CVDlsSetLinearSolver failed");
+            if (CVodeSetLinearSolver(cvode_mem, LS, A) != CV_SUCCESS) {
+                std::cout << "CVodeSetLinearSolver failed" << std::endl;
+                throw std::runtime_error("CVodeSetLinearSolver failed");
             }
         } catch(...) {
             std::exception_ptr eptr = std::current_exception();
@@ -126,6 +160,15 @@ arr Driver::run() {
 Driver::~Driver() {
     if (origVars != nullptr)
         delete origVars;
+    CVodeMem *cmem = nullptr;
+    cmem = &CVodeMem::create();
+    cmem->cvode_mem_free();
+    cvode_mem = nullptr;
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+    if (_context.use_count() == 1)
+        SUNContext_Free(_context.get());
+    _context.reset();
+#endif // SUNDIALS_CONTEXT_REQUIRED
 }
 
 int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {

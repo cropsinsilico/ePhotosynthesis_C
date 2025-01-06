@@ -27,9 +27,10 @@
  **********************************************************************************************************************************************/
 
 #include <vector>
+#include <memory>
 
+#include "definitions.hpp"
 #include <nvector/nvector_serial.h>
-#include <sundials/sundials_types.h>
 #include "globals.hpp"
 
 namespace ePhotosynthesis {
@@ -106,7 +107,7 @@ public:
       */
     virtual arr MB(realtype t, N_Vector u) = 0;
     virtual ~Driver();
-    static Variables *inputVars;  // the instance of Variables to use for all calculations.
+    EPHOTO_API static Variables *inputVars;  // the instance of Variables to use for all calculations.
     arr constraints;   // serialized version of the Condition class being used.
 
 protected:
@@ -128,20 +129,7 @@ protected:
       */
     Driver(Variables *theVars, const double startTime, const double stepSize, const double endTime,
            const int maxSubsteps, const double atol, const double rtol,
-           const bool showWarn = false) {
-        this->inputVars = theVars;
-        this->start = startTime;
-        this->step = stepSize;
-        initialStep = stepSize;
-        this->endtime = endTime;
-        this->maxSubSteps = maxSubsteps;
-        this->showWarnings = showWarn;
-        abstol = atol;
-        reltol = rtol;
-        maxStep = 20. * step;
-        data = nullptr;
-        origVars = nullptr;
-    }
+           const bool showWarn = false);
     /**
       Does the computations and generates the results for each step or sub-step in the solver.
       A pointer to this function is passed to the ODE solver. The API of the function cannot change
@@ -154,6 +142,15 @@ protected:
       */
     static int calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
 
+#ifdef SUNDIALS_CONTEXT_REQUIRED
+private:
+    std::shared_ptr<SUNContext> _context;
+public:
+    /** Get the context */
+    SUNContext& context() {
+        return *(_context.get());
+    }
+#endif // SUNDIALS_CONTEXT_REQUIRED
     realtype abstol;            // absolute tolerance
     realtype reltol;            // relative tolerance
     double start, step, endtime; // time stuff
@@ -165,7 +162,7 @@ protected:
     CalcData* data;
     double maxStep;
     void *cvode_mem;
-    static bool showWarnings;
+    EPHOTO_API static bool showWarnings;
 private:
     Driver() {}
     Variables* origVars;

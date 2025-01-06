@@ -99,8 +99,8 @@ private:
         TIME = 0.;
         conditions::FICondition::reset();
     }
-    static double TIME;    // The timestamp of the most recent call to _Rate
-    static std::size_t N;  // The current size of the FI TimeSeries
+    EPHOTO_API static double TIME;    // The timestamp of the most recent call to _Rate
+    EPHOTO_API static std::size_t N;  // The current size of the FI TimeSeries
 };
 
 }  // namespace modules

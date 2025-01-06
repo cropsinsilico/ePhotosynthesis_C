@@ -85,7 +85,7 @@ public:
       \param tab The level of indentation to use.
       \returns The output stream
       */
-    std::ostream& _print(std::ostream &out, const uint tab = 0) const;
+    std::ostream& _print(std::ostream &out, const uint tab = 0) const override;
 
 private:
     friend ConditionBase;
@@ -106,8 +106,7 @@ private:
       \returns The size of the serialized vector.
       */
     static std::size_t _size() {
-        if (count == 0)
-            count = BFCondition::size() + FICondition::size() + 1;
+        count = BFCondition::size() + FICondition::size() + 1;
         return count;
     }
 
@@ -116,7 +115,7 @@ private:
       */
     void _clear() override;
 
-    static std::size_t count;   // size of the current serialized output
+    EPHOTO_API static std::size_t count;   // size of the current serialized output
 
     /**
       Reset any static data members to their initial state
@@ -125,7 +124,7 @@ private:
         count = 0;
     }
 #ifdef INCDEBUG
-    const static Debug::DebugLevel _dlevel = Debug::Middle;
+    EPHOTO_API const static Debug::DebugLevel _dlevel = Debug::Middle;
 #endif
 };
 

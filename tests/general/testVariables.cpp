@@ -27,4 +27,27 @@ TEST_F(VariableFramework, TestCopy) {
     EXPECT_EQ(tempVar.BF_FI_com, temp2.BF_FI_com);
     EXPECT_TRUE(temp2.BF_FI_com);
 }
+
+TEST_F(VariableFramework, TestDeepcopy) {
+    BFVel bfv;
+    theVars->BF_VEL.insert(2, 0.5, bfv);
+    theVars->BF_FI_com = true;
+    Variables* tempVar = theVars->deepcopy();
+    EXPECT_EQ(tempVar->BF_VEL.size(), theVars->BF_VEL.size());
+    EXPECT_EQ(theVars->BF_VEL.size(), 1);
+    EXPECT_EQ(tempVar->BF_FI_com, theVars->BF_FI_com);
+    EXPECT_TRUE(theVars->BF_FI_com);
+
+    Variables* temp2 = tempVar->deepcopy();
+    EXPECT_EQ(tempVar->BF_VEL.size(), temp2->BF_VEL.size());
+    EXPECT_EQ(temp2->BF_VEL.size(), 1);
+    EXPECT_EQ(tempVar->BF_FI_com, temp2->BF_FI_com);
+    EXPECT_TRUE(temp2->BF_FI_com);
+
+    delete tempVar;
+    delete temp2;
+}
+TEST_F(VariableFramework, TestOutput) {
+    std::cout << theVars << std::endl;
+}
 }

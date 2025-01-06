@@ -24,16 +24,11 @@
  *
  **********************************************************************************************************************************************/
 
-#include <math.h>
 #include "Variables.hpp"
 #include "globals.hpp"
 #include "drivers/EPS_Driver.hpp"
 #include "modules/EPS.hpp"
 #include "modules/PS.hpp"
-//#include <iostream>
-//#include <fstream>
-
-//using namespace std;
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
