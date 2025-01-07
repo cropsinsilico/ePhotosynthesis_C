@@ -197,10 +197,6 @@
 
 #define INHERIT_METHODS_VALUE_SET_BASE(...)	\
   INHERIT_METHODS_VALUE_SET_TYPES(__VA_ARGS__)	\
-  using __VA_ARGS__::static_flags;		\
-  using __VA_ARGS__::defaults;			\
-  using __VA_ARGS__::static_values;		\
-  using __VA_ARGS__::child_classes;		\
   using __VA_ARGS__::getValueSetClass;		\
   using __VA_ARGS__::inArrays;			\
   using __VA_ARGS__::remove_skipped;		\

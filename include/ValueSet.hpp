@@ -44,8 +44,8 @@ namespace ePhotosynthesis {
 #define DO_VALUE_SET_CHILD_CLASSES_MACRO(macro, iter, ...)		\
   if (!noChildren) {							\
     size_t iChild = 0;							\
-    for (std::vector<ValueSetClassWrapper>::iter it = child_classes.begin(); \
-	 it != child_classes.end(); it++, iChild++) {			\
+    for (std::vector<ValueSetClassWrapper>::iter it = BaseClass::child_classes.begin(); \
+	 it != BaseClass::child_classes.end(); it++, iChild++) {        \
       if (*it) {							\
 	macro((*it), __VA_ARGS__);					\
       }									\
@@ -714,7 +714,7 @@ namespace ePhotosynthesis {
      Untemplated base class to allow storage of mixed value sets in
        containers.
    */
-  class ValueSet_t {
+  class EPHOTO_API ValueSet_t {
   public:
 
     virtual ~ValueSet_t() {}
@@ -889,7 +889,7 @@ namespace ePhotosynthesis {
        will be used by.
    */
   template<class T, class U, MODULE ID, PARAM_TYPE PT>
-  class ValueSetBase : public ValueSetEnum<ID, PT> {
+  class EPHOTO_API ValueSetBase : public ValueSetEnum<ID, PT> {
   public:
     typedef T ThisClass; /** Inheriting class */
     typedef U ThisParent; /** Parent class */
@@ -1098,6 +1098,14 @@ namespace ePhotosynthesis {
       return std::move(out).str();
     }
     /**
+       Get a string containing a certain number of tabs.
+       \param[in] tab Number of tabs to include.
+       \returns String containing tabs.
+     */
+    static std::string getTabs(const uint tab = 0) {
+      return std::string(tab * tab_size, ' ');
+    }
+    /**
        Display a single value from a value map.
        \tparam V Type of value in value map.
        \param key Parameter enum.
@@ -1129,7 +1137,7 @@ namespace ePhotosynthesis {
       if ((!includeSkipped) && (isSkipped(key) ||
                                 isConstant(key)))
         return out;
-      const std::string space(tab * tab_size, ' ');
+      const std::string space = getTabs(tab);
       std::string iname;
       if (includePrefixes)
         iname = getNameWithPrefix(key);
@@ -2401,12 +2409,14 @@ namespace ePhotosynthesis {
       child_classes.emplace_back(new ValueSetClassType<C>());
     }
 
+  protected:
     static int static_flags; /**< Bitwise flags describing the value set  static state */
     static std::map<EnumType, double> defaults; /**< Default values */
     static std::map<EnumType, double*> static_values; /**< Static values */
     static std::vector<ValueSetClassWrapper> child_classes; /**< Child classes */
     static const uint tab_size = 2;
 
+  public:
     // Methods that call inheriting class methods
     /**
        Initialize the child classes.
@@ -2459,6 +2469,13 @@ namespace ePhotosynthesis {
     static void checkSelected() {
       if (!(static_flags & VS_FLAG_SELECTED))
 	ERROR_VALUE_SET("Value set has not been selected");
+    }
+    /**
+       Check if the value set has children.
+       \returns true if the value set has children, false otherwise.
+     */
+    static bool hasChildren() {
+      return (child_classes.size() > 0);
     }
     /**
        Check if the value set uses the C3 defaults.
@@ -3220,6 +3237,7 @@ namespace ePhotosynthesis {
       children.push_back(C);
     }
 
+  private:
     int flags = 0; /**< Bitwise flags describing the value set */
     std::map<EnumType, double*> values; /**< Values in the set. */
     std::map<EnumType, double> preinit_values; /**< Value set pre-initialization */
@@ -3266,7 +3284,7 @@ namespace ePhotosynthesis {
       ENSURE_VALUE_POINTERS_CONST;
       uint child_tab = tab;
       if (!(noChildren || includePrefixes)) {
-	const std::string space(tab * BaseClass::tab_size, ' ');
+	const std::string space = BaseClass::getTabs(tab);
 	out << space << error_prefix() << std::endl;
 	child_tab++;
       }
@@ -3355,7 +3373,7 @@ namespace ePhotosynthesis {
       }
       BaseClass::import_value_map(values, map, CONTEXT_VALUE_SET);
       if (setinit)
-	static_flags |= BaseClass::VS_FLAG_INIT_VALUES;
+        BaseClass::static_flags |= BaseClass::VS_FLAG_INIT_VALUES;
     }
     
     /** \copydoc ValueSet::initMembers */
@@ -3371,11 +3389,11 @@ namespace ePhotosynthesis {
       reset_value_map(values);
       T::_resetValues();
       DO_VALUE_SET_CHILD_CLASSES(resetValues, ());
-      static_flags &= ~BaseClass::VS_FLAG_INIT_VALUES;
+      BaseClass::static_flags &= ~BaseClass::VS_FLAG_INIT_VALUES;
     }
     /** \copydoc ValueSet::initialized */
     static bool initialized() {
-      return (static_flags & BaseClass::VS_FLAG_INIT_VALUES);
+      return (BaseClass::static_flags & BaseClass::VS_FLAG_INIT_VALUES);
     }
     /** \copydoc ValueSet::initValues */
     static void initValues(const bool noDefaults=false,
@@ -3386,21 +3404,25 @@ namespace ePhotosynthesis {
       if (!noDefaults)
 	init_value_map(values, initialized());
       T::_initValues();
+      // if (!noChildren) {
+      //   ERROR_VALUE_SET("recursion for child classes disabled.");
+      // }
       DO_VALUE_SET_CHILD_CLASSES(initValues, (noDefaults, force));
       if (!preinit_values.empty()) {
 	copy_value_map(values, preinit_values, "initValues: ",
 		       false, true, true, false, true);
       }
-      static_flags |= BaseClass::VS_FLAG_INIT_VALUES;
+      BaseClass::static_flags |= BaseClass::VS_FLAG_INIT_VALUES;
     }
 
     /** \copydoc ValueSet::initMemberPointers */
     static void initMemberPointers(const bool noChildren=false) {
-      if (static_flags & BaseClass::VS_FLAG_INIT_POINTERS) return;
+      if (BaseClass::static_flags & BaseClass::VS_FLAG_INIT_POINTERS)
+        return;
       BaseClass::initDefaults();
       T::_initMemberPointers();
       DO_VALUE_SET_CHILD_CLASSES(initMemberPointers, ());
-      static_flags |= BaseClass::VS_FLAG_INIT_POINTERS;
+      BaseClass::static_flags |= BaseClass::VS_FLAG_INIT_POINTERS;
     }
     /** \copydoc ValueSetBase::initStaticMembers */
     static void initStaticMembers(const bool noChildren = false) {
@@ -3670,9 +3692,10 @@ namespace ePhotosynthesis {
      */
     template<typename C>
     static void addChildClass() {
-      child_classes.push_back(new ValueSetStaticClassType<C>());
+      BaseClass::child_classes.push_back(new ValueSetStaticClassType<C>());
     }
 
+  private:
     static std::map<EnumType, double*> values; /**< Values in the set. */
     static std::map<EnumType, double> preinit_values; /**< Value set pre-initialization */
 
@@ -3701,7 +3724,7 @@ namespace ePhotosynthesis {
       ENSURE_VALUE_POINTERS;
       uint child_tab = tab;
       if (!(noChildren || includePrefixes)) {
-	const std::string space(tab * BaseClass::tab_size, ' ');
+	const std::string space = BaseClass::getTabs(tab);
 	out << space << error_prefix() << std::endl;
 	child_tab++;
       }

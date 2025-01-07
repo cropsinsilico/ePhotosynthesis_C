@@ -68,7 +68,7 @@ Variables::Variables(SUNContext* ctx, const int flags) :
     }
     select();
     useC3 = usesC3();
-    initValues();
+    initValues(false, false, true);
 }
 Variables::Variables() : Variables((SUNContext*)nullptr) {}
 Variables::Variables(const Variables& other) :

@@ -1477,7 +1477,7 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             lines += ['*/']
         static = 'static'
         if function_type in ['operator<<']:
-            static = 'friend'
+            static = 'friend inline'
         lines += [f"{static} {return_type} {function_name}"
                   f"({', '.join(args)}) {{"]
         lines += ["  " + x for x in body]
@@ -1779,6 +1779,7 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
     name = 'global'
     file_suffix = ''
     prefix = CEnumGeneratorBase.prefix + [
+        '#include "ePhotosynthesis_export.h"',
         '#include <string>',
         '#include <map>',
         '#include <vector>',
@@ -2424,7 +2425,7 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             lines += ['#endif // EPHOTO_USE_SCOPED_ENUM']
         lines += template_lines
         lines += [
-            f'class {class_name}{specialization} {{',
+            f'class EPHOTO_API {class_name}{specialization} {{',
             'public:',
         ]
         lines += [

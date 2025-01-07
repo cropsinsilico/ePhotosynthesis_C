@@ -2,6 +2,7 @@
 // modified directly
 #pragma once
 
+#include "ePhotosynthesis_export.h"
 #include <string>
 #include <map>
 #include <vector>
@@ -243,7 +244,7 @@ namespace ePhotosynthesis {
   };
   #endif // EPHOTO_USE_SCOPED_ENUM
   template<MODULE M, PARAM_TYPE PT>
-  class ValueSetEnum {
+  class EPHOTO_API ValueSetEnum {
   public:
     #ifdef EPHOTO_USE_SCOPED_ENUM
     typedef typename enum_helper<M, PT>::type Type;
@@ -282,7 +283,7 @@ namespace ePhotosynthesis {
       \param[in] x Key to serialize
       \return Updated stream
     */
-    friend std::ostream& operator<<(std::ostream& out, const Type& x) {
+    friend inline std::ostream& operator<<(std::ostream& out, const Type& x) {
       out << getName(x);
       return out;
     }
@@ -292,7 +293,7 @@ namespace ePhotosynthesis {
       \param[in] x Collection to serialize
       \return Updated stream
     */
-    friend std::ostream& operator<<(std::ostream& out, const std::map<Type, std::string>& x) {
+    friend inline std::ostream& operator<<(std::ostream& out, const std::map<Type, std::string>& x) {
       print_map(x, out);
       return out;
     }
@@ -607,7 +608,7 @@ namespace ePhotosynthesis {
       \param[in] x Collection to serialize
       \return Updated stream
     */
-    friend std::ostream& operator<<(std::ostream& out, const std::vector<Type>& x) {
+    friend inline std::ostream& operator<<(std::ostream& out, const std::vector<Type>& x) {
       print_vector(x, out);
       return out;
     }

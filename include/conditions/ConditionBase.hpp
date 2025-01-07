@@ -120,7 +120,7 @@ protected:
     static void _initStaticMembers() {
 	ParentClass::_initStaticMembers();
 #ifdef INCDEBUG
-	if (ParentClass::child_classes.size() > 0)
+	if (ParentClass::hasChildren())
 	    T::_dlevel = Debug::Middle;
 #endif // INCDEBUG
     }
@@ -421,8 +421,12 @@ public:
    \param name Name of the module the child condition is associated with.
  */
 #define DEFINE_CONDITION_COMPOSITE_CHILD_CREATE_OTHER(name)		\
-  name ## _con = new VARS_CLASS_VAR_LOCAL(name, COND)(other.name ## _con); \
-  name ## _con->setParent(this)
+  if (name ## _con) {                                                   \
+    (*name ## _con) = other.name ## _con;                               \
+  } else {                                                              \
+    name ## _con = new VARS_CLASS_VAR_LOCAL(name, COND)(other.name ## _con); \
+    name ## _con->setParent(this);                                      \
+  }
 /**
    Utility to initialize a child condition from another child condition.
    \param name Name of the module the child condition is associated with.
