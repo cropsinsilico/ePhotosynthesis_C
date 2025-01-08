@@ -2,1770 +2,837 @@
 // modified directly
 #pragma once
 
+#include "enums/enums_helpers.hpp"
+
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_BF_MOD : int {
-    NONE             ,
-    cATPsyn          ,  //!< [GLYMAID=Glyma.13G204800] cATPsyn=1.0447;%1.01866 WY201803
-    CPSi             ,  //!< [GLYMAID=Glyma.10G042000] CPSi=1.0131;% 1.0237 WY201803
-    cNADPHsyn        ,  //!< [GLYMAID=Glyma.09G024100] cNADPHsyn=1.094468408;%1.0388 WY201803
-    EPS_ATP_Rate     ,  //!< Indicate in the beginning there is no ATP synthesis activity.
-    _Pi              ,  //!< Phosphate in stroma
-    PMODTEM          ,  //!< [CONST] ?; Used to scale RC parameters PK, PMg, & PCl
-    RT               ,  //!< [CONST] 8.314 * 298.; Gas constant and the temperature. Used to calculate RC parameters KE8, KE9 & KE11
-    DeltaGo          ,  //!< [CONST] 7.3 * 4184; The free energy change for ATP synthesis from ADP and Pi; Used to calculate KE11
-    MAX              ,
-};
-template<>
-struct enum_helper<MODULE_BF, PARAM_TYPE_MOD> {
-  typedef ENUM_BF_MOD type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_BF_MOD& x) {
+  out << ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_BF_MOD, T>& x) {
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_BF_MOD>& x) {
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type : int {
-    NONE             ,
-    cATPsyn          ,  //!< [GLYMAID=Glyma.13G204800] cATPsyn=1.0447;%1.01866 WY201803
-    CPSi             ,  //!< [GLYMAID=Glyma.10G042000] CPSi=1.0131;% 1.0237 WY201803
-    cNADPHsyn        ,  //!< [GLYMAID=Glyma.09G024100] cNADPHsyn=1.094468408;%1.0388 WY201803
-    EPS_ATP_Rate     ,  //!< Indicate in the beginning there is no ATP synthesis activity.
-    _Pi              ,  //!< Phosphate in stroma
-    PMODTEM          ,  //!< [CONST] ?; Used to scale RC parameters PK, PMg, & PCl
-    RT               ,  //!< [CONST] 8.314 * 298.; Gas constant and the temperature. Used to calculate RC parameters KE8, KE9 & KE11
-    DeltaGo          ,  //!< [CONST] 7.3 * 4184; The free energy change for ATP synthesis from ADP and Pi; Used to calculate KE11
-    MAX              ,
+  MEMBERS_BF
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_BF		\
-    NONE             ,		\
-    cATPsyn          ,		\
-    CPSi             ,		\
-    cNADPHsyn        ,		\
-    EPS_ATP_Rate     ,		\
-    _Pi              ,		\
-    PMODTEM          ,		\
-    RT               ,		\
-    DeltaGo          ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::static_value_flags;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD> BF;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_CM_MOD : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_CM, PARAM_TYPE_MOD> {
-  typedef ENUM_CM_MOD type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_CM_MOD& x) {
+  out << ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_CM_MOD, T>& x) {
+  ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_CM_MOD>& x) {
+  ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type : int {
-    NONE   ,
-    MAX    ,
+  MEMBERS_CM
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_CM		\
-    NONE   ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::static_value_flags;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD> CM;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_DynaPS_MOD : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_DynaPS, PARAM_TYPE_MOD> {
-  typedef ENUM_DynaPS_MOD type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_DynaPS_MOD& x) {
+  out << ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_DynaPS_MOD, T>& x) {
+  ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_DynaPS_MOD>& x) {
+  ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type : int {
-    NONE   ,
-    MAX    ,
+  MEMBERS_DynaPS
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_DynaPS		\
-    NONE   ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::static_value_flags;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD> DynaPS;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_EPS_MOD : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_EPS, PARAM_TYPE_MOD> {
-  typedef ENUM_EPS_MOD type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_EPS_MOD& x) {
+  out << ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_EPS_MOD, T>& x) {
+  ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_EPS_MOD>& x) {
+  ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type : int {
-    NONE   ,
-    MAX    ,
+  MEMBERS_EPS
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_EPS		\
-    NONE   ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::static_value_flags;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD> EPS;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_FIBF_MOD : int {
-    NONE            ,
-    ChlPSI          ,  //!< [CALC, INIT_ONCE]
-    ChlT            ,  //!< [CALC, INIT_ONCE]
-    ChlT2           ,  //!< [CALC, INIT_ONCE]
-    FIBF2FI_PQ      ,  //!< [CALC, INIT_ONCE]
-    FIBF2FI_PQa     ,  //!< [CALC, INIT_ONCE]
-    MAX             ,
-};
-template<>
-struct enum_helper<MODULE_FIBF, PARAM_TYPE_MOD> {
-  typedef ENUM_FIBF_MOD type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_MOD& x) {
+  out << ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_FIBF_MOD, T>& x) {
+  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_FIBF_MOD>& x) {
+  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type : int {
-    NONE            ,
-    ChlPSI          ,  //!< [CALC, INIT_ONCE]
-    ChlT            ,  //!< [CALC, INIT_ONCE]
-    ChlT2           ,  //!< [CALC, INIT_ONCE]
-    FIBF2FI_PQ      ,  //!< [CALC, INIT_ONCE]
-    FIBF2FI_PQa     ,  //!< [CALC, INIT_ONCE]
-    MAX             ,
+  MEMBERS_FIBF
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_FIBF		\
-    NONE            ,		\
-    ChlPSI          ,		\
-    ChlT            ,		\
-    ChlT2           ,		\
-    FIBF2FI_PQ      ,		\
-    FIBF2FI_PQa     ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::static_value_flags;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD> FIBF;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_FI_MOD : int {
-    NONE      ,
-    cpsii     ,  //!< [GLYMAID=Glyma.01G095900]
-    MAX       ,
-};
-template<>
-struct enum_helper<MODULE_FI, PARAM_TYPE_MOD> {
-  typedef ENUM_FI_MOD type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_FI_MOD& x) {
+  out << ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_FI_MOD, T>& x) {
+  ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_FI_MOD>& x) {
+  ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type : int {
-    NONE      ,
-    cpsii     ,  //!< [GLYMAID=Glyma.01G095900]
-    MAX       ,
+  MEMBERS_FI
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_FI		\
-    NONE      ,		\
-    cpsii     ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::static_value_flags;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD> FI;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PR_MOD : int {
-    NONE             ,
-    V111             ,  //!< [CALC]
-    V112             ,
-    V113             ,
-    V121             ,
-    V122             ,
-    V123             ,
-    V124             ,
-    V131             ,
-    NADHc            ,
-    NADc             ,
-    GLUc             ,
-    KGc              ,
-    PR_ADP           ,
-    PR_ATP           ,
-    KO               ,  //!< Michaelis constant for O2
-    KC               ,  //!< Michaelis constant for CO2
-    KR               ,  //!< Michaelis constant for RUBP
-    KM112            ,  //!< Km112 for PGlycolate
-    KI1122           ,  //!< Inhibition constant for Glycolate
-    KI1121           ,  //!< The competitive Pi inhibition for PGlycolate
-    KM1131           ,  //!< Km for ATP
-    KM1132           ,  //!< Km for Gcea
-    KI113            ,  //!< Competitive inhibition for ATP; in original paper it is 0.36
-    KE113            ,  //!< New: Kleczkowski et al . 1985 Archives of Biochemistry and Biophysics  300, as default
-    KM121            ,
-    KM1221           ,  //!< Michaelis constant for glyoxylate
-    KM1222           ,  //!< Michaelis constant for serinie
-    KI1221           ,  //!< Inhibition constant for Glycine
-    KE122            ,  //!< New: Guynn, R.W.; Arch. Biochem. Biophys.; 218, 14 (1982).; 0.24. At 25 degree.
-    KM123            ,  //!< Michaelis constant for hydroxylpyruvate
-    KI123            ,  //!< Inhibition constant for hydroxypyruvate
-    KE123            ,
-    KM1241           ,  //!< Michaelis constant for glyoxylate
-    KM1242           ,  //!< Michaelis constant for Glu
-    KI124            ,  //!< [CONST] This KI is one guessed
-    KE124            ,  //!< New: Cooper, A.J.L.; Meister, A.; Biochemistry; 11, 661 (1972).; K' 607.
-    KM1311           ,  //!< Michaelis constant for Glycine
-    KI1311           ,  //!< Inhibition constant for Serine
-    KM1312           ,  //!< [CONST] Michaelis constant for NAD;
-    KI1312           ,  //!< [CONST] Inhibition constant for NADH; Since in the current program, we assume that P protein limit the rate of the overall glycin decarboxylase; the KI1312 and KM1312 were not used.
-    V1T              ,  //!< *= CE if not C3
-    KM1011           ,
-    KI1011           ,
-    V2T              ,  //!< *= CE if not C3
-    KM1012           ,
-    KI1012           ,
-    Vfactor112       ,  //!< [GLYMAID=Glyma.09G015500]
-    Vfactor113       ,  //!< [GLYMAID=Glyma.15G012500]
-    Vfactor121       ,  //!< [GLYMAID=Glyma.06G017900]
-    Vfactor122       ,  //!< [GLYMAID=Glyma.08G302600]
-    Vfactor123       ,  //!< [GLYMAID=Glyma.09G255200]
-    Vfactor124       ,  //!< [GLYMAID=Glyma.01G026700]
-    Vfactor131       ,  //!< [GLYMAID=Glyma.13G222300]
-    Vf_T131          ,
-    Vf_T113          ,
-    Vf_T123          ,
-    Vf_T121          ,
-    Vf_T122          ,
-    Vf_T112          ,
-    PGA              ,
-    RUBISCOTOTAL     ,
-    PrV112           ,
-    PrV113           ,
-    PrV121           ,
-    PrV122           ,
-    PrV123           ,
-    PrV124           ,
-    PrV131           ,
-    Q10_112          ,  //!< [CONST] Q10 for PrV112; unused w/o C3
-    Q10_113          ,  //!< [CONST] Q10 for PrV113; unused w/o C3
-    Q10_121          ,  //!< [CONST] Q10 for PrV121; unused w/o C3
-    Q10_122          ,  //!< [CONST] Q10 for PrV122; unused w/o C3
-    Q10_123          ,  //!< [CONST] Q10 for PrV123; unused w/o C3
-    Q10_124          ,  //!< [CONST] Q10 for PrV124; unused w/o C3
-    Q10_131          ,  //!< [CONST] Q10 for PrV131; unused w/o C3
-    CE               ,  //!< [CONST] This is the coefficient for calibrating the volume effect; Used to scale V1T & V2T; Comment says default is 4; Unused w/ C3
-    MAX              ,
-};
-template<>
-struct enum_helper<MODULE_PR, PARAM_TYPE_MOD> {
-  typedef ENUM_PR_MOD type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_PR_MOD& x) {
+  out << ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_PR_MOD, T>& x) {
+  ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_PR_MOD>& x) {
+  ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type : int {
-    NONE             ,
-    V111             ,  //!< [CALC]
-    V112             ,
-    V113             ,
-    V121             ,
-    V122             ,
-    V123             ,
-    V124             ,
-    V131             ,
-    NADHc            ,
-    NADc             ,
-    GLUc             ,
-    KGc              ,
-    PR_ADP           ,
-    PR_ATP           ,
-    KO               ,  //!< Michaelis constant for O2
-    KC               ,  //!< Michaelis constant for CO2
-    KR               ,  //!< Michaelis constant for RUBP
-    KM112            ,  //!< Km112 for PGlycolate
-    KI1122           ,  //!< Inhibition constant for Glycolate
-    KI1121           ,  //!< The competitive Pi inhibition for PGlycolate
-    KM1131           ,  //!< Km for ATP
-    KM1132           ,  //!< Km for Gcea
-    KI113            ,  //!< Competitive inhibition for ATP; in original paper it is 0.36
-    KE113            ,  //!< New: Kleczkowski et al . 1985 Archives of Biochemistry and Biophysics  300, as default
-    KM121            ,
-    KM1221           ,  //!< Michaelis constant for glyoxylate
-    KM1222           ,  //!< Michaelis constant for serinie
-    KI1221           ,  //!< Inhibition constant for Glycine
-    KE122            ,  //!< New: Guynn, R.W.; Arch. Biochem. Biophys.; 218, 14 (1982).; 0.24. At 25 degree.
-    KM123            ,  //!< Michaelis constant for hydroxylpyruvate
-    KI123            ,  //!< Inhibition constant for hydroxypyruvate
-    KE123            ,
-    KM1241           ,  //!< Michaelis constant for glyoxylate
-    KM1242           ,  //!< Michaelis constant for Glu
-    KI124            ,  //!< [CONST] This KI is one guessed
-    KE124            ,  //!< New: Cooper, A.J.L.; Meister, A.; Biochemistry; 11, 661 (1972).; K' 607.
-    KM1311           ,  //!< Michaelis constant for Glycine
-    KI1311           ,  //!< Inhibition constant for Serine
-    KM1312           ,  //!< [CONST] Michaelis constant for NAD;
-    KI1312           ,  //!< [CONST] Inhibition constant for NADH; Since in the current program, we assume that P protein limit the rate of the overall glycin decarboxylase; the KI1312 and KM1312 were not used.
-    V1T              ,  //!< *= CE if not C3
-    KM1011           ,
-    KI1011           ,
-    V2T              ,  //!< *= CE if not C3
-    KM1012           ,
-    KI1012           ,
-    Vfactor112       ,  //!< [GLYMAID=Glyma.09G015500]
-    Vfactor113       ,  //!< [GLYMAID=Glyma.15G012500]
-    Vfactor121       ,  //!< [GLYMAID=Glyma.06G017900]
-    Vfactor122       ,  //!< [GLYMAID=Glyma.08G302600]
-    Vfactor123       ,  //!< [GLYMAID=Glyma.09G255200]
-    Vfactor124       ,  //!< [GLYMAID=Glyma.01G026700]
-    Vfactor131       ,  //!< [GLYMAID=Glyma.13G222300]
-    Vf_T131          ,
-    Vf_T113          ,
-    Vf_T123          ,
-    Vf_T121          ,
-    Vf_T122          ,
-    Vf_T112          ,
-    PGA              ,
-    RUBISCOTOTAL     ,
-    PrV112           ,
-    PrV113           ,
-    PrV121           ,
-    PrV122           ,
-    PrV123           ,
-    PrV124           ,
-    PrV131           ,
-    Q10_112          ,  //!< [CONST] Q10 for PrV112; unused w/o C3
-    Q10_113          ,  //!< [CONST] Q10 for PrV113; unused w/o C3
-    Q10_121          ,  //!< [CONST] Q10 for PrV121; unused w/o C3
-    Q10_122          ,  //!< [CONST] Q10 for PrV122; unused w/o C3
-    Q10_123          ,  //!< [CONST] Q10 for PrV123; unused w/o C3
-    Q10_124          ,  //!< [CONST] Q10 for PrV124; unused w/o C3
-    Q10_131          ,  //!< [CONST] Q10 for PrV131; unused w/o C3
-    CE               ,  //!< [CONST] This is the coefficient for calibrating the volume effect; Used to scale V1T & V2T; Comment says default is 4; Unused w/ C3
-    MAX              ,
+  MEMBERS_PR
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_PR		\
-    NONE             ,		\
-    V111             ,		\
-    V112             ,		\
-    V113             ,		\
-    V121             ,		\
-    V122             ,		\
-    V123             ,		\
-    V124             ,		\
-    V131             ,		\
-    NADHc            ,		\
-    NADc             ,		\
-    GLUc             ,		\
-    KGc              ,		\
-    PR_ADP           ,		\
-    PR_ATP           ,		\
-    KO               ,		\
-    KC               ,		\
-    KR               ,		\
-    KM112            ,		\
-    KI1122           ,		\
-    KI1121           ,		\
-    KM1131           ,		\
-    KM1132           ,		\
-    KI113            ,		\
-    KE113            ,		\
-    KM121            ,		\
-    KM1221           ,		\
-    KM1222           ,		\
-    KI1221           ,		\
-    KE122            ,		\
-    KM123            ,		\
-    KI123            ,		\
-    KE123            ,		\
-    KM1241           ,		\
-    KM1242           ,		\
-    KI124            ,		\
-    KE124            ,		\
-    KM1311           ,		\
-    KI1311           ,		\
-    KM1312           ,		\
-    KI1312           ,		\
-    V1T              ,		\
-    KM1011           ,		\
-    KI1011           ,		\
-    V2T              ,		\
-    KM1012           ,		\
-    KI1012           ,		\
-    Vfactor112       ,		\
-    Vfactor113       ,		\
-    Vfactor121       ,		\
-    Vfactor122       ,		\
-    Vfactor123       ,		\
-    Vfactor124       ,		\
-    Vfactor131       ,		\
-    Vf_T131          ,		\
-    Vf_T113          ,		\
-    Vf_T123          ,		\
-    Vf_T121          ,		\
-    Vf_T122          ,		\
-    Vf_T112          ,		\
-    PGA              ,		\
-    RUBISCOTOTAL     ,		\
-    PrV112           ,		\
-    PrV113           ,		\
-    PrV121           ,		\
-    PrV122           ,		\
-    PrV123           ,		\
-    PrV124           ,		\
-    PrV131           ,		\
-    Q10_112          ,		\
-    Q10_113          ,		\
-    Q10_121          ,		\
-    Q10_122          ,		\
-    Q10_123          ,		\
-    Q10_124          ,		\
-    Q10_131          ,		\
-    CE               ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::static_value_flags;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD> PR;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PS_MOD : int {
-    NONE          ,
-    PS_C_CP       ,  //!< Global constant for the total phosphate (22.0 was originally used in the C++ version)
-    PS_C_CA       ,  //!< Global constant for the total adenylates
-    PS_C_CN       ,  //!< Global constant for the cytosolic Phosphate concentration; langmm: 1.0 w/o C3 in Matlab version
-    PS_PEXT       ,  //!< Global constant for the cytosolic Phosphate concentration;
-    V1            ,  //!< *= SC1 / STOM1 (Harris & Koniger, 1997); Set by EnzymeAct for C3
-    V2            ,  //!< *= SC * STOM2 (Harris & Koniger, 1997); Set by EnzymeAct for C3
-    V3            ,  //!< *= SC * STOM2 (Harris & Koniger, 1997); Set by EnzymeAct for C3
-    V5            ,  //!< *= SC (Harris & Koniger, 1997); Set by EnzymeAct for C3
-    V6            ,  //!< *= SC / STOM1 (Harris & Koniger, 1997); Set by EnzymeAct for C3
-    V7            ,  //!< *= SC (Harris & Koniger, 1997); Set by EnzymeAct for C3
-    V8            ,  //!< *= SC (Harris & Koniger, 1997); Set by EnzymeAct for C3
-    V9            ,  //!< 0.17*SC *FC; (Harris & Koniger, 1997) *3.; Set by EnzymeAct for C3
-    V10           ,  //!< V10 skipped if not C3 and not present in PSRatio; Set by EnzymeAct for C3
-    V13           ,  //!< *= SC1 (Harris & Koniger, 1997); Set by EnzymeAct for C3
-    V16           ,  //!< (Aflalo & Shavit, 1983, Davenport & McLeod, 1986); Set by EnzymeAct for C3
-    V23           ,  //!< Set by EnzymeAct for C3
-    V24           ,
-    V31           ,
-    V32           ,
-    V33           ,  //!< WY 2018103
-    KM11          ,  //!< CO2 1 RuBP+CO2->2PGA; calc for C3
-    KM12          ,  //!< O2 1 RuBP+CO2->2PGA; calc for C3
-    KM13          ,  //!< RuBP 1 RuBP+CO2->2PGA; calc for C3
-    KI11          ,  //!< PGA
-    KI12          ,  //!< FBP
-    KI13          ,  //!< SBP
-    KI14          ,  //!< Pi
-    KI15          ,  //!< NADPH
-    KM21          ,  //!< PGA 2 PGA+ATP <-> ADP + DPGA
-    KM22          ,  //!< ATP 2 PGA+ATP <-> ADP + DPGA
-    KM23          ,  //!< ADP
-    KM31a         ,  //!< BPGA 3 DPGA+NADPH <->GAP + OP+NADP
-    KM32b         ,  //!< NADPH 3 DPGA+NADPH <->GAP + OP+NADP
-    KE4           ,  //!< Using the value from Patterson; langmm: calcs suspiciously different for C3 vs not, this might be a typo?
-    KM51          ,  //!< GAP 5 GAP+DHAP <->FBP
-    KM52          ,  //!< DHAP 5 GAP+DHAP <->FBP
-    KM53          ,  //!< FBP 5 GAP+DHAP <->FBP; Original Value: 0.02
-    KE5           ,
-    KM61          ,  //!< FBP 6 FBP<->F6P+OP
-    KI61          ,  //!< F6P
-    KI62          ,  //!< Pi
-    KE6           ,
-    KM71          ,  //!< Xu5P 7 F6P+GAP<->E4P+Xu5P; jn
-    KM72          ,  //!< E4P 7 F6P+GAP<->E4P+Xu5P
-    KM73          ,  //!< F6P This value was based on estimate
-    KM74          ,  //!< Estimate for GAP ORIGINAL 0.1
-    KE7           ,  //!< The equilibrium constant for this reaction  New   Laisk  Bassham and Krause 1969 BBA
-    KM81          ,  //!< DHAP
-    KM82          ,  //!< E4P estimate
-    KE8           ,  //!< The equilibrium constant for this reaction  New  mM-1  Laisk  Bassham and Krause 1969 BBA. Default: 1.107
-    KM9           ,  //!< SBP 9 SBP<->S7P+OP
-    KI9           ,  //!< The inibintion constant for Pi
-    KE9           ,
-    KM10          ,  //!< R5P 10 S7P+GAP<->Ri5P+Xu5P
-    KM101         ,  //!< Xu5P
-    KM102         ,  //!< Estimate for GAP
-    KM103         ,  //!< Estimate for S7P
-    KE10          ,  //!< The equilibrium constant for this reaction; New: From Laisk or Bassham and Krause 1969 BBA
-    KE11          ,  //!< Equilibrium Constant 11 Ri5P<-->Ru5P
-    KE12          ,  //!< Equilibrium Constant 12 Xu5P<-->Ru5P
-    KM131         ,  //!< Ru5P 13 Ru5P+ATP<->RuBP+ADP
-    KM132         ,  //!< ATP 13 Ru5P+ATP<->RuBP+ADP
-    KI131         ,  //!< PGA 13 Ru5P+ATP<->RuBP+ADP
-    KI132         ,  //!< RuBP 13 Ru5P+ATP<->RuBP+ADP
-    KI133         ,  //!< Pi 13 Ru5P+ATP<->RuBP+ADP
-    KI134         ,  //!< ADP 13 Ru5P+ATP<->RuBP+ADP
-    KI135         ,  //!< ADP 13 Ru5P+ATP<->RuBP+ADP
-    KE13          ,  //!< The equilibrium constant for this reaction; New: From Laisk or Bassham and Krause 1969 BBA
-    KM161         ,  //!< ADP 16 ADP+Pi<->ATP
-    KM162         ,  //!< Pi 16 ADP+Pi<-> ATP
-    KM163         ,  //!< ATP 16  ADP+Pi<-> ATP; New: Based on Laisk
-    KE16          ,  //!< The equilibrium constant for this reaction; New: From Laisk or Bassham and Krause 1969 BBA
-    KE21          ,  //!< Equilibrium constant 21 F6P<->G6P
-    KE22          ,  //!< Equilibrium constant 22 G6P<->G1P
-    KM311         ,  //!< DHAP 31 DHAPi<->DHAPo
-    KM312         ,  //!< Pi 31 DHAPi<->DHAPo
-    KM313         ,  //!< Pext 31 DHAPi<->DHAPo
-    KM32          ,  //!< PGA 32 PGAi<->PGAo
-    KM33          ,  //!< GAP 33 GAPi<->GAPo
-    KM231         ,  //!< G1P 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)
-    KM232         ,  //!< ATP 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)
-    KM233         ,  //!< ADPG 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)
-    KM234         ,  //!< PPi 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)
-    KE23          ,
-    KA231         ,  //!< PGA 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)
-    KI231         ,  //!< Pi 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989) WY201803
-    KVmo          ,  //!< The minimum maximum velocity (Laisk et al 1989)
-    KM241         ,  //!< ADPG    ADPG --> ADP + Gn (Laisk et al 1989)
-    KA232         ,  //!< F6P 23 G1P+ATP+Gn<->PPi+ADP+Gn+1; skipped in PSRatio
-    KA233         ,  //!< FBP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1; skipped in PSRatio
-    KI23          ,  //!< ADP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1; skipped in PSRatio
-    KE25          ,
-    KE57          ,
-    Km8p5p        ,
-    Km5p5p        ,
-    KE810         ,
-    Km5gap        ,
-    Km8f6p        ,
-    Km8s7p        ,
-    Km8gap        ,
-    MaxCoeff      ,
-    _NADPH        ,
-    KE1Ratio      ,  //!< Calculated from KE11 & KE12
-    KE2Ratio      ,  //!< Calculated from KE21 & KE22
-    Ru_Act        ,  //!< Initialized w/ C3
-    PsV31         ,  //!< Set by scaling V31
-    PsV32         ,  //!< Set by scaling V32
-    PsV33         ,  //!< Set by scaling V33
-    PiTc          ,  //!< [INIT_ONCE]
-    V1Reg         ,  //!< [INIT_ONCE]
-    Theta         ,  //!< [INIT_ONCE, CONST]
-    beta          ,  //!< [INIT_ONCE, CONST]
-    Jmax          ,  //!< [INIT_ONCE, CONST]
-    Vfactor1      ,  //!< [RESET_ONE,GLYMAID=Glyma.19G046800] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-    Vfactor2      ,  //!< [RESET_ONE,GLYMAID=Glyma.08G165500] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-    Vfactor3      ,  //!< [RESET_ONE,GLYMAID=Glyma.04G015900] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-    Vfactor5      ,  //!< [RESET_ONE,GLYMAID=Glyma.10G268500] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-    Vfactor7      ,  //!< [RESET_ONE,GLYMAID=Glyma.10G293500] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-    Vfactor13     ,  //!< [RESET_ONE,GLYMAID=Glyma.19G089100] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-    Vfactor23     ,  //!< [RESET_ONE,GLYMAID=Glyma.17G015600] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-    Vf_T3         ,  //!< [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C4
-    Vf_T2         ,  //!< [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
-    Vf_T1         ,  //!< [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
-    Vf_T6         ,  //!< [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
-    Vf_T5         ,  //!< [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
-    Vf_T9         ,  //!< [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
-    Vf_T13        ,  //!< [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
-    Vf_T23        ,  //!< [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
-    PsV1          ,  //!< Set by calculation w/ C3
-    PsV2          ,  //!< Set by calculation w/ C3
-    PsV3          ,  //!< Set by calculation w/ C3
-    PsV5          ,  //!< Set by calculation w/ C3
-    PsV6          ,  //!< Set by calculation w/ C3
-    PsV7          ,  //!< Set by calculation w/ C3
-    PsV8          ,  //!< Set by calculation w/ C3
-    PsV9          ,  //!< Set by calculation w/ C3
-    PsV10         ,  //!< Set by calculation w/ C3
-    PsV13         ,  //!< Set by calculation w/ C3
-    PsV16         ,  //!< Set by calculation w/ C3
-    PsV23         ,  //!< Set by calculation w/ C3
-    PsV1_0        ,  //!< Product of VX, VfactorX & Vf_TX; X = 1
-    PsV2_0        ,  //!< Product of VX, VfactorX & Vf_TX; X = 2
-    PsV3_0        ,  //!< Product of VX, VfactorX & Vf_TX; X = 3
-    PsV5_0        ,  //!< Product of VX, VfactorX & Vf_TX; X = 5
-    PsV6_0        ,  //!< Product of VX & Vf_TX; X = 6
-    PsV7_0        ,  //!< Product of VX & VfactorX; X = 7
-    PsV8_0        ,  //!< Product of VX, Vfactor5 & Vf_T5; X = 8
-    PsV9_0        ,  //!< Product of VX & Vf_TX; X = 9
-    PsV10_0       ,  //!< Product of VX & Vfactor7; X = 10
-    PsV13_0       ,  //!< Product of VX, VfactorX & Vf_TX; X = 13
-    PsV23_0       ,  //!< Product of VX, VfactorX & Vf_TX; X = 23
-    I2            ,  //!< Set by calculation w/ C3
-    J             ,  //!< Set by calculation w/ C3
-    Q10_1         ,  //!< [CONST] Q10 for PsV1; unused w/o C3
-    Q10_2         ,  //!< [CONST] Q10 for PsV2; unused w/o C3
-    Q10_3         ,  //!< [CONST] Q10 for PsV3; unused w/o C3
-    Q10_5         ,  //!< [CONST] Q10 for PsV5; unused w/o C3
-    Q10_6         ,  //!< [CONST] Q10 for PsV6; unused w/o C3
-    Q10_7         ,  //!< [CONST] Q10 for PsV7; unused w/o C3
-    Q10_8         ,  //!< [CONST] Q10 for PsV8; unused w/o C3
-    Q10_9         ,  //!< [CONST] Q10 for PsV9; unused w/o C3
-    Q10_10        ,  //!< [CONST] Q10 for PsV10; unused w/o C3
-    Q10_13        ,  //!< [CONST] Q10 for PsV13; unused w/o C3
-    Q10_23        ,  //!< [CONST] Q10 for PsV23; unused w/o C3
-    R             ,  //!< [CONST] ideal gas constant J mole-1 K-1; BioCro: 8.314E-3; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
-    c_c           ,  //!< [CONST] dimensionless; BioCro: 38.05; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
-    dHa_c         ,  //!< [CONST] J / mol activation_energy; BioCro: 79.43; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
-    c_o           ,  //!< [CONST] dimensionless; BioCro: 20.30; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
-    dHa_o         ,  //!< [CONST] J / mol activation_energy; BioCro: 36.38; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
-    RegFactor     ,  //!< [CONST] dimensionless; BioCro: 1.0; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
-    SC            ,  //!< [CONST] Scaling coefficient for the stroma volume per mg chl. defualt 2 in comments; Used to scale PS module parameters V2, V3, V5, V6, V7 & V8; was previously used in comments to scale V9, V31, V32, & V33, but is not currently (see Lilley, Chon, Mosbach & Heldt, 1977b & Lilley et al., 1977b)
-    SC1           ,  //!< [CONST] Used to scale PS module parameters V1 & V13
-    STOM1         ,  //!< [CONST] Used to scale PS module parameters V1 & V6
-    STOM2         ,  //!< [CONST] Used to scale PS module parameters V2 & V3
-    MAX           ,
-};
-template<>
-struct enum_helper<MODULE_PS, PARAM_TYPE_MOD> {
-  typedef ENUM_PS_MOD type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_PS_MOD& x) {
+  out << ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_PS_MOD, T>& x) {
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_PS_MOD>& x) {
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type : int {
-    NONE          ,
-    PS_C_CP       ,  //!< Global constant for the total phosphate (22.0 was originally used in the C++ version)
-    PS_C_CA       ,  //!< Global constant for the total adenylates
-    PS_C_CN       ,  //!< Global constant for the cytosolic Phosphate concentration; langmm: 1.0 w/o C3 in Matlab version
-    PS_PEXT       ,  //!< Global constant for the cytosolic Phosphate concentration;
-    V1            ,  //!< *= SC1 / STOM1 (Harris & Koniger, 1997); Set by EnzymeAct for C3
-    V2            ,  //!< *= SC * STOM2 (Harris & Koniger, 1997); Set by EnzymeAct for C3
-    V3            ,  //!< *= SC * STOM2 (Harris & Koniger, 1997); Set by EnzymeAct for C3
-    V5            ,  //!< *= SC (Harris & Koniger, 1997); Set by EnzymeAct for C3
-    V6            ,  //!< *= SC / STOM1 (Harris & Koniger, 1997); Set by EnzymeAct for C3
-    V7            ,  //!< *= SC (Harris & Koniger, 1997); Set by EnzymeAct for C3
-    V8            ,  //!< *= SC (Harris & Koniger, 1997); Set by EnzymeAct for C3
-    V9            ,  //!< 0.17*SC *FC; (Harris & Koniger, 1997) *3.; Set by EnzymeAct for C3
-    V10           ,  //!< V10 skipped if not C3 and not present in PSRatio; Set by EnzymeAct for C3
-    V13           ,  //!< *= SC1 (Harris & Koniger, 1997); Set by EnzymeAct for C3
-    V16           ,  //!< (Aflalo & Shavit, 1983, Davenport & McLeod, 1986); Set by EnzymeAct for C3
-    V23           ,  //!< Set by EnzymeAct for C3
-    V24           ,
-    V31           ,
-    V32           ,
-    V33           ,  //!< WY 2018103
-    KM11          ,  //!< CO2 1 RuBP+CO2->2PGA; calc for C3
-    KM12          ,  //!< O2 1 RuBP+CO2->2PGA; calc for C3
-    KM13          ,  //!< RuBP 1 RuBP+CO2->2PGA; calc for C3
-    KI11          ,  //!< PGA
-    KI12          ,  //!< FBP
-    KI13          ,  //!< SBP
-    KI14          ,  //!< Pi
-    KI15          ,  //!< NADPH
-    KM21          ,  //!< PGA 2 PGA+ATP <-> ADP + DPGA
-    KM22          ,  //!< ATP 2 PGA+ATP <-> ADP + DPGA
-    KM23          ,  //!< ADP
-    KM31a         ,  //!< BPGA 3 DPGA+NADPH <->GAP + OP+NADP
-    KM32b         ,  //!< NADPH 3 DPGA+NADPH <->GAP + OP+NADP
-    KE4           ,  //!< Using the value from Patterson; langmm: calcs suspiciously different for C3 vs not, this might be a typo?
-    KM51          ,  //!< GAP 5 GAP+DHAP <->FBP
-    KM52          ,  //!< DHAP 5 GAP+DHAP <->FBP
-    KM53          ,  //!< FBP 5 GAP+DHAP <->FBP; Original Value: 0.02
-    KE5           ,
-    KM61          ,  //!< FBP 6 FBP<->F6P+OP
-    KI61          ,  //!< F6P
-    KI62          ,  //!< Pi
-    KE6           ,
-    KM71          ,  //!< Xu5P 7 F6P+GAP<->E4P+Xu5P; jn
-    KM72          ,  //!< E4P 7 F6P+GAP<->E4P+Xu5P
-    KM73          ,  //!< F6P This value was based on estimate
-    KM74          ,  //!< Estimate for GAP ORIGINAL 0.1
-    KE7           ,  //!< The equilibrium constant for this reaction  New   Laisk  Bassham and Krause 1969 BBA
-    KM81          ,  //!< DHAP
-    KM82          ,  //!< E4P estimate
-    KE8           ,  //!< The equilibrium constant for this reaction  New  mM-1  Laisk  Bassham and Krause 1969 BBA. Default: 1.107
-    KM9           ,  //!< SBP 9 SBP<->S7P+OP
-    KI9           ,  //!< The inibintion constant for Pi
-    KE9           ,
-    KM10          ,  //!< R5P 10 S7P+GAP<->Ri5P+Xu5P
-    KM101         ,  //!< Xu5P
-    KM102         ,  //!< Estimate for GAP
-    KM103         ,  //!< Estimate for S7P
-    KE10          ,  //!< The equilibrium constant for this reaction; New: From Laisk or Bassham and Krause 1969 BBA
-    KE11          ,  //!< Equilibrium Constant 11 Ri5P<-->Ru5P
-    KE12          ,  //!< Equilibrium Constant 12 Xu5P<-->Ru5P
-    KM131         ,  //!< Ru5P 13 Ru5P+ATP<->RuBP+ADP
-    KM132         ,  //!< ATP 13 Ru5P+ATP<->RuBP+ADP
-    KI131         ,  //!< PGA 13 Ru5P+ATP<->RuBP+ADP
-    KI132         ,  //!< RuBP 13 Ru5P+ATP<->RuBP+ADP
-    KI133         ,  //!< Pi 13 Ru5P+ATP<->RuBP+ADP
-    KI134         ,  //!< ADP 13 Ru5P+ATP<->RuBP+ADP
-    KI135         ,  //!< ADP 13 Ru5P+ATP<->RuBP+ADP
-    KE13          ,  //!< The equilibrium constant for this reaction; New: From Laisk or Bassham and Krause 1969 BBA
-    KM161         ,  //!< ADP 16 ADP+Pi<->ATP
-    KM162         ,  //!< Pi 16 ADP+Pi<-> ATP
-    KM163         ,  //!< ATP 16  ADP+Pi<-> ATP; New: Based on Laisk
-    KE16          ,  //!< The equilibrium constant for this reaction; New: From Laisk or Bassham and Krause 1969 BBA
-    KE21          ,  //!< Equilibrium constant 21 F6P<->G6P
-    KE22          ,  //!< Equilibrium constant 22 G6P<->G1P
-    KM311         ,  //!< DHAP 31 DHAPi<->DHAPo
-    KM312         ,  //!< Pi 31 DHAPi<->DHAPo
-    KM313         ,  //!< Pext 31 DHAPi<->DHAPo
-    KM32          ,  //!< PGA 32 PGAi<->PGAo
-    KM33          ,  //!< GAP 33 GAPi<->GAPo
-    KM231         ,  //!< G1P 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)
-    KM232         ,  //!< ATP 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)
-    KM233         ,  //!< ADPG 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)
-    KM234         ,  //!< PPi 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)
-    KE23          ,
-    KA231         ,  //!< PGA 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)
-    KI231         ,  //!< Pi 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989) WY201803
-    KVmo          ,  //!< The minimum maximum velocity (Laisk et al 1989)
-    KM241         ,  //!< ADPG    ADPG --> ADP + Gn (Laisk et al 1989)
-    KA232         ,  //!< F6P 23 G1P+ATP+Gn<->PPi+ADP+Gn+1; skipped in PSRatio
-    KA233         ,  //!< FBP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1; skipped in PSRatio
-    KI23          ,  //!< ADP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1; skipped in PSRatio
-    KE25          ,
-    KE57          ,
-    Km8p5p        ,
-    Km5p5p        ,
-    KE810         ,
-    Km5gap        ,
-    Km8f6p        ,
-    Km8s7p        ,
-    Km8gap        ,
-    MaxCoeff      ,
-    _NADPH        ,
-    KE1Ratio      ,  //!< Calculated from KE11 & KE12
-    KE2Ratio      ,  //!< Calculated from KE21 & KE22
-    Ru_Act        ,  //!< Initialized w/ C3
-    PsV31         ,  //!< Set by scaling V31
-    PsV32         ,  //!< Set by scaling V32
-    PsV33         ,  //!< Set by scaling V33
-    PiTc          ,  //!< [INIT_ONCE]
-    V1Reg         ,  //!< [INIT_ONCE]
-    Theta         ,  //!< [INIT_ONCE, CONST]
-    beta          ,  //!< [INIT_ONCE, CONST]
-    Jmax          ,  //!< [INIT_ONCE, CONST]
-    Vfactor1      ,  //!< [RESET_ONE,GLYMAID=Glyma.19G046800] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-    Vfactor2      ,  //!< [RESET_ONE,GLYMAID=Glyma.08G165500] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-    Vfactor3      ,  //!< [RESET_ONE,GLYMAID=Glyma.04G015900] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-    Vfactor5      ,  //!< [RESET_ONE,GLYMAID=Glyma.10G268500] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-    Vfactor7      ,  //!< [RESET_ONE,GLYMAID=Glyma.10G293500] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-    Vfactor13     ,  //!< [RESET_ONE,GLYMAID=Glyma.19G089100] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-    Vfactor23     ,  //!< [RESET_ONE,GLYMAID=Glyma.17G015600] Set by VfactorCp for C3 if GRNC and CO2_cond > 0
-    Vf_T3         ,  //!< [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C4
-    Vf_T2         ,  //!< [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
-    Vf_T1         ,  //!< [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
-    Vf_T6         ,  //!< [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
-    Vf_T5         ,  //!< [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
-    Vf_T9         ,  //!< [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
-    Vf_T13        ,  //!< [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
-    Vf_T23        ,  //!< [RESET_ONE] Set by VfactorT if GRNT and Tp > 25 w/ C3
-    PsV1          ,  //!< Set by calculation w/ C3
-    PsV2          ,  //!< Set by calculation w/ C3
-    PsV3          ,  //!< Set by calculation w/ C3
-    PsV5          ,  //!< Set by calculation w/ C3
-    PsV6          ,  //!< Set by calculation w/ C3
-    PsV7          ,  //!< Set by calculation w/ C3
-    PsV8          ,  //!< Set by calculation w/ C3
-    PsV9          ,  //!< Set by calculation w/ C3
-    PsV10         ,  //!< Set by calculation w/ C3
-    PsV13         ,  //!< Set by calculation w/ C3
-    PsV16         ,  //!< Set by calculation w/ C3
-    PsV23         ,  //!< Set by calculation w/ C3
-    PsV1_0        ,  //!< Product of VX, VfactorX & Vf_TX; X = 1
-    PsV2_0        ,  //!< Product of VX, VfactorX & Vf_TX; X = 2
-    PsV3_0        ,  //!< Product of VX, VfactorX & Vf_TX; X = 3
-    PsV5_0        ,  //!< Product of VX, VfactorX & Vf_TX; X = 5
-    PsV6_0        ,  //!< Product of VX & Vf_TX; X = 6
-    PsV7_0        ,  //!< Product of VX & VfactorX; X = 7
-    PsV8_0        ,  //!< Product of VX, Vfactor5 & Vf_T5; X = 8
-    PsV9_0        ,  //!< Product of VX & Vf_TX; X = 9
-    PsV10_0       ,  //!< Product of VX & Vfactor7; X = 10
-    PsV13_0       ,  //!< Product of VX, VfactorX & Vf_TX; X = 13
-    PsV23_0       ,  //!< Product of VX, VfactorX & Vf_TX; X = 23
-    I2            ,  //!< Set by calculation w/ C3
-    J             ,  //!< Set by calculation w/ C3
-    Q10_1         ,  //!< [CONST] Q10 for PsV1; unused w/o C3
-    Q10_2         ,  //!< [CONST] Q10 for PsV2; unused w/o C3
-    Q10_3         ,  //!< [CONST] Q10 for PsV3; unused w/o C3
-    Q10_5         ,  //!< [CONST] Q10 for PsV5; unused w/o C3
-    Q10_6         ,  //!< [CONST] Q10 for PsV6; unused w/o C3
-    Q10_7         ,  //!< [CONST] Q10 for PsV7; unused w/o C3
-    Q10_8         ,  //!< [CONST] Q10 for PsV8; unused w/o C3
-    Q10_9         ,  //!< [CONST] Q10 for PsV9; unused w/o C3
-    Q10_10        ,  //!< [CONST] Q10 for PsV10; unused w/o C3
-    Q10_13        ,  //!< [CONST] Q10 for PsV13; unused w/o C3
-    Q10_23        ,  //!< [CONST] Q10 for PsV23; unused w/o C3
-    R             ,  //!< [CONST] ideal gas constant J mole-1 K-1; BioCro: 8.314E-3; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
-    c_c           ,  //!< [CONST] dimensionless; BioCro: 38.05; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
-    dHa_c         ,  //!< [CONST] J / mol activation_energy; BioCro: 79.43; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
-    c_o           ,  //!< [CONST] dimensionless; BioCro: 20.30; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
-    dHa_o         ,  //!< [CONST] J / mol activation_energy; BioCro: 36.38; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
-    RegFactor     ,  //!< [CONST] dimensionless; BioCro: 1.0; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
-    SC            ,  //!< [CONST] Scaling coefficient for the stroma volume per mg chl. defualt 2 in comments; Used to scale PS module parameters V2, V3, V5, V6, V7 & V8; was previously used in comments to scale V9, V31, V32, & V33, but is not currently (see Lilley, Chon, Mosbach & Heldt, 1977b & Lilley et al., 1977b)
-    SC1           ,  //!< [CONST] Used to scale PS module parameters V1 & V13
-    STOM1         ,  //!< [CONST] Used to scale PS module parameters V1 & V6
-    STOM2         ,  //!< [CONST] Used to scale PS module parameters V2 & V3
-    MAX           ,
+  MEMBERS_PS
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_PS		\
-    NONE          ,		\
-    PS_C_CP       ,		\
-    PS_C_CA       ,		\
-    PS_C_CN       ,		\
-    PS_PEXT       ,		\
-    V1            ,		\
-    V2            ,		\
-    V3            ,		\
-    V5            ,		\
-    V6            ,		\
-    V7            ,		\
-    V8            ,		\
-    V9            ,		\
-    V10           ,		\
-    V13           ,		\
-    V16           ,		\
-    V23           ,		\
-    V24           ,		\
-    V31           ,		\
-    V32           ,		\
-    V33           ,		\
-    KM11          ,		\
-    KM12          ,		\
-    KM13          ,		\
-    KI11          ,		\
-    KI12          ,		\
-    KI13          ,		\
-    KI14          ,		\
-    KI15          ,		\
-    KM21          ,		\
-    KM22          ,		\
-    KM23          ,		\
-    KM31a         ,		\
-    KM32b         ,		\
-    KE4           ,		\
-    KM51          ,		\
-    KM52          ,		\
-    KM53          ,		\
-    KE5           ,		\
-    KM61          ,		\
-    KI61          ,		\
-    KI62          ,		\
-    KE6           ,		\
-    KM71          ,		\
-    KM72          ,		\
-    KM73          ,		\
-    KM74          ,		\
-    KE7           ,		\
-    KM81          ,		\
-    KM82          ,		\
-    KE8           ,		\
-    KM9           ,		\
-    KI9           ,		\
-    KE9           ,		\
-    KM10          ,		\
-    KM101         ,		\
-    KM102         ,		\
-    KM103         ,		\
-    KE10          ,		\
-    KE11          ,		\
-    KE12          ,		\
-    KM131         ,		\
-    KM132         ,		\
-    KI131         ,		\
-    KI132         ,		\
-    KI133         ,		\
-    KI134         ,		\
-    KI135         ,		\
-    KE13          ,		\
-    KM161         ,		\
-    KM162         ,		\
-    KM163         ,		\
-    KE16          ,		\
-    KE21          ,		\
-    KE22          ,		\
-    KM311         ,		\
-    KM312         ,		\
-    KM313         ,		\
-    KM32          ,		\
-    KM33          ,		\
-    KM231         ,		\
-    KM232         ,		\
-    KM233         ,		\
-    KM234         ,		\
-    KE23          ,		\
-    KA231         ,		\
-    KI231         ,		\
-    KVmo          ,		\
-    KM241         ,		\
-    KA232         ,		\
-    KA233         ,		\
-    KI23          ,		\
-    KE25          ,		\
-    KE57          ,		\
-    Km8p5p        ,		\
-    Km5p5p        ,		\
-    KE810         ,		\
-    Km5gap        ,		\
-    Km8f6p        ,		\
-    Km8s7p        ,		\
-    Km8gap        ,		\
-    MaxCoeff      ,		\
-    _NADPH        ,		\
-    KE1Ratio      ,		\
-    KE2Ratio      ,		\
-    Ru_Act        ,		\
-    PsV31         ,		\
-    PsV32         ,		\
-    PsV33         ,		\
-    PiTc          ,		\
-    V1Reg         ,		\
-    Theta         ,		\
-    beta          ,		\
-    Jmax          ,		\
-    Vfactor1      ,		\
-    Vfactor2      ,		\
-    Vfactor3      ,		\
-    Vfactor5      ,		\
-    Vfactor7      ,		\
-    Vfactor13     ,		\
-    Vfactor23     ,		\
-    Vf_T3         ,		\
-    Vf_T2         ,		\
-    Vf_T1         ,		\
-    Vf_T6         ,		\
-    Vf_T5         ,		\
-    Vf_T9         ,		\
-    Vf_T13        ,		\
-    Vf_T23        ,		\
-    PsV1          ,		\
-    PsV2          ,		\
-    PsV3          ,		\
-    PsV5          ,		\
-    PsV6          ,		\
-    PsV7          ,		\
-    PsV8          ,		\
-    PsV9          ,		\
-    PsV10         ,		\
-    PsV13         ,		\
-    PsV16         ,		\
-    PsV23         ,		\
-    PsV1_0        ,		\
-    PsV2_0        ,		\
-    PsV3_0        ,		\
-    PsV5_0        ,		\
-    PsV6_0        ,		\
-    PsV7_0        ,		\
-    PsV8_0        ,		\
-    PsV9_0        ,		\
-    PsV10_0       ,		\
-    PsV13_0       ,		\
-    PsV23_0       ,		\
-    I2            ,		\
-    J             ,		\
-    Q10_1         ,		\
-    Q10_2         ,		\
-    Q10_3         ,		\
-    Q10_5         ,		\
-    Q10_6         ,		\
-    Q10_7         ,		\
-    Q10_8         ,		\
-    Q10_9         ,		\
-    Q10_10        ,		\
-    Q10_13        ,		\
-    Q10_23        ,		\
-    R             ,		\
-    c_c           ,		\
-    dHa_c         ,		\
-    c_o           ,		\
-    dHa_o         ,		\
-    RegFactor     ,		\
-    SC            ,		\
-    SC1           ,		\
-    STOM1         ,		\
-    STOM2         ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::static_value_flags;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD> PS;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PS_PR_MOD : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_PS_PR, PARAM_TYPE_MOD> {
-  typedef ENUM_PS_PR_MOD type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_PS_PR_MOD& x) {
+  out << ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_PS_PR_MOD, T>& x) {
+  ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_PS_PR_MOD>& x) {
+  ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type : int {
-    NONE   ,
-    MAX    ,
+  MEMBERS_PS_PR
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_PS_PR		\
-    NONE   ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::static_value_flags;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD> PS_PR;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RA_MOD : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_RA, PARAM_TYPE_MOD> {
-  typedef ENUM_RA_MOD type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_RA_MOD& x) {
+  out << ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RA_MOD, T>& x) {
+  ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RA_MOD>& x) {
+  ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type : int {
-    NONE   ,
-    MAX    ,
+  MEMBERS_RA
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_RA		\
-    NONE   ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::static_value_flags;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD> RA;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RROEA_MOD : int {
-    NONE     ,
-    SC       ,  //!< [CONST] Used to scale PS module parameters V3, V6, V9, V13, V16, & V23 if RROEA is used without EPS
-    fc16     ,  //!< [CONST] Used to scale PS module parameter V16 if RROEA is used without EPS
-    FC       ,  //!< [CONST] Used to scale PS module parameters V9 & V23 if RROEA is used without EPS
-    MAX      ,
-};
-template<>
-struct enum_helper<MODULE_RROEA, PARAM_TYPE_MOD> {
-  typedef ENUM_RROEA_MOD type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_MOD& x) {
+  out << ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RROEA_MOD, T>& x) {
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RROEA_MOD>& x) {
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type : int {
-    NONE     ,
-    SC       ,  //!< [CONST] Used to scale PS module parameters V3, V6, V9, V13, V16, & V23 if RROEA is used without EPS
-    fc16     ,  //!< [CONST] Used to scale PS module parameter V16 if RROEA is used without EPS
-    FC       ,  //!< [CONST] Used to scale PS module parameters V9 & V23 if RROEA is used without EPS
-    MAX      ,
+  MEMBERS_RROEA
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_RROEA		\
-    NONE     ,		\
-    SC       ,		\
-    fc16     ,		\
-    FC       ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::static_value_flags;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD> RROEA;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RedoxReg_MOD : int {
-    NONE                ,
-    RedoxReg_VMAX6      ,  //!< Taken from PS::V6
-    RedoxReg_VMAX9      ,  //!< Taken from PS::V9
-    RedoxReg_VMAX13     ,  //!< Taken from PS::V13
-    RedoxReg_VMAX16     ,  //!< Taken from PS::V16
-    Fd_Thio_ET          ,  //!< [CONST]
-    ThioT               ,  //!< [CONST]
-    Thio_Oxidation      ,  //!< [CONST]
-    MAX                 ,
-};
-template<>
-struct enum_helper<MODULE_RedoxReg, PARAM_TYPE_MOD> {
-  typedef ENUM_RedoxReg_MOD type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_MOD& x) {
+  out << ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RedoxReg_MOD, T>& x) {
+  ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RedoxReg_MOD>& x) {
+  ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type : int {
-    NONE                ,
-    RedoxReg_VMAX6      ,  //!< Taken from PS::V6
-    RedoxReg_VMAX9      ,  //!< Taken from PS::V9
-    RedoxReg_VMAX13     ,  //!< Taken from PS::V13
-    RedoxReg_VMAX16     ,  //!< Taken from PS::V16
-    Fd_Thio_ET          ,  //!< [CONST]
-    ThioT               ,  //!< [CONST]
-    Thio_Oxidation      ,  //!< [CONST]
-    MAX                 ,
+  MEMBERS_RedoxReg
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_RedoxReg		\
-    NONE                ,		\
-    RedoxReg_VMAX6      ,		\
-    RedoxReg_VMAX9      ,		\
-    RedoxReg_VMAX13     ,		\
-    RedoxReg_VMAX16     ,		\
-    Fd_Thio_ET          ,		\
-    ThioT               ,		\
-    Thio_Oxidation      ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::static_value_flags;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD> RedoxReg;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RuACT_MOD : int {
-    NONE         ,
-    activase     ,
-    factor       ,  //!< [CONST] Factor used to scale RuACT condition parameters ER, Eaf & ECMR and RuACT pool parameter ET; was previously 0.224/0.3 in comments
-    MAX          ,
-};
-template<>
-struct enum_helper<MODULE_RuACT, PARAM_TYPE_MOD> {
-  typedef ENUM_RuACT_MOD type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_MOD& x) {
+  out << ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RuACT_MOD, T>& x) {
+  ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RuACT_MOD>& x) {
+  ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type : int {
-    NONE         ,
-    activase     ,
-    factor       ,  //!< [CONST] Factor used to scale RuACT condition parameters ER, Eaf & ECMR and RuACT pool parameter ET; was previously 0.224/0.3 in comments
-    MAX          ,
+  MEMBERS_RuACT
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_RuACT		\
-    NONE         ,		\
-    activase     ,		\
-    factor       ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::static_value_flags;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD> RuACT;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_SUCS_MOD : int {
-    NONE            ,
-    V51             ,  //!< from EnzymeAct for C3, *= SC with GP; DHAP+GAP --FBP     default 0.5; Unit: mmol l-1 s-1
-    V52             ,  //!< from EnzymeAct for C3, *= SC with GP; FBP --F6P + Pi; Unit: mmol l-1 s-1
-    V55             ,  //!< from EnzymeAct for C3, *= SC with GP; G1P+UTP --OPOP+UDPG; Unit: mmol l-1 s-1
-    V56             ,  //!< from EnzymeAct for C3, *= SC with GP; UDPG+F6P--SUCP + UDP; Unit: mmol l-1 s-1
-    V57             ,  //!< from EnzymeAct for C3, *= SC1 with GP; SUCP--Pi + SUC; 0.27 DEFALT; Unit: mmol l-1 s-1
-    V58             ,  //!< from EnzymeAct for C3, *= SC with GP; F26BP--F6P + Pi; Unit: mmol l-1 s-1
-    V59             ,  //!< from EnzymeAct for C3, *= SC; F6P + ATP --ADP + F26BP; defalut 0.03  (* 0.3); Unit: mmol l-1 s-1
-    V60             ,  //!< ATP+UDP --UTP + ADP; Unused w/o C3
-    V61             ,  //!< POPO --2PO; Unused w/o C3
-    V62             ,  //!< SUC Sink; 0.2 works for C3; 0.9 works w/o C3 & *= SC1.
-    Vdhap_in        ,  //!< DHAP export from chloroplast; *= SC1 w/o C3
-    Vgap_in         ,  //!< GAP export from chloroplast; *= SC1 w/o C3
-    Vpga_in         ,  //!< PGA export from chloropalst; *= SC1 w/o C3
-    KE501           ,  //!< Equilibrium Constant  50  KE501  0.05  [Bassham, 1869 #832]
-    Km511           ,  //!< FBP 4.1.2.13 51  Km511 FBP 0.02 Pisum sativum (Anderson, Heinrikson et al. 1975)
-    Km512           ,  //!< FBP 4.1.2.13 51  Km512 GAP 0.3 Spinacia oleracea (Iwaki, Wadano et al. 1991)
-    Km513           ,  //!< FBP 4.1.2.13 51  Km513 DHAP 0.4 Spinacia oleracea (Iwaki, Wadano et al. 1991)
-    KE51            ,  //!< Based on Thomas et al 1997 Biochem Journal. The fifth citation in the paper.
-    Km521           ,  //!< FBPase[1] 3.1.3.11 52  Km521 FBP 0.0025 Pisum sativum (Jang, Lee et al. 2003)
-    KI521           ,  //!< FBPase 3.1.3.11 52  KI521 F6P 0.7  [Heldt, 1983 #841]
-    KI522           ,  //!< FBPase 3.1.3.11 52  KI522 Pi 12 Pisum sativum (Charles & Halliwell 1997)
-    KI523           ,  //!< FBPase 3.1.3.11 52  KI523 F26BP 7*10^(-5) Pisum sativum <Com> {Jang, 2003 #2523}
-    KE52            ,  //!< FBPase 3.1.3.11 52  KE52   6663 [Bassham, 1869 #832]
-    KE531           ,  //!< Equilibrium Constant 5.3.1.9 53  KE531  2.3[2]  [Bassham, 1869 #832]
-    KE541           ,  //!< Equilibrium Constant 5.4.2.2 54 G1P G6P KE541 G1P G6P 0.0584  [Bassham, 1869 #832]
-    Km551           ,  //!< UGPase 2.7.7.9 55  Km551 G1P 0.14 Solanum tuberosum (Nakano, Omura et al. 1989)
-    Km552           ,  //!< UDPase 2.7.7.9 55  Km552 UTP 0.1 Solanum tuberosum (Nakano, Omura et al. 1989)
-    Km553           ,  //!< UGPase 2.7.7.9 55  Km553 OPOP 0.11 Solanum tuberosum (Nakano, Omura et al. 1989)
-    Km554           ,  //!< UGPase 2.7.7.9 55  Km554 UDPGlu 0.12 Solanum tuberosum (Nakano, Omura et al. 1989)
-    KE55            ,  //!< UGPase 2.7.7.9 55  KE55 Equi 0.31  Lunn and Rees 1990
-    Km561           ,  //!< SPase 2.4.1.14 56  Km561 D-F6P 0.8 Pisum sativum (Lunn and Ap Rees 1990)
-    Km562           ,  //!< Spase 2.4.1.14 56  Km562 UDP-glucose 2.4 Pisum sativum (Lunn and Ap Rees 1990)
-    KI561           ,  //!< Inhibitor KI561 UDP 0.7 Spinacia oleracea (Harbron, Foyer et al. 1981)
-    KI562           ,  //!< Sucrose Synthesase   Inhibitor KI562 FBP 0.8 Spinacia oleracea (Harbron, Foyer et al. 1981)
-    KI563           ,  //!< Inhibitor KI563 SUCP 0.4 Spinacia oleracea (Harbron, Foyer et al. 1981)
-    KI564           ,  //!< 2.4.1.14 56 Inhibitor KI564 Pi 11 Spinacia oleracea (Harbron, Foyer et al. 1981)
-    KI565           ,  //!< 2.4.1.14 56 Inhibitor KI565 Sucrose 50 Spinacia oleracea {Salerno, 1978 #2525}
-    KE56            ,  //!< KE56  10 Pisum sativum Lunn and Rees, 1990
-    Km571           ,  //!< SPP 3.1.3.24 57.1  Km571 SUCP 0.35 Pisum sativum (Whitaker 1984)
-    Ki572           ,  //!< SPP 3.1.3.24 57.2  Ki572 SUC 80 Daucus carota (Whitaker 1984)
-    KE57            ,  //!< SPP 3.1.3.24 57.2  KE57 Equili 780  Lunn and Rees 1990
-    Km581           ,  //!< F26BPa 3.1.3.46 58  Km581 F26BP 0.032 Spinacia oleracea (Macdonald, Chou et al. 1989)
-    KI581           ,  //!< F26BPa 3.1.3.46 58  KI581 F6P 0.1 Arabidopsis thaliana (V5lladsen and Nielsen 2001)
-    KI582           ,  //!< F26BPa 3.1.3.46 58  KI582 OP 0.5 Arabidopsis thaliana (Villadsen and Nielsen 2001)
-    KI583           ,  //!< [CONST] F26BPa 3.1.3.46 58  KI583 ? 1.55 Arabidopsis thaliana (Villadsen and Nielsen 2001); Previously stored as constant
-    Km591           ,  //!< 6PF2K 2.7.1.105 59  Km591 ATP 0.5 Spinacia oleracea (Walker and Huber 1987); SUCSRatio 47
-    Km592           ,  //!< 6PF2K 2.7.1.105 59  Km592 F26BP 0.021 Sparus aurate (Garcia de Frutos and Baanante 1995); Skipped w/o C3
-    Km593           ,  //!< 6PF2K 2.7.1.105 59  Km593 F6P 0.5 Spinacia oleracea (Walker and Huber 1987); SUCSRatio 49
-    KI591           ,  //!< 59  KI591 ADP 0.16 Rattus norvegicus (Kretschmer and Hofmann 1984); SUCSRatio 50
-    KI592           ,  //!< 6PF2K 2.7.1.105 59  KI592 DHAP 0.7 Spinacia oleracea {Markham, 2002 #2524}; Skipped w/o C3
-    KE59            ,  //!< 6PF2K 2.7.1.105 59  KE59  590  Cornish-Bowden, 1997; SUCSRatio 52
-    Km601           ,  //!< Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km601 ADP 0.042 Rat Kamura and Shimada 1988; Skipped w/o C3
-    Km602           ,  //!< Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km602 ATP 1.66 Rat Kamura and Shimada 1988; Skipped w/o C3
-    Km603           ,  //!< Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km603 UDP 0.28 Saccharomyces cerevisiae {Jong, 1991 #2518}; Skipped w/o C3
-    Km604           ,  //!< Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km604 UTP 16 Rattus norvegicus {Fukuchi, 1994 #2519}; Skipped w/o C3
-    KE60            ,  //!< Nucleoside Diphosphate Kinase 2.7.4.6 60 NI KE60  16 1.04 {Lynn, 1978 #2520}; Skipped w/o C3
-    KE61            ,  //!< Pyrophosphate hydrolysis    KE61  1.2*107  {Flodgaard, 1974 #2521}; SUCSRatio 58
-    Km621           ,  //!< Vsink   Notice: pH dependent Km621 Sucrose 5  {Weschke, 2000 #2522}
-    ATPc            ,
-    UTPc            ,
-    Vf_T52          ,  //!< Set by VfactorT if GRNT & Tp > 25 for C3
-    Vf_T59          ,  //!< Set by VfactorT if GRNT & Tp > 25 for C3
-    Vf_T57          ,  //!< Set by VfactorT if GRNT & Tp > 25 for C3
-    Vf_T51          ,  //!< Set by VfactorT if GRNT & Tp > 25 for C3
-    Vf_T56          ,  //!< Set by VfactorT if GRNT & Tp > 25 for C3
-    Vfactor51       ,
-    Vfactor52       ,  //!< [GLYMAID=Glyma.16G168000] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
-    Vfactor56       ,  //!< [GLYMAID=Glyma.06G323700] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
-    Vfactor57       ,  //!< [GLYMAID=Glyma.10G086600] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
-    Vfactor59       ,  //!< [GLYMAID=Glyma.11G169700] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
-    SUCSV51         ,  //!< Set by calculation for C3
-    SUCSV52         ,  //!< Set by calculation for C3
-    SUCSV55         ,  //!< Set by calculation for C3
-    SUCSV56         ,  //!< Set by calculation for C3
-    SUCSV57         ,  //!< Set by calculation for C3
-    SUCSV58         ,  //!< Set by calculation for C3
-    SUCS2PS_Pic     ,  //!< [INIT_ONCE]
-    KE5Ratio        ,  //!< Calculated from KE541 & KE531
-    ADPc            ,  //!< Calculated from ATc & ATPc
-    Vmatpf          ,  //!< [CONST] Previously stored as constant
-    Q10_51          ,  //!< [CONST] DHAP+GAP --FBP; unused w/o C3
-    Q10_52          ,  //!< [CONST] FBP --F6P + Pi; unused w/o C3
-    Q10_55          ,  //!< [CONST] G1P+UTP --OPOP+UDPG; unused w/o C3
-    Q10_56          ,  //!< [CONST] UDPG+F6P--SUCP + UDP; unused w/o C3
-    Q10_57          ,  //!< [CONST] SUCP--Pi + SUC; unused w/o C3
-    Q10_58          ,  //!< [CONST] F26BP--F6P + Pi; unused w/o C3
-    SC              ,  //!< [CONST] Scale factor for SUCS module parameters V51, V52, V55, V56 & V58 when GP set and V59 always; unused w/o C3
-    SC1             ,  //!< [CONST] Scale factor for SUCS module parameters V62, Vdhap_in, Vgap_in & Vpga_in always and V57 when GP set; unused w/o C3
-    MAX             ,
-};
-template<>
-struct enum_helper<MODULE_SUCS, PARAM_TYPE_MOD> {
-  typedef ENUM_SUCS_MOD type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_MOD& x) {
+  out << ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_SUCS_MOD, T>& x) {
+  ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_SUCS_MOD>& x) {
+  ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type : int {
-    NONE            ,
-    V51             ,  //!< from EnzymeAct for C3, *= SC with GP; DHAP+GAP --FBP     default 0.5; Unit: mmol l-1 s-1
-    V52             ,  //!< from EnzymeAct for C3, *= SC with GP; FBP --F6P + Pi; Unit: mmol l-1 s-1
-    V55             ,  //!< from EnzymeAct for C3, *= SC with GP; G1P+UTP --OPOP+UDPG; Unit: mmol l-1 s-1
-    V56             ,  //!< from EnzymeAct for C3, *= SC with GP; UDPG+F6P--SUCP + UDP; Unit: mmol l-1 s-1
-    V57             ,  //!< from EnzymeAct for C3, *= SC1 with GP; SUCP--Pi + SUC; 0.27 DEFALT; Unit: mmol l-1 s-1
-    V58             ,  //!< from EnzymeAct for C3, *= SC with GP; F26BP--F6P + Pi; Unit: mmol l-1 s-1
-    V59             ,  //!< from EnzymeAct for C3, *= SC; F6P + ATP --ADP + F26BP; defalut 0.03  (* 0.3); Unit: mmol l-1 s-1
-    V60             ,  //!< ATP+UDP --UTP + ADP; Unused w/o C3
-    V61             ,  //!< POPO --2PO; Unused w/o C3
-    V62             ,  //!< SUC Sink; 0.2 works for C3; 0.9 works w/o C3 & *= SC1.
-    Vdhap_in        ,  //!< DHAP export from chloroplast; *= SC1 w/o C3
-    Vgap_in         ,  //!< GAP export from chloroplast; *= SC1 w/o C3
-    Vpga_in         ,  //!< PGA export from chloropalst; *= SC1 w/o C3
-    KE501           ,  //!< Equilibrium Constant  50  KE501  0.05  [Bassham, 1869 #832]
-    Km511           ,  //!< FBP 4.1.2.13 51  Km511 FBP 0.02 Pisum sativum (Anderson, Heinrikson et al. 1975)
-    Km512           ,  //!< FBP 4.1.2.13 51  Km512 GAP 0.3 Spinacia oleracea (Iwaki, Wadano et al. 1991)
-    Km513           ,  //!< FBP 4.1.2.13 51  Km513 DHAP 0.4 Spinacia oleracea (Iwaki, Wadano et al. 1991)
-    KE51            ,  //!< Based on Thomas et al 1997 Biochem Journal. The fifth citation in the paper.
-    Km521           ,  //!< FBPase[1] 3.1.3.11 52  Km521 FBP 0.0025 Pisum sativum (Jang, Lee et al. 2003)
-    KI521           ,  //!< FBPase 3.1.3.11 52  KI521 F6P 0.7  [Heldt, 1983 #841]
-    KI522           ,  //!< FBPase 3.1.3.11 52  KI522 Pi 12 Pisum sativum (Charles & Halliwell 1997)
-    KI523           ,  //!< FBPase 3.1.3.11 52  KI523 F26BP 7*10^(-5) Pisum sativum <Com> {Jang, 2003 #2523}
-    KE52            ,  //!< FBPase 3.1.3.11 52  KE52   6663 [Bassham, 1869 #832]
-    KE531           ,  //!< Equilibrium Constant 5.3.1.9 53  KE531  2.3[2]  [Bassham, 1869 #832]
-    KE541           ,  //!< Equilibrium Constant 5.4.2.2 54 G1P G6P KE541 G1P G6P 0.0584  [Bassham, 1869 #832]
-    Km551           ,  //!< UGPase 2.7.7.9 55  Km551 G1P 0.14 Solanum tuberosum (Nakano, Omura et al. 1989)
-    Km552           ,  //!< UDPase 2.7.7.9 55  Km552 UTP 0.1 Solanum tuberosum (Nakano, Omura et al. 1989)
-    Km553           ,  //!< UGPase 2.7.7.9 55  Km553 OPOP 0.11 Solanum tuberosum (Nakano, Omura et al. 1989)
-    Km554           ,  //!< UGPase 2.7.7.9 55  Km554 UDPGlu 0.12 Solanum tuberosum (Nakano, Omura et al. 1989)
-    KE55            ,  //!< UGPase 2.7.7.9 55  KE55 Equi 0.31  Lunn and Rees 1990
-    Km561           ,  //!< SPase 2.4.1.14 56  Km561 D-F6P 0.8 Pisum sativum (Lunn and Ap Rees 1990)
-    Km562           ,  //!< Spase 2.4.1.14 56  Km562 UDP-glucose 2.4 Pisum sativum (Lunn and Ap Rees 1990)
-    KI561           ,  //!< Inhibitor KI561 UDP 0.7 Spinacia oleracea (Harbron, Foyer et al. 1981)
-    KI562           ,  //!< Sucrose Synthesase   Inhibitor KI562 FBP 0.8 Spinacia oleracea (Harbron, Foyer et al. 1981)
-    KI563           ,  //!< Inhibitor KI563 SUCP 0.4 Spinacia oleracea (Harbron, Foyer et al. 1981)
-    KI564           ,  //!< 2.4.1.14 56 Inhibitor KI564 Pi 11 Spinacia oleracea (Harbron, Foyer et al. 1981)
-    KI565           ,  //!< 2.4.1.14 56 Inhibitor KI565 Sucrose 50 Spinacia oleracea {Salerno, 1978 #2525}
-    KE56            ,  //!< KE56  10 Pisum sativum Lunn and Rees, 1990
-    Km571           ,  //!< SPP 3.1.3.24 57.1  Km571 SUCP 0.35 Pisum sativum (Whitaker 1984)
-    Ki572           ,  //!< SPP 3.1.3.24 57.2  Ki572 SUC 80 Daucus carota (Whitaker 1984)
-    KE57            ,  //!< SPP 3.1.3.24 57.2  KE57 Equili 780  Lunn and Rees 1990
-    Km581           ,  //!< F26BPa 3.1.3.46 58  Km581 F26BP 0.032 Spinacia oleracea (Macdonald, Chou et al. 1989)
-    KI581           ,  //!< F26BPa 3.1.3.46 58  KI581 F6P 0.1 Arabidopsis thaliana (V5lladsen and Nielsen 2001)
-    KI582           ,  //!< F26BPa 3.1.3.46 58  KI582 OP 0.5 Arabidopsis thaliana (Villadsen and Nielsen 2001)
-    KI583           ,  //!< [CONST] F26BPa 3.1.3.46 58  KI583 ? 1.55 Arabidopsis thaliana (Villadsen and Nielsen 2001); Previously stored as constant
-    Km591           ,  //!< 6PF2K 2.7.1.105 59  Km591 ATP 0.5 Spinacia oleracea (Walker and Huber 1987); SUCSRatio 47
-    Km592           ,  //!< 6PF2K 2.7.1.105 59  Km592 F26BP 0.021 Sparus aurate (Garcia de Frutos and Baanante 1995); Skipped w/o C3
-    Km593           ,  //!< 6PF2K 2.7.1.105 59  Km593 F6P 0.5 Spinacia oleracea (Walker and Huber 1987); SUCSRatio 49
-    KI591           ,  //!< 59  KI591 ADP 0.16 Rattus norvegicus (Kretschmer and Hofmann 1984); SUCSRatio 50
-    KI592           ,  //!< 6PF2K 2.7.1.105 59  KI592 DHAP 0.7 Spinacia oleracea {Markham, 2002 #2524}; Skipped w/o C3
-    KE59            ,  //!< 6PF2K 2.7.1.105 59  KE59  590  Cornish-Bowden, 1997; SUCSRatio 52
-    Km601           ,  //!< Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km601 ADP 0.042 Rat Kamura and Shimada 1988; Skipped w/o C3
-    Km602           ,  //!< Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km602 ATP 1.66 Rat Kamura and Shimada 1988; Skipped w/o C3
-    Km603           ,  //!< Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km603 UDP 0.28 Saccharomyces cerevisiae {Jong, 1991 #2518}; Skipped w/o C3
-    Km604           ,  //!< Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km604 UTP 16 Rattus norvegicus {Fukuchi, 1994 #2519}; Skipped w/o C3
-    KE60            ,  //!< Nucleoside Diphosphate Kinase 2.7.4.6 60 NI KE60  16 1.04 {Lynn, 1978 #2520}; Skipped w/o C3
-    KE61            ,  //!< Pyrophosphate hydrolysis    KE61  1.2*107  {Flodgaard, 1974 #2521}; SUCSRatio 58
-    Km621           ,  //!< Vsink   Notice: pH dependent Km621 Sucrose 5  {Weschke, 2000 #2522}
-    ATPc            ,
-    UTPc            ,
-    Vf_T52          ,  //!< Set by VfactorT if GRNT & Tp > 25 for C3
-    Vf_T59          ,  //!< Set by VfactorT if GRNT & Tp > 25 for C3
-    Vf_T57          ,  //!< Set by VfactorT if GRNT & Tp > 25 for C3
-    Vf_T51          ,  //!< Set by VfactorT if GRNT & Tp > 25 for C3
-    Vf_T56          ,  //!< Set by VfactorT if GRNT & Tp > 25 for C3
-    Vfactor51       ,
-    Vfactor52       ,  //!< [GLYMAID=Glyma.16G168000] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
-    Vfactor56       ,  //!< [GLYMAID=Glyma.06G323700] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
-    Vfactor57       ,  //!< [GLYMAID=Glyma.10G086600] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
-    Vfactor59       ,  //!< [GLYMAID=Glyma.11G169700] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
-    SUCSV51         ,  //!< Set by calculation for C3
-    SUCSV52         ,  //!< Set by calculation for C3
-    SUCSV55         ,  //!< Set by calculation for C3
-    SUCSV56         ,  //!< Set by calculation for C3
-    SUCSV57         ,  //!< Set by calculation for C3
-    SUCSV58         ,  //!< Set by calculation for C3
-    SUCS2PS_Pic     ,  //!< [INIT_ONCE]
-    KE5Ratio        ,  //!< Calculated from KE541 & KE531
-    ADPc            ,  //!< Calculated from ATc & ATPc
-    Vmatpf          ,  //!< [CONST] Previously stored as constant
-    Q10_51          ,  //!< [CONST] DHAP+GAP --FBP; unused w/o C3
-    Q10_52          ,  //!< [CONST] FBP --F6P + Pi; unused w/o C3
-    Q10_55          ,  //!< [CONST] G1P+UTP --OPOP+UDPG; unused w/o C3
-    Q10_56          ,  //!< [CONST] UDPG+F6P--SUCP + UDP; unused w/o C3
-    Q10_57          ,  //!< [CONST] SUCP--Pi + SUC; unused w/o C3
-    Q10_58          ,  //!< [CONST] F26BP--F6P + Pi; unused w/o C3
-    SC              ,  //!< [CONST] Scale factor for SUCS module parameters V51, V52, V55, V56 & V58 when GP set and V59 always; unused w/o C3
-    SC1             ,  //!< [CONST] Scale factor for SUCS module parameters V62, Vdhap_in, Vgap_in & Vpga_in always and V57 when GP set; unused w/o C3
-    MAX             ,
+  MEMBERS_SUCS
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_SUCS		\
-    NONE            ,		\
-    V51             ,		\
-    V52             ,		\
-    V55             ,		\
-    V56             ,		\
-    V57             ,		\
-    V58             ,		\
-    V59             ,		\
-    V60             ,		\
-    V61             ,		\
-    V62             ,		\
-    Vdhap_in        ,		\
-    Vgap_in         ,		\
-    Vpga_in         ,		\
-    KE501           ,		\
-    Km511           ,		\
-    Km512           ,		\
-    Km513           ,		\
-    KE51            ,		\
-    Km521           ,		\
-    KI521           ,		\
-    KI522           ,		\
-    KI523           ,		\
-    KE52            ,		\
-    KE531           ,		\
-    KE541           ,		\
-    Km551           ,		\
-    Km552           ,		\
-    Km553           ,		\
-    Km554           ,		\
-    KE55            ,		\
-    Km561           ,		\
-    Km562           ,		\
-    KI561           ,		\
-    KI562           ,		\
-    KI563           ,		\
-    KI564           ,		\
-    KI565           ,		\
-    KE56            ,		\
-    Km571           ,		\
-    Ki572           ,		\
-    KE57            ,		\
-    Km581           ,		\
-    KI581           ,		\
-    KI582           ,		\
-    KI583           ,		\
-    Km591           ,		\
-    Km592           ,		\
-    Km593           ,		\
-    KI591           ,		\
-    KI592           ,		\
-    KE59            ,		\
-    Km601           ,		\
-    Km602           ,		\
-    Km603           ,		\
-    Km604           ,		\
-    KE60            ,		\
-    KE61            ,		\
-    Km621           ,		\
-    ATPc            ,		\
-    UTPc            ,		\
-    Vf_T52          ,		\
-    Vf_T59          ,		\
-    Vf_T57          ,		\
-    Vf_T51          ,		\
-    Vf_T56          ,		\
-    Vfactor51       ,		\
-    Vfactor52       ,		\
-    Vfactor56       ,		\
-    Vfactor57       ,		\
-    Vfactor59       ,		\
-    SUCSV51         ,		\
-    SUCSV52         ,		\
-    SUCSV55         ,		\
-    SUCSV56         ,		\
-    SUCSV57         ,		\
-    SUCSV58         ,		\
-    SUCS2PS_Pic     ,		\
-    KE5Ratio        ,		\
-    ADPc            ,		\
-    Vmatpf          ,		\
-    Q10_51          ,		\
-    Q10_52          ,		\
-    Q10_55          ,		\
-    Q10_56          ,		\
-    Q10_57          ,		\
-    Q10_58          ,		\
-    SC              ,		\
-    SC1             ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::static_value_flags;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD> SUCS;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_XanCycle_MOD : int {
-    NONE                     ,
-    kva                      ,  //!< /=60; Ruth Frommolt et a; 2001; Planta
-    kaz                      ,  //!< /=60; Ruth Frommolt et a; 2001; Planta
-    kza                      ,  //!< /=60; Ruth Frommolt et a; 2001; Planta
-    kav                      ,  //!< /=60; Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
-    Vx_                      ,  //!< [CONST, INIT_ONCE] The concentration of Violozanthin
-    Ax_                      ,  //!< [CONST, INIT_ONCE] The concentration of Anthrozanthin
-    Zx_                      ,  //!< [CONST, INIT_ONCE] The concentration of Zeaznthin
-    ABA_                     ,  //!< [CONST, INIT_ONCE] The concentration of ABA
-    XanCycle2FIBF_Xstate     ,  //!< [CALC] Calculated
-    MAX                      ,
-};
-template<>
-struct enum_helper<MODULE_XanCycle, PARAM_TYPE_MOD> {
-  typedef ENUM_XanCycle_MOD type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_MOD& x) {
+  out << ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_XanCycle_MOD, T>& x) {
+  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_XanCycle_MOD>& x) {
+  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type : int {
-    NONE                     ,
-    kva                      ,  //!< /=60; Ruth Frommolt et a; 2001; Planta
-    kaz                      ,  //!< /=60; Ruth Frommolt et a; 2001; Planta
-    kza                      ,  //!< /=60; Ruth Frommolt et a; 2001; Planta
-    kav                      ,  //!< /=60; Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
-    Vx_                      ,  //!< [CONST, INIT_ONCE] The concentration of Violozanthin
-    Ax_                      ,  //!< [CONST, INIT_ONCE] The concentration of Anthrozanthin
-    Zx_                      ,  //!< [CONST, INIT_ONCE] The concentration of Zeaznthin
-    ABA_                     ,  //!< [CONST, INIT_ONCE] The concentration of ABA
-    XanCycle2FIBF_Xstate     ,  //!< [CALC] Calculated
-    MAX                      ,
+  MEMBERS_XanCycle
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_XanCycle		\
-    NONE                     ,		\
-    kva                      ,		\
-    kaz                      ,		\
-    kza                      ,		\
-    kav                      ,		\
-    Vx_                      ,		\
-    Ax_                      ,		\
-    Zx_                      ,		\
-    ABA_                     ,		\
-    XanCycle2FIBF_Xstate     ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::static_value_flags;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD> XanCycle;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_trDynaPS_MOD : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_trDynaPS, PARAM_TYPE_MOD> {
-  typedef ENUM_trDynaPS_MOD type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_trDynaPS_MOD& x) {
+  out << ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_trDynaPS_MOD, T>& x) {
+  ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_trDynaPS_MOD>& x) {
+  ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type : int {
-    NONE   ,
-    MAX    ,
+  MEMBERS_trDynaPS
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_trDynaPS		\
-    NONE   ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::static_value_flags;
 
 namespace MOD {
   typedef ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD> trDynaPS;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_NONE_MOD : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_NONE, PARAM_TYPE_MOD> {
-  typedef ENUM_NONE_MOD type;
-};
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type : int {
-    NONE   ,
-    MAX    ,
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_NONE		\
-    NONE   ,		\
-    MAX
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD>::initonce;
-
-namespace MOD {
-  typedef ValueSetEnum<MODULE_NONE, PARAM_TYPE_MOD> NONE;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_MAX_MOD : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_MAX, PARAM_TYPE_MOD> {
-  typedef ENUM_MAX_MOD type;
-};
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type : int {
-    NONE   ,
-    MAX    ,
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_MAX		\
-    NONE   ,		\
-    MAX
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD>::initonce;
-
-namespace MOD {
-  typedef ValueSetEnum<MODULE_MAX, PARAM_TYPE_MOD> MAX;
 }
 

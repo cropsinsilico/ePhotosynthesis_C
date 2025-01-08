@@ -2,603 +2,525 @@
 // modified directly
 #pragma once
 
+#include "enums/enums_helpers.hpp"
+
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_BF_POOL : int {
-    NONE     ,
-    kA_d     ,  //!< [ALIASES={Tcyt}] The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
-    kA_f     ,  //!< [ALIASES={Tcytc2}] The total amount of cytc; Unit: micromole m-2 leaf area
-    kA_U     ,  //!< [ALIASES={TK}] The total concentration of K in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant.
-    kU_A     ,  //!< [ALIASES={TMg}] The total concentration of Mg in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant.
-    kU_d     ,  //!< [ALIASES={TCl}] The total concentration of Cl in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant.
-    kU_f     ,  //!< [ALIASES={TFd}] The total concentration of Ferrodoxin
-    k1       ,  //!< [ALIASES={TA}] The total concentration of the primary electron acceptor of PSI; Unit: micromole m-2 leaf area
-    k_r1     ,  //!< [ALIASES={TQ}] The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
-    kz       ,  //!< [ALIASES={BFTs}] The total concentration of buffer in stroma; unit: mmol per liter
-    k12      ,  //!< [ALIASES={BFTl}] The total concentration of buffer in lumen; unit: mmol per liter
-    k23      ,  //!< [ALIASES={P700T}] The total number of P700; unit: micromole m-2 leaf area
-    k30      ,  //!< [ALIASES={NADPHT}]   The total concentration of NADPH in stroma; 1 is an guessed value;
-    MAX      ,
-};
-template<>
-struct enum_helper<MODULE_BF, PARAM_TYPE_POOL> {
-  typedef ENUM_BF_POOL type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_BF_POOL& x) {
+  out << ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_BF_POOL, T>& x) {
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_BF_POOL>& x) {
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type : int {
-    NONE     ,
-    kA_d     ,  //!< [ALIASES={Tcyt}] The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
-    kA_f     ,  //!< [ALIASES={Tcytc2}] The total amount of cytc; Unit: micromole m-2 leaf area
-    kA_U     ,  //!< [ALIASES={TK}] The total concentration of K in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant.
-    kU_A     ,  //!< [ALIASES={TMg}] The total concentration of Mg in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant.
-    kU_d     ,  //!< [ALIASES={TCl}] The total concentration of Cl in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant.
-    kU_f     ,  //!< [ALIASES={TFd}] The total concentration of Ferrodoxin
-    k1       ,  //!< [ALIASES={TA}] The total concentration of the primary electron acceptor of PSI; Unit: micromole m-2 leaf area
-    k_r1     ,  //!< [ALIASES={TQ}] The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
-    kz       ,  //!< [ALIASES={BFTs}] The total concentration of buffer in stroma; unit: mmol per liter
-    k12      ,  //!< [ALIASES={BFTl}] The total concentration of buffer in lumen; unit: mmol per liter
-    k23      ,  //!< [ALIASES={P700T}] The total number of P700; unit: micromole m-2 leaf area
-    k30      ,  //!< [ALIASES={NADPHT}]   The total concentration of NADPH in stroma; 1 is an guessed value;
-    MAX      ,
+  MEMBERS_BFPool
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_BFPool		\
-    NONE     ,		\
-    kA_d     ,		\
-    kA_f     ,		\
-    kA_U     ,		\
-    kU_A     ,		\
-    kU_d     ,		\
-    kU_f     ,		\
-    k1       ,		\
-    k_r1     ,		\
-    kz       ,		\
-    k12      ,		\
-    k23      ,		\
-    k30      ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::static_value_flags;
 
 namespace POOL {
   typedef ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL> BF;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_FIBF_POOL : int {
-    NONE     ,
-    PQT      ,
-    MAX      ,
-};
-template<>
-struct enum_helper<MODULE_FIBF, PARAM_TYPE_POOL> {
-  typedef ENUM_FIBF_POOL type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_POOL& x) {
+  out << ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_FIBF_POOL, T>& x) {
+  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_FIBF_POOL>& x) {
+  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type : int {
-    NONE     ,
-    PQT      ,
-    MAX      ,
+  MEMBERS_FIBFPool
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_FIBFPool		\
-    NONE     ,		\
-    PQT      ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::static_value_flags;
 
 namespace POOL {
   typedef ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL> FIBF;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_FI_POOL : int {
-    NONE     ,
-    QBt      ,  //!< The total concentration of Qb site;
-    PQT      ,  //!< The total concentration of PQ;
-    MAX      ,
-};
-template<>
-struct enum_helper<MODULE_FI, PARAM_TYPE_POOL> {
-  typedef ENUM_FI_POOL type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_FI_POOL& x) {
+  out << ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_FI_POOL, T>& x) {
+  ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_FI_POOL>& x) {
+  ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type : int {
-    NONE     ,
-    QBt      ,  //!< The total concentration of Qb site;
-    PQT      ,  //!< The total concentration of PQ;
-    MAX      ,
+  MEMBERS_FIPool
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_FIPool		\
-    NONE     ,		\
-    QBt      ,		\
-    PQT      ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::static_value_flags;
 
 namespace POOL {
   typedef ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL> FI;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PR_POOL : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_PR, PARAM_TYPE_POOL> {
-  typedef ENUM_PR_POOL type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_PR_POOL& x) {
+  out << ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_PR_POOL, T>& x) {
+  ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_PR_POOL>& x) {
+  ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type : int {
-    NONE   ,
-    MAX    ,
+  MEMBERS_PRPool
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_PRPool		\
-    NONE   ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::static_value_flags;
 
 namespace POOL {
   typedef ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL> PR;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PS_POOL : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_PS, PARAM_TYPE_POOL> {
-  typedef ENUM_PS_POOL type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_PS_POOL& x) {
+  out << ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_PS_POOL, T>& x) {
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_PS_POOL>& x) {
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type : int {
-    NONE   ,
-    MAX    ,
+  MEMBERS_PSPool
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_PSPool		\
-    NONE   ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::static_value_flags;
 
 namespace POOL {
   typedef ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL> PS;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RROEA_POOL : int {
-    NONE          ,
-    GAPDH         ,  //!< [CALC] The initial concentration of active GAPDH; *=V3; SA = 620.0, mw = 147000.0, PS::V3
-    FBPase        ,  //!< [CALC] The initial concentration of active FBPase; *=V6; SA = 119.0, mw = 195000.0, PS::V6
-    SBPase        ,  //!< [CALC] The initial concentration of active SBPase; *=V9; SA = 70.0, mw = 66000.0, PS::V9
-    PRK           ,  //!< [CALC] The initial concentration of active PRK; *=V13; SA = 410.0, mw = 40000.0 PS::V13
-    ATPase        ,  //!< [CALC] The initial concentration of active ATPase; *=V16; SA = 100.0, mw = 500000.0 PS::V16
-    ATPGPP        ,  //!< [CALC] The initial concentration of active ATPGPP; *=V23; SA = 10.0, mw = 210000.0 PS::V23
-    MDH           ,  //!< [CALC] The initial concentration of active MDH; *=MDH_Vmax; SA = 184.0, mw = 87000.0; MDH_Vmax = 2 value is assumed, but no literature to support. Needs to be fixed.
-    ThioT         ,
-    FdT           ,  //!< Comes from BF if used with RROEA_EPS
-    RuACTT        ,
-    SA_GAPDH      ,  //!< [CONST] Used w/ mw_GAPDH to calculate GAPDH from PS::V3; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    SA_FBPase     ,  //!< [CONST] Used w/ mw_FBPase to calculate FBPase from PS::V6; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    SA_SBPase     ,  //!< [CONST] Used w/ mw_SBPase to calculate SBPase from PS::V9; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    SA_PRK        ,  //!< [CONST] Used w/ mw_PRK to calculate PRK from PS::V13; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    SA_ATPase     ,  //!< [CONST] Used w/ mw_ATPase to calculate ATPase from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    SA_ATPGPP     ,  //!< [CONST] Used w/ mw_ATPGPP to calculate ATPGPP from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    SA_MDH        ,  //!< [CONST] Used w/ MDH_Vmax & mw_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    mw_GAPDH      ,  //!< [CONST] Used w/ SA_GAPDH to calculate GAPDH from PS::V3; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    mw_FBPase     ,  //!< [CONST] Used w/ SA_FBPase to calculate FBPase from PS::V6; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    mw_SBPase     ,  //!< [CONST] Used w/ SA_SBPase to calculate SBPase from PS::V9; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    mw_PRK        ,  //!< [CONST] Used w/ SA_PRK to calculate PRK from PS::V13; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    mw_ATPase     ,  //!< [CONST] Used w/ SA_ATPase to calculate ATPase from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    mw_ATPGPP     ,  //!< [CONST] Used w/ SA_ATPGPP to calculate ATPGPP from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    mw_MDH        ,  //!< [CONST] Used w/ MDH_Vmax & SA_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    MDH_Vmax      ,  //!< [CONST] This value is assumed and there is no literature about it. Need to be fixed.; Used w/ SA_MDH & mw_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    MAX           ,
-};
-template<>
-struct enum_helper<MODULE_RROEA, PARAM_TYPE_POOL> {
-  typedef ENUM_RROEA_POOL type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_POOL& x) {
+  out << ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RROEA_POOL, T>& x) {
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RROEA_POOL>& x) {
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type : int {
-    NONE          ,
-    GAPDH         ,  //!< [CALC] The initial concentration of active GAPDH; *=V3; SA = 620.0, mw = 147000.0, PS::V3
-    FBPase        ,  //!< [CALC] The initial concentration of active FBPase; *=V6; SA = 119.0, mw = 195000.0, PS::V6
-    SBPase        ,  //!< [CALC] The initial concentration of active SBPase; *=V9; SA = 70.0, mw = 66000.0, PS::V9
-    PRK           ,  //!< [CALC] The initial concentration of active PRK; *=V13; SA = 410.0, mw = 40000.0 PS::V13
-    ATPase        ,  //!< [CALC] The initial concentration of active ATPase; *=V16; SA = 100.0, mw = 500000.0 PS::V16
-    ATPGPP        ,  //!< [CALC] The initial concentration of active ATPGPP; *=V23; SA = 10.0, mw = 210000.0 PS::V23
-    MDH           ,  //!< [CALC] The initial concentration of active MDH; *=MDH_Vmax; SA = 184.0, mw = 87000.0; MDH_Vmax = 2 value is assumed, but no literature to support. Needs to be fixed.
-    ThioT         ,
-    FdT           ,  //!< Comes from BF if used with RROEA_EPS
-    RuACTT        ,
-    SA_GAPDH      ,  //!< [CONST] Used w/ mw_GAPDH to calculate GAPDH from PS::V3; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    SA_FBPase     ,  //!< [CONST] Used w/ mw_FBPase to calculate FBPase from PS::V6; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    SA_SBPase     ,  //!< [CONST] Used w/ mw_SBPase to calculate SBPase from PS::V9; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    SA_PRK        ,  //!< [CONST] Used w/ mw_PRK to calculate PRK from PS::V13; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    SA_ATPase     ,  //!< [CONST] Used w/ mw_ATPase to calculate ATPase from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    SA_ATPGPP     ,  //!< [CONST] Used w/ mw_ATPGPP to calculate ATPGPP from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    SA_MDH        ,  //!< [CONST] Used w/ MDH_Vmax & mw_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    mw_GAPDH      ,  //!< [CONST] Used w/ SA_GAPDH to calculate GAPDH from PS::V3; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    mw_FBPase     ,  //!< [CONST] Used w/ SA_FBPase to calculate FBPase from PS::V6; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    mw_SBPase     ,  //!< [CONST] Used w/ SA_SBPase to calculate SBPase from PS::V9; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    mw_PRK        ,  //!< [CONST] Used w/ SA_PRK to calculate PRK from PS::V13; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    mw_ATPase     ,  //!< [CONST] Used w/ SA_ATPase to calculate ATPase from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    mw_ATPGPP     ,  //!< [CONST] Used w/ SA_ATPGPP to calculate ATPGPP from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    mw_MDH        ,  //!< [CONST] Used w/ MDH_Vmax & SA_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    MDH_Vmax      ,  //!< [CONST] This value is assumed and there is no literature about it. Need to be fixed.; Used w/ SA_MDH & mw_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var
-    MAX           ,
+  MEMBERS_RROEAPool
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_RROEAPool		\
-    NONE          ,		\
-    GAPDH         ,		\
-    FBPase        ,		\
-    SBPase        ,		\
-    PRK           ,		\
-    ATPase        ,		\
-    ATPGPP        ,		\
-    MDH           ,		\
-    ThioT         ,		\
-    FdT           ,		\
-    RuACTT        ,		\
-    SA_GAPDH      ,		\
-    SA_FBPase     ,		\
-    SA_SBPase     ,		\
-    SA_PRK        ,		\
-    SA_ATPase     ,		\
-    SA_ATPGPP     ,		\
-    SA_MDH        ,		\
-    mw_GAPDH      ,		\
-    mw_FBPase     ,		\
-    mw_SBPase     ,		\
-    mw_PRK        ,		\
-    mw_ATPase     ,		\
-    mw_ATPGPP     ,		\
-    mw_MDH        ,		\
-    MDH_Vmax      ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::static_value_flags;
 
 namespace POOL {
   typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL> RROEA;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RedoxReg_POOL : int {
-    NONE             ,
-    FBPase_Coeff     ,
-    FBPase0          ,
-    SBPase_Coeff     ,
-    SBPase0          ,
-    PRK_Coeff        ,
-    PRK0             ,
-    ATPase_Coeff     ,
-    ATPase0          ,
-    MAX              ,
-};
-template<>
-struct enum_helper<MODULE_RedoxReg, PARAM_TYPE_POOL> {
-  typedef ENUM_RedoxReg_POOL type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_POOL& x) {
+  out << ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RedoxReg_POOL, T>& x) {
+  ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RedoxReg_POOL>& x) {
+  ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type : int {
-    NONE             ,
-    FBPase_Coeff     ,
-    FBPase0          ,
-    SBPase_Coeff     ,
-    SBPase0          ,
-    PRK_Coeff        ,
-    PRK0             ,
-    ATPase_Coeff     ,
-    ATPase0          ,
-    MAX              ,
+  MEMBERS_RedoxRegPool
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_RedoxRegPool		\
-    NONE             ,		\
-    FBPase_Coeff     ,		\
-    FBPase0          ,		\
-    SBPase_Coeff     ,		\
-    SBPase0          ,		\
-    PRK_Coeff        ,		\
-    PRK0             ,		\
-    ATPase_Coeff     ,		\
-    ATPase0          ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::static_value_flags;
 
 namespace POOL {
   typedef ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL> RedoxReg;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RuACT_POOL : int {
-    NONE     ,
-    ET       ,  //!< The total concentraiton of E, ER, EC, ECM, ECMR , mM;
-    Rac      ,  //!< The concentration of the activase, mM
-    C        ,  //!< mM
-    O        ,  //!< mM
-    M        ,
-    MAX      ,
-};
-template<>
-struct enum_helper<MODULE_RuACT, PARAM_TYPE_POOL> {
-  typedef ENUM_RuACT_POOL type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_POOL& x) {
+  out << ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RuACT_POOL, T>& x) {
+  ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RuACT_POOL>& x) {
+  ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type : int {
-    NONE     ,
-    ET       ,  //!< The total concentraiton of E, ER, EC, ECM, ECMR , mM;
-    Rac      ,  //!< The concentration of the activase, mM
-    C        ,  //!< mM
-    O        ,  //!< mM
-    M        ,
-    MAX      ,
+  MEMBERS_RuACTPool
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_RuACTPool		\
-    NONE     ,		\
-    ET       ,		\
-    Rac      ,		\
-    C        ,		\
-    O        ,		\
-    M        ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::static_value_flags;
 
 namespace POOL {
   typedef ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL> RuACT;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_SUCS_POOL : int {
-    NONE     ,
-    ATc      ,  //!< mM
-    UTc      ,  //!< mM
-    PTc      ,
-    MAX      ,
-};
-template<>
-struct enum_helper<MODULE_SUCS, PARAM_TYPE_POOL> {
-  typedef ENUM_SUCS_POOL type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_POOL& x) {
+  out << ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_SUCS_POOL, T>& x) {
+  ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_SUCS_POOL>& x) {
+  ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type : int {
-    NONE     ,
-    ATc      ,  //!< mM
-    UTc      ,  //!< mM
-    PTc      ,
-    MAX      ,
+  MEMBERS_SUCSPool
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_SUCSPool		\
-    NONE     ,		\
-    ATc      ,		\
-    UTc      ,		\
-    PTc      ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::static_value_flags;
 
 namespace POOL {
   typedef ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL> SUCS;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_XanCycle_POOL : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_XanCycle, PARAM_TYPE_POOL> {
-  typedef ENUM_XanCycle_POOL type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_POOL& x) {
+  out << ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_XanCycle_POOL, T>& x) {
+  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_XanCycle_POOL>& x) {
+  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type : int {
-    NONE   ,
-    MAX    ,
+  MEMBERS_XanCyclePool
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_XanCyclePool		\
-    NONE   ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::static_value_flags;
 
 namespace POOL {
   typedef ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL> XanCycle;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_NONE_POOL : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_NONE, PARAM_TYPE_POOL> {
-  typedef ENUM_NONE_POOL type;
-};
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type : int {
-    NONE   ,
-    MAX    ,
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_NONEPool		\
-    NONE   ,		\
-    MAX
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL>::initonce;
-
-namespace POOL {
-  typedef ValueSetEnum<MODULE_NONE, PARAM_TYPE_POOL> NONE;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_MAX_POOL : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_MAX, PARAM_TYPE_POOL> {
-  typedef ENUM_MAX_POOL type;
-};
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type : int {
-    NONE   ,
-    MAX    ,
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_MAXPool		\
-    NONE   ,		\
-    MAX
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL>::initonce;
-
-namespace POOL {
-  typedef ValueSetEnum<MODULE_MAX, PARAM_TYPE_POOL> MAX;
 }
 

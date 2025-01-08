@@ -175,13 +175,7 @@
   using __VA_ARGS__::fromName;						\
   using __VA_ARGS__::fromGlymaid;					\
   INHERIT_METHOD_ENUM_MAP_NAMES(names, Names, Name, __VA_ARGS__);	\
-  INHERIT_METHOD_ENUM_MAP(aliases, Aliases, Alias, __VA_ARGS__);	\
-  INHERIT_METHOD_ENUM_VECTOR(constant, Constant, __VA_ARGS__);		\
-  INHERIT_METHOD_ENUM_VECTOR(calculated, Calculated, __VA_ARGS__);	\
-  INHERIT_METHOD_ENUM_VECTOR(nonvector, Nonvector, __VA_ARGS__);	\
-  INHERIT_METHOD_ENUM_VECTOR_EDIT(skipped, Skipped, __VA_ARGS__);	\
-  INHERIT_METHOD_ENUM_VECTOR(resetone, Resetone, __VA_ARGS__);		\
-  INHERIT_METHOD_ENUM_VECTOR(initonce, Initonce, __VA_ARGS__)
+  INHERIT_METHOD_ENUM_MAP(aliases, Aliases, Alias, __VA_ARGS__)
 
 #define INHERIT_METHODS_VALUE_SET_TYPES(...)	\
   typedef __VA_ARGS__ ParentClass;		\

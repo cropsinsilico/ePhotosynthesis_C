@@ -21,27 +21,7 @@
 #define SCOPED_ENUM_TYPE(name)
 #endif // EPHOTO_USE_SCOPED_ENUM
 namespace ePhotosynthesis {
-  enum MODULE : int {
-      MODULE_NONE       ,
-      MODULE_BF         ,
-      MODULE_CM         ,
-      MODULE_DynaPS     ,
-      MODULE_EPS        ,
-      MODULE_FIBF       ,
-      MODULE_FI         ,
-      MODULE_PR         ,
-      MODULE_PS         ,
-      MODULE_PS_PR      ,
-      MODULE_RA         ,
-      MODULE_RROEA      ,
-      MODULE_RedoxReg   ,
-      MODULE_RuACT      ,
-      MODULE_SUCS       ,
-      MODULE_XanCycle   ,
-      MODULE_trDynaPS   ,
-      MODULE_ALL        ,
-      MODULE_MAX        ,
-  };
+  // [BEGIN] GLOBAL_ENUM
   #define MEMBERS_MODULE		\
       MODULE_NONE       ,		\
       MODULE_BF         ,		\
@@ -79,19 +59,11 @@ namespace ePhotosynthesis {
       SUCS       ,		\
       XanCycle   ,		\
       trDynaPS
+  enum MODULE : int {
+    MEMBERS_MODULE
+  };
   static const std::vector<MODULE> ALL_MODULE = {MODULE_BF, MODULE_CM, MODULE_DynaPS, MODULE_EPS, MODULE_FIBF, MODULE_FI, MODULE_PR, MODULE_PS, MODULE_PS_PR, MODULE_RA, MODULE_RROEA, MODULE_RedoxReg, MODULE_RuACT, MODULE_SUCS, MODULE_XanCycle, MODULE_trDynaPS, MODULE_ALL};  /**< All enum values */
   
-  enum PARAM_TYPE : int {
-      PARAM_TYPE_NONE   ,
-      PARAM_TYPE_COND   ,
-      PARAM_TYPE_POOL   ,
-      PARAM_TYPE_KE     ,
-      PARAM_TYPE_MOD    ,
-      PARAM_TYPE_RC     ,
-      PARAM_TYPE_VEL    ,
-      PARAM_TYPE_VARS   ,
-      PARAM_TYPE_MAX    ,
-  };
   #define MEMBERS_PARAM		\
       PARAM_TYPE_NONE   ,		\
       PARAM_TYPE_COND   ,		\
@@ -99,8 +71,8 @@ namespace ePhotosynthesis {
       PARAM_TYPE_KE     ,		\
       PARAM_TYPE_MOD    ,		\
       PARAM_TYPE_RC     ,		\
-      PARAM_TYPE_VEL    ,		\
       PARAM_TYPE_VARS   ,		\
+      PARAM_TYPE_VEL    ,		\
       PARAM_TYPE_MAX
   #define MEMBER_NAMES_PARAM		\
       COND   ,		\
@@ -109,7 +81,51 @@ namespace ePhotosynthesis {
       MOD    ,		\
       RC     ,		\
       VEL
-  static const std::vector<PARAM_TYPE> ALL_PARAM_TYPE = {PARAM_TYPE_COND, PARAM_TYPE_POOL, PARAM_TYPE_KE, PARAM_TYPE_MOD, PARAM_TYPE_RC, PARAM_TYPE_VEL, PARAM_TYPE_VARS};  /**< All enum values */
+  enum PARAM_TYPE : int {
+    MEMBERS_PARAM
+  };
+  static const std::vector<PARAM_TYPE> ALL_PARAM_TYPE = {PARAM_TYPE_COND, PARAM_TYPE_POOL, PARAM_TYPE_KE, PARAM_TYPE_MOD, PARAM_TYPE_RC, PARAM_TYPE_VARS, PARAM_TYPE_VEL};  /**< All enum values */
+  
+  // [END] GLOBAL_ENUM
+  // VALUE_FLAG enum
+  #define MEMBERS_VALUE		\
+      VALUE_FLAG_NONE                ,		\
+      VALUE_FLAG_SKIPPED             ,		\
+      VALUE_FLAG_MAX
+  #define MEMBER_NAMES_VALUE		\
+      SKIPPED
+  enum VALUE_FLAG : int {
+      VALUE_FLAG_NONE    = 0x00000000,
+      VALUE_FLAG_SKIPPED = 0x00000001,
+      VALUE_FLAG_MAX     = 0x00000002,
+  };
+  static const std::vector<VALUE_FLAG> ALL_VALUE_FLAG = {VALUE_FLAG_SKIPPED};  /**< All enum values */
+  
+  // STATIC_VALUE_FLAG enum
+  #define MEMBERS_STATIC_VALUE		\
+      STATIC_VALUE_FLAG_NONE                   ,		\
+      STATIC_VALUE_FLAG_CONST                  ,		\
+      STATIC_VALUE_FLAG_CALC                   ,		\
+      STATIC_VALUE_FLAG_NON_VECTOR             ,		\
+      STATIC_VALUE_FLAG_RESET_ONE              ,		\
+      STATIC_VALUE_FLAG_INIT_ONCE              ,		\
+      STATIC_VALUE_FLAG_MAX
+  #define MEMBER_NAMES_STATIC_VALUE		\
+      CONST                  ,		\
+      CALC                   ,		\
+      NON_VECTOR             ,		\
+      RESET_ONE              ,		\
+      INIT_ONCE
+  enum STATIC_VALUE_FLAG : int {
+      STATIC_VALUE_FLAG_NONE       = 0x00000000,
+      STATIC_VALUE_FLAG_CONST      = 0x00000001,
+      STATIC_VALUE_FLAG_CALC       = 0x00000002,
+      STATIC_VALUE_FLAG_NON_VECTOR = 0x00000004,
+      STATIC_VALUE_FLAG_RESET_ONE  = 0x00000008,
+      STATIC_VALUE_FLAG_INIT_ONCE  = 0x00000010,
+      STATIC_VALUE_FLAG_MAX        = 0x00000020,
+  };
+  static const std::vector<STATIC_VALUE_FLAG> ALL_STATIC_VALUE_FLAG = {STATIC_VALUE_FLAG_CONST, STATIC_VALUE_FLAG_CALC, STATIC_VALUE_FLAG_NON_VECTOR, STATIC_VALUE_FLAG_RESET_ONE, STATIC_VALUE_FLAG_INIT_ONCE};  /**< All enum values */
   
   // Utility for getting module id from enum type
   template<typename T>
@@ -161,8 +177,8 @@ namespace ePhotosynthesis {
       {PARAM_TYPE_KE  , "KE"  },
       {PARAM_TYPE_MOD , "MOD" },
       {PARAM_TYPE_RC  , "RC"  },
-      {PARAM_TYPE_VEL , "VEL" },
       {PARAM_TYPE_VARS, "VARS"},
+      {PARAM_TYPE_VEL , "VEL" },
     };
     return collection;
   }
@@ -194,55 +210,30 @@ namespace ePhotosynthesis {
     throw std::runtime_error("No enum aliases collection could be found");
     return result;
   }
-  // Utility for getting constant from enum
+  // Utility for getting docs from enum
   template<typename T>
-  const std::vector<T>& get_enum_constant() {
-    static const std::vector<T> result;
-    throw std::runtime_error("No enum constant collection could be found");
+  const std::map<T, std::string>& get_enum_docs() {
+    static const std::map<T, std::string> result;
+    throw std::runtime_error("No enum docs collection could be found");
     return result;
   }
-  // Utility for getting calculated from enum
+  // Utility for getting value_flags from enum
   template<typename T>
-  const std::vector<T>& get_enum_calculated() {
-    static const std::vector<T> result;
-    throw std::runtime_error("No enum calculated collection could be found");
+  std::map<T, int>& get_enum_value_flags() {
+    static std::map<T, int> result;
+    throw std::runtime_error("No enum value_flags collection could be found");
     return result;
   }
-  // Utility for getting nonvector from enum
+  // Utility for getting static_value_flags from enum
   template<typename T>
-  const std::vector<T>& get_enum_nonvector() {
-    static const std::vector<T> result;
-    throw std::runtime_error("No enum nonvector collection could be found");
-    return result;
-  }
-  // Utility for getting skipped from enum
-  template<typename T>
-  std::vector<T>& get_enum_skipped() {
-    static std::vector<T> result;
-    throw std::runtime_error("No enum skipped collection could be found");
-    return result;
-  }
-  // Utility for getting resetone from enum
-  template<typename T>
-  const std::vector<T>& get_enum_resetone() {
-    static const std::vector<T> result;
-    throw std::runtime_error("No enum resetone collection could be found");
-    return result;
-  }
-  // Utility for getting initonce from enum
-  template<typename T>
-  const std::vector<T>& get_enum_initonce() {
-    static const std::vector<T> result;
-    throw std::runtime_error("No enum initonce collection could be found");
+  const std::map<T, int>& get_enum_static_value_flags() {
+    static const std::map<T, int> result;
+    throw std::runtime_error("No enum static_value_flags collection could be found");
     return result;
   }
   // Unspecialized enum
-  #ifdef EPHOTO_USE_SCOPED_ENUM
-  template<MODULE M, PARAM_TYPE PT>
-  struct enum_helper {
-    typedef int type;
-  };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #include "enums/enums_helpers.hpp"
+  
   template<MODULE M, PARAM_TYPE PT>
   class EPHOTO_API ValueSetEnum {
   public:
@@ -259,12 +250,9 @@ namespace ePhotosynthesis {
     static const std::map<Type, double> defaults_C3;  /**< Defaults_C3 for values */
     static const std::map<Type, std::string> glymaids;  /**< Glymaids for values */
     static const std::map<std::string, Type> aliases;  /**< Aliases for values */
-    static const std::vector<Type> constant;  /**< Values that are constant */
-    static const std::vector<Type> calculated;  /**< Values that are calculated */
-    static const std::vector<Type> nonvector;  /**< Values that are nonvector */
-    static std::vector<Type> skipped;  /**< Values that are skipped */
-    static const std::vector<Type> resetone;  /**< Values that are resetone */
-    static const std::vector<Type> initonce;  /**< Values that are initonce */
+    static const std::map<Type, std::string> docs;  /**< Docs for values */
+    static std::map<Type, int> value_flags;  /**< Value_Flags for values */
+    static const std::map<Type, int> static_value_flags;  /**< Static_Value_Flags for values */
     /**
       Get a prefix for errors describing the class
       \return Prefix
@@ -275,26 +263,6 @@ namespace ePhotosynthesis {
       out += "[";
       out += get_enum_names<MODULE>().find(module)->second;
       out += "]: ";
-      return out;
-    }
-    /**
-      Serialize an enum to an output stream
-      \param[in,out] out Output stream
-      \param[in] x Key to serialize
-      \return Updated stream
-    */
-    friend inline std::ostream& operator<<(std::ostream& out, const Type& x) {
-      out << getName(x);
-      return out;
-    }
-    /**
-      Serialize an enum to an output stream
-      \param[in,out] out Output stream
-      \param[in] x Collection to serialize
-      \return Updated stream
-    */
-    friend inline std::ostream& operator<<(std::ostream& out, const std::map<Type, std::string>& x) {
-      print_map(x, out);
       return out;
     }
     /**
@@ -349,9 +317,10 @@ namespace ePhotosynthesis {
       \param[in] tab Indentation to add to each line
       \return Updated stream
     */
-    static std::ostream& print_map(const std::map<Type, double>& collection, std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
+    template<typename T>
+    static std::ostream& print_map(const std::map<Type, T>& collection, std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
       const std::string space(tab * 4, ' ');
-      typename std::map<Type, double>::const_iterator it;
+      typename std::map<Type, T>::const_iterator it;
       for (it = collection.begin(); it != collection.end(); it++) {
         out << space << "  " << names.find(it->first)->second << "	" << it->second << std::endl;
       }
@@ -363,7 +332,8 @@ namespace ePhotosynthesis {
       \param[in] tab Indentation to add to each line
       \return Serialized collection
     */
-    static std::string string_map(const std::map<Type, double>& collection, const unsigned int tab = 0) {
+    template<typename T>
+    static std::string string_map(const std::map<Type, T>& collection, const unsigned int tab = 0) {
       std::ostringstream oss;
       print_map(collection, oss, tab);
       return oss.str();
@@ -424,7 +394,7 @@ namespace ePhotosynthesis {
       \param[in] tab Indentation to add to each line
       \return Updated stream
     */
-    static std::ostream& printDefaults_C3(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
+    static std::ostream& printDefaultsC3(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
       return print_map(defaults_C3, out, includePrefixes, tab);
     }
     /**
@@ -432,29 +402,29 @@ namespace ePhotosynthesis {
       \param[in] tab Indentation to add to each line
       \return Serialized collection
     */
-    static std::string stringDefaults_C3(const unsigned int tab = 0) {
+    static std::string stringDefaultsC3(const unsigned int tab = 0) {
       return string_map(defaults_C3, tab);
     }
     /**
-      Get the default_c3 value corresponding to an enum key
+      Get the defaultc3 value corresponding to an enum key
       \param[in] x Key to get value for
       \return Value
     */
-    static double getDefault_C3(const Type& x) {
+    static double getDefaultC3(const Type& x) {
       typename std::map<Type, double>::const_iterator it;
       it = defaults_C3.find(x);
       if (it == defaults_C3.end()) {
-        throw std::runtime_error("Could not locate Default_C3 for '" + names.find(x)->second + "'");
+        throw std::runtime_error("Could not locate DefaultC3 for '" + names.find(x)->second + "'");
       }
       return it->second;
     }
     /**
-      Get the default_c3 value corresponding to an enum key
+      Get the defaultc3 value corresponding to an enum key
       \param[in] x Key to get value for
       \param[in] defaultV Value to return if x is not present
       \return Value
     */
-    static double getDefault_C3(const Type& x, const double& defaultV) {
+    static double getDefaultC3(const Type& x, const double& defaultV) {
       typename std::map<Type, double>::const_iterator it;
       it = defaults_C3.find(x);
       if (it == defaults_C3.end()) {
@@ -572,6 +542,68 @@ namespace ePhotosynthesis {
       return it->second;
     }
     /**
+      Print the contents of docs
+      \param[in,out] out Stream to print to
+      \param[in] includePrefixes If true, the module & 
+        parameter type prefixes will be added to the member 
+        names.
+      \param[in] tab Indentation to add to each line
+      \return Updated stream
+    */
+    static std::ostream& printDocs(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
+      return print_map(docs, out, includePrefixes, tab);
+    }
+    /**
+      Serialize the contents of docs
+      \param[in] tab Indentation to add to each line
+      \return Serialized collection
+    */
+    static std::string stringDocs(const unsigned int tab = 0) {
+      return string_map(docs, tab);
+    }
+    /**
+      Get the docs value corresponding to an enum key
+      \param[in] x Key to get value for
+      \return Value
+    */
+    static std::string getDocs(const Type& x) {
+      typename std::map<Type, std::string>::const_iterator it;
+      it = docs.find(x);
+      if (it == docs.end()) {
+        throw std::runtime_error("Could not locate Docs for '" + names.find(x)->second + "'");
+      }
+      return it->second;
+    }
+    /**
+      Get the docs value corresponding to an enum key
+      \param[in] x Key to get value for
+      \param[in] defaultV Value to return if x is not present
+      \return Value
+    */
+    static std::string getDocs(const Type& x, const std::string& defaultV) {
+      typename std::map<Type, std::string>::const_iterator it;
+      it = docs.find(x);
+      if (it == docs.end()) {
+        return defaultV;
+      }
+      return it->second;
+    }
+    /**
+      Get the enum key corresponding to a docs values
+      \param[in] x Value to get key for
+      \return Key
+    */
+    static Type fromDocs(const std::string& x) {
+      typename std::map<Type, std::string>::const_iterator it;
+      for (it = docs.begin(); it != docs.end(); it++) {
+        if (it->second == x) break;
+      }
+      if (it == docs.end()) {
+        throw std::runtime_error("Could not locate Docs for '" + x + "'");
+      }
+      return it->first;
+    }
+    /**
       Print the contents of a collection
       \param[in] collection Object to print
       \param[in,out] out Stream to print to
@@ -603,17 +635,7 @@ namespace ePhotosynthesis {
       return oss.str();
     }
     /**
-      Serialize an enum to an output stream
-      \param[in,out] out Output stream
-      \param[in] x Collection to serialize
-      \return Updated stream
-    */
-    friend inline std::ostream& operator<<(std::ostream& out, const std::vector<Type>& x) {
-      print_vector(x, out);
-      return out;
-    }
-    /**
-      Print the contents of constant
+      Print the contents of value_flags
       \param[in,out] out Stream to print to
       \param[in] includePrefixes If true, the module & 
         parameter type prefixes will be added to the member 
@@ -621,170 +643,8 @@ namespace ePhotosynthesis {
       \param[in] tab Indentation to add to each line
       \return Updated stream
     */
-    static std::ostream& printConstant(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
-      return print_vector(constant, out, includePrefixes, tab);
-    }
-    /**
-      Serialize the contents of constant
-      \param[in] tab Indentation to add to each line
-      \return Serialized collection
-    */
-    static std::string stringConstant(const unsigned int tab = 0) {
-      return string_vector(constant, tab);
-    }
-    /**
-      Check if a key is in constant
-      \param[in] x Key to check
-      \return true if x is present, false otherwise
-    */
-    static bool isConstant(const Type& x) {
-      typename std::vector<Type>::const_iterator it;
-      for (it = constant.begin(); it != constant.end(); it++){
-        if ((*(it)) == x) break;
-      }
-      return (it != constant.end());
-    }
-    /**
-      Throw an error if a key is not in constant
-      \param[in] x Key to check
-      \param[in] context String describing context that 
-        should be used in the error message
-    */
-    static void checkConstant(const Type& x, const std::string& context = "") {
-      if (!isConstant(x)) {
-        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in constant");
-      }
-    }
-    /**
-      Throw an error if a key is in constant
-      \param[in] x Key to check
-      \param[in] context String describing context that 
-        should be used in the error message
-    */
-    static void checkNotConstant(const Type& x, const std::string& context = "") {
-      if (isConstant(x)) {
-        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in constant");
-      }
-    }
-    /**
-      Print the contents of calculated
-      \param[in,out] out Stream to print to
-      \param[in] includePrefixes If true, the module & 
-        parameter type prefixes will be added to the member 
-        names.
-      \param[in] tab Indentation to add to each line
-      \return Updated stream
-    */
-    static std::ostream& printCalculated(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
-      return print_vector(calculated, out, includePrefixes, tab);
-    }
-    /**
-      Serialize the contents of calculated
-      \param[in] tab Indentation to add to each line
-      \return Serialized collection
-    */
-    static std::string stringCalculated(const unsigned int tab = 0) {
-      return string_vector(calculated, tab);
-    }
-    /**
-      Check if a key is in calculated
-      \param[in] x Key to check
-      \return true if x is present, false otherwise
-    */
-    static bool isCalculated(const Type& x) {
-      typename std::vector<Type>::const_iterator it;
-      for (it = calculated.begin(); it != calculated.end(); it++){
-        if ((*(it)) == x) break;
-      }
-      return (it != calculated.end());
-    }
-    /**
-      Throw an error if a key is not in calculated
-      \param[in] x Key to check
-      \param[in] context String describing context that 
-        should be used in the error message
-    */
-    static void checkCalculated(const Type& x, const std::string& context = "") {
-      if (!isCalculated(x)) {
-        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in calculated");
-      }
-    }
-    /**
-      Throw an error if a key is in calculated
-      \param[in] x Key to check
-      \param[in] context String describing context that 
-        should be used in the error message
-    */
-    static void checkNotCalculated(const Type& x, const std::string& context = "") {
-      if (isCalculated(x)) {
-        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in calculated");
-      }
-    }
-    /**
-      Print the contents of nonvector
-      \param[in,out] out Stream to print to
-      \param[in] includePrefixes If true, the module & 
-        parameter type prefixes will be added to the member 
-        names.
-      \param[in] tab Indentation to add to each line
-      \return Updated stream
-    */
-    static std::ostream& printNonvector(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
-      return print_vector(nonvector, out, includePrefixes, tab);
-    }
-    /**
-      Serialize the contents of nonvector
-      \param[in] tab Indentation to add to each line
-      \return Serialized collection
-    */
-    static std::string stringNonvector(const unsigned int tab = 0) {
-      return string_vector(nonvector, tab);
-    }
-    /**
-      Check if a key is in nonvector
-      \param[in] x Key to check
-      \return true if x is present, false otherwise
-    */
-    static bool isNonvector(const Type& x) {
-      typename std::vector<Type>::const_iterator it;
-      for (it = nonvector.begin(); it != nonvector.end(); it++){
-        if ((*(it)) == x) break;
-      }
-      return (it != nonvector.end());
-    }
-    /**
-      Throw an error if a key is not in nonvector
-      \param[in] x Key to check
-      \param[in] context String describing context that 
-        should be used in the error message
-    */
-    static void checkNonvector(const Type& x, const std::string& context = "") {
-      if (!isNonvector(x)) {
-        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in nonvector");
-      }
-    }
-    /**
-      Throw an error if a key is in nonvector
-      \param[in] x Key to check
-      \param[in] context String describing context that 
-        should be used in the error message
-    */
-    static void checkNotNonvector(const Type& x, const std::string& context = "") {
-      if (isNonvector(x)) {
-        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in nonvector");
-      }
-    }
-    /**
-      Print the contents of skipped
-      \param[in,out] out Stream to print to
-      \param[in] includePrefixes If true, the module & 
-        parameter type prefixes will be added to the member 
-        names.
-      \param[in] tab Indentation to add to each line
-      \return Updated stream
-    */
-    static std::ostream& printSkipped(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
-      return print_vector(skipped, out, includePrefixes, tab);
+    static std::ostream& printValueFlags(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
+      return print_map(value_flags, out, includePrefixes, tab);
     }
     /**
       Serialize the contents of skipped
@@ -792,92 +652,180 @@ namespace ePhotosynthesis {
       \return Serialized collection
     */
     static std::string stringSkipped(const unsigned int tab = 0) {
-      return string_vector(skipped, tab);
+      return string_vector(listSkipped(), tab);
     }
     /**
-      Check if a key is in skipped
+      Serialize the contents of value_flags
+      \param[in] tab Indentation to add to each line
+      \return Serialized collection
+    */
+    static std::string stringValueFlags(const unsigned int tab = 0) {
+      return string_map(value_flags, tab);
+    }
+    /**
+      Get the valueflag value corresponding to an enum key
+      \param[in] x Key to get value for
+      \return Value
+    */
+    static int getValueFlag(const Type& x) {
+      typename std::map<Type, int>::const_iterator it;
+      it = value_flags.find(x);
+      if (it == value_flags.end()) {
+        throw std::runtime_error("Could not locate ValueFlag for '" + names.find(x)->second + "'");
+      }
+      return it->second;
+    }
+    /**
+      Check if a key is in value_flags
       \param[in] x Key to check
       \return true if x is present, false otherwise
     */
     static bool isSkipped(const Type& x) {
-      typename std::vector<Type>::const_iterator it;
-      for (it = skipped.begin(); it != skipped.end(); it++){
-        if ((*(it)) == x) break;
-      }
-      return (it != skipped.end());
+      typename std::map<Type, int>::const_iterator it;
+      it = value_flags.find(x);
+      if (it == value_flags.end()) return false;
+      return (it->second & VALUE_FLAG_SKIPPED);
     }
     /**
-      Throw an error if a key is not in skipped
+      Throw an error if a key is not in value_flags
       \param[in] x Key to check
       \param[in] context String describing context that 
         should be used in the error message
     */
     static void checkSkipped(const Type& x, const std::string& context = "") {
       if (!isSkipped(x)) {
-        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in skipped");
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in value_flags");
       }
     }
     /**
-      Throw an error if a key is in skipped
+      Throw an error if a key is in value_flags
       \param[in] x Key to check
       \param[in] context String describing context that 
         should be used in the error message
     */
     static void checkNotSkipped(const Type& x, const std::string& context = "") {
       if (isSkipped(x)) {
-        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in skipped");
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in value_flags");
       }
     }
     /**
-      Remove all entries from skipped
+      Get the number of elements in value_flags with VALUE_FLAG_SKIPPED set.
+      \return Number of elements with VALUE_FLAG_SKIPPED set.
     */
-    static void clearSkipped() {
-      skipped.clear();
+    static std::size_t countSkipped() {
+      std::size_t out;
+      out = 0;
+      typename std::map<Type, int>::const_iterator it;
+      for (it = value_flags.begin(); it != value_flags.end(); it++){
+        if (it->second & VALUE_FLAG_SKIPPED) out++;
+      }
+      return out;
     }
     /**
-      Add an element to skipped if it is not already present
+      Get the number of elements in value_flags.
+      \return Number of elements.
+    */
+    static std::size_t countValueFlags() {
+      std::size_t out;
+      out = value_flags.size();
+      return out;
+    }
+    /**
+      Get the set of elements in value_flags with VALUE_FLAG_SKIPPED set.
+      \return Set of elements.
+    */
+    static std::vector<Type> listSkipped() {
+      std::vector<Type> out;
+      typename std::map<Type, int>::const_iterator it;
+      for (it = value_flags.begin(); it != value_flags.end(); it++){
+        if (it->second & VALUE_FLAG_SKIPPED) {
+          out.push_back(it->first);
+        }
+      }
+      return out;
+    }
+    /**
+      Remove all VALUE_FLAG_SKIPPED flags from value_flags
+    */
+    static void clearSkipped() {
+      typename std::map<Type, int>::iterator it;
+      for (it = value_flags.begin(); it != value_flags.end(); it++){
+        it->second &= ~VALUE_FLAG_SKIPPED;
+      }
+    }
+    /**
+      Remove all entries from value_flags
+    */
+    static void clearValueFlags() {
+      value_flags.clear();
+    }
+    /**
+      Add an element to value_flags if it is not already present
       \param[in] x Key to add
     */
     static void addSkipped(const Type& x) {
       if (!isSkipped(x)) {
-        skipped.push_back(x);
+        typename std::map<Type, int>::iterator it;
+        it = value_flags.find(x);
+        if (it == value_flags.end()) {
+          value_flags.emplace(x, VALUE_FLAG_NONE);
+          it = value_flags.find(x);
+        }
+        it->second |= VALUE_FLAG_SKIPPED;
       }
     }
     /**
-      Remove an element from skipped
+      Add an element to value_flags if it is not already present
+      \param[in] x Key to add
+      \param y Value to add for x
+    */
+    static void addValueFlags(const Type& x, const int& y) {
+      value_flags.emplace(x, y);
+    }
+    /**
+      Remove an element from value_flags
       \param[in] x Key to remove
     */
     static void removeSkipped(const Type& x) {
-      typename std::vector<Type>::iterator it;
-      for (it = skipped.begin(); it != skipped.end(); it++){
-        if ((*(it)) == x) break;
-      }
-      if (it != skipped.end()) {
-        skipped.erase(it);
+      typename std::map<Type, int>::iterator it;
+      it = value_flags.find(x);
+      if (it != value_flags.end()) {
+        it->second &= ~VALUE_FLAG_SKIPPED;
       }
     }
     /**
-      Add multiple elements to skipped if they are not already present
+      Remove an element from value_flags
+      \param[in] x Key to remove
+    */
+    static void removeValueFlags(const Type& x) {
+      typename std::map<Type, int>::iterator it;
+      it = value_flags.find(x);
+      if (it != value_flags.end()) {
+        value_flags.erase(it);
+      }
+    }
+    /**
+      Add multiple elements to value_flags if they are not already present
       \param[in] x Elements to add
     */
-    static void addMultipleSkipped(const std::vector<Type>& x) {
-      typename std::vector<Type>::const_iterator it;
+    static void addMultipleValueFlags(const std::map<Type, int>& x) {
+      typename std::map<Type, int>::const_iterator it;
       for (it = x.begin(); it != x.end(); it++) {
-        addSkipped((*(it)));
+        addValueFlags(it->first, it->second);
       }
     }
     /**
-      Remove multiple elements to skipped if they are not already present
+      Remove multiple elements to value_flags if they are not already present
       \param[in] x Elements to add
     */
-    static void removeMultipleSkipped(const std::vector<Type>& x) {
-      typename std::vector<Type>::const_iterator it;
+    static void removeMultipleValueFlags(const std::map<Type, int>& x) {
+      typename std::map<Type, int>::const_iterator it;
       for (it = x.begin(); it != x.end(); it++) {
-        removeSkipped((*(it)));
+        removeValueFlags(it->first, it->second);
       }
     }
     /**
-      Print the contents of resetone
+      Print the contents of static_value_flags
       \param[in,out] out Stream to print to
       \param[in] includePrefixes If true, the module & 
         parameter type prefixes will be added to the member 
@@ -885,8 +833,32 @@ namespace ePhotosynthesis {
       \param[in] tab Indentation to add to each line
       \return Updated stream
     */
-    static std::ostream& printResetone(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
-      return print_vector(resetone, out, includePrefixes, tab);
+    static std::ostream& printStaticValueFlags(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
+      return print_map(static_value_flags, out, includePrefixes, tab);
+    }
+    /**
+      Serialize the contents of constant
+      \param[in] tab Indentation to add to each line
+      \return Serialized collection
+    */
+    static std::string stringConstant(const unsigned int tab = 0) {
+      return string_vector(listConstant(), tab);
+    }
+    /**
+      Serialize the contents of calculated
+      \param[in] tab Indentation to add to each line
+      \return Serialized collection
+    */
+    static std::string stringCalculated(const unsigned int tab = 0) {
+      return string_vector(listCalculated(), tab);
+    }
+    /**
+      Serialize the contents of nonvector
+      \param[in] tab Indentation to add to each line
+      \return Serialized collection
+    */
+    static std::string stringNonvector(const unsigned int tab = 0) {
+      return string_vector(listNonvector(), tab);
     }
     /**
       Serialize the contents of resetone
@@ -894,53 +866,7 @@ namespace ePhotosynthesis {
       \return Serialized collection
     */
     static std::string stringResetone(const unsigned int tab = 0) {
-      return string_vector(resetone, tab);
-    }
-    /**
-      Check if a key is in resetone
-      \param[in] x Key to check
-      \return true if x is present, false otherwise
-    */
-    static bool isResetone(const Type& x) {
-      typename std::vector<Type>::const_iterator it;
-      for (it = resetone.begin(); it != resetone.end(); it++){
-        if ((*(it)) == x) break;
-      }
-      return (it != resetone.end());
-    }
-    /**
-      Throw an error if a key is not in resetone
-      \param[in] x Key to check
-      \param[in] context String describing context that 
-        should be used in the error message
-    */
-    static void checkResetone(const Type& x, const std::string& context = "") {
-      if (!isResetone(x)) {
-        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in resetone");
-      }
-    }
-    /**
-      Throw an error if a key is in resetone
-      \param[in] x Key to check
-      \param[in] context String describing context that 
-        should be used in the error message
-    */
-    static void checkNotResetone(const Type& x, const std::string& context = "") {
-      if (isResetone(x)) {
-        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in resetone");
-      }
-    }
-    /**
-      Print the contents of initonce
-      \param[in,out] out Stream to print to
-      \param[in] includePrefixes If true, the module & 
-        parameter type prefixes will be added to the member 
-        names.
-      \param[in] tab Indentation to add to each line
-      \return Updated stream
-    */
-    static std::ostream& printInitonce(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
-      return print_vector(initonce, out, includePrefixes, tab);
+      return string_vector(listResetone(), tab);
     }
     /**
       Serialize the contents of initonce
@@ -948,41 +874,337 @@ namespace ePhotosynthesis {
       \return Serialized collection
     */
     static std::string stringInitonce(const unsigned int tab = 0) {
-      return string_vector(initonce, tab);
+      return string_vector(listInitonce(), tab);
     }
     /**
-      Check if a key is in initonce
+      Serialize the contents of static_value_flags
+      \param[in] tab Indentation to add to each line
+      \return Serialized collection
+    */
+    static std::string stringStaticValueFlags(const unsigned int tab = 0) {
+      return string_map(static_value_flags, tab);
+    }
+    /**
+      Get the staticvalueflag value corresponding to an enum key
+      \param[in] x Key to get value for
+      \return Value
+    */
+    static int getStaticValueFlag(const Type& x) {
+      typename std::map<Type, int>::const_iterator it;
+      it = static_value_flags.find(x);
+      if (it == static_value_flags.end()) {
+        throw std::runtime_error("Could not locate StaticValueFlag for '" + names.find(x)->second + "'");
+      }
+      return it->second;
+    }
+    /**
+      Check if a key is in static_value_flags
+      \param[in] x Key to check
+      \return true if x is present, false otherwise
+    */
+    static bool isConstant(const Type& x) {
+      typename std::map<Type, int>::const_iterator it;
+      it = static_value_flags.find(x);
+      if (it == static_value_flags.end()) return false;
+      return (it->second & STATIC_VALUE_FLAG_CONST);
+    }
+    /**
+      Check if a key is in static_value_flags
+      \param[in] x Key to check
+      \return true if x is present, false otherwise
+    */
+    static bool isCalculated(const Type& x) {
+      typename std::map<Type, int>::const_iterator it;
+      it = static_value_flags.find(x);
+      if (it == static_value_flags.end()) return false;
+      return (it->second & STATIC_VALUE_FLAG_CALC);
+    }
+    /**
+      Check if a key is in static_value_flags
+      \param[in] x Key to check
+      \return true if x is present, false otherwise
+    */
+    static bool isNonvector(const Type& x) {
+      typename std::map<Type, int>::const_iterator it;
+      it = static_value_flags.find(x);
+      if (it == static_value_flags.end()) return false;
+      return (it->second & STATIC_VALUE_FLAG_NON_VECTOR);
+    }
+    /**
+      Check if a key is in static_value_flags
+      \param[in] x Key to check
+      \return true if x is present, false otherwise
+    */
+    static bool isResetone(const Type& x) {
+      typename std::map<Type, int>::const_iterator it;
+      it = static_value_flags.find(x);
+      if (it == static_value_flags.end()) return false;
+      return (it->second & STATIC_VALUE_FLAG_RESET_ONE);
+    }
+    /**
+      Check if a key is in static_value_flags
       \param[in] x Key to check
       \return true if x is present, false otherwise
     */
     static bool isInitonce(const Type& x) {
-      typename std::vector<Type>::const_iterator it;
-      for (it = initonce.begin(); it != initonce.end(); it++){
-        if ((*(it)) == x) break;
-      }
-      return (it != initonce.end());
+      typename std::map<Type, int>::const_iterator it;
+      it = static_value_flags.find(x);
+      if (it == static_value_flags.end()) return false;
+      return (it->second & STATIC_VALUE_FLAG_INIT_ONCE);
     }
     /**
-      Throw an error if a key is not in initonce
+      Throw an error if a key is not in static_value_flags
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
+    static void checkConstant(const Type& x, const std::string& context = "") {
+      if (!isConstant(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in static_value_flags");
+      }
+    }
+    /**
+      Throw an error if a key is not in static_value_flags
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
+    static void checkCalculated(const Type& x, const std::string& context = "") {
+      if (!isCalculated(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in static_value_flags");
+      }
+    }
+    /**
+      Throw an error if a key is not in static_value_flags
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
+    static void checkNonvector(const Type& x, const std::string& context = "") {
+      if (!isNonvector(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in static_value_flags");
+      }
+    }
+    /**
+      Throw an error if a key is not in static_value_flags
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
+    static void checkResetone(const Type& x, const std::string& context = "") {
+      if (!isResetone(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in static_value_flags");
+      }
+    }
+    /**
+      Throw an error if a key is not in static_value_flags
       \param[in] x Key to check
       \param[in] context String describing context that 
         should be used in the error message
     */
     static void checkInitonce(const Type& x, const std::string& context = "") {
       if (!isInitonce(x)) {
-        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in initonce");
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in static_value_flags");
       }
     }
     /**
-      Throw an error if a key is in initonce
+      Throw an error if a key is in static_value_flags
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
+    static void checkNotConstant(const Type& x, const std::string& context = "") {
+      if (isConstant(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in static_value_flags");
+      }
+    }
+    /**
+      Throw an error if a key is in static_value_flags
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
+    static void checkNotCalculated(const Type& x, const std::string& context = "") {
+      if (isCalculated(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in static_value_flags");
+      }
+    }
+    /**
+      Throw an error if a key is in static_value_flags
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
+    static void checkNotNonvector(const Type& x, const std::string& context = "") {
+      if (isNonvector(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in static_value_flags");
+      }
+    }
+    /**
+      Throw an error if a key is in static_value_flags
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
+    static void checkNotResetone(const Type& x, const std::string& context = "") {
+      if (isResetone(x)) {
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in static_value_flags");
+      }
+    }
+    /**
+      Throw an error if a key is in static_value_flags
       \param[in] x Key to check
       \param[in] context String describing context that 
         should be used in the error message
     */
     static void checkNotInitonce(const Type& x, const std::string& context = "") {
       if (isInitonce(x)) {
-        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in initonce");
+        throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in static_value_flags");
       }
+    }
+    /**
+      Get the number of elements in static_value_flags with STATIC_VALUE_FLAG_CONST set.
+      \return Number of elements with STATIC_VALUE_FLAG_CONST set.
+    */
+    static std::size_t countConstant() {
+      std::size_t out;
+      out = 0;
+      typename std::map<Type, int>::const_iterator it;
+      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++){
+        if (it->second & STATIC_VALUE_FLAG_CONST) out++;
+      }
+      return out;
+    }
+    /**
+      Get the number of elements in static_value_flags with STATIC_VALUE_FLAG_CALC set.
+      \return Number of elements with STATIC_VALUE_FLAG_CALC set.
+    */
+    static std::size_t countCalculated() {
+      std::size_t out;
+      out = 0;
+      typename std::map<Type, int>::const_iterator it;
+      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++){
+        if (it->second & STATIC_VALUE_FLAG_CALC) out++;
+      }
+      return out;
+    }
+    /**
+      Get the number of elements in static_value_flags with STATIC_VALUE_FLAG_NON_VECTOR set.
+      \return Number of elements with STATIC_VALUE_FLAG_NON_VECTOR set.
+    */
+    static std::size_t countNonvector() {
+      std::size_t out;
+      out = 0;
+      typename std::map<Type, int>::const_iterator it;
+      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++){
+        if (it->second & STATIC_VALUE_FLAG_NON_VECTOR) out++;
+      }
+      return out;
+    }
+    /**
+      Get the number of elements in static_value_flags with STATIC_VALUE_FLAG_RESET_ONE set.
+      \return Number of elements with STATIC_VALUE_FLAG_RESET_ONE set.
+    */
+    static std::size_t countResetone() {
+      std::size_t out;
+      out = 0;
+      typename std::map<Type, int>::const_iterator it;
+      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++){
+        if (it->second & STATIC_VALUE_FLAG_RESET_ONE) out++;
+      }
+      return out;
+    }
+    /**
+      Get the number of elements in static_value_flags with STATIC_VALUE_FLAG_INIT_ONCE set.
+      \return Number of elements with STATIC_VALUE_FLAG_INIT_ONCE set.
+    */
+    static std::size_t countInitonce() {
+      std::size_t out;
+      out = 0;
+      typename std::map<Type, int>::const_iterator it;
+      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++){
+        if (it->second & STATIC_VALUE_FLAG_INIT_ONCE) out++;
+      }
+      return out;
+    }
+    /**
+      Get the number of elements in static_value_flags.
+      \return Number of elements.
+    */
+    static std::size_t countStaticValueFlags() {
+      std::size_t out;
+      out = static_value_flags.size();
+      return out;
+    }
+    /**
+      Get the set of elements in static_value_flags with STATIC_VALUE_FLAG_CONST set.
+      \return Set of elements.
+    */
+    static std::vector<Type> listConstant() {
+      std::vector<Type> out;
+      typename std::map<Type, int>::const_iterator it;
+      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++){
+        if (it->second & STATIC_VALUE_FLAG_CONST) {
+          out.push_back(it->first);
+        }
+      }
+      return out;
+    }
+    /**
+      Get the set of elements in static_value_flags with STATIC_VALUE_FLAG_CALC set.
+      \return Set of elements.
+    */
+    static std::vector<Type> listCalculated() {
+      std::vector<Type> out;
+      typename std::map<Type, int>::const_iterator it;
+      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++){
+        if (it->second & STATIC_VALUE_FLAG_CALC) {
+          out.push_back(it->first);
+        }
+      }
+      return out;
+    }
+    /**
+      Get the set of elements in static_value_flags with STATIC_VALUE_FLAG_NON_VECTOR set.
+      \return Set of elements.
+    */
+    static std::vector<Type> listNonvector() {
+      std::vector<Type> out;
+      typename std::map<Type, int>::const_iterator it;
+      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++){
+        if (it->second & STATIC_VALUE_FLAG_NON_VECTOR) {
+          out.push_back(it->first);
+        }
+      }
+      return out;
+    }
+    /**
+      Get the set of elements in static_value_flags with STATIC_VALUE_FLAG_RESET_ONE set.
+      \return Set of elements.
+    */
+    static std::vector<Type> listResetone() {
+      std::vector<Type> out;
+      typename std::map<Type, int>::const_iterator it;
+      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++){
+        if (it->second & STATIC_VALUE_FLAG_RESET_ONE) {
+          out.push_back(it->first);
+        }
+      }
+      return out;
+    }
+    /**
+      Get the set of elements in static_value_flags with STATIC_VALUE_FLAG_INIT_ONCE set.
+      \return Set of elements.
+    */
+    static std::vector<Type> listInitonce() {
+      std::vector<Type> out;
+      typename std::map<Type, int>::const_iterator it;
+      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++){
+        if (it->second & STATIC_VALUE_FLAG_INIT_ONCE) {
+          out.push_back(it->first);
+        }
+      }
+      return out;
     }
   };
   template<MODULE M, PARAM_TYPE PT>
@@ -1002,63 +1224,69 @@ namespace ePhotosynthesis {
   template<MODULE M, PARAM_TYPE PT>
   const std::map<std::string, typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::aliases = {};
   template<MODULE M, PARAM_TYPE PT>
-  const std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::constant = {};
+  const std::map<typename ValueSetEnum<M, PT>::Type, std::string> ValueSetEnum<M, PT>::docs = {};
   template<MODULE M, PARAM_TYPE PT>
-  const std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::calculated = {};
+  std::map<typename ValueSetEnum<M, PT>::Type, int> ValueSetEnum<M, PT>::value_flags = {};
   template<MODULE M, PARAM_TYPE PT>
-  const std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::nonvector = {};
-  template<MODULE M, PARAM_TYPE PT>
-  std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::skipped = {};
-  template<MODULE M, PARAM_TYPE PT>
-  const std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::resetone = {};
-  template<MODULE M, PARAM_TYPE PT>
-  const std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::initonce = {};
+  const std::map<typename ValueSetEnum<M, PT>::Type, int> ValueSetEnum<M, PT>::static_value_flags = {};
   
+  // Global includes
+  // [BEGIN] HEADERS_GLOBAL
   #include "enums/enums_COND.hpp"
   #include "enums/enums_POOL.hpp"
   #include "enums/enums_KE.hpp"
   #include "enums/enums_MOD.hpp"
   #include "enums/enums_RC.hpp"
-  #include "enums/enums_VEL.hpp"
   #include "enums/enums_VARS.hpp"
+  #include "enums/enums_VEL.hpp"
+  // [END] HEADERS_GLOBAL
   
   // Specializations for get_enum_names
+  // [BEGIN] HEADERS_NAMES
   #include "enums/enums_COND_names.hpp"
   #include "enums/enums_POOL_names.hpp"
   #include "enums/enums_KE_names.hpp"
   #include "enums/enums_MOD_names.hpp"
   #include "enums/enums_RC_names.hpp"
-  #include "enums/enums_VEL_names.hpp"
   #include "enums/enums_VARS_names.hpp"
+  #include "enums/enums_VEL_names.hpp"
+  // [END] HEADERS_NAMES
   
   // Specializations for get_enum_values
+  // [BEGIN] HEADERS_VALUES
   #include "enums/enums_COND_defaults.hpp"
   #include "enums/enums_POOL_defaults.hpp"
   #include "enums/enums_KE_defaults.hpp"
   #include "enums/enums_MOD_defaults.hpp"
   #include "enums/enums_RC_defaults.hpp"
-  #include "enums/enums_VEL_defaults.hpp"
   #include "enums/enums_VARS_defaults.hpp"
+  #include "enums/enums_VEL_defaults.hpp"
+  // [END] HEADERS_VALUES
   
   // Specializations for get_enum_alternate_values
+  // [BEGIN] HEADERS_ALTERNATE_VALUES
   #include "enums/enums_COND_defaults_C3.hpp"
   #include "enums/enums_POOL_defaults_C3.hpp"
   #include "enums/enums_KE_defaults_C3.hpp"
   #include "enums/enums_MOD_defaults_C3.hpp"
   #include "enums/enums_RC_defaults_C3.hpp"
-  #include "enums/enums_VEL_defaults_C3.hpp"
   #include "enums/enums_VARS_defaults_C3.hpp"
+  #include "enums/enums_VEL_defaults_C3.hpp"
+  // [END] HEADERS_ALTERNATE_VALUES
   
   // Specializations for get_enum_glymaids
+  // [BEGIN] HEADERS_GLYMAIDS
   #include "enums/enums_COND_glymaids.hpp"
   #include "enums/enums_POOL_glymaids.hpp"
   #include "enums/enums_KE_glymaids.hpp"
   #include "enums/enums_MOD_glymaids.hpp"
   #include "enums/enums_RC_glymaids.hpp"
-  #include "enums/enums_VEL_glymaids.hpp"
   #include "enums/enums_VARS_glymaids.hpp"
+  #include "enums/enums_VEL_glymaids.hpp"
+  // [END] HEADERS_GLYMAIDS
   
   // Specializations for get_enum_aliases
+  // [BEGIN] HEADERS_ALIASES
   #include "enums/enums_COND_aliases.hpp"
   #include "enums/enums_POOL_aliases.hpp"
   #include "enums/enums_KE_aliases.hpp"
@@ -1066,65 +1294,44 @@ namespace ePhotosynthesis {
   #include "enums/enums_RC_aliases.hpp"
   #include "enums/enums_VARS_aliases.hpp"
   #include "enums/enums_VEL_aliases.hpp"
+  // [END] HEADERS_ALIASES
   
-  // Specializations for get_enum_constant
-  #include "enums/enums_COND_constant.hpp"
-  #include "enums/enums_POOL_constant.hpp"
-  #include "enums/enums_KE_constant.hpp"
-  #include "enums/enums_MOD_constant.hpp"
-  #include "enums/enums_RC_constant.hpp"
-  #include "enums/enums_VEL_constant.hpp"
-  #include "enums/enums_VARS_constant.hpp"
+  // Specializations for get_enum_docs
+  // [BEGIN] HEADERS_DOCS
+  #include "enums/enums_COND_docs.hpp"
+  #include "enums/enums_POOL_docs.hpp"
+  #include "enums/enums_KE_docs.hpp"
+  #include "enums/enums_MOD_docs.hpp"
+  #include "enums/enums_RC_docs.hpp"
+  #include "enums/enums_VARS_docs.hpp"
+  #include "enums/enums_VEL_docs.hpp"
+  // [END] HEADERS_DOCS
   
-  // Specializations for get_enum_calculated
-  #include "enums/enums_COND_calculated.hpp"
-  #include "enums/enums_POOL_calculated.hpp"
-  #include "enums/enums_KE_calculated.hpp"
-  #include "enums/enums_MOD_calculated.hpp"
-  #include "enums/enums_RC_calculated.hpp"
-  #include "enums/enums_VEL_calculated.hpp"
-  #include "enums/enums_VARS_calculated.hpp"
+  // Specializations for get_enum_value_flags
+  // [BEGIN] HEADERS_VALUE_FLAGS
+  #include "enums/enums_COND_value_flags.hpp"
+  #include "enums/enums_POOL_value_flags.hpp"
+  #include "enums/enums_KE_value_flags.hpp"
+  #include "enums/enums_MOD_value_flags.hpp"
+  #include "enums/enums_RC_value_flags.hpp"
+  #include "enums/enums_VARS_value_flags.hpp"
+  #include "enums/enums_VEL_value_flags.hpp"
+  // [END] HEADERS_VALUE_FLAGS
   
-  // Specializations for get_enum_nonvector
-  #include "enums/enums_COND_nonvector.hpp"
-  #include "enums/enums_POOL_nonvector.hpp"
-  #include "enums/enums_KE_nonvector.hpp"
-  #include "enums/enums_MOD_nonvector.hpp"
-  #include "enums/enums_RC_nonvector.hpp"
-  #include "enums/enums_VEL_nonvector.hpp"
-  #include "enums/enums_VARS_nonvector.hpp"
-  
-  // Specializations for get_enum_skipped
-  #include "enums/enums_COND_skipped.hpp"
-  #include "enums/enums_POOL_skipped.hpp"
-  #include "enums/enums_KE_skipped.hpp"
-  #include "enums/enums_MOD_skipped.hpp"
-  #include "enums/enums_RC_skipped.hpp"
-  #include "enums/enums_VEL_skipped.hpp"
-  #include "enums/enums_VARS_skipped.hpp"
-  
-  // Specializations for get_enum_resetone
-  #include "enums/enums_COND_resetone.hpp"
-  #include "enums/enums_POOL_resetone.hpp"
-  #include "enums/enums_KE_resetone.hpp"
-  #include "enums/enums_MOD_resetone.hpp"
-  #include "enums/enums_RC_resetone.hpp"
-  #include "enums/enums_VEL_resetone.hpp"
-  #include "enums/enums_VARS_resetone.hpp"
-  
-  // Specializations for get_enum_initonce
-  #include "enums/enums_COND_initonce.hpp"
-  #include "enums/enums_POOL_initonce.hpp"
-  #include "enums/enums_KE_initonce.hpp"
-  #include "enums/enums_MOD_initonce.hpp"
-  #include "enums/enums_RC_initonce.hpp"
-  #include "enums/enums_VEL_initonce.hpp"
-  #include "enums/enums_VARS_initonce.hpp"
+  // Specializations for get_enum_static_value_flags
+  // [BEGIN] HEADERS_STATIC_VALUE_FLAGS
+  #include "enums/enums_COND_static_value_flags.hpp"
+  #include "enums/enums_POOL_static_value_flags.hpp"
+  #include "enums/enums_KE_static_value_flags.hpp"
+  #include "enums/enums_MOD_static_value_flags.hpp"
+  #include "enums/enums_RC_static_value_flags.hpp"
+  #include "enums/enums_VARS_static_value_flags.hpp"
+  #include "enums/enums_VEL_static_value_flags.hpp"
+  // [END] HEADERS_STATIC_VALUE_FLAGS
   
   
   // Utility for getting enum type from module & param_type
   #define MODULE2Enum ValueSetEnum
-  // Code after this line will be preserved
   // Utility for getting name from enum
   template<typename T>
   std::string get_enum_name(const T& k) {

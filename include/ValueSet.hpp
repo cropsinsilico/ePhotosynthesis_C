@@ -168,8 +168,8 @@ namespace ePhotosynthesis {
 #define INIT_VALUE_SET_MEMBER(name)				\
   ValueSetClass::insertOrig(EnumClass::name, &name, "INIT_VALUE_SET_MEMBER: ")
 #endif // VALUE_SET_VAL_MEMBERS
-#define COPY_VALUE_SET_MEMBER(name)		\
-  if (!isSkipped(EnumClass::name))		\
+#define COPY_VALUE_SET_MEMBER(name)                     \
+  if (!EnumBaseClass::isSkipped(EnumClass::name))       \
     name = other.name
 
   /*
@@ -599,8 +599,8 @@ namespace ePhotosynthesis {
   /** \copydoc ValueSetBase::getAliasedName */                          \
   method(getAliasedName, std::string,                                   \
          ((const std::string&, name, )), "", const)                     \
-  /** \copydoc ValueSetBase::fromNameWithAliases */			\
-  method(fromNameWithAliases, int,					\
+  /** \copydoc ValueSetBase::fromNameWithAliasesInt */			\
+  method(fromNameWithAliasesInt, int,					\
 	 ((const std::string&, name, ),                                 \
           (const bool&, isGlymaID, false)), -1, const)                  \
   /** \copydoc ValueSetBase::setDefault */				\
@@ -611,7 +611,11 @@ namespace ePhotosynthesis {
   /** \copydoc ValueSetBase::getDefault */				\
   method(getDefault, double,						\
 	 ((const std::string&, x, ),                                    \
-          (const bool&, isGlymaID, false)), 0.0, const)
+          (const bool&, isGlymaID, false)), 0.0, const)                 \
+  /** \copydoc ValueSetBase::getDocs */                                 \
+  method(getDocs, std::string,                                          \
+         ((const std::string&, x, ),                                    \
+          (const bool&, isGlymaID, false)), "", const)
 /**
    Use macro to define methods static in ValueSet & ValueSetStatic
      with duplicates
@@ -625,7 +629,10 @@ namespace ePhotosynthesis {
 	  (const bool, dontPreserve, false)), , const)                  \
   /** \copydoc ValueSetBase::getDefault */				\
   method(getDefault, double,						\
-         ((const int&, k, )), 0.0, const)
+         ((const int&, k, )), 0.0, const)                               \
+  /** \copydoc ValueSetBase::getDocs */                                 \
+  method(getDocs, std::string,                                          \
+         ((const int&, k, )), "", const)
 
 /**
    Use macros to define methods static in ValueSetStatic and not static
@@ -931,6 +938,14 @@ namespace ePhotosynthesis {
       return ValueSetEnum<ID, PT>::all[k - 1]; // NONE not in all
     }
     /**
+       Convert an enum key to an integer.
+       \param[in] k Enum key.
+       \returns Integer key.
+     */
+    static int key2int(const EnumType& k) {
+      return static_cast<int>(k);
+    }
+    /**
        Convert a map with integer keys to a map with enum keys.
        \tparam V Type of value in map.
        \param[in] map Value map with integer keys.
@@ -950,7 +965,8 @@ namespace ePhotosynthesis {
        \returns true if the key is included in arrays, false otherwise.
      */
     static bool inArrays(const EnumType k) {
-      return (!(isNonvector(k) || isSkipped(k)));
+      return (!(EnumBaseClass::isNonvector(k) ||
+                EnumBaseClass::isSkipped(k)));
     }
 
     enum VS_FLAGS : int {
@@ -1134,8 +1150,8 @@ namespace ePhotosynthesis {
                                      const std::vector<std::string>& skip_keys={},
                                      const std::map<std::string, std::string>& key_aliases={},
                                      bool show_pointers=false) {
-      if ((!includeSkipped) && (isSkipped(key) ||
-                                isConstant(key)))
+      if ((!includeSkipped) && (EnumBaseClass::isSkipped(key) ||
+                                EnumBaseClass::isConstant(key)))
         return out;
       const std::string space = getTabs(tab);
       std::string iname;
@@ -1456,11 +1472,13 @@ namespace ePhotosynthesis {
     template<typename V>
     static void remove_skipped(std::map<EnumType, V>& vals,
 			       const std::string& context="") {
-      for (typename std::vector<EnumType>::const_iterator s = skipped.begin();
-	   s != skipped.end(); s++) {
-	typename std::map<EnumType, V>::iterator it = vals.find(*s);
+      for (typename std::map<EnumType, int>::const_iterator s = EnumBaseClass::value_flags.begin();
+           s != EnumBaseClass::value_flags.end(); s++) {
+        if (!(s->second & VALUE_FLAG_SKIPPED))
+          continue;
+	typename std::map<EnumType, V>::iterator it = vals.find(s->first);
 	if (it != vals.end()) {
-	  DEBUG_VALUE_SET(context, "erasing ", *s);
+	  DEBUG_VALUE_SET(context, "erasing ", s->first);
 	  vals.erase(it);
 	}
       }
@@ -1590,7 +1608,6 @@ namespace ePhotosynthesis {
       }
       return true;
     }
-#ifndef EPHOTO_USE_SCOPED_ENUM
     /**
        Check for equality between two value maps with integer keys.
        \tparam VDst Destination value type.
@@ -1607,7 +1624,6 @@ namespace ePhotosynthesis {
       std::map<EnumType, VSrc> kvalsSrc = int2key(valsSrc);
       return compare_value_maps(kvalsDst, kvalsSrc, context);
     }
-#endif // EPHOTO_USE_SCOPED_ENUM
     /**
        Compare two values maps, throwing an error if the keys do not
          match, valsSrc contains a constant value that is different than
@@ -1639,12 +1655,14 @@ namespace ePhotosynthesis {
 	  ERROR_VALUE_SET(context, getName(itSrc->first),
 			  " is not present in the destination");
 	}
-	if ((!ignore_constants) && isConstant(itSrc->first) &&
+	if ((!ignore_constants) &&
+            EnumBaseClass::isConstant(itSrc->first) &&
 	    (!valuesEqual(itDst->second, itSrc->second))) {
 	  std::string oldval = valueString(itDst->second);
 	  std::string newval = valueString(itSrc->second);
-	  checkNotConstant(itSrc->first, context +
-			   "[" + oldval + ", " + newval + "]: ");
+          EnumBaseClass::checkNotConstant(itSrc->first, context +
+                                          "[" + oldval + ", " + newval +
+                                          "]: ");
 	}
       }
       if (valsDst.size() != valsSrc.size()) {
@@ -1700,8 +1718,8 @@ namespace ePhotosynthesis {
 	  ERROR_VALUE_SET(context, getName(itSrc->first),
 			  " is not present in the destination");
 	}
-	if (((!ignore_skipped) && isSkipped(itSrc->first)) ||
-	    ((!ignore_initonce) && isInitonce(itSrc->first))) {
+	if (((!ignore_skipped) && EnumBaseClass::isSkipped(itSrc->first)) ||
+	    ((!ignore_initonce) && EnumBaseClass::isInitonce(itSrc->first))) {
 	  continue;
 	}
 #ifdef VERBOSE_VALUE_SET_DEBUG
@@ -1809,7 +1827,7 @@ namespace ePhotosynthesis {
       std::map<int, double> out;
       for (typename std::map<EnumType, V>::const_iterator it = vals.begin();
 	   it != vals.end(); it++) {
-	out[it->first] = valueGet(it->second);
+	out[key2int(it->first)] = valueGet(it->second);
       }
       return out;
     }
@@ -2001,6 +2019,17 @@ namespace ePhotosynthesis {
       }
     }
     /**
+       Get the enum key corresponding to a name value also checking for
+         aliases cast to an int.
+       \param[in] name Value to get key for
+       \param[in] isGlymaID If true, name is a GlymaID.
+       \return Key as int
+    */
+    static int fromNameWithAliasesInt(const std::string& name,
+                                      bool isGlymaID = false) {
+      return static_cast<int>(fromNameWithAliases(name, isGlymaID));
+    }
+    /**
        Check if a string names a member of the value set.
        \param name Key to check for.
        \param[in] isGlymaID If true, name is a GlymaID.
@@ -2062,7 +2091,6 @@ namespace ePhotosynthesis {
 	return setDefault(fromGlymaid(k), v, dontPreserve);
       return setDefault(fromNameWithAliases(k), v, dontPreserve);
     }
-#ifndef EPHOTO_USE_SCOPED_ENUM
     /**
        Set the default value corresponding to an enum key
        \param[in] k Key to set value for.
@@ -2074,7 +2102,6 @@ namespace ePhotosynthesis {
 			   const bool dontPreserve = false) {
       return setDefault(int2key(k), v, dontPreserve);
     }
-#endif // EPHOTO_USE_SCOPED_ENUM
     /**
       Get the default value corresponding to an enum key
       \param[in] x Key to get value for
@@ -2102,7 +2129,6 @@ namespace ePhotosynthesis {
 	return getDefault(fromGlymaid(x));
       return getDefault(fromNameWithAliases(x));
     }
-#ifndef EPHOTO_USE_SCOPED_ENUM
     /**
       Get the default value corresponding to an enum key
       \param[in] k Key to get value for
@@ -2111,7 +2137,6 @@ namespace ePhotosynthesis {
     static double getDefault(const int& k) {
       return getDefault(int2key(k));
     }
-#endif // EPHOTO_USE_SCOPED_ENUM
     /**
       Get the default value corresponding to an enum key
       \param[in] x Key to get value for
@@ -2126,6 +2151,26 @@ namespace ePhotosynthesis {
         return defaultV;
       }
       return it->second;
+    }
+    /**
+       Get the docs associated with a key.
+       \param name String representation of key to get value for.
+       \param[in] isGlymaID If true, k is a GlymaID.
+       \returns Documentation string.
+     */
+    static std::string getDocs(const std::string& name,
+                               const bool& isGlymaID = false) {
+      if (isGlymaID)
+	return EnumBaseClass::getDocs(fromGlymaid(name), "");
+      return EnumBaseClass::getDocs(fromNameWithAliases(name), "");
+    }
+    /**
+       Get the docs associated with a key.
+       \param k Key to get value for.
+       \returns Documentation string.
+     */
+    static std::string getDocs(const int& k) {
+      return EnumBaseClass::getDocs(BaseClass::int2key(k), "");
     }
     /**
        Get the reference for the value associated with a key from a value
@@ -2197,7 +2242,7 @@ namespace ePhotosynthesis {
       }
       DEBUG_VALUE_SET_RAW(" -> ", v);
 #endif // VERBOSE_VALUE_SET_DEBUG
-      checkNotConstant(k, context);
+      EnumBaseClass::checkNotConstant(k, context);
       vals[k] = v;
 #ifdef VERBOSE_VALUE_SET_DEBUG
       DEBUG_VALUE_SET_END(" [AFTER = ", vals[k], "]");
@@ -2253,7 +2298,7 @@ namespace ePhotosynthesis {
     static double*& get_value_orig(std::map<EnumType, double*>& vals,
 				   const EnumType k,
 				   const std::string& context="[]: ") {
-      checkNotConstant(k, context);
+      EnumBaseClass::checkNotConstant(k, context);
       check_value_map(vals, k, context);
       DEBUG_VALUE_SET(context, k);
       return vals.find(k)->second;
@@ -2271,7 +2316,7 @@ namespace ePhotosynthesis {
 				  const std::string& context="") {
       if (vals.find(k) == vals.end()) {
 	vals.emplace(k, &(v[0]));
-	if (isInitonce(k)) {
+	if (EnumBaseClass::isInitonce(k)) {
 	  // TODO: this check may not be necessary if the init once
 	  //   variables are reinitialized after a reset
 	  compareValues(k, EnumBaseClass::defaults.find(k)->second,
@@ -2305,8 +2350,8 @@ namespace ePhotosynthesis {
       DEBUG_VALUE_SET_NOARGS;
       for (typename std::map<EnumType, V>::iterator it = vals.begin();
 	   it != vals.end(); it++) {
-	if (!isConstant(it->first)) {
-	  if (isResetone(it->first)) {
+	if (!EnumBaseClass::isConstant(it->first)) {
+	  if (EnumBaseClass::isResetone(it->first)) {
 	    set_value(vals, it->first, 1.0, "reset_value_map: ");
 	  } else {
 	    set_value(vals, it->first, 0.0, "reset_value_map: ");
@@ -2329,7 +2374,7 @@ namespace ePhotosynthesis {
       for (typename std::map<EnumType, V>::const_iterator it = vals.begin();
 	   it != vals.end(); it++) {
 	if (inArrays(it->first)) {
-	  checkNotConstant(it->first);
+          EnumBaseClass::checkNotConstant(it->first);
 	  out[i] = get_value_const(vals, it->first,
 				   "value_map_toArray: ");
 	  i++;
@@ -2362,7 +2407,7 @@ namespace ePhotosynthesis {
       for (typename std::map<EnumType, V>::iterator it = vals.begin();
 	   it != vals.end(); it++) {
 	if (inArrays(it->first)) {
-	  // checkNotConstant(it->first, "value_map_fromArray: ");
+	  // EnumBaseClass::checkNotConstant(it->first, "value_map_fromArray: ");
 	  set_value(vals, it->first, vec[offset + i],
 		    "value_map_fromArray: ");
 	  i++;
@@ -2375,7 +2420,7 @@ namespace ePhotosynthesis {
        \return Member counts.
      */
     static std::size_t memberCount(const bool noChildren = false) {
-      std::size_t out = EnumBaseClass::defaults.size() - (skipped.size() + nonvector.size());
+      std::size_t out = EnumBaseClass::defaults.size() - (EnumBaseClass::countSkipped() + EnumBaseClass::countNonvector());
 #define DO_CHILD(child, dummy) out += child->memberCount()
       DO_VALUE_SET_CHILD_CLASSES_MACRO(DO_CHILD, const_iterator, );
 #undef DO_CHILD
@@ -2390,8 +2435,8 @@ namespace ePhotosynthesis {
       std::string out = error_prefix() +
 	", NCHILD = " + std::to_string(child_classes.size()) +
 	", COUNT = " + std::to_string(memberCount()) +
-	", SKIPPED = " + stringSkipped() +
-	", NONVECT = " + stringNonvector();
+	", SKIPPED = " + EnumBaseClass::stringSkipped() +
+	", NONVECT = " + EnumBaseClass::stringNonvector();
       if (noChildren)
 	return out;
       for (std::vector<ValueSetClassWrapper>::const_iterator it = child_classes.begin();
@@ -2508,7 +2553,7 @@ namespace ePhotosynthesis {
      */
     static void reset(const bool noChildren = false) {
       int flags0 = static_flags;
-      clearSkipped();
+      EnumBaseClass::clearSkipped();
       T::_reset(noChildren);
       static_flags = 0;
       if (flags0 & VS_FLAG_INIT_CHILDREN)
@@ -3126,7 +3171,6 @@ namespace ePhotosynthesis {
 	return set(fromGlymaid(name), v);
       return set(fromNameWithAliases(name), v);
     }
-#ifndef EPHOTO_USE_SCOPED_ENUM
     /**
        Update the value associated with a key.
        \param k Key to update value for.
@@ -3135,7 +3179,6 @@ namespace ePhotosynthesis {
     void set(const int& k, const double& v) override {
       return set(BaseClass::int2key(k), v);
     }
-#endif // EPHOTO_USE_SCOPED_ENUM
     /**
        Update the value associated with a key in the value set from a map
          containing enzyme activity values.
@@ -3177,7 +3220,6 @@ namespace ePhotosynthesis {
 	return get(fromGlymaid(name));
       return get(fromNameWithAliases(name));
     }
-#ifndef EPHOTO_USE_SCOPED_ENUM
     /**
        Get the value associated with a key.
        \param k Key to get value for.
@@ -3186,7 +3228,6 @@ namespace ePhotosynthesis {
     double get(const int& k) const override {
       return get(BaseClass::int2key(k));
     }
-#endif // EPHOTO_USE_SCOPED_ENUM
     /**
        Add a value reference for the given key.
        \param k Key to update value for.
@@ -3816,7 +3857,6 @@ namespace ePhotosynthesis {
     namespace ePhotosynthesis {						\
     namespace namespc {					                \
       DECLARE_PARAM_BASE_CLASS(name, pt);				\
-      DECLARE_PARAM_DUMMIES(name, __VA_ARGS__);				\
     }									\
     }
 #define DECLARE_PARAM_BASE(namespc, name, pt, dummies)			\

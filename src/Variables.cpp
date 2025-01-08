@@ -600,7 +600,7 @@ bool Variables::hasVar(const std::string& k,
 int Variables::getKey(const MODULE& mod, const PARAM_TYPE& pt,
 		      const std::string& name,
 		      const bool& isGlymaID) {
-    return GET_VALUE_SET_CLASS(mod, pt)->fromNameWithAliases(name, isGlymaID);
+    return GET_VALUE_SET_CLASS(mod, pt)->fromNameWithAliasesInt(name, isGlymaID);
 }
 double Variables::getDefault(const MODULE& mod, const PARAM_TYPE& pt,
                              const std::string& name,
@@ -676,6 +676,25 @@ double Variables::getVar(const std::string& k,
     PARAM_TYPE pt = PARAM_TYPE_NONE;
     name = parseVar(k, mod, pt, isGlymaID);
     return getVar(mod, pt, name, isGlymaID);
+}
+std::string Variables::getDocs(const MODULE& module,
+                               const PARAM_TYPE& param_type,
+                               const std::string& name,
+                               const bool& isGlymaID) {
+    return GET_VALUE_SET_CLASS(module, param_type)->getDocs(name, isGlymaID);
+}
+std::string Variables::getDocs(const MODULE& module,
+                               const PARAM_TYPE& param_type,
+                               const int& key) {
+    return GET_VALUE_SET_CLASS(module, param_type)->getDocs(key);
+}
+std::string Variables::getDocs(const std::string& k,
+                               const bool& isGlymaID) {
+    std::string name;
+    MODULE mod = MODULE_NONE;
+    PARAM_TYPE pt = PARAM_TYPE_NONE;
+    name = parseVar(k, mod, pt, isGlymaID);
+    return getDocs(mod, pt, name, isGlymaID);
 }
 std::vector<PARAM_TYPE> Variables::getParamTypes(const MODULE& mod,
 						 const bool for_instance,

@@ -22,22 +22,13 @@ template<>
 const std::map<std::string, ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::aliases = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::constant = {
+const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::docs = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::calculated = {
+std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::value_flags = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::nonvector = {
-};
-template<> 
-std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::skipped = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::resetone = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::initonce = {
+const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::static_value_flags = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::all = {};
@@ -57,22 +48,13 @@ template<>
 const std::map<std::string, ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::aliases = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::constant = {
+const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::docs = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::calculated = {
+std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::value_flags = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::nonvector = {
-};
-template<> 
-std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::skipped = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::resetone = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::initonce = {
+const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::static_value_flags = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::all = {};
@@ -92,22 +74,13 @@ template<>
 const std::map<std::string, ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::aliases = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::constant = {
+const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::docs = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::calculated = {
+std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::value_flags = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::nonvector = {
-};
-template<> 
-std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::skipped = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::resetone = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::initonce = {
+const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::static_value_flags = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::all = {};
@@ -127,22 +100,13 @@ template<>
 const std::map<std::string, ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::aliases = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::constant = {
+const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::docs = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::calculated = {
+std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::value_flags = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::nonvector = {
-};
-template<> 
-std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::skipped = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::resetone = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::initonce = {
+const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::static_value_flags = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::all = {};
@@ -162,22 +126,13 @@ template<>
 const std::map<std::string, ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::aliases = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::constant = {
+const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::docs = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::calculated = {
+std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::value_flags = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::nonvector = {
-};
-template<> 
-std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::skipped = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::resetone = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::initonce = {
+const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::static_value_flags = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::all = {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2FBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2SBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2PRK, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2RuACT, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2GAPDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2MDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPGPP, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEeFd2Thio};
@@ -185,11 +140,11 @@ template<>
 const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::names = {
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2FBPase, "KEe2FBPase"},
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2SBPase, "KEe2SBPase"},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2PRK, "KEe2PRK"   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2PRK   , "KEe2PRK"   },
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPase, "KEe2ATPase"},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2RuACT, "KEe2RuACT" },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2GAPDH, "KEe2GAPDH" },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2MDH, "KEe2MDH"   },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2RuACT , "KEe2RuACT" },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2GAPDH , "KEe2GAPDH" },
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2MDH   , "KEe2MDH"   },
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPGPP, "KEe2ATPGPP"},
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEeFd2Thio, "KEeFd2Thio"},
 };
@@ -197,11 +152,11 @@ template<>
 const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::defaults = {
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2FBPase, 0.311167869},
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2SBPase, 0.459194309},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2PRK, 0.677638775},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2PRK   , 0.677638775},
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPase, 1.0        },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2RuACT, 0.677638775},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2GAPDH, 0.044461692},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2MDH, 0.044461692},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2RuACT , 0.677638775},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2GAPDH , 0.044461692},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2MDH   , 0.044461692},
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPGPP, 1.0        },
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEeFd2Thio, 24776.0    },
 };
@@ -209,11 +164,11 @@ template<>
 const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::defaults_C3 = {
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2FBPase, 0.311167869},
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2SBPase, 0.459194309},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2PRK, 0.677638775},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2PRK   , 0.677638775},
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPase, 1.0        },
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2RuACT, 0.677638775},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2GAPDH, 0.044461692},
-  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2MDH, 0.044461692},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2RuACT , 0.677638775},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2GAPDH , 0.044461692},
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2MDH   , 0.044461692},
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPGPP, 1.0        },
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEeFd2Thio, 24776.0    },
 };
@@ -224,23 +179,15 @@ template<>
 const std::map<std::string, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::aliases = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::constant = {
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPase,
+const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::docs = {
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPase, "[CONST] 2.177727336 was set in code, but not used"},
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::calculated = {
+std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::value_flags = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::nonvector = {
-};
-template<> 
-std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::skipped = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::resetone = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::initonce = {
+const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::static_value_flags = {
+  {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPase, (STATIC_VALUE_FLAG_CONST)},
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::all = {};
@@ -260,22 +207,13 @@ template<>
 const std::map<std::string, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::aliases = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::constant = {
+const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::docs = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::calculated = {
+std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::value_flags = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::nonvector = {
-};
-template<> 
-std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::skipped = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::resetone = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::initonce = {
+const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::static_value_flags = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::all = {};
@@ -295,22 +233,13 @@ template<>
 const std::map<std::string, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::aliases = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::constant = {
+const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::docs = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::calculated = {
+std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::value_flags = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::nonvector = {
-};
-template<> 
-std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::skipped = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::resetone = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::initonce = {
+const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::static_value_flags = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::all = {};
@@ -330,22 +259,13 @@ template<>
 const std::map<std::string, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::aliases = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::constant = {
+const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::docs = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::calculated = {
+std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::value_flags = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::nonvector = {
-};
-template<> 
-std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::skipped = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::resetone = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::initonce = {
+const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::static_value_flags = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::all = {};
@@ -365,22 +285,13 @@ template<>
 const std::map<std::string, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::aliases = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::constant = {
+const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::docs = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::calculated = {
+std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::value_flags = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::nonvector = {
-};
-template<> 
-std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::skipped = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::resetone = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::initonce = {
+const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::static_value_flags = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::all = {};
@@ -400,22 +311,13 @@ template<>
 const std::map<std::string, ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::aliases = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::constant = {
+const std::map<ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::docs = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::calculated = {
+std::map<ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::value_flags = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::nonvector = {
-};
-template<> 
-std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::skipped = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::resetone = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::initonce = {
+const std::map<ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::static_value_flags = {
 };
 
 template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::all = {};
@@ -435,21 +337,12 @@ template<>
 const std::map<std::string, ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::aliases = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::constant = {
+const std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::docs = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::calculated = {
+std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::value_flags = {
 };
 template<> 
-const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::nonvector = {
-};
-template<> 
-std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::skipped = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::resetone = {
-};
-template<> 
-const std::vector<ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::initonce = {
+const std::map<ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::static_value_flags = {
 };
 

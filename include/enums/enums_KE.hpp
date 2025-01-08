@@ -2,462 +2,525 @@
 // modified directly
 #pragma once
 
+#include "enums/enums_helpers.hpp"
+
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_BF_KE : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_BF, PARAM_TYPE_KE> {
-  typedef ENUM_BF_KE type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_BF_KE& x) {
+  out << ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_BF_KE, T>& x) {
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_BF_KE>& x) {
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type : int {
-    NONE   ,
-    MAX    ,
+  MEMBERS_BFKE
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_BFKE		\
-    NONE   ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::static_value_flags;
 
 namespace KE {
   typedef ValueSetEnum<MODULE_BF, PARAM_TYPE_KE> BF;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_FIBF_KE : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_FIBF, PARAM_TYPE_KE> {
-  typedef ENUM_FIBF_KE type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_KE& x) {
+  out << ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_FIBF_KE, T>& x) {
+  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_FIBF_KE>& x) {
+  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type : int {
-    NONE   ,
-    MAX    ,
+  MEMBERS_FIBFKE
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_FIBFKE		\
-    NONE   ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::static_value_flags;
 
 namespace KE {
   typedef ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE> FIBF;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_FI_KE : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_FI, PARAM_TYPE_KE> {
-  typedef ENUM_FI_KE type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_FI_KE& x) {
+  out << ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_FI_KE, T>& x) {
+  ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_FI_KE>& x) {
+  ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type : int {
-    NONE   ,
-    MAX    ,
+  MEMBERS_FIKE
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_FIKE		\
-    NONE   ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::static_value_flags;
 
 namespace KE {
   typedef ValueSetEnum<MODULE_FI, PARAM_TYPE_KE> FI;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PR_KE : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_PR, PARAM_TYPE_KE> {
-  typedef ENUM_PR_KE type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_PR_KE& x) {
+  out << ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_PR_KE, T>& x) {
+  ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_PR_KE>& x) {
+  ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type : int {
-    NONE   ,
-    MAX    ,
+  MEMBERS_PRKE
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_PRKE		\
-    NONE   ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::static_value_flags;
 
 namespace KE {
   typedef ValueSetEnum<MODULE_PR, PARAM_TYPE_KE> PR;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PS_KE : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_PS, PARAM_TYPE_KE> {
-  typedef ENUM_PS_KE type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_PS_KE& x) {
+  out << ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_PS_KE, T>& x) {
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_PS_KE>& x) {
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type : int {
-    NONE   ,
-    MAX    ,
+  MEMBERS_PSKE
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_PSKE		\
-    NONE   ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::static_value_flags;
 
 namespace KE {
   typedef ValueSetEnum<MODULE_PS, PARAM_TYPE_KE> PS;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RROEA_KE : int {
-    NONE           ,
-    KEe2FBPase     ,
-    KEe2SBPase     ,
-    KEe2PRK        ,
-    KEe2ATPase     ,  //!< [CONST] 2.177727336 was set in code, but not used
-    KEe2RuACT      ,
-    KEe2GAPDH      ,
-    KEe2MDH        ,
-    KEe2ATPGPP     ,
-    KEeFd2Thio     ,
-    MAX            ,
-};
-template<>
-struct enum_helper<MODULE_RROEA, PARAM_TYPE_KE> {
-  typedef ENUM_RROEA_KE type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_KE& x) {
+  out << ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RROEA_KE, T>& x) {
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RROEA_KE>& x) {
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type : int {
-    NONE           ,
-    KEe2FBPase     ,
-    KEe2SBPase     ,
-    KEe2PRK        ,
-    KEe2ATPase     ,  //!< [CONST] 2.177727336 was set in code, but not used
-    KEe2RuACT      ,
-    KEe2GAPDH      ,
-    KEe2MDH        ,
-    KEe2ATPGPP     ,
-    KEeFd2Thio     ,
-    MAX            ,
+  MEMBERS_RROEAKE
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_RROEAKE		\
-    NONE           ,		\
-    KEe2FBPase     ,		\
-    KEe2SBPase     ,		\
-    KEe2PRK        ,		\
-    KEe2ATPase     ,		\
-    KEe2RuACT      ,		\
-    KEe2GAPDH      ,		\
-    KEe2MDH        ,		\
-    KEe2ATPGPP     ,		\
-    KEeFd2Thio     ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::static_value_flags;
 
 namespace KE {
   typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE> RROEA;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RedoxReg_KE : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_RedoxReg, PARAM_TYPE_KE> {
-  typedef ENUM_RedoxReg_KE type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_KE& x) {
+  out << ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RedoxReg_KE, T>& x) {
+  ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RedoxReg_KE>& x) {
+  ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type : int {
-    NONE   ,
-    MAX    ,
+  MEMBERS_RedoxRegKE
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_RedoxRegKE		\
-    NONE   ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::static_value_flags;
 
 namespace KE {
   typedef ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE> RedoxReg;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RuACT_KE : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_RuACT, PARAM_TYPE_KE> {
-  typedef ENUM_RuACT_KE type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_KE& x) {
+  out << ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RuACT_KE, T>& x) {
+  ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RuACT_KE>& x) {
+  ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type : int {
-    NONE   ,
-    MAX    ,
+  MEMBERS_RuACTKE
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_RuACTKE		\
-    NONE   ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::static_value_flags;
 
 namespace KE {
   typedef ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE> RuACT;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_SUCS_KE : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_SUCS, PARAM_TYPE_KE> {
-  typedef ENUM_SUCS_KE type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_KE& x) {
+  out << ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_SUCS_KE, T>& x) {
+  ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_SUCS_KE>& x) {
+  ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type : int {
-    NONE   ,
-    MAX    ,
+  MEMBERS_SUCSKE
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_SUCSKE		\
-    NONE   ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::static_value_flags;
 
 namespace KE {
   typedef ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE> SUCS;
 }
 
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_XanCycle_KE : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_XanCycle, PARAM_TYPE_KE> {
-  typedef ENUM_XanCycle_KE type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_KE& x) {
+  out << ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_XanCycle_KE, T>& x) {
+  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_XanCycle_KE>& x) {
+  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type : int {
-    NONE   ,
-    MAX    ,
+  MEMBERS_XanCycleKE
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_XanCycleKE		\
-    NONE   ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::static_value_flags;
 
 namespace KE {
   typedef ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE> XanCycle;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_NONE_KE : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_NONE, PARAM_TYPE_KE> {
-  typedef ENUM_NONE_KE type;
-};
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type : int {
-    NONE   ,
-    MAX    ,
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_NONEKE		\
-    NONE   ,		\
-    MAX
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE>::initonce;
-
-namespace KE {
-  typedef ValueSetEnum<MODULE_NONE, PARAM_TYPE_KE> NONE;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_MAX_KE : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_MAX, PARAM_TYPE_KE> {
-  typedef ENUM_MAX_KE type;
-};
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type : int {
-    NONE   ,
-    MAX    ,
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_MAXKE		\
-    NONE   ,		\
-    MAX
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE>::initonce;
-
-namespace KE {
-  typedef ValueSetEnum<MODULE_MAX, PARAM_TYPE_KE> MAX;
 }
 

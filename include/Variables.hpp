@@ -515,6 +515,40 @@ public:
      */
     double getVar(const std::string& k,
 		  const bool& isGlymaID = false) const;
+    /**
+       Get the documentation string for a variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] name String identifying the variable.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
+       \returns Variable doc string.
+     */
+    static std::string getDocs(const MODULE& mod, const PARAM_TYPE& pt,
+                               const std::string& name,
+                               const bool& isGlymaID = false);
+    /**
+       Get the documentation string for a variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] key Key identifying the variable.
+       \returns Variable doc string.
+     */
+    static std::string getDocs(const MODULE& mod, const PARAM_TYPE& pt,
+                               const int& key);
+    /**
+       Get the documentation string for a variable in a value set.
+       \param[in] k String identifying the variable.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
+       \returns Variable doc string.
+     */
+    static std::string getDocs(const std::string& k,
+                               const bool& isGlymaID = false);
 
     /**
        Get the set of parameters types for a module.

@@ -181,6 +181,7 @@ set(ENUM_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/utils/generate_enum.py)
 
 # The last suffix must have a complete set of modules for the global
 # enum to be generated correctly
+set(ENUM_EXCLUDE_EMPTY 1)
 foreach(suffix COND POOL KE MOD RC VARS VEL)
   set(fsuffix ${suffix})
   set(ENUM_SRC_REGEX ${CMAKE_CURRENT_SOURCE_DIR}/param/*_${fsuffix}.txt)
@@ -205,9 +206,8 @@ foreach(suffix COND POOL KE MOD RC VARS VEL)
   else()
     list(APPEND iARGS --macro-suffix-c=${suffix})
   endif()
-  foreach(ftype names defaults defaults_C3
-          constant calculated nonvector skipped glymaids resetone
-	  initonce aliases)
+  foreach(ftype names defaults defaults_C3 glymaids aliases docs
+          value_flags static_value_flags)
     if(ftype STREQUAL "defaults_C3")
       set(ftype_key "alternate-values")
       list(APPEND iARGS --collection-name-${ftype_key}=${ftype}
@@ -215,22 +215,39 @@ foreach(suffix COND POOL KE MOD RC VARS VEL)
     elseif(ftype STREQUAL "defaults")
       set(ftype_key "values")
       list(APPEND iARGS --collection-name-${ftype_key}=${ftype})
+    elseif(ftype STREQUAL "static_value_flags")
+      set(ftype_key "static-value-flags")
+    elseif(ftype STREQUAL "value_flags")
+      set(ftype_key "value-flags")
     else()
       set(ftype_key ${ftype})
     endif()
     if(ftype STREQUAL skipped)
       list(APPEND iARGS --is-editable-${ftype_key})
+    elseif(ftype STREQUAL value_flags)
+      list(APPEND iARGS --is-editable-${ftype_key}
+           --explicit-${ftype_key})
+    elseif(ftype STREQUAL static_value_flags)
+      list(APPEND iARGS --explicit-${ftype_key})
     elseif(ftype STREQUAL aliases)
       list(APPEND iARGS --reversed-${ftype_key}
            --explicit-${ftype_key}
 	   --singular-collection-name-${ftype_key}=alias)
     elseif(ftype STREQUAL glymaids)
       list(APPEND iARGS --explicit-${ftype_key})
+    elseif(ftype STREQUAL docs)
+      list(APPEND iARGS --explicit-${ftype_key}
+           --singular-collection-name-${ftype_key}=docs)
     endif()
     set(ENUM_${ftype} ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_${ftype}.cpp)
     set(ENUM_${ftype}_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_${ftype}.hpp)
-    list(APPEND iBYPRODUCTS ${ENUM_${ftype}_H} ${ENUM_${ftype}})
-    list(APPEND iGENERATED_SOURCES ${ENUM_${ftype}})
+    if(ENUM_EXCLUDE_EMPTY)
+      list(APPEND iBYPRODUCTS ${ENUM_${ftype}_H})
+      list(APPEND iARGS --expect-empty-${ftype_key})
+    else()
+      list(APPEND iBYPRODUCTS ${ENUM_${ftype}_H} ${ENUM_${ftype}})
+      list(APPEND iGENERATED_SOURCES ${ENUM_${ftype}})
+    endif()
     list(APPEND iARGS
       --dst-${ftype_key}=${ENUM_${ftype}}
       --dst-${ftype_key}-header=${ENUM_${ftype}_H}
@@ -239,19 +256,21 @@ foreach(suffix COND POOL KE MOD RC VARS VEL)
 
   set(ENUM_UTILS ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_utils.hpp)
   set(ENUM_GLOBAL ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums.hpp)
-  set(ENUM_MAP ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_names.cpp)
-  set(ENUM_MAP_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_names.hpp)
-  set(ENUM_VAL ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_defaults.cpp)
-  set(ENUM_VAL_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_defaults.hpp)
-  set(ENUM_ALT ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_defaults_C3.cpp)
-  set(ENUM_ALT_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_defaults_C3.hpp)
+  set(ENUM_HELPER ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_helpers.hpp)
+  # set(ENUM_MAP ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_names.cpp)
+  # set(ENUM_MAP_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_names.hpp)
+  # set(ENUM_VAL ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_defaults.cpp)
+  # set(ENUM_VAL_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_defaults.hpp)
+  # set(ENUM_ALT ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_defaults_C3.cpp)
+  # set(ENUM_ALT_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_defaults_C3.hpp)
   set(ENUM_DST ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}.cpp)
   set(ENUM_DST_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}.hpp)
   add_custom_target(
     generate_enum_${fsuffix}
     COMMAND python ${ENUM_SCRIPT}
     "${ENUM_SRC_REGEX}" --src-regex --dst-type=c --dst=${ENUM_DST_H}
-    --dst-c-source=${ENUM_DST} --include-file-c-source=${ENUM_GLOBAL}
+    --dst-c-source=${ENUM_DST} --dst-helper=${ENUM_HELPER}
+    --include-file-c-source=${ENUM_GLOBAL}
     --namespace-c-source=ePhotosynthesis
     --dst-global=${ENUM_GLOBAL} ${APPEND_GLOBAL_ARGS}
     --enum-name-global=MODULE --strip-suffix-global=_${suffix}
@@ -259,12 +278,14 @@ foreach(suffix COND POOL KE MOD RC VARS VEL)
     --as-class-c=ValueSetEnum
     --namespace-global=ePhotosynthesis
     --overwrite ${iARGS} # --verbose
-    BYPRODUCTS ${ENUM_DST_H} ${ENUM_DST} ${ENUM_GLOBAL} ${iBYPRODUCTS}
+    BYPRODUCTS ${ENUM_DST_H} ${ENUM_DST} ${ENUM_GLOBAL} ${ENUM_HELPER} ${iBYPRODUCTS}
     DEPENDS ${ENUM_SRC} ${ENUM_SCRIPT} ${LAST_SUFFIX_PROCESSED}
   )
   list(APPEND GENERATED_SOURCES ${ENUM_DST} ${iGENERATED_SOURCES})
-  set(APPEND_GLOBAL_ARGS --append-global=preserved)
-  set(LAST_SUFFIX_PROCESSED ${ENUM_VAL})
+  set(APPEND_GLOBAL_ARGS
+      --append-global=preserved
+      --append-helper=direct)
+  set(LAST_SUFFIX_PROCESSED ${ENUM_DST})
 endforeach()
 
 

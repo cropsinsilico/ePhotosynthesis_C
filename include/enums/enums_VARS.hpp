@@ -2,195 +2,57 @@
 // modified directly
 #pragma once
 
+#include "enums/enums_helpers.hpp"
+
 #ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_ALL_VARS : int {
-    NONE                  ,
-    AVR                   ,  //!< [CONST] The conversion factor between volume and area (micromole per meter square per second and milimole per liter per second).
-    HPR                   ,  //!< [CONST]
-    O2                    ,  //!< [CONST] Seems to be unused currently
-    CO2_cond              ,  //!< [CALC] Intercellular CO2 in umoles m^{-3}, calculated from air CO2 (CO2_in)
-    GLight                ,
-    O2_cond               ,
-    PS12ratio             ,  //!< [CALC] Calcualted from input_PSI & input_PSIIcore in SYSInitial
-    ADP                   ,
-    Pi                    ,  //!< [CALC] Pi used when useC3 is true and EPS module selected
-    TestATPCost           ,  //!< [ALIASES={ATPCost}] Extra ATP cost when useC3 is false (in units per area)
-    CO2_in                ,  //!< [CALC,ALIASES={CO2,Air_CO2}] Air CO2 concentration in ppm
-    TestLi_Wps            ,  //!< [CALC] Light intensity (in units of W s^{-1})
-    TestLi                ,  //!< [CALC,ALIASES={PAR,Radiation_PAR}] Light intensity (in units of umoles m^{-2} s^{-1})
-    PS2BF_Pi              ,  //!< Pi Shared by PS & BF modules when useC3 is false and EPS module is selected
-    PS_PR_Param           ,  //!< Seems to unused currently
-    Tp                    ,  //!< [ALIASES={Temp,WeatherTemperature}] Temperature
-    alfa                  ,  //!< [CONST] Used for scaling light (*= alpha * (1 - fc))
-    fc                    ,  //!< [CONST] Used for scaling light (*= alpha * (1 - fc))
-    lightParam            ,  //!< [CALC]
-    alpha1                ,  //!< [CONST] originally 1.205 in C++ code, 1 for Matlab equivalent
-    alpha2                ,  //!< [CONST] originally 2.06 in C++ code, 1 for Matlab equivalent
-    input_LHCI            ,  //!< [CONST] Used to set FIBF::ChlPSI in SYSInitial
-    input_LHCII           ,  //!< [CONST] Used to set FIBF::ChlT in SYSInitial
-    input_PSI             ,  //!< [CONST] Used to set FIBF::ChlPSI & PS12ratio in SYSInitial
-    input_PSIIcore        ,  //!< [CONST] Used to set FIBF::ChlT2, FIBF::ChlT & PS12ratio in SYSInitial
-    PSIIantennaSize       ,  //!< [CONST] Used to set FIBF::ChlT2 & FIBF::ChlT in SYSInitial
-    PSIantennaSize        ,  //!< [CONST] Used to set FIBF::ChlPSI in SYSInitial
-    ProteinTotalRatio     ,  //!< [CONST] Scaling factor for CM GRN expression levels
-    MAX                   ,
-};
-template<>
-struct enum_helper<MODULE_ALL, PARAM_TYPE_VARS> {
-  typedef ENUM_ALL_VARS type;
-};
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const ENUM_ALL_VARS& x) {
+  out << ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::getName(x);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+template<typename T>
+std::ostream& operator<<(std::ostream& out, const std::map<ENUM_ALL_VARS, T>& x) {
+  ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::print_map(x, out);
+  return out;
+}
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_ALL_VARS>& x) {
+  ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::print_vector(x, out);
+  return out;
+}
 #else // EPHOTO_USE_SCOPED_ENUM
 template<>
 enum ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type : int {
-    NONE                  ,
-    AVR                   ,  //!< [CONST] The conversion factor between volume and area (micromole per meter square per second and milimole per liter per second).
-    HPR                   ,  //!< [CONST]
-    O2                    ,  //!< [CONST] Seems to be unused currently
-    CO2_cond              ,  //!< [CALC] Intercellular CO2 in umoles m^{-3}, calculated from air CO2 (CO2_in)
-    GLight                ,
-    O2_cond               ,
-    PS12ratio             ,  //!< [CALC] Calcualted from input_PSI & input_PSIIcore in SYSInitial
-    ADP                   ,
-    Pi                    ,  //!< [CALC] Pi used when useC3 is true and EPS module selected
-    TestATPCost           ,  //!< [ALIASES={ATPCost}] Extra ATP cost when useC3 is false (in units per area)
-    CO2_in                ,  //!< [CALC,ALIASES={CO2,Air_CO2}] Air CO2 concentration in ppm
-    TestLi_Wps            ,  //!< [CALC] Light intensity (in units of W s^{-1})
-    TestLi                ,  //!< [CALC,ALIASES={PAR,Radiation_PAR}] Light intensity (in units of umoles m^{-2} s^{-1})
-    PS2BF_Pi              ,  //!< Pi Shared by PS & BF modules when useC3 is false and EPS module is selected
-    PS_PR_Param           ,  //!< Seems to unused currently
-    Tp                    ,  //!< [ALIASES={Temp,WeatherTemperature}] Temperature
-    alfa                  ,  //!< [CONST] Used for scaling light (*= alpha * (1 - fc))
-    fc                    ,  //!< [CONST] Used for scaling light (*= alpha * (1 - fc))
-    lightParam            ,  //!< [CALC]
-    alpha1                ,  //!< [CONST] originally 1.205 in C++ code, 1 for Matlab equivalent
-    alpha2                ,  //!< [CONST] originally 2.06 in C++ code, 1 for Matlab equivalent
-    input_LHCI            ,  //!< [CONST] Used to set FIBF::ChlPSI in SYSInitial
-    input_LHCII           ,  //!< [CONST] Used to set FIBF::ChlT in SYSInitial
-    input_PSI             ,  //!< [CONST] Used to set FIBF::ChlPSI & PS12ratio in SYSInitial
-    input_PSIIcore        ,  //!< [CONST] Used to set FIBF::ChlT2, FIBF::ChlT & PS12ratio in SYSInitial
-    PSIIantennaSize       ,  //!< [CONST] Used to set FIBF::ChlT2 & FIBF::ChlT in SYSInitial
-    PSIantennaSize        ,  //!< [CONST] Used to set FIBF::ChlPSI in SYSInitial
-    ProteinTotalRatio     ,  //!< [CONST] Scaling factor for CM GRN expression levels
-    MAX                   ,
+  MEMBERS_ALLVARS
 };
 #endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_ALLVARS		\
-    NONE                  ,		\
-    AVR                   ,		\
-    HPR                   ,		\
-    O2                    ,		\
-    CO2_cond              ,		\
-    GLight                ,		\
-    O2_cond               ,		\
-    PS12ratio             ,		\
-    ADP                   ,		\
-    Pi                    ,		\
-    TestATPCost           ,		\
-    CO2_in                ,		\
-    TestLi_Wps            ,		\
-    TestLi                ,		\
-    PS2BF_Pi              ,		\
-    PS_PR_Param           ,		\
-    Tp                    ,		\
-    alfa                  ,		\
-    fc                    ,		\
-    lightParam            ,		\
-    alpha1                ,		\
-    alpha2                ,		\
-    input_LHCI            ,		\
-    input_LHCII           ,		\
-    input_PSI             ,		\
-    input_PSIIcore        ,		\
-    PSIIantennaSize       ,		\
-    PSIantennaSize        ,		\
-    ProteinTotalRatio     ,		\
-    MAX
 template<> const std::vector<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::names;
 template<> const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, double> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::defaults;
 template<> const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, double> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::defaults_C3;
 template<> const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::glymaids;
 template<> const std::map<std::string, typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::initonce;
+template<> const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, int> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, int> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::static_value_flags;
 
 namespace VARS {
   typedef ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS> ALL;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_NONE_VARS : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_NONE, PARAM_TYPE_VARS> {
-  typedef ENUM_NONE_VARS type;
-};
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::Type : int {
-    NONE   ,
-    MAX    ,
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_NONEVARS		\
-    NONE   ,		\
-    MAX
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::Type, double> ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS>::initonce;
-
-namespace VARS {
-  typedef ValueSetEnum<MODULE_NONE, PARAM_TYPE_VARS> NONE;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_MAX_VARS : int {
-    NONE   ,
-    MAX    ,
-};
-template<>
-struct enum_helper<MODULE_MAX, PARAM_TYPE_VARS> {
-  typedef ENUM_MAX_VARS type;
-};
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::Type : int {
-    NONE   ,
-    MAX    ,
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-#define MEMBERS_MAXVARS		\
-    NONE   ,		\
-    MAX
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::Type, double> ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::aliases;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::constant;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::calculated;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::nonvector;
-template<> std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::skipped;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::resetone;
-template<> const std::vector<typename ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS>::initonce;
-
-namespace VARS {
-  typedef ValueSetEnum<MODULE_MAX, PARAM_TYPE_VARS> MAX;
 }
 

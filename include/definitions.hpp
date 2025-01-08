@@ -190,7 +190,7 @@ enum RequestedDebug : uint {None = 0,
   /** Set the value of NAME \param val The value to set NAME to */	\
   static void set ## NAME(const double val) {				\
     initStaticMembers();						\
-    setPreInit(ValueSetClass::NAME, val);				\
+    setPreInit(EnumClass::NAME, val);                                   \
     NAME = val;								\
   }
 //! [SET_GET]
