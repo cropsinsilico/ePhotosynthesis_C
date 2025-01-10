@@ -41,7 +41,7 @@ namespace modules {
 
 class trDynaPS : public MODULE_BASE(trDynaPS) {
 private:
-    friend class trDynaPSDriver;
+    friend class drivers::trDynaPSDriver;
 public:
     // Prevent trDynaPS from being friends with itself :(
     // DECLARE_MODULE_DRIVER(trDynaPS)
