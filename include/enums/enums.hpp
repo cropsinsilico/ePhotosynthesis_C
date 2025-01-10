@@ -20,73 +20,9 @@
 #else // EPHOTO_USE_SCOPED_ENUM
 #define SCOPED_ENUM_TYPE(name)
 #endif // EPHOTO_USE_SCOPED_ENUM
+#include "enums/enums_helpers.hpp"
+
 namespace ePhotosynthesis {
-  // [BEGIN] GLOBAL_ENUM
-  #define MEMBERS_MODULE		\
-      MODULE_NONE       ,		\
-      MODULE_BF         ,		\
-      MODULE_CM         ,		\
-      MODULE_DynaPS     ,		\
-      MODULE_EPS        ,		\
-      MODULE_FIBF       ,		\
-      MODULE_FI         ,		\
-      MODULE_PR         ,		\
-      MODULE_PS         ,		\
-      MODULE_PS_PR      ,		\
-      MODULE_RA         ,		\
-      MODULE_RROEA      ,		\
-      MODULE_RedoxReg   ,		\
-      MODULE_RuACT      ,		\
-      MODULE_SUCS       ,		\
-      MODULE_XanCycle   ,		\
-      MODULE_trDynaPS   ,		\
-      MODULE_ALL        ,		\
-      MODULE_MAX
-  #define MEMBER_NAMES_MODULE		\
-      BF         ,		\
-      CM         ,		\
-      DynaPS     ,		\
-      EPS        ,		\
-      FIBF       ,		\
-      FI         ,		\
-      PR         ,		\
-      PS         ,		\
-      PS_PR      ,		\
-      RA         ,		\
-      RROEA      ,		\
-      RedoxReg   ,		\
-      RuACT      ,		\
-      SUCS       ,		\
-      XanCycle   ,		\
-      trDynaPS
-  enum MODULE : int {
-    MEMBERS_MODULE
-  };
-  static const std::vector<MODULE> ALL_MODULE = {MODULE_BF, MODULE_CM, MODULE_DynaPS, MODULE_EPS, MODULE_FIBF, MODULE_FI, MODULE_PR, MODULE_PS, MODULE_PS_PR, MODULE_RA, MODULE_RROEA, MODULE_RedoxReg, MODULE_RuACT, MODULE_SUCS, MODULE_XanCycle, MODULE_trDynaPS, MODULE_ALL};  /**< All enum values */
-  
-  #define MEMBERS_PARAM		\
-      PARAM_TYPE_NONE   ,		\
-      PARAM_TYPE_COND   ,		\
-      PARAM_TYPE_POOL   ,		\
-      PARAM_TYPE_KE     ,		\
-      PARAM_TYPE_MOD    ,		\
-      PARAM_TYPE_RC     ,		\
-      PARAM_TYPE_VARS   ,		\
-      PARAM_TYPE_VEL    ,		\
-      PARAM_TYPE_MAX
-  #define MEMBER_NAMES_PARAM		\
-      COND   ,		\
-      POOL   ,		\
-      KE     ,		\
-      MOD    ,		\
-      RC     ,		\
-      VEL
-  enum PARAM_TYPE : int {
-    MEMBERS_PARAM
-  };
-  static const std::vector<PARAM_TYPE> ALL_PARAM_TYPE = {PARAM_TYPE_COND, PARAM_TYPE_POOL, PARAM_TYPE_KE, PARAM_TYPE_MOD, PARAM_TYPE_RC, PARAM_TYPE_VARS, PARAM_TYPE_VEL};  /**< All enum values */
-  
-  // [END] GLOBAL_ENUM
   // VALUE_FLAG enum
   #define MEMBERS_VALUE		\
       VALUE_FLAG_NONE                ,		\
@@ -232,8 +168,6 @@ namespace ePhotosynthesis {
     return result;
   }
   // Unspecialized enum
-  #include "enums/enums_helpers.hpp"
-  
   template<MODULE M, PARAM_TYPE PT>
   class EPHOTO_API ValueSetEnum {
   public:
@@ -1230,105 +1164,6 @@ namespace ePhotosynthesis {
   template<MODULE M, PARAM_TYPE PT>
   const std::map<typename ValueSetEnum<M, PT>::Type, int> ValueSetEnum<M, PT>::static_value_flags = {};
   
-  // Global includes
-  // [BEGIN] HEADERS_GLOBAL
-  #include "enums/enums_COND.hpp"
-  #include "enums/enums_POOL.hpp"
-  #include "enums/enums_KE.hpp"
-  #include "enums/enums_MOD.hpp"
-  #include "enums/enums_RC.hpp"
-  #include "enums/enums_VARS.hpp"
-  #include "enums/enums_VEL.hpp"
-  // [END] HEADERS_GLOBAL
-  
-  // Specializations for get_enum_names
-  // [BEGIN] HEADERS_NAMES
-  #include "enums/enums_COND_names.hpp"
-  #include "enums/enums_POOL_names.hpp"
-  #include "enums/enums_KE_names.hpp"
-  #include "enums/enums_MOD_names.hpp"
-  #include "enums/enums_RC_names.hpp"
-  #include "enums/enums_VARS_names.hpp"
-  #include "enums/enums_VEL_names.hpp"
-  // [END] HEADERS_NAMES
-  
-  // Specializations for get_enum_values
-  // [BEGIN] HEADERS_VALUES
-  #include "enums/enums_COND_defaults.hpp"
-  #include "enums/enums_POOL_defaults.hpp"
-  #include "enums/enums_KE_defaults.hpp"
-  #include "enums/enums_MOD_defaults.hpp"
-  #include "enums/enums_RC_defaults.hpp"
-  #include "enums/enums_VARS_defaults.hpp"
-  #include "enums/enums_VEL_defaults.hpp"
-  // [END] HEADERS_VALUES
-  
-  // Specializations for get_enum_alternate_values
-  // [BEGIN] HEADERS_ALTERNATE_VALUES
-  #include "enums/enums_COND_defaults_C3.hpp"
-  #include "enums/enums_POOL_defaults_C3.hpp"
-  #include "enums/enums_KE_defaults_C3.hpp"
-  #include "enums/enums_MOD_defaults_C3.hpp"
-  #include "enums/enums_RC_defaults_C3.hpp"
-  #include "enums/enums_VARS_defaults_C3.hpp"
-  #include "enums/enums_VEL_defaults_C3.hpp"
-  // [END] HEADERS_ALTERNATE_VALUES
-  
-  // Specializations for get_enum_glymaids
-  // [BEGIN] HEADERS_GLYMAIDS
-  #include "enums/enums_COND_glymaids.hpp"
-  #include "enums/enums_POOL_glymaids.hpp"
-  #include "enums/enums_KE_glymaids.hpp"
-  #include "enums/enums_MOD_glymaids.hpp"
-  #include "enums/enums_RC_glymaids.hpp"
-  #include "enums/enums_VARS_glymaids.hpp"
-  #include "enums/enums_VEL_glymaids.hpp"
-  // [END] HEADERS_GLYMAIDS
-  
-  // Specializations for get_enum_aliases
-  // [BEGIN] HEADERS_ALIASES
-  #include "enums/enums_COND_aliases.hpp"
-  #include "enums/enums_POOL_aliases.hpp"
-  #include "enums/enums_KE_aliases.hpp"
-  #include "enums/enums_MOD_aliases.hpp"
-  #include "enums/enums_RC_aliases.hpp"
-  #include "enums/enums_VARS_aliases.hpp"
-  #include "enums/enums_VEL_aliases.hpp"
-  // [END] HEADERS_ALIASES
-  
-  // Specializations for get_enum_docs
-  // [BEGIN] HEADERS_DOCS
-  #include "enums/enums_COND_docs.hpp"
-  #include "enums/enums_POOL_docs.hpp"
-  #include "enums/enums_KE_docs.hpp"
-  #include "enums/enums_MOD_docs.hpp"
-  #include "enums/enums_RC_docs.hpp"
-  #include "enums/enums_VARS_docs.hpp"
-  #include "enums/enums_VEL_docs.hpp"
-  // [END] HEADERS_DOCS
-  
-  // Specializations for get_enum_value_flags
-  // [BEGIN] HEADERS_VALUE_FLAGS
-  #include "enums/enums_COND_value_flags.hpp"
-  #include "enums/enums_POOL_value_flags.hpp"
-  #include "enums/enums_KE_value_flags.hpp"
-  #include "enums/enums_MOD_value_flags.hpp"
-  #include "enums/enums_RC_value_flags.hpp"
-  #include "enums/enums_VARS_value_flags.hpp"
-  #include "enums/enums_VEL_value_flags.hpp"
-  // [END] HEADERS_VALUE_FLAGS
-  
-  // Specializations for get_enum_static_value_flags
-  // [BEGIN] HEADERS_STATIC_VALUE_FLAGS
-  #include "enums/enums_COND_static_value_flags.hpp"
-  #include "enums/enums_POOL_static_value_flags.hpp"
-  #include "enums/enums_KE_static_value_flags.hpp"
-  #include "enums/enums_MOD_static_value_flags.hpp"
-  #include "enums/enums_RC_static_value_flags.hpp"
-  #include "enums/enums_VARS_static_value_flags.hpp"
-  #include "enums/enums_VEL_static_value_flags.hpp"
-  // [END] HEADERS_STATIC_VALUE_FLAGS
-  
   
   // Utility for getting enum type from module & param_type
   #define MODULE2Enum ValueSetEnum
@@ -1338,3 +1173,102 @@ namespace ePhotosynthesis {
     return get_enum_names<T>().find(k)->second;
   }
 }
+// Global includes
+// [BEGIN] HEADERS_GLOBAL
+#include "enums/enums_COND.hpp"
+#include "enums/enums_POOL.hpp"
+#include "enums/enums_KE.hpp"
+#include "enums/enums_MOD.hpp"
+#include "enums/enums_RC.hpp"
+#include "enums/enums_VARS.hpp"
+#include "enums/enums_VEL.hpp"
+// [END] HEADERS_GLOBAL
+
+// Specializations for get_enum_names
+// [BEGIN] HEADERS_NAMES
+#include "enums/enums_COND_names.hpp"
+#include "enums/enums_POOL_names.hpp"
+#include "enums/enums_KE_names.hpp"
+#include "enums/enums_MOD_names.hpp"
+#include "enums/enums_RC_names.hpp"
+#include "enums/enums_VARS_names.hpp"
+#include "enums/enums_VEL_names.hpp"
+// [END] HEADERS_NAMES
+
+// Specializations for get_enum_values
+// [BEGIN] HEADERS_VALUES
+#include "enums/enums_COND_defaults.hpp"
+#include "enums/enums_POOL_defaults.hpp"
+#include "enums/enums_KE_defaults.hpp"
+#include "enums/enums_MOD_defaults.hpp"
+#include "enums/enums_RC_defaults.hpp"
+#include "enums/enums_VARS_defaults.hpp"
+#include "enums/enums_VEL_defaults.hpp"
+// [END] HEADERS_VALUES
+
+// Specializations for get_enum_alternate_values
+// [BEGIN] HEADERS_ALTERNATE_VALUES
+#include "enums/enums_COND_defaults_C3.hpp"
+#include "enums/enums_POOL_defaults_C3.hpp"
+#include "enums/enums_KE_defaults_C3.hpp"
+#include "enums/enums_MOD_defaults_C3.hpp"
+#include "enums/enums_RC_defaults_C3.hpp"
+#include "enums/enums_VARS_defaults_C3.hpp"
+#include "enums/enums_VEL_defaults_C3.hpp"
+// [END] HEADERS_ALTERNATE_VALUES
+
+// Specializations for get_enum_glymaids
+// [BEGIN] HEADERS_GLYMAIDS
+#include "enums/enums_COND_glymaids.hpp"
+#include "enums/enums_POOL_glymaids.hpp"
+#include "enums/enums_KE_glymaids.hpp"
+#include "enums/enums_MOD_glymaids.hpp"
+#include "enums/enums_RC_glymaids.hpp"
+#include "enums/enums_VARS_glymaids.hpp"
+#include "enums/enums_VEL_glymaids.hpp"
+// [END] HEADERS_GLYMAIDS
+
+// Specializations for get_enum_aliases
+// [BEGIN] HEADERS_ALIASES
+#include "enums/enums_COND_aliases.hpp"
+#include "enums/enums_POOL_aliases.hpp"
+#include "enums/enums_KE_aliases.hpp"
+#include "enums/enums_MOD_aliases.hpp"
+#include "enums/enums_RC_aliases.hpp"
+#include "enums/enums_VARS_aliases.hpp"
+#include "enums/enums_VEL_aliases.hpp"
+// [END] HEADERS_ALIASES
+
+// Specializations for get_enum_docs
+// [BEGIN] HEADERS_DOCS
+#include "enums/enums_COND_docs.hpp"
+#include "enums/enums_POOL_docs.hpp"
+#include "enums/enums_KE_docs.hpp"
+#include "enums/enums_MOD_docs.hpp"
+#include "enums/enums_RC_docs.hpp"
+#include "enums/enums_VARS_docs.hpp"
+#include "enums/enums_VEL_docs.hpp"
+// [END] HEADERS_DOCS
+
+// Specializations for get_enum_value_flags
+// [BEGIN] HEADERS_VALUE_FLAGS
+#include "enums/enums_COND_value_flags.hpp"
+#include "enums/enums_POOL_value_flags.hpp"
+#include "enums/enums_KE_value_flags.hpp"
+#include "enums/enums_MOD_value_flags.hpp"
+#include "enums/enums_RC_value_flags.hpp"
+#include "enums/enums_VARS_value_flags.hpp"
+#include "enums/enums_VEL_value_flags.hpp"
+// [END] HEADERS_VALUE_FLAGS
+
+// Specializations for get_enum_static_value_flags
+// [BEGIN] HEADERS_STATIC_VALUE_FLAGS
+#include "enums/enums_COND_static_value_flags.hpp"
+#include "enums/enums_POOL_static_value_flags.hpp"
+#include "enums/enums_KE_static_value_flags.hpp"
+#include "enums/enums_MOD_static_value_flags.hpp"
+#include "enums/enums_RC_static_value_flags.hpp"
+#include "enums/enums_VARS_static_value_flags.hpp"
+#include "enums/enums_VEL_static_value_flags.hpp"
+// [END] HEADERS_STATIC_VALUE_FLAGS
+

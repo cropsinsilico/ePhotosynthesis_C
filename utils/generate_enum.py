@@ -443,16 +443,23 @@ class EnumGeneratorBase(EnumBase):
         return inside
 
     @classmethod
+    def check_chunk(cls, name, lines, **kwargs):
+        idx0, idx1, indent = cls.find_chunk(name, lines, **kwargs)
+        assert idx0 < len(lines) and idx1 < len(lines)
+
+    @classmethod
     def replace_chunk(cls, name, lines, new_chunk, markers=None):
         if markers is None:
             markers = cls.chunk_markers(name)
         idx0, idx1, indent = cls.find_chunk(name, lines, markers=markers)
-        assert idx0 < len(lines)
-        return (
+        assert idx0 < len(lines) and idx1 < len(lines)
+        out = (
             lines[:(idx0 + len(markers[0]))]
             + [(indent * ' ') + x for x in new_chunk]
-            + lines[(idx1 + len(markers[1])):]
+            + lines[idx1:]
         )
+        cls.check_chunk(name, out, markers=markers)
+        return out
 
     @classmethod
     def begin_marker(cls, name, extract_from=None, markers=None,
@@ -467,7 +474,7 @@ class EnumGeneratorBase(EnumBase):
 
     @classmethod
     def add_chunk(cls, name, new_chunk=None, extract_from=None,
-                  markers=None):
+                  markers=None, allow_empty=False):
         if new_chunk is None:
             new_chunk = []
         if markers is None:
@@ -477,13 +484,17 @@ class EnumGeneratorBase(EnumBase):
                 cls.extract_chunk(name, extract_from, markers=markers)
                 + new_chunk
             )
-        if not new_chunk:
+        if not (new_chunk or allow_empty):
             return []
-        return (
+        out = (
             cls.begin_marker(name, markers=markers)
             + new_chunk
             + cls.end_marker(name, markers=markers)
         )
+        cls.check_chunk(name, out, markers=markers)
+        if out[-1]:
+            out.append('')
+        return out
 
     @classmethod
     def end_marker(cls, name, extract_from=None, markers=None, **kwargs):
@@ -514,13 +525,7 @@ class EnumGeneratorBase(EnumBase):
         if footer and existing_footer:
             out = out[:-len(footer)]
         if append == 'preserved':
-            out = self.add_chunk('preserved', extract_from=out)
-            # out = self.extract_chunk('preserved', out)
-            # if out:
-            #     out = (self.begin_marker('preserved')
-            #            + out
-            #            + self.end_marker('preserved'))
-            return out
+            return self.add_chunk('preserved', extract_from=out)
         elif append == 'discard':
             return self.extract_chunk('discard', out,
                                       return_outside=True)
@@ -752,22 +757,33 @@ class CMixin:
             self.get_child('header').dst, caller=caller,
             rootdir=self.root_include_dir)
 
+    def add_namespaces(self, lines, namespaces=None):
+        if namespaces is None:
+            namespaces = self.namespaces
+        if not (lines and namespaces):
+            return lines
+        if self.file_extension in ['.hpp', '.h']:
+            lines = [
+                ('  ' * i) + f'namespace {x} {{'
+                for i, x in enumerate(namespaces)
+            ] + [
+                ('  ' * len(namespaces)) + x for x in lines
+            ] + [
+                ('  ' * (len(namespaces) - (i + 1))) + '}'
+                for i in range(len(namespaces))
+            ]
+        else:
+            lines = [
+                f"using namespace {'::'.join(namespaces)};", ""
+            ] + lines
+        return lines
+
     def generate(self, indent='', **kwargs):
         lines = []
         lines += self.add_include_files()
-        if self.namespaces:
-            if self.file_extension in ['.hpp', '.h']:
-                for x in self.namespaces:
-                    lines += [f"{indent}namespace {x} {{"]
-                    indent += 2 * ' '
-            else:
-                lines += [
-                    f"using namespace {'::'.join(self.namespaces)};", ""]
-        lines += super().generate(indent=indent, **kwargs)
-        if self.namespaces and self.file_extension in ['.hpp', '.h']:
-            for x in self.namespaces:
-                indent = indent[:(len(indent) - 2)]
-                lines += [f"{indent}}}"]
+        lines += self.add_namespaces(
+            super().generate(indent=indent, **kwargs)
+        )
         return lines
 
 
@@ -1177,6 +1193,14 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
     @property
     def unsuffixed_functions(self):
         return self.collection_functions + self.universal_functions
+
+    def generate(self, *args, **kwargs):
+        out = super(CEnumGeneratorCollectionBase, self).generate(
+            *args, **kwargs)
+        fglobal = self.parent.get_child('global')
+        if fglobal._independent_headers:
+            out = fglobal.add_namespaces(out)
+        return out
 
     def generate_value(self, x):
         if self.value_key is None:
@@ -2388,7 +2412,8 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
                      "members"),
         },
     )
-    _top_in_helper = False
+    _top_in_helper = True
+    _independent_headers = True
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('enum_name', self.name.upper())
@@ -2633,14 +2658,6 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
         # Include for module/param specific enums
         includes['global'] = [k for k in includes['global']
                               if k not in lines]
-        if includes['global']:
-            lines += ['// Global includes']
-            lines += self.add_chunk('headers_global',
-                                    includes['global'])
-            # lines += self.begin_marker('headers_global')
-            # lines += includes['global']
-            # lines += self.end_marker('headers_global')
-            lines += ['']
         # Utilities for getting names/values from enum type
         for k in self.parent.added_collections:
             if k in self.parent.added_files:
@@ -2650,14 +2667,18 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
                 for x in new_include:
                     if x not in includes[k]:
                         includes[k].append(x)
-            if includes[k]:
-                lines += [f'// Specializations for get_enum_{k}']
-                lines += self.add_chunk(f'headers_{k}',
-                                        [x for x in includes[k] if x])
-                # lines += self.begin_marker(f'headers_{k}')
-                # lines += [x for x in includes[k] if x]
-                # lines += self.end_marker(f'headers_{k}')
-                lines += ['']
+        include_lines = []
+        for k, v in includes.items():
+            if not v:
+                continue
+            if k == 'global':
+                include_lines += ['// Global includes']
+            else:
+                include_lines += [f'// Specializations for get_enum_{k}']
+            include_lines += self.add_chunk(
+                f'headers_{k}', [x for x in v if x])
+        if not self._independent_headers:
+            lines += include_lines
         lines += ['']
         lines += [
             f'// Utility for getting enum type from '
@@ -2675,7 +2696,7 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
             '}',
         ]
         if not self.parent.as_class:
-            # Begin preserved lines?
+            # Begin preserved lines
             lines += self.begin_marker('preserved_utils', existing)
             for k, v in self.src.param.items():
                 key = k.rsplit(self.strip_suffix)[0]
@@ -2686,16 +2707,13 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
                                 f'{self.strip_suffix}'])
                 lines += ['']
             lines += self.end_marker('preserved_utils')
-        if self.namespaces:
-            lines = [
-                ('  ' * i) + f'namespace {x} {{'
-                for i, x in enumerate(self.namespaces)
-            ] + [
-                ('  ' * len(self.namespaces)) + x for x in lines
-            ] + [
-                ('  ' * (len(self.namespaces) - (i + 1))) + '}'
-                for i in range(len(self.namespaces))
-            ]
+        if self._independent_headers:
+            lines = self.add_namespaces(lines)
+            lines += include_lines
+        if self._top_in_helper:
+            lines = self.parent.include_helper_header() + lines
+        if not self._independent_headers:
+            lines = self.add_namespaces(lines)
         return lines
 
 
@@ -2716,16 +2734,19 @@ class CEnumGeneratorHelper(CEnumGeneratorBaseHeader):
 
     def generate(self, *args, **kwargs):
         lines = []
-        # TODO: Move global enums into helper header
+        fglobal = self.parent.get_child('global')
         if self.parent.as_class and not self.append:
+            if fglobal._top_in_helper:
+                lines += self.add_chunk(
+                    'global_enum',
+                    fglobal.generate_global_enum(),
+                    allow_empty=True
+                )
             lines += ['// Unspecialized enum helper']
             lines += self.parent.generate_enum_class_helper(
                 self.parent.as_class, [], specialize=False)
-            if self.parent.get_child('global')._top_in_helper:
-                lines += self.add_chunk(
-                    'global_enum',
-                    self.parent.get_child('global').generate_global_enum()
-                )
+            if fglobal._independent_headers:
+                lines = fglobal.add_namespaces(lines)
         lines += super(CEnumGeneratorHelper, self).generate(*args, **kwargs)
         return lines
 
@@ -2845,6 +2866,16 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             for k, v in classes.items():
                 added[k] = base.create_class(k, **v)
         cls.added_file_classes = dict(cls.added_file_classes, **added)
+
+    @classmethod
+    def extract_child_kws(cls, kwargs, child_kws, **kws_all):
+        out = super(CEnumGeneratorHeader, cls).extract_child_kws(
+            kwargs, child_kws, **kws_all)
+        if ((CEnumGeneratorGlobalHeader._independent_headers
+             and out.get('global', {}).get('namespaces', None))):
+            for k, v in out.items():
+                v['namespaces'] = out['global']['namespaces']
+        return out
 
     @property
     def added_maps(self):
@@ -3035,7 +3066,8 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                     ''
                 ]
             return lines
-        if spec_var and not specialization:
+        if ((spec_var and not specialization
+             and not self.get_child('global')._top_in_helper)):
             lines += self.include_helper_header()
         lines += template_lines
         lines += [
@@ -3261,12 +3293,12 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
     def generate_source_closing(self, **kwargs):
         lines = super(CEnumGeneratorHeader, self).generate_source_closing(
             **kwargs)
-        for k in ['NONE', 'MAX']:
-            members = [self.add_member(x) for x in ['NONE', 'MAX']]
-            name = f"{k}{self.get_child('global').strip_suffix}"
-            specialize = self.get_child('global').item2specialize(name)
-            lines += self.generate_definition(name, members,
-                                              specialize=specialize)
+        # for k in ['NONE', 'MAX']:
+        #     members = [self.add_member(x) for x in ['NONE', 'MAX']]
+        #     name = f"{k}{self.get_child('global').strip_suffix}"
+        #     specialize = self.get_child('global').item2specialize(name)
+        #     lines += self.generate_definition(name, members,
+        #                                       specialize=specialize)
         return lines
 
     def generate_item(self, name, members, as_class=None, **kwargs):
@@ -3304,12 +3336,14 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
         return lines
 
     def generate(self, *args, **kwargs):
-        lines = self.include_helper_header()
-        lines += super(CEnumGeneratorHeader, self).generate(*args, **kwargs)
+        lines = super(CEnumGeneratorHeader, self).generate(*args, **kwargs)
         # for k in ['NONE', 'MAX']:
         #     members = [self.add_member(x) for x in ['NONE', 'MAX']]
         #     lines += self.generate_enum(
         #         f"{k}{self.get_child('global').strip_suffix}", members)
+        if self.get_child('global')._independent_headers:
+            lines = self.get_child('global').add_namespaces(lines)
+        lines = self.include_helper_header() + lines
         return lines
 
 

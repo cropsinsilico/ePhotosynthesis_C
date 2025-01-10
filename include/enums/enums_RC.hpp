@@ -4,523 +4,525 @@
 
 #include "enums/enums_helpers.hpp"
 
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_BF_RC& x) {
-  out << ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::getName(x);
-  return out;
+namespace ePhotosynthesis {
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_BF_RC& x) {
+    out << ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_BF_RC, T>& x) {
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_BF_RC>& x) {
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_BFRC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::static_value_flags;
+  
+  namespace RC {
+    typedef ValueSetEnum<MODULE_BF, PARAM_TYPE_RC> BF;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_RC& x) {
+    out << ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_FIBF_RC, T>& x) {
+    ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_FIBF_RC>& x) {
+    ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_FIBFRC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::static_value_flags;
+  
+  namespace RC {
+    typedef ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC> FIBF;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_FI_RC& x) {
+    out << ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_FI_RC, T>& x) {
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_FI_RC>& x) {
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_FIRC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::static_value_flags;
+  
+  namespace RC {
+    typedef ValueSetEnum<MODULE_FI, PARAM_TYPE_RC> FI;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_PR_RC& x) {
+    out << ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_PR_RC, T>& x) {
+    ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_PR_RC>& x) {
+    ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_PRRC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::static_value_flags;
+  
+  namespace RC {
+    typedef ValueSetEnum<MODULE_PR, PARAM_TYPE_RC> PR;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_PS_RC& x) {
+    out << ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_PS_RC, T>& x) {
+    ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_PS_RC>& x) {
+    ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_PSRC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::static_value_flags;
+  
+  namespace RC {
+    typedef ValueSetEnum<MODULE_PS, PARAM_TYPE_RC> PS;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_RC& x) {
+    out << ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RROEA_RC, T>& x) {
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RROEA_RC>& x) {
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_RROEARC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::static_value_flags;
+  
+  namespace RC {
+    typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC> RROEA;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_RC& x) {
+    out << ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RedoxReg_RC, T>& x) {
+    ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RedoxReg_RC>& x) {
+    ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_RedoxRegRC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::static_value_flags;
+  
+  namespace RC {
+    typedef ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC> RedoxReg;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_RC& x) {
+    out << ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RuACT_RC, T>& x) {
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RuACT_RC>& x) {
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_RuACTRC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::static_value_flags;
+  
+  namespace RC {
+    typedef ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC> RuACT;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_RC& x) {
+    out << ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_SUCS_RC, T>& x) {
+    ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_SUCS_RC>& x) {
+    ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_SUCSRC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::static_value_flags;
+  
+  namespace RC {
+    typedef ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC> SUCS;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_RC& x) {
+    out << ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_XanCycle_RC, T>& x) {
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_XanCycle_RC>& x) {
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_XanCycleRC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::static_value_flags;
+  
+  namespace RC {
+    typedef ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC> XanCycle;
+  }
+  
 }
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_BF_RC, T>& x) {
-  ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_BF_RC>& x) {
-  ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type : int {
-  MEMBERS_BFRC
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::static_value_flags;
-
-namespace RC {
-  typedef ValueSetEnum<MODULE_BF, PARAM_TYPE_RC> BF;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_RC& x) {
-  out << ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_FIBF_RC, T>& x) {
-  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_FIBF_RC>& x) {
-  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type : int {
-  MEMBERS_FIBFRC
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::static_value_flags;
-
-namespace RC {
-  typedef ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC> FIBF;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_FI_RC& x) {
-  out << ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_FI_RC, T>& x) {
-  ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_FI_RC>& x) {
-  ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type : int {
-  MEMBERS_FIRC
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::static_value_flags;
-
-namespace RC {
-  typedef ValueSetEnum<MODULE_FI, PARAM_TYPE_RC> FI;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_PR_RC& x) {
-  out << ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_PR_RC, T>& x) {
-  ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_PR_RC>& x) {
-  ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type : int {
-  MEMBERS_PRRC
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::static_value_flags;
-
-namespace RC {
-  typedef ValueSetEnum<MODULE_PR, PARAM_TYPE_RC> PR;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_PS_RC& x) {
-  out << ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_PS_RC, T>& x) {
-  ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_PS_RC>& x) {
-  ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type : int {
-  MEMBERS_PSRC
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::static_value_flags;
-
-namespace RC {
-  typedef ValueSetEnum<MODULE_PS, PARAM_TYPE_RC> PS;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_RC& x) {
-  out << ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RROEA_RC, T>& x) {
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RROEA_RC>& x) {
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type : int {
-  MEMBERS_RROEARC
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::static_value_flags;
-
-namespace RC {
-  typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC> RROEA;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_RC& x) {
-  out << ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RedoxReg_RC, T>& x) {
-  ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RedoxReg_RC>& x) {
-  ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type : int {
-  MEMBERS_RedoxRegRC
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::static_value_flags;
-
-namespace RC {
-  typedef ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC> RedoxReg;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_RC& x) {
-  out << ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RuACT_RC, T>& x) {
-  ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RuACT_RC>& x) {
-  ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type : int {
-  MEMBERS_RuACTRC
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::static_value_flags;
-
-namespace RC {
-  typedef ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC> RuACT;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_RC& x) {
-  out << ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_SUCS_RC, T>& x) {
-  ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_SUCS_RC>& x) {
-  ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type : int {
-  MEMBERS_SUCSRC
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::static_value_flags;
-
-namespace RC {
-  typedef ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC> SUCS;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_RC& x) {
-  out << ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_XanCycle_RC, T>& x) {
-  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_XanCycle_RC>& x) {
-  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type : int {
-  MEMBERS_XanCycleRC
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::static_value_flags;
-
-namespace RC {
-  typedef ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC> XanCycle;
-}
-

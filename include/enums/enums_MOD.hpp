@@ -4,835 +4,837 @@
 
 #include "enums/enums_helpers.hpp"
 
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_BF_MOD& x) {
-  out << ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::getName(x);
-  return out;
+namespace ePhotosynthesis {
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_BF_MOD& x) {
+    out << ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_BF_MOD, T>& x) {
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_BF_MOD>& x) {
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_BF
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::static_value_flags;
+  
+  namespace MOD {
+    typedef ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD> BF;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_CM_MOD& x) {
+    out << ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_CM_MOD, T>& x) {
+    ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_CM_MOD>& x) {
+    ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_CM
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::static_value_flags;
+  
+  namespace MOD {
+    typedef ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD> CM;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_DynaPS_MOD& x) {
+    out << ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_DynaPS_MOD, T>& x) {
+    ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_DynaPS_MOD>& x) {
+    ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_DynaPS
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::static_value_flags;
+  
+  namespace MOD {
+    typedef ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD> DynaPS;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_EPS_MOD& x) {
+    out << ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_EPS_MOD, T>& x) {
+    ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_EPS_MOD>& x) {
+    ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_EPS
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::static_value_flags;
+  
+  namespace MOD {
+    typedef ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD> EPS;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_MOD& x) {
+    out << ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_FIBF_MOD, T>& x) {
+    ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_FIBF_MOD>& x) {
+    ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_FIBF
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::static_value_flags;
+  
+  namespace MOD {
+    typedef ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD> FIBF;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_FI_MOD& x) {
+    out << ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_FI_MOD, T>& x) {
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_FI_MOD>& x) {
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_FI
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::static_value_flags;
+  
+  namespace MOD {
+    typedef ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD> FI;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_PR_MOD& x) {
+    out << ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_PR_MOD, T>& x) {
+    ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_PR_MOD>& x) {
+    ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_PR
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::static_value_flags;
+  
+  namespace MOD {
+    typedef ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD> PR;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_PS_MOD& x) {
+    out << ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_PS_MOD, T>& x) {
+    ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_PS_MOD>& x) {
+    ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_PS
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::static_value_flags;
+  
+  namespace MOD {
+    typedef ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD> PS;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_PS_PR_MOD& x) {
+    out << ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_PS_PR_MOD, T>& x) {
+    ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_PS_PR_MOD>& x) {
+    ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_PS_PR
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::static_value_flags;
+  
+  namespace MOD {
+    typedef ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD> PS_PR;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_RA_MOD& x) {
+    out << ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RA_MOD, T>& x) {
+    ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RA_MOD>& x) {
+    ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_RA
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::static_value_flags;
+  
+  namespace MOD {
+    typedef ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD> RA;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_MOD& x) {
+    out << ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RROEA_MOD, T>& x) {
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RROEA_MOD>& x) {
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_RROEA
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::static_value_flags;
+  
+  namespace MOD {
+    typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD> RROEA;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_MOD& x) {
+    out << ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RedoxReg_MOD, T>& x) {
+    ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RedoxReg_MOD>& x) {
+    ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_RedoxReg
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::static_value_flags;
+  
+  namespace MOD {
+    typedef ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD> RedoxReg;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_MOD& x) {
+    out << ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RuACT_MOD, T>& x) {
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RuACT_MOD>& x) {
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_RuACT
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::static_value_flags;
+  
+  namespace MOD {
+    typedef ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD> RuACT;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_MOD& x) {
+    out << ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_SUCS_MOD, T>& x) {
+    ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_SUCS_MOD>& x) {
+    ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_SUCS
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::static_value_flags;
+  
+  namespace MOD {
+    typedef ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD> SUCS;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_MOD& x) {
+    out << ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_XanCycle_MOD, T>& x) {
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_XanCycle_MOD>& x) {
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_XanCycle
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::static_value_flags;
+  
+  namespace MOD {
+    typedef ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD> XanCycle;
+  }
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Key to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const ENUM_trDynaPS_MOD& x) {
+    out << ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::getName(x);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  template<typename T>
+  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_trDynaPS_MOD, T>& x) {
+    ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::print_map(x, out);
+    return out;
+  }
+  /**
+    Serialize an enum to an output stream
+    \param[in,out] out Output stream
+    \param[in] x Collection to serialize
+    \return Updated stream
+  */
+  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_trDynaPS_MOD>& x) {
+    ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::print_vector(x, out);
+    return out;
+  }
+  #else // EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_trDynaPS
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::static_value_flags;
+  
+  namespace MOD {
+    typedef ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD> trDynaPS;
+  }
+  
 }
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_BF_MOD, T>& x) {
-  ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_BF_MOD>& x) {
-  ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type : int {
-  MEMBERS_BF
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::static_value_flags;
-
-namespace MOD {
-  typedef ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD> BF;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_CM_MOD& x) {
-  out << ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_CM_MOD, T>& x) {
-  ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_CM_MOD>& x) {
-  ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type : int {
-  MEMBERS_CM
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::static_value_flags;
-
-namespace MOD {
-  typedef ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD> CM;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_DynaPS_MOD& x) {
-  out << ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_DynaPS_MOD, T>& x) {
-  ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_DynaPS_MOD>& x) {
-  ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type : int {
-  MEMBERS_DynaPS
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::static_value_flags;
-
-namespace MOD {
-  typedef ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD> DynaPS;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_EPS_MOD& x) {
-  out << ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_EPS_MOD, T>& x) {
-  ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_EPS_MOD>& x) {
-  ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type : int {
-  MEMBERS_EPS
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::static_value_flags;
-
-namespace MOD {
-  typedef ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD> EPS;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_MOD& x) {
-  out << ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_FIBF_MOD, T>& x) {
-  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_FIBF_MOD>& x) {
-  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type : int {
-  MEMBERS_FIBF
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::static_value_flags;
-
-namespace MOD {
-  typedef ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD> FIBF;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_FI_MOD& x) {
-  out << ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_FI_MOD, T>& x) {
-  ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_FI_MOD>& x) {
-  ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type : int {
-  MEMBERS_FI
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::static_value_flags;
-
-namespace MOD {
-  typedef ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD> FI;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_PR_MOD& x) {
-  out << ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_PR_MOD, T>& x) {
-  ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_PR_MOD>& x) {
-  ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type : int {
-  MEMBERS_PR
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::static_value_flags;
-
-namespace MOD {
-  typedef ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD> PR;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_PS_MOD& x) {
-  out << ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_PS_MOD, T>& x) {
-  ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_PS_MOD>& x) {
-  ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type : int {
-  MEMBERS_PS
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::static_value_flags;
-
-namespace MOD {
-  typedef ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD> PS;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_PS_PR_MOD& x) {
-  out << ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_PS_PR_MOD, T>& x) {
-  ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_PS_PR_MOD>& x) {
-  ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type : int {
-  MEMBERS_PS_PR
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::static_value_flags;
-
-namespace MOD {
-  typedef ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD> PS_PR;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_RA_MOD& x) {
-  out << ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RA_MOD, T>& x) {
-  ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RA_MOD>& x) {
-  ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type : int {
-  MEMBERS_RA
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::static_value_flags;
-
-namespace MOD {
-  typedef ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD> RA;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_MOD& x) {
-  out << ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RROEA_MOD, T>& x) {
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RROEA_MOD>& x) {
-  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type : int {
-  MEMBERS_RROEA
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::static_value_flags;
-
-namespace MOD {
-  typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD> RROEA;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_MOD& x) {
-  out << ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RedoxReg_MOD, T>& x) {
-  ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RedoxReg_MOD>& x) {
-  ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type : int {
-  MEMBERS_RedoxReg
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::static_value_flags;
-
-namespace MOD {
-  typedef ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD> RedoxReg;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_MOD& x) {
-  out << ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RuACT_MOD, T>& x) {
-  ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RuACT_MOD>& x) {
-  ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type : int {
-  MEMBERS_RuACT
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::static_value_flags;
-
-namespace MOD {
-  typedef ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD> RuACT;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_MOD& x) {
-  out << ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_SUCS_MOD, T>& x) {
-  ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_SUCS_MOD>& x) {
-  ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type : int {
-  MEMBERS_SUCS
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::static_value_flags;
-
-namespace MOD {
-  typedef ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD> SUCS;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_MOD& x) {
-  out << ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_XanCycle_MOD, T>& x) {
-  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_XanCycle_MOD>& x) {
-  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type : int {
-  MEMBERS_XanCycle
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::static_value_flags;
-
-namespace MOD {
-  typedef ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD> XanCycle;
-}
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Key to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const ENUM_trDynaPS_MOD& x) {
-  out << ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::getName(x);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-template<typename T>
-std::ostream& operator<<(std::ostream& out, const std::map<ENUM_trDynaPS_MOD, T>& x) {
-  ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::print_map(x, out);
-  return out;
-}
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_trDynaPS_MOD>& x) {
-  ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::print_vector(x, out);
-  return out;
-}
-#else // EPHOTO_USE_SCOPED_ENUM
-template<>
-enum ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type : int {
-  MEMBERS_trDynaPS
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-template<> const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::all;
-template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::names;
-template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::defaults;
-template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::defaults_C3;
-template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::glymaids;
-template<> const std::map<std::string, typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::aliases;
-template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::docs;
-template<> std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::value_flags;
-template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::static_value_flags;
-
-namespace MOD {
-  typedef ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD> trDynaPS;
-}
-

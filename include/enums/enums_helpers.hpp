@@ -2,2075 +2,2158 @@
 // modified directly
 #pragma once
 
-// Unspecialized enum helper
-#ifdef EPHOTO_USE_SCOPED_ENUM
-template<MODULE M, PARAM_TYPE PT>
-struct enum_helper {
-  typedef int type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_BFCondition		\
-    NONE        ,		\
-    ISPHr       ,		\
-    cytc1       ,		\
-    ISPo        ,		\
-    ISPoQH2     ,		\
-    QHsemi      ,		\
-    cytbL       ,		\
-    Qi          ,		\
-    Q           ,		\
-    cytbH       ,		\
-    Qn          ,		\
-    Qr          ,		\
-    QH2         ,		\
-    cytc2       ,		\
-    P700        ,		\
-    ADP         ,		\
-    ATP         ,		\
-    Ks          ,		\
-    Mgs         ,		\
-    Cls         ,		\
-    Aip         ,		\
-    U           ,		\
-    An          ,		\
-    Fdn         ,		\
-    BFHs        ,		\
-    BFHl        ,		\
-    PHs         ,		\
-    PHl         ,		\
-    NADPH       ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_BF_COND : int {
-  MEMBERS_BFCondition
-};
-template<>
-struct enum_helper<MODULE_BF, PARAM_TYPE_COND> {
-  typedef ENUM_BF_COND type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_CMCondition		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_CM_COND : int {
-  MEMBERS_CMCondition
-};
-template<>
-struct enum_helper<MODULE_CM, PARAM_TYPE_COND> {
-  typedef ENUM_CM_COND type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_DynaPSCondition		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_DynaPS_COND : int {
-  MEMBERS_DynaPSCondition
-};
-template<>
-struct enum_helper<MODULE_DynaPS, PARAM_TYPE_COND> {
-  typedef ENUM_DynaPS_COND type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_EPSCondition		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_EPS_COND : int {
-  MEMBERS_EPSCondition
-};
-template<>
-struct enum_helper<MODULE_EPS, PARAM_TYPE_COND> {
-  typedef ENUM_EPS_COND type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_FIBFCondition		\
-    NONE     ,		\
-    kd       ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_FIBF_COND : int {
-  MEMBERS_FIBFCondition
-};
-template<>
-struct enum_helper<MODULE_FIBF, PARAM_TYPE_COND> {
-  typedef ENUM_FIBF_COND type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_FICondition		\
-    NONE           ,		\
-    A              ,		\
-    U              ,		\
-    P680ePheo      ,		\
-    P680pPheon     ,		\
-    P680pPheo      ,		\
-    P680Pheon      ,		\
-    Yz             ,		\
-    S1T            ,		\
-    S2T            ,		\
-    S3T            ,		\
-    S0T            ,		\
-    S1Tp           ,		\
-    S2Tp           ,		\
-    S3Tp           ,		\
-    S0Tp           ,		\
-    QAQB           ,		\
-    QAnQB          ,		\
-    QAQBn          ,		\
-    QAnQBn         ,		\
-    QAQB2n         ,		\
-    QAnQB2n        ,		\
-    PQn            ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_FI_COND : int {
-  MEMBERS_FICondition
-};
-template<>
-struct enum_helper<MODULE_FI, PARAM_TYPE_COND> {
-  typedef ENUM_FI_COND type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_PRCondition		\
-    NONE      ,		\
-    GCEA      ,		\
-    GCA       ,		\
-    PGCA      ,		\
-    GCAc      ,		\
-    GOAc      ,		\
-    SERc      ,		\
-    GLYc      ,		\
-    HPRc      ,		\
-    GCEAc     ,		\
-    RuBP      ,		\
-    _v131     ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PR_COND : int {
-  MEMBERS_PRCondition
-};
-template<>
-struct enum_helper<MODULE_PR, PARAM_TYPE_COND> {
-  typedef ENUM_PR_COND type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_PSCondition		\
-    NONE     ,		\
-    RuBP     ,		\
-    PGA      ,		\
-    DPGA     ,		\
-    T3P      ,		\
-    ADPG     ,		\
-    FBP      ,		\
-    E4P      ,		\
-    S7P      ,		\
-    SBP      ,		\
-    ATP      ,		\
-    HexP     ,		\
-    PenP     ,		\
-    _Pi      ,		\
-    _ADP     ,		\
-    _v1      ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PS_COND : int {
-  MEMBERS_PSCondition
-};
-template<>
-struct enum_helper<MODULE_PS, PARAM_TYPE_COND> {
-  typedef ENUM_PS_COND type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_PS_PRCondition		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PS_PR_COND : int {
-  MEMBERS_PS_PRCondition
-};
-template<>
-struct enum_helper<MODULE_PS_PR, PARAM_TYPE_COND> {
-  typedef ENUM_PS_PR_COND type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RACondition		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RA_COND : int {
-  MEMBERS_RACondition
-};
-template<>
-struct enum_helper<MODULE_RA, PARAM_TYPE_COND> {
-  typedef ENUM_RA_COND type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RROEACondition		\
-    NONE       ,		\
-    GAPDH      ,		\
-    FBPase     ,		\
-    SBPase     ,		\
-    PRK        ,		\
-    ATPase     ,		\
-    ATPGPP     ,		\
-    MDH        ,		\
-    Thio       ,		\
-    Fd         ,		\
-    RuACT      ,		\
-    Coeff      ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RROEA_COND : int {
-  MEMBERS_RROEACondition
-};
-template<>
-struct enum_helper<MODULE_RROEA, PARAM_TYPE_COND> {
-  typedef ENUM_RROEA_COND type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RedoxRegCondition		\
-    NONE      ,		\
-    Thion     ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RedoxReg_COND : int {
-  MEMBERS_RedoxRegCondition
-};
-template<>
-struct enum_helper<MODULE_RedoxReg, PARAM_TYPE_COND> {
-  typedef ENUM_RedoxReg_COND type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RuACTCondition		\
-    NONE     ,		\
-    ER       ,		\
-    Eaf      ,		\
-    ECMR     ,		\
-    RuBP     ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RuACT_COND : int {
-  MEMBERS_RuACTCondition
-};
-template<>
-struct enum_helper<MODULE_RuACT, PARAM_TYPE_COND> {
-  typedef ENUM_RuACT_COND type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_SUCSCondition		\
-    NONE       ,		\
-    T3Pc       ,		\
-    FBPc       ,		\
-    HexPc      ,		\
-    F26BPc     ,		\
-    UDPGc      ,		\
-    SUCP       ,		\
-    SUC        ,		\
-    PGAc       ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_SUCS_COND : int {
-  MEMBERS_SUCSCondition
-};
-template<>
-struct enum_helper<MODULE_SUCS, PARAM_TYPE_COND> {
-  typedef ENUM_SUCS_COND type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_XanCycleCondition		\
-    NONE     ,		\
-    Vx       ,		\
-    Ax       ,		\
-    Zx       ,		\
-    ABA      ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_XanCycle_COND : int {
-  MEMBERS_XanCycleCondition
-};
-template<>
-struct enum_helper<MODULE_XanCycle, PARAM_TYPE_COND> {
-  typedef ENUM_XanCycle_COND type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_trDynaPSCondition		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_trDynaPS_COND : int {
-  MEMBERS_trDynaPSCondition
-};
-template<>
-struct enum_helper<MODULE_trDynaPS, PARAM_TYPE_COND> {
-  typedef ENUM_trDynaPS_COND type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_BFPool		\
-    NONE     ,		\
-    kA_d     ,		\
-    kA_f     ,		\
-    kA_U     ,		\
-    kU_A     ,		\
-    kU_d     ,		\
-    kU_f     ,		\
-    k1       ,		\
-    k_r1     ,		\
-    kz       ,		\
-    k12      ,		\
-    k23      ,		\
-    k30      ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_BF_POOL : int {
-  MEMBERS_BFPool
-};
-template<>
-struct enum_helper<MODULE_BF, PARAM_TYPE_POOL> {
-  typedef ENUM_BF_POOL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_FIBFPool		\
-    NONE     ,		\
-    PQT      ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_FIBF_POOL : int {
-  MEMBERS_FIBFPool
-};
-template<>
-struct enum_helper<MODULE_FIBF, PARAM_TYPE_POOL> {
-  typedef ENUM_FIBF_POOL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_FIPool		\
-    NONE     ,		\
-    QBt      ,		\
-    PQT      ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_FI_POOL : int {
-  MEMBERS_FIPool
-};
-template<>
-struct enum_helper<MODULE_FI, PARAM_TYPE_POOL> {
-  typedef ENUM_FI_POOL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_PRPool		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PR_POOL : int {
-  MEMBERS_PRPool
-};
-template<>
-struct enum_helper<MODULE_PR, PARAM_TYPE_POOL> {
-  typedef ENUM_PR_POOL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_PSPool		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PS_POOL : int {
-  MEMBERS_PSPool
-};
-template<>
-struct enum_helper<MODULE_PS, PARAM_TYPE_POOL> {
-  typedef ENUM_PS_POOL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RROEAPool		\
-    NONE          ,		\
-    GAPDH         ,		\
-    FBPase        ,		\
-    SBPase        ,		\
-    PRK           ,		\
-    ATPase        ,		\
-    ATPGPP        ,		\
-    MDH           ,		\
-    ThioT         ,		\
-    FdT           ,		\
-    RuACTT        ,		\
-    SA_GAPDH      ,		\
-    SA_FBPase     ,		\
-    SA_SBPase     ,		\
-    SA_PRK        ,		\
-    SA_ATPase     ,		\
-    SA_ATPGPP     ,		\
-    SA_MDH        ,		\
-    mw_GAPDH      ,		\
-    mw_FBPase     ,		\
-    mw_SBPase     ,		\
-    mw_PRK        ,		\
-    mw_ATPase     ,		\
-    mw_ATPGPP     ,		\
-    mw_MDH        ,		\
-    MDH_Vmax      ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RROEA_POOL : int {
-  MEMBERS_RROEAPool
-};
-template<>
-struct enum_helper<MODULE_RROEA, PARAM_TYPE_POOL> {
-  typedef ENUM_RROEA_POOL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RedoxRegPool		\
-    NONE             ,		\
-    FBPase_Coeff     ,		\
-    FBPase0          ,		\
-    SBPase_Coeff     ,		\
-    SBPase0          ,		\
-    PRK_Coeff        ,		\
-    PRK0             ,		\
-    ATPase_Coeff     ,		\
-    ATPase0          ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RedoxReg_POOL : int {
-  MEMBERS_RedoxRegPool
-};
-template<>
-struct enum_helper<MODULE_RedoxReg, PARAM_TYPE_POOL> {
-  typedef ENUM_RedoxReg_POOL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RuACTPool		\
-    NONE     ,		\
-    ET       ,		\
-    Rac      ,		\
-    C        ,		\
-    O        ,		\
-    M        ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RuACT_POOL : int {
-  MEMBERS_RuACTPool
-};
-template<>
-struct enum_helper<MODULE_RuACT, PARAM_TYPE_POOL> {
-  typedef ENUM_RuACT_POOL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_SUCSPool		\
-    NONE     ,		\
-    ATc      ,		\
-    UTc      ,		\
-    PTc      ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_SUCS_POOL : int {
-  MEMBERS_SUCSPool
-};
-template<>
-struct enum_helper<MODULE_SUCS, PARAM_TYPE_POOL> {
-  typedef ENUM_SUCS_POOL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_XanCyclePool		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_XanCycle_POOL : int {
-  MEMBERS_XanCyclePool
-};
-template<>
-struct enum_helper<MODULE_XanCycle, PARAM_TYPE_POOL> {
-  typedef ENUM_XanCycle_POOL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_BFKE		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_BF_KE : int {
-  MEMBERS_BFKE
-};
-template<>
-struct enum_helper<MODULE_BF, PARAM_TYPE_KE> {
-  typedef ENUM_BF_KE type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_FIBFKE		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_FIBF_KE : int {
-  MEMBERS_FIBFKE
-};
-template<>
-struct enum_helper<MODULE_FIBF, PARAM_TYPE_KE> {
-  typedef ENUM_FIBF_KE type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_FIKE		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_FI_KE : int {
-  MEMBERS_FIKE
-};
-template<>
-struct enum_helper<MODULE_FI, PARAM_TYPE_KE> {
-  typedef ENUM_FI_KE type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_PRKE		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PR_KE : int {
-  MEMBERS_PRKE
-};
-template<>
-struct enum_helper<MODULE_PR, PARAM_TYPE_KE> {
-  typedef ENUM_PR_KE type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_PSKE		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PS_KE : int {
-  MEMBERS_PSKE
-};
-template<>
-struct enum_helper<MODULE_PS, PARAM_TYPE_KE> {
-  typedef ENUM_PS_KE type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RROEAKE		\
-    NONE           ,		\
-    KEe2FBPase     ,		\
-    KEe2SBPase     ,		\
-    KEe2PRK        ,		\
-    KEe2ATPase     ,		\
-    KEe2RuACT      ,		\
-    KEe2GAPDH      ,		\
-    KEe2MDH        ,		\
-    KEe2ATPGPP     ,		\
-    KEeFd2Thio     ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RROEA_KE : int {
-  MEMBERS_RROEAKE
-};
-template<>
-struct enum_helper<MODULE_RROEA, PARAM_TYPE_KE> {
-  typedef ENUM_RROEA_KE type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RedoxRegKE		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RedoxReg_KE : int {
-  MEMBERS_RedoxRegKE
-};
-template<>
-struct enum_helper<MODULE_RedoxReg, PARAM_TYPE_KE> {
-  typedef ENUM_RedoxReg_KE type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RuACTKE		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RuACT_KE : int {
-  MEMBERS_RuACTKE
-};
-template<>
-struct enum_helper<MODULE_RuACT, PARAM_TYPE_KE> {
-  typedef ENUM_RuACT_KE type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_SUCSKE		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_SUCS_KE : int {
-  MEMBERS_SUCSKE
-};
-template<>
-struct enum_helper<MODULE_SUCS, PARAM_TYPE_KE> {
-  typedef ENUM_SUCS_KE type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_XanCycleKE		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_XanCycle_KE : int {
-  MEMBERS_XanCycleKE
-};
-template<>
-struct enum_helper<MODULE_XanCycle, PARAM_TYPE_KE> {
-  typedef ENUM_XanCycle_KE type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_BF		\
-    NONE             ,		\
-    cATPsyn          ,		\
-    CPSi             ,		\
-    cNADPHsyn        ,		\
-    EPS_ATP_Rate     ,		\
-    _Pi              ,		\
-    PMODTEM          ,		\
-    RT               ,		\
-    DeltaGo          ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_BF_MOD : int {
-  MEMBERS_BF
-};
-template<>
-struct enum_helper<MODULE_BF, PARAM_TYPE_MOD> {
-  typedef ENUM_BF_MOD type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_CM		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_CM_MOD : int {
-  MEMBERS_CM
-};
-template<>
-struct enum_helper<MODULE_CM, PARAM_TYPE_MOD> {
-  typedef ENUM_CM_MOD type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_DynaPS		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_DynaPS_MOD : int {
-  MEMBERS_DynaPS
-};
-template<>
-struct enum_helper<MODULE_DynaPS, PARAM_TYPE_MOD> {
-  typedef ENUM_DynaPS_MOD type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_EPS		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_EPS_MOD : int {
-  MEMBERS_EPS
-};
-template<>
-struct enum_helper<MODULE_EPS, PARAM_TYPE_MOD> {
-  typedef ENUM_EPS_MOD type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_FIBF		\
-    NONE            ,		\
-    ChlPSI          ,		\
-    ChlT            ,		\
-    ChlT2           ,		\
-    FIBF2FI_PQ      ,		\
-    FIBF2FI_PQa     ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_FIBF_MOD : int {
-  MEMBERS_FIBF
-};
-template<>
-struct enum_helper<MODULE_FIBF, PARAM_TYPE_MOD> {
-  typedef ENUM_FIBF_MOD type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_FI		\
-    NONE      ,		\
-    cpsii     ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_FI_MOD : int {
-  MEMBERS_FI
-};
-template<>
-struct enum_helper<MODULE_FI, PARAM_TYPE_MOD> {
-  typedef ENUM_FI_MOD type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_PR		\
-    NONE             ,		\
-    V111             ,		\
-    V112             ,		\
-    V113             ,		\
-    V121             ,		\
-    V122             ,		\
-    V123             ,		\
-    V124             ,		\
-    V131             ,		\
-    NADHc            ,		\
-    NADc             ,		\
-    GLUc             ,		\
-    KGc              ,		\
-    PR_ADP           ,		\
-    PR_ATP           ,		\
-    KO               ,		\
-    KC               ,		\
-    KR               ,		\
-    KM112            ,		\
-    KI1122           ,		\
-    KI1121           ,		\
-    KM1131           ,		\
-    KM1132           ,		\
-    KI113            ,		\
-    KE113            ,		\
-    KM121            ,		\
-    KM1221           ,		\
-    KM1222           ,		\
-    KI1221           ,		\
-    KE122            ,		\
-    KM123            ,		\
-    KI123            ,		\
-    KE123            ,		\
-    KM1241           ,		\
-    KM1242           ,		\
-    KI124            ,		\
-    KE124            ,		\
-    KM1311           ,		\
-    KI1311           ,		\
-    KM1312           ,		\
-    KI1312           ,		\
-    V1T              ,		\
-    KM1011           ,		\
-    KI1011           ,		\
-    V2T              ,		\
-    KM1012           ,		\
-    KI1012           ,		\
-    Vfactor112       ,		\
-    Vfactor113       ,		\
-    Vfactor121       ,		\
-    Vfactor122       ,		\
-    Vfactor123       ,		\
-    Vfactor124       ,		\
-    Vfactor131       ,		\
-    Vf_T131          ,		\
-    Vf_T113          ,		\
-    Vf_T123          ,		\
-    Vf_T121          ,		\
-    Vf_T122          ,		\
-    Vf_T112          ,		\
-    PGA              ,		\
-    RUBISCOTOTAL     ,		\
-    PrV112           ,		\
-    PrV113           ,		\
-    PrV121           ,		\
-    PrV122           ,		\
-    PrV123           ,		\
-    PrV124           ,		\
-    PrV131           ,		\
-    Q10_112          ,		\
-    Q10_113          ,		\
-    Q10_121          ,		\
-    Q10_122          ,		\
-    Q10_123          ,		\
-    Q10_124          ,		\
-    Q10_131          ,		\
-    CE               ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PR_MOD : int {
-  MEMBERS_PR
-};
-template<>
-struct enum_helper<MODULE_PR, PARAM_TYPE_MOD> {
-  typedef ENUM_PR_MOD type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_PS		\
-    NONE          ,		\
-    PS_C_CP       ,		\
-    PS_C_CA       ,		\
-    PS_C_CN       ,		\
-    PS_PEXT       ,		\
-    V1            ,		\
-    V2            ,		\
-    V3            ,		\
-    V5            ,		\
-    V6            ,		\
-    V7            ,		\
-    V8            ,		\
-    V9            ,		\
-    V10           ,		\
-    V13           ,		\
-    V16           ,		\
-    V23           ,		\
-    V24           ,		\
-    V31           ,		\
-    V32           ,		\
-    V33           ,		\
-    KM11          ,		\
-    KM12          ,		\
-    KM13          ,		\
-    KI11          ,		\
-    KI12          ,		\
-    KI13          ,		\
-    KI14          ,		\
-    KI15          ,		\
-    KM21          ,		\
-    KM22          ,		\
-    KM23          ,		\
-    KM31a         ,		\
-    KM32b         ,		\
-    KE4           ,		\
-    KM51          ,		\
-    KM52          ,		\
-    KM53          ,		\
-    KE5           ,		\
-    KM61          ,		\
-    KI61          ,		\
-    KI62          ,		\
-    KE6           ,		\
-    KM71          ,		\
-    KM72          ,		\
-    KM73          ,		\
-    KM74          ,		\
-    KE7           ,		\
-    KM81          ,		\
-    KM82          ,		\
-    KE8           ,		\
-    KM9           ,		\
-    KI9           ,		\
-    KE9           ,		\
-    KM10          ,		\
-    KM101         ,		\
-    KM102         ,		\
-    KM103         ,		\
-    KE10          ,		\
-    KE11          ,		\
-    KE12          ,		\
-    KM131         ,		\
-    KM132         ,		\
-    KI131         ,		\
-    KI132         ,		\
-    KI133         ,		\
-    KI134         ,		\
-    KI135         ,		\
-    KE13          ,		\
-    KM161         ,		\
-    KM162         ,		\
-    KM163         ,		\
-    KE16          ,		\
-    KE21          ,		\
-    KE22          ,		\
-    KM311         ,		\
-    KM312         ,		\
-    KM313         ,		\
-    KM32          ,		\
-    KM33          ,		\
-    KM231         ,		\
-    KM232         ,		\
-    KM233         ,		\
-    KM234         ,		\
-    KE23          ,		\
-    KA231         ,		\
-    KI231         ,		\
-    KVmo          ,		\
-    KM241         ,		\
-    KA232         ,		\
-    KA233         ,		\
-    KI23          ,		\
-    KE25          ,		\
-    KE57          ,		\
-    Km8p5p        ,		\
-    Km5p5p        ,		\
-    KE810         ,		\
-    Km5gap        ,		\
-    Km8f6p        ,		\
-    Km8s7p        ,		\
-    Km8gap        ,		\
-    MaxCoeff      ,		\
-    _NADPH        ,		\
-    KE1Ratio      ,		\
-    KE2Ratio      ,		\
-    Ru_Act        ,		\
-    PsV31         ,		\
-    PsV32         ,		\
-    PsV33         ,		\
-    PiTc          ,		\
-    V1Reg         ,		\
-    Theta         ,		\
-    beta          ,		\
-    Jmax          ,		\
-    Vfactor1      ,		\
-    Vfactor2      ,		\
-    Vfactor3      ,		\
-    Vfactor5      ,		\
-    Vfactor7      ,		\
-    Vfactor13     ,		\
-    Vfactor23     ,		\
-    Vf_T3         ,		\
-    Vf_T2         ,		\
-    Vf_T1         ,		\
-    Vf_T6         ,		\
-    Vf_T5         ,		\
-    Vf_T9         ,		\
-    Vf_T13        ,		\
-    Vf_T23        ,		\
-    PsV1          ,		\
-    PsV2          ,		\
-    PsV3          ,		\
-    PsV5          ,		\
-    PsV6          ,		\
-    PsV7          ,		\
-    PsV8          ,		\
-    PsV9          ,		\
-    PsV10         ,		\
-    PsV13         ,		\
-    PsV16         ,		\
-    PsV23         ,		\
-    PsV1_0        ,		\
-    PsV2_0        ,		\
-    PsV3_0        ,		\
-    PsV5_0        ,		\
-    PsV6_0        ,		\
-    PsV7_0        ,		\
-    PsV8_0        ,		\
-    PsV9_0        ,		\
-    PsV10_0       ,		\
-    PsV13_0       ,		\
-    PsV23_0       ,		\
-    I2            ,		\
-    J             ,		\
-    Q10_1         ,		\
-    Q10_2         ,		\
-    Q10_3         ,		\
-    Q10_5         ,		\
-    Q10_6         ,		\
-    Q10_7         ,		\
-    Q10_8         ,		\
-    Q10_9         ,		\
-    Q10_10        ,		\
-    Q10_13        ,		\
-    Q10_23        ,		\
-    R             ,		\
-    c_c           ,		\
-    dHa_c         ,		\
-    c_o           ,		\
-    dHa_o         ,		\
-    RegFactor     ,		\
-    SC            ,		\
-    SC1           ,		\
-    STOM1         ,		\
-    STOM2         ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PS_MOD : int {
-  MEMBERS_PS
-};
-template<>
-struct enum_helper<MODULE_PS, PARAM_TYPE_MOD> {
-  typedef ENUM_PS_MOD type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_PS_PR		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PS_PR_MOD : int {
-  MEMBERS_PS_PR
-};
-template<>
-struct enum_helper<MODULE_PS_PR, PARAM_TYPE_MOD> {
-  typedef ENUM_PS_PR_MOD type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RA		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RA_MOD : int {
-  MEMBERS_RA
-};
-template<>
-struct enum_helper<MODULE_RA, PARAM_TYPE_MOD> {
-  typedef ENUM_RA_MOD type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RROEA		\
-    NONE     ,		\
-    SC       ,		\
-    fc16     ,		\
-    FC       ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RROEA_MOD : int {
-  MEMBERS_RROEA
-};
-template<>
-struct enum_helper<MODULE_RROEA, PARAM_TYPE_MOD> {
-  typedef ENUM_RROEA_MOD type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RedoxReg		\
-    NONE                ,		\
-    RedoxReg_VMAX6      ,		\
-    RedoxReg_VMAX9      ,		\
-    RedoxReg_VMAX13     ,		\
-    RedoxReg_VMAX16     ,		\
-    Fd_Thio_ET          ,		\
-    ThioT               ,		\
-    Thio_Oxidation      ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RedoxReg_MOD : int {
-  MEMBERS_RedoxReg
-};
-template<>
-struct enum_helper<MODULE_RedoxReg, PARAM_TYPE_MOD> {
-  typedef ENUM_RedoxReg_MOD type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RuACT		\
-    NONE         ,		\
-    activase     ,		\
-    factor       ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RuACT_MOD : int {
-  MEMBERS_RuACT
-};
-template<>
-struct enum_helper<MODULE_RuACT, PARAM_TYPE_MOD> {
-  typedef ENUM_RuACT_MOD type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_SUCS		\
-    NONE            ,		\
-    V51             ,		\
-    V52             ,		\
-    V55             ,		\
-    V56             ,		\
-    V57             ,		\
-    V58             ,		\
-    V59             ,		\
-    V60             ,		\
-    V61             ,		\
-    V62             ,		\
-    Vdhap_in        ,		\
-    Vgap_in         ,		\
-    Vpga_in         ,		\
-    KE501           ,		\
-    Km511           ,		\
-    Km512           ,		\
-    Km513           ,		\
-    KE51            ,		\
-    Km521           ,		\
-    KI521           ,		\
-    KI522           ,		\
-    KI523           ,		\
-    KE52            ,		\
-    KE531           ,		\
-    KE541           ,		\
-    Km551           ,		\
-    Km552           ,		\
-    Km553           ,		\
-    Km554           ,		\
-    KE55            ,		\
-    Km561           ,		\
-    Km562           ,		\
-    KI561           ,		\
-    KI562           ,		\
-    KI563           ,		\
-    KI564           ,		\
-    KI565           ,		\
-    KE56            ,		\
-    Km571           ,		\
-    Ki572           ,		\
-    KE57            ,		\
-    Km581           ,		\
-    KI581           ,		\
-    KI582           ,		\
-    KI583           ,		\
-    Km591           ,		\
-    Km592           ,		\
-    Km593           ,		\
-    KI591           ,		\
-    KI592           ,		\
-    KE59            ,		\
-    Km601           ,		\
-    Km602           ,		\
-    Km603           ,		\
-    Km604           ,		\
-    KE60            ,		\
-    KE61            ,		\
-    Km621           ,		\
-    ATPc            ,		\
-    UTPc            ,		\
-    Vf_T52          ,		\
-    Vf_T59          ,		\
-    Vf_T57          ,		\
-    Vf_T51          ,		\
-    Vf_T56          ,		\
-    Vfactor51       ,		\
-    Vfactor52       ,		\
-    Vfactor56       ,		\
-    Vfactor57       ,		\
-    Vfactor59       ,		\
-    SUCSV51         ,		\
-    SUCSV52         ,		\
-    SUCSV55         ,		\
-    SUCSV56         ,		\
-    SUCSV57         ,		\
-    SUCSV58         ,		\
-    SUCS2PS_Pic     ,		\
-    KE5Ratio        ,		\
-    ADPc            ,		\
-    Vmatpf          ,		\
-    Q10_51          ,		\
-    Q10_52          ,		\
-    Q10_55          ,		\
-    Q10_56          ,		\
-    Q10_57          ,		\
-    Q10_58          ,		\
-    SC              ,		\
-    SC1             ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_SUCS_MOD : int {
-  MEMBERS_SUCS
-};
-template<>
-struct enum_helper<MODULE_SUCS, PARAM_TYPE_MOD> {
-  typedef ENUM_SUCS_MOD type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_XanCycle		\
-    NONE                     ,		\
-    kva                      ,		\
-    kaz                      ,		\
-    kza                      ,		\
-    kav                      ,		\
-    Vx_                      ,		\
-    Ax_                      ,		\
-    Zx_                      ,		\
-    ABA_                     ,		\
-    XanCycle2FIBF_Xstate     ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_XanCycle_MOD : int {
-  MEMBERS_XanCycle
-};
-template<>
-struct enum_helper<MODULE_XanCycle, PARAM_TYPE_MOD> {
-  typedef ENUM_XanCycle_MOD type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_trDynaPS		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_trDynaPS_MOD : int {
-  MEMBERS_trDynaPS
-};
-template<>
-struct enum_helper<MODULE_trDynaPS, PARAM_TYPE_MOD> {
-  typedef ENUM_trDynaPS_MOD type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_BFRC		\
-    NONE         ,		\
-    K1           ,		\
-    K2           ,		\
-    K3           ,		\
-    K4           ,		\
-    K5           ,		\
-    K6           ,		\
-    K7           ,		\
-    K8           ,		\
-    K9           ,		\
-    K10          ,		\
-    Vmax11       ,		\
-    Kqi          ,		\
-    PK           ,		\
-    PMg          ,		\
-    PCl          ,		\
-    Kau          ,		\
-    Kua          ,		\
-    Kf           ,		\
-    Kd           ,		\
-    KE8          ,		\
-    KE9          ,		\
-    K15          ,		\
-    K16          ,		\
-    Em_IPS       ,		\
-    Em_Cytf      ,		\
-    Em_PG        ,		\
-    MemCap       ,		\
-    RVA          ,		\
-    KBs          ,		\
-    KBl          ,		\
-    KM1ATP       ,		\
-    KM1ADP       ,		\
-    KM1PI        ,		\
-    KM2NADP      ,		\
-    KM2NADPH     ,		\
-    V2M          ,		\
-    KE2          ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_BF_RC : int {
-  MEMBERS_BFRC
-};
-template<>
-struct enum_helper<MODULE_BF, PARAM_TYPE_RC> {
-  typedef ENUM_BF_RC type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_FIBFRC		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_FIBF_RC : int {
-  MEMBERS_FIBFRC
-};
-template<>
-struct enum_helper<MODULE_FIBF, PARAM_TYPE_RC> {
-  typedef ENUM_FIBF_RC type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_FIRC		\
-    NONE         ,		\
-    kA_d         ,		\
-    kA_f         ,		\
-    kA_U         ,		\
-    kU_A         ,		\
-    kU_d         ,		\
-    kU_f         ,		\
-    k1           ,		\
-    k_r1         ,		\
-    kz           ,		\
-    k12          ,		\
-    k23          ,		\
-    k30          ,		\
-    k01          ,		\
-    k2           ,		\
-    kAB1         ,		\
-    kBA1         ,		\
-    kAB2         ,		\
-    kBA2         ,		\
-    k3           ,		\
-    k_r3         ,		\
-    k_pq_oxy     ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_FI_RC : int {
-  MEMBERS_FIRC
-};
-template<>
-struct enum_helper<MODULE_FI, PARAM_TYPE_RC> {
-  typedef ENUM_FI_RC type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_PRRC		\
-    NONE           ,		\
-    V111           ,		\
-    V112           ,		\
-    V113           ,		\
-    V121           ,		\
-    V122           ,		\
-    V123           ,		\
-    V124           ,		\
-    V131           ,		\
-    NADHc          ,		\
-    NADc           ,		\
-    GLUc           ,		\
-    KGc            ,		\
-    ADP            ,		\
-    ATP            ,		\
-    PGA            ,		\
-    KO             ,		\
-    KC             ,		\
-    KR             ,		\
-    KM112          ,		\
-    KI1122         ,		\
-    KI1121         ,		\
-    KM1131         ,		\
-    KM1132         ,		\
-    KI113          ,		\
-    KE113          ,		\
-    KM121          ,		\
-    KM1221         ,		\
-    KM1222         ,		\
-    KI1221         ,		\
-    KE122          ,		\
-    KM123          ,		\
-    KI123          ,		\
-    KE123          ,		\
-    KM1241         ,		\
-    KM1242         ,		\
-    KE124          ,		\
-    KM1311         ,		\
-    KI1311         ,		\
-    V1T            ,		\
-    KM1011         ,		\
-    KI1011         ,		\
-    V2T            ,		\
-    KM1012         ,		\
-    KI1012         ,		\
-    Vfactor112     ,		\
-    Vfactor113     ,		\
-    Vfactor121     ,		\
-    Vfactor122     ,		\
-    Vfactor123     ,		\
-    Vfactor124     ,		\
-    Vfactor131     ,		\
-    Vf_T131        ,		\
-    Vf_T113        ,		\
-    Vf_T123        ,		\
-    Vf_T121        ,		\
-    Vf_T122        ,		\
-    Vf_T112        ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PR_RC : int {
-  MEMBERS_PRRC
-};
-template<>
-struct enum_helper<MODULE_PR, PARAM_TYPE_RC> {
-  typedef ENUM_PR_RC type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_PSRC		\
-    NONE          ,		\
-    CP            ,		\
-    CA            ,		\
-    CN            ,		\
-    PEXT          ,		\
-    V1            ,		\
-    V2            ,		\
-    V3            ,		\
-    V5            ,		\
-    V6            ,		\
-    V7            ,		\
-    V8            ,		\
-    V9            ,		\
-    V13           ,		\
-    V16           ,		\
-    V23           ,		\
-    V24           ,		\
-    V31           ,		\
-    V32           ,		\
-    V33           ,		\
-    KM11_A        ,		\
-    KM12_A        ,		\
-    KM13          ,		\
-    KI11          ,		\
-    KI12          ,		\
-    KI13          ,		\
-    KI14          ,		\
-    KI15          ,		\
-    KM21          ,		\
-    KM22          ,		\
-    KM23          ,		\
-    KM31a         ,		\
-    KM32b         ,		\
-    KE4           ,		\
-    KM51          ,		\
-    KM52          ,		\
-    KM53          ,		\
-    KE5           ,		\
-    KM61          ,		\
-    KI61          ,		\
-    KI62          ,		\
-    KE6           ,		\
-    KM71          ,		\
-    KM72          ,		\
-    KM73          ,		\
-    KM74          ,		\
-    KE7           ,		\
-    KM81          ,		\
-    KM82          ,		\
-    KE8           ,		\
-    KM9           ,		\
-    KI9           ,		\
-    KE9           ,		\
-    KM10          ,		\
-    KM101         ,		\
-    KM102         ,		\
-    KM103         ,		\
-    KE10          ,		\
-    KE11          ,		\
-    KE12          ,		\
-    KM131         ,		\
-    KM132         ,		\
-    KI131         ,		\
-    KI132         ,		\
-    KI133         ,		\
-    KI134         ,		\
-    KI135         ,		\
-    KE13          ,		\
-    KM161         ,		\
-    KM162         ,		\
-    KM163         ,		\
-    KE16          ,		\
-    KE21          ,		\
-    KE22          ,		\
-    KM311         ,		\
-    KM312         ,		\
-    KM313         ,		\
-    KM32          ,		\
-    KM33          ,		\
-    KM231         ,		\
-    KM232         ,		\
-    KM233         ,		\
-    KM234         ,		\
-    KE23          ,		\
-    KA231         ,		\
-    KI231         ,		\
-    KVmo          ,		\
-    KM241         ,		\
-    KE25          ,		\
-    KE57          ,		\
-    Km8p5p        ,		\
-    Km5p5p        ,		\
-    KE810         ,		\
-    Km5gap        ,		\
-    Km8f6p        ,		\
-    Km8s7p        ,		\
-    Km8gap        ,		\
-    MaxCoeff      ,		\
-    Vfactor1      ,		\
-    Vfactor2      ,		\
-    Vfactor3      ,		\
-    Vfactor5      ,		\
-    Vfactor7      ,		\
-    Vfactor13     ,		\
-    Vfactor23     ,		\
-    Vf_T3         ,		\
-    Vf_T2         ,		\
-    Vf_T1         ,		\
-    Vf_T6         ,		\
-    Vf_T5         ,		\
-    Vf_T9         ,		\
-    Vf_T13        ,		\
-    Vf_T23        ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PS_RC : int {
-  MEMBERS_PSRC
-};
-template<>
-struct enum_helper<MODULE_PS, PARAM_TYPE_RC> {
-  typedef ENUM_PS_RC type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RROEARC		\
-    NONE            ,		\
-    ke2GAPDH        ,		\
-    ke2MDH          ,		\
-    ke2FBPase       ,		\
-    ke2SBPase       ,		\
-    ke2PRK          ,		\
-    ke2ATPase       ,		\
-    ke2RubACT       ,		\
-    ke2Fd           ,		\
-    keFd2Thio       ,		\
-    keFd2Calvin     ,		\
-    ke2ATPGPP       ,		\
-    Coeff           ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RROEA_RC : int {
-  MEMBERS_RROEARC
-};
-template<>
-struct enum_helper<MODULE_RROEA, PARAM_TYPE_RC> {
-  typedef ENUM_RROEA_RC type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RedoxRegRC		\
-    NONE               ,		\
-    Fd_Thio_ET         ,		\
-    ThioT              ,		\
-    Thio_Oxidation     ,		\
-    Thion0             ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RedoxReg_RC : int {
-  MEMBERS_RedoxRegRC
-};
-template<>
-struct enum_helper<MODULE_RedoxReg, PARAM_TYPE_RC> {
-  typedef ENUM_RedoxReg_RC type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RuACTRC		\
-    NONE     ,		\
-    k1       ,		\
-    kn1      ,		\
-    km1      ,		\
-    Ke2      ,		\
-    Ke3      ,		\
-    k6       ,		\
-    kc       ,		\
-    ko       ,		\
-    k7       ,		\
-    kr       ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RuACT_RC : int {
-  MEMBERS_RuACTRC
-};
-template<>
-struct enum_helper<MODULE_RuACT, PARAM_TYPE_RC> {
-  typedef ENUM_RuACT_RC type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_SUCSRC		\
-    NONE         ,		\
-    V51          ,		\
-    V52          ,		\
-    V55          ,		\
-    V56          ,		\
-    V57          ,		\
-    V58          ,		\
-    V59          ,		\
-    V62          ,		\
-    Vdhap_in     ,		\
-    Vgap_in      ,		\
-    Vpga_in      ,		\
-    KE501        ,		\
-    Km511        ,		\
-    Km512        ,		\
-    Km513        ,		\
-    KE51         ,		\
-    Km521        ,		\
-    KI521        ,		\
-    KI522        ,		\
-    KI523        ,		\
-    KE52         ,		\
-    KE531        ,		\
-    KE541        ,		\
-    Km551        ,		\
-    Km552        ,		\
-    Km553        ,		\
-    Km554        ,		\
-    KE55         ,		\
-    Km561        ,		\
-    Km562        ,		\
-    KI561        ,		\
-    KI562        ,		\
-    KI563        ,		\
-    KI564        ,		\
-    KI565        ,		\
-    KE56         ,		\
-    Km571        ,		\
-    Ki572        ,		\
-    KE57         ,		\
-    Km581        ,		\
-    KI581        ,		\
-    KI582        ,		\
-    Km591        ,		\
-    Km593        ,		\
-    KI591        ,		\
-    KE61         ,		\
-    Km621        ,		\
-    KE59         ,		\
-    Km592        ,		\
-    KI592        ,		\
-    Km601        ,		\
-    Km602        ,		\
-    Km603        ,		\
-    Km604        ,		\
-    KE60         ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_SUCS_RC : int {
-  MEMBERS_SUCSRC
-};
-template<>
-struct enum_helper<MODULE_SUCS, PARAM_TYPE_RC> {
-  typedef ENUM_SUCS_RC type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_XanCycleRC		\
-    NONE     ,		\
-    kva      ,		\
-    kaz      ,		\
-    kza      ,		\
-    kav      ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_XanCycle_RC : int {
-  MEMBERS_XanCycleRC
-};
-template<>
-struct enum_helper<MODULE_XanCycle, PARAM_TYPE_RC> {
-  typedef ENUM_XanCycle_RC type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_ALLVARS		\
-    NONE                  ,		\
-    AVR                   ,		\
-    HPR                   ,		\
-    O2                    ,		\
-    CO2_cond              ,		\
-    GLight                ,		\
-    O2_cond               ,		\
-    PS12ratio             ,		\
-    ADP                   ,		\
-    Pi                    ,		\
-    TestATPCost           ,		\
-    CO2_in                ,		\
-    TestLi_Wps            ,		\
-    TestLi                ,		\
-    PS2BF_Pi              ,		\
-    PS_PR_Param           ,		\
-    Tp                    ,		\
-    alfa                  ,		\
-    fc                    ,		\
-    lightParam            ,		\
-    alpha1                ,		\
-    alpha2                ,		\
-    input_LHCI            ,		\
-    input_LHCII           ,		\
-    input_PSI             ,		\
-    input_PSIIcore        ,		\
-    PSIIantennaSize       ,		\
-    PSIantennaSize        ,		\
-    ProteinTotalRatio     ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_ALL_VARS : int {
-  MEMBERS_ALLVARS
-};
-template<>
-struct enum_helper<MODULE_ALL, PARAM_TYPE_VARS> {
-  typedef ENUM_ALL_VARS type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_BFVel		\
-    NONE        ,		\
-    Vbf1        ,		\
-    Vbf2        ,		\
-    Vbf3        ,		\
-    Vbf4        ,		\
-    Vbf5        ,		\
-    Vbf6        ,		\
-    Vbf7        ,		\
-    Vbf8        ,		\
-    Vbf9        ,		\
-    Vbf10       ,		\
-    Vbf11       ,		\
-    Vqi         ,		\
-    Vipc        ,		\
-    Vicp        ,		\
-    Vinc        ,		\
-    Vinp        ,		\
-    Vdp         ,		\
-    Vdc         ,		\
-    Vfp         ,		\
-    Vfc         ,		\
-    Vsfd        ,		\
-    VsATP       ,		\
-    VgPQH2      ,		\
-    JKc         ,		\
-    JMgc        ,		\
-    JClc        ,		\
-    Vbf15       ,		\
-    Vbf16       ,		\
-    vbfn2       ,		\
-    VsNADPH     ,		\
-    vcet        ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_BF_VEL : int {
-  MEMBERS_BFVel
-};
-template<>
-struct enum_helper<MODULE_BF, PARAM_TYPE_VEL> {
-  typedef ENUM_BF_VEL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_FIBFVel		\
-    NONE   ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_FIBF_VEL : int {
-  MEMBERS_FIBFVel
-};
-template<>
-struct enum_helper<MODULE_FIBF, PARAM_TYPE_VEL> {
-  typedef ENUM_FIBF_VEL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_FIVel		\
-    NONE         ,		\
-    vA_d         ,		\
-    vA_f         ,		\
-    vA_U         ,		\
-    vU_A         ,		\
-    vU_f         ,		\
-    vU_d         ,		\
-    v1           ,		\
-    v_r1         ,		\
-    vS1_S2       ,		\
-    vS2_S3       ,		\
-    vS3_S0       ,		\
-    vS0_S1       ,		\
-    vz_1         ,		\
-    v1z_1        ,		\
-    v2z_1        ,		\
-    v3z_1        ,		\
-    v0z_1        ,		\
-    vz_2         ,		\
-    v1z_2        ,		\
-    v2z_2        ,		\
-    v3z_2        ,		\
-    v0z_2        ,		\
-    v1z          ,		\
-    v2z          ,		\
-    v3z          ,		\
-    v0z          ,		\
-    vAB1         ,		\
-    vBA1         ,		\
-    vAB2         ,		\
-    vBA2         ,		\
-    v3           ,		\
-    v_r3         ,		\
-    v3_n         ,		\
-    v_r3_n       ,		\
-    v_pq_ox      ,		\
-    Ic           ,		\
-    Ia           ,		\
-    v2_1         ,		\
-    v2_2         ,		\
-    v2_00_1      ,		\
-    v2_01_1      ,		\
-    v2_02_1      ,		\
-    v2_00_2      ,		\
-    v2_01_2      ,		\
-    v2_02_2      ,		\
-    vr2_00_1     ,		\
-    vr2_01_1     ,		\
-    vr2_02_1     ,		\
-    vr2_1        ,		\
-    vr2_00_2     ,		\
-    vr2_01_2     ,		\
-    vr2_02_2     ,		\
-    vr2_2        ,		\
-    vP680qU      ,		\
-    vP680qA      ,		\
-    vU_P680      ,		\
-    vP680_d      ,		\
-    vP680_f      ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_FI_VEL : int {
-  MEMBERS_FIVel
-};
-template<>
-struct enum_helper<MODULE_FI, PARAM_TYPE_VEL> {
-  typedef ENUM_FI_VEL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_PRVel		\
-    NONE      ,		\
-    v111      ,		\
-    v112      ,		\
-    v113      ,		\
-    v121      ,		\
-    v122      ,		\
-    v123      ,		\
-    v124      ,		\
-    v131      ,		\
-    v1in      ,		\
-    v2out     ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PR_VEL : int {
-  MEMBERS_PRVel
-};
-template<>
-struct enum_helper<MODULE_PR, PARAM_TYPE_VEL> {
-  typedef ENUM_PR_VEL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_PSVel		\
-    NONE     ,		\
-    v1       ,		\
-    v2       ,		\
-    v3       ,		\
-    v4       ,		\
-    v5       ,		\
-    v6       ,		\
-    v7       ,		\
-    v8       ,		\
-    v9       ,		\
-    v10      ,		\
-    v13      ,		\
-    v16      ,		\
-    v23      ,		\
-    v31      ,		\
-    v32      ,		\
-    v33      ,		\
-    Pi       ,		\
-    v24      ,		\
-    v25      ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_PS_VEL : int {
-  MEMBERS_PSVel
-};
-template<>
-struct enum_helper<MODULE_PS, PARAM_TYPE_VEL> {
-  typedef ENUM_PS_VEL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RROEAVel		\
-    NONE            ,		\
-    ve2GAPDH        ,		\
-    ve2FBPase       ,		\
-    ve2SBPase       ,		\
-    ve2PRK          ,		\
-    ve2ATPase       ,		\
-    ve2ATPGPP       ,		\
-    ve2MDH          ,		\
-    ve2Fd           ,		\
-    veFd2Thio       ,		\
-    veFd2Calvin     ,		\
-    ve2RuACT        ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RROEA_VEL : int {
-  MEMBERS_RROEAVel
-};
-template<>
-struct enum_helper<MODULE_RROEA, PARAM_TYPE_VEL> {
-  typedef ENUM_RROEA_VEL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RedoxRegVel		\
-    NONE     ,		\
-    Vred     ,		\
-    Vox      ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RedoxReg_VEL : int {
-  MEMBERS_RedoxRegVel
-};
-template<>
-struct enum_helper<MODULE_RedoxReg, PARAM_TYPE_VEL> {
-  typedef ENUM_RedoxReg_VEL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_RuACTVel		\
-    NONE     ,		\
-    v1       ,		\
-    vn1      ,		\
-    v7       ,		\
-    vn7      ,		\
-    v6_1     ,		\
-    v6_2     ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_RuACT_VEL : int {
-  MEMBERS_RuACTVel
-};
-template<>
-struct enum_helper<MODULE_RuACT, PARAM_TYPE_VEL> {
-  typedef ENUM_RuACT_VEL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_SUCSVel		\
-    NONE         ,		\
-    v51          ,		\
-    v52          ,		\
-    v55          ,		\
-    v56          ,		\
-    v57          ,		\
-    v58          ,		\
-    v59          ,		\
-    v60          ,		\
-    v61          ,		\
-    v62          ,		\
-    vdhap_in     ,		\
-    vgap_in      ,		\
-    vpga_in      ,		\
-    vpga_use     ,		\
-    vatpf        ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_SUCS_VEL : int {
-  MEMBERS_SUCSVel
-};
-template<>
-struct enum_helper<MODULE_SUCS, PARAM_TYPE_VEL> {
-  typedef ENUM_SUCS_VEL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
-#define MEMBERS_XanCycleVel		\
-    NONE       ,		\
-    Vva        ,		\
-    Vaz        ,		\
-    Vza        ,		\
-    Vav        ,		\
-    Vvf        ,		\
-    Vv2ABA     ,		\
-    VABAdg     ,		\
-    MAX
-
-#ifdef EPHOTO_USE_SCOPED_ENUM
-enum class ENUM_XanCycle_VEL : int {
-  MEMBERS_XanCycleVel
-};
-template<>
-struct enum_helper<MODULE_XanCycle, PARAM_TYPE_VEL> {
-  typedef ENUM_XanCycle_VEL type;
-};
-#endif // EPHOTO_USE_SCOPED_ENUM
-
+namespace ePhotosynthesis {
+  // [BEGIN] GLOBAL_ENUM
+  #define MEMBERS_MODULE		\
+      MODULE_NONE       ,		\
+      MODULE_BF         ,		\
+      MODULE_CM         ,		\
+      MODULE_DynaPS     ,		\
+      MODULE_EPS        ,		\
+      MODULE_FIBF       ,		\
+      MODULE_FI         ,		\
+      MODULE_PR         ,		\
+      MODULE_PS         ,		\
+      MODULE_PS_PR      ,		\
+      MODULE_RA         ,		\
+      MODULE_RROEA      ,		\
+      MODULE_RedoxReg   ,		\
+      MODULE_RuACT      ,		\
+      MODULE_SUCS       ,		\
+      MODULE_XanCycle   ,		\
+      MODULE_trDynaPS   ,		\
+      MODULE_ALL        ,		\
+      MODULE_MAX
+  #define MEMBER_NAMES_MODULE		\
+      BF         ,		\
+      CM         ,		\
+      DynaPS     ,		\
+      EPS        ,		\
+      FIBF       ,		\
+      FI         ,		\
+      PR         ,		\
+      PS         ,		\
+      PS_PR      ,		\
+      RA         ,		\
+      RROEA      ,		\
+      RedoxReg   ,		\
+      RuACT      ,		\
+      SUCS       ,		\
+      XanCycle   ,		\
+      trDynaPS
+  enum MODULE : int {
+    MEMBERS_MODULE
+  };
+  static const std::vector<MODULE> ALL_MODULE = {MODULE_BF, MODULE_CM, MODULE_DynaPS, MODULE_EPS, MODULE_FIBF, MODULE_FI, MODULE_PR, MODULE_PS, MODULE_PS_PR, MODULE_RA, MODULE_RROEA, MODULE_RedoxReg, MODULE_RuACT, MODULE_SUCS, MODULE_XanCycle, MODULE_trDynaPS, MODULE_ALL};  /**< All enum values */
+  
+  #define MEMBERS_PARAM		\
+      PARAM_TYPE_NONE   ,		\
+      PARAM_TYPE_COND   ,		\
+      PARAM_TYPE_POOL   ,		\
+      PARAM_TYPE_KE     ,		\
+      PARAM_TYPE_MOD    ,		\
+      PARAM_TYPE_RC     ,		\
+      PARAM_TYPE_VARS   ,		\
+      PARAM_TYPE_VEL    ,		\
+      PARAM_TYPE_MAX
+  #define MEMBER_NAMES_PARAM		\
+      COND   ,		\
+      POOL   ,		\
+      KE     ,		\
+      MOD    ,		\
+      RC     ,		\
+      VEL
+  enum PARAM_TYPE : int {
+    MEMBERS_PARAM
+  };
+  static const std::vector<PARAM_TYPE> ALL_PARAM_TYPE = {PARAM_TYPE_COND, PARAM_TYPE_POOL, PARAM_TYPE_KE, PARAM_TYPE_MOD, PARAM_TYPE_RC, PARAM_TYPE_VARS, PARAM_TYPE_VEL};  /**< All enum values */
+  
+  // [END] GLOBAL_ENUM
+  
+  // Unspecialized enum helper
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  template<MODULE M, PARAM_TYPE PT>
+  struct enum_helper {
+    typedef int type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+}
+namespace ePhotosynthesis {
+  #define MEMBERS_BFCondition		\
+      NONE        ,		\
+      ISPHr       ,		\
+      cytc1       ,		\
+      ISPo        ,		\
+      ISPoQH2     ,		\
+      QHsemi      ,		\
+      cytbL       ,		\
+      Qi          ,		\
+      Q           ,		\
+      cytbH       ,		\
+      Qn          ,		\
+      Qr          ,		\
+      QH2         ,		\
+      cytc2       ,		\
+      P700        ,		\
+      ADP         ,		\
+      ATP         ,		\
+      Ks          ,		\
+      Mgs         ,		\
+      Cls         ,		\
+      Aip         ,		\
+      U           ,		\
+      An          ,		\
+      Fdn         ,		\
+      BFHs        ,		\
+      BFHl        ,		\
+      PHs         ,		\
+      PHl         ,		\
+      NADPH       ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_BF_COND : int {
+    MEMBERS_BFCondition
+  };
+  template<>
+  struct enum_helper<MODULE_BF, PARAM_TYPE_COND> {
+    typedef ENUM_BF_COND type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_CMCondition		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_CM_COND : int {
+    MEMBERS_CMCondition
+  };
+  template<>
+  struct enum_helper<MODULE_CM, PARAM_TYPE_COND> {
+    typedef ENUM_CM_COND type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_DynaPSCondition		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_DynaPS_COND : int {
+    MEMBERS_DynaPSCondition
+  };
+  template<>
+  struct enum_helper<MODULE_DynaPS, PARAM_TYPE_COND> {
+    typedef ENUM_DynaPS_COND type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_EPSCondition		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_EPS_COND : int {
+    MEMBERS_EPSCondition
+  };
+  template<>
+  struct enum_helper<MODULE_EPS, PARAM_TYPE_COND> {
+    typedef ENUM_EPS_COND type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_FIBFCondition		\
+      NONE     ,		\
+      kd       ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_FIBF_COND : int {
+    MEMBERS_FIBFCondition
+  };
+  template<>
+  struct enum_helper<MODULE_FIBF, PARAM_TYPE_COND> {
+    typedef ENUM_FIBF_COND type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_FICondition		\
+      NONE           ,		\
+      A              ,		\
+      U              ,		\
+      P680ePheo      ,		\
+      P680pPheon     ,		\
+      P680pPheo      ,		\
+      P680Pheon      ,		\
+      Yz             ,		\
+      S1T            ,		\
+      S2T            ,		\
+      S3T            ,		\
+      S0T            ,		\
+      S1Tp           ,		\
+      S2Tp           ,		\
+      S3Tp           ,		\
+      S0Tp           ,		\
+      QAQB           ,		\
+      QAnQB          ,		\
+      QAQBn          ,		\
+      QAnQBn         ,		\
+      QAQB2n         ,		\
+      QAnQB2n        ,		\
+      PQn            ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_FI_COND : int {
+    MEMBERS_FICondition
+  };
+  template<>
+  struct enum_helper<MODULE_FI, PARAM_TYPE_COND> {
+    typedef ENUM_FI_COND type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_PRCondition		\
+      NONE      ,		\
+      GCEA      ,		\
+      GCA       ,		\
+      PGCA      ,		\
+      GCAc      ,		\
+      GOAc      ,		\
+      SERc      ,		\
+      GLYc      ,		\
+      HPRc      ,		\
+      GCEAc     ,		\
+      RuBP      ,		\
+      _v131     ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_PR_COND : int {
+    MEMBERS_PRCondition
+  };
+  template<>
+  struct enum_helper<MODULE_PR, PARAM_TYPE_COND> {
+    typedef ENUM_PR_COND type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_PSCondition		\
+      NONE     ,		\
+      RuBP     ,		\
+      PGA      ,		\
+      DPGA     ,		\
+      T3P      ,		\
+      ADPG     ,		\
+      FBP      ,		\
+      E4P      ,		\
+      S7P      ,		\
+      SBP      ,		\
+      ATP      ,		\
+      HexP     ,		\
+      PenP     ,		\
+      _Pi      ,		\
+      _ADP     ,		\
+      _v1      ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_PS_COND : int {
+    MEMBERS_PSCondition
+  };
+  template<>
+  struct enum_helper<MODULE_PS, PARAM_TYPE_COND> {
+    typedef ENUM_PS_COND type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_PS_PRCondition		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_PS_PR_COND : int {
+    MEMBERS_PS_PRCondition
+  };
+  template<>
+  struct enum_helper<MODULE_PS_PR, PARAM_TYPE_COND> {
+    typedef ENUM_PS_PR_COND type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RACondition		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RA_COND : int {
+    MEMBERS_RACondition
+  };
+  template<>
+  struct enum_helper<MODULE_RA, PARAM_TYPE_COND> {
+    typedef ENUM_RA_COND type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RROEACondition		\
+      NONE       ,		\
+      GAPDH      ,		\
+      FBPase     ,		\
+      SBPase     ,		\
+      PRK        ,		\
+      ATPase     ,		\
+      ATPGPP     ,		\
+      MDH        ,		\
+      Thio       ,		\
+      Fd         ,		\
+      RuACT      ,		\
+      Coeff      ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RROEA_COND : int {
+    MEMBERS_RROEACondition
+  };
+  template<>
+  struct enum_helper<MODULE_RROEA, PARAM_TYPE_COND> {
+    typedef ENUM_RROEA_COND type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RedoxRegCondition		\
+      NONE      ,		\
+      Thion     ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RedoxReg_COND : int {
+    MEMBERS_RedoxRegCondition
+  };
+  template<>
+  struct enum_helper<MODULE_RedoxReg, PARAM_TYPE_COND> {
+    typedef ENUM_RedoxReg_COND type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RuACTCondition		\
+      NONE     ,		\
+      ER       ,		\
+      Eaf      ,		\
+      ECMR     ,		\
+      RuBP     ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RuACT_COND : int {
+    MEMBERS_RuACTCondition
+  };
+  template<>
+  struct enum_helper<MODULE_RuACT, PARAM_TYPE_COND> {
+    typedef ENUM_RuACT_COND type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_SUCSCondition		\
+      NONE       ,		\
+      T3Pc       ,		\
+      FBPc       ,		\
+      HexPc      ,		\
+      F26BPc     ,		\
+      UDPGc      ,		\
+      SUCP       ,		\
+      SUC        ,		\
+      PGAc       ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_SUCS_COND : int {
+    MEMBERS_SUCSCondition
+  };
+  template<>
+  struct enum_helper<MODULE_SUCS, PARAM_TYPE_COND> {
+    typedef ENUM_SUCS_COND type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_XanCycleCondition		\
+      NONE     ,		\
+      Vx       ,		\
+      Ax       ,		\
+      Zx       ,		\
+      ABA      ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_XanCycle_COND : int {
+    MEMBERS_XanCycleCondition
+  };
+  template<>
+  struct enum_helper<MODULE_XanCycle, PARAM_TYPE_COND> {
+    typedef ENUM_XanCycle_COND type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_trDynaPSCondition		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_trDynaPS_COND : int {
+    MEMBERS_trDynaPSCondition
+  };
+  template<>
+  struct enum_helper<MODULE_trDynaPS, PARAM_TYPE_COND> {
+    typedef ENUM_trDynaPS_COND type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+}
+namespace ePhotosynthesis {
+  #define MEMBERS_BFPool		\
+      NONE     ,		\
+      kA_d     ,		\
+      kA_f     ,		\
+      kA_U     ,		\
+      kU_A     ,		\
+      kU_d     ,		\
+      kU_f     ,		\
+      k1       ,		\
+      k_r1     ,		\
+      kz       ,		\
+      k12      ,		\
+      k23      ,		\
+      k30      ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_BF_POOL : int {
+    MEMBERS_BFPool
+  };
+  template<>
+  struct enum_helper<MODULE_BF, PARAM_TYPE_POOL> {
+    typedef ENUM_BF_POOL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_FIBFPool		\
+      NONE     ,		\
+      PQT      ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_FIBF_POOL : int {
+    MEMBERS_FIBFPool
+  };
+  template<>
+  struct enum_helper<MODULE_FIBF, PARAM_TYPE_POOL> {
+    typedef ENUM_FIBF_POOL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_FIPool		\
+      NONE     ,		\
+      QBt      ,		\
+      PQT      ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_FI_POOL : int {
+    MEMBERS_FIPool
+  };
+  template<>
+  struct enum_helper<MODULE_FI, PARAM_TYPE_POOL> {
+    typedef ENUM_FI_POOL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_PRPool		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_PR_POOL : int {
+    MEMBERS_PRPool
+  };
+  template<>
+  struct enum_helper<MODULE_PR, PARAM_TYPE_POOL> {
+    typedef ENUM_PR_POOL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_PSPool		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_PS_POOL : int {
+    MEMBERS_PSPool
+  };
+  template<>
+  struct enum_helper<MODULE_PS, PARAM_TYPE_POOL> {
+    typedef ENUM_PS_POOL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RROEAPool		\
+      NONE          ,		\
+      GAPDH         ,		\
+      FBPase        ,		\
+      SBPase        ,		\
+      PRK           ,		\
+      ATPase        ,		\
+      ATPGPP        ,		\
+      MDH           ,		\
+      ThioT         ,		\
+      FdT           ,		\
+      RuACTT        ,		\
+      SA_GAPDH      ,		\
+      SA_FBPase     ,		\
+      SA_SBPase     ,		\
+      SA_PRK        ,		\
+      SA_ATPase     ,		\
+      SA_ATPGPP     ,		\
+      SA_MDH        ,		\
+      mw_GAPDH      ,		\
+      mw_FBPase     ,		\
+      mw_SBPase     ,		\
+      mw_PRK        ,		\
+      mw_ATPase     ,		\
+      mw_ATPGPP     ,		\
+      mw_MDH        ,		\
+      MDH_Vmax      ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RROEA_POOL : int {
+    MEMBERS_RROEAPool
+  };
+  template<>
+  struct enum_helper<MODULE_RROEA, PARAM_TYPE_POOL> {
+    typedef ENUM_RROEA_POOL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RedoxRegPool		\
+      NONE             ,		\
+      FBPase_Coeff     ,		\
+      FBPase0          ,		\
+      SBPase_Coeff     ,		\
+      SBPase0          ,		\
+      PRK_Coeff        ,		\
+      PRK0             ,		\
+      ATPase_Coeff     ,		\
+      ATPase0          ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RedoxReg_POOL : int {
+    MEMBERS_RedoxRegPool
+  };
+  template<>
+  struct enum_helper<MODULE_RedoxReg, PARAM_TYPE_POOL> {
+    typedef ENUM_RedoxReg_POOL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RuACTPool		\
+      NONE     ,		\
+      ET       ,		\
+      Rac      ,		\
+      C        ,		\
+      O        ,		\
+      M        ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RuACT_POOL : int {
+    MEMBERS_RuACTPool
+  };
+  template<>
+  struct enum_helper<MODULE_RuACT, PARAM_TYPE_POOL> {
+    typedef ENUM_RuACT_POOL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_SUCSPool		\
+      NONE     ,		\
+      ATc      ,		\
+      UTc      ,		\
+      PTc      ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_SUCS_POOL : int {
+    MEMBERS_SUCSPool
+  };
+  template<>
+  struct enum_helper<MODULE_SUCS, PARAM_TYPE_POOL> {
+    typedef ENUM_SUCS_POOL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_XanCyclePool		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_XanCycle_POOL : int {
+    MEMBERS_XanCyclePool
+  };
+  template<>
+  struct enum_helper<MODULE_XanCycle, PARAM_TYPE_POOL> {
+    typedef ENUM_XanCycle_POOL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+}
+namespace ePhotosynthesis {
+  #define MEMBERS_BFKE		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_BF_KE : int {
+    MEMBERS_BFKE
+  };
+  template<>
+  struct enum_helper<MODULE_BF, PARAM_TYPE_KE> {
+    typedef ENUM_BF_KE type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_FIBFKE		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_FIBF_KE : int {
+    MEMBERS_FIBFKE
+  };
+  template<>
+  struct enum_helper<MODULE_FIBF, PARAM_TYPE_KE> {
+    typedef ENUM_FIBF_KE type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_FIKE		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_FI_KE : int {
+    MEMBERS_FIKE
+  };
+  template<>
+  struct enum_helper<MODULE_FI, PARAM_TYPE_KE> {
+    typedef ENUM_FI_KE type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_PRKE		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_PR_KE : int {
+    MEMBERS_PRKE
+  };
+  template<>
+  struct enum_helper<MODULE_PR, PARAM_TYPE_KE> {
+    typedef ENUM_PR_KE type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_PSKE		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_PS_KE : int {
+    MEMBERS_PSKE
+  };
+  template<>
+  struct enum_helper<MODULE_PS, PARAM_TYPE_KE> {
+    typedef ENUM_PS_KE type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RROEAKE		\
+      NONE           ,		\
+      KEe2FBPase     ,		\
+      KEe2SBPase     ,		\
+      KEe2PRK        ,		\
+      KEe2ATPase     ,		\
+      KEe2RuACT      ,		\
+      KEe2GAPDH      ,		\
+      KEe2MDH        ,		\
+      KEe2ATPGPP     ,		\
+      KEeFd2Thio     ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RROEA_KE : int {
+    MEMBERS_RROEAKE
+  };
+  template<>
+  struct enum_helper<MODULE_RROEA, PARAM_TYPE_KE> {
+    typedef ENUM_RROEA_KE type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RedoxRegKE		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RedoxReg_KE : int {
+    MEMBERS_RedoxRegKE
+  };
+  template<>
+  struct enum_helper<MODULE_RedoxReg, PARAM_TYPE_KE> {
+    typedef ENUM_RedoxReg_KE type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RuACTKE		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RuACT_KE : int {
+    MEMBERS_RuACTKE
+  };
+  template<>
+  struct enum_helper<MODULE_RuACT, PARAM_TYPE_KE> {
+    typedef ENUM_RuACT_KE type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_SUCSKE		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_SUCS_KE : int {
+    MEMBERS_SUCSKE
+  };
+  template<>
+  struct enum_helper<MODULE_SUCS, PARAM_TYPE_KE> {
+    typedef ENUM_SUCS_KE type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_XanCycleKE		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_XanCycle_KE : int {
+    MEMBERS_XanCycleKE
+  };
+  template<>
+  struct enum_helper<MODULE_XanCycle, PARAM_TYPE_KE> {
+    typedef ENUM_XanCycle_KE type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+}
+namespace ePhotosynthesis {
+  #define MEMBERS_BF		\
+      NONE             ,		\
+      cATPsyn          ,		\
+      CPSi             ,		\
+      cNADPHsyn        ,		\
+      EPS_ATP_Rate     ,		\
+      _Pi              ,		\
+      PMODTEM          ,		\
+      RT               ,		\
+      DeltaGo          ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_BF_MOD : int {
+    MEMBERS_BF
+  };
+  template<>
+  struct enum_helper<MODULE_BF, PARAM_TYPE_MOD> {
+    typedef ENUM_BF_MOD type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_CM		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_CM_MOD : int {
+    MEMBERS_CM
+  };
+  template<>
+  struct enum_helper<MODULE_CM, PARAM_TYPE_MOD> {
+    typedef ENUM_CM_MOD type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_DynaPS		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_DynaPS_MOD : int {
+    MEMBERS_DynaPS
+  };
+  template<>
+  struct enum_helper<MODULE_DynaPS, PARAM_TYPE_MOD> {
+    typedef ENUM_DynaPS_MOD type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_EPS		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_EPS_MOD : int {
+    MEMBERS_EPS
+  };
+  template<>
+  struct enum_helper<MODULE_EPS, PARAM_TYPE_MOD> {
+    typedef ENUM_EPS_MOD type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_FIBF		\
+      NONE            ,		\
+      ChlPSI          ,		\
+      ChlT            ,		\
+      ChlT2           ,		\
+      FIBF2FI_PQ      ,		\
+      FIBF2FI_PQa     ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_FIBF_MOD : int {
+    MEMBERS_FIBF
+  };
+  template<>
+  struct enum_helper<MODULE_FIBF, PARAM_TYPE_MOD> {
+    typedef ENUM_FIBF_MOD type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_FI		\
+      NONE      ,		\
+      cpsii     ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_FI_MOD : int {
+    MEMBERS_FI
+  };
+  template<>
+  struct enum_helper<MODULE_FI, PARAM_TYPE_MOD> {
+    typedef ENUM_FI_MOD type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_PR		\
+      NONE             ,		\
+      V111             ,		\
+      V112             ,		\
+      V113             ,		\
+      V121             ,		\
+      V122             ,		\
+      V123             ,		\
+      V124             ,		\
+      V131             ,		\
+      NADHc            ,		\
+      NADc             ,		\
+      GLUc             ,		\
+      KGc              ,		\
+      PR_ADP           ,		\
+      PR_ATP           ,		\
+      KO               ,		\
+      KC               ,		\
+      KR               ,		\
+      KM112            ,		\
+      KI1122           ,		\
+      KI1121           ,		\
+      KM1131           ,		\
+      KM1132           ,		\
+      KI113            ,		\
+      KE113            ,		\
+      KM121            ,		\
+      KM1221           ,		\
+      KM1222           ,		\
+      KI1221           ,		\
+      KE122            ,		\
+      KM123            ,		\
+      KI123            ,		\
+      KE123            ,		\
+      KM1241           ,		\
+      KM1242           ,		\
+      KI124            ,		\
+      KE124            ,		\
+      KM1311           ,		\
+      KI1311           ,		\
+      KM1312           ,		\
+      KI1312           ,		\
+      V1T              ,		\
+      KM1011           ,		\
+      KI1011           ,		\
+      V2T              ,		\
+      KM1012           ,		\
+      KI1012           ,		\
+      Vfactor112       ,		\
+      Vfactor113       ,		\
+      Vfactor121       ,		\
+      Vfactor122       ,		\
+      Vfactor123       ,		\
+      Vfactor124       ,		\
+      Vfactor131       ,		\
+      Vf_T131          ,		\
+      Vf_T113          ,		\
+      Vf_T123          ,		\
+      Vf_T121          ,		\
+      Vf_T122          ,		\
+      Vf_T112          ,		\
+      PGA              ,		\
+      RUBISCOTOTAL     ,		\
+      PrV112           ,		\
+      PrV113           ,		\
+      PrV121           ,		\
+      PrV122           ,		\
+      PrV123           ,		\
+      PrV124           ,		\
+      PrV131           ,		\
+      Q10_112          ,		\
+      Q10_113          ,		\
+      Q10_121          ,		\
+      Q10_122          ,		\
+      Q10_123          ,		\
+      Q10_124          ,		\
+      Q10_131          ,		\
+      CE               ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_PR_MOD : int {
+    MEMBERS_PR
+  };
+  template<>
+  struct enum_helper<MODULE_PR, PARAM_TYPE_MOD> {
+    typedef ENUM_PR_MOD type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_PS		\
+      NONE          ,		\
+      PS_C_CP       ,		\
+      PS_C_CA       ,		\
+      PS_C_CN       ,		\
+      PS_PEXT       ,		\
+      V1            ,		\
+      V2            ,		\
+      V3            ,		\
+      V5            ,		\
+      V6            ,		\
+      V7            ,		\
+      V8            ,		\
+      V9            ,		\
+      V10           ,		\
+      V13           ,		\
+      V16           ,		\
+      V23           ,		\
+      V24           ,		\
+      V31           ,		\
+      V32           ,		\
+      V33           ,		\
+      KM11          ,		\
+      KM12          ,		\
+      KM13          ,		\
+      KI11          ,		\
+      KI12          ,		\
+      KI13          ,		\
+      KI14          ,		\
+      KI15          ,		\
+      KM21          ,		\
+      KM22          ,		\
+      KM23          ,		\
+      KM31a         ,		\
+      KM32b         ,		\
+      KE4           ,		\
+      KM51          ,		\
+      KM52          ,		\
+      KM53          ,		\
+      KE5           ,		\
+      KM61          ,		\
+      KI61          ,		\
+      KI62          ,		\
+      KE6           ,		\
+      KM71          ,		\
+      KM72          ,		\
+      KM73          ,		\
+      KM74          ,		\
+      KE7           ,		\
+      KM81          ,		\
+      KM82          ,		\
+      KE8           ,		\
+      KM9           ,		\
+      KI9           ,		\
+      KE9           ,		\
+      KM10          ,		\
+      KM101         ,		\
+      KM102         ,		\
+      KM103         ,		\
+      KE10          ,		\
+      KE11          ,		\
+      KE12          ,		\
+      KM131         ,		\
+      KM132         ,		\
+      KI131         ,		\
+      KI132         ,		\
+      KI133         ,		\
+      KI134         ,		\
+      KI135         ,		\
+      KE13          ,		\
+      KM161         ,		\
+      KM162         ,		\
+      KM163         ,		\
+      KE16          ,		\
+      KE21          ,		\
+      KE22          ,		\
+      KM311         ,		\
+      KM312         ,		\
+      KM313         ,		\
+      KM32          ,		\
+      KM33          ,		\
+      KM231         ,		\
+      KM232         ,		\
+      KM233         ,		\
+      KM234         ,		\
+      KE23          ,		\
+      KA231         ,		\
+      KI231         ,		\
+      KVmo          ,		\
+      KM241         ,		\
+      KA232         ,		\
+      KA233         ,		\
+      KI23          ,		\
+      KE25          ,		\
+      KE57          ,		\
+      Km8p5p        ,		\
+      Km5p5p        ,		\
+      KE810         ,		\
+      Km5gap        ,		\
+      Km8f6p        ,		\
+      Km8s7p        ,		\
+      Km8gap        ,		\
+      MaxCoeff      ,		\
+      _NADPH        ,		\
+      KE1Ratio      ,		\
+      KE2Ratio      ,		\
+      Ru_Act        ,		\
+      PsV31         ,		\
+      PsV32         ,		\
+      PsV33         ,		\
+      PiTc          ,		\
+      V1Reg         ,		\
+      Theta         ,		\
+      beta          ,		\
+      Jmax          ,		\
+      Vfactor1      ,		\
+      Vfactor2      ,		\
+      Vfactor3      ,		\
+      Vfactor5      ,		\
+      Vfactor7      ,		\
+      Vfactor13     ,		\
+      Vfactor23     ,		\
+      Vf_T3         ,		\
+      Vf_T2         ,		\
+      Vf_T1         ,		\
+      Vf_T6         ,		\
+      Vf_T5         ,		\
+      Vf_T9         ,		\
+      Vf_T13        ,		\
+      Vf_T23        ,		\
+      PsV1          ,		\
+      PsV2          ,		\
+      PsV3          ,		\
+      PsV5          ,		\
+      PsV6          ,		\
+      PsV7          ,		\
+      PsV8          ,		\
+      PsV9          ,		\
+      PsV10         ,		\
+      PsV13         ,		\
+      PsV16         ,		\
+      PsV23         ,		\
+      PsV1_0        ,		\
+      PsV2_0        ,		\
+      PsV3_0        ,		\
+      PsV5_0        ,		\
+      PsV6_0        ,		\
+      PsV7_0        ,		\
+      PsV8_0        ,		\
+      PsV9_0        ,		\
+      PsV10_0       ,		\
+      PsV13_0       ,		\
+      PsV23_0       ,		\
+      I2            ,		\
+      J             ,		\
+      Q10_1         ,		\
+      Q10_2         ,		\
+      Q10_3         ,		\
+      Q10_5         ,		\
+      Q10_6         ,		\
+      Q10_7         ,		\
+      Q10_8         ,		\
+      Q10_9         ,		\
+      Q10_10        ,		\
+      Q10_13        ,		\
+      Q10_23        ,		\
+      R             ,		\
+      c_c           ,		\
+      dHa_c         ,		\
+      c_o           ,		\
+      dHa_o         ,		\
+      RegFactor     ,		\
+      SC            ,		\
+      SC1           ,		\
+      STOM1         ,		\
+      STOM2         ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_PS_MOD : int {
+    MEMBERS_PS
+  };
+  template<>
+  struct enum_helper<MODULE_PS, PARAM_TYPE_MOD> {
+    typedef ENUM_PS_MOD type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_PS_PR		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_PS_PR_MOD : int {
+    MEMBERS_PS_PR
+  };
+  template<>
+  struct enum_helper<MODULE_PS_PR, PARAM_TYPE_MOD> {
+    typedef ENUM_PS_PR_MOD type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RA		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RA_MOD : int {
+    MEMBERS_RA
+  };
+  template<>
+  struct enum_helper<MODULE_RA, PARAM_TYPE_MOD> {
+    typedef ENUM_RA_MOD type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RROEA		\
+      NONE     ,		\
+      SC       ,		\
+      fc16     ,		\
+      FC       ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RROEA_MOD : int {
+    MEMBERS_RROEA
+  };
+  template<>
+  struct enum_helper<MODULE_RROEA, PARAM_TYPE_MOD> {
+    typedef ENUM_RROEA_MOD type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RedoxReg		\
+      NONE                ,		\
+      RedoxReg_VMAX6      ,		\
+      RedoxReg_VMAX9      ,		\
+      RedoxReg_VMAX13     ,		\
+      RedoxReg_VMAX16     ,		\
+      Fd_Thio_ET          ,		\
+      ThioT               ,		\
+      Thio_Oxidation      ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RedoxReg_MOD : int {
+    MEMBERS_RedoxReg
+  };
+  template<>
+  struct enum_helper<MODULE_RedoxReg, PARAM_TYPE_MOD> {
+    typedef ENUM_RedoxReg_MOD type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RuACT		\
+      NONE         ,		\
+      activase     ,		\
+      factor       ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RuACT_MOD : int {
+    MEMBERS_RuACT
+  };
+  template<>
+  struct enum_helper<MODULE_RuACT, PARAM_TYPE_MOD> {
+    typedef ENUM_RuACT_MOD type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_SUCS		\
+      NONE            ,		\
+      V51             ,		\
+      V52             ,		\
+      V55             ,		\
+      V56             ,		\
+      V57             ,		\
+      V58             ,		\
+      V59             ,		\
+      V60             ,		\
+      V61             ,		\
+      V62             ,		\
+      Vdhap_in        ,		\
+      Vgap_in         ,		\
+      Vpga_in         ,		\
+      KE501           ,		\
+      Km511           ,		\
+      Km512           ,		\
+      Km513           ,		\
+      KE51            ,		\
+      Km521           ,		\
+      KI521           ,		\
+      KI522           ,		\
+      KI523           ,		\
+      KE52            ,		\
+      KE531           ,		\
+      KE541           ,		\
+      Km551           ,		\
+      Km552           ,		\
+      Km553           ,		\
+      Km554           ,		\
+      KE55            ,		\
+      Km561           ,		\
+      Km562           ,		\
+      KI561           ,		\
+      KI562           ,		\
+      KI563           ,		\
+      KI564           ,		\
+      KI565           ,		\
+      KE56            ,		\
+      Km571           ,		\
+      Ki572           ,		\
+      KE57            ,		\
+      Km581           ,		\
+      KI581           ,		\
+      KI582           ,		\
+      KI583           ,		\
+      Km591           ,		\
+      Km592           ,		\
+      Km593           ,		\
+      KI591           ,		\
+      KI592           ,		\
+      KE59            ,		\
+      Km601           ,		\
+      Km602           ,		\
+      Km603           ,		\
+      Km604           ,		\
+      KE60            ,		\
+      KE61            ,		\
+      Km621           ,		\
+      ATPc            ,		\
+      UTPc            ,		\
+      Vf_T52          ,		\
+      Vf_T59          ,		\
+      Vf_T57          ,		\
+      Vf_T51          ,		\
+      Vf_T56          ,		\
+      Vfactor51       ,		\
+      Vfactor52       ,		\
+      Vfactor56       ,		\
+      Vfactor57       ,		\
+      Vfactor59       ,		\
+      SUCSV51         ,		\
+      SUCSV52         ,		\
+      SUCSV55         ,		\
+      SUCSV56         ,		\
+      SUCSV57         ,		\
+      SUCSV58         ,		\
+      SUCS2PS_Pic     ,		\
+      KE5Ratio        ,		\
+      ADPc            ,		\
+      Vmatpf          ,		\
+      Q10_51          ,		\
+      Q10_52          ,		\
+      Q10_55          ,		\
+      Q10_56          ,		\
+      Q10_57          ,		\
+      Q10_58          ,		\
+      SC              ,		\
+      SC1             ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_SUCS_MOD : int {
+    MEMBERS_SUCS
+  };
+  template<>
+  struct enum_helper<MODULE_SUCS, PARAM_TYPE_MOD> {
+    typedef ENUM_SUCS_MOD type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_XanCycle		\
+      NONE                     ,		\
+      kva                      ,		\
+      kaz                      ,		\
+      kza                      ,		\
+      kav                      ,		\
+      Vx_                      ,		\
+      Ax_                      ,		\
+      Zx_                      ,		\
+      ABA_                     ,		\
+      XanCycle2FIBF_Xstate     ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_XanCycle_MOD : int {
+    MEMBERS_XanCycle
+  };
+  template<>
+  struct enum_helper<MODULE_XanCycle, PARAM_TYPE_MOD> {
+    typedef ENUM_XanCycle_MOD type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_trDynaPS		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_trDynaPS_MOD : int {
+    MEMBERS_trDynaPS
+  };
+  template<>
+  struct enum_helper<MODULE_trDynaPS, PARAM_TYPE_MOD> {
+    typedef ENUM_trDynaPS_MOD type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+}
+namespace ePhotosynthesis {
+  #define MEMBERS_BFRC		\
+      NONE         ,		\
+      K1           ,		\
+      K2           ,		\
+      K3           ,		\
+      K4           ,		\
+      K5           ,		\
+      K6           ,		\
+      K7           ,		\
+      K8           ,		\
+      K9           ,		\
+      K10          ,		\
+      Vmax11       ,		\
+      Kqi          ,		\
+      PK           ,		\
+      PMg          ,		\
+      PCl          ,		\
+      Kau          ,		\
+      Kua          ,		\
+      Kf           ,		\
+      Kd           ,		\
+      KE8          ,		\
+      KE9          ,		\
+      K15          ,		\
+      K16          ,		\
+      Em_IPS       ,		\
+      Em_Cytf      ,		\
+      Em_PG        ,		\
+      MemCap       ,		\
+      RVA          ,		\
+      KBs          ,		\
+      KBl          ,		\
+      KM1ATP       ,		\
+      KM1ADP       ,		\
+      KM1PI        ,		\
+      KM2NADP      ,		\
+      KM2NADPH     ,		\
+      V2M          ,		\
+      KE2          ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_BF_RC : int {
+    MEMBERS_BFRC
+  };
+  template<>
+  struct enum_helper<MODULE_BF, PARAM_TYPE_RC> {
+    typedef ENUM_BF_RC type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_FIBFRC		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_FIBF_RC : int {
+    MEMBERS_FIBFRC
+  };
+  template<>
+  struct enum_helper<MODULE_FIBF, PARAM_TYPE_RC> {
+    typedef ENUM_FIBF_RC type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_FIRC		\
+      NONE         ,		\
+      kA_d         ,		\
+      kA_f         ,		\
+      kA_U         ,		\
+      kU_A         ,		\
+      kU_d         ,		\
+      kU_f         ,		\
+      k1           ,		\
+      k_r1         ,		\
+      kz           ,		\
+      k12          ,		\
+      k23          ,		\
+      k30          ,		\
+      k01          ,		\
+      k2           ,		\
+      kAB1         ,		\
+      kBA1         ,		\
+      kAB2         ,		\
+      kBA2         ,		\
+      k3           ,		\
+      k_r3         ,		\
+      k_pq_oxy     ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_FI_RC : int {
+    MEMBERS_FIRC
+  };
+  template<>
+  struct enum_helper<MODULE_FI, PARAM_TYPE_RC> {
+    typedef ENUM_FI_RC type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_PRRC		\
+      NONE           ,		\
+      V111           ,		\
+      V112           ,		\
+      V113           ,		\
+      V121           ,		\
+      V122           ,		\
+      V123           ,		\
+      V124           ,		\
+      V131           ,		\
+      NADHc          ,		\
+      NADc           ,		\
+      GLUc           ,		\
+      KGc            ,		\
+      ADP            ,		\
+      ATP            ,		\
+      PGA            ,		\
+      KO             ,		\
+      KC             ,		\
+      KR             ,		\
+      KM112          ,		\
+      KI1122         ,		\
+      KI1121         ,		\
+      KM1131         ,		\
+      KM1132         ,		\
+      KI113          ,		\
+      KE113          ,		\
+      KM121          ,		\
+      KM1221         ,		\
+      KM1222         ,		\
+      KI1221         ,		\
+      KE122          ,		\
+      KM123          ,		\
+      KI123          ,		\
+      KE123          ,		\
+      KM1241         ,		\
+      KM1242         ,		\
+      KE124          ,		\
+      KM1311         ,		\
+      KI1311         ,		\
+      V1T            ,		\
+      KM1011         ,		\
+      KI1011         ,		\
+      V2T            ,		\
+      KM1012         ,		\
+      KI1012         ,		\
+      Vfactor112     ,		\
+      Vfactor113     ,		\
+      Vfactor121     ,		\
+      Vfactor122     ,		\
+      Vfactor123     ,		\
+      Vfactor124     ,		\
+      Vfactor131     ,		\
+      Vf_T131        ,		\
+      Vf_T113        ,		\
+      Vf_T123        ,		\
+      Vf_T121        ,		\
+      Vf_T122        ,		\
+      Vf_T112        ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_PR_RC : int {
+    MEMBERS_PRRC
+  };
+  template<>
+  struct enum_helper<MODULE_PR, PARAM_TYPE_RC> {
+    typedef ENUM_PR_RC type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_PSRC		\
+      NONE          ,		\
+      CP            ,		\
+      CA            ,		\
+      CN            ,		\
+      PEXT          ,		\
+      V1            ,		\
+      V2            ,		\
+      V3            ,		\
+      V5            ,		\
+      V6            ,		\
+      V7            ,		\
+      V8            ,		\
+      V9            ,		\
+      V13           ,		\
+      V16           ,		\
+      V23           ,		\
+      V24           ,		\
+      V31           ,		\
+      V32           ,		\
+      V33           ,		\
+      KM11_A        ,		\
+      KM12_A        ,		\
+      KM13          ,		\
+      KI11          ,		\
+      KI12          ,		\
+      KI13          ,		\
+      KI14          ,		\
+      KI15          ,		\
+      KM21          ,		\
+      KM22          ,		\
+      KM23          ,		\
+      KM31a         ,		\
+      KM32b         ,		\
+      KE4           ,		\
+      KM51          ,		\
+      KM52          ,		\
+      KM53          ,		\
+      KE5           ,		\
+      KM61          ,		\
+      KI61          ,		\
+      KI62          ,		\
+      KE6           ,		\
+      KM71          ,		\
+      KM72          ,		\
+      KM73          ,		\
+      KM74          ,		\
+      KE7           ,		\
+      KM81          ,		\
+      KM82          ,		\
+      KE8           ,		\
+      KM9           ,		\
+      KI9           ,		\
+      KE9           ,		\
+      KM10          ,		\
+      KM101         ,		\
+      KM102         ,		\
+      KM103         ,		\
+      KE10          ,		\
+      KE11          ,		\
+      KE12          ,		\
+      KM131         ,		\
+      KM132         ,		\
+      KI131         ,		\
+      KI132         ,		\
+      KI133         ,		\
+      KI134         ,		\
+      KI135         ,		\
+      KE13          ,		\
+      KM161         ,		\
+      KM162         ,		\
+      KM163         ,		\
+      KE16          ,		\
+      KE21          ,		\
+      KE22          ,		\
+      KM311         ,		\
+      KM312         ,		\
+      KM313         ,		\
+      KM32          ,		\
+      KM33          ,		\
+      KM231         ,		\
+      KM232         ,		\
+      KM233         ,		\
+      KM234         ,		\
+      KE23          ,		\
+      KA231         ,		\
+      KI231         ,		\
+      KVmo          ,		\
+      KM241         ,		\
+      KE25          ,		\
+      KE57          ,		\
+      Km8p5p        ,		\
+      Km5p5p        ,		\
+      KE810         ,		\
+      Km5gap        ,		\
+      Km8f6p        ,		\
+      Km8s7p        ,		\
+      Km8gap        ,		\
+      MaxCoeff      ,		\
+      Vfactor1      ,		\
+      Vfactor2      ,		\
+      Vfactor3      ,		\
+      Vfactor5      ,		\
+      Vfactor7      ,		\
+      Vfactor13     ,		\
+      Vfactor23     ,		\
+      Vf_T3         ,		\
+      Vf_T2         ,		\
+      Vf_T1         ,		\
+      Vf_T6         ,		\
+      Vf_T5         ,		\
+      Vf_T9         ,		\
+      Vf_T13        ,		\
+      Vf_T23        ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_PS_RC : int {
+    MEMBERS_PSRC
+  };
+  template<>
+  struct enum_helper<MODULE_PS, PARAM_TYPE_RC> {
+    typedef ENUM_PS_RC type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RROEARC		\
+      NONE            ,		\
+      ke2GAPDH        ,		\
+      ke2MDH          ,		\
+      ke2FBPase       ,		\
+      ke2SBPase       ,		\
+      ke2PRK          ,		\
+      ke2ATPase       ,		\
+      ke2RubACT       ,		\
+      ke2Fd           ,		\
+      keFd2Thio       ,		\
+      keFd2Calvin     ,		\
+      ke2ATPGPP       ,		\
+      Coeff           ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RROEA_RC : int {
+    MEMBERS_RROEARC
+  };
+  template<>
+  struct enum_helper<MODULE_RROEA, PARAM_TYPE_RC> {
+    typedef ENUM_RROEA_RC type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RedoxRegRC		\
+      NONE               ,		\
+      Fd_Thio_ET         ,		\
+      ThioT              ,		\
+      Thio_Oxidation     ,		\
+      Thion0             ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RedoxReg_RC : int {
+    MEMBERS_RedoxRegRC
+  };
+  template<>
+  struct enum_helper<MODULE_RedoxReg, PARAM_TYPE_RC> {
+    typedef ENUM_RedoxReg_RC type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RuACTRC		\
+      NONE     ,		\
+      k1       ,		\
+      kn1      ,		\
+      km1      ,		\
+      Ke2      ,		\
+      Ke3      ,		\
+      k6       ,		\
+      kc       ,		\
+      ko       ,		\
+      k7       ,		\
+      kr       ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RuACT_RC : int {
+    MEMBERS_RuACTRC
+  };
+  template<>
+  struct enum_helper<MODULE_RuACT, PARAM_TYPE_RC> {
+    typedef ENUM_RuACT_RC type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_SUCSRC		\
+      NONE         ,		\
+      V51          ,		\
+      V52          ,		\
+      V55          ,		\
+      V56          ,		\
+      V57          ,		\
+      V58          ,		\
+      V59          ,		\
+      V62          ,		\
+      Vdhap_in     ,		\
+      Vgap_in      ,		\
+      Vpga_in      ,		\
+      KE501        ,		\
+      Km511        ,		\
+      Km512        ,		\
+      Km513        ,		\
+      KE51         ,		\
+      Km521        ,		\
+      KI521        ,		\
+      KI522        ,		\
+      KI523        ,		\
+      KE52         ,		\
+      KE531        ,		\
+      KE541        ,		\
+      Km551        ,		\
+      Km552        ,		\
+      Km553        ,		\
+      Km554        ,		\
+      KE55         ,		\
+      Km561        ,		\
+      Km562        ,		\
+      KI561        ,		\
+      KI562        ,		\
+      KI563        ,		\
+      KI564        ,		\
+      KI565        ,		\
+      KE56         ,		\
+      Km571        ,		\
+      Ki572        ,		\
+      KE57         ,		\
+      Km581        ,		\
+      KI581        ,		\
+      KI582        ,		\
+      Km591        ,		\
+      Km593        ,		\
+      KI591        ,		\
+      KE61         ,		\
+      Km621        ,		\
+      KE59         ,		\
+      Km592        ,		\
+      KI592        ,		\
+      Km601        ,		\
+      Km602        ,		\
+      Km603        ,		\
+      Km604        ,		\
+      KE60         ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_SUCS_RC : int {
+    MEMBERS_SUCSRC
+  };
+  template<>
+  struct enum_helper<MODULE_SUCS, PARAM_TYPE_RC> {
+    typedef ENUM_SUCS_RC type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_XanCycleRC		\
+      NONE     ,		\
+      kva      ,		\
+      kaz      ,		\
+      kza      ,		\
+      kav      ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_XanCycle_RC : int {
+    MEMBERS_XanCycleRC
+  };
+  template<>
+  struct enum_helper<MODULE_XanCycle, PARAM_TYPE_RC> {
+    typedef ENUM_XanCycle_RC type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+}
+namespace ePhotosynthesis {
+  #define MEMBERS_ALLVARS		\
+      NONE                  ,		\
+      AVR                   ,		\
+      HPR                   ,		\
+      O2                    ,		\
+      CO2_cond              ,		\
+      GLight                ,		\
+      O2_cond               ,		\
+      PS12ratio             ,		\
+      ADP                   ,		\
+      Pi                    ,		\
+      TestATPCost           ,		\
+      CO2_in                ,		\
+      TestLi_Wps            ,		\
+      TestLi                ,		\
+      PS2BF_Pi              ,		\
+      PS_PR_Param           ,		\
+      Tp                    ,		\
+      alfa                  ,		\
+      fc                    ,		\
+      lightParam            ,		\
+      alpha1                ,		\
+      alpha2                ,		\
+      input_LHCI            ,		\
+      input_LHCII           ,		\
+      input_PSI             ,		\
+      input_PSIIcore        ,		\
+      PSIIantennaSize       ,		\
+      PSIantennaSize        ,		\
+      ProteinTotalRatio     ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_ALL_VARS : int {
+    MEMBERS_ALLVARS
+  };
+  template<>
+  struct enum_helper<MODULE_ALL, PARAM_TYPE_VARS> {
+    typedef ENUM_ALL_VARS type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+}
+namespace ePhotosynthesis {
+  #define MEMBERS_BFVel		\
+      NONE        ,		\
+      Vbf1        ,		\
+      Vbf2        ,		\
+      Vbf3        ,		\
+      Vbf4        ,		\
+      Vbf5        ,		\
+      Vbf6        ,		\
+      Vbf7        ,		\
+      Vbf8        ,		\
+      Vbf9        ,		\
+      Vbf10       ,		\
+      Vbf11       ,		\
+      Vqi         ,		\
+      Vipc        ,		\
+      Vicp        ,		\
+      Vinc        ,		\
+      Vinp        ,		\
+      Vdp         ,		\
+      Vdc         ,		\
+      Vfp         ,		\
+      Vfc         ,		\
+      Vsfd        ,		\
+      VsATP       ,		\
+      VgPQH2      ,		\
+      JKc         ,		\
+      JMgc        ,		\
+      JClc        ,		\
+      Vbf15       ,		\
+      Vbf16       ,		\
+      vbfn2       ,		\
+      VsNADPH     ,		\
+      vcet        ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_BF_VEL : int {
+    MEMBERS_BFVel
+  };
+  template<>
+  struct enum_helper<MODULE_BF, PARAM_TYPE_VEL> {
+    typedef ENUM_BF_VEL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_FIBFVel		\
+      NONE   ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_FIBF_VEL : int {
+    MEMBERS_FIBFVel
+  };
+  template<>
+  struct enum_helper<MODULE_FIBF, PARAM_TYPE_VEL> {
+    typedef ENUM_FIBF_VEL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_FIVel		\
+      NONE         ,		\
+      vA_d         ,		\
+      vA_f         ,		\
+      vA_U         ,		\
+      vU_A         ,		\
+      vU_f         ,		\
+      vU_d         ,		\
+      v1           ,		\
+      v_r1         ,		\
+      vS1_S2       ,		\
+      vS2_S3       ,		\
+      vS3_S0       ,		\
+      vS0_S1       ,		\
+      vz_1         ,		\
+      v1z_1        ,		\
+      v2z_1        ,		\
+      v3z_1        ,		\
+      v0z_1        ,		\
+      vz_2         ,		\
+      v1z_2        ,		\
+      v2z_2        ,		\
+      v3z_2        ,		\
+      v0z_2        ,		\
+      v1z          ,		\
+      v2z          ,		\
+      v3z          ,		\
+      v0z          ,		\
+      vAB1         ,		\
+      vBA1         ,		\
+      vAB2         ,		\
+      vBA2         ,		\
+      v3           ,		\
+      v_r3         ,		\
+      v3_n         ,		\
+      v_r3_n       ,		\
+      v_pq_ox      ,		\
+      Ic           ,		\
+      Ia           ,		\
+      v2_1         ,		\
+      v2_2         ,		\
+      v2_00_1      ,		\
+      v2_01_1      ,		\
+      v2_02_1      ,		\
+      v2_00_2      ,		\
+      v2_01_2      ,		\
+      v2_02_2      ,		\
+      vr2_00_1     ,		\
+      vr2_01_1     ,		\
+      vr2_02_1     ,		\
+      vr2_1        ,		\
+      vr2_00_2     ,		\
+      vr2_01_2     ,		\
+      vr2_02_2     ,		\
+      vr2_2        ,		\
+      vP680qU      ,		\
+      vP680qA      ,		\
+      vU_P680      ,		\
+      vP680_d      ,		\
+      vP680_f      ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_FI_VEL : int {
+    MEMBERS_FIVel
+  };
+  template<>
+  struct enum_helper<MODULE_FI, PARAM_TYPE_VEL> {
+    typedef ENUM_FI_VEL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_PRVel		\
+      NONE      ,		\
+      v111      ,		\
+      v112      ,		\
+      v113      ,		\
+      v121      ,		\
+      v122      ,		\
+      v123      ,		\
+      v124      ,		\
+      v131      ,		\
+      v1in      ,		\
+      v2out     ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_PR_VEL : int {
+    MEMBERS_PRVel
+  };
+  template<>
+  struct enum_helper<MODULE_PR, PARAM_TYPE_VEL> {
+    typedef ENUM_PR_VEL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_PSVel		\
+      NONE     ,		\
+      v1       ,		\
+      v2       ,		\
+      v3       ,		\
+      v4       ,		\
+      v5       ,		\
+      v6       ,		\
+      v7       ,		\
+      v8       ,		\
+      v9       ,		\
+      v10      ,		\
+      v13      ,		\
+      v16      ,		\
+      v23      ,		\
+      v31      ,		\
+      v32      ,		\
+      v33      ,		\
+      Pi       ,		\
+      v24      ,		\
+      v25      ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_PS_VEL : int {
+    MEMBERS_PSVel
+  };
+  template<>
+  struct enum_helper<MODULE_PS, PARAM_TYPE_VEL> {
+    typedef ENUM_PS_VEL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RROEAVel		\
+      NONE            ,		\
+      ve2GAPDH        ,		\
+      ve2FBPase       ,		\
+      ve2SBPase       ,		\
+      ve2PRK          ,		\
+      ve2ATPase       ,		\
+      ve2ATPGPP       ,		\
+      ve2MDH          ,		\
+      ve2Fd           ,		\
+      veFd2Thio       ,		\
+      veFd2Calvin     ,		\
+      ve2RuACT        ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RROEA_VEL : int {
+    MEMBERS_RROEAVel
+  };
+  template<>
+  struct enum_helper<MODULE_RROEA, PARAM_TYPE_VEL> {
+    typedef ENUM_RROEA_VEL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RedoxRegVel		\
+      NONE     ,		\
+      Vred     ,		\
+      Vox      ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RedoxReg_VEL : int {
+    MEMBERS_RedoxRegVel
+  };
+  template<>
+  struct enum_helper<MODULE_RedoxReg, PARAM_TYPE_VEL> {
+    typedef ENUM_RedoxReg_VEL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_RuACTVel		\
+      NONE     ,		\
+      v1       ,		\
+      vn1      ,		\
+      v7       ,		\
+      vn7      ,		\
+      v6_1     ,		\
+      v6_2     ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_RuACT_VEL : int {
+    MEMBERS_RuACTVel
+  };
+  template<>
+  struct enum_helper<MODULE_RuACT, PARAM_TYPE_VEL> {
+    typedef ENUM_RuACT_VEL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_SUCSVel		\
+      NONE         ,		\
+      v51          ,		\
+      v52          ,		\
+      v55          ,		\
+      v56          ,		\
+      v57          ,		\
+      v58          ,		\
+      v59          ,		\
+      v60          ,		\
+      v61          ,		\
+      v62          ,		\
+      vdhap_in     ,		\
+      vgap_in      ,		\
+      vpga_in      ,		\
+      vpga_use     ,		\
+      vatpf        ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_SUCS_VEL : int {
+    MEMBERS_SUCSVel
+  };
+  template<>
+  struct enum_helper<MODULE_SUCS, PARAM_TYPE_VEL> {
+    typedef ENUM_SUCS_VEL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+  #define MEMBERS_XanCycleVel		\
+      NONE       ,		\
+      Vva        ,		\
+      Vaz        ,		\
+      Vza        ,		\
+      Vav        ,		\
+      Vvf        ,		\
+      Vv2ABA     ,		\
+      VABAdg     ,		\
+      MAX
+  
+  #ifdef EPHOTO_USE_SCOPED_ENUM
+  enum class ENUM_XanCycle_VEL : int {
+    MEMBERS_XanCycleVel
+  };
+  template<>
+  struct enum_helper<MODULE_XanCycle, PARAM_TYPE_VEL> {
+    typedef ENUM_XanCycle_VEL type;
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  
+}

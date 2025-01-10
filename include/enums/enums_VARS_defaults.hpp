@@ -2,7 +2,9 @@
 // modified directly
 #pragma once
 
-template<>
-inline const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, double>& get_enum_defaults<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type>() {
-  return ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::defaults;
+namespace ePhotosynthesis {
+  template<>
+  inline const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, double>& get_enum_defaults<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type>() {
+    return ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::defaults;
+  }
 }
