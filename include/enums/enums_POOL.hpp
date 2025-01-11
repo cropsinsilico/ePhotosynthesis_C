@@ -5,654 +5,732 @@
 #include "enums/enums_helpers.hpp"
 
 namespace ePhotosynthesis {
-  // [BEGIN] EXPLICIT_SPECIALIZATION_BF_POOL
-  #ifndef EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type : int {
-    MEMBERS_BFPool
-  };
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::static_value_flags;
-  // [END] EXPLICIT_SPECIALIZATION_BF_POOL
-  
-  // [BEGIN] EXPLICIT_SPECIALIZATION_BF_POOL_UTILS
-  #ifdef EPHOTO_USE_SCOPED_ENUM
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Key to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const ENUM_BF_POOL& x) {
-    out << ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::getName(x);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  template<typename T>
-  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_BF_POOL, T>& x) {
-    ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::print_map(x, out);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_BF_POOL>& x) {
-    ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::print_vector(x, out);
-    return out;
-  }
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  // [END] EXPLICIT_SPECIALIZATION_BF_POOL_UTILS
-  
+// [BEGIN] EXPLICIT_SPECIALIZATION_BF_POOL
+#ifndef EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type : int {
+  MEMBERS_BFPool
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
+template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::defaults_C3;
+template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::aliases;
+template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::static_value_flags;
+// [END] EXPLICIT_SPECIALIZATION_BF_POOL
+}
+
+// [BEGIN] EXPLICIT_SPECIALIZATION_BF_POOL_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_BF_POOL& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_BF_POOL, std::string>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_BF_POOL, double>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_BF_POOL, int>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_BF_POOL>& x);
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPECIALIZATION_BF_POOL_UTILS
+
+namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_BF_POOL
   namespace POOL {
     typedef ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL> BF;
   }
   // [END] SPECIALIZED_TYPEDEF_BF_POOL
   
-  
-  // [BEGIN] EXPLICIT_SPECIALIZATION_FIBF_POOL
-  #ifndef EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type : int {
-    MEMBERS_FIBFPool
-  };
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::static_value_flags;
-  // [END] EXPLICIT_SPECIALIZATION_FIBF_POOL
-  
-  // [BEGIN] EXPLICIT_SPECIALIZATION_FIBF_POOL_UTILS
-  #ifdef EPHOTO_USE_SCOPED_ENUM
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Key to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_POOL& x) {
-    out << ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::getName(x);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  template<typename T>
-  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_FIBF_POOL, T>& x) {
-    ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::print_map(x, out);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_FIBF_POOL>& x) {
-    ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::print_vector(x, out);
-    return out;
-  }
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  // [END] EXPLICIT_SPECIALIZATION_FIBF_POOL_UTILS
-  
+}
+
+namespace ePhotosynthesis {
+// [BEGIN] EXPLICIT_SPECIALIZATION_FIBF_POOL
+#ifndef EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type : int {
+  MEMBERS_FIBFPool
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
+template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::defaults_C3;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::aliases;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::static_value_flags;
+// [END] EXPLICIT_SPECIALIZATION_FIBF_POOL
+}
+
+// [BEGIN] EXPLICIT_SPECIALIZATION_FIBF_POOL_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_FIBF_POOL& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FIBF_POOL, std::string>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FIBF_POOL, double>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FIBF_POOL, int>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_FIBF_POOL>& x);
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPECIALIZATION_FIBF_POOL_UTILS
+
+namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_FIBF_POOL
   namespace POOL {
     typedef ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL> FIBF;
   }
   // [END] SPECIALIZED_TYPEDEF_FIBF_POOL
   
-  
-  // [BEGIN] EXPLICIT_SPECIALIZATION_FI_POOL
-  #ifndef EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type : int {
-    MEMBERS_FIPool
-  };
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::static_value_flags;
-  // [END] EXPLICIT_SPECIALIZATION_FI_POOL
-  
-  // [BEGIN] EXPLICIT_SPECIALIZATION_FI_POOL_UTILS
-  #ifdef EPHOTO_USE_SCOPED_ENUM
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Key to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const ENUM_FI_POOL& x) {
-    out << ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::getName(x);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  template<typename T>
-  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_FI_POOL, T>& x) {
-    ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::print_map(x, out);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_FI_POOL>& x) {
-    ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::print_vector(x, out);
-    return out;
-  }
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  // [END] EXPLICIT_SPECIALIZATION_FI_POOL_UTILS
-  
+}
+
+namespace ePhotosynthesis {
+// [BEGIN] EXPLICIT_SPECIALIZATION_FI_POOL
+#ifndef EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type : int {
+  MEMBERS_FIPool
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
+template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::defaults_C3;
+template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::aliases;
+template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::static_value_flags;
+// [END] EXPLICIT_SPECIALIZATION_FI_POOL
+}
+
+// [BEGIN] EXPLICIT_SPECIALIZATION_FI_POOL_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_FI_POOL& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FI_POOL, std::string>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FI_POOL, double>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FI_POOL, int>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_FI_POOL>& x);
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPECIALIZATION_FI_POOL_UTILS
+
+namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_FI_POOL
   namespace POOL {
     typedef ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL> FI;
   }
   // [END] SPECIALIZED_TYPEDEF_FI_POOL
   
-  
-  // [BEGIN] EXPLICIT_SPECIALIZATION_PR_POOL
-  #ifndef EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type : int {
-    MEMBERS_PRPool
-  };
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::static_value_flags;
-  // [END] EXPLICIT_SPECIALIZATION_PR_POOL
-  
-  // [BEGIN] EXPLICIT_SPECIALIZATION_PR_POOL_UTILS
-  #ifdef EPHOTO_USE_SCOPED_ENUM
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Key to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const ENUM_PR_POOL& x) {
-    out << ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::getName(x);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  template<typename T>
-  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_PR_POOL, T>& x) {
-    ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::print_map(x, out);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_PR_POOL>& x) {
-    ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::print_vector(x, out);
-    return out;
-  }
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  // [END] EXPLICIT_SPECIALIZATION_PR_POOL_UTILS
-  
+}
+
+namespace ePhotosynthesis {
+// [BEGIN] EXPLICIT_SPECIALIZATION_PR_POOL
+#ifndef EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type : int {
+  MEMBERS_PRPool
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
+template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::defaults_C3;
+template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::aliases;
+template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::static_value_flags;
+// [END] EXPLICIT_SPECIALIZATION_PR_POOL
+}
+
+// [BEGIN] EXPLICIT_SPECIALIZATION_PR_POOL_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_PR_POOL& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PR_POOL, std::string>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PR_POOL, double>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PR_POOL, int>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_PR_POOL>& x);
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPECIALIZATION_PR_POOL_UTILS
+
+namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_PR_POOL
   namespace POOL {
     typedef ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL> PR;
   }
   // [END] SPECIALIZED_TYPEDEF_PR_POOL
   
-  
-  // [BEGIN] EXPLICIT_SPECIALIZATION_PS_POOL
-  #ifndef EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type : int {
-    MEMBERS_PSPool
-  };
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::static_value_flags;
-  // [END] EXPLICIT_SPECIALIZATION_PS_POOL
-  
-  // [BEGIN] EXPLICIT_SPECIALIZATION_PS_POOL_UTILS
-  #ifdef EPHOTO_USE_SCOPED_ENUM
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Key to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const ENUM_PS_POOL& x) {
-    out << ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::getName(x);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  template<typename T>
-  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_PS_POOL, T>& x) {
-    ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::print_map(x, out);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_PS_POOL>& x) {
-    ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::print_vector(x, out);
-    return out;
-  }
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  // [END] EXPLICIT_SPECIALIZATION_PS_POOL_UTILS
-  
+}
+
+namespace ePhotosynthesis {
+// [BEGIN] EXPLICIT_SPECIALIZATION_PS_POOL
+#ifndef EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type : int {
+  MEMBERS_PSPool
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
+template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::defaults_C3;
+template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::aliases;
+template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::static_value_flags;
+// [END] EXPLICIT_SPECIALIZATION_PS_POOL
+}
+
+// [BEGIN] EXPLICIT_SPECIALIZATION_PS_POOL_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_PS_POOL& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PS_POOL, std::string>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PS_POOL, double>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PS_POOL, int>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_PS_POOL>& x);
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPECIALIZATION_PS_POOL_UTILS
+
+namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_PS_POOL
   namespace POOL {
     typedef ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL> PS;
   }
   // [END] SPECIALIZED_TYPEDEF_PS_POOL
   
-  
-  // [BEGIN] EXPLICIT_SPECIALIZATION_RROEA_POOL
-  #ifndef EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type : int {
-    MEMBERS_RROEAPool
-  };
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::static_value_flags;
-  // [END] EXPLICIT_SPECIALIZATION_RROEA_POOL
-  
-  // [BEGIN] EXPLICIT_SPECIALIZATION_RROEA_POOL_UTILS
-  #ifdef EPHOTO_USE_SCOPED_ENUM
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Key to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_POOL& x) {
-    out << ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::getName(x);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  template<typename T>
-  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RROEA_POOL, T>& x) {
-    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::print_map(x, out);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RROEA_POOL>& x) {
-    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::print_vector(x, out);
-    return out;
-  }
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  // [END] EXPLICIT_SPECIALIZATION_RROEA_POOL_UTILS
-  
+}
+
+namespace ePhotosynthesis {
+// [BEGIN] EXPLICIT_SPECIALIZATION_RROEA_POOL
+#ifndef EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type : int {
+  MEMBERS_RROEAPool
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
+template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::defaults_C3;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::aliases;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::static_value_flags;
+// [END] EXPLICIT_SPECIALIZATION_RROEA_POOL
+}
+
+// [BEGIN] EXPLICIT_SPECIALIZATION_RROEA_POOL_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_RROEA_POOL& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RROEA_POOL, std::string>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RROEA_POOL, double>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RROEA_POOL, int>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_RROEA_POOL>& x);
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPECIALIZATION_RROEA_POOL_UTILS
+
+namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_RROEA_POOL
   namespace POOL {
     typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL> RROEA;
   }
   // [END] SPECIALIZED_TYPEDEF_RROEA_POOL
   
-  
-  // [BEGIN] EXPLICIT_SPECIALIZATION_REDOXREG_POOL
-  #ifndef EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type : int {
-    MEMBERS_RedoxRegPool
-  };
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::static_value_flags;
-  // [END] EXPLICIT_SPECIALIZATION_REDOXREG_POOL
-  
-  // [BEGIN] EXPLICIT_SPECIALIZATION_REDOXREG_POOL_UTILS
-  #ifdef EPHOTO_USE_SCOPED_ENUM
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Key to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_POOL& x) {
-    out << ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::getName(x);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  template<typename T>
-  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RedoxReg_POOL, T>& x) {
-    ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::print_map(x, out);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RedoxReg_POOL>& x) {
-    ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::print_vector(x, out);
-    return out;
-  }
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  // [END] EXPLICIT_SPECIALIZATION_REDOXREG_POOL_UTILS
-  
+}
+
+namespace ePhotosynthesis {
+// [BEGIN] EXPLICIT_SPECIALIZATION_REDOXREG_POOL
+#ifndef EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type : int {
+  MEMBERS_RedoxRegPool
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
+template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::defaults_C3;
+template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::aliases;
+template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::static_value_flags;
+// [END] EXPLICIT_SPECIALIZATION_REDOXREG_POOL
+}
+
+// [BEGIN] EXPLICIT_SPECIALIZATION_REDOXREG_POOL_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_RedoxReg_POOL& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RedoxReg_POOL, std::string>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RedoxReg_POOL, double>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RedoxReg_POOL, int>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_RedoxReg_POOL>& x);
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPECIALIZATION_REDOXREG_POOL_UTILS
+
+namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_REDOXREG_POOL
   namespace POOL {
     typedef ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL> RedoxReg;
   }
   // [END] SPECIALIZED_TYPEDEF_REDOXREG_POOL
   
-  
-  // [BEGIN] EXPLICIT_SPECIALIZATION_RUACT_POOL
-  #ifndef EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type : int {
-    MEMBERS_RuACTPool
-  };
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::static_value_flags;
-  // [END] EXPLICIT_SPECIALIZATION_RUACT_POOL
-  
-  // [BEGIN] EXPLICIT_SPECIALIZATION_RUACT_POOL_UTILS
-  #ifdef EPHOTO_USE_SCOPED_ENUM
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Key to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_POOL& x) {
-    out << ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::getName(x);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  template<typename T>
-  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_RuACT_POOL, T>& x) {
-    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::print_map(x, out);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_RuACT_POOL>& x) {
-    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::print_vector(x, out);
-    return out;
-  }
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  // [END] EXPLICIT_SPECIALIZATION_RUACT_POOL_UTILS
-  
+}
+
+namespace ePhotosynthesis {
+// [BEGIN] EXPLICIT_SPECIALIZATION_RUACT_POOL
+#ifndef EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type : int {
+  MEMBERS_RuACTPool
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
+template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::defaults_C3;
+template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::aliases;
+template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::static_value_flags;
+// [END] EXPLICIT_SPECIALIZATION_RUACT_POOL
+}
+
+// [BEGIN] EXPLICIT_SPECIALIZATION_RUACT_POOL_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_RuACT_POOL& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RuACT_POOL, std::string>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RuACT_POOL, double>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RuACT_POOL, int>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_RuACT_POOL>& x);
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPECIALIZATION_RUACT_POOL_UTILS
+
+namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_RUACT_POOL
   namespace POOL {
     typedef ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL> RuACT;
   }
   // [END] SPECIALIZED_TYPEDEF_RUACT_POOL
   
-  
-  // [BEGIN] EXPLICIT_SPECIALIZATION_SUCS_POOL
-  #ifndef EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type : int {
-    MEMBERS_SUCSPool
-  };
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::static_value_flags;
-  // [END] EXPLICIT_SPECIALIZATION_SUCS_POOL
-  
-  // [BEGIN] EXPLICIT_SPECIALIZATION_SUCS_POOL_UTILS
-  #ifdef EPHOTO_USE_SCOPED_ENUM
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Key to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_POOL& x) {
-    out << ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::getName(x);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  template<typename T>
-  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_SUCS_POOL, T>& x) {
-    ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::print_map(x, out);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_SUCS_POOL>& x) {
-    ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::print_vector(x, out);
-    return out;
-  }
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  // [END] EXPLICIT_SPECIALIZATION_SUCS_POOL_UTILS
-  
+}
+
+namespace ePhotosynthesis {
+// [BEGIN] EXPLICIT_SPECIALIZATION_SUCS_POOL
+#ifndef EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type : int {
+  MEMBERS_SUCSPool
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
+template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::defaults_C3;
+template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::aliases;
+template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::static_value_flags;
+// [END] EXPLICIT_SPECIALIZATION_SUCS_POOL
+}
+
+// [BEGIN] EXPLICIT_SPECIALIZATION_SUCS_POOL_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_SUCS_POOL& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_SUCS_POOL, std::string>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_SUCS_POOL, double>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_SUCS_POOL, int>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_SUCS_POOL>& x);
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPECIALIZATION_SUCS_POOL_UTILS
+
+namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_SUCS_POOL
   namespace POOL {
     typedef ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL> SUCS;
   }
   // [END] SPECIALIZED_TYPEDEF_SUCS_POOL
   
-  
-  // [BEGIN] EXPLICIT_SPECIALIZATION_XANCYCLE_POOL
-  #ifndef EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type : int {
-    MEMBERS_XanCyclePool
-  };
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::static_value_flags;
-  // [END] EXPLICIT_SPECIALIZATION_XANCYCLE_POOL
-  
-  // [BEGIN] EXPLICIT_SPECIALIZATION_XANCYCLE_POOL_UTILS
-  #ifdef EPHOTO_USE_SCOPED_ENUM
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Key to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_POOL& x) {
-    out << ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::getName(x);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  template<typename T>
-  std::ostream& operator<<(std::ostream& out, const std::map<ENUM_XanCycle_POOL, T>& x) {
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::print_map(x, out);
-    return out;
-  }
-  /**
-    Serialize an enum to an output stream
-    \param[in,out] out Output stream
-    \param[in] x Collection to serialize
-    \return Updated stream
-  */
-  inline std::ostream& operator<<(std::ostream& out, const std::vector<ENUM_XanCycle_POOL>& x) {
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::print_vector(x, out);
-    return out;
-  }
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  // [END] EXPLICIT_SPECIALIZATION_XANCYCLE_POOL_UTILS
-  
+}
+
+namespace ePhotosynthesis {
+// [BEGIN] EXPLICIT_SPECIALIZATION_XANCYCLE_POOL
+#ifndef EPHOTO_USE_SCOPED_ENUM
+template<>
+enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type : int {
+  MEMBERS_XanCyclePool
+};
+#endif // EPHOTO_USE_SCOPED_ENUM
+template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::all;
+template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::names;
+template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::defaults;
+template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::defaults_C3;
+template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::glymaids;
+template<> const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::aliases;
+template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::docs;
+template<> std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::value_flags;
+template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::static_value_flags;
+// [END] EXPLICIT_SPECIALIZATION_XANCYCLE_POOL
+}
+
+// [BEGIN] EXPLICIT_SPECIALIZATION_XANCYCLE_POOL_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Key to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_XanCycle_POOL& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_XanCycle_POOL, std::string>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_XanCycle_POOL, double>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_XanCycle_POOL, int>& x);
+/**
+  Serialize an enum to an output stream
+  \param[in,out] out Output stream
+  \param[in] x Collection to serialize
+  \return Updated stream
+*/
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_XanCycle_POOL>& x);
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPECIALIZATION_XANCYCLE_POOL_UTILS
+
+namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_XANCYCLE_POOL
   namespace POOL {
     typedef ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL> XanCycle;
   }
   // [END] SPECIALIZED_TYPEDEF_XANCYCLE_POOL
   
-  
 }
+

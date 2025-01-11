@@ -184,6 +184,36 @@ const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<M
   {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_PG   , (STATIC_VALUE_FLAG_CONST)},
 };
 
+// [BEGIN] EXPLICIT_SPEC_BF_RC_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_BF_RC& x) {
+  out << ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_BF_RC, std::string>& x) {
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_BF_RC, double>& x) {
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_BF_RC, int>& x) {
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_BF_RC>& x) {
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_BF_RC_UTILS
+
+
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::all = {};
 template<> 
 const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::names = {
@@ -209,6 +239,36 @@ std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODUL
 template<> 
 const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::static_value_flags = {
 };
+
+// [BEGIN] EXPLICIT_SPEC_FIBF_RC_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_FIBF_RC& x) {
+  out << ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FIBF_RC, std::string>& x) {
+  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FIBF_RC, double>& x) {
+  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FIBF_RC, int>& x) {
+  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_FIBF_RC>& x) {
+  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_FIBF_RC_UTILS
+
 
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::all = {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kA_d, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kA_f, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kA_U, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kU_A, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kU_d, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kU_f, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k1, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_r1, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kz, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k12, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k23, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k30, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k01, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k2, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kAB1, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kBA1, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kAB2, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kBA2, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k3, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_r3, ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_pq_oxy};
 template<> 
@@ -319,6 +379,36 @@ std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_
 template<> 
 const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::static_value_flags = {
 };
+
+// [BEGIN] EXPLICIT_SPEC_FI_RC_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_FI_RC& x) {
+  out << ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FI_RC, std::string>& x) {
+  ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FI_RC, double>& x) {
+  ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FI_RC, int>& x) {
+  ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_FI_RC>& x) {
+  ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_FI_RC_UTILS
+
 
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::all = {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V111, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V112, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V113, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V121, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V122, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V123, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V124, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V131, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)NADHc, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)NADc, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)GLUc, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KGc, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ADP, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ATP, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)PGA, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KO, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KC, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KR, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM112, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1122, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1121, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1131, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1132, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI113, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE113, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM121, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1221, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1222, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1221, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE122, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM123, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI123, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE123, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1241, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1242, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE124, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1311, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1311, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V1T, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1011, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1011, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V2T, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1012, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1012, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vfactor112, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vfactor113, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vfactor121, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vfactor122, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vfactor123, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vfactor124, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vfactor131, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vf_T131, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vf_T113, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vf_T123, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vf_T121, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vf_T122, ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vf_T112};
 template<> 
@@ -573,6 +663,36 @@ std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_
 template<> 
 const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::static_value_flags = {
 };
+
+// [BEGIN] EXPLICIT_SPEC_PR_RC_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_PR_RC& x) {
+  out << ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PR_RC, std::string>& x) {
+  ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PR_RC, double>& x) {
+  ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PR_RC, int>& x) {
+  ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_PR_RC>& x) {
+  ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_PR_RC_UTILS
+
 
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::all = {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)CP, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)CA, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)CN, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)PEXT, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V1, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V2, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V3, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V5, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V6, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V7, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V8, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V9, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V13, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V16, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V23, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V24, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V31, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V32, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V33, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM11_A, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM12_A, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM13, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI11, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI12, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI13, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI14, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI15, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM21, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM22, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM23, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM31a, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM32b, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE4, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM51, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM52, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM53, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE5, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM61, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI61, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI62, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE6, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM71, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM72, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM73, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM74, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE7, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM81, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM82, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE8, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM9, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI9, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE9, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM10, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM101, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM102, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM103, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE10, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE11, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE12, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM131, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM132, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI131, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI132, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI133, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI134, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI135, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE13, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM161, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM162, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM163, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE16, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE21, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE22, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM311, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM312, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM313, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM32, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM33, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM231, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM232, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM233, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM234, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE23, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA231, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI231, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KVmo, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM241, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE25, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE57, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8p5p, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km5p5p, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE810, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km5gap, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8f6p, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8s7p, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8gap, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)MaxCoeff, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vfactor1, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vfactor2, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vfactor3, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vfactor5, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vfactor7, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vfactor13, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vfactor23, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vf_T3, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vf_T2, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vf_T1, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vf_T6, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vf_T5, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vf_T9, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vf_T13, ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vf_T23};
 template<> 
@@ -1034,6 +1154,36 @@ template<>
 const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::static_value_flags = {
 };
 
+// [BEGIN] EXPLICIT_SPEC_PS_RC_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_PS_RC& x) {
+  out << ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PS_RC, std::string>& x) {
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PS_RC, double>& x) {
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PS_RC, int>& x) {
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_PS_RC>& x) {
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_PS_RC_UTILS
+
+
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::all = {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ke2GAPDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ke2MDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ke2FBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ke2SBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ke2PRK, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ke2ATPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ke2RubACT, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ke2Fd, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)keFd2Thio, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)keFd2Calvin, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ke2ATPGPP, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Coeff};
 template<> 
 const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::names = {
@@ -1110,6 +1260,36 @@ const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, int> ValueSetEnu
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Coeff      , (STATIC_VALUE_FLAG_CONST)},
 };
 
+// [BEGIN] EXPLICIT_SPEC_RROEA_RC_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_RROEA_RC& x) {
+  out << ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RROEA_RC, std::string>& x) {
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RROEA_RC, double>& x) {
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RROEA_RC, int>& x) {
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_RROEA_RC>& x) {
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_RROEA_RC_UTILS
+
+
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::all = {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Fd_Thio_ET, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ThioT, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Thio_Oxidation, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Thion0};
 template<> 
 const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::names = {
@@ -1148,6 +1328,36 @@ std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, int> ValueSetEnum<M
 template<> 
 const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::static_value_flags = {
 };
+
+// [BEGIN] EXPLICIT_SPEC_REDOXREG_RC_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_RedoxReg_RC& x) {
+  out << ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RedoxReg_RC, std::string>& x) {
+  ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RedoxReg_RC, double>& x) {
+  ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RedoxReg_RC, int>& x) {
+  ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_RedoxReg_RC>& x) {
+  ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_REDOXREG_RC_UTILS
+
 
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::all = {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k1, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn1, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)km1, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke2, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke3, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k6, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kc, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ko, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k7, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kr};
 template<> 
@@ -1214,6 +1424,36 @@ std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODU
 template<> 
 const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::static_value_flags = {
 };
+
+// [BEGIN] EXPLICIT_SPEC_RUACT_RC_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_RuACT_RC& x) {
+  out << ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RuACT_RC, std::string>& x) {
+  ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RuACT_RC, double>& x) {
+  ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RuACT_RC, int>& x) {
+  ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_RuACT_RC>& x) {
+  ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_RUACT_RC_UTILS
+
 
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::all = {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V51, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V52, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V55, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V56, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V57, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V58, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V59, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V62, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vdhap_in, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vgap_in, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vpga_in, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE501, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km511, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km512, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km513, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE51, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km521, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI521, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI522, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI523, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE52, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE531, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE541, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km551, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km552, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km553, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km554, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE55, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km561, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km562, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI561, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI562, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI563, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI564, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI565, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE56, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km571, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ki572, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE57, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km581, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI581, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI582, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km591, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km593, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI591, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE61, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km621, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE59, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km592, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI592, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km601, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km602, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km603, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km604, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE60};
 template<> 
@@ -1461,6 +1701,36 @@ template<>
 const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::static_value_flags = {
 };
 
+// [BEGIN] EXPLICIT_SPEC_SUCS_RC_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_SUCS_RC& x) {
+  out << ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_SUCS_RC, std::string>& x) {
+  ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_SUCS_RC, double>& x) {
+  ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_SUCS_RC, int>& x) {
+  ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_SUCS_RC>& x) {
+  ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_SUCS_RC_UTILS
+
+
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::all = {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kva, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kaz, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kza, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kav};
 template<> 
 const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::names = {
@@ -1502,4 +1772,34 @@ std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, int> ValueSetEnum<M
 template<> 
 const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::static_value_flags = {
 };
+
+// [BEGIN] EXPLICIT_SPEC_XANCYCLE_RC_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_XanCycle_RC& x) {
+  out << ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_XanCycle_RC, std::string>& x) {
+  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_XanCycle_RC, double>& x) {
+  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_XanCycle_RC, int>& x) {
+  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_XanCycle_RC>& x) {
+  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_XANCYCLE_RC_UTILS
+
 

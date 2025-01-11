@@ -757,6 +757,36 @@ class CMixin:
             self.get_child('header').dst, caller=caller,
             rootdir=self.root_include_dir)
 
+    def begin_namespaces(self, namespaces=None):
+        if namespaces is None:
+            namespaces = self.namespaces
+        if not namespaces:
+            return []
+        lines = []
+        if self.file_extension in ['.hpp', '.h']:
+            lines += [
+                ('  ' * i) + f'namespace {x} {{'
+                for i, x in enumerate(namespaces)
+            ]
+        else:
+            lines += [
+                f"using namespace {'::'.join(namespaces)};", ""
+            ]
+        return lines
+
+    def end_namespaces(self, namespaces=None):
+        if namespaces is None:
+            namespaces = self.namespaces
+        if not namespaces:
+            return []
+        lines = []
+        if self.file_extension in ['.hpp', '.h']:
+            lines += [
+                ('  ' * (len(namespaces) - (i + 1))) + '}'
+                for i in range(len(namespaces))
+            ]
+        return lines
+
     def add_namespaces(self, lines, namespaces=None):
         if namespaces is None:
             namespaces = self.namespaces
@@ -1144,6 +1174,7 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
     ]
     _print_prefix = None
     _print_suffix = None
+    _friend_value_types = ['std::string', 'double', 'int']
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault("collection_name", self.name)
@@ -1373,7 +1404,8 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
     def generate_additional_method(self, function_type, enum_name='Type',
                                    enum_is_class=None, result=None,
                                    no_return=False, utility=False,
-                                   function_param=None):
+                                   function_param=None, value_type=None,
+                                   dont_define=False, in_source=False):
         lines = []
         if function_type == 'from' and (
                 self.value_type == 'double'
@@ -1415,9 +1447,13 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
              and not ((function_type in self.collection_functions
                        or function_type in self.universal_functions)
                       and not function_param.get('for_class')))):
-            template_value_type = 'T'
-            collection_type = self.generate_collection_type(
-                enum_name, value_type=template_value_type)
+            if value_type:
+                collection_type = self.generate_collection_type(
+                    enum_name, value_type=value_type)
+            else:
+                template_value_type = 'T'
+                collection_type = self.generate_collection_type(
+                    enum_name, value_type=template_value_type)
         else:
             collection_type = self.generate_collection_type(enum_name)
         if ((function_type in self.unsuffixed_functions
@@ -1755,7 +1791,10 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             assert self.is_editable
             short = function_type.split('Multiple')[0]
             ftype = short + function_suffix
-            itdref = ", ".join(self.generate_iterator_dref('it'))
+            dref = self.generate_iterator_dref('it')
+            if function_type == 'removeMultiple':
+                dref = [dref[0]]
+            itdref = ", ".join(dref)
             docs += [
                 f'{short.title()} multiple elements to '
                 f'{self.collection_name} if they are not already present',
@@ -1773,13 +1812,13 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 f"(valid values = {self.additional_functions})")
         if no_return:
             return body
-        if docs:
+        if docs and not in_source:
             lines += ['/**']
             lines += ["  " + x for x in docs]
             lines += ['*/']
         static = 'static '
         if function_param.get('outside_class', False):
-            if template_value_type:
+            if template_value_type or in_source or dont_define:
                 static = ''
             else:
                 static = 'inline '
@@ -1791,16 +1830,28 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
         if template_value_type:
             lines += [f'template<typename {template_value_type}>']
         lines += [f"{static}{return_type} {function_name}"
-                  f"({', '.join(args)}) {{"]
-        lines += ["  " + x for x in body]
-        lines += ["}"]
+                  f"({', '.join(args)})"]
+        if dont_define:
+            lines[-1] += ";"
+        else:
+            lines[-1] += " {"
+            lines += ["  " + x for x in body]
+            lines += ["}"]
         if ((function_type in self.collection_functions
              and not function_param.get('for_class', False))):
-            lines += self.generate_additional_method(
-                function_type, enum_name=enum_name,
-                enum_is_class=enum_is_class, result=result,
-                no_return=no_return, utility=utility,
-                function_param=dict(function_param, for_class=True))
+            if ((hasattr(self, 'value_type')
+                 and function_type in self.friend_functions)):
+                value_types = self._friend_value_types
+            else:
+                value_types = [None]
+            for vtype in value_types:
+                lines += self.generate_additional_method(
+                    function_type, enum_name=enum_name,
+                    enum_is_class=enum_is_class, result=result,
+                    no_return=no_return, utility=utility,
+                    function_param=dict(function_param, for_class=True),
+                    dont_define=dont_define, in_source=in_source,
+                    value_type=vtype)
         return lines
 
     def generate_function(self, name, for_header=False, result=None,
@@ -2974,7 +3025,8 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
         return lines
 
     def generate_utilities(self, name, no_guards=False, marker=None,
-                           class_name=None, specialization=''):
+                           class_name=None, specialization='',
+                           dont_define=False, in_header=False):
         if marker is None:
             marker = f'explicit_spec_{name}_utils'
         lines = []
@@ -2987,12 +3039,17 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             '//   specialization of the class (and class members)',
         ]
         completed_utils = {}
+        context = ''
+        if self.get_child('global').namespaces:
+            context = '::'.join(self.get_child('global').namespaces) + '::'
         util_kws = {
             'enum_is_class': class_name,
-            'enum_name': f'ENUM_{name}',
+            'enum_name': f'{context}ENUM_{name}',
             'function_param': {
                 'outside_class': f'{class_name}{specialization}',
             },
+            'dont_define': dont_define,
+            'in_source': (not in_header),
         }
         for k in self.added_collections:
             kchild = self.get_child(k)
@@ -3048,6 +3105,7 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
         if members_only:
             spec_marker = f'explicit_specialization_{name}'
             if specialization:
+                lines += self.get_child('global').begin_namespaces()
                 lines += self.begin_marker(spec_marker)
             if specialization and not self.enum_in_source:
                 members_macro = self.generate_definition_macro(
@@ -3097,11 +3155,14 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                     lines[-1] += f'  /**< {docs} */'
             if specialization:
                 lines += self.end_marker(spec_marker)
+                lines += self.get_child('global').end_namespaces()
                 lines += ['']
                 lines += self.generate_utilities(
                     name, class_name=class_name,
                     marker=(spec_marker + '_utils'),
-                    specialization=specialization)
+                    specialization=specialization,
+                    dont_define=True, in_header=True,
+                )
             else:
                 completed_utils = {}
                 for k in self.added_collections:
@@ -3325,6 +3386,11 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                     var_name=(f'{enum_prefix}'
                               f'{self.get_child(k).collection_name}'),
                     skip_items=skip_items, in_class=enum_prefix)
+            lines += ['']
+            lines += self.generate_utilities(
+                name, class_name=class_name,
+                specialization=specialization,
+            )
         lines += ['']
         return lines
 
@@ -3359,8 +3425,9 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
         lines = []
         lines += self.generate_declaration(
             name, members, as_class=as_class, **kwargs)
-        lines += self.generate_specialized_typedef(
-            name, as_class=as_class, **kwargs)
+        lines += self.get_child('global').add_namespaces(
+            self.generate_specialized_typedef(
+                name, as_class=as_class, **kwargs))
         lines += ['']
         return lines
 
@@ -3370,8 +3437,8 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
         #     members = [self.add_member(x) for x in ['NONE', 'MAX']]
         #     lines += self.generate_enum(
         #         f"{k}{self.get_child('global').strip_suffix}", members)
-        if self.get_child('global')._independent_headers:
-            lines = self.get_child('global').add_namespaces(lines)
+        # if self.get_child('global')._independent_headers:
+        #     lines = self.get_child('global').add_namespaces(lines)
         lines = self.include_helper_header() + lines
         return lines
 

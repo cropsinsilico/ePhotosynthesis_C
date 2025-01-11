@@ -754,7 +754,7 @@ namespace ePhotosynthesis {
     static void removeMultipleValueFlags(const std::map<Type, int>& x) {
       typename std::map<Type, int>::const_iterator it;
       for (it = x.begin(); it != x.end(); it++) {
-        removeValueFlags(it->first, it->second);
+        removeValueFlags(it->first);
       }
     }
     /**

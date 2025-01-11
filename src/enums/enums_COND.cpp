@@ -143,6 +143,36 @@ template<>
 const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::static_value_flags = {
 };
 
+// [BEGIN] EXPLICIT_SPEC_BF_COND_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_BF_COND& x) {
+  out << ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_BF_COND, std::string>& x) {
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_BF_COND, double>& x) {
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_BF_COND, int>& x) {
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_BF_COND>& x) {
+  ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_BF_COND_UTILS
+
+
 template<> const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::all = {};
 template<> 
 const std::map<ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::names = {
@@ -168,6 +198,36 @@ std::map<ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODUL
 template<> 
 const std::map<ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::static_value_flags = {
 };
+
+// [BEGIN] EXPLICIT_SPEC_CM_COND_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_CM_COND& x) {
+  out << ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_CM_COND, std::string>& x) {
+  ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_CM_COND, double>& x) {
+  ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_CM_COND, int>& x) {
+  ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_CM_COND>& x) {
+  ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_CM_COND_UTILS
+
 
 template<> const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::all = {};
 template<> 
@@ -195,6 +255,36 @@ template<>
 const std::map<ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::static_value_flags = {
 };
 
+// [BEGIN] EXPLICIT_SPEC_DYNAPS_COND_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_DynaPS_COND& x) {
+  out << ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_DynaPS_COND, std::string>& x) {
+  ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_DynaPS_COND, double>& x) {
+  ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_DynaPS_COND, int>& x) {
+  ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_DynaPS_COND>& x) {
+  ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_DYNAPS_COND_UTILS
+
+
 template<> const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::all = {};
 template<> 
 const std::map<ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::names = {
@@ -220,6 +310,36 @@ std::map<ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODU
 template<> 
 const std::map<ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::static_value_flags = {
 };
+
+// [BEGIN] EXPLICIT_SPEC_EPS_COND_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_EPS_COND& x) {
+  out << ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_EPS_COND, std::string>& x) {
+  ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_EPS_COND, double>& x) {
+  ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_EPS_COND, int>& x) {
+  ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_EPS_COND>& x) {
+  ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_EPS_COND_UTILS
+
 
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)kd};
 template<> 
@@ -250,6 +370,36 @@ std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MOD
 template<> 
 const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::static_value_flags = {
 };
+
+// [BEGIN] EXPLICIT_SPEC_FIBF_COND_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_FIBF_COND& x) {
+  out << ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FIBF_COND, std::string>& x) {
+  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FIBF_COND, double>& x) {
+  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FIBF_COND, int>& x) {
+  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_FIBF_COND>& x) {
+  ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_FIBF_COND_UTILS
+
 
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)A, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680ePheo, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheon, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheo, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680Pheon, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Yz, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S1T, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S2T, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S3T, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S0T, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S1Tp, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S2Tp, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S3Tp, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S0Tp, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQBn, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQBn, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB2n, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB2n, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PQn};
 template<> 
@@ -365,6 +515,36 @@ template<>
 const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::static_value_flags = {
 };
 
+// [BEGIN] EXPLICIT_SPEC_FI_COND_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_FI_COND& x) {
+  out << ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FI_COND, std::string>& x) {
+  ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FI_COND, double>& x) {
+  ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FI_COND, int>& x) {
+  ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_FI_COND>& x) {
+  ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_FI_COND_UTILS
+
+
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEA, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCA, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGCA, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCAc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GOAc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SERc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GLYc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HPRc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEAc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131};
 template<> 
 const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::names = {
@@ -435,6 +615,36 @@ template<>
 const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::static_value_flags = {
   {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131, (STATIC_VALUE_FLAG_CONST | STATIC_VALUE_FLAG_NON_VECTOR)},
 };
+
+// [BEGIN] EXPLICIT_SPEC_PR_COND_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_PR_COND& x) {
+  out << ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PR_COND, std::string>& x) {
+  ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PR_COND, double>& x) {
+  ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PR_COND, int>& x) {
+  ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_PR_COND>& x) {
+  ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_PR_COND_UTILS
+
 
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGA, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)DPGA, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3P, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADPG, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)E4P, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S7P, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HexP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PenP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_Pi, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_ADP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1};
 template<> 
@@ -514,6 +724,36 @@ const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, int> ValueSetEnum
   {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1 , (STATIC_VALUE_FLAG_CONST | STATIC_VALUE_FLAG_NON_VECTOR)},
 };
 
+// [BEGIN] EXPLICIT_SPEC_PS_COND_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_PS_COND& x) {
+  out << ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PS_COND, std::string>& x) {
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PS_COND, double>& x) {
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PS_COND, int>& x) {
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_PS_COND>& x) {
+  ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_PS_COND_UTILS
+
+
 template<> const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::all = {};
 template<> 
 const std::map<ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::names = {
@@ -540,6 +780,36 @@ template<>
 const std::map<ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::static_value_flags = {
 };
 
+// [BEGIN] EXPLICIT_SPEC_PS_PR_COND_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_PS_PR_COND& x) {
+  out << ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PS_PR_COND, std::string>& x) {
+  ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PS_PR_COND, double>& x) {
+  ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PS_PR_COND, int>& x) {
+  ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_PS_PR_COND>& x) {
+  ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_PS_PR_COND_UTILS
+
+
 template<> const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::all = {};
 template<> 
 const std::map<ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::names = {
@@ -565,6 +835,36 @@ std::map<ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODUL
 template<> 
 const std::map<ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::static_value_flags = {
 };
+
+// [BEGIN] EXPLICIT_SPEC_RA_COND_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_RA_COND& x) {
+  out << ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RA_COND, std::string>& x) {
+  ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RA_COND, double>& x) {
+  ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RA_COND, int>& x) {
+  ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_RA_COND>& x) {
+  ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_RA_COND_UTILS
+
 
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GAPDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PRK, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPGPP, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)MDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thio, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fd, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuACT, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff};
 template<> 
@@ -643,6 +943,36 @@ const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, int> ValueSetE
   {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff , (STATIC_VALUE_FLAG_CONST | STATIC_VALUE_FLAG_NON_VECTOR)},
 };
 
+// [BEGIN] EXPLICIT_SPEC_RROEA_COND_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_RROEA_COND& x) {
+  out << ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RROEA_COND, std::string>& x) {
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RROEA_COND, double>& x) {
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RROEA_COND, int>& x) {
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_RROEA_COND>& x) {
+  ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_RROEA_COND_UTILS
+
+
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thion};
 template<> 
 const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::names = {
@@ -672,6 +1002,36 @@ std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, int> ValueSetEnum
 template<> 
 const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::static_value_flags = {
 };
+
+// [BEGIN] EXPLICIT_SPEC_REDOXREG_COND_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_RedoxReg_COND& x) {
+  out << ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RedoxReg_COND, std::string>& x) {
+  ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RedoxReg_COND, double>& x) {
+  ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RedoxReg_COND, int>& x) {
+  ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_RedoxReg_COND>& x) {
+  ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_REDOXREG_COND_UTILS
+
 
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ER, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Eaf, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ECMR, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP};
 template<> 
@@ -714,6 +1074,36 @@ std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MO
 template<> 
 const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::static_value_flags = {
 };
+
+// [BEGIN] EXPLICIT_SPEC_RUACT_COND_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_RuACT_COND& x) {
+  out << ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RuACT_COND, std::string>& x) {
+  ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RuACT_COND, double>& x) {
+  ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RuACT_COND, int>& x) {
+  ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_RuACT_COND>& x) {
+  ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_RUACT_COND_UTILS
+
 
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3Pc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HexPc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)F26BPc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)UDPGc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUCP, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUC, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGAc};
 template<> 
@@ -765,6 +1155,36 @@ template<>
 const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::static_value_flags = {
 };
 
+// [BEGIN] EXPLICIT_SPEC_SUCS_COND_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_SUCS_COND& x) {
+  out << ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_SUCS_COND, std::string>& x) {
+  ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_SUCS_COND, double>& x) {
+  ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_SUCS_COND, int>& x) {
+  ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_SUCS_COND>& x) {
+  ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_SUCS_COND_UTILS
+
+
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA};
 template<> 
 const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::names = {
@@ -811,6 +1231,36 @@ const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, int> ValueS
   {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA , (STATIC_VALUE_FLAG_CALC)},
 };
 
+// [BEGIN] EXPLICIT_SPEC_XANCYCLE_COND_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_XanCycle_COND& x) {
+  out << ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_XanCycle_COND, std::string>& x) {
+  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_XanCycle_COND, double>& x) {
+  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_XanCycle_COND, int>& x) {
+  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_XanCycle_COND>& x) {
+  ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_XANCYCLE_COND_UTILS
+
+
 template<> const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::all = {};
 template<> 
 const std::map<ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::names = {
@@ -836,4 +1286,34 @@ std::map<ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum
 template<> 
 const std::map<ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::static_value_flags = {
 };
+
+// [BEGIN] EXPLICIT_SPEC_TRDYNAPS_COND_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_trDynaPS_COND& x) {
+  out << ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_trDynaPS_COND, std::string>& x) {
+  ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_trDynaPS_COND, double>& x) {
+  ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_trDynaPS_COND, int>& x) {
+  ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_trDynaPS_COND>& x) {
+  ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_TRDYNAPS_COND_UTILS
+
 

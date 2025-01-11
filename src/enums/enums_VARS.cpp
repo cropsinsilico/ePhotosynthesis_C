@@ -168,3 +168,33 @@ const std::map<ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, int> ValueSetEnu
   {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)ProteinTotalRatio, (STATIC_VALUE_FLAG_CONST)},
 };
 
+// [BEGIN] EXPLICIT_SPEC_ALL_VARS_UTILS
+#ifdef EPHOTO_USE_SCOPED_ENUM
+// Definition of explicitly specialized enum class 
+//   utility methods. This causes instantiation of the 
+//   specialized class and must come after explicit 
+//   specialization of the class (and class members)
+std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_ALL_VARS& x) {
+  out << ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::getName(x);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_ALL_VARS, std::string>& x) {
+  ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_ALL_VARS, double>& x) {
+  ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_ALL_VARS, int>& x) {
+  ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::print_map(x, out);
+  return out;
+}
+std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_ALL_VARS>& x) {
+  ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::print_vector(x, out);
+  return out;
+}
+#endif // EPHOTO_USE_SCOPED_ENUM
+// [END] EXPLICIT_SPEC_ALL_VARS_UTILS
+
+
