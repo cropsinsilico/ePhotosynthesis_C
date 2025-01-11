@@ -1,0 +1,2 @@
+# Name          Value   Docs
+TestSucPath     0       # [ALIASES={SucPath}] If 1 include sucrose synthesis(original); If 0 Don't include sucrose synthesis, only T3P output.

@@ -2,7 +2,6 @@
 // modified directly
 #pragma once
 
-#include "ePhotosynthesis_export.h"
 #include <string>
 #include <map>
 #include <vector>
@@ -169,7 +168,7 @@ namespace ePhotosynthesis {
   }
   // Unspecialized enum
   template<MODULE M, PARAM_TYPE PT>
-  class EPHOTO_API ValueSetEnum {
+  class ValueSetEnum {
   public:
     #ifdef EPHOTO_USE_SCOPED_ENUM
     typedef typename enum_helper<M, PT>::type Type;

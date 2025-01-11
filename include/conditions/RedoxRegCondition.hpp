@@ -75,14 +75,6 @@ public:
 
     RACondition* RA_con = nullptr;     // child Condition
 
-    /**
-      Write the contents of the instance to the output stream.
-
-      \param out output stream to write to.
-      \param tab The level of indentation to use.
-      \returns The output stream
-      */
-    std::ostream& _print(std::ostream &out, const uint tab = 0) const;
     SET_GET_NOVS(V6)
     SET_GET_NOVS(V9)
     SET_GET_NOVS(V13)

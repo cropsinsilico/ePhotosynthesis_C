@@ -78,6 +78,7 @@ TEST_F(VariableFramework, TestParseVar) {
 TEST_F(VariableFramework, TestReadDefaults) {
     std::map<std::string, std::string> inputs;
     TempParamFile tmp("ALL::VARS::AVR");
+    Variables::initDefaults();
     double AVR_DEFAULT0 = Variables::getDefault(MODULE_ALL,
                                                 PARAM_TYPE_VARS,
                                                 "AVR");

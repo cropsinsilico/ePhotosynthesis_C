@@ -5,7 +5,30 @@
 #include "enums/enums_helpers.hpp"
 
 namespace ePhotosynthesis {
+  // [BEGIN] EXPLICIT_SPECIALIZATION_BF_RC
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_BFRC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_BF_RC
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_BF_RC_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -37,27 +60,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type : int {
-    MEMBERS_BFRC
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_BF_RC_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_BF_RC
   namespace RC {
     typedef ValueSetEnum<MODULE_BF, PARAM_TYPE_RC> BF;
   }
+  // [END] SPECIALIZED_TYPEDEF_BF_RC
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_FIBF_RC
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_FIBFRC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_FIBF_RC
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_FIBF_RC_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -89,27 +125,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type : int {
-    MEMBERS_FIBFRC
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_FIBF_RC_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_FIBF_RC
   namespace RC {
     typedef ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC> FIBF;
   }
+  // [END] SPECIALIZED_TYPEDEF_FIBF_RC
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_FI_RC
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_FIRC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_FI_RC
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_FI_RC_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -141,27 +190,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type : int {
-    MEMBERS_FIRC
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_FI_RC_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_FI_RC
   namespace RC {
     typedef ValueSetEnum<MODULE_FI, PARAM_TYPE_RC> FI;
   }
+  // [END] SPECIALIZED_TYPEDEF_FI_RC
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_PR_RC
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_PRRC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_PR_RC
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_PR_RC_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -193,27 +255,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type : int {
-    MEMBERS_PRRC
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_PR_RC_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_PR_RC
   namespace RC {
     typedef ValueSetEnum<MODULE_PR, PARAM_TYPE_RC> PR;
   }
+  // [END] SPECIALIZED_TYPEDEF_PR_RC
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_PS_RC
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_PSRC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_PS_RC
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_PS_RC_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -245,27 +320,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type : int {
-    MEMBERS_PSRC
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_PS_RC_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_PS_RC
   namespace RC {
     typedef ValueSetEnum<MODULE_PS, PARAM_TYPE_RC> PS;
   }
+  // [END] SPECIALIZED_TYPEDEF_PS_RC
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_RROEA_RC
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_RROEARC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_RROEA_RC
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_RROEA_RC_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -297,27 +385,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type : int {
-    MEMBERS_RROEARC
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_RROEA_RC_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_RROEA_RC
   namespace RC {
     typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC> RROEA;
   }
+  // [END] SPECIALIZED_TYPEDEF_RROEA_RC
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_REDOXREG_RC
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_RedoxRegRC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_REDOXREG_RC
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_REDOXREG_RC_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -349,27 +450,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type : int {
-    MEMBERS_RedoxRegRC
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_REDOXREG_RC_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_REDOXREG_RC
   namespace RC {
     typedef ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC> RedoxReg;
   }
+  // [END] SPECIALIZED_TYPEDEF_REDOXREG_RC
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_RUACT_RC
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_RuACTRC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_RUACT_RC
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_RUACT_RC_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -401,27 +515,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type : int {
-    MEMBERS_RuACTRC
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_RUACT_RC_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_RUACT_RC
   namespace RC {
     typedef ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC> RuACT;
   }
+  // [END] SPECIALIZED_TYPEDEF_RUACT_RC
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_SUCS_RC
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_SUCSRC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_SUCS_RC
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_SUCS_RC_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -453,27 +580,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type : int {
-    MEMBERS_SUCSRC
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_SUCS_RC_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_SUCS_RC
   namespace RC {
     typedef ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC> SUCS;
   }
+  // [END] SPECIALIZED_TYPEDEF_SUCS_RC
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_XANCYCLE_RC
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type : int {
+    MEMBERS_XanCycleRC
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_XANCYCLE_RC
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_XANCYCLE_RC_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -505,24 +645,14 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type : int {
-    MEMBERS_XanCycleRC
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_XANCYCLE_RC_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_XANCYCLE_RC
   namespace RC {
     typedef ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC> XanCycle;
   }
+  // [END] SPECIALIZED_TYPEDEF_XANCYCLE_RC
+  
   
 }

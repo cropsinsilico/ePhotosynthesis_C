@@ -30,6 +30,4 @@
 
 #define MEMBERS_RC BF, FI, RROEA, RuACT
 
-DECLARE_PARAM_BASE(RC, RC, RC,
-		   (CM, DynaPS, EPS, FIBF, PR, PS, PS_PR, RA, RedoxReg,
-		    SUCS, XanCycle, trDynaPS))
+DECLARE_PARAM_BASE(RC)

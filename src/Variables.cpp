@@ -349,13 +349,22 @@ std::ostream& Variables::dump(std::ostream& out,
              it != subset.end(); it++) {
             MODULE mod = MODULE_NONE;
             PARAM_TYPE pt = PARAM_TYPE_NONE;
-            std::string name = parseVar(*it, mod, pt);
+            bool controlVar = false;
+            std::string name = parseVar(*it, mod, pt, false,
+                                        false, false, &controlVar);
             const ValueSetClass_t* vs = getValueSetClass(mod, pt, false,
                                                          // conditions,
                                                          "dump");
-            double val = vs->get(name);
-            vs->print_value(name, val, out, 0, pad, true, includeSkipped,
-                            skip_keys, key_aliases);
+            if (controlVar) {
+                int val = getControlVar(mod, pt, name);
+                vs->print_value("", val, out, 0, pad, true,
+                                includeSkipped, skip_keys, key_aliases,
+                                false, name);
+            } else {
+                double val = vs->get(name);
+                vs->print_value(name, val, out, 0, pad, true, includeSkipped,
+                                skip_keys, key_aliases);
+            }
         }
         return out;
     }
@@ -472,9 +481,11 @@ std::string Variables::parseVar(const std::string& k,
 				MODULE& mod, PARAM_TYPE& pt,
 				const bool& isGlymaID,
 				const bool& use_1st_match,
-                                const bool& allow_no_match) {
+                                const bool& allow_no_match,
+                                bool* controlVar) {
     mod = MODULE_NONE;
     pt = PARAM_TYPE_NONE;
+    if (controlVar) controlVar[0] = false;
     std::string split="::", var1, var2, name;
     bool var1_used = false, var2_used = false;
     size_t idx1 = k.find(split);
@@ -538,8 +549,9 @@ std::string Variables::parseVar(const std::string& k,
                     continue;
 		if (use_1st_match && !matches.empty())
 		    break;
-		if (hasVar(*it_mod, *it_pt, name, isGlymaID)) {
-		    if (!isSelected(*it_mod, *it_pt)) {
+		if (hasVar(*it_mod, *it_pt, name, isGlymaID, controlVar)) {
+		    if ((!(controlVar && controlVar[0])) &&
+                        (!isSelected(*it_mod, *it_pt))) {
 			INFO_VALUE_SET("Variable \"", k, "\" matches ",
 				       name, " in ",
 				       utils::enum_key2string(*it_mod),
@@ -574,25 +586,167 @@ std::string Variables::parseVar(const std::string& k,
 			    k, "\"");
 	}
     }
-    DEBUG_VALUE_SET("parseVar[", k, ", ", mod, ", ", pt, ", ", name);
+    INFO_VALUE_SET("parseVar[", k, "] -> ",
+                   utils::enum_key2string(mod), ", ",
+                   utils::enum_key2string(pt), ", ", name);
+    if (controlVar && controlVar[0]) {
+        return getControlAlias(mod, pt, name);
+    }
     if (mod != MODULE_NONE && pt != PARAM_TYPE_NONE && !name.empty())
         return GET_VALUE_SET_CLASS(mod, pt)->getAliasedName(name);
     return name;
 }
 
+bool Variables::isControlVar(const MODULE& mod, const PARAM_TYPE& pt,
+                             const std::string& name) {
+    // TODO: Use generated code
+    if (mod == MODULE_ALL && pt == PARAM_TYPE_VARS) {
+#define CHECK_CONTROL(x)                        \
+        if (name == #x) {                       \
+            return true;                        \
+        }
+        FOR_EACH(CHECK_CONTROL, EXPAND(CONTROL_Variables));
+#undef CHECK_CONTROL
+    }
+#define NAME_EQUALS(x) (name == #x)
+#define CHECK_CONTROL_MOD(m, p, ...)                                    \
+    if (mod == MODULE_ ## m && pt == PARAM_TYPE_ ## p &&                \
+        (JOIN_ARGS(SEP_OR, FOR_EACH_COMMA(NAME_EQUALS, __VA_ARGS__)))) { \
+        return true;                                                    \
+    }
+    EVAL(CHECK_CONTROL_MOD(CM, MOD, TestSucPath, SucPath));
+#undef CHECK_CONTROL_MOD
+#undef NAME_EQUALS
+    return false;
+}
+void Variables::setControlVar(const MODULE& mod, const PARAM_TYPE& pt,
+                              const std::string& name,
+                              const int& value) {
+    // TODO: Use generated code
+    if (mod == MODULE_ALL && pt == PARAM_TYPE_VARS) {
+#define SET_CONTROL(x)                          \
+        if (name == #x) {                       \
+            this->x = value;                    \
+            return;                             \
+        }
+        FOR_EACH(SET_CONTROL, EXPAND(CONTROL_Variables));
+#undef SET_CONTROL
+    }
+#define NAME_EQUALS(x) (name == #x)
+#define CHECK_CONTROL_MOD(m, p, ...)                                    \
+    if (mod == MODULE_ ## m && pt == PARAM_TYPE_ ## p &&                \
+        (JOIN_ARGS(SEP_OR, FOR_EACH_COMMA(NAME_EQUALS, __VA_ARGS__)))) { \
+        modules::m::CONCATENATE(set, FIRST_ARG(__VA_ARGS__))(value);    \
+        return;                                                         \
+    }
+    EVAL(CHECK_CONTROL_MOD(CM, MOD, TestSucPath, SucPath));
+#undef CHECK_CONTROL_MOD
+#undef NAME_EQUALS
+    ERROR_VALUE_SET("Unhandled control parameter: ",
+                    utils::enum_key2string(mod), "::",
+                    utils::enum_key2string(pt), "::", name);
+}
+int Variables::getControlVar(const MODULE& mod, const PARAM_TYPE& pt,
+                             const std::string& name) const {
+    // TODO: Use generated code
+    if (mod == MODULE_ALL && pt == PARAM_TYPE_VARS) {
+#define SET_CONTROL(x)                          \
+        if (name == #x) {                       \
+            return this->x;                     \
+        }
+        FOR_EACH(SET_CONTROL, EXPAND(CONTROL_Variables));
+#undef SET_CONTROL
+    }
+#define NAME_EQUALS(x) (name == #x)
+#define CHECK_CONTROL_MOD(m, p, ...)                                    \
+    if (mod == MODULE_ ## m && pt == PARAM_TYPE_ ## p &&                \
+        (JOIN_ARGS(SEP_OR, FOR_EACH_COMMA(NAME_EQUALS, __VA_ARGS__)))) { \
+        return modules::m::CONCATENATE(get, FIRST_ARG(__VA_ARGS__))();  \
+    }
+    EVAL(CHECK_CONTROL_MOD(CM, MOD, TestSucPath, SucPath));
+#undef CHECK_CONTROL_MOD
+#undef NAME_EQUALS
+    ERROR_VALUE_SET("Unhandled control parameter: ",
+                    utils::enum_key2string(mod), "::",
+                    utils::enum_key2string(pt), "::", name);
+}
+std::string Variables::getControlAlias(const MODULE& mod,
+                                       const PARAM_TYPE& pt,
+                                       const std::string& name) {
+    // TODO: Use generated code
+    if (mod == MODULE_CM && pt == PARAM_TYPE_MOD && name == "SucPath")
+        return "TestSucPath";
+    return name;
+}
+std::string Variables::getControlDocs(const MODULE& mod,
+                                      const PARAM_TYPE& pt,
+                                      const std::string& name) {
+    // TODO: Use generated code
+    std::string out;
+    if (mod == MODULE_ALL && pt == PARAM_TYPE_VARS) {
+        if (name == "GRNC") {
+            out += "If 1, VfactorCp values will be used to scale enzyme activities in the PS, PR, & SUCS modules when CO2 > 0";
+        } else if (name == "GRNT") {
+            out += "If 1, VfactorT values will be used to scale enzyme activities in the PS, PR, & SUCS modules when T > 25";
+        } else if (name == "PAR_in_Wpm2") {
+            out += "If 1, the input TestLi will be taken to be in units of W/m**2";
+        } else if (name == "VolRatioStCyto") {
+            out += "If 1, the ratio between the volume of the stroma and cytosol is 1, otherwise it will be 4.0/9.0. This factor is used to scale rates for the photorespiration (PR) reactions.";
+        } else if (name == "RUBISCOMETHOD") {
+            out += "The method to use for rubisco calculations. Choices are: [1] Use enzyme concentration for calculation, [2] DEFAULT Use the michaelis menton and enzyme concentration together for calculation";
+        }
+    }
+    if (mod == MODULE_CM && pt == PARAM_TYPE_MOD &&
+        ((name == "TestSucPath") || (name == "SucPath"))) {
+        out += "If 1 include sucrose synthesis(original); If 0 Don't include sucrose synthesis, only T3P output.";
+    }
+    if (!out.empty()) {
+        out = "Control parameter; " + out;
+        return out;
+    }
+    ERROR_VALUE_SET("Cannot get docs for control parameter ",
+                    utils::enum_key2string(mod), "::",
+                    utils::enum_key2string(pt), "::", name);
+    return "";
+}
+void Variables::setDefaultControlVar(const MODULE& mod,
+                                     const PARAM_TYPE& pt,
+                                     const std::string& name,
+                                     const int&) {
+    ERROR_VALUE_SET("Cannot set default for control parameter ",
+                    utils::enum_key2string(mod), "::",
+                    utils::enum_key2string(pt), "::", name);
+}
+int Variables::getDefaultControlVar(const MODULE& mod,
+                                    const PARAM_TYPE& pt,
+                                    const std::string& name) {
+    ERROR_VALUE_SET("Cannot get default for control parameter ",
+                    utils::enum_key2string(mod), "::",
+                    utils::enum_key2string(pt), "::", name);
+    return 0;
+}
+
 bool Variables::hasVar(const MODULE& mod, const PARAM_TYPE& pt,
 		       const std::string& name,
-		       const bool& isGlymaID) {
+		       const bool& isGlymaID,
+                       bool* controlVar) {
+    if ((!isGlymaID) && controlVar) {
+        if (isControlVar(mod, pt, name)) {
+            controlVar[0] = true;
+            return true;
+        }
+    }
     ValueSetClass_t* vs = getValueSetClass(mod, pt, true);
     if (!vs) return false;
     return vs->has(name, isGlymaID);
 }
 bool Variables::hasVar(const std::string& k,
-		       const bool& isGlymaID) {
+		       const bool& isGlymaID,
+                       bool* controlVar) {
     std::string name;
     MODULE mod = MODULE_NONE;
     PARAM_TYPE pt = PARAM_TYPE_NONE;
-    name = parseVar(k, mod, pt, isGlymaID, false, true);
+    name = parseVar(k, mod, pt, isGlymaID, false, true, controlVar);
     if (name.empty())
       return false;
     return hasVar(mod, pt, name, isGlymaID);
@@ -618,12 +772,19 @@ double Variables::getDefault(const std::string& k,
     std::string name;
     MODULE mod = MODULE_NONE;
     PARAM_TYPE pt = PARAM_TYPE_NONE;
-    name = parseVar(k, mod, pt, isGlymaID);
+    bool controlVar = false;
+    name = parseVar(k, mod, pt, isGlymaID, false, false, &controlVar);
+    if (controlVar) {
+        return static_cast<double>(getDefaultControlVar(mod, pt, name));
+    }
     return getDefault(mod, pt, name, isGlymaID);
 }
 void Variables::setDefault(const MODULE& mod, const PARAM_TYPE& pt,
 			   const std::string& name, const double& value,
 			   const bool& isGlymaID) {
+    if ((!isGlymaID) && isControlVar(mod, pt, name)) {
+        setDefaultControlVar(mod, pt, name, (value > 0));
+    }
     GET_VALUE_SET_CLASS(mod, pt)->setDefault(name, value, isGlymaID);
 }
 void Variables::setDefault(const MODULE& mod, const PARAM_TYPE& pt,
@@ -635,7 +796,11 @@ void Variables::setDefault(const std::string& k, const double& value,
     std::string name;
     MODULE mod = MODULE_NONE;
     PARAM_TYPE pt = PARAM_TYPE_NONE;
-    name = parseVar(k, mod, pt, isGlymaID);
+    bool controlVar = false;
+    name = parseVar(k, mod, pt, isGlymaID, false, false, &controlVar);
+    if (controlVar) {
+        return setDefaultControlVar(mod, pt, name, (value > 0));
+    }
     return setDefault(mod, pt, name, value, isGlymaID);
 }
 void Variables::setVar(const MODULE& module,
@@ -643,6 +808,9 @@ void Variables::setVar(const MODULE& module,
 		       const std::string& name,
 		       const double& value,
 		       const bool& isGlymaID) {
+    if ((!isGlymaID) && isControlVar(module, param_type, name)) {
+        setControlVar(module, param_type, name, (value > 0));
+    }
     GET_VALUE_SET(module, param_type)->set(name, value, isGlymaID);
 }
 void Variables::setVar(const MODULE& module,
@@ -655,13 +823,20 @@ void Variables::setVar(const std::string& k, const double& value,
     std::string name;
     MODULE mod = MODULE_NONE;
     PARAM_TYPE pt = PARAM_TYPE_NONE;
-    name = parseVar(k, mod, pt, isGlymaID);
+    bool controlVar = false;
+    name = parseVar(k, mod, pt, isGlymaID, false, false, &controlVar);
+    if (controlVar) {
+        return setControlVar(mod, pt, name, (value > 0));
+    }
     return setVar(mod, pt, name, value, isGlymaID);
 }
 double Variables::getVar(const MODULE& module,
 			 const PARAM_TYPE& param_type,
 			 const std::string& name,
 			 const bool& isGlymaID) const {
+    if ((!isGlymaID) && isControlVar(module, param_type, name)) {
+        return getControlVar(module, param_type, name);
+    }
     return GET_VALUE_SET(module, param_type)->get(name, isGlymaID);
 }
 double Variables::getVar(const MODULE& module,
@@ -674,13 +849,20 @@ double Variables::getVar(const std::string& k,
     std::string name;
     MODULE mod = MODULE_NONE;
     PARAM_TYPE pt = PARAM_TYPE_NONE;
-    name = parseVar(k, mod, pt, isGlymaID);
+    bool controlVar = false;
+    name = parseVar(k, mod, pt, isGlymaID, false, false, &controlVar);
+    if (controlVar) {
+        return static_cast<double>(getControlVar(mod, pt, name));
+    }
     return getVar(mod, pt, name, isGlymaID);
 }
 std::string Variables::getDocs(const MODULE& module,
                                const PARAM_TYPE& param_type,
                                const std::string& name,
                                const bool& isGlymaID) {
+    if ((!isGlymaID) && isControlVar(module, param_type, name)) {
+        return getControlDocs(module, param_type, name);
+    }
     return GET_VALUE_SET_CLASS(module, param_type)->getDocs(name, isGlymaID);
 }
 std::string Variables::getDocs(const MODULE& module,
@@ -693,7 +875,11 @@ std::string Variables::getDocs(const std::string& k,
     std::string name;
     MODULE mod = MODULE_NONE;
     PARAM_TYPE pt = PARAM_TYPE_NONE;
-    name = parseVar(k, mod, pt, isGlymaID);
+    bool controlVar = false;
+    name = parseVar(k, mod, pt, isGlymaID, false, false, &controlVar);
+    if (controlVar) {
+        return getControlDocs(mod, pt, name);
+    }
     return getDocs(mod, pt, name, isGlymaID);
 }
 std::vector<PARAM_TYPE> Variables::getParamTypes(const MODULE& mod,
@@ -841,38 +1027,15 @@ void Variables::_readParam(const std::string& fname,
     if (fname.empty())
         return;
     std::cout << "PARAMETER FILE PROVIDED: " << fname << std::endl;
-#define convD(x) static_cast<double>(std::stof(x, nullptr))
-#define convI(x) std::stoi(x, nullptr)
-#define convB(x) ((bool)(std::stoi(x, nullptr)))
-#define CASE_I(mod_, pt_, src, dst)                                     \
-    if (it->first == #src || it->first == (#mod_ "::" #pt_ "::" #src) || \
-        it->first == #dst || it->first == (#mod_ "::" #pt_ "::" #dst)) { \
-        name = #dst;                                                    \
-        valueI = convI(it->second);                                     \
-        mod = MODULE_ ## mod_;                                          \
-        pt = PARAM_TYPE_ ## pt_;                                        \
-    }
-#define ASSIGN_I(mod_, pt_, src, dst)                                   \
-    if (name == #dst) {                                                 \
-        if (theVars) {                                                  \
-            theVars-> dst = valueI;                                     \
-        } else {                                                        \
-            throw std::runtime_error("Cannot set a default for the parameter \"" #dst "\""); \
-        }                                                               \
-    }
-#define ASSIGN_MODB(mod_, pt_, src, dst)                                \
-    if (name == #dst) {                                                 \
-      modules::mod_::set ## dst(valueI);                                \
-    }
     readFile(fname, inputs);
     std::map<std::string, std::string> add_values;
     std::vector<std::string> rm_values;
     MODULE mod = MODULE_NONE;
     PARAM_TYPE pt = PARAM_TYPE_NONE;
     std::string name, name_SET, name_FULL;
-    double valueD = 0.0;
-    int valueI = 0;
+    double value = 0.0;
     static std::string set_suffix = "_SETXXX";
+    bool controlVar = false;
 
     for (typename std::map<std::string, std::string>::const_iterator it = inputs.begin();
          it != inputs.end(); it++) {
@@ -880,21 +1043,16 @@ void Variables::_readParam(const std::string& fname,
             continue;
         mod = MODULE_NONE;
         pt = PARAM_TYPE_NONE;
-        CASE_I(ALL, VARS, GRNC, GRNC)
-        else CASE_I(ALL, VARS, GRNT, GRNT)
-        else CASE_I(ALL, VARS, PAR_in_Wpm2, PAR_in_Wpm2)
-        else CASE_I(ALL, VARS, VolRatioStCyto, VolRatioStCyto)
-        else CASE_I(ALL, VARS, RUBISCOMETHOD, RUBISCOMETHOD)
-        else CASE_I(CM, MOD, SucPath, TestSucPath)
-        else {
-            name = parseVar(it->first, mod, pt, false, false, true);
-            if (name.empty()) {
-                std::cout << context << ": String \"" << it->first <<
-                  "\" does not match any known parameters." << std::endl;
-                continue;
-            }
-            valueD = convD(it->second);
+        controlVar = false;
+        name = parseVar(it->first, mod, pt, false, false, true,
+                        &controlVar);
+        if (name.empty()) {
+            std::cout << context << ": String \"" << it->first <<
+              "\" does not match any known parameters or belongs "
+              "to a value set not currently selected." << std::endl;
+            continue;
         }
+        value = static_cast<double>(std::stof(it->second, nullptr));
         name_FULL = utils::enum_key2string(mod) + "::" +
             utils::enum_key2string(pt) + "::" + name;
         name_SET = name_FULL + set_suffix;
@@ -903,16 +1061,16 @@ void Variables::_readParam(const std::string& fname,
                 "\" (" << it->second << ") read from \"" << it->first <<
                 "\"" << std::endl;
             add_values[name_SET] = it->second;
-            ASSIGN_I(ALL, VARS, GRNC, GRNC)
-            else ASSIGN_I(ALL, VARS, GRNT, GRNT)
-            else ASSIGN_I(ALL, VARS, PAR_in_Wpm2, PAR_in_Wpm2)
-            else ASSIGN_I(ALL, VARS, VolRatioStCyto, VolRatioStCyto)
-            else ASSIGN_I(ALL, VARS, RUBISCOMETHOD, RUBISCOMETHOD)
-            else ASSIGN_MODB(CM, MOD, SucPath, TestSucPath)
-            else if (theVars) {
-                theVars->setVar(mod, pt, name, valueD);
+            if (theVars) {
+                if (controlVar)
+                    theVars->setControlVar(mod, pt, name, (value > 0));
+                else
+                    theVars->setVar(mod, pt, name, value);
             } else {
-                setDefault(mod, pt, name, valueD);
+                if (controlVar)
+                    setDefaultControlVar(mod, pt, name, (value > 0));
+                else
+                    setDefault(mod, pt, name, value);
             }
         } else {
             std::cout << context << ": Parameter \"" << name_FULL <<
@@ -928,12 +1086,6 @@ void Variables::_readParam(const std::string& fname,
         inputs.erase(*it);
     }
     inputs.insert(add_values.begin(), add_values.end());
-#undef convD
-#undef convI
-#undef convB
-#undef CASE_I
-#undef ASSIGN_I
-#undef ASSIGN_MODB
 }
 void Variables::readEnzymeAct(const std::string& fname) {
     if (fname.empty())

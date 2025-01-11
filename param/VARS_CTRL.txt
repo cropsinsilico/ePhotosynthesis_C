@@ -1,0 +1,7 @@
+# Name          Value   Docs
+GP              0       # ?
+GRNC            0       # If 1, VfactorCp values will be used to scale enzyme activities in the PS, PR, & SUCS modules when CO2 > 0
+GRNT            0       # If 1, VfactorT values will be used to scale enzyme activities in the PS, PR, & SUCS modules when T > 25
+PAR_in_Wpm2     0       # If 1, the input TestLi will be taken to be in units of W/m**2
+VolRatioStCyto  1       # If 1, the ratio between the volume of the stroma and cytosol is 1, otherwise it will be 4.0/9.0. This factor is used to scale rates for the photorespiration (PR) reactions.
+RUBISCOMETHOD   1       # [MATLAB=2] The method to use for rubisco calculations. Choices are: [1] Use enzyme concentration for calculation, [2] DEFAULT Use the michaelis menton and enzyme concentration together for calculation

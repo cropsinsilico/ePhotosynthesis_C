@@ -31,6 +31,4 @@
 
 #define MEMBERS_KE RROEA
 
-DECLARE_PARAM_BASE(KE, KE, KE,
-		   (BF, CM, DynaPS, EPS, FIBF, FI, PR, PS, PS_PR,
-		    RA, RedoxReg, RuACT, SUCS, XanCycle, trDynaPS))
+DECLARE_PARAM_BASE(KE)

@@ -2356,7 +2356,6 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
     name = 'global'
     file_suffix = ''
     prefix = CEnumGeneratorBase.prefix + [
-        '#include "ePhotosynthesis_export.h"',
         '#include <string>',
         '#include <map>',
         '#include <vector>',
@@ -2950,6 +2949,60 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
         ]
         return lines
 
+    def generate_specialized_typedef(self, name, as_class=None, **kwargs):
+        if as_class is None:
+            as_class = self.as_class
+        if not (as_class and kwargs.get('specialize', None)):
+            return []
+        specialization, spec_var = self.specialization(None, **kwargs)
+        lines = []
+        contexts = [
+            k.rsplit(k0, 1)[-1].strip('_') for k0, k in
+            zip(kwargs['spec_param'], kwargs['specialize'])
+        ]
+        contexts = contexts[::-1]
+        lines += self.add_chunk(
+            f'specialized_typedef_{name}',
+            self.add_namespaces(
+                [
+                    f'typedef {as_class}{specialization} '
+                    f'{contexts[-1]};'
+                ],
+                namespaces=contexts[:-1],
+            )
+        )
+        return lines
+
+    def generate_utilities(self, name, no_guards=False, marker=None,
+                           class_name=None, specialization=''):
+        if marker is None:
+            marker = f'explicit_spec_{name}_utils'
+        lines = []
+        if not no_guards:
+            lines += ['#ifdef EPHOTO_USE_SCOPED_ENUM']
+        lines += [
+            '// Definition of explicitly specialized enum class ',
+            '//   utility methods. This causes instantiation of the ',
+            '//   specialized class and must come after explicit ',
+            '//   specialization of the class (and class members)',
+        ]
+        completed_utils = {}
+        util_kws = {
+            'enum_is_class': class_name,
+            'enum_name': f'ENUM_{name}',
+            'function_param': {
+                'outside_class': f'{class_name}{specialization}',
+            },
+        }
+        for k in self.added_collections:
+            kchild = self.get_child(k)
+            lines += kchild.generate_utility_methods(
+                completed_utils, methods=kchild.friend_functions,
+                **util_kws)
+        if not no_guards:
+            lines += ['#endif // EPHOTO_USE_SCOPED_ENUM']
+        return self.add_chunk(marker, lines)
+
     def generate_declaration(self, name, members, enum_name=None,
                              enum_type='int', members_only=False,
                              as_class=None, macro_skip=[], **kwargs):
@@ -2993,24 +3046,13 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
         if specialization:
             enum_name_full = f'typename {enum_name_full}'
         if members_only:
+            spec_marker = f'explicit_specialization_{name}'
+            if specialization:
+                lines += self.begin_marker(spec_marker)
             if specialization and not self.enum_in_source:
                 members_macro = self.generate_definition_macro(
                     name, members, return_macro=True)
-                lines += ['#ifdef EPHOTO_USE_SCOPED_ENUM']
-                completed_utils = {}
-                util_kws = {
-                    'enum_is_class': class_name,
-                    'enum_name': f'ENUM_{name}',
-                    'function_param': {
-                        'outside_class': f'{class_name}{specialization}',
-                    },
-                }
-                for k in self.added_collections:
-                    kchild = self.get_child(k)
-                    lines += kchild.generate_utility_methods(
-                        completed_utils, methods=kchild.friend_functions,
-                        **util_kws)
-                lines += ['#else // EPHOTO_USE_SCOPED_ENUM']
+                lines += ['#ifndef EPHOTO_USE_SCOPED_ENUM']
                 lines += template_lines
                 lines += self.generate_definition_enum(
                     name, members, enum_name=enum_name,
@@ -3053,7 +3095,14 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 docs = self.get_child(k).generate_docs(k)
                 if docs and not specialization:
                     lines[-1] += f'  /**< {docs} */'
-            if not specialization:
+            if specialization:
+                lines += self.end_marker(spec_marker)
+                lines += ['']
+                lines += self.generate_utilities(
+                    name, class_name=class_name,
+                    marker=(spec_marker + '_utils'),
+                    specialization=specialization)
+            else:
                 completed_utils = {}
                 for k in self.added_collections:
                     lines += self.get_child(k).generate_utility_methods(
@@ -3061,17 +3110,13 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                         enum_name=enum_name_full, enum_is_class=as_class)
                     lines += self.get_child(k).generate_additional_methods(
                         enum_name=enum_name_full, enum_is_class=as_class)
-            if specialization:
-                lines += [
-                    ''
-                ]
             return lines
         if ((spec_var and not specialization
              and not self.get_child('global')._top_in_helper)):
             lines += self.include_helper_header()
         lines += template_lines
         lines += [
-            f'class EPHOTO_API {class_name}{specialization} {{',
+            f'class {class_name}{specialization} {{',
             'public:',
         ]
         lines += [
@@ -3311,27 +3356,11 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                               self.get_child('global').spec_var)
             kwargs.setdefault('specialize',
                               self.get_child('global').item2specialize(name))
-        lines = self.generate_declaration(
+        lines = []
+        lines += self.generate_declaration(
             name, members, as_class=as_class, **kwargs)
-        if as_class and kwargs['specialize']:
-            specialization, spec_var = self.specialization(None, **kwargs)
-            class_name = as_class
-            indent = ''
-            contexts = [
-                k.rsplit(k0, 1)[-1].strip('_') for k0, k in
-                zip(kwargs['spec_param'], kwargs['specialize'])
-            ]
-            contexts = contexts[::-1]
-            for kn in contexts[:-1]:
-                lines += [f'{indent}namespace {kn} {{']
-                indent += '  '
-            lines += [
-                f'{indent}typedef {class_name}{specialization} '
-                f'{contexts[-1]};'
-            ]
-            for _ in contexts[:-1]:
-                indent = indent[:-2]
-                lines += [f'{indent}}}']
+        lines += self.generate_specialized_typedef(
+            name, as_class=as_class, **kwargs)
         lines += ['']
         return lines
 

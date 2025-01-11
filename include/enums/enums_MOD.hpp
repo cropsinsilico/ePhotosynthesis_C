@@ -5,7 +5,30 @@
 #include "enums/enums_helpers.hpp"
 
 namespace ePhotosynthesis {
+  // [BEGIN] EXPLICIT_SPECIALIZATION_BF_MOD
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_BF
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_BF_MOD
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_BF_MOD_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -37,27 +60,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type : int {
-    MEMBERS_BF
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_BF_MOD_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_BF_MOD
   namespace MOD {
     typedef ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD> BF;
   }
+  // [END] SPECIALIZED_TYPEDEF_BF_MOD
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_CM_MOD
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_CM
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_CM_MOD
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_CM_MOD_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -89,27 +125,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type : int {
-    MEMBERS_CM
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_CM_MOD_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_CM_MOD
   namespace MOD {
     typedef ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD> CM;
   }
+  // [END] SPECIALIZED_TYPEDEF_CM_MOD
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_DYNAPS_MOD
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_DynaPS
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_DYNAPS_MOD
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_DYNAPS_MOD_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -141,27 +190,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type : int {
-    MEMBERS_DynaPS
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_DYNAPS_MOD_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_DYNAPS_MOD
   namespace MOD {
     typedef ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD> DynaPS;
   }
+  // [END] SPECIALIZED_TYPEDEF_DYNAPS_MOD
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_EPS_MOD
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_EPS
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_EPS_MOD
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_EPS_MOD_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -193,27 +255,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type : int {
-    MEMBERS_EPS
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_EPS_MOD_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_EPS_MOD
   namespace MOD {
     typedef ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD> EPS;
   }
+  // [END] SPECIALIZED_TYPEDEF_EPS_MOD
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_FIBF_MOD
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_FIBF
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_FIBF_MOD
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_FIBF_MOD_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -245,27 +320,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type : int {
-    MEMBERS_FIBF
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_FIBF_MOD_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_FIBF_MOD
   namespace MOD {
     typedef ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD> FIBF;
   }
+  // [END] SPECIALIZED_TYPEDEF_FIBF_MOD
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_FI_MOD
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_FI
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_FI_MOD
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_FI_MOD_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -297,27 +385,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type : int {
-    MEMBERS_FI
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_FI_MOD_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_FI_MOD
   namespace MOD {
     typedef ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD> FI;
   }
+  // [END] SPECIALIZED_TYPEDEF_FI_MOD
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_PR_MOD
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_PR
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_PR_MOD
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_PR_MOD_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -349,27 +450,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type : int {
-    MEMBERS_PR
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_PR_MOD_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_PR_MOD
   namespace MOD {
     typedef ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD> PR;
   }
+  // [END] SPECIALIZED_TYPEDEF_PR_MOD
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_PS_MOD
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_PS
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_PS_MOD
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_PS_MOD_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -401,27 +515,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type : int {
-    MEMBERS_PS
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_PS_MOD_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_PS_MOD
   namespace MOD {
     typedef ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD> PS;
   }
+  // [END] SPECIALIZED_TYPEDEF_PS_MOD
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_PS_PR_MOD
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_PS_PR
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_PS_PR_MOD
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_PS_PR_MOD_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -453,27 +580,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type : int {
-    MEMBERS_PS_PR
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_PS_PR_MOD_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_PS_PR_MOD
   namespace MOD {
     typedef ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD> PS_PR;
   }
+  // [END] SPECIALIZED_TYPEDEF_PS_PR_MOD
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_RA_MOD
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_RA
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_RA_MOD
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_RA_MOD_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -505,27 +645,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type : int {
-    MEMBERS_RA
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_RA_MOD_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_RA_MOD
   namespace MOD {
     typedef ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD> RA;
   }
+  // [END] SPECIALIZED_TYPEDEF_RA_MOD
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_RROEA_MOD
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_RROEA
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_RROEA_MOD
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_RROEA_MOD_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -557,27 +710,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type : int {
-    MEMBERS_RROEA
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_RROEA_MOD_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_RROEA_MOD
   namespace MOD {
     typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD> RROEA;
   }
+  // [END] SPECIALIZED_TYPEDEF_RROEA_MOD
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_REDOXREG_MOD
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_RedoxReg
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_REDOXREG_MOD
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_REDOXREG_MOD_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -609,27 +775,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type : int {
-    MEMBERS_RedoxReg
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_REDOXREG_MOD_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_REDOXREG_MOD
   namespace MOD {
     typedef ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD> RedoxReg;
   }
+  // [END] SPECIALIZED_TYPEDEF_REDOXREG_MOD
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_RUACT_MOD
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_RuACT
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_RUACT_MOD
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_RUACT_MOD_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -661,27 +840,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type : int {
-    MEMBERS_RuACT
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_RUACT_MOD_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_RUACT_MOD
   namespace MOD {
     typedef ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD> RuACT;
   }
+  // [END] SPECIALIZED_TYPEDEF_RUACT_MOD
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_SUCS_MOD
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_SUCS
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_SUCS_MOD
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_SUCS_MOD_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -713,27 +905,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type : int {
-    MEMBERS_SUCS
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_SUCS_MOD_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_SUCS_MOD
   namespace MOD {
     typedef ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD> SUCS;
   }
+  // [END] SPECIALIZED_TYPEDEF_SUCS_MOD
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_XANCYCLE_MOD
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_XanCycle
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_XANCYCLE_MOD
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_XANCYCLE_MOD_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -765,27 +970,40 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type : int {
-    MEMBERS_XanCycle
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_XANCYCLE_MOD_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_XANCYCLE_MOD
   namespace MOD {
     typedef ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD> XanCycle;
   }
+  // [END] SPECIALIZED_TYPEDEF_XANCYCLE_MOD
   
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_TRDYNAPS_MOD
+  #ifndef EPHOTO_USE_SCOPED_ENUM
+  template<>
+  enum ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type : int {
+    MEMBERS_trDynaPS
+  };
+  #endif // EPHOTO_USE_SCOPED_ENUM
+  template<> const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::all;
+  template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::names;
+  template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::defaults;
+  template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::defaults_C3;
+  template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::glymaids;
+  template<> const std::map<std::string, typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::aliases;
+  template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::docs;
+  template<> std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::value_flags;
+  template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_TRDYNAPS_MOD
+  
+  // [BEGIN] EXPLICIT_SPECIALIZATION_TRDYNAPS_MOD_UTILS
   #ifdef EPHOTO_USE_SCOPED_ENUM
+  // Definition of explicitly specialized enum class 
+  //   utility methods. This causes instantiation of the 
+  //   specialized class and must come after explicit 
+  //   specialization of the class (and class members)
   /**
     Serialize an enum to an output stream
     \param[in,out] out Output stream
@@ -817,24 +1035,14 @@ namespace ePhotosynthesis {
     ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::print_vector(x, out);
     return out;
   }
-  #else // EPHOTO_USE_SCOPED_ENUM
-  template<>
-  enum ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type : int {
-    MEMBERS_trDynaPS
-  };
   #endif // EPHOTO_USE_SCOPED_ENUM
-  template<> const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::all;
-  template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::names;
-  template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::defaults;
-  template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::defaults_C3;
-  template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::glymaids;
-  template<> const std::map<std::string, typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::aliases;
-  template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::docs;
-  template<> std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::value_flags;
-  template<> const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::static_value_flags;
+  // [END] EXPLICIT_SPECIALIZATION_TRDYNAPS_MOD_UTILS
   
+  // [BEGIN] SPECIALIZED_TYPEDEF_TRDYNAPS_MOD
   namespace MOD {
     typedef ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD> trDynaPS;
   }
+  // [END] SPECIALIZED_TYPEDEF_TRDYNAPS_MOD
+  
   
 }

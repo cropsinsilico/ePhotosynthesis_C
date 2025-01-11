@@ -41,6 +41,8 @@ namespace ePhotosynthesis {
 
 #define MEMBERS_Variables MEMBERS_ALLVARS
 #define PARAM_TYPES_ALL VARS
+#define CONTROL_Variables                                       \
+  GRNC, GRNT, PAR_in_Wpm2, VolRatioStCyto, RUBISCOMETHOD
 
 #ifdef SUNDIALS_CONTEXT_REQUIRED
 extern std::shared_ptr<SUNContext> global_context; //!< Global context
@@ -69,6 +71,7 @@ void cleanup_global_sundials_context();
 class Variables : public VALUE_SET_PARENT(Variables, Variables, MODULE_ALL, PARAM_TYPE_VARS) {
 public:
     DECLARE_VALUE_SET(Variables, VALUE_SET_PARENT(Variables, Variables, MODULE_ALL, PARAM_TYPE_VARS))
+    using ValueSetClass::getValueSetClass;
 
 #ifdef MAKE_EQUIVALENT_TO_MATLAB
     static void _initDefaults();
@@ -330,13 +333,18 @@ public:
 	 than one match, an error will be thrown.
        \param[in] allow_no_match If true, an empty string will be
          returned if there is not match.
+       \param[in] controlVar If provided, the target will be set to
+         true if the string refers to a control parameter and false
+         otherwise. If not provided and k is a control parameter,
+         an error will be raised.
        \returns Variable name extracted from k.
      */
     static std::string parseVar(const std::string& k,
 				MODULE& mod, PARAM_TYPE& pt,
 				const bool& isGlymaID = false,
 				const bool& use_1st_match=false,
-                                const bool& allow_no_match=false);
+                                const bool& allow_no_match=false,
+                                bool* controlVar=nullptr);
     /**
        Check if a value set has a variable that matches the provided
          string.
@@ -347,23 +355,120 @@ public:
        \param[in] name String to check against variables in the value set.
        \param[in] isGlymaID If true, name will be treated as a GlymaID.
          If false, name will be treated as the variable name.
+       \param[in] controlVar If provided, the target will be set to
+         true if the string refers to a control parameter and false
+         otherwise. If not provided and k is a control parameter,
+         an error will be raised.
        \returns true if the variable is part of the value set, false
          otherwise.
      */
     static bool hasVar(const MODULE& mod, const PARAM_TYPE& pt,
 		       const std::string& name,
-		       const bool& isGlymaID = false);
+		       const bool& isGlymaID = false,
+                       bool* controlVar = nullptr);
     /**
        Check if there is a variable that matches the provided string.
        \param[in] name String to check against variables.
        \param[in] isGlymaID If true, name will be treated as a GlymaID.
          If false, name will be treated as the variable name.
+       \param[in] controlVar If provided, the target will be set to
+         true if the string refers to a control parameter and false
+         otherwise. If not provided and k is a control parameter,
+         an error will be raised.
        \returns true if the variable is part of a value set, false
          otherwise.
      */
     static bool hasVar(const std::string& name,
-		       const bool& isGlymaID = false);
-
+		       const bool& isGlymaID = false,
+                       bool* controlVar = nullptr);
+    
+    /**
+       Check if a string matches a control parameter.
+       \param[in] mod Module associated with the value set that should
+         be checked.
+       \param[in] pt Parameter type associated with the value set that
+         should be checked.
+       \param[in] name String to check against control parameters.
+       \returns true if the variable is a control parameter, false
+         otherwise.
+     */
+    static bool isControlVar(const MODULE& mod, const PARAM_TYPE& pt,
+                             const std::string& name);
+    /**
+       Set the value for a control variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] name String identifying the variable.
+       \param[in] value The new value.
+     */
+    void setControlVar(const MODULE& mod, const PARAM_TYPE& pt,
+                       const std::string& name,
+                       const int& value);
+    /**
+       Get the value of a control variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] name String identifying the variable.
+       \returns Variable value.
+     */
+    int getControlVar(const MODULE& mod, const PARAM_TYPE& pt,
+                      const std::string& name) const;
+    /**
+       Get the documentation string for a control variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] name String identifying the variable.
+       \returns Variable doc string.
+     */
+    static std::string getControlDocs(const MODULE& mod,
+                                      const PARAM_TYPE& pt,
+                                      const std::string& name);
+    /**
+       Get the aliased version of a control variable name.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] name String identifying the variable.
+       \returns Aliased control variable name.
+     */
+    static std::string getControlAlias(const MODULE& mod,
+                                       const PARAM_TYPE& pt,
+                                       const std::string& name);
+ private:
+    /**
+       Set the default value for a control variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] name String identifying the variable.
+       \param[in] value The new default value.
+     */
+    static void setDefaultControlVar(const MODULE& mod,
+                                     const PARAM_TYPE& pt,
+                                     const std::string& name,
+                                     const int& value);
+    /**
+       Get the default value of a control variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] name String identifying the variable.
+       \returns Variable default value.
+     */
+    static int getDefaultControlVar(const MODULE& mod,
+                                    const PARAM_TYPE& pt,
+                                    const std::string& name);
+ public:
+    
     /**
        Get the integer key for a value set variable.
        \param[in] mod Module associated with the value set that the

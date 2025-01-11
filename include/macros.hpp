@@ -142,46 +142,17 @@
 #define COMPARE_ABSOLUTE_EPSILON 1e-9
 
 // Inheritance for ValueSet
-#define INHERIT_METHOD_ENUM_BASE(name1, name2, ...)	\
-  using __VA_ARGS__::name1;					\
-  using __VA_ARGS__::print ## name2;				\
-  using __VA_ARGS__::string ## name2
-#define INHERIT_METHOD_ENUM_MAP(name1, name2, name3, ...)	\
-  INHERIT_METHOD_ENUM_BASE(name1, name2, __VA_ARGS__);		\
-  using __VA_ARGS__::get ## name3
-#define INHERIT_METHOD_ENUM_MAP_NAMES(name1, name2, name3, ...)	\
-  using __VA_ARGS__::name1;					\
-  using __VA_ARGS__::get ## name3
-#define INHERIT_METHOD_ENUM_VECTOR(name1, name2, ...)		\
-  INHERIT_METHOD_ENUM_BASE(name1, name2, __VA_ARGS__);		\
-  using __VA_ARGS__::is ## name2;				\
-  using __VA_ARGS__::check ## name2;				\
-  using __VA_ARGS__::checkNot ## name2
-#define INHERIT_METHOD_ENUM_VECTOR_EDIT(name1, name2, ...)	\
-  INHERIT_METHOD_ENUM_VECTOR(name1, name2, __VA_ARGS__);	\
-  using __VA_ARGS__::add ## name2;				\
-  using __VA_ARGS__::remove ## name2;				\
-  using __VA_ARGS__::addMultiple ## name2;			\
-  using __VA_ARGS__::removeMultiple ## name2;			\
-  using __VA_ARGS__::clear ## name2
 #define INHERIT_METHOD_ENUM(...)					\
   using __VA_ARGS__::module;						\
   using __VA_ARGS__::param_type;					\
-  using __VA_ARGS__::error_prefix;					\
-  using __VA_ARGS__::print_map;						\
-  using __VA_ARGS__::print_vector;					\
-  using __VA_ARGS__::string_map;					\
-  using __VA_ARGS__::string_vector;					\
-  using __VA_ARGS__::fromName;						\
-  using __VA_ARGS__::fromGlymaid;					\
-  INHERIT_METHOD_ENUM_MAP_NAMES(names, Names, Name, __VA_ARGS__);	\
-  INHERIT_METHOD_ENUM_MAP(aliases, Aliases, Alias, __VA_ARGS__)
+  using __VA_ARGS__::error_prefix
 
 #define INHERIT_METHODS_VALUE_SET_TYPES(...)	\
   typedef __VA_ARGS__ ParentClass;		\
   friend __VA_ARGS__;				\
   using typename __VA_ARGS__::BaseClass;	\
   using typename __VA_ARGS__::EnumClass;	\
+  using typename __VA_ARGS__::EnumBaseClass;	\
   using typename __VA_ARGS__::EnumType;		\
   using typename __VA_ARGS__::ValueType;	\
   using typename __VA_ARGS__::iterator;		\
@@ -189,57 +160,19 @@
   using typename __VA_ARGS__::VS_FLAGS;		\
   INHERIT_METHOD_ENUM(__VA_ARGS__);
 
-#define INHERIT_METHODS_VALUE_SET_BASE(...)	\
-  INHERIT_METHODS_VALUE_SET_TYPES(__VA_ARGS__)	\
-  using __VA_ARGS__::getValueSetClass;		\
-  using __VA_ARGS__::inArrays;			\
-  using __VA_ARGS__::remove_skipped;		\
-  using __VA_ARGS__::get_pointer_map;		\
-  using __VA_ARGS__::max_field_width;		\
-  using __VA_ARGS__::print_value_map;		\
-  using __VA_ARGS__::compareValues;		\
-  using __VA_ARGS__::check_value_map;		\
-  using __VA_ARGS__::check_value_maps;		\
-  using __VA_ARGS__::update_value_map;		\
-  using __VA_ARGS__::copy_value_map;		\
-  using __VA_ARGS__::init_value_map;		\
-  using __VA_ARGS__::get_value;			\
-  using __VA_ARGS__::get_value_const;		\
-  using __VA_ARGS__::set_value;			\
-  using __VA_ARGS__::set_value_from_EnzymeAct;	\
-  using __VA_ARGS__::get_value_orig;		\
-  using __VA_ARGS__::set_value_orig;		\
-  using __VA_ARGS__::insert_value_orig;		\
-  using __VA_ARGS__::reset_value_map;		\
-  using __VA_ARGS__::value_map_toArray;		\
-  using __VA_ARGS__::value_map_fromArray;	\
-  using __VA_ARGS__::fromNameWithAliases;	\
-  using __VA_ARGS__::setDefault;		\
-  using __VA_ARGS__::getDefault;
+#define INHERIT_METHODS_VALUE_SET_BASE(...)     \
+  INHERIT_METHODS_VALUE_SET_TYPES(__VA_ARGS__) 
 #define INHERIT_METHOD_VALUE_SET(name, ...) using ParentClass::name;
-#define INHERIT_METHODS_VALUE_SET(...)		\
-  INHERIT_METHODS_VALUE_SET_TYPES(__VA_ARGS__)	\
-  using typename __VA_ARGS__::ValueSetClass;	\
-  ADD_METHODS_VALUE_SET_T_BOTH_NODUP(INHERIT_METHOD_VALUE_SET);		\
-  ADD_METHODS_VALUE_SET_T_STATIC_NODUP(INHERIT_METHOD_VALUE_SET);	\
-  using __VA_ARGS__::begin;			\
-  using __VA_ARGS__::end;			\
-  using __VA_ARGS__::getValueSetClass;		\
-  using __VA_ARGS__::checkDefaults;		\
-  using __VA_ARGS__::check;			\
-  using __VA_ARGS__::update_values;		\
-  using __VA_ARGS__::hasGlymaID;		\
-  using __VA_ARGS__::_initMembers;		\
-  using __VA_ARGS__::_initValues;		\
-  using __VA_ARGS__::_print;			\
-  using __VA_ARGS__::_initMemberPointers;	\
-  using __VA_ARGS__::_sizeArray;
+#define INHERIT_METHODS_VALUE_SET(...)                                  \
+  INHERIT_METHODS_VALUE_SET_TYPES(__VA_ARGS__)                          \
+  using typename __VA_ARGS__::ValueSetClass;                            \
+  ADD_METHODS_VALUE_SET_T_BOTH_NODUP(INHERIT_METHOD_VALUE_SET);         \
+  ADD_METHODS_VALUE_SET_T_STATIC_NODUP(INHERIT_METHOD_VALUE_SET);
 #define DECLARE_VALUE_SET_BASE(cls, ...)		\
   typedef cls ThisClass;				\
   friend class ValueSetClassType<cls>;			\
   INHERIT_METHODS_VALUE_SET(__VA_ARGS__)		\
-  using __VA_ARGS__::_copyMembers;			\
-  using __VA_ARGS__::_resetValues;			\
+  friend BaseClass;                                     \
   friend ValueSetClass;
 #define DECLARE_VALUE_SET_STATIC_BASE(cls, ...)		\
   typedef cls ThisClass;				\

@@ -157,7 +157,7 @@ public:
       theVars->initParam(ID, PARAM_TYPE_MOD, noDefaults, true);
       theVars->initParam(ID, PARAM_TYPE_COND, noDefaults, false,
 			 static_cast<ValueSet_t*>(out));
-      const std::vector<PARAM_TYPE>& param_types = get_parameter_types();
+      const std::vector<PARAM_TYPE>& param_types = ValueSetClass::get_parameter_types();
       for (typename std::vector<PARAM_TYPE>::const_iterator it = param_types.begin();
 	   it != param_types.end(); it++) {
 	if (*it == PARAM_TYPE_COND) continue;

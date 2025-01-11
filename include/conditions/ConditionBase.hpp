@@ -73,18 +73,6 @@ public:
     }
 
     /**
-      Converts a realtype* to a vector and then copies the data into this class.
-
-      \param x Array of realtype's
-      */
-    void fromArray(realtype *x) {
-        arr vec(size());
-        for (std::size_t i = 0; i < size(); i++)
-            vec[i] = x[i];
-        fromArray(vec);
-    }
-
-    /**
       Common, puiblic interface for the private _clear function.
       */
     void clear() {

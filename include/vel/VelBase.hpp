@@ -30,5 +30,4 @@
 
 #define MEMBERS_VEL BF, FI, PR, PS, RROEA, RedoxReg, RuACT, SUCS, XanCycle
 
-DECLARE_PARAM_BASE(vel, Vel, VEL,
-		   (CM, DynaPS, EPS, FIBF, PS_PR, RA, trDynaPS))
+DECLARE_PARAM_BASE(VEL)
