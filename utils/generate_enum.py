@@ -1611,6 +1611,10 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             body += [f"typename {collection_type}::const_iterator it;"]
             body += self.generate_find(result, "x", "it")
             dref = self.generate_iterator_dref("it")[1]
+            if self.reversed:
+                name_err = "x"
+            else:
+                name_err = "names.find(x)->second"
             docs += [
                 f'Get the {function_suffix.lower()} value corresponding '
                 f'to an enum key',
@@ -1630,7 +1634,7 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 body += [
                     f'  throw std::runtime_error("Could not locate '
                     f'{function_suffix} for \'" + '
-                    f'names.find(x)->second + "\'");',
+                    f'{name_err} + "\'");',
                     '}'
                 ]
             docs += [
@@ -2413,6 +2417,7 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
         '#include <iostream>',
         '#include <fstream>',
         '#include <sstream>',
+        '#include <stdexcept>',
         # '#define EPHOTO_USE_SCOPED_ENUM 1',
         '#ifdef _MSC_VER',
         '// There is a bug in the MSVC compiler where it does not allow',

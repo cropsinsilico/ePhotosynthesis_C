@@ -51,6 +51,11 @@ TEST_F(VariableFramework, TestOutput) {
     std::cout << theVars << std::endl;
 }
 
+TEST_F(VariableFramework, TestGetAlias) {
+  EXPECT_EQ(Variables::getAlias("PAR"),
+            Variables::EnumClass::TestLi);
+}
+
 TEST_F(VariableFramework, TestParseVar) {
     MODULE mod = MODULE_NONE;
     PARAM_TYPE pt = PARAM_TYPE_NONE;

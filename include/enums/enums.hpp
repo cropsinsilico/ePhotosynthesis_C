@@ -8,6 +8,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <stdexcept>
 #ifdef _MSC_VER
 // There is a bug in the MSVC compiler where it does not allow
 //   declaration of a specialized class member enum
@@ -456,7 +457,7 @@ namespace ePhotosynthesis {
       typename std::map<std::string, Type>::const_iterator it;
       it = aliases.find(x);
       if (it == aliases.end()) {
-        throw std::runtime_error("Could not locate Alias for '" + names.find(x)->second + "'");
+        throw std::runtime_error("Could not locate Alias for '" + x + "'");
       }
       return it->second;
     }
