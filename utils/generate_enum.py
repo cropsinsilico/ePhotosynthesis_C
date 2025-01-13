@@ -714,11 +714,11 @@ class CMixin:
 
     @classmethod
     def specialization(cls, lines, spec_param=[], specialize=[],
-                       spec_var=None):
+                       spec_var=None, inside_class=False):
         specialization = ''
         if spec_param:
             if specialize:
-                if lines is not None:
+                if (not inside_class) and lines is not None:
                     lines += ['template<>']
                 specialization = f"<{', '.join(specialize)}>"
             else:
@@ -2905,6 +2905,7 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             },
         },
     }
+    _specialize_class = False
 
     @staticmethod
     def create_child_classes(cls):
@@ -3071,7 +3072,8 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
 
     def generate_declaration(self, name, members, enum_name=None,
                              enum_type='int', members_only=False,
-                             as_class=None, macro_skip=[], **kwargs):
+                             as_class=None, macro_skip=[],
+                             inside_class=False, **kwargs):
         lines = []
         if as_class is None:
             as_class = self.as_class
@@ -3101,31 +3103,43 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
         kwargs.setdefault('spec_var',
                           self.get_child('global').spec_var)
         specialization, spec_var = self.specialization(
-            template_lines, **kwargs)
-        if specialization:
-            members_only = True
-        template = 'template<> ' if specialization else ''
-        static = 'static ' if not specialization else ''
-        enum_prefix = (
-            f'{class_name}{specialization}::' if specialization else '')
+            template_lines, inside_class=inside_class, **kwargs)
+        if specialization and not inside_class:
+            template = 'template<> '
+            enum_prefix = f'{class_name}{specialization}::'
+            static = ''
+        else:
+            template = ''
+            enum_prefix = ''
+            static = 'static '
         enum_name_full = f'{enum_prefix}{enum_name}'
-        if specialization:
+        if enum_prefix:
             enum_name_full = f'typename {enum_name_full}'
+        spec_marker = f'explicit_specialization_{name}'
         if members_only:
-            spec_marker = f'explicit_specialization_{name}'
-            if specialization:
+            if specialization and not inside_class:
                 lines += self.get_child('global').begin_namespaces()
                 lines += self.begin_marker(spec_marker)
             if specialization and not self.enum_in_source:
                 members_macro = self.generate_definition_macro(
                     name, members, return_macro=True)
-                lines += ['#ifndef EPHOTO_USE_SCOPED_ENUM']
+                if not inside_class:
+                    lines += [
+                        '#ifndef EPHOTO_USE_SCOPED_ENUM',
+                    ]
+                elif as_class and spec_var:
+                    lines += [
+                        '#ifdef EPHOTO_USE_SCOPED_ENUM',
+                        f'typedef ENUM_{name} {enum_name};',
+                        '#else // EPHOTO_USE_SCOPED_ENUM',
+                    ]
                 lines += template_lines
                 lines += self.generate_definition_enum(
                     name, members, enum_name=enum_name,
                     enum_type=enum_type, enum_prefix=enum_prefix,
                     as_class=as_class, members_macro=members_macro)
-                lines += ['#endif // EPHOTO_USE_SCOPED_ENUM']
+                if (not inside_class) or (as_class and spec_var):
+                    lines += ['#endif // EPHOTO_USE_SCOPED_ENUM']
             else:
                 if as_class and spec_var:
                     lines += [
@@ -3144,12 +3158,14 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                     lines += [
                         '#endif // EPHOTO_USE_SCOPED_ENUM',
                     ]
-            if spec_var and not specialization:
+            if spec_var and (inside_class or not specialization):
                 for p, t in zip(kwargs['spec_param'], spec_var):
                     lines += [f'{static}const {p} {p.lower()};']
             lines += self.generate_definition_all(
                 name, members, enum_name=enum_name, as_class=as_class,
-                declare=True, specialization=specialization)
+                declare=True, specialization=specialization,
+                template=template, static=static,
+                enum_prefix=enum_prefix)
             for k in self.added_collections:
                 self.get_child(k).add_enum(enum_name)
                 collection_type = self.get_child(k).generate_collection_type(
@@ -3163,15 +3179,16 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 if docs and not specialization:
                     lines[-1] += f'  /**< {docs} */'
             if specialization:
-                lines += self.end_marker(spec_marker)
-                lines += self.get_child('global').end_namespaces()
-                lines += ['']
-                lines += self.generate_utilities(
-                    name, class_name=class_name,
-                    marker=(spec_marker + '_utils'),
-                    specialization=specialization,
-                    dont_define=True, in_header=True,
-                )
+                if not inside_class:
+                    lines += self.end_marker(spec_marker)
+                    lines += self.get_child('global').end_namespaces()
+                    lines += ['']
+                    lines += self.generate_utilities(
+                        name, class_name=class_name,
+                        marker=(spec_marker + '_utils'),
+                        specialization=specialization,
+                        dont_define=True, in_header=True,
+                    )
             else:
                 completed_utils = {}
                 for k in self.added_collections:
@@ -3184,6 +3201,9 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
         if ((spec_var and not specialization
              and not self.get_child('global')._top_in_helper)):
             lines += self.include_helper_header()
+        if specialization and self._specialize_class:
+            lines += self.get_child('global').begin_namespaces()
+            lines += self.begin_marker(spec_marker)
         lines += template_lines
         lines += [
             f'class {class_name}{specialization} {{',
@@ -3192,9 +3212,19 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
         lines += [
             '  ' + x for x in self.generate_declaration(
                 name, members, enum_name=enum_name, enum_type=enum_type,
-                members_only=True, **kwargs)
+                members_only=True, inside_class=self._specialize_class,
+                **kwargs)
         ]
         lines += ["};"]
+        if specialization and self._specialize_class:
+            lines += self.end_marker(spec_marker)
+            lines += self.get_child('global').end_namespaces()
+            lines += self.generate_utilities(
+                name, class_name=class_name,
+                marker=(spec_marker + '_utils'),
+                specialization=specialization,
+                dont_define=True, in_header=True,
+            )
         # Definition of static members for unspecialized class
         if spec_var and not specialization:
             unspecialization = f'<{", ".join(spec_var)}>'
@@ -3257,23 +3287,26 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
 
     def generate_definition_all(self, name, members, enum_name=None,
                                 as_class=None, declare=False,
-                                specialization=False, template=None):
+                                specialization=False, template=None,
+                                static=None, enum_prefix=None):
         lines = []
         if as_class is None:
             as_class = self.as_class
         if template is None:
             template = 'template<> ' if specialization else ''
-        static = 'static ' if not specialization else ''
+        if static is None:
+            static = 'static ' if not specialization else ''
         class_name = as_class if as_class else ''
         if enum_name is None:
             if as_class:
                 enum_name = 'Type'
             else:
                 enum_name = name
-        enum_prefix = (
-            f'{class_name}{specialization}::' if specialization else '')
+        if enum_prefix is None:
+            enum_prefix = (
+                f'{class_name}{specialization}::' if specialization else '')
         enum_name_full = f'{enum_prefix}{enum_name}'
-        if specialization:
+        if enum_prefix:
             enum_name_full = f'typename {enum_name_full}'
         if as_class:
             var_name = 'all'
@@ -3382,10 +3415,19 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 enum_prefix=enum_prefix, as_class=as_class,
                 members_macro=members_macro)
         if as_class:
-            template = 'template<> ' if specialization else ''
+            inside_class = self._specialize_class
+            if spec_var and (inside_class or not specialization):
+                for p, t in zip(kwargs['spec_param'], spec_var):
+                    lines += [
+                        f'const {p} {enum_prefix}{p.lower()} = {t};'
+                    ]
+            if specialization and not inside_class:
+                template = 'template<> '
+            else:
+                template = ''
             lines += self.generate_definition_all(
                 name, members, enum_name=enum_name, as_class=as_class,
-                specialization=specialization)
+                specialization=specialization, template=template)
             for k in self.added_collections:
                 self.get_child(k).add_enum(enum_name)
                 if template:
@@ -3433,7 +3475,10 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                               self.get_child('global').item2specialize(name))
         lines = []
         lines += self.generate_declaration(
-            name, members, as_class=as_class, **kwargs)
+            name, members, as_class=as_class,
+            members_only=(kwargs.get('specialize', '')
+                          and not self._specialize_class),
+            **kwargs)
         lines += self.get_child('global').add_namespaces(
             self.generate_specialized_typedef(
                 name, as_class=as_class, **kwargs))
