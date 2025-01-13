@@ -2872,6 +2872,10 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 'default_value_key': 'ALIASES',
                 'default_reversed': True,
                 'default_explicit': True,
+                '_utility_functions': [
+                    x for x in CEnumGeneratorMapBase._utility_functions
+                    if x not in ['print', 'string']
+                ],
             },
             'docs': {
                 'default_value_type': 'std::string',

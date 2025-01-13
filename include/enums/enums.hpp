@@ -429,26 +429,6 @@ namespace ePhotosynthesis {
       return it->first;
     }
     /**
-      Print the contents of aliases
-      \param[in,out] out Stream to print to
-      \param[in] includePrefixes If true, the module & 
-        parameter type prefixes will be added to the member 
-        names.
-      \param[in] tab Indentation to add to each line
-      \return Updated stream
-    */
-    static std::ostream& printAliases(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
-      return print_map(aliases, out, includePrefixes, tab);
-    }
-    /**
-      Serialize the contents of aliases
-      \param[in] tab Indentation to add to each line
-      \return Serialized collection
-    */
-    static std::string stringAliases(const unsigned int tab = 0) {
-      return string_map(aliases, tab);
-    }
-    /**
       Get the alias value corresponding to an enum key
       \param[in] x Key to get value for
       \return Value
