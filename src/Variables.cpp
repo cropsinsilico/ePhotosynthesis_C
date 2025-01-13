@@ -370,8 +370,8 @@ std::ostream& Variables::dump(std::ostream& out,
     }
 #define FITER(V, ...)							\
     if (V->_virtual_selected() &&					\
-	!__contains(skip_modules, V->_virtual_get_module()) &&		\
-        !__contains(skip_param_types, V->_virtual_get_param_type())) {	\
+	!utils::contains(skip_modules, V->_virtual_get_module()) &&     \
+        !utils::contains(skip_param_types, V->_virtual_get_param_type())) { \
 	V->print(__VA_ARGS__);						\
     }
     VARS_ITER_MACRO_COND(FITER, out, 0, pad, true, includeSkipped,
@@ -1039,7 +1039,7 @@ void Variables::_readParam(const std::string& fname,
 
     for (typename std::map<std::string, std::string>::const_iterator it = inputs.begin();
          it != inputs.end(); it++) {
-        if (__endswith(it->first, set_suffix))
+        if (utils::str_endswith(it->first, set_suffix))
             continue;
         mod = MODULE_NONE;
         pt = PARAM_TYPE_NONE;

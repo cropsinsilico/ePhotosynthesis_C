@@ -11,6 +11,7 @@ template<>
 enum ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::Type : int {
   MEMBERS_BFVel
 };
+typedef ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::Type ENUM_BF_VEL;
 #endif // EPHOTO_USE_SCOPED_ENUM
 template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::names;
@@ -21,11 +22,15 @@ template<> const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TY
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::docs;
 template<> std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::value_flags;
 template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::static_value_flags;
+template<>
+struct enum_helper_inv<ENUM_BF_VEL> {
+  typedef ENUM_BF_VEL type;
+  static const MODULE module = MODULE_BF;
+  static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
+};
 // [END] EXPLICIT_SPECIALIZATION_BF_VEL
-}
 
 // [BEGIN] EXPLICIT_SPECIALIZATION_BF_VEL_UTILS
-#ifdef EPHOTO_USE_SCOPED_ENUM
 // Definition of explicitly specialized enum class 
 //   utility methods. This causes instantiation of the 
 //   specialized class and must come after explicit 
@@ -36,37 +41,15 @@ template<> const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::Type
   \param[in] x Key to serialize
   \return Updated stream
 */
-std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_BF_VEL& x);
+std::ostream& operator<<(std::ostream& out, const ENUM_BF_VEL& x);
 /**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
+  Get a prefix for errors describing the class
+  \return Prefix
 */
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_BF_VEL, std::string>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_BF_VEL, double>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_BF_VEL, int>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_BF_VEL>& x);
-#endif // EPHOTO_USE_SCOPED_ENUM
+template<>
+std::string ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::error_prefix();
 // [END] EXPLICIT_SPECIALIZATION_BF_VEL_UTILS
+}
 
 namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_BF_VEL
@@ -84,6 +67,7 @@ template<>
 enum ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::Type : int {
   MEMBERS_FIBFVel
 };
+typedef ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::Type ENUM_FIBF_VEL;
 #endif // EPHOTO_USE_SCOPED_ENUM
 template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::names;
@@ -94,11 +78,15 @@ template<> const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::docs;
 template<> std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::value_flags;
 template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::static_value_flags;
+template<>
+struct enum_helper_inv<ENUM_FIBF_VEL> {
+  typedef ENUM_FIBF_VEL type;
+  static const MODULE module = MODULE_FIBF;
+  static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
+};
 // [END] EXPLICIT_SPECIALIZATION_FIBF_VEL
-}
 
 // [BEGIN] EXPLICIT_SPECIALIZATION_FIBF_VEL_UTILS
-#ifdef EPHOTO_USE_SCOPED_ENUM
 // Definition of explicitly specialized enum class 
 //   utility methods. This causes instantiation of the 
 //   specialized class and must come after explicit 
@@ -109,37 +97,15 @@ template<> const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::Ty
   \param[in] x Key to serialize
   \return Updated stream
 */
-std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_FIBF_VEL& x);
+std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_VEL& x);
 /**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
+  Get a prefix for errors describing the class
+  \return Prefix
 */
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FIBF_VEL, std::string>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FIBF_VEL, double>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FIBF_VEL, int>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_FIBF_VEL>& x);
-#endif // EPHOTO_USE_SCOPED_ENUM
+template<>
+std::string ValueSetEnum<MODULE_FIBF, PARAM_TYPE_VEL>::error_prefix();
 // [END] EXPLICIT_SPECIALIZATION_FIBF_VEL_UTILS
+}
 
 namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_FIBF_VEL
@@ -157,6 +123,7 @@ template<>
 enum ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::Type : int {
   MEMBERS_FIVel
 };
+typedef ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::Type ENUM_FI_VEL;
 #endif // EPHOTO_USE_SCOPED_ENUM
 template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::names;
@@ -167,11 +134,15 @@ template<> const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TY
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::docs;
 template<> std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::value_flags;
 template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::static_value_flags;
+template<>
+struct enum_helper_inv<ENUM_FI_VEL> {
+  typedef ENUM_FI_VEL type;
+  static const MODULE module = MODULE_FI;
+  static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
+};
 // [END] EXPLICIT_SPECIALIZATION_FI_VEL
-}
 
 // [BEGIN] EXPLICIT_SPECIALIZATION_FI_VEL_UTILS
-#ifdef EPHOTO_USE_SCOPED_ENUM
 // Definition of explicitly specialized enum class 
 //   utility methods. This causes instantiation of the 
 //   specialized class and must come after explicit 
@@ -182,37 +153,15 @@ template<> const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::Type
   \param[in] x Key to serialize
   \return Updated stream
 */
-std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_FI_VEL& x);
+std::ostream& operator<<(std::ostream& out, const ENUM_FI_VEL& x);
 /**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
+  Get a prefix for errors describing the class
+  \return Prefix
 */
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FI_VEL, std::string>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FI_VEL, double>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_FI_VEL, int>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_FI_VEL>& x);
-#endif // EPHOTO_USE_SCOPED_ENUM
+template<>
+std::string ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::error_prefix();
 // [END] EXPLICIT_SPECIALIZATION_FI_VEL_UTILS
+}
 
 namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_FI_VEL
@@ -230,6 +179,7 @@ template<>
 enum ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::Type : int {
   MEMBERS_PRVel
 };
+typedef ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::Type ENUM_PR_VEL;
 #endif // EPHOTO_USE_SCOPED_ENUM
 template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::names;
@@ -240,11 +190,15 @@ template<> const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TY
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::docs;
 template<> std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::value_flags;
 template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::static_value_flags;
+template<>
+struct enum_helper_inv<ENUM_PR_VEL> {
+  typedef ENUM_PR_VEL type;
+  static const MODULE module = MODULE_PR;
+  static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
+};
 // [END] EXPLICIT_SPECIALIZATION_PR_VEL
-}
 
 // [BEGIN] EXPLICIT_SPECIALIZATION_PR_VEL_UTILS
-#ifdef EPHOTO_USE_SCOPED_ENUM
 // Definition of explicitly specialized enum class 
 //   utility methods. This causes instantiation of the 
 //   specialized class and must come after explicit 
@@ -255,37 +209,15 @@ template<> const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::Type
   \param[in] x Key to serialize
   \return Updated stream
 */
-std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_PR_VEL& x);
+std::ostream& operator<<(std::ostream& out, const ENUM_PR_VEL& x);
 /**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
+  Get a prefix for errors describing the class
+  \return Prefix
 */
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PR_VEL, std::string>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PR_VEL, double>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PR_VEL, int>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_PR_VEL>& x);
-#endif // EPHOTO_USE_SCOPED_ENUM
+template<>
+std::string ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::error_prefix();
 // [END] EXPLICIT_SPECIALIZATION_PR_VEL_UTILS
+}
 
 namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_PR_VEL
@@ -303,6 +235,7 @@ template<>
 enum ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::Type : int {
   MEMBERS_PSVel
 };
+typedef ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::Type ENUM_PS_VEL;
 #endif // EPHOTO_USE_SCOPED_ENUM
 template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::names;
@@ -313,11 +246,15 @@ template<> const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TY
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::docs;
 template<> std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::value_flags;
 template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::static_value_flags;
+template<>
+struct enum_helper_inv<ENUM_PS_VEL> {
+  typedef ENUM_PS_VEL type;
+  static const MODULE module = MODULE_PS;
+  static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
+};
 // [END] EXPLICIT_SPECIALIZATION_PS_VEL
-}
 
 // [BEGIN] EXPLICIT_SPECIALIZATION_PS_VEL_UTILS
-#ifdef EPHOTO_USE_SCOPED_ENUM
 // Definition of explicitly specialized enum class 
 //   utility methods. This causes instantiation of the 
 //   specialized class and must come after explicit 
@@ -328,37 +265,15 @@ template<> const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::Type
   \param[in] x Key to serialize
   \return Updated stream
 */
-std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_PS_VEL& x);
+std::ostream& operator<<(std::ostream& out, const ENUM_PS_VEL& x);
 /**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
+  Get a prefix for errors describing the class
+  \return Prefix
 */
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PS_VEL, std::string>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PS_VEL, double>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_PS_VEL, int>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_PS_VEL>& x);
-#endif // EPHOTO_USE_SCOPED_ENUM
+template<>
+std::string ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::error_prefix();
 // [END] EXPLICIT_SPECIALIZATION_PS_VEL_UTILS
+}
 
 namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_PS_VEL
@@ -376,6 +291,7 @@ template<>
 enum ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::Type : int {
   MEMBERS_RROEAVel
 };
+typedef ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::Type ENUM_RROEA_VEL;
 #endif // EPHOTO_USE_SCOPED_ENUM
 template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::names;
@@ -386,11 +302,15 @@ template<> const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::docs;
 template<> std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::value_flags;
 template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::static_value_flags;
+template<>
+struct enum_helper_inv<ENUM_RROEA_VEL> {
+  typedef ENUM_RROEA_VEL type;
+  static const MODULE module = MODULE_RROEA;
+  static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
+};
 // [END] EXPLICIT_SPECIALIZATION_RROEA_VEL
-}
 
 // [BEGIN] EXPLICIT_SPECIALIZATION_RROEA_VEL_UTILS
-#ifdef EPHOTO_USE_SCOPED_ENUM
 // Definition of explicitly specialized enum class 
 //   utility methods. This causes instantiation of the 
 //   specialized class and must come after explicit 
@@ -401,37 +321,15 @@ template<> const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::T
   \param[in] x Key to serialize
   \return Updated stream
 */
-std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_RROEA_VEL& x);
+std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_VEL& x);
 /**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
+  Get a prefix for errors describing the class
+  \return Prefix
 */
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RROEA_VEL, std::string>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RROEA_VEL, double>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RROEA_VEL, int>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_RROEA_VEL>& x);
-#endif // EPHOTO_USE_SCOPED_ENUM
+template<>
+std::string ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::error_prefix();
 // [END] EXPLICIT_SPECIALIZATION_RROEA_VEL_UTILS
+}
 
 namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_RROEA_VEL
@@ -449,6 +347,7 @@ template<>
 enum ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::Type : int {
   MEMBERS_RedoxRegVel
 };
+typedef ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::Type ENUM_RedoxReg_VEL;
 #endif // EPHOTO_USE_SCOPED_ENUM
 template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::names;
@@ -459,11 +358,15 @@ template<> const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PA
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::docs;
 template<> std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::value_flags;
 template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::static_value_flags;
+template<>
+struct enum_helper_inv<ENUM_RedoxReg_VEL> {
+  typedef ENUM_RedoxReg_VEL type;
+  static const MODULE module = MODULE_RedoxReg;
+  static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
+};
 // [END] EXPLICIT_SPECIALIZATION_REDOXREG_VEL
-}
 
 // [BEGIN] EXPLICIT_SPECIALIZATION_REDOXREG_VEL_UTILS
-#ifdef EPHOTO_USE_SCOPED_ENUM
 // Definition of explicitly specialized enum class 
 //   utility methods. This causes instantiation of the 
 //   specialized class and must come after explicit 
@@ -474,37 +377,15 @@ template<> const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>
   \param[in] x Key to serialize
   \return Updated stream
 */
-std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_RedoxReg_VEL& x);
+std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_VEL& x);
 /**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
+  Get a prefix for errors describing the class
+  \return Prefix
 */
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RedoxReg_VEL, std::string>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RedoxReg_VEL, double>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RedoxReg_VEL, int>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_RedoxReg_VEL>& x);
-#endif // EPHOTO_USE_SCOPED_ENUM
+template<>
+std::string ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::error_prefix();
 // [END] EXPLICIT_SPECIALIZATION_REDOXREG_VEL_UTILS
+}
 
 namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_REDOXREG_VEL
@@ -522,6 +403,7 @@ template<>
 enum ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::Type : int {
   MEMBERS_RuACTVel
 };
+typedef ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::Type ENUM_RuACT_VEL;
 #endif // EPHOTO_USE_SCOPED_ENUM
 template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::names;
@@ -532,11 +414,15 @@ template<> const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::docs;
 template<> std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::value_flags;
 template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::static_value_flags;
+template<>
+struct enum_helper_inv<ENUM_RuACT_VEL> {
+  typedef ENUM_RuACT_VEL type;
+  static const MODULE module = MODULE_RuACT;
+  static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
+};
 // [END] EXPLICIT_SPECIALIZATION_RUACT_VEL
-}
 
 // [BEGIN] EXPLICIT_SPECIALIZATION_RUACT_VEL_UTILS
-#ifdef EPHOTO_USE_SCOPED_ENUM
 // Definition of explicitly specialized enum class 
 //   utility methods. This causes instantiation of the 
 //   specialized class and must come after explicit 
@@ -547,37 +433,15 @@ template<> const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::T
   \param[in] x Key to serialize
   \return Updated stream
 */
-std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_RuACT_VEL& x);
+std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_VEL& x);
 /**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
+  Get a prefix for errors describing the class
+  \return Prefix
 */
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RuACT_VEL, std::string>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RuACT_VEL, double>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_RuACT_VEL, int>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_RuACT_VEL>& x);
-#endif // EPHOTO_USE_SCOPED_ENUM
+template<>
+std::string ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::error_prefix();
 // [END] EXPLICIT_SPECIALIZATION_RUACT_VEL_UTILS
+}
 
 namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_RUACT_VEL
@@ -595,6 +459,7 @@ template<>
 enum ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::Type : int {
   MEMBERS_SUCSVel
 };
+typedef ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::Type ENUM_SUCS_VEL;
 #endif // EPHOTO_USE_SCOPED_ENUM
 template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::names;
@@ -605,11 +470,15 @@ template<> const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::docs;
 template<> std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::value_flags;
 template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::static_value_flags;
+template<>
+struct enum_helper_inv<ENUM_SUCS_VEL> {
+  typedef ENUM_SUCS_VEL type;
+  static const MODULE module = MODULE_SUCS;
+  static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
+};
 // [END] EXPLICIT_SPECIALIZATION_SUCS_VEL
-}
 
 // [BEGIN] EXPLICIT_SPECIALIZATION_SUCS_VEL_UTILS
-#ifdef EPHOTO_USE_SCOPED_ENUM
 // Definition of explicitly specialized enum class 
 //   utility methods. This causes instantiation of the 
 //   specialized class and must come after explicit 
@@ -620,37 +489,15 @@ template<> const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::Ty
   \param[in] x Key to serialize
   \return Updated stream
 */
-std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_SUCS_VEL& x);
+std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_VEL& x);
 /**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
+  Get a prefix for errors describing the class
+  \return Prefix
 */
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_SUCS_VEL, std::string>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_SUCS_VEL, double>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_SUCS_VEL, int>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_SUCS_VEL>& x);
-#endif // EPHOTO_USE_SCOPED_ENUM
+template<>
+std::string ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::error_prefix();
 // [END] EXPLICIT_SPECIALIZATION_SUCS_VEL_UTILS
+}
 
 namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_SUCS_VEL
@@ -668,6 +515,7 @@ template<>
 enum ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::Type : int {
   MEMBERS_XanCycleVel
 };
+typedef ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::Type ENUM_XanCycle_VEL;
 #endif // EPHOTO_USE_SCOPED_ENUM
 template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::all;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::names;
@@ -678,11 +526,15 @@ template<> const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PA
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::docs;
 template<> std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::value_flags;
 template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::static_value_flags;
+template<>
+struct enum_helper_inv<ENUM_XanCycle_VEL> {
+  typedef ENUM_XanCycle_VEL type;
+  static const MODULE module = MODULE_XanCycle;
+  static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
+};
 // [END] EXPLICIT_SPECIALIZATION_XANCYCLE_VEL
-}
 
 // [BEGIN] EXPLICIT_SPECIALIZATION_XANCYCLE_VEL_UTILS
-#ifdef EPHOTO_USE_SCOPED_ENUM
 // Definition of explicitly specialized enum class 
 //   utility methods. This causes instantiation of the 
 //   specialized class and must come after explicit 
@@ -693,37 +545,15 @@ template<> const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>
   \param[in] x Key to serialize
   \return Updated stream
 */
-std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::ENUM_XanCycle_VEL& x);
+std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_VEL& x);
 /**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
+  Get a prefix for errors describing the class
+  \return Prefix
 */
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_XanCycle_VEL, std::string>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_XanCycle_VEL, double>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::map<ePhotosynthesis::ENUM_XanCycle_VEL, int>& x);
-/**
-  Serialize an enum to an output stream
-  \param[in,out] out Output stream
-  \param[in] x Collection to serialize
-  \return Updated stream
-*/
-std::ostream& operator<<(std::ostream& out, const std::vector<ePhotosynthesis::ENUM_XanCycle_VEL>& x);
-#endif // EPHOTO_USE_SCOPED_ENUM
+template<>
+std::string ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::error_prefix();
 // [END] EXPLICIT_SPECIALIZATION_XANCYCLE_VEL_UTILS
+}
 
 namespace ePhotosynthesis {
   // [BEGIN] SPECIALIZED_TYPEDEF_XANCYCLE_VEL
@@ -733,4 +563,5 @@ namespace ePhotosynthesis {
   // [END] SPECIALIZED_TYPEDEF_XANCYCLE_VEL
   
 }
+
 

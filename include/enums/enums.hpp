@@ -28,6 +28,8 @@ namespace ePhotosynthesis {
       VALUE_FLAG_NONE                ,		\
       VALUE_FLAG_SKIPPED             ,		\
       VALUE_FLAG_MAX
+  #define MEMBER_NAMES_COMPLETE_VALUE		\
+      SKIPPED
   #define MEMBER_NAMES_VALUE		\
       SKIPPED
   enum VALUE_FLAG : int {
@@ -46,6 +48,12 @@ namespace ePhotosynthesis {
       STATIC_VALUE_FLAG_RESET_ONE              ,		\
       STATIC_VALUE_FLAG_INIT_ONCE              ,		\
       STATIC_VALUE_FLAG_MAX
+  #define MEMBER_NAMES_COMPLETE_STATIC_VALUE		\
+      CONST                  ,		\
+      CALC                   ,		\
+      NON_VECTOR             ,		\
+      RESET_ONE              ,		\
+      INIT_ONCE
   #define MEMBER_NAMES_STATIC_VALUE		\
       CONST                  ,		\
       CALC                   ,		\
@@ -75,98 +83,6 @@ namespace ePhotosynthesis {
     return T::PARAM_TYPE;
   }
   
-  // Utility for getting names from enum
-  template<typename T>
-  const std::map<T, std::string>& get_enum_names() {
-    static const std::map<T, std::string> result;
-    throw std::runtime_error("No enum names collection could be found");
-    return result;
-  }
-  template<>
-  inline const std::map<MODULE, std::string>& get_enum_names<MODULE>() {
-    static const std::map<MODULE, std::string> collection = {
-      {MODULE_BF      , "BF"      },
-      {MODULE_CM      , "CM"      },
-      {MODULE_DynaPS  , "DynaPS"  },
-      {MODULE_EPS     , "EPS"     },
-      {MODULE_FIBF    , "FIBF"    },
-      {MODULE_FI      , "FI"      },
-      {MODULE_PR      , "PR"      },
-      {MODULE_PS      , "PS"      },
-      {MODULE_PS_PR   , "PS_PR"   },
-      {MODULE_RA      , "RA"      },
-      {MODULE_RROEA   , "RROEA"   },
-      {MODULE_RedoxReg, "RedoxReg"},
-      {MODULE_RuACT   , "RuACT"   },
-      {MODULE_SUCS    , "SUCS"    },
-      {MODULE_XanCycle, "XanCycle"},
-      {MODULE_trDynaPS, "trDynaPS"},
-      {MODULE_ALL     , "ALL"     },
-    };
-    return collection;
-  }
-  template<>
-  inline const std::map<PARAM_TYPE, std::string>& get_enum_names<PARAM_TYPE>() {
-    static const std::map<PARAM_TYPE, std::string> collection = {
-      {PARAM_TYPE_COND, "COND"},
-      {PARAM_TYPE_POOL, "POOL"},
-      {PARAM_TYPE_KE  , "KE"  },
-      {PARAM_TYPE_MOD , "MOD" },
-      {PARAM_TYPE_RC  , "RC"  },
-      {PARAM_TYPE_VARS, "VARS"},
-      {PARAM_TYPE_VEL , "VEL" },
-    };
-    return collection;
-  }
-  // Utility for getting values from enum
-  template<typename T>
-  const std::map<T, double>& get_enum_defaults() {
-    static const std::map<T, double> result;
-    throw std::runtime_error("No enum defaults collection could be found");
-    return result;
-  }
-  // Utility for getting alternate_values from enum
-  template<typename T>
-  const std::map<T, double>& get_enum_defaults_C3() {
-    static const std::map<T, double> result;
-    throw std::runtime_error("No enum defaults_C3 collection could be found");
-    return result;
-  }
-  // Utility for getting glymaids from enum
-  template<typename T>
-  const std::map<T, std::string>& get_enum_glymaids() {
-    static const std::map<T, std::string> result;
-    throw std::runtime_error("No enum glymaids collection could be found");
-    return result;
-  }
-  // Utility for getting aliases from enum
-  template<typename T>
-  const std::map<std::string, T>& get_enum_aliases() {
-    static const std::map<std::string, T> result;
-    throw std::runtime_error("No enum aliases collection could be found");
-    return result;
-  }
-  // Utility for getting docs from enum
-  template<typename T>
-  const std::map<T, std::string>& get_enum_docs() {
-    static const std::map<T, std::string> result;
-    throw std::runtime_error("No enum docs collection could be found");
-    return result;
-  }
-  // Utility for getting value_flags from enum
-  template<typename T>
-  std::map<T, int>& get_enum_value_flags() {
-    static std::map<T, int> result;
-    throw std::runtime_error("No enum value_flags collection could be found");
-    return result;
-  }
-  // Utility for getting static_value_flags from enum
-  template<typename T>
-  const std::map<T, int>& get_enum_static_value_flags() {
-    static const std::map<T, int> result;
-    throw std::runtime_error("No enum static_value_flags collection could be found");
-    return result;
-  }
   // Unspecialized enum
   template<MODULE M, PARAM_TYPE PT>
   class ValueSetEnum {
@@ -191,14 +107,7 @@ namespace ePhotosynthesis {
       Get a prefix for errors describing the class
       \return Prefix
     */
-    static std::string error_prefix() {
-      std::string out;
-      out += get_enum_names<PARAM_TYPE>().find(param_type)->second;
-      out += "[";
-      out += get_enum_names<MODULE>().find(module)->second;
-      out += "]: ";
-      return out;
-    }
+    static std::string error_prefix();
     /**
       Get the name value corresponding to an enum key
       \param[in] x Key to get value for
@@ -242,57 +151,6 @@ namespace ePhotosynthesis {
       return it->first;
     }
     /**
-      Print the contents of a collection
-      \param[in] collection Object to print
-      \param[in,out] out Stream to print to
-      \param[in] includePrefixes If true, the module & 
-        parameter type prefixes will be added to the member 
-        names.
-      \param[in] tab Indentation to add to each line
-      \return Updated stream
-    */
-    template<typename T>
-    static std::ostream& print_map(const std::map<Type, T>& collection, std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
-      const std::string space(tab * 4, ' ');
-      typename std::map<Type, T>::const_iterator it;
-      for (it = collection.begin(); it != collection.end(); it++) {
-        out << space << "  " << names.find(it->first)->second << "	" << it->second << std::endl;
-      }
-      return out;
-    }
-    /**
-      Serialize a collection to a string
-      \param[in] collection Object to serialize
-      \param[in] tab Indentation to add to each line
-      \return Serialized collection
-    */
-    template<typename T>
-    static std::string string_map(const std::map<Type, T>& collection, const unsigned int tab = 0) {
-      std::ostringstream oss;
-      print_map(collection, oss, tab);
-      return oss.str();
-    }
-    /**
-      Print the contents of defaults
-      \param[in,out] out Stream to print to
-      \param[in] includePrefixes If true, the module & 
-        parameter type prefixes will be added to the member 
-        names.
-      \param[in] tab Indentation to add to each line
-      \return Updated stream
-    */
-    static std::ostream& printDefaults(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
-      return print_map(defaults, out, includePrefixes, tab);
-    }
-    /**
-      Serialize the contents of defaults
-      \param[in] tab Indentation to add to each line
-      \return Serialized collection
-    */
-    static std::string stringDefaults(const unsigned int tab = 0) {
-      return string_map(defaults, tab);
-    }
-    /**
       Get the default value corresponding to an enum key
       \param[in] x Key to get value for
       \return Value
@@ -320,26 +178,6 @@ namespace ePhotosynthesis {
       return it->second;
     }
     /**
-      Print the contents of defaults_C3
-      \param[in,out] out Stream to print to
-      \param[in] includePrefixes If true, the module & 
-        parameter type prefixes will be added to the member 
-        names.
-      \param[in] tab Indentation to add to each line
-      \return Updated stream
-    */
-    static std::ostream& printDefaultsC3(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
-      return print_map(defaults_C3, out, includePrefixes, tab);
-    }
-    /**
-      Serialize the contents of defaults_C3
-      \param[in] tab Indentation to add to each line
-      \return Serialized collection
-    */
-    static std::string stringDefaultsC3(const unsigned int tab = 0) {
-      return string_map(defaults_C3, tab);
-    }
-    /**
       Get the defaultc3 value corresponding to an enum key
       \param[in] x Key to get value for
       \return Value
@@ -365,26 +203,6 @@ namespace ePhotosynthesis {
         return defaultV;
       }
       return it->second;
-    }
-    /**
-      Print the contents of glymaids
-      \param[in,out] out Stream to print to
-      \param[in] includePrefixes If true, the module & 
-        parameter type prefixes will be added to the member 
-        names.
-      \param[in] tab Indentation to add to each line
-      \return Updated stream
-    */
-    static std::ostream& printGlymaids(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
-      return print_map(glymaids, out, includePrefixes, tab);
-    }
-    /**
-      Serialize the contents of glymaids
-      \param[in] tab Indentation to add to each line
-      \return Serialized collection
-    */
-    static std::string stringGlymaids(const unsigned int tab = 0) {
-      return string_map(glymaids, tab);
     }
     /**
       Get the glymaid value corresponding to an enum key
@@ -456,26 +274,6 @@ namespace ePhotosynthesis {
       return it->second;
     }
     /**
-      Print the contents of docs
-      \param[in,out] out Stream to print to
-      \param[in] includePrefixes If true, the module & 
-        parameter type prefixes will be added to the member 
-        names.
-      \param[in] tab Indentation to add to each line
-      \return Updated stream
-    */
-    static std::ostream& printDocs(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
-      return print_map(docs, out, includePrefixes, tab);
-    }
-    /**
-      Serialize the contents of docs
-      \param[in] tab Indentation to add to each line
-      \return Serialized collection
-    */
-    static std::string stringDocs(const unsigned int tab = 0) {
-      return string_map(docs, tab);
-    }
-    /**
       Get the docs value corresponding to an enum key
       \param[in] x Key to get value for
       \return Value
@@ -516,65 +314,6 @@ namespace ePhotosynthesis {
         throw std::runtime_error("Could not locate Docs for '" + x + "'");
       }
       return it->first;
-    }
-    /**
-      Print the contents of a collection
-      \param[in] collection Object to print
-      \param[in,out] out Stream to print to
-      \param[in] includePrefixes If true, the module & 
-        parameter type prefixes will be added to the member 
-        names.
-      \param[in] tab Indentation to add to each line
-      \return Updated stream
-    */
-    static std::ostream& print_vector(const std::vector<Type>& collection, std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
-      const std::string space(tab * 4, ' ');
-      out << space << "[";
-      typename std::vector<Type>::const_iterator it;
-      for (it = collection.begin(); it != collection.end(); it++) {
-        out << names.find((*(it)))->second << ",";
-      }
-      out << "]";
-      return out;
-    }
-    /**
-      Serialize a collection to a string
-      \param[in] collection Object to serialize
-      \param[in] tab Indentation to add to each line
-      \return Serialized collection
-    */
-    static std::string string_vector(const std::vector<Type>& collection, const unsigned int tab = 0) {
-      std::ostringstream oss;
-      print_vector(collection, oss, tab);
-      return oss.str();
-    }
-    /**
-      Print the contents of value_flags
-      \param[in,out] out Stream to print to
-      \param[in] includePrefixes If true, the module & 
-        parameter type prefixes will be added to the member 
-        names.
-      \param[in] tab Indentation to add to each line
-      \return Updated stream
-    */
-    static std::ostream& printValueFlags(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
-      return print_map(value_flags, out, includePrefixes, tab);
-    }
-    /**
-      Serialize the contents of skipped
-      \param[in] tab Indentation to add to each line
-      \return Serialized collection
-    */
-    static std::string stringSkipped(const unsigned int tab = 0) {
-      return string_vector(listSkipped(), tab);
-    }
-    /**
-      Serialize the contents of value_flags
-      \param[in] tab Indentation to add to each line
-      \return Serialized collection
-    */
-    static std::string stringValueFlags(const unsigned int tab = 0) {
-      return string_map(value_flags, tab);
     }
     /**
       Get the valueflag value corresponding to an enum key
@@ -737,66 +476,6 @@ namespace ePhotosynthesis {
       for (it = x.begin(); it != x.end(); it++) {
         removeValueFlags(it->first);
       }
-    }
-    /**
-      Print the contents of static_value_flags
-      \param[in,out] out Stream to print to
-      \param[in] includePrefixes If true, the module & 
-        parameter type prefixes will be added to the member 
-        names.
-      \param[in] tab Indentation to add to each line
-      \return Updated stream
-    */
-    static std::ostream& printStaticValueFlags(std::ostream& out, bool includePrefixes = false, const unsigned int tab = 0) {
-      return print_map(static_value_flags, out, includePrefixes, tab);
-    }
-    /**
-      Serialize the contents of constant
-      \param[in] tab Indentation to add to each line
-      \return Serialized collection
-    */
-    static std::string stringConstant(const unsigned int tab = 0) {
-      return string_vector(listConstant(), tab);
-    }
-    /**
-      Serialize the contents of calculated
-      \param[in] tab Indentation to add to each line
-      \return Serialized collection
-    */
-    static std::string stringCalculated(const unsigned int tab = 0) {
-      return string_vector(listCalculated(), tab);
-    }
-    /**
-      Serialize the contents of nonvector
-      \param[in] tab Indentation to add to each line
-      \return Serialized collection
-    */
-    static std::string stringNonvector(const unsigned int tab = 0) {
-      return string_vector(listNonvector(), tab);
-    }
-    /**
-      Serialize the contents of resetone
-      \param[in] tab Indentation to add to each line
-      \return Serialized collection
-    */
-    static std::string stringResetone(const unsigned int tab = 0) {
-      return string_vector(listResetone(), tab);
-    }
-    /**
-      Serialize the contents of initonce
-      \param[in] tab Indentation to add to each line
-      \return Serialized collection
-    */
-    static std::string stringInitonce(const unsigned int tab = 0) {
-      return string_vector(listInitonce(), tab);
-    }
-    /**
-      Serialize the contents of static_value_flags
-      \param[in] tab Indentation to add to each line
-      \return Serialized collection
-    */
-    static std::string stringStaticValueFlags(const unsigned int tab = 0) {
-      return string_map(static_value_flags, tab);
     }
     /**
       Get the staticvalueflag value corresponding to an enum key
@@ -1147,11 +826,6 @@ namespace ePhotosynthesis {
   
   // Utility for getting enum type from module & param_type
   #define MODULE2Enum ValueSetEnum
-  // Utility for getting name from enum
-  template<typename T>
-  std::string get_enum_name(const T& k) {
-    return get_enum_names<T>().find(k)->second;
-  }
 }
 // Global includes
 // [BEGIN] HEADERS_GLOBAL
@@ -1163,92 +837,4 @@ namespace ePhotosynthesis {
 #include "enums/enums_VARS.hpp"
 #include "enums/enums_VEL.hpp"
 // [END] HEADERS_GLOBAL
-
-// Specializations for get_enum_names
-// [BEGIN] HEADERS_NAMES
-#include "enums/enums_COND_names.hpp"
-#include "enums/enums_POOL_names.hpp"
-#include "enums/enums_KE_names.hpp"
-#include "enums/enums_MOD_names.hpp"
-#include "enums/enums_RC_names.hpp"
-#include "enums/enums_VARS_names.hpp"
-#include "enums/enums_VEL_names.hpp"
-// [END] HEADERS_NAMES
-
-// Specializations for get_enum_values
-// [BEGIN] HEADERS_VALUES
-#include "enums/enums_COND_defaults.hpp"
-#include "enums/enums_POOL_defaults.hpp"
-#include "enums/enums_KE_defaults.hpp"
-#include "enums/enums_MOD_defaults.hpp"
-#include "enums/enums_RC_defaults.hpp"
-#include "enums/enums_VARS_defaults.hpp"
-#include "enums/enums_VEL_defaults.hpp"
-// [END] HEADERS_VALUES
-
-// Specializations for get_enum_alternate_values
-// [BEGIN] HEADERS_ALTERNATE_VALUES
-#include "enums/enums_COND_defaults_C3.hpp"
-#include "enums/enums_POOL_defaults_C3.hpp"
-#include "enums/enums_KE_defaults_C3.hpp"
-#include "enums/enums_MOD_defaults_C3.hpp"
-#include "enums/enums_RC_defaults_C3.hpp"
-#include "enums/enums_VARS_defaults_C3.hpp"
-#include "enums/enums_VEL_defaults_C3.hpp"
-// [END] HEADERS_ALTERNATE_VALUES
-
-// Specializations for get_enum_glymaids
-// [BEGIN] HEADERS_GLYMAIDS
-#include "enums/enums_COND_glymaids.hpp"
-#include "enums/enums_POOL_glymaids.hpp"
-#include "enums/enums_KE_glymaids.hpp"
-#include "enums/enums_MOD_glymaids.hpp"
-#include "enums/enums_RC_glymaids.hpp"
-#include "enums/enums_VARS_glymaids.hpp"
-#include "enums/enums_VEL_glymaids.hpp"
-// [END] HEADERS_GLYMAIDS
-
-// Specializations for get_enum_aliases
-// [BEGIN] HEADERS_ALIASES
-#include "enums/enums_COND_aliases.hpp"
-#include "enums/enums_POOL_aliases.hpp"
-#include "enums/enums_KE_aliases.hpp"
-#include "enums/enums_MOD_aliases.hpp"
-#include "enums/enums_RC_aliases.hpp"
-#include "enums/enums_VARS_aliases.hpp"
-#include "enums/enums_VEL_aliases.hpp"
-// [END] HEADERS_ALIASES
-
-// Specializations for get_enum_docs
-// [BEGIN] HEADERS_DOCS
-#include "enums/enums_COND_docs.hpp"
-#include "enums/enums_POOL_docs.hpp"
-#include "enums/enums_KE_docs.hpp"
-#include "enums/enums_MOD_docs.hpp"
-#include "enums/enums_RC_docs.hpp"
-#include "enums/enums_VARS_docs.hpp"
-#include "enums/enums_VEL_docs.hpp"
-// [END] HEADERS_DOCS
-
-// Specializations for get_enum_value_flags
-// [BEGIN] HEADERS_VALUE_FLAGS
-#include "enums/enums_COND_value_flags.hpp"
-#include "enums/enums_POOL_value_flags.hpp"
-#include "enums/enums_KE_value_flags.hpp"
-#include "enums/enums_MOD_value_flags.hpp"
-#include "enums/enums_RC_value_flags.hpp"
-#include "enums/enums_VARS_value_flags.hpp"
-#include "enums/enums_VEL_value_flags.hpp"
-// [END] HEADERS_VALUE_FLAGS
-
-// Specializations for get_enum_static_value_flags
-// [BEGIN] HEADERS_STATIC_VALUE_FLAGS
-#include "enums/enums_COND_static_value_flags.hpp"
-#include "enums/enums_POOL_static_value_flags.hpp"
-#include "enums/enums_KE_static_value_flags.hpp"
-#include "enums/enums_MOD_static_value_flags.hpp"
-#include "enums/enums_RC_static_value_flags.hpp"
-#include "enums/enums_VARS_static_value_flags.hpp"
-#include "enums/enums_VEL_static_value_flags.hpp"
-// [END] HEADERS_STATIC_VALUE_FLAGS
 

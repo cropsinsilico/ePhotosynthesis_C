@@ -99,16 +99,18 @@ public:
     std::vector<std::string> outputVars; /**< Names of variables that should be output by the driver */
     EPHOTO_API static bool showWarnings; /**< Whether or not to send solver warnings to stdout. */
 };
-  
-template<>
-inline const std::map<DriverType, std::string>& get_enum_names<DriverType>() {
-  static const std::map<DriverType, std::string> collection = {
-    {trDynaPS, "trDynaPS"},
-    {DynaPS  , "DynaPS"  },
-    {CM      , "CM"      },
-    {EPS     , "EPS"     },
-  };
-  return collection;
+
+namespace utils {
+  template<>
+  inline const std::map<DriverType, std::string>& get_enum_names<DriverType>() {
+    static const std::map<DriverType, std::string> collection = {
+      {trDynaPS, "trDynaPS"},
+      {DynaPS  , "DynaPS"  },
+      {CM      , "CM"      },
+      {EPS     , "EPS"     },
+    };
+    return collection;
+  }
 }
 
 class ValueSet_t;
@@ -393,7 +395,7 @@ public:
     */
     static std::string error_prefix() {
       std::string out;
-      out += get_enum_names<MODULE>().find(module)->second;
+      out += utils::get_enum_names<MODULE>().find(module)->second;
       out += ": ";
       return out;
     }
@@ -405,7 +407,7 @@ public:
                      const std::vector<std::string>& vars = {}) override {
 	std::string fname_base_cpy = fname_base;
 	if (fname_base_cpy.empty()) {
-	  fname_base_cpy = get_enum_names<MODULE>().find(module)->second;
+	  fname_base_cpy = utils::get_enum_names<MODULE>().find(module)->second;
 	  fname_base_cpy += "_";
 	}
         Driver::outputParam(frequency, fname_base_cpy, vars);

@@ -182,7 +182,6 @@ set(ENUM_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/utils/generate_enum.py)
 
 # The last suffix must have a complete set of modules for the global
 # enum to be generated correctly
-set(ENUM_EXCLUDE_EMPTY 1)
 foreach(suffix COND POOL KE MOD RC VARS VEL)
   set(fsuffix ${suffix})
   set(ENUM_SRC_REGEX ${CMAKE_CURRENT_SOURCE_DIR}/param/*_${fsuffix}.txt)
@@ -242,13 +241,8 @@ foreach(suffix COND POOL KE MOD RC VARS VEL)
     endif()
     set(ENUM_${ftype} ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_${ftype}.cpp)
     set(ENUM_${ftype}_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_${ftype}.hpp)
-    if(ENUM_EXCLUDE_EMPTY)
-      list(APPEND iBYPRODUCTS ${ENUM_${ftype}_H})
-      list(APPEND iARGS --expect-empty-${ftype_key})
-    else()
-      list(APPEND iBYPRODUCTS ${ENUM_${ftype}_H} ${ENUM_${ftype}})
-      list(APPEND iGENERATED_SOURCES ${ENUM_${ftype}})
-    endif()
+    list(APPEND iARGS --expect-empty-${ftype_key}
+         --expect-empty-${ftype_key}-header)
     list(APPEND iARGS
       --dst-${ftype_key}=${ENUM_${ftype}}
       --dst-${ftype_key}-header=${ENUM_${ftype}_H}
@@ -258,20 +252,15 @@ foreach(suffix COND POOL KE MOD RC VARS VEL)
   set(ENUM_UTILS ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_utils.hpp)
   set(ENUM_GLOBAL ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums.hpp)
   set(ENUM_HELPER ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_helpers.hpp)
-  # set(ENUM_MAP ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_names.cpp)
-  # set(ENUM_MAP_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_names.hpp)
-  # set(ENUM_VAL ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_defaults.cpp)
-  # set(ENUM_VAL_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_defaults.hpp)
-  # set(ENUM_ALT ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_defaults_C3.cpp)
-  # set(ENUM_ALT_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_defaults_C3.hpp)
   set(ENUM_DST ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}.cpp)
   set(ENUM_DST_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}.hpp)
+  set(UTILS_DST_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_utils.hpp)
   add_custom_target(
     generate_enum_${fsuffix}
     COMMAND python ${ENUM_SCRIPT}
     "${ENUM_SRC_REGEX}" --src-regex --dst-type=c --dst=${ENUM_DST_H}
     --dst-c-source=${ENUM_DST} --dst-helper=${ENUM_HELPER}
-    --include-file-c-source=${ENUM_GLOBAL}
+    --include-file-c-source=${UTILS_DST_H}
     --namespace-c-source=ePhotosynthesis
     --dst-global=${ENUM_GLOBAL} ${APPEND_GLOBAL_ARGS}
     --enum-name-global=MODULE --strip-suffix-global=_${suffix}

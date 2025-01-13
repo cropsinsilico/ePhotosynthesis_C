@@ -74,49 +74,9 @@ namespace ePhotosynthesis {
   DO_VALUE_SET_CHILDREN_MACRO(CALL_CHILD_METHOD, const_iterator,	\
 			      method, args)
 
-  inline bool __values_equal(const double& a, const double& b) {
-    if (std::isnan(a) && std::isnan(b))
-      return true;
-    double relative_max = std::max(std::fabs(a), std::fabs(b));
-    double relative = std::fabs(a - b);
-    if (relative_max > COMPARE_RELATIVE_EPSILON)
-      relative = relative / relative_max;
-    double absolute = std::fabs(a - b);
-    return ((relative <= COMPARE_RELATIVE_EPSILON) &&
-	    (absolute <= COMPARE_ABSOLUTE_EPSILON));
-  }
-  inline double __extract_value(const double& x) { return x; }
-  inline double __extract_value(const double* x) { return *x; }
-  template<typename T>
-  bool __contains(const std::vector<T>& v, const T& x) {
-    typename std::vector<T>::const_iterator it;
-    for (it = v.begin(); it != v.end(); it++){
-      if ((*(it)) == x) break;
-    }
-    return (it != v.end());
-  }
-  inline bool __startswith(std::string const& value,
-                           std::string const& prefix) {
-    if (prefix.size() > value.size()) return false;
-    return std::equal(prefix.begin(), prefix.end(), value.begin());
-  }
-  inline bool __endswith(std::string const& value,
-                         std::string const& suffix) {
-    if (suffix.size() > value.size()) return false;
-    return std::equal(suffix.rbegin(), suffix.rend(), value.rbegin());
-  }
-  template<typename T>
-  std::string __make_string(const T& x,
-			    typename std::enable_if<!std::is_same<T, const char[]>::value >::type* = 0)
-  { return std::to_string(x); }
-  inline std::string __make_string(const std::string& x) { return x; }
-  inline std::string __make_string(const char* x) { return std::string(x); }
-  template<size_t N>
-  inline std::string __make_string(const char x[N]) { return std::string(x); }
-
 #define CONTEXT_VALUE_SET std::string(__func__) + ": "
 #define ERROR_VALUE_SET(...)			\
-    throw std::runtime_error(error_prefix() + std::string(__func__) + ": " + FOR_EACH_JOIN(__make_string, SEP_ADD, __VA_ARGS__))
+    throw std::runtime_error(error_prefix() + std::string(__func__) + ": " + FOR_EACH_JOIN(utils::to_string, SEP_ADD, __VA_ARGS__))
 #define ERROR_VALUE_SET_NESTED(err, msg)				\
   throw std::runtime_error(std::string(err.what()) + msg)
 #define ERROR_VALUE_SET_NOARGS() ERROR_VALUE_SET("")
@@ -415,11 +375,11 @@ namespace ePhotosynthesis {
 #undef ASSIGN_OP
     template<typename T2>
     friend bool operator==(const Value<T>& a, const Value<T2>& b) {
-      return __values_equal(a.get("lhs: =="), b.get("rhs: =="));
+      return utils::values_equal(a.get("lhs: =="), b.get("rhs: =="));
     }
     template<typename T2>
     friend bool operator==(const Value<T>& a, const T2& b) {
-      return __values_equal(a.get("lhs: =="), b);
+      return utils::values_equal(a.get("lhs: =="), b);
     }
     template<typename T2>
     friend bool operator!=(const Value<T>& a, const T2& b) {
@@ -999,8 +959,8 @@ namespace ePhotosynthesis {
       }
       if (includePrefixes) {
 	pad += 4; // "::" between param_type/module/key
-	pad += get_enum_names<PARAM_TYPE>().find(param_type)->second.size();
-	pad += get_enum_names<MODULE>().find(module)->second.size();
+	pad += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second.size();
+	pad += utils::get_enum_names<MODULE>().find(module)->second.size();
       }
       return pad;
     }
@@ -1162,7 +1122,7 @@ namespace ePhotosynthesis {
           utils::enum_key2string(param_type) + "::" + iname;
       }
       std::map<std::string, std::string>::const_iterator it_alias = key_aliases.find(iname);
-      if (!__contains(skip_keys, iname)) {
+      if (!utils::contains(skip_keys, iname)) {
         out << space << std::setw(pad + tab_size) << std::left;
         if (it_alias != key_aliases.end())
           iname = it_alias->second;
@@ -1265,7 +1225,7 @@ namespace ePhotosynthesis {
        \param b Second value for comparison.
      */
     static bool valuesEqual(const double& a, const double& b) {
-      return __values_equal(a, b);
+      return utils::values_equal(a, b);
     }
     static bool valuesEqual(const double* a, const double* b) {
       return valuesEqual(*a, *b);
@@ -1527,7 +1487,7 @@ namespace ePhotosynthesis {
 				       std::size_t padVals=0,
 				       bool includePrefixes=false) {
       std::map<K, std::string> valStrDst, valStrSrc;
-#define GET_VAL(x) to_string_with_precision(__extract_value(x))
+#define GET_VAL(x) to_string_with_precision(utils::extract_value(x))
       if (padKeys == 0) {
 	padKeys = field_width_value_map(valsDst, includePrefixes);
 	std::size_t padKeys2 = field_width_value_map(valsSrc, includePrefixes);
@@ -2446,8 +2406,8 @@ namespace ePhotosynthesis {
       std::string out = error_prefix() +
 	", NCHILD = " + std::to_string(child_classes.size()) +
 	", COUNT = " + std::to_string(memberCount()) +
-	", SKIPPED = " + EnumBaseClass::stringSkipped() +
-	", NONVECT = " + EnumBaseClass::stringNonvector();
+	", SKIPPED = " + utils::to_string(EnumBaseClass::listSkipped()) +
+        ", NONVECT = " + utils::to_string(EnumBaseClass::listNonvector());
       if (noChildren)
 	return out;
       for (std::vector<ValueSetClassWrapper>::const_iterator it = child_classes.begin();
