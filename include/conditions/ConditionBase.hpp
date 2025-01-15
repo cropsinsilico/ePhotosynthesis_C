@@ -97,7 +97,7 @@ protected:
       VALUE_SET_PARENT(T, U, ID, PARAM_TYPE_COND)(*other) {}
 
 #ifdef INCDEBUG
-    EPHOTO_API static Debug::DebugLevel _dlevel;
+    static Debug::DebugLevel _dlevel;
  public:
     static void setTop() {
 	T::_dlevel = Debug::Top;

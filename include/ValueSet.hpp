@@ -1634,7 +1634,7 @@ namespace ePhotosynthesis {
                                           "]: ");
 	}
       }
-      if (valsDst.size() != valsSrc.size()) {
+      if (valsDst.size() != valsSrc.size() && !ignore_missing) {
 	for (typename std::map<EnumType, VDst>::const_iterator itDst = valsDst.begin();
 	     itDst != valsDst.end(); itDst++) {
 	  typename std::map<EnumType, VSrc>::const_iterator itSrc = valsSrc.find(itDst->first);
@@ -1882,13 +1882,12 @@ namespace ePhotosynthesis {
 			     const bool force=false,
 			     const bool noChildren=false) {
       if (!(static_flags & VS_FLAG_INIT_DEFAULTS)) {
+        defaults.insert(EnumBaseClass::defaults.begin(),
+                        EnumBaseClass::defaults.end());
 	if (useC3) {
-	  defaults.insert(EnumBaseClass::defaults_C3.begin(),
-			  EnumBaseClass::defaults_C3.end());
+          utils::copyInto(defaults, EnumBaseClass::defaults_C3);
 	  static_flags |= VS_FLAG_DEFAULTS_C3;
 	} else {
-	  defaults.insert(EnumBaseClass::defaults.begin(),
-			  EnumBaseClass::defaults.end());
 	  static_flags &= ~VS_FLAG_DEFAULTS_C3;
 	}
 	static_flags |= VS_FLAG_INIT_DEFAULTS;
@@ -1903,7 +1902,7 @@ namespace ePhotosynthesis {
 	if (useC3) {
 	  copy_value_map(defaults, EnumBaseClass::defaults_C3,
 			 "initDefaults: ",
-			 false, false, true, true, true);
+			 false, true, true, true, true);
 	  static_flags |= VS_FLAG_DEFAULTS_C3;
 	} else {
 	  copy_value_map(defaults, EnumBaseClass::defaults,
@@ -2290,8 +2289,10 @@ namespace ePhotosynthesis {
 	if (EnumBaseClass::isInitonce(k)) {
 	  // TODO: this check may not be necessary if the init once
 	  //   variables are reinitialized after a reset
-	  compareValues(k, EnumBaseClass::defaults.find(k)->second,
-			EnumBaseClass::defaults_C3.find(k)->second);
+          typename std::map<EnumType, double>::const_iterator it_C3 = EnumBaseClass::defaults_C3.find(k);
+          if (it_C3 != EnumBaseClass::defaults_C3.end())
+            compareValues(k, EnumBaseClass::defaults.find(k)->second,
+                          it_C3->second);
 	  checkDefaults("insert_value_orig: ");
 	  v[0] = defaults.find(k)->second;
 	  DEBUG_VALUE_SET(context, "initialized ", k, " = ",

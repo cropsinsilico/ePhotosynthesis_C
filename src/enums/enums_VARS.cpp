@@ -69,34 +69,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, double> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::defaults_C3 = {
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)AVR              , 30.0 },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)HPR              , 4.66 },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2               , 210.0},
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_cond         , 0.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)GLight           , 0.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2_cond          , 0.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS12ratio        , 0.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)ADP              , 0.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Pi               , 0.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestATPCost      , 0.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_in           , 0.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi_Wps       , 0.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi           , 0.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS2BF_Pi         , 0.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS_PR_Param      , 0.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Tp               , 0.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)alfa             , 0.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)fc               , 0.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)lightParam       , 0.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)alpha1           , 1.205},
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)alpha2           , 2.06 },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_LHCI       , 6.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_LHCII      , 13.0 },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_PSI        , 1.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)input_PSIIcore   , 1.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PSIIantennaSize  , 37.0 },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PSIantennaSize   , 95.0 },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)ProteinTotalRatio, 0.973},
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::glymaids = {

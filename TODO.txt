@@ -6,7 +6,6 @@
 - Set Vfactor variables from grn
 - Use GlymaIDs from param
 - Remove unnecessary explicit use of parent class members in INHERIT_ macros
-- Change defaults_C3 to only specify values that are different when useC3 is true
 - Use of macros for modules
 - Use of macros for conditions
 - Unit tests for dynamic inputs of variables from files

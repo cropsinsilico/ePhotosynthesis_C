@@ -37,18 +37,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::defaults_C3 = {
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kA_d, 1.0 },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kA_f, 1.0 },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kA_U, 20.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kU_A, 10.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kU_d, 2.0 },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kU_f, 1.0 },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k1  , 1.0 },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k_r1, 8.0 },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)kz  , 38.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k12 , 38.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k23 , 1.0 },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)k30 , 1.0 },
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::glymaids = {
@@ -122,7 +110,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::defaults_C3 = {
-    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PQT , 8.0},
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::glymaids = {
@@ -174,8 +161,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::defaults_C3 = {
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)QBt , 1},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PQT , 8},
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::glymaids = {
@@ -369,31 +354,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::defaults_C3 = {
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)GAPDH    , 1.0972130787798991e-08},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FBPase   , 4.309416074121956e-08 },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SBPase   , 2.1645021645021643e-07},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PRK      , 6.097560975609756e-08 },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPase   , 2e-08                 },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPGPP   , 4.7619047619047623e-07},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)MDH      , 6.24687656171914e-08  },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ThioT    , 0.081                 },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FdT      , 0.081                 },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)RuACTT   , 0.0056                },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_GAPDH , 620                   },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_FBPase, 119                   },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_SBPase, 70                    },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_PRK   , 410                   },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_ATPase, 100                   },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_ATPGPP, 10                    },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_MDH   , 184                   },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_GAPDH , 147000                },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_FBPase, 195000                },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_SBPase, 66000                 },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_PRK   , 40000                 },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_ATPase, 500000                },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_ATPGPP, 210000                },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_MDH   , 87000                 },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)MDH_Vmax , 2.0                   },
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::glymaids = {
@@ -502,14 +462,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::defaults_C3 = {
-    {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FBPase_Coeff, -0.305},
-    {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FBPase0     , 0.5   },
-    {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SBPase_Coeff, -0.3  },
-    {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SBPase0     , 0.5   },
-    {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PRK_Coeff   , -0.295},
-    {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PRK0        , 0.5   },
-    {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPase_Coeff, -0.28 },
-    {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPase0     , 0.5   },
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::glymaids = {
@@ -567,11 +519,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::defaults_C3 = {
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ET  , 1.2   },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)Rac , 0.0056},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)C   , 0.012 },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)O   , 0.260 },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)M   , 5.0   },
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::glymaids = {
@@ -629,9 +576,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::defaults_C3 = {
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATc , 1.0 },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)UTc , 1.5 },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PTc , 15.0},
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::glymaids = {

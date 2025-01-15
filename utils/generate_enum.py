@@ -2874,7 +2874,7 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             'alternate_values': {
                 'default_value_type': 'double',
                 'default_value_key': 'val_alt',
-                'default_secondary_value_key': 'val',
+                'default_explicit': True,
             },
             'glymaids': {
                 'default_value_type': 'std::string',

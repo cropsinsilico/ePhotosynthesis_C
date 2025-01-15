@@ -75,37 +75,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::defaults_C3 = {
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf1   , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf2   , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf3   , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf4   , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf5   , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf6   , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf7   , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf8   , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf9   , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf10  , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf11  , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vqi    , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vipc   , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vicp   , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vinc   , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vinp   , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vdp    , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vdc    , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vfp    , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vfc    , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vsfd   , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)VsATP  , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)VgPQH2 , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)JKc    , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)JMgc   , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)JClc   , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf15  , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vbf16  , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vbfn2  , 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)VsNADPH, 0.0},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vcet   , 0.0},
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_VEL>::glymaids = {
@@ -316,64 +285,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::defaults_C3 = {
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vA_d    , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vA_f    , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vA_U    , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vU_A    , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vU_f    , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vU_d    , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v1      , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v_r1    , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vS1_S2  , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vS2_S3  , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vS3_S0  , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vS0_S1  , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vz_1    , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v1z_1   , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2z_1   , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v3z_1   , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v0z_1   , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vz_2    , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v1z_2   , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2z_2   , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v3z_2   , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v0z_2   , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v1z     , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2z     , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v3z     , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v0z     , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vAB1    , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vBA1    , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vAB2    , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vBA2    , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v3      , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v_r3    , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v3_n    , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v_r3_n  , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v_pq_ox , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Ic      , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Ia      , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2_1    , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2_2    , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2_00_1 , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2_01_1 , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2_02_1 , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2_00_2 , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2_01_2 , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2_02_2 , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vr2_00_1, 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vr2_01_1, 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vr2_02_1, 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vr2_1   , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vr2_00_2, 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vr2_01_2, 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vr2_02_2, 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vr2_2   , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vP680qU , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vP680qA , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vU_P680 , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vP680_d , 0.0},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vP680_f , 0.0},
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_VEL>::glymaids = {
@@ -488,16 +399,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::defaults_C3 = {
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v111 , 0.0},
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v112 , 0.0},
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v113 , 0.0},
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v121 , 0.0},
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v122 , 0.0},
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v123 , 0.0},
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v124 , 0.0},
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v131 , 0.0},
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v1in , 0.0},
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2out, 0.0},
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_VEL>::glymaids = {
@@ -583,25 +484,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::defaults_C3 = {
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v1  , 0.0},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v2  , 0.0},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v3  , 0.0},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v4  , 0.0},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v5  , 0.0},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v6  , 0.0},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v7  , 0.0},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v8  , 0.0},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v9  , 0.0},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v10 , 0.0},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v13 , 0.0},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v16 , 0.0},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v23 , 0.0},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v31 , 0.0},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v32 , 0.0},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v33 , 0.0},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Pi  , 0.0},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v24 , 0.0},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v25 , 0.0},
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_VEL>::glymaids = {
@@ -671,17 +553,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::defaults_C3 = {
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)ve2GAPDH   , 0.0},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)ve2FBPase  , 0.0},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)ve2SBPase  , 0.0},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)ve2PRK     , 0.0},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)ve2ATPase  , 0.0},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)ve2ATPGPP  , 0.0},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)ve2MDH     , 0.0},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)ve2Fd      , 0.0},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)veFd2Thio  , 0.0},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)veFd2Calvin, 0.0},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)ve2RuACT   , 0.0},
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_VEL>::glymaids = {
@@ -733,8 +604,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::defaults_C3 = {
-    {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vred, 0.0},
-    {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vox , 0.0},
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_VEL>::glymaids = {
@@ -794,12 +663,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::defaults_C3 = {
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v1  , 0.0},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vn1 , 0.0},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v7  , 0.0},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vn7 , 0.0},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v6_1, 0.0},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v6_2, 0.0},
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_VEL>::glymaids = {
@@ -877,21 +740,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::defaults_C3 = {
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v51     , 0.0},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v52     , 0.0},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v55     , 0.0},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v56     , 0.0},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v57     , 0.0},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v58     , 0.0},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v59     , 0.0},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v60     , 0.0},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v61     , 0.0},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)v62     , 0.0},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vdhap_in, 0.0},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vgap_in , 0.0},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vpga_in , 0.0},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vpga_use, 0.0},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vatpf   , 0.0},
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_VEL>::glymaids = {
@@ -968,13 +816,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::defaults_C3 = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vva   , 0.0},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vaz   , 0.0},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vza   , 0.0},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vav   , 0.0},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vvf   , 0.0},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vv2ABA, 0.0},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)VABAdg, 0.0},
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::glymaids = {

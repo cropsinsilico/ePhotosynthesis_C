@@ -69,34 +69,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::defaults_C3 = {
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPHr  , 0.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc1  , 1.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPo   , 1.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPoQH2, 0.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QHsemi , 0.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytbL  , 1.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qi     , 0.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Q      , 1.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytbH  , 1.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qn     , 0.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qr     , 0.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QH2    , 5.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc2  , 1.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P700   , 0.5    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADP    , 0.82   },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATP    , 0.68   },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ks     , 10.0   },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Mgs    , 5.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Cls    , 1.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Aip    , 0.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U      , 0.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)An     , 0.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fdn    , 0.3    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)BFHs   , 19.0001},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)BFHl   , 19.0001},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHs    , 7.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHl    , 7.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)NADPH  , 0.21   },
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::glymaids = {
@@ -315,7 +287,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::defaults_C3 = {
-    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)kd  , 0.5e8},
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::glymaids = {
@@ -408,28 +379,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::defaults_C3 = {
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)A         , 0  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U         , 0  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680ePheo , 1  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheon, 0  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheo , 0  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680Pheon , 0  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Yz        , 1  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S1T       , 0.8},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S2T       , 0  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S3T       , 0  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S0T       , 0.2},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S1Tp      , 0  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S2Tp      , 0  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S3Tp      , 0  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S0Tp      , 0  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB      , 1  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB     , 0  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQBn     , 0  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQBn    , 0  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB2n    , 0  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB2n   , 0  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PQn       , 5  },
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::glymaids = {
@@ -521,17 +470,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::defaults_C3 = {
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEA , 0.1812},
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCA  , 0.36  },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGCA , 0.0029},
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCAc , 0.36  },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GOAc , 0.028 },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SERc , 7.5   },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GLYc , 1.8   },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HPRc , 0.0035},
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEAc, 0.1812},
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP , 2.0   },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131, 0.0   },
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::glymaids = {
@@ -621,21 +559,7 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::defaults_C3 = {
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, 2.000 },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGA , 2.400 },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)DPGA, 0.0011},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3P , 0.5   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADPG, 0.0   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBP , 0.670 },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)E4P , 0.050 },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S7P , 2.000 },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBP , 0.300 },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATP , 0.68  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HexP, 2.2   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PenP, 0.25  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_Pi , 0.0   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_ADP, 0.0   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1 , 0.0   },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADPG, 0.0},
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::glymaids = {
@@ -806,17 +730,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::defaults_C3 = {
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GAPDH , 1.0972130787798991e-08},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPase, 4.309416074121956e-08 },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBPase, 2.1645021645021643e-07},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PRK   , 6.097560975609756e-08 },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPase, 2e-08                 },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPGPP, 4.7619047619047623e-07},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)MDH   , 0.0                   },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thio  , 0.081                 },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fd    , 0.081                 },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuACT , 0.0056                },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff , 0.3                   },
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::glymaids = {
@@ -884,7 +797,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::defaults_C3 = {
-    {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thion, 0.25},
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::glymaids = {
@@ -941,10 +853,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::defaults_C3 = {
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ER  , 0.20},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Eaf , 0.20},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ECMR, 0.8 },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, 2.0 },
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::glymaids = {
@@ -1075,10 +983,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::defaults_C3 = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx  , 160.0},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax  , 10.0 },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx  , 5.0  },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA , 1.0  },
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::glymaids = {

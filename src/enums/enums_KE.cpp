@@ -266,15 +266,6 @@ namespace ePhotosynthesis {
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::defaults_C3 = {
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2FBPase, 0.311167869},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2SBPase, 0.459194309},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2PRK   , 0.677638775},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPase, 1.0        },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2RuACT , 0.677638775},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2GAPDH , 0.044461692},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2MDH   , 0.044461692},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPGPP, 1.0        },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEeFd2Thio, 24776.0    },
   };
   template<> 
   const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::glymaids = {

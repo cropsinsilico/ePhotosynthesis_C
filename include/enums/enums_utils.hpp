@@ -113,6 +113,18 @@ namespace ePhotosynthesis {
       }
       return (it != v.end());
     }
+    template<typename T1, typename T2>
+    void copyInto(std::map<T1, T2>& dst, const std::map<T1, T2>& src) {
+      typename std::map<T1, T2>::const_iterator it_src;
+      typename std::map<T1, T2>::iterator it_dst;
+      for (it_src = src.begin(); it_src != src.end(); it_src++) {
+        it_dst = dst.find(it_src->first);
+        if (it_dst == dst.end())
+          dst.insert(*it_src);
+        else
+          it_dst->second = it_src->second;
+      }
+    }
     
     ///////////////////////////
     // Enum utilities
