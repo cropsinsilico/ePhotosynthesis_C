@@ -676,7 +676,7 @@ namespace ePhotosynthesis {
      Untemplated base class to allow storage of mixed value sets in
        containers.
    */
-  class EPHOTO_API ValueSet_t {
+  class ValueSet_t {
   public:
 
     virtual ~ValueSet_t() {}
@@ -851,7 +851,7 @@ namespace ePhotosynthesis {
        will be used by.
    */
   template<class T, class U, MODULE ID, PARAM_TYPE PT>
-  class EPHOTO_API ValueSetBase : public ValueSetEnum<ID, PT> {
+  class ValueSetBase : public ValueSetEnum<ID, PT> {
   public:
     typedef T ThisClass; /** Inheriting class */
     typedef U ThisParent; /** Parent class */
@@ -2592,7 +2592,7 @@ namespace ePhotosynthesis {
        will be used by.
    */
   template<class T, class U, MODULE ID, PARAM_TYPE PT>
-  class EPHOTO_API ValueSet :
+  class ValueSet :
     public ValueSet_t, public ValueSetBase<T, U, ID, PT> {
   public:
     typedef ValueSet<T, U, ID, PT> ValueSetClass;
@@ -3366,7 +3366,7 @@ namespace ePhotosynthesis {
        will be used by.
    */
   template<class T, class U, MODULE ID, PARAM_TYPE PT>
-  class EPHOTO_API ValueSetStatic : public ValueSetBase<T, U, ID, PT> {
+  class ValueSetStatic : public ValueSetBase<T, U, ID, PT> {
   public:
     typedef ValueSetStatic<T, U, ID, PT> ValueSetClass;
     INHERIT_METHODS_VALUE_SET_BASE(ValueSetBase<T, U, ID, PT>)
