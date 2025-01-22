@@ -4,41 +4,24 @@
 
 
 namespace ePhotosynthesis {
-  template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::all = {};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::names = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::defaults = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::docs = {
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_BF_KE_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_BF_KE& x) {
-    out << ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::getName(x);
-    return out;
-  }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::all = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::names = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::defaults = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::docs = {};
+  template<>
+  std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::error_prefix() {
     std::string out;
@@ -48,44 +31,28 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_BF_KE_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::all = {};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::names = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::defaults = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::docs = {
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_FIBF_KE_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_KE& x) {
-    out << ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::getName(x);
+  std::ostream& operator<<(std::ostream& out, const ENUM_BF_KE& x) {
+    out << ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::getName(x);
     return out;
   }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::all = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::names = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::defaults = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::docs = {};
+  template<>
+  std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::error_prefix() {
     std::string out;
@@ -95,44 +62,28 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_FIBF_KE_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::all = {};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::names = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::defaults = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::docs = {
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_FI_KE_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_FI_KE& x) {
-    out << ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::getName(x);
+  std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_KE& x) {
+    out << ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::getName(x);
     return out;
   }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::all = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::names = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::defaults = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::docs = {};
+  template<>
+  std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::error_prefix() {
     std::string out;
@@ -142,44 +93,28 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_FI_KE_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::all = {};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::names = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::defaults = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::docs = {
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_PR_KE_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_PR_KE& x) {
-    out << ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::getName(x);
+  std::ostream& operator<<(std::ostream& out, const ENUM_FI_KE& x) {
+    out << ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::getName(x);
     return out;
   }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::all = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::names = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::defaults = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::docs = {};
+  template<>
+  std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::error_prefix() {
     std::string out;
@@ -189,44 +124,28 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_PR_KE_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::all = {};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::names = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::defaults = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::docs = {
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_PS_KE_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_PS_KE& x) {
-    out << ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::getName(x);
+  std::ostream& operator<<(std::ostream& out, const ENUM_PR_KE& x) {
+    out << ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::getName(x);
     return out;
   }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::all = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::names = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::defaults = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::docs = {};
+  template<>
+  std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::error_prefix() {
     std::string out;
@@ -236,12 +155,24 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_PS_KE_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::all = {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2FBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2SBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2PRK, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2RuACT, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2GAPDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2MDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPGPP, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEeFd2Thio};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::names = {
+  std::ostream& operator<<(std::ostream& out, const ENUM_PS_KE& x) {
+    out << ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::getName(x);
+    return out;
+  }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::all = {
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2FBPase,
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2SBPase,
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2PRK   ,
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPase,
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2RuACT ,
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2GAPDH ,
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2MDH   ,
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPGPP,
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEeFd2Thio
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::names = {
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2FBPase, "KEe2FBPase"},
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2SBPase, "KEe2SBPase"},
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2PRK   , "KEe2PRK"   },
@@ -250,10 +181,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2GAPDH , "KEe2GAPDH" },
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2MDH   , "KEe2MDH"   },
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPGPP, "KEe2ATPGPP"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEeFd2Thio, "KEeFd2Thio"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEeFd2Thio, "KEeFd2Thio"}
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::defaults = {
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::defaults = {
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2FBPase, 0.311167869},
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2SBPase, 0.459194309},
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2PRK   , 0.677638775},
@@ -262,38 +193,24 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2GAPDH , 0.044461692},
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2MDH   , 0.044461692},
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPGPP, 1.0        },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEeFd2Thio, 24776.0    },
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEeFd2Thio, 24776.0    }
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::defaults_C3 = {
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::docs = {
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPase, "[CONST] 2.177727336 was set in code, but not used"}
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::glymaids = {
+  template<>
+  std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::static_value_flags = {
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPase, (STATIC_VALUE_FLAG_CONST)}
   };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::docs = {
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPase, "[CONST] 2.177727336 was set in code, but not used"},
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::static_value_flags = {
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPase, (STATIC_VALUE_FLAG_CONST)},
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_RROEA_KE_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_KE& x) {
-    out << ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::getName(x);
-    return out;
-  }
   template<>
   std::string ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::error_prefix() {
     std::string out;
@@ -303,44 +220,28 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_RROEA_KE_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::all = {};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::names = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::defaults = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::docs = {
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_REDOXREG_KE_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_KE& x) {
-    out << ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::getName(x);
+  std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_KE& x) {
+    out << ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::getName(x);
     return out;
   }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::all = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::names = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::defaults = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::docs = {};
+  template<>
+  std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::error_prefix() {
     std::string out;
@@ -350,44 +251,28 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_REDOXREG_KE_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::all = {};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::names = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::defaults = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::docs = {
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_RUACT_KE_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_KE& x) {
-    out << ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::getName(x);
+  std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_KE& x) {
+    out << ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::getName(x);
     return out;
   }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::all = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::names = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::defaults = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::docs = {};
+  template<>
+  std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::error_prefix() {
     std::string out;
@@ -397,44 +282,28 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_RUACT_KE_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::all = {};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::names = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::defaults = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::docs = {
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_SUCS_KE_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_KE& x) {
-    out << ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::getName(x);
+  std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_KE& x) {
+    out << ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::getName(x);
     return out;
   }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::all = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::names = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::defaults = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::docs = {};
+  template<>
+  std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::error_prefix() {
     std::string out;
@@ -444,44 +313,28 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_SUCS_KE_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::all = {};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::names = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::defaults = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::docs = {
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_XANCYCLE_KE_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_KE& x) {
-    out << ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::getName(x);
+  std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_KE& x) {
+    out << ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::getName(x);
     return out;
   }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::all = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::names = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::defaults = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::docs = {};
+  template<>
+  std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::error_prefix() {
     std::string out;
@@ -491,8 +344,9 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_XANCYCLE_KE_UTILS
-  
-  
+  std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_KE& x) {
+    out << ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::getName(x);
+    return out;
+  }
 }
 

@@ -4,9 +4,39 @@
 
 
 namespace ePhotosynthesis {
-  template<> const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPHr, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc1, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPo, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPoQH2, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QHsemi, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytbL, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qi, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Q, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytbH, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qn, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qr, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QH2, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc2, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P700, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADP, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATP, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ks, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Mgs, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Cls, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Aip, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)An, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fdn, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)BFHs, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)BFHl, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHs, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHl, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)NADPH};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::names = {
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::all = {
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPHr  ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc1  ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPo   ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPoQH2,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QHsemi ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytbL  ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qi     ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Q      ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytbH  ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qn     ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qr     ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QH2    ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc2  ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P700   ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADP    ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATP    ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ks     ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Mgs    ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Cls    ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Aip    ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U      ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)An     ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fdn    ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)BFHs   ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)BFHl   ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHs    ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHl    ,
+    ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)NADPH  
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::names = {
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPHr  , "ISPHr"  },
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc1  , "cytc1"  },
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPo   , "ISPo"   },
@@ -34,10 +64,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)BFHl   , "BFHl"   },
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHs    , "PHs"    },
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHl    , "PHl"    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)NADPH  , "NADPH"  },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)NADPH  , "NADPH"  }
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::defaults = {
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::defaults = {
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPHr  , 0.0    },
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc1  , 1.0    },
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPo   , 1.0    },
@@ -65,64 +95,49 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)BFHl   , 19.0001},
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHs    , 7.0    },
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHl    , 7.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)NADPH  , 0.21   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)NADPH  , 0.21   }
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::docs = {
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPHr  , "The reduced ion sulfer protein (ISPH); unit: micromole per m2"                                                                                                                                      },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc1  , "The oxidized state of cytc1; unit: micromole per meter square"                                                                                                                                      },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPo   , "The oxidized ion sulfer protein (ISP); unit: micromole per meter square"                                                                                                                            },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPoQH2, "The complex of oxidized ion sulfer protein and reduced quinone; unit: micromole per meter square"                                                                                                   },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QHsemi , "Semiquinone; micromole per meter square"                                                                                                                                                            },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytbL  , "The oxidized cytbL; micromole per meter square"                                                                                                                                                     },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qi     , "The binding Quinone; micromole per meter square"                                                                                                                                                    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Q      , "Quinone; micromole per meter square"                                                                                                                                                                },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytbH  , "The oxidized form of cytbH; micromole per meter square"                                                                                                                                             },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qn     , "Q-; unit: micromole per meter square"                                                                                                                                                               },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qr     , "The reduced quinone Q2-; micromole per meter square"                                                                                                                                                },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QH2    , "The reduced quinone PQH2; micromole per meter square"                                                                                                                                               },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc2  , "oxidized cytc2; micromole per meter square"                                                                                                                                                         },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P700   , "The reduced state of P700, including both P700 and excited P700; micromole per meter square"                                                                                                        },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADP    , "ADP in stroma, from the earlier photorespiration model; mmol l-1"                                                                                                                                   },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATP    , "ATP in stroma, from the photorespiration model; mmol l-1"                                                                                                                                           },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ks     , "K ions in stroma, mM, from the literature; mmol l-1; 90 might be an default;"                                                                                                                       },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Mgs    , "Mg ions in stroma, mM, from the literature of the ion estimate"                                                                                                                                     },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Cls    , "Cl ions in stroma, mM, from the literature of the ion estimate"                                                                                                                                     },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Aip    , "The number of photons in peripheral antenna; micromole per meter square"                                                                                                                            },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U      , "The number of photons in core antenna; micromole per meter square"                                                                                                                                  },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)An     , "The reduced electron acceptor in PSI; micromole per meter square"                                                                                                                                   },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fdn    , "The reduced ferrodoxin; micromole per meter square leaf area"                                                                                                                                       },
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::docs = {
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPHr  , "The reduced ion sulfer protein (ISPH); unit: micromole per m2"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc1  , "The oxidized state of cytc1; unit: micromole per meter square"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPo   , "The oxidized ion sulfer protein (ISP); unit: micromole per meter square"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ISPoQH2, "The complex of oxidized ion sulfer protein and reduced quinone; unit: micromole per meter square"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QHsemi , "Semiquinone; micromole per meter square"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytbL  , "The oxidized cytbL; micromole per meter square"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qi     , "The binding Quinone; micromole per meter square"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Q      , "Quinone; micromole per meter square"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytbH  , "The oxidized form of cytbH; micromole per meter square"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qn     , "Q-; unit: micromole per meter square"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Qr     , "The reduced quinone Q2-; micromole per meter square"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QH2    , "The reduced quinone PQH2; micromole per meter square"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)cytc2  , "oxidized cytc2; micromole per meter square"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P700   , "The reduced state of P700, including both P700 and excited P700; micromole per meter square"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADP    , "ADP in stroma, from the earlier photorespiration model; mmol l-1"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATP    , "ATP in stroma, from the photorespiration model; mmol l-1"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ks     , "K ions in stroma, mM, from the literature; mmol l-1; 90 might be an default;"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Mgs    , "Mg ions in stroma, mM, from the literature of the ion estimate"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Cls    , "Cl ions in stroma, mM, from the literature of the ion estimate"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Aip    , "The number of photons in peripheral antenna; micromole per meter square"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U      , "The number of photons in core antenna; micromole per meter square"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)An     , "The reduced electron acceptor in PSI; micromole per meter square"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fdn    , "The reduced ferrodoxin; micromole per meter square leaf area"},
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)BFHs   , "The protonated buffer species  and free proton together in stroma; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number.; default 25"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)BFHl   , "The protonated buffer species and free proton together in lumen; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number. ; default 5"  },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHs    , "The PH value of the stroma"                                                                                                                                                                         },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHl    , "The PH value of the lumen"                                                                                                                                                                          },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)NADPH  , "The NADPH concentration in stroma, Unit: mmol l-1;"                                                                                                                                                 },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)BFHl   , "The protonated buffer species and free proton together in lumen; mmol l-1; The value follows Laisk and Walker, 1989. But they did not give reference about the source of this number. ; default 5"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHs    , "The PH value of the stroma"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PHl    , "The PH value of the lumen"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)NADPH  , "The NADPH concentration in stroma, Unit: mmol l-1;"}
   };
-  template<> 
-  std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_BF_COND_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_BF_COND& x) {
-    out << ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::getName(x);
-    return out;
-  }
+  template<>
+  std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::error_prefix() {
     std::string out;
@@ -132,44 +147,28 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_BF_COND_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::all = {};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::names = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::defaults = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::docs = {
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_CM_COND_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_CM_COND& x) {
-    out << ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::getName(x);
+  std::ostream& operator<<(std::ostream& out, const ENUM_BF_COND& x) {
+    out << ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::getName(x);
     return out;
   }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::all = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::names = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::defaults = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::docs = {};
+  template<>
+  std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::error_prefix() {
     std::string out;
@@ -179,44 +178,28 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_CM_COND_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::all = {};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::names = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::defaults = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::docs = {
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_DYNAPS_COND_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_DynaPS_COND& x) {
-    out << ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::getName(x);
+  std::ostream& operator<<(std::ostream& out, const ENUM_CM_COND& x) {
+    out << ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::getName(x);
     return out;
   }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::all = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::names = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::defaults = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::docs = {};
+  template<>
+  std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::error_prefix() {
     std::string out;
@@ -226,44 +209,28 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_DYNAPS_COND_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::all = {};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::names = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::defaults = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::docs = {
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_EPS_COND_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_EPS_COND& x) {
-    out << ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::getName(x);
+  std::ostream& operator<<(std::ostream& out, const ENUM_DynaPS_COND& x) {
+    out << ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::getName(x);
     return out;
   }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::all = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::names = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::defaults = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::docs = {};
+  template<>
+  std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::error_prefix() {
     std::string out;
@@ -273,47 +240,36 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_EPS_COND_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)kd};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::names = {
-    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)kd  , "kd"  },
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::defaults = {
-    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)kd  , 0.5e8},
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::docs = {
-    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)kd  , "The initialization of the initial rate constant for heat dissipation"},
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_FIBF_COND_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_COND& x) {
-    out << ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::getName(x);
+  std::ostream& operator<<(std::ostream& out, const ENUM_EPS_COND& x) {
+    out << ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::getName(x);
     return out;
   }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::all = {
+    ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)kd
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::names = {
+    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)kd, "kd"}
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::defaults = {
+    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)kd, 0.5e8}
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::docs = {
+    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)kd, "The initialization of the initial rate constant for heat dissipation"}
+  };
+  template<>
+  std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::error_prefix() {
     std::string out;
@@ -323,12 +279,37 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_FIBF_COND_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)A, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680ePheo, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheon, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheo, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680Pheon, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Yz, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S1T, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S2T, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S3T, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S0T, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S1Tp, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S2Tp, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S3Tp, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S0Tp, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQBn, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQBn, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB2n, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB2n, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PQn};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::names = {
+  std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_COND& x) {
+    out << ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::getName(x);
+    return out;
+  }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::all = {
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)A         ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U         ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680ePheo ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheon,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheo ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680Pheon ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Yz        ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S1T       ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S2T       ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S3T       ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S0T       ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S1Tp      ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S2Tp      ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S3Tp      ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S0Tp      ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB      ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB     ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQBn     ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQBn    ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB2n    ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB2n   ,
+    ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PQn       
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::names = {
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)A         , "A"         },
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U         , "U"         },
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680ePheo , "P680ePheo" },
@@ -350,10 +331,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQBn    , "QAnQBn"    },
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB2n    , "QAQB2n"    },
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB2n   , "QAnQB2n"   },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PQn       , "PQn"       },
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PQn       , "PQn"       }
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::defaults = {
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::defaults = {
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)A         , 0  },
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U         , 0  },
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680ePheo , 1  },
@@ -375,58 +356,43 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQBn    , 0  },
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB2n    , 0  },
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB2n   , 0  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PQn       , 5  },
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PQn       , 5  }
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::docs = {
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)A         , "The concentration of excitons in the peripheral antenna"      },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U         , "The concentration fo excitons in the core antenna"            },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680ePheo , "The concentration of the P680Pheo; QF add"                    },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheon, "The concentration for the P680+ Pheo-"                        },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheo , "The concentration of P680+ Pheo"                              },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680Pheon , "The concentration of P680Pheo-"                               },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Yz        , "The concentration of reduced tyrosine; --unused"              },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S1T       , "The concentration of S1 in combination with reduced tyrosine" },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S2T       , "The concentration of S2 in combination with reduced tyrosine" },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S3T       , "The concentration of S3 in combination with reduced tyrosine" },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S0T       , "The concentration of S0 in combination with reduced tyrosine" },
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::docs = {
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)A         , "The concentration of excitons in the peripheral antenna"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)U         , "The concentration fo excitons in the core antenna"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680ePheo , "The concentration of the P680Pheo; QF add"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheon, "The concentration for the P680+ Pheo-"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680pPheo , "The concentration of P680+ Pheo"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)P680Pheon , "The concentration of P680Pheo-"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Yz        , "The concentration of reduced tyrosine; --unused"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S1T       , "The concentration of S1 in combination with reduced tyrosine"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S2T       , "The concentration of S2 in combination with reduced tyrosine"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S3T       , "The concentration of S3 in combination with reduced tyrosine"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S0T       , "The concentration of S0 in combination with reduced tyrosine"},
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S1Tp      , "The concentration of S1 in combination with oxidized tyrosine"},
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S2Tp      , "The concentration of S2 in combination with oxidized tyrosine"},
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S3Tp      , "The concentration of S3 in combination with oxidized tyrosine"},
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S0Tp      , "The concentration of S0 in combination with oxidized tyrosine"},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB      , "The concentration of [QAQB]"                                  },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB     , "The concentration of [QA-QB]"                                 },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQBn     , "The concentration of [QAQB-]"                                 },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQBn    , "The concentration of [QA-QB-]"                                },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB2n    , "The concentration of [QAQB2-]"                                },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB2n   , "The concentration of [QA-QB2-]"                               },
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PQn       , "The concentration of reduced PQ, i.e. PQH2;"                  },
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB      , "The concentration of [QAQB]"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB     , "The concentration of [QA-QB]"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQBn     , "The concentration of [QAQB-]"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQBn    , "The concentration of [QA-QB-]"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAQB2n    , "The concentration of [QAQB2-]"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)QAnQB2n   , "The concentration of [QA-QB2-]"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PQn       , "The concentration of reduced PQ, i.e. PQH2;"}
   };
-  template<> 
-  std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_FI_COND_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_FI_COND& x) {
-    out << ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::getName(x);
-    return out;
-  }
+  template<>
+  std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::error_prefix() {
     std::string out;
@@ -436,12 +402,26 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_FI_COND_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEA, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCA, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGCA, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCAc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GOAc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SERc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GLYc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HPRc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEAc, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::names = {
+  std::ostream& operator<<(std::ostream& out, const ENUM_FI_COND& x) {
+    out << ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::getName(x);
+    return out;
+  }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::all = {
+    ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEA ,
+    ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCA  ,
+    ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGCA ,
+    ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCAc ,
+    ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GOAc ,
+    ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SERc ,
+    ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GLYc ,
+    ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HPRc ,
+    ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEAc,
+    ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP ,
+    ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::names = {
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEA , "GCEA" },
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCA  , "GCA"  },
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGCA , "PGCA" },
@@ -452,10 +432,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HPRc , "HPRc" },
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEAc, "GCEAc"},
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP , "RuBP" },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131, "_v131"},
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131, "_v131"}
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::defaults = {
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::defaults = {
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEA , 0.1812},
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCA  , 0.36  },
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGCA , 0.0029},
@@ -466,48 +446,34 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HPRc , 0.0035},
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEAc, 0.1812},
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP , 2.0   },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131, 0.0   },
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131, 0.0   }
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::docs = {
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEA , "Glycerate in chloroplast; derived based on V113"                                                           },
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::docs = {
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEA , "Glycerate in chloroplast; derived based on V113"},
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCA  , "Derived from radioactive labelling experiment; assume equal concenatration inside and outshide chloroplast"},
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGCA , "Phosphoglycolate in chloroplast derived based on the Km112; orignal value is : 0.0029;"                    },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCAc , "See the note for GCA."                                                                                     },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GOAc , "Glyoxylate in cytosol; 0.028; EXPERIMENTAL DATA;"                                                          },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SERc , "Serine in cytosol; 7.5 original value"                                                                     },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GLYc , "Glycine in cytosol; 1.8 original vlaue"                                                                    },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HPRc , "HydroxylPyruvate; derived from equation 123;"                                                              },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEAc, "Glycerate in cytosol; assume at equilibrium with GCEA initially."                                          },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP , "RuBP concentration"                                                                                        },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131, "[CONST, NON_VECTOR] ?"                                                                                     },
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGCA , "Phosphoglycolate in chloroplast derived based on the Km112; orignal value is : 0.0029;"},
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCAc , "See the note for GCA."},
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GOAc , "Glyoxylate in cytosol; 0.028; EXPERIMENTAL DATA;"},
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SERc , "Serine in cytosol; 7.5 original value"},
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GLYc , "Glycine in cytosol; 1.8 original vlaue"},
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HPRc , "HydroxylPyruvate; derived from equation 123;"},
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEAc, "Glycerate in cytosol; assume at equilibrium with GCEA initially."},
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP , "RuBP concentration"},
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131, "[CONST, NON_VECTOR] ?"}
   };
-  template<> 
-  std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::value_flags = {
+  template<>
+  std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::static_value_flags = {
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131, (STATIC_VALUE_FLAG_CONST | STATIC_VALUE_FLAG_NON_VECTOR)}
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::static_value_flags = {
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131, (STATIC_VALUE_FLAG_CONST | STATIC_VALUE_FLAG_NON_VECTOR)},
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_PR_COND_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_PR_COND& x) {
-    out << ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::getName(x);
-    return out;
-  }
   template<>
   std::string ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::error_prefix() {
     std::string out;
@@ -517,12 +483,30 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_PR_COND_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGA, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)DPGA, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3P, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADPG, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)E4P, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S7P, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HexP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PenP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_Pi, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_ADP, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::names = {
+  std::ostream& operator<<(std::ostream& out, const ENUM_PR_COND& x) {
+    out << ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::getName(x);
+    return out;
+  }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::all = {
+    ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP,
+    ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGA ,
+    ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)DPGA,
+    ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3P ,
+    ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADPG,
+    ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBP ,
+    ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)E4P ,
+    ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)S7P ,
+    ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBP ,
+    ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATP ,
+    ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HexP,
+    ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PenP,
+    ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_Pi ,
+    ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_ADP,
+    ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1 
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::names = {
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, "RuBP"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGA , "PGA" },
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)DPGA, "DPGA"},
@@ -537,10 +521,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PenP, "PenP"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_Pi , "_Pi" },
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_ADP, "_ADP"},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1 , "_v1" },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1 , "_v1" }
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::defaults = {
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::defaults = {
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, 2.000 },
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGA , 2.400 },
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)DPGA, 0.0011},
@@ -555,44 +539,31 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PenP, 0.25  },
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_Pi , 0.0   },
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_ADP, 0.0   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1 , 0.0   },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1 , 0.0   }
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::defaults_C3 = {
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADPG, 0.0},
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::defaults_C3 = {
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADPG, 0.0}
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::docs = {
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADPG, "(0.0 with C3)"        },
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::docs = {
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ADPG, "(0.0 with C3)"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_Pi , "[CONST, NON_VECTOR] ?"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_ADP, "[CONST, NON_VECTOR] ?"},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1 , "[CONST, NON_VECTOR] ?"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1 , "[CONST, NON_VECTOR] ?"}
   };
-  template<> 
-  std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::static_value_flags = {
+  template<>
+  std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::static_value_flags = {
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_Pi , (STATIC_VALUE_FLAG_CONST | STATIC_VALUE_FLAG_NON_VECTOR)},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_ADP, (STATIC_VALUE_FLAG_CONST | STATIC_VALUE_FLAG_NON_VECTOR)},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1 , (STATIC_VALUE_FLAG_CONST | STATIC_VALUE_FLAG_NON_VECTOR)},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1 , (STATIC_VALUE_FLAG_CONST | STATIC_VALUE_FLAG_NON_VECTOR)}
   };
-  
-  // [BEGIN] EXPLICIT_SPEC_PS_COND_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_PS_COND& x) {
-    out << ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::getName(x);
-    return out;
-  }
   template<>
   std::string ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::error_prefix() {
     std::string out;
@@ -602,44 +573,28 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_PS_COND_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::all = {};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::names = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::defaults = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::docs = {
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_PS_PR_COND_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_PS_PR_COND& x) {
-    out << ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::getName(x);
+  std::ostream& operator<<(std::ostream& out, const ENUM_PS_COND& x) {
+    out << ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::getName(x);
     return out;
   }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::all = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::names = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::defaults = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::docs = {};
+  template<>
+  std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::error_prefix() {
     std::string out;
@@ -649,44 +604,28 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_PS_PR_COND_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::all = {};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::names = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::defaults = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::docs = {
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_RA_COND_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_RA_COND& x) {
-    out << ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::getName(x);
+  std::ostream& operator<<(std::ostream& out, const ENUM_PS_PR_COND& x) {
+    out << ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::getName(x);
     return out;
   }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::all = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::names = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::defaults = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::docs = {};
+  template<>
+  std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::error_prefix() {
     std::string out;
@@ -696,12 +635,26 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_RA_COND_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GAPDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PRK, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPase, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPGPP, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)MDH, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thio, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fd, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuACT, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::names = {
+  std::ostream& operator<<(std::ostream& out, const ENUM_RA_COND& x) {
+    out << ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::getName(x);
+    return out;
+  }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::all = {
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GAPDH ,
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPase,
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBPase,
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PRK   ,
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPase,
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPGPP,
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)MDH   ,
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thio  ,
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fd    ,
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuACT ,
+    ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff 
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::names = {
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GAPDH , "GAPDH" },
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPase, "FBPase"},
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBPase, "SBPase"},
@@ -712,10 +665,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thio  , "Thio"  },
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fd    , "Fd"    },
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuACT , "RuACT" },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff , "Coeff" },
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff , "Coeff" }
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::defaults = {
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::defaults = {
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GAPDH , 1.0972130787798991e-08},
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPase, 4.309416074121956e-08 },
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBPase, 2.1645021645021643e-07},
@@ -726,54 +679,40 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thio  , 0.081                 },
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fd    , 0.081                 },
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuACT , 0.0056                },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff , 0.3                   },
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff , 0.3                   }
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::defaults_C3 = {
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::docs = {
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GAPDH , "[CALC] Calculated from Pool & Coeff The initial concentration of active GAPDH; *=V3; SA = 620.0, mw = 147000.0, PS::V3"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPase, "[CALC] Calculated from Pool & Coeff The initial concentration of active FBPase; *=V6; SA = 119.0, mw = 195000.0, PS::V6"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBPase, "[CALC] Calculated from Pool & Coeff The initial concentration of active SBPase; *=V9; SA = 70.0, mw = 66000.0, PS::V9"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PRK   , "[CALC] Calculated from Pool & Coeff The initial concentration of active PRK; *=V13; SA = 410.0, mw = 40000.0 PS::V13"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPase, "[CALC] Calculated from Pool & Coeff The initial concentration of active ATPase; *=V16; SA = 100.0, mw = 500000.0 PS::V16"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPGPP, "[CALC] Calculated from Pool & Coeff The initial concentration of active ATPGPP; *=V23; SA = 10.0, mw = 210000.0 PS::V23"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)MDH   , "The initial concentration of active MDH; Not set from Pool like previous variables"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thio  , "The initial concentration of reduced thioredoxin; scaled by Coeff"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fd    , "The initial concentration of reduced ferrodoxin; scaled by Coeff"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuACT , "The initial concentration of active Rubisco activase; scaled by Coeff"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff , "[CONST, NON_VECTOR] Used to scale Thio, Fd, & RuACT and calculate GAPDH, FBPase, SBPase, PRK, ATPase, ATPGPP from Pool values"}
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::docs = {
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GAPDH , "[CALC] Calculated from Pool & Coeff The initial concentration of active GAPDH; *=V3; SA = 620.0, mw = 147000.0, PS::V3"       },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPase, "[CALC] Calculated from Pool & Coeff The initial concentration of active FBPase; *=V6; SA = 119.0, mw = 195000.0, PS::V6"      },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBPase, "[CALC] Calculated from Pool & Coeff The initial concentration of active SBPase; *=V9; SA = 70.0, mw = 66000.0, PS::V9"        },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PRK   , "[CALC] Calculated from Pool & Coeff The initial concentration of active PRK; *=V13; SA = 410.0, mw = 40000.0 PS::V13"         },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPase, "[CALC] Calculated from Pool & Coeff The initial concentration of active ATPase; *=V16; SA = 100.0, mw = 500000.0 PS::V16"     },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPGPP, "[CALC] Calculated from Pool & Coeff The initial concentration of active ATPGPP; *=V23; SA = 10.0, mw = 210000.0 PS::V23"      },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)MDH   , "The initial concentration of active MDH; Not set from Pool like previous variables"                                           },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thio  , "The initial concentration of reduced thioredoxin; scaled by Coeff"                                                            },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Fd    , "The initial concentration of reduced ferrodoxin; scaled by Coeff"                                                             },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuACT , "The initial concentration of active Rubisco activase; scaled by Coeff"                                                        },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff , "[CONST, NON_VECTOR] Used to scale Thio, Fd, & RuACT and calculate GAPDH, FBPase, SBPase, PRK, ATPase, ATPGPP from Pool values"},
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::static_value_flags = {
+  template<>
+  std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::static_value_flags = {
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GAPDH , (STATIC_VALUE_FLAG_CALC)                                },
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPase, (STATIC_VALUE_FLAG_CALC)                                },
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SBPase, (STATIC_VALUE_FLAG_CALC)                                },
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PRK   , (STATIC_VALUE_FLAG_CALC)                                },
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPase, (STATIC_VALUE_FLAG_CALC)                                },
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPGPP, (STATIC_VALUE_FLAG_CALC)                                },
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff , (STATIC_VALUE_FLAG_CONST | STATIC_VALUE_FLAG_NON_VECTOR)},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff , (STATIC_VALUE_FLAG_CONST | STATIC_VALUE_FLAG_NON_VECTOR)}
   };
-  
-  // [BEGIN] EXPLICIT_SPEC_RROEA_COND_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_COND& x) {
-    out << ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::getName(x);
-    return out;
-  }
   template<>
   std::string ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::error_prefix() {
     std::string out;
@@ -783,47 +722,36 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_RROEA_COND_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thion};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::names = {
-    {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thion, "Thion"},
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::defaults = {
-    {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thion, 0.25},
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::docs = {
-    {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thion, "This is a wild guess"},
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_REDOXREG_COND_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_COND& x) {
-    out << ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::getName(x);
+  std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_COND& x) {
+    out << ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::getName(x);
     return out;
   }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::all = {
+    ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thion
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::names = {
+    {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thion, "Thion"}
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::defaults = {
+    {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thion, 0.25}
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::docs = {
+    {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thion, "This is a wild guess"}
+  };
+  template<>
+  std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::error_prefix() {
     std::string out;
@@ -833,56 +761,48 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_REDOXREG_COND_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ER, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Eaf, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ECMR, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::names = {
+  std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_COND& x) {
+    out << ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::getName(x);
+    return out;
+  }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::all = {
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ER  ,
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Eaf ,
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ECMR,
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::names = {
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ER  , "ER"  },
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Eaf , "Eaf" },
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ECMR, "ECMR"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, "RuBP"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, "RuBP"}
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::defaults = {
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::defaults = {
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ER  , 0.20},
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Eaf , 0.20},
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ECMR, 0.8 },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, 2.0 },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, 2.0 }
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::docs = {
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ER  , "The concentration of inactive ER"         },
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::docs = {
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ER  , "The concentration of inactive ER"},
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Eaf , "The total concentration of E, EC, AND ECM"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ECMR, "The concentration of ECMR"                },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, "The concentration of ECMR"                },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ECMR, "The concentration of ECMR"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, "The concentration of ECMR"}
   };
-  template<> 
-  std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_RUACT_COND_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_COND& x) {
-    out << ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::getName(x);
-    return out;
-  }
+  template<>
+  std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::error_prefix() {
     std::string out;
@@ -892,12 +812,23 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_RUACT_COND_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3Pc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HexPc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)F26BPc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)UDPGc, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUCP, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUC, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGAc};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::names = {
+  std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_COND& x) {
+    out << ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::getName(x);
+    return out;
+  }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::all = {
+    ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3Pc  ,
+    ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPc  ,
+    ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HexPc ,
+    ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)F26BPc,
+    ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)UDPGc ,
+    ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUCP  ,
+    ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUC   ,
+    ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGAc  
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::names = {
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3Pc  , "T3Pc"  },
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPc  , "FBPc"  },
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HexPc , "HexPc" },
@@ -905,10 +836,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)UDPGc , "UDPGc" },
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUCP  , "SUCP"  },
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUC   , "SUC"   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGAc  , "PGAc"  },
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGAc  , "PGAc"  }
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::defaults = {
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::defaults = {
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3Pc  , 2.0   },
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPc  , 2.0   },
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HexPc , 5.8   },
@@ -916,10 +847,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)UDPGc , 0.57  },
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUCP  , 0.0   },
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUC   , 0.0   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGAc  , 0.5   },
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGAc  , 0.5   }
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::defaults_C3 = {
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::defaults_C3 = {
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3Pc  , 2.3   },
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)FBPc  , 2.0   },
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)HexPc , 5.8   },
@@ -927,33 +858,18 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)UDPGc , 0.57  },
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUCP  , 0.0   },
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)SUC   , 0.0   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGAc  , 0.0   },
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PGAc  , 0.0   }
   };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::docs = {
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_SUCS_COND_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_COND& x) {
-    out << ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::getName(x);
-    return out;
-  }
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::docs = {};
+  template<>
+  std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::error_prefix() {
     std::string out;
@@ -963,60 +879,53 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_SUCS_COND_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::all = {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::names = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx  , "Vx"  },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax  , "Ax"  },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx  , "Zx"  },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA , "ABA" },
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::defaults = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx  , 160.0},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax  , 10.0 },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx  , 5.0  },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA , 1.0  },
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::docs = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx  , "[CALC] * 0.37; The concentration of Violozanthin" },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax  , "[CALC] * 0.37; The concentration of Anthrozanthin"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx  , "[CALC] * 0.37; The concentration of Zeaznthin"    },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA , "[CALC] The concentration of ABA"                  },
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::static_value_flags = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx  , (STATIC_VALUE_FLAG_CALC)},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax  , (STATIC_VALUE_FLAG_CALC)},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx  , (STATIC_VALUE_FLAG_CALC)},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA , (STATIC_VALUE_FLAG_CALC)},
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_XANCYCLE_COND_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_COND& x) {
-    out << ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::getName(x);
+  std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_COND& x) {
+    out << ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::getName(x);
     return out;
   }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::all = {
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::names = {
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx , "Vx" },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax , "Ax" },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx , "Zx" },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA, "ABA"}
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::defaults = {
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx , 160.0},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax , 10.0 },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx , 5.0  },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA, 1.0  }
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::docs = {
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx , "[CALC] * 0.37; The concentration of Violozanthin"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax , "[CALC] * 0.37; The concentration of Anthrozanthin"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx , "[CALC] * 0.37; The concentration of Zeaznthin"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA, "[CALC] The concentration of ABA"}
+  };
+  template<>
+  std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::static_value_flags = {
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx , (STATIC_VALUE_FLAG_CALC)},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax , (STATIC_VALUE_FLAG_CALC)},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx , (STATIC_VALUE_FLAG_CALC)},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA, (STATIC_VALUE_FLAG_CALC)}
+  };
   template<>
   std::string ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::error_prefix() {
     std::string out;
@@ -1026,44 +935,28 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_XANCYCLE_COND_UTILS
-  
-  
-  template<> const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::all = {};
-  template<> 
-  const std::map<ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::names = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::defaults = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::defaults_C3 = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::glymaids = {
-  };
-  template<> 
-  const std::map<std::string, ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::aliases = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::docs = {
-  };
-  template<> 
-  std::map<ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::value_flags = {
-  };
-  template<> 
-  const std::map<ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::static_value_flags = {
-  };
-  
-  // [BEGIN] EXPLICIT_SPEC_TRDYNAPS_COND_UTILS
-  // Definition of explicitly specialized enum class 
-  //   utility methods. This causes instantiation of the 
-  //   specialized class and must come after explicit 
-  //   specialization of the class (and class members)
-  std::ostream& operator<<(std::ostream& out, const ENUM_trDynaPS_COND& x) {
-    out << ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::getName(x);
+  std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_COND& x) {
+    out << ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::getName(x);
     return out;
   }
+  template<>
+  const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::all = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::names = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::defaults = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::glymaids = {};
+  template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::docs = {};
+  template<>
+  std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::value_flags = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::static_value_flags = {};
   template<>
   std::string ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::error_prefix() {
     std::string out;
@@ -1073,8 +966,9 @@ namespace ePhotosynthesis {
     out += "]: ";
     return out;
   }
-  // [END] EXPLICIT_SPEC_TRDYNAPS_COND_UTILS
-  
-  
+  std::ostream& operator<<(std::ostream& out, const ENUM_trDynaPS_COND& x) {
+    out << ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::getName(x);
+    return out;
+  }
 }
 

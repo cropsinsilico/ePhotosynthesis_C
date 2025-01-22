@@ -2082,8 +2082,7 @@ namespace ePhotosynthesis {
       typename std::map<EnumType, double>::const_iterator it;
       it = defaults.find(x);
       if (it == defaults.end()) {
-	ERROR_VALUE_SET("Could not locate Default for '",
-			EnumBaseClass::names.find(x)->second, "'");
+	ERROR_VALUE_SET("Could not locate Default for '", x, "'");
       }
       return it->second;
     }

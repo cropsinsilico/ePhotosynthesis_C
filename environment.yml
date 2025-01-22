@@ -2,7 +2,7 @@ name: ephoto
 channels:
   - conda-forge
 dependencies:
-  - boost
+  - boost>=1.36.0
   - cmake
   # - gcovr
   - gtest
@@ -10,6 +10,6 @@ dependencies:
   - lcov
   - pytest
   - python
-  - sundials
+  - sundials>=5.7.0
   - yggdrasil
   - numpy

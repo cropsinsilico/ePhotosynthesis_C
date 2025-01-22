@@ -62,7 +62,25 @@ namespace ePhotosynthesis {
   enum MODULE : int {
     MEMBERS_MODULE
   };
-  static const std::vector<MODULE> ALL_MODULE = {MODULE_BF, MODULE_CM, MODULE_DynaPS, MODULE_EPS, MODULE_FIBF, MODULE_FI, MODULE_PR, MODULE_PS, MODULE_PS_PR, MODULE_RA, MODULE_RROEA, MODULE_RedoxReg, MODULE_RuACT, MODULE_SUCS, MODULE_XanCycle, MODULE_trDynaPS, MODULE_ALL};  /**< All enum values */
+  static const std::vector<MODULE> ALL_MODULE = {
+    MODULE_BF      ,
+    MODULE_CM      ,
+    MODULE_DynaPS  ,
+    MODULE_EPS     ,
+    MODULE_FIBF    ,
+    MODULE_FI      ,
+    MODULE_PR      ,
+    MODULE_PS      ,
+    MODULE_PS_PR   ,
+    MODULE_RA      ,
+    MODULE_RROEA   ,
+    MODULE_RedoxReg,
+    MODULE_RuACT   ,
+    MODULE_SUCS    ,
+    MODULE_XanCycle,
+    MODULE_trDynaPS,
+    MODULE_ALL     
+  };  /**< All enum values */
   
   #define MEMBERS_PARAM		\
       PARAM_TYPE_NONE   ,		\
@@ -92,7 +110,15 @@ namespace ePhotosynthesis {
   enum PARAM_TYPE : int {
     MEMBERS_PARAM
   };
-  static const std::vector<PARAM_TYPE> ALL_PARAM_TYPE = {PARAM_TYPE_COND, PARAM_TYPE_POOL, PARAM_TYPE_KE, PARAM_TYPE_MOD, PARAM_TYPE_RC, PARAM_TYPE_VARS, PARAM_TYPE_VEL};  /**< All enum values */
+  static const std::vector<PARAM_TYPE> ALL_PARAM_TYPE = {
+    PARAM_TYPE_COND,
+    PARAM_TYPE_POOL,
+    PARAM_TYPE_KE  ,
+    PARAM_TYPE_MOD ,
+    PARAM_TYPE_RC  ,
+    PARAM_TYPE_VARS,
+    PARAM_TYPE_VEL 
+  };  /**< All enum values */
   
   // [END] GLOBAL_ENUM
   
@@ -104,14 +130,74 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_NONE;
     static const PARAM_TYPE param_type = PARAM_TYPE_NONE;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
-  template<typename T>
+  #endif  // EPHOTO_USE_SCOPED_ENUM
+  template<typename EnumType>
   struct enum_helper_inv {
-    typedef T type;
+    typedef EnumType type;
     static const MODULE module = MODULE_NONE;
     static const PARAM_TYPE param_type = PARAM_TYPE_NONE;
   };
 }
+// VALUE_FLAG enum
+namespace ePhotosynthesis {
+  #define MEMBERS_VALUE		\
+      VALUE_FLAG_NONE                ,		\
+      VALUE_FLAG_SKIPPED             ,		\
+      VALUE_FLAG_MAX
+  #define MEMBER_NAMES_COMPLETE_VALUE		\
+      SKIPPED
+  #define MEMBER_NAMES_VALUE		\
+      SKIPPED
+  enum VALUE_FLAG : int {
+      VALUE_FLAG_NONE    = 0x00000000,
+      VALUE_FLAG_SKIPPED = 0x00000001,
+      VALUE_FLAG_MAX     = 0x00000002,
+  };
+  static const std::vector<VALUE_FLAG> ALL_VALUE_FLAG = {
+    VALUE_FLAG_SKIPPED
+  };  /**< All enum values */
+}
+
+// STATIC_VALUE_FLAG enum
+namespace ePhotosynthesis {
+  #define MEMBERS_STATIC_VALUE		\
+      STATIC_VALUE_FLAG_NONE                   ,		\
+      STATIC_VALUE_FLAG_CONST                  ,		\
+      STATIC_VALUE_FLAG_CALC                   ,		\
+      STATIC_VALUE_FLAG_NON_VECTOR             ,		\
+      STATIC_VALUE_FLAG_RESET_ONE              ,		\
+      STATIC_VALUE_FLAG_INIT_ONCE              ,		\
+      STATIC_VALUE_FLAG_MAX
+  #define MEMBER_NAMES_COMPLETE_STATIC_VALUE		\
+      CONST                  ,		\
+      CALC                   ,		\
+      NON_VECTOR             ,		\
+      RESET_ONE              ,		\
+      INIT_ONCE
+  #define MEMBER_NAMES_STATIC_VALUE		\
+      CONST                  ,		\
+      CALC                   ,		\
+      NON_VECTOR             ,		\
+      RESET_ONE              ,		\
+      INIT_ONCE
+  enum STATIC_VALUE_FLAG : int {
+      STATIC_VALUE_FLAG_NONE       = 0x00000000,
+      STATIC_VALUE_FLAG_CONST      = 0x00000001,
+      STATIC_VALUE_FLAG_CALC       = 0x00000002,
+      STATIC_VALUE_FLAG_NON_VECTOR = 0x00000004,
+      STATIC_VALUE_FLAG_RESET_ONE  = 0x00000008,
+      STATIC_VALUE_FLAG_INIT_ONCE  = 0x00000010,
+      STATIC_VALUE_FLAG_MAX        = 0x00000020,
+  };
+  static const std::vector<STATIC_VALUE_FLAG> ALL_STATIC_VALUE_FLAG = {
+    STATIC_VALUE_FLAG_CONST     ,
+    STATIC_VALUE_FLAG_CALC      ,
+    STATIC_VALUE_FLAG_NON_VECTOR,
+    STATIC_VALUE_FLAG_RESET_ONE ,
+    STATIC_VALUE_FLAG_INIT_ONCE 
+  };  /**< All enum values */
+}
+
 namespace ePhotosynthesis {
   #define MEMBERS_BFCondition		\
       NONE        ,		\
@@ -144,7 +230,6 @@ namespace ePhotosynthesis {
       PHl         ,		\
       NADPH       ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_BF_COND : int {
     MEMBERS_BFCondition
@@ -155,13 +240,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_BF;
     static const PARAM_TYPE param_type = PARAM_TYPE_COND;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_CMCondition		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_CM_COND : int {
     MEMBERS_CMCondition
@@ -172,13 +256,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_CM;
     static const PARAM_TYPE param_type = PARAM_TYPE_COND;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_DynaPSCondition		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_DynaPS_COND : int {
     MEMBERS_DynaPSCondition
@@ -189,13 +272,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_DynaPS;
     static const PARAM_TYPE param_type = PARAM_TYPE_COND;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_EPSCondition		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_EPS_COND : int {
     MEMBERS_EPSCondition
@@ -206,14 +288,13 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_EPS;
     static const PARAM_TYPE param_type = PARAM_TYPE_COND;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_FIBFCondition		\
       NONE     ,		\
       kd       ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_FIBF_COND : int {
     MEMBERS_FIBFCondition
@@ -224,7 +305,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_FIBF;
     static const PARAM_TYPE param_type = PARAM_TYPE_COND;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_FICondition		\
@@ -252,7 +333,6 @@ namespace ePhotosynthesis {
       QAnQB2n        ,		\
       PQn            ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_FI_COND : int {
     MEMBERS_FICondition
@@ -263,7 +343,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_FI;
     static const PARAM_TYPE param_type = PARAM_TYPE_COND;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_PRCondition		\
@@ -280,7 +360,6 @@ namespace ePhotosynthesis {
       RuBP      ,		\
       _v131     ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_PR_COND : int {
     MEMBERS_PRCondition
@@ -291,7 +370,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_PR;
     static const PARAM_TYPE param_type = PARAM_TYPE_COND;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_PSCondition		\
@@ -312,7 +391,6 @@ namespace ePhotosynthesis {
       _ADP     ,		\
       _v1      ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_PS_COND : int {
     MEMBERS_PSCondition
@@ -323,13 +401,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_PS;
     static const PARAM_TYPE param_type = PARAM_TYPE_COND;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_PS_PRCondition		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_PS_PR_COND : int {
     MEMBERS_PS_PRCondition
@@ -340,13 +417,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_PS_PR;
     static const PARAM_TYPE param_type = PARAM_TYPE_COND;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RACondition		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RA_COND : int {
     MEMBERS_RACondition
@@ -357,7 +433,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RA;
     static const PARAM_TYPE param_type = PARAM_TYPE_COND;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RROEACondition		\
@@ -374,7 +450,6 @@ namespace ePhotosynthesis {
       RuACT      ,		\
       Coeff      ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RROEA_COND : int {
     MEMBERS_RROEACondition
@@ -385,14 +460,13 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RROEA;
     static const PARAM_TYPE param_type = PARAM_TYPE_COND;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RedoxRegCondition		\
       NONE      ,		\
       Thion     ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RedoxReg_COND : int {
     MEMBERS_RedoxRegCondition
@@ -403,7 +477,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RedoxReg;
     static const PARAM_TYPE param_type = PARAM_TYPE_COND;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RuACTCondition		\
@@ -413,7 +487,6 @@ namespace ePhotosynthesis {
       ECMR     ,		\
       RuBP     ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RuACT_COND : int {
     MEMBERS_RuACTCondition
@@ -424,7 +497,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RuACT;
     static const PARAM_TYPE param_type = PARAM_TYPE_COND;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_SUCSCondition		\
@@ -438,7 +511,6 @@ namespace ePhotosynthesis {
       SUC        ,		\
       PGAc       ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_SUCS_COND : int {
     MEMBERS_SUCSCondition
@@ -449,7 +521,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_SUCS;
     static const PARAM_TYPE param_type = PARAM_TYPE_COND;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_XanCycleCondition		\
@@ -459,7 +531,6 @@ namespace ePhotosynthesis {
       Zx       ,		\
       ABA      ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_XanCycle_COND : int {
     MEMBERS_XanCycleCondition
@@ -470,13 +541,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_XanCycle;
     static const PARAM_TYPE param_type = PARAM_TYPE_COND;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_trDynaPSCondition		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_trDynaPS_COND : int {
     MEMBERS_trDynaPSCondition
@@ -487,7 +557,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_trDynaPS;
     static const PARAM_TYPE param_type = PARAM_TYPE_COND;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 
 namespace ePhotosynthesis {
@@ -506,7 +576,6 @@ namespace ePhotosynthesis {
       k23      ,		\
       k30      ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_BF_POOL : int {
     MEMBERS_BFPool
@@ -517,14 +586,13 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_BF;
     static const PARAM_TYPE param_type = PARAM_TYPE_POOL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_FIBFPool		\
       NONE     ,		\
       PQT      ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_FIBF_POOL : int {
     MEMBERS_FIBFPool
@@ -535,7 +603,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_FIBF;
     static const PARAM_TYPE param_type = PARAM_TYPE_POOL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_FIPool		\
@@ -543,7 +611,6 @@ namespace ePhotosynthesis {
       QBt      ,		\
       PQT      ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_FI_POOL : int {
     MEMBERS_FIPool
@@ -554,13 +621,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_FI;
     static const PARAM_TYPE param_type = PARAM_TYPE_POOL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_PRPool		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_PR_POOL : int {
     MEMBERS_PRPool
@@ -571,13 +637,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_PR;
     static const PARAM_TYPE param_type = PARAM_TYPE_POOL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_PSPool		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_PS_POOL : int {
     MEMBERS_PSPool
@@ -588,7 +653,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_PS;
     static const PARAM_TYPE param_type = PARAM_TYPE_POOL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RROEAPool		\
@@ -619,7 +684,6 @@ namespace ePhotosynthesis {
       mw_MDH        ,		\
       MDH_Vmax      ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RROEA_POOL : int {
     MEMBERS_RROEAPool
@@ -630,7 +694,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RROEA;
     static const PARAM_TYPE param_type = PARAM_TYPE_POOL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RedoxRegPool		\
@@ -644,7 +708,6 @@ namespace ePhotosynthesis {
       ATPase_Coeff     ,		\
       ATPase0          ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RedoxReg_POOL : int {
     MEMBERS_RedoxRegPool
@@ -655,7 +718,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RedoxReg;
     static const PARAM_TYPE param_type = PARAM_TYPE_POOL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RuACTPool		\
@@ -666,7 +729,6 @@ namespace ePhotosynthesis {
       O        ,		\
       M        ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RuACT_POOL : int {
     MEMBERS_RuACTPool
@@ -677,7 +739,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RuACT;
     static const PARAM_TYPE param_type = PARAM_TYPE_POOL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_SUCSPool		\
@@ -686,7 +748,6 @@ namespace ePhotosynthesis {
       UTc      ,		\
       PTc      ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_SUCS_POOL : int {
     MEMBERS_SUCSPool
@@ -697,13 +758,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_SUCS;
     static const PARAM_TYPE param_type = PARAM_TYPE_POOL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_XanCyclePool		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_XanCycle_POOL : int {
     MEMBERS_XanCyclePool
@@ -714,14 +774,13 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_XanCycle;
     static const PARAM_TYPE param_type = PARAM_TYPE_POOL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 
 namespace ePhotosynthesis {
   #define MEMBERS_BFKE		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_BF_KE : int {
     MEMBERS_BFKE
@@ -732,13 +791,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_BF;
     static const PARAM_TYPE param_type = PARAM_TYPE_KE;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_FIBFKE		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_FIBF_KE : int {
     MEMBERS_FIBFKE
@@ -749,13 +807,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_FIBF;
     static const PARAM_TYPE param_type = PARAM_TYPE_KE;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_FIKE		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_FI_KE : int {
     MEMBERS_FIKE
@@ -766,13 +823,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_FI;
     static const PARAM_TYPE param_type = PARAM_TYPE_KE;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_PRKE		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_PR_KE : int {
     MEMBERS_PRKE
@@ -783,13 +839,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_PR;
     static const PARAM_TYPE param_type = PARAM_TYPE_KE;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_PSKE		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_PS_KE : int {
     MEMBERS_PSKE
@@ -800,7 +855,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_PS;
     static const PARAM_TYPE param_type = PARAM_TYPE_KE;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RROEAKE		\
@@ -815,7 +870,6 @@ namespace ePhotosynthesis {
       KEe2ATPGPP     ,		\
       KEeFd2Thio     ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RROEA_KE : int {
     MEMBERS_RROEAKE
@@ -826,13 +880,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RROEA;
     static const PARAM_TYPE param_type = PARAM_TYPE_KE;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RedoxRegKE		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RedoxReg_KE : int {
     MEMBERS_RedoxRegKE
@@ -843,13 +896,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RedoxReg;
     static const PARAM_TYPE param_type = PARAM_TYPE_KE;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RuACTKE		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RuACT_KE : int {
     MEMBERS_RuACTKE
@@ -860,13 +912,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RuACT;
     static const PARAM_TYPE param_type = PARAM_TYPE_KE;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_SUCSKE		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_SUCS_KE : int {
     MEMBERS_SUCSKE
@@ -877,13 +928,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_SUCS;
     static const PARAM_TYPE param_type = PARAM_TYPE_KE;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_XanCycleKE		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_XanCycle_KE : int {
     MEMBERS_XanCycleKE
@@ -894,7 +944,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_XanCycle;
     static const PARAM_TYPE param_type = PARAM_TYPE_KE;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 
 namespace ePhotosynthesis {
@@ -909,7 +959,6 @@ namespace ePhotosynthesis {
       RT               ,		\
       DeltaGo          ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_BF_MOD : int {
     MEMBERS_BF
@@ -920,13 +969,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_BF;
     static const PARAM_TYPE param_type = PARAM_TYPE_MOD;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_CM		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_CM_MOD : int {
     MEMBERS_CM
@@ -937,13 +985,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_CM;
     static const PARAM_TYPE param_type = PARAM_TYPE_MOD;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_DynaPS		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_DynaPS_MOD : int {
     MEMBERS_DynaPS
@@ -954,13 +1001,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_DynaPS;
     static const PARAM_TYPE param_type = PARAM_TYPE_MOD;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_EPS		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_EPS_MOD : int {
     MEMBERS_EPS
@@ -971,7 +1017,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_EPS;
     static const PARAM_TYPE param_type = PARAM_TYPE_MOD;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_FIBF		\
@@ -982,7 +1028,6 @@ namespace ePhotosynthesis {
       FIBF2FI_PQ      ,		\
       FIBF2FI_PQa     ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_FIBF_MOD : int {
     MEMBERS_FIBF
@@ -993,14 +1038,13 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_FIBF;
     static const PARAM_TYPE param_type = PARAM_TYPE_MOD;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_FI		\
       NONE      ,		\
       cpsii     ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_FI_MOD : int {
     MEMBERS_FI
@@ -1011,7 +1055,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_FI;
     static const PARAM_TYPE param_type = PARAM_TYPE_MOD;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_PR		\
@@ -1093,7 +1137,6 @@ namespace ePhotosynthesis {
       Q10_131          ,		\
       CE               ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_PR_MOD : int {
     MEMBERS_PR
@@ -1104,7 +1147,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_PR;
     static const PARAM_TYPE param_type = PARAM_TYPE_MOD;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_PS		\
@@ -1284,7 +1327,6 @@ namespace ePhotosynthesis {
       STOM1         ,		\
       STOM2         ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_PS_MOD : int {
     MEMBERS_PS
@@ -1295,13 +1337,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_PS;
     static const PARAM_TYPE param_type = PARAM_TYPE_MOD;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_PS_PR		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_PS_PR_MOD : int {
     MEMBERS_PS_PR
@@ -1312,13 +1353,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_PS_PR;
     static const PARAM_TYPE param_type = PARAM_TYPE_MOD;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RA		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RA_MOD : int {
     MEMBERS_RA
@@ -1329,7 +1369,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RA;
     static const PARAM_TYPE param_type = PARAM_TYPE_MOD;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RROEA		\
@@ -1338,7 +1378,6 @@ namespace ePhotosynthesis {
       fc16     ,		\
       FC       ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RROEA_MOD : int {
     MEMBERS_RROEA
@@ -1349,7 +1388,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RROEA;
     static const PARAM_TYPE param_type = PARAM_TYPE_MOD;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RedoxReg		\
@@ -1362,7 +1401,6 @@ namespace ePhotosynthesis {
       ThioT               ,		\
       Thio_Oxidation      ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RedoxReg_MOD : int {
     MEMBERS_RedoxReg
@@ -1373,7 +1411,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RedoxReg;
     static const PARAM_TYPE param_type = PARAM_TYPE_MOD;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RuACT		\
@@ -1381,7 +1419,6 @@ namespace ePhotosynthesis {
       activase     ,		\
       factor       ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RuACT_MOD : int {
     MEMBERS_RuACT
@@ -1392,7 +1429,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RuACT;
     static const PARAM_TYPE param_type = PARAM_TYPE_MOD;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_SUCS		\
@@ -1486,7 +1523,6 @@ namespace ePhotosynthesis {
       SC              ,		\
       SC1             ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_SUCS_MOD : int {
     MEMBERS_SUCS
@@ -1497,7 +1533,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_SUCS;
     static const PARAM_TYPE param_type = PARAM_TYPE_MOD;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_XanCycle		\
@@ -1512,7 +1548,6 @@ namespace ePhotosynthesis {
       ABA_                     ,		\
       XanCycle2FIBF_Xstate     ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_XanCycle_MOD : int {
     MEMBERS_XanCycle
@@ -1523,13 +1558,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_XanCycle;
     static const PARAM_TYPE param_type = PARAM_TYPE_MOD;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_trDynaPS		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_trDynaPS_MOD : int {
     MEMBERS_trDynaPS
@@ -1540,7 +1574,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_trDynaPS;
     static const PARAM_TYPE param_type = PARAM_TYPE_MOD;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 
 namespace ePhotosynthesis {
@@ -1584,7 +1618,6 @@ namespace ePhotosynthesis {
       V2M          ,		\
       KE2          ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_BF_RC : int {
     MEMBERS_BFRC
@@ -1595,13 +1628,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_BF;
     static const PARAM_TYPE param_type = PARAM_TYPE_RC;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_FIBFRC		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_FIBF_RC : int {
     MEMBERS_FIBFRC
@@ -1612,7 +1644,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_FIBF;
     static const PARAM_TYPE param_type = PARAM_TYPE_RC;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_FIRC		\
@@ -1639,7 +1671,6 @@ namespace ePhotosynthesis {
       k_r3         ,		\
       k_pq_oxy     ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_FI_RC : int {
     MEMBERS_FIRC
@@ -1650,7 +1681,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_FI;
     static const PARAM_TYPE param_type = PARAM_TYPE_RC;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_PRRC		\
@@ -1713,7 +1744,6 @@ namespace ePhotosynthesis {
       Vf_T122        ,		\
       Vf_T112        ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_PR_RC : int {
     MEMBERS_PRRC
@@ -1724,7 +1754,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_PR;
     static const PARAM_TYPE param_type = PARAM_TYPE_RC;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_PSRC		\
@@ -1842,7 +1872,6 @@ namespace ePhotosynthesis {
       Vf_T13        ,		\
       Vf_T23        ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_PS_RC : int {
     MEMBERS_PSRC
@@ -1853,7 +1882,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_PS;
     static const PARAM_TYPE param_type = PARAM_TYPE_RC;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RROEARC		\
@@ -1871,7 +1900,6 @@ namespace ePhotosynthesis {
       ke2ATPGPP       ,		\
       Coeff           ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RROEA_RC : int {
     MEMBERS_RROEARC
@@ -1882,7 +1910,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RROEA;
     static const PARAM_TYPE param_type = PARAM_TYPE_RC;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RedoxRegRC		\
@@ -1892,7 +1920,6 @@ namespace ePhotosynthesis {
       Thio_Oxidation     ,		\
       Thion0             ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RedoxReg_RC : int {
     MEMBERS_RedoxRegRC
@@ -1903,7 +1930,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RedoxReg;
     static const PARAM_TYPE param_type = PARAM_TYPE_RC;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RuACTRC		\
@@ -1919,7 +1946,6 @@ namespace ePhotosynthesis {
       k7       ,		\
       kr       ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RuACT_RC : int {
     MEMBERS_RuACTRC
@@ -1930,7 +1956,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RuACT;
     static const PARAM_TYPE param_type = PARAM_TYPE_RC;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_SUCSRC		\
@@ -1991,7 +2017,6 @@ namespace ePhotosynthesis {
       Km604        ,		\
       KE60         ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_SUCS_RC : int {
     MEMBERS_SUCSRC
@@ -2002,7 +2027,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_SUCS;
     static const PARAM_TYPE param_type = PARAM_TYPE_RC;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_XanCycleRC		\
@@ -2012,7 +2037,6 @@ namespace ePhotosynthesis {
       kza      ,		\
       kav      ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_XanCycle_RC : int {
     MEMBERS_XanCycleRC
@@ -2023,7 +2047,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_XanCycle;
     static const PARAM_TYPE param_type = PARAM_TYPE_RC;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 
 namespace ePhotosynthesis {
@@ -2058,7 +2082,6 @@ namespace ePhotosynthesis {
       PSIantennaSize        ,		\
       ProteinTotalRatio     ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_ALL_VARS : int {
     MEMBERS_ALLVARS
@@ -2069,7 +2092,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_ALL;
     static const PARAM_TYPE param_type = PARAM_TYPE_VARS;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 
 namespace ePhotosynthesis {
@@ -2107,7 +2130,6 @@ namespace ePhotosynthesis {
       VsNADPH     ,		\
       vcet        ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_BF_VEL : int {
     MEMBERS_BFVel
@@ -2118,13 +2140,12 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_BF;
     static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_FIBFVel		\
       NONE   ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_FIBF_VEL : int {
     MEMBERS_FIBFVel
@@ -2135,7 +2156,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_FIBF;
     static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_FIVel		\
@@ -2199,7 +2220,6 @@ namespace ePhotosynthesis {
       vP680_d      ,		\
       vP680_f      ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_FI_VEL : int {
     MEMBERS_FIVel
@@ -2210,7 +2230,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_FI;
     static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_PRVel		\
@@ -2226,7 +2246,6 @@ namespace ePhotosynthesis {
       v1in      ,		\
       v2out     ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_PR_VEL : int {
     MEMBERS_PRVel
@@ -2237,7 +2256,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_PR;
     static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_PSVel		\
@@ -2262,7 +2281,6 @@ namespace ePhotosynthesis {
       v24      ,		\
       v25      ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_PS_VEL : int {
     MEMBERS_PSVel
@@ -2273,7 +2291,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_PS;
     static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RROEAVel		\
@@ -2290,7 +2308,6 @@ namespace ePhotosynthesis {
       veFd2Calvin     ,		\
       ve2RuACT        ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RROEA_VEL : int {
     MEMBERS_RROEAVel
@@ -2301,7 +2318,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RROEA;
     static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RedoxRegVel		\
@@ -2309,7 +2326,6 @@ namespace ePhotosynthesis {
       Vred     ,		\
       Vox      ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RedoxReg_VEL : int {
     MEMBERS_RedoxRegVel
@@ -2320,7 +2336,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RedoxReg;
     static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RuACTVel		\
@@ -2332,7 +2348,6 @@ namespace ePhotosynthesis {
       v6_1     ,		\
       v6_2     ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RuACT_VEL : int {
     MEMBERS_RuACTVel
@@ -2343,7 +2358,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_RuACT;
     static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_SUCSVel		\
@@ -2364,7 +2379,6 @@ namespace ePhotosynthesis {
       vpga_use     ,		\
       vatpf        ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_SUCS_VEL : int {
     MEMBERS_SUCSVel
@@ -2375,7 +2389,7 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_SUCS;
     static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 namespace ePhotosynthesis {
   #define MEMBERS_XanCycleVel		\
@@ -2388,7 +2402,6 @@ namespace ePhotosynthesis {
       Vv2ABA     ,		\
       VABAdg     ,		\
       MAX
-  
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_XanCycle_VEL : int {
     MEMBERS_XanCycleVel
@@ -2399,6 +2412,6 @@ namespace ePhotosynthesis {
     static const MODULE module = MODULE_XanCycle;
     static const PARAM_TYPE param_type = PARAM_TYPE_VEL;
   };
-  #endif // EPHOTO_USE_SCOPED_ENUM
+  #endif  // EPHOTO_USE_SCOPED_ENUM
 }
 

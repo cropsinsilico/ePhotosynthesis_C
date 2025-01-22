@@ -61,6 +61,7 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
     set(CMAKE_CXX_FLAGS_RELEASE "/O2 -DNDEBUG${BUILDINC}${BUILD_FLAGS}")
     set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/O2 /Zi -DINCDEBUG${BUILD_FLAGS}")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /bigobj")
+    set(EPHOTO_USE_SCOPED_ENUM ON)
 else()
     set(CMAKE_CXX_FLAGS_DEBUG "-g -DINCDEBUG${BUILD_FLAGS}")
     set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG${BUILDINC}${BUILD_FLAGS}")
@@ -83,6 +84,7 @@ option(WITH_ASAN "Enable Clang address sanitizer and undefined behavior sanitize
 option(TEST_VALGRIND "Enable valgrind tests")
 option(BUILD_DOCS "Create HTML and PDF API documentation for ePhotosynthesis (requires Doxygen)")
 option(BUILD_PYTHON "Build python bindings for the library.")
+option(EPHOTO_USE_SCOPED_ENUM "Build using a scoped enumerator for the ValueSet base class (enabled by default when building with MSVC)")
 option(MAKE_EQUIVALENT_TO_MATLAB "Build with settings that make this model equivalent to the Matlab C3 model")
 
 if(NOT BUILD_PYTHON)
@@ -164,6 +166,9 @@ endif()
 if(MAKE_EQUIVALENT_TO_MATLAB)
     add_compile_options(-DMAKE_EQUIVALENT_TO_MATLAB=1)
 endif()
+if(EPHOTO_USE_SCOPED_ENUM)
+    add_compile_options(-DEPHOTO_USE_SCOPED_ENUM=1)
+endif()
 
 if(NOT WIN32)
     find_program(CCACHE_FOUND ccache)
@@ -181,105 +186,56 @@ endif()
 # Regenerate enum files #
 #########################
 
+set(ENUM_TARGET generate_enum)
 set(ENUM_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/utils/generate_enum.py)
+set(ENUM_UTILS ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_utils.hpp)
+set(ENUM_GLOBAL_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums.hpp)
+set(ENUM_GLOBAL ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums.cpp)
+set(ENUM_HELPER ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_helpers.hpp)
+set(UTILS_DST_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_utils.hpp)
+file(GLOB ENUM_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/param/*.txt")
+list(APPEND ENUM_SOURCES ${ENUM_SCRIPT})
+set(ENUM_BYPRODUCTS)
+set(ENUM_OUTPUT ${ENUM_GLOBAL_H} ${ENUM_HELPER})  # ${ENUM_GLOBAL})
+# set(GENERATED_SOURCES ${ENUM_GLOBAL})
+set(ENUM_COMMAND
+    python ${ENUM_SCRIPT}
+    "${CMAKE_CURRENT_SOURCE_DIR}/param"
+    --ePhotosynthesis
+    --api-macro-c=EPHOTO_API
+    --include-file-c-source=${UTILS_DST_H}
+    --dst-global=${ENUM_GLOBAL_H}
+    --dst-global-source=${ENUM_GLOBAL}
+    --root-include-dir=${CMAKE_CURRENT_SOURCE_DIR}/include
+    --overwrite
+)
 
 # The last suffix must have a complete set of modules for the global
 # enum to be generated correctly
-foreach(suffix COND POOL KE MOD RC VARS VEL)
-  set(fsuffix ${suffix})
-  set(ENUM_SRC_REGEX ${CMAKE_CURRENT_SOURCE_DIR}/param/*_${fsuffix}.txt)
-  file(GLOB ENUM_SRC "${ENUM_SRC_REGEX}")
-  string(REPLACE "*" "\\*" ENUM_SRC_REGEX ${ENUM_SRC_REGEX})
-  set(iBYPRODUCTS)
-  set(iGENERATED_SOURCES)
-  set(iARGS)
-  list(
-       APPEND iARGS
-       --enum-macro-skip-global=ALL
-       --accum-enum-macro-skip-global=VARS
-  )
-  if(suffix STREQUAL COND)
-    list(APPEND iARGS --macro-suffix-c=Condition)
-  elseif(suffix STREQUAL MOD)
-    list(APPEND iARGS --macro-suffix-c="")
-  elseif(suffix STREQUAL POOL)
-    list(APPEND iARGS --macro-suffix-c=Pool)
-  elseif(suffix STREQUAL VEL)
-    list(APPEND iARGS --macro-suffix-c=Vel)
-  else()
-    list(APPEND iARGS --macro-suffix-c=${suffix})
-  endif()
-  foreach(ftype names defaults defaults_C3 glymaids aliases docs
-          value_flags static_value_flags)
-    if(ftype STREQUAL "defaults_C3")
-      set(ftype_key "alternate-values")
-      list(APPEND iARGS --collection-name-${ftype_key}=${ftype}
-           --singular-collection-name-${ftype_key}=default_C3)
-    elseif(ftype STREQUAL "defaults")
-      set(ftype_key "values")
-      list(APPEND iARGS --collection-name-${ftype_key}=${ftype})
-    elseif(ftype STREQUAL "static_value_flags")
-      set(ftype_key "static-value-flags")
-    elseif(ftype STREQUAL "value_flags")
-      set(ftype_key "value-flags")
-    else()
-      set(ftype_key ${ftype})
-    endif()
-    if(ftype STREQUAL skipped)
-      list(APPEND iARGS --is-editable-${ftype_key})
-    elseif(ftype STREQUAL value_flags)
-      list(APPEND iARGS --is-editable-${ftype_key}
-           --explicit-${ftype_key})
-    elseif(ftype STREQUAL static_value_flags)
-      list(APPEND iARGS --explicit-${ftype_key})
-    elseif(ftype STREQUAL aliases)
-      list(APPEND iARGS --reversed-${ftype_key}
-           --explicit-${ftype_key}
-	   --singular-collection-name-${ftype_key}=alias)
-    elseif(ftype STREQUAL glymaids)
-      list(APPEND iARGS --explicit-${ftype_key})
-    elseif(ftype STREQUAL docs)
-      list(APPEND iARGS --explicit-${ftype_key}
-           --singular-collection-name-${ftype_key}=docs)
-    endif()
-    set(ENUM_${ftype} ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}_${ftype}.cpp)
-    set(ENUM_${ftype}_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}_${ftype}.hpp)
-    list(APPEND iARGS --expect-empty-${ftype_key}
-         --expect-empty-${ftype_key}-header)
-    list(APPEND iARGS
-      --dst-${ftype_key}=${ENUM_${ftype}}
-      --dst-${ftype_key}-header=${ENUM_${ftype}_H}
-    )
-  endforeach()
-
-  set(ENUM_UTILS ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_utils.hpp)
-  set(ENUM_GLOBAL ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums.hpp)
-  set(ENUM_HELPER ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_helpers.hpp)
+foreach(fsuffix COND POOL KE MOD RC VARS VEL)
   set(ENUM_DST ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums_${fsuffix}.cpp)
   set(ENUM_DST_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_${fsuffix}.hpp)
-  set(UTILS_DST_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_utils.hpp)
-  add_custom_target(
-    generate_enum_${fsuffix}
-    COMMAND python ${ENUM_SCRIPT}
-    "${ENUM_SRC_REGEX}" --src-regex --dst-type=c --dst=${ENUM_DST_H}
-    --dst-c-source=${ENUM_DST} --dst-helper=${ENUM_HELPER}
-    --include-file-c-source=${UTILS_DST_H}
-    --namespace-c-source=ePhotosynthesis
-    --dst-global=${ENUM_GLOBAL} ${APPEND_GLOBAL_ARGS}
-    --enum-name-global=MODULE --strip-suffix-global=_${suffix}
-    --root-include-dir=${CMAKE_CURRENT_SOURCE_DIR}/include
-    --as-class-c=ValueSetEnum
-    --namespace-global=ePhotosynthesis
-    --overwrite ${iARGS} # --verbose
-    BYPRODUCTS ${ENUM_DST_H} ${ENUM_DST} ${ENUM_GLOBAL} ${ENUM_HELPER} ${iBYPRODUCTS}
-    DEPENDS ${ENUM_SRC} ${ENUM_SCRIPT} ${LAST_SUFFIX_PROCESSED}
-  )
-  list(APPEND GENERATED_SOURCES ${ENUM_DST} ${iGENERATED_SOURCES})
-  set(APPEND_GLOBAL_ARGS
-      --append-global=preserved
-      --append-helper=direct)
-  set(LAST_SUFFIX_PROCESSED ${ENUM_DST})
+  list(APPEND ENUM_OUTPUT ${ENUM_DST} ${ENUM_DST_H})
+  list(APPEND GENERATED_SOURCES ${ENUM_DST})
 endforeach()
+if(ENUM_TARGET)
+  add_custom_command(
+    COMMAND ${ENUM_COMMAND}
+    OUTPUT ${ENUM_GLOBAL_H}
+    BYPRODUCTS ${ENUM_OUTPUT}
+    DEPENDS ${ENUM_SOURCES}
+  )
+  add_custom_target(
+    ${ENUM_TARGET}
+    DEPENDS ${ENUM_GLOBAL_H}
+  )
+else()
+  add_custom_command(
+    COMMAND ${ENUM_COMMAND}
+    OUTPUT ${ENUM_OUTPUT}
+    DEPENDS ${ENUM_SOURCES}
+  )
+endif()
 
 
 ########################
@@ -290,6 +246,9 @@ file(GLOB_RECURSE SOURCES "src/*.cpp")
 list(APPEND SOURCES ${GENERATED_SOURCES})
 
 add_library(EPhotosynthesis SHARED ${SOURCES})
+if(ENUM_TARGET)
+  add_dependencies(EPhotosynthesis ${ENUM_TARGET})
+endif()
 add_executable(ePhoto bin/ePhotosynthesis.cpp)
 
 find_package(Boost 1.36.0 REQUIRED COMPONENTS regex)
@@ -322,7 +281,7 @@ target_include_directories(
     $<INSTALL_INTERFACE:include/ePhotosynthesis>
 )
 
-target_link_libraries(ePhoto EPhotosynthesis)
+target_link_libraries(ePhoto PRIVATE EPhotosynthesis)
 
 
 ###########################
@@ -656,6 +615,9 @@ if(BUILD_PYTHON)
         regex python${Python_VERSION_MAJOR}${Python_VERSION_MINOR}
     )
     add_library(${PYTHON_LIBRARY_NAME} MODULE ${SOURCES})
+    if(ENUM_TARGET)
+        add_dependencies(${PYTHON_LIBRARY_NAME} ${ENUM_TARGET})
+    endif()
     target_link_libraries(
         ${PYTHON_LIBRARY_NAME}
         ${Boost_LIBRARIES}

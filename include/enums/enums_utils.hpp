@@ -59,8 +59,11 @@ namespace ePhotosynthesis {
     
     template<typename T>
     std::string to_string(const T& x,
-                          typename std::enable_if<!std::is_same<T, const char[]>::value >::type* = 0)
-    { return std::to_string(x); }
+                          typename std::enable_if<!std::is_same<T, const char[]>::value >::type* = 0) {
+      std::ostringstream oss;
+      oss << x;
+      return oss.str();
+    }      
     std::string to_string(const std::string& x);
     std::string to_string(const char* x);
     template<size_t N>

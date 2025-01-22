@@ -23,75 +23,15 @@
 #include "enums/enums_helpers.hpp"
 
 namespace ePhotosynthesis {
-  // VALUE_FLAG enum
-  #define MEMBERS_VALUE		\
-      VALUE_FLAG_NONE                ,		\
-      VALUE_FLAG_SKIPPED             ,		\
-      VALUE_FLAG_MAX
-  #define MEMBER_NAMES_COMPLETE_VALUE		\
-      SKIPPED
-  #define MEMBER_NAMES_VALUE		\
-      SKIPPED
-  enum VALUE_FLAG : int {
-      VALUE_FLAG_NONE    = 0x00000000,
-      VALUE_FLAG_SKIPPED = 0x00000001,
-      VALUE_FLAG_MAX     = 0x00000002,
-  };
-  static const std::vector<VALUE_FLAG> ALL_VALUE_FLAG = {VALUE_FLAG_SKIPPED};  /**< All enum values */
-  
-  // STATIC_VALUE_FLAG enum
-  #define MEMBERS_STATIC_VALUE		\
-      STATIC_VALUE_FLAG_NONE                   ,		\
-      STATIC_VALUE_FLAG_CONST                  ,		\
-      STATIC_VALUE_FLAG_CALC                   ,		\
-      STATIC_VALUE_FLAG_NON_VECTOR             ,		\
-      STATIC_VALUE_FLAG_RESET_ONE              ,		\
-      STATIC_VALUE_FLAG_INIT_ONCE              ,		\
-      STATIC_VALUE_FLAG_MAX
-  #define MEMBER_NAMES_COMPLETE_STATIC_VALUE		\
-      CONST                  ,		\
-      CALC                   ,		\
-      NON_VECTOR             ,		\
-      RESET_ONE              ,		\
-      INIT_ONCE
-  #define MEMBER_NAMES_STATIC_VALUE		\
-      CONST                  ,		\
-      CALC                   ,		\
-      NON_VECTOR             ,		\
-      RESET_ONE              ,		\
-      INIT_ONCE
-  enum STATIC_VALUE_FLAG : int {
-      STATIC_VALUE_FLAG_NONE       = 0x00000000,
-      STATIC_VALUE_FLAG_CONST      = 0x00000001,
-      STATIC_VALUE_FLAG_CALC       = 0x00000002,
-      STATIC_VALUE_FLAG_NON_VECTOR = 0x00000004,
-      STATIC_VALUE_FLAG_RESET_ONE  = 0x00000008,
-      STATIC_VALUE_FLAG_INIT_ONCE  = 0x00000010,
-      STATIC_VALUE_FLAG_MAX        = 0x00000020,
-  };
-  static const std::vector<STATIC_VALUE_FLAG> ALL_STATIC_VALUE_FLAG = {STATIC_VALUE_FLAG_CONST, STATIC_VALUE_FLAG_CALC, STATIC_VALUE_FLAG_NON_VECTOR, STATIC_VALUE_FLAG_RESET_ONE, STATIC_VALUE_FLAG_INIT_ONCE};  /**< All enum values */
-  
-  // Utility for getting module id from enum type
-  template<typename T>
-  MODULE get_enum_module() {
-    return T::MODULE;
-  }
-  
-  // Utility for getting param_type from enum type
-  template<typename T>
-  PARAM_TYPE get_enum_param_type() {
-    return T::PARAM_TYPE;
-  }
-  
   // Unspecialized enum
   template<MODULE M, PARAM_TYPE PT>
   class ValueSetEnum {
   public:
     #ifdef EPHOTO_USE_SCOPED_ENUM
     typedef typename enum_helper<M, PT>::type Type;
-    #else // EPHOTO_USE_SCOPED_ENUM
+    #else  // EPHOTO_USE_SCOPED_ENUM
     enum Type : int;
-    #endif // EPHOTO_USE_SCOPED_ENUM
+    #endif  // EPHOTO_USE_SCOPED_ENUM
     static const MODULE module;
     static const PARAM_TYPE param_type;
     static const std::vector<Type> all;  /**< All enum values */
@@ -369,7 +309,7 @@ namespace ePhotosynthesis {
       std::size_t out;
       out = 0;
       typename std::map<Type, int>::const_iterator it;
-      for (it = value_flags.begin(); it != value_flags.end(); it++){
+      for (it = value_flags.begin(); it != value_flags.end(); it++) {
         if (it->second & VALUE_FLAG_SKIPPED) out++;
       }
       return out;
@@ -663,7 +603,7 @@ namespace ePhotosynthesis {
       std::size_t out;
       out = 0;
       typename std::map<Type, int>::const_iterator it;
-      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++){
+      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++) {
         if (it->second & STATIC_VALUE_FLAG_CONST) out++;
       }
       return out;
@@ -676,7 +616,7 @@ namespace ePhotosynthesis {
       std::size_t out;
       out = 0;
       typename std::map<Type, int>::const_iterator it;
-      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++){
+      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++) {
         if (it->second & STATIC_VALUE_FLAG_CALC) out++;
       }
       return out;
@@ -689,7 +629,7 @@ namespace ePhotosynthesis {
       std::size_t out;
       out = 0;
       typename std::map<Type, int>::const_iterator it;
-      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++){
+      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++) {
         if (it->second & STATIC_VALUE_FLAG_NON_VECTOR) out++;
       }
       return out;
@@ -702,7 +642,7 @@ namespace ePhotosynthesis {
       std::size_t out;
       out = 0;
       typename std::map<Type, int>::const_iterator it;
-      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++){
+      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++) {
         if (it->second & STATIC_VALUE_FLAG_RESET_ONE) out++;
       }
       return out;
@@ -715,7 +655,7 @@ namespace ePhotosynthesis {
       std::size_t out;
       out = 0;
       typename std::map<Type, int>::const_iterator it;
-      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++){
+      for (it = static_value_flags.begin(); it != static_value_flags.end(); it++) {
         if (it->second & STATIC_VALUE_FLAG_INIT_ONCE) out++;
       }
       return out;
@@ -823,9 +763,6 @@ namespace ePhotosynthesis {
   template<MODULE M, PARAM_TYPE PT>
   const std::map<typename ValueSetEnum<M, PT>::Type, int> ValueSetEnum<M, PT>::static_value_flags = {};
   
-  
-  // Utility for getting enum type from module & param_type
-  #define MODULE2Enum ValueSetEnum
 }
 // Global includes
 // [BEGIN] HEADERS_GLOBAL

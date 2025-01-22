@@ -222,6 +222,8 @@ class build(SubTask):
             config_args += ['-DBUILD_PYTHON:BOOL=ON']
         if not args.dont_install:
             config_args += [f'-DCMAKE_INSTALL_PREFIX={args.install_dir}']
+        if args.force_scoped_enum:
+            config_args += ['-DEPHOTO_USE_SCOPED_ENUM:BOOL=ON']
         if sys.platform != 'win32':
             build_args += ['--', '-j', str(args.njobs)]
         cmds = [
@@ -833,6 +835,12 @@ if __name__ == "__main__":
         '--only-python', action='store_true',
         help="Only run the Python tests",
         subparsers={'task': build_tasks})
+    parser.add_argument(
+        '--force-scoped-enum', action='store_true',
+        help=("Compile with 'EPHOTO_USE_SCOPED_ENUM' reguardless of the "
+              "compiler (usually only used with MSVC)"),
+        subparsers={'task': build_tasks})
+    # EPHOTO_USE_SCOPED_ENUM
 
     parser.add_argument(
         '--dont-build', action='store_true',

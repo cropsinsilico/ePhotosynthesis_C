@@ -20,6 +20,1229 @@ _bitflags = [
 ]
 
 
+def max_width(members, key='name', func=None, current_keys=None):
+    if len(members) == 0:
+        return 0
+    if func is not None:
+        def fw(x):
+            y = func(x)
+            if y is None:
+                return ''
+            if isinstance(y, list):
+                y = max(y, key=len)
+            return y
+        width = len(fw(max(members, key=lambda x: len(fw(x)))))
+    elif key == 'name':
+        width = len(create_enum_member(
+            max(members, key=lambda x:
+                len(create_enum_member(x, return_name=True,
+                                       current_keys=current_keys))),
+            return_name=True, current_keys=current_keys))
+    else:
+        width = len(max(members, key=lambda x:
+                        len(x.get(key, ''))).get(key, ''))
+    if key == 'idx':
+        width += 3
+    return width
+
+
+def create_enum_member(member, return_name=False, add_prefix=None,
+                       strip_suffix=None, replace_with_prefix=False,
+                       add_kwargs=None, current_keys=None):
+    if current_keys is None:
+        current_keys = {
+            'kprefix': [],
+            'ksuffix': [],
+            'kreplacement': {},
+            'klower': False,
+        }
+    if isinstance(member, str):
+        member = {'name': member}
+    name = member['name']
+    abbr = member.get('abbr', name)
+    if replace_with_prefix and current_keys['kprefix']:
+        name = ''
+    name = current_keys['kreplacement'].get(
+        name, name)
+    if current_keys['klower']:
+        name = name.lower()
+    if not member.get('no_suffix', False):
+        for x in current_keys['ksuffix']:
+            name = name + x
+    if not member.get('no_prefix', False):
+        for x in current_keys['kprefix']:
+            name = x + name
+    if replace_with_prefix and current_keys['kprefix']:
+        name = name.rstrip('_')
+    if add_prefix:
+        name = add_prefix + name
+    if strip_suffix:
+        assert name.endswith(strip_suffix)
+        name = name.rsplit(strip_suffix)[0]
+        abbr = abbr.rsplit(strip_suffix)[0]
+    if return_name:
+        return name
+    out = dict(member, name=name, abbr=abbr)
+    if add_kwargs:
+        out.update(**add_kwargs)
+    return out
+
+
+def generate_enum_member(x, width=None, width_val=None,
+                         name_only=False, explicit_values=False):
+    assert width is not None and width_val is not None
+    if isinstance(x, str):
+        x = create_enum_member(x)
+    val = ''
+    docs = ''
+    if not name_only:
+        if x.get('explicit_idx', False) or explicit_values:
+            val = f" = {x['idx']}"
+        if x.get('doc', False):
+            docs = f"  //!< {x['doc']}"
+    return f"  {x['name']:{width}}{val:{width_val}},{docs}"
+
+
+def generate_enum_members(members, indent='  ', members_macro=None,
+                          ragged_right=False, **kwargs):
+    if members_macro and not (kwargs.get('explicit_values', False)
+                              or any(x.get('explicit_idx', False)
+                                     for x in members)):
+        if isinstance(members_macro, EnumMacroUnit):
+            members_macro = members_macro.macro_name
+        return generate_enum_members(members_macro, indent=indent,
+                                     ragged_right=ragged_right, **kwargs)
+    if isinstance(members, str):
+        out = [indent + members]
+    else:
+        width = max_width(members)
+        if ragged_right:
+            width_val = 0
+        else:
+            width_val = max_width(members, key='idx')
+        out = [
+            indent + generate_enum_member(
+                x, width=width, width_val=width_val, **kwargs,
+            ) for x in members
+        ]
+    return out
+
+
+class CodeContext:
+
+    parameter_keys = [
+        'in_header', 'in_source', 'inside_class', 'specialize',
+        'definition', 'declaration', 'filetype'
+    ]
+
+    def __init__(self, **kwargs):
+        self.update(**kwargs)
+
+    @classmethod
+    def from_kwargs(cls, kwargs):
+        ikws = {}
+        for k in ['in_header', 'in_source']:
+            if k in kwargs:
+                ikws[k] = kwargs.pop(k)
+        return cls(**ikws)
+
+    @property
+    def primary(self):
+        return (self.declaration
+                and (not self.specialize))
+
+    @property
+    def outside_class(self):
+        if self.inside_class:
+            return False
+        return True
+
+    @property
+    def parameters(self):
+        return {k: getattr(self, k) for k in self.parameter_keys}
+
+    def update(self, in_header=None, in_source=None,
+               inside_class=False, specialize=None,
+               definition=None, declaration=None,
+               filetype=None):
+        if in_header is None:
+            in_header = getattr(self, 'in_header', None)
+        if in_source is None:
+            in_source = getattr(self, 'in_source', None)
+        if inside_class is None:
+            inside_class = getattr(self, 'inside_class', None)
+        if inside_class:
+            assert isinstance(inside_class, str)
+        if specialize is None:
+            specialize = getattr(self, 'specialize', None)
+        if definition is None:
+            definition = getattr(self, 'definition', None)
+        if declaration is None:
+            declaration = getattr(self, 'declaration', None)
+        if filetype is None:
+            filetype = getattr(self, 'filetype', None)
+        if in_header is None:
+            if in_source is None:
+                in_source = False
+            in_header = (not in_source)
+        elif in_source is None:
+            in_source = (not in_header)
+        else:
+            assert in_header == (not in_source)
+        if in_source:
+            inside_class = False
+            definition = True
+            declaration = False
+        if declaration is None:
+            declaration = True
+        if definition is None:
+            if specialize:
+                definition = False
+            else:
+                definition = True
+        self.in_header = in_header
+        self.in_source = in_source
+        self.inside_class = inside_class
+        self.specialize = specialize
+        self.declaration = declaration
+        self.definition = definition
+        self.filetype = filetype
+
+
+class CodeUnitBase:
+
+    generate_str = False
+    dont_add_template_lines = False
+    is_class = False
+    non_child_attributes = ['_parent', '__dict__']
+
+    def __init__(self, name, parent=None, static=True,
+                 export=False, spec_param=None, spec_var=None,
+                 docs=None, namespaces=None, guards=None, chunks=None,
+                 context=CodeContext(), conditions=None,
+                 temp_parent=None, no_parent=False):
+        if spec_param:
+            if spec_var is None:
+                if len(spec_param) == 1:
+                    spec_var = ['T']
+                else:
+                    spec_var = [
+                        f'T{i}' for i in range(len(spec_param))]
+            assert len(spec_var) == len(spec_param)
+        if isinstance(namespaces, str):
+            namespaces = [namespaces]
+        if isinstance(guards, (str, GuardUnit)):
+            guards = [guards]
+        if guards:
+            assert isinstance(guards, list)
+            for i in range(len(guards)):
+                if not isinstance(guards[i], GuardUnit):
+                    guards[i] = GuardUnit(guards[i])
+        if isinstance(chunks, str):
+            chunks = [chunks]
+        if conditions is None:
+            conditions = {}
+        elif isinstance(conditions, str):
+            conditions = {'generate': [[conditions]]}
+        elif ((isinstance(conditions, list) and conditions
+               and isinstance(conditions[0], str))):
+            conditions = {'generate': [conditions]}
+        elif isinstance(conditions, list):
+            conditions = {'generate': conditions}
+        self.name = name
+        self.no_parent = no_parent
+        self._parent = parent
+        self._static = static
+        self.export = export
+        self.spec_param = spec_param
+        self.spec_var = spec_var
+        self.docs = docs
+        self.namespaces = namespaces
+        self.guards = guards
+        self.chunks = chunks
+        self.conditions = conditions
+        self.temp_parent = temp_parent
+        self.context = context
+
+    @classmethod
+    def _eval(cls, x):
+        if isinstance(x, list):
+            return [cls._eval(xx) for xx in x]
+        if isinstance(x, str):
+            return x
+        elif isinstance(x, CodeUnitBase):
+            return x.generate()
+        raise NotImplementedError(str(type(x)))
+
+    def set_parent(self, new_parent, temporary=False):
+        if self.no_parent:
+            return
+        if temporary:
+            self.temp_parent = new_parent
+            self._parent = None
+        else:
+            self._parent = new_parent
+            self.temp_parent = None
+
+    @property
+    def parent(self):
+        if self.temp_parent:
+            return self.temp_parent
+        return self._parent
+
+    @classmethod
+    def iter_units(cls, k, v):
+        if isinstance(v, CodeUnitBase):
+            yield v
+        elif isinstance(v, list):
+            for vv in v:
+                if isinstance(vv, CodeUnitBase):
+                    yield vv
+        elif isinstance(v, dict):
+            for kk, vv in v.items():
+                assert not isinstance(kk, CodeUnitBase)
+                for vvv in cls.iter_units((k, kk), vv):
+                    yield vvv
+
+    @property
+    def children(self):
+        for k in dir(self):
+            if ((k in self.non_child_attributes
+                 or isinstance(getattr(type(self), k, None), property))):
+                continue
+            v = getattr(self, k)
+            for vv in self.iter_units(k, v):
+                yield vv
+
+    @property
+    def outside_class(self):
+        return (self.parent_class and not self.inside_class)
+
+    @property
+    def primary(self):
+        return self.context.primary and not (self.context.definition
+                                             and self.outside_class)
+
+    @property
+    def inside_class(self):
+        return (self.parent_class and self.context.inside_class
+                and self.parent_class.name == self.context.inside_class)
+
+    @property
+    def parent_class(self):
+        if not self.parent:
+            return None
+        if self.parent.is_class:
+            return self.parent
+        return self.parent.parent_class
+
+    def set_context(self, context=None, **kwargs):
+        if context is not None:
+            kwargs = dict(context.parameters, **kwargs)
+        self.context = CodeContext(**kwargs)
+        for v in self.children:
+            v.set_context(**kwargs)
+
+    def update_context(self, **kwargs):
+        self.context.update(**kwargs)
+        for v in self.children:
+            v.update_context(**kwargs)
+
+    @property
+    def specialized(self):
+        if not (self.spec_var and self.context.specialize):
+            return []
+        param = [
+            self.context.specialize.get(k, None) for k in self.spec_var
+        ]
+        if all(param):
+            return param
+        return []
+
+    @property
+    def specialization(self):
+        param = self.specialized
+        if not param:
+            return ''
+        return f"<{', '.join(param)}>"
+
+    @property
+    def template(self):
+        if not self.spec_var:
+            return ''
+        if self.specialized:
+            return 'template<> '
+        param = [f"{x} {t}" for x, t in zip(self.spec_param, self.spec_var)]
+        return f"template<{', '.join(param)}> "
+
+    @property
+    def template_lines(self):
+        out = []
+        if self.parent_class and self.outside_class:
+            out += self.parent_class.template_lines
+        template = self.template
+        if template:
+            out += [template.strip()]
+        return out
+
+    @property
+    def api(self):
+        if self.context.primary and self.export:
+            return f'{self.export} '
+        return ''
+
+    @property
+    def static(self):
+        if (self.context.primary or self.inside_class) and self._static:
+            return 'static '
+        return ''
+
+    def __format__(self, spec):
+        out = self.generate()
+        if isinstance(out, list) and len(out) == 1:
+            return out[0]
+        if isinstance(out, list) and len(out) == 0:
+            return ''
+        assert isinstance(out, str)
+        return out
+
+    @property
+    def prefix(self):
+        return f'{self.static}{self.api}'
+
+    @property
+    def child_address(self):
+        return f'{self.type}::'
+
+    @property
+    def parent_address(self):
+        out = ''
+        if self.parent_class and not self.inside_class:
+            out = self.parent_class.child_address
+        return out
+
+    def get_condition(self, k):
+        not_flag = "NOT:"
+        eq_flag = "EQ:"
+        reverse = k.startswith(not_flag)
+        if reverse:
+            k = k.split(not_flag)[-1]
+        equals = k.startswith(eq_flag)
+        if equals:
+            k, equals = k.split(eq_flag)[-1].split(':')
+        v = getattr(self.context, k)
+        if equals:
+            v = (v == equals)
+        else:
+            v = bool(v)
+        if reverse:
+            return (not v)
+        return v
+
+    def check_conditions(self, step='generate'):
+        if isinstance(step, tuple):
+            cond = step
+        else:
+            cond = self.conditions.get(step, [])
+        if not cond:
+            return True
+        for kSet in cond:
+            if all(self.get_condition(k) for k in kSet):
+                return True
+        return False
+
+    def _generate(self):
+        raise NotImplementedError
+
+    def _define(self):
+        raise NotImplementedError
+
+    def generate(self, top=False):
+        if not self.check_conditions():
+            return []
+        template_lines = (
+            None if (self.generate_str or self.dont_add_template_lines)
+            else self.template_lines
+        )
+        out = self._generate()
+        if template_lines and out:
+            if isinstance(out, str):
+                out = [out]
+            out = template_lines + out
+        return self.finalize_generate(out)
+
+    def define(self):
+        # TODO: Check self.context.definition?
+        if not (self.check_conditions('define')):
+            return []
+        return self._define()
+
+    def add_definition(self, out, no_semicolon=False):
+        definition = self.define()
+        if definition:
+            out[-1] += definition[0]
+            out += definition[1:]
+        elif no_semicolon == 'declaration':
+            out[-1] += ';'
+        if not no_semicolon:
+            out[-1] += ';'
+        return out
+
+    def finalize_generate(self, out):
+        return self.add_bounds(self.add_docs(out))
+
+    def add_docs(self, out):
+        if not (self.primary and self.docs):
+            return out
+        assert isinstance(out, list)
+        if isinstance(self.docs, str):
+            out = ['/** ' + self.docs + ' */'] + out
+        else:
+            assert isinstance(self.docs, list)
+            out = ['/**'] + [
+                '  ' + x for x in self.docs
+            ] + ['*/'] + out
+        return out
+
+    def add_bounds(self, out):
+        out = self.add_chunks(out)
+        out = self.add_namespaces(out)
+        out = self.add_guards(out)
+        return out
+
+    def add_chunks(self, out):
+        if not (out and self.chunks):
+            return out
+        for x in self.chunks:
+            out = EnumGeneratorBase.add_chunk(x, out)
+        return out
+
+    def add_guards(self, out):
+        if not (out and self.guards):
+            return out
+        assert isinstance(self.guards, list)
+        for x in self.guards[::-1]:  # inside out
+            assert x.empty()
+            x.first = out
+            out = x._generate()
+            x.first = None
+        return out
+
+    def add_namespaces(self, out):
+        if not (out and self.namespaces):
+            return out
+        out = [
+            ('  ' * i) + f'namespace {x} {{'
+            for i, x in enumerate(self.namespaces)
+        ] + [
+            ('  ' * len(self.namespaces)) + x for x in out
+        ] + [
+            ('  ' * (len(self.namespaces) - (i + 1))) + '}'
+            for i in range(len(self.namespaces))
+        ]
+        return out
+
+
+class EmptyCodeUnit(CodeUnitBase):
+
+    dont_add_template_lines = True
+
+    def __init__(self):
+        super(EmptyCodeUnit, self).__init__(None)
+
+    def _generate(self):
+        return []
+
+
+class ContainerUnit(CodeUnitBase):
+
+    dont_add_template_lines = True
+
+    def __init__(self, members=None, name=None, **kwargs):
+        if members is None:
+            members = []
+        self.members = []
+        for m in members:
+            self.add_member(m)
+        super(ContainerUnit, self).__init__(name, **kwargs)
+
+    def add_member(self, m, index=None):
+        m.set_parent(self)
+        if index is None:
+            self.members.append(m)
+        else:
+            self.members.insert(index, m)
+
+    def add_members(self, m):
+        for x in m:
+            self.add_member(x)
+
+    def _generate(self):
+        out = []
+        for m in self.members:
+            out += m.generate()
+        return out
+
+
+class ClassUnit(ContainerUnit):
+
+    dont_add_template_lines = True
+    is_class = True
+
+    def __init__(self, name, members=None, **kwargs):
+        self.class_type = kwargs.pop('class_type', 'class')
+        self.specialize_class = kwargs.pop('specialize_class', False)
+        self.complete_class = False
+        self.body = kwargs.pop('body', [])
+        kwargs.update(name=name, members=members)
+        super(ClassUnit, self).__init__(**kwargs)
+
+    @property
+    def type(self):
+        return TypeUnit(self.name,
+                        spec_var=self.spec_var,
+                        spec_param=self.spec_param,
+                        parent=self.parent,
+                        context=self.context)
+
+    def update_member_context(self, inside_class=None, **kwargs):
+        updated_kwargs = {}
+        if inside_class is None:
+            inside_class = (
+                self.context.declaration
+                and ((not self.context.specialize)
+                     or self.specialize_class)
+            )
+            if inside_class:
+                inside_class = self.name
+            updated_kwargs['inside_class'] = inside_class
+        self.complete_class = (inside_class == self.name)
+        if updated_kwargs:
+            for m in self.members:
+                m.update_context(**updated_kwargs)
+
+    def set_context(self, **kwargs):
+        out = super(ClassUnit, self).set_context(**kwargs)
+        self.update_member_context(**kwargs)
+        return out
+
+    def update_context(self, **kwargs):
+        out = super(ClassUnit, self).update_context(**kwargs)
+        self.update_member_context(**kwargs)
+        return out
+
+    def _generate(self):
+        out = []
+        for m in self.members:
+            out += m.generate()
+        if not (self.context.declaration and self.complete_class):
+            return out
+        body = out
+        out = self.template_lines + [
+            f'{self.api}{self.class_type} '
+            f'{self.name}{self.specialization} {{',
+        ]
+        if self.class_type in ['class']:
+            out += ['public:']
+        out += ['  ' + x for x in body + self.body]
+        out += ['};']
+        if not self.specialized:  # or self.api:
+            self.update_context(inside_class=False,
+                                definition=True,
+                                declaration=False)
+            out += self._generate()
+        return out
+
+
+class TypeUnit(CodeUnitBase):
+
+    generate_str = True
+
+    def __init__(self, *args, **kwargs):
+        self.constant = kwargs.pop('constant', False)
+        self.specialize = kwargs.pop('specialize', None)
+        super(TypeUnit, self).__init__(*args, **kwargs)
+
+    @property
+    def type(self):
+        return self.generate()
+
+    def _generate(self):
+        const = 'const ' if self.constant else ''
+        parent_address = self.parent_address
+        if parent_address:
+            parent_address = f'typename {parent_address}'
+        if self.specialize:
+            spec_param = [f'{x}' for x in self.specialize]
+            specialization = f"<{', '.join(spec_param)}>"
+        elif self.spec_var and not self.context.specialize:
+            specialization = f"<{', '.join(self.spec_var)}>"
+        else:
+            specialization = self.specialization
+        name = self.name
+        if self.context.specialize and name in self.context.specialize:
+            name = self.context.specialize[name]
+        return f'{const}{parent_address}{name}{specialization}'
+
+
+class TypedefUnit(CodeUnitBase):
+
+    def __init__(self, *args, **kwargs):
+        self.type = kwargs.pop('type', None)
+        assert self.type
+        super(TypedefUnit, self).__init__(*args, **kwargs)
+
+    def _generate(self):
+        if (((not self.context.in_header)
+             or (self.parent_class and not self.inside_class))):
+            return []
+        if f'{self.type}' == self.name:
+            return []
+        return [f'typedef {self.type} {self.name};']
+
+
+class MacroUnit(CodeUnitBase):
+
+    dont_add_template_lines = True
+
+    def __init__(self, *args, **kwargs):
+        self.body = kwargs.pop('body', [])
+        self._args = kwargs.pop('args', [])
+        super(MacroUnit, self).__init__(*args, **kwargs)
+
+    @property
+    def args(self):
+        if not self._args:
+            return ''
+        return '(' + ', '.join(self._args) + ')'
+
+    @property
+    def macro_name(self):
+        return f'{self.name}'
+
+    def _generate(self):
+        out = []
+        out += [
+            f'#define {self.macro_name}{self.args}'
+        ]
+        if self.body:
+            out[-1] += '\t\t\\'
+            for i, x in enumerate(self.body):
+                if i == len(self.body) - 1:
+                    out.append('  ' + x.rstrip(',').rstrip())
+                else:
+                    out.append('  ' + x + '\t\t\\')
+        return out
+
+    def _define(self):
+        return self.body
+
+
+class VariableUnit(CodeUnitBase):
+
+    def __init__(self, *args, **kwargs):
+        self.value = kwargs.pop('value', None)
+        self.type = kwargs.pop('type', None)
+        self.constant = kwargs.pop('constant', False)
+        self.reference = kwargs.pop('reference', False)
+        super(VariableUnit, self).__init__(*args, **kwargs)
+
+    def _generate(self):
+        const = 'const ' if self.constant else ''
+        ref = '&' if self.reference else ''
+        out = [
+            f'{self.prefix}{const}{self.type}{ref} '
+            f'{self.parent_address}{self.name}'
+        ]
+        self.add_definition(out)
+        if ((self.primary and self.docs
+             and isinstance(self.docs, str))):
+            out[-1] += f'  /**< {self.docs} */'
+        return out
+
+    def _define(self):
+        value = self.value
+        if isinstance(value, CodeUnitBase):
+            value = value.generate()
+        if isinstance(value, str):
+            value = [value]
+        out = [f' = {value[0]}']
+        out += value[1:]
+        return out
+
+    def add_docs(self, out):
+        if isinstance(self.docs, str):
+            return out
+        return super(VariableUnit, self).add_docs(out)
+
+
+class ArgUnit(VariableUnit):
+
+    def __init__(self, *args, **kwargs):
+        kwargs['value'] = kwargs.pop('default', None)
+        kwargs['static'] = False
+        super(ArgUnit, self).__init__(*args, **kwargs)
+
+    def add_definition(self, *args, **kwargs):
+        kwargs['no_semicolon'] = True
+        return super(ArgUnit, self).add_definition(*args, **kwargs)
+
+    def _define(self):
+        if (not self.context.declaration) or self.value is None:
+            return []
+        return super(ArgUnit, self)._define()
+
+    def add_docs(self, out):
+        return out
+
+
+class ValueUnit(CodeUnitBase):
+
+    generate_str = True
+    non_child_attributes = CodeUnitBase.non_child_attributes + [
+        'fstring_param'
+    ]
+
+    def __init__(self, *args, **kwargs):
+        self.fstring_param = kwargs.pop('fstring_param', None)
+        self.ragged_right = kwargs.pop('ragged_right', False)
+        super(ValueUnit, self).__init__(*args, **kwargs)
+
+    def _generate_value(self, x, width=None):
+        if isinstance(x, CodeUnitBase):
+            out = x.generate()
+        elif isinstance(x, (list, tuple)):
+            if width is not None:
+                assert len(width) == len(x)
+                out = [self._generate_value(xx, width=width[i])
+                       for i, xx in enumerate(x)]
+            else:
+                out = [self._generate_value(xx) for xx in x]
+            return f"{{{', '.join(out)}}}"
+        else:
+            out = f'{self.parent_address}{x}'
+        if width:
+            out = f"{out:{width}}"
+        return out
+
+    def _value_width(self, members, recurse=False):
+        if not members:
+            return None
+        if isinstance(members[0], list):
+            len0 = len(members[0])
+            if all(len(x) == len0 for x in members[1:]):
+                out = [self._value_width([x[i] for x in members],
+                                         recurse=True)
+                       for i in range(len(members[0]))]
+                if self.ragged_right:
+                    out[-1] = None
+                return out
+            else:
+                return None
+        elif self.ragged_right and not recurse:
+            return None
+        members = [self._generate_value(x) for x in members]
+        return len(max(members, key=len))
+
+    @property
+    def value(self):
+        if callable(self.name):
+            return self.name(self)
+        elif self.fstring_param is not None:
+            assert isinstance(self.name, str)
+            return self.name.format(**self.fstring_param)
+        return self.name
+
+    def _generate(self):
+        value = self.value
+        if isinstance(value, list):
+            width = self._value_width(value)
+            out = [f'  {self._generate_value(x, width)}' for x in value]
+            for i in range(len(value) - 1):
+                out[i] += ','
+            if out:
+                out = ['{'] + out + ['}']
+            else:
+                out = ['{}']
+            return out
+        return self._generate_value(value)
+
+
+class ConditionalValueUnit(ValueUnit):
+
+    @property
+    def value(self):
+        assert self.name and isinstance(self.name, dict)
+        for k, v in self.name.items():
+            if self.check_conditions(k):
+                return v
+        raise RuntimeError(f'Could not find a valid condition:\n'
+                           f'{pprint.pformat(self.name)}')
+
+
+class FunctionUnit(CodeUnitBase):
+
+    def __init__(self, *args, **kwargs):
+        self.type = kwargs.pop('type', 'void')
+        self.body = kwargs.pop('body', [])
+        self._args = kwargs.pop('args', [])
+        self.constant = kwargs.pop('constant', False)
+        self.friend = kwargs.pop('friend', False)
+        assert self.type and self.body
+        super(FunctionUnit, self).__init__(*args, **kwargs)
+
+    @property
+    def args(self):
+        args = [f'{x}' for x in self._args]
+        assert all(args)
+        return ', '.join(args)
+
+    def _generate(self):
+        out = []
+        friend = 'friend ' if self.friend else ''
+        inline = ''
+        if ((self.context.definition and self.context.declaration
+             and not (self.template_lines or self.static))):
+            inline = 'inline '
+        out = [
+            f'{friend}{inline}{self.prefix}{self.type} '
+            f'{self.parent_address}{self.name}'
+            f'({self.args})'
+        ]
+        if self.constant:
+            out[-1] += ' const'
+        self.add_definition(out, no_semicolon='declaration')
+        return out
+
+    def _define(self):
+        out = [' {']
+        out += [f'  {x}' for x in self.body]
+        out += ['}']
+        return out
+
+
+class EnumUnit(CodeUnitBase):
+
+    is_class = True
+
+    def __init__(self, name, members, **kwargs):
+        self.enum_type = kwargs.pop('enum_type', 'int')
+        self.members = members
+        self.members_macro = kwargs.pop('members_macro', None)
+        self.enum_name_ext = kwargs.pop('enum_name_ext', None)
+        self.explicit_values = kwargs.pop('explicit_values', False)
+        self.scoped_enum = kwargs.pop('scoped_enum', False)
+        self.ragged_right = kwargs.pop('ragged_right', False)
+        super(EnumUnit, self).__init__(name, **kwargs)
+
+    @property
+    def class_attr(self):
+        if self.scoped_enum:
+            return 'class '
+        return ''
+
+    @property
+    def type(self):
+        return TypeUnit(self.name, parent=self.parent,
+                        context=self.context)
+
+    @property
+    def child_address(self):
+        if self.scoped_enum:
+            return super(EnumUnit, self).child_address
+        out = f'{self.parent_address}'
+        if self.parent_class and self.outside_class:
+            out += f'SCOPED_ENUM_TYPE({self.name})'
+        return out
+
+    def external_enum(self, **kwargs):
+        if not self.enum_name_ext:
+            return EmptyCodeUnit()
+        default_kws = dict(
+            enum_type=self.enum_type,
+            members_macro=self.members_macro,
+            explicit_values=self.explicit_values,
+            scoped_enum=True,
+        )
+        for k, v in default_kws.items():
+            kwargs.setdefault(k, v)
+        return EnumUnit(self.enum_name_ext, self.members, **kwargs)
+
+    def _generate(self):
+        out = [
+            f'enum {self.class_attr}{self.parent_address}{self.name} : '
+            f'{self.enum_type}'
+        ]
+        self.add_definition(out)
+        if ((self.enum_name_ext and self.parent_class
+             and self.parent_class.specialized)):
+            typedef = TypedefUnit(
+                name=self.enum_name_ext,
+                type=self.type,
+                context=self.context,
+                conditions=[['declaration',  'specialize']],
+            )
+            out += typedef.generate()
+        return out
+
+    def _define(self):
+        if self.parent_class and self.context.primary:
+            return []
+        out = [' {']
+        members_macro = self.members_macro
+        if isinstance(members_macro, EnumUnit):
+            members_macro = members_macro.members_macro
+        if isinstance(members_macro, EnumMacrosUnit):
+            members_macro = members_macro.macro_base
+        out += generate_enum_members(
+            self.members, explicit_values=self.explicit_values,
+            members_macro=members_macro,
+            ragged_right=self.ragged_right,
+        )
+        out += ['}']
+        return out
+
+
+class EnumMacroUnit(MacroUnit):
+
+    def __init__(self, name, members, macro_suffix=None,
+                 macro_prefix='MEMBERS_', skip=[],
+                 strip_member_prefix=False, width=None,
+                 width_val=None, current_keys=None, **kwargs):
+        macro_name = name
+        self.macro_suffix = macro_suffix
+        self.macro_prefix = macro_prefix
+        self.disable = False
+        if strip_member_prefix:
+            if any(x['name'].startswith(strip_member_prefix)
+                   for x in members):
+                members = [
+                    dict(x, name=x['name'].split(strip_member_prefix)[-1])
+                    for x in members
+                ]
+            else:
+                self.disable = True
+                members = []
+        members = [x for x in members if x['name'] not in skip]
+        if width is None:
+            width = max_width(members, current_keys=current_keys)
+        if width_val is None:
+            width_val = max_width(members, current_keys=current_keys,
+                                  key='idx')
+        body = []
+        for x in members:
+            body.append(
+                generate_enum_member(
+                    x, name_only=True,
+                    width=width, width_val=width_val,
+                )
+            )
+        super(EnumMacroUnit, self).__init__(macro_name, body=body, **kwargs)
+
+    @property
+    def macro_name(self):
+        out = super(EnumMacroUnit, self).macro_name
+        if self.macro_suffix is not None:
+            out = out.rsplit('_', 1)[0] + self.macro_suffix
+        if self.macro_prefix:
+            out = self.macro_prefix + out
+        return out
+
+    def _generate(self):
+        if self.disable:
+            return []
+        return super(EnumMacroUnit, self)._generate()
+
+
+class EnumMacrosUnit(ContainerUnit):
+
+    def __init__(self, name, members, skip=[], **kwargs):
+        assert 'macro_prefix' not in kwargs
+        enum_kws = {}
+        for k in ['macro_suffix']:
+            if k in kwargs:
+                enum_kws[k] = kwargs.pop(k)
+        macros = [
+            EnumMacroUnit(name, members, skip=skip,
+                          macro_prefix='MEMBERS_',
+                          **enum_kws),
+            EnumMacroUnit(name, members,
+                          macro_prefix='MEMBER_NAMES_COMPLETE_',
+                          skip=['NONE', 'MAX'],
+                          strip_member_prefix=(name + '_'),
+                          **enum_kws),
+            EnumMacroUnit(name, members,
+                          macro_prefix='MEMBER_NAMES_',
+                          skip=(skip + ['NONE', 'MAX']),
+                          strip_member_prefix=(name + '_'),
+                          **enum_kws),
+        ]
+        kwargs.update(name=name, members=macros)
+        super(EnumMacrosUnit, self).__init__(**kwargs)
+
+    @property
+    def macro_base(self):
+        return self.members[0].macro_name
+
+
+class HelperUnit(ClassUnit):
+
+    non_child_attributes = ClassUnit.non_child_attributes + ['enum_unit']
+
+    def __init__(self, *args, **kwargs):
+        self.inverse = kwargs.pop('inverse', False)
+        self.wrapped_type = kwargs.pop('wrapped_type', 'int')
+        self.base_spec_param = kwargs.pop('spec_param', [])
+        self.base_spec_var = kwargs.pop('spec_var', [])
+        self.enum_unit = kwargs.pop('enum_unit', None)
+        self.type_name = kwargs.pop('type_name', 'type')
+        self.inv_spec_param = kwargs.pop('inv_spec_param', 'typename')
+        self.inv_spec_var = kwargs.pop('inv_spec_var', 'EnumType')
+        assert (self.base_spec_param and self.base_spec_var
+                and self.enum_unit)
+        kwargs.setdefault('class_type', 'struct')
+        kwargs.setdefault('specialize_class', True)
+        assert not kwargs.get('members', None)
+        kwargs['members'] = []
+        if self.inverse:
+            kwargs['members'].append(
+                TypedefUnit(self.type_name, type=self.inv_spec_var),
+            )
+        else:
+            kwargs['members'].append(
+                TypedefUnit(self.type_name, type=self.wrapped_type),
+            )
+        for t in self.base_spec_param:
+            kwargs['members'].append(VariableUnit(
+                t.lower(), type=t, value=f'{t}_NONE',
+                static=True, constant=True,
+                conditions={
+                    'generate': [['inside_class']],
+                    'define': [['declaration', 'inside_class']],
+                }
+            ))
+        super(HelperUnit, self).__init__(*args, **kwargs)
+
+    @property
+    def spec_var(self):
+        if self.inverse:
+            return [self.inv_spec_var]
+        else:
+            return self.base_spec_var
+
+    @property
+    def spec_param(self):
+        if self.inverse:
+            return [self.inv_spec_param]
+        else:
+            return self.base_spec_param
+
+    @spec_var.setter
+    def spec_var(self, value):
+        assert value is None
+
+    @spec_param.setter
+    def spec_param(self, value):
+        assert value is None
+
+    @property
+    def wrapper_type(self):
+        return TypeUnit(self.type_name, parent=self,
+                        context=self.context)
+
+    def update_member_context(self, **kwargs):
+        super(HelperUnit, self).update_member_context(**kwargs)
+        if self.specialized:
+            if self.inverse:
+                self.members[0].type = self.context.specialize[
+                    self.inv_spec_var]
+            elif self.enum_unit.enum_name_ext:
+                self.members[0].type = self.enum_unit.enum_name_ext
+            else:
+                self.members[0].type = self.enum_unit.name
+        else:
+            if self.inverse:
+                self.members[0].type = self.inv_spec_var
+            else:
+                self.members[0].type = 'int'
+        for i, t in enumerate(self.base_spec_var):
+            p = self.base_spec_param[i]
+            if self.context.specialize and t in self.context.specialize:
+                self.members[i + 1].value = self.context.specialize[t]
+            else:
+                self.members[i + 1].value = f'{p}_NONE'
+
+
+class GuardUnit(CodeUnitBase):
+
+    dont_add_template_lines = True
+
+    def __init__(self, name, first=None, second=None,
+                 guard_prefix=None, **kwargs):
+        self.first = first
+        self.second = second
+        if guard_prefix is None and not name.lstrip().startswith('#'):
+            guard_prefix = '#ifdef '
+        self.guard_prefix = guard_prefix
+        super(GuardUnit, self).__init__(name, **kwargs)
+        for x in [self.first, self.second]:
+            if x and isinstance(x, CodeUnitBase):
+                x.set_parent(self)
+
+    def empty(self):
+        return not (self.first or self.second)
+
+    def _generate(self):
+        out = []
+        out1 = []
+        out2 = []
+        if self.first:
+            if isinstance(self.first, CodeUnitBase):
+                out1 = self.first.generate()
+            elif isinstance(self.first, list):
+                out1 = self.first
+            else:
+                raise TypeError(type(self.first))
+        if self.second:
+            if isinstance(self.second, CodeUnitBase):
+                out2 = self.second.generate()
+            elif isinstance(self.second, list):
+                out2 = self.second
+            else:
+                raise TypeError(type(self.second))
+        if not (out1 or out2):
+            return []
+        if self.guard_prefix:
+            start = f'{self.guard_prefix}{self.name}'
+        else:
+            start = self.name
+        if (not out1) and 'ifdef' in start:
+            out += [start.replace('ifdef', 'ifndef')]
+        else:
+            out += [start] + out1
+        if out2:
+            if out1:
+                out += [f'#else  // {self.name}']
+            out += out2
+        out += [f'#endif  // {self.name}']
+        return out
+
+
+class BinaryOperatorUnit(CodeUnitBase):
+
+    generate_str = True
+
+    def __init__(self, name, members, **kwargs):
+        self.members = members
+        super(BinaryOperatorUnit, self).__init__(name, **kwargs)
+
+    def _generate(self):
+        if not self.members:
+            return ''
+        sep = f' {self.name} '
+        return '(' + sep.join(self._eval(self.members)) + ')'
+
+
 def registered_classes(typename, return_classes=False):
     global _registry
     if return_classes:
@@ -307,7 +1530,7 @@ class EnumGeneratorBase(EnumBase):
 
     @classmethod
     def perfile_options_keys(cls):
-        return ['kwargs'] + [
+        return ['kwargs', 'existing', 'update_existing'] + [
             v.get('dest', k) for k, v in cls.perfile_options.items()]
 
     # @classmethod
@@ -349,6 +1572,7 @@ class EnumGeneratorBase(EnumBase):
             x = xcls.name
             out.setdefault(x, {})
             for k in xcls.perfile_options_keys():
+                # for k in ['dont_generate'] + xcls.perfile_options_keys():
                 key = f"{k}_{x}"
                 if key in kwargs:
                     if k == 'kwargs':
@@ -367,10 +1591,13 @@ class EnumGeneratorBase(EnumBase):
 
     @property
     def existing_lines(self):
-        if os.path.isfile(self.dst):
-            with open(self.dst, 'r') as fd:
-                return fd.read().splitlines()
-        return []
+        if self.existing is None:
+            if os.path.isfile(self.dst):
+                with open(self.dst, 'r') as fd:
+                    self.existing = fd.read().splitlines()
+            else:
+                self.existing = []
+        return self.existing
 
     def get_child(self, k):
         if k in self.added_sections:
@@ -541,13 +1768,16 @@ class EnumGeneratorBase(EnumBase):
     def footer(self):
         return self.suffix
 
-    def write(self, verbose=False, overwrite=False, dry_run=False,
+    def write(self, verbose=False, overwrite=False, dry_run=None,
               append=False):
+        if dry_run is None:
+            dry_run = self.dry_run
         self.lines = self.generate()
         if self.expect_empty:
             assert not self.lines
         if (not self.write_empty) and (not self.lines):
-            print(f"No lines to be written to {self.dst}")
+            if verbose:
+                print(f"No lines to be written to {self.dst}")
             if os.path.isfile(self.dst) and overwrite:
                 os.remove(self.dst)
             return
@@ -567,74 +1797,29 @@ class EnumGeneratorBase(EnumBase):
         contents = '\n'.join(self.header + lines + self.footer) + '\n'
         if verbose:
             print(f"{self.dst}\n----------------\n{contents}")
+        if self.update_existing:
+            self.existing = contents.splitlines()
+            return contents
         if dry_run:
-            return
+            return contents
         if (not overwrite) and os.path.isfile(self.dst):
             raise AssertionError(f"{self.name} file {self.dst} "
                                  f"already exists")
         with open(self.dst, 'w') as fd:
             fd.write(contents)
+        return contents
 
-    def max_width(self, members, key='name', func=None):
-        if len(members) == 0:
-            return 0
-        if func is not None:
-            def fw(x):
-                y = func(x)
-                if y is None:
-                    return ''
-                if isinstance(y, list):
-                    y = max(y, key=len)
-                return y
-            width = len(fw(max(members, key=lambda x: len(fw(x)))))
-        elif key == 'name':
-            width = len(self.add_member(
-                max(members, key=lambda x:
-                    len(self.add_member(x, return_name=True))),
-                return_name=True))
-        else:
-            width = len(max(members, key=lambda x:
-                            len(x.get(key, ''))).get(key, ''))
-        if key == 'idx':
-            width += 3
-        return width
+    def max_width(self, *args, **kwargs):
+        kwargs.setdefault('current_keys', self._current_keys)
+        return max_width(*args, **kwargs)
 
-    def add_member(self, member, return_name=False, add_prefix=None,
-                   strip_suffix=None, replace_with_prefix=False,
-                   add_enum=False, add_kwargs=None):
+    def add_member(self, *args, **kwargs):
+        add_enum = kwargs.pop('add_enum', False)
         if add_enum:
             self.add_enum(add_enum)
         assert self.current_key is not None
-        if isinstance(member, str):
-            member = {'name': member}
-        name = member['name']
-        abbr = member.get('abbr', name)
-        if replace_with_prefix and self._current_keys['kprefix']:
-            name = ''
-        name = self._current_keys['kreplacement'].get(
-            name, name)
-        if self._current_keys['klower']:
-            name = name.lower()
-        if not member.get('no_suffix', False):
-            for x in self._current_keys['ksuffix']:
-                name = name + x
-        if not member.get('no_prefix', False):
-            for x in self._current_keys['kprefix']:
-                name = x + name
-        if replace_with_prefix and self._current_keys['kprefix']:
-            name = name.rstrip('_')
-        if add_prefix:
-            name = add_prefix + name
-        if strip_suffix:
-            assert name.endswith(strip_suffix)
-            name = name.rsplit(strip_suffix)[0]
-            abbr = abbr.rsplit(strip_suffix)[0]
-        if return_name:
-            return name
-        out = dict(member, name=name, abbr=abbr)
-        if add_kwargs:
-            out.update(**add_kwargs)
-        return out
+        kwargs.setdefault('current_keys', self._current_keys)
+        return create_enum_member(*args, **kwargs)
 
     def generate_member(self, x, **kwargs):
         raise NotImplementedError
@@ -845,7 +2030,6 @@ class ParamFileParser(EnumParserBase):
 
     def parse_lines(self, lines, src=None):
         for line in lines:
-            # assert '//' not in line
             rem = line.split(self.comment, 1)
             if (not rem[0]) or rem[0].isspace():
                 continue
@@ -1005,6 +2189,10 @@ class CEnumGeneratorBaseHeader(CEnumGeneratorBase):
         return lines
 
     def generate(self, **kwargs):
+        if not self.is_parent:
+            assert self.parent
+            if hasattr(self.parent, 'generate_header'):
+                return self.parent.generate_header(**kwargs)
         lines = super(CEnumGeneratorBaseHeader, self).generate(**kwargs)
         if not self.is_parent:
             assert self.parent
@@ -1092,6 +2280,14 @@ class CEnumGeneratorBaseSource(CMixin, EnumGeneratorBase):
 
     def generate(self, indent='', **kwargs):
         lines = []
+        if not self.is_parent:
+            assert self.parent
+            if hasattr(self.parent, 'generate_source'):
+                lines += self.parent.generate_source(
+                    indent=indent, **kwargs)
+                if lines:
+                    lines = self.parent.include_self(self.dst) + lines
+                return lines
         if not self.define_in_header:
             lines += self.include_header()
         lines += super(CEnumGeneratorBaseSource, self).generate(
@@ -1256,84 +2452,55 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
     def generate_member(self, *args, **kwargs):
         raise NotImplementedError
 
-    def generate_collection_param(self, name='Type', enum_prefix=''):
-        if name is None:
-            if self.as_class:
-                name = 'Type'
-            else:
-                raise NotImplementedError('Should come from parent?')
-        return [f'{enum_prefix}{name}']
+    def collection_param_units(self, enum_name=None, **kwargs):
+        return [self.parent.enum_unit(enum_name=enum_name, **kwargs).type]
 
-    def generate_collection_type(self, *args, **kwargs):
+    def collection_type_unit(self, *args, **kwargs):
         if self.collection_type is None:
             raise NotImplementedError
-        param = ', '.join(
-            self.generate_collection_param(*args, **kwargs))
-        return f"{self.collection_type}<{param}>"
+        constant = kwargs.pop('constant', None)
+        if constant is None:
+            constant = (not self.is_editable)
+        specialize = kwargs.pop('specialize', None)
+        if specialize is None:
+            specialize = self.collection_param_units(*args, **kwargs)
+        return TypeUnit(self.collection_type, specialize=specialize,
+                        constant=constant)
 
-    def generate_declaration(self, name, members, for_header=False,
-                             in_class=False, var_name='collection'):
-        const = "" if self.is_editable else "const "
-        if in_class:
-            return (
-                f"{const}"
-                f"{self.generate_collection_type(name, enum_prefix=in_class)} "
-                f"{var_name}")
-        func_name = f"{name}_{self.function_suffix}"
-        if (not for_header) and self.namespaces:
-            func_name = f"{'::'.join(self.namespaces)}::{func_name}"
-        func_decl = (
-            f"{const}{self.generate_collection_type(name)}& {func_name}()")
-        return func_decl
+    def variable_unit(self, enum_name, members, var_name=None,
+                      parent=None, **kwargs):
+        remainder_kwargs = {}
+        enum_unit = self.parent.enum_unit(
+            enum_name=enum_name, remainder_kwargs=remainder_kwargs,
+            parent=parent, **kwargs)
+        if var_name is None:
+            var_name = self.collection_name
+        remainder_kwargs.setdefault(
+            'type', self.collection_type_unit(enum_unit=enum_unit))
+        remainder_kwargs.setdefault(
+            'value', self.value_unit(enum_name, members,
+                                     parent=enum_unit))
+        remainder_kwargs.setdefault(
+            'docs', self.generate_docs(var_name))
+        return self.parent.variable_unit(
+            var_name=var_name, enum_unit=enum_unit, parent=parent,
+            **remainder_kwargs
+        )
 
-    def generate_definition(self, name, members, var_name='collection',
-                            no_return=False, in_class=False,
-                            enum_prefix='', function_type='get', **kwargs):
-        if in_class:
-            no_return = True
-            enum_prefix = in_class
-        if function_type != 'get':
-            return self.generate_additional_method(
-                function_type, enum_name=f'{enum_prefix}{name}',
-                enum_is_class=in_class, result=var_name,
-                no_return=no_return)
-        enum_member_prefix = enum_prefix
-        if in_class:
-            enum_member_prefix += f'SCOPED_ENUM_TYPE({name})'
-        static = '' if in_class else 'static '
-        const = "" if self.is_editable else "const "
-        lines = [
-            f"{static}{const}"
-            f"{self.generate_collection_type(name, enum_prefix=enum_prefix)} "
-            f"{var_name} = {{"
-        ]
-        width = self.max_width(members) + len(enum_member_prefix)
-        lines += super(
-            CEnumGeneratorCollectionBase, self).generate_definition(
-                name, members, width=width,
-                enum_prefix=enum_member_prefix, **kwargs)
-        lines += ["};"]
-        if not no_return:
-            lines += [f"return {var_name};"]
-        return lines
+    def member_units(self, x, **kwargs):
+        raise NotImplementedError
 
-    def generate_specialization(self, name, members, **kwargs):
-        lines = []
-        if self.dont_specialize:
-            return lines
-        if self.parent.as_class:
-            specialize = [
-                'typename '
-                + self.parent.get_child("global").item2specialize(
-                    name, return_class=True)
-                + '::Type'
-            ]
-        else:
-            specialize = [name]
-        if not self.parent.get_child("global")._no_functions:
-            lines += self.generate_function(
-                name, specialize=specialize, **kwargs)
-        return lines
+    def value_unit(self, name, members, **kwargs):
+        member_units = []
+        for x in members:
+            if x['abbr'] not in ['NONE', 'MAX']:
+                member_units += self.member_units(x, **kwargs)
+        return ConditionalValueUnit({(('specialize', ), ): member_units,
+                                     (('NOT:specialize', ), ): []},
+                                    ragged_right=self.ragged_right)
+
+    def utility_type_units(self, *args, **kwargs):
+        return []
 
     def generate_header_item(self, name, members):
         lines = []
@@ -1341,9 +2508,6 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             lines += super(
                 CEnumGeneratorCollectionBase, self).generate_header_item(
                     name, members)
-        if not self.specialize_in_source:
-            lines += self.generate_specialization(name, members,
-                                                  for_header=True)
         return lines
 
     def generate_item(self, name, members):
@@ -1352,8 +2516,6 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             lines += super(
                 CEnumGeneratorCollectionBase, self).generate_item(
                     name, members)
-        if self.specialize_in_source:
-            lines += self.generate_specialization(name, members)
         return lines
 
     def generate_iteration(self, collection_name, iter_name):
@@ -1362,13 +2524,14 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             f"{iter_name} != {collection_name}.end(); {iter_name}++)"
         )
 
-    def generate_clear(self, collection_name, **kwargs):
+    def generate_clear(self, collection_name, collection_type, **kwargs):
         return [f"{collection_name}.clear();"]
 
     def generate_iterator_dref(self, iter_name):
         raise NotImplementedError
 
-    def generate_add(self, collection_name, var_name, *args):
+    def generate_add(self, collection_name, collection_type, var_name,
+                     *args, **kwargs):
         raise NotImplementedError
 
     def generate_remove(self, collection_name, iter_name="it"):
@@ -1382,65 +2545,112 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
     def generate_find(self, collection_name, key_name, iter_name="it"):
         raise NotImplementedError
 
-    def generate_count(self, collection_name, var_name, **kwargs):
-        return [f'{var_name} = {collection_name}.size();']
+    def generate_count(self, collection_name, collection_type, var_name,
+                       **kwargs):
+        fstring = ['{var_name} = {collection_name}.size();']
+        fstring_param = {
+            'collection_name': collection_name,
+            'var_name': var_name,
+        }
+        return self._generate_unit(fstring, fstring_param)
 
-    def generate_utility_methods(self, completed_utils, methods=None,
-                                 **kwargs):
-        lines = []
-        completed_utils.setdefault(self.collection_type, [])
-        if methods is None:
-            methods = self.utility_functions
-        for k in methods:
-            if k in completed_utils[self.collection_type]:
-                continue
-            ikws = copy.deepcopy(kwargs)
-            ikws.setdefault('function_param', {})
-            if any(k in v for v in completed_utils.values()):
-                if k in self.collection_functions:
-                    ikws['function_param']['for_class'] = True
-                elif k in self.universal_functions:
-                    continue
-            lines += self.generate_additional_method(
-                k, utility=True, **ikws)
-            completed_utils[self.collection_type].append(k)
-        return lines
+    def _generate_unit(self, fstring, fstring_param, indent=''):
+        if indent:
+            if isinstance(fstring, list):
+                fstring = [indent + x for x in fstring]
+            else:
+                fstring = indent + fstring
+        if any(isinstance(v, CodeUnitBase) for v in fstring_param.values()):
+            if isinstance(fstring, list):
+                return [ValueUnit(x, fstring_param=fstring_param)
+                        for x in fstring]
+            else:
+                return ValueUnit(fstring, fstring_param=fstring_param)
+        if isinstance(fstring, list):
+            return [x.format(**fstring_param) for x in fstring]
+        else:
+            return fstring.format(**fstring_param)
 
-    def generate_additional_methods(self, **kwargs):
-        lines = []
-        for k in self.additional_functions:
-            lines += self.generate_additional_method(k, **kwargs)
-        return lines
-
-    def generate_additional_method(self, function_type, enum_name='Type',
-                                   enum_is_class=None, result=None,
-                                   no_return=False, utility=False,
-                                   function_param=None, value_type=None,
-                                   dont_define=None, in_source=False,
-                                   template_lines=None):
-        lines = []
+    def function_units(self, function_type=None, enum_unit=None,
+                       added_functions=None, **kwargs):
+        if function_type is None:
+            out = []
+            for function_type in self.additional_functions:
+                out += self.function_units(
+                    function_type, enum_unit=enum_unit,
+                    added_functions=added_functions, **kwargs)
+            return out
+        if added_functions is not None:
+            added_functions.setdefault(self.collection_type, [])
+            if function_type in added_functions[self.collection_type]:
+                return []
         if function_type == 'from' and (
                 self.value_type == 'double'
                 or self.value_key == 'ALIASES'):
-            return lines
-        if ((function_type in self.specialized_functions and not in_source
-             and dont_define is None)):
-            dont_define = True
-        if function_param is None:
-            function_param = {}
-        if enum_is_class is None:
-            enum_is_class = self.parent.as_class
-        if result is None:
-            result = self.collection_name
-        ktype = enum_name
-        vtype = None
-        if hasattr(self, 'value_type'):
-            if self.reversed:
-                ktype = self.value_type
-                vtype = enum_name
+            return []
+        enum_name = kwargs.pop('enum_name', 'Type')
+        enum_is_class = kwargs.pop('enum_is_class', self.parent.as_class)
+        result = kwargs.pop('result', self.collection_name)
+        utility = kwargs.pop(
+            'utility', (function_type in self.utility_functions
+                        or function_type in self.friend_functions))
+        value_type = kwargs.pop('value_type', None)
+        conditions = kwargs.pop('conditions', None)
+        friend = kwargs.pop(
+            'friend', (function_type in self.friend_functions))
+        function_param = kwargs.pop('function_param', {})
+        if enum_unit is not None:
+            if enum_unit.parent_class:
+                enum_is_class = enum_unit.parent_class.name
+            enum_name = enum_unit.name
+        assert enum_name is not None
+        param_units = self.collection_param_units(
+            enum_name, value_type=value_type, parent=enum_unit,
+            as_class=enum_is_class)
+        collection_type = self.collection_type_unit(
+            enum_name, value_type=value_type, parent=enum_unit,
+            as_class=enum_is_class, constant=False)
+        # const_collection_type = self.collection_type_unit(
+        #     enum_name, value_type=value_type, parent=enum_unit,
+        #     as_class=enum_is_class, constant=True)
+        if conditions is None:
+            if friend:
+                conditions = {
+                    'generate': [
+                        ['specialize'],
+                    ],
+                    'define': [
+                        ['specialize', 'in_source']
+                    ],
+                }
+            elif utility:
+                conditions = {
+                    'generate': [
+                        ['primary', 'inside_class'],
+                        ['specialize'],
+                    ],
+                    'define': [
+                        ['specialize', 'in_source']
+                    ],
+                }
             else:
-                ktype = enum_name
-                vtype = self.value_type
+                conditions = {
+                    'generate': [
+                        ['primary', 'inside_class']
+                    ],
+                }
+        if enum_unit.parent_class:
+            if friend:
+                kwargs.update(
+                    no_parent=True,
+                )
+            else:
+                kwargs.update(
+                    parent=enum_unit.parent_class,
+                    static=True,
+                )
+        ktype = param_units[0]
+        vtype = None if len(param_units) == 1 else param_units[1]
         utility_suffix = function_param.get('utility_suffix', None)
         if utility_suffix is None:
             utility_suffix = '_' + self.collection_type.split('::')[-1]
@@ -1457,19 +2667,6 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                         self.collection_name)
             else:
                 function_suffix = f"_enum_{self.function_suffix}"
-        template_value_type = None
-        if ((utility and hasattr(self, 'value_type')
-             and not (function_type in self.unsuffixed_functions
-                      and not function_param.get('for_class')))):
-            if value_type:
-                collection_type = self.generate_collection_type(
-                    enum_name, value_type=value_type)
-            else:
-                template_value_type = 'T'
-                collection_type = self.generate_collection_type(
-                    enum_name, value_type=template_value_type)
-        else:
-            collection_type = self.generate_collection_type(enum_name)
         if ((function_type in self.unsuffixed_functions
              or function_type.startswith('operator'))):
             function_name = function_type
@@ -1491,66 +2688,94 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
         elif function_type in ['string', 'error_prefix']:
             return_type = 'std::string'
         elif function_type in ['list']:
-            return_type = f'std::vector<{ktype}>'
+            return_type = TypeUnit('std::vector', specialize=[ktype])
         elif function_type in ['count']:
             return_type = 'std::size_t'
         else:
             return_type = 'void'
         args = []
-        arg_names = []
         if utility and function_type not in (self.universal_functions
                                              + ['operator<<']):
-            args.append(f'const {collection_type}& collection')
-            arg_names.append('collection')
+            args.append(
+                ArgUnit('collection', type=collection_type,
+                        constant=True, reference=True)
+            )
         if function_type in ['add', 'remove', 'is', 'get', 'getdefault',
                              'check', 'checkNot']:
-            args.append(f'const {ktype}& x')
-            arg_names.append('x')
+            args.append(
+                ArgUnit('x', type=ktype, constant=True, reference=True)
+            )
             if ((function_type == 'add' and hasattr(self, 'value_type')
                  and not getattr(self, 'current_flag', None))):
-                args.append(f'const {vtype}& y')
-                arg_names.append('y')
+                args.append(
+                    ArgUnit('y', type=vtype,
+                            constant=True, reference=True)
+                )
             elif function_type in ['check', 'checkNot']:
-                args.append('const std::string& context = ""')
-                arg_names.append('context')
+                args.append(
+                    ArgUnit('context', type='std::string',
+                            constant=True, reference=True,
+                            default='""')
+                )
             elif function_type == 'getdefault':
-                args.append(f'const {vtype}& defaultV')
-                arg_names.append('defaultV')
+                args.append(
+                    ArgUnit(
+                        'defaultV', type=vtype,
+                        constant=True, reference=True,
+                    )
+                )
         elif function_type in ['addMultiple', 'removeMultiple']:
-            args.append(f'const {collection_type}& x')
-            arg_names.append('x')
+            args.append(
+                ArgUnit('x', type=collection_type,
+                        constant=True, reference=True)
+            )
         elif function_type == 'print':
-            args += ['std::ostream& out', 'bool includePrefixes = false',
-                     'const unsigned int tab = 0']
-            arg_names += ['out', 'includePrefixes', 'tab']
+            args += [
+                ArgUnit('out', type='std::ostream', reference=True),
+                ArgUnit('includePrefixes', type='bool', default='false'),
+                ArgUnit('tab', type='unsigned int', default='0',
+                        constant=True),
+            ]
         elif function_type == 'operator<<':
-            args += ['std::ostream& out']
-            arg_names += ['out', 'x']
+            args.append(
+                ArgUnit('out', type='std::ostream', reference=True)
+            )
             if function_param.get('for_class', False):
-                args += [f'const {collection_type}& x']
+                argT = collection_type
             else:
-                args += [f'const {enum_name}& x']
+                argT = enum_unit.enum_name_ext
+            args.append(
+                ArgUnit('x', type=argT, constant=True, reference=True)
+            )
         elif function_type == 'string':
-            args += ['const unsigned int tab = 0']
-            arg_names += ['tab']
+            args.append(
+                ArgUnit('tab', type='unsigned int', constant=True,
+                        default='0')
+            )
         elif function_type == 'from':
-            args += [f'const {vtype}& x']
-            arg_names += ['x']
+            args.append(
+                ArgUnit('x', type=vtype, constant=True, reference=True)
+            )
+        arg_names = [x.name for x in args]
         docs = []
         body = []
         if not enum_is_class:
-            const = '' if self.is_editable else 'const '
             body += [
-                f"{const}{collection_type} {result} = "
-                f"get{function_suffix};"
+                ValueUnit(
+                    "{const}{collection_type} {result} = "
+                    "get{function_suffix};",
+                    fstring_param={
+                        'collection_type': collection_type,
+                        'result': result,
+                        'function_suffix': function_suffix,
+                        'const': ('' if self.is_editable else 'const '),
+                    }
+                )
             ]
         if function_type not in self.additional_functions:
             raise NotImplementedError(
                 f"Invalid function_type \'{function_type}\' "
                 f"(valid values = {self.additional_functions})")
-        method_prefix = ''
-        if enum_is_class and function_param.get('outside_class', False):
-            method_prefix = function_param['outside_class'] + '::'
         if (not utility) and (function_type in self.utility_functions
                               or function_type in self.friend_functions):
             if ((function_type in self.universal_functions
@@ -1583,7 +2808,12 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 '\\param[in] x Key to check',
                 '\\return true if x is present, false otherwise',
             ]
-            body += [f"typename {collection_type}::const_iterator it;"]
+            body += [
+                ValueUnit(
+                    "typename {collection_type}::const_iterator it;",
+                    fstring_param={'collection_type': collection_type},
+                )
+            ]
             body += self.generate_find(result, "x", "it")
             if hasattr(self, 'generate_is'):
                 body += self.generate_is(result, 'it')
@@ -1618,11 +2848,15 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             docs += [
                 f'Remove all {docs_sub} from {self.collection_name}'
             ]
-            body += self.generate_clear(result,
-                                        collection_type=collection_type)
+            body += self.generate_clear(result, collection_type)
         elif function_type in ['get', 'getdefault']:
             assert hasattr(self, 'value_type')
-            body += [f"typename {collection_type}::const_iterator it;"]
+            body += [
+                ValueUnit(
+                    "typename {collection_type}::const_iterator it;",
+                    fstring_param={'collection_type': collection_type},
+                )
+            ]
             body += self.generate_find(result, "x", "it")
             dref = self.generate_iterator_dref("it")[1]
             if self.reversed:
@@ -1657,7 +2891,12 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             body += [f"return {dref};"]
         elif function_type == 'from':
             assert hasattr(self, 'value_type')
-            body += [f"typename {collection_type}::const_iterator it;"]
+            body += [
+                ValueUnit(
+                    "typename {collection_type}::const_iterator it;",
+                    fstring_param={'collection_type': collection_type},
+                )
+            ]
             body += self.generate_find(result, "x", "it",
                                        from_value=True)
             dref = self.generate_iterator_dref("it")[0]
@@ -1708,7 +2947,10 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                     '\\param[in] x Key to serialize',
                 ]
                 body += [
-                    f'out << {method_prefix}getName(x);',
+                    ValueUnit(
+                        'out << {enum_unit.parent_address}getName(x);',
+                        fstring_param={'enum_unit': enum_unit}
+                    ),
                     'return out;'
                 ]
             docs += [
@@ -1732,7 +2974,10 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             if self._print_prefix:
                 body += [f"out << {self._print_prefix};"]
             body += [
-                f"typename {collection_type}::const_iterator it;",
+                ValueUnit(
+                    "typename {collection_type}::const_iterator it;",
+                    fstring_param={'collection_type': collection_type},
+                ),
                 f"{self.generate_iteration('collection', 'it')} {{",
                 f"  {itdref}",
                 "}",
@@ -1751,8 +2996,11 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             ]
             body += [
                 "std::ostringstream oss;",
-                f"{method_prefix}"
-                f"print{function_suffix}(collection, oss, tab);",
+                ValueUnit(
+                    lambda x:
+                    f"{x.parent_address}"
+                    f"print{function_suffix}(collection, oss, tab);"
+                ),
                 "return oss.str();",
             ]
         elif function_type == 'remove':
@@ -1761,7 +3009,12 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 f'Remove an element from {self.collection_name}',
                 '\\param[in] x Key to remove',
             ]
-            body += [f"typename {collection_type}::iterator it;"]
+            body += [
+                ValueUnit(
+                    "typename {collection_type}::iterator it;",
+                    fstring_param={'collection_type': collection_type},
+                )
+            ]
             body += self.generate_find(result, "x", "it")
             body += self.generate_remove(result, "it")
         elif function_type == 'add':
@@ -1774,13 +3027,12 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             if ((hasattr(self, 'value_type')
                  and not getattr(self, 'current_flag', None))):
                 docs += ['\\param y Value to add for x']
-                body += self.generate_add(result, *arg_names,
-                                          collection_type=collection_type)
+                body += self.generate_add(result, collection_type,
+                                          *arg_names)
             else:
                 body += [f"if (!is{function_suffix}(x)) {{"]
-                body += [f"  {x}" for x in
-                         self.generate_add(result, *arg_names,
-                                           collection_type=collection_type)]
+                body += self.generate_add(result, collection_type,
+                                          *arg_names, indent='  ')
                 body += ["}"]
         elif function_type == 'count':
             docs_suffix = ''
@@ -1791,9 +3043,13 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 f'{self.collection_name}{docs_suffix}.',
                 f'\\return Number of elements{docs_suffix}.',
             ]
-            body += [f'{return_type} out;']
-            body += self.generate_count(result, 'out',
-                                        collection_type=collection_type)
+            body += [
+                ValueUnit(
+                    '{return_type} out;',
+                    fstring_param={'return_type': return_type}
+                )
+            ]
+            body += self.generate_count(result, collection_type, 'out')
             body += ['return out;']
         elif function_type == 'list':
             docs += [
@@ -1801,9 +3057,13 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 f'with {self.current_flag} set.',
                 '\\return Set of elements.',
             ]
-            body += [f'{return_type} out;']
-            body += self.generate_list(result, 'out',
-                                       collection_type=collection_type)
+            body += [
+                ValueUnit(
+                    '{return_type} out;',
+                    fstring_param={'return_type': return_type},
+                )
+            ]
+            body += self.generate_list(result, collection_type, 'out')
             body += ['return out;']
         elif function_type.endswith('Multiple'):
             assert self.is_editable
@@ -1819,7 +3079,10 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 '\\param[in] x Elements to add',
             ]
             body += [
-                f"typename {collection_type}::const_iterator it;",
+                ValueUnit(
+                    "typename {collection_type}::const_iterator it;",
+                    fstring_param={'collection_type': collection_type},
+                ),
                 f"{self.generate_iteration('x', 'it')} {{",
                 f"  {ftype}({itdref});",
                 "}"
@@ -1828,175 +3091,21 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             raise NotImplementedError(
                 f"Unimplemented function_type \'{function_type}\' "
                 f"(valid values = {self.additional_functions})")
-        if no_return:
-            return body
-        if docs and not in_source:
-            lines += ['/**']
-            lines += ["  " + x for x in docs]
-            lines += ['*/']
-        static = 'static '
-        if template_value_type:
-            assert template_lines is None
-            template_lines = [f'template<typename {template_value_type}>']
-        if function_param.get('outside_class', False):
-            if function_type not in self.friend_functions:
-                function_name = f'{method_prefix}{function_name}'
-                if not template_lines:
-                    template_lines = ['template<>']
-            if template_lines or in_source or dont_define:
-                static = ''
-            else:
-                static = 'inline '
-        elif function_type in self.friend_functions:
-            if template_lines:
-                static = 'friend '
-            else:
-                static = 'friend inline '
-        if template_lines:
-            lines += template_lines
-        lines += [f"{static}{return_type} {function_name}"
-                  f"({', '.join(args)})"]
-        if dont_define:
-            lines[-1] += ";"
-        else:
-            lines[-1] += " {"
-            lines += ["  " + x for x in body]
-            lines += ["}"]
-        if ((function_type in self.collection_functions
-             and not function_param.get('for_class', False))):
-            if ((hasattr(self, 'value_type')
-                 and function_type in self.friend_functions)):
-                value_types = self._friend_value_types
-            else:
-                value_types = [None]
-            for vtype in value_types:
-                lines += self.generate_additional_method(
-                    function_type, enum_name=enum_name,
-                    enum_is_class=enum_is_class, result=result,
-                    no_return=no_return, utility=utility,
-                    function_param=dict(function_param, for_class=True),
-                    dont_define=dont_define, in_source=in_source,
-                    value_type=vtype, template_lines=template_lines)
-        return lines
-
-    def generate_function(self, name, for_header=False, result=None,
-                          specialize_empty=False, enum_is_class=None,
-                          specialize_direct=None, direct=False,
-                          skip_items=[], function_type='get', **kwargs):
-        lines = []
-        kwargs.setdefault('spec_param', ['typename'])
-        assert len(kwargs['spec_param']) == 1
-        specialization, spec_var = self.specialization(lines, **kwargs)
-        inline = 'inline ' if (specialization and for_header) else ''
-        const = "" if self.is_editable else "const "
-        key_type = (specialization.strip('<>') if specialization
-                    else spec_var[0])
-        class_type = None
-        if enum_is_class is None:
-            enum_is_class = self.parent.as_class
-        if enum_is_class and specialization:
-            class_type = self.parent.get_child('global').item2specialize(
-                name, return_class=True)
-            key_type = f'typename {class_type}::Type'
-        ktype = key_type
-        vtype = None
-        if hasattr(self, 'value_type'):
-            if self.reversed:
-                vtype = key_type
-                ktype = self.value_type
-            else:
-                vtype = self.value_type
-        collection_type = self.generate_collection_type(key_type)
-        args = []
-        arg_names = []
-        if function_type in ['add', 'remove', 'is']:
-            args.append(f'const {ktype}& x')
-            arg_names.append('x')
-            if function_type == 'add' and hasattr(self, 'value_type'):
-                args.append(f'const {vtype}& y')
-                arg_names.append('y')
-        elif function_type in ['addMultiple', 'removeMultiple']:
-            args.append(f'const {collection_type}& x')
-        if enum_is_class and specialization:
-            if result is None:
-                if function_type == 'get':
-                    result = f'{class_type}::{self.collection_name}'
-                else:
-                    result = (
-                        f'{class_type}::{function_type}'
-                        f'{self.make_title(self.collection_name)}('
-                        f'{", ".join(arg_names)})'
-                    )
-        if function_type == 'is':
-            return_type = 'bool'
-            return_value = ' = false'
-            return_ref = ''
-        else:
-            return_type = f"{const}{collection_type}"
-            return_value = ''
-            return_ref = '&'
-        lines += [
-            f'{inline}{return_type}{return_ref} {function_type}_enum_'
-            f'{self.function_suffix}{specialization}('
-            f'{", ".join(args)}) {{',
-        ]
-        if result is None:
-            if specialization:
-                if specialize_empty:
-                    result = 'result'
-                    lines += [
-                        f'  static{return_type}result{return_value};'
-                    ]
-                else:
-                    if not direct:
-                        raise AssertionError(
-                            "direct must be provide names of members "
-                            "for non-empty specialization")
-                    self.add_enum(name)
-                    result = 'collection'
-                    lines += [
-                        '  ' + x for x in self.generate_definition(
-                            name, direct, no_return=True,
-                            var_name=result, skip_items=skip_items,
-                            function_type=function_type,
-                        )]
-                    if function_type == 'is':
-                        result = None
-            else:
-                result = 'result'
-                lines += [
-                    f'  static {return_type} result{return_value};',
-                    f'  throw std::runtime_error(\"No enum '
-                    f'{self.collection_name} collection could be found\");'
-                ]
-        if result is not None:
-            lines += [f'  return {result};']
-        lines += ['}']
-        kwargs.update(for_header=for_header, skip_items=skip_items)
-        kwargs.pop('specialize', None)
-        if (not specialization) and specialize_empty:
-            lines += self.generate_function(
-                name,
-                specialize=[specialize_empty],
-                specialize_empty=specialize_empty,
-                **kwargs
+        if utility and added_functions is not None:
+            added_functions[self.collection_type].append(function_type)
+        return [
+            FunctionUnit(
+                function_name, type=return_type, args=args, body=body,
+                docs=docs, constant=False,
+                conditions=conditions, **kwargs
             )
-        if (not specialization) and specialize_direct:
-            for k, v in specialize_direct.items():
-                lines += self.generate_function(
-                    k,
-                    specialize=[k],
-                    direct=v,
-                    enum_is_class=False,
-                    **kwargs
-                )
-        return lines
+        ]
 
     @classmethod
     def make_title(cls, x):
         return ''.join([xx.title() for xx in x.split('_')])
 
-    def generate_utility_types(self):
+    def generate_utility_types(self, **kwargs):
         return []
 
 
@@ -2016,10 +3125,15 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
             'action': 'store_true',
             'help': "Only include keys with explicit values in map",
         },
+        ragged_right={
+            'action': 'store_true',
+            'help': "Generate the map with a ragged right edge.",
+        },
     )
     default_value_type = None
     default_reversed = False
     default_explicit = False
+    default_ragged_right = False
     collection_type = 'std::map'
     _additional_functions = (
         CEnumGeneratorCollectionBase._additional_functions + [
@@ -2029,19 +3143,39 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
     _print_prefix = None  # "space << \"{\" << std::endl;"
     _print_suffix = None  # "space << \"}\""
 
-    def generate_docs(self, name):
-        name_doc = self.collection_name.title()
-        return f'{name_doc} for values'
-
-    def generate_collection_param(self, *args, **kwargs):
-        value_type = kwargs.pop('value_type', self.value_type)
-        out = super(CEnumGeneratorMapBase, self).generate_collection_param(
+    def collection_param_units(self, *args, **kwargs):
+        value_type = kwargs.pop('value_type', None)
+        if value_type is None:
+            value_type = self.value_type
+        if not isinstance(value_type, CodeUnitBase):
+            value_type = ValueUnit(value_type)
+        out = super(CEnumGeneratorMapBase, self).collection_param_units(
             *args, **kwargs)
         if self.reversed:
             out = [value_type] + out
         else:
             out.append(value_type)
         return out
+
+    def generate_docs(self, name):
+        name_doc = self.collection_name.title()
+        return f'{name_doc} for values'
+
+    def member_units(self, x, value_unit=None, **kwargs):
+        if value_unit is None:
+            value_unit = self.generate_value(x)
+        if not value_unit:
+            return []
+        if isinstance(value_unit, list):
+            out = []
+            for v in value_unit:
+                out += self.member_units(x, value_unit=v, **kwargs)
+            return out
+        key_unit = ValueUnit(x['name'], **kwargs)
+        if self.reversed:
+            return [[value_unit, key_unit]]
+        else:
+            return [[key_unit, value_unit]]
 
     def generate_value(self, x):
         out = super(CEnumGeneratorMapBase, self).generate_value(x)
@@ -2090,11 +3224,15 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
     def generate_iterator_dref(self, iter_name):
         return [f"{iter_name}->first", f"{iter_name}->second"]
 
-    def generate_add(self, collection_name, key_name, val_name, **kwargs):
+    def generate_add(self, collection_name, collection_type,
+                     key_name, val_name, **kwargs):
+        indent = kwargs.get('indent', '')
         if self.reversed:
-            return [f"{collection_name}.emplace({val_name}, {key_name});"]
+            return [f"{indent}{collection_name}.emplace({val_name}, "
+                    f"{key_name});"]
         else:
-            return [f"{collection_name}.emplace({key_name}, {val_name});"]
+            return [f"{indent}{collection_name}.emplace({key_name}, "
+                    f"{val_name});"]
 
     def generate_find(self, collection_name, key_name, iter_name="it",
                       from_value=False):
@@ -2116,8 +3254,6 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
         assert len(args) == 2
         key = f"names.find({args[0]})->second"
         val = f"{args[1]}"
-        # return (f'{out}{space} << "  " << {key} << " = " << {val} '
-        #         f'<< std::endl;')
         return (f'{out}{space} << "  " << {key} << "\t" << {val} '
                 f'<< std::endl;')
 
@@ -2141,6 +3277,7 @@ class CEnumGeneratorFlagMapBase(CEnumGeneratorMapBase):
             'get', 'is', 'check', 'checkNot', 'count', 'list',
         ]
     )
+    default_ragged_right = True
     default_value_type = 'int'
     default_value_flags = []
     default_flag_prefix = None
@@ -2218,14 +3355,40 @@ class CEnumGeneratorFlagMapBase(CEnumGeneratorMapBase):
             x = xflag
         return CEnumGeneratorCollectionBase.make_title(x)
 
-    def generate_utility_methods(self, *args, **kwargs):
-        k = next(iter(self.value_flag_map.keys()))
-        dummy_vect = self.get_dummy_vector_collection(k)
+    def function_units(self, function_type=None, enum_unit=None,
+                       **kwargs):
+        methods_not_general = [
+            'is', 'check', 'checkNot', 'list',
+        ]
+        methods_general = [
+            'string', 'clear', 'add', 'remove', 'count',
+        ]
         out = []
-        out += dummy_vect.generate_utility_methods(*args, **kwargs)
+        if ((function_type in (methods_not_general + methods_general)
+             and not self.current_flag_collection)):
+            result = kwargs.get('result', self.collection_name)
+            assert self.value_flag_map
+            assert result
+            for k in self.value_flag_map.keys():
+                ktitle = CEnumGeneratorCollectionBase.make_title(k)
+                self.push_flag(k)
+                ikw = copy.deepcopy(kwargs)
+                ikw.setdefault('function_param', {})
+                ikw['enum_unit'] = enum_unit
+                if function_type in ['string']:
+                    dummy_vect = self.get_dummy_vector_collection(k)
+                    ikw['result'] = f'list{ktitle}()'
+                    out += dummy_vect.function_units(
+                        function_type, **ikw)
+                else:
+                    out += self.function_units(
+                        function_type, **ikw)
+                self.pop_flag()
+            if function_type in methods_not_general:
+                return out
         out += super(
-            CEnumGeneratorFlagMapBase, self).generate_utility_methods(
-                *args, **kwargs)
+            CEnumGeneratorFlagMapBase, self).function_units(
+                function_type, enum_unit=enum_unit, **kwargs)
         return out
 
     def generate_additional_method(self, function_type, **kwargs):
@@ -2281,83 +3444,102 @@ class CEnumGeneratorFlagMapBase(CEnumGeneratorMapBase):
         ]
         return out
 
-    def generate_add(self, result, var_name, *args, **kwargs):
+    def generate_add(self, result, collection_type, var_name,
+                     *args, **kwargs):
         if self.current_flag is None:
             return super(CEnumGeneratorFlagMapBase, self).generate_add(
-                result, var_name, *args, **kwargs)
+                result, collection_type, var_name, *args, **kwargs)
         iter_name = kwargs.get('iter_name', 'it')
-        collection_type = kwargs.get('collection_type', None)
-        if collection_type is None:
-            collection_type = self.generate_collection_type()
+        indent = kwargs.get('indent', '')
+        fstring_param = {
+            'collection_type': collection_type,
+            'iter_name': iter_name,
+            'result': result,
+            'var_name': var_name,
+            'current_flag': self.current_flag,
+        }
         out = [
-            f"typename {collection_type}::iterator {iter_name};",
+            "typename {collection_type}::iterator {iter_name};",
         ]
         out += self.generate_find(result, var_name, iter_name)
-        out += [f'if ({iter_name} == {result}.end()) {{']
+        out += ['if ({iter_name} == {result}.end()) {{']
+        out += super(CEnumGeneratorFlagMapBase, self).generate_add(
+            result, collection_type, var_name,
+            self.prefix_flags('NONE'), indent='  ')
         out += [
-            f'  {x}' for x in
-            super(CEnumGeneratorFlagMapBase, self).generate_add(
-                result, var_name, self.prefix_flags('NONE'))
+            '  {iter_name} = {result}.find({var_name});',
+            '}}',
+            '{iter_name}->second |= {current_flag};',
         ]
-        out += [
-            f'  {iter_name} = {result}.find({var_name});',
-            '}',
-            f'{iter_name}->second |= {self.current_flag};',
-        ]
-        return out
+        return self._generate_unit(out, fstring_param, indent=indent)
 
-    def generate_clear(self, collection_name, iter_name="it",
-                       collection_type=None):
+    def generate_clear(self, collection_name, collection_type,
+                       iter_name="it"):
         if self.current_flag is None:
             return super(CEnumGeneratorFlagMapBase, self).generate_clear(
-                collection_name, iter_name=iter_name,
-                collection_type=collection_type)
+                collection_name, collection_type, iter_name=iter_name)
         dref = self.generate_iterator_dref(iter_name)[1]
-        if collection_type is None:
-            collection_type = self.generate_collection_type()
+        fstring_param = {
+            'collection_type': collection_type,
+            'iter_name': iter_name,
+        }
         out = [
-            f"typename {collection_type}::iterator {iter_name};",
-            self.generate_iteration(collection_name, iter_name) + "{",
+            "typename {collection_type}::iterator {iter_name};",
+            self.generate_iteration(collection_name, iter_name) + "{{",
             f"  {dref} &= ~{self.current_flag};",
-            "}",
+            "}}",
         ]
-        return out
+        return self._generate_unit(out, fstring_param)
 
-    def generate_count(self, collection_name, var_name, iter_name="it",
-                       collection_type=None):
+    def generate_count(self, collection_name, collection_type, var_name,
+                       iter_name="it"):
         if self.current_flag is None:
             return super(CEnumGeneratorFlagMapBase, self).generate_count(
-                collection_name, var_name, iter_name=iter_name,
-                collection_type=collection_type)
+                collection_name, collection_type, var_name,
+                iter_name=iter_name)
         dref = self.generate_iterator_dref(iter_name)[1]
-        if collection_type is None:
-            collection_type = self.generate_collection_type()
+        fstring_param = {
+            'var_name': var_name,
+            'collection_type': collection_type,
+            'iter_name': iter_name,
+            'dref': dref,
+            'current_flag': self.current_flag,
+            'iteration': self.generate_iteration(
+                collection_name, iter_name),
+        }
         out = [
             f"{var_name} = 0;",
-            f"typename {collection_type}::const_iterator {iter_name};",
-            self.generate_iteration(collection_name, iter_name) + "{",
+            "typename {collection_type}::const_iterator {iter_name};",
+            "{iteration} {{",
             f"  if ({dref} & {self.current_flag}) {var_name}++;",
-            "}",
+            "}}",
         ]
-        return out
+        return self._generate_unit(out, fstring_param)
 
-    def generate_list(self, collection_name, var_name, iter_name="it",
-                      collection_type=None):
+    def generate_list(self, collection_name, collection_type, var_name,
+                      iter_name="it"):
         assert self.current_flag is not None
         dref = self.generate_iterator_dref(iter_name)
-        if collection_type is None:
-            collection_type = self.generate_collection_type()
+        fstring_param = {
+            'var_name': var_name,
+            'collection_type': collection_type,
+            'iter_name': iter_name,
+            'dref': dref,
+            'current_flag': self.current_flag,
+            'iteration': self.generate_iteration(
+                collection_name, iter_name),
+        }
         out = [
-            f"typename {collection_type}::const_iterator {iter_name};",
-            self.generate_iteration(collection_name, iter_name) + "{",
-            f"  if ({dref[1]} & {self.current_flag}) {{",
-            f"    {var_name}.push_back({dref[0]});",
-            "  }",
-            "}",
+            "typename {collection_type}::const_iterator {iter_name};",
+            "{iteration}{{",
+            "  if ({dref[1]} & {current_flag}) {{",
+            "    {var_name}.push_back({dref[0]});",
+            "  }}",
+            "}}",
         ]
-        return out
+        return self._generate_unit(out, fstring_param)
 
-    def generate_utility_types(self):
+    def generate_utility_types(self, **kwargs):
         assert self.flag_prefix
         out = [f'// {self.flag_prefix} enum']
         keys = ['NONE'] + self.value_key + ['MAX']
@@ -2370,10 +3552,19 @@ class CEnumGeneratorFlagMapBase(CEnumGeneratorMapBase):
             for i, k in enumerate(keys)
         ]
         out += self.parent.generate_enum(
-            self.flag_prefix, members, as_class=False)
+            self.flag_prefix, members, as_class=False, **kwargs)
         return out
 
-    def generate_value(self, x):
+    def member_units(self, x, **kwargs):
+        value_unit = self.generate_value(x, return_list=True)
+        if not value_unit:
+            return []
+        value_unit = BinaryOperatorUnit(
+            '|', [ValueUnit(x) for x in value_unit])
+        return super(CEnumGeneratorFlagMapBase, self).member_units(
+            x, value_unit=value_unit, **kwargs)
+
+    def generate_value(self, x, return_list=False):
         if self.value_key is None or not isinstance(self.value_key, list):
             raise NotImplementedError
         out = [k for k in self.value_key if x.get(k, '')]
@@ -2381,7 +3572,10 @@ class CEnumGeneratorFlagMapBase(CEnumGeneratorMapBase):
             return None
         if not out:
             out.append('NONE')
-        out = ' | '.join(self.prefix_flags(out))
+        out = self.prefix_flags(out)
+        if return_list:
+            return out
+        out = ' | '.join(out)
         return '(' + out + ')'
 
 
@@ -2401,6 +3595,11 @@ class CEnumGeneratorVectorBase(CEnumGeneratorCollectionBase):
         name_doc = name_doc.replace('s_C3', '_C3')
         return f'Values that are {name_doc}'
 
+    def member_units(self, x, **kwargs):
+        if not self.generate_value(x):
+            return []
+        return [ValueUnit(x['name'], **kwargs)]
+
     def generate_member(self, x, width=None, enum_prefix=''):
         if not self.generate_value(x):
             return []
@@ -2410,8 +3609,10 @@ class CEnumGeneratorVectorBase(CEnumGeneratorCollectionBase):
     def generate_iterator_dref(self, iter_name):
         return [f"(*({iter_name}))"]
 
-    def generate_add(self, collection_name, var_name, *args, **kwargs):
-        return [f'{collection_name}.push_back({var_name});']
+    def generate_add(self, collection_name, collection_type, var_name,
+                     *args, **kwargs):
+        indent = kwargs.get('indent', '')
+        return [f'{indent}{collection_name}.push_back({var_name});']
 
     def generate_find(self, collection_name, key_name, iter_name="it"):
         dref = self.generate_iterator_dref(iter_name)[0]
@@ -2427,7 +3628,7 @@ class CEnumGeneratorVectorBase(CEnumGeneratorCollectionBase):
         return f'{out} << {key} << ",";'
 
 
-class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
+class CEnumGeneratorGlobalHeader(CEnumGeneratorBaseHeader):
 
     name = 'global'
     file_suffix = ''
@@ -2439,7 +3640,6 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
         '#include <fstream>',
         '#include <sstream>',
         '#include <stdexcept>',
-        # '#define EPHOTO_USE_SCOPED_ENUM 1',
         '#ifdef _MSC_VER',
         '// There is a bug in the MSVC compiler where it does not allow',
         '//   declaration of a specialized class member enum',
@@ -2488,7 +3688,6 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
                      "members"),
         },
     )
-    _no_functions = True
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('enum_name', self.name.upper())
@@ -2601,13 +3800,13 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
             if x.strip().startswith(f'{self.enum_name}_'):
                 new_val = x.split(
                     f'{self.enum_name}_')[-1].split(',')[0].strip()
-                if new_val not in ['NONE', 'MAX']:
+                if new_val not in ['NONE', 'MAX'] + existing_enum:
                     existing_enum.append(new_val)
             elif (self.accum_enum_name
                   and x.strip().startswith(f'{self.accum_enum_name}_')):
                 new_val = x.split(
                     f'{self.accum_enum_name}_')[-1].split(',')[0].strip()
-                if new_val not in ['NONE', 'MAX']:
+                if new_val not in ['NONE', 'MAX'] + existing_accum_enum:
                     existing_accum_enum.append(new_val)
         # Modules
         for k in self.src.param.keys():
@@ -2652,17 +3851,22 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
         lines += self.parent.generate_enum(
             self.enum_name, self.enum_members,
             as_class=False, macro_skip=self.enum_macro_skip,
+            namespaces=False,
         )
         # Param types
         if self.accum_enum_name:
             lines += self.parent.generate_enum(
                 self.accum_enum_name, self.accum_enum_members,
                 as_class=False, macro_skip=self.accum_enum_macro_skip,
+                namespaces=False,
             )
         return lines
 
-    def generate(self, indent='', **kwargs):
-        lines = []
+    def generate_source(self, **kwargs):
+        # return self.generate(in_source=True, **kwargs)
+        return []
+
+    def includes(self):
         includes = {'global': []}
         for k in self.parent.added_collections:
             includes[k] = []
@@ -2674,62 +3878,6 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
         for x in include:
             if x not in includes['global']:
                 includes['global'].append(x)
-        # Utility types for additional methods
-        for k in self.parent.added_collections:
-            lines += self.parent.get_child(k).generate_utility_types()
-        # Utility for getting module id from enum type
-        lines += [
-            f'// Utility for getting {self.enum_name.lower()} '
-            f'id from enum type',
-        ]
-        lines += self.generate_param_function(
-            self.enum_name, for_header=True)
-        lines += ['']
-        # Utility for getting param type from enum type
-        if self.accum_enum_name:
-            lines += [
-                f'// Utility for getting {self.accum_enum_name.lower()} '
-                f'from enum type',
-            ]
-            lines += self.generate_param_function(
-                self.accum_enum_name, for_header=True)
-            lines += ['']
-        # Utilities for getting names/values from enum type
-        if not self._no_functions:
-            for k in self.parent.added_collections:
-                lines += [
-                    f'// Utility for getting {k} from enum',
-                ]
-                specialize_direct = None
-                if k == 'names':
-                    specialize_direct = {}
-                    specialize_direct[self.enum_name] = self.enum_members
-                    if self.accum_enum_name:
-                        specialize_direct[self.accum_enum_name] = (
-                            self.accum_enum_members)
-                lines += self.parent.get_child(k).generate_function(
-                    self.enum_name, spec_param=['typename'],
-                    specialize_direct=specialize_direct,
-                    for_header=True, skip_items=['NONE', 'MAX'])
-        # Base class
-        lines_utilities = []
-        if self.parent.as_class:
-            lines += ['// Unspecialized enum']
-            lines += self.parent.generate_enum(
-                self.parent.as_class, [],
-                spec_param=self.spec_param, spec_var=self.spec_var,
-                specialize=False, lines_utilities=lines_utilities)
-        else:
-            # Empty enum
-            lines += ['// Empty enum']
-            lines += self.parent.generate_enum(
-                self.empty_enum_name, [],
-                spec_param=self.spec_param, spec_var=self.spec_var,
-                specialize=False)
-        # Include for module/param specific enums
-        includes['global'] = [k for k in includes['global']
-                              if k not in lines]
-        # Utilities for getting names/values from enum type
         for k in self.parent.added_collections:
             if k in self.parent.added_files:
                 new_include = self.parent.get_child(
@@ -2740,49 +3888,33 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBase):
                         includes[k].append(x)
         include_lines = []
         for k, v in includes.items():
-            if not v:
+            if not (v and k == 'global'):
                 continue
-            if k == 'global':
-                include_lines += ['// Global includes']
-            elif self._no_functions:
-                continue
-            else:
-                include_lines += [f'// Specializations for get_enum_{k}']
+            include_lines += ['// Global includes']
             include_lines += self.add_chunk(
                 f'headers_{k}', [x for x in v if x])
-        lines += ['']
-        lines += [
-            f'// Utility for getting enum type from '
-            f'{self.enum_name.lower()} & '
-            f'{self.accum_enum_name.lower()}',
-        ]
-        lines += self.generate_type_struct(
-            self.enum_name, for_header=True)
-        # Utility for getting name from enum
-        if not self._no_functions:
-            lines += [
-                '// Utility for getting name from enum',
-                'template<typename T>',
-                'std::string get_enum_name(const T& k) {',
-                '  return get_enum_names<T>().find(k)->second;',
-                '}',
-            ]
-        if not self.parent.as_class:
-            # Begin preserved lines
-            lines += self.begin_marker('preserved_utils', existing)
-            for k, v in self.src.param.items():
-                key = k.rsplit(self.strip_suffix)[0]
-                lines += self.generate_type_struct(
-                    self.enum_name, result=k, for_header=True,
-                    specialize=[f'{self.enum_name}_{key}',
-                                f'{self.accum_enum_name}'
-                                f'{self.strip_suffix}'])
-                lines += ['']
-            lines += self.end_marker('preserved_utils')
+        return include_lines
+
+    def generate(self, indent='', **kwargs):
+        lines = []
+        kwargs.update(
+            spec_param=self.spec_param, spec_var=self.spec_var,
+            specialize=False, namespaces=False,
+        )
+        # Base class
+        if self.parent.as_class:
+            lines += ['// Unspecialized enum']
+            lines += self.parent.generate_enum(
+                self.parent.as_class, [], **kwargs,
+            )
+        else:
+            # Empty enum
+            lines += ['// Empty enum']
+            lines += self.parent.generate_enum(
+                self.empty_enum_name, [], **kwargs,
+            )
         lines = self.add_namespaces(lines)
-        lines += include_lines
-        if lines_utilities:
-            lines += self.add_namespaces(lines_utilities)
+        lines += self.includes()
         lines = self.parent.include_helper_header() + lines
         return lines
 
@@ -2812,9 +3944,14 @@ class CEnumGeneratorHelper(CEnumGeneratorBaseHeader):
                 allow_empty=True
             )
             lines += ['// Unspecialized enum helper']
-            lines += self.parent.generate_enum_class_helper(
-                self.parent.as_class, [], specialize=False)
+            lines += self.parent.generate_from_unit(
+                self.parent.as_class, [], specialize=False,
+                filetype='helper', namespaces=False)
             lines = fglobal.add_namespaces(lines)
+            assert lines
+        if not self.append:
+            for k in self.parent.added_collections:
+                lines += self.parent.get_child(k).generate_utility_types()
         kwargs['no_namespaces'] = True
         lines += super(CEnumGeneratorHelper, self).generate(*args, **kwargs)
         return lines
@@ -2825,8 +3962,9 @@ class CEnumGeneratorHelper(CEnumGeneratorBaseHeader):
             as_class = self.parent.as_class
         if not as_class:
             return lines
-        lines += self.parent.generate_enum_class_helper(
-            name, members, as_class=as_class, **kwargs)
+        lines += self.parent.generate_from_unit(
+            name, members, as_class=as_class, filetype='helper',
+            **kwargs)
         return lines
 
 
@@ -2851,6 +3989,11 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
         explicit_values={
             'action': 'store_true',
             'help': "Explicitly define the value for each enum member",
+        },
+        api_macro={
+            'type': str,
+            'help': "Macro that should be used to export/import members",
+            'default': '',
         },
     )
     added_file_classes = {
@@ -2895,6 +4038,7 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 'default_value_type': 'std::string',
                 'default_value_key': 'doc',
                 'default_explicit': True,
+                'default_ragged_right': True,
             },
         },
         'flagmap': {
@@ -2920,6 +4064,7 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
         },
     }
     _utilities_in_primary = False
+    _export_members = False
 
     @staticmethod
     def create_child_classes(cls):
@@ -2964,18 +4109,10 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
     def added_collections(self):
         return self.added_maps + self.added_vectors
 
-    def generate_member(self, x, width=None, width_val=None,
-                        name_only=False, explicit_values=False):
-        assert width is not None and width_val is not None
-        val = ''
-        docs = ''
-        if not name_only:
-            if ((x.get('explicit_idx', False)
-                 or self.explicit_values or explicit_values)):
-                val = f" = {x['idx']}"
-            if x.get('doc', False):
-                docs = f"  //!< {x['doc']}"
-        return [f"  {x['name']:{width}}{val:{width_val}},{docs}"]
+    def generate_member(self, *args, **kwargs):
+        if self.explicit_values:
+            kwargs['explicit_values'] = True
+        return [generate_enum_member(*args, **kwargs)]
 
     def include_helper_header(self):
         return self.include_file(
@@ -2983,479 +4120,320 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             rootdir=self.root_include_dir
         )
 
-    def generate_enum_class_helper(self, name, members,
-                                   enum_type='int', as_class=None,
-                                   members_macro=None, inverse=False,
-                                   helper_only=False, no_guards=False,
-                                   no_namespaces=False, include_inv=False,
-                                   **kwargs):
-        helper_name = 'enum_helper'
+    def helper_unit(self, helper_name='enum_helper', inverse=False,
+                    conditions=None, include_inv=False, **kwargs):
+        remainder_kwargs = {}
+        enum_unit = self.enum_unit(remainder_kwargs=remainder_kwargs,
+                                   **kwargs)
+        if not enum_unit.parent_class:
+            return None
         if inverse:
-            helper_name += '_inv'
             include_inv = False
-        lines = []
-        if as_class is None:
-            as_class = self.as_class
-        fglobal = self.get_child('global')
-        if as_class:
-            kwargs.setdefault('spec_param',
-                              fglobal.spec_param)
-            kwargs.setdefault('spec_var',
-                              fglobal.spec_var)
-            kwargs.setdefault('specialize',
-                              fglobal.item2specialize(name))
-        template_lines = []
-        specialization, spec_var = self.specialization(
-            template_lines, **kwargs)
-        if inverse:
-            template_lines = []
-            spec_var_inv = ['T']
-            if kwargs['specialize']:
-                specialize_inv = [f'ENUM_{name}']
-            else:
-                specialize_inv = False
-                enum_type = spec_var_inv[0]
-            specialization = self.specialization(
-                template_lines, spec_param=['typename'],
-                spec_var=spec_var_inv, specialize=specialize_inv,
-                inside_class=kwargs.get('inside_class', False),
-            )[0]
-        elif not specialization:
-            include_inv = True
-        enum_name_ext = f'ENUM_{name}' if specialization else enum_type
-        self.complete_members(members)
-        members_macro = None
-        if specialization:
-            members_macro = self.generate_definition_macro(
-                name, members, return_macro=True)
-            if not helper_only:
-                lines += self.generate_definition_macro(name, members)
-                lines += ['']
-        if not no_guards:
-            lines += ['#ifdef EPHOTO_USE_SCOPED_ENUM']
-        if specialization and not helper_only:
-            lines += self.generate_definition_enum(
-                name, members, enum_name=enum_name_ext,
-                enum_type=enum_type, as_class=as_class,
-                scoped_enum=True, members_macro=members_macro)
-        lines += template_lines
-        lines += [
-            f'struct {helper_name}{specialization} {{',
-            f'  typedef {enum_name_ext} type;',
-        ]
-        if specialization:
-            for (t, k), v in zip(zip(kwargs['spec_param'], spec_var),
-                                 kwargs['specialize']):
-                lines += [f'  static const {t} {t.lower()} = {v};']
-        else:
-            for t, k in zip(kwargs['spec_param'], spec_var):
-                lines += [f'  static const {t} {t.lower()} = {t}_NONE;']
-        lines += [
-            '};',
-        ]
-        if not no_guards:
-            lines += [
-                '#endif // EPHOTO_USE_SCOPED_ENUM',
-            ]
-        if include_inv:
-            lines += self.generate_enum_class_helper(
-                name, members, enum_type=enum_type, as_class=as_class,
-                members_macro=members_macro, inverse=True,
-                helper_only=True, no_guards=True,
-                no_namespaces=True, **kwargs)
-        if specialization and not no_namespaces:
-            lines = fglobal.add_namespaces(lines)
-        return lines
-
-    def generate_specialized_typedef(self, name, as_class=None, **kwargs):
-        if as_class is None:
-            as_class = self.as_class
-        if not (as_class and kwargs.get('specialize', None)):
-            return []
-        specialization, spec_var = self.specialization(None, **kwargs)
-        lines = []
-        contexts = [
-            k.rsplit(k0, 1)[-1].strip('_') for k0, k in
-            zip(kwargs['spec_param'], kwargs['specialize'])
-        ]
-        contexts = contexts[::-1]
-        lines += self.add_chunk(
-            f'specialized_typedef_{name}',
-            self.add_namespaces(
-                [
-                    f'typedef {as_class}{specialization} '
-                    f'{contexts[-1]};'
-                ],
-                namespaces=contexts[:-1],
+        if enum_unit.parent_class:
+            remainder_kwargs.update(
+                spec_param=enum_unit.parent_class.spec_param,
+                spec_var=enum_unit.parent_class.spec_var,
             )
+        if conditions is None:
+            if inverse:
+                conditions = {
+                    'generate': [
+                        ['declaration', 'NOT:specialize',
+                         'EQ:filetype:helper'],
+                        ['declaration', 'specialize',
+                         'NOT:EQ:filetype:helper'],
+                    ]
+                }
+            else:
+                conditions = {
+                    'generate': [
+                        ['declaration', 'NOT:specialize',
+                         'EQ:filetype:helper'],
+                        ['declaration', 'specialize',
+                         'EQ:filetype:helper'],
+                    ]
+                }
+        out = HelperUnit(
+            f'{helper_name}_inv' if inverse else helper_name,
+            enum_unit=enum_unit,
+            conditions=conditions,
+            inverse=inverse,
+            **remainder_kwargs
         )
-        return lines
+        if include_inv:
+            out = ContainerUnit(members=[out])
+            out.add_member(
+                self.helper_unit(helper_name=helper_name, inverse=True,
+                                 enum_unit=enum_unit,
+                                 **remainder_kwargs)
+            )
+        return out
 
-    def generate_utilities(self, name, no_guards=False, marker=None,
-                           class_name=None, specialization='',
-                           dont_define=False, in_header=False,
-                           enum_name=None, template_lines=None,
-                           dont_buffer_end=False, global_methods=False):
-        if marker is None:
-            marker = f'explicit_spec_{name}_utils'
-        lines = []
-        if not no_guards:
-            lines += ['#ifdef EPHOTO_USE_SCOPED_ENUM']
-        if not template_lines:
-            lines += [
-                '// Definition of explicitly specialized enum class ',
-                '//   utility methods. This causes instantiation of the ',
-                '//   specialized class and must come after explicit ',
-                '//   specialization of the class (and class members)',
-            ]
-        completed_utils = {}
-        context = ''
-        # if self.get_child('global').namespaces:
-        #     context = '::'.join(self.get_child('global').namespaces) + '::'
-        if enum_name is None:
-            enum_name = f'{context}ENUM_{name}'
-        util_kws = {
-            'enum_is_class': class_name,
-            'enum_name': enum_name,
-            'function_param': {
-                'outside_class': f'{class_name}{specialization}',
-            },
-            'dont_define': dont_define,
-            'in_source': (not in_header),
-            'template_lines': template_lines,
-        }
-        for k in self.added_collections:
-            kchild = self.get_child(k)
-            if global_methods:
-                methods = kchild.specialized_functions
-            elif self._utilities_in_primary:
-                methods = kchild.friend_functions
-            else:
-                methods = (kchild.friend_functions
-                           + kchild.specialized_functions)
-            lines += kchild.generate_utility_methods(
-                completed_utils,
-                methods=methods,
-                **util_kws)
-        if not no_guards:
-            lines += ['#endif // EPHOTO_USE_SCOPED_ENUM']
-        if not marker:
-            return lines
-        return self.add_chunk(marker, lines,
-                              dont_buffer_end=dont_buffer_end)
+    def variable_unit(self, var_name=None, value=None, type=None,
+                      static=True, conditions=None,
+                      parent=None, **kwargs):
+        remainder_kwargs = {}
+        enum_unit = self.enum_unit(
+            remainder_kwargs=remainder_kwargs, parent=parent, **kwargs)
+        if not parent:
+            parent = enum_unit.parent_class
+        if conditions is None:
+            conditions = {
+                'generate': [
+                    ['in_header'],
+                    ['specialize', 'in_source'],
+                ],
+                'define': [
+                    ['NOT:specialize', 'outside_class', 'in_header'],
+                    ['specialize', 'in_source'],
+                ]
+            }
+        assert (var_name and value and type)
+        out = VariableUnit(
+            var_name, type=type, value=value, static=static,
+            conditions=conditions,
+            parent=parent, **remainder_kwargs
+        )
+        return out
 
-    def generate_declaration(self, name, members, enum_name=None,
-                             enum_type='int', members_only=False,
-                             as_class=None, macro_skip=[],
-                             inside_class=False, lines_utilities=None,
-                             **kwargs):
-        lines = []
+    def enum_unit(self, name=None, members=None,
+                  enum_unit=None, enum_name=None, enum_name_ext=None,
+                  enum_type='int', as_class=None,
+                  spec_param=None, spec_var=None, members_macro=None,
+                  parent=None, force_container=False,
+                  return_type=None, remainder_kwargs=None, **kwargs):
+        if remainder_kwargs is None:
+            if kwargs:
+                raise RuntimeError(f'ENUM_UNIT UNUSED KWARGS: '
+                                   f'{pprint.pformat(kwargs)}')
+        else:
+            remainder_kwargs.update(**kwargs)
+        if enum_unit is not None:
+            if return_type:
+                return enum_unit.type
+            return enum_unit
         if as_class is None:
             as_class = self.as_class
-        if not as_class:
-            lines += self.generate_definition_macro(
-                name, members, macro_suffix='', skip=macro_skip)
-            lines += self.generate_definition_macro(
-                name, members, macro_suffix='',
-                macro_prefix='MEMBER_NAMES_COMPLETE_',
-                skip=['NONE', 'MAX'],
-                strip_member_prefix=(name + '_'))
-            lines += self.generate_definition_macro(
-                name, members, macro_suffix='',
-                macro_prefix='MEMBER_NAMES_',
-                skip=(macro_skip + ['NONE', 'MAX']),
-                strip_member_prefix=(name + '_'))
-            members_macro = self.generate_definition_macro(
-                name, members, macro_suffix='', return_macro=True)
-            lines += self.generate_definition_enum(
-                name, members, enum_name=enum_name, enum_type=enum_type,
-                as_class=as_class, members_macro=members_macro)
-            lines += self.generate_definition_all(
-                name, members, enum_name=enum_name,
-                as_class=as_class)
-            return lines
+        if name is None:
+            assert as_class
+            name = as_class
         if enum_name is None:
-            enum_name = 'Type'
-        template_lines = []
-        class_name = as_class
-        kwargs.setdefault('spec_param',
-                          self.get_child('global').spec_param)
-        kwargs.setdefault('spec_var',
-                          self.get_child('global').spec_var)
-        specialization, spec_var = self.specialization(
-            template_lines, inside_class=inside_class, **kwargs)
-        if specialization and not inside_class:
-            template = 'template<> '
-            enum_prefix = f'{class_name}{specialization}::'
-            static = ''
-        else:
-            template = ''
-            enum_prefix = ''
-            static = 'static '
-        enum_name_full = f'{enum_prefix}{enum_name}'
-        if enum_prefix:
-            enum_name_full = f'typename {enum_name_full}'
-        spec_marker = f'explicit_specialization_{name}'
-        if members_only:
-            if specialization and not inside_class:
-                lines += self.get_child('global').begin_namespaces()
-                lines += self.begin_marker(spec_marker)
-            if specialization and not self.enum_in_source:
-                members_macro = self.generate_definition_macro(
-                    name, members, return_macro=True)
-                if not inside_class:
-                    lines += [
-                        '#ifndef EPHOTO_USE_SCOPED_ENUM',
-                    ]
-                elif as_class and spec_var:
-                    lines += [
-                        '#ifdef EPHOTO_USE_SCOPED_ENUM',
-                        f'typedef ENUM_{name} {enum_name};',
-                        '#else // EPHOTO_USE_SCOPED_ENUM',
-                    ]
-                lines += template_lines
-                lines += self.generate_definition_enum(
-                    name, members, enum_name=enum_name,
-                    enum_type=enum_type, enum_prefix=enum_prefix,
-                    as_class=as_class, members_macro=members_macro)
-                if (not inside_class) or (as_class and spec_var):
-                    lines += [
-                        f'typedef {enum_prefix}{enum_name} ENUM_{name};'
-                    ]
-                    lines += ['#endif // EPHOTO_USE_SCOPED_ENUM']
+            if as_class:
+                enum_name = 'Type'
             else:
-                if as_class and spec_var:
-                    lines += [
-                        '#ifdef EPHOTO_USE_SCOPED_ENUM',
-                        f'typedef typename '
-                        f'enum_helper<{", ".join(spec_var)}>::'
-                        f'type {enum_name};',
-                        '#else // EPHOTO_USE_SCOPED_ENUM',
-                    ]
-                member_prefix = 'enum '
-                lines += [
-                    f'{template}{member_prefix}{enum_prefix}{enum_name} : '
-                    f'{enum_type};',
-                ]
-                if as_class and spec_var:
-                    lines += [
-                        '#endif // EPHOTO_USE_SCOPED_ENUM',
-                    ]
-            if spec_var and (inside_class or not specialization):
-                for p, t in zip(kwargs['spec_param'], spec_var):
-                    lines += [f'{static}const {p} {p.lower()};']
-            lines += self.generate_definition_all(
-                name, members, enum_name=enum_name, as_class=as_class,
-                declare=True, specialization=specialization,
-                template=template, static=static,
-                enum_prefix=enum_prefix)
-            for k in self.added_collections:
-                self.get_child(k).add_enum(enum_name)
-                collection_type = self.get_child(k).generate_collection_type(
-                    enum_name_full)
-                const = '' if self.get_child(k).is_editable else 'const '
-                lines += [
-                    f'{template}{static}{const}{collection_type} '
-                    f'{enum_prefix}{self.get_child(k).collection_name};'
-                ]
-                docs = self.get_child(k).generate_docs(k)
-                if docs and not specialization:
-                    lines[-1] += f'  /**< {docs} */'
-            if specialization:
-                if not inside_class:
-                    lines += self.generate_enum_class_helper(
-                        name, members, as_class=class_name,
-                        inverse=True, helper_only=True, no_guards=True,
-                        no_namespaces=True)
-                    lines += self.end_marker(spec_marker)
-                    lines += ['']
-                    lines += self.generate_utilities(
-                        name, class_name=class_name,
-                        marker=(spec_marker + '_utils'),
-                        specialization=specialization,
-                        dont_define=True, in_header=True,
-                        no_guards=True, dont_buffer_end=True,
-                    )
-                    lines += self.get_child('global').end_namespaces()
-                    lines += ['']
-            else:
-                completed_utils = {}
-                for k in self.added_collections:
-                    lines += self.get_child(k).generate_utility_methods(
-                        completed_utils,
-                        enum_name=enum_name_full, enum_is_class=as_class)
-                    lines += self.get_child(k).generate_additional_methods(
-                        enum_name=enum_name_full, enum_is_class=as_class)
-            return lines
-        lines += template_lines
-        lines += [
-            f'class {class_name}{specialization} {{',
-            'public:',
-        ]
-        lines += [
-            '  ' + x for x in self.generate_declaration(
-                name, members, enum_name=enum_name, enum_type=enum_type,
-                members_only=True, inside_class=False,
-                **kwargs)
-        ]
-        lines += ["};"]
-        # Definition of static members for unspecialized class
-        if spec_var and not specialization:
-            unspecialization = f'<{", ".join(spec_var)}>'
-            enum_prefix = f'{class_name}{unspecialization}::'
-            enum_name_full = f'typename {enum_prefix}{enum_name}'
-            for p, t in zip(kwargs['spec_param'], spec_var):
-                lines += template_lines
-                lines += [
-                    f'const {p} {enum_prefix}{p.lower()} = {t};'
-                ]
-            lines += template_lines
-            lines += self.generate_definition_all(
-                name, members, enum_name=enum_name,
-                as_class=as_class, specialization=unspecialization,
-                template='')
-            for k in self.added_collections:
-                self.get_child(k).add_enum(enum_name)
-                collection_type = self.get_child(k).generate_collection_type(
-                    enum_name_full)
-                const = '' if self.get_child(k).is_editable else 'const '
-                lines += template_lines
-                lines += [
-                    f'{const}{collection_type} '
-                    f'{enum_prefix}{self.get_child(k).collection_name}'
-                    f' = {{}};'
-                ]
-            if self._utilities_in_primary:
-                new_lines = self.generate_utilities(
-                    name, class_name=class_name, no_guards=True,
-                    marker=(spec_marker + '_utils'),
-                    specialization=unspecialization,
-                    dont_define=False, in_header=True,
-                    global_methods=True,
-                    template_lines=template_lines,
+                enum_name = name
+        if enum_name_ext is None:
+            enum_name_ext = (f'ENUM_{name}' if as_class else None)
+        if return_type and isinstance(parent, EnumUnit):
+            return parent.type
+        if members is not None:
+            self.complete_members(members)
+        enum_unit = EnumUnit(
+            enum_name, members,
+            enum_type=enum_type,
+            members_macro=members_macro,
+            enum_name_ext=enum_name_ext,
+            conditions={
+                'generate': (
+                    [['specialize', 'in_header'], ['declaration']]
+                    if as_class else []
                 )
-                if lines_utilities is not None:
-                    lines_utilities += new_lines
-                else:
-                    lines += new_lines
-        return lines
-
-    def generate_definition_enum(self, name, members, enum_name=None,
-                                 enum_type='int', as_class=None,
-                                 enum_prefix='', scoped_enum=False,
-                                 members_macro=None):
-        lines = []
-        if as_class is None:
-            as_class = self.as_class
-        if enum_name is None:
+            },
+        )
+        parent_created = False
+        if parent is None:
+            parent_created = True
             if as_class:
-                enum_name = 'Type'
-            else:
-                enum_name = name
-        width = self.max_width(members)
-        width_val = self.max_width(members, key='idx')
-        if as_class and scoped_enum:
-            member_prefix = 'enum class '
-        else:
-            member_prefix = 'enum '
-        lines += [f'{member_prefix}{enum_prefix}{enum_name} : {enum_type} {{']
-        if members_macro and not (self.explicit_values
-                                  or any(x.get('explicit_idx', False)
-                                         for x in members)):
-            lines += ['  ' + members_macro]
-        else:
-            lines += [
-                '  ' + x for x in
-                super(CEnumGeneratorBaseHeader, self).generate_item(
-                    name, members, width=width, width_val=width_val)
-            ]
-        lines += ['};']
-        return lines
-
-    def generate_definition_all(self, name, members, enum_name=None,
-                                as_class=None, declare=False,
-                                specialization=False, template=None,
-                                static=None, enum_prefix=None):
-        lines = []
-        if as_class is None:
-            as_class = self.as_class
-        if template is None:
-            template = 'template<> ' if specialization else ''
-        if static is None:
-            static = 'static ' if not specialization else ''
-        class_name = as_class if as_class else ''
-        if enum_name is None:
-            if as_class:
-                enum_name = 'Type'
-            else:
-                enum_name = name
-        if enum_prefix is None:
-            enum_prefix = (
-                f'{class_name}{specialization}::' if specialization else '')
-        enum_name_full = f'{enum_prefix}{enum_name}'
-        if enum_prefix:
-            enum_name_full = f'typename {enum_name_full}'
+                if spec_param is None:
+                    spec_param = self.get_child('global').spec_param
+                if spec_var is None:
+                    spec_var = self.get_child('global').spec_var
+                parent = ClassUnit(
+                    as_class, spec_param=spec_param, spec_var=spec_var,
+                    conditions={
+                        'generate': [['NOT:EQ:filetype:helper']]
+                    })
+            elif force_container:
+                parent = ContainerUnit()
+        if parent is not None:
+            temporary = (parent_created and not force_container)
+            enum_unit.set_parent(parent, temporary=temporary)
         if as_class:
-            var_name = 'all'
-        else:
-            var_name = f'ALL_{enum_name}'
-        lines += [
-            f'{template}{static}'
-            f'const std::vector<{enum_name_full}> '
-            f'{enum_prefix}{var_name}'
-        ]
-        if declare:
-            lines[-1] += ';'
-        else:
-            enum_member_prefix = enum_prefix
-            if as_class:
-                enum_member_prefix += f'SCOPED_ENUM_TYPE({enum_name})'
-            members_core = [
-                x for x in members if x['abbr'] not in ["NONE", "MAX"]
-            ]
-            prefixed_names = [
-                enum_member_prefix + x["name"] for x in members_core
-            ]
-            lines[-1] += f' = {{{", ".join(prefixed_names)}}};'
-        docs = '  /**< All enum values */'
-        if (not as_class) or (declare and not specialization):
-            lines[-1] += docs
-        return lines
+            assert enum_unit.parent_class
+        if return_type:
+            return enum_unit.type
+        return enum_unit
 
-    def generate_definition_macro(self, name, members, macro_suffix=None,
-                                  macro_prefix='MEMBERS_', skip=[],
-                                  strip_member_prefix=False,
-                                  return_macro=False):
-        macro_name = name
-        if macro_suffix is None:
-            macro_suffix = self.macro_suffix
-        if macro_suffix is not None:
-            macro_name = name.rsplit('_', 1)[0] + macro_suffix
-        if return_macro:
-            return f'{macro_prefix}{macro_name}'
-        lines = [
-            f'#define {macro_prefix}{macro_name}'
-        ]
-        if strip_member_prefix:
-            members = [
-                dict(x, name=x['name'].split(strip_member_prefix)[-1])
-                for x in members
-            ]
-        members = [x for x in members if x['name'] not in skip]
-        if members:
-            lines[-1] += '\t\t\\'
-        width = self.max_width(members)
-        width_val = self.max_width(members, key='idx')
-        values = super(CEnumGeneratorBaseHeader, self).generate_item(
-            name, members, width=width, width_val=width_val,
-            name_only=True)
-        for i in range(len(values)):
-            if i == len(values) - 1:
-                values[i] = '  ' + values[i].rstrip(',').rstrip()
-            else:
-                values[i] = '  ' + values[i] + '\t\t\\'
-        lines += values
-        return lines
+    def generate_from_unit(self, name, members, mark=False,
+                           as_class=None, spec_param=None,
+                           spec_var=None, specialize=None,
+                           namespaces=None, **kwargs):
+        context_kws = {
+            k: kwargs.pop(k) for k in CodeContext.parameter_keys
+            if k in kwargs
+        }
+        if as_class is None:
+            as_class = self.as_class
+        if as_class:
+            if spec_param is None:
+                spec_param = self.get_child('global').spec_param
+            if spec_var is None:
+                spec_var = self.get_child('global').spec_var
+            if as_class != name and specialize is None:
+                specialize = self.get_child('global').item2specialize(name)
+        if namespaces is None:
+            namespaces = self.get_child('global').namespaces
+        if specialize:
+            assert isinstance(specialize, list)
+            assert len(specialize) == len(spec_var)
+            specialize = {
+                k: v for k, v in zip(spec_var, specialize)
+            }
+            assert 'EnumType' not in specialize
+            specialize['EnumType'] = f'ENUM_{name}'
+        unit = self.generate_code_unit(name, members, as_class=as_class,
+                                       spec_param=spec_param,
+                                       spec_var=spec_var, **kwargs)
+        if namespaces:
+            unit.namespaces = namespaces
+        unit.set_context(specialize=specialize, **context_kws)
+        out = []
+        if mark:
+            out += ['// BEFORE GENERATED']
+        out += unit.generate(top=True)
+        if mark:
+            out += ['// AFTER GENERATED']
+        return out
+
+    def generate_code_unit(self, name, members, macro_skip=[], **kwargs):
+        enum_unit = self.enum_unit(
+            name, members, force_container=True, **kwargs)
+        out = enum_unit.parent
+        as_class = enum_unit.parent_class
+        helper = self.helper_unit(enum_unit=enum_unit)
+        helper_inv = self.helper_unit(enum_unit=enum_unit, inverse=True)
+        if as_class:
+            out.add_member(
+                GuardUnit(
+                    'EPHOTO_USE_SCOPED_ENUM',
+                    first=TypedefUnit(
+                        name='Type',
+                        type=helper.wrapper_type,
+                    ),
+                    second=enum_unit,
+                )
+            )
+            assert enum_unit.parent_class
+        else:
+            out.add_member(enum_unit)
+        members_core = [
+            x for x in members if x['abbr'] not in ['NONE', 'MAX']]
+        if as_class and as_class.spec_param:
+            for p, t in zip(as_class.spec_param, as_class.spec_var):
+                out.add_member(
+                    self.variable_unit(
+                        var_name=p.lower(),
+                        type=f'const {p}',
+                        value=t,
+                        conditions={
+                            'generate': [
+                                ['NOT:specialize', 'outside_class',
+                                 'in_header'],
+                                ['NOT:specialize', 'inside_class',
+                                 'in_header'],
+                            ],
+                            'define': [
+                                ['NOT:specialize', 'outside_class',
+                                 'in_header'],
+                            ]
+                        },
+                    )
+                )
+        out.add_member(
+            self.variable_unit(
+                var_name=('all' if as_class else f'ALL_{name}'),
+                type=TypeUnit('std::vector',
+                              specialize=[enum_unit.type],
+                              constant=True),
+                docs='All enum values',
+                value=ValueUnit([
+                    ValueUnit(x['name'], parent=enum_unit)
+                    for x in members_core
+                ]),
+                enum_unit=enum_unit,
+            ),
+        )
+        if as_class:
+            for k in self.added_collections:
+                kchild = self.get_child(k)
+                out.add_member(
+                    kchild.variable_unit(
+                        name, members_core, enum_unit=enum_unit,
+                        parent=out,
+                    )
+                )
+            added = {}
+            for k in self.added_collections:
+                out.add_members(
+                    self.get_child(k).function_units(
+                        enum_unit=enum_unit,
+                        added_functions=added,
+                    )
+                )
+            out = ContainerUnit([out])
+        out.add_member(
+            EnumMacrosUnit(
+                name, members,
+                macro_suffix=(self.macro_suffix if as_class else ''),
+                skip=macro_skip,
+                conditions={
+                    'generate': (
+                        [['specialize', 'EQ:filetype:helper',
+                          'in_header']]
+                        if as_class else []
+                    )
+                },
+            ),
+            index=0,
+        )
+        enum_unit.members_macro = out.members[0]
+        if as_class:
+            def _get_context(i):
+                def _get_context_wrapped(self):
+                    return self.context.specialize[
+                        enum_unit.parent_class.spec_var[i]].rsplit(
+                            enum_unit.parent_class.spec_param[i], 1
+                        )[-1].strip('_')
+                return _get_context_wrapped
+
+            out.add_members([
+                ContainerUnit([
+                    enum_unit.external_enum(
+                        conditions={
+                            'generate': [
+                                ['declaration', 'EQ:filetype:helper',
+                                 'specialize']
+                            ]
+                        }
+                    ),
+                    helper
+                ], guards=GuardUnit('EPHOTO_USE_SCOPED_ENUM')),
+                helper_inv,
+                TypedefUnit(
+                    ValueUnit(_get_context(0)),
+                    conditions=['outside_class', 'in_header',
+                                'NOT:EQ:filetype:helper',
+                                'specialize'],
+                    type=ValueUnit(
+                        '{enum_unit.parent_class.type}',
+                        fstring_param={'enum_unit': enum_unit}),
+                    namespaces=[
+                        ValueUnit(_get_context(i)) for i in
+                        range(1, len(enum_unit.parent_class.spec_var))
+                    ]
+                )
+            ])
+        return out
 
     def complete_members(self, members):
         first = "NONE"
@@ -3467,88 +4445,10 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             members.append({'name': last, 'abbr': last})
         return skip_items
 
-    def generate_definition(self, name, members, enum_name=None,
-                            enum_type='int', as_class=None, **kwargs):
-        if as_class is None:
-            as_class = self.as_class
-        if enum_name is None:
-            if as_class:
-                enum_name = 'Type'
-            else:
-                enum_name = name
-        skip_items = self.complete_members(members)
-        lines = []
-        template_lines = []
-        enum_prefix = ''
-        specialization = ''
-        if as_class:
-            class_name = as_class
-            kwargs.setdefault('spec_param',
-                              self.get_child('global').spec_param)
-            kwargs.setdefault('spec_var',
-                              self.get_child('global').spec_var)
-            kwargs.setdefault('specialize',
-                              self.get_child('global').item2specialize(name))
-            specialization, spec_var = self.specialization(
-                template_lines, **kwargs)
-            enum_prefix = f'{class_name}{specialization}::'
-        if self.enum_in_source:
-            members_macro = self.generate_definition_macro(
-                name, members, return_macro=True,
-                macro_suffix=(None if as_class else ''))
-            lines += template_lines
-            lines += self.generate_definition_enum(
-                name, members, enum_name=enum_name, enum_type=enum_type,
-                enum_prefix=enum_prefix, as_class=as_class,
-                members_macro=members_macro)
-        if as_class:
-            if spec_var and not specialization:
-                for p, t in zip(kwargs['spec_param'], spec_var):
-                    lines += [
-                        f'const {p} {enum_prefix}{p.lower()} = {t};'
-                    ]
-            if specialization:
-                template = 'template<> '
-            else:
-                template = ''
-            lines += self.generate_definition_all(
-                name, members, enum_name=enum_name, as_class=as_class,
-                specialization=specialization, template=template)
-            for k in self.added_collections:
-                self.get_child(k).add_enum(enum_name)
-                if template:
-                    lines += [template]
-                lines += self.get_child(k).generate_definition(
-                    enum_name, members,
-                    var_name=(f'{enum_prefix}'
-                              f'{self.get_child(k).collection_name}'),
-                    skip_items=skip_items, in_class=enum_prefix)
-            lines += ['']
-        if as_class:
-            lines += self.generate_utilities(
-                name, class_name=class_name, no_guards=True,
-                specialization=specialization,
-            )
-        lines += ['']
-        return lines
-
-    def generate_source_item(self, name, members):
-        if not self.as_class:
-            return []
-        specialize = self.get_child('global').item2specialize(name)
-        return self.generate_definition(name, members,
-                                        specialize=specialize)
-
-    def generate_source_closing(self, **kwargs):
-        lines = super(CEnumGeneratorHeader, self).generate_source_closing(
-            **kwargs)
-        # for k in ['NONE', 'MAX']:
-        #     members = [self.add_member(x) for x in ['NONE', 'MAX']]
-        #     name = f"{k}{self.get_child('global').strip_suffix}"
-        #     specialize = self.get_child('global').item2specialize(name)
-        #     lines += self.generate_definition(name, members,
-        #                                       specialize=specialize)
-        return lines
+    def generate_source_item(self, name, members, **kwargs):
+        return self.generate_from_unit(name, members, definition=True,
+                                       in_source=True, namespaces=False,
+                                       **kwargs)
 
     def generate_item(self, name, members, as_class=None, **kwargs):
         if as_class is None:
@@ -3561,23 +4461,13 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             kwargs.setdefault('specialize',
                               self.get_child('global').item2specialize(name))
         lines = []
-        lines += self.generate_declaration(
-            name, members, as_class=as_class,
-            members_only=bool(kwargs.get('specialize', '')),
-            **kwargs)
-        lines += self.get_child('global').add_namespaces(
-            self.generate_specialized_typedef(
-                name, as_class=as_class, **kwargs))
+        lines += self.generate_from_unit(
+            name, members, as_class=as_class, **copy.deepcopy(kwargs))
         lines += ['']
         return lines
 
     def generate(self, *args, **kwargs):
         lines = super(CEnumGeneratorHeader, self).generate(*args, **kwargs)
-        # for k in ['NONE', 'MAX']:
-        #     members = [self.add_member(x) for x in ['NONE', 'MAX']]
-        #     lines += self.generate_enum(
-        #         f"{k}{self.get_child('global').strip_suffix}", members)
-        # lines = self.get_child('global').add_namespaces(lines)
         lines = self.include_helper_header() + lines
         return lines
 
@@ -3789,6 +4679,115 @@ def rename_source(directory, src_suffix, dst_suffix, ext):
         shutil.move(src, dst)
 
 
+def generate(args, **kws):
+    if args.rename_source:
+        src_cls = get_registered_class('parser', args.src_type)
+        return rename_source(args.rename_source, args.src, args.dst,
+                             src_cls.file_extension)
+    elif args.ePhotosynthesis:
+        return ePhotosynthesis(args)
+    src = get_registered_class('parser', args.src_type)(
+        args.src, verbose=args.verbose, is_regex=args.src_regex)
+    dstcls = get_registered_class('generator', args.dst_type)
+    if args.prefix_by_split:
+        assert not args.prefix_with_type
+        kws['prefixes'] = src.prefix_by_split(args.prefix_by_split)
+    elif args.prefix_with_type:
+        kws['prefixes'] = {k: [f"{k}_"] for k in src.param.keys()}
+    dst_children = dstcls.all_children()
+    for x in registered_classes('generator', return_classes=True):
+        if x.name not in [dstcls.name] + dst_children:
+            continue
+        x.get_arguments(args, kws, top_level=(x.name == args.dst_type))
+    dst = dstcls(
+        src, dst=args.dst, top_level=True, overwrite=args.overwrite,
+        verbose=args.verbose, dry_run=args.dry_run,
+        skip_children=args.skip_children,
+        root_include_dir=args.root_include_dir, **kws)
+    return dst
+
+
+def ePhotosynthesis(args):
+    srcdir = args.src
+    dstdir_inc = os.path.dirname(args.dst_global)
+    dstdir_src = os.path.dirname(args.dst_global_source)
+    args.ePhotosynthesis = False
+    args.src_regex = True
+    args.dst_type = 'c'
+    args.namespaces_c_source = ['ePhotosynthesis']
+    args.namespaces_global = ['ePhotosynthesis']
+    args.enum_name_global = 'MODULE'
+    args.enum_macro_skip_global = ['ALL']
+    args.accum_enum_macro_skip_global = ['VARS']
+    args.as_class_c = 'ValueSetEnum'
+    args.dst_helper = os.path.join(dstdir_inc, 'enums_helpers.hpp')
+    first = True
+    macro_suffix = {
+        'COND': 'Condition',
+        'MOD': '',
+        'POOL': 'Pool',
+        'VEL': 'Vel'
+    }
+    added_classes = {
+        'names': {},
+        'values': {
+            'collection_name': 'defaults',
+        },
+        'alternate_values': {
+            'collection_name': 'defaults_C3',
+            'singular_collection_name': 'default_C3',
+        },
+        'glymaids': {
+            'explicit': True,
+        },
+        'aliases': {
+            'reversed': True,
+            'explicit': True,
+            'singular_collection_name': 'alias',
+        },
+        'docs': {
+            'explicit': True,
+            'singular_collection_name': 'docs',
+            'ragged_right': True,
+        },
+        'value_flags': {
+            'is_editable': True,
+            'explicit': True,
+        },
+        'static_value_flags': {
+            'explicit': True,
+        },
+    }
+    order = ['COND', 'POOL', 'KE', 'MOD', 'RC', 'VARS', 'VEL']
+    kws = {}
+    for k in ['global', 'helper']:
+        kws[f'update_existing_{k}'] = True
+    for suffix in order:
+        last = (suffix == order[-1])
+        if not first:
+            args.append_global = 'preserved'
+            args.append_helper = 'direct'
+        if last:
+            for k in ['global', 'helper']:
+                kws[f'update_existing_{k}'] = False
+        args.src = os.path.join(srcdir, f'*_{suffix}.txt')
+        args.dst = os.path.join(dstdir_inc, f'enums_{suffix}.hpp')
+        args.dst_c_source = os.path.join(dstdir_src,
+                                         f'enums_{suffix}.cpp')
+        args.macro_suffix_c = macro_suffix.get(suffix, suffix)
+        args.strip_suffix_global = f'_{suffix}'
+        for ftype, ftype_args in added_classes.items():
+            setattr(args, f'expect_empty_{ftype}', True)
+            setattr(args, f'expect_empty_{ftype}_header', True)
+            for k, v in ftype_args.items():
+                setattr(args, f'{k}_{ftype}', v)
+        dst = generate(args, **kws)
+        if not last:
+            for k in ['global', 'helper']:
+                kws[f'existing_{k}'] = dst.added_files[k].existing
+        first = False
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         "Generate enum source code & header files based on "
@@ -3831,30 +4830,9 @@ if __name__ == "__main__":
                         help=("Rename source files in this directory "
                               "with the provided src suffix to use the "
                               "provided dst suffix"))
+    parser.add_argument("--ePhotosynthesis", action="store_true",
+                        help="Generate the enumerators for ePhotosynthesis")
     for x in registered_classes('generator', return_classes=True):
         x.add_arguments(parser)
     args = parser.parse_args()
-    if args.rename_source:
-        src_cls = get_registered_class('parser', args.src_type)
-        rename_source(args.rename_source, args.src, args.dst,
-                      src_cls.file_extension)
-    else:
-        src = get_registered_class('parser', args.src_type)(
-            args.src, verbose=args.verbose, is_regex=args.src_regex)
-        dstcls = get_registered_class('generator', args.dst_type)
-        kws = {}
-        if args.prefix_by_split:
-            assert not args.prefix_with_type
-            kws['prefixes'] = src.prefix_by_split(args.prefix_by_split)
-        elif args.prefix_with_type:
-            kws['prefixes'] = {k: [f"{k}_"] for k in src.param.keys()}
-        dst_children = dstcls.all_children()
-        for x in registered_classes('generator', return_classes=True):
-            if x.name not in [dstcls.name] + dst_children:
-                continue
-            x.get_arguments(args, kws, top_level=(x.name == args.dst_type))
-        dst = dstcls(
-            src, dst=args.dst, top_level=True, overwrite=args.overwrite,
-            verbose=args.verbose, dry_run=args.dry_run,
-            skip_children=args.skip_children,
-            root_include_dir=args.root_include_dir, **kws)
+    generate(args)
