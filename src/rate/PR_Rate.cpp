@@ -117,7 +117,7 @@ void PR::_Rate(const double t, const PRCondition* const PR_con, Variables *theVa
                                              PR_con->GLYc / PR::KE122) / ((PR_con->GOAc + PR::KM1221) *
                                                                           (PR_con->SERc + PR::KM1222 *
                                                                            (1. + PR_con->GLYc / PR::KI1221)));
-        theVars->PR_Vel.v123 = PR::PrV123 * (PR_con->HPRc * PR::NADHc - PR_con->GCEA * PR::NADc / PR::KE123) /
+        theVars->PR_Vel.v123 = PR::PrV123 * (PR_con->HPRc * PR::NADHc - PR_con->GCEAc * PR::NADc / PR::KE123) /
                                (PR_con->HPRc + PR::KM123 * (1. + PR_con->HPRc / PR::KI123));
         theVars->PR_Vel.v124 = PR::PrV124 * (PR_con->GOAc * PR::GLUc - PR::KGc * PR_con->GLYc / PR::KE124) /
                                ((PR_con->GOAc + PR::KM1241) * (PR::GLUc + PR::KM1242 *
