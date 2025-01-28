@@ -248,12 +248,17 @@ class build(SubTask):
                     f"cmake --install . --prefix {args.install_dir} "
                     f"--component Python {' '.join(install_args)}"
                 ]
+        if args.rebuild and os.path.isdir(args.build_dir):
+            shutil.rmtree(args.build_dir)
         if ((args.rebuild and (not args.dont_install) and
              os.path.isdir(args.install_dir))):
+            ephotodir = os.path.join(args.install_dir,
+                                     'ePhotosynthesis')
             subdir = glob.glob(os.path.join(args.install_dir, '*'))
-            if (not subdir) or subdir == [os.path.join(args.install_dir,
-                                                       'ePhotosynthesis')]:
+            if (not subdir) or subdir == [ephotodir]:
                 shutil.rmtree(args.install_dir)
+            elif os.path.isdir(ephotodir):
+                shutil.rmtree(ephotodir)
         if not os.path.isdir(args.build_dir):
             os.mkdir(args.build_dir)
         kwargs.setdefault('cwd', args.build_dir)
@@ -631,6 +636,7 @@ class docs(BuildSubTask):
         args.dont_build = False
         args.dont_install = True
         args.only_python = False
+        args.force_scoped_enum = False
         super(docs, cls).adjust_args(args)
 
     def __init__(self, args, config_args=None, build_args=None,

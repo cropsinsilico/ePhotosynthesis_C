@@ -30,8 +30,6 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::static_value_flags;
-  template<>
-  std::string ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::error_prefix();
   std::ostream& operator<<(std::ostream& out, const ENUM_BF_POOL& x);
   template<>
   struct enum_helper_inv<ENUM_BF_POOL> {
@@ -70,8 +68,6 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::static_value_flags;
-  template<>
-  std::string ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::error_prefix();
   std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_POOL& x);
   template<>
   struct enum_helper_inv<ENUM_FIBF_POOL> {
@@ -110,8 +106,6 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::static_value_flags;
-  template<>
-  std::string ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::error_prefix();
   std::ostream& operator<<(std::ostream& out, const ENUM_FI_POOL& x);
   template<>
   struct enum_helper_inv<ENUM_FI_POOL> {
@@ -150,8 +144,6 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::static_value_flags;
-  template<>
-  std::string ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::error_prefix();
   std::ostream& operator<<(std::ostream& out, const ENUM_PR_POOL& x);
   template<>
   struct enum_helper_inv<ENUM_PR_POOL> {
@@ -190,8 +182,6 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::static_value_flags;
-  template<>
-  std::string ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::error_prefix();
   std::ostream& operator<<(std::ostream& out, const ENUM_PS_POOL& x);
   template<>
   struct enum_helper_inv<ENUM_PS_POOL> {
@@ -230,8 +220,6 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::static_value_flags;
-  template<>
-  std::string ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::error_prefix();
   std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_POOL& x);
   template<>
   struct enum_helper_inv<ENUM_RROEA_POOL> {
@@ -270,8 +258,6 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::static_value_flags;
-  template<>
-  std::string ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::error_prefix();
   std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_POOL& x);
   template<>
   struct enum_helper_inv<ENUM_RedoxReg_POOL> {
@@ -310,8 +296,6 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::static_value_flags;
-  template<>
-  std::string ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::error_prefix();
   std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_POOL& x);
   template<>
   struct enum_helper_inv<ENUM_RuACT_POOL> {
@@ -350,8 +334,6 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::static_value_flags;
-  template<>
-  std::string ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::error_prefix();
   std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_POOL& x);
   template<>
   struct enum_helper_inv<ENUM_SUCS_POOL> {
@@ -390,8 +372,6 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::static_value_flags;
-  template<>
-  std::string ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::error_prefix();
   std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_POOL& x);
   template<>
   struct enum_helper_inv<ENUM_XanCycle_POOL> {

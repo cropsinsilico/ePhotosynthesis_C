@@ -132,7 +132,7 @@ class CodeContext:
 
     parameter_keys = [
         'in_header', 'in_source', 'inside_class', 'specialize',
-        'definition', 'declaration', 'filetype'
+        'definition', 'declaration', 'filetype', 'instantiation',
     ]
 
     def __init__(self, **kwargs):
@@ -164,7 +164,7 @@ class CodeContext:
     def update(self, in_header=None, in_source=None,
                inside_class=False, specialize=None,
                definition=None, declaration=None,
-               filetype=None):
+               filetype=None, instantiation=None):
         if in_header is None:
             in_header = getattr(self, 'in_header', None)
         if in_source is None:
@@ -181,6 +181,8 @@ class CodeContext:
             declaration = getattr(self, 'declaration', None)
         if filetype is None:
             filetype = getattr(self, 'filetype', None)
+        if instantiation is None:
+            instantiation = getattr(self, 'instantiation', None)
         if in_header is None:
             if in_source is None:
                 in_source = False
@@ -200,6 +202,8 @@ class CodeContext:
                 definition = False
             else:
                 definition = True
+        if instantiation is None:
+            instantiation = False
         self.in_header = in_header
         self.in_source = in_source
         self.inside_class = inside_class
@@ -207,6 +211,7 @@ class CodeContext:
         self.declaration = declaration
         self.definition = definition
         self.filetype = filetype
+        self.instantiation = instantiation
 
 
 class CodeUnitBase:
@@ -360,6 +365,10 @@ class CodeUnitBase:
         return []
 
     @property
+    def instantiated(self):
+        return self.specialized and self.context.instantiation
+
+    @property
     def specialization(self):
         param = self.specialized
         if not param:
@@ -371,6 +380,8 @@ class CodeUnitBase:
         if not self.spec_var:
             return ''
         if self.specialized:
+            if self.instantiated:
+                return 'template '
             return 'template<> '
         param = [f"{x} {t}" for x, t in zip(self.spec_param, self.spec_var)]
         return f"template<{', '.join(param)}> "
@@ -387,7 +398,8 @@ class CodeUnitBase:
 
     @property
     def api(self):
-        if self.context.primary and self.export:
+        if ((self.context.primary and self.export and self.inside_class
+             and (not self.check_conditions('define')))):
             return f'{self.export} '
         return ''
 
@@ -451,11 +463,16 @@ class CodeUnitBase:
                 return True
         return False
 
-    def _generate(self):
+    def _declare(self):
         raise NotImplementedError
 
     def _define(self):
         raise NotImplementedError
+
+    def _generate(self):
+        out = self.declare(no_semicolon=True)
+        self.add_definition(out)
+        return out
 
     def generate(self, top=False):
         if not self.check_conditions():
@@ -477,8 +494,41 @@ class CodeUnitBase:
             return []
         return self._define()
 
-    def add_definition(self, out, no_semicolon=False):
+    def declare(self, force=False, no_semicolon=False):
+        if not (force or self.check_conditions('declare')):
+            return []
+        out = [self._declare()]
+        if self.dont_add_template_lines:
+            template = ''
+            template_lines = self.template_lines
+            if template_lines and '<' not in template_lines[-1]:
+                template = template_lines[-1] + ' '
+                template_lines = template_lines[:-1]
+            out = template_lines + [f'{template}{out[0]}']
+        if not no_semicolon:
+            out[-1] += ';'
+        return out
+
+    def instantiate(self):
+        if not (self.check_conditions('instantiate')
+                and self.instantiated):
+            return []
+        return self.declare(force=True)
+
+    def add_definition(self, out, no_semicolon=False,
+                       add_brakets=False, indent=0,
+                       prefix=None, suffix=None):
         definition = self.define()
+        if add_brakets:
+            indent += 1
+        if indent:
+            definition = ['  ' * indent + f'{x}' for x in definition]
+        if prefix and definition:
+            definition = prefix + definition
+        if suffix and definition:
+            definition = definition + suffix
+        if add_brakets and definition:
+            definition = [' {'] + definition + ['}']
         if definition:
             out[-1] += definition[0]
             out += definition[1:]
@@ -631,21 +681,28 @@ class ClassUnit(ContainerUnit):
         self.update_member_context(**kwargs)
         return out
 
-    def _generate(self):
+    def add_definition(self, *args, **kwargs):
+        kwargs['add_brakets'] = True
+        if self.class_type in ['class']:
+            kwargs['prefix'] = ['public:']
+        return super(ClassUnit, self).add_definition(*args, **kwargs)
+
+    def _declare(self):
+        return (f'{self.api}{self.class_type} {self.name}'
+                f'{self.specialization}')
+
+    def _define(self):
         out = []
         for m in self.members:
             out += m.generate()
+        if self.context.declaration and self.complete_class:
+            out += self.body
+        return out
+
+    def _generate(self):
         if not (self.context.declaration and self.complete_class):
-            return out
-        body = out
-        out = self.template_lines + [
-            f'{self.api}{self.class_type} '
-            f'{self.name}{self.specialization} {{',
-        ]
-        if self.class_type in ['class']:
-            out += ['public:']
-        out += ['  ' + x for x in body + self.body]
-        out += ['};']
+            return self.define()
+        out = super(ContainerUnit, self)._generate()
         if not self.specialized:  # or self.api:
             self.update_context(inside_class=False,
                                 definition=True,
@@ -747,18 +804,11 @@ class VariableUnit(CodeUnitBase):
         self.reference = kwargs.pop('reference', False)
         super(VariableUnit, self).__init__(*args, **kwargs)
 
-    def _generate(self):
+    def _declare(self):
         const = 'const ' if self.constant else ''
         ref = '&' if self.reference else ''
-        out = [
-            f'{self.prefix}{const}{self.type}{ref} '
-            f'{self.parent_address}{self.name}'
-        ]
-        self.add_definition(out)
-        if ((self.primary and self.docs
-             and isinstance(self.docs, str))):
-            out[-1] += f'  /**< {self.docs} */'
-        return out
+        return (f'{self.prefix}{const}{self.type}{ref} '
+                f'{self.parent_address}{self.name}')
 
     def _define(self):
         value = self.value
@@ -768,6 +818,13 @@ class VariableUnit(CodeUnitBase):
             value = [value]
         out = [f' = {value[0]}']
         out += value[1:]
+        return out
+
+    def _generate(self):
+        out = super(VariableUnit, self)._generate()
+        if ((self.primary and self.docs
+             and isinstance(self.docs, str))):
+            out[-1] += f'  /**< {self.docs} */'
         return out
 
     def add_docs(self, out):
@@ -819,6 +876,8 @@ class ValueUnit(CodeUnitBase):
             else:
                 out = [self._generate_value(xx) for xx in x]
             return f"{{{', '.join(out)}}}"
+        elif isinstance(self.parent, EnumUnit):
+            return f'{self.parent.value_address}{x}'
         else:
             out = f'{self.parent_address}{x}'
         if width:
@@ -897,28 +956,25 @@ class FunctionUnit(CodeUnitBase):
         assert all(args)
         return ', '.join(args)
 
-    def _generate(self):
-        out = []
+    def add_definition(self, *args, **kwargs):
+        kwargs['add_brakets'] = True
+        return super(FunctionUnit, self).add_definition(*args, **kwargs)
+
+    def _declare(self):
         friend = 'friend ' if self.friend else ''
         inline = ''
         if ((self.context.definition and self.context.declaration
              and not (self.template_lines or self.static))):
             inline = 'inline '
-        out = [
-            f'{friend}{inline}{self.prefix}{self.type} '
-            f'{self.parent_address}{self.name}'
-            f'({self.args})'
-        ]
+        out = (f'{friend}{inline}{self.prefix}'
+               f'{self.type} {self.parent_address}{self.name}'
+               f'{self.specialization}({self.args})')
         if self.constant:
-            out[-1] += ' const'
-        self.add_definition(out, no_semicolon='declaration')
+            out += ' const'
         return out
 
     def _define(self):
-        out = [' {']
-        out += [f'  {x}' for x in self.body]
-        out += ['}']
-        return out
+        return copy.deepcopy(self.body)
 
 
 class EnumUnit(CodeUnitBase):
@@ -947,13 +1003,18 @@ class EnumUnit(CodeUnitBase):
                         context=self.context)
 
     @property
+    def value_address(self):
+        out = self.child_address
+        if (((not self.scoped_enum) and self.parent_class
+             and self.outside_class)):
+            out += f'SCOPED_ENUM_TYPE({self.name})'
+        return out
+
+    @property
     def child_address(self):
         if self.scoped_enum:
             return super(EnumUnit, self).child_address
-        out = f'{self.parent_address}'
-        if self.parent_class and self.outside_class:
-            out += f'SCOPED_ENUM_TYPE({self.name})'
-        return out
+        return f'{self.parent_address}'
 
     def external_enum(self, **kwargs):
         if not self.enum_name_ext:
@@ -968,12 +1029,32 @@ class EnumUnit(CodeUnitBase):
             kwargs.setdefault(k, v)
         return EnumUnit(self.enum_name_ext, self.members, **kwargs)
 
+    def add_definition(self, *args, **kwargs):
+        kwargs['add_brakets'] = True
+        return super(EnumUnit, self).add_definition(*args, **kwargs)
+
+    def _declare(self):
+        return (f'enum {self.class_attr}{self.parent_address}'
+                f'{self.name} : {self.enum_type}')
+
+    def _define(self):
+        if self.parent_class and self.context.primary:
+            return []
+        members_macro = self.members_macro
+        if isinstance(members_macro, EnumUnit):
+            members_macro = members_macro.members_macro
+        if isinstance(members_macro, EnumMacrosUnit):
+            members_macro = members_macro.macro_base
+        out = generate_enum_members(
+            self.members, explicit_values=self.explicit_values,
+            members_macro=members_macro,
+            ragged_right=self.ragged_right,
+            indent=''
+        )
+        return out
+
     def _generate(self):
-        out = [
-            f'enum {self.class_attr}{self.parent_address}{self.name} : '
-            f'{self.enum_type}'
-        ]
-        self.add_definition(out)
+        out = super(EnumUnit, self)._generate()
         if ((self.enum_name_ext and self.parent_class
              and self.parent_class.specialized)):
             typedef = TypedefUnit(
@@ -983,23 +1064,6 @@ class EnumUnit(CodeUnitBase):
                 conditions=[['declaration',  'specialize']],
             )
             out += typedef.generate()
-        return out
-
-    def _define(self):
-        if self.parent_class and self.context.primary:
-            return []
-        out = [' {']
-        members_macro = self.members_macro
-        if isinstance(members_macro, EnumUnit):
-            members_macro = members_macro.members_macro
-        if isinstance(members_macro, EnumMacrosUnit):
-            members_macro = members_macro.macro_base
-        out += generate_enum_members(
-            self.members, explicit_values=self.explicit_values,
-            members_macro=members_macro,
-            ragged_right=self.ragged_right,
-        )
-        out += ['}']
         return out
 
 
@@ -1886,7 +1950,8 @@ class CMixin:
         super().__init__(*args, **kwargs)
 
     @classmethod
-    def include_file(cls, x, caller=None, rootdir=None):
+    def include_file(cls, x, caller=None, rootdir=None,
+                     no_buffer_line=False):
         if isinstance(x, EnumGeneratorBase):
             x = x.dst
         elif isinstance(x, EnumParserBase):
@@ -1897,7 +1962,10 @@ class CMixin:
             header_incl = os.path.basename(x)
         else:
             header_incl = os.path.relpath(x, rootdir)
-        return [f"#include \"{header_incl}\"", ""]
+        out = [f"#include \"{header_incl}\""]
+        if not no_buffer_line:
+            out.append("")
+        return out
 
     @classmethod
     def specialization(cls, lines, spec_param=[], specialize=[],
@@ -1922,27 +1990,29 @@ class CMixin:
                     lines += [f"template<{', '.join(param)}>"]
         return specialization, spec_var
 
-    def add_include_files(self):
+    def add_include_files(self, no_buffer_line=False):
         lines = []
         if self.include_files:
             for x in self.include_files:
                 lines += self.include_file(x, caller=self.dst,
-                                           rootdir=self.root_include_dir)
-            lines += ['']
+                                           rootdir=self.root_include_dir,
+                                           no_buffer_line=True)
+            if not no_buffer_line:
+                lines += ['']
         return lines
 
-    def include_self(self, caller, rootdir=None):
+    def include_self(self, caller, rootdir=None, **kwargs):
         if rootdir is None:
             rootdir = self.root_include_dir
         return self.include_file(
-            self.dst, caller=caller, rootdir=rootdir)
+            self.dst, caller=caller, rootdir=rootdir, **kwargs)
 
-    def include_header(self, caller=None):
+    def include_header(self, caller=None, **kwargs):
         if caller is None:
             caller = self.dst
         return self.include_file(
             self.get_child('header').dst, caller=caller,
-            rootdir=self.root_include_dir)
+            rootdir=self.root_include_dir, **kwargs)
 
     def begin_namespaces(self, namespaces=None):
         if namespaces is None:
@@ -2286,7 +2356,11 @@ class CEnumGeneratorBaseSource(CMixin, EnumGeneratorBase):
                 lines += self.parent.generate_source(
                     indent=indent, **kwargs)
                 if lines:
-                    lines = self.parent.include_self(self.dst) + lines
+                    includes = (
+                        self.parent.include_self(
+                            self.dst, no_buffer_line=True)
+                        + self.add_include_files())
+                    lines = includes + lines
                 return lines
         if not self.define_in_header:
             lines += self.include_header()
@@ -2610,9 +2684,6 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
         collection_type = self.collection_type_unit(
             enum_name, value_type=value_type, parent=enum_unit,
             as_class=enum_is_class, constant=False)
-        # const_collection_type = self.collection_type_unit(
-        #     enum_name, value_type=value_type, parent=enum_unit,
-        #     as_class=enum_is_class, constant=True)
         if conditions is None:
             if friend:
                 conditions = {
@@ -2621,6 +2692,16 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                     ],
                     'define': [
                         ['specialize', 'in_source']
+                    ],
+                }
+            elif self.parent.get_child('global').define_in_source:
+                conditions = {
+                    'generate': [
+                        ['primary', 'inside_class'],
+                        ['NOT:specialize', 'in_source'],
+                    ],
+                    'define': [
+                        ['NOT:specialize', 'in_source'],
                     ],
                 }
             elif utility:
@@ -3391,40 +3472,6 @@ class CEnumGeneratorFlagMapBase(CEnumGeneratorMapBase):
                 function_type, enum_unit=enum_unit, **kwargs)
         return out
 
-    def generate_additional_method(self, function_type, **kwargs):
-        methods_not_general = [
-            'is', 'check', 'checkNot', 'list',
-        ]
-        methods_general = [
-            'string', 'clear', 'add', 'remove', 'count',
-        ]
-        out = []
-        if ((function_type in (methods_not_general + methods_general)
-             and not self.current_flag_collection)):
-            result = kwargs.get('result', self.collection_name)
-            assert self.value_flag_map
-            assert result
-            for k in self.value_flag_map.keys():
-                ktitle = CEnumGeneratorCollectionBase.make_title(k)
-                self.push_flag(k)
-                ikw = copy.deepcopy(kwargs)
-                ikw.setdefault('function_param', {})
-                if function_type in ['string']:
-                    dummy_vect = self.get_dummy_vector_collection(k)
-                    ikw['result'] = f'list{ktitle}()'
-                    out += dummy_vect.generate_additional_method(
-                        function_type, **ikw)
-                else:
-                    out += self.generate_additional_method(
-                        function_type, **ikw)
-                self.pop_flag()
-            if function_type in methods_not_general:
-                return out
-        out += super(
-            CEnumGeneratorFlagMapBase, self).generate_additional_method(
-                function_type, **kwargs)
-        return out
-
     def generate_is(self, result, value):
         assert self.current_flag is not None
         out = [
@@ -3688,6 +3735,7 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBaseHeader):
                      "members"),
         },
     )
+    define_in_source = True
 
     def __init__(self, *args, **kwargs):
         kwargs.setdefault('enum_name', self.name.upper())
@@ -3702,65 +3750,6 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBaseHeader):
                               add_prefix=f'{self.enum_name}_',
                               strip_suffix=self.strip_suffix)
         return [f"{key:{width}},"]
-
-    def generate_type_struct(self, name, result=None, for_header=False,
-                             **kwargs):
-        lines = []
-        func_name = f'{name}2Enum'
-        if self.parent.as_class:
-            lines += [
-                f'#define {func_name} {self.parent.as_class}'
-            ]
-            return lines
-        assert not self.parent.as_class
-        kwargs.setdefault('spec_param', self.spec_param)
-        specialization, spec_var = self.specialization(lines, **kwargs)
-        lines += [
-            f'struct {func_name}{specialization} {{',
-            'public:',
-        ]
-        if result is None and (not specialization):
-            result = self.empty_enum_name
-        assert result is not None
-        lines += [
-            f'  typedef enum {result} Type;',
-            '};',
-        ]
-        return lines
-
-    def generate_param_function(self, dst, result=None, for_header=False,
-                                **kwargs):
-        lines = []
-        func_name = f'get_enum_{dst.lower()}'
-        kwargs.setdefault('spec_param', ['typename'])
-        specialization, spec_var = self.specialization(lines, **kwargs)
-        inline = 'inline ' if (specialization and for_header) else ''
-        lines += [
-            f'{inline}{dst} {func_name}{specialization}() {{',
-        ]
-        if (not specialization) and (not self.parent.as_class):
-            lines += [
-                f'  throw std::runtime_error(\"No {dst.lower()} '
-                f'could be found\");',
-            ]
-        if result is None and (not specialization):
-            if self.parent.as_class:
-                result = f'{spec_var[0]}::{dst}'
-            else:
-                result = f'{dst}_NONE'
-        assert result is not None
-        lines += [
-            f'  return {result};',
-            '}',
-        ]
-        if (not specialization) and (not self.parent.as_class):
-            kwargs.update(
-                result=result,
-                for_header=for_header,
-                specialize=[self.empty_enum_name],
-            )
-            lines += self.generate_param_function(dst, **kwargs)
-        return lines
 
     @property
     def spec_param(self):
@@ -3844,6 +3833,21 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBaseHeader):
             self.extract_global_enum()
         return self._accum_enum_members
 
+    @property
+    def specializations(self):
+        spec_var = self.spec_var
+        for x in self.enum_members:
+            if x['abbr'] in ['NONE', 'MAX']:
+                continue
+            if self.accum_enum_name:
+                for y in self.accum_enum_members:
+                    if y['abbr'] in ['NONE', 'MAX']:
+                        continue
+                    yield {spec_var[0]: x['name'],
+                           spec_var[1]: y['name']}
+            else:
+                yield {spec_var[0]: x['name']}
+
     def generate_global_enum(self, lines=None):
         if lines is None:
             lines = []
@@ -3861,10 +3865,6 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBaseHeader):
                 namespaces=False,
             )
         return lines
-
-    def generate_source(self, **kwargs):
-        # return self.generate(in_source=True, **kwargs)
-        return []
 
     def includes(self):
         includes = {'global': []}
@@ -3895,7 +3895,22 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBaseHeader):
                 f'headers_{k}', [x for x in v if x])
         return include_lines
 
-    def generate(self, indent='', **kwargs):
+    def generate_source(self, namespaces=None, **kwargs):
+        if not self.define_in_source:
+            return []
+        lines = self.generate(in_source=True, namespaces=False, **kwargs)
+        if self.parent.as_class:
+            enum_class = self.parent.enum_unit().parent
+            for spec in self.specializations:
+                enum_class.set_context(specialize=spec,
+                                       in_source=True,
+                                       instantiation=True,
+                                       filetype='global')
+                lines += enum_class.instantiate()
+        lines = self.add_namespaces(lines, namespaces=namespaces)
+        return lines
+
+    def generate(self, indent='', namespaces=None, **kwargs):
         lines = []
         kwargs.update(
             spec_param=self.spec_param, spec_var=self.spec_var,
@@ -3903,19 +3918,21 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBaseHeader):
         )
         # Base class
         if self.parent.as_class:
-            lines += ['// Unspecialized enum']
+            docs = 'Unspecialized enum'
             lines += self.parent.generate_enum(
                 self.parent.as_class, [], **kwargs,
             )
         else:
-            # Empty enum
-            lines += ['// Empty enum']
+            docs = 'Empty enum'
             lines += self.parent.generate_enum(
                 self.empty_enum_name, [], **kwargs,
             )
-        lines = self.add_namespaces(lines)
-        lines += self.includes()
-        lines = self.parent.include_helper_header() + lines
+        if lines:
+            lines = [f'// {docs}'] + lines
+        lines = self.add_namespaces(lines, namespaces=namespaces)
+        if not kwargs.get('in_source', False):
+            lines += self.includes()
+            lines = self.parent.include_helper_header() + lines
         return lines
 
 
@@ -3933,6 +3950,12 @@ class CEnumGeneratorHelper(CEnumGeneratorBaseHeader):
                 'global').generate_global_enum()
             out = self.replace_chunk('global_enum', out, new_chunk)
         return out
+
+    def add_include_files(self, *args, **kwargs):
+        if not self.append:
+            return super(CEnumGeneratorHelper, self).add_include_files(
+                *args, **kwargs)
+        return []
 
     def generate(self, *args, **kwargs):
         lines = []
@@ -4063,8 +4086,7 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             },
         },
     }
-    _utilities_in_primary = False
-    _export_members = False
+    _export_members = True
 
     @staticmethod
     def create_child_classes(cls):
@@ -4189,6 +4211,8 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 ]
             }
         assert (var_name and value and type)
+        if self._export_members:
+            remainder_kwargs.setdefault('export', self.api_macro)
         out = VariableUnit(
             var_name, type=type, value=value, static=static,
             conditions=conditions,
@@ -4251,7 +4275,13 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 parent = ClassUnit(
                     as_class, spec_param=spec_param, spec_var=spec_var,
                     conditions={
-                        'generate': [['NOT:EQ:filetype:helper']]
+                        'generate': [
+                            ['NOT:EQ:filetype:helper'],
+                            # ['specialize', 'in_source', 'instantiation',
+                            #  'EQ:filetype:global'],
+                        ],
+                        # 'instantiate': [
+                        # ],
                     })
             elif force_container:
                 parent = ContainerUnit()
@@ -4463,7 +4493,8 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
         lines = []
         lines += self.generate_from_unit(
             name, members, as_class=as_class, **copy.deepcopy(kwargs))
-        lines += ['']
+        if lines:
+            lines += ['']
         return lines
 
     def generate(self, *args, **kwargs):

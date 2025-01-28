@@ -2,7 +2,6 @@
 // modified directly
 #include "enums/enums_utils.hpp"
 
-
 namespace ePhotosynthesis {
   template<>
   const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::all = {
@@ -72,19 +71,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)RT     , (STATIC_VALUE_FLAG_CONST)},
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)DeltaGo, (STATIC_VALUE_FLAG_CONST)}
   };
-  template<>
-  std::string ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_BF_MOD& x) {
     out << ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::all = {};
   template<>
@@ -103,19 +93,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_CM_MOD& x) {
     out << ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::all = {};
   template<>
@@ -134,19 +115,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_DynaPS_MOD& x) {
     out << ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::all = {};
   template<>
@@ -165,19 +137,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_EPS_MOD& x) {
     out << ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::all = {
     ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)ChlPSI     ,
@@ -226,19 +189,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)FIBF2FI_PQ , (STATIC_VALUE_FLAG_CALC | STATIC_VALUE_FLAG_INIT_ONCE)},
     {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)FIBF2FI_PQa, (STATIC_VALUE_FLAG_CALC | STATIC_VALUE_FLAG_INIT_ONCE)}
   };
-  template<>
-  std::string ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_MOD& x) {
     out << ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::all = {
     ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)cpsii
@@ -269,19 +223,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_FI_MOD& x) {
     out << ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::all = {
     ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V111        ,
@@ -617,19 +562,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Q10_131, (STATIC_VALUE_FLAG_CONST)},
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)CE     , (STATIC_VALUE_FLAG_CONST)}
   };
-  template<>
-  std::string ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_PR_MOD& x) {
     out << ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::all = {
     ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PS_C_CP  ,
@@ -1474,19 +1410,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)STOM1    , (STATIC_VALUE_FLAG_CONST)                              },
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)STOM2    , (STATIC_VALUE_FLAG_CONST)                              }
   };
-  template<>
-  std::string ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_PS_MOD& x) {
     out << ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::all = {};
   template<>
@@ -1505,19 +1432,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_PS_PR_MOD& x) {
     out << ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::all = {};
   template<>
@@ -1536,19 +1454,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_RA_MOD& x) {
     out << ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::all = {
     ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)SC  ,
@@ -1587,19 +1496,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)fc16, (STATIC_VALUE_FLAG_CONST)},
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)FC  , (STATIC_VALUE_FLAG_CONST)}
   };
-  template<>
-  std::string ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_MOD& x) {
     out << ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::all = {
     ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)RedoxReg_VMAX6 ,
@@ -1654,19 +1554,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)ThioT         , (STATIC_VALUE_FLAG_CONST)},
     {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Thio_Oxidation, (STATIC_VALUE_FLAG_CONST)}
   };
-  template<>
-  std::string ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_MOD& x) {
     out << ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::all = {
     ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)activase,
@@ -1700,19 +1591,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::static_value_flags = {
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)factor, (STATIC_VALUE_FLAG_CONST)}
   };
-  template<>
-  std::string ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_MOD& x) {
     out << ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::all = {
     ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)V51        ,
@@ -2182,19 +2064,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)SC         , (STATIC_VALUE_FLAG_CONST)    },
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)SC1        , (STATIC_VALUE_FLAG_CONST)    }
   };
-  template<>
-  std::string ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_MOD& x) {
     out << ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::all = {
     ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kva                 ,
@@ -2259,19 +2132,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)ABA_                , (STATIC_VALUE_FLAG_CONST | STATIC_VALUE_FLAG_INIT_ONCE)},
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)XanCycle2FIBF_Xstate, (STATIC_VALUE_FLAG_CALC)                               }
   };
-  template<>
-  std::string ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_MOD& x) {
     out << ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::all = {};
   template<>
@@ -2290,18 +2154,9 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_trDynaPS_MOD& x) {
     out << ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::getName(x);
     return out;
-  }
+  };
 }
 

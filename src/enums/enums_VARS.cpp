@@ -2,7 +2,6 @@
 // modified directly
 #include "enums/enums_utils.hpp"
 
-
 namespace ePhotosynthesis {
   template<>
   const std::vector<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::all = {
@@ -165,18 +164,9 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PSIantennaSize   , (STATIC_VALUE_FLAG_CONST)},
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)ProteinTotalRatio, (STATIC_VALUE_FLAG_CONST)}
   };
-  template<>
-  std::string ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_ALL_VARS& x) {
     out << ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::getName(x);
     return out;
-  }
+  };
 }
 

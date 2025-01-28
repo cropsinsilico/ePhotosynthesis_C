@@ -100,6 +100,10 @@ else()
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
+if(NOT EPHOTO_USE_SCOPED_ENUM)
+    set(EPHOTO_USE_SCOPED_ENUM OFF)
+endif()
+
 if(NOT TEST_COVERAGE)
     set(TEST_COVERAGE OFF)
 else()
@@ -181,6 +185,8 @@ if(NOT WIN32)
     endif(CCACHE_FOUND)
 endif()
 
+set(EXPORT_HEADER ePhotosynthesis_export.h)
+set(EXPORT_MACRO EPHOTO_API)
 
 #########################
 # Regenerate enum files #
@@ -196,14 +202,16 @@ set(UTILS_DST_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_utils.hpp)
 file(GLOB ENUM_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/param/*.txt")
 list(APPEND ENUM_SOURCES ${ENUM_SCRIPT})
 set(ENUM_BYPRODUCTS)
-set(ENUM_OUTPUT ${ENUM_GLOBAL_H} ${ENUM_HELPER})  # ${ENUM_GLOBAL})
-# set(GENERATED_SOURCES ${ENUM_GLOBAL})
+set(ENUM_OUTPUT ${ENUM_GLOBAL_H} ${ENUM_HELPER} ${ENUM_GLOBAL})
+set(GENERATED_SOURCES ${ENUM_GLOBAL})
 set(ENUM_COMMAND
     python ${ENUM_SCRIPT}
     "${CMAKE_CURRENT_SOURCE_DIR}/param"
     --ePhotosynthesis
-    --api-macro-c=EPHOTO_API
+    --api-macro-c=${EXPORT_MACRO}
     --include-file-c-source=${UTILS_DST_H}
+    --include-file-global-source=${UTILS_DST_H}
+    --include-file-helper=${CMAKE_CURRENT_SOURCE_DIR}/include/${EXPORT_HEADER}
     --dst-global=${ENUM_GLOBAL_H}
     --dst-global-source=${ENUM_GLOBAL}
     --root-include-dir=${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -291,11 +299,11 @@ target_link_libraries(ePhoto PRIVATE EPhotosynthesis)
 include(GenerateExportHeader)
 generate_export_header(
     EPhotosynthesis
-    BASE_NAME EPHOTO_API
-    EXPORT_MACRO_NAME EPHOTO_API
-    EXPORT_FILE_NAME ePhotosynthesis_export.h
-    DEPRECATED_MACRO_NAME EPHOTO_API_DEPRECATED
-    NO_DEPRECATED_MACRO_NAME EPHOTO_API_NO_DEPRECATED
+    BASE_NAME ${EXPORT_MACRO}
+    EXPORT_MACRO_NAME ${EXPORT_MACRO}
+    EXPORT_FILE_NAME ${EXPORT_HEADER}
+    DEPRECATED_MACRO_NAME ${EXPORT_MACRO}_DEPRECATED
+    NO_DEPRECATED_MACRO_NAME ${EXPORT_MACRO}_NO_DEPRECATED
 )
 target_include_directories(
     EPhotosynthesis PUBLIC
@@ -351,7 +359,7 @@ install(
     COMPONENT CXX
 )
 install(
-    FILES ${CMAKE_CURRENT_BINARY_DIR}/ePhotosynthesis_export.h
+    FILES ${CMAKE_CURRENT_BINARY_DIR}/${EXPORT_HEADER}
     DESTINATION ${EPHOTOSYNTHESIS_INSTALL_INCLUDEDIR}
     COMPONENT CXX
 )

@@ -2,7 +2,6 @@
 // modified directly
 #include "enums/enums_utils.hpp"
 
-
 namespace ePhotosynthesis {
   template<>
   const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::all = {
@@ -138,19 +137,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_BF_COND& x) {
     out << ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::all = {};
   template<>
@@ -169,19 +159,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_CM_COND& x) {
     out << ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::all = {};
   template<>
@@ -200,19 +181,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_DynaPS_COND& x) {
     out << ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::all = {};
   template<>
@@ -231,19 +203,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_EPS_COND& x) {
     out << ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::all = {
     ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)kd
@@ -270,19 +233,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_COND& x) {
     out << ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::all = {
     ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)A         ,
@@ -393,19 +347,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_FI_COND& x) {
     out << ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::all = {
     ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GCEA ,
@@ -474,19 +419,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::static_value_flags = {
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131, (STATIC_VALUE_FLAG_CONST | STATIC_VALUE_FLAG_NON_VECTOR)}
   };
-  template<>
-  std::string ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_PR_COND& x) {
     out << ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::all = {
     ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP,
@@ -564,19 +500,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_ADP, (STATIC_VALUE_FLAG_CONST | STATIC_VALUE_FLAG_NON_VECTOR)},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1 , (STATIC_VALUE_FLAG_CONST | STATIC_VALUE_FLAG_NON_VECTOR)}
   };
-  template<>
-  std::string ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_PS_COND& x) {
     out << ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::all = {};
   template<>
@@ -595,19 +522,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_PS_PR_COND& x) {
     out << ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::all = {};
   template<>
@@ -626,19 +544,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_RA_COND& x) {
     out << ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::all = {
     ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)GAPDH ,
@@ -713,19 +622,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ATPGPP, (STATIC_VALUE_FLAG_CALC)                                },
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff , (STATIC_VALUE_FLAG_CONST | STATIC_VALUE_FLAG_NON_VECTOR)}
   };
-  template<>
-  std::string ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_COND& x) {
     out << ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::all = {
     ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thion
@@ -752,19 +652,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_COND& x) {
     out << ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::all = {
     ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ER  ,
@@ -803,19 +694,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_COND& x) {
     out << ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::all = {
     ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)T3Pc  ,
@@ -870,19 +752,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_COND& x) {
     out << ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::all = {
     ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx ,
@@ -926,19 +799,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx , (STATIC_VALUE_FLAG_CALC)},
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA, (STATIC_VALUE_FLAG_CALC)}
   };
-  template<>
-  std::string ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_COND& x) {
     out << ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::all = {};
   template<>
@@ -957,18 +821,9 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_trDynaPS_COND& x) {
     out << ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::getName(x);
     return out;
-  }
+  };
 }
 

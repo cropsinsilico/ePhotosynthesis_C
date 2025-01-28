@@ -46,7 +46,7 @@
 #define SUNDIALS_CONTEXT_REQUIRED 1
 #else
 #ifndef sunrealtype
-#define sunrealtype double
+typedef double sunrealtype;
 #endif
 #endif //
 
@@ -58,13 +58,13 @@ inline const char* SUNGetErrMsg(const SUNErrCode&) { return ""; }
 #endif
 
 #ifndef uint
-#define uint unsigned int
+typedef unsigned int uint;
 #endif
 #ifndef ushort
-#define ushort unsigned short int
+typedef unsigned short int ushort;
 #endif
 #ifndef realtype
-#define realtype sunrealtype
+typedef sunrealtype realtype;
 #endif
 #ifndef SUN_COMM_NULL
 #define SUN_COMM_NULL 0

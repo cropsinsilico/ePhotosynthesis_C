@@ -736,6 +736,15 @@ public:
                            Variables* theVars = nullptr,
                            const std::string& context="_readParam");
  public:
+    /**
+       Update the default parameters from a map.
+       \param[in, out] inputs Map of parameters that should be added.
+       \param[in] theVars Variable instance that should be updated.
+       \param[in] context String providing context for errors.
+     */
+    static void updateParam(std::map<std::string, std::string>& inputs,
+                            Variables* theVars = nullptr,
+                            const std::string& context="updateParam");
     
     /**
        Read default parameters from a file.

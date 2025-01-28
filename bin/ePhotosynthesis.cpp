@@ -44,6 +44,29 @@ using namespace ePhotosynthesis;
 
 #ifdef WITH_YGGDRASIL
 #include <YggInterface.hpp>
+template<typename ValueType>
+std::map<std::string, std::string> ygg2param(const ValueType& v) {
+  std::map<std::string, std::string> out;
+  for (typename ValueType::ConstMemberIterator it = v.MemberBegin();
+       it != v.MemberEnd(); it++) {
+    std::string k(it->name.GetString());
+    std::ostringstream oss;
+    oss << it->value;
+    out[k] = oss.str();
+  }
+  return out;
+}
+template<typename T>
+void param2ygg(const std::map<std::string, T>& v,
+               rapidjson::Document& out) {
+  for (typename std::map<std::string, std::string>::const_iterator it = v.begin();
+       it != v.end(); it++) {
+    rapidjson::Value key(it->first.c_str(), it->first.size(),
+                         out.GetAllocator());
+    rapidjson::Value val(it->second, out.GetAllocator());
+    out.AddMember(key, val, out.GetAllocator());
+  }
+}
 #endif
 
 #define convD(x) static_cast<double>(stof(x, nullptr))
@@ -95,28 +118,6 @@ using namespace ePhotosynthesis;
     printf("Input variable \"%s\" not set\n", #src)
 #define setInputVarB(src, mod, dst) setInputVar(src, mod, dst, convB, %d)
 
-
-#ifdef WITH_YGGDRASIL
-#define convYggD(x) x.GetDouble()
-#define convYggS(x) x.GetString()
-#define convYggI(x) x.GetInt()
-#define convYggB(x) x.GetBool()
-#define displayYggInputVar(fmt, src, val)				\
-  printf("Yggdrasil input variable \"%s\" = " #fmt "\n", #src, val)
-#define assignYggVar(src, dst, conv, fmt)			\
-  if (new_state.HasMember(#src)) {				\
-    theVars->dst = conv(new_state[#src]);			\
-    displayYggInputVar(fmt, src, conv(new_state[#src]));	\
-  }
-#define setYggVar(src, mod, dst, conv, fmt)			\
-  if (new_state.HasMember(#src)) {				\
-    modules::mod::set ## dst (conv(new_state[#src]));		\
-    displayYggInputVar(fmt, src, conv(new_state[#src]));	\
-  }
-#define assignYggVarD(src, dst) assignYggVar(src, dst, convYggD, %lf)
-#define assignYggVarI(src, dst) assignYggVar(src, dst, convYggI, %d)
-#define setYggVarB(src, mod, dst) setYggVar(src, mod, dst, convYggB, %d)
-#endif // WITH_YGGDRASIL
 
 int main(int argc, const char* argv[]) {
     try {
@@ -340,25 +341,26 @@ int main(int argc, const char* argv[]) {
 	
 #ifdef WITH_YGGDRASIL
 	int flag = 0;
-	YggAsciiTableOutput* out;
 	Variables *origVars = theVars->deepcopy();
-        switch (driverChoice) {
-	case trDynaPS:
-	  out = new YggAsciiTableOutput("output", "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n");
-	  break;
-	case DynaPS:
-	  out = new YggAsciiTableOutput("output", "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n");
-	  break;
-	case CM:
-	  out = new YggAsciiTableOutput("output", "%f\t%f\n");
-	  break;
-	case EPS:
-	  out = new YggAsciiTableOutput("output", "%f\n");
-	  break;
-	default:
-	  printf("Invalid driver choice given.\n");
-	  exit(EXIT_FAILURE);
-        }
+        YggGenericOutput out("output");
+	// YggAsciiTableOutput* out;
+        // switch (driverChoice) {
+	// case trDynaPS:
+	//   out = new YggAsciiTableOutput("output", "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n");
+	//   break;
+	// case DynaPS:
+	//   out = new YggAsciiTableOutput("output", "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n");
+	//   break;
+	// case CM:
+	//   out = new YggAsciiTableOutput("output", "%f\t%f\n");
+	//   break;
+	// case EPS:
+	//   out = new YggAsciiTableOutput("output", "%f\n");
+	//   break;
+	// default:
+	//   printf("Invalid driver choice given.\n");
+	//   exit(EXIT_FAILURE);
+        // }
 	YggGenericInput steps("param");
 	bool first = true;
 	int iteration = 0;
@@ -380,17 +382,19 @@ int main(int argc, const char* argv[]) {
 	  }
 
 	  std::cout << "state = " << new_state << std::endl;
-	  assignYggVarD(CO2, Air_CO2);
-	  assignYggVarD(Air_CO2, Air_CO2);
-	  assignYggVarD(PAR, Radiation_PAR);
-	  assignYggVarD(Radiation_PAR, Radiation_PAR);
-	  assignYggVarD(ATPCost, TestATPCost);
-	  assignYggVarI(GRNC, GRNC);
-	  setYggVarB(SucPath, CM, TestSucPath);
-	  if (new_state.HasMember("Temp")) {
-	    theVars->Tp = new_state["Temp"].GetDouble();
-	    displayYggInputVar(%lf, Temp, theVars->Tp);
-	  }
+          Variables::update_param(ygg2param(new_state), theVars,
+                                  "ePhoto");
+	  // assignYggVarD(CO2, Air_CO2);
+	  // assignYggVarD(Air_CO2, Air_CO2);
+	  // assignYggVarD(PAR, Radiation_PAR);
+	  // assignYggVarD(Radiation_PAR, Radiation_PAR);
+	  // assignYggVarD(ATPCost, TestATPCost);
+	  // assignYggVarI(GRNC, GRNC);
+	  // setYggVarB(SucPath, CM, TestSucPath);
+	  // if (new_state.HasMember("Temp")) {
+	  //   theVars->Tp = new_state["Temp"].GetDouble();
+	  //   displayYggInputVar(%lf, Temp, theVars->Tp);
+	  // }
 #endif
 
 	  maindriver = drivers::create_driver(driverChoice, theVars,
@@ -411,26 +415,29 @@ int main(int argc, const char* argv[]) {
         std::vector<double> ResultRate = maindriver->run();
 
 #ifdef WITH_YGGDRASIL
-        switch (driverChoice) {
-	case trDynaPS:
-	  flag = out->send(9, theVars->TestLi, ResultRate[0], ResultRate[1],
-			   ResultRate[2], ResultRate[3], ResultRate[4],
-			   ResultRate[5], ResultRate[6], ResultRate[7]);
-	  break;
-	case DynaPS:
-	  flag = out->send(9, theVars->TestLi, ResultRate[0], ResultRate[1],
-			   ResultRate[2], ResultRate[3], ResultRate[4],
-			   ResultRate[5], ResultRate[6], ResultRate[7]);
-	  break;
-	case CM:
-	  flag = out->send(2, theVars->TestLi, ResultRate[0]);
-	  break;
-	case EPS:
-	  flag = out->send(1, ResultRate[0]);
-	  break;
-	default:
-	  break;
-        }
+        rapidjson::Document out_state;
+        param2ygg(maindriver->output, out_state);
+        flag = out.send(1, out_state);
+        // switch (driverChoice) {
+	// case trDynaPS:
+	//   flag = out->send(9, theVars->TestLi, ResultRate[0], ResultRate[1],
+	// 		   ResultRate[2], ResultRate[3], ResultRate[4],
+	// 		   ResultRate[5], ResultRate[6], ResultRate[7]);
+	//   break;
+	// case DynaPS:
+	//   flag = out->send(9, theVars->TestLi, ResultRate[0], ResultRate[1],
+	// 		   ResultRate[2], ResultRate[3], ResultRate[4],
+	// 		   ResultRate[5], ResultRate[6], ResultRate[7]);
+	//   break;
+	// case CM:
+	//   flag = out->send(2, theVars->TestLi, ResultRate[0]);
+	//   break;
+	// case EPS:
+	//   flag = out->send(1, ResultRate[0]);
+	//   break;
+	// default:
+	//   break;
+        // }
 	if (flag < 0) {
 	  printf("Error sending output.\n");
 	  exit(EXIT_FAILURE);

@@ -2,7 +2,6 @@
 // modified directly
 #include "enums/enums_utils.hpp"
 
-
 namespace ePhotosynthesis {
   template<>
   const std::vector<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::all = {
@@ -87,19 +86,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_BF_POOL& x) {
     out << ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::all = {
     ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PQT
@@ -124,19 +114,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_POOL& x) {
     out << ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::all = {
     ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)QBt,
@@ -167,19 +148,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_FI_POOL& x) {
     out << ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::all = {};
   template<>
@@ -198,19 +170,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_PR_POOL& x) {
     out << ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::all = {};
   template<>
@@ -229,19 +192,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_PS_POOL& x) {
     out << ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::all = {
     ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)GAPDH    ,
@@ -385,19 +339,10 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_MDH   , (STATIC_VALUE_FLAG_CONST)},
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)MDH_Vmax , (STATIC_VALUE_FLAG_CONST)}
   };
-  template<>
-  std::string ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_POOL& x) {
     out << ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::all = {
     ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FBPase_Coeff,
@@ -443,19 +388,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_POOL& x) {
     out << ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::all = {
     ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ET ,
@@ -497,19 +433,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_POOL& x) {
     out << ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::all = {
     ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATc,
@@ -543,19 +470,10 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_POOL& x) {
     out << ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::getName(x);
     return out;
-  }
+  };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::all = {};
   template<>
@@ -574,18 +492,9 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::static_value_flags = {};
-  template<>
-  std::string ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::error_prefix() {
-    std::string out;
-    out += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second;
-    out += "[";
-    out += utils::get_enum_names<MODULE>().find(module)->second;
-    out += "]: ";
-    return out;
-  }
   std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_POOL& x) {
     out << ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::getName(x);
     return out;
-  }
+  };
 }
 

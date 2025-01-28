@@ -1028,6 +1028,11 @@ void Variables::_readParam(const std::string& fname,
         return;
     std::cout << "PARAMETER FILE PROVIDED: " << fname << std::endl;
     readFile(fname, inputs);
+    updateParam(inputs, theVars, context);
+}
+void Variables::updateParam(std::map<std::string, std::string>& inputs,
+                            Variables* theVars,
+                            const std::string& context) {
     std::map<std::string, std::string> add_values;
     std::vector<std::string> rm_values;
     MODULE mod = MODULE_NONE;
