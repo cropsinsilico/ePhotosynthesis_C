@@ -45,7 +45,7 @@ using namespace ePhotosynthesis;
 #ifdef WITH_YGGDRASIL
 #include <YggInterface.hpp>
 template<typename ValueType>
-std::map<std::string, std::string> ygg2param(const ValueType& v) {
+void updateParamYgg(const ValueType& v, Variables* theVars) {
   std::map<std::string, std::string> out;
   for (typename ValueType::ConstMemberIterator it = v.MemberBegin();
        it != v.MemberEnd(); it++) {
@@ -54,18 +54,21 @@ std::map<std::string, std::string> ygg2param(const ValueType& v) {
     oss << it->value;
     out[k] = oss.str();
   }
-  return out;
+  Variables::updateParam(out, theVars, "updateParamYgg");
 }
 template<typename T>
 void param2ygg(const std::map<std::string, T>& v,
-               rapidjson::Document& out) {
-  for (typename std::map<std::string, std::string>::const_iterator it = v.begin();
+               rapidjson::Document& out,
+               const Variables* theVars) {
+  out.SetObject();
+  for (typename std::map<std::string, T>::const_iterator it = v.begin();
        it != v.end(); it++) {
     rapidjson::Value key(it->first.c_str(), it->first.size(),
                          out.GetAllocator());
     rapidjson::Value val(it->second, out.GetAllocator());
     out.AddMember(key, val, out.GetAllocator());
   }
+  out.AddMember("Light intensity", theVars->TestLi, out.GetAllocator());
 }
 #endif
 
@@ -369,7 +372,7 @@ int main(int argc, const char* argv[]) {
 	  if (!first)
 	    theVars = origVars->deepcopy();
 	  rapidjson::Document new_state;
-	  flag = steps.recv(1, &new_state);
+	  flag = steps.recvVar(new_state);
 	  if (flag < 0) {
 	    if (first) {
 	      printf("Failed to receive first step.\n");
@@ -381,9 +384,8 @@ int main(int argc, const char* argv[]) {
 	    }
 	  }
 
-	  std::cout << "state = " << new_state << std::endl;
-          Variables::update_param(ygg2param(new_state), theVars,
-                                  "ePhoto");
+	  std::cout << "INPUT STATE = " << new_state << std::endl;
+          updateParamYgg(new_state, theVars);
 	  // assignYggVarD(CO2, Air_CO2);
 	  // assignYggVarD(Air_CO2, Air_CO2);
 	  // assignYggVarD(PAR, Radiation_PAR);
@@ -416,28 +418,9 @@ int main(int argc, const char* argv[]) {
 
 #ifdef WITH_YGGDRASIL
         rapidjson::Document out_state;
-        param2ygg(maindriver->output, out_state);
-        flag = out.send(1, out_state);
-        // switch (driverChoice) {
-	// case trDynaPS:
-	//   flag = out->send(9, theVars->TestLi, ResultRate[0], ResultRate[1],
-	// 		   ResultRate[2], ResultRate[3], ResultRate[4],
-	// 		   ResultRate[5], ResultRate[6], ResultRate[7]);
-	//   break;
-	// case DynaPS:
-	//   flag = out->send(9, theVars->TestLi, ResultRate[0], ResultRate[1],
-	// 		   ResultRate[2], ResultRate[3], ResultRate[4],
-	// 		   ResultRate[5], ResultRate[6], ResultRate[7]);
-	//   break;
-	// case CM:
-	//   flag = out->send(2, theVars->TestLi, ResultRate[0]);
-	//   break;
-	// case EPS:
-	//   flag = out->send(1, ResultRate[0]);
-	//   break;
-	// default:
-	//   break;
-        // }
+        param2ygg(maindriver->output, out_state, theVars);
+        std::cout << "OUTPUT STATE = " << out_state << std::endl;
+        flag = out.sendVar(out_state);
 	if (flag < 0) {
 	  printf("Error sending output.\n");
 	  exit(EXIT_FAILURE);
@@ -464,7 +447,6 @@ int main(int argc, const char* argv[]) {
 	  first = false;
 	  iteration++;
 	}
-	delete out;
 	if (origVars != nullptr)
 	  delete origVars;
 #endif

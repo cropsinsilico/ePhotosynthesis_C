@@ -1803,7 +1803,7 @@ class EnumGeneratorBase(EnumBase):
             append = self.append
         if append == 'nothing':
             append = False
-        if not (append and os.path.isfile(self.dst)):
+        if not (append and self.existing_lines):
             return []
         out = copy.deepcopy(self.existing_lines)
         header = self.header
@@ -4817,6 +4817,9 @@ def ePhotosynthesis(args):
             for k in ['global', 'helper']:
                 kws[f'existing_{k}'] = dst.added_files[k].existing
         first = False
+    if args.timestamp_file:
+        with open(args.timestamp_file, 'w') as fd:
+            fd.write("STAMP1")
 
 
 if __name__ == "__main__":
@@ -4863,6 +4866,9 @@ if __name__ == "__main__":
                               "provided dst suffix"))
     parser.add_argument("--ePhotosynthesis", action="store_true",
                         help="Generate the enumerators for ePhotosynthesis")
+    parser.add_argument("--timestamp-file", type=str,
+                        help=("File that should be created that can be "
+                              "used as a time stamp"))
     for x in registered_classes('generator', return_classes=True):
         x.add_arguments(parser)
     args = parser.parse_args()

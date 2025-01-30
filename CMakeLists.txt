@@ -87,6 +87,10 @@ option(BUILD_PYTHON "Build python bindings for the library.")
 option(EPHOTO_USE_SCOPED_ENUM "Build using a scoped enumerator for the ValueSet base class (enabled by default when building with MSVC)")
 option(MAKE_EQUIVALENT_TO_MATLAB "Build with settings that make this model equivalent to the Matlab C3 model")
 
+if(NOT EPHOTO_EXECUTABLE_NAME)
+    set(EPHOTO_EXECUTABLE_NAME ePhoto)
+endif()
+
 if(NOT BUILD_PYTHON)
     set(BUILD_PYTHON OFF)
 else()
@@ -198,6 +202,7 @@ set(ENUM_UTILS ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_utils.hpp)
 set(ENUM_GLOBAL_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums.hpp)
 set(ENUM_GLOBAL ${CMAKE_CURRENT_SOURCE_DIR}/src/enums/enums.cpp)
 set(ENUM_HELPER ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_helpers.hpp)
+set(ENUM_STAMP ${CMAKE_CURRENT_BINARY_DIR}/enum_created.txt)
 set(UTILS_DST_H ${CMAKE_CURRENT_SOURCE_DIR}/include/enums/enums_utils.hpp)
 file(GLOB ENUM_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/param/*.txt")
 list(APPEND ENUM_SOURCES ${ENUM_SCRIPT})
@@ -215,6 +220,7 @@ set(ENUM_COMMAND
     --dst-global=${ENUM_GLOBAL_H}
     --dst-global-source=${ENUM_GLOBAL}
     --root-include-dir=${CMAKE_CURRENT_SOURCE_DIR}/include
+    --timestamp-file=${ENUM_STAMP}
     --overwrite
 )
 
@@ -229,13 +235,15 @@ endforeach()
 if(ENUM_TARGET)
   add_custom_command(
     COMMAND ${ENUM_COMMAND}
-    OUTPUT ${ENUM_GLOBAL_H}
-    BYPRODUCTS ${ENUM_OUTPUT}
+    OUTPUT ${ENUM_STAMP}
+    # OUTPUT ${ENUM_GLOBAL_H}
+    # BYPRODUCTS ${ENUM_OUTPUT}
     DEPENDS ${ENUM_SOURCES}
   )
   add_custom_target(
     ${ENUM_TARGET}
-    DEPENDS ${ENUM_GLOBAL_H}
+    DEPENDS ${ENUM_STAMP}
+    # DEPENDS ${ENUM_GLOBAL_H}
   )
 else()
   add_custom_command(
@@ -257,7 +265,7 @@ add_library(EPhotosynthesis SHARED ${SOURCES})
 if(ENUM_TARGET)
   add_dependencies(EPhotosynthesis ${ENUM_TARGET})
 endif()
-add_executable(ePhoto bin/ePhotosynthesis.cpp)
+add_executable(${EPHOTO_EXECUTABLE_NAME} bin/ePhotosynthesis.cpp)
 
 find_package(Boost 1.36.0 REQUIRED COMPONENTS regex)
 # Find MPI
@@ -289,7 +297,7 @@ target_include_directories(
     $<INSTALL_INTERFACE:include/ePhotosynthesis>
 )
 
-target_link_libraries(ePhoto PRIVATE EPhotosynthesis)
+target_link_libraries(${EPHOTO_EXECUTABLE_NAME} PRIVATE EPhotosynthesis)
 
 
 ###########################
@@ -322,7 +330,7 @@ cmake_path(
 )
 
 install(
-    TARGETS EPhotosynthesis ePhoto
+    TARGETS EPhotosynthesis ${EPHOTO_EXECUTABLE_NAME}
     EXPORT ePhotosynthesisTargets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -448,7 +456,7 @@ function(add_ePhoto_tests)
       list(APPEND ePhoto_TEST_ACTUAL ${ACTUAL_OUTPUT})
       add_test(
         NAME ${TEST_NAME} COMMAND ${ARGS_COMMAND_PREFIX}
-        $<TARGET_FILE:ePhoto>
+        $<TARGET_FILE:${EPHOTO_EXECUTABLE_NAME}>
         -d ${DRIVER}
         --evn ${TEST_DATA_DIR}/InputEvn.txt
         --grn ${TEST_DATA_DIR}/InputGRNC.txt
@@ -539,6 +547,7 @@ if(BUILD_TESTS)
 	        APPEND GCOVR_ADDITIONAL_ARGS
 		# --gcov-executable=\"${CTEST_COVERAGE_COMMAND} ${CTEST_COVERAGE_EXTRA_FLAGS}\"
 		--coveralls=${COVERAGE_DIR}/coverage.info
+                --gcov-ignore-parse-errors=suspicious_hits.warn_once_per_file
 	    )
             set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O0")
             set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O0")

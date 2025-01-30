@@ -586,9 +586,9 @@ std::string Variables::parseVar(const std::string& k,
 			    k, "\"");
 	}
     }
-    INFO_VALUE_SET("parseVar[", k, "] -> ",
-                   utils::enum_key2string(mod), ", ",
-                   utils::enum_key2string(pt), ", ", name);
+    // INFO_VALUE_SET("parseVar[", k, "] -> ",
+    //                utils::enum_key2string(mod), ", ",
+    //                utils::enum_key2string(pt), ", ", name);
     if (controlVar && controlVar[0]) {
         return getControlAlias(mod, pt, name);
     }
@@ -1052,9 +1052,10 @@ void Variables::updateParam(std::map<std::string, std::string>& inputs,
         name = parseVar(it->first, mod, pt, false, false, true,
                         &controlVar);
         if (name.empty()) {
-            std::cout << context << ": String \"" << it->first <<
-              "\" does not match any known parameters or belongs "
-              "to a value set not currently selected." << std::endl;
+            std::cout << context << ": IGNORING \"" << it->first <<
+              "\" - it does not match any known parameters or belongs "
+              "to a value set not used selected by the current driver."
+                      << std::endl;
             continue;
         }
         value = static_cast<double>(std::stof(it->second, nullptr));
@@ -1062,9 +1063,9 @@ void Variables::updateParam(std::map<std::string, std::string>& inputs,
             utils::enum_key2string(pt) + "::" + name;
         name_SET = name_FULL + set_suffix;
         if (inputs.find(name_SET) == inputs.end()) {
-            std::cout << context << ": Parameter \"" << name_FULL <<
-                "\" (" << it->second << ") read from \"" << it->first <<
-                "\"" << std::endl;
+            std::cout << context << ": READ \"" << name_FULL <<
+                "\" from \"" << it->first << "\" (" << it->second << ")" <<
+                std::endl;
             add_values[name_SET] = it->second;
             if (theVars) {
                 if (controlVar)
@@ -1078,10 +1079,10 @@ void Variables::updateParam(std::map<std::string, std::string>& inputs,
                     setDefault(mod, pt, name, value);
             }
         } else {
-            std::cout << context << ": Parameter \"" << name_FULL <<
-                "\" already set. Using previous value." << std::endl <<
-                "    Previous value :    " << inputs.at(name_SET) << std::endl <<
-                "    Discarded value:    " << it->second << std::endl;
+            std::cout << context << ": IGNORING \"" << name_FULL <<
+                "\" - parameter already set." << std::endl <<
+                "    Current value:    " << inputs.at(name_SET) << std::endl <<
+                "    Ignored value:    " << it->second << std::endl;
             rm_values.push_back(name);
         }
         rm_values.push_back(it->first);

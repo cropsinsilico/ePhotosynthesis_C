@@ -214,6 +214,8 @@ class build(SubTask):
             config_args += ['-DMAKE_EQUIVALENT_TO_MATLAB:BOOL=ON']
         if args.with_asan:
             config_args += ['-DWITH_ASAN=ON']
+        if args.with_coverage:
+            config_args += ['-DTEST_COVERAGE:BOOL=ON']
         if args.only_python:
             build_args += ['--target pyPhotosynthesis']
             install_args += ['--component', 'Python']
@@ -637,6 +639,7 @@ class docs(BuildSubTask):
         args.dont_install = True
         args.only_python = False
         args.force_scoped_enum = False
+        args.with_coverage = False
         super(docs, cls).adjust_args(args)
 
     def __init__(self, args, config_args=None, build_args=None,
@@ -660,12 +663,17 @@ class docs(BuildSubTask):
 
 class coverage(BuildSubTask):
 
+    @classmethod
+    def adjust_args(cls, args):
+        args.with_coverage = True
+        return super(coverage, cls).adjust_args(args)
+
     def __init__(self, args, config_args=None, build_args=None):
         if config_args is None:
             config_args = []
         if build_args is None:
             build_args = []
-        config_args += ['-DTEST_COVERAGE=ON']
+        config_args += ['-DBUILD_TESTS:BOOL=ON']
         cmds = ['make coverage']
         super(coverage, self).__init__(
             args, cmds=cmds, config_args=config_args,
@@ -837,6 +845,10 @@ if __name__ == "__main__":
         '--with-python', action='store_true',
         help="Build the Python interface",
         subparsers={'task': build_tasks + ['docs']})
+    parser.add_argument(
+        '--with-coverage', action='store_true',
+        help="Build the coverage tests",
+        subparsers={'task': build_tasks})
     parser.add_argument(
         '--only-python', action='store_true',
         help="Only run the Python tests",
