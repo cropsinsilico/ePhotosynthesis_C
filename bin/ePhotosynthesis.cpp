@@ -306,7 +306,7 @@ int main(int argc, const char* argv[]) {
         // Ensure that command line argument takes precedence
         if (result.count("Tp") != 0) {
             theVars->Tp = Tp;
-            inputs["Tp_SET"] = std::to_string(Tp);
+            inputs["Tp_SETXXX"] = std::to_string(Tp);
         }
         if (fileProvided(evn, evn))
             theVars->readParam(evn, inputs);
@@ -346,24 +346,6 @@ int main(int argc, const char* argv[]) {
 	int flag = 0;
 	Variables *origVars = theVars->deepcopy();
         YggGenericOutput out("output");
-	// YggAsciiTableOutput* out;
-        // switch (driverChoice) {
-	// case trDynaPS:
-	//   out = new YggAsciiTableOutput("output", "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n");
-	//   break;
-	// case DynaPS:
-	//   out = new YggAsciiTableOutput("output", "%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n");
-	//   break;
-	// case CM:
-	//   out = new YggAsciiTableOutput("output", "%f\t%f\n");
-	//   break;
-	// case EPS:
-	//   out = new YggAsciiTableOutput("output", "%f\n");
-	//   break;
-	// default:
-	//   printf("Invalid driver choice given.\n");
-	//   exit(EXIT_FAILURE);
-        // }
 	YggGenericInput steps("param");
 	bool first = true;
 	int iteration = 0;

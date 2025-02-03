@@ -1044,7 +1044,7 @@ void Variables::updateParam(std::map<std::string, std::string>& inputs,
 
     for (typename std::map<std::string, std::string>::const_iterator it = inputs.begin();
          it != inputs.end(); it++) {
-        if (utils::str_endswith(it->first, set_suffix))
+        if (utils::str_endswith(it->first, set_suffix)) 
             continue;
         mod = MODULE_NONE;
         pt = PARAM_TYPE_NONE;
@@ -1056,6 +1056,7 @@ void Variables::updateParam(std::map<std::string, std::string>& inputs,
               "\" - it does not match any known parameters or belongs "
               "to a value set not used selected by the current driver."
                       << std::endl;
+            rm_values.push_back(it->first);
             continue;
         }
         value = static_cast<double>(std::stof(it->second, nullptr));

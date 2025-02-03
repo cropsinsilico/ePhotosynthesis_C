@@ -2,14 +2,8 @@ model:
   name: ePhotosynthesis
   description: C++ port of the ePhotosynthesis Matlab model code
   language: cmake
-  configurer_flags: [-DEPHOTO_EXECUTABLE_NAME=ePhotoYGG]
-  args: [{{YAMLDIR}}/build_yggdrasil/ePhotoYGG, -d, 4, -a, InputATPCost.txt, -e, InputEvn.txt, -T, 25, -n, InputEnzyme.txt, -g, InputGRNC.txt]
-  target: ePhotoYGG
   target_language: c++
-  builddir: {{YAMLDIR}}/build_yggdrasil
-  sourcedir: {{YAMLDIR}}
-  working_dir: {{YAMLDIR}}
-  preserve_cache: true
+  args: [ePhoto, -d, 4, -a, InputATPCost.txt, -e, InputEvn.txt, -T, 25, -n, InputEnzyme.txt, -g, InputGRNC.txt]
   # overwrite: true
   # dependencies:
   #   - package: "sundials>=5.7.0"
@@ -18,18 +12,6 @@ model:
     - name: param
       datatype:
         type: object
-        allowWrapped: true
-        properties:
-          CO2:
-            type: number
-          PAR:
-            type: number
-          ATPCost:
-            type: number
-          GRNC:
-            type: integer
-          SucPath:
-            type: boolean
       # Single timestep
       # default_file:
       #   name: ./InputEvn.txt
