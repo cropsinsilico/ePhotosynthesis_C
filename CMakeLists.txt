@@ -87,10 +87,6 @@ option(BUILD_PYTHON "Build python bindings for the library.")
 option(EPHOTO_USE_SCOPED_ENUM "Build using a scoped enumerator for the ValueSet base class (enabled by default when building with MSVC)")
 option(MAKE_EQUIVALENT_TO_MATLAB "Build with settings that make this model equivalent to the Matlab C3 model")
 
-if(NOT EPHOTO_EXECUTABLE_NAME)
-    set(EPHOTO_EXECUTABLE_NAME ePhoto)
-endif()
-
 if(NOT BUILD_PYTHON)
     set(BUILD_PYTHON OFF)
 else()
@@ -265,7 +261,7 @@ add_library(EPhotosynthesis SHARED ${SOURCES})
 if(ENUM_TARGET)
   add_dependencies(EPhotosynthesis ${ENUM_TARGET})
 endif()
-add_executable(${EPHOTO_EXECUTABLE_NAME} bin/ePhotosynthesis.cpp)
+add_executable(ePhoto bin/ePhotosynthesis.cpp)
 
 find_package(Boost 1.36.0 REQUIRED COMPONENTS regex)
 # Find MPI
@@ -297,7 +293,7 @@ target_include_directories(
     $<INSTALL_INTERFACE:include/ePhotosynthesis>
 )
 
-target_link_libraries(${EPHOTO_EXECUTABLE_NAME} PRIVATE EPhotosynthesis)
+target_link_libraries(ePhoto PRIVATE EPhotosynthesis)
 
 
 ###########################
@@ -330,7 +326,7 @@ cmake_path(
 )
 
 install(
-    TARGETS EPhotosynthesis ${EPHOTO_EXECUTABLE_NAME}
+    TARGETS EPhotosynthesis ePhoto
     EXPORT ePhotosynthesisTargets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -456,7 +452,7 @@ function(add_ePhoto_tests)
       list(APPEND ePhoto_TEST_ACTUAL ${ACTUAL_OUTPUT})
       add_test(
         NAME ${TEST_NAME} COMMAND ${ARGS_COMMAND_PREFIX}
-        $<TARGET_FILE:${EPHOTO_EXECUTABLE_NAME}>
+        $<TARGET_FILE:ePhoto>
         -d ${DRIVER}
         --evn ${TEST_DATA_DIR}/InputEvn.txt
         --grn ${TEST_DATA_DIR}/InputGRNC.txt

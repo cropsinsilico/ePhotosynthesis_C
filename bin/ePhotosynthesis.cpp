@@ -345,8 +345,8 @@ int main(int argc, const char* argv[]) {
 #ifdef WITH_YGGDRASIL
 	int flag = 0;
 	Variables *origVars = theVars->deepcopy();
-        YggGenericOutput out("output");
-	YggGenericInput steps("param");
+	YggInput steps("param");
+	YggOutput out("output");
 	bool first = true;
 	int iteration = 0;
 	while (true) {
