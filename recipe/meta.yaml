@@ -1,0 +1,58 @@
+{% set name = "ePhotosynthesis" %}
+{% set version = "1.0.0" %}
+{% set PY_VER_MAJOR = PY_VER.split('.')[0] %}
+{% set PY_VER_MINOR = PY_VER.split('.')[1] %}
+
+package:
+  name: {{ name|lower }}
+  version: {{ version }}
+
+source:
+  path: ../
+
+build:
+  number: 0
+
+requirements:
+  build:
+    - cmake
+    - make  # [unix]
+    - ninja  # [win]
+    - {{ compiler('cxx') }}
+  host:
+    - boost >=1.36.0
+    - sundials >=5.7.0
+    # - yggdrasil
+    # - yggdrasil.c
+    # - yggdrasil.zmq
+  run:
+    - boost >=1.36.0
+    - sundials >=5.7.0
+    # - yggdrasil
+    # - yggdrasil.c
+    # - yggdrasil.zmq
+
+test:
+  commands:
+    - test -f $PREFIX/lib/libEPhotosynthesis$SHLIB_EXT  # [unix]
+    - test -f $PREFIX/include/ePhotosynthesis/ePhotosynthesis.hpp  # [unix]
+    - test -f $PREFIX/bin/ePhoto  # [unix]
+    - if not exist %LIBRARY_LIB%\\libEPhotosynthesis.dll exit 1  # [win]
+    - if not exist %LIBRARY_INC%\\ePhotosynthesis\\ePhotosynthesis.hpp exit 1  # [win]
+    - if not exist %LIBRARY_BIN%\\ePhoto.exe exit 1  # [win]
+
+about:
+  home: https://github.com/cropsinsilico/ePhotosynthesis_C
+  license: MPL-2.0
+  license_file: LICENSE.md
+  summary: C++ version of ePhotosynthesis model
+
+  description: |
+    ePhotosynthesis is a dynamic mechanistic model of photosynthesis 
+    described by Zhu XG, Wang Y, Ort DR, Long SP. e-Photosynthesis: a comprehensive dynamic mechanistic model of C3 photosynthesis: from light capture to sucrose synthesis. Plant Cell Environ. 2013 Sep;36(9):1711-27. doi: 10.1111/pce.12025. Epub 2012 Nov 19. PMID: 23072293.
+  doc_url: https://github.com/cropsinsilico/ePhotosynthesis_C
+  dev_url: https://github.com/cropsinsilico/ePhotosynthesis_C
+
+extra:
+  recipe-maintainers:
+    - langmm

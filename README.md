@@ -1,6 +1,6 @@
 # ePhotosynthesis
 
-This is a C++ port of the ePhotosynthesis Matlab model code. The code is built with
+This is a C++ port of the ePhotosynthesis Matlab model code. ePhotosynthesis is a dynamic mechanistic model of photosynthesis. The code is built with
 *CMake*.
 
 The Matlab origin code is tagged [C++ conversion](https://github.com/cropsinsilico/ePhotosynthesis/releases/tag/1.0.0). The scripts
@@ -135,3 +135,7 @@ The ePhotosynthesis executable is named `ePhoto` and takes the following argumen
       --debugInternal      Debug internals
 
 ```
+
+### Citation
+
+Zhu XG, Wang Y, Ort DR, Long SP. e-Photosynthesis: a comprehensive dynamic mechanistic model of C3 photosynthesis: from light capture to sucrose synthesis. Plant Cell Environ. 2013 Sep;36(9):1711-27. doi: 10.1111/pce.12025. Epub 2012 Nov 19. PMID: 23072293.
