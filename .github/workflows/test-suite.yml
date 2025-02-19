@@ -134,8 +134,8 @@ jobs:
           channel-priority: strict
           miniforge-variant: Miniforge3
           miniforge-version: latest
-          use-mamba: true
-          mamba-version: "2.0.5"
+          # use-mamba: true
+          # mamba-version: "2.0.5"
           # mamba-version: "1.5.10"
           conda-remove-defaults: true
       - name: Set up miniconda test environment (W/ MPI)
@@ -149,48 +149,36 @@ jobs:
           channel-priority: strict
           miniforge-variant: Miniforge3
           miniforge-version: latest
-          use-mamba: true
-          mamba-version: "2.0.5"
+          # use-mamba: true
+          # mamba-version: "2.0.5"
           # mamba-version: "1.5.10"
           conda-remove-defaults: true
       - name: Set USERPROFILE
         if: matrix.os == 'windows-latest'
         run: |
           echo "USERPROFILE=${{ github.workspace }}" >> "$GITHUB_ENV"
-      - name: Clean mamba installation
-        run: |
-          conda clean --all
-          mamba clean --all
-          mamba info
-          mamba list
       - name: Install specific version of Sundials via conda
         if: matrix.sundials-version != 'latest' && matrix.with-mpi == false
         run: |
-          mamba install sundials==${{ matrix.sundials-version }} -y
-      - name: Check mamba installation
+          conda install sundials==${{ matrix.sundials-version }} -y
+      - name: Check conda installation
         run: |
-          mamba info
-          mamba list
+          conda info
+          conda list
       - name: Install doxgen on unix systems
         if: matrix.os != 'windows-latest'
         run: |
-          conda clean --all
-          mamba clean --all
-          mamba install doxygen>=1.9.2 graphviz -y
+          conda install doxygen>=1.9.2 graphviz -y
       - name: Install compilers using conda on Linux/Mac
         if: matrix.os != 'windows-latest' && matrix.with-valgrind != true
         run: |
-          conda clean --all
-          mamba clean --all
-          mamba install c-compiler cxx-compiler
+          conda install c-compiler cxx-compiler
       - name: Install valgrind on unix systems (and required debug symbols)
         if: matrix.os != 'windows-latest' && matrix.with-valgrind == true
         run: |
           sudo apt-get update
           sudo apt-get install libc6-dbg
-          conda clean --all
-          mamba clean --all
-          mamba install valgrind
+          conda install valgrind
           
       ###################################
       # INSTALL SUNDIALS W/ MPI
@@ -318,7 +306,7 @@ jobs:
       - name: Test C++
         if: matrix.with-coverage != true
         run: |
-          mamba list
+          conda list
           echo "PATH=$PATH"
           cd build
           which ctest
@@ -326,7 +314,7 @@ jobs:
       - name: Test C++ (COVERAGE)
         if: matrix.with-coverage && matrix.os != 'windows-latest'
         run: |
-          mamba list
+          conda list
           echo "PATH=$PATH"
           cd build
           make coverage
