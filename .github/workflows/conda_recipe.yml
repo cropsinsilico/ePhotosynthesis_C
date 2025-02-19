@@ -75,10 +75,16 @@ jobs:
           cd build
           cmake ..
           cmake --build .
-      - name: Test built example executable
+      - name: Test built example executable (Unix)
+        if: matrix.os != 'windows-latest'
         run: |
           cd tests
           ./external/build/example
+      - name: Test built example executable (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          cd tests
+          ./external/build/Debug/example
       - name: Check built example executable output
         run: |
           python scripts/devtasks.py compare-files tests/example_output.data --driver 4
