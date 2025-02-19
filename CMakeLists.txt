@@ -273,6 +273,11 @@ install(
     COMPONENT CXX
 )
 install(
+    FILES cmake/FindSUNDIALS.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ePhotosynthesis
+    COMPONENT CXX
+)
+install(
     FILES ${CMAKE_CURRENT_BINARY_DIR}/ePhotosynthesis_export.h
     DESTINATION ${EPHOTOSYNTHESIS_INSTALL_INCLUDEDIR}
     COMPONENT CXX

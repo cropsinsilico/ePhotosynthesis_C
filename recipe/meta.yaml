@@ -1,5 +1,5 @@
 {% set name = "ePhotosynthesis" %}
-{% set version = "1.0.0" %}
+{% set version = "1.0.1" %}
 {% set PY_VER_MAJOR = PY_VER.split('.')[0] %}
 {% set PY_VER_MINOR = PY_VER.split('.')[1] %}
 
@@ -22,15 +22,9 @@ requirements:
   host:
     - libboost-devel >=1.36.0
     - sundials >=5.7.0
-    # - yggdrasil
-    # - yggdrasil.c
-    # - yggdrasil.zmq
   run:
     - libboost-devel >=1.36.0
     - sundials >=5.7.0
-    # - yggdrasil
-    # - yggdrasil.c
-    # - yggdrasil.zmq
 
 test:
   commands:
