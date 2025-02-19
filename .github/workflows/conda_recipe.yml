@@ -17,7 +17,6 @@ jobs:
       matrix:
         sundials-version: [latest]
         os: [ubuntu-latest, macos-latest, windows-latest]
-        with-coverage: [false, true]
       fail-fast: false
     steps:
       - name: Check out repository code
@@ -34,7 +33,8 @@ jobs:
       - name: Set up miniconda test environment (W/O MPI)
         uses: conda-incubator/setup-miniconda@v3
         with:
-          activate-environment: base
+          activate-environment: ""
+          auto-activate-base: true
           environment-file: environment_recipe.yml
           auto-update-conda: true
           channels: conda-forge
