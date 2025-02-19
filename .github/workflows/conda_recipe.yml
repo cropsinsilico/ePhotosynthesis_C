@@ -40,26 +40,23 @@ jobs:
           channel-priority: strict
           miniforge-variant: Miniforge3
           miniforge-version: latest
-          use-mamba: true
-          mamba-version: "2.0.5"
-          # mamba-version: "1.5.10"
           conda-remove-defaults: true
       - name: Install conda-build
         run: |
-          mamba info
-          mamba list
-          mamba install conda-build py-lief=0.14 cmake numpy -y
-      - name: Check mamba installation
+          conda info
+          conda list
+          conda install conda-build py-lief=0.14 cmake numpy -y
+      - name: Check conda installation
         run: |
-          mamba info
-          mamba list
+          conda info
+          conda list
       - name: Build conda recipe
         run: |
           conda-build --use-local --no-anaconda-upload --output-folder ./local_channel/ recipe/
       - name: Install from local conda recipe
         run: |
-          mamba install -c ./local_channel ePhotosynthesis
-          mamba list
+          conda install -c ./local_channel ePhotosynthesis
+          conda list
 
       ###################################
       # Test
@@ -72,7 +69,7 @@ jobs:
           python scripts/devtasks.py compare-files output_conda.data --driver 4
       - name: Build example against the installed library using CMake
         run: |
-          mamba list
+          conda list
           cd tests/external
           mkdir build
           cd build
