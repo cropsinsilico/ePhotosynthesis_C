@@ -141,7 +141,8 @@ void ePhotosynthesis::readFile(const std::string &filename, std::map<std::string
         std::string errmsg = "Could not open " + filename + " for reading";
         throw std::runtime_error(errmsg);
     }
-    while (getline(inputfile, input)) {
+    std::cerr << "BEGIN READING " << filename << std::endl;
+    while (std::getline(inputfile, input)) {
         if (input.empty())
             continue;
         boost::algorithm::split_regex(tempVec, input, token);
@@ -164,8 +165,9 @@ void ePhotosynthesis::readFile(const std::string &filename, std::map<std::string
         std::string errmsg = "Could not open " + filename + " for reading";
         throw std::runtime_error(errmsg);
     }
+    std::cerr << "BEGIN READING " << filename << std::endl;
     int count = 0;
-    while (getline(inputfile, input)) {
+    while (std::getline(inputfile, input)) {
         if (input.empty())
             continue;
         boost::algorithm::split_regex(tempVec, input, token);
