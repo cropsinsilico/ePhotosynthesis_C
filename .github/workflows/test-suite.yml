@@ -145,14 +145,19 @@ jobs:
           auto-update-conda: true
           channels: conda-forge
           channel-priority: strict
-          # miniforge-version: latest
+          miniforge-version: latest
           use-mamba: true
-          # mamba-version: "1.5.10"
+          mamba-version: "1.5.10"
           conda-remove-defaults: true
       - name: Set USERPROFILE
         if: matrix.os == 'windows-latest'
         run: |
           echo "USERPROFILE=${{ github.workspace }}" >> "$GITHUB_ENV"
+      - name: Clean mamba installation
+        run: |
+          mamba clean --all
+          mamba info
+          mamba list
       - name: Install specific version of Sundials via conda
         if: matrix.sundials-version != 'latest' && matrix.with-mpi == false
         run: |
