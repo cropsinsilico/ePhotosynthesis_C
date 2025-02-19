@@ -40,7 +40,7 @@ jobs:
           channel-priority: strict
           miniforge-version: latest
           use-mamba: true
-          mamba-version: "1.5.10"
+          # mamba-version: "1.5.10"
           conda-remove-defaults: true
       - name: Install conda-build
         run: |

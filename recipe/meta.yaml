@@ -37,7 +37,8 @@ test:
     - test -f $PREFIX/lib/libEPhotosynthesis$SHLIB_EXT  # [unix]
     - test -f $PREFIX/include/ePhotosynthesis/ePhotosynthesis.hpp  # [unix]
     - test -f $PREFIX/bin/ePhoto  # [unix]
-    - if not exist %LIBRARY_LIB%\\libEPhotosynthesis.dll exit 1  # [win]
+    - if not exist %LIBRARY_LIB%\\EPhotosynthesis.lib exit 1  # [win]
+    - if not exist %LIBRARY_BIN%\\EPhotosynthesis.dll exit 1  # [win]
     - if not exist %LIBRARY_INC%\\ePhotosynthesis\\ePhotosynthesis.hpp exit 1  # [win]
     - if not exist %LIBRARY_BIN%\\ePhoto.exe exit 1  # [win]
 

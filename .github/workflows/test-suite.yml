@@ -170,16 +170,22 @@ jobs:
       - name: Install doxgen on unix systems
         if: matrix.os != 'windows-latest'
         run: |
+          conda clean --all
+          mamba clean --all
           mamba install doxygen>=1.9.2 graphviz -y
       - name: Install compilers using conda on Linux/Mac
         if: matrix.os != 'windows-latest' && matrix.with-valgrind != true
         run: |
+          conda clean --all
+          mamba clean --all
           mamba install c-compiler cxx-compiler
       - name: Install valgrind on unix systems (and required debug symbols)
         if: matrix.os != 'windows-latest' && matrix.with-valgrind == true
         run: |
           sudo apt-get update
           sudo apt-get install libc6-dbg
+          conda clean --all
+          mamba clean --all
           mamba install valgrind
           
       ###################################
