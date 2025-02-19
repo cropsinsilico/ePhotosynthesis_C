@@ -11,12 +11,21 @@ int main(int argc, const char* argv[]) {
 
         std::map<std::string, std::string> inputs;
         Variables *theVars = new Variables();
+        std::string evn("data/InputEvn.txt");
+        std::string atpcost("data/InputATPCost.txt");
+        std::string enzyme("data/InputEnzyme.txt");
+        std::string grn("data/InputGRNC.txt");
+
+        std::cerr << "evn: " << evn << std::endl;
+        std::cerr << "atpcost: " << atpcost << std::endl;
+        std::cerr << "enzyme: " << enzyme << std::endl;
+        std::cerr << "grn: " << grn << std::endl;
 
         // Read files
-        theVars->readParam("data/InputEvn.txt", inputs);
-        theVars->readParam("data/InputATPCost.txt", inputs);
-        theVars->readEnzymeAct("data/InputEnzyme.txt");
-        theVars->readGRN("data/InputGRNC.txt");
+        theVars->readParam(evn, inputs);
+        theVars->readParam(atpcost, inputs);
+        theVars->readEnzymeAct(enzyme);
+        theVars->readGRN(grn);
 
         double Tp = theVars->Tp;
         theVars->record = false;
