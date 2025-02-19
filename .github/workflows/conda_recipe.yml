@@ -35,7 +35,6 @@ jobs:
         with:
           activate-environment: ""
           auto-activate-base: true
-          environment-file: environment_recipe.yml
           auto-update-conda: true
           channels: conda-forge
           channel-priority: strict
@@ -43,6 +42,11 @@ jobs:
           use-mamba: true
           mamba-version: "1.5.10"
           conda-remove-defaults: true
+      - name: Install conda-build
+        run: |
+          mamba info
+          mamba list
+          mamba install conda-build -y
       - name: Check mamba installation
         run: |
           mamba info
