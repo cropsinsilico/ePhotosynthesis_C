@@ -155,6 +155,7 @@ jobs:
           echo "USERPROFILE=${{ github.workspace }}" >> "$GITHUB_ENV"
       - name: Clean mamba installation
         run: |
+          conda clean --all
           mamba clean --all
           mamba info
           mamba list
