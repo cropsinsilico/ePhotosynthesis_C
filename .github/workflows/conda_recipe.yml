@@ -48,7 +48,7 @@ jobs:
         run: |
           mamba info
           mamba list
-          mamba install conda-build py-lief=0.14 cmake -y
+          mamba install conda-build py-lief=0.14 cmake numpy -y
       - name: Check mamba installation
         run: |
           mamba info
