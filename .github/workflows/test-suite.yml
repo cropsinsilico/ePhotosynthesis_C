@@ -134,7 +134,7 @@ jobs:
           channel-priority: strict
           miniforge-version: latest
           use-mamba: true
-          mamba-version: "1.5.10"
+          # mamba-version: "1.5.10"
           conda-remove-defaults: true
       - name: Set up miniconda test environment (W/ MPI)
         if: matrix.with-mpi == true
@@ -147,7 +147,7 @@ jobs:
           channel-priority: strict
           miniforge-version: latest
           use-mamba: true
-          mamba-version: "1.5.10"
+          # mamba-version: "1.5.10"
           conda-remove-defaults: true
       - name: Set USERPROFILE
         if: matrix.os == 'windows-latest'
