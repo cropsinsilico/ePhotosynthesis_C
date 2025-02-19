@@ -103,15 +103,15 @@ jobs:
             with-asan: true
       fail-fast: false
     steps:
-      - name: Clean up unused software (Ubuntu)
-        uses: easimon/maximize-build-space@master
-        if: matrix.os == 'ubuntu-latest'
-        with:
-          remove-dotnet: 'true'
-          remove-android: 'true'
-          remove-haskell: 'true'
-          remove-codeql: 'true'
-          remove-docker-images: 'true'
+      # - name: Clean up unused software (Ubuntu)
+      #   uses: easimon/maximize-build-space@master
+      #   if: matrix.os == 'ubuntu-latest'
+      #   with:
+      #     remove-dotnet: 'true'
+      #     remove-android: 'true'
+      #     remove-haskell: 'true'
+      #     remove-codeql: 'true'
+      #     remove-docker-images: 'true'
       - name: Check out repository code
         uses: actions/checkout@v4
         with:
@@ -145,9 +145,9 @@ jobs:
           auto-update-conda: true
           channels: conda-forge
           channel-priority: strict
-          miniforge-version: latest
+          # miniforge-version: latest
           use-mamba: true
-          mamba-version: "1.5.10"
+          # mamba-version: "1.5.10"
           conda-remove-defaults: true
       - name: Set USERPROFILE
         if: matrix.os == 'windows-latest'

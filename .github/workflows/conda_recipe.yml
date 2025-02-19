@@ -38,15 +38,15 @@ jobs:
           auto-update-conda: true
           channels: conda-forge
           channel-priority: strict
-          miniforge-version: latest
+          # miniforge-version: latest
           use-mamba: true
-          mamba-version: "1.5.10"
+          # mamba-version: "1.5.10"
           conda-remove-defaults: true
       - name: Install conda-build
         run: |
           mamba info
           mamba list
-          mamba install conda-build -y
+          mamba install conda-build py-lief=0.14 -y
       - name: Check mamba installation
         run: |
           mamba info
