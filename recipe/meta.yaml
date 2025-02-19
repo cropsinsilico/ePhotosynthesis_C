@@ -20,13 +20,13 @@ requirements:
     - ninja  # [win]
     - {{ compiler('cxx') }}
   host:
-    - boost >=1.36.0
+    - libboost-devel >=1.36.0
     - sundials >=5.7.0
     # - yggdrasil
     # - yggdrasil.c
     # - yggdrasil.zmq
   run:
-    - boost >=1.36.0
+    - libboost-devel >=1.36.0
     - sundials >=5.7.0
     # - yggdrasil
     # - yggdrasil.c

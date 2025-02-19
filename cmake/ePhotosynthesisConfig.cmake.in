@@ -1,6 +1,6 @@
 include(CMakeFindDependencyMacro)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
-find_dependency(Boost REQUIRED)  # COMPONENTS regex)
+find_dependency(Boost REQUIRED COMPONENTS regex)
 find_dependency(Sundials REQUIRED)
 include(${CMAKE_CURRENT_LIST_DIR}/ePhotosynthesisTargets.cmake)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} CACHE INTERNAL "CMAKE_MODULE_PATH")
