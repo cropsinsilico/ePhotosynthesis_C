@@ -29,6 +29,64 @@ def find_matlab(required=False):
     return sorted(locations)[-1]  # Return newest version
 
 
+def read_output_table(fname):
+    with open(fname, 'r') as fd:
+        contents = fd.readlines()
+    if len(contents) == 1:
+        names = ['CO2AR']
+    else:
+        names = contents[0].strip().split(',')
+    values = [float(x) for x in contents[-1].strip().split(',')]
+    out = {k: v for k, v in zip(names, values)}
+    return out
+
+
+def check_output(f1, f2, reltol=1.0e-05, abstol=1.0e-08,
+                 label_f1='file A', label_f2='file B'):
+    x1dict = read_output_table(f1)
+    x2dict = read_output_table(f2)
+    out = True
+    for k in x1dict.keys():
+        if k not in x2dict:
+            print(f"{k} missing from C++")
+    for k in x2dict.keys():
+        if k not in x1dict:
+            print(f"{k} missing from MATLAB")
+    for k in x1dict.keys():
+        x1 = x1dict[k]
+        x2 = x2dict[k]
+        iout = np.isclose(x1, x2, rtol=reltol, atol=abstol)
+        if not iout:
+            out = False
+            reldiff = np.abs(x1 - x2) / x2
+            absdiff = np.abs(x1 - x2)
+            print(f"Values differ: {x1} vs {x2}\n"
+                  f"    Relative diff: {reldiff} (reltol = {reltol})\n"
+                  f"    Absolute diff: {absdiff} (abstol = {abstol}\n")
+    return out
+
+
+def compare_files(f1, f2, check_files=None, ftype='parameter',
+                  check_files_kwargs={}):
+    with open(f1, 'r') as fd:
+        lines1 = fd.readlines()
+    with open(f2, 'r') as fd:
+        lines2 = fd.readlines()
+    line_diff = list(difflib.unified_diff(lines1, lines2,
+                                          fromfile=f1, tofile=f2))
+    if line_diff:
+        if ftype == 'output' and check_files is None:
+            check_files = check_output
+        if (((check_files is not None)
+             and check_files(f1, f2, **check_files_kwargs))):
+            return
+        print(line_diff)
+        line_diff = '\n'.join(line_diff)
+        raise RuntimeError(
+            f"{ftype.title()} files differ:\n{line_diff}"
+        )
+
+
 class InstrumentedParser(argparse.ArgumentParser):
 
     def __init__(self, *args, **kwargs):
@@ -562,71 +620,18 @@ class compare_matlab(BuildSubTask):
         ]
         finit1 = args.matlab_output_param_base + 'init.txt'
         finit2 = args.output_param_base + 'init.txt'
-        self.compare_files(finit1, finit2)
+        compare_files(finit1, finit2)
         fout1 = args.matlab_output_file
         fout2 = args.output_file
         check_output_kws = {
             'reltol': args.reltol,
             'abstol': args.abstol,
+            'label_f1': 'MATLAB',
+            'label_f2': 'C++',
         }
-        self.compare_files(fout1, fout2, check_files=self.check_output,
-                           check_files_kwargs=check_output_kws,
-                           ftype='output')
-
-    @classmethod
-    def compare_files(cls, f1, f2, check_files=None, ftype='parameter',
-                      check_files_kwargs={}):
-        with open(f1, 'r') as fd:
-            lines1 = fd.readlines()
-        with open(f2, 'r') as fd:
-            lines2 = fd.readlines()
-        line_diff = list(difflib.unified_diff(lines1, lines2,
-                                              fromfile=f1, tofile=f2))
-        if line_diff:
-            if (((check_files is not None)
-                 and check_files(f1, f2, **check_files_kwargs))):
-                return
-            print(line_diff)
-            line_diff = '\n'.join(line_diff)
-            raise RuntimeError(
-                f"{ftype.title()} files differ:\n{line_diff}"
-            )
-
-    @classmethod
-    def read_output_table(cls, fname):
-        with open(fname, 'r') as fd:
-            contents = fd.readlines()
-        if len(contents) == 1:
-            names = ['CO2AR']
-        else:
-            names = contents[0].strip().split(',')
-        values = [float(x) for x in contents[-1].strip().split(',')]
-        out = {k: v for k, v in zip(names, values)}
-        return out
-
-    @classmethod
-    def check_output(cls, f1, f2, reltol=1.0e-05, abstol=1.0e-08):
-        x1dict = cls.read_output_table(f1)
-        x2dict = cls.read_output_table(f2)
-        out = True
-        for k in x1dict.keys():
-            if k not in x2dict:
-                print(f"{k} missing from C++")
-        for k in x2dict.keys():
-            if k not in x1dict:
-                print(f"{k} missing from MATLAB")
-        for k in x1dict.keys():
-            x1 = x1dict[k]
-            x2 = x2dict[k]
-            iout = np.isclose(x1, x2, rtol=reltol, atol=abstol)
-            if not iout:
-                out = False
-                reldiff = np.abs(x1 - x2) / x2
-                absdiff = np.abs(x1 - x2)
-                print(f"Values differ: {x1} vs {x2}\n"
-                      f"    Relative diff: {reldiff} (reltol = {reltol})\n"
-                      f"    Absolute diff: {absdiff} (abstol = {abstol}\n")
-        return out
+        compare_files(fout1, fout2, check_files=check_output,
+                      check_files_kwargs=check_output_kws,
+                      ftype='output')
 
 
 class docs(BuildSubTask):
@@ -690,6 +695,32 @@ class preprocess(SubTask):
         super(preprocess, self).__init__(args, cmds=cmds,
                                          output_file=args.output_file,
                                          allow_error=True)
+
+
+class compare_files_task(SubTask):
+
+    @classmethod
+    def adjust_args(cls, args):
+        if not args.expected:
+            if args.filetype != 'output':
+                raise RuntimeError(f'Cannot infer the expected file for '
+                                   f'a filetype of \'{args.filetype}\'')
+            driver_name = cls._driver_map[args.driver]
+            args.expected = os.path.join(_source_dir, 'tests', 'data',
+                                         f'ePhotoOutput_{driver_name}.txt')
+        assert os.path.isfile(args.actual)
+        assert os.path.isfile(args.expected)
+
+    def __init__(self, args, **kwargs):
+        super(compare_files_task, self).__init__(args, **kwargs)
+        check_files_kwargs = {
+            'label_f1': 'Actual',
+            'label_f2': 'Expected',
+            'reltol': args.reltol,
+            'abstol': args.abstol,
+        }
+        compare_files(args.actual, args.expected, ftype=args.filetype,
+                      check_files_kwargs=check_files_kwargs)
 
 
 if __name__ == "__main__":
@@ -770,12 +801,6 @@ if __name__ == "__main__":
         "--diff", action='store_true',
         help=("Just perform the diff on the output from the two models "
               "assuming that it was already generated"))
-    parser_matlab.add_argument(
-        "--reltol", type=float, default=1.0e-05,
-        help="Relative tolerance to use when comparing C++ & MATLAB")
-    parser_matlab.add_argument(
-        "--abstol", type=float, default=1.0e-08,
-        help="Absolute tolerance to use when comparing C++ & MATLAB")
 
     parser_docs = subparsers.add_parser(
         'docs', help="Build the docs",
@@ -791,6 +816,20 @@ if __name__ == "__main__":
     parser_coverage = subparsers.add_parser(
         'coverage', help="Check test coverage",
         func=coverage)
+    parser_compare_files = subparsers.add_parser(
+        'compare-files', help="Compare two files",
+        func=compare_files_task)
+    parser_compare_files.add_argument(
+        'actual', type=str, help="Actual result file for comparison")
+    parser_compare_files.add_argument(
+        '--expected', type=str,
+        help=("File containing expected result. If not "
+              "provided, the ePhoto input arguments will "
+              "be used to determine which file contains "
+              "the expected result."))
+    parser_compare_files.add_argument(
+        '--filetype', type=str, default="output",
+        help="Type of file being compared")
 
     requires_build = [
         'update-readme',
@@ -801,6 +840,7 @@ if __name__ == "__main__":
     ]
     build_tasks = ['build'] + requires_build
     ephoto_tasks = ['ephoto', 'compare-matlab']
+    compare_tasks = ['compare-matlab', 'compare-files']
 
     # Build arguments
     parser.add_argument(
@@ -865,12 +905,22 @@ if __name__ == "__main__":
         help="Don't rebuild before performing the task",
         subparsers={'task': requires_build})
 
+    # Comparison arguments
+    parser.add_argument(
+        "--reltol", type=float, default=1.0e-05,
+        help="Relative tolerance to use when comparing output files",
+        subparsers={'task': compare_tasks})
+    parser.add_argument(
+        "--abstol", type=float, default=1.0e-08,
+        help="Absolute tolerance to use when comparing output files",
+        subparsers={'task': compare_tasks})
+
     # ePhoto arguments
     parser.add_argument(
         "--driver", '-d', type=int,
         default=0, choices=[0, 1, 2, 3, 4],
         help="Driver to run",
-        subparsers={'task': ephoto_tasks})
+        subparsers={'task': ephoto_tasks + ['compare-files']})
     parser.add_argument(
         '--input-dir', type=str, default=_source_dir,
         help="Directory containing input files",

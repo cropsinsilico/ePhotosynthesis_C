@@ -29,15 +29,7 @@
 #include <vector>
 
 #include "cxxopts.hpp"
-#include "globals.hpp"
-#include "modules/trDynaPS.hpp"
-#include "modules/CM.hpp"
-#include "modules/EPS.hpp"
-#include "modules/PR.hpp"
-#include "modules/BF.hpp"
-#include "modules/FI.hpp"
-#include "drivers/drivers.hpp"
-#include "Variables.hpp"
+#include "ePhotosynthesis.hpp"
 
 
 using namespace ePhotosynthesis;

@@ -1,0 +1,103 @@
+name: Test of conda recipe build
+'on':
+  push:
+    branches-ignore:
+     - gh-pages
+    tags:
+     - '*'
+  schedule:
+  - cron: 0 10 * * 1
+jobs:
+  build_conda_recipe:
+    runs-on: ${{ matrix.os }}
+    defaults:
+      run:
+        shell: bash -el {0}
+    strategy:
+      matrix:
+        sundials-version: [latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+      fail-fast: false
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      ###################################
+      # CONDA SETUP
+      ###################################
+      - name: Set up MSVC Compiler on windows
+        uses: ilammy/msvc-dev-cmd@v1
+        if: matrix.os == 'windows-latest'
+      - name: Set up miniconda test environment (W/O MPI)
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          activate-environment: ""
+          auto-activate-base: true
+          auto-update-conda: true
+          channels: conda-forge
+          channel-priority: strict
+          miniforge-variant: Miniforge3
+          miniforge-version: latest
+          conda-remove-defaults: true
+      - name: Install conda-build
+        run: |
+          conda info
+          conda list
+          conda install conda-build py-lief=0.14 cmake numpy -y
+      - name: Check conda installation
+        run: |
+          conda info
+          conda list
+      - name: Build conda recipe
+        run: |
+          conda-build --use-local --no-anaconda-upload --output-folder ./local_channel/ recipe/
+      - name: Install from local conda recipe
+        run: |
+          conda install -c ./local_channel ePhotosynthesis
+          conda list
+
+      ###################################
+      # Test
+      ###################################
+      - name: Test ePhoto executable install by conda
+        run: |
+          ePhoto -d 4 --evn tests/data/InputEvn.txt --grn tests/data/InputGRNC.txt --enzyme tests/data/InputEnzyme.txt --atpcost tests/data/InputATPCost.txt --output output_conda.data
+      - name: Check output from ePhoto executable install by conda
+        run: |
+          python scripts/devtasks.py compare-files output_conda.data --driver 4
+      - name: Build example against the installed library using CMake/Make (Unix)
+        if: matrix.os != 'windows-latest'
+        run: |
+          conda list
+          cd tests/external
+          mkdir build
+          cd build
+          cmake .. -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+          cmake --build .
+      - name: Build example against the installed library using CMake/Ninja (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          conda list
+          cd tests/external
+          mkdir build
+          cd build
+          cmake -GNinja -D CMAKE_BUILD_TYPE=Release -D CMAKE_VERBOSE_MAKEFILE:BOOL=ON ..
+          cmake --build .
+      - name: Test built example executable (Unix)
+        if: matrix.os != 'windows-latest'
+        run: |
+          cd tests
+          ./external/build/example
+      - name: Test built example executable (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          cd tests
+          ls
+          ls ./external/build/
+          # ./external/build/Release/example
+          ./external/build/example
+      - name: Check built example executable output
+        run: |
+          python scripts/devtasks.py compare-files tests/example_output.data --driver 4
