@@ -1,10 +1,6 @@
 #!/bin/sh
 set -euo pipefail
 
-# if [[ `uname` == Darwin ]]; then
-#     export LDFLAGS="-Wl,-rpath,$PREFIX/lib $LDFLAGS"
-# fi
-
 # Using cmake
 mkdir conda_build
 cd conda_build
