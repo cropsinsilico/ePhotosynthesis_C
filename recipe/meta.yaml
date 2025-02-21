@@ -25,6 +25,7 @@ requirements:
     - libboost-devel >=1.36.0
     - sundials >=5.7.0
   run:
+    - libboost-devel >=1.36.0
     - sundials >=5.7.0
 
 # TODO: Add Python wrapper as export?
