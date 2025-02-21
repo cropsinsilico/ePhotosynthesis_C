@@ -94,7 +94,10 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           cd tests
-          ./external/build/Release/example
+          ls
+          ls ./external/build/
+          # ./external/build/Release/example
+          ./external/build/example
       - name: Check built example executable output
         run: |
           python scripts/devtasks.py compare-files tests/example_output.data --driver 4
