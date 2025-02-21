@@ -7,7 +7,8 @@ cd conda_build
 :: Call cmake
 cmake -GNinja ^
       -D CMAKE_BUILD_TYPE=%CONFIGURATION% ^
-      -D CMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ..
+      -D CMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
+      -D CMAKE_VERBOSE_MAKEFILE=ON ..
 if errorlevel 1 exit 1
 
 :: Using ninja

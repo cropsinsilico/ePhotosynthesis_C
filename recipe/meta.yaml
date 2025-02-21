@@ -12,19 +12,24 @@ source:
 
 build:
   number: 0
+  run_exports:
+    - {{ pin_subpackage('ephotosynthesis', max_pin='x.x') }}
 
 requirements:
   build:
     - cmake
     - make  # [unix]
     - ninja  # [win]
+    - {{ compiler('c') }}
+    - {{ stdlib('c') }}
     - {{ compiler('cxx') }}
   host:
     - libboost-devel >=1.36.0
     - sundials >=5.7.0
   run:
-    - libboost-devel >=1.36.0
     - sundials >=5.7.0
+
+# TODO: Add Python wrapper as export?
 
 test:
   commands:

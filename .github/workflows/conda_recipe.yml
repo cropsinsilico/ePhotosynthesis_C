@@ -67,13 +67,23 @@ jobs:
       - name: Check output from ePhoto executable install by conda
         run: |
           python scripts/devtasks.py compare-files output_conda.data --driver 4
-      - name: Build example against the installed library using CMake
+      - name: Build example against the installed library using CMake/Make (Unix)
+        if: matrix.os != 'windows-latest'
         run: |
           conda list
           cd tests/external
           mkdir build
           cd build
           cmake .. -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+          cmake --build .
+      - name: Build example against the installed library using CMake/Ninja (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          conda list
+          cd tests/external
+          mkdir build
+          cd build
+          cmake -GNinja -D CMAKE_BUILD_TYPE=Release -D CMAKE_VERBOSE_MAKEFILE:BOOL=ON ..
           cmake --build .
       - name: Test built example executable (Unix)
         if: matrix.os != 'windows-latest'
@@ -84,7 +94,7 @@ jobs:
         if: matrix.os == 'windows-latest'
         run: |
           cd tests
-          ./external/build/Debug/example
+          ./external/build/Release/example
       - name: Check built example executable output
         run: |
           python scripts/devtasks.py compare-files tests/example_output.data --driver 4
