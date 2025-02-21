@@ -8,4 +8,4 @@ add_executable(example example.cpp)
 
 find_package(ePhotosynthesis REQUIRED)
 
-target_link_libraries(example PUBLIC ePhotosynthesis::EPhotosynthesis)
+target_link_libraries(example PRIVATE ePhotosynthesis::EPhotosynthesis)
