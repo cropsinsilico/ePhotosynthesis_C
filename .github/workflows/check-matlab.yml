@@ -31,13 +31,11 @@ jobs:
           auto-update-conda: true
           channels: conda-forge
           channel-priority: strict
-          # miniforge-variant: Mambaforge
+          miniforge-variant: Miniforge3
           miniforge-version: latest
-          use-mamba: true
-          mamba-version: "1.5.10"
       - name: Install compilers using conda on Linux/Mac
         run: |
-          mamba install c-compiler cxx-compiler
+          conda install c-compiler cxx-compiler
       - name: Global config flags
         shell: bash -l {0}
         run: |
