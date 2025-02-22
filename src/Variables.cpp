@@ -1052,6 +1052,7 @@ void Variables::updateParam(std::map<std::string, std::string>& inputs,
     double value = 0.0;
     static std::string set_suffix = "_SETXXX";
     bool controlVar = false;
+    std::string controlStr = "";
 
     for (typename std::map<std::string, std::string>::const_iterator it = inputs.begin();
          it != inputs.end(); it++) {
@@ -1060,6 +1061,7 @@ void Variables::updateParam(std::map<std::string, std::string>& inputs,
         mod = MODULE_NONE;
         pt = PARAM_TYPE_NONE;
         controlVar = false;
+        controlStr = "";
         name = parseVar(it->first, mod, pt, false, false, true,
                         &controlVar);
         if (name.empty()) {
@@ -1070,23 +1072,26 @@ void Variables::updateParam(std::map<std::string, std::string>& inputs,
             rm_values.push_back(it->first);
             continue;
         }
+        if (controlVar)
+            controlStr = "[CONTROL VARIABLE] ";
         value = static_cast<double>(std::stof(it->second, nullptr));
         name_FULL = utils::enum_key2string(mod) + "::" +
             utils::enum_key2string(pt) + "::" + name;
         name_SET = name_FULL + set_suffix;
         if (inputs.find(name_SET) == inputs.end()) {
             std::cout << context << ": READ \"" << name_FULL <<
-                "\" from \"" << it->first << "\" (" << it->second << ")" <<
+                "\" " << controlStr <<
+                "from \"" << it->first << "\" (" << it->second << ")" <<
                 std::endl;
             add_values[name_SET] = it->second;
             if (theVars) {
                 if (controlVar)
-                    theVars->setControlVar(mod, pt, name, (value > 0));
+                    theVars->setControlVar(mod, pt, name, (int)value);
                 else
                     theVars->setVar(mod, pt, name, value);
             } else {
                 if (controlVar)
-                    setDefaultControlVar(mod, pt, name, (value > 0));
+                    setDefaultControlVar(mod, pt, name, (int)value);
                 else
                     setDefault(mod, pt, name, value);
             }

@@ -72,13 +72,13 @@ class Variables;
      @brief Factory for creating Variables.
      @returns Pointer to new Variables instance.
   */
-  Variables* create_Variables();
+  EPHOTO_API Variables* create_Variables();
 
   /**
      @brief Utility for destroying Variables.
      @param[in] theVars Variables instance to destroy.
    */
-  void destroy_Variables(Variables*& theVars);
+  EPHOTO_API void destroy_Variables(Variables*& theVars);
     
 /**
   Structure to hold global variables

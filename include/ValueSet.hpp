@@ -821,7 +821,7 @@ namespace ePhotosynthesis {
      Wrapper for handling destruction of ValueSet pointers.
    */
   template<typename T>
-  class ValueSetWrapperBase {
+  class EPHOTO_API ValueSetWrapperBase {
   public:
     ValueSetWrapperBase(T* ptr);
     ValueSetWrapperBase(ValueSetWrapperBase&& other);

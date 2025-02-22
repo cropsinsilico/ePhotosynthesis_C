@@ -304,8 +304,7 @@ int main(int argc, const char* argv[]) {
 #ifdef MAKE_EQUIVALENT_TO_MATLAB
         if (result.count("RUBISCOMETHOD") != 0) {
 #endif // MAKE_EQUIVALENT_TO_MATLAB
-            theVars->RUBISCOMETHOD = RUBISCOMETHOD;
-            inputs["RUBISCOMETHOD_SETXXX"] = std::to_string(RUBISCOMETHOD);
+            inputs["RUBISCOMETHOD"] = std::to_string(RUBISCOMETHOD);
 #ifdef MAKE_EQUIVALENT_TO_MATLAB
         }
 #endif // MAKE_EQUIVALENT_TO_MATLAB

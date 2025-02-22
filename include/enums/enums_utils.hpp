@@ -11,8 +11,8 @@
 
 const boost::regex token("\\s+");
 
-std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::MODULE& x);
-std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::PARAM_TYPE& x);
+EPHOTO_API std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::MODULE& x);
+EPHOTO_API std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::PARAM_TYPE& x);
 
 namespace ePhotosynthesis {
   namespace utils {
