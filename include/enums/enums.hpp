@@ -32,17 +32,17 @@ namespace ePhotosynthesis {
     #else  // EPHOTO_USE_SCOPED_ENUM
     enum Type : int;
     #endif  // EPHOTO_USE_SCOPED_ENUM
-    static EPHOTO_API const MODULE module;
-    static EPHOTO_API const PARAM_TYPE param_type;
-    static EPHOTO_API const std::vector<Type> all;  /**< All enum values */
-    static EPHOTO_API const std::map<Type, std::string> names;  /**< Names for values */
-    static EPHOTO_API const std::map<Type, double> defaults;  /**< Defaults for values */
-    static EPHOTO_API const std::map<Type, double> defaults_C3;  /**< Defaults_C3 for values */
-    static EPHOTO_API const std::map<Type, std::string> glymaids;  /**< Glymaids for values */
-    static EPHOTO_API const std::map<std::string, Type> aliases;  /**< Aliases for values */
-    static EPHOTO_API const std::map<Type, std::string> docs;  /**< Docs for values */
-    static EPHOTO_API std::map<Type, int> value_flags;  /**< Value_Flags for values */
-    static EPHOTO_API const std::map<Type, int> static_value_flags;  /**< Static_Value_Flags for values */
+    static const MODULE module;
+    static const PARAM_TYPE param_type;
+    static const std::vector<Type> all;  /**< All enum values */
+    static const std::map<Type, std::string> names;  /**< Names for values */
+    static const std::map<Type, double> defaults;  /**< Defaults for values */
+    static const std::map<Type, double> defaults_C3;  /**< Defaults_C3 for values */
+    static const std::map<Type, std::string> glymaids;  /**< Glymaids for values */
+    static const std::map<std::string, Type> aliases;  /**< Aliases for values */
+    static const std::map<Type, std::string> docs;  /**< Docs for values */
+    static std::map<Type, int> value_flags;  /**< Value_Flags for values */
+    static const std::map<Type, int> static_value_flags;  /**< Static_Value_Flags for values */
     /**
       Get a prefix for errors describing the class
       \return Prefix

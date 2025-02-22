@@ -22,7 +22,8 @@ int main(int argc, const char* argv[]) {
         std::cerr << "enzyme: " << enzyme << std::endl;
         std::cerr << "grn: " << grn << std::endl;
 
-        run_simulation(4, begintime, stoptime, stepsize, maxSubSteps,
+        run_simulation((DriverType)4,
+                       begintime, stoptime, stepsize, maxSubSteps,
                        abstol, reltol, inputs,
                        true, 0, false, false, false,
                        evn, atpcost, enzyme, grn,

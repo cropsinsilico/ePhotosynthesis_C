@@ -4086,7 +4086,7 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             },
         },
     }
-    _export_members = True
+    _export_members = False
 
     @staticmethod
     def create_child_classes(cls):
