@@ -30,7 +30,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_BF_COND& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_BF_COND& x);
   template<>
   struct enum_helper_inv<ENUM_BF_COND> {
     typedef ENUM_BF_COND type;
@@ -68,7 +68,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_CM_COND& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_CM_COND& x);
   template<>
   struct enum_helper_inv<ENUM_CM_COND> {
     typedef ENUM_CM_COND type;
@@ -106,7 +106,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_DynaPS_COND& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_DynaPS_COND& x);
   template<>
   struct enum_helper_inv<ENUM_DynaPS_COND> {
     typedef ENUM_DynaPS_COND type;
@@ -144,7 +144,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_EPS_COND& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_EPS_COND& x);
   template<>
   struct enum_helper_inv<ENUM_EPS_COND> {
     typedef ENUM_EPS_COND type;
@@ -182,7 +182,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_COND& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_COND& x);
   template<>
   struct enum_helper_inv<ENUM_FIBF_COND> {
     typedef ENUM_FIBF_COND type;
@@ -220,7 +220,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_FI_COND& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_FI_COND& x);
   template<>
   struct enum_helper_inv<ENUM_FI_COND> {
     typedef ENUM_FI_COND type;
@@ -258,7 +258,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_PR_COND& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_PR_COND& x);
   template<>
   struct enum_helper_inv<ENUM_PR_COND> {
     typedef ENUM_PR_COND type;
@@ -296,7 +296,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_PS_COND& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_PS_COND& x);
   template<>
   struct enum_helper_inv<ENUM_PS_COND> {
     typedef ENUM_PS_COND type;
@@ -334,7 +334,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_PS_PR_COND& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_PS_PR_COND& x);
   template<>
   struct enum_helper_inv<ENUM_PS_PR_COND> {
     typedef ENUM_PS_PR_COND type;
@@ -372,7 +372,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_RA_COND& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_RA_COND& x);
   template<>
   struct enum_helper_inv<ENUM_RA_COND> {
     typedef ENUM_RA_COND type;
@@ -410,7 +410,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_COND& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_COND& x);
   template<>
   struct enum_helper_inv<ENUM_RROEA_COND> {
     typedef ENUM_RROEA_COND type;
@@ -448,7 +448,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_COND& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_COND& x);
   template<>
   struct enum_helper_inv<ENUM_RedoxReg_COND> {
     typedef ENUM_RedoxReg_COND type;
@@ -486,7 +486,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_COND& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_COND& x);
   template<>
   struct enum_helper_inv<ENUM_RuACT_COND> {
     typedef ENUM_RuACT_COND type;
@@ -524,7 +524,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_COND& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_COND& x);
   template<>
   struct enum_helper_inv<ENUM_SUCS_COND> {
     typedef ENUM_SUCS_COND type;
@@ -562,7 +562,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_COND& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_COND& x);
   template<>
   struct enum_helper_inv<ENUM_XanCycle_COND> {
     typedef ENUM_XanCycle_COND type;
@@ -600,7 +600,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_trDynaPS_COND& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_trDynaPS_COND& x);
   template<>
   struct enum_helper_inv<ENUM_trDynaPS_COND> {
     typedef ENUM_trDynaPS_COND type;

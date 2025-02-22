@@ -139,9 +139,9 @@ namespace ePhotosynthesis {
       return VS::names;
     }
     template<>
-    const std::map<MODULE, std::string>& get_enum_names<MODULE>();
+    EPHOTO_API const std::map<MODULE, std::string>& get_enum_names<MODULE>();
     template<>
-    const std::map<PARAM_TYPE, std::string>& get_enum_names<PARAM_TYPE>();
+    EPHOTO_API const std::map<PARAM_TYPE, std::string>& get_enum_names<PARAM_TYPE>();
     
     template<typename T1>
     bool enum_key_search(const std::map<T1, std::string> map,

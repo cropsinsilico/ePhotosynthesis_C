@@ -30,7 +30,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, int> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, int> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_ALL_VARS& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_ALL_VARS& x);
   template<>
   struct enum_helper_inv<ENUM_ALL_VARS> {
     typedef ENUM_ALL_VARS type;

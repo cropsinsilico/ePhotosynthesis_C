@@ -294,7 +294,7 @@ int main(int argc, const char* argv[]) {
 	  }
 	}
       
-        Variables *theVars = new Variables();
+        Variables *theVars = create_Variables();
         // Ensure that command line argument takes precedence
         if (result.count("Tp") != 0) {
             theVars->Tp = Tp;

@@ -64,6 +64,21 @@ void init_global_sundials_context();
 void cleanup_global_sundials_context();
 
 #endif // SUNDIALS_CONTEXT_REQUIRED
+
+/** Forward declaration */
+class Variables;
+
+  /**
+     @brief Factory for creating Variables.
+     @returns Pointer to new Variables instance.
+  */
+  Variables* create_Variables();
+
+  /**
+     @brief Utility for destroying Variables.
+     @param[in] theVars Variables instance to destroy.
+   */
+  void destroy_Variables(Variables*& theVars);
     
 /**
   Structure to hold global variables

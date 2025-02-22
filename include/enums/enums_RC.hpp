@@ -30,7 +30,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_BF_RC& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_BF_RC& x);
   template<>
   struct enum_helper_inv<ENUM_BF_RC> {
     typedef ENUM_BF_RC type;
@@ -68,7 +68,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_RC& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_FIBF_RC& x);
   template<>
   struct enum_helper_inv<ENUM_FIBF_RC> {
     typedef ENUM_FIBF_RC type;
@@ -106,7 +106,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_FI_RC& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_FI_RC& x);
   template<>
   struct enum_helper_inv<ENUM_FI_RC> {
     typedef ENUM_FI_RC type;
@@ -144,7 +144,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_PR_RC& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_PR_RC& x);
   template<>
   struct enum_helper_inv<ENUM_PR_RC> {
     typedef ENUM_PR_RC type;
@@ -182,7 +182,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_PS_RC& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_PS_RC& x);
   template<>
   struct enum_helper_inv<ENUM_PS_RC> {
     typedef ENUM_PS_RC type;
@@ -220,7 +220,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_RC& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_RROEA_RC& x);
   template<>
   struct enum_helper_inv<ENUM_RROEA_RC> {
     typedef ENUM_RROEA_RC type;
@@ -258,7 +258,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_RC& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_RedoxReg_RC& x);
   template<>
   struct enum_helper_inv<ENUM_RedoxReg_RC> {
     typedef ENUM_RedoxReg_RC type;
@@ -296,7 +296,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_RC& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_RuACT_RC& x);
   template<>
   struct enum_helper_inv<ENUM_RuACT_RC> {
     typedef ENUM_RuACT_RC type;
@@ -334,7 +334,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_RC& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_RC& x);
   template<>
   struct enum_helper_inv<ENUM_SUCS_RC> {
     typedef ENUM_SUCS_RC type;
@@ -372,7 +372,7 @@ namespace ePhotosynthesis {
   std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::static_value_flags;
-  std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_RC& x);
+  EPHOTO_API std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_RC& x);
   template<>
   struct enum_helper_inv<ENUM_XanCycle_RC> {
     typedef ENUM_XanCycle_RC type;

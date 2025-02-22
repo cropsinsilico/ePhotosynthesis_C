@@ -82,7 +82,8 @@ void makeFluxTR(Variables *theVars);
   @param[in, out] mapper The std::map to put the contents of the file into
   @exception std::runtime_error If the opening of the file fails.
   */
-void readFile(const std::string &filename, std::map<std::string, std::string> &mapper);
+EPHOTO_API void readFile(const std::string &filename,
+                         std::map<std::string, std::string> &mapper);
 
 /**
   Overloaded utility function to read a text file and convert it to a map. The input text file
@@ -94,6 +95,6 @@ void readFile(const std::string &filename, std::map<std::string, std::string> &m
   @param[in] enzymes If True, the inputs are scales like enzymes.
   @exception std::runtime_error If the opening of the file fails.
   */
-void readFile(const std::string &filename, std::map<std::string, double> &mapper, bool enzymes=false);
+EPHOTO_API void readFile(const std::string &filename, std::map<std::string, double> &mapper, bool enzymes=false);
 
 }  // namespace ePhotosynthesis

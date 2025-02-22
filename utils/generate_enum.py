@@ -398,7 +398,9 @@ class CodeUnitBase:
 
     @property
     def api(self):
-        if ((self.context.primary and self.export and self.inside_class
+        if ((self.export
+             and ((self.inside_class and self.context.primary)
+                  or not (self.parent_class or self.context.inside_class))
              and (not self.check_conditions('define')))):
             return f'{self.export} '
         return ''
@@ -3174,6 +3176,9 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 f"(valid values = {self.additional_functions})")
         if utility and added_functions is not None:
             added_functions[self.collection_type].append(function_type)
+        if ((isinstance(self.parent._export_members, list)
+             and function_type in self.parent._export_members)):
+            kwargs.setdefault('export', self.parent.api_macro)
         return [
             FunctionUnit(
                 function_name, type=return_type, args=args, body=body,
@@ -4086,7 +4091,7 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             },
         },
     }
-    _export_members = False
+    _export_members = ['operator<<']
 
     @staticmethod
     def create_child_classes(cls):
@@ -4212,7 +4217,9 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
             }
         assert (var_name and value and type)
         if self._export_members:
-            remainder_kwargs.setdefault('export', self.api_macro)
+            if (((self._export_members is True)
+                 or (var_name in self._export_members))):
+                remainder_kwargs.setdefault('export', self.api_macro)
         out = VariableUnit(
             var_name, type=type, value=value, static=static,
             conditions=conditions,

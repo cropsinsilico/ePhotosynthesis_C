@@ -11,7 +11,7 @@ int main(int argc, const char* argv[]) {
 
         std::map<std::string, std::string> inputs;
         inputs["RUBISCOMETHOD"] = "2";
-        Variables *theVars = new Variables();
+        
         std::string evn("data/InputEvn.txt");
         std::string atpcost("data/InputATPCost.txt");
         std::string enzyme("data/InputEnzyme.txt");
@@ -24,8 +24,7 @@ int main(int argc, const char* argv[]) {
 
         run_simulation((DriverType)4,
                        begintime, stoptime, stepsize, maxSubSteps,
-                       abstol, reltol, inputs,
-                       true, 0, false, false, false,
+                       abstol, reltol, inputs, true,
                        evn, atpcost, enzyme, grn,
                        "example_output.data");
 

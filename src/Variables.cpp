@@ -36,6 +36,17 @@ void ePhotosynthesis::cleanup_global_sundials_context() {
 
 #endif // SUNDIALS_CONTEXT_REQUIRED
 
+ePhotosynthesis::Variables* ePhotosynthesis::create_Variables() {
+    return new ePhotosynthesis::Variables();
+}
+
+void ePhotosynthesis::destroy_Variables(ePhotosynthesis::Variables*& theVars) {
+    if (theVars) {
+      delete theVars;
+      theVars = nullptr;
+    }
+}
+
 using namespace ePhotosynthesis;
 
 DEFINE_VALUE_SET(Variables);
