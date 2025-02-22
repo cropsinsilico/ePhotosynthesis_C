@@ -300,130 +300,34 @@ int main(int argc, const char* argv[]) {
             theVars->Tp = Tp;
             inputs["Tp_SETXXX"] = std::to_string(Tp);
         }
-        if (fileProvided(evn, evn))
-            theVars->readParam(evn, inputs);
-        if (fileProvided(atpcost, atpcost))
-            theVars->readParam(atpcost, inputs);
-        if (fileProvided(enzyme, enzymeFile)) {
-            theVars->readEnzymeAct(enzymeFile);
-        } else {
-            if (useC3)
-                throw std::runtime_error("Enzyme data required if --c3 set (automatically true for EPS driver)");
+        // TODO: The default needs updated?
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+        if (result.count("RUBISCOMETHOD") != 0) {
+#endif // MAKE_EQUIVALENT_TO_MATLAB
+            theVars->RUBISCOMETHOD = RUBISCOMETHOD;
+            inputs["RUBISCOMETHOD_SETXXX"] = std::to_string(RUBISCOMETHOD);
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
         }
+#endif // MAKE_EQUIVALENT_TO_MATLAB
+        if (!fileProvided(evn, evn)) evn = "";
+        if (!fileProvided(atpcost, atpcost)) atpcost = "";
+        if (!fileProvided(enzyme, enzymeFile)) enzymeFile = "";
+        if (!fileProvided(grn, grnFile)) grnFile = "";
 
-        // Read the GRN data and assign it into the correct positions
-        // based on the expected order
-        if (fileProvided(grn, grnFile))
-            theVars->readGRN(grnFile);
-
-        Tp = theVars->Tp;
-        theVars->record = record;
-        theVars->useC3 = useC3; // Redundant after select_driver
-        theVars->RUBISCOMETHOD = RUBISCOMETHOD;
-        modules::PR::setRUBISCOTOTAL(3);
-        if (debugDelta)
-            dbglvl += 8;
-        if (debugInternal)
-            dbglvl += 16;
-#ifdef INCDEBUG
-        std::cout << "Setting Debug level " << dbglvl << std::endl;
-        theVars->debuglevel = static_cast<Debug::RequestedDebug>(dbglvl);
-#else
-        if (dbglvl != 0)
-            std::cout << "This is not a debug build, no debug reporting will be done." << std::endl;
-#endif
-        drivers::Driver *maindriver;
-	
-#ifdef WITH_YGGDRASIL
-	int flag = 0;
-	Variables *origVars = theVars->deepcopy();
-	YggInput steps("param");
-	YggOutput out("output");
-	bool first = true;
-	int iteration = 0;
-	while (true) {
-	  std::cout << "ITERATION: " << iteration << std::endl;
-	  if (!first)
-	    theVars = origVars->deepcopy();
-	  rapidjson::Document new_state;
-	  flag = steps.recvVar(new_state);
-	  if (flag < 0) {
-	    if (first) {
-	      printf("Failed to receive first step.\n");
-	      exit(EXIT_FAILURE);
-	    } else {
-	      printf("End of input\n");
-	      delete theVars;
-	      break;
-	    }
-	  }
-
-	  std::cout << "INPUT STATE = " << new_state << std::endl;
-          updateParamYgg(new_state, theVars);
-	  // assignYggVarD(CO2, Air_CO2);
-	  // assignYggVarD(Air_CO2, Air_CO2);
-	  // assignYggVarD(PAR, Radiation_PAR);
-	  // assignYggVarD(Radiation_PAR, Radiation_PAR);
-	  // assignYggVarD(ATPCost, TestATPCost);
-	  // assignYggVarI(GRNC, GRNC);
-	  // setYggVarB(SucPath, CM, TestSucPath);
-	  // if (new_state.HasMember("Temp")) {
-	  //   theVars->Tp = new_state["Temp"].GetDouble();
-	  //   displayYggInputVar(%lf, Temp, theVars->Tp);
-	  // }
-#endif
-
-	  maindriver = drivers::create_driver(driverChoice, theVars,
-					      begintime, stepsize,
-					      stoptime, maxSubSteps,
-					      abstol, reltol, 1, 1);
-	  if ((outputParam == 0) && !(outputParamBase.empty() &&
-                                      outputParamVars.empty()))
-	    outputParam = 1;
-	  if (outputParam) {
-            std::vector<std::string> outputParamVarsV;
-            if (!outputParamVars.empty())
-              outputParamVarsV = utils::str_split(outputParamVars, ",");
-	    maindriver->outputParam(static_cast<OutputFreq>(outputParam),
-                                    outputParamBase,
-                                    outputParamVarsV);
-          }
-        std::vector<double> ResultRate = maindriver->run();
-
-#ifdef WITH_YGGDRASIL
-        rapidjson::Document out_state;
-        param2ygg(maindriver->output, out_state, theVars);
-        std::cout << "OUTPUT STATE = " << out_state << std::endl;
-        flag = out.sendVar(out_state);
-	if (flag < 0) {
-	  printf("Error sending output.\n");
-	  exit(EXIT_FAILURE);
-	}
-#else
-	// std::cerr << theVars << std::endl;
-        std::ofstream outfile(outputFile);
-        if (!outputVars.empty()) {
-          std::vector<std::string> outputVarsV = utils::str_split(outputVars, ",");
-          maindriver->setOutputVars(outputVarsV);
-        }
-	maindriver->writeOutputTable(outfile);
-
-        outfile.close();
-#endif
-	
-        if (theVars != nullptr) {
-            maindriver->inputVars = nullptr;
-            delete theVars;
-        }
-        delete maindriver;
-
-#ifdef WITH_YGGDRASIL
-	  first = false;
-	  iteration++;
-	}
-	if (origVars != nullptr)
-	  delete origVars;
-#endif
+        std::vector<std::string> outputVarsV;
+        if (!outputVars.empty())
+            outputVarsV = utils::str_split(outputVars, ",");
+        std::vector<std::string> outputParamVarsV;
+        if (!outputParamVars.empty())
+            outputParamVarsV = utils::str_split(outputParamVars, ",");
+        run_simulation(driverChoice,
+                       begintime, stoptime, stepsize, maxSubSteps,
+                       abstol, reltol, inputs, useC3,
+                       evn, atpcost, enzymeFile, grnFile,
+                       outputFile, outputVarsV, outputParam,
+                       outputParamBase, outputParamVarsV,
+                       dbglvl, debugDelta, debugInternal, record,
+                       theVars);
         return (EXIT_SUCCESS);
     } catch (std::exception& e) {
         std::cout << "An error occurred: " << e.what() << std:: endl;

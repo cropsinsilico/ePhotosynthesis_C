@@ -277,6 +277,13 @@ public:
                              const std::string& fname_base = "",
                              const std::vector<std::string>& vars = {});
 
+    /**
+       Get the results form the simulation in a map.
+       \returns Mapping between variable name and value at the end of the
+           simulation.
+     */
+    EPHOTO_API const std::map<std::string, double>& getOutput() const;
+
 protected:
     friend CVodeMem;
     /**

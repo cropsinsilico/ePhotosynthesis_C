@@ -357,3 +357,6 @@ int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
     return 0;
 }
 
+const std::map<std::string, double>& Driver::getOutput() const {
+    return output;
+}

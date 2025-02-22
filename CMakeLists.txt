@@ -275,9 +275,9 @@ message(STATUS "SUNDIALS_LIBRARIES = ${SUNDIALS_LIBRARIES}")
 message(STATUS "SUNDIALS_INCLUDE_DIRS = ${SUNDIALS_INCLUDE_DIRS}")
 
 if(WIN32)
-    set_target_properties(
-        EPhotosynthesis PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON
-    )
+    # set_target_properties(
+    #     EPhotosynthesis PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON
+    # )
     target_compile_options(
         EPhotosynthesis PUBLIC
 	/Zc:preprocessor  # Required for more than 127 macro parameters

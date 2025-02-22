@@ -143,24 +143,24 @@ public:
        \param[in] other Variables instance to copy.
      */
     void __copyMembers(const Variables& other) override;
- public:
-
-    /**
-       Finalize variables read from input including any unit changes.
-     */
-    void finalizeInputs();
-    /**
-       Create a deep copy of this instance including variables excluded
-         from a default copy.
-       \returns New instance with all parameters copied.
-     */
-    Variables* deepcopy() const;
     /** \copydoc ValueSet::diff */
     std::string _diff(const Variables& other,
 		      std::size_t padKeys=0,
 		      std::size_t padVals=0,
 		      bool includePrefixes=false,
 		      bool noChildren = false) const override;
+ public:
+
+    /**
+       Finalize variables read from input including any unit changes.
+     */
+    EPHOTO_API void finalizeInputs();
+    /**
+       Create a deep copy of this instance including variables excluded
+         from a default copy.
+       \returns New instance with all parameters copied.
+     */
+    EPHOTO_API Variables* deepcopy() const;
     /** \copydoc ValueSet::equals */
     bool equals(const ValueSet_t& b,
 		const bool noChildren = false) const override;
@@ -170,7 +170,7 @@ public:
        \param[in] in Instance to serialize.
        \returns Updated output stream.
     */
-    friend std::ostream& operator<<(std::ostream &out, const Variables *in);
+    EPHOTO_API friend std::ostream& operator<<(std::ostream &out, const Variables *in);
     /**
        Record a value set by copying it into this set of Variables.
        \param[in] x Value set to record.
@@ -269,17 +269,17 @@ public:
          initialized if different than the default version attached to
          Variables.
      */
-    void initParam(const MODULE& mod, const PARAM_TYPE& pt,
-		   const bool noDefaults=false,
-		   const bool force=false,
-		   ValueSet_t* value_set=nullptr);
+    EPHOTO_API void initParam(const MODULE& mod, const PARAM_TYPE& pt,
+                              const bool noDefaults=false,
+                              const bool force=false,
+                              ValueSet_t* value_set=nullptr);
 
     /**
        Initialize the default values for all value sets selected by the
          current driver.
        \param useC3 If true, C3 defaults should be used.
      */
-    static void initAllDefaults(const bool useC3=false);
+    EPHOTO_API static void initAllDefaults(const bool useC3=false);
     /**
        Initialize the default values for a value set.
        \param module Value set module.
@@ -292,30 +292,31 @@ public:
 	 false, a warning will be generated when the value set is not
 	 selected and the defaults will not be initialized.
      */
-    static void initDefaults(const MODULE& module,
-			     const PARAM_TYPE& param_type,
-			     const bool useC3=false,
-			     const std::string& filename="",
-			     const bool force=true);
+    EPHOTO_API static void initDefaults(const MODULE& module,
+                                        const PARAM_TYPE& param_type,
+                                        const bool useC3=false,
+                                        const std::string& filename="",
+                                        const bool force=true);
     /**
        Check if a value set is selected by the current driver.
        \param[in] mod Module type of value set to check.
        \param[in] pt Parameter type of value set to check.
        \returns true if the value set is selected, false otherwise.
      */
-    static bool isSelected(const MODULE& mod, const PARAM_TYPE& pt);
+    EPHOTO_API static bool isSelected(const MODULE& mod,
+                                      const PARAM_TYPE& pt);
     /**
        Get the maximum field width of all selected value sets for use
          in aligning field names.
        \returns Maximum field width.
      */
-    static std::size_t max_field_width_all();
+    EPHOTO_API static std::size_t max_field_width_all();
     /**
        Get the maximum value width of all selected value sets for use
          in aligning values.
        \returns Maximum value width.
      */
-    std::size_t max_value_width_all() const;
+    EPHOTO_API std::size_t max_value_width_all() const;
     /**
        Parse a variable string, checking if there is a prefix containing
          information on the module and/or parameter type associated with
@@ -339,12 +340,12 @@ public:
          an error will be raised.
        \returns Variable name extracted from k.
      */
-    static std::string parseVar(const std::string& k,
-				MODULE& mod, PARAM_TYPE& pt,
-				const bool& isGlymaID = false,
-				const bool& use_1st_match=false,
-                                const bool& allow_no_match=false,
-                                bool* controlVar=nullptr);
+    EPHOTO_API static std::string parseVar(const std::string& k,
+                                           MODULE& mod, PARAM_TYPE& pt,
+                                           const bool& isGlymaID = false,
+                                           const bool& use_1st_match=false,
+                                           const bool& allow_no_match=false,
+                                           bool* controlVar=nullptr);
     /**
        Check if a value set has a variable that matches the provided
          string.
@@ -362,10 +363,10 @@ public:
        \returns true if the variable is part of the value set, false
          otherwise.
      */
-    static bool hasVar(const MODULE& mod, const PARAM_TYPE& pt,
-		       const std::string& name,
-		       const bool& isGlymaID = false,
-                       bool* controlVar = nullptr);
+    EPHOTO_API static bool hasVar(const MODULE& mod, const PARAM_TYPE& pt,
+                                  const std::string& name,
+                                  const bool& isGlymaID = false,
+                                  bool* controlVar = nullptr);
     /**
        Check if there is a variable that matches the provided string.
        \param[in] name String to check against variables.
@@ -378,9 +379,9 @@ public:
        \returns true if the variable is part of a value set, false
          otherwise.
      */
-    static bool hasVar(const std::string& name,
-		       const bool& isGlymaID = false,
-                       bool* controlVar = nullptr);
+    EPHOTO_API static bool hasVar(const std::string& name,
+                                  const bool& isGlymaID = false,
+                                  bool* controlVar = nullptr);
     
     /**
        Check if a string matches a control parameter.
@@ -392,8 +393,9 @@ public:
        \returns true if the variable is a control parameter, false
          otherwise.
      */
-    static bool isControlVar(const MODULE& mod, const PARAM_TYPE& pt,
-                             const std::string& name);
+    EPHOTO_API static bool isControlVar(const MODULE& mod,
+                                        const PARAM_TYPE& pt,
+                                        const std::string& name);
     /**
        Set the value for a control variable in a value set.
        \param[in] mod Module associated with the value set that the
@@ -403,9 +405,9 @@ public:
        \param[in] name String identifying the variable.
        \param[in] value The new value.
      */
-    void setControlVar(const MODULE& mod, const PARAM_TYPE& pt,
-                       const std::string& name,
-                       const int& value);
+    EPHOTO_API void setControlVar(const MODULE& mod, const PARAM_TYPE& pt,
+                                  const std::string& name,
+                                  const int& value);
     /**
        Get the value of a control variable in a value set.
        \param[in] mod Module associated with the value set that the
@@ -415,8 +417,8 @@ public:
        \param[in] name String identifying the variable.
        \returns Variable value.
      */
-    int getControlVar(const MODULE& mod, const PARAM_TYPE& pt,
-                      const std::string& name) const;
+    EPHOTO_API int getControlVar(const MODULE& mod, const PARAM_TYPE& pt,
+                                 const std::string& name) const;
     /**
        Get the documentation string for a control variable in a value set.
        \param[in] mod Module associated with the value set that the
@@ -426,9 +428,9 @@ public:
        \param[in] name String identifying the variable.
        \returns Variable doc string.
      */
-    static std::string getControlDocs(const MODULE& mod,
-                                      const PARAM_TYPE& pt,
-                                      const std::string& name);
+    EPHOTO_API static std::string getControlDocs(const MODULE& mod,
+                                                 const PARAM_TYPE& pt,
+                                                 const std::string& name);
     /**
        Get the aliased version of a control variable name.
        \param[in] mod Module associated with the value set that the
@@ -438,9 +440,9 @@ public:
        \param[in] name String identifying the variable.
        \returns Aliased control variable name.
      */
-    static std::string getControlAlias(const MODULE& mod,
-                                       const PARAM_TYPE& pt,
-                                       const std::string& name);
+    EPHOTO_API static std::string getControlAlias(const MODULE& mod,
+                                                  const PARAM_TYPE& pt,
+                                                  const std::string& name);
  private:
     /**
        Set the default value for a control variable in a value set.
@@ -480,9 +482,9 @@ public:
          If false, name will be treated as the variable name.
        \returns Variable key.
      */
-    static int getKey(const MODULE& mod, const PARAM_TYPE& pt,
-		      const std::string& name,
-		      const bool& isGlymaID = false);
+    EPHOTO_API static int getKey(const MODULE& mod, const PARAM_TYPE& pt,
+                                 const std::string& name,
+                                 const bool& isGlymaID = false);
     
     /**
        Get the default value for a variable in a value set.
@@ -494,112 +496,119 @@ public:
        \param[in] isGlymaID If true, name will be treated as a GlymaID.
          If false, name will be treated as the variable name.
      */
-    static double getDefault(const MODULE& mod, const PARAM_TYPE& pt,
+    EPHOTO_API static double getDefault(const MODULE& mod,
+                                        const PARAM_TYPE& pt,
+                                        const std::string& name,
+                                        const bool& isGlymaID = false);
+    /**
+       Get the default value for a variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] key Key identifying the variable.
+     */
+    EPHOTO_API static double getDefault(const MODULE& mod,
+                                        const PARAM_TYPE& pt,
+                                        const int& key);
+    /**
+       Set the default value for a variable in a value set.
+       \param[in] k String identifying the variable.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
+     */
+    EPHOTO_API static double getDefault(const std::string& k,
+                                        const bool& isGlymaID = false);
+
+    /**
+       Set the default value for a variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] name String identifying the variable.
+       \param[in] value The new default value.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
+     */
+    EPHOTO_API static void setDefault(const MODULE& mod,
+                                      const PARAM_TYPE& pt,
+                                      const std::string& name,
+                                      const double& value,
+                                      const bool& isGlymaID = false);
+    /**
+       Set the default value for a variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] key Key identifying the variable.
+       \param[in] value The new default value.
+     */
+    EPHOTO_API static void setDefault(const MODULE& mod,
+                                      const PARAM_TYPE& pt,
+                                      const int& key,
+                                      const double& value);
+    /**
+       Set the default value for a variable in a value set.
+       \param[in] k String identifying the variable.
+       \param[in] value The new default value.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
+     */
+    EPHOTO_API static void setDefault(const std::string& k,
+                                      const double& value,
+                                      const bool& isGlymaID = false);
+    
+    /**
+       Set the value for a variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] name String identifying the variable.
+       \param[in] value The new value.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
+     */
+    EPHOTO_API void setVar(const MODULE& mod, const PARAM_TYPE& pt,
+                           const std::string& name, const double& value,
+                           const bool& isGlymaID = false);
+    /**
+       Set the value for a variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] key Key identifying the variable.
+       \param[in] value The new value.
+     */
+    EPHOTO_API void setVar(const MODULE& mod, const PARAM_TYPE& pt,
+                           const int& key, const double& value);
+    /**
+       Set the value for a variable in a value set.
+       \param[in] k String identifying the variable.
+       \param[in] value The new value.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
+     */
+    EPHOTO_API void setVar(const std::string& k, const double& value,
+                           const bool& isGlymaID = false);
+
+    /**
+       Get the value of a variable in a value set.
+       \param[in] mod Module associated with the value set that the
+         variable is part of.
+       \param[in] pt Parameter type associated with the value set that the
+         variable is part of.
+       \param[in] name String identifying the variable.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
+       \returns Variable value.
+     */
+    EPHOTO_API double getVar(const MODULE& mod, const PARAM_TYPE& pt,
                              const std::string& name,
-                             const bool& isGlymaID = false);
-    /**
-       Get the default value for a variable in a value set.
-       \param[in] mod Module associated with the value set that the
-         variable is part of.
-       \param[in] pt Parameter type associated with the value set that the
-         variable is part of.
-       \param[in] key Key identifying the variable.
-     */
-    static double getDefault(const MODULE& mod, const PARAM_TYPE& pt,
-                             const int& key);
-    /**
-       Set the default value for a variable in a value set.
-       \param[in] k String identifying the variable.
-       \param[in] isGlymaID If true, name will be treated as a GlymaID.
-         If false, name will be treated as the variable name.
-     */
-    static double getDefault(const std::string& k,
-                             const bool& isGlymaID = false);
-
-    /**
-       Set the default value for a variable in a value set.
-       \param[in] mod Module associated with the value set that the
-         variable is part of.
-       \param[in] pt Parameter type associated with the value set that the
-         variable is part of.
-       \param[in] name String identifying the variable.
-       \param[in] value The new default value.
-       \param[in] isGlymaID If true, name will be treated as a GlymaID.
-         If false, name will be treated as the variable name.
-     */
-    static void setDefault(const MODULE& mod, const PARAM_TYPE& pt,
-			   const std::string& name, const double& value,
-			   const bool& isGlymaID = false);
-    /**
-       Set the default value for a variable in a value set.
-       \param[in] mod Module associated with the value set that the
-         variable is part of.
-       \param[in] pt Parameter type associated with the value set that the
-         variable is part of.
-       \param[in] key Key identifying the variable.
-       \param[in] value The new default value.
-     */
-    static void setDefault(const MODULE& mod, const PARAM_TYPE& pt,
-			   const int& key, const double& value);
-    /**
-       Set the default value for a variable in a value set.
-       \param[in] k String identifying the variable.
-       \param[in] value The new default value.
-       \param[in] isGlymaID If true, name will be treated as a GlymaID.
-         If false, name will be treated as the variable name.
-     */
-    static void setDefault(const std::string& k, const double& value,
-			   const bool& isGlymaID = false);
-    
-    /**
-       Set the value for a variable in a value set.
-       \param[in] mod Module associated with the value set that the
-         variable is part of.
-       \param[in] pt Parameter type associated with the value set that the
-         variable is part of.
-       \param[in] name String identifying the variable.
-       \param[in] value The new value.
-       \param[in] isGlymaID If true, name will be treated as a GlymaID.
-         If false, name will be treated as the variable name.
-     */
-    void setVar(const MODULE& mod, const PARAM_TYPE& pt,
-		const std::string& name, const double& value,
-		const bool& isGlymaID = false);
-    /**
-       Set the value for a variable in a value set.
-       \param[in] mod Module associated with the value set that the
-         variable is part of.
-       \param[in] pt Parameter type associated with the value set that the
-         variable is part of.
-       \param[in] key Key identifying the variable.
-       \param[in] value The new value.
-     */
-    void setVar(const MODULE& mod, const PARAM_TYPE& pt,
-		const int& key, const double& value);
-    /**
-       Set the value for a variable in a value set.
-       \param[in] k String identifying the variable.
-       \param[in] value The new value.
-       \param[in] isGlymaID If true, name will be treated as a GlymaID.
-         If false, name will be treated as the variable name.
-     */
-    void setVar(const std::string& k, const double& value,
-		const bool& isGlymaID = false);
-
-    /**
-       Get the value of a variable in a value set.
-       \param[in] mod Module associated with the value set that the
-         variable is part of.
-       \param[in] pt Parameter type associated with the value set that the
-         variable is part of.
-       \param[in] name String identifying the variable.
-       \param[in] isGlymaID If true, name will be treated as a GlymaID.
-         If false, name will be treated as the variable name.
-       \returns Variable value.
-     */
-    double getVar(const MODULE& mod, const PARAM_TYPE& pt,
-		  const std::string& name,
-		  const bool& isGlymaID = false) const;
+                             const bool& isGlymaID = false) const;
     /**
        Get the value of a variable in a value set.
        \param[in] mod Module associated with the value set that the
@@ -609,8 +618,8 @@ public:
        \param[in] key Key identifying the variable.
        \returns Variable value.
      */
-    double getVar(const MODULE& mod, const PARAM_TYPE& pt,
-		  const int& key) const;
+    EPHOTO_API double getVar(const MODULE& mod, const PARAM_TYPE& pt,
+                             const int& key) const;
     /**
        Get the value of a variable in a value set.
        \param[in] k String identifying the variable.
@@ -618,8 +627,8 @@ public:
          If false, name will be treated as the variable name.
        \returns Variable value.
      */
-    double getVar(const std::string& k,
-		  const bool& isGlymaID = false) const;
+    EPHOTO_API double getVar(const std::string& k,
+                             const bool& isGlymaID = false) const;
     /**
        Get the documentation string for a variable in a value set.
        \param[in] mod Module associated with the value set that the
@@ -631,9 +640,10 @@ public:
          If false, name will be treated as the variable name.
        \returns Variable doc string.
      */
-    static std::string getDocs(const MODULE& mod, const PARAM_TYPE& pt,
-                               const std::string& name,
-                               const bool& isGlymaID = false);
+    EPHOTO_API static std::string getDocs(const MODULE& mod,
+                                          const PARAM_TYPE& pt,
+                                          const std::string& name,
+                                          const bool& isGlymaID = false);
     /**
        Get the documentation string for a variable in a value set.
        \param[in] mod Module associated with the value set that the
@@ -643,8 +653,9 @@ public:
        \param[in] key Key identifying the variable.
        \returns Variable doc string.
      */
-    static std::string getDocs(const MODULE& mod, const PARAM_TYPE& pt,
-                               const int& key);
+    EPHOTO_API static std::string getDocs(const MODULE& mod,
+                                          const PARAM_TYPE& pt,
+                                          const int& key);
     /**
        Get the documentation string for a variable in a value set.
        \param[in] k String identifying the variable.
@@ -652,8 +663,8 @@ public:
          If false, name will be treated as the variable name.
        \returns Variable doc string.
      */
-    static std::string getDocs(const std::string& k,
-                               const bool& isGlymaID = false);
+    EPHOTO_API static std::string getDocs(const std::string& k,
+                                          const bool& isGlymaID = false);
 
     /**
        Get the set of parameters types for a module.
@@ -665,10 +676,10 @@ public:
        \param[in] conditions Map of conditions for composite modules that
          are not stored on Variables instances.
      */
-    static std::vector<PARAM_TYPE> getParamTypes(const MODULE& mod,
-						 const bool for_instance = false,
-						 const bool include_cond = false,
-						 const std::map<MODULE, const ValueSet_t*>& conditions = {});
+    EPHOTO_API static std::vector<PARAM_TYPE> getParamTypes(const MODULE& mod,
+                                                            const bool for_instance = false,
+                                                            const bool include_cond = false,
+                                                            const std::map<MODULE, const ValueSet_t*>& conditions = {});
     /**
        Get a ValueSetClass_t instance for a module that can be used to
          call virtual methods.
@@ -742,46 +753,46 @@ public:
        \param[in] theVars Variable instance that should be updated.
        \param[in] context String providing context for errors.
      */
-    static void updateParam(std::map<std::string, std::string>& inputs,
-                            Variables* theVars = nullptr,
-                            const std::string& context="updateParam");
+    EPHOTO_API static void updateParam(std::map<std::string, std::string>& inputs,
+                                       Variables* theVars = nullptr,
+                                       const std::string& context="updateParam");
     
     /**
        Read default parameters from a file.
        \param[in] fname File to read.
      */
-    static void readDefaults(const std::string& fname);
+    EPHOTO_API static void readDefaults(const std::string& fname);
     /**
        Read default parameters from a file, checking for duplicates
        \param[in] fname File to read.
        \param[in, out] inputs Map that read variables should be checked
          against for duplicates and copied into.
      */
-    static void readDefaults(const std::string& fname,
-                             std::map<std::string, std::string>& inputs);
+    EPHOTO_API static void readDefaults(const std::string& fname,
+                                        std::map<std::string, std::string>& inputs);
     /**
        Read parameters from a file.
        \param[in] fname File to read.
      */
-    void readParam(const std::string& fname);
+    EPHOTO_API void readParam(const std::string& fname);
     /**
        Read parameters from a file, checking for duplicates
        \param[in] fname File to read.
        \param[in, out] inputs Map that read variables should be checked
          against for duplicates and copied into.
      */
-    void readParam(const std::string& fname,
-                   std::map<std::string, std::string>& inputs);
+    EPHOTO_API void readParam(const std::string& fname,
+                              std::map<std::string, std::string>& inputs);
     /**
        Read Enzyme activities from a file.
        \param[in] File to read.
     */
-    void readEnzymeAct(const std::string& fname);
+    EPHOTO_API void readEnzymeAct(const std::string& fname);
     /**
        Read genetic regulatory network expression data from a file.
        \param[in] File to read.
     */
-    void readGRN(const std::string& fname);
+    EPHOTO_API void readGRN(const std::string& fname);
 
     bool inputsFinalized = false;
     bool record = false;
