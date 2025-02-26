@@ -6,6 +6,8 @@
 # define EXPAND(...) __VA_ARGS__
 # define OBSTRUCT_INDIRECT() OBSTRUCT
 
+#define EXPAND_AND_PACK(...)                    \
+  FOR_EACH_COMMA(PACK_MACRO, __VA_ARGS__)
 #define CAT(a, ...) a ## __VA_ARGS__
 #define CHECK_EMPTY_N(x, n, ...) n
 #define CHECK_EMPTY(...) CHECK_EMPTY_N(__VA_ARGS__, 0,)
@@ -82,6 +84,7 @@
 #define STRIP_PARENS(X) X
 #define PACK_MACRO_(X) STRIP_PARENS( _Args X )
 #define PACK_MACRO(...) PACK_MACRO_((__VA_ARGS__))
+#define PACK_MACRO_DEFERED() PACK_MACRO
 #define UNPACK_MACRO(...) __VA_ARGS__
 #define UNPACK_PARENS(X) STRIP_PARENS( _Args X )
 #define ADD_PARENS(...) (__VA_ARGS__)
@@ -94,6 +97,8 @@
   what args
 #define CALL_WITH_EMPTY_ARGS(what, args, x)	\
   what(x)
+#define CALL_WITH_EMPTY_ARGS_PACKED(what, args, x)      \
+  what x
 #define CALL_WITH_PREFIX_ARGS(what, args, x)	\
   what(UNPACK_PARENS(args), x)
 #define CALL_WITH_SUFFIX_ARGS(what, args, x)	\
@@ -102,8 +107,64 @@
   what(UNPACK_PARENS args, x)
 #define CALL_WITH_SUFFIX_ARGS_PACKED(what, args, x)	\
   what(x, UNPACK_PARENS args)
-#define CALL_DO_NOTHING(what, args, x)
+#define CALL_WITH_PREFIX_ARGS_PACKED_ITER(what, args, x)	\
+  what(UNPACK_PARENS args, EXPAND x)
+#define CALL_WITH_PREFIX_ARGS_PACKED_ITER2(what, args, x)	\
+  what(UNPACK_PARENS args, UNPACK_PARENS x)
+#define CALL_WITH_SUFFIX_ARGS_PACKED_ITER(what, args, x)	\
+  what(EXPAND x, UNPACK_PARENS args)
 
+#define CALL_NESTED_1(what, caller, args, var1) \
+  caller(what, args, (PACK_MACRO var1))
+#define CALL_NESTED_2(what, caller, args, var1, var2)           \
+  caller(what, args, (PACK_MACRO var1,                          \
+                      PACK_MACRO var2))
+#define CALL_NESTED_3(what, caller, args, var1, var2, var3)          \
+  caller(what, args, (PACK_MACRO var1,                               \
+                      PACK_MACRO var2,                               \
+                      PACK_MACRO var3))
+#define CALL_NESTED_(N, ...)                    \
+  CONCATENATE(CALL_NESTED_, N)(__VA_ARGS__)
+#define CALL_NESTED_N_(what, caller, args, ...)                         \
+  caller(what, args, (__VA_ARGS__))
+// CALL_NESTED_(NARGS(__VA_ARGS__), what, caller,       \
+//              args, __VA_ARGS__)
+#define CALL_NESTED_N(...)                      \
+  CALL_NESTED_N_(__VA_ARGS__)
+#define CALL_NESTED(what, args, x)              \
+  CALL_NESTED_N(what, EXPAND args, x)
+
+#define CALL_NESTED_PACKED_NO_ARGS_1(what, var1)        \
+  what(PACK_MACRO(PACK_MACRO var1))
+#define CALL_NESTED_PACKED_NO_ARGS_2(what, var1, var2)                  \
+  what(PACK_MACRO(PACK_MACRO var1), PACK_MACRO(PACK_MACRO var2))
+#define CALL_NESTED_PACKED_NO_ARGS_3(what, var1, var2, var3)            \
+  what(PACK_MACRO(PACK_MACRO var1), PACK_MACRO(PACK_MACRO var2),        \
+       PACK_MACRO(PACK_MACRO var3))
+#define CALL_NESTED_PACKED_1(what, args, var1)   \
+  what(EXPAND args,                              \
+       PACK_MACRO(PACK_MACRO var1))
+#define CALL_NESTED_PACKED_2(what, args, var1, var2)                    \
+  what(EXPAND args,                                                     \
+       PACK_MACRO(PACK_MACRO var1),                                     \
+       PACK_MACRO(PACK_MACRO var2))
+#define CALL_NESTED_PACKED_3(what, args, var1, var2, var3)              \
+  what(EXPAND args,                                                     \
+       PACK_MACRO(PACK_MACRO var1),                                     \
+       PACK_MACRO(PACK_MACRO var2),                                     \
+       PACK_MACRO(PACK_MACRO var3))
+
+#define CALL_NESTED_PACKED_(N, what, args, ...)                 \
+  CONCATENATE(CALL_NESTED_PACKED_, N)(what, args, __VA_ARGS__)
+#define CALL_NESTED_PACKED(what, args, x)                               \
+  CALL_NESTED_PACKED_(NARGS x, what, args, EXPAND x)
+#define CALL_NESTED_PACKED_NO_ARGS_(N, what, ...)                       \
+  CONCATENATE(CALL_NESTED_PACKED_NO_ARGS_, N)(what, __VA_ARGS__)
+#define CALL_NESTED_PACKED_NO_ARGS(what, args, x)       \
+  CALL_NESTED_PACKED_NO_ARGS_(NARGS x, what, EXPAND x)
+
+#define CALL_DO_NOTHING(what, args, x)
+#define CALL_DO_NOTHING_DEFER(what, args, x)
 #define CALL_MACRO_PACKED_DEFER(what, args)		\
   DEFER(what)() args
 #define CALL_WITH_EMPTY_ARGS_DEFER(what, args, x)	\
@@ -116,7 +177,11 @@
   DEFER(what)()(UNPACK_PARENS args, x)
 #define CALL_WITH_SUFFIX_ARGS_PACKED_DEFER(what, args, x)	\
   DEFER(what)()(x, UNPACK_PARENS args)
-#define CALL_DO_NOTHING_DEFER(what, args, x)
+
+#define CALL_WITH_APPEND_ARGS_(what, append, args, x)   \
+  CALL_MACRO_PACKED(what, append(args, x))
+#define CALL_WITH_APPEND_ARGS(what, args, x)            \
+  CALL_WITH_APPEND_ARGS_(what, EXPAND args, x)
   
 #define STRINGIZE(arg)  STRINGIZE1(arg)
 #define STRINGIZE1(arg) STRINGIZE2(arg)
@@ -1199,6 +1264,8 @@
   CONCATENATE(FOR_EACH_WITH_ARGS_, N)(what, caller, caller, sep, args, __VA_ARGS__)
 #define FOR_EACH_GENERIC(what, caller, sep, args, ...)			\
   FOR_EACH_(FOR_EACH_NARG(__VA_ARGS__), what, caller, sep, args, __VA_ARGS__)
+#define FOR_EACH_GENERIC_DEFERED() FOR_EACH_GENERIC
+  
 #define FOR_EACH(what, ...)			\
   FOR_EACH_(FOR_EACH_NARG(__VA_ARGS__), what, CALL_WITH_EMPTY_ARGS, SEP_SEMICOLON, (), __VA_ARGS__)
 #define FOR_EACH_DEFERED(what, ...)			\
@@ -1209,6 +1276,10 @@
   FOR_EACH_(FOR_EACH_NARG(__VA_ARGS__), what, CALL_WITH_EMPTY_ARGS, sep, (), __VA_ARGS__)
 #define JOIN_ARGS(sep, ...)						\
   FOR_EACH_JOIN(PASS_THROUGH, sep, __VA_ARGS__)
+#define APPEND_ARG(args, a)                                             \
+  (EXPAND args, a)
+#define PREPEND_ARG(args, a)                                            \
+  (a, EXPAND args)
 #define FOR_EACH_PREFIX_ARGS(what, sep, args, ...)			\
   FOR_EACH_(FOR_EACH_NARG(__VA_ARGS__), what, CALL_WITH_PREFIX_ARGS, sep, args, __VA_ARGS__)
 #define FOR_EACH_SUFFIX_ARGS(what, sep, args, ...)			\
@@ -1266,3 +1337,41 @@
 #define JOIN_MACROS(...)				\
   FOR_EACH_SUFFIX_ARGS(SUFFIX_IF_NOT_EMPTY, SEP_EMPTY,	\
 		       (SEP_COMMA), __VA_ARGS__)
+
+#define FOR_EACH_GENERIC_NESTED_(N, var1, sep, args, ...)               \
+  CONCATENATE(FOR_EACH_GENERIC_NESTED_, N)(var1, sep, args, __VA_ARGS__)
+#define FOR_EACH_GENERIC_NESTED_1(var1, sep, args, vars2, ...)          \
+  FOR_EACH_GENERIC(FOR_EACH_GENERIC_NESTED_N_DEFERED,                   \
+                   CALL_WITH_SUFFIX_ARGS_DEFER, sep,                    \
+                   (sep, APPEND_ARG(args, var1), __VA_ARGS__),          \
+                   EXPAND vars2)
+#define FOR_EACH_GENERIC_NESTED_1_DEFERED() FOR_EACH_GENERIC_NESTED_1
+#define FOR_EACH_GENERIC_NESTED_0_EXPAND_ARGS_(vars2, sep, what, caller, args, ...) \
+  FOR_EACH_GENERIC(what, CALL_NESTED, sep,                              \
+                   (caller, args, ## __VA_ARGS__), EXPAND vars2)
+#define FOR_EACH_GENERIC_NESTED_0_EXPAND_ARGS(...)                      \
+  FOR_EACH_GENERIC_NESTED_0_EXPAND_ARGS_(__VA_ARGS__)
+#define FOR_EACH_GENERIC_NESTED_0(var1, sep, args, vars2)               \
+  FOR_EACH_GENERIC_NESTED_0_EXPAND_ARGS(vars2, sep, EXPAND args, var1)
+#define FOR_EACH_GENERIC_NESTED_0_DEFERED() FOR_EACH_GENERIC_NESTED_0
+#define FOR_EACH_GENERIC_NESTED_N(var1, sep, args, ...)          \
+  FOR_EACH_GENERIC_NESTED_(BOOL(DEC(NARGS(__VA_ARGS__))),       \
+                           var1, sep, args, __VA_ARGS__)
+#define FOR_EACH_GENERIC_NESTED_N_DEFERED() FOR_EACH_GENERIC_NESTED_N
+#define FOR_EACH_GENERIC_NESTED(what, caller, sep, args, ...)           \
+  EVAL(FOR_EACH_GENERIC_NESTED_N(args, sep, (what, caller), __VA_ARGS__))
+
+#define FOR_EACH_GENERIC_NESTED_PACKED(what, sep, args, ...)    \
+  FOR_EACH_GENERIC_NESTED(what, CALL_NESTED_PACKED, sep,        \
+                          args, __VA_ARGS__)
+#define FOR_EACH_GENERIC_NESTED_PACKED_NO_ARGS(what, sep, ...)          \
+  FOR_EACH_GENERIC_NESTED(what, CALL_NESTED_PACKED_NO_ARGS, sep,        \
+                          (), __VA_ARGS__)
+
+
+#define COMBO_ARGS_BASE(METHOD, ...)                           \
+  FOR_EACH_GENERIC_NESTED(METHOD, CALL_WITH_EMPTY_ARGS_PACKED, \
+                          SEP_COMMA, (), __VA_ARGS__)
+#define COMBO_ARGS(...)                         \
+  COMBO_ARGS_BASE(ADD_PARENS, __VA_ARGS__)
+

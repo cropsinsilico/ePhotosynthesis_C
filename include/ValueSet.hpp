@@ -288,6 +288,8 @@ namespace ePhotosynthesis {
 	  const std::string& context="") : x(v), k(k0), ctx(context) {}
     double* getPtr() { return x; }
     const double* getPtr() const { return x; }
+    double& getRef() { return x[0]; }
+    const double& getRef() const { return x[0]; }
     double* x = nullptr;
 #else // VALUE_X_PTR
     Value(typename T::EnumType k0=T::EnumClass::NONE,
@@ -296,6 +298,8 @@ namespace ePhotosynthesis {
 	  const std::string& context="") : x(v), k(k0), ctx(context) {}
     double* getPtr() { return &x; }
     const double* getPtr() const { return &x; }
+    double& getRef() { return x; }
+    const double& getRef() const { return x; }
     double x = 0.0;
 #endif // VALUE_X_PTR
     double x0 = 0.0;
@@ -851,7 +855,7 @@ namespace ePhotosynthesis {
        will be used by.
    */
   template<class T, class U, MODULE ID, PARAM_TYPE PT>
-  class ValueSetBase : public ValueSetEnum<ID, PT> {
+  class EPHOTO_API ValueSetBase : public ValueSetEnum<ID, PT> {
   public:
     typedef T ThisClass; /** Inheriting class */
     typedef U ThisParent; /** Parent class */
@@ -874,33 +878,19 @@ namespace ePhotosynthesis {
        Get a ValueSetStaticClassType instance for this class.
        \returns Reference to ValueSetStaticClassType instance.
      */
-    static ValueSetClass_t* getValueSetClass() {
-      static ValueSetStaticClassType<T> out;
-      return &out;
-    }
+    EPHOTO_API static ValueSetClass_t* getValueSetClass();
     /**
        Convert an integer to an enum.
        \param[in] k Integer key.
        \returns Enum key.
     */
-    static EnumType int2key(const int& k) {
-      if (k < 0)
-	ERROR_VALUE_SET("Cannot convert a negative value to an enum");
-      if (k > ValueSetEnum<ID, PT>::all.size())
-	ERROR_VALUE_SET("Integer (", k,
-			") exceeds maximum value in enum (",
-			std::to_string(ValueSetEnum<ID, PT>::all.size()),
-			")");
-      return ValueSetEnum<ID, PT>::all[k - 1]; // NONE not in all
-    }
+    static EnumType int2key(const int& k);
     /**
        Convert an enum key to an integer.
        \param[in] k Enum key.
        \returns Integer key.
      */
-    static int key2int(const EnumType& k) {
-      return static_cast<int>(k);
-    }
+    static int key2int(const EnumType& k);
     /**
        Convert a map with integer keys to a map with enum keys.
        \tparam V Type of value in map.
@@ -910,9 +900,9 @@ namespace ePhotosynthesis {
     template<typename V>
     static std::map<EnumType, V> int2key(const std::map<int, V>& map) {
       std::map<EnumType, V> out;
-      for (typename std::map<int, double>::const_iterator it = map.begin();
-	   it != map.end(); it++)
-	out[int2key(it->first)] = it->second;
+      for (typename std::map<int, V>::const_iterator it = map.begin();
+           it != map.end(); it++)
+        out.insert({int2key(it->first), it->second});
       return out;
     }
     /**
@@ -920,10 +910,7 @@ namespace ePhotosynthesis {
        \param k Key to check.
        \returns true if the key is included in arrays, false otherwise.
      */
-    static bool inArrays(const EnumType k) {
-      return (!(EnumBaseClass::isNonvector(k) ||
-                EnumBaseClass::isSkipped(k)));
-    }
+    static bool inArrays(const EnumType k);
 
     enum VS_FLAGS : int {
       VS_FLAG_SELECTED        = 0x00000001, //!< Value set selected by driver
@@ -946,21 +933,21 @@ namespace ePhotosynthesis {
          should be included.
        \returns Maximum key name width.
      */
-    template <typename K, typename V>
+    template<typename K, typename V>
     static std::size_t field_width_value_map(const std::map<K, V>& vals,
 					     bool includePrefixes=false) {
       std::size_t pad = 0;
       std::string name;
       for (typename std::map<K, V>::const_iterator it = vals.begin();
-	   it != vals.end(); it++) {
-	name = getName(it->first);
-	if (name.size() > pad)
-	  pad = name.size();
+           it != vals.end(); it++) {
+        name = getName(it->first);
+        if (name.size() > pad)
+          pad = name.size();
       }
       if (includePrefixes) {
-	pad += 4; // "::" between param_type/module/key
-	pad += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second.size();
-	pad += utils::get_enum_names<MODULE>().find(module)->second.size();
+        pad += 4; // "::" between param_type/module/key
+        pad += utils::get_enum_names<PARAM_TYPE>().find(param_type)->second.size();
+        pad += utils::get_enum_names<MODULE>().find(module)->second.size();
       }
       return pad;
     }
@@ -971,15 +958,15 @@ namespace ePhotosynthesis {
        \param vals Value map.
        \returns Maximum value width.
      */
-    template <typename K, typename V>
+    template<typename K, typename V>
     static std::size_t value_width_value_map(const std::map<K, V>& vals) {
       std::size_t pad = 7; // for "MISSING"
       std::string name;
       for (typename std::map<K, V>::const_iterator it = vals.begin();
-	   it != vals.end(); it++) {
-	name = to_string_with_precision(it->second);
-	if (name.size() > pad)
-	  pad = name.size();
+           it != vals.end(); it++) {
+        name = to_string_with_precision(it->second);
+        if (name.size() > pad)
+          pad = name.size();
       }
       return pad;
     }
@@ -989,48 +976,14 @@ namespace ePhotosynthesis {
          determining the maximum field width.
        \returns Maximum key name width.
      */
-    static std::size_t max_field_width(bool noChildren = false) {
-      static std::size_t out = 0;
-      static std::size_t outBase = 0;
-      if (outBase == 0) {
-	outBase = field_width_value_map(defaults, true);
-      }
-      if (noChildren) return outBase;
-      if (out == 0) {
-	out = outBase;
-	std::size_t iout = 0;
-#define DO_CHILD(child, dummy)						\
-	iout = child->max_field_width();				\
-	if (iout > out) out = iout
-	DO_VALUE_SET_CHILD_CLASSES_MACRO(DO_CHILD, const_iterator, );
-#undef DO_CHILD
-      }
-      return out;
-    }
+    static std::size_t max_field_width(bool noChildren = false);
     /**
        Get the maximum width of the values in the defaults map.
        \param noChildren If true, children won't be included when
          determining the maximum value width.
        \returns Maximum default value width.
      */
-    static std::size_t max_default_value_width(bool noChildren = false) {
-      static std::size_t out = 0;
-      static std::size_t outBase = 0;
-      if (outBase == 0) {
-	outBase = value_width_value_map(defaults);
-      }
-      if (noChildren) return outBase;
-      if (out == 0) {
-	out = outBase;
-	std::size_t iout = 0;
-#define DO_CHILD(child, dummy)						\
-	iout = child->max_default_value_width();			\
-	if (iout > out) out = iout
-	DO_VALUE_SET_CHILD_CLASSES_MACRO(DO_CHILD, const_iterator, );
-#undef DO_CHILD
-      }
-      return out;
-    }
+    static std::size_t max_default_value_width(bool noChildren = false);
     /**
        Output a single value to an output stream.
        \param val Value to ouput.
@@ -1040,21 +993,9 @@ namespace ePhotosynthesis {
        \returns Output stream.
      */
     static std::ostream& print_value(const double& val, std::ostream &out,
-				     bool show_pointers = false) {
-      if (show_pointers)
-	out << &val;
-      else
-	out << val;
-      return out;
-    }
+				     bool show_pointers = false);
     static std::ostream& print_value(const double* val, std::ostream &out,
-				     bool show_pointers = false) {
-      if (show_pointers)
-	out << val;
-      else
-	out << *val;
-      return out;
-    }
+				     bool show_pointers = false);
     /**
        Get a string version of a value.
        \param val Value to ouput.
@@ -1063,7 +1004,7 @@ namespace ePhotosynthesis {
        \returns String
      */
     template<typename V>
-    static std::string string_value(const V val,
+    static std::string string_value(V const val,
 				    bool show_pointers = false) {
       std::ostringstream out;
       print_value(val, out, show_pointers);
@@ -1074,9 +1015,7 @@ namespace ePhotosynthesis {
        \param[in] tab Number of tabs to include.
        \returns String containing tabs.
      */
-    static std::string getTabs(const uint tab = 0) {
-      return std::string(tab * tab_size, ' ');
-    }
+    static std::string getTabs(const uint tab = 0);
     /**
        Display a single value from a value map.
        \tparam V Type of value in value map.
@@ -1096,9 +1035,9 @@ namespace ePhotosynthesis {
        \param iname Alternate name to use.
        \returns Output stream.
      */
-    template <typename V>
+    template<typename V>
     static std::ostream& print_value(const EnumType& key,
-                                     const V& val,
+                                     V const & val,
                                      std::ostream &out,
                                      const uint tab=0,
                                      std::size_t pad=0,
@@ -1151,9 +1090,9 @@ namespace ePhotosynthesis {
        \param iname Alternate name to use.
        \returns Output stream.
      */
-    template <typename V>
+    template<typename V>
     static std::ostream& print_value(const std::string& name,
-                                     const V& val,
+                                     V const & val,
                                      std::ostream &out,
                                      const uint tab=0,
                                      std::size_t pad=0,
@@ -1190,7 +1129,7 @@ namespace ePhotosynthesis {
          instead of the values.
        \returns Output stream.
      */
-    template <typename V>
+    template<typename V>
     static std::ostream& print_value_map(const std::map<EnumType, V>& vals,
 					 std::ostream &out,
 					 const uint tab=0,
@@ -1202,17 +1141,17 @@ namespace ePhotosynthesis {
 					 bool show_pointers=false) {
       check_value_map(vals, "print_value_map: ");
       if (pad == 0)
-	pad = field_width_value_map(vals, includePrefixes);
+        pad = field_width_value_map(vals, includePrefixes);
       for (typename std::map<EnumType, V>::const_iterator it = vals.begin();
-	   it != vals.end(); it++) {
+           it != vals.end(); it++) {
         print_value(it->first, it->second,
                     out, tab, pad, includePrefixes, includeSkipped,
                     skip_keys, key_aliases, show_pointers);
       }
       return out;
     }
-    template <typename V>
-    static std::string to_string_with_precision(const V a_value,
+    template<typename V>
+    static std::string to_string_with_precision(V const a_value,
 						const int n = COMPARE_PRECISION) {
       std::ostringstream out;
       out.precision(n);
@@ -1224,61 +1163,31 @@ namespace ePhotosynthesis {
        \param a First value for comparison.
        \param b Second value for comparison.
      */
-    static bool valuesEqual(const double& a, const double& b) {
-      return utils::values_equal(a, b);
-    }
-    static bool valuesEqual(const double* a, const double* b) {
-      return valuesEqual(*a, *b);
-    }
-    static bool valuesEqual(const double& a, const double* b) {
-      return valuesEqual(a, *b);
-    }
-    static bool valuesEqual(const double* a, const double& b) {
-      return valuesEqual(*a, b);
-    }
-    static bool valuesEqual(const Value<T>& a, const Value<T>& b) {
-      return valuesEqual(a.x, b.x);
-    }
-    template<typename V>
-    static bool valuesEqual(const Value<T>& a, const V& b) {
-      return valuesEqual(a.x, b);
-    }
-    template<typename V>
-    static bool valuesEqual(const V& a, const Value<T>& b) {
-      return valuesEqual(a, b.x);
-    }
+    static bool valuesEqual(const double& a, const double& b);
+    static bool valuesEqual(const double* a, const double* b);
+    static bool valuesEqual(const double& a, const double* b);
+    static bool valuesEqual(const double* a, const double& b);
+    static bool valuesEqual(const ValueType& a, const ValueType& b);
+    static bool valuesEqual(const ValueType& a, const double& b);
+    static bool valuesEqual(const ValueType& a, const double* b);
+    static bool valuesEqual(const double& a, const ValueType& b);
+    static bool valuesEqual(const double* a, const ValueType& b);
     /**
        Convert a value to a string.
        \param a Value to make into a string.
        \returns String version of value.
      */
-    static std::string valueString(const Value<T>& a) {
-      return valueString(a.x);
-    }
-    static std::string valueString(const double& a) {
-      return std::to_string(a);
-    }
-    static std::string valueString(const double* a) {
-      if (!a)
-	return "NULL";
-      return std::to_string(*a);
-    }
+    static std::string valueString(const ValueType& a);
+    static std::string valueString(const double& a);
+    static std::string valueString(const double* a);
     /**
        Convert a value pointer to a string.
        \param a Value to make into a string.
        \returns String version of value.
      */
-    static std::string valuePointerString(const double& a) {
-      return "N/A";
-    }
-    static std::string valuePointerString(const double* a) {
-      std::ostringstream oss;
-      oss << a;
-      return oss.str();
-    }
-    static std::string valuePointerString(const Value<T>& a) {
-      return valuePointerString(a.x);
-    }
+    static std::string valuePointerString(const double& a);
+    static std::string valuePointerString(const double* a);
+    static std::string valuePointerString(const ValueType& a);
     /**
        Set a value.
        \param dst Destination for value.
@@ -1286,34 +1195,16 @@ namespace ePhotosynthesis {
        \param context Context to use for error messages.
      */
     static void valueSet(double& dst, const double& src,
-			 const std::string& context = "") {
-      UNUSED(context);
-      dst = src;
-    }
+                         const std::string& context = "");
     static void valueSet(double& dst, const double* src,
-			 const std::string& context = "") {
-      if (!src)
-	ERROR_VALUE_SET(context, "source pointer null");
-      dst = src[0];
-    }
+                         const std::string& context = "");
     static void valueSet(double* dst, const double& src,
-			 const std::string& context = "") {
-      if (!dst)
-	ERROR_VALUE_SET(context, "destination pointer null");
-      dst[0] = src;
-    }
+                         const std::string& context = "");
     static void valueSet(double* dst, const double* src,
-			 const std::string& context = "") {
-      if (!dst)
-	ERROR_VALUE_SET(context, "pointer null");
-      if (!src)
-	ERROR_VALUE_SET(context, "source pointer null");
-      dst[0] = src[0];
-    }
+                         const std::string& context = "");
     template<typename V>
-    static void valueSet(Value<T>& dst, const V& src,
-			 const std::string& context = "") {
-      UNUSED(context);
+    static void valueSet(ValueType& dst, V const & src,
+                         const std::string& context = "") {
       dst = src;
     }
     /**
@@ -1321,9 +1212,9 @@ namespace ePhotosynthesis {
        \param[in] x Value to get contents of.
        \returns Value contents.
      */
-    static double valueGet(const double* x) { return *x; }
-    static double valueGet(const double& x) { return x; }
-    static double valueGet(const Value<T>& x) { return valueGet(x.x); }
+    static double valueGet(const double* x);
+    static double valueGet(const double& x);
+    static double valueGet(const ValueType& x);
     /**
        Insert a value into a value set map.
        \param[in, out] valsDst Value set map to add value to.
@@ -1333,35 +1224,20 @@ namespace ePhotosynthesis {
      */
     static void insertValue(std::map<EnumType, double*>& valsDst,
 			    const EnumType& k, const double* src,
-			    const std::string& context = "") {
-      if (!src)
-	ERROR_VALUE_SET(context, "source pointer null");
-      valsDst[k] = const_cast<double*>(src);
-    }
+			    const std::string& context = "");
     static void insertValue(std::map<EnumType, double>& valsDst,
 			    const EnumType& k, const double& src,
-			    const std::string& context = "") {
-      UNUSED(context);
-      valsDst[k] = src;
-    }
+			    const std::string& context = "");
     static void insertValue(std::map<EnumType, double>& valsDst,
 			    const EnumType& k, const double* src,
-			    const std::string& context = "") {
-      if (!src)
-	ERROR_VALUE_SET(context, "source pointer null");
-      valsDst[k] = src[0];
-    }
+			    const std::string& context = "");
     static void insertValue(std::map<EnumType, double*>&,
 			    const EnumType& k, const double&,
-			    const std::string& context = "") {
-      ERROR_VALUE_SET(context, "No value for \'",
-                      getName(k), "\'");
-    }
+			    const std::string& context = "");
     template<typename V>
-    static void insertValue(std::map<EnumType, Value<T> >& valsDst,
-			    const EnumType& k, const V& src,
+    static void insertValue(std::map<EnumType, ValueType>& valsDst,
+			    const EnumType& k, V const & src,
 			    const std::string& context = "") {
-      UNUSED(context);
       valsDst[k] = src;
     }
     /**
@@ -1373,30 +1249,7 @@ namespace ePhotosynthesis {
      */
     static void compareValues(const EnumType k,
 			      const double& a, const double& b,
-			      const std::string& context = "") {
-      if (std::isnan(a) && std::isnan(b))
-	return;
-      double relative_max = std::max(std::fabs(a), std::fabs(b));
-      double relative = std::fabs(a - b);
-      if (relative_max > COMPARE_RELATIVE_EPSILON)
-	relative = relative / relative_max;
-      double absolute = std::fabs(a - b);
-      if (!((relative <= COMPARE_RELATIVE_EPSILON) &&
-	    (absolute <= COMPARE_ABSOLUTE_EPSILON))) {
-	std::string msg = "Values for " +
-	  utils::enum_key2string(module) + " " +
-	  utils::enum_key2string(param_type) + " " +
-	  getName(k) +
-	  " differ: " +
-	  to_string_with_precision(a) + " vs " +
-	  to_string_with_precision(b) +
-	  " (absolute = " + to_string_with_precision(absolute) +
-	  ", relative = " + to_string_with_precision(relative) + ")";
-	if (!context.empty())
-	  msg = context + ": " + msg;
-	ERROR_VALUE_SET(msg);
-      }
-    }
+			      const std::string& context = "");
     /**
        Throw an error if a map is empty;
        \tparam V Value map type.
@@ -1407,7 +1260,7 @@ namespace ePhotosynthesis {
     static void check_value_map(const std::map<EnumType, V>& vals,
 				const std::string& context = "") {
       if (vals.empty() && !defaults.empty()) {
-	ERROR_VALUE_SET(context, "Value map empty");
+        ERROR_VALUE_SET(context, "Value map empty");
       }
     }
     /**
@@ -1423,12 +1276,12 @@ namespace ePhotosynthesis {
 				const std::string& context = "") {
       typename std::map<EnumType, V>::const_iterator it = vals.find(k);
       if (it == vals.end()) {
-	std::string msg = "\'" +
-	  getName(k) +
-	  "\' not present";
-	if (!context.empty())
-	  msg = context + ": " + msg;
-	ERROR_VALUE_SET(msg);
+        std::string msg = "\'" +
+          getName(k) +
+          "\' not present";
+        if (!context.empty())
+          msg = context + ": " + msg;
+        ERROR_VALUE_SET(msg);
       }
     }
     // Value manipulation
@@ -1445,11 +1298,11 @@ namespace ePhotosynthesis {
            s != EnumBaseClass::value_flags.end(); s++) {
         if (!(s->second & VALUE_FLAG_SKIPPED))
           continue;
-	typename std::map<EnumType, V>::iterator it = vals.find(s->first);
-	if (it != vals.end()) {
-	  DEBUG_VALUE_SET(context, "erasing ", s->first);
-	  vals.erase(it);
-	}
+        typename std::map<EnumType, V>::iterator it = vals.find(s->first);
+        if (it != vals.end()) {
+          DEBUG_VALUE_SET(context, "erasing ", s->first);
+          vals.erase(it);
+        }
       }
     }
     /**
@@ -1457,14 +1310,7 @@ namespace ePhotosynthesis {
        \param val Map from enum key to value pointer.
        \return Map between value names and value pointers.
      */
-    static std::map<std::string, double*> get_pointer_map(std::map<EnumType, double*> vals) {
-      std::map<std::string, double*> out;
-      for (typename std::map<EnumType, double*>::iterator it = vals.begin();
-	   it != vals.end(); it++) {
-	out[getName(it->first)] = it->second;
-      }
-      return out;
-    }
+    static std::map<std::string, double*> get_pointer_map(std::map<EnumType, double*> vals);
     /**
        Get the diff between two value maps.
        \tparam K Key type.
@@ -1489,49 +1335,49 @@ namespace ePhotosynthesis {
       std::map<K, std::string> valStrDst, valStrSrc;
 #define GET_VAL(x) to_string_with_precision(utils::extract_value(x))
       if (padKeys == 0) {
-	padKeys = field_width_value_map(valsDst, includePrefixes);
-	std::size_t padKeys2 = field_width_value_map(valsSrc, includePrefixes);
-	if (padKeys2 > padKeys)
-	  padKeys = padKeys2;
+        padKeys = field_width_value_map(valsDst, includePrefixes);
+        std::size_t padKeys2 = field_width_value_map(valsSrc, includePrefixes);
+        if (padKeys2 > padKeys)
+          padKeys = padKeys2;
       }
       if (padVals == 0) {
-	padVals = value_width_value_map(valsDst);
-	std::size_t padVals2 = value_width_value_map(valsSrc);
-	if (padVals2 > padVals)
-	  padVals = padVals2;
+        padVals = value_width_value_map(valsDst);
+        std::size_t padVals2 = value_width_value_map(valsSrc);
+        if (padVals2 > padVals)
+          padVals = padVals2;
       }
       for (typename std::map<K, VSrc>::const_iterator itSrc = valsSrc.begin();
-	   itSrc != valsSrc.end(); itSrc++) {
-	typename std::map<K, VDst>::const_iterator itDst = valsDst.find(itSrc->first);
-	if (itDst == valsDst.end()) {
-	  valStrDst[itSrc->first] = "MISSING";
-	  valStrSrc[itSrc->first] = GET_VAL(itSrc->second);
-	} else if (!valuesEqual(itDst->second, itSrc->second)) {
-	  valStrDst[itSrc->first] = GET_VAL(itDst->second);
-	  valStrSrc[itSrc->first] = GET_VAL(itSrc->second);
-	}
+           itSrc != valsSrc.end(); itSrc++) {
+        typename std::map<K, VDst>::const_iterator itDst = valsDst.find(itSrc->first);
+        if (itDst == valsDst.end()) {
+          valStrDst[itSrc->first] = "MISSING";
+          valStrSrc[itSrc->first] = GET_VAL(itSrc->second);
+        } else if (!valuesEqual(itDst->second, itSrc->second)) {
+          valStrDst[itSrc->first] = GET_VAL(itDst->second);
+          valStrSrc[itSrc->first] = GET_VAL(itSrc->second);
+        }
       }
       if (valsDst.size() != valsSrc.size()) {
-	for (typename std::map<K, VDst>::const_iterator itDst = valsDst.begin();
-	     itDst != valsDst.end(); itDst++) {
-	  typename std::map<K, VSrc>::const_iterator itSrc = valsSrc.find(itDst->first);
-	  if (itSrc == valsSrc.end()) {
-	    valStrDst[itDst->first] = GET_VAL(itDst->second);
-	    valStrSrc[itDst->first] = "MISSING";
-	  }
-	}
+        for (typename std::map<K, VDst>::const_iterator itDst = valsDst.begin();
+             itDst != valsDst.end(); itDst++) {
+          typename std::map<K, VSrc>::const_iterator itSrc = valsSrc.find(itDst->first);
+          if (itSrc == valsSrc.end()) {
+            valStrDst[itDst->first] = GET_VAL(itDst->second);
+            valStrSrc[itDst->first] = "MISSING";
+          }
+        }
       }
       std::ostringstream out;
       for (typename std::map<K, std::string>::const_iterator itSrc = valStrSrc.begin();
-	   itSrc != valStrSrc.end(); itSrc++) {
-	typename std::map<K, std::string>::const_iterator itDst = valStrDst.find(itSrc->first);
-	out << std::setw(padKeys + tab_size) << std::left;
-	if (includePrefixes)
-	  out << getNameWithPrefix(itSrc->first);
-	else
-	  out << getName(itSrc->first);
-	out << std::setw(padVals + tab_size) << std::left << itDst->second;
-	out << std::setw(padVals + tab_size) << std::left << itSrc->second << std::endl;
+           itSrc != valStrSrc.end(); itSrc++) {
+        typename std::map<K, std::string>::const_iterator itDst = valStrDst.find(itSrc->first);
+        out << std::setw(padKeys + tab_size) << std::left;
+        if (includePrefixes)
+          out << getNameWithPrefix(itSrc->first);
+        else
+          out << getName(itSrc->first);
+        out << std::setw(padVals + tab_size) << std::left << itDst->second;
+        out << std::setw(padVals + tab_size) << std::left << itSrc->second << std::endl;
       }
 #undef GET_VAL
       return std::move(out.str());
@@ -1549,31 +1395,31 @@ namespace ePhotosynthesis {
 				   const std::map<EnumType, VSrc>& valsSrc,
 				   const std::string& context="") {
       for (typename std::map<EnumType, VSrc>::const_iterator itSrc = valsSrc.begin();
-	   itSrc != valsSrc.end(); itSrc++) {
-	typename std::map<EnumType, VDst>::const_iterator itDst = valsDst.find(itSrc->first);
-	if (itDst == valsDst.end()) {
-	  INFO_VALUE_SET(context, itSrc->first,
-			 " value not present in a");
-	  return false;
-	}
-	if (!valuesEqual(itDst->second, itSrc->second)) {
-	  INFO_VALUE_SET(context, itDst->first,
-			 " values are not equal: ",
-			 valueString(itDst->second), ", ",
-			 valueString(itSrc->second));
-	  return false;
-	}
+           itSrc != valsSrc.end(); itSrc++) {
+        typename std::map<EnumType, VDst>::const_iterator itDst = valsDst.find(itSrc->first);
+        if (itDst == valsDst.end()) {
+          INFO_VALUE_SET(context, itSrc->first,
+                         " value not present in a");
+          return false;
+        }
+        if (!valuesEqual(itDst->second, itSrc->second)) {
+          INFO_VALUE_SET(context, itDst->first,
+                         " values are not equal: ",
+                         valueString(itDst->second), ", ",
+                         valueString(itSrc->second));
+          return false;
+        }
       }
       if (valsDst.size() != valsSrc.size()) {
-	for (typename std::map<EnumType, VDst>::const_iterator itDst = valsDst.begin();
-	     itDst != valsDst.end(); itDst++) {
-	  typename std::map<EnumType, VSrc>::const_iterator itSrc = valsSrc.find(itDst->first);
-	  if (itSrc == valsSrc.end()) {
-	    INFO_VALUE_SET(context, itDst->first,
-			   " value not present in b");
-	    return false;
-	  }
-	}
+        for (typename std::map<EnumType, VDst>::const_iterator itDst = valsDst.begin();
+             itDst != valsDst.end(); itDst++) {
+          typename std::map<EnumType, VSrc>::const_iterator itSrc = valsSrc.find(itDst->first);
+          if (itSrc == valsSrc.end()) {
+            INFO_VALUE_SET(context, itDst->first,
+                           " value not present in b");
+            return false;
+          }
+        }
       }
       return true;
     }
@@ -1616,35 +1462,35 @@ namespace ePhotosynthesis {
 				 bool ignore_missing=false,
 				 bool ignore_constants=false) {
       for (typename std::map<EnumType, VSrc>::const_iterator itSrc = valsSrc.begin();
-	   itSrc != valsSrc.end(); itSrc++) {
-	typename std::map<EnumType, VDst>::const_iterator itDst = valsDst.find(itSrc->first);
-	if (itDst == valsDst.end()) {
-	  if (ignore_extras)
-	    continue;
-	  ERROR_VALUE_SET(context, getName(itSrc->first),
-			  " is not present in the destination");
-	}
-	if ((!ignore_constants) &&
+           itSrc != valsSrc.end(); itSrc++) {
+        typename std::map<EnumType, VDst>::const_iterator itDst = valsDst.find(itSrc->first);
+        if (itDst == valsDst.end()) {
+          if (ignore_extras)
+            continue;
+          ERROR_VALUE_SET(context, getName(itSrc->first),
+                          " is not present in the destination");
+        }
+        if ((!ignore_constants) &&
             EnumBaseClass::isConstant(itSrc->first) &&
-	    (!valuesEqual(itDst->second, itSrc->second))) {
-	  std::string oldval = valueString(itDst->second);
-	  std::string newval = valueString(itSrc->second);
+            (!valuesEqual(itDst->second, itSrc->second))) {
+          std::string oldval = valueString(itDst->second);
+          std::string newval = valueString(itSrc->second);
           EnumBaseClass::checkNotConstant(itSrc->first, context +
-                                          "[" + oldval + ", " + newval +
-                                          "]: ");
-	}
+                                                 "[" + oldval + ", " + newval +
+                                                 "]: ");
+        }
       }
       if (valsDst.size() != valsSrc.size() && !ignore_missing) {
-	for (typename std::map<EnumType, VDst>::const_iterator itDst = valsDst.begin();
-	     itDst != valsDst.end(); itDst++) {
-	  typename std::map<EnumType, VSrc>::const_iterator itSrc = valsSrc.find(itDst->first);
-	  if (itSrc == valsSrc.end()) {
-	    if (ignore_missing)
-	      continue;
-	    ERROR_VALUE_SET(context, getName(itDst->first),
-			    " is not present in the source");
-	  }
-	}
+        for (typename std::map<EnumType, VDst>::const_iterator itDst = valsDst.begin();
+             itDst != valsDst.end(); itDst++) {
+          typename std::map<EnumType, VSrc>::const_iterator itSrc = valsSrc.find(itDst->first);
+          if (itSrc == valsSrc.end()) {
+            if (ignore_missing)
+              continue;
+            ERROR_VALUE_SET(context, getName(itDst->first),
+                            " is not present in the source");
+          }
+        }
       }
     }
     /**
@@ -1674,33 +1520,33 @@ namespace ePhotosynthesis {
 			       bool ignore_initonce=false) {
       bool check = false;
       if (valsDst.size() != valsSrc.size())
-	check = true;
+        check = true;
       if (check)
-	check_value_maps(valsDst, valsSrc, context + "copy_value_map: ",
-			 ignore_extras, ignore_missing, ignore_constants);
+        check_value_maps(valsDst, valsSrc, context + "copy_value_map: ",
+                         ignore_extras, ignore_missing, ignore_constants);
       for (typename std::map<EnumType, VSrc>::const_iterator itSrc = valsSrc.begin();
-	   itSrc != valsSrc.end(); itSrc++) {
-	typename std::map<EnumType, VDst>::iterator itDst = valsDst.find(itSrc->first);
-	if (itDst == valsDst.end()) {
-	  if (ignore_extras)
-	    continue;
-	  ERROR_VALUE_SET(context, getName(itSrc->first),
-			  " is not present in the destination");
-	}
-	if (((!ignore_skipped) && EnumBaseClass::isSkipped(itSrc->first)) ||
-	    ((!ignore_initonce) && EnumBaseClass::isInitonce(itSrc->first))) {
-	  continue;
-	}
+           itSrc != valsSrc.end(); itSrc++) {
+        typename std::map<EnumType, VDst>::iterator itDst = valsDst.find(itSrc->first);
+        if (itDst == valsDst.end()) {
+          if (ignore_extras)
+            continue;
+          ERROR_VALUE_SET(context, getName(itSrc->first),
+                          " is not present in the destination");
+        }
+        if (((!ignore_skipped) && EnumBaseClass::isSkipped(itSrc->first)) ||
+            ((!ignore_initonce) && EnumBaseClass::isInitonce(itSrc->first))) {
+          continue;
+        }
 #ifdef VERBOSE_VALUE_SET_DEBUG
-	std::string srcval = valueString(itSrc->second);
-	std::string dstval = valueString(itDst->second);
-	std::string dstptr = valuePointerString(itDst->second);
+        std::string srcval = valueString(itSrc->second);
+        std::string dstval = valueString(itDst->second);
+        std::string dstptr = valuePointerString(itDst->second);
 #endif // VERBOSE_VALUE_SET_DEBUG
-	valueSet(itDst->second, itSrc->second);
+        valueSet(itDst->second, itSrc->second);
 #ifdef VERBOSE_VALUE_SET_DEBUG
-	DEBUG_VALUE_SET(context, itSrc->first, ": [", dstptr, "] ",
-			dstval, " -> ", srcval, " [AFTER = ",
-			valueString(itDst->second), "]");
+        DEBUG_VALUE_SET(context, itSrc->first, ": [", dstptr, "] ",
+                        dstval, " -> ", srcval, " [AFTER = ",
+                        valueString(itDst->second), "]");
 #endif // VERBOSE_VALUE_SET_DEBUG
       }      
     }
@@ -1730,9 +1576,9 @@ namespace ePhotosynthesis {
 			       bool ignore_initonce=false) {
       std::map<EnumType, double> new_values = utils::readEnumFile<EnumType, double>(filename);
       copy_value_map(vals, new_values, context + "[" + filename + "]: ",
-		     ignore_extras, ignore_missing,
-		     ignore_constants, ignore_skipped,
-		     ignore_initonce);
+                     ignore_extras, ignore_missing,
+                     ignore_constants, ignore_skipped,
+                     ignore_initonce);
     }
     /**
        Add values to a value map from another.
@@ -1760,8 +1606,8 @@ namespace ePhotosynthesis {
 				 bool no_constants=false,
 				 bool no_skipped=false) {
       copy_value_map(valsDst, valsSrc, context,
-		     allow_extras, !no_missing,
-		     !no_constants, !no_skipped);
+                     allow_extras, !no_missing,
+                     !no_constants, !no_skipped);
     }
     /**
        Add values to a value map by reading a parameter file.
@@ -1787,34 +1633,26 @@ namespace ePhotosynthesis {
 				 bool no_constants=false,
 				 bool no_skipped=false) {
       copy_value_map(vals, filename, context,
-		     allow_extras, !no_missing,
-		     !no_constants, !no_skipped);
+                     allow_extras, !no_missing,
+                     !no_constants, !no_skipped);
     }
     template<typename V>
     static std::map<int, double> export_value_map(const std::map<EnumType, V>& vals,
 						  const std::string& context="") {
       std::map<int, double> out;
       for (typename std::map<EnumType, V>::const_iterator it = vals.begin();
-	   it != vals.end(); it++) {
-	out[key2int(it->first)] = valueGet(it->second);
+           it != vals.end(); it++) {
+        out[key2int(it->first)] = valueGet(it->second);
       }
       return out;
     }
-    template<typename V>
-    static void import_value_map(std::map<EnumType, V>& dst,
+    // template<typename V>
+    static void import_value_map(std::map<EnumType, double*>& dst,
 				 const std::map<int, double>& src,
-				 const std::string& context="") {
-      std::map<EnumType, double> ksrc = BaseClass::int2key(src);
-      copy_value_map(dst, ksrc, context,
-		     false, false, true, true, true);
-    }
+				 const std::string& context="");
     static void import_value_map(std::map<EnumType, double>& dst,
 				 const std::map<int, double>& src,
-				 const std::string& context) {
-      std::map<EnumType, double> ksrc = BaseClass::int2key(src);
-      dst.clear();
-      dst.insert(ksrc.begin(), ksrc.end());
-    }
+				 const std::string& context);
     /**
        Re-initialize the values in a value map to the default values,
          minus any values that are skipped.
@@ -1829,45 +1667,34 @@ namespace ePhotosynthesis {
       // checkDefaults("init_value_map: ");
       initDefaults();
       copy_value_map(vals, defaults, "init_value_map: ",
-		     true, false, !isinit, true, !isinit);
+                     true, false, !isinit, true, !isinit);
     }
     /**
        Throw an error if the defaults have not been initialized.
        \param context String providing context for error messages.
      */
-    static void checkDefaults(const std::string& context="") {
-      // initDefaults();
-      if (defaults.empty() && !EnumBaseClass::defaults.empty())
-	ERROR_VALUE_SET(context,
-			"defaults not initialized, call ",
-			"initDefaults first");
-    }
+    static void checkDefaults(const std::string& context="");
     /**
        Get the value set module enum.
        \returns Module enum.
      */
-    static MODULE get_module() { return module; }
+    static MODULE get_module();
     /**
        Get the value set parameter type enum.
        \returns Parameter type enum.
      */
-    static PARAM_TYPE get_param_type() { return param_type; }
+    static PARAM_TYPE get_param_type();
     /**
        Get a vector containing the parameter types that are associated
          with the module that this value set belongs to.
        \returns Parameter types.
      */
-    static const std::vector<PARAM_TYPE>& get_parameter_types() {
-      static std::vector<PARAM_TYPE> out = {};
-      return out;
-    }
+    static const std::vector<PARAM_TYPE>& get_parameter_types();
     /**
        Initialize the defaults for the value set if they have not been
          initialized.
      */
-    static void initDefaults() {
-      initDefaults(static_flags & VS_FLAG_DEFAULTS_C3);
-    }
+    static void initDefaults();
     /**
        Initialize the defaults for the value set if they have not been
          initialized.
@@ -1880,49 +1707,11 @@ namespace ePhotosynthesis {
     static void initDefaults(const bool useC3,
 			     const std::string& filename="",
 			     const bool force=false,
-			     const bool noChildren=false) {
-      if (!(static_flags & VS_FLAG_INIT_DEFAULTS)) {
-        defaults.insert(EnumBaseClass::defaults.begin(),
-                        EnumBaseClass::defaults.end());
-	if (useC3) {
-          utils::copyInto(defaults, EnumBaseClass::defaults_C3);
-	  static_flags |= VS_FLAG_DEFAULTS_C3;
-	} else {
-	  static_flags &= ~VS_FLAG_DEFAULTS_C3;
-	}
-	static_flags |= VS_FLAG_INIT_DEFAULTS;
-      }
-      if (useC3 != bool(static_flags & VS_FLAG_DEFAULTS_C3)) {
-	if (static_flags & VS_FLAG_DEFAULTS_EDITED)
-	  ERROR_VALUE_SET("Defaults have been modified using "
-			  "values from a file. Changing the "
-			  "default value set to those for "
-			  "useC3 = ", useC3,
-			  " would overwrite those values.");
-	if (useC3) {
-	  copy_value_map(defaults, EnumBaseClass::defaults_C3,
-			 "initDefaults: ",
-			 false, true, true, true, true);
-	  static_flags |= VS_FLAG_DEFAULTS_C3;
-	} else {
-	  copy_value_map(defaults, EnumBaseClass::defaults,
-			 "initDefaults: ",
-			 false, false, true, true, true);
-	  static_flags &= ~VS_FLAG_DEFAULTS_C3;
-	}
-      }
-      T::_initDefaults();
-      DO_VALUE_SET_CHILD_CLASSES(initDefaults, (useC3, "", force));
-      if (filename.empty())
-	return;
-      copy_value_map(defaults, filename, "initDefaults: ",
-		     false, true, true, true, true);
-      static_flags |= VS_FLAG_DEFAULTS_EDITED;
-    }
+			     const bool noChildren=false);
     /** \copydoc ValueSetEnum::getName */
-    static std::string getName(const int& k) {
-      return getName(int2key(k));
-    }
+    static std::string getName(const int& k);
+    /** \copydoc ValueSetEnum::getName */
+    static std::string getName(const std::string& k);
     /**
        Get the string associated with a variable including the module
          and parameter type as a prefix.
@@ -1930,7 +1719,7 @@ namespace ePhotosynthesis {
        \param[in] k Key to get name for.
        \returns Key name with prefix.
      */
-    template <typename K>
+    template<typename K>
     static std::string getNameWithPrefix(const K& k) {
       std::ostringstream out;
       out << utils::enum_key2string(module) << "::" <<
@@ -1943,10 +1732,7 @@ namespace ePhotosynthesis {
        \param[in] name Alias to get name for.
        \return Aliased key name.
      */
-    static std::string getAliasedName(const std::string& name) {
-      EnumType k = fromNameWithAliases(name);
-      return getName(k);
-    }
+    static std::string getAliasedName(const std::string& name);
     /**
        Get the enum key corresponding to a name value also checking for
          aliases.
@@ -1955,38 +1741,7 @@ namespace ePhotosynthesis {
        \return Key
     */
     static EnumType fromNameWithAliases(const std::string& name,
-					bool isGlymaID = false) {
-      if (isGlymaID)
-	return EnumBaseClass::fromGlymaid(name);
-      // TODO: Check for module/param_type prefix
-      if (EnumBaseClass::aliases.size()) {
-        typename std::map<std::string, EnumType>::const_iterator it = EnumBaseClass::aliases.find(name);
-        if (it != EnumBaseClass::aliases.end())
-          return it->second;
-      }
-      try {
-        return EnumBaseClass::fromName(name);
-      } catch (...) {
-        std::string split = "::";
-        size_t idx1 = name.find(split);
-        size_t idx2 = std::string::npos;
-        if (idx1 != std::string::npos) {
-          idx2 = name.find(split, idx1 + split.size());
-          if (idx2 != std::string::npos) {
-            std::string var1 = name.substr(0, idx1);
-            if (var1 == utils::enum_key2string(module)) {
-              std::string var2 = name.substr(idx1 + split.size(),
-                                             idx2 - (idx1 + split.size()));
-              if (var2 == utils::enum_key2string(param_type)) {
-                std::string name_alt = name.substr(idx2 + split.size());
-                return EnumBaseClass::fromName(name_alt);
-              }
-            }
-          }
-        }
-        throw;
-      }
-    }
+					bool isGlymaID = false);
     /**
        Get the enum key corresponding to a name value also checking for
          aliases cast to an int.
@@ -1995,9 +1750,7 @@ namespace ePhotosynthesis {
        \return Key as int
     */
     static int fromNameWithAliasesInt(const std::string& name,
-                                      bool isGlymaID = false) {
-      return static_cast<int>(fromNameWithAliases(name, isGlymaID));
-    }
+                                      bool isGlymaID = false);
     /**
        Check if a string names a member of the value set.
        \param name Key to check for.
@@ -2005,17 +1758,7 @@ namespace ePhotosynthesis {
        \returns true if name is a member, false otherwise.
      */
     static bool has(const std::string& name,
-		    const bool& isGlymaID = false) {
-      try {
-	if (isGlymaID)
-          EnumBaseClass::fromGlymaid(name);
-	else
-	  fromNameWithAliases(name);
-	return true;
-      } catch (...) {
-	return false;
-      }
-    }
+		    const bool& isGlymaID = false);
     /**
        Check if a string names a GlymaID associated with a member of the
          value set.
@@ -2023,14 +1766,7 @@ namespace ePhotosynthesis {
        \returns true if name is a GlymaID associated with the value set,
          false otherwise.
      */
-    static bool hasGlymaID(const std::string& name) {
-      try {
-        EnumBaseClass::fromGlymaid(name);
-	return true;
-      } catch (...) {
-	return false;
-      }
-    }
+    static bool hasGlymaID(const std::string& name);
     /**
        Set the default value corresponding to an enum key
        \param[in] k Key to set value for.
@@ -2039,12 +1775,7 @@ namespace ePhotosynthesis {
          if initDefaults is called again.
      */
     static void setDefault(const EnumType& k, const double& v,
-			   const bool dontPreserve = false) {
-      checkDefaults("setDefault: ");
-      defaults[k] = v;
-      if (!dontPreserve)
-	static_flags |= VS_FLAG_DEFAULTS_EDITED;
-    }
+			   const bool dontPreserve = false);
     /**
        Set the default value corresponding to an enum key
        \param[in] k Name of key to set value for.
@@ -2055,12 +1786,7 @@ namespace ePhotosynthesis {
      */
     static void setDefault(const std::string& k, const double& v,
 			   const bool& isGlymaID = false,
-			   const bool dontPreserve = false) {
-      if (isGlymaID)
-	return setDefault(EnumBaseClass::fromGlymaid(k),
-                          v, dontPreserve);
-      return setDefault(fromNameWithAliases(k), v, dontPreserve);
-    }
+			   const bool dontPreserve = false);
     /**
        Set the default value corresponding to an enum key
        \param[in] k Key to set value for.
@@ -2069,23 +1795,13 @@ namespace ePhotosynthesis {
          if initDefaults is called again.
      */
     static void setDefault(const int& k, const double& v,
-			   const bool dontPreserve = false) {
-      return setDefault(int2key(k), v, dontPreserve);
-    }
+			   const bool dontPreserve = false);
     /**
       Get the default value corresponding to an enum key
       \param[in] x Key to get value for
       \return Value
     */
-    static double getDefault(const EnumType& x) {
-      checkDefaults("getDefault: ");
-      typename std::map<EnumType, double>::const_iterator it;
-      it = defaults.find(x);
-      if (it == defaults.end()) {
-	ERROR_VALUE_SET("Could not locate Default for '", x, "'");
-      }
-      return it->second;
-    }
+    static double getDefault(const EnumType& x);
     /**
       Get the default value corresponding to an enum key
       \param[in] x Key to get value for
@@ -2093,34 +1809,20 @@ namespace ePhotosynthesis {
       \return Value
     */
     static double getDefault(const std::string& x,
-			     const bool& isGlymaID = false) {
-      if (isGlymaID)
-	return getDefault(EnumBaseClass::fromGlymaid(x));
-      return getDefault(fromNameWithAliases(x));
-    }
+			     const bool& isGlymaID = false);
     /**
       Get the default value corresponding to an enum key
       \param[in] k Key to get value for
       \return Value
     */
-    static double getDefault(const int& k) {
-      return getDefault(int2key(k));
-    }
+    static double getDefault(const int& k);
     /**
       Get the default value corresponding to an enum key
       \param[in] x Key to get value for
       \param[in] defaultV Value to return if x is not present
       \return Value
     */
-    static double getDefault(const EnumType& x, const double& defaultV) {
-      checkDefaults("getDefault[optional]: ");
-      typename std::map<EnumType, double>::const_iterator it;
-      it = defaults.find(x);
-      if (it == defaults.end()) {
-        return defaultV;
-      }
-      return it->second;
-    }
+    static double getDefault(const EnumType& x, const double& defaultV);
     /**
        Get the docs associated with a key.
        \param name String representation of key to get value for.
@@ -2128,19 +1830,13 @@ namespace ePhotosynthesis {
        \returns Documentation string.
      */
     static std::string getDocs(const std::string& name,
-                               const bool& isGlymaID = false) {
-      if (isGlymaID)
-	return EnumBaseClass::getDocs(EnumBaseClass::fromGlymaid(name), "");
-      return EnumBaseClass::getDocs(fromNameWithAliases(name), "");
-    }
+                               const bool& isGlymaID = false);
     /**
        Get the docs associated with a key.
        \param k Key to get value for.
        \returns Documentation string.
      */
-    static std::string getDocs(const int& k) {
-      return EnumBaseClass::getDocs(BaseClass::int2key(k), "");
-    }
+    static std::string getDocs(const int& k);
     /**
        Get the reference for the value associated with a key from a value
          map.
@@ -2156,8 +1852,8 @@ namespace ePhotosynthesis {
 			       const std::string& context="[]: ") {
       check_value_map(vals, k, context);
       return ValueType(k, vals.find(k)->second,
-		       context + "get_value[V]: "
-		       + getName(k));
+                       context + "get_value[V]: "
+                       + getName(k));
     }
     /**
        Get the constant reference for the value associated with a key from
@@ -2169,12 +1865,7 @@ namespace ePhotosynthesis {
      */
     static const double& get_value_const(const std::map<EnumType, double>& vals,
 					 const EnumType k,
-					 const std::string& context="") {
-      check_value_map(vals, k, context);
-      DEBUG_VALUE_SET(context, "[CONST DOUBLE]: ", k, " = ",
-		      vals.find(k)->second);
-      return vals.find(k)->second;
-    }
+					 const std::string& context="");
     /**
        Get the constant reference for the value associated with a key
          from a value map.
@@ -2185,12 +1876,18 @@ namespace ePhotosynthesis {
      */
     static const double& get_value_const(const std::map<EnumType, double*>& vals,
 					 const EnumType k,
-					 const std::string& context="") {
-      check_value_map(vals, k, context);
-      DEBUG_VALUE_SET(context, "[CONST DOUBLE*]: ", k, " = ",
-		      *(vals.find(k)->second));
-      return *(vals.find(k)->second);
-    }
+					 const std::string& context="");
+    /**
+       Get the constant reference for the value associated with a key
+         from a value map.
+       \param vals Value map.
+       \param k Key to get value for.
+       \param context String providing context for error messages.
+       \returns Constant value reference.
+     */
+    static const double& get_value_const(const std::map<EnumType, ValueType>& vals,
+					 const EnumType k,
+					 const std::string& context="");
     /**
        Update the value associated with a key in a value map.
        \param vals Value map to update.
@@ -2200,23 +1897,7 @@ namespace ePhotosynthesis {
      */
     static void set_value(std::map<EnumType, double>& vals,
 			  const EnumType k, const double v,
-			  const std::string& context="") {
-#ifdef VERBOSE_VALUE_SET_DEBUG
-      DEBUG_VALUE_SET_NOEND(context, "[DOUBLE] ", k, "[",
-			    std::to_string(k), "]: ");
-      if (vals.find(k) == vals.end()) {
-	DEBUG_VALUE_SET_RAW("NULL");
-      } else {
-	DEBUG_VALUE_SET_RAW(vals[k]);
-      }
-      DEBUG_VALUE_SET_RAW(" -> ", v);
-#endif // VERBOSE_VALUE_SET_DEBUG
-      EnumBaseClass::checkNotConstant(k, context);
-      vals[k] = v;
-#ifdef VERBOSE_VALUE_SET_DEBUG
-      DEBUG_VALUE_SET_END(" [AFTER = ", vals[k], "]");
-#endif // VERBOSE_VALUE_SET_DEBUG
-    }
+			  const std::string& context="");
     /**
        Update the value associated with a key in a value map.
        \param vals Value map to update.
@@ -2226,21 +1907,17 @@ namespace ePhotosynthesis {
      */
     static void set_value(std::map<EnumType, double*>& vals,
 			  const EnumType k, const double v,
-			  const std::string& context="") {
-      DEBUG_VALUE_SET_NOEND(context, "[DOUBLE*] ", k, "[",
-			    std::to_string(k), "]: ");
-#ifdef VERBOSE_VALUE_SET_DEBUG
-      if (vals.find(k) == vals.end()) {
-	DEBUG_VALUE_SET_RAW("[NULL] 0");
-      } else {
-	DEBUG_VALUE_SET_RAW("[", vals[k], "] ", *(vals[k]));
-      }
-      DEBUG_VALUE_SET_RAW(" -> ", v);
-#endif // VERBOSE_VALUE_SET_DEBUG
-      check_value_map(vals, k, context);
-      *(vals[k]) = v;
-      DEBUG_VALUE_SET_END(" [AFTER = ", *(vals[k]), "]");
-    }
+			  const std::string& context="");
+    /**
+       Update the value associated with a key in a value map.
+       \param vals Value map to update.
+       \param k Key to update value for.
+       \param v New value for key.
+       \param context String providing context for error messages.
+     */
+    static void set_value(std::map<EnumType, ValueType>& vals,
+			  const EnumType k, const double v,
+			  const std::string& context="");
     /**
        Update the value associated with a key in a value map from a map
          containing enzyme activity values.
@@ -2254,7 +1931,7 @@ namespace ePhotosynthesis {
 					 const EnumType k,
 					 const std::map<std::string, double>& EnzymeAct) {
       set_value(vals, k, EnzymeAct.at(getName(k)),
-		"set_value_from_EnzymeAct: ");
+                "set_value_from_EnzymeAct: ");
     }
     /**
        Get the value pointer for the value associated with a key from a
@@ -2266,12 +1943,7 @@ namespace ePhotosynthesis {
      */
     static double*& get_value_orig(std::map<EnumType, double*>& vals,
 				   const EnumType k,
-				   const std::string& context="[]: ") {
-      EnumBaseClass::checkNotConstant(k, context);
-      check_value_map(vals, k, context);
-      DEBUG_VALUE_SET(context, k);
-      return vals.find(k)->second;
-    }
+				   const std::string& context="[]: ");
     /**
        Add a reference to an original value for the given key to a value
          map.
@@ -2282,25 +1954,7 @@ namespace ePhotosynthesis {
      */
     static void insert_value_orig(std::map<EnumType, double*>& vals,
 				  const EnumType k, double* v,
-				  const std::string& context="") {
-      if (vals.find(k) == vals.end()) {
-	vals.emplace(k, &(v[0]));
-	if (EnumBaseClass::isInitonce(k)) {
-	  // TODO: this check may not be necessary if the init once
-	  //   variables are reinitialized after a reset
-          typename std::map<EnumType, double>::const_iterator it_C3 = EnumBaseClass::defaults_C3.find(k);
-          if (it_C3 != EnumBaseClass::defaults_C3.end())
-            compareValues(k, EnumBaseClass::defaults.find(k)->second,
-                          it_C3->second);
-	  checkDefaults("insert_value_orig: ");
-	  v[0] = defaults.find(k)->second;
-	  DEBUG_VALUE_SET(context, "initialized ", k, " = ",
-			  vals[k], " [", v, "]");
-	}
-	DEBUG_VALUE_SET(context, "inserted ", k, " = ",
-			vals[k], " [", v, "]");
-      }
-    }
+				  const std::string& context="");
     /**
        Update the value associated with a key in a value map.
        \param vals Value map to update.
@@ -2308,9 +1962,7 @@ namespace ePhotosynthesis {
        \param v New value for key.
      */
     static void set_value_orig(std::map<EnumType, double*>& vals,
-			       const EnumType k, double* v) {
-      get_value_orig(vals, k, "set_orig") = v;
-    }
+			       const EnumType k, double* v);
     /**
        Reset all of the values in a value map that are not constant to 0.
        \tparam Type of value in map.
@@ -2320,14 +1972,14 @@ namespace ePhotosynthesis {
     static void reset_value_map(std::map<EnumType, V>& vals) {
       DEBUG_VALUE_SET_NOARGS;
       for (typename std::map<EnumType, V>::iterator it = vals.begin();
-	   it != vals.end(); it++) {
-	if (!EnumBaseClass::isConstant(it->first)) {
-	  if (EnumBaseClass::isResetone(it->first)) {
-	    set_value(vals, it->first, 1.0, "reset_value_map: ");
-	  } else {
-	    set_value(vals, it->first, 0.0, "reset_value_map: ");
-	  }
-	}
+           it != vals.end(); it++) {
+        if (!EnumBaseClass::isConstant(it->first)) {
+          if (EnumBaseClass::isResetone(it->first)) {
+            set_value(vals, it->first, 1.0, "reset_value_map: ");
+          } else {
+            set_value(vals, it->first, 0.0, "reset_value_map: ");
+          }
+        }
       }
     }
     /**
@@ -2343,13 +1995,13 @@ namespace ePhotosynthesis {
       size_t i = 0;
       out.resize(out.size() + vals.size());
       for (typename std::map<EnumType, V>::const_iterator it = vals.begin();
-	   it != vals.end(); it++) {
-	if (inArrays(it->first)) {
+           it != vals.end(); it++) {
+        if (inArrays(it->first)) {
           EnumBaseClass::checkNotConstant(it->first);
-	  out[i] = get_value_const(vals, it->first,
-				   "value_map_toArray: ");
-	  i++;
-	}
+          out[i] = get_value_const(vals, it->first,
+                                   "value_map_toArray: ");
+          i++;
+        }
       }
     }
     /**
@@ -2368,21 +2020,21 @@ namespace ePhotosynthesis {
       size_t nexp = memberCount();
       size_t nact = vec.size() - offset;
       if (vals.size() != defaults.size())
-	ERROR_VALUE_SET(vals.size(), " provided, but ",
-			defaults.size(), " expected");
+        ERROR_VALUE_SET(vals.size(), " provided, but ",
+                        defaults.size(), " expected");
       if (nexp > nact)
-	ERROR_VALUE_SET(nexp, " expected, but only ",
-			nact, " provided (vec.size() = ",
-			vec.size(), ", offset = ",
-			offset, ")");
+        ERROR_VALUE_SET(nexp, " expected, but only ",
+                        nact, " provided (vec.size() = ",
+                        vec.size(), ", offset = ",
+                        offset, ")");
       for (typename std::map<EnumType, V>::iterator it = vals.begin();
-	   it != vals.end(); it++) {
-	if (inArrays(it->first)) {
-	  // EnumBaseClass::checkNotConstant(it->first, "value_map_fromArray: ");
-	  set_value(vals, it->first, vec[offset + i],
-		    "value_map_fromArray: ");
-	  i++;
-	}
+           it != vals.end(); it++) {
+        if (inArrays(it->first)) {
+          // EnumBaseClass::checkNotConstant(it->first, "value_map_fromArray: ");
+          set_value(vals, it->first, vec[offset + i],
+                    "value_map_fromArray: ");
+          i++;
+        }
       }
     }
     /**
@@ -2390,31 +2042,13 @@ namespace ePhotosynthesis {
        \param noChildren If true, child classes will not be included.
        \return Member counts.
      */
-    static std::size_t memberCount(const bool noChildren = false) {
-      std::size_t out = EnumBaseClass::defaults.size() - (EnumBaseClass::countSkipped() + EnumBaseClass::countNonvector());
-#define DO_CHILD(child, dummy) out += child->memberCount()
-      DO_VALUE_SET_CHILD_CLASSES_MACRO(DO_CHILD, const_iterator, );
-#undef DO_CHILD
-      return out;
-    }
+    static std::size_t memberCount(const bool noChildren = false);
     /**
        Get a string representation of the class state.
        \param noChildren If true, child classes will not be included.
        \return String representation.
      */
-    static std::string memberState(const bool noChildren = false) {
-      std::string out = error_prefix() +
-	", NCHILD = " + std::to_string(child_classes.size()) +
-	", COUNT = " + std::to_string(memberCount()) +
-	", SKIPPED = " + utils::to_string(EnumBaseClass::listSkipped()) +
-        ", NONVECT = " + utils::to_string(EnumBaseClass::listNonvector());
-      if (noChildren)
-	return out;
-      for (std::vector<ValueSetClassWrapper>::const_iterator it = child_classes.begin();
-	   it != child_classes.end(); it++)
-	out += "\n\t" + (*it)->memberState();
-      return out;
-    }
+    static std::string memberState(const bool noChildren = false);
 
     /**
        Add a child class to this classes set.
@@ -2439,67 +2073,39 @@ namespace ePhotosynthesis {
        \param noChildren If true, child classes will not be initialized.
        Common, public interface for the private _initChildClasses method.
      */
-    static void initChildClasses(const bool noChildren = false) {
-      if (static_flags & VS_FLAG_INIT_CHILDREN) return;
-      T::_initChildClasses();
-      DO_VALUE_SET_CHILD_CLASSES(initChildClasses, ());
-      static_flags |= VS_FLAG_INIT_CHILDREN;
-    }
+    static void initChildClasses(const bool noChildren = false);
     /**
        Initialize the static class members including child classes.
        \param noChildren If true, child classes will not be initialized.
        Common, public interface for the private _initStaticMembers method.
      */
-    static void initStaticMembers(const bool noChildren = false) {
-      if (static_flags & VS_FLAG_INIT_STATIC) return;
-      T::_initStaticMembers();
-      initChildClasses(true); // Children will be called in initStaticMembers
-      DO_VALUE_SET_CHILD_CLASSES(initStaticMembers, ());
-      static_flags |= VS_FLAG_INIT_STATIC;
-    }
+    static void initStaticMembers(const bool noChildren = false);
     /**
        Check if the value set is selected by the current driver.
        \returns true if the value set is selected, false otherwise.
      */
-    static bool selected() {
-      return (static_flags & VS_FLAG_SELECTED);
-    }
+    static bool selected();
     /**
        Select the value set and any children.
        \param[in] x true if value set should be selected, false if it
          should be deselected.
        \param noChildren If true, child classes will not be selected.
      */
-    static void select(const bool x = true, const bool noChildren = false) {
-      if (x) {
-	static_flags |= VS_FLAG_SELECTED;
-      } else {
-	static_flags &= ~VS_FLAG_SELECTED;
-      }
-      T::_select(x, noChildren);
-      DO_VALUE_SET_CHILD_CLASSES(select, (x));
-    }
+    static void select(const bool x = true, const bool noChildren = false);
     /**
        Throw an error if the value set is not selected.
      */
-    static void checkSelected() {
-      if (!(static_flags & VS_FLAG_SELECTED))
-	ERROR_VALUE_SET("Value set has not been selected");
-    }
+    static void checkSelected();
     /**
        Check if the value set has children.
        \returns true if the value set has children, false otherwise.
      */
-    static bool hasChildren() {
-      return (child_classes.size() > 0);
-    }
+    static bool hasChildren();
     /**
        Check if the value set uses the C3 defaults.
        \returns true if the C3 defaults are being used, false otherwise.
      */
-    static bool usesC3() {
-      return (static_flags & VS_FLAG_DEFAULTS_C3);
-    }
+    static bool usesC3();
     /**
        Set a flag so that the value set uses or does not use C3 defaults.
        \param[in] x true if value set should use C3 defaults, false if it
@@ -2507,40 +2113,19 @@ namespace ePhotosynthesis {
        \param noChildren If true, child classes will not be modified.
     */
     static void enableC3(const bool x = true,
-			 const bool noChildren = false) {
-      initDefaults(x, "", true);
-      if (x)
-	static_flags |= VS_FLAG_DEFAULTS_C3;
-      else
-	static_flags &= ~VS_FLAG_DEFAULTS_C3;
-      T::_enableC3(x, noChildren);
-      DO_VALUE_SET_CHILD_CLASSES(enableC3, (x));
-    }
+			 const bool noChildren = false);
     /**
        Reset the static class members following the destruction of the
          current driver so that additional runs start with a clean slate.
        \param noChildren If true, child classes will not be reset.
        Common, public interface for the private _reset method.
      */
-    static void reset(const bool noChildren = false) {
-      int flags0 = static_flags;
-      EnumBaseClass::clearSkipped();
-      T::_reset(noChildren);
-      static_flags = 0;
-      if (flags0 & VS_FLAG_INIT_CHILDREN)
-	static_flags |= VS_FLAG_INIT_CHILDREN;
-      if (flags0 & VS_FLAG_INIT_POINTERS)
-	static_flags |= VS_FLAG_INIT_POINTERS;
-      defaults.clear();
-      DO_VALUE_SET_CHILD_CLASSES(reset, ());
-    }
+    static void reset(const bool noChildren = false);
     /**
        Number of elements in the value set.
        \returns Element count.
      */
-    static std::size_t size() {
-      return T::_size();
-    }
+    static std::size_t size();
     // Methods that can be overridden
   protected:
     /** Perform class specific default initialization */
@@ -2592,7 +2177,7 @@ namespace ePhotosynthesis {
        will be used by.
    */
   template<class T, class U, MODULE ID, PARAM_TYPE PT>
-  class ValueSet :
+  class EPHOTO_API ValueSet :
     public ValueSet_t, public ValueSetBase<T, U, ID, PT> {
   public:
     typedef ValueSet<T, U, ID, PT> ValueSetClass;
@@ -2604,76 +2189,51 @@ namespace ePhotosynthesis {
        Default constructor. Values will be initialized with default
          values, minus any values that are skipped.
      */
-    ValueSet() : values() {}
+    ValueSet();
     /**
        Copy constructor. Values will be updated from the values in the
          copied set.
        \param other Value set to copy values from.
      */
-    ValueSet(const ValueSet& other) : ValueSet() {
-      copyValueSet(other);
-    }
+    ValueSet(const ValueSet& other);
+    /** Destructor */
+    virtual ~ValueSet();
     /**
        Copy ValueSet members from another value set to this one.
        \param other Value set to copy values from.
      */
-    void copyValueSet(const ValueSet& other) {
-      int flags0 = flags;
-      flags = other.flags;
-      preinit_values = other.preinit_values;
-      if (!(flags0 & BaseClass::VS_FLAG_INIT_POINTERS))
-	flags &= ~BaseClass::VS_FLAG_INIT_POINTERS;
-      if (!(flags0 & BaseClass::VS_FLAG_INIT_CHILDREN))
-	flags &= ~BaseClass::VS_FLAG_INIT_CHILDREN;
-    }
+    void copyValueSet(const ValueSet& other);
     /**
        Copy another instance of this value set.
        \param other Value set to copy values from.
        \param noChildren If true, child classes will not be initialized.
      */
-    void copyInstance(const T& other, const bool noChildren=false) {
-      initMembers();
-      static_cast<T*>(this)->_copyMembers(other);
-      copyChildren(other, noChildren);
-    }
+    void copyInstance(const T& other, const bool noChildren=false);
     /**
        Copy children.
        \param other Value set to copy values from.
        \param noChildren If true, child classes will not be initialized.
      */
-    void copyChildren(const T& other, const bool noChildren=false) {
-      if (children.size() != other.children.size()) {
-	ERROR_VALUE_SET("copyMembers: "
-			"This instance has ", children.size(),
-			" children, but the one being copied has ",
-			other.children.size());
-      }
-      DO_VALUE_SET_CHILDREN(copyMembers, (**(other.children[iChild])));
-    }
+    void copyChildren(const T& other, const bool noChildren=false);
     /**
        Assignment operator. Values will be updated from the values in the
          copied set.
        \param other Value set to copy values from.
        \returns Updated value set.
      */
-    T& operator=(const T& other) {
-      copyMembers(other);
-      return *static_cast<T>(this);
-    }
+    T& operator=(const T& other);
     /**
        Copy values from an array.
        \param vec Vector to copy values from.
        \param offset Index into vec that copied values should start from.
      */
-    ValueSet(const arr &vec, const std::size_t offset) : ValueSet() {}
+    ValueSet(const arr &vec, const std::size_t offset);
 
     /**
        Get a constant ValueSet_t pointer for this instance/class.
        \returns Pointer.
      */
-    const ValueSet_t* getValueSet() const override {
-      return this;
-    }
+    const ValueSet_t* getValueSet() const override;
 
     /**
        Get a copy of the value in the set.
@@ -2681,11 +2241,7 @@ namespace ePhotosynthesis {
          returned.
        \returns Map of values in the value set.
      */
-    std::map<int, double> getValueMap(const bool preinit=false) const override {
-      if (preinit)
-	return BaseClass::export_value_map(preinit_values, CONTEXT_VALUE_SET);
-      return BaseClass::export_value_map(values, CONTEXT_VALUE_SET);
-    }
+    std::map<int, double> getValueMap(const bool preinit=false) const override;
     /**
        Set the values from a map.
        \param[in] map Value map to update values from.
@@ -2696,17 +2252,7 @@ namespace ePhotosynthesis {
      */
     void setValueMap(const std::map<int, double>& map,
 		     const bool setinit=false,
-		     const bool preinit=false) override {
-      if (preinit) {
-	if (setinit)
-	  ERROR_VALUE_SET("preinit and setinit cannot both be true");
-	BaseClass::import_value_map(preinit_values, map, CONTEXT_VALUE_SET);
-	return;
-      }
-      BaseClass::import_value_map(values, map, CONTEXT_VALUE_SET);
-      if (setinit)
-	flags |= BaseClass::VS_FLAG_INIT_VALUES;
-    }
+		     const bool preinit=false) override;
     
     // Methods that call inheriting class methods
     /**
@@ -2716,44 +2262,24 @@ namespace ePhotosynthesis {
        \param noChildren If true, child classes will not be initialized.
      */
     void copyMembers(const ValueSet_t& other0,
-		     const bool noChildren=false) override {
-      const T& other = castValueSet<T>(other0);
-      copyValueSet(other);
-      // TODO: Re-enable this only if more efficient than direct copy
-      // BaseClass::copy_value_map(values, other.values, "copyMembers[vals]: ", true);
-      copyInstance(other, noChildren);
-    }
+		     const bool noChildren=false) override;
     /**
        Initialize the members in the instance. This should be overriden
          by child classes with a method that adds pointers to values.
        Common, public interface for the private _initMembers method.
        \param noChildren If true, child classes will not be initialized.
     */
-    void initMembers(const bool noChildren=false) override {
-      ParentClass::initStaticMembers(true);
-      initMemberPointers(true);
-      static_cast<T*>(this)->_initMembers();
-      initChildren(true);
-      DO_VALUE_SET_CHILDREN(initMembers, ());
-    }
+    void initMembers(const bool noChildren=false) override;
     /**
        Reset the values so that they can be re-initialized.
        \param noChildren If true, child classes will not be initialized.
      */
-    void resetValues(const bool noChildren=false) override {
-      ENSURE_VALUE_POINTERS;
-      BaseClass::reset_value_map(values);
-      static_cast<T*>(this)->_resetValues();
-      DO_VALUE_SET_CHILDREN(resetValues, ());
-      flags &= ~BaseClass::VS_FLAG_INIT_VALUES;
-    }
+    void resetValues(const bool noChildren=false) override;
     /**
        Check if the value set has been initialized.
        \returns true if the value set has been initialized, false otherwise.
      */
-    bool initialized() const override {
-      return (flags & BaseClass::VS_FLAG_INIT_VALUES);
-    }
+    bool initialized() const override;
     /**
        Initialize the values to the default values if they have not
          already been initialized, minus any values that are skipped.
@@ -2766,143 +2292,65 @@ namespace ePhotosynthesis {
      */
     void initValues(const bool noDefaults=false,
 		    const bool force=false,
-		    const bool noChildren=false) override {
-      if ((!force) && initialized()) return;
-      initMembers(true);
-      if (!noDefaults)
-        BaseClass::init_value_map(values, initialized());
-      static_cast<T*>(this)->_initValues();
-      DO_VALUE_SET_CHILDREN(initValues, (noDefaults, force));
-      if (!preinit_values.empty()) {
-        BaseClass::copy_value_map(values, preinit_values, "initValues: ",
-                                  false, true, true, false, true);
-      }
-      flags |= BaseClass::VS_FLAG_INIT_VALUES;
-      if (BaseClass::usesC3())
-	flags |= BaseClass::VS_FLAG_DEFAULTS_C3;
-      else
-	flags &= ~BaseClass::VS_FLAG_DEFAULTS_C3;
-    }
+		    const bool noChildren=false) override;
     /**
        Reset the instance so that it can be used again.
        \param noChildren If true, child classes will not be reset.
      */
-    void resetInstance(const bool noChildren=false) override {
-      T::reset(true);
-      int preserve_flags = 0;
-      if (flags & BaseClass::VS_FLAG_INIT_POINTERS)
-	preserve_flags |= BaseClass::VS_FLAG_INIT_POINTERS;
-      if (flags & BaseClass::VS_FLAG_INIT_CHILDREN)
-	preserve_flags |= BaseClass::VS_FLAG_INIT_CHILDREN;
-      flags = preserve_flags;
-      DO_VALUE_SET_CHILDREN(resetInstance, ());
-    }
+    void resetInstance(const bool noChildren=false) override;
     /**
        Initialize the map containing pointers to instance members.
        Common, public interface for the private _initMemberPointers method.
        \param noChildren If true, child classes will not be initialized.
      */
-    void initMemberPointers(const bool noChildren=false) override {
-      if (flags & BaseClass::VS_FLAG_INIT_POINTERS) return;
-      static_cast<T*>(this)->_initMemberPointers();
-      DO_VALUE_SET_CHILDREN(initMemberPointers, ());
-      flags |= BaseClass::VS_FLAG_INIT_POINTERS;
-    }
+    void initMemberPointers(const bool noChildren=false) override;
     /**
        Initialize the vector containing pointers to children.
        Common, public interface for the private _initChildren method.
      */
-    void initChildren(const bool noChildren=false) override {
-      if (flags & BaseClass::VS_FLAG_INIT_CHILDREN) return;
-      static_cast<T*>(this)->_initChildren();
-      DO_VALUE_SET_CHILDREN(initChildren, ());
-      flags |= BaseClass::VS_FLAG_INIT_CHILDREN;
-    } 
+    void initChildren(const bool noChildren=false) override;
     /**
        Create any missing children.
        Common, public interface for the private _createChildren method.
      */
-    void createChildren(const bool noChildren=false) override {
-      BaseClass::initChildClasses(true);
-      initChildren(true);
-      static_cast<T*>(this)->_createChildren();
-      // if (child_classes.size() != children.size())
-      //        ERROR_VALUE_SET("Number of child classes (",
-      //                        child_classes.size(),
-      // 			") does not match the number of child pointers (",
-      //                        children.size(), ")");
-      // std::vector<ValueSetClassWrapper>::iterator itCls = child_classes.begin();
-      // for (std::vector<ValueSet_t**>::iterator it = children.begin();
-      // 	   it != children.end(); it++, itCls++) {
-      // 	if (**it) continue;
-      // 	(*it)[0] = (*itCls)->newInstance(static_cast<ValueSet_t*>(this));
-      // 	// (*it)[0]->setParent(static_cast<ValueSet_t*>(this));
-      // }
-      DO_VALUE_SET_CHILDREN(createChildren, ());
-    }
+    void createChildren(const bool noChildren=false) override;
     /**
        Get the vector of children.
        \returns References to the values set children.
      */
-    const std::vector<ValueSet_t**>& getChildren() const override {
-      return children;
-    }
+    const std::vector<ValueSet_t**>& getChildren() const override;
     /**
        Create a new instance of the wrapped class.
        \param par Pointer to parent instance.
        \returns New instance.
      */
-    static ValueSet_t* newInstance(ValueSet_t* par = nullptr) {
-      return T::_newInstance(par);
-    }
+    static ValueSet_t* newInstance(ValueSet_t* par = nullptr);
     /**
        Set the parent class pointer to the given value.
        \param par Pointer to the parent class instance.
     */
-    virtual void setParent(U* par) {
-      UNUSED(par);
-    }
+    virtual void setParent(U* par);
     /**
        Set the parent class pointer to the given value.
        \param par Pointer to the parent class instance.
     */
-    void setParent(ValueSet_t* par) override {
-      // if (typeid(*par) != typeid(U))
-      //   ERROR_VALUE_SET("Type IDs do not match");
-      // static_cast<T*>(this)->setParent(static_cast<U*>(par));
-      UNUSED(par);
-    }
+    void setParent(ValueSet_t* par) override;
 
     /**
        Get the map containing pointers to the instance members.
        \return Map between member names and pointers to instance
          members.
      */
-    std::map<std::string, double*> getPointerMap() {
-      initMemberPointers();
-      return BaseClass::get_pointer_map(values);
-    }
+    std::map<std::string, double*> getPointerMap();
 
     /** Get the iterator pointing to the start of the value set */
-    iterator begin() {
-      ENSURE_VALUE_POINTERS;
-      return values.begin();
-    }
+    iterator begin();
     /** Get the iterator pointing to the end of the value set */
-    iterator end() {
-      ENSURE_VALUE_POINTERS;
-      return values.end();
-    }
+    iterator end();
     /** Get the constant iterator pointing to the start of the value set */
-    const_iterator begin() const {
-      ENSURE_VALUE_POINTERS_CONST;
-      return values.begin();
-    }
+    const_iterator begin() const;
     /** Get the constant iterator pointing to the end of the value set */
-    const_iterator end() const {
-      ENSURE_VALUE_POINTERS_CONST;
-      return values.end();
-    }
+    const_iterator end() const;
     // Inspection utilities
     /**
        Get the maximum width of the values in the value set.
@@ -2910,17 +2358,7 @@ namespace ePhotosynthesis {
          determining the maximum value width.
        \returns Maximum value width.
      */
-    std::size_t max_value_width(bool noChildren = false) const override {
-      std::size_t out = BaseClass::value_width_value_map(values);
-      if (noChildren) return out;
-      std::size_t iout = 0;
-#define DO_CHILD(child, dummy)						\
-      iout = child->max_value_width();					\
-      if (iout > out) out = iout
-      DO_VALUE_SET_CHILDREN_MACRO(DO_CHILD, const_iterator, );
-#undef DO_CHILD
-      return out;
-    }
+    std::size_t max_value_width(bool noChildren = false) const override;
     /**
        Get the diff between this an another value set.
        \param other Value set to compare against.
@@ -2938,21 +2376,7 @@ namespace ePhotosynthesis {
 		     std::size_t padKeys=0,
 		     std::size_t padVals=0,
 		     bool includePrefixes=false,
-		     bool noChildren = false) const override {
-      if (padKeys == 0) {
-	padKeys = BaseClass::max_field_width(noChildren);
-      }
-      if (padVals == 0) {
-	padVals = max_value_width(noChildren);
-	std::size_t padVals2 = other.max_value_width(noChildren);
-	if (padVals2 > padVals)
-	  padVals = padVals2;
-      }
-      return static_cast<const T*>(this)->_diff(static_cast<const T&>(other),
-						padKeys, padVals,
-						includePrefixes,
-						noChildren);
-    }
+		     bool noChildren = false) const override;
     /**
        Display the values in the set.
        Common, public interface for the private _print method.
@@ -2975,15 +2399,7 @@ namespace ePhotosynthesis {
 			bool includeSkipped = false,
 			const std::vector<std::string>& skip_keys = {},
 			const std::map<std::string, std::string>& key_aliases = {},
-			bool noChildren = false) const override {
-      if (pad == 0) pad = BaseClass::max_field_width(noChildren);
-      return static_cast<const T*>(this)->_print(out, tab, pad,
-						 includePrefixes,
-						 includeSkipped,
-						 skip_keys,
-						 key_aliases,
-						 noChildren);
-    }
+			bool noChildren = false) const override;
     friend std::ostream& operator<<(std::ostream& out, const ValueSetClass& x) {
       return x.print(out);
     }
@@ -3000,44 +2416,15 @@ namespace ePhotosynthesis {
        \param noChildren If true, child classes will not be checked.
      */
     bool equals(const ValueSet_t& b0,
-		const bool noChildren = false) const override {
-      if(typeid(*this) != typeid(b0)) {
-	std::cerr << "typeids not equal in ValueSet_t" << std::endl;
-	return false;
-      }
-      // if (!ValueSet_t::equals(b0, noChildren)) {
-      // 	INFO_VALUE_SET("typeids not equal");
-      // 	return false;
-      // }
-      const ValueSetClass& b = static_cast<const ValueSetClass&>(b0);
-      if (!this->compare_value_maps(values, b.values, "values: "))
-	return false;
-      if (this->children.size() != b.children.size()) {
-	INFO_VALUE_SET("number of children not equal: ",
-		       this->children.size(), ", ", b.children.size());
-	return false;
-      }
-#define DO_CHILD(child, dummy)					\
-      if (*child != **(b.children[iChild])) return false
-      DO_VALUE_SET_CHILDREN_MACRO(DO_CHILD, const_iterator, );
-#undef DO_CHILD
-      return true;
-    }
-    bool operator==(const T& other) const {
-      return static_cast<const T*>(this)->equals(static_cast<const ValueSet_t&>(other));
-    }
-    bool operator!=(const T& other) const {
-      return !(operator==(other));
-    }
+		const bool noChildren = false) const override;
+    bool operator==(const T& other) const;
+    bool operator!=(const T& other) const;
     /**
        Throw an error if a key is not present in the set.
        \param k Key to check.
        \param context String to prefix the error message with.
      */
-    void check(const EnumType k, const std::string& context = "") const {
-      ENSURE_VALUE_POINTERS_CONST;
-      check_value_map(values, k, context);
-    }
+    void check(const EnumType k, const std::string& context = "") const;
     // Value manipulation
     /**
        Add values to the set.
@@ -3058,13 +2445,7 @@ namespace ePhotosynthesis {
 		       bool allow_extras=false,
 		       bool no_missing=false,
 		       bool no_constants=false,
-		       bool no_skipped=false) {
-      ENSURE_VALUE_POINTERS;
-      update_value_map(values, new_values,
-		       context + "update_values: ",
-		       allow_extras, no_missing,
-		       no_constants, no_skipped);
-    }
+		       bool no_skipped=false);
     /**
        Add values to the set by reading a parameter file.
        \param filename File containing values to add to the set.
@@ -3084,52 +2465,32 @@ namespace ePhotosynthesis {
 		       bool allow_extras=false,
 		       bool no_missing=false,
 		       bool no_constants=false,
-		       bool no_skipped=false) {
-      ENSURE_VALUE_POINTERS;
-      update_value_map(values, filename,
-		       context + "update_values[" + filename + "]: ",
-		       allow_extras, no_missing,
-		       no_constants, no_skipped);
-    }
+		       bool no_skipped=false);
     /**
        Get the reference for the value associated with a key.
        \param k Key to get value for.
        \returns Value reference.
      */
-    ValueType operator[](const EnumType k) {
-      ENSURE_VALUE_POINTERS;
-      return get_value(values, k);
-    }
+    ValueType operator[](const EnumType k);
     /**
        Get the constant reference for the value associated with a key.
        \param k Key to get value for.
        \returns Constant value reference.
      */
-    const double& operator[](const EnumType k) const {
-      ENSURE_VALUE_POINTERS_CONST;
-      return get_value_const(values, k);
-    }
+    const double& operator[](const EnumType k) const;
     /**
        Record a value set before the value set is initialized so it can
          be ensured once the values are initialized.
        \param k Key to update value for.
        \param v New value for key.
      */
-    void setPreInit(const EnumType& k, const double& v) {
-      if (initialized()) return;
-      // INFO_VALUE_SET(k, " = ", v);
-      preinit_values[k] = v;
-    }
+    void setPreInit(const EnumType& k, const double& v);
     /**
        Update the value associated with a key.
        \param k Key to update value for.
        \param v New value for key.
      */
-    void set(const EnumType& k, const double& v) {
-      ENSURE_VALUE_POINTERS;
-      setPreInit(k, v);
-      BaseClass::set_value(values, k, v);
-    }
+    void set(const EnumType& k, const double& v);
     /**
        Update the value associated with a key.
        \param k Key to update value for.
@@ -3137,19 +2498,13 @@ namespace ePhotosynthesis {
        \param[in] isGlymaID If true, k is a GlymaID.
      */
     void set(const std::string& name, const double& v,
-	     const bool& isGlymaID = false) override {
-      if (isGlymaID)
-	return set(EnumBaseClass::fromGlymaid(name), v);
-      return set(BaseClass::fromNameWithAliases(name), v);
-    }
+	     const bool& isGlymaID = false) override;
     /**
        Update the value associated with a key.
        \param k Key to update value for.
        \param v New value for key.
      */
-    void set(const int& k, const double& v) override {
-      return set(BaseClass::int2key(k), v);
-    }
+    void set(const int& k, const double& v) override;
     /**
        Update the value associated with a key in the value set from a map
          containing enzyme activity values.
@@ -3157,28 +2512,19 @@ namespace ePhotosynthesis {
        \param EnzymeAct Enzyme activities.
      */
     void setFromEnzymeAct(const EnumType k,
-			  const std::map<std::string, double>& EnzymeAct) {
-      ENSURE_VALUE_POINTERS;
-      set_value_from_EnzymeAct(values, k, EnzymeAct);
-    }
+			  const std::map<std::string, double>& EnzymeAct);
     /**
        Get the value associated with a key.
        \param k Key to get value for.
        \returns Value
      */
-    ValueType get(const EnumType& k) {
-      ENSURE_VALUE_POINTERS;
-      return BaseClass::get_value(values, k);
-    }
+    ValueType get(const EnumType& k);
     /**
        Get the value associated with a key.
        \param k Key to get value for.
        \returns Value
      */
-    double get(const EnumType& k) const {
-      ENSURE_VALUE_POINTERS_CONST;
-      return BaseClass::get_value_const(values, k);
-    }
+    double get(const EnumType& k) const;
     /**
        Get the value associated with a key.
        \param name String representation of key to get value for.
@@ -3186,19 +2532,13 @@ namespace ePhotosynthesis {
        \returns Value
      */
     double get(const std::string& name,
-	       const bool& isGlymaID = false) const override {
-      if (isGlymaID)
-	return get(EnumBaseClass::fromGlymaid(name));
-      return get(BaseClass::fromNameWithAliases(name));
-    }
+	       const bool& isGlymaID = false) const override;
     /**
        Get the value associated with a key.
        \param k Key to get value for.
        \returns Value
      */
-    double get(const int& k) const override {
-      return get(BaseClass::int2key(k));
-    }
+    double get(const int& k) const override;
     /**
        Add a value reference for the given key.
        \param k Key to update value for.
@@ -3206,58 +2546,38 @@ namespace ePhotosynthesis {
        \param context String providing context for error messages.
      */
     void insertOrig(const EnumType k, double* v,
-		    const std::string& context="") {
-      if (k == EnumClass::NONE || k == EnumClass::MAX)
-	return;
-      BaseClass::insert_value_orig(values, k, v, context);
-    }
+		    const std::string& context="");
     /**
        Get the number of values in the set that would be included in an
          array produced by toArray.
        Common, public interface for the private _sizeArray function.
        \returns Value count.
      */
-    std::size_t sizeArray() const override {
-      // TODO: include children here instead of in overridden method?
-      return static_cast<const T*>(this)->_sizeArray();
-    }
+    std::size_t sizeArray() const override;
     /**
        Get the values in an array ordering based on key order.
        Common, public interface for the private _toArray function.
        \returns Values array.
      */
-    arr toArray() const override {
-      // TODO: include children here instead of in overridden method?
-      return static_cast<const T*>(this)->_toArray();
-    }
+    arr toArray() const override;
     /**
        Update the values in the set from an array.
        Common, public interface for the private _fromArray method.
        \param vec Array to update values from.
        \param offset Index in vec to start from.
      */
-    void fromArray(const arr &vec, const std::size_t offset = 0) override {
-      // TODO: include children here instead of in overridden method?
-      static_cast<T*>(this)->_fromArray(vec, offset);
-    }
+    void fromArray(const arr &vec, const std::size_t offset = 0) override;
     /**
        Update the values in the set from a pointer to an array.
        \param x Array to update values from.
      */
-    void fromArray(realtype *x) {
-        arr vec(BaseClass::size());
-        for (std::size_t i = 0; i < BaseClass::size(); i++)
-            vec[i] = x[i];
-        fromArray(vec);
-    }
+    void fromArray(realtype *x);
 
     /**
        Add a child to this instance.
        \param[in] C Child.
      */
-    void addChild(ValueSet_t** C) {
-      children.push_back(C);
-    }
+    void addChild(ValueSet_t** C);
 
   private:
     int flags = 0; /**< Bitwise flags describing the value set */
@@ -3283,75 +2603,17 @@ namespace ePhotosynthesis {
 			      std::size_t padKeys=0,
 			      std::size_t padVals=0,
 			      bool includePrefixes=false,
-			      bool noChildren = false) const {
-      ENSURE_VALUE_POINTERS_CONST;
-      std::string out;
-#define DO_CHILD(child, dummy)						\
-      out += child->diff(**other.children[iChild], padKeys, padVals,	\
-			 includePrefixes);
-      DO_VALUE_SET_CHILDREN_MACRO(DO_CHILD, const_iterator, );
-#undef DO_CHILD
-      out += BaseClass::diff_value_maps(values, other.values,
-					padKeys, padVals,
-					includePrefixes);
-      return out;
-    }
+			      bool noChildren = false) const;
     virtual std::ostream& _print(std::ostream &out,
 				 const uint tab = 0, std::size_t pad = 0,
 				 bool includePrefixes = false,
 				 bool includeSkipped = false,
 				 const std::vector<std::string>& skip_keys = {},
 				 const std::map<std::string, std::string>& key_aliases = {},
-				 bool noChildren = false) const {
-      ENSURE_VALUE_POINTERS_CONST;
-      uint child_tab = tab;
-      if (!(noChildren || includePrefixes)) {
-	const std::string space = BaseClass::getTabs(tab);
-	out << space << error_prefix() << std::endl;
-	child_tab++;
-      }
-#define DO_CHILD(child, dummy)						\
-      child->print(out, child_tab, pad, includePrefixes, includeSkipped, \
-		   skip_keys, key_aliases)
-      DO_VALUE_SET_CHILDREN_MACRO(DO_CHILD, const_iterator, );
-#undef DO_CHILD
-      return BaseClass::print_value_map(values, out, child_tab, pad,
-                                        includePrefixes, includeSkipped,
-                                        skip_keys, key_aliases);
-    }
-    virtual std::size_t _sizeArray() const {
-      ENSURE_VALUE_POINTERS_CONST;
-      bool noChildren = false;
-      std::size_t out = values.size();
-#define DO_CHILD(child, dummy) out += child->sizeArray()
-      DO_VALUE_SET_CHILDREN_MACRO(DO_CHILD, const_iterator, );
-#undef DO_CHILD
-      return out;
-    }
-    virtual arr _toArray() const {
-      ENSURE_VALUE_POINTERS_CONST;
-      bool noChildren = false;
-      arr out;
-#define DO_CHILD(child, dummy)						\
-      arr ivec = child->toArray();					\
-      out.insert(out.end(), ivec.begin(), ivec.end())
-      DO_VALUE_SET_CHILDREN_MACRO(DO_CHILD, const_iterator, );
-#undef DO_CHILD
-      BaseClass::value_map_toArray(values, out);
-      return out;
-    }
-    virtual void _fromArray(const arr &vec, const std::size_t offset = 0) {
-      ENSURE_VALUE_POINTERS;
-      ENSURE_CHILD_POINTERS;
-      bool noChildren = false;
-      std::size_t ioffset = offset;
-#define DO_CHILD(child, dummy)						\
-      child->fromArray(vec, ioffset);					\
-      ioffset += child->sizeArray()
-      DO_VALUE_SET_CHILDREN_MACRO(DO_CHILD, iterator, );
-#undef DO_CHILD
-      BaseClass::value_map_fromArray(values, vec, ioffset);
-    }
+				 bool noChildren = false) const;
+    virtual std::size_t _sizeArray() const;
+    virtual arr _toArray() const;
+    virtual void _fromArray(const arr &vec, const std::size_t offset = 0);
   };
   
   /**
@@ -3366,156 +2628,64 @@ namespace ePhotosynthesis {
        will be used by.
    */
   template<class T, class U, MODULE ID, PARAM_TYPE PT>
-  class ValueSetStatic : public ValueSetBase<T, U, ID, PT> {
+  class EPHOTO_API ValueSetStatic : public ValueSetBase<T, U, ID, PT> {
   public:
     typedef ValueSetStatic<T, U, ID, PT> ValueSetClass;
     INHERIT_METHODS_VALUE_SET_BASE(ValueSetBase<T, U, ID, PT>)
     ADD_METHODS_VALUE_SET_T_BOTH(STUB_STATIC_VALUE_SET_DECLARE)
 
     /** \copydoc ValueSet::getValueSet */
-    static const ValueSet_t* getValueSet() {
-      return BaseClass::getValueSetClass();
-    }
+    static const ValueSet_t* getValueSet();
     
     /** \copydoc ValueSet::getValueMap */
-    static std::map<int, double> getValueMap(const bool preinit=false) {
-      if (preinit)
-	return BaseClass::export_value_map(preinit_values, CONTEXT_VALUE_SET);
-      return BaseClass::export_value_map(values, CONTEXT_VALUE_SET);
-    }
+    static std::map<int, double> getValueMap(const bool preinit=false);
     /** \copydoc ValueSet::setValueMap */
     static void setValueMap(const std::map<int, double>& map,
 			    const bool setinit=false,
-			    const bool preinit=false) {
-      if (preinit) {
-	if (setinit)
-	  ERROR_VALUE_SET("preinit and setinit cannot both be true");
-	BaseClass::import_value_map(preinit_values, map, CONTEXT_VALUE_SET);
-	return;
-      }
-      BaseClass::import_value_map(values, map, CONTEXT_VALUE_SET);
-      if (setinit)
-        BaseClass::static_flags |= BaseClass::VS_FLAG_INIT_VALUES;
-    }
+			    const bool preinit=false);
     
     /** \copydoc ValueSet::initMembers */
-    static void initMembers(const bool noChildren=false) {
-      initStaticMembers(true);
-      // initMemberPointers(true); // Called by initStaticMembers
-      T::_initMembers();
-      DO_VALUE_SET_CHILD_CLASSES(initMembers, ());
-    }
+    static void initMembers(const bool noChildren=false);
     /** \copydoc ValueSet::resetValues */
-    static void resetValues(const bool noChildren=false) {
-      ENSURE_VALUE_POINTERS;
-      BaseClass::reset_value_map(values);
-      T::_resetValues();
-      DO_VALUE_SET_CHILD_CLASSES(resetValues, ());
-      BaseClass::static_flags &= ~BaseClass::VS_FLAG_INIT_VALUES;
-    }
+    static void resetValues(const bool noChildren=false);
     /** \copydoc ValueSet::initialized */
-    static bool initialized() {
-      return (BaseClass::static_flags & BaseClass::VS_FLAG_INIT_VALUES);
-    }
+    static bool initialized();
     /** \copydoc ValueSet::initValues */
     static void initValues(const bool noDefaults=false,
 			   const bool force=false,
-			   const bool noChildren=false) {
-      if ((!force) && initialized()) return;
-      initMembers(true);
-      if (!noDefaults)
-        BaseClass::init_value_map(values, initialized());
-      T::_initValues();
-      // if (!noChildren) {
-      //   ERROR_VALUE_SET("recursion for child classes disabled.");
-      // }
-      DO_VALUE_SET_CHILD_CLASSES(initValues, (noDefaults, force));
-      if (!preinit_values.empty()) {
-        BaseClass::copy_value_map(values, preinit_values, "initValues: ",
-                                  false, true, true, false, true);
-      }
-      BaseClass::static_flags |= BaseClass::VS_FLAG_INIT_VALUES;
-    }
+			   const bool noChildren=false);
 
     /** \copydoc ValueSet::initMemberPointers */
-    static void initMemberPointers(const bool noChildren=false) {
-      if (BaseClass::static_flags & BaseClass::VS_FLAG_INIT_POINTERS)
-        return;
-      BaseClass::initDefaults();
-      T::_initMemberPointers();
-      DO_VALUE_SET_CHILD_CLASSES(initMemberPointers, ());
-      BaseClass::static_flags |= BaseClass::VS_FLAG_INIT_POINTERS;
-    }
+    static void initMemberPointers(const bool noChildren=false);
     /** \copydoc ValueSetBase::initStaticMembers */
-    static void initStaticMembers(const bool noChildren = false) {
-      initMemberPointers(true);
-      ParentClass::initStaticMembers(noChildren);
-    }
+    static void initStaticMembers(const bool noChildren = false);
 
     /**
        Disabled method to create an instance of the class.
      */
-    static ValueSet_t* newInstance(ValueSet_t* par = nullptr) {
-      UNUSED(par);
-      ERROR_VALUE_SET("Cannot create instances of ValueSetStatic subclasses");
-      return nullptr;
-    }
+    static ValueSet_t* newInstance(ValueSet_t* par = nullptr);
       
     /**
        Get the map containing pointers to the static class members.
        \return Map between member names and pointers to static class
          members.
      */
-    static std::map<std::string, double*> getPointerMap() {
-      return BaseClass::get_pointer_map(values);
-    }
+    static std::map<std::string, double*> getPointerMap();
 
     /** Get the iterator pointing to the start of the value set */
-    static iterator begin() {
-      ENSURE_VALUE_POINTERS;
-      return values.begin();
-    }
+    static iterator begin();
     /** Get the iterator pointing to the end of the value set */
-    static iterator end() {
-      ENSURE_VALUE_POINTERS;
-      return values.end();
-    }
+    static iterator end();
     /** Get the constant iterator pointing to the start of the value set */
     // Inspection utilities
     /** \copydoc ValueSet::max_value_width */
-    static std::size_t max_value_width(bool noChildren = false) {
-      static std::size_t out = 0;
-      static std::size_t outBase = 0;
-      if (outBase == 0) {
-	outBase = BaseClass::value_width_value_map(values);
-      }
-      if (noChildren) return outBase;
-      if (out == 0) {
-	out = outBase;
-	std::size_t iout = 0;
-#define DO_CHILD(child, dummy)						\
-	iout = child->max_value_width();				\
-	if (iout > out) out = iout
-	DO_VALUE_SET_CHILD_CLASSES_MACRO(DO_CHILD, const_iterator, );
-#undef DO_CHILD
-      }
-      return out;
-    }
+    static std::size_t max_value_width(bool noChildren = false);
     /** \copydoc ValueSet::diff */
     static std::string diff(const ValueSet_t& other,
 			    std::size_t padKeys=0,
 			    std::size_t padVals=0,
 			    bool includePrefixes=false,
-			    bool noChildren = false) {
-      UNUSED(other);
-      if (padKeys == 0) {
-	padKeys = BaseClass::max_field_width(noChildren);
-      }
-      if (padVals == 0) {
-	padVals = max_value_width(noChildren);
-      }
-      return T::_diff(padKeys, padVals, includePrefixes, noChildren);
-    }
+			    bool noChildren = false);
     /** \copydoc ValueSet::print */
     static std::ostream& print(std::ostream &out,
 			       const uint tab = 0, std::size_t pad = 0,
@@ -3523,20 +2693,13 @@ namespace ePhotosynthesis {
 			       bool includeSkipped = false,
 			       const std::vector<std::string>& skip_keys = {},
 			       const std::map<std::string, std::string>& key_aliases = {},
-			       bool noChildren = false) {
-      if (pad == 0) pad = BaseClass::max_field_width(noChildren);
-      return T::_print(out, tab, pad, includePrefixes, includeSkipped,
-		       skip_keys, key_aliases, noChildren);
-    }
+			       bool noChildren = false);
     /**
        Throw an error if a key is not present in the set.
        \param k Key to check.
        \param context String to prefix the error message with.
      */
-    static void check(const EnumType k, const std::string& context = "") {
-      ENSURE_VALUE_POINTERS;
-      BaseClass::check_value_map(values, k, context);
-    }
+    static void check(const EnumType k, const std::string& context = "");
     // Value manipulation
     /**
        Add values to the set.
@@ -3557,13 +2720,7 @@ namespace ePhotosynthesis {
 			      bool allow_extras=false,
 			      bool no_missing=false,
 			      bool no_constants=false,
-			      bool no_skipped=false) {
-      ENSURE_VALUE_POINTERS;
-      BaseClass::update_value_map(values, new_values,
-                                  context + "update_values: ",
-                                  allow_extras, no_missing,
-                                  no_constants, no_skipped);
-    }
+			      bool no_skipped=false);
     /**
        Add values to the set by reading a parameter file.
        \param filename File containing values to add to the set.
@@ -3583,29 +2740,15 @@ namespace ePhotosynthesis {
 			      bool allow_extras=false,
 			      bool no_missing=false,
 			      bool no_constants=false,
-			      bool no_skipped=false) {
-      ENSURE_VALUE_POINTERS;
-      BaseClass::update_value_map(values, filename,
-                                  context + "update_values[" + filename + "]: ",
-                                  allow_extras, no_missing,
-                                  no_constants, no_skipped);
-    }
+			      bool no_skipped=false);
     /** \copydoc ValueSet::setPreInit */
-    static void setPreInit(const EnumType& k, const double& v) {
-      if (initialized()) return;
-      // INFO_VALUE_SET(k, " = ", v);
-      preinit_values[k] = v;
-    }
+    static void setPreInit(const EnumType& k, const double& v);
     /**
        Update the value associated with a key.
        \param k Key to update value for.
        \param v New value for key.
      */
-    static void set(const EnumType& k, const double& v) {
-      ENSURE_VALUE_POINTERS;
-      setPreInit(k, v);
-      BaseClass::set_value(values, k, v);
-    }
+    static void set(const EnumType& k, const double& v);
     /**
        Update the value associated with a key.
        \param k Key to update value for.
@@ -3613,19 +2756,13 @@ namespace ePhotosynthesis {
        \param[in] isGlymaID If true, k is a GlymaID.
      */
     static void set(const std::string& name, const double& v,
-		    const bool& isGlymaID = false) {
-      if (isGlymaID)
-	return set(EnumBaseClass::fromGlymaid(name), v);
-      return set(BaseClass::fromNameWithAliases(name), v);
-    }
+		    const bool& isGlymaID = false);
     /**
        Update the value associated with a key.
        \param k Key to update value for.
        \param v New value for key.
      */
-    static void set(const int& k, const double& v) {
-      return set(BaseClass::int2key(k), v);
-    }
+    static void set(const int& k, const double& v);
     /**
        Update the value associated with a key in the value set from a map
          containing enzyme activity values.
@@ -3633,19 +2770,13 @@ namespace ePhotosynthesis {
        \param EnzymeAct Enzyme activities.
      */
     static void setFromEnzymeAct(const EnumType k,
-				 const std::map<std::string, double>& EnzymeAct) {
-      ENSURE_VALUE_POINTERS;
-      BaseClass::set_value_from_EnzymeAct(values, k, EnzymeAct);
-    }
+				 const std::map<std::string, double>& EnzymeAct);
     /**
        Get the value associated with a key.
        \param k Key to get value for.
        \returns Value.
      */
-    static double get(const EnumType& k) {
-      ENSURE_VALUE_POINTERS;
-      return BaseClass::get_value_const(values, k);
-    }
+    static double get(const EnumType& k);
     /**
        Get the value associated with a key.
        \param name String representation of key to get value for.
@@ -3653,19 +2784,13 @@ namespace ePhotosynthesis {
        \returns Value
      */
     static double get(const std::string& name,
-		      const bool& isGlymaID = false) {
-      if (isGlymaID)
-	return get(EnumBaseClass::fromGlymaid(name));
-      return get(BaseClass::fromNameWithAliases(name));
-    }
+		      const bool& isGlymaID = false);
     /**
        Get the value associated with a key.
        \param k Key to get value for.
        \returns Value.
      */
-    static double get(const int& k) {
-      return get(BaseClass::int2key(k));
-    }
+    static double get(const int& k);
     /**
        Add a value reference for the given key.
        \param k Key to update value for.
@@ -3673,40 +2798,26 @@ namespace ePhotosynthesis {
        \param context String providing context for error messages.
      */
     static void insertOrig(const EnumType k, double* v,
-			   const std::string& context="") {
-      if (k == EnumClass::NONE || k == EnumClass::MAX)
-	return;
-      BaseClass::insert_value_orig(values, k, v, context);
-    }
+			   const std::string& context="");
     /** \copydoc ValueSetBase::reset */
-    static void reset(const bool noChildren = false) {
-      ENSURE_VALUE_POINTERS;
-      BaseClass::reset_value_map(values);
-      ParentClass::reset(noChildren);
-    }
+    static void reset(const bool noChildren = false);
     /**
        Get the number of values in the set that would be included in an
          array produced by toArray.
        \returns Value count.
      */
-    static std::size_t sizeArray() {
-      return T::_sizeArray();
-    }
+    static std::size_t sizeArray();
     /**
        Get the values in an array ordering based on key order.
        \returns Values array.
      */
-    static arr toArray() {
-      return T::_toArray();
-    }
+    static arr toArray();
     /**
        Update the values in the set from an array.
        \param vec Array to update values from.
        \param offset Index in vec to start from.
      */
-    static void fromArray(const arr &vec, const std::size_t offset = 0) {
-      T::_fromArray(vec, offset);
-    }
+    static void fromArray(const arr &vec, const std::size_t offset = 0);
     
     /**
        Add a child class to this classes set.
@@ -3742,57 +2853,11 @@ namespace ePhotosynthesis {
 				bool includeSkipped = false,
 				const std::vector<std::string>& skip_keys = {},
 				const std::map<std::string, std::string>& key_aliases = {},
-				bool noChildren = false) {
-      ENSURE_VALUE_POINTERS;
-      uint child_tab = tab;
-      if (!(noChildren || includePrefixes)) {
-	const std::string space = BaseClass::getTabs(tab);
-	out << space << error_prefix() << std::endl;
-	child_tab++;
-      }
-#define DO_CHILD(child, dummy)						\
-      child->print(out, child_tab, pad, includePrefixes, includeSkipped,\
-		   skip_keys, key_aliases)
-      DO_VALUE_SET_CHILD_CLASSES_MACRO(DO_CHILD, const_iterator, );
-#undef DO_CHILD
-      return BaseClass::print_value_map(values, out, child_tab, pad,
-                                        includePrefixes, includeSkipped,
-                                        skip_keys, key_aliases);
-    }
+				bool noChildren = false);
     static void _initMemberPointers() {}
-    static std::size_t _sizeArray() {
-      ENSURE_VALUE_POINTERS;
-      bool noChildren = false;
-      std::size_t out = values.size();
-#define DO_CHILD(child, dummy) out += child->sizeArray()
-      DO_VALUE_SET_CHILD_CLASSES_MACRO(DO_CHILD, iterator, );
-#undef DO_CHILD
-      return out;
-    }
-    static arr _toArray() {
-      ENSURE_VALUE_POINTERS;
-      bool noChildren = false;
-      arr out;
-#define DO_CHILD(child, dummy)						\
-      arr ivec = child->toArray();					\
-      out.insert(out.end(), ivec.begin(), ivec.end())
-      DO_VALUE_SET_CHILD_CLASSES_MACRO(DO_CHILD, const_iterator, );
-#undef DO_CHILD
-      BaseClass::value_map_toArray(values, out);
-      return out;
-    }
-    static void _fromArray(const arr &vec, const std::size_t offset = 0) {
-      ENSURE_VALUE_POINTERS;
-      ENSURE_CHILD_CLASS_POINTERS;
-      bool noChildren = false;
-      std::size_t ioffset = offset;
-#define DO_CHILD(child, dummy)						\
-      child->fromArray(vec, ioffset);					\
-      ioffset += child->sizeArray()
-      DO_VALUE_SET_CHILD_CLASSES_MACRO(DO_CHILD, iterator, );
-#undef DO_CHILD
-      BaseClass::value_map_fromArray(values, vec, ioffset);
-    }
+    static std::size_t _sizeArray();
+    static arr _toArray();
+    static void _fromArray(const arr &vec, const std::size_t offset = 0);
     
   };
 
