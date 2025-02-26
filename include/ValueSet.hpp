@@ -855,7 +855,7 @@ namespace ePhotosynthesis {
        will be used by.
    */
   template<class T, class U, MODULE ID, PARAM_TYPE PT>
-  class EPHOTO_API ValueSetBase : public ValueSetEnum<ID, PT> {
+  class ValueSetBase : public ValueSetEnum<ID, PT> {
   public:
     typedef T ThisClass; /** Inheriting class */
     typedef U ThisParent; /** Parent class */
@@ -878,7 +878,7 @@ namespace ePhotosynthesis {
        Get a ValueSetStaticClassType instance for this class.
        \returns Reference to ValueSetStaticClassType instance.
      */
-    EPHOTO_API static ValueSetClass_t* getValueSetClass();
+    static ValueSetClass_t* getValueSetClass();
     /**
        Convert an integer to an enum.
        \param[in] k Integer key.
@@ -2177,7 +2177,7 @@ namespace ePhotosynthesis {
        will be used by.
    */
   template<class T, class U, MODULE ID, PARAM_TYPE PT>
-  class EPHOTO_API ValueSet :
+  class ValueSet :
     public ValueSet_t, public ValueSetBase<T, U, ID, PT> {
   public:
     typedef ValueSet<T, U, ID, PT> ValueSetClass;
@@ -2628,7 +2628,7 @@ namespace ePhotosynthesis {
        will be used by.
    */
   template<class T, class U, MODULE ID, PARAM_TYPE PT>
-  class EPHOTO_API ValueSetStatic : public ValueSetBase<T, U, ID, PT> {
+  class ValueSetStatic : public ValueSetBase<T, U, ID, PT> {
   public:
     typedef ValueSetStatic<T, U, ID, PT> ValueSetClass;
     INHERIT_METHODS_VALUE_SET_BASE(ValueSetBase<T, U, ID, PT>)
