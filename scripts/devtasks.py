@@ -690,8 +690,11 @@ class preprocess(SubTask):
 
     def __init__(self, args):
         cmds = [
-            f'gcc -E {args.file} -I {_source_dir}/include/'
+            f'clang -E {args.file} -I {_source_dir}/include/'
         ]
+        if args.defines:
+            for x in args.defines:
+                cmds[-1] += f' -D {x}'
         super(preprocess, self).__init__(args, cmds=cmds,
                                          output_file=args.output_file,
                                          allow_error=True)
@@ -813,6 +816,10 @@ if __name__ == "__main__":
     parser_preprocess.add_argument(
         '--output-file', type=str,
         help="File to direct preprocess output into")
+    parser_preprocess.add_argument(
+        '-D', '--define', dest='defines', nargs='*', action='extend',
+        help='Definitions to pass to the preprocessor'
+    )
     parser_coverage = subparsers.add_parser(
         'coverage', help="Check test coverage",
         func=coverage)
