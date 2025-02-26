@@ -569,8 +569,16 @@ if(BUILD_TESTS)
             list(APPEND TEST_LIST ${TEST_PATH})
         endif()
     endforeach()
-    add_executable(testRunner ${TEST_LIST})
-    target_link_libraries(testRunner EPhotosynthesis)
+    # Build executable directly from compiled object files so that
+    # non-exported symbols can still be tested by unit tests
+    add_executable(testRunner ${TEST_LIST} $<TARGET_OBJECTS:EPhotosynthesis>)
+    # target_link_libraries(testRunner EPhotosynthesis)
+    target_include_directories(
+      testRunner PUBLIC $<TARGET_PROPERTY:EPhotosynthesis,INCLUDE_DIRECTORIES>
+    )
+    target_link_libraries(
+      testRunner $<TARGET_PROPERTY:EPhotosynthesis,LINK_LIBRARIES>
+    )
     if(GTEST_FOUND)
         target_link_libraries(testRunner ${GTEST_BOTH_LIBRARIES})
     else()
