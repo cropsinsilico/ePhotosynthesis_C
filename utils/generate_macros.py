@@ -74,19 +74,30 @@ class Generator(object):
         return out
 
     def define_defered(self, name):
-        return self.define(f'{name}_DEFERED', args=[], body=name)
+        out = self.define(f'{name}_DEFERED', args=[], body=name)
+        out += self.define_expanded(name)
+        return out
+
+    def define_expanded(self, name):
+        return self.define(f'{name}_EXPANDED', va_args=True,
+                           body=f'{name}(__VA_ARGS__)')
 
     def define_count(self, name, args='', name_N=None, name_C=None,
                      body_C=None, body_N=None, dont_define_N=False,
-                     no_defered=False):
+                     no_defered=False, name_NARGS='NARGS',
+                     include_unsafe=False, no_defered_N=None):
         args_call = list(args) if isinstance(args, list) else []
-        args_call = ['NARGS(__VA_ARGS__)'] + args_call + ['__VA_ARGS__']
+        args_call = [
+            f'{name_NARGS}(__VA_ARGS__)'
+        ] + args_call + ['__VA_ARGS__']
         if name_N is None:
             name_N = f'{name}_N'
         if name_C is None:
             name_C = name
             if name_N == name:
                 name_C += '_'
+        if no_defered_N is None:
+            no_defered_N = no_defered
         assert name_C != name_N
         if body_C is None:
             body_C = f'{name_N}({", ".join(args_call)})'
@@ -96,17 +107,28 @@ class Generator(object):
         if not dont_define_N:
             out += self.define_N(name, args=args, va_args=True,
                                  no_suffix=True, name_N=name_N,
-                                 body=body_N, no_defered=no_defered)
+                                 body=body_N, no_defered=no_defered_N)
+        if include_unsafe:
+            out += self.define_count(
+                name, args=args, name_N=name_N,
+                name_C=f'{name_C}_UNSAFE',
+                body_N=body_N, name_NARGS=f'{name_NARGS}_UNSAFE',
+                dont_define_N=True, no_defered=no_defered,
+                no_defered_N=no_defered_N,
+            )
         return out
 
     def define_N(self, name, args='', va_args=False, no_suffix=False,
-                 name_N=None, body=None, no_defered=False):
+                 name_N=None, body=None, no_defered=False, pad=False):
+        pad = False
         if body is None:
             body = f'CONCATENATE_MAX({name}_, N)'
             if isinstance(args, list) or va_args:
                 args_call = list(args) if isinstance(args, list) else []
                 if va_args:
-                    args_call.append('__VA_ARGS__')
+                    args_call += ['__VA_ARGS__']
+                    if pad:
+                        args_call += ['~']
                 body += '(' + ', '.join(args_call) + ')'
         args = list(args) if isinstance(args, list) else []
         args.insert(0, 'N')
@@ -139,7 +161,9 @@ class Generator(object):
 
     def generate_get_args_after(self):
         lines = self.begin_section(
-            'GET_ARGS_AFTER', "Get the arguments after Nth argument"
+            'GET_ARGS_AFTER',
+            "Get the arguments after Nth argument "
+            "(zero-indexed, inclusive)"
         )
         lines += self.define_N('GET_ARGS_AFTER', va_args=True)
         body = 'GET_ARG_N(N, CONCATENATE(GET_ARGS_AFTER_, M)(__VA_ARGS__))'
@@ -160,13 +184,13 @@ class Generator(object):
             rem = i - base
             if rem:
                 body = (
-                    f'GET_ARGS_AFTER_{rem}'
-                    f'(GET_ARGS_AFTER_{base}(__VA_ARGS__))'
+                    f'CALL_MACRO(GET_ARGS_AFTER_{rem}, '
+                    f'GET_ARGS_AFTER_{base}(__VA_ARGS__))'
                 )
             else:
                 body = (
-                    f'GET_ARGS_AFTER_10'
-                    f'(GET_ARGS_AFTER_{base - 10}(__VA_ARGS__))'
+                    f'CALL_MACRO(GET_ARGS_AFTER_10, '
+                    f'GET_ARGS_AFTER_{base - 10}(__VA_ARGS__))'
                 )
             lines += self.define(f'GET_ARGS_AFTER_{i}', va_args=True,
                                  body=body)
@@ -174,12 +198,15 @@ class Generator(object):
 
     def generate_get_args_before(self):
         lines = self.begin_section(
-            'GET_ARGS_BEFORE', "Get the arguments before Nth argument"
+            'GET_ARGS_BEFORE',
+            "Get the arguments before Nth argument "
+            "(zero-indexed, exclusive)"
         )
-        lines += self.define_N('GET_ARGS_BEFORE', va_args=True)
+        lines += self.define_N('GET_ARGS_BEFORE', va_args=True,
+                               pad=True)
         body = (
             'GET_ARG_N_BEFORE_END(N, CONCATENATE(GET_ARGS_BEFORE_, M)'
-            '(__VA_ARGS__))'
+            '(__VA_ARGS__, ~))'
         )
         lines += self.define('GET_ARG_N_BEFORE_M', args=['M', 'N'],
                              va_args=True, body=body)
@@ -191,11 +218,17 @@ class Generator(object):
         for i in range(11, self.args.max_iter):
             base = 10 * (i // 10)
             rem = i - base
-            body = f'GET_ARGS_BEFORE_{base}(__VA_ARGS__)'
             if rem:
-                body += (
-                    f', GET_ARGS_BEFORE_{rem}('
-                    f'GET_ARGS_AFTER_{base}(__VA_ARGS__))'
+                body = (
+                    f'GET_ARGS_BEFORE_{base}(__VA_ARGS__)'
+                    f', CALL_MACRO(GET_ARGS_BEFORE_{rem}, '
+                    f'GET_ARGS_AFTER_{base}(__VA_ARGS__), ~)'
+                )
+            else:
+                body = (
+                    f'GET_ARGS_BEFORE_{base - 10}(__VA_ARGS__)'
+                    f', CALL_MACRO(GET_ARGS_BEFORE_{10}, '
+                    f'GET_ARGS_AFTER_{base - 10}(__VA_ARGS__), ~)'
                 )
             lines += self.define(f'GET_ARGS_BEFORE_{i}', va_args=True,
                                  body=body)
@@ -203,9 +236,9 @@ class Generator(object):
 
     def generate_get_arg(self):
         lines = self.begin_section(
-            'GET_ARG', "Get the Nth argument"
+            'GET_ARG', "Get the Nth argument (zero indexed)"
         )
-        lines += self.define_N('GET_ARG', va_args=True)
+        lines += self.define_N('GET_ARG', va_args=True, pad=True)
         for i in range(10):
             args = [f'_{x}' for x in range(i + 1)]
             lines += self.define(f'GET_ARG_{i}',
@@ -215,7 +248,8 @@ class Generator(object):
             base = 10 * (i // 10)
             rem = i - base
             body = (
-                f'GET_ARG_{rem}(GET_ARGS_AFTER_{base}(__VA_ARGS__))'
+                f'CALL_MACRO(GET_ARG_{rem}, '
+                f'GET_ARGS_AFTER_{base}(__VA_ARGS__))'
             )
             lines += self.define(f'GET_ARG_{i}', va_args=True,
                                  body=body)
@@ -237,13 +271,16 @@ class Generator(object):
             + [x if x != 'caller0' else 'caller' for x in args]
             + ['__VA_ARGS__']
         )
-        lines += self.define_count(name, args=args, name_N=name_N)
         lines += self.define_count(
-            'FOR_EACH', args=args_same_caller, no_defered=True,
-            name_N='FOR_EACH_', name_C='FOR_EACH_GENERIC',
-            body_N=f'{name_N}({", ".join(call_args_same_caller)})'
+            name, args=args, name_N=name_N, include_unsafe=True,
+            no_defered_N=True,
         )
-        lines += self.define_defered('FOR_EACH_GENERIC')
+        lines += self.define_count(
+            'FOR_EACH', args=args_same_caller,
+            name_N='FOR_EACH_', name_C='FOR_EACH_GENERIC',
+            body_N=f'{name_N}({", ".join(call_args_same_caller)})',
+            include_unsafe=True, no_defered_N=True,
+        )
         lines += self.define(f'{name}_0', va_args=True)
         lines += self.define(f'{name}_1', args=args_x,
                              body='caller0(what, args, x)')
@@ -257,15 +294,23 @@ class Generator(object):
                                  va_args=True, body=body)
         return self.end_section(lines)
 
+    def define_return_N(self, N, name=None):
+        if name is None:
+            name = f'NARGS_ARG_{N}'
+        lines = self.define(
+            name, va_args=True, body='N',
+            args=([f'_{x + 1}' for x in range(N)] + ['N']),
+        )
+        return lines
+
     def generate_nargs(self):
         lines = self.begin_section(
             'NARGS', 'Utilities for counting macro arguments'
         )
-        lines += self.define('NARGS_MAX', body='125')
-        lines += self.define(
-            'NARGS_ARG_N', va_args=True, body='N',
-            args=([f'_{x + 1}' for x in range(self.max_args)] + ['N']),
-        )
+        lines += self.define('NARGS_MAX', body=str(self.max_args))
+        lines += self.define_return_N(self.max_args,
+                                      name='NARGS_ARG_N')
+        lines += self.define_return_N(1)
         lines += self.define(
             'NARGS_REMAINDER', va_args=True, body='__VA_ARGS__',
             args=[f'_{x + 1}' for x in range(self.max_args)]
@@ -280,11 +325,19 @@ class Generator(object):
         )
         lines += self.define(
             'NARGS_ZEROS', args=[],
-            body=', '.join(self.max_args * ['0'])
+            body=', '.join(self.args.max_iter * ['0'])
         )
         lines += self.define(
             'NARGS_ONES', args=[],
-            body=', '.join(self.max_args * ['1'])
+            body=', '.join(self.args.max_iter * ['1'])
+        )
+        lines += self.define(
+            'NARGS_EMPTY', args=[],
+            body=', '.join(self.args.max_iter * [' '])
+        )
+        lines += self.define(
+            'NARGS_FLAGS', args=[],
+            body=', '.join(self.args.max_iter * ['UNIQUE_FLAG'])
         )
         return self.end_section(lines)
 
@@ -310,34 +363,15 @@ class Generator(object):
         )
         lines += self.define('TEST_SEQ_MAX_ITER',
                              body=f'TEST_SEQ_{self.args.max_iter}')
+        # lines += self.define('MACRO_TEST_0', args=['name', 'exp', 'expr'],
+        #                      body='')
+        # lines += self.define('MACRO_TEST_EVAL', args=['name', 'exp', 'expr'],
         lines += self.define(
-            'TEST_NARGS',
-            body=[
-                'NARGS_0 = NARGS();',
-                'NARGS_1 = NARGS(A);',
-                'NARGS_3 = NARGS(A, B, C);',
-                f'NARGS_{self.max_args} = NARGS(TEST_SEQ_MAX_ARGS);',
-                f'NARGS_{self.max_args + 1} = NARGS(TEST_SEQ_MAX_ARGS_PLUS1);',
-                f'NARGS_{self.args.max_iter} = NARGS(TEST_SEQ_MAX_ITER);',
-            ]
-        )
+            'MACRO_TEST', args=['name', 'exp', 'expr'],
+            body=('name[exp][expr] -> #expr'))
         lines += self.define(
-            'TEST_IS_EMPTY',
-            body=[
-                'IS_EMPTY_0 = IS_EMPTY();',
-                'IS_EMPTY_1_NULL = IS_EMPTY(0);',
-                'IS_EMPTY_1_ONES = IS_EMPTY(1);',
-                'IS_EMPTY_2_NULL = IS_EMPTY(0, 0);',
-                'IS_EMPTY_2_ONES = IS_EMPTY(1, 1);',
-                'IS_EMPTY_3 = IS_EMPTY(A, B, C);',
-                f'IS_EMPTY_{self.max_args} = '
-                f'IS_EMPTY(TEST_SEQ_MAX_ARGS);',
-                f'IS_EMPTY_{self.max_args + 1} = '
-                f'IS_EMPTY(TEST_SEQ_MAX_ARGS_PLUS1);',
-                f'IS_EMPTY_{self.args.max_iter} = '
-                f'IS_EMPTY(TEST_SEQ_MAX_ITER);',
-            ]
-        )
+            'MACRO_TEST_EVAL', args=['name', 'exp', 'expr'],
+            body=('name[exp][EVAL(expr)] -> #expr'))
         return self.end_section(lines)
 
     def write(self, lines):

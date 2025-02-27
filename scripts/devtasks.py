@@ -10,6 +10,7 @@ import numpy as np
 
 
 _source_dir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
+_utils_dir = os.path.join(_source_dir, 'utils')
 
 
 def find_matlab(required=False):
@@ -692,9 +693,21 @@ class preprocess(SubTask):
         cmds = [
             f'clang -E {args.file} -I {_source_dir}/include/'
         ]
+        if args.test_macros:
+            if not args.defines:
+                args.defines = []
+            args.defines.append('DO_TEST_MACROS_PREPROCESS=1')
+            generate_macros = os.path.join(_utils_dir,
+                                           'generate_macros.py')
+            result_macros = os.path.join(_source_dir, 'include',
+                                         'macros_iter.hpp')
+            cmds.insert(0, (f'python {generate_macros} {result_macros}'
+                            f' --overwrite'))
         if args.defines:
             for x in args.defines:
                 cmds[-1] += f' -D {x}'
+        if args.capture and not args.output_file:
+            args.output_file = 'preprocess.txt'
         super(preprocess, self).__init__(args, cmds=cmds,
                                          output_file=args.output_file,
                                          allow_error=True)
@@ -819,6 +832,14 @@ if __name__ == "__main__":
     parser_preprocess.add_argument(
         '-D', '--define', dest='defines', nargs='*', action='extend',
         help='Definitions to pass to the preprocessor'
+    )
+    parser_preprocess.add_argument(
+        '--test-macros', action='store_true',
+        help='Enable macro testing'
+    )
+    parser_preprocess.add_argument(
+        '--capture', action='store_true',
+        help='Capture the output to preprocess.txt if output_file not set'
     )
     parser_coverage = subparsers.add_parser(
         'coverage', help="Check test coverage",

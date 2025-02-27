@@ -551,7 +551,7 @@ public:
   void name::_initAddedClasses() {					\
       FOR_EACH_WITH_ARGS(DEFINE_MODULE_COMPOSITE_ADDED_CLASS,		\
 			 (name), UNPACK_MACRO(PARAM_TYPES_ ## name));	\
-      size_t exp = FOR_EACH_NARG(PARAM_TYPES_ ## name);			\
+      size_t exp = NARGS(PARAM_TYPES_ ## name);                         \
       size_t act = added_classes.size();				\
       if (exp != act) {							\
 	ERROR_VALUE_SET("Failed to initialized added classes. ",	\

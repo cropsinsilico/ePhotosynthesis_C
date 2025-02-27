@@ -26,18 +26,18 @@ bool ValueSet_t::operator!=(const ValueSet_t& b) const {
 #define ADD_METHOD(name, retT, args, retV, suffix)                      \
   retT ValueSet_t::name VS_ARGS_T_NODEF(args) suffix {                  \
     FOR_EACH(UNUSED, EXPAND VS_ARGS(args));                             \
-    IF_NOT_EMPTY(retV, static PACK_MACRO(retT) tmp_ = retV; return tmp_;) \
+    IF_NOT_EMPTY(PACK_MACRO(retV), EVAL(static PACK_MACRO(retT) tmp_ = retV; return tmp_;)) \
       }
 #define ADD_METHOD_BOTH(name, retT, args, retV, suffix)                 \
-  ADD_METHOD(name, PACK_MACRO(retT), args, retV, suffix)                \
+  ADD_METHOD(name, PACK_MACRO(retT), args, PACK_MACRO(retV), suffix)    \
   retT ValueSet_t::_static_ ## name VS_ARGS_T_NODEF(args) {             \
     FOR_EACH(UNUSED, EXPAND VS_ARGS(args));                             \
-    IF_NOT_EMPTY(retV, static PACK_MACRO(retT) tmp_ = retV; return tmp_;) \
+    IF_NOT_EMPTY(PACK_MACRO(retV), EVAL(static PACK_MACRO(retT) tmp_ = retV; return tmp_;)) \
   }
 #define ADD_METHOD_STATIC(name, retT, args, retV, suffix)               \
   retT ValueSet_t::_virtual_ ## name VS_ARGS_T_NODEF(args) suffix {     \
     FOR_EACH(UNUSED, EXPAND VS_ARGS(args));                             \
-    IF_NOT_EMPTY(retV, static PACK_MACRO(retT) tmp_ = retV; return tmp_;) \
+    IF_NOT_EMPTY(PACK_MACRO(retV), EVAL(static PACK_MACRO(retT) tmp_ = retV; return tmp_;)) \
   }
 
 // Methods specific to classes

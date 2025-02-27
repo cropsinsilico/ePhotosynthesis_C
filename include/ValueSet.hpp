@@ -76,14 +76,14 @@ namespace ePhotosynthesis {
 
 #define CONTEXT_VALUE_SET std::string(__func__) + ": "
 #define ERROR_VALUE_SET(...)			\
-    throw std::runtime_error(error_prefix() + std::string(__func__) + ": " + FOR_EACH_JOIN(utils::to_string, SEP_ADD, __VA_ARGS__))
+    throw std::runtime_error(error_prefix() + std::string(__func__) + ": " + FOR_EACH_JOIN_UNSAFE(utils::to_string, SEP_ADD, __VA_ARGS__))
 #define ERROR_VALUE_SET_NESTED(err, msg)				\
   throw std::runtime_error(std::string(err.what()) + msg)
 #define ERROR_VALUE_SET_NOARGS() ERROR_VALUE_SET("")
 #define INFO_VALUE_SET_MSG(x)			\
   std::cerr << x
 #define INFO_VALUE_SET_(...)			\
-  FOR_EACH(INFO_VALUE_SET_MSG, __VA_ARGS__)
+  FOR_EACH_UNSAFE(INFO_VALUE_SET_MSG, __VA_ARGS__)
 #define INFO_VALUE_SET(...)						\
   INFO_VALUE_SET_(error_prefix(), ": ", __func__, ": ",		\
 		   __VA_ARGS__, std::endl)
@@ -391,24 +391,6 @@ namespace ePhotosynthesis {
     }
   };
 
-#define _GET_ARG_TYPE(arg) DROP_N_ARGS(2, EXPAND arg)
-#define _GET_ARG_NAME(arg) GET_ARG_N_BEFORE_END(1, EXPAND arg)
-#define _GET_ARG_DEFV(arg)                              \
-  __GET_ARG_DEFV(GET_ARG_N_BEFORE_END(0, EXPAND arg))
-#define __GET_ARG_DEFV(defV)                            \
-  OBSTRUCT(IF_NOT_EMPTY)(defV, = defV)
-#define MAKE_ARG(arg) _GET_ARG_NAME(arg)
-#define MAKE_ARG_T(arg)                                         \
-  _GET_ARG_TYPE(arg) _GET_ARG_NAME(arg) _GET_ARG_DEFV(arg)
-#define MAKE_ARG_T_NODEF(arg)                   \
-  _GET_ARG_TYPE(arg) _GET_ARG_NAME(arg)
-#define VS_ARGS(args)                                   \
-  EVAL(ADD_PARENS(FOR_EACH_COMMA(MAKE_ARG, EXPAND args)))
-#define VS_ARGS_T(args)                                 \
-  EVAL(ADD_PARENS(FOR_EACH_COMMA(MAKE_ARG_T, EXPAND args)))
-#define VS_ARGS_T_NODEF(args)                                   \
-  EVAL(ADD_PARENS(FOR_EACH_COMMA(MAKE_ARG_T_NODEF, EXPAND args)))
-
 #define STUB_STATIC_VALUE_SET_DECLARE(name, retT, args, retV, suffix)   \
   static retT _static_ ## name VS_ARGS_T(args) {                        \
     return name VS_ARGS(args);                                          \
@@ -454,7 +436,7 @@ namespace ePhotosynthesis {
          ((const bool, noChildren, false)), , )                         \
   /** \copydoc ValueSet::getChildren */					\
   method(getChildren, const std::vector<ValueSet_t**>&,			\
-         (), {}, const)                                                 \
+         (), PACK_RETURN_TYPE(VECTOR_INIT_MACRO(ValueSet_t**)), const)  \
   /** \copydoc ValueSet::resetInstance */				\
   method(resetInstance, void,						\
 	 ((const bool, noChildren, false)), , )                         \
@@ -484,7 +466,7 @@ namespace ePhotosynthesis {
 */
 #define ADD_METHODS_VALUE_SET_T_STATIC_ONLY(method)	\
   /** \copydoc ValueSetEnum::error_prefix */		\
-  method(error_prefix, std::string, (), "", const)
+  method(error_prefix, std::string, (), STRING_INIT_MACRO(""), const)
   
 /**
    Use macro to define methods static in ValueSet & ValueSetStatic
@@ -498,11 +480,13 @@ namespace ePhotosynthesis {
   method(get_param_type, PARAM_TYPE, (), PARAM_TYPE_NONE, const)	\
   /** \copydoc ValueSetBase::get_parameter_types */			\
   method(get_parameter_types,						\
-	 const std::vector<PARAM_TYPE>&, (), {}, const)                 \
+	 const std::vector<PARAM_TYPE>&, (),                            \
+         PACK_RETURN_TYPE(VECTOR_INIT_MACRO(PARAM_TYPE)), const)        \
   /** \copydoc ValueSetBase::initDefaults */				\
   method(initDefaults, void,						\
          ((const bool, useC3, false),                                   \
-          (const std::string&, filename, ""),                           \
+          (const std::string&, filename,                                \
+           PACK_TYPE(STRING_INIT_MACRO(""))),                           \
 	  (const bool, force, false),                                   \
           (const bool, noChildren, false)), , const)                    \
   /** \copydoc ValueSetBase::memberCount */				\
@@ -510,7 +494,8 @@ namespace ePhotosynthesis {
          ((const bool, noChildren, false)), 0, const)                   \
   /** \copydoc ValueSetBase::memberState */				\
   method(memberState, std::string,                                      \
-         ((const bool, noChildren, false)), "", const)                  \
+         ((const bool, noChildren, false)),                             \
+         STRING_INIT_MACRO(""), const)                                  \
   /** \copydoc ValueSetBase::initChildClasses */			\
   method(initChildClasses, void,                                        \
          ((const bool, noChildren, false)), , const)                    \
@@ -546,10 +531,13 @@ namespace ePhotosynthesis {
           (std::size_t, pad, 0),                                        \
 	  (bool, includePrefixes, false),                               \
 	  (bool, includeSkipped, false),                                \
-	  (const std::vector<std::string>, skip_keys, {}),		\
-	  (const std::map<std::string, std::string>&, key_aliases, {}),	\
+	  (const std::vector<std::string>, skip_keys,                   \
+           PACK_TYPE(VECTOR_INIT_MACRO(std::string))),                  \
+          (PACK_TYPE(const MAP_TYPE_MACRO(std::string, std::string)&),  \
+           key_aliases,                                                 \
+           PACK_TYPE(MAP_INIT_MACRO(std::string, std::string))),        \
 	  (bool, show_pointers, false),                                 \
-          (std::string, iname, "")),                                    \
+          (std::string, iname, PACK_TYPE(STRING_INIT_MACRO("")))),      \
 	 out, const)							\
   /** \copydoc ValueSetBase::has */					\
   method(has, bool,							\
@@ -557,11 +545,12 @@ namespace ePhotosynthesis {
           (const bool&, isGlymaID, false)), false, const)               \
   /** \copydoc ValueSetBase::getAliasedName */                          \
   method(getAliasedName, std::string,                                   \
-         ((const std::string&, name, )), "", const)                     \
+         ((const std::string&, name, )),                                \
+         STRING_INIT_MACRO(""), const)                                  \
   /** \copydoc ValueSetBase::fromNameWithAliasesInt */			\
   method(fromNameWithAliasesInt, int,					\
 	 ((const std::string&, name, ),                                 \
-          (const bool&, isGlymaID, false)), -1, const)                  \
+          (const bool&, isGlymaID, false)), int(-1), const)             \
   /** \copydoc ValueSetBase::setDefault */				\
   method(setDefault, void,						\
 	 ((const std::string&, k, ), (const double&, v, ),              \
@@ -570,11 +559,12 @@ namespace ePhotosynthesis {
   /** \copydoc ValueSetBase::getDefault */				\
   method(getDefault, double,						\
 	 ((const std::string&, x, ),                                    \
-          (const bool&, isGlymaID, false)), 0.0, const)                 \
+          (const bool&, isGlymaID, false)), double(0.0), const)         \
   /** \copydoc ValueSetBase::getDocs */                                 \
   method(getDocs, std::string,                                          \
          ((const std::string&, x, ),                                    \
-          (const bool&, isGlymaID, false)), "", const)
+          (const bool&, isGlymaID, false)),                             \
+         STRING_INIT_MACRO(""), const)
 /**
    Use macro to define methods static in ValueSet & ValueSetStatic
      with duplicates
@@ -588,10 +578,10 @@ namespace ePhotosynthesis {
 	  (const bool, dontPreserve, false)), , const)                  \
   /** \copydoc ValueSetBase::getDefault */				\
   method(getDefault, double,						\
-         ((const int&, k, )), 0.0, const)                               \
+         ((const int&, k, )), double(0.0), const)                       \
   /** \copydoc ValueSetBase::getDocs */                                 \
   method(getDocs, std::string,                                          \
-         ((const int&, k, )), "", const)
+         ((const int&, k, )), STRING_INIT_MACRO(""), const)
 
 /**
    Use macros to define methods static in ValueSetStatic and not static
@@ -603,11 +593,13 @@ namespace ePhotosynthesis {
   method(getValueSet, const ValueSet_t*, (),                            \
 	 nullptr, const)						\
   /** \copydoc ValueSet:getValueMap */					\
-  method(getValueMap, std::map ADD_BRACKETS(OBSTRUCT(int, double)),     \
-	 ((const bool, preinit, false)), {}, const)                     \
+  method(getValueMap,                                                   \
+         PACK_RETURN_TYPE(MAP_TYPE_MACRO(int, double)),                 \
+	 ((const bool, preinit, false)),                                \
+         PACK_RETURN_TYPE(MAP_INIT_MACRO(int, double)), const)          \
   /** \copydoc ValueSet:setValueMap */					\
   method(setValueMap, void,						\
-         ((const MAP_TYPE_MACRO(int, double)&, map, ),                  \
+         ((PACK_TYPE(const MAP_TYPE_MACRO(int, double)&), map, ),       \
           (const bool, setinit, false),                                 \
 	  (const bool, preinit, false)), , )                            \
   /** \copydoc ValueSet::max_value_width */				\
@@ -635,21 +627,24 @@ namespace ePhotosynthesis {
           (std::size_t, padKeys, 0),                                    \
 	  (std::size_t, padVals, 0),                                    \
           (bool, includePrefixes, false),                               \
-	  (bool, noChildren, false)), "", const)                        \
+	  (bool, noChildren, false)), STRING_INIT_MACRO(""), const)                        \
   /** \copydoc ValueSet::print */					\
   method(print, std::ostream&,						\
 	 ((std::ostream&, out, ), (const uint, tab, 0),                 \
           (std::size_t, pad, 0),                                        \
 	  (bool, includePrefixes, false),                               \
 	  (bool, includeSkipped, false),                                \
-	  (const std::vector<std::string>&, skip_keys, {}),		\
-	  (const std::map<std::string, std::string>&, key_aliases, {}),	\
+	  (const std::vector<std::string>&, skip_keys,                  \
+           PACK_TYPE(VECTOR_INIT_MACRO(std::string))),                  \
+          (PACK_TYPE(const MAP_TYPE_MACRO(std::string, std::string)&),  \
+           key_aliases,                                                 \
+           PACK_TYPE(MAP_INIT_MACRO(std::string, std::string))),        \
 	  (bool, noChildren, false)),					\
 	 out, const)							\
   /** \copydoc ValueSet::sizeArray */					\
   method(sizeArray, std::size_t, (), 0, const)                          \
   /** \copydoc ValueSet::toArray */					\
-  method(toArray, arr, (), {}, const)                                   \
+  method(toArray, arr, (), VECTOR_INIT_MACRO(double), const)            \
   /** \copydoc ValueSet::fromArray */					\
   method(fromArray, void,						\
 	 ((const arr&, vec, ),                                          \
@@ -661,7 +656,7 @@ namespace ePhotosynthesis {
   /** \copydoc ValueSetBase::get */					\
   method(get, double,							\
 	 ((const std::string&, name, ),                                 \
-          (const bool&, isGlymaID, false)), 0.0, const)
+          (const bool&, isGlymaID, false)), double(0.0), const)
 /**
    Use macros to define methods static in ValueSetStatic and not static
      in ValueSet with duplicates
@@ -674,7 +669,7 @@ namespace ePhotosynthesis {
          ((const int&, k, ), (const double&, v, )), , )                 \
   /** \copydoc ValueSetBase::get */					\
   method(get, double,							\
-         ((const int&, k, )), 0.0, const)
+         ((const int&, k, )), double(0.0), const)
 
   /**
      Untemplated base class to allow storage of mixed value sets in
@@ -706,7 +701,8 @@ namespace ePhotosynthesis {
 #define ADD_METHOD(name, retT, args, retV, suffix)	\
     virtual retT name VS_ARGS_T(args) suffix;
 #define ADD_METHOD_BOTH(name, retT, args, retV, suffix)                 \
-    ADD_METHOD(name, PACK_MACRO(retT), args, retV, suffix)              \
+    ADD_METHOD(name, PACK_MACRO(retT), args,                            \
+               PACK_MACRO(retV), suffix)                                \
     static retT _static_ ## name VS_ARGS_T(args);
 #define ADD_METHOD_STATIC(name, retT, args, retV, suffix)	\
     virtual retT _virtual_ ## name VS_ARGS_T(args) suffix;
