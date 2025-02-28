@@ -573,6 +573,9 @@ if(BUILD_TESTS)
     # non-exported symbols can still be tested by unit tests
     add_executable(testRunner ${TEST_LIST} $<TARGET_OBJECTS:EPhotosynthesis>)
     # target_link_libraries(testRunner EPhotosynthesis)
+    target_compile_options(
+      testRunner PUBLIC $<TARGET_PROPERTY:EPhotosynthesis,COMPILE_OPTIONS>
+    )
     target_include_directories(
       testRunner PUBLIC $<TARGET_PROPERTY:EPhotosynthesis,INCLUDE_DIRECTORIES>
     )

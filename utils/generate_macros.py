@@ -155,6 +155,9 @@ class Generator(object):
         lines += [f'#define DEC_MAX {self.args.max_iter}']
         lines += self.define_N('DEC', no_suffix=True)
         lines += [
+            '#define DEC_0 0'
+        ]
+        lines += [
             f'#define DEC_{x + 1} {x}' for x in range(self.args.max_iter)
         ]
         return self.end_section(lines)
@@ -307,7 +310,9 @@ class Generator(object):
         lines = self.begin_section(
             'NARGS', 'Utilities for counting macro arguments'
         )
+        # lines += ['#if defined(_MSVC_TRADITIONAL) && _MSVC_TRADITIONAL']
         lines += self.define('NARGS_MAX', body=str(self.max_args))
+        # lines += ['#endif']
         lines += self.define_return_N(self.max_args,
                                       name='NARGS_ARG_N')
         lines += self.define_return_N(1)
@@ -342,7 +347,8 @@ class Generator(object):
         return self.end_section(lines)
 
     def generate_test(self):
-        lines = self.begin_section(
+        lines = ['#ifdef DO_TEST_MACROS_PREPROCESS']
+        lines += self.begin_section(
             "TESTING", 'Utilities for testing macros'
         )
         lines += self.define(
@@ -363,15 +369,43 @@ class Generator(object):
         )
         lines += self.define('TEST_SEQ_MAX_ITER',
                              body=f'TEST_SEQ_{self.args.max_iter}')
-        # lines += self.define('MACRO_TEST_0', args=['name', 'exp', 'expr'],
-        #                      body='')
-        # lines += self.define('MACRO_TEST_EVAL', args=['name', 'exp', 'expr'],
+        lines += self.define(
+            'DISPLAY_MACRO_TEST', args=['name', 'exp', 'expr', 'str'],
+            body='name[exp][expr] -> str',
+        )
+        lines += self.define('MACRO_TEST_ERROR',
+                             body=['MACRO_TEST_ERROR ## ('])
+        lines += self.define('MACRO_TEST_RESULT_0', va_args=True,
+                             body=['MACRO_TEST_ERROR; ',
+                                   'DISPLAY_MACRO_TEST(__VA_ARGS__)'])
+        lines += ['#ifdef SHOW_PASSED_MACRO_TESTS']
+        lines += self.define('MACRO_TEST_RESULT_1', va_args=True,
+                             body='DISPLAY_MACRO_TEST(__VA_ARGS__)')
+        lines += ['#else // SHOW_PASSED_MACRO_TESTS']
+        lines += self.define('MACRO_TEST_RESULT_1', va_args=True,
+                             body='')
+        lines += ['#endif // SHOW_PASSED_MACRO_TESTS']
+        lines += self.define(
+            'CHECK_TEST_RESULT', args=['name', 'exp', 'expr', 'str'],
+            body=('IF_FUNC(EQUAL(exp, expr), MACRO_TEST_RESULT_)'
+                  '(name, exp, expr, str)')
+        )
         lines += self.define(
             'MACRO_TEST', args=['name', 'exp', 'expr'],
-            body=('name[exp][expr] -> #expr'))
+            body=('CHECK_TEST_RESULT(name, PACK_MACRO(exp), '
+                  'PACK_MACRO(expr), #expr)')
+        )
+        lines += self.define(
+            'MACRO_TEST_NOEQ', args=['name', 'exp', 'expr'],
+            body=('DISPLAY_MACRO_TEST(name, PACK_MACRO(exp), '
+                  'PACK_MACRO(expr), #expr)'),
+        )
         lines += self.define(
             'MACRO_TEST_EVAL', args=['name', 'exp', 'expr'],
-            body=('name[exp][EVAL(expr)] -> #expr'))
+            body=('DISPLAY_MACRO_TEST(name, PACK_MACRO(exp), '
+                  'EVAL(expr), #expr)'),
+        )
+        lines += ['#endif // DO_TEST_MACROS_PREPROCESS']
         return self.end_section(lines)
 
     def write(self, lines):

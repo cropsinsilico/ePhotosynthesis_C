@@ -697,6 +697,8 @@ class preprocess(SubTask):
             if not args.defines:
                 args.defines = []
             args.defines.append('DO_TEST_MACROS_PREPROCESS=1')
+            if args.show_passed_macro_tests:
+                args.defines.append('SHOW_PASSED_MACRO_TESTS=1')
             generate_macros = os.path.join(_utils_dir,
                                            'generate_macros.py')
             result_macros = os.path.join(_source_dir, 'include',
@@ -836,6 +838,10 @@ if __name__ == "__main__":
     parser_preprocess.add_argument(
         '--test-macros', action='store_true',
         help='Enable macro testing'
+    )
+    parser_preprocess.add_argument(
+        '--show-passed-macro-tests', action='store_true',
+        help='Show results from passed macro tests'
     )
     parser_preprocess.add_argument(
         '--capture', action='store_true',
