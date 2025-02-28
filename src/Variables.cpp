@@ -96,7 +96,11 @@ Variables::~Variables() {
 }
 #else // SUNDIALS_CONTEXT_REQUIRED
 Variables::Variables() :
-  ValueSet() {}
+  ValueSet() {
+    select();
+    useC3 = usesC3();
+    initValues(false, false, true);
+}
 Variables::Variables(const Variables& other) :
   ValueSet(other) {
     copyInstance(other);
@@ -794,7 +798,7 @@ void Variables::setDefault(const MODULE& mod, const PARAM_TYPE& pt,
 			   const std::string& name, const double& value,
 			   const bool& isGlymaID) {
     if ((!isGlymaID) && isControlVar(mod, pt, name)) {
-        setDefaultControlVar(mod, pt, name, (value > 0));
+        setDefaultControlVar(mod, pt, name, (int)value);
     }
     GET_VALUE_SET_CLASS(mod, pt)->setDefault(name, value, isGlymaID);
 }
@@ -810,7 +814,7 @@ void Variables::setDefault(const std::string& k, const double& value,
     bool controlVar = false;
     name = parseVar(k, mod, pt, isGlymaID, false, false, &controlVar);
     if (controlVar) {
-        return setDefaultControlVar(mod, pt, name, (value > 0));
+        return setDefaultControlVar(mod, pt, name, (int)value);
     }
     return setDefault(mod, pt, name, value, isGlymaID);
 }
@@ -820,7 +824,7 @@ void Variables::setVar(const MODULE& module,
 		       const double& value,
 		       const bool& isGlymaID) {
     if ((!isGlymaID) && isControlVar(module, param_type, name)) {
-        setControlVar(module, param_type, name, (value > 0));
+        setControlVar(module, param_type, name, (int)value);
     }
     GET_VALUE_SET(module, param_type)->set(name, value, isGlymaID);
 }
@@ -837,7 +841,7 @@ void Variables::setVar(const std::string& k, const double& value,
     bool controlVar = false;
     name = parseVar(k, mod, pt, isGlymaID, false, false, &controlVar);
     if (controlVar) {
-        return setControlVar(mod, pt, name, (value > 0));
+        return setControlVar(mod, pt, name, (int)value);
     }
     return setVar(mod, pt, name, value, isGlymaID);
 }
