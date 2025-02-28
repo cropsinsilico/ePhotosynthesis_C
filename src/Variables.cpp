@@ -358,7 +358,11 @@ std::ostream& Variables::dump(std::ostream& out,
                               const std::map<std::string, std::string>& key_aliases,
                               const std::map<MODULE, const ValueSet_t*>& conditions,
                               const std::vector<std::string>& subset) const {
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+    std::size_t pad = 35;
+#else // MAKE_EQUIVALENT_TO_MATLAB
     std::size_t pad = max_field_width_all();
+#endif // MAKE_EQUIVALENT_TO_MATLAB
     if (!subset.empty()) {
         for (typename std::vector<std::string>::const_iterator it = subset.begin();
              it != subset.end(); it++) {
