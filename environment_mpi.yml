@@ -10,4 +10,5 @@ dependencies:
   - pytest
   - python
   - openmpi
-
+  - yggdrasil
+  - numpy

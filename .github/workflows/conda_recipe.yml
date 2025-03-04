@@ -50,46 +50,47 @@ jobs:
         run: |
           conda info
           conda list
+          conda create -n test python=3.11
       - name: Build conda recipe
         run: |
-          conda-build --use-local --no-anaconda-upload --output-folder ./local_channel/ recipe/
+          conda-build --use-local --no-anaconda-upload --output-folder ./local_channel/ --python 3.11 recipe/
       - name: Install from local conda recipe
         run: |
-          conda install -c ./local_channel ePhotosynthesis
-          conda list
+          conda install -n test -c ./local_channel ePhotosynthesis
+          conda list -n test
 
       ###################################
       # Test
       ###################################
       - name: Test ePhoto executable install by conda
         run: |
-          ePhoto -d 4 --evn tests/data/InputEvn.txt --grn tests/data/InputGRNC.txt --enzyme tests/data/InputEnzyme.txt --atpcost tests/data/InputATPCost.txt --output output_conda.data
+          conda run -n test ePhoto -d 4 --evn tests/data/InputEvn.txt --grn tests/data/InputGRNC.txt --enzyme tests/data/InputEnzyme.txt --atpcost tests/data/InputATPCost.txt --output output_conda.data
       - name: Check output from ePhoto executable install by conda
         run: |
-          python scripts/devtasks.py compare-files output_conda.data --driver 4
+          conda run -n test python scripts/devtasks.py compare-files output_conda.data --driver 4
       - name: Build example against the installed library using CMake/Make (Unix)
         if: matrix.os != 'windows-latest'
         run: |
-          conda list
+          conda list -n test
           cd tests/external
           mkdir build
           cd build
-          cmake .. -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
-          cmake --build .
+          conda run -n test cmake .. -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON
+          conda run -n test cmake --build .
       - name: Build example against the installed library using CMake/Ninja (Windows)
         if: matrix.os == 'windows-latest'
         run: |
-          conda list
+          conda list -n test
           cd tests/external
           mkdir build
           cd build
-          cmake -GNinja -D CMAKE_BUILD_TYPE=Release -D CMAKE_VERBOSE_MAKEFILE:BOOL=ON ..
-          cmake --build .
+          conda run -n test cmake -GNinja -D CMAKE_BUILD_TYPE=Release -D CMAKE_VERBOSE_MAKEFILE:BOOL=ON ..
+          conda run -n test cmake --build .
       - name: Test built example executable (Unix)
         if: matrix.os != 'windows-latest'
         run: |
           cd tests
-          ./external/build/example
+          conda run -n test ./external/build/example
       - name: Test built example executable (Windows)
         if: matrix.os == 'windows-latest'
         run: |
@@ -97,7 +98,7 @@ jobs:
           ls
           ls ./external/build/
           # ./external/build/Release/example
-          ./external/build/example
+          conda run -n test ./external/build/example
       - name: Check built example executable output
         run: |
-          python scripts/devtasks.py compare-files tests/example_output.data --driver 4
+          conda run -n test python scripts/devtasks.py compare-files tests/example_output.data --driver 4

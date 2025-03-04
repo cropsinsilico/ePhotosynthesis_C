@@ -24,9 +24,11 @@ requirements:
   host:
     - libboost-devel >=1.36.0
     - sundials >=5.7.0
+    - yggdrasil
   run:
     - libboost-devel >=1.36.0
     - sundials >=5.7.0
+    - yggdrasil
 
 # TODO: Add Python wrapper as export?
 

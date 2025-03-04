@@ -649,6 +649,7 @@ class docs(BuildSubTask):
         args.only_python = False
         args.force_scoped_enum = False
         args.with_coverage = False
+        args.with_yggdrasil = False
         super(docs, cls).adjust_args(args)
 
     def __init__(self, args, config_args=None, build_args=None,
