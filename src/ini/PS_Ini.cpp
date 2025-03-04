@@ -365,7 +365,7 @@ PSCondition* PS::_init(Variables *theVars) {
         PS::PsV31  =   PS::V31;         //  31  Phosphate translocator  DHAPi<->DHAPo
         PS::PsV32  =   PS::V32;         //  32  Phosphate translocator  PGAi<->PGAo
         PS::PsV33  =   PS::V33;         //  33  Phosphate translocator  GAPi<->GAPo
-        PS::Ru_Act = -3. * pow(10., -5.) * pow(theVars->Tp, 3.) + 0.0013 * pow(theVars->Tp, 2.) - 0.0106 * theVars->Tp + 0.8839; //Rubisco activition state   % SHARED
+        PS::Ru_Act = 1.0;//-3. * pow(10., -5.) * pow(theVars->Tp, 3.) + 0.0013 * pow(theVars->Tp, 2.) - 0.0106 * theVars->Tp + 0.8839; //Rubisco activition state   % SHARED
         PS::PsV1 = PS::PsV1_0 * PS::Ru_Act * pow(theVars->Q10_1, (theVars->Tp - 25.) / 10.);                     //   SHARED
         PS::PsV2  = PS::PsV2_0  * pow(theVars->Q10_2, (theVars->Tp - 25.) / 10.);
         PS::PsV3  = PS::PsV3_0  * pow(theVars->Q10_3, (theVars->Tp - 25.) / 10.);
