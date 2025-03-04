@@ -11,6 +11,7 @@ import numpy as np
 
 _source_dir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 _utils_dir = os.path.join(_source_dir, 'utils')
+_data_dir = os.path.join(_source_dir, 'tests', 'data')
 
 
 def find_matlab(required=False):
@@ -285,6 +286,8 @@ class build(SubTask):
             config_args += [f'-DCMAKE_INSTALL_PREFIX={args.install_dir}']
         if args.force_scoped_enum:
             config_args += ['-DEPHOTO_USE_SCOPED_ENUM:BOOL=ON']
+        if args.with_yggdrasil:
+            config_args += ['-DWITH_YGGDRASIL:BOOL=ON']
         if sys.platform != 'win32':
             build_args += ['--', '-j', str(args.njobs)]
         cmds = [
@@ -932,12 +935,14 @@ if __name__ == "__main__":
         help=("Compile with 'EPHOTO_USE_SCOPED_ENUM' reguardless of the "
               "compiler (usually only used with MSVC)"),
         subparsers={'task': build_tasks})
-    # EPHOTO_USE_SCOPED_ENUM
-
     parser.add_argument(
         '--dont-build', action='store_true',
         help="Don't rebuild before performing the task",
         subparsers={'task': requires_build})
+    parser.add_argument(
+        '--with-yggdrasil', action='store_true',
+        help="Compile with WITH_YGGDRASIL",
+        subparsers={'task': build_tasks})
 
     # Comparison arguments
     parser.add_argument(
@@ -956,7 +961,7 @@ if __name__ == "__main__":
         help="Driver to run",
         subparsers={'task': ephoto_tasks + ['compare-files']})
     parser.add_argument(
-        '--input-dir', type=str, default=_source_dir,
+        '--input-dir', type=str, default=_data_dir,
         help="Directory containing input files",
         subparsers={'task': ephoto_tasks})
     parser.add_argument(

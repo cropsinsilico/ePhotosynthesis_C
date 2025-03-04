@@ -111,7 +111,7 @@ ePhotosynthesis::run_simulation(Variables*& theVars,
         if (steps) {
             std::cout << "ITERATION: " << iteration << std::endl;
             rapidjson::Document new_state;
-            flag = steps.recvVar(new_state);
+            flag = steps->recvVar(new_state);
             if (flag < 0) {
                 if (first) {
                     delete theVars;
@@ -146,6 +146,9 @@ ePhotosynthesis::run_simulation(Variables*& theVars,
                                     outputParamBase,
                                     outputParamVars);
         }
+        if (!outputVars.empty()) {
+            maindriver->setOutputVars(outputVars);
+        }
         std::vector<double> ResultRate = maindriver->run();
 
 #ifdef WITH_YGGDRASIL
@@ -153,7 +156,7 @@ ePhotosynthesis::run_simulation(Variables*& theVars,
             rapidjson::Document out_state;
             param2ygg(maindriver->output, out_state, theVars);
             std::cout << "OUTPUT STATE = " << out_state << std::endl;
-            flag = out.sendVar(out_state);
+            flag = out->sendVar(out_state);
             if (flag < 0)
                 throw std::runtime_error("Error sending output.");
         } else {
@@ -161,9 +164,6 @@ ePhotosynthesis::run_simulation(Variables*& theVars,
             // std::cerr << theVars << std::endl;
             if (!outputFile.empty()) {
                 std::ofstream outfile(outputFile);
-                if (!outputVars.empty()) {
-                    maindriver->setOutputVars(outputVars);
-                }
                 maindriver->writeOutputTable(outfile);
                 outfile.close();
             }

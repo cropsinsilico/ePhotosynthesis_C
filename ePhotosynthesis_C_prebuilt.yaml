@@ -1,10 +1,8 @@
 model:
   name: ePhotosynthesis
   description: C++ port of the ePhotosynthesis Matlab model code
-  language: cmake
-  target_language: c++
+  language: executable
   args: [ePhoto, -d, 4, -a, tests/data/InputATPCost.txt, -e, tests/data/InputEvn.txt, -T, 25, -n, tests/data/InputEnzyme.txt, -g, tests/data/InputGRNC.txt]
-  # overwrite: true
   # dependencies:
   #   - package: "sundials>=5.7.0"
   #   - package: "boost>=1.36.0"
@@ -26,11 +24,11 @@ model:
     - name: output
       # Single timestep
       # default_file:
-      #   name: output_ygg_single.data
+      #   name: output_ygg_single_prebuilt.data
       #   filetype: table
       # Multiple timesteps
       default_file:
-        name: output_ygg_multiple.data
+        name: output_ygg_multiple_prebuilt.data
         filetype: table
       datatype:
         type: object

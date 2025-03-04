@@ -86,6 +86,7 @@ option(BUILD_DOCS "Create HTML and PDF API documentation for ePhotosynthesis (re
 option(BUILD_PYTHON "Build python bindings for the library.")
 option(EPHOTO_USE_SCOPED_ENUM "Build using a scoped enumerator for the ValueSet base class (enabled by default when building with MSVC)")
 option(MAKE_EQUIVALENT_TO_MATLAB "Build with settings that make this model equivalent to the Matlab C3 model")
+option(WITH_YGGDRASIL "Compile with yggdrasil enabled")
 
 if(NOT BUILD_PYTHON)
     set(BUILD_PYTHON OFF)
@@ -284,6 +285,16 @@ if(WIN32)
     )
 endif()
 
+# TODO: Replace this with proper cmake target & check for it in yggdrasil cmake driver
+if(WITH_YGGDRASIL)
+    include(YggdrasilTools)
+    set(YGG_LINK_ARGS)
+    if(WITH_ASAN)
+      list(APPEND YGG_LINK_ARGS WITH_ASAN)
+    endif()
+    link_yggdrasil(EPhotosynthesis PRIVATE CXX ${YGG_LINK_ARGS})
+endif()
+
 target_link_libraries(
     EPhotosynthesis PUBLIC ${Boost_LIBRARIES} ${SUNDIALS_LIBRARIES}
 )
@@ -441,6 +452,11 @@ endif()
 # Tests #
 #########
 
+include(TestTools)
+set(CHECK_TEST_ARGS)
+if(PRESERVE_TEST_OUTPUT)
+    list(APPEND CHECK_TEST_ARGS PRESERVE_TEST_OUTPUT)
+endif()
 function(add_ePhoto_tests)
     set(oneValueArgs PREFIX)
     set(multiValueArgs COMMAND_PREFIX)
@@ -452,8 +468,6 @@ function(add_ePhoto_tests)
       math(EXPR IDX ${DRIVER}-1)
       list(GET ePhoto_TEST_DRIVERS ${IDX} DRIVER_NAME)
       set(TEST_NAME ${ARGS_PREFIX}ePhoto_${DRIVER_NAME})
-      set(SHOW_NAME ${TEST_NAME}_SHOW)
-      set(CHECK_NAME ${TEST_NAME}_CHECK)
       # if ((DRIVER_NAME STREQUAL "EPS") AND
       #     (SUNDIALS_VERSION VERSION_LESS "6.7.0"))
       #   set(EXPECTED_OUTPUT ${TEST_DATA_DIR}/ePhotoOutput_${DRIVER_NAME}_SUNDIALS_LT_6p7.txt)
@@ -461,10 +475,6 @@ function(add_ePhoto_tests)
       set(EXPECTED_OUTPUT ${TEST_DATA_DIR}/ePhotoOutput_${DRIVER_NAME}.txt)
       # endif()
       set(ACTUAL_OUTPUT ${ePhoto_TEST_DIR}/output_${DRIVER_NAME}.data)
-      list(APPEND ePhoto_TESTS ${TEST_NAME})
-      list(APPEND ePhoto_TESTS_CHECK ${CHECK_NAME})
-      list(APPEND ePhoto_TEST_EXPECTED ${EXPECTED_OUTPUT})
-      list(APPEND ePhoto_TEST_ACTUAL ${ACTUAL_OUTPUT})
       add_test(
         NAME ${TEST_NAME} COMMAND ${ARGS_COMMAND_PREFIX}
         $<TARGET_FILE:ePhoto>
@@ -478,42 +488,11 @@ function(add_ePhoto_tests)
         WORKING_DIRECTORY ${ePhoto_TEST_DIR}
         COMMAND_EXPAND_LISTS
       )
-      add_test(
-        NAME ${SHOW_NAME}_EXPECTED COMMAND
-        ${CMAKE_COMMAND} -E cat ${EXPECTED_OUTPUT}
-      )
-      set_tests_properties(
-        ${SHOW_NAME}_EXPECTED PROPERTIES
-        DEPENDS ${TEST_NAME}
-      )
-      add_test(
-        NAME ${SHOW_NAME}_ACTUAL COMMAND
-        ${CMAKE_COMMAND} -E cat ${ACTUAL_OUTPUT}
-      )
-      set_tests_properties(
-        ${SHOW_NAME}_ACTUAL PROPERTIES
-        DEPENDS ${TEST_NAME}
-      )
-      add_test(
-        NAME ${CHECK_NAME} COMMAND
-        ${CMAKE_COMMAND} -E compare_files ${EXPECTED_OUTPUT} ${ACTUAL_OUTPUT}
-      )
-      set_tests_properties(
-        ${CHECK_NAME} PROPERTIES
-        DEPENDS "${TEST_NAME};${SHOW_NAME}_EXPECTED;${SHOW_NAME}_ACTUAL"
+      check_test_output(
+        ${TEST_NAME} ${EXPECTED_OUTPUT} ${ACTUAL_OUTPUT}
+        ${CHECK_TEST_ARGS}
       )
     endforeach()
-    if(NOT PRESERVE_TEST_OUTPUT)
-      add_test(
-        NAME ${ARGS_PREFIX}ePhoto_cleanup COMMAND
-        ${CMAKE_COMMAND} -E remove ${ePhoto_TEST_ACTUAL}
-      )
-      list(JOIN ePhoto_TESTS_CHECK "\\;" ePhoto_TESTS_CHECK)
-      set_tests_properties(
-        ${ARGS_PREFIX}ePhoto_cleanup PROPERTIES
-        DEPENDS ${ePhoto_TESTS_CHECK}
-      )
-    endif()
 endfunction()
 
 if(BUILD_TESTS)
@@ -581,6 +560,9 @@ if(BUILD_TESTS)
     target_compile_options(
       testRunner PUBLIC $<TARGET_PROPERTY:EPhotosynthesis,COMPILE_OPTIONS>
     )
+    target_link_options(
+      testRunner PUBLIC $<TARGET_PROPERTY:EPhotosynthesis,LINK_OPTIONS>
+    )
     target_include_directories(
       testRunner PUBLIC $<TARGET_PROPERTY:EPhotosynthesis,INCLUDE_DIRECTORIES>
     )
@@ -595,6 +577,17 @@ if(BUILD_TESTS)
     gtest_discover_tests(testRunner PROPERTIES DISCOVERY_TIMEOUT 1200)
 
     add_ePhoto_tests()
+
+    if(WITH_YGGDRASIL)
+        add_yggdrasil_test(
+          yggrun_isolated
+          ${PROJECT_SOURCE_DIR}/ePhotosynthesis_C_prebuilt.yaml
+          ePhoto LIBRARY EPhotosynthesis
+          EXPECTED_OUTPUT ${PROJECT_SOURCE_DIR}/tests/data/yggrunOutput.txt
+          ACTUAL_OUTPUT ${PROJECT_SOURCE_DIR}/output_ygg_multiple_prebuilt.data
+          ${CHECK_TEST_ARGS}
+        )
+    endif()
 
 endif()
 

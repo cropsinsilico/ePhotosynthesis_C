@@ -23,6 +23,7 @@ jobs:
         with-valgrind: [false, true]
         with-mpi: [false]
         with-python: [false]
+        with-yggdrasil: [false]
         include:
           - sundials-version: "5.7.0"
             os: ubuntu-latest
@@ -32,6 +33,7 @@ jobs:
             with-valgrind: false
             with-mpi: false
             with-python: false
+            with-yggdrasil: false
           - sundials-version: "6.7.0"
             os: ubuntu-latest
             with-coverage: false
@@ -40,6 +42,7 @@ jobs:
             with-valgrind: false
             with-mpi: false
             with-python: false
+            with-yggdrasil: false
           - sundials-version: "7.1.1"
             os: ubuntu-latest
             with-coverage: false
@@ -48,6 +51,7 @@ jobs:
             with-valgrind: false
             with-mpi: false
             with-python: false
+            with-yggdrasil: false
           - sundials-version: latest
             os: ubuntu-latest
             with-coverage: false
@@ -56,6 +60,7 @@ jobs:
             with-valgrind: false
             with-mpi: true
             with-python: false
+            with-yggdrasil: true
           - sundials-version: "6.7.0"
             os: ubuntu-latest
             with-coverage: false
@@ -64,6 +69,7 @@ jobs:
             with-valgrind: false
             with-mpi: true
             with-python: false
+            with-yggdrasil: true
           - sundials-version: "7.1.1"
             os: ubuntu-latest
             with-coverage: false
@@ -72,6 +78,7 @@ jobs:
             with-valgrind: false
             with-mpi: true
             with-python: false
+            with-yggdrasil: true
           - sundials-version: latest
             os: ubuntu-latest
             with-coverage: false
@@ -80,6 +87,7 @@ jobs:
             with-valgrind: false
             with-mpi: false
             with-python: true
+            with-yggdrasil: true
         exclude:
           - os: windows-latest
             with-asan: true
@@ -101,6 +109,14 @@ jobs:
             with-valgrind: true
           - with-coverage: true
             with-asan: true
+          - with-yggdrasil: true
+            with-coverage: true
+          - with-yggdrasil: true
+            with-mpi: true
+          - with-yggdrasil: true
+            with-elf: true
+          - with-yggdrasil: true
+            with-valgrind: true
       fail-fast: false
     steps:
       - name: Check out repository code
@@ -138,10 +154,12 @@ jobs:
           miniforge-variant: Miniforge3
           miniforge-version: latest
           conda-remove-defaults: true
-      - name: Set USERPROFILE
-        if: matrix.os == 'windows-latest'
+      - name: Configure yggdrasil & compile interface
+        if: matrix.with-yggdrasil == true
         run: |
-          echo "USERPROFILE=${{ github.workspace }}" >> "$GITHUB_ENV"
+          yggconfig
+          yggcompile cpp
+          ygginfo
       - name: Install specific version of Sundials via conda
         if: matrix.sundials-version != 'latest' && matrix.with-mpi == false
         run: |
@@ -226,6 +244,10 @@ jobs:
           echo "CMAKE_ARGS_TEST=-DBUILD_TESTS=ON" >> "$GITHUB_ENV"
           echo "TEST_FLAGS=-C ${CMAKE_BUILD_TYPE_TEST} --output-on-failure -VV" >> "$GITHUB_ENV"
           echo "BUILD_ARGS=--config ${CMAKE_BUILD_TYPE_TEST}" >> "$GITHUB_ENV"
+      - name: Config flags for linking against yggdrasil
+        if: matrix.with-yggdrasil == true
+        run: |
+          echo "CMAKE_ARGS=${{ env.CMAKE_ARGS }} -DWITH_YGGDRASIL:BOOL=ON" >> "$GITHUB_ENV"
       - name: Set flags to build in parallel (UNIX)
         if: matrix.os != 'windows-latest'
         run: |
