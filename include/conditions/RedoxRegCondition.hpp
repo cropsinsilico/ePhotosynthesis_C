@@ -25,7 +25,8 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-#include "RACondition.hpp"
+
+#include "conditions/RACondition.hpp"
 
 #define PARENT_RedoxReg RedoxReg
 #define NRATIO_RedoxReg 0

@@ -26,8 +26,8 @@
  *
  **********************************************************************************************************************************************/
 
-#include "PSCondition.hpp"
-#include "PRCondition.hpp"
+#include "conditions/PSCondition.hpp"
+#include "conditions/PRCondition.hpp"
 
 #define PARENT_PS_PR CM
 #define CHILDREN_PS_PR PS, PR

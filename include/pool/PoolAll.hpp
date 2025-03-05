@@ -26,10 +26,10 @@
  *
  **********************************************************************************************************************************************/
 
-#include "PoolBase.hpp"
-#include "BFPool.hpp"
-#include "FIBFPool.hpp"
-#include "FIPool.hpp"
-#include "RROEAPool.hpp"
-#include "RuACTPool.hpp"
-#include "SUCSPool.hpp"
+#include "pool/PoolBase.hpp"
+#include "pool/BFPool.hpp"
+#include "pool/FIBFPool.hpp"
+#include "pool/FIPool.hpp"
+#include "pool/RROEAPool.hpp"
+#include "pool/RuACTPool.hpp"
+#include "pool/SUCSPool.hpp"

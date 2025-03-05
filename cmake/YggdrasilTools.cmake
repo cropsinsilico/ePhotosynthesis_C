@@ -1,3 +1,95 @@
+function(create_yggdrasil_interface_library LANGUAGE)
+  # TODO: Allow indication of the toolchain being used
+  set(oneValueArgs OUTPUT_VARIABLE)
+  cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
+  get_yggdrasil_flags(
+    ${LANGUAGE} compiler YGG_CCFLAGS ${ARGS_UNPARSED_ARGUMENTS}
+  )
+  get_yggdrasil_flags(
+    ${LANGUAGE} linker YGG_LDFLAGS ${ARGS_UNPARSED_ARGUMENTS}
+  )
+  find_yggdrasil_library(
+    YGG_LDFLAGS ${YGG_LDFLAGS} COMPILE_MISSING
+    LANGUAGE ${LANGUAGE} OUTPUT_VARIABLE LIBRARY_NAME
+    ${ARGS_UNPARSED_ARGUMENTS}
+  )
+  if(NOT LIBRARY_NAME)
+    message(FATAL_ERROR "Failed to locate or create the yggdrasil ${LANGUAGE} interface library")
+  endif()
+  # TODO: Handle .lib on windows which could be static or import
+  string(REGEX MATCH "\.(so)|(dylib)|(dll)$" EXT_MATCH ${LIBRARY_NAME})
+  if(EXT_MATCH)
+    set(LIBRARY_TYPE SHARED)
+  else()
+    set(LIBRARY_TYPE STATIC)
+  endif()
+  select_flags(
+    INCLUDE_DIRECTORIES FLAGS ${YGG_CCFLAGS}
+    INCLUDE_PREFIXES I
+    REMOVE_PREFIX
+  )
+  select_flags(
+    COMPILE_DEFINNITIONS FLAGS ${YGG_CCFLAGS}
+    INCLUDE_PREFIXES D
+    REMOVE_PREFIX
+  )
+  select_flags(
+    LIBRARY_DIRECTORIES FLAGS ${YGG_LDFLAGS}
+    INCLUDE_PREFIXES L LIBPATH
+    REMOVE_PREFIX
+  )
+  select_flags(
+    LINKED_LIBRARIES FLAGS ${YGG_LDFLAGS}
+    INCLUDE_PREFIXES l
+    REMOVE_PREFIX
+  )
+  set(LINK_LIBRARIES)
+  foreach(lib ${LINKED_LIBRARIES})
+    if(NOT lib MATCHES "^ygg")
+      find_library(${lib} ${lib} HINTS ${LIBRARY_DIRECTORIES})
+      if(${lib} STREQUAL "${lib}-NOTFOUND")
+        message(WARNING "Could not find yggdrasil dependency \"${lib}\"")
+      else()
+        list(APPEND LINK_LIBRARIES ${${lib}})
+      endif()
+    endif()
+  endforeach()
+  message(STATUS "LIBRARY_NAME = ${LIBRARY_NAME}")
+  message(STATUS "LIBRARY_TYPE = ${LIBRARY_TYPE}")
+  message(STATUS "INCLUDE_DIRECTORIES = ${INCLUDE_DIRECTORIES}")
+  message(STATUS "COMPILE_DEFINNITIONS = ${COMPILE_DEFINNITIONS}")
+  message(STATUS "LIBRARY_DIRECTORIES = ${LIBRARY_DIRECTORIES}")
+  message(STATUS "LINKED_LIBRARIES = ${LINKED_LIBRARIES}")
+  message(STATUS "LINK_LIBRARIES = ${LINK_LIBRARIES}")
+  set(TARGET YggInterface::${LANGUAGE})
+  add_library(${TARGET} ${LIBRARY_TYPE} IMPORTED)
+  set_target_properties(
+    ${TARGET} PROPERTIES
+    IMPORTED_LOCATION ${LIBRARY_NAME}
+  )
+  if(INCLUDE_DIRECTORIES)
+    set_property(
+      TARGET ${TARGET} APPEND PROPERTY
+      INTERFACE_INCLUDE_DIRECTORIES "${INCLUDE_DIRECTORIES}"
+    )
+  endif()
+  if(COMPILE_DEFINNITIONS)
+    set_property(
+      TARGET ${TARGET} APPEND PROPERTY
+      INTERFACE_COMPILE_DEFINITIONS "${COMPILE_DEFINNITIONS}"
+    )
+  endif()
+  if(LINK_LIBRARIES)
+    set_property(
+      TARGET ${TARGET} APPEND PROPERTY
+      INTERFACE_LINK_LIBRARIES "${LINK_LIBRARIES}"
+    )
+  endif()
+  if(ARGS_OUTPUT_VARIABLE)
+    set(${ARGS_OUTPUT_VARIABLE} ${TARGET} PARENT_SCOPE)
+  endif()
+endfunction()
+
 function(remove_flag_prefix FLAG PREFIX OUTPUT_VARIABLE)
   string(REGEX REPLACE "^[\/\-]${PREFIX}" "" ${OUTPUT_VARIABLE} ${FLAG})
   set(${OUTPUT_VARIABLE} ${${OUTPUT_VARIABLE}} PARENT_SCOPE)
@@ -104,10 +196,14 @@ endfunction()
 
 function(get_yggdrasil_flags LANGUAGE TOOL OUTPUT_VARIABLE)
     set(options WITH_ASAN)
+    set(oneValueArgs TOOLNAME)
     cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
     set(INFO_FLAGS --flags)
     if(ARGS_WITH_ASAN)
       list(APPEND INFO_FLAGS --with-asan)
+    endif()
+    if(ARGS_TOOLNAME)
+      list(APPEND INFO_FLAGS --toolname ${ARGS_TOOLNAME})
     endif()
     execute_process(
       COMMAND yggdrasil info ${TOOL} ${LANGUAGE} ${INFO_FLAGS}
@@ -158,20 +254,27 @@ function(find_yggdrasil_library)
     if(NOT LIBRARY_DIRS)
       message(FATAL_ERROR "Failed to identify library directories from flags \"${ARGS_YGG_LDFLAGS}\"")
     endif()
-    foreach(dir ${LIBRARY_DIRS})
-      cmake_path(APPEND dir "*${YGG_LIBNAME}*" OUTPUT_VARIABLE ipath)
-      file(GLOB MATCHES LIST_DIRECTORIES false "${ipath}" )
-      if(MATCHES)
-        list(LENGTH MATCHES LEN_MATCHES)
-        if(LEN_MATCHES GREATER 1)
-          message(FATAL_ERROR "More than one match to \"${ipath}\": \"${MATCHES}\"")
-        endif()
-        if(ARGS_OUTPUT_VARIABLE)
-          set(${ARGS_OUTPUT_VARIABLE} ${MATCHES} PARENT_SCOPE)
-        endif()
-        return()
+    find_library(${YGG_LIBNAME} ${YGG_LIBNAME} HINTS ${LIBRARY_DIRS})
+    if(NOT ${YGG_LIBNAME} STREQUAL "${YGG_LIBNAME}-NOTFOUND")
+      if(ARGS_OUTPUT_VARIABLE)
+        set(${ARGS_OUTPUT_VARIABLE} ${${YGG_LIBNAME}} PARENT_SCOPE)
       endif()
-    endforeach()
+      return()
+    endif()
+    # foreach(dir ${LIBRARY_DIRS})
+    #   cmake_path(APPEND dir "*${YGG_LIBNAME}*" OUTPUT_VARIABLE ipath)
+    #   file(GLOB MATCHES LIST_DIRECTORIES false "${ipath}" )
+    #   if(MATCHES)
+    #     list(LENGTH MATCHES LEN_MATCHES)
+    #     if(LEN_MATCHES GREATER 1)
+    #       message(FATAL_ERROR "More than one match to \"${ipath}\": \"${MATCHES}\"")
+    #     endif()
+    #     if(ARGS_OUTPUT_VARIABLE)
+    #       set(${ARGS_OUTPUT_VARIABLE} ${MATCHES} PARENT_SCOPE)
+    #     endif()
+    #     return()
+    #   endif()
+    # endforeach()
     if(ARGS_COMPILE_MISSING)
       compile_yggdrasil(${ARGS_UNPARSED_ARGUMENTS})
       if(ARGS_OUTPUT_VARIABLE)
@@ -182,6 +285,7 @@ function(find_yggdrasil_library)
         ${ARGS_UNPARSED_ARGUMENTS}
       )
     elseif(ARGS_OUTPUT_VARIABLE)
+      message(WARNING "Failed to locate or create any yggdrasil library matching \"${YGG_LIBNAME}\" in these directories: \"${LIBRARY_DIRS}\"")
       set(${ARGS_OUTPUT_VARIABLE})
     else()
       message(FATAL_ERROR "Failed to locate or create any yggdrasil library matching \"${YGG_LIBNAME}\" in these directories: \"${LIBRARY_DIRS}\"")
@@ -194,7 +298,7 @@ endfunction()
 
 function(compile_yggdrasil)
     set(options WITH_ASAN)
-    set(oneValueArgs LANGUAGE)
+    set(oneValueArgs LANGUAGE TOOLNAME)
     cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
     set(flags)
     if(ARGS_LANGUAGE)
@@ -202,6 +306,9 @@ function(compile_yggdrasil)
     endif()
     if(ARGS_WITH_ASAN)
       list(APPEND flags --with-asan)
+    endif()
+    if(ARGS_TOOLNAME)
+      list(APPEND flags --toolname ${ARGS_TOOLNAME})
     endif()
     execute_process(
       COMMAND yggdrasil compile ${flags}

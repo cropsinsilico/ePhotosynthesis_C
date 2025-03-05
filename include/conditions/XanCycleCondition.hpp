@@ -26,7 +26,7 @@
  *
  **********************************************************************************************************************************************/
 
-#include "ConditionBase.hpp"
+#include "conditions/ConditionBase.hpp"
 
 #define PARENT_XanCycle DynaPS
 #define NRATIO_XanCycle 4

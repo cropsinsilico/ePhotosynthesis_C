@@ -25,7 +25,8 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-#include "ModuleBase.hpp"
+
+#include "modules/ModuleBase.hpp"
 #include <nvector/nvector_serial.h>
 #include "conditions/RedoxRegCondition.hpp"
 

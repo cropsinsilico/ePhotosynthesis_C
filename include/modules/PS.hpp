@@ -26,7 +26,7 @@
  *
  **********************************************************************************************************************************************/
 
-#include "ModuleBase.hpp"
+#include "modules/ModuleBase.hpp"
 #include "conditions/PSCondition.hpp"
 #include "definitions.hpp"
 

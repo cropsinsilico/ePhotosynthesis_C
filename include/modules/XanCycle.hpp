@@ -26,7 +26,8 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-#include "ModuleBase.hpp"
+
+#include "modules/ModuleBase.hpp"
 #include "conditions/XanCycleCondition.hpp"
 #include "definitions.hpp"
 

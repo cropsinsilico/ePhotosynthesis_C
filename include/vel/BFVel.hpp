@@ -27,7 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
-#include "VelBase.hpp"
+#include "vel/VelBase.hpp"
 
 namespace ePhotosynthesis {
 namespace vel {

@@ -19,10 +19,22 @@ std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::PARAM_TYPE& x
 using namespace ePhotosynthesis;
 
 std::vector<std::string>
-utils::str_split(const std::string& inStr,
-                                  const std::string& sep) {
+utils::str_split(const std::string& inStr, const char sep) {
   std::vector<std::string> out;
+  std::string input;
+  std::stringstream buffer(inStr);
+  while (std::getline(buffer, input, sep)) {
+    out.push_back(input);
+  }
   return out;
+}
+
+std::vector<std::string>
+utils::str_split_whitespace(const std::string& inStr) {
+  std::istringstream buffer(inStr);
+  std::vector<std::string> ret((std::istream_iterator<std::string>(buffer)),
+                               std::istream_iterator<std::string>());
+  return ret;
 }
 
 std::string utils::str_toupper(const std::string& inStr) {

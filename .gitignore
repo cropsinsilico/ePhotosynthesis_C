@@ -54,6 +54,8 @@ junk
 
 build/
 
+_version.py
+
 CMakeLists.txt.user
 
 Doxyfile

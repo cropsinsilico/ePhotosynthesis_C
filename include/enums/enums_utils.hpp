@@ -3,13 +3,9 @@
 #include <map>
 #include <string>
 #include "definitions.hpp"
-#include <boost/algorithm/string_regex.hpp>
-#include <boost/regex.hpp>
 #include <sstream>
 
 #include "enums/enums.hpp"
-
-const boost::regex token("\\s+");
 
 EPHOTO_API std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::MODULE& x);
 EPHOTO_API std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::PARAM_TYPE& x);
@@ -23,7 +19,8 @@ namespace ePhotosynthesis {
     EPHOTO_API std::string str_toupper(const std::string& inStr);
     EPHOTO_API std::string str_tolower(const std::string& inStr);
     EPHOTO_API std::vector<std::string> str_split(const std::string& inStr,
-                                                  const std::string& sep);
+                                                  const char sep);
+    EPHOTO_API std::vector<std::string> str_split_whitespace(const std::string& inStr);
     EPHOTO_API bool str_startswith(std::string const& value,
                                    std::string const& prefix);
     EPHOTO_API bool str_endswith(std::string const& value,
@@ -210,10 +207,10 @@ namespace ePhotosynthesis {
         throw std::runtime_error(errmsg);
       }
       int count = 0;
-      while (getline(inputfile, input)) {
+      while (std::getline(inputfile, input)) {
         if (input.empty() || (input.rfind(comment, 0) == 0))
 	  continue;
-        boost::algorithm::split_regex(tempVec, input, token);
+        tempVec = str_split_whitespace(input);
 	key = enum_string2key<Tenum>(tempVec[0]);
         std::stringstream ss(tempVec[1]);
         ss >> val;

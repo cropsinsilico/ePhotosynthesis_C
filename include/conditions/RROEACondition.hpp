@@ -26,7 +26,7 @@
  *
  **********************************************************************************************************************************************/
 
-#include "ConditionBase.hpp"
+#include "conditions/ConditionBase.hpp"
 
 #define PARENT_RROEA trDynaPS
 #define NRATIO_RROEA 0

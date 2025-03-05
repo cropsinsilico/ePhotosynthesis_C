@@ -185,7 +185,7 @@ public:
        \param[in] in Instance to serialize.
        \returns Updated output stream.
     */
-    EPHOTO_API friend std::ostream& operator<<(std::ostream &out, const Variables *in);
+    friend std::ostream& operator<<(std::ostream &out, const Variables *in);
     /**
        Record a value set by copying it into this set of Variables.
        \param[in] x Value set to record.
@@ -856,4 +856,12 @@ public:
 #endif
 };
 
+/**
+   Serialization operator.
+   \param[in, out] out Output stream.
+   \param[in] in Instance to serialize.
+   \returns Updated output stream.
+*/
+EPHOTO_API std::ostream& operator<<(std::ostream &out, const Variables *in);
+  
 }  // namespace ePhotosynthesis

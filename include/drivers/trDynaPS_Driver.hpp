@@ -27,7 +27,7 @@
  **********************************************************************************************************************************************/
 
 #include "definitions.hpp"
-#include "driver.hpp"
+#include "drivers/driver.hpp"
 #include "conditions/trDynaPSCondition.hpp"
 
 namespace ePhotosynthesis {

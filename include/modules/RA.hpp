@@ -26,7 +26,7 @@
  *
  **********************************************************************************************************************************************/
 
-#include "ModuleBase.hpp"
+#include "modules/ModuleBase.hpp"
 #include "conditions/RACondition.hpp"
 
 namespace ePhotosynthesis {

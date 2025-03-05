@@ -26,13 +26,13 @@
  *
  **********************************************************************************************************************************************/
 
-#include <vector>
-#include <memory>
-
 #include "definitions.hpp"
-#include <nvector/nvector_serial.h>
 #include "globals.hpp"
 #include "enums/enums_utils.hpp"
+
+#include <nvector/nvector_serial.h>
+#include <vector>
+#include <memory>
 
 #define MEMBERS_DRIVER trDynaPS, DynaPS, CM, EPS
 

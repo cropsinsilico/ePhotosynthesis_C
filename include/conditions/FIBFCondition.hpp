@@ -25,11 +25,11 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-#include <math.h>
-#include "definitions.hpp"
 
-#include "FICondition.hpp"
-#include "BFCondition.hpp"
+#include "definitions.hpp"
+#include "conditions/FICondition.hpp"
+#include "conditions/BFCondition.hpp"
+#include <math.h>
 
 #define PARENT_FIBF EPS
 #define NRATIO_FIBF 0

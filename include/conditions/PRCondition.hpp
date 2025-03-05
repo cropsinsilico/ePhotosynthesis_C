@@ -26,7 +26,7 @@
  *
  **********************************************************************************************************************************************/
 
-#include "ConditionBase.hpp"
+#include "conditions/ConditionBase.hpp"
 
 #define PARENT_PR PS_PR
 #define NRATIO_PR 48

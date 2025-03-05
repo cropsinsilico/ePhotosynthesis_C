@@ -26,8 +26,6 @@
 #include <math.h>
 #include "Variables.hpp"
 #include "globals.hpp"
-#include <boost/algorithm/string_regex.hpp>
-#include <boost/regex.hpp>
 #include <string>
 #include <sstream>
 
@@ -149,10 +147,10 @@ void ePhotosynthesis::readFile(const std::string &filename, std::map<std::string
         std::string errmsg = "Could not open " + filename + " for reading";
         throw std::runtime_error(errmsg);
     }
-    while (getline(inputfile, input)) {
+    while (std::getline(inputfile, input)) {
         if (input.empty())
             continue;
-        boost::algorithm::split_regex(tempVec, input, token);
+        tempVec = utils::str_split_whitespace(input);
         existing = mapper.find(tempVec[0]);
         if (existing != mapper.end()) {
           std::cerr << "readFile[" << filename << "]: " << tempVec[0] <<
@@ -173,10 +171,10 @@ void ePhotosynthesis::readFile(const std::string &filename, std::map<std::string
         throw std::runtime_error(errmsg);
     }
     int count = 0;
-    while (getline(inputfile, input)) {
+    while (std::getline(inputfile, input)) {
         if (input.empty())
             continue;
-        boost::algorithm::split_regex(tempVec, input, token);
+        tempVec = utils::str_split_whitespace(input);
         double d;
         std::stringstream ss(tempVec[1]);
         ss >> d;

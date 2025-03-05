@@ -1,5 +1,5 @@
 {% set name = "ePhotosynthesis" %}
-{% set version = "1.0.1" %}
+{% set version = os.getenv("VERSION_OVERRIDE") or GIT_DESCRIBE_TAG %}
 {% set PY_VER_MAJOR = PY_VER.split('.')[0] %}
 {% set PY_VER_MINOR = PY_VER.split('.')[1] %}
 
@@ -18,19 +18,32 @@ build:
 requirements:
   build:
     - cmake
+    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
     - make  # [unix]
     - ninja  # [win]
+    - python                                 # [build_platform != target_platform]
+    - scikit-build-core
+    - setuptools_scm
     - {{ compiler('cxx') }}
   host:
     - libboost-devel >=1.36.0
+    - python
+    - scikit-build-core
+    - setuptools_scm
     - sundials >=5.7.0
     - yggdrasil
   run:
     - libboost-devel >=1.36.0
+    - python
     - sundials >=5.7.0
     - yggdrasil
 
 # TODO: Add Python wrapper as export?
+outputs:
+  - name: ePhotosynthesis
+    version:  {{ version }}
+  - name: pyPhotosynthesis
+    version:  {{ version }}
 
 test:
   commands:
@@ -41,6 +54,8 @@ test:
     - if not exist %LIBRARY_BIN%\\EPhotosynthesis.dll exit 1  # [win]
     - if not exist %LIBRARY_INC%\\ePhotosynthesis\\ePhotosynthesis.hpp exit 1  # [win]
     - if not exist %LIBRARY_BIN%\\ePhoto.exe exit 1  # [win]
+  imports:
+    - pyPhotosynthesis
 
 about:
   home: https://github.com/cropsinsilico/ePhotosynthesis_C

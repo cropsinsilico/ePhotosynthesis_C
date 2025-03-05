@@ -27,8 +27,8 @@
  **********************************************************************************************************************************************/
 #include <sundials/sundials_types.h>   /* defs. of realtype, sunindextype */
 
-#include "PS_PRCondition.hpp"
-#include "SUCSCondition.hpp"
+#include "conditions/PS_PRCondition.hpp"
+#include "conditions/SUCSCondition.hpp"
 
 #define PARENT_CM EPS
 #define CHILDREN_CM PS_PR, SUCS

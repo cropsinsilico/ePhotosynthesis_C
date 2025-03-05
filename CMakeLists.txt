@@ -74,6 +74,7 @@ endif("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
 if(NOT CONDA_PREFIX)
   cmake_path(SET CONDA_PREFIX "$ENV{CONDA_PREFIX}")
 endif()
+message(STATUS "CONDA_PREFIX = ${CONDA_PREFIX}")
 
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${PROJECT_SOURCE_DIR}/cmake")
 
@@ -264,7 +265,6 @@ if(ENUM_TARGET)
 endif()
 add_executable(ePhoto bin/ePhotosynthesis.cpp)
 
-find_package(Boost 1.36.0 REQUIRED COMPONENTS regex)
 # Find MPI
 find_package(MPI COMPONENTS C CXX)
 
@@ -289,17 +289,21 @@ endif()
 if(WITH_YGGDRASIL)
     include(YggdrasilTools)
     set(YGG_LINK_ARGS)
-    if(WITH_ASAN)
-      list(APPEND YGG_LINK_ARGS WITH_ASAN)
-    endif()
-    link_yggdrasil(EPhotosynthesis PRIVATE CXX ${YGG_LINK_ARGS})
+    # if(WITH_ASAN)
+    #   list(APPEND YGG_LINK_ARGS WITH_ASAN)
+    # endif()
+    create_yggdrasil_interface_library(CXX ${YGG_LINK_ARGS})
+    target_link_libraries(
+      EPhotosynthesis PRIVATE YggInterface::CXX
+    )
+    # link_yggdrasil(EPhotosynthesis PRIVATE CXX ${YGG_LINK_ARGS})
 endif()
 
 target_link_libraries(
-    EPhotosynthesis PUBLIC ${Boost_LIBRARIES} ${SUNDIALS_LIBRARIES}
+    EPhotosynthesis PUBLIC ${SUNDIALS_LIBRARIES}
 )
 target_include_directories(
-    EPhotosynthesis PUBLIC ${Boost_INCLUDE_DIRS} ${SUNDIALS_INCLUDE_DIRS}
+    EPhotosynthesis PUBLIC ${SUNDIALS_INCLUDE_DIRS}
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include/ePhotosynthesis>
 )
@@ -374,7 +378,7 @@ install(
     COMPONENT CXX
 )
 install(
-    FILES cmake/FindSUNDIALS.cmake
+    FILES cmake/FindSUNDIALS.cmake cmake/YggdrasilTools.cmake
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ePhotosynthesis
     COMPONENT CXX
 )
@@ -647,7 +651,7 @@ if(BUILD_PYTHON)
     )
     find_package(
         Boost 1.36.0 REQUIRED COMPONENTS
-        regex python${Python_VERSION_MAJOR}${Python_VERSION_MINOR}
+        python${Python_VERSION_MAJOR}${Python_VERSION_MINOR}
     )
     add_library(${PYTHON_LIBRARY_NAME} MODULE ${SOURCES})
     if(ENUM_TARGET)

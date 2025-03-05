@@ -315,10 +315,10 @@ int main(int argc, const char* argv[]) {
 
         std::vector<std::string> outputVarsV;
         if (!outputVars.empty())
-            outputVarsV = utils::str_split(outputVars, ",");
+            outputVarsV = utils::str_split(outputVars, ',');
         std::vector<std::string> outputParamVarsV;
         if (!outputParamVars.empty())
-            outputParamVarsV = utils::str_split(outputParamVars, ",");
+            outputParamVarsV = utils::str_split(outputParamVars, ',');
         run_simulation(driverChoice,
                        begintime, stoptime, stepsize, maxSubSteps,
                        abstol, reltol, inputs, useC3,
