@@ -2,7 +2,7 @@
 // modified directly
 #pragma once
 
-#include "enums/enums_helpers.hpp"
+#include "enums_helpers.hpp"
 
 namespace ePhotosynthesis {
   #ifndef EPHOTO_USE_SCOPED_ENUM

@@ -20,7 +20,7 @@
 #else // EPHOTO_USE_SCOPED_ENUM
 #define SCOPED_ENUM_TYPE(name)
 #endif // EPHOTO_USE_SCOPED_ENUM
-#include "enums/enums_helpers.hpp"
+#include "enums_helpers.hpp"
 
 namespace ePhotosynthesis {
   // Unspecialized enum
@@ -412,12 +412,12 @@ namespace ePhotosynthesis {
 }
 // Global includes
 // [BEGIN] HEADERS_GLOBAL
-#include "enums/enums_COND.hpp"
-#include "enums/enums_POOL.hpp"
-#include "enums/enums_KE.hpp"
-#include "enums/enums_MOD.hpp"
-#include "enums/enums_RC.hpp"
-#include "enums/enums_VARS.hpp"
-#include "enums/enums_VEL.hpp"
+#include "enums_COND.hpp"
+#include "enums_POOL.hpp"
+#include "enums_KE.hpp"
+#include "enums_MOD.hpp"
+#include "enums_RC.hpp"
+#include "enums_VARS.hpp"
+#include "enums_VEL.hpp"
 // [END] HEADERS_GLOBAL
 

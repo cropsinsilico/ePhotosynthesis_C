@@ -5,7 +5,7 @@
 #include "definitions.hpp"
 #include <sstream>
 
-#include "enums/enums.hpp"
+#include "enums.hpp"
 
 EPHOTO_API std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::MODULE& x);
 EPHOTO_API std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::PARAM_TYPE& x);

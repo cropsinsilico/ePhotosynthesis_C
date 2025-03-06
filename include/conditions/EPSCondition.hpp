@@ -26,8 +26,8 @@
  *
  **********************************************************************************************************************************************/
 
-#include "conditions/FIBFCondition.hpp"
-#include "conditions/CMCondition.hpp"
+#include "FIBFCondition.hpp"
+#include "CMCondition.hpp"
 
 #define PARENT_EPS RA
 #define CHILDREN_EPS FIBF, CM

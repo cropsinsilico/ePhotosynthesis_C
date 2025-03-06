@@ -26,8 +26,8 @@
  *
  **********************************************************************************************************************************************/
 
-#include "modules/ModuleBase.hpp"
-#include "conditions/EPSCondition.hpp"
+#include "ModuleBase.hpp"
+#include "../conditions/EPSCondition.hpp"
 
 namespace ePhotosynthesis {
 

@@ -26,7 +26,7 @@
  *
  **********************************************************************************************************************************************/
 
-#include "conditions/ConditionBase.hpp"
+#include "ConditionBase.hpp"
 
 #define PARENT_SUCS CM
 #define NRATIO_SUCS 66

@@ -25,11 +25,11 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-#include "definitions.hpp"
-#include "drivers/CM_Driver.hpp"
-#include "drivers/DynaPS_Driver.hpp"
-#include "drivers/EPS_Driver.hpp"
-#include "drivers/trDynaPS_Driver.hpp"
+#include "../definitions.hpp"
+#include "CM_Driver.hpp"
+#include "DynaPS_Driver.hpp"
+#include "EPS_Driver.hpp"
+#include "trDynaPS_Driver.hpp"
 
 #define CASE_DRIVER_METHOD(drv, X)					\
   case drv: {								\

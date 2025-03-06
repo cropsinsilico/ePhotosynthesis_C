@@ -1939,25 +1939,37 @@ class CMixin:
     )
 
     def __init__(self, *args, **kwargs):
-        self.root_include_dir = kwargs.pop('root_include_dir', None)
+        self.root_include_dir_source = kwargs.pop(
+            'root_include_dir_source', None)
+        self.root_include_dir_header = kwargs.pop(
+            'root_include_dir_header', None)
         if not hasattr(self, 'namespaces'):
             self.namespaces = kwargs.pop('namespaces', None)
         if ((self._type == 'generator'
-             and (self.namespaces or self.root_include_dir))):
+             and (self.namespaces or self.root_include_dir_header
+                  or self.root_include_dir_source))):
             kwargs.setdefault('child_kws', {})
             kwargs['child_kws'].setdefault('all', {})
             kwargs['child_kws']['all'].setdefault(
-                'root_include_dir', self.root_include_dir)
+                'root_include_dir_source', self.root_include_dir_source)
+            kwargs['child_kws']['all'].setdefault(
+                'root_include_dir_header', self.root_include_dir_header)
             kwargs['child_kws']['all']['namespaces'] = self.namespaces
         super().__init__(*args, **kwargs)
 
     @classmethod
-    def include_file(cls, x, caller=None, rootdir=None,
-                     no_buffer_line=False):
+    def include_file(cls, x, caller=None, rootdir_source=None,
+                     rootdir_header=None, no_buffer_line=False):
         if isinstance(x, EnumGeneratorBase):
             x = x.dst
         elif isinstance(x, EnumParserBase):
             x = x.src
+        rootdir = None
+        if caller:
+            if caller.endswith('.cpp'):
+                rootdir = rootdir_source
+            else:
+                rootdir = rootdir_header
         if rootdir is None and caller is not None:
             rootdir = os.path.commonprefix([x, caller])
         if rootdir is None:
@@ -1996,25 +2008,33 @@ class CMixin:
         lines = []
         if self.include_files:
             for x in self.include_files:
-                lines += self.include_file(x, caller=self.dst,
-                                           rootdir=self.root_include_dir,
-                                           no_buffer_line=True)
+                lines += self.include_file(
+                    x, caller=self.dst,
+                    rootdir_header=self.root_include_dir_header,
+                    rootdir_source=self.root_include_dir_source,
+                    no_buffer_line=True)
             if not no_buffer_line:
                 lines += ['']
         return lines
 
-    def include_self(self, caller, rootdir=None, **kwargs):
-        if rootdir is None:
-            rootdir = self.root_include_dir
+    def include_self(self, caller, rootdir_header=None,
+                     rootdir_source=None, **kwargs):
+        if rootdir_header is None:
+            rootdir_header = self.root_include_dir_header
+        if rootdir_source is None:
+            rootdir_source = self.root_include_dir_source
         return self.include_file(
-            self.dst, caller=caller, rootdir=rootdir, **kwargs)
+            self.dst, caller=caller, rootdir_header=rootdir_header,
+            rootdir_source=rootdir_source, **kwargs)
 
     def include_header(self, caller=None, **kwargs):
         if caller is None:
             caller = self.dst
         return self.include_file(
             self.get_child('header').dst, caller=caller,
-            rootdir=self.root_include_dir, **kwargs)
+            rootdir_header=self.root_include_dir_header,
+            rootdir_source=self.root_include_dir_source,
+            **kwargs)
 
     def begin_namespaces(self, namespaces=None):
         if namespaces is None:
@@ -3879,7 +3899,8 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBaseHeader):
         for k, v in includes.items():
             includes[k] += self.extract_chunk(f'headers_{k}', existing)
         include = self.parent.include_self(
-            self.dst, rootdir=self.root_include_dir)
+            self.dst, rootdir_header=self.root_include_dir_header,
+            rootdir_source=self.root_include_dir_source)
         for x in include:
             if x not in includes['global']:
                 includes['global'].append(x)
@@ -3887,7 +3908,9 @@ class CEnumGeneratorGlobalHeader(CEnumGeneratorBaseHeader):
             if k in self.parent.added_files:
                 new_include = self.parent.get_child(
                     k).get_child('header').include_self(
-                        self.dst, rootdir=self.root_include_dir)
+                        self.dst,
+                        rootdir_header=self.root_include_dir_header,
+                        rootdir_source=self.root_include_dir_source)
                 for x in new_include:
                     if x not in includes[k]:
                         includes[k].append(x)
@@ -4144,7 +4167,8 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
     def include_helper_header(self):
         return self.include_file(
             self.get_child('helper').dst, caller=self.dst,
-            rootdir=self.root_include_dir
+            rootdir_header=self.root_include_dir_header,
+            rootdir_source=self.root_include_dir_source,
         )
 
     def helper_unit(self, helper_name='enum_helper', inverse=False,
@@ -4741,7 +4765,8 @@ def generate(args, **kws):
         src, dst=args.dst, top_level=True, overwrite=args.overwrite,
         verbose=args.verbose, dry_run=args.dry_run,
         skip_children=args.skip_children,
-        root_include_dir=args.root_include_dir, **kws)
+        root_include_dir_source=args.root_include_dir_source,
+        root_include_dir_header=args.root_include_dir_header, **kws)
     return dst
 
 
@@ -4859,9 +4884,12 @@ if __name__ == "__main__":
                         help="Run without writing any file(s)")
     parser.add_argument("--skip-children", action="store_true",
                         help="Don't generate the default child files")
-    parser.add_argument("--root-include-dir", type=str,
+    parser.add_argument("--root-include-dir-source", type=str,
                         help=("Root directory where include files are "
                               "located"))
+    parser.add_argument("--root-include-dir-header", type=str,
+                        help=("Root directory where header files should "
+                              "be included from"))
     parser.add_argument("--prefix-with-type", action="store_true",
                         help="Prefix enums w/ their type")
     parser.add_argument("--prefix-by-split", type=str,

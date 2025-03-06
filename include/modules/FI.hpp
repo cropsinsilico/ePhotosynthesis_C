@@ -26,8 +26,8 @@
  *
  **********************************************************************************************************************************************/
 
-#include "modules/ModuleBase.hpp"
-#include "conditions/FIBFCondition.hpp"
+#include "ModuleBase.hpp"
+#include "../conditions/FIBFCondition.hpp"
 
 namespace ePhotosynthesis {
 

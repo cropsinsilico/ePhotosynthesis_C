@@ -2,8 +2,8 @@
 #include <memory>
 #include <boost/python.hpp>
 
-#include "Variables.hpp"
-#include "drivers/drivers.hpp"
+#include "../Variables.hpp"
+#include "../drivers/drivers.hpp"
 
 namespace ePhotosynthesis {
 namespace python {

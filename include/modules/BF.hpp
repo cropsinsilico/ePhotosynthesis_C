@@ -26,9 +26,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "modules/ModuleBase.hpp"
-#include "definitions.hpp"
-#include "conditions/BFCondition.hpp"
+#include "ModuleBase.hpp"
+#include "../definitions.hpp"
+#include "../conditions/BFCondition.hpp"
 
 namespace ePhotosynthesis {
 

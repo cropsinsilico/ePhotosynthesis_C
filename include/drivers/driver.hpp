@@ -26,9 +26,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
-#include "globals.hpp"
-#include "enums/enums_utils.hpp"
+#include "../definitions.hpp"
+#include "../globals.hpp"
+#include "../enums/enums_utils.hpp"
 
 #include <nvector/nvector_serial.h>
 #include <vector>

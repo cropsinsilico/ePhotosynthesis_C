@@ -34,7 +34,7 @@
 
 #ifdef ENABLE_ssPS
 
-#include "definitions.hpp"
+#include "../definitions.hpp"
 
 namespace ePhotosynthesis {
 namespace modules {

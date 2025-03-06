@@ -26,8 +26,8 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
-#include "rc/RCBase.hpp"
+#include "../definitions.hpp"
+#include "RCBase.hpp"
 
 namespace ePhotosynthesis {
 namespace RC {

@@ -26,9 +26,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "modules/ModuleBase.hpp"
-#include "conditions/SUCSCondition.hpp"
-#include "definitions.hpp"
+#include "ModuleBase.hpp"
+#include "../conditions/SUCSCondition.hpp"
+#include "../definitions.hpp"
 
 namespace ePhotosynthesis {
 

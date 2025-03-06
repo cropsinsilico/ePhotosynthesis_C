@@ -26,7 +26,7 @@
  *
  **********************************************************************************************************************************************/
 
-#include "conditions/RACondition.hpp"
+#include "RACondition.hpp"
 
 #define PARENT_RedoxReg RedoxReg
 #define NRATIO_RedoxReg 0

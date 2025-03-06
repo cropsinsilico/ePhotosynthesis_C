@@ -26,9 +26,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "modules/ModuleBase.hpp"
+#include "ModuleBase.hpp"
 #include <nvector/nvector_serial.h>
-#include "conditions/RedoxRegCondition.hpp"
+#include "../conditions/RedoxRegCondition.hpp"
 
 namespace ePhotosynthesis {
 

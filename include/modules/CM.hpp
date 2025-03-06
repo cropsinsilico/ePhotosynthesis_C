@@ -25,8 +25,9 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **********************************************************************************************************************************************/
-#include "modules/ModuleBase.hpp"
-#include "conditions/CMCondition.hpp"
+
+#include "ModuleBase.hpp"
+#include "../conditions/CMCondition.hpp"
 
 namespace ePhotosynthesis {
 

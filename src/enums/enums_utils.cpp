@@ -2,6 +2,7 @@
 #include <istream>
 #include <iostream>
 #include <algorithm>
+#include <iterator>
 
 std::ostream& operator<<(std::ostream& out, const ePhotosynthesis::MODULE& x) {
   out << ePhotosynthesis::utils::get_enum_names<ePhotosynthesis::MODULE>().find(x)->second;

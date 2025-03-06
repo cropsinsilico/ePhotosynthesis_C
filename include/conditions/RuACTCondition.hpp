@@ -26,7 +26,7 @@
  *
  **********************************************************************************************************************************************/
 
-#include "conditions/ConditionBase.hpp"
+#include "ConditionBase.hpp"
 
 #define PARENT_RuACT RA
 #define NRATIO_RuACT 16

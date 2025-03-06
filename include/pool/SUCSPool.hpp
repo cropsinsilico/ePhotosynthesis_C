@@ -26,8 +26,8 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
-#include "pool/PoolBase.hpp"
+#include "../definitions.hpp"
+#include "PoolBase.hpp"
 
 namespace ePhotosynthesis {
 namespace pool {

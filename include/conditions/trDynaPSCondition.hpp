@@ -26,8 +26,8 @@
  *
  **********************************************************************************************************************************************/
 
-#include "conditions/RROEACondition.hpp"
-#include "conditions/DynaPSCondition.hpp"
+#include "RROEACondition.hpp"
+#include "DynaPSCondition.hpp"
 
 #define PARENT_trDynaPS trDynaPS
 #define CHILDREN_trDynaPS DynaPS, RROEA

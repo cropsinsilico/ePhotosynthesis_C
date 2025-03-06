@@ -1,5 +1,4 @@
 #pragma once
-#include "definitions.hpp"
 
 /**********************************************************************************************************************************************
  *   Copyright   Xin-Guang Zhu, Yu Wang, Donald R. ORT and Stephen P. LONG
@@ -27,9 +26,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "modules/ModuleBase.hpp"
-#include "conditions/XanCycleCondition.hpp"
-#include "definitions.hpp"
+#include "ModuleBase.hpp"
+#include "../conditions/XanCycleCondition.hpp"
+#include "../definitions.hpp"
 
 namespace ePhotosynthesis {
 

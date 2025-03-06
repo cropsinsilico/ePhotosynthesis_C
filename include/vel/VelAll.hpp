@@ -26,13 +26,13 @@
  *
  **********************************************************************************************************************************************/
 
-#include "vel/VelBase.hpp"
-#include "vel/BFVel.hpp"
-#include "vel/FIVel.hpp"
-#include "vel/PRVel.hpp"
-#include "vel/PSVel.hpp"
-#include "vel/RROEAVel.hpp"
-#include "vel/RedoxRegVel.hpp"
-#include "vel/RuACTVel.hpp"
-#include "vel/SUCSVel.hpp"
-#include "vel/XanCycleVel.hpp"
+#include "VelBase.hpp"
+#include "BFVel.hpp"
+#include "FIVel.hpp"
+#include "PRVel.hpp"
+#include "PSVel.hpp"
+#include "RROEAVel.hpp"
+#include "RedoxRegVel.hpp"
+#include "RuACTVel.hpp"
+#include "SUCSVel.hpp"
+#include "XanCycleVel.hpp"

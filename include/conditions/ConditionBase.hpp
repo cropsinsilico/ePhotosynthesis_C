@@ -26,9 +26,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
-#include "enums/enums_utils.hpp"
-#include "ValueSet.hpp"
+#include "../definitions.hpp"
+#include "../enums/enums_utils.hpp"
+#include "../ValueSet.hpp"
 #include <stdexcept>
 #include <sundials/sundials_types.h>
 

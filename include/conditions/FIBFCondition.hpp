@@ -27,9 +27,9 @@
  **********************************************************************************************************************************************/
 
 #include <math.h>
-#include "definitions.hpp"
-#include "conditions/FICondition.hpp"
-#include "conditions/BFCondition.hpp"
+#include "../definitions.hpp"
+#include "FICondition.hpp"
+#include "BFCondition.hpp"
 
 #define PARENT_FIBF EPS
 #define NRATIO_FIBF 0

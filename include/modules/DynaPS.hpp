@@ -26,8 +26,8 @@
  *
  **********************************************************************************************************************************************/
 
-#include "modules/ModuleBase.hpp"
-#include "conditions/DynaPSCondition.hpp"
+#include "ModuleBase.hpp"
+#include "../conditions/DynaPSCondition.hpp"
 
 namespace ePhotosynthesis {
 

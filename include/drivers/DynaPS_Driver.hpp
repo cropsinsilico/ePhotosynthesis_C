@@ -26,9 +26,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
-#include "drivers/driver.hpp"
-#include "conditions/DynaPSCondition.hpp"
+#include "../definitions.hpp"
+#include "driver.hpp"
+#include "../conditions/DynaPSCondition.hpp"
 
 namespace ePhotosynthesis {
   FORWARD_DECLARE_DRIVER(DynaPS);

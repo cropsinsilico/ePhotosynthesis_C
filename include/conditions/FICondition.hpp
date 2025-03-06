@@ -26,7 +26,7 @@
  *
  **********************************************************************************************************************************************/
 
-#include "conditions/ConditionBase.hpp"
+#include "ConditionBase.hpp"
 
 #define PARENT_FI FIBF
 #define NRATIO_FI 23

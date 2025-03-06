@@ -26,8 +26,8 @@
  *
  **********************************************************************************************************************************************/
 
-#include "conditions/RACondition.hpp"
-#include "conditions/XanCycleCondition.hpp"
+#include "RACondition.hpp"
+#include "XanCycleCondition.hpp"
 #include <sundials/sundials_types.h>
 
 #define PARENT_DynaPS trDynaPS

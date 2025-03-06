@@ -214,10 +214,11 @@ set(ENUM_COMMAND
     --api-macro-c=${EXPORT_MACRO}
     --include-file-c-source=${UTILS_DST_H}
     --include-file-global-source=${UTILS_DST_H}
-    --include-file-helper=${CMAKE_CURRENT_SOURCE_DIR}/include/${EXPORT_HEADER}
+    --include-file-helper=${CMAKE_CURRENT_SOURCE_DIR}/include/definitions.hpp
     --dst-global=${ENUM_GLOBAL_H}
     --dst-global-source=${ENUM_GLOBAL}
-    --root-include-dir=${CMAKE_CURRENT_SOURCE_DIR}/include
+    --root-include-dir-source=${CMAKE_CURRENT_SOURCE_DIR}/include
+    --root-include-dir-header=${CMAKE_CURRENT_SOURCE_DIR}/include/enums
     --timestamp-file=${ENUM_STAMP}
     --overwrite
 )

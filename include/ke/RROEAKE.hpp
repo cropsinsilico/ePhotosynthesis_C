@@ -26,8 +26,8 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
-#include "ke/KEBase.hpp"
+#include "../definitions.hpp"
+#include "KEBase.hpp"
 
 namespace ePhotosynthesis {
 namespace KE {

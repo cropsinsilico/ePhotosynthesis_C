@@ -26,8 +26,8 @@
  *
  **********************************************************************************************************************************************/
 
-#include "conditions/EPSCondition.hpp"
-#include "conditions/RuACTCondition.hpp"
+#include "EPSCondition.hpp"
+#include "RuACTCondition.hpp"
 
 #define PARENT_RA DynaPS
 #define CHILDREN_RA EPS, RuACT

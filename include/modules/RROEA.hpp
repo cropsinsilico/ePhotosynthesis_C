@@ -26,8 +26,8 @@
  *
  **********************************************************************************************************************************************/
 
-#include "modules/ModuleBase.hpp"
-#include "conditions/RROEACondition.hpp"
+#include "ModuleBase.hpp"
+#include "../conditions/RROEACondition.hpp"
 
 namespace ePhotosynthesis {
 

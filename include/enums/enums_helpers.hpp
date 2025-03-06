@@ -198,7 +198,7 @@ namespace ePhotosynthesis {
   };  /**< All enum values */
 }
 
-#include "ePhotosynthesis_export.h"
+#include "../definitions.hpp"
 
 namespace ePhotosynthesis {
   #define MEMBERS_BFCondition		\

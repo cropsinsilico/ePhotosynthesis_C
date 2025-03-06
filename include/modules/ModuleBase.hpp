@@ -26,9 +26,9 @@
  *
  **********************************************************************************************************************************************/
 
-#include "definitions.hpp"
-#include "Variables.hpp"
-#include "ValueSet.hpp"
+#include "../definitions.hpp"
+#include "../Variables.hpp"
+#include "../ValueSet.hpp"
 
 namespace ePhotosynthesis {
 namespace modules {
