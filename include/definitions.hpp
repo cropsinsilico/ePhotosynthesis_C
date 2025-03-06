@@ -34,6 +34,7 @@
 #include "macros.hpp"
 #include <cmath>
 #include <cstdlib>
+#include <limits>
 #include <sundials/sundials_types.h>
 #include <sundials/sundials_config.h>
 

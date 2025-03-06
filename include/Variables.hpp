@@ -185,7 +185,7 @@ public:
        \param[in] in Instance to serialize.
        \returns Updated output stream.
     */
-    friend std::ostream& operator<<(std::ostream &out, const Variables *in);
+    EPHOTO_API friend std::ostream& operator<<(std::ostream &out, const Variables *in);
     /**
        Record a value set by copying it into this set of Variables.
        \param[in] x Value set to record.
