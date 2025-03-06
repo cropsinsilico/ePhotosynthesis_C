@@ -72,7 +72,11 @@ if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
   message(FATAL_ERROR "In-source build prohibited.\nCMAKE_SOURCE_DIR = ${CMAKE_SOURCE_DIR}\nCMAKE_BINARY_DIR = ${CMAKE_BINARY_DIR}")
 endif("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
 if(NOT CONDA_PREFIX)
-  cmake_path(SET CONDA_PREFIX "$ENV{CONDA_PREFIX}")
+  if(DEFINED ENV{CONDA_BUILD})
+    cmake_path(SET CONDA_PREFIX "$ENV{PREFIX}")
+  else()
+    cmake_path(SET CONDA_PREFIX "$ENV{CONDA_PREFIX}")
+  endif()
 endif()
 message(STATUS "CONDA_PREFIX = ${CONDA_PREFIX}")
 
@@ -650,6 +654,8 @@ if(BUILD_PYTHON)
         Python REQUIRED COMPONENTS
         Interpreter Development.Module
     )
+    message(STATUS "Python_VERSION_MAJOR = ${Python_VERSION_MAJOR}")
+    message(STATUS "Python_VERSION_MINOR = ${Python_VERSION_MINOR}")
     find_package(
         Boost 1.36.0 REQUIRED COMPONENTS
         python${Python_VERSION_MAJOR}${Python_VERSION_MINOR}
