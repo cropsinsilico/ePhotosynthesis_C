@@ -367,6 +367,9 @@ jobs:
   docs:
     name: Build/Publish the Docs
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -390,6 +393,7 @@ jobs:
       - name: Install doc dependencies
         run: |
           conda env update -n ephoto --file environment_docs.yml
+          conda list
       - name: Build docs
         if: matrix.os != 'windows-latest'
         run: |

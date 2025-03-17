@@ -37,6 +37,7 @@ outputs:
         - ninja  # [win]
         - python                                 # [build_platform != target_platform]
         - {{ compiler('cxx') }}
+        - yggdrasil
       host:
         - python
         - sundials >=5.7.0
@@ -76,6 +77,7 @@ outputs:
         - scikit-build-core
         - setuptools_scm
         - {{ compiler('cxx') }}
+        - yggdrasil
       host:
         - libboost-devel >=1.36.0
         - libboost-python-devel >=1.36.0
