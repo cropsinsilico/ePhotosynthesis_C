@@ -392,7 +392,7 @@ function(add_yggdrasil_test NAME YAML EXECUTABLE)
       include(TestTools)
       check_test_output(
         ${NAME} ${ARGS_EXPECTED_OUTPUT} ${ARGS_ACTUAL_OUTPUT}
-        ${CHECK_TEST_ARGS}
+        ${CHECK_TEST_ARGS} FUZZY_COMPARE SEP "\t"
       )
     endif()
 endfunction()

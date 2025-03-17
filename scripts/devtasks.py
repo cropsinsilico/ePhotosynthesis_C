@@ -31,29 +31,29 @@ def find_matlab(required=False):
     return sorted(locations)[-1]  # Return newest version
 
 
-def read_output_table(fname):
+def read_output_table(fname, sep=','):
     with open(fname, 'r') as fd:
         contents = fd.readlines()
     if len(contents) == 1:
         names = ['CO2AR']
     else:
-        names = contents[0].strip().split(',')
-    values = [float(x) for x in contents[-1].strip().split(',')]
+        names = contents[0].strip().split(sep)
+    values = [float(x) for x in contents[-1].strip().split(sep)]
     out = {k: v for k, v in zip(names, values)}
     return out
 
 
-def check_output(f1, f2, reltol=1.0e-05, abstol=1.0e-08,
+def check_output(f1, f2, reltol=1.0e-05, abstol=1.0e-08, sep=',',
                  label_f1='file A', label_f2='file B'):
-    x1dict = read_output_table(f1)
-    x2dict = read_output_table(f2)
+    x1dict = read_output_table(f1, sep=sep)
+    x2dict = read_output_table(f2, sep=sep)
     out = True
     for k in x1dict.keys():
         if k not in x2dict:
-            print(f"{k} missing from C++")
+            print(f"{k} missing from {label_f2}")
     for k in x2dict.keys():
         if k not in x1dict:
-            print(f"{k} missing from MATLAB")
+            print(f"{k} missing from {label_f1}")
     for k in x1dict.keys():
         x1 = x1dict[k]
         x2 = x2dict[k]
@@ -632,6 +632,7 @@ class compare_matlab(BuildSubTask):
             'abstol': args.abstol,
             'label_f1': 'MATLAB',
             'label_f2': 'C++',
+            'sep': args.sep,
         }
         compare_files(fout1, fout2, check_files=check_output,
                       check_files_kwargs=check_output_kws,
@@ -740,6 +741,7 @@ class compare_files_task(SubTask):
             'label_f2': 'Expected',
             'reltol': args.reltol,
             'abstol': args.abstol,
+            'sep': args.sep,
         }
         compare_files(args.actual, args.expected, ftype=args.filetype,
                       check_files_kwargs=check_files_kwargs)
@@ -953,6 +955,10 @@ if __name__ == "__main__":
     parser.add_argument(
         "--abstol", type=float, default=1.0e-08,
         help="Absolute tolerance to use when comparing output files",
+        subparsers={'task': compare_tasks})
+    parser.add_argument(
+        "--sep", type=str, default=',',
+        help="Separator for values in tables to compare",
         subparsers={'task': compare_tasks})
 
     # ePhoto arguments
