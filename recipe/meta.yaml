@@ -19,7 +19,7 @@ build:
 # TODO: Add Python wrapper as export?
 outputs:
   - name: ephotosynthesis
-    version:  {{ version }}
+    version: {{ version }}
     script: build_cpp.sh  # [unix]
     script: bld_cpp.bat  # [win]
     about:
@@ -55,8 +55,8 @@ outputs:
         - if not exist %LIBRARY_INC%\\ePhotosynthesis\\ePhotosynthesis.hpp exit 1  # [win]
         - if not exist %LIBRARY_BIN%\\ePhoto.exe exit 1  # [win]
   - name: pyphotosynthesis
-    version:  {{ version }}
-    script: '{{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv '
+    version: {{ version }}
+    script: python -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv 
     about:
       summary:
       description: |
