@@ -56,7 +56,9 @@ outputs:
         - if not exist %LIBRARY_BIN%\\ePhoto.exe exit 1  # [win]
   - name: pyphotosynthesis
     version: {{ version }}
-    script: python -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv 
+    script: build_python.sh  # [unix]
+    script: bld_python.bat  # [win]
+    # script: python -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv 
     about:
       summary:
       description: |

@@ -8,7 +8,8 @@ cd conda_build
 cmake -GNinja ^
       -D CMAKE_BUILD_TYPE=%CONFIGURATION% ^
       -D CMAKE_INSTALL_PREFIX=%LIBRARY_PREFIX% ^
-      -D CMAKE_VERBOSE_MAKEFILE:BOOL=ON ..
+      -D CMAKE_VERBOSE_MAKEFILE:BOOL=ON ^
+      -D WITH_YGGDRASIL:BOOL=ON ..
 if errorlevel 1 exit 1
 
 :: Using ninja

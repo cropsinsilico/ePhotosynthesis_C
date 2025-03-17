@@ -1,0 +1,6 @@
+channels:
+  - conda-forge
+dependencies:
+  - setuptools_scm
+  - doxygen>=1.9.2
+  - graphviz

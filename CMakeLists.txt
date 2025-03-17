@@ -82,6 +82,7 @@ message(STATUS "CONDA_PREFIX = ${CONDA_PREFIX}")
 
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${PROJECT_SOURCE_DIR}/cmake")
 
+option(BUILD_CXX "Build CXX library & executable." ON)
 option(BUILD_TESTS "Build ePhotosynthesis tests.")
 option(TEST_COVERAGE "Include test coverage in the tests (turns BUILD_TESTS ON)")
 option(PRESERVE_TEST_OUTPUT "Don't clean up test output after the test runs")
@@ -92,6 +93,14 @@ option(BUILD_PYTHON "Build python bindings for the library.")
 option(EPHOTO_USE_SCOPED_ENUM "Build using a scoped enumerator for the ValueSet base class (enabled by default when building with MSVC)")
 option(MAKE_EQUIVALENT_TO_MATLAB "Build with settings that make this model equivalent to the Matlab C3 model")
 option(WITH_YGGDRASIL "Compile with yggdrasil enabled")
+
+if(SKBUILD)
+    set(BUILD_CXX OFF)
+    set(BUILD_PYTHON ON)
+    set(BUILD_TESTS OFF)
+    set(BUILD_DOCS OFF)
+    set(WITH_YGGDRASIL ON)
+endif()
 
 if(NOT BUILD_PYTHON)
     set(BUILD_PYTHON OFF)
