@@ -4,9 +4,9 @@ set -euo pipefail
 # Using cmake
 mkdir conda_build
 cd conda_build
+# -D CMAKE_BUILD_TYPE=Release \
+# -D CMAKE_INSTALL_PREFIX=$PREFIX \
 cmake ${CMAKE_ARGS} \
-    -D CMAKE_BUILD_TYPE=Release \
-    -D CMAKE_INSTALL_PREFIX=$PREFIX \
     -D CMAKE_VERBOSE_MAKEFILE:BOOL=ON \
     -D WITH_YGGDRASIL:BOOL=ON ..
 

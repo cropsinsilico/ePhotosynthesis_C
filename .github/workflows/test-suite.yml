@@ -389,7 +389,7 @@ jobs:
           conda-remove-defaults: true
       - name: Install doc dependencies
         run: |
-          conda install --file environment_docs.yml
+          conda env update -n ephoto --file environment_docs.yml
       - name: Build docs
         if: matrix.os != 'windows-latest'
         run: |
