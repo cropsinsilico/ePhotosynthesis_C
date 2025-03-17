@@ -16,56 +16,88 @@ build:
   run_exports:
     - {{ pin_subpackage('ephotosynthesis', max_pin='x.x') }}
 
-requirements:
-  build:
-    - cmake
-    - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-    - make  # [unix]
-    - ninja  # [win]
-    - python                                 # [build_platform != target_platform]
-    - scikit-build-core
-    - setuptools_scm
-    - {{ compiler('cxx') }}
-  host:
-    - libboost-devel >=1.36.0
-    - libboost-python-devel >=1.36.0
-    - python
-    - scikit-build-core
-    - setuptools_scm
-    - sundials >=5.7.0
-    - yggdrasil
-  run:
-    - libboost-devel >=1.36.0
-    - libboost-python-devel >=1.36.0
-    - python
-    - sundials >=5.7.0
-    - yggdrasil
-
 # TODO: Add Python wrapper as export?
 outputs:
   - name: ephotosynthesis
     version:  {{ version }}
+    script: build_cpp.sh  # [unix]
+    script: bld_cpp.bat  # [win]
+    about:
+      summary:
+      description: |
+        C++ library and executable for running the ePhotosynthesis
+        model for leaf-level photosynthesis.
+      license: MPL-2.0
+      license_file: LICENSE.md
+    requirements:
+      build:
+        - cmake
+        - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+        - make  # [unix]
+        - ninja  # [win]
+        - python                                 # [build_platform != target_platform]
+        - {{ compiler('cxx') }}
+      host:
+        - python
+        - sundials >=5.7.0
+        - yggdrasil
+      run:
+        - python
+        - sundials >=5.7.0
+        - yggdrasil
+    test:
+      commands:
+        - test -f $PREFIX/lib/libEPhotosynthesis$SHLIB_EXT  # [unix]
+        - test -f $PREFIX/include/ePhotosynthesis/ePhotosynthesis.hpp  # [unix]
+        - test -f $PREFIX/bin/ePhoto  # [unix]
+        - if not exist %LIBRARY_LIB%\\EPhotosynthesis.lib exit 1  # [win]
+        - if not exist %LIBRARY_BIN%\\EPhotosynthesis.dll exit 1  # [win]
+        - if not exist %LIBRARY_INC%\\ePhotosynthesis\\ePhotosynthesis.hpp exit 1  # [win]
+        - if not exist %LIBRARY_BIN%\\ePhoto.exe exit 1  # [win]
   - name: pyphotosynthesis
     version:  {{ version }}
+    script: '{{ PYTHON }} -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv '
+    about:
+      summary:
+      description: |
+        Python package for running the ePhotosynthesis
+        model for leaf-level photosynthesis.
+      license: MPL-2.0
+      license_file: LICENSE.md
+    requirements:
+      build:
+        - cmake
+        - cross-python_{{ target_platform }}     # [build_platform != target_platform]
+        - make  # [unix]
+        - ninja  # [win]
+        - python                                 # [build_platform != target_platform]
+        - scikit-build-core
+        - setuptools_scm
+        - {{ compiler('cxx') }}
+      host:
+        - libboost-devel >=1.36.0
+        - libboost-python-devel >=1.36.0
+        - python
+        - scikit-build-core
+        - setuptools_scm
+        - sundials >=5.7.0
+        - yggdrasil
+      run:
+        - libboost-devel >=1.36.0
+        - libboost-python-devel >=1.36.0
+        - python
+        - sundials >=5.7.0
+        - yggdrasil
+    test:
+      imports:
+        - pyPhotosynthesis
 
-test:
-  commands:
-    - test -f $PREFIX/lib/libEPhotosynthesis$SHLIB_EXT  # [unix]
-    - test -f $PREFIX/include/ePhotosynthesis/ePhotosynthesis.hpp  # [unix]
-    - test -f $PREFIX/bin/ePhoto  # [unix]
-    - if not exist %LIBRARY_LIB%\\EPhotosynthesis.lib exit 1  # [win]
-    - if not exist %LIBRARY_BIN%\\EPhotosynthesis.dll exit 1  # [win]
-    - if not exist %LIBRARY_INC%\\ePhotosynthesis\\ePhotosynthesis.hpp exit 1  # [win]
-    - if not exist %LIBRARY_BIN%\\ePhoto.exe exit 1  # [win]
-  imports:
-    - pyPhotosynthesis
 
 about:
   home: https://github.com/cropsinsilico/ePhotosynthesis_C
   license: MPL-2.0
   license_file: LICENSE.md
-  summary: C++ version of ePhotosynthesis model
-
+  summary: C++/Python version of ePhotosynthesis model
   description: |
     ePhotosynthesis is a dynamic mechanistic model of photosynthesis 
     described by Zhu XG, Wang Y, Ort DR, Long SP. e-Photosynthesis: a comprehensive dynamic mechanistic model of C3 photosynthesis: from light capture to sucrose synthesis. Plant Cell Environ. 2013 Sep;36(9):1711-27. doi: 10.1111/pce.12025. Epub 2012 Nov 19. PMID: 23072293.
