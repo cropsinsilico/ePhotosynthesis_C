@@ -1,7 +1,7 @@
 #!/bin/sh
 set -euo pipefail
 
-"${PYTHON}" -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv
+"${PYTHON}" -m pip install . --no-deps --ignore-installed --no-cache-dir -vvv --no-build-isolation
 
 # # Using cmake
 # mkdir conda_build

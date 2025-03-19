@@ -45,7 +45,8 @@ function(create_yggdrasil_interface_library LANGUAGE)
   )
   set(LINK_LIBRARIES)
   foreach(lib ${LINKED_LIBRARIES})
-    if(NOT lib MATCHES "^ygg")
+    if((NOT lib MATCHES "^ygg")
+       AND (NOT lib MATCHES "^python"))
       find_library(${lib} ${lib} HINTS ${LIBRARY_DIRECTORIES})
       if(${lib} STREQUAL "${lib}-NOTFOUND")
         message(WARNING "Could not find yggdrasil dependency \"${lib}\"")
@@ -196,7 +197,7 @@ endfunction()
 
 function(get_yggdrasil_flags LANGUAGE TOOL OUTPUT_VARIABLE)
     set(options WITH_ASAN)
-    set(oneValueArgs TOOLNAME)
+    set(oneValueArgs TOOLNAME PYTHON)
     cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
     set(INFO_FLAGS --flags)
     if(ARGS_WITH_ASAN)
@@ -205,14 +206,19 @@ function(get_yggdrasil_flags LANGUAGE TOOL OUTPUT_VARIABLE)
     if(ARGS_TOOLNAME)
       list(APPEND INFO_FLAGS --toolname ${ARGS_TOOLNAME})
     endif()
+    if(NOT ARGS_PYTHON)
+      set(ARGS_PYTHON python)
+    endif()
+    set(YGG_COMMAND ${ARGS_PYTHON} -m yggdrasil info
+        ${TOOL} ${LANGUAGE} ${INFO_FLAGS})
     execute_process(
-      COMMAND yggdrasil info ${TOOL} ${LANGUAGE} ${INFO_FLAGS}
+      COMMAND ${YGG_COMMAND}
       OUTPUT_VARIABLE ${OUTPUT_VARIABLE}
       ERROR_VARIABLE FLAGS_ERROR
       RESULT_VARIABLE RESULT
     )
     if(RESULT)
-      message(FATAL_ERROR "WITH_YGGDRASIL specified, but command to get yggdrasil ${TOOL} flags failed: ${FLAGS_ERROR}")
+      message(FATAL_ERROR "WITH_YGGDRASIL specified, but command to get yggdrasil ${TOOL} flags failed:\n  COMMAND: ${YGG_COMMAND}\n  OUTPUT: ${${OUTPUT_VARIABLE}}\n  ERROR: ${FLAGS_ERROR}")
     endif()
     STRING(REPLACE " " ";" ${OUTPUT_VARIABLE} ${${OUTPUT_VARIABLE}})
     set(INCLUDE_PREFIXES)
@@ -298,7 +304,7 @@ endfunction()
 
 function(compile_yggdrasil)
     set(options WITH_ASAN)
-    set(oneValueArgs LANGUAGE TOOLNAME)
+    set(oneValueArgs LANGUAGE TOOLNAME PYTHON)
     cmake_parse_arguments(ARGS "${options}" "${oneValueArgs}" "${multiValueArgs}" ${ARGN})
     set(flags)
     if(ARGS_LANGUAGE)
@@ -311,8 +317,12 @@ function(compile_yggdrasil)
     if(ARGS_TOOLNAME)
       list(APPEND flags --toolname ${ARGS_TOOLNAME})
     endif()
+    if(NOT ARGS_PYTHON)
+      set(ARGS_PYTHON python)
+    endif()
+    set(YGG_COMMAND ${ARGS_PYTHON} -m yggdrasil compile ${flags})
     execute_process(
-      COMMAND yggdrasil compile ${flags}
+      COMMAND ${YGG_COMMAND}
       RESULT_VARIABLE YGGCOMPILE_RESULT
     )
     if(YGGCOMPILE_RESULT)

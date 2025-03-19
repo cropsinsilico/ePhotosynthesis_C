@@ -1,1 +1,31 @@
+import os
+try:
+    from .pyPhotosynthesis import Variables  # noqa: F401
+except ImportError:
+    import os.path
+    import re
+    from ctypes import PyDLL
+    if hasattr(os, 'add_dll_directory'):
+        os.add_dll_directory(os.path.dirname(__file__))
+    ## @cond HIDDEN_SYMBOLS
+    bundled_pylib = next(
+        filter(
+            lambda fl: re.match(".*pyPhotosynthesis\\..*", fl),
+            sorted(os.listdir(os.path.dirname(__file__))),
+        ),
+        None,
+    )
+    print(f"dir = {os.path.dirname(__file__)}\n"
+          f"files = {os.listdir(os.path.dirname(__file__))}\n"
+          f"bundled_pylib = {bundled_pylib}")
+    if bundled_pylib:
+        PyDLL(os.path.join(os.path.dirname(__file__), bundled_pylib),
+              winmode=0)
+    else:
+        raise FileNotFoundError(
+            "YggInterface C++ library is not installed and "
+            "no bundled version was detected")
+    from .pyPhotosynthesis import Variables  # noqa: F401
+    ## @endcond
+
 from .pyPhotosynthesis import Variables, modules, drivers

@@ -1,4 +1,5 @@
 import os
+import copy
 import shutil
 import sys
 import argparse
@@ -234,6 +235,17 @@ class BuildSubTask(SubTask):
     @classmethod
     def adjust_args(cls, args):
         cls.prefix_path_args(args, ['build_dir', 'install_dir'])
+        if args.scikit_build:
+            args.with_python = False
+        if args.only_python:
+            assert args.target in [None, 'pyPhotosynthesis']
+            args.target = 'pyPhotosynthesis'
+        if args.target == 'pyPhotosynthesis':
+            args.component = 'Python'
+            args.with_python = False
+        if args.with_python:
+            args.with_python = build.copy_args(
+                args, target='pyPhotosynthesis')
         super(BuildSubTask, cls).adjust_args(args)
 
     def __init__(self, args, **kwargs):
@@ -253,6 +265,52 @@ class BuildSubTask(SubTask):
         super(BuildSubTask, self).run_commands(args, **kwargs)
 
 
+class scikit_build(SubTask):
+
+    @classmethod
+    def adjust_args(cls, args):
+        if args.target != 'pyPhotosynthesis':
+            args.build_dir += '_scikit'
+        args.target = None
+        args.component = None
+        super(scikit_build, cls).adjust_args(args)
+
+    def __init__(self, args, config_args=None, install_args=None,
+                 **kwargs):
+        self.adjust_args(args)
+        if install_args is None:
+            install_args = []
+        install_args += [
+            '--ignore-installed', '-v',
+        ]
+        if args.dont_install:
+            if args.rebuild and os.path.isdir(args.build_dir):
+                shutil.rmtree(args.build_dir)
+            if not os.path.isdir(args.build_dir):
+                os.mkdir(args.build_dir)
+            install_args += [
+                '--no-build-isolation',
+                # '--config-settings=editable.rebuild=true',
+                f'--config-settings=build-dir={args.build_dir}',
+                '-e',
+            ]
+        config_args = build.config_args(args, config_args=config_args,
+                                        for_scikit_build=True)
+        if config_args:
+            kwargs.setdefault('env', {})
+            kwargs['env'].setdefault(
+                'CMAKE_ARGS', os.environ.get('CMAKE_ARGS', ''))
+            kwargs['env']['CMAKE_ARGS'] = ' '.join([
+                x for x in config_args + [kwargs['env']['CMAKE_ARGS']]
+                if x
+            ])
+        cmds = [
+            f"pip install {' '.join(install_args)} ."
+        ]
+        kwargs.setdefault('cwd', _source_dir)
+        super(scikit_build, self).__init__(args, cmds=cmds, **kwargs)
+
+
 class build(SubTask):
 
     @classmethod
@@ -260,57 +318,109 @@ class build(SubTask):
         BuildSubTask.adjust_args(args)
         super(build, cls).adjust_args(args)
 
-    def __init__(self, args, config_args=None, build_args=None,
-                 install_args=None, **kwargs):
-        self.adjust_args(args)
+    @classmethod
+    def copy_args(cls, args, **kwargs):
+        out = copy.deepcopy(args)
+        for k, v in kwargs.items():
+            setattr(out, k, v)
+        cls.adjust_args(out)
+        return out
+
+    @classmethod
+    def config_args(cls, args, config_args=None,
+                    for_scikit_build=False, **kwargs):
+        if kwargs:
+            args = cls.copy_args(args, **kwargs)
+        config_args = copy.deepcopy(config_args)
         if config_args is None:
             config_args = []
-        if build_args is None:
-            build_args = []
-        if install_args is None:
-            install_args = []
         config_args += ['-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON']
         if args.make_equivalent_to_matlab:
             config_args += ['-DMAKE_EQUIVALENT_TO_MATLAB:BOOL=ON']
         if args.with_asan:
-            config_args += ['-DWITH_ASAN=ON']
+            config_args += ['-DWITH_ASAN:BOOL=ON']
         if args.with_coverage:
             config_args += ['-DTEST_COVERAGE:BOOL=ON']
-        if args.only_python:
-            build_args += ['--target pyPhotosynthesis']
-            install_args += ['--component', 'Python']
-            args.with_python = True
-        if args.with_python:
+        if args.target not in [None, 'EPhotosynthesis', 'ePhoto']:
+            config_args += ['-DBUILD_CXX:BOOL=OFF']
+        if args.with_python or args.target == 'pyPhotosynthesis':
             config_args += ['-DBUILD_PYTHON:BOOL=ON']
-        if not args.dont_install:
+        if not (args.dont_install or for_scikit_build):
             config_args += [f'-DCMAKE_INSTALL_PREFIX={args.install_dir}']
         if args.force_scoped_enum:
             config_args += ['-DEPHOTO_USE_SCOPED_ENUM:BOOL=ON']
         if args.with_yggdrasil:
             config_args += ['-DWITH_YGGDRASIL:BOOL=ON']
+        return config_args
+
+    @classmethod
+    def config_cmd(cls, args, **kwargs):
+        config_args = cls.config_args(args, **kwargs)
+        return f"cmake {_source_dir} {' '.join(config_args)}"
+
+    @classmethod
+    def build_args(cls, args, build_args=None, **kwargs):
+        if kwargs:
+            args = cls.copy_args(args, **kwargs)
+        build_args = copy.deepcopy(build_args)
+        if build_args is None:
+            build_args = []
+        if args.target:
+            build_args += ['--target', args.target]
         if sys.platform != 'win32':
             build_args += ['--', '-j', str(args.njobs)]
+        return build_args
+
+    @classmethod
+    def build_cmd(cls, args, **kwargs):
+        build_args = cls.build_args(args, **kwargs)
+        return (f"cmake --build . --config {args.build_type}"
+                f" {' '.join(build_args)}")
+
+    @classmethod
+    def install_args(cls, args, install_args=None, **kwargs):
+        if kwargs:
+            args = cls.copy_args(args, **kwargs)
+        install_args = copy.deepcopy(install_args)
+        if install_args is None:
+            install_args = []
+        if args.component:
+            install_args += ['--component', args.component]
+        return install_args
+
+    @classmethod
+    def install_cmd(cls, args, **kwargs):
+        install_args = cls.install_args(args, **kwargs)
+        return (f"cmake --install . --prefix {args.install_dir} "
+                f"{' '.join(install_args)}")
+
+    def __init__(self, args, config_args=None, build_args=None,
+                 install_args=None, **kwargs):
+        self.adjust_args(args)
+        if args.scikit_build:
+            if args.target == 'pyPhotosynthesis':
+                super(build, self).__init__(args, **kwargs)
+            scikit_build(self.copy_args(args), config_args=config_args)
+            if args.target == 'pyPhotosynthesis':
+                return
         cmds = [
-            f"cmake {_source_dir} {' '.join(config_args)}",
-            f"cmake --build . --config {args.build_type}"
-            f" {' '.join(build_args)}",
+            self.config_cmd(args, config_args=config_args),
+            self.build_cmd(args, build_args=build_args),
         ]
-        if args.with_python and not args.only_python:
+        if args.with_python:
             cmds += [
-                f"cmake --build . --config {args.build_type} "
-                f"--target pyPhotosynthesis"
+                self.build_cmd(args.with_python, build_args=build_args),
             ]
         if not args.dont_install:
             if not os.path.isdir(args.install_dir):
                 os.mkdir(args.install_dir)
             cmds += [
-                f"cmake --install . --prefix {args.install_dir} "
-                f"{' '.join(install_args)}"
+                self.install_cmd(args, install_args=install_args),
             ]
-            if args.with_python and not getattr(args, 'only_python', False):
+            if args.with_python:
                 cmds += [
-                    f"cmake --install . --prefix {args.install_dir} "
-                    f"--component Python {' '.join(install_args)}"
+                    self.install_cmd(args.with_python,
+                                     install_args=install_args),
                 ]
         if args.rebuild and os.path.isdir(args.build_dir):
             shutil.rmtree(args.build_dir)
@@ -383,7 +493,8 @@ class test(BuildSubTask):
             config_args = []
         if build_args is None:
             build_args = []
-        config_args += ['-DBUILD_TESTS:BOOL=ON']
+        if args.target != 'pyPhotosynthesis':
+            config_args += ['-DBUILD_TESTS:BOOL=ON']
         test_flags += ['-C', args.build_type]
         pytest_flags = ['-sv']
         if args.preserve_output:
@@ -394,8 +505,6 @@ class test(BuildSubTask):
         if args.verbose:
             test_flags += ['--output-on-failure', '-VV']
             pytest_flags += ['-v']
-        if args.only_python:
-            args.with_python = True
         if args.with_python and args.dont_install:
             kwargs.setdefault('env', {})
             kwargs['env'].setdefault(
@@ -406,18 +515,19 @@ class test(BuildSubTask):
                  kwargs['env']['PYTHONPATH']]
                 if x
             ])
-        if args.only_python:
-            testdir = os.path.join(_source_dir, 'tests', 'python')
-            cmds = [f"python -m pytest {' '.join(pytest_flags)} {testdir}"]
-        else:
+        cmds = []
+        if args.target != 'pyPhotosynthesis':
             if args.show_tests:
-                cmds = [
-                    'ctest -N'
-                ]
+                cmds += ['ctest -N']
             else:
-                cmds = [
-                    f"ctest {' '.join(test_flags)}"
-                ]
+                cmds += [f"ctest {' '.join(test_flags)}"]
+        if args.target == 'pyPhotosynthesis' or args.scikit_build:
+            testdir = os.path.join(_source_dir, 'tests', 'python')
+            cmds += [
+                f"python -m pytest {' '.join(pytest_flags)} {testdir}"
+            ]
+            if args.scikit_build:
+                kwargs.setdefault('cwd', _source_dir)
         try:
             super(test, self).__init__(args, cmds=cmds,
                                        config_args=config_args,
@@ -643,9 +753,12 @@ class docs(BuildSubTask):
 
     @classmethod
     def adjust_args(cls, args):
+        args.target = 'docs'
+        args.component = 'docs'
         args.with_asan = False
         args.build_type = 'Debug'
         args.dont_build = False
+        args.scikit_build = False
         args.dont_install = True
         args.only_python = False
         args.force_scoped_enum = False
@@ -663,8 +776,6 @@ class docs(BuildSubTask):
         if install_args is None:
             install_args = []
         config_args += ['-DBUILD_DOCS=ON', '-DDOXYGEN_CHECK_MISSING=ON']
-        build_args += ['--target', 'docs']
-        install_args += ['--component', 'docs']
         super(docs, self).__init__(
             args, config_args=config_args,
             build_args=build_args,
@@ -916,6 +1027,20 @@ if __name__ == "__main__":
         choices=["Debug", "Release"],
         subparsers={'task': build_tasks})
     parser.add_argument(
+        '--target', type=str,
+        help="Target to build",
+        # choices=[
+        #     "EPhotosynthesis", "ePhoto", "pyPhotosynthesis", "docs",
+        # ],
+        subparsers={'task': build_tasks})
+    parser.add_argument(
+        '--component', type=str,
+        help="Component to install",
+        # choices=[
+        #     "CXX", "Python", "docs",
+        # ],
+        subparsers={'task': build_tasks})
+    parser.add_argument(
         '--make-equivalent-to-matlab', action='store_true',
         help=("Build with changes enabled to make the model equivalent "
               "to the MATLAB version of the model"),
@@ -942,6 +1067,10 @@ if __name__ == "__main__":
         '--dont-build', action='store_true',
         help="Don't rebuild before performing the task",
         subparsers={'task': requires_build})
+    parser.add_argument(
+        '--scikit-build', action='store_true',
+        help="Build the Python wrapper package using scikit-build-core",
+        subparsers={'task': build_tasks})
     parser.add_argument(
         '--with-yggdrasil', action='store_true',
         help="Compile with WITH_YGGDRASIL",
