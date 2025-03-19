@@ -71,30 +71,11 @@ endif()
 if("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
   message(FATAL_ERROR "In-source build prohibited.\nCMAKE_SOURCE_DIR = ${CMAKE_SOURCE_DIR}\nCMAKE_BINARY_DIR = ${CMAKE_BINARY_DIR}")
 endif("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
-if(NOT CONDA_PREFIX)
-  if(DEFINED ENV{CONDA_BUILD})
-    cmake_path(SET CONDA_PREFIX "$ENV{PREFIX}")
-  else()
-    cmake_path(SET CONDA_PREFIX "$ENV{CONDA_PREFIX}")
-  endif()
-endif()
-message(STATUS "CONDA_PREFIX = ${CONDA_PREFIX}")
-if(NOT Python_ROOT_DIR AND CONDA_PREFIX)
-  set(Python_ROOT_DIR ${CONDA_PREFIX})
-endif()
-if(Python_ROOT_DIR AND NOT Python_FIND_STRATEGY)
-  set(Python_FIND_STRATEGY LOCATION)
-endif()
-if (NOT DEFINED Python_FIND_REGISTRY)
-  set(Python_FIND_REGISTRY "LAST")
-endif()
-if (NOT DEFINED Python_FIND_FRAMEWORK)
-  set(Python_FIND_FRAMEWORK "LAST")
-endif()
-find_package(Python REQUIRED COMPONENTS Interpreter)
-message(STATUS "Python_EXECUTABLE = ${Python_EXECUTABLE}")
 
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${PROJECT_SOURCE_DIR}/cmake")
+
+include(SearchTools)
+find_package_python(REQUIRED COMPONENTS Interpreter VERBOSE)
 
 option(BUILD_CXX "Build CXX library & executable." ON)
 option(BUILD_TESTS "Build ePhotosynthesis tests.")
@@ -107,13 +88,13 @@ option(BUILD_PYTHON "Build python bindings for the library.")
 option(EPHOTO_USE_SCOPED_ENUM "Build using a scoped enumerator for the ValueSet base class (enabled by default when building with MSVC)")
 option(MAKE_EQUIVALENT_TO_MATLAB "Build with settings that make this model equivalent to the Matlab C3 model")
 option(WITH_YGGDRASIL "Compile with yggdrasil enabled")
+option(INSTALL_PREFIX_PYTHON "Directory where the Python package should be installed. Can be absolute or relative to CMAKE_INSTALL_PREFIX." ".")
 
 if(SKBUILD)
     set(BUILD_CXX OFF)
     set(BUILD_PYTHON ON)
     set(BUILD_TESTS OFF)
     set(BUILD_DOCS OFF)
-    set(WITH_YGGDRASIL ON)
     if(NOT SKBUILD STREQUAL "2")
         message(FATAL_ERROR "Python interface must be built using scikit-build-core")
     endif()
@@ -293,15 +274,19 @@ endif()
 # Library & Executable #
 ########################
 
-file(GLOB_RECURSE SOURCES "src/*.cpp")
-list(APPEND SOURCES ${GENERATED_SOURCES})
+file(GLOB_RECURSE ePhoto_SOURCES "src/*.cpp")
+list(APPEND ePhoto_SOURCES ${GENERATED_SOURCES})
 
 set(ePhoto_DEPENDENCIES)
 set(ePhoto_COMPILE_OPTIONS)
+set(ePhoto_COMPILE_DEFINITIONS)
 set(ePhoto_PRIVATE_LIBRARIES)
+set(ePhoto_PRIVATE_LIBRARIES_C)
+set(ePhoto_PRIVATE_LIBRARIES_Python)
 set(ePhoto_PUBLIC_LIBRARIES)
 set(ePhoto_INCLUDE_DIRECTORIES)
 set(ePhoto_PROPERTIES)
+set(ePhoto_RPATHS)
 
 if(ENUM_TARGET)
   list(APPEND ePhoto_DEPENDENCIES ${ENUM_TARGET})
@@ -323,15 +308,98 @@ if(WIN32)
     list(APPEND ePhoto_COMPILE_OPTIONS /Zc:preprocessor)
 endif()
 
-# TODO: Replace this with proper cmake target & check for it in yggdrasil cmake driver
+set(NO_YggInterface_TARGET)
 if(WITH_YGGDRASIL)
-    include(YggdrasilTools)
-    set(YGG_LINK_ARGS PYTHON ${Python_EXECUTABLE})
-    # if(WITH_ASAN)
-    #   list(APPEND YGG_LINK_ARGS WITH_ASAN)
-    # endif()
-    create_yggdrasil_interface_library(CXX ${YGG_LINK_ARGS})
-    list(APPEND ePhoto_PRIVATE_LIBRARIES YggInterface::CXX)
+    # The next release of yggdrasil will install a proper cmake target,
+    # but until then, if the build environment is isolated, the yggdrasil
+    # interface library needs to be built and installed alongside the
+    # ePhotosynthesis Python wrappers
+    find_package(YggInterface COMPONENTS CXX)
+    if(NOT YggInterface_FOUND)
+        include(AddYggInterface)
+        set(YGGDRASIL_ARGS)
+        set(SKBUILD_ISOLATED)
+        if(SKBUILD)
+          get_yggdrasil_root(YGGDRASIL_ROOT)
+          cmake_path(
+            IS_PREFIX Python_SITEARCH "${YGGDRASIL_ROOT}"
+            yggdrasil_in_sitearch
+          )
+          if(NOT yggdrasil_in_sitearch)
+            set(SKBUILD_ISOLATED ON)
+          endif()
+        endif()
+        if(SKBUILD_ISOLATED)
+          set(NO_YggInterface_TARGET ON)
+          set(YGGDRASIL_PYTHON_PREFIX YggInterface)
+          add_yggdrasil_interfaces_backwards(
+            INSTALL_PREFIX ${YGGDRASIL_PYTHON_PREFIX}
+            INSTALL_LIBDIR ${YGGDRASIL_PYTHON_PREFIX}
+            INSTALL_BINDIR ${YGGDRASIL_PYTHON_PREFIX}
+            YGGDRASIL_ROOT ${YGGDRASIL_ROOT}
+            LIBRARY_BASE yggPhoto
+            DONT_INSTALL_CMAKE_PACKAGING
+            DONT_INSTALL_HEADERS
+            DONT_INSTALL_TARGETS
+            ${YGGDRASIL_ARGS}
+          )
+          if(NO_YggInterface_TARGET)
+            transfer_interface_properties(
+              yggPhoto DEST_PREFIX ePhoto_
+              EXCLUDE_REGEX_LINK_LIBRARIES "Python::Python"
+              DESTLIST_LINK_LIBRARIES ePhoto_PRIVATE_LIBRARIES_Python
+              PROPERTIES SOURCES INCLUDE_DIRECTORIES COMPILE_OPTIONS
+              LINK_LIBRARIES
+            )
+            transfer_interface_properties(
+              yggPhoto++ DEST_PREFIX ePhoto_
+              PROPERTIES SOURCES INCLUDE_DIRECTORIES COMPILE_OPTIONS
+            )
+          else()
+            # TODO: Try building YggInterface::CXX in ePhotosynthesis?
+          endif()
+        else()
+          # TODO: Handle case where yggdrasil already installed &
+          #   interface library is a shared library.
+          #   Add rpath to location of shared library?
+          # set(YGGDRASIL_PYTHON_PREFIX "..")
+          # cmake_path(
+          #   APPEND YGGDRASIL_PYTHON_PREFIX yggdrasil C
+          # )
+          # get_rpath_directory(${YGGDRASIL_PYTHON_PREFIX} ePhoto_RPATHS APPEND)
+          if(WITH_ASAN)
+            list(APPEND YGGDRASIL_ARGS WITH_ASAN)
+          endif()
+          import_yggdrasil_interface_library(
+            CXX PYTHON ${Python_EXECUTABLE} VERBOSE
+            ${YGGDRASIL_ARGS}
+          )
+        endif()
+    endif()
+    if(NOT NO_YggInterface_TARGET)
+      if(BUILD_CXX)
+        get_target_property(YggInterface_TYPE YggInterface::CXX TYPE)
+        if(YggInterface_TYPE STREQUAL "STATIC_LIBRARY")
+          transfer_interface_properties(
+            YggInterface::CXX SOURCE_INTERFACE LINK_SOURCE
+            DEST_PREFIX ePhoto_
+            DESTLIST_LINK_LIBRARIES ePhoto_PRIVATE_LIBRARIES_C
+            VERBOSE
+          )
+        else()
+          list(APPEND ePhoto_PRIVATE_LIBRARIES_C YggInterface::CXX)
+        endif()
+      endif()
+      if(BUILD_PYTHON)
+        transfer_interface_properties(
+          YggInterface::CXX SOURCE_INTERFACE LINK_SOURCE
+          DEST_PREFIX ePhoto_
+          EXCLUDE_REGEX_LINK_LIBRARIES ".*python.*"
+          DESTLIST_LINK_LIBRARIES ePhoto_PRIVATE_LIBRARIES_Python
+          VERBOSE
+        )
+      endif()
+    endif()
 endif()
 
 list(APPEND ePhoto_PUBLIC_LIBRARIES ${SUNDIALS_LIBRARIES})
@@ -350,7 +418,7 @@ list(
 
 set(CXX_LIBRARY_NAME EPhotosynthesis)
 if(BUILD_CXX)
-  add_library(${CXX_LIBRARY_NAME} SHARED ${SOURCES})
+  add_library(${CXX_LIBRARY_NAME} SHARED ${ePhoto_SOURCES})
   if(ePhoto_DEPENDENCIES)
     add_dependencies(${CXX_LIBRARY_NAME} ${ePhoto_DEPENDENCIES})
   endif()
@@ -359,9 +427,16 @@ if(BUILD_CXX)
       ${CXX_LIBRARY_NAME} PUBLIC ${ePhoto_COMPILE_OPTIONS}
     )
   endif()
-  if(ePhoto_PRIVATE_LIBRARIES)
+  if(ePhoto_COMPILE_DEFINITIONS)
+    target_compile_definitions(
+      ${CXX_LIBRARY_NAME} PUBLIC ${ePhoto_COMPILE_DEFINITIONS}
+    )
+  endif()
+  message(STATUS "ePhoto_PRIVATE_LIBRARIES_C = ${ePhoto_PRIVATE_LIBRARIES_C}")
+  if(ePhoto_PRIVATE_LIBRARIES OR ePhoto_PRIVATE_LIBRARIES_C)
     target_link_libraries(
       ${CXX_LIBRARY_NAME} PRIVATE ${ePhoto_PRIVATE_LIBRARIES}
+      ${ePhoto_PRIVATE_LIBRARIES_C}
     )
   endif()
   if(ePhoto_PUBLIC_LIBRARIES)
@@ -377,6 +452,11 @@ if(BUILD_CXX)
   if(ePhoto_PROPERTIES)
     set_target_properties(
       ${CXX_LIBRARY_NAME} PROPERTIES ${ePhoto_PROPERTIES}
+    )
+  endif()
+  if(ePhoto_RPATHS)
+    add_library_dirs_to_rpath(
+      ${CXX_LIBRARY_NAME} ADDITIONAL_DIRECTORIES ${ePhoto_RPATHS}
     )
   endif()
 
@@ -406,8 +486,8 @@ if(BUILD_PYTHON)
         Boost 1.36.0 REQUIRED COMPONENTS
         python${Python_VERSION_MAJOR}${Python_VERSION_MINOR}
     )
-    # Python_add_library(${PYTHON_LIBRARY_NAME} MODULE ${SOURCES})
-    add_library(${PYTHON_LIBRARY_NAME} MODULE ${SOURCES})
+    # Python_add_library(${PYTHON_LIBRARY_NAME} MODULE ${ePhoto_SOURCES})
+    add_library(${PYTHON_LIBRARY_NAME} MODULE ${ePhoto_SOURCES})
     if(ePhoto_DEPENDENCIES)
         add_dependencies(${PYTHON_LIBRARY_NAME} ${ePhoto_DEPENDENCIES})
     endif()
@@ -415,6 +495,7 @@ if(BUILD_PYTHON)
         ${PYTHON_LIBRARY_NAME} PRIVATE
         ${ePhoto_PRIVATE_LIBRARIES}
         ${ePhoto_PUBLIC_LIBRARIES}
+        ${ePhoto_PRIVATE_LIBRARIES_Python}
         ${Boost_LIBRARIES}
         Python::Module
     )
@@ -429,31 +510,32 @@ if(BUILD_PYTHON)
         -DPYTHON_LIBRARY_NAME=${PYTHON_LIBRARY_NAME}
         ${ePhoto_COMPILE_OPTIONS}
     )
+    if(ePhoto_COMPILE_DEFINITIONS)
+      target_compile_definitions(
+        ${PYTHON_LIBRARY_NAME} PUBLIC ${ePhoto_COMPILE_DEFINITIONS}
+      )
+    endif()
     set_target_properties(
         ${PYTHON_LIBRARY_NAME} PROPERTIES
         PREFIX ""
         DEFINE_SYMBOL "${CXX_LIBRARY_NAME}_EXPORTS"
         ${ePhoto_PROPERTIES}
     )
-
-    if(SKBUILD)
-        # set(PYTHON_BUILD_DIR ${CMAKE_CURRENT_BINARY_DIR})
-        cmake_path(
-            APPEND CMAKE_CURRENT_BINARY_DIR ePhotosynthesis
-            OUTPUT_VARIABLE PYTHON_BUILD_DIR
-        )
-    else()
-        cmake_path(
-            APPEND CMAKE_CURRENT_BINARY_DIR ${PYTHON_PACKAGE_NAME}
-            OUTPUT_VARIABLE PYTHON_BUILD_DIR
-        )
+    if(ePhoto_RPATHS)
+      add_library_dirs_to_rpath(
+        ${PYTHON_LIBRARY_NAME} ADDITIONAL_DIRECTORIES ${ePhoto_RPATHS}
+      )
     endif()
+    cmake_path(
+        APPEND CMAKE_CURRENT_BINARY_DIR ${PYTHON_PACKAGE_NAME}
+        OUTPUT_VARIABLE PYTHON_BUILD_DIR
+    )
+    message(STATUS "PYTHON_BUILD_DIR = ${PYTHON_BUILD_DIR}")
     set_target_properties(
         ${PYTHON_LIBRARY_NAME} PROPERTIES
         LIBRARY_OUTPUT_DIRECTORY ${PYTHON_BUILD_DIR}
         RUNTIME_OUTPUT_DIRECTORY ${PYTHON_BUILD_DIR}
     )
-    message(STATUS "PYTHON_BUILD_DIR = ${PYTHON_BUILD_DIR}")
     configure_file(
         cmake/__init__.py.in
         ${PYTHON_BUILD_DIR}/__init__.py @ONLY
@@ -468,17 +550,19 @@ endif()
 include(GenerateExportHeader)
 if(BUILD_CXX)
     set(EXPORT_LIBRARY ${CXX_LIBRARY_NAME})
-else()
+elseif(BUILD_PYTHON)
     set(EXPORT_LIBRARY ${PYTHON_LIBRARY_NAME})
 endif()
-generate_export_header(
-    ${EXPORT_LIBRARY}
-    BASE_NAME ${EXPORT_MACRO}
-    EXPORT_MACRO_NAME ${EXPORT_MACRO}
-    EXPORT_FILE_NAME ${EXPORT_HEADER}
-    DEPRECATED_MACRO_NAME ${EXPORT_MACRO}_DEPRECATED
-    NO_DEPRECATED_MACRO_NAME ${EXPORT_MACRO}_NO_DEPRECATED
-)
+if(EXPORT_LIBRARY)
+    generate_export_header(
+        ${EXPORT_LIBRARY}
+        BASE_NAME ${EXPORT_MACRO}
+        EXPORT_MACRO_NAME ${EXPORT_MACRO}
+        EXPORT_FILE_NAME ${EXPORT_HEADER}
+        DEPRECATED_MACRO_NAME ${EXPORT_MACRO}_DEPRECATED
+        NO_DEPRECATED_MACRO_NAME ${EXPORT_MACRO}_NO_DEPRECATED
+    )
+endif()
 
 
 #################
@@ -535,68 +619,21 @@ endif()
 ###########
 
 include(GNUInstallDirs)
+include(InstallTools)
 cmake_path(
     APPEND CMAKE_INSTALL_INCLUDEDIR ePhotosynthesis
     OUTPUT_VARIABLE EPHOTOSYNTHESIS_INSTALL_INCLUDEDIR
 )
 
 if(BUILD_CXX)
-  install(
+  complete_install(
+    ePhotosynthesis
     TARGETS ${CXX_LIBRARY_NAME} ePhoto
-    EXPORT ePhotosynthesisTargets
-    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-    PUBLIC_HEADER DESTINATION ${EPHOTOSYNTHESIS_INSTALL_INCLUDEDIR}
     COMPONENT CXX
-  )
-  install(
-    EXPORT ePhotosynthesisTargets
-    FILE ePhotosynthesisTargets.cmake
-    NAMESPACE ePhotosynthesis::
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ePhotosynthesis
-    COMPONENT CXX
-  )
-  install(
-    DIRECTORY include/
-    DESTINATION ${EPHOTOSYNTHESIS_INSTALL_INCLUDEDIR}
-    COMPONENT CXX
-  )
-  include(CMakePackageConfigHelpers)
-  write_basic_package_version_file(
-    "ePhotosynthesisConfigVersion.cmake"
     VERSION ${PACKAGE_VERSION}
-    COMPATIBILITY AnyNewerVersion
+    HEADER_DIR include/
+    MODULES_INCLUDE cmake/FindSUNDIALS.cmake
   )
-  configure_file(
-    cmake/ePhotosynthesisConfig.cmake.in
-    ePhotosynthesisConfig.cmake @ONLY
-  )
-  install(
-    FILES "${CMAKE_CURRENT_BINARY_DIR}/ePhotosynthesisConfig.cmake"
-    "${CMAKE_CURRENT_BINARY_DIR}/ePhotosynthesisConfigVersion.cmake"
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ePhotosynthesis
-    COMPONENT CXX
-  )
-  install(
-    FILES cmake/FindSUNDIALS.cmake cmake/YggdrasilTools.cmake
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/ePhotosynthesis
-    COMPONENT CXX
-  )
-  install(
-    FILES ${CMAKE_CURRENT_BINARY_DIR}/${EXPORT_HEADER}
-    DESTINATION ${EPHOTOSYNTHESIS_INSTALL_INCLUDEDIR}
-    COMPONENT CXX
-  )
-  install(
-    DIRECTORY include/
-    DESTINATION ${EPHOTOSYNTHESIS_INSTALL_INCLUDEDIR}
-    COMPONENT CXX
-  )
-  # install(
-  #    DIRECTORY param
-  #    DESTINATION ${EPHOTOSYNTHESIS_INSTALL_INCLUDEDIR}
-  # )
 endif()
 
 if(BUILD_PYTHON)
@@ -604,8 +641,8 @@ if(BUILD_PYTHON)
         set(PYTHON_INSTALL_DIR ".")
     else()
         cmake_path(
-            APPEND Python_SITEARCH ${PYTHON_PACKAGE_NAME}
-            OUTPUT_VARIABLE PYTHON_INSTALL_DIR
+          APPEND INSTALL_PREFIX_PYTHON ${PYTHON_PACKAGE_NAME}
+          OUTPUT_VARIABLE PYTHON_INSTALL_DIR
         )
     endif()
     message(STATUS "PYTHON_INSTALL_DIR = ${PYTHON_INSTALL_DIR}")
@@ -613,8 +650,6 @@ if(BUILD_PYTHON)
     install(
         TARGETS ${PYTHON_LIBRARY_NAME}
         DESTINATION "${PYTHON_INSTALL_DIR}"
-        # LIBRARY DESTINATION "${PYTHON_INSTALL_DIR}"
-        # RUNTIME DESTINATION "${PYTHON_INSTALL_DIR}"
         COMPONENT Python
     )
     install(
@@ -742,7 +777,6 @@ if(BUILD_TESTS AND BUILD_CXX)
     # Build executable directly from compiled object files so that
     # non-exported symbols can still be tested by unit tests
     add_executable(testRunner ${TEST_LIST} $<TARGET_OBJECTS:${CXX_LIBRARY_NAME}>)
-    # target_link_libraries(testRunner ${CXX_LIBRARY_NAME})
     target_compile_options(
       testRunner PUBLIC $<TARGET_PROPERTY:${CXX_LIBRARY_NAME},COMPILE_OPTIONS>
     )

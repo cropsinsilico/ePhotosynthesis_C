@@ -7,7 +7,7 @@ import pprint
 import subprocess
 import glob
 import difflib
-import numpy as np
+import site
 
 
 _source_dir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
@@ -46,6 +46,7 @@ def read_output_table(fname, sep=','):
 
 def check_output(f1, f2, reltol=1.0e-05, abstol=1.0e-08, sep=',',
                  label_f1='file A', label_f2='file B'):
+    import numpy as np
     x1dict = read_output_table(f1, sep=sep)
     x2dict = read_output_table(f2, sep=sep)
     out = True
@@ -235,6 +236,8 @@ class BuildSubTask(SubTask):
     @classmethod
     def adjust_args(cls, args):
         cls.prefix_path_args(args, ['build_dir', 'install_dir'])
+        if args.isolated_scikit_build:
+            args.scikit_build = True
         if args.scikit_build:
             args.with_python = False
         if args.only_python:
@@ -243,6 +246,16 @@ class BuildSubTask(SubTask):
         if args.target == 'pyPhotosynthesis':
             args.component = 'Python'
             args.with_python = False
+        if not args.install_dir_python:
+            if args.install_dir and args.target == 'pyPhotosynthesis':
+                args.install_dir_python = args.install_dir
+            else:
+                args.install_dir_python = site.getsitepackages()[0]
+        if not args.install_dir:
+            if args.target == 'pyPhotosynthesis':
+                args.install_dir = args.install_dir_python
+            else:
+                args.install_dir = os.path.join(_source_dir, '_install')
         if args.with_python:
             args.with_python = build.copy_args(
                 args, target='pyPhotosynthesis')
@@ -273,6 +286,18 @@ class scikit_build(SubTask):
             args.build_dir += '_scikit'
         args.target = None
         args.component = None
+        # import warnings
+        # if args.isolated_scikit_build:
+        #     warnings.warn(
+        #         "Build must occur within the current environment that "
+        #         "already has the build dependencies installed until "
+        #         "yggdrasil wheels either install the library or the "
+        #         "configuration routines are patched such that the "
+        #         ".yggconfig file location for yggdrasil installed in a "
+        #         "pip virtual build env is different than the .yggconfig "
+        #         "file for yggdrasil installed in the target env (e.g. "
+        #         "conda env)")
+        #     args.isolated_scikit_build = False
         super(scikit_build, cls).adjust_args(args)
 
     def __init__(self, args, config_args=None, install_args=None,
@@ -280,18 +305,31 @@ class scikit_build(SubTask):
         self.adjust_args(args)
         if install_args is None:
             install_args = []
+        cmds = []
         install_args += [
             '--ignore-installed', '-v',
         ]
-        if args.dont_install:
+        if not args.isolated_scikit_build:
+            build_deps = [
+                "scikit-build-core",
+                "setuptools_scm",
+                "numpy<2",
+                "yggdrasil-framework",
+            ]
+            cmds += [
+                f"pip install {' '.join(build_deps)}",
+            ]
             if args.rebuild and os.path.isdir(args.build_dir):
                 shutil.rmtree(args.build_dir)
             if not os.path.isdir(args.build_dir):
                 os.mkdir(args.build_dir)
             install_args += [
                 '--no-build-isolation',
-                # '--config-settings=editable.rebuild=true',
                 f'--config-settings=build-dir={args.build_dir}',
+            ]
+        if args.dont_install:
+            install_args += [
+                # '--config-settings=editable.rebuild=true',
                 '-e',
             ]
         config_args = build.config_args(args, config_args=config_args,
@@ -304,7 +342,7 @@ class scikit_build(SubTask):
                 x for x in config_args + [kwargs['env']['CMAKE_ARGS']]
                 if x
             ])
-        cmds = [
+        cmds += [
             f"pip install {' '.join(install_args)} ."
         ]
         kwargs.setdefault('cwd', _source_dir)
@@ -345,6 +383,10 @@ class build(SubTask):
             config_args += ['-DBUILD_CXX:BOOL=OFF']
         if args.with_python or args.target == 'pyPhotosynthesis':
             config_args += ['-DBUILD_PYTHON:BOOL=ON']
+            if not (args.dont_install or for_scikit_build):
+                config_args += [
+                    f'-DINSTALL_PREFIX_PYTHON={args.install_dir_python}'
+                ]
         if not (args.dont_install or for_scikit_build):
             config_args += [f'-DCMAKE_INSTALL_PREFIX={args.install_dir}']
         if args.force_scoped_enum:
@@ -506,15 +548,21 @@ class test(BuildSubTask):
             test_flags += ['--output-on-failure', '-VV']
             pytest_flags += ['-v']
         if args.with_python and args.dont_install:
-            kwargs.setdefault('env', {})
-            kwargs['env'].setdefault(
-                'PYTHONPATH', os.environ.get('PYTHONPATH', ''))
-            kwargs['env']['PYTHONPATH'] = os.pathsep.join([
-                x for x in
-                [args.build_dir,
-                 kwargs['env']['PYTHONPATH']]
-                if x
-            ])
+            python_prefix_dir = None
+            if args.dont_install:
+                python_prefix_dir = args.build_dir
+            elif args.install_dir_python != site.getsitepackages()[0]:
+                python_prefix_dir = args.install_dir
+            if python_prefix_dir:
+                kwargs.setdefault('env', {})
+                kwargs['env'].setdefault(
+                    'PYTHONPATH', os.environ.get('PYTHONPATH', ''))
+                kwargs['env']['PYTHONPATH'] = os.pathsep.join([
+                    x for x in
+                    [python_prefix_dir,
+                     kwargs['env']['PYTHONPATH']]
+                    if x
+                ])
         cmds = []
         if args.target != 'pyPhotosynthesis':
             if args.show_tests:
@@ -526,7 +574,7 @@ class test(BuildSubTask):
             cmds += [
                 f"python -m pytest {' '.join(pytest_flags)} {testdir}"
             ]
-            if args.scikit_build:
+            if args.scikit_build or not args.dont_install:
                 kwargs.setdefault('cwd', _source_dir)
         try:
             super(test, self).__init__(args, cmds=cmds,
@@ -544,6 +592,19 @@ class test(BuildSubTask):
                         self._generated_files.append(fsrc)
                     else:
                         print(f"MISSING OUTPUT {fsrc}")
+
+
+# class ygginfo(SubTask):
+
+#     @classmethod
+#     def adjust_args(cls, args):
+#         super(ygginfo, cls).adjust_args(args)
+
+#     def __init__(self, args):
+#         import yggdrasil
+#         import pdb; pdb.set_trace()
+#         cmds = []
+#         super(ygginfo, self).__init__(args, cmds=cmds)
 
 
 class ephoto(BuildSubTask):
@@ -892,6 +953,10 @@ if __name__ == "__main__":
     parser_ephoto = subparsers.add_parser(
         'ephoto', help="Run ephoto executable",
         func=ephoto)
+    # parser_yggdrasil = subparsers.add_parser(
+    #     'yggdrasil',
+    #     help="Return information about the yggdrasil interface library",
+    #     func=ygginfo)
 
     # MATLAB/C++ Comparison
     parser_matlab = subparsers.add_parser(
@@ -1010,8 +1075,11 @@ if __name__ == "__main__":
         subparsers={'task': build_tasks + ['docs']})
     parser.add_argument(
         '--install-dir', type=str,
-        default=os.path.join(_source_dir, '_install'),
         help="Install directory",
+        subparsers={'task': build_tasks + ['docs']})
+    parser.add_argument(
+        '--install-dir-python', type=str,
+        help="Install directory for Python package",
         subparsers={'task': build_tasks + ['docs']})
     parser.add_argument(
         '--dont-install', action='store_true',
@@ -1070,6 +1138,11 @@ if __name__ == "__main__":
     parser.add_argument(
         '--scikit-build', action='store_true',
         help="Build the Python wrapper package using scikit-build-core",
+        subparsers={'task': build_tasks})
+    parser.add_argument(
+        '--isolated-scikit-build', action='store_true',
+        help=("Build the Python wrapper package using scikit-build-core "
+              "in an isolated pip env"),
         subparsers={'task': build_tasks})
     parser.add_argument(
         '--with-yggdrasil', action='store_true',

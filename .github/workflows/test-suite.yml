@@ -160,6 +160,10 @@ jobs:
           yggconfig
           yggcompile cpp
           ygginfo
+      - name: Install mpi with non-mpi Sundials to test compilation
+        if: matrix.with-mpi == false
+        run: |
+          conda install openmpi -y
       - name: Install specific version of Sundials via conda
         if: matrix.sundials-version != 'latest' && matrix.with-mpi == false
         run: |
