@@ -89,6 +89,7 @@ option(EPHOTO_USE_SCOPED_ENUM "Build using a scoped enumerator for the ValueSet 
 option(MAKE_EQUIVALENT_TO_MATLAB "Build with settings that make this model equivalent to the Matlab C3 model")
 option(WITH_YGGDRASIL "Compile with yggdrasil enabled")
 option(INSTALL_PREFIX_PYTHON "Directory where the Python package should be installed. Can be absolute or relative to CMAKE_INSTALL_PREFIX." ".")
+option(BUILD_WITH_YGGINTERFACE "If WITH_YGGDRASIL specified, build against Yggdrasil sources directly instead of linking")
 
 if(SKBUILD)
     set(BUILD_CXX OFF)
@@ -308,14 +309,15 @@ if(WIN32)
     list(APPEND ePhoto_COMPILE_OPTIONS /Zc:preprocessor)
 endif()
 
-set(NO_YggInterface_TARGET)
 if(WITH_YGGDRASIL)
     # The next release of yggdrasil will install a proper cmake target,
     # but until then, if the build environment is isolated, the yggdrasil
     # interface library needs to be built and installed alongside the
     # ePhotosynthesis Python wrappers
     find_package(YggInterface COMPONENTS CXX)
-    if(NOT YggInterface_FOUND)
+    if(YggInterface_FOUND)
+        set(BUILD_WITH_YGGINTERFACE OFF)
+    else()
         include(AddYggInterface)
         set(YGGDRASIL_ARGS)
         set(SKBUILD_ISOLATED)
@@ -330,7 +332,9 @@ if(WITH_YGGDRASIL)
           endif()
         endif()
         if(SKBUILD_ISOLATED)
-          set(NO_YggInterface_TARGET ON)
+          set(BUILD_WITH_YGGINTERFACE ON)
+        endif()
+        if(BUILD_WITH_YGGINTERFACE)
           set(YGGDRASIL_PYTHON_PREFIX YggInterface)
           add_yggdrasil_interfaces_backwards(
             INSTALL_PREFIX ${YGGDRASIL_PYTHON_PREFIX}
@@ -343,21 +347,18 @@ if(WITH_YGGDRASIL)
             DONT_INSTALL_TARGETS
             ${YGGDRASIL_ARGS}
           )
-          if(NO_YggInterface_TARGET)
-            transfer_interface_properties(
-              yggPhoto DEST_PREFIX ePhoto_
-              EXCLUDE_REGEX_LINK_LIBRARIES "Python::Python"
-              DESTLIST_LINK_LIBRARIES ePhoto_PRIVATE_LIBRARIES_Python
-              PROPERTIES SOURCES INCLUDE_DIRECTORIES COMPILE_OPTIONS
-              LINK_LIBRARIES
-            )
-            transfer_interface_properties(
-              yggPhoto++ DEST_PREFIX ePhoto_
-              PROPERTIES SOURCES INCLUDE_DIRECTORIES COMPILE_OPTIONS
-            )
-          else()
-            # TODO: Try building YggInterface::CXX in ePhotosynthesis?
-          endif()
+          transfer_interface_properties(
+            yggPhoto DEST_PREFIX ePhoto_
+            EXCLUDE_REGEX_LINK_LIBRARIES "Python::Python"
+            DESTLIST_LINK_LIBRARIES ePhoto_PRIVATE_LIBRARIES_Python
+            PROPERTIES SOURCES INCLUDE_DIRECTORIES COMPILE_OPTIONS
+            LINK_LIBRARIES
+          )
+          transfer_interface_properties(
+            yggPhoto++ DEST_PREFIX ePhoto_
+            PROPERTIES SOURCES INCLUDE_DIRECTORIES COMPILE_OPTIONS
+          )
+          # TODO: Try building YggInterface::CXX in ePhotosynthesis?
         else()
           # TODO: Handle case where yggdrasil already installed &
           #   interface library is a shared library.
@@ -376,7 +377,7 @@ if(WITH_YGGDRASIL)
           )
         endif()
     endif()
-    if(NOT NO_YggInterface_TARGET)
+    if(NOT BUILD_WITH_YGGINTERFACE)
       if(BUILD_CXX)
         get_target_property(YggInterface_TYPE YggInterface::CXX TYPE)
         if(YggInterface_TYPE STREQUAL "STATIC_LIBRARY")

@@ -950,6 +950,12 @@ function(transfer_interface_properties SOURCE_TARGET)
       get_target_property(
         ARGS_LINK_SOURCE ${SOURCE_TARGET} IMPORTED_LOCATION
       )
+      get_target_property(
+        SOURCE_WHOLE_ARCHIVE ${SOURCE_TARGET} INTERFACE_WHOLE_ARCHIVE
+      )
+      if(SOURCE_WHOLE_ARCHIVE)
+        add_whole_archive_flag(ARGS_LINK_SOURCE LIBRARY ${ARGS_LINK_SOURCE})
+      endif()
       list(PREPEND proplist ${ARGS_LINK_SOURCE})
     endif()
     if(ARGS_VERBOSE)
@@ -1078,8 +1084,10 @@ function(import_yggdrasil_interface_library LANGUAGE)
       endif()
     endif()
   endforeach()
+  set(WHOLE_ARCHIVE OFF)
   if((LIBRARY_TYPE STREQUAL "STATIC") AND (LANGUAGE STREQUAL "CXX"))
-    add_whole_archive_flag(LIBRARY_NAME LIBRARY ${LIBRARY_NAME})
+    set(WHOLE_ARCHIVE ON)
+    # add_whole_archive_flag(LIBRARY_NAME LIBRARY ${LIBRARY_NAME})
   endif()
   if(NOT ARGS_TARGET)
     set(ARGS_TARGET YggInterface::${LANGUAGE})
@@ -1102,6 +1110,12 @@ function(import_yggdrasil_interface_library LANGUAGE)
     ${ARGS_TARGET} PROPERTIES
     IMPORTED_LOCATION ${LIBRARY_NAME}
   )
+  if(WHOLE_ARCHIVE)
+    set_property(
+      TARGET ${ARGS_TARGET} PROPERTY
+      INTERFACE_WHOLE_ARCHIVE ON
+    )
+  endif()
   if(INCLUDE_DIRECTORIES)
     set_property(
       TARGET ${ARGS_TARGET} APPEND PROPERTY
