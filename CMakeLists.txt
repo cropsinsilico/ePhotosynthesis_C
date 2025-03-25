@@ -779,18 +779,27 @@ if(BUILD_TESTS AND BUILD_CXX)
             list(APPEND TEST_LIST ${TEST_PATH})
         endif()
     endforeach()
-    # Build executable directly from compiled object files so that
+    # Build executable directly from source files so that
     # non-exported symbols can still be tested by unit tests
-    add_executable(testRunner ${TEST_LIST} $<TARGET_OBJECTS:${CXX_LIBRARY_NAME}>)
-    target_compile_options(
-      testRunner PUBLIC ${ePhoto_COMPILE_OPTIONS}
-    )
-    # target_link_options(
-    #   testRunner PUBLIC $<TARGET_PROPERTY:${CXX_LIBRARY_NAME},LINK_OPTIONS>
-    # )
-    target_include_directories(
-      testRunner PUBLIC ${ePhoto_INCLUDE_DIRECTORIES}
-    )
+    add_executable(testRunner ${TEST_LIST} ${ePhoto_SOURCES})
+    if(ePhoto_DEPENDENCIES)
+      add_dependencies(testRunner ${ePhoto_DEPENDENCIES})
+    endif()
+    if(ePhoto_COMPILE_OPTIONS)
+      target_compile_options(
+        testRunner PUBLIC ${ePhoto_COMPILE_OPTIONS}
+      )
+    endif()
+    if(ePhoto_COMPILE_DEFINITIONS)
+      target_compile_definitions(
+        testRunner PUBLIC ${ePhoto_COMPILE_DEFINITIONS}
+      )
+    endif()
+    if(ePhoto_INCLUDE_DIRECTORIES)
+      target_include_directories(
+        testRunner PUBLIC ${ePhoto_INCLUDE_DIRECTORIES}
+      )
+    endif()
     target_link_libraries(
       testRunner ${ePhoto_PUBLIC_LIBRARIES} ${ePhoto_PRIVATE_LIBRARIES}
       ${ePhoto_PRIVATE_LIBRARIES_C}

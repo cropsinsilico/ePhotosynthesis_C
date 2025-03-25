@@ -213,24 +213,29 @@ function(find_package_pkgconfig name)
 
         if (CONDA_PREFIX)
 	    if (WIN32)
-                set(PC_${name}_INCLUDE_DIRS "${CONDA_PREFIX}/Library/include ${PC_${name}_INCLUDE_DIRS}")
-                set(PC_${name}_LIBRARY_DIRS "${CONDA_PREFIX}/Library/lib ${CONDA_PREFIX}/Library/bin ${PC_${name}_LIBRARY_DIRS}")
+                set(CONDA_INCLUDE_DIRS "${CONDA_PREFIX}/Library/include")
+                set(CONDA_LIBRARY_DIRS "${CONDA_PREFIX}/Library/lib"
+                    "${CONDA_PREFIX}/Library/bin")
             else()
-                set(PC_${name}_INCLUDE_DIRS "${CONDA_PREFIX}/include ${PC_${name}_INCLUDE_DIRS}")
-                set(PC_${name}_LIBRARY_DIRS "${CONDA_PREFIX}/lib ${PC_${name}_LIBRARY_DIRS}")
+                set(CONDA_INCLUDE_DIRS "${CONDA_PREFIX}/include")
+                set(CONDA_LIBRARY_DIRS "${CONDA_PREFIX}/lib")
             endif()
+            list(PREPEND PC_${name}_INCLUDE_DIRS ${CONDA_INCLUDE_DIRS})
+            list(PREPEND PC_${name}_LIBRARY_DIRS ${CONDA_LIBRARY_DIRS})
         endif()
 
         ## use the hint from above to find where '*.h' is located
         find_path(${name}_INCLUDE_DIR
             NAMES ${ARGS_HEADER}
-            PATHS ${PC_${name}_INCLUDE_DIRS})
+            PATHS ${PC_${name}_INCLUDE_DIRS}
+        )
 
         ## use the hint from above to find the location of lib*
         find_library(tmp_library
             NAMES ${ARGS_LIBNAMES}
             PATHS ${PC_${name}_LIBRARY_DIRS}
-	    NO_CACHE)
+	    NO_CACHE
+        )
 
         if(NOT tmp_library STREQUAL tmp_library-NOTFOUND)
             set(${name}_LIBRARY ${tmp_library})
@@ -239,7 +244,8 @@ function(find_package_pkgconfig name)
 	    foreach(dir IN LISTS PC_${name}_LIBRARY_DIRS)
 	      execute_process(
 	        COMMAND ls ${dir}
-	        COMMAND_ECHO STDOUT)
+	        COMMAND_ECHO STDOUT
+              )
 	    endforeach()
 	endif()
 	if ((NOT ${name}_INCLUDE_DIR STREQUAL ${name}_INCLUDE_DIR-NOTFOUND) AND
