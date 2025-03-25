@@ -820,6 +820,7 @@ class docs(BuildSubTask):
         args.build_type = 'Debug'
         args.dont_build = False
         args.scikit_build = False
+        args.isolated_scikit_build = False
         args.dont_install = True
         args.only_python = False
         args.force_scoped_enum = False

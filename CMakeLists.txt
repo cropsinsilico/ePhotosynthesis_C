@@ -335,6 +335,7 @@ if(WITH_YGGDRASIL)
           set(BUILD_WITH_YGGINTERFACE ON)
         endif()
         if(BUILD_WITH_YGGINTERFACE)
+          message(STATUS "Building with YggInterface source files")
           set(YGGDRASIL_PYTHON_PREFIX YggInterface)
           add_yggdrasil_interfaces_backwards(
             INSTALL_PREFIX ${YGGDRASIL_PYTHON_PREFIX}
@@ -360,6 +361,7 @@ if(WITH_YGGDRASIL)
           )
           # TODO: Try building YggInterface::CXX in ePhotosynthesis?
         else()
+          message(STATUS "Linking to YggInterface library")
           # TODO: Handle case where yggdrasil already installed &
           #   interface library is a shared library.
           #   Add rpath to location of shared library?
@@ -640,11 +642,13 @@ endif()
 if(BUILD_PYTHON)
     if(SKBUILD)
         set(PYTHON_INSTALL_DIR ".")
-    else()
+    elseif(INSTALL_PREFIX_PYTHON)
         cmake_path(
           APPEND INSTALL_PREFIX_PYTHON ${PYTHON_PACKAGE_NAME}
           OUTPUT_VARIABLE PYTHON_INSTALL_DIR
         )
+    else()
+        set(PYTHON_INSTALL_DIR ${PYTHON_PACKAGE_NAME})
     endif()
     message(STATUS "PYTHON_INSTALL_DIR = ${PYTHON_INSTALL_DIR}")
     message(STATUS "Python_SITEARCH = ${Python_SITEARCH}")
@@ -779,16 +783,17 @@ if(BUILD_TESTS AND BUILD_CXX)
     # non-exported symbols can still be tested by unit tests
     add_executable(testRunner ${TEST_LIST} $<TARGET_OBJECTS:${CXX_LIBRARY_NAME}>)
     target_compile_options(
-      testRunner PUBLIC $<TARGET_PROPERTY:${CXX_LIBRARY_NAME},COMPILE_OPTIONS>
+      testRunner PUBLIC ${ePhoto_COMPILE_OPTIONS}
     )
-    target_link_options(
-      testRunner PUBLIC $<TARGET_PROPERTY:${CXX_LIBRARY_NAME},LINK_OPTIONS>
-    )
+    # target_link_options(
+    #   testRunner PUBLIC $<TARGET_PROPERTY:${CXX_LIBRARY_NAME},LINK_OPTIONS>
+    # )
     target_include_directories(
-      testRunner PUBLIC $<TARGET_PROPERTY:${CXX_LIBRARY_NAME},INCLUDE_DIRECTORIES>
+      testRunner PUBLIC ${ePhoto_INCLUDE_DIRECTORIES}
     )
     target_link_libraries(
-      testRunner $<TARGET_PROPERTY:${CXX_LIBRARY_NAME},LINK_LIBRARIES>
+      testRunner ${ePhoto_PUBLIC_LIBRARIES} ${ePhoto_PRIVATE_LIBRARIES}
+      ${ePhoto_PRIVATE_LIBRARIES_C}
     )
     if(GTEST_FOUND)
         target_link_libraries(testRunner ${GTEST_BOTH_LIBRARIES})

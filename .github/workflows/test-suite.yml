@@ -333,17 +333,21 @@ jobs:
       ###################################
       # Build Python
       ###################################
-      - name: Configure Python
+      - name: Install Python via pip
         if: matrix.with-python == true
         run: |
-          cd build
-          cmake .. -DBUILD_PYTHON=ON ${{ env.CMAKE_ARGS }}
-      - name: Build & install Python
-        if: matrix.with-python == true
-        run: |
-          cd build
-          cmake --build . --target pyPhotosynthesis ${{ env.BUILD_ARGS }}
-          cmake --install . --prefix /home/runner/miniconda3/envs/ephoto --component Python
+          pip install . -v
+      # - name: Configure Python
+      #   if: matrix.with-python == true
+      #   run: |
+      #     cd build
+      #     cmake .. -DBUILD_PYTHON=ON ${{ env.CMAKE_ARGS }}
+      # - name: Build & install Python
+      #   if: matrix.with-python == true
+      #   run: |
+      #     cd build
+      #     cmake --build . --target pyPhotosynthesis ${{ env.BUILD_ARGS }}
+      #     cmake --install . --prefix /home/runner/miniconda3/envs/ephoto --component Python
 
       ###################################
       # Test Python
