@@ -1,0 +1,20 @@
+<map id="ePhotosynthesis::ValueSetBase::valueString" name="ePhotosynthesis::ValueSetBase::valueString">
+<area shape="rect" id="Node000001" title=" " alt="" coords="751,144,945,189"/>
+<area shape="rect" id="Node000002" href="$dc/d5b/classe_photosynthesis_1_1_value_set_base.html#ae10f559320ddc64142d5a2ba7a1f9565" title=" " alt="" coords="504,84,698,129"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="738,142,695,132,696,127,739,137"/>
+<area shape="rect" id="Node000003" href="$dc/d5b/classe_photosynthesis_1_1_value_set_base.html#aab218492d1d9ef9dcdaa4a782aef54e0" title=" " alt="" coords="252,109,446,154"/>
+<area shape="poly" id="edge9_Node000001_Node000003" title=" " alt="" coords="735,161,446,141,446,136,736,156"/>
+<area shape="rect" id="Node000008" href="$dc/d5b/classe_photosynthesis_1_1_value_set_base.html#a5746f815ee81e1d50eee6a53882bca54" title=" " alt="" coords="499,204,703,249"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="739,195,696,206,695,201,738,190"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="489,120,446,125,446,119,489,115"/>
+<area shape="rect" id="Node000004" href="$dc/d5b/classe_photosynthesis_1_1_value_set_base.html#ab23f51704cda60811fa03bef2849ddab" title=" " alt="" coords="5,5,199,50"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="286,105,198,65,168,53,170,48,200,60,289,100"/>
+<area shape="rect" id="Node000005" href="$dc/d5b/classe_photosynthesis_1_1_value_set_base.html#a98b7e32d7141b8fbbdf04f99607cd204" title=" " alt="" coords="5,75,199,119"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="236,119,199,113,200,108,237,113"/>
+<area shape="rect" id="Node000006" href="$dc/d5b/classe_photosynthesis_1_1_value_set_base.html#abf8577903baf7868501ace4c4a33ac36" title=" " alt="" coords="5,144,199,189"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="237,150,200,155,199,150,236,145"/>
+<area shape="rect" id="Node000007" href="$dc/d5b/classe_photosynthesis_1_1_value_set_base.html#ae7d09ab6c227bda9a7beccb51df43de0" title=" " alt="" coords="5,213,199,258"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="289,164,200,203,170,215,168,210,198,199,286,159"/>
+<area shape="rect" id="Node000009" href="$dc/d5b/classe_photosynthesis_1_1_value_set_base.html#a37c52ef5a8eb2b3a4a75b5517ed5c1a8" title=" " alt="" coords="247,204,451,249"/>
+<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="484,229,451,229,451,224,484,224"/>
+</map>

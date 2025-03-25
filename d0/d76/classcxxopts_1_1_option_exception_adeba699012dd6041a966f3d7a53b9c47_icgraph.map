@@ -1,0 +1,29 @@
+<map id="cxxopts::OptionException::OptionException" name="cxxopts::OptionException::OptionException">
+<area shape="rect" id="Node000001" title=" " alt="" coords="551,357,737,402"/>
+<area shape="rect" id="Node000002" href="$dc/d71/classcxxopts_1_1option__has__no__value__exception.html#aa4459b5fb837a4722d0884e4fcfa5ee4" title=" " alt="" coords="309,255,476,334"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="561,354,475,325,477,320,562,349"/>
+<area shape="rect" id="Node000003" href="$df/d31/classcxxopts_1_1_option_parse_exception.html#a5a29d9742ef8d0edc05c46d942debd05" title=" " alt="" coords="282,357,503,402"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="535,382,504,382,504,377,535,377"/>
+<area shape="rect" id="Node000012" href="$d3/dc2/classcxxopts_1_1_option_spec_exception.html#a0bea2dfad20862c59c70311246fcb354" title=" " alt="" coords="284,699,501,743"/>
+<area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="619,416,412,700,408,697,615,413"/>
+<area shape="rect" id="Node000004" href="$d7/d08/classcxxopts_1_1argument__incorrect__type.html#adf2fdc98794172201b1209c6d16dfceb" title=" " alt="" coords="5,5,234,50"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="282,349,280,347,257,310,248,274,249,238,255,203,261,168,262,134,254,99,232,64,219,53,222,49,236,61,259,97,268,133,266,169,260,204,255,239,253,273,261,308,284,343,286,345"/>
+<area shape="rect" id="Node000005" href="$da/dfa/classcxxopts_1_1missing__argument__exception.html#a394d6f889c4bd90dd554ebd4d8cd50a2" title=" " alt="" coords="9,74,230,136"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="282,349,280,347,262,322,254,296,253,271,254,247,256,222,255,198,248,174,232,149,219,138,223,134,236,146,253,172,260,197,262,222,260,247,258,271,259,295,267,319,284,343,286,346"/>
+<area shape="rect" id="Node000006" href="$db/d62/classcxxopts_1_1option__not__exists__exception.html#a3a48a64b139a9fd7f27bffe350cf6b76" title=" " alt="" coords="26,160,213,221"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="284,351,280,347,267,333,260,318,255,290,249,262,243,249,232,235,212,220,215,216,236,231,248,246,255,260,260,289,265,317,272,330,284,343,288,347"/>
+<area shape="rect" id="Node000007" href="$d8/d9d/classcxxopts_1_1option__not__has__argument__exception.html#afc3b2cbef0a6c2f63756bcc9f2c2746e" title=" " alt="" coords="20,246,219,324"/>
+<area shape="poly" id="edge6_Node000003_Node000007" title=" " alt="" coords="301,354,281,348,218,325,220,320,283,342,303,349"/>
+<area shape="rect" id="Node000008" href="$d6/d4c/classcxxopts_1_1option__not__present__exception.html#ade0b732924a309c3823367cbe403f1d3" title=" " alt="" coords="11,349,228,410"/>
+<area shape="poly" id="edge7_Node000003_Node000008" title=" " alt="" coords="266,382,228,382,228,377,266,377"/>
+<area shape="rect" id="Node000009" href="$de/ded/classcxxopts_1_1option__required__exception.html#a0f7af231cec958b7912b0b010351584f" title=" " alt="" coords="18,434,221,496"/>
+<area shape="poly" id="edge8_Node000003_Node000009" title=" " alt="" coords="305,410,221,436,219,431,303,405"/>
+<area shape="rect" id="Node000010" href="$d3/dd9/classcxxopts_1_1option__requires__argument__exception.html#a4dd16f0718fc2952cf0e632d757800b0" title=" " alt="" coords="8,520,231,581"/>
+<area shape="poly" id="edge9_Node000003_Node000010" title=" " alt="" coords="359,414,303,463,235,510,213,521,211,516,232,505,300,458,356,410"/>
+<area shape="rect" id="Node000011" href="$d7/d39/classcxxopts_1_1option__syntax__exception.html#a358fbda6263eccdcd235d7da42bd7d5e" title=" " alt="" coords="23,605,216,666"/>
+<area shape="poly" id="edge10_Node000003_Node000011" title=" " alt="" coords="375,417,352,458,320,505,281,553,235,595,217,607,215,602,232,591,277,550,316,502,347,455,371,414"/>
+<area shape="rect" id="Node000013" href="$db/db0/classcxxopts_1_1invalid__option__format__error.html#ae31d4f488bbee0eebe50e7c8949a6fb6" title=" " alt="" coords="34,690,205,752"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="268,724,206,724,206,718,268,718"/>
+<area shape="rect" id="Node000014" href="$db/dfd/classcxxopts_1_1option__exists__error.html#a2734bc9372936fa24999f08ad3032bca" title=" " alt="" coords="23,776,216,821"/>
+<area shape="poly" id="edge13_Node000012_Node000014" title=" " alt="" coords="297,751,202,778,200,773,295,746"/>
+</map>

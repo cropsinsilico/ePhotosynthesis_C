@@ -1,0 +1,13 @@
+<map id="ePhotosynthesis::ValueSetBase&lt; T, U, ID, PT &gt;" name="ePhotosynthesis::ValueSetBase&lt; T, U, ID, PT &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="821,109,1014,154"/>
+<area shape="rect" id="Node000002" href="$d3/d43/classe_photosynthesis_1_1_value_set_enum.html" title=" " alt="" coords="425,5,618,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="634,47,798,88,854,106,853,111,796,93,633,52"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="440,75,604,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="620,103,821,121,820,126,620,108"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="440,144,604,189"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="619,156,797,141,820,138,821,144,797,146,619,161"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="361,213,683,258"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="651,207,796,170,852,152,854,157,798,175,653,212"/>
+<area shape="rect" id="Node000006" href="$d9/d80/classe_photosynthesis_1_1_value_set_wrapper_base.html" title=" " alt="" coords="5,213,248,258"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="263,233,360,233,360,238,263,238"/>
+</map>

@@ -1,0 +1,7 @@
+<map id="ePhotosynthesis::modules::PS" name="ePhotosynthesis::modules::PS">
+<area shape="rect" id="Node000001" title=" " alt="" coords="52,98,268,126"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,141,33"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="98,42,149,96,145,99,94,46"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="164,5,328,33"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="225,46,174,99,170,96,222,42"/>
+</map>

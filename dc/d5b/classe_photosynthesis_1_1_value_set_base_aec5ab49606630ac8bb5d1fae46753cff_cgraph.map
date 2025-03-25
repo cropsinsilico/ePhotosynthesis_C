@@ -1,0 +1,9 @@
+<map id="ePhotosynthesis::ValueSetBase::reset_value_map" name="ePhotosynthesis::ValueSetBase::reset_value_map">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,75,199,119"/>
+<area shape="rect" id="Node000002" href="$d3/d43/classe_photosynthesis_1_1_value_set_enum.html#ad9a4e07692944278d7d5baf27e714da8" title=" " alt="" coords="248,5,452,50"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="184,71,252,52,254,57,185,77"/>
+<area shape="rect" id="Node000003" href="$d3/d43/classe_photosynthesis_1_1_value_set_enum.html#adc2c298805b792dbb02425e4d0189043" title=" " alt="" coords="247,75,453,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="199,94,231,94,231,100,199,100"/>
+<area shape="rect" id="Node000004" href="$dc/d5b/classe_photosynthesis_1_1_value_set_base.html#ae3192854907faf0bf6719f721838f51f" title=" " alt="" coords="253,144,446,189"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="185,117,254,137,252,142,184,123"/>
+</map>

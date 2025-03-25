@@ -1,0 +1,20 @@
+<map id="ePhotosynthesis::conditions::XanCycleCondition" name="ePhotosynthesis::conditions::XanCycleCondition">
+<area shape="rect" id="Node000001" title=" " alt="" coords="1174,97,1377,142"/>
+<area shape="rect" id="Node000002" href="$d4/d2c/classe_photosynthesis_1_1conditions_1_1_condition_base.html" title=" " alt="" coords="840,88,1126,150"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1141,116,1173,116,1173,122,1141,122"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="27,5,187,33"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="203,13,322,11,470,15,632,26,793,50,853,65,909,85,908,90,851,71,792,55,631,32,470,20,322,16,203,18"/>
+<area shape="rect" id="Node000005" href="$d4/d2c/classe_photosynthesis_1_1conditions_1_1_condition_base.html" title=" " alt="" coords="257,52,541,114"/>
+<area shape="poly" id="edge5_Node000005_Node000003" title=" " alt="" coords="189,34,257,49,256,55,188,40"/>
+<area shape="rect" id="Node000004" href="$d2/d80/classe_photosynthesis_1_1conditions_1_1_dyna_p_s_condition.html" title=" " alt="" coords="589,65,792,110"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="808,97,840,101,840,106,808,103"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="557,83,589,83,588,88,557,88"/>
+<area shape="rect" id="Node000006" href="$d8/d64/classe_photosynthesis_1_1conditions_1_1tr_dyna_p_s_condition.html" title=" " alt="" coords="5,61,209,106"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="224,80,256,80,256,86,224,86"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="88,131,126,158"/>
+<area shape="poly" id="edge9_Node000002_Node000007" title=" " alt="" coords="142,141,840,121,840,126,142,146"/>
+<area shape="poly" id="edge7_Node000005_Node000007" title=" " alt="" coords="141,135,256,111,257,116,142,140"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="31,185,183,213"/>
+<area shape="poly" id="edge10_Node000002_Node000008" title=" " alt="" coords="198,188,840,129,840,135,199,194"/>
+<area shape="poly" id="edge8_Node000005_Node000008" title=" " alt="" coords="177,178,208,167,334,112,336,117,210,172,178,183"/>
+</map>

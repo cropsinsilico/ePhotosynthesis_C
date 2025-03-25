@@ -1,0 +1,25 @@
+var definitions_8hpp =
+[
+    [ "ePhotosynthesis::TimeSeries< T >", "d4/dc0/classe_photosynthesis_1_1_time_series.html", "d4/dc0/classe_photosynthesis_1_1_time_series" ],
+    [ "CHECK", "d1/dc9/definitions_8hpp.html#a3c05a13962538c8e9516e6299ff6f56b", null ],
+    [ "DEBUG_DELTA", "d1/dc9/definitions_8hpp.html#a2799ea066c55ed8f9fc9ae8817674b28", null ],
+    [ "DEBUG_INTERNAL", "d1/dc9/definitions_8hpp.html#a2bfd2762aabf6445ede06c60f5e9b228", null ],
+    [ "DEBUG_MESSAGE", "d1/dc9/definitions_8hpp.html#a76de27b7478fbc362b8ab67ba086d4e0", null ],
+    [ "SET_GET", "d1/dc9/definitions_8hpp.html#ad9c48e5c4b3a419523b41e3d7f151ecf", null ],
+    [ "SET_GET_BOOL", "d1/dc9/definitions_8hpp.html#af15bc9742710e9edefcbc1dd94837cf3", null ],
+    [ "SET_GET_BOOL_MODULE", "d1/dc9/definitions_8hpp.html#a362208f0f10ebfe9665027df3066287d", null ],
+    [ "SET_GET_BOOL_NOSKIP", "d1/dc9/definitions_8hpp.html#a25d8706b21d2fc0b75c652aaa7e20b26", null ],
+    [ "SET_GET_NOVS", "d1/dc9/definitions_8hpp.html#ae764224283f82e26d74663b87eb24aef", null ],
+    [ "SUN_COMM_NULL", "d1/dc9/definitions_8hpp.html#af885172c56401a9ae8fc1fc2a1e15a5f", null ],
+    [ "ePhotosynthesis::arr", "d0/d3a/namespacee_photosynthesis.html#adc3c94eec1aef7ff6933bec82ced5721", null ],
+    [ "realtype", "d1/dc9/definitions_8hpp.html#a1d804444ed281e7c91aaf2a27b205660", null ],
+    [ "SUNErrCode", "d1/dc9/definitions_8hpp.html#aff53255a4993855a1cca0e524c94ee89", null ],
+    [ "sunrealtype", "d1/dc9/definitions_8hpp.html#ad07412ba9345f30661d759159ce36ee7", null ],
+    [ "uint", "d1/dc9/definitions_8hpp.html#a91ad9478d81a7aaf2593e8d9c3d06a14", null ],
+    [ "ushort", "d1/dc9/definitions_8hpp.html#a3fa7784c89589b49764048e9909d0e07", null ],
+    [ "ePhotosynthesis::ones", "d0/d3a/namespacee_photosynthesis.html#a37c8a59e5443a6641b875c896a5bfc98", null ],
+    [ "ePhotosynthesis::report", "d0/d3a/namespacee_photosynthesis.html#a1352bef69574c2107acce7814095623b", null ],
+    [ "SUNGetErrMsg", "d1/dc9/definitions_8hpp.html#a9ad8e1ea9d63aed09338e365d42dd2fe", null ],
+    [ "ePhotosynthesis::zeros", "d0/d3a/namespacee_photosynthesis.html#accbaa82cf30a10f224675ec7ec7c3375", null ],
+    [ "ePhotosynthesis::glymaID_order", "d0/d3a/namespacee_photosynthesis.html#abad536f4aba4119fdd768c290ea8a227", null ]
+];

@@ -1,0 +1,20 @@
+<map id="ePhotosynthesis::Variables::setDefault" name="ePhotosynthesis::Variables::setDefault">
+<area shape="rect" id="Node000001" title=" " alt="" coords="944,175,1140,219"/>
+<area shape="rect" id="Node000002" href="$da/d90/classe_photosynthesis_1_1_variables.html#a85502fbc07161df5fdc9b42697042de6" title=" " alt="" coords="699,140,896,185"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="928,184,896,179,897,174,929,178"/>
+<area shape="rect" id="Node000003" href="$da/d90/classe_photosynthesis_1_1_variables.html#a08c7c278c2fb647c3bdf2255b2271824" title=" " alt="" coords="699,209,896,254"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="929,216,897,220,896,215,928,210"/>
+<area shape="rect" id="Node000004" href="$da/d90/classe_photosynthesis_1_1_variables.html#a86e0a9787fe72c803ac46a90bbc780f2" title=" " alt="" coords="455,144,651,189"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="696,207,639,192,640,187,698,202"/>
+<area shape="rect" id="Node000008" href="$d0/d3a/namespacee_photosynthesis.html#a054f2ee280cb579cd643854fe9a37f84" title="Run a simulation." alt="" coords="5,209,163,254"/>
+<area shape="poly" id="edge9_Node000003_Node000008" title=" " alt="" coords="684,256,583,270,464,281,337,283,273,280,210,273,146,257,147,252,211,268,273,275,337,278,464,276,582,265,683,251"/>
+<area shape="rect" id="Node000005" href="$da/d90/classe_photosynthesis_1_1_variables.html#a1166607344bd00eab5abd80d81ee614a" title=" " alt="" coords="211,5,407,50"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="512,136,463,100,406,65,380,53,383,48,408,60,466,95,515,132"/>
+<area shape="rect" id="Node000006" href="$da/d90/classe_photosynthesis_1_1_variables.html#af1bcf52f3a96816d9af0c7b8ba97c782" title=" " alt="" coords="211,75,407,119"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="457,142,389,122,391,117,458,137"/>
+<area shape="rect" id="Node000007" href="$da/d90/classe_photosynthesis_1_1_variables.html#a9a19de16a633946ce39321ffba073dbc" title=" " alt="" coords="211,144,407,189"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="440,169,408,169,408,164,440,164"/>
+<area shape="rect" id="Node000009" href="$da/d90/classe_photosynthesis_1_1_variables.html#ab078a0924fc9d4dd8078ff357734e0ee" title=" " alt="" coords="211,213,407,258"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="458,196,391,215,389,210,457,191"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="216,196,164,211,162,206,215,191"/>
+</map>

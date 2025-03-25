@@ -1,0 +1,12 @@
+<map id="ePhotosynthesis::Variables::getModule" name="ePhotosynthesis::Variables::getModule">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,40,202,85"/>
+<area shape="rect" id="Node000002" href="$da/d90/classe_photosynthesis_1_1_variables.html#acb12869963d471ac2f534218cc3adc08" title=" " alt="" coords="250,40,446,85"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="202,60,234,60,234,65,202,65"/>
+<area shape="poly" id="edge5_Node000002_Node000002" title=" " alt="" coords="304,40,303,30,310,21,325,15,348,13,373,16,387,22,385,27,371,21,348,19,327,21,313,25,308,31,309,39"/>
+<area shape="rect" id="Node000003" href="$d3/d2c/namespacee_photosynthesis_1_1utils.html#ac966c16426dca00df609a91fb5c7c7b5" title=" " alt="" coords="494,40,658,85"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="446,60,478,60,478,65,446,65"/>
+<area shape="rect" id="Node000004" href="$d3/d2c/namespacee_photosynthesis_1_1utils.html#ae5f316abc8fc9219c52e3dbe27258e01" title=" " alt="" coords="706,5,871,50"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="658,46,690,41,691,46,659,52"/>
+<area shape="rect" id="Node000005" href="$d3/d2c/namespacee_photosynthesis_1_1utils.html#a546f0e1e82d76a969534fb077853505f" title=" " alt="" coords="706,75,871,119"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="659,73,691,78,690,84,658,78"/>
+</map>
