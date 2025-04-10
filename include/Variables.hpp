@@ -209,17 +209,17 @@ public:
     double ProteinTotalRatio = 0.973; //!< Scaling factor for CM GRN expression levels
 
     //YH:Q10 values come from my Q10 fitting for LD11
-    double Q10_1  = 2.21;
-    double Q10_2  = 1.69;
-    double Q10_3  = 2.00;
-    double Q10_5  = 2.50;
-    double Q10_6  = 2.17;
-    double Q10_7  = 1.76;
-    double Q10_8  = 1.91;
-    double Q10_9  = 1.98;
-    double Q10_10 = 2.02;
-    double Q10_13 = 2.08;
-    double Q10_23 = 2.50;
+    double Q10_1  = 2.269;
+    double Q10_2  = 1.702;
+    double Q10_3  = 1.995;
+    double Q10_5  = 2.5  ;
+    double Q10_6  = 2.167;
+    double Q10_7  = 1.743;
+    double Q10_8  = 1.920;
+    double Q10_9  = 1.962;
+    double Q10_10 = 2.034;
+    double Q10_13 = 2.049;
+    double Q10_23 = 2.364;
     double PS_scaling_factor = 1.0; //a parameter to scale the total P
     // Parameters
     arr PR_Param = zeros(2);
