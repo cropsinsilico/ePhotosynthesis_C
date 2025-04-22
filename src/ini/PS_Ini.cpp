@@ -342,6 +342,7 @@ PSCondition* PS::_init(Variables *theVars) {
             PS::V23 = theVars->EnzymeAct.at("V23");
             PS::V16 = theVars->EnzymeAct.at("V16");
         }
+        PS::KM9 *= theVars->KM_sf;   // SBP 9 SBP<->S7P+OP
 
         PS::V31 = 3.73 / 3.;   // 1.05 *SC  *1.0 ; % (Lilley, Chon, Mosbach & Heldt, 1977b) 31 Phosphate translocator DHAPi<->DHAPo   1.05 defulat
         PS::V32 = 3.73 / 3.;   //1.05 *SC *1.0;     % (Lilley et al., 1977b) 32 Phosphate translocator PGAi<->PGAo 1.05 default

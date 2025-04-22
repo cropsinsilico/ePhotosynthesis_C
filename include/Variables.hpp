@@ -221,6 +221,7 @@ public:
     double Q10_13 = 2.049;
     double Q10_23 = 2.364;
     double PS_scaling_factor = 1.0; //a parameter to scale the total P
+    double KM_sf = 1.0; //a parameter to scale KM9 
     // Parameters
     arr PR_Param = zeros(2);
     arr BF_Param = zeros(2);
