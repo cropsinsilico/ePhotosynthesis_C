@@ -336,7 +336,7 @@ jobs:
       - name: Install Python via pip
         if: matrix.with-python == true
         run: |
-          pip install . -v
+          pip install . -v --no-build-isolation
       # - name: Configure Python
       #   if: matrix.with-python == true
       #   run: |
