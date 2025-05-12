@@ -37,6 +37,7 @@ THE SOFTWARE.
 #include <unordered_set>
 #include <utility>
 #include <vector>
+#include <cstdint>
 
 #ifdef __cpp_lib_optional
 #include <optional>
