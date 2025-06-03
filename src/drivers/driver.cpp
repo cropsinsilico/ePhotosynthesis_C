@@ -223,6 +223,7 @@ arr Driver::run() {
           std::vector<double> sub_vector(difference.begin() + 7,
                                          difference.begin() + 51);
           double penalty = smoothPenalty(sub_vector, threshold);
+// the 6th is the CO2 assimilation. See src/GenOut.cpp
           double penalty_assim = 1.0 - exp(-1000.0 * (std::max(difference[6] - threshold,0.0))); 
 //return results of assimilation and others
 //since we maximize assimilation, the penalty (positive) is deducted
@@ -253,6 +254,7 @@ arr Driver::run() {
         count++;
         step = initialStep / (count + 1);
 //        std::cout << "Retrying with smaller step size: " << step << std::endl;
+//        std::cout << "Retry attempt #" << count + 1 << " with step = " << step << std::endl;
     }
 //    throw std::runtime_error("No valid solution found");
 //  Create an array of some values

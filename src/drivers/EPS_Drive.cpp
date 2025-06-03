@@ -40,7 +40,8 @@ EPSDriver::~EPSDriver() {
 }
 
 void EPSDriver::setup() {
-    //Ca = theVars->TestCa;
+    //the conversion factor comes from Zhu et al (2007). They assume
+    //1 g chlorophyll/m²,30 μL stroma/mg chlorophyll =  30 mL stroma/m², or 0.03 L
     inputVars->TestLi /= 30.;
     //Li = theVars->TestLi;
     AtpCost = inputVars->TestATPCost;
