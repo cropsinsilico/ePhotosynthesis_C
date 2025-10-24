@@ -8,11 +8,52 @@ import subprocess
 import glob
 import difflib
 import site
+from collections import OrderedDict
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 _source_dir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 _utils_dir = os.path.join(_source_dir, 'utils')
 _data_dir = os.path.join(_source_dir, 'tests', 'data')
+
+_platform = None
+_library_path_var = None
+if sys.platform == 'darwin':
+    _platform = 'osx'
+    _library_path_var = 'DYLD_LIBRARY_PATH'
+elif 'linux' in sys.platform:
+    _platform = 'linux'
+    _library_path_var = 'LD_LIBRARY_PATH'
+elif sys.platform in ['win32', 'cygwin']:
+    _platform = 'win'
+    _library_path_var = 'PATH'
+
+
+def cli_param(x):
+    k, v = x.split(':')
+    return k, float(v)
+
+
+def add_directory_to_path(directory, return_path=False,
+                          prev_value=None, prepend=False):
+    if isinstance(directory, list):
+        directory = os.pathsep.join(directory)
+    if prev_value is None:
+        prev_value = os.environ.get(_library_path_var, '')
+    out = ''
+    if prev_value:
+        if prepend:
+            out = os.pathsep + prev_value
+        else:
+            out = prev_value + os.pathsep
+    if prepend:
+        out = directory + out
+    else:
+        out += directory
+    if return_path:
+        return out
+    os.environ[_library_path_var] = out
 
 
 def find_matlab(required=False):
@@ -30,6 +71,24 @@ def find_matlab(required=False):
             return None
         raise Exception('MATLAB could not be located')
     return sorted(locations)[-1]  # Return newest version
+
+
+def read_param(fname):
+    out = OrderedDict()
+    with open(fname, 'r') as fd:
+        contents = fd.readlines()
+    for x in contents:
+        name, value = x.split('#')[0].split()
+        out[name] = float(value)
+    return out
+
+
+def write_param(fname, param):
+    maxlen = len(max(param.keys(), key=len)) + 4
+    with open(fname, 'w') as fd:
+        for k, v in param.items():
+            pad = ' ' * (maxlen - len(k))
+            fd.write(f'{k}{pad}{v}\n')
 
 
 def read_output_table(fname, sep=','):
@@ -178,6 +237,10 @@ class SubTask:
                 os.remove(x)
             elif os.path.isdir(x) and not glob.glob(os.path.join(x, '*')):
                 os.rmdir(x)
+            elif '*' in x:
+                xfiles = glob.glob(x)
+                for xx in xfiles:
+                    os.remove(xx)
 
     @classmethod
     def prefix_path_args(cls, args, names, prefix=None):
@@ -264,6 +327,11 @@ class BuildSubTask(SubTask):
     def __init__(self, args, **kwargs):
         self.adjust_args(args)
         kwargs.setdefault('cwd', args.build_dir)
+        kwargs.setdefault('env', {})
+        kwargs['env'][_library_path_var] = add_directory_to_path(
+            args.build_dir, return_path=True, prepend=True,
+            prev_value=kwargs['env'].get(_library_path_var, None),
+        )
         super(BuildSubTask, self).__init__(args, **kwargs)
 
     def run_commands(self, args, config_args=None, build_args=None,
@@ -393,6 +461,8 @@ class build(SubTask):
             config_args += ['-DEPHOTO_USE_SCOPED_ENUM:BOOL=ON']
         if args.with_yggdrasil:
             config_args += ['-DWITH_YGGDRASIL:BOOL=ON']
+        if args.with_yggdrasil == 'direct':
+            config_args += ['-DBUILD_WITH_YGGINTERFACE:BOOL=ON']
         return config_args
 
     @classmethod
@@ -609,26 +679,42 @@ class test(BuildSubTask):
 
 class ephoto(BuildSubTask):
 
+    direct_args = ['stoptime']
+
     @classmethod
     def adjust_args(cls, args):
+        if isinstance(args.param, list):
+            args.param = OrderedDict(*args.param)
         cls.prefix_path_args(args, ['input_dir', 'output_dir'])
         cls.prefix_path_args(args, ['enzyme_file', 'grn_file',
-                                    'evn_file', 'atpcost_file'],
+                                    'evn_file', 'atpcost_file',
+                                    'iterations_file'],
                              prefix=args.input_dir)
         cls.prefix_path_args(args, ['output_file', 'output_param_base'],
                              prefix=args.output_dir)
         if not os.path.isdir(args.output_dir):
             os.mkdir(args.output_dir)
+        if args.dont_run:
+            args.dont_build = True
         super(ephoto, cls).adjust_args(args)
 
     def run_commands(self, args, cmds=None, ephoto_args=None, **kwargs):
         if args.driver == 0 and cmds is None:
-            self.iter_drivers(args, self.run_commands, **kwargs)
+            self.iter_drivers(self.run_commands, args, **kwargs)
             return
         if ephoto_args is None:
             ephoto_args = []
-        if cmds is None:
+        if cmds is None and not args.dont_run:
             execFile = os.path.join(args.build_dir, 'ePhoto')
+            if args.param:
+                if args.evn_file:
+                    param = read_param(args.evn_file)
+                    args.param = dict(param, **args.param)
+                args.evn_file = os.path.join(
+                    args.input_dir, 'GeneratedEvn.txt'
+                )
+                write_param(args.evn_file, args.param)
+                self._generated_files.append(args.evn_file)
             cmds = [
                 f'{execFile} -d {args.driver} '
                 f'--enzyme {args.enzyme_file} --grn {args.grn_file} '
@@ -644,6 +730,17 @@ class ephoto(BuildSubTask):
                     args.output_param_base + 'init.txt',
                     args.output_param_base + 'last.txt',
                 ]
+            if args.output_param:
+                cmds[0] += f' --outputParam {args.output_param}'
+                if args.output_param >= 3:
+                    self._generated_files += [
+                        args.output_param_base + 'step*.txt'
+                    ]
+            if args.iterations_file:
+                cmds[0] += f' --iterations {args.iterations_file}'
+            for k in self.direct_args:
+                if getattr(args, k, None):
+                    cmds[0] += f' --{k} {getattr(args, k)}'
         return super(ephoto, self).run_commands(args, cmds=cmds, **kwargs)
 
     @classmethod
@@ -656,6 +753,161 @@ class ephoto(BuildSubTask):
             cls.suffix_path_args(args, suffix_paths,
                                  '_' + cls._driver_map[args.driver])
             func(args, **kwargs)
+
+
+class ephoto_iterations(ephoto):
+
+    def __init__(self, args, **kwargs):
+        super(ephoto_iterations, self).__init__(args, **kwargs)
+        self.plot(self.read_param(args))
+
+    @classmethod
+    def adjust_args(cls, args):
+        if not args.param:
+            args.param = {}
+        if args.light_profile:
+            # args.evn_file = None
+            args.iterations_file = (
+                f'InputTimeIteration_{args.light_profile}.txt'
+            )
+            if args.plot_file:
+                args.plot_file = (
+                    f'TimeIterationResult_{args.light_profile}.png'
+                )
+        if args.light_profile in ['paper', 'paper_exp1', 'paper_exp3']:
+            args.driver = 2
+            args.plot_var = [
+                'CO2AR', 'FI::VEL::vA_d',
+                'ALL::VARS::O2_cond',  # fluoresence
+                # membrange potential
+                'PSIIabs',
+                'BF::COND::PHs', 'BF::COND::PHl',
+                'BF::COND::Ks', 'BF::COND::Mgs',
+                'BF::COND::Cls',
+                'ALL::VARS::TestLi',
+            ]
+            args.param['O2'] = 210  # mmol mol-1
+            args.param['CO2_in'] = 280  # umol mol-1 (or CO2_cond?)
+            args.param['CO2_in'] *= 3. * pow(10., 4.)  # Convert to ppm
+            args.param['Tp'] = 25  # C
+        cls.prefix_path_args(args, ['plot_file'], prefix=args.output_dir)
+        super(ephoto_iterations, cls).adjust_args(args)
+
+    def run_commands(self, args, cmds=None, ephoto_args=None, **kwargs):
+        self.create_light_profile(args)
+        return super(ephoto_iterations, self).run_commands(
+            args, cmds=cmds, ephoto_args=ephoto_args, **kwargs
+        )
+
+    def create_light_profile(self, args):
+        if not args.light_profile:
+            return None
+        variables = {'time': [], 'PAR': []}
+        if args.light_profile == 'dilkaran':
+            variables['time'] = [
+                0,
+                400,
+                800,
+                1200,
+            ]
+            variables['PAR'] = [
+                0,
+                600,
+                0,
+                0,
+            ]
+        elif args.light_profile in ['paper', 'paper_exp1']:
+            variables['time'] = [
+                0,
+                200,
+                400,
+                600,
+            ]
+            variables['PAR'] = [
+                1000,
+                100,
+                1000,
+                1000,
+            ]
+        elif args.light_profile == 'paper_exp3':
+            # 100 µmol m−2 s−1 increments
+            variables['PAR'] = np.linspace(0, 1000, 11)
+            variables['PAR'].append(variables['PAR'][-1])
+            variables['time'] = [
+                200 * x for x in range(len(variables['PAR']))
+            ]
+        elif args.light_profile == 'zaks':
+            variables['time'] = [
+                0,
+                150,
+                900,
+                1500,
+            ]
+            variables['PAR'] = [
+                0,
+                1000,
+                0,
+                0,
+            ]
+        else:
+            raise ValueError(f"Unsupported light profile: "
+                             f"{args.light_profile}")
+        args.param['PAR'] = variables['PAR'][0]
+        args.stoptime = max(variables['time'])
+        self._generated_files += [
+            args.iterations_file
+        ]
+        self.write_iterations(args.iterations_file, variables)
+
+    def write_iterations(self, fname, data):
+        import pandas as pd
+        df = pd.DataFrame(data)
+        df.to_csv(fname, sep='\t', index=False)
+
+    def read_param(self, args):
+        param_files = sorted(glob.glob(
+            args.output_param_base + 'step*.txt'
+        ))
+        assert param_files
+        variables = {'time': []}
+        for v in args.plot_var:
+            variables[v] = []
+        for x in param_files:
+            t = float(x.rsplit('_step', 1)[-1].split('.txt')[0])
+            if t < args.tmin:
+                continue
+            variables['time'].append(t)
+            if len(variables['time']) > 1:
+                assert variables['time'][-1] > variables['time'][-2]
+            data = read_param(x)
+            for v in args.plot_var:
+                variables[v].append(data[v])
+        return variables
+
+    def plot(self, data):
+        assert 'time' in data
+        variables = list(data.keys())
+        variables.remove('time')
+        nplots = len(variables)
+        if args.light_profile.startswith('paper'):
+            nplots += 1
+        ncol = 1 if nplots == 1 else 2
+        nrow = int(np.ceil(nplots / ncol))
+        fig, axs = plt.subplots(nrow, ncol, figsize=(10, 3 * nrow),
+                                layout='constrained')
+        for ax, v in zip(axs.flat, variables):
+            ax.set_xlabel('time')
+            ax.set_ylabel(v.split('::')[-1])
+            ax.plot(data['time'], data[v])
+        if args.light_profile.startswith('paper'):
+            ax = axs.flat[-1]
+            ax.set_xlabel('ALL::VARS::TestLi')
+            ax.set_ylabel('CO2AR')
+            ax.plot(data['ALL::VARS::TestLi'], data['CO2AR'])
+        if args.plot_file:
+            fig.savefig(args.plot_file)
+        else:
+            plt.show()
 
 
 class compare_matlab(BuildSubTask):
@@ -675,7 +927,7 @@ class compare_matlab(BuildSubTask):
             prefix=args.matlab_output_dir)
         if args.generate_matlab_script and args.dont_run_matlab:
             args.no_diff = True
-        if args.diff:
+        if args.diff or args.dont_run:
             args.dont_run_matlab = True
             args.dont_run_cpp = True
         if args.no_diff:
@@ -684,6 +936,7 @@ class compare_matlab(BuildSubTask):
             args.dont_build = True
         assert args.output_file != args.matlab_output_file
         assert args.output_param_base != args.matlab_output_param_base
+        assert not args.iterations_file
         if not os.path.isdir(args.matlab_output_dir):
             os.mkdir(args.matlab_output_dir)
 
@@ -774,9 +1027,6 @@ class compare_matlab(BuildSubTask):
     def run_cpp(self, args, ephoto_args=None):
         if ephoto_args is None:
             ephoto_args = []
-        ephoto_args += [
-            '--outputParam', '2', '--stoptime', '3000',
-        ]
         out = ephoto(
             args, config_args=['-DMAKE_EQUIVALENT_TO_MATLAB:BOOL=ON'],
             ephoto_args=ephoto_args, dont_cleanup=True)
@@ -951,9 +1201,35 @@ if __name__ == "__main__":
     parser_test.add_argument(
         '--refresh-output', action='store_true',
         help="Refresh the copies of expected test output")
+
     parser_ephoto = subparsers.add_parser(
         'ephoto', help="Run ephoto executable",
         func=ephoto)
+
+    parser_iterations = subparsers.add_parser(
+        'ephoto-iterations', help="Run an ephoto time series",
+        func=ephoto_iterations)
+    parser_iterations.add_argument(
+        '--plot-var', '--var', type=str, action='append',
+        help="Variable that should be plot against time",
+        default=[
+            'ALL::VARS::TestLi', 'CO2AR',
+            'ALL::VARS::O2_cond', 'ALL::VARS::CO2_cond',
+            'FI::VEL::vU_d', 'FI::VEL::vA_d',
+            'BF::COND::PHs', 'BF::COND::PHl',
+        ])
+    parser_iterations.add_argument(
+        '--plot-file', type=str,
+        nargs='?', const='TimeIterationResult.png',
+        help="Location where the generated plot should be saved")
+    parser_iterations.add_argument(
+        '--tmin', type=float, default=1,
+        help="Minimum time that should be plot")
+    parser_iterations.add_argument(
+        '--light-profile', choices=['dilkaran', 'paper'],
+        default='paper',
+        help=("Create an input file that produces a desired light "
+              "profile"))
     # parser_yggdrasil = subparsers.add_parser(
     #     'yggdrasil',
     #     help="Return information about the yggdrasil interface library",
@@ -1052,11 +1328,12 @@ if __name__ == "__main__":
         'update-readme',
         'test',
         'ephoto',
+        'ephoto-iterations',
         'compare-matlab',
         'coverage',
     ]
     build_tasks = ['build'] + requires_build
-    ephoto_tasks = ['ephoto', 'compare-matlab']
+    ephoto_tasks = ['ephoto', 'ephoto-iterations', 'compare-matlab']
     compare_tasks = ['compare-matlab', 'compare-files']
 
     # Build arguments
@@ -1146,8 +1423,9 @@ if __name__ == "__main__":
               "in an isolated pip env"),
         subparsers={'task': build_tasks})
     parser.add_argument(
-        '--with-yggdrasil', action='store_true',
-        help="Compile with WITH_YGGDRASIL",
+        '--with-yggdrasil', nargs='?', const=True,
+        help=("Compile with WITH_YGGDRASIL. If \"direct\" is passed, "
+              "the yggdrasil sources will be directly included."),
         subparsers={'task': build_tasks})
 
     # Comparison arguments
@@ -1169,7 +1447,10 @@ if __name__ == "__main__":
         "--driver", '-d', type=int,
         default=0, choices=[0, 1, 2, 3, 4],
         help="Driver to run",
-        subparsers={'task': ephoto_tasks + ['compare-files']})
+        subparsers={'task': ephoto_tasks + ['compare-files']},
+        subparser_defaults={
+            'ephoto-iterations': 4
+        })
     parser.add_argument(
         '--input-dir', type=str, default=_data_dir,
         help="Directory containing input files",
@@ -1189,6 +1470,12 @@ if __name__ == "__main__":
         subparsers={'task': ephoto_tasks},
         subparser_defaults={'compare-matlab': 'InputEvn_MATLAB.txt'})
     parser.add_argument(
+        '--iterations-file', '--iterations', type=str,
+        subparsers={'task': ephoto_tasks},
+        subparser_defaults={
+            'ephoto-iterations': 'InputTimeIteration.txt'
+        })
+    parser.add_argument(
         '--atpcost-file', '--atp', type=str, default='InputATPCost.txt',
         help="File containing ATP cost",
         subparsers={'task': ephoto_tasks})
@@ -1196,16 +1483,35 @@ if __name__ == "__main__":
         '--output-dir', type=str, default=os.getcwd(),
         help="Directory where output should be saved",
         subparsers={'task': ephoto_tasks},
-        subparser_defaults={'compare-matlab': 'output_CPP'})
+        subparser_defaults={'compare-matlab': 'output_CPP',
+                            'ephoto-iterations': 'output_iterations'})
     parser.add_argument(
         '--output-file', '--output', type=str, default='output.data',
         help="File where driver output should be saved",
         subparsers={'task': ephoto_tasks})
     parser.add_argument(
+        "--output-param", choices=[0, 1, 2, 3], type=int,
+        help="Flag specifying when to output parameters",
+        subparsers={'task': ephoto_tasks},
+        subparser_defaults={'compare-matlab': 2,
+                            'ephoto-iterations': 3})
+    parser.add_argument(
         "--output-param-base", type=str, default="param_",
         help="File prefix for output parameter files",
         subparsers={'task': ephoto_tasks},
         subparser_defaults={'compare-matlab': 'output_param_'})
+    parser.add_argument(
+        '--dont-run', action='store_true',
+        help="Don\'t run ephotosynthesis, only post-process",
+        subparsers={'task': ephoto_tasks})
+    parser.add_argument(
+        '--stoptime', type=int,
+        help="Stop time for the run",
+        subparsers={'task': ephoto_tasks},
+        subparser_defaults={'compare-matlab': 3000})
+    parser.add_argument(
+        '--param', type=cli_param, action='extend',
+        help="Parameter values that should be set")
 
     # Universal arguments
     parser.add_argument(

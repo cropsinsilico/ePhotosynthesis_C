@@ -82,23 +82,59 @@ ePhotosynthesis::run_simulation(Variables*& theVars,
                const std::vector<std::string>& outputVars,
                int outputParam,
                const std::string& outputParamBase,
-               const std::vector<std::string>& outputParamVars) {
-                     
+               const std::vector<std::string>& outputParamVars,
+               const std::map<std::string, std::vector<std::string> > iterations,
+               const bool iterationsPreserveState) {
+  
     drivers::Driver *maindriver = nullptr;
     std::map<std::string, double> output;
+
+    bool first = true;
+    int iteration = 0;
+    Variables* origVars = theVars->deepcopy();
+    double it_begintime = begintime;
+    double it_stoptime = stoptime;
+    size_t maxIterations = 1;
+    bool preserveState = iterationsPreserveState;
+    
+    typename std::map<std::string, std::vector<std::string> >::const_iterator first_col = iterations.begin();
+    if (first_col != iterations.end()) {
+        maxIterations = first_col->second.size();
+        std::cout << "MAX_ITERATIONS = " << maxIterations << std::endl;
+    }
+    std::vector<double> iterationTimes;
+    bool has_time = (iterations.find("time") != iterations.end());
+    if (has_time) {
+        preserveState = true;
+        typename std::map<std::string, std::vector<std::string> >::const_iterator itt = iterations.find("time");
+        for (typename std::vector<std::string>::const_iterator it = itt->second.begin();
+             it != itt->second.end(); it++) {
+            double d;
+            std::stringstream ss(*it);
+            ss >> d;
+            iterationTimes.push_back(d);
+        }
+        while ((iteration + 1) < maxIterations &&
+               iterationTimes[iteration + 1] < begintime)
+            iteration++;
+        if (iterationTimes[iteration] < begintime)
+            it_begintime = iterationTimes[iteration];
+        if ((iteration + 1) < maxIterations)
+            it_stoptime = iterationTimes[iteration + 1];
+    }
 	
 #ifdef WITH_YGGDRASIL
     int flag = 0;
-    Variables* origVars = nullptr;
     YggInput* steps = nullptr;
     YggOutput* out = nullptr;
-    bool first = true;
-    int iteration = 0;
     if (std::getenv("YGG_SUBPROCESS")) {
         try {
             steps = new YggInput("param");
             out = new YggOutput("output");
-            origVars = theVars->deepcopy();
+            if (iterations.size()) {
+                throw std::runtime_error("Iterations were provided via the command line and yggdrasil \"param\" input. Only one is currently allowed.");
+            }
+            maxIterations = std::numeric_limits<size_t>::max();
         } catch(...) {
             if (steps) {
                 delete steps;
@@ -106,10 +142,23 @@ ePhotosynthesis::run_simulation(Variables*& theVars,
             }
         }
     }
-          
-    while (true) {
+
+#endif // WITH_YGGDRASIL
+
+    while (iteration < maxIterations && it_begintime < stoptime) {
+
+        if (maxIterations > 1) {
+          std::cout << "ITERATION: " << iteration << std::endl <<
+            "TSTART: " << it_begintime << std::endl <<
+            "TSTOP: " << it_stoptime << std::endl;
+        }
+        if (!(first || preserveState)) {
+            delete theVars;
+            theVars = origVars->deepcopy();
+        }
+
+#ifdef WITH_YGGDRASIL
         if (steps) {
-            std::cout << "ITERATION: " << iteration << std::endl;
             rapidjson::Document new_state;
             flag = steps->recvVar(new_state);
             if (flag < 0) {
@@ -122,34 +171,44 @@ ePhotosynthesis::run_simulation(Variables*& theVars,
                     break;
                 }
             }
-            if (!first) {
-                delete theVars;
-                theVars = origVars->deepcopy();
-            }
 
             std::cout << "INPUT STATE = " << new_state << std::endl;
             updateParamYgg(new_state, theVars);
-        } else if (!first) {
-            break;
         }
 #endif
 
-        maindriver = drivers::create_driver(driverChoice, theVars,
-                                            begintime, stepsize,
-                                            stoptime, maxSubSteps,
-                                            abstol, reltol, 1, 1);
-        if ((outputParam == 0) && !(outputParamBase.empty() &&
-                                    outputParamVars.empty()))
-	    outputParam = 1;
-        if (outputParam) {
-	    maindriver->outputParam(static_cast<OutputFreq>(outputParam),
-                                    outputParamBase,
-                                    outputParamVars);
+        if (iterations.size()) {
+            std::map<std::string, std::string> it_param;
+            for (typename std::map<std::string, std::vector<std::string> >::const_iterator it = iterations.begin(); it != iterations.end(); it++) {
+                if (it->first == "time")
+                    continue;
+                it_param[it->first] = it->second[iteration];
+            }
+            Variables::updateParam(it_param, theVars, "updateIteration");
         }
-        if (!outputVars.empty()) {
-            maindriver->setOutputVars(outputVars);
+
+        bool continuingRun = (maindriver != nullptr);
+        std::vector<double> ResultRate;
+        if (!maindriver) {
+            maindriver = drivers::create_driver(driverChoice, theVars,
+                                                it_begintime, stepsize,
+                                                it_stoptime, maxSubSteps,
+                                                abstol, reltol, 1, 1);
+            if ((outputParam == 0) && !(outputParamBase.empty() &&
+                                        outputParamVars.empty()))
+                outputParam = 1;
+            if (outputParam) {
+                maindriver->outputParam(static_cast<OutputFreq>(outputParam),
+                                        outputParamBase,
+                                        outputParamVars);
+            }
+            if (!outputVars.empty()) {
+                maindriver->setOutputVars(outputVars);
+            }
+            ResultRate = maindriver->run();
+        } else {
+            ResultRate = maindriver->continue_run(it_stoptime);
         }
-        std::vector<double> ResultRate = maindriver->run();
 
 #ifdef WITH_YGGDRASIL
         if (out) {
@@ -172,18 +231,34 @@ ePhotosynthesis::run_simulation(Variables*& theVars,
 #endif // WITH_YGGDRASIL
 
         output = maindriver->getOutput();
+        if (!preserveState) {
+            if (theVars != nullptr) {
+                maindriver->inputVars = nullptr;
+            }
+            delete maindriver;
+            maindriver = nullptr;
+        }
+
+        first = false;
+        iteration++;
+        if (has_time) {
+            it_begintime = it_stoptime;
+            if ((iteration + 1) < maxIterations) {
+                it_stoptime = std::min(iterationTimes[iteration + 1],
+                                       stoptime);
+            } else {
+                it_stoptime = stoptime;
+            }
+        }
+    }
+    if (origVars != nullptr)
+        delete origVars;
+    if (maindriver != nullptr) {
         if (theVars != nullptr) {
             maindriver->inputVars = nullptr;
         }
         delete maindriver;
-
-#ifdef WITH_YGGDRASIL
-        first = false;
-        iteration++;
     }
-    if (origVars != nullptr)
-        delete origVars;
-#endif
     return output;
 }
 
@@ -201,6 +276,7 @@ ePhotosynthesis::run_simulation(DriverType driverChoice,
                const std::string& atpcostFile,
                const std::string& enzymeFile,
                const std::string& grnFile,
+               const std::string& iterationsFile,
                const std::string& outputFile,
                const std::vector<std::string>& outputVars,
                const int& outputParam,
@@ -210,6 +286,7 @@ ePhotosynthesis::run_simulation(DriverType driverChoice,
                const bool debugDelta,
                const bool debugInternal,
                const bool& record,
+               const bool iterationsPreserveState,
                Variables *theVars) {
     // TODO: Do yggdrasil initial input before this point so driver
     //   choice can be an input?
@@ -264,11 +341,19 @@ ePhotosynthesis::run_simulation(DriverType driverChoice,
         std::cout << "This is not a debug build, no debug reporting will be done." << std::endl;
 #endif
 
+    // Read the iteration data
+    std::map<std::string, std::vector<std::string> > iterations;
+    if (!iterationsFile.empty()) {
+      std::cout << "ITERATIONS FILE PROVIDED: " << iterationsFile << std::endl;
+      readTable(iterationsFile, iterations);
+    }
+
     std::map<std::string, double> out = run_simulation(
         theVars, driverChoice,
         begintime, stoptime, stepsize, maxSubSteps, abstol, reltol,
         outputFile, outputVars,
-        outputParam, outputParamBase, outputParamVars);
+        outputParam, outputParamBase, outputParamVars,
+        iterations, iterationsPreserveState);
 
     if (theVars != nullptr)
         delete theVars;

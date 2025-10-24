@@ -56,48 +56,36 @@ CMDriver::CMDriver(Variables *theVars, const double startTime,
 }
 
 
-void CMDriver::setup() {
-
-    ////////////////////////////////////////////////////////////////////////////////////////
-    //   Global variables used for obtaining flux and concentration data //
-    ////////////////////////////////////////////////////////////////////////////////////////
-
-    ////////////////////////////////////////////////
-    //   Initialation step //
-    ////////////////////////////////////////////////
-    IniModelCom(inputVars);        // Initialize the structure of the model, i.e. Is this model separate or combined with others.
+void CMDriver::setup_connections(Variables* theVars) {
     // This is a variable indicating whether the PR model is actually need to be combined with PS or not. If 1 then means combined; 0 means not.
-    inputVars->PR_PS_com = true;
+    theVars->PR_PS_com = true;
     // This is a variable indicating whether the PSPR model is actually need to be combined with SUCS or not. If 1 then means combined; 0 means not.
-    inputVars->PSPR_SUCS_com = true;
+    theVars->PSPR_SUCS_com = true;
 
-    CMCondition* CM_con = CM_Ini();
-    constraints = CM_con->toArray();
-    delete CM_con;
-    ////////////////////////////////////////////////
-    //   Calculation  step //
-    ////////////////////////////////////////////////
-
-    inputVars->SUCS_Param[0] = 1;
-    inputVars->SUCS_Param[1] = 1;
-
-    inputVars->PS_PR_Param = 0;
 }
 
-void CMDriver::getResults() {
-    //////////////////////////////////////////////
-    //   output  step      //
-    //////////////////////////////////////////////
-    CMCondition* CM_int_con = new CMCondition(intermediateRes);
+void CMDriver::setup_variables(Variables* theVars) {
 
-    arr temp = CM::MB(time, CM_int_con, inputVars);
+    theVars->alpha1 = 1.0;
+    theVars->alpha2 = 1.0;
+
+}
+
+void CMDriver::setup_param(Variables* theVars) {
+
+    theVars->SUCS_Param[0] = 1;
+    theVars->SUCS_Param[1] = 1;
+
+    theVars->PS_PR_Param = 0;
+
+}
+
+void CMDriver::getResults(Variables* theVars) {
     
-    const double CO2AR = TargetFunVal(inputVars);
+    if (!theVars) theVars = currentVariables();
+
+    const double CO2AR = TargetFunVal(theVars);
 
     results = {CO2AR};
 
-    // Reinitialize some values of global variables.
-    inputVars->PSPR_SUCS_com = false;
-    delete CM_int_con;
-    IniModelCom(inputVars);
 }

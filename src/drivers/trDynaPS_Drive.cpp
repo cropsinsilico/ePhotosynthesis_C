@@ -60,83 +60,83 @@ trDynaPSDriver::trDynaPSDriver(Variables *theVars, const double startTime,
       outputVars.push_back("CO2AR");
     }
 }
-void trDynaPSDriver::setup() {
-
-    if (ParaNum <= 103) {
-        inputVars->PSRatio[ParaNum] = Ratio;
-    } else if (ParaNum <= 169) {
-        inputVars->SUCSRatio[ParaNum - 103] = Ratio;
-    } else if (ParaNum <= 217) {
-        inputVars->PRRatio[ParaNum - 169] = Ratio;
-    } else if (ParaNum <= 233) {
-        inputVars->RuACTRatio[ParaNum - 217] = Ratio;
-    } else if (ParaNum <= 256) {
-        inputVars->FIRatio[ParaNum - 233] = Ratio;
-    } else if (ParaNum <= 305) {
-        inputVars->BFRatio[ParaNum - 256] = Ratio;
-    } else if (ParaNum <= 309) {
-        inputVars->XanCycleRatio[ParaNum - 305] = Ratio;
-    }
-    SYSInitial(inputVars);
-
-    IniModelCom(inputVars);        // Initialize the structure of the model, i.e. Is this model separate or combined with others.
-
+void trDynaPSDriver::setup_connections(Variables* theVars) {
     // The combination of BF and FI model
-    inputVars->BF_FI_com = true;
+    theVars->BF_FI_com = true;
 
     // true means that the overall EPS model is used. false means partial model of FIBF is used.
-    inputVars->FIBF_PSPR_com = true;
+    theVars->FIBF_PSPR_com = true;
 
     // A global variable to indicate whether the RuACT is run by itself or combined with others.
-    inputVars->RuACT_EPS_com = true;        // Since this is run within this program, it is combinbed, therefore, it is assigned value true, otherwise, assign value false.
+    theVars->RuACT_EPS_com = true;        // Since this is run within this program, it is combinbed, therefore, it is assigned value true, otherwise, assign value false.
 
     // This is the connection between Redox and RA.
     // langmm: I believe this should be true, but the RedoxReg module
     //   solver problem does not appear to be well solved and is always
     //   solved by the initial guess.
-    inputVars->RedoxReg_RA_com = false;        // This means that the connection is there.
+    theVars->RedoxReg_RA_com = false;        // This means that the connection is there.
 
-    inputVars->XanCycle_BF_com = true;
+    theVars->XanCycle_BF_com = true;
+  
+    theVars->RROEA_EPS_com = true;
 
-    inputVars->RROEA_EPS_com = true;
-
-    inputVars->EPS_SUCS_com = true;
+    theVars->EPS_SUCS_com = true;
 
     // This is a variable indicating whether the PSPR model is actually need to be combined with SUCS or not. If 1 then means combined; 0 means not.
-    inputVars->PSPR_SUCS_com = true;
+    theVars->PSPR_SUCS_com = true;
 
-    // Next is to initialize the vector.
-    trDynaPSCondition* trDynaPS_con = trDynaPS_Ini();
-    ParamSet(inputVars);
-    constraints = trDynaPS_con->toArray();
-    delete trDynaPS_con;
+}
+void trDynaPSDriver::setup_variables(Variables* theVars) {
+
+    if (ParaNum <= 103) {
+        theVars->PSRatio[ParaNum] = Ratio;
+    } else if (ParaNum <= 169) {
+        theVars->SUCSRatio[ParaNum - 103] = Ratio;
+    } else if (ParaNum <= 217) {
+        theVars->PRRatio[ParaNum - 169] = Ratio;
+    } else if (ParaNum <= 233) {
+        theVars->RuACTRatio[ParaNum - 217] = Ratio;
+    } else if (ParaNum <= 256) {
+        theVars->FIRatio[ParaNum - 233] = Ratio;
+    } else if (ParaNum <= 305) {
+        theVars->BFRatio[ParaNum - 256] = Ratio;
+    } else if (ParaNum <= 309) {
+        theVars->XanCycleRatio[ParaNum - 305] = Ratio;
+    }
+
+    theVars->alpha1 = 1.0;
+    theVars->alpha2 = 1.0;
 
 }
 
-void trDynaPSDriver::getResults() {
-    // call the functions one last time to get the correct values we need
-    trDynaPSCondition* trDynaPS_res = new trDynaPSCondition(intermediateRes);
-    arr temp = trDynaPS::MB(time, trDynaPS_res, inputVars);
+void trDynaPSDriver::setup_param(Variables* theVars) {
 
-    double CarbonRate = inputVars->RuACT_Vel.v6_1 * inputVars->AVR;
-    double VPR = inputVars->RuACT_Vel.v6_2 * inputVars->AVR;
-    double Vpgasink = inputVars->SUCS_Vel.vpga_use * inputVars->AVR;
-    double VStarch = (inputVars->PS_Vel.v23 - inputVars->PS_Vel.v25) * inputVars->AVR;
-    double Vt3p = (inputVars->PS_Vel.v31 + inputVars->PS_Vel.v33) * inputVars->AVR;
-    const double CO2AR = TargetFunVal(inputVars);
+    ParamSet(theVars);
+
+}
+
+void trDynaPSDriver::getResults(Variables* theVars) {
+
+    if (!theVars) theVars = currentVariables();
+
+    double CarbonRate = theVars->RuACT_Vel.v6_1 * theVars->AVR;
+    double VPR = theVars->RuACT_Vel.v6_2 * theVars->AVR;
+    double Vpgasink = theVars->SUCS_Vel.vpga_use * theVars->AVR;
+    double VStarch = (theVars->PS_Vel.v23 - theVars->PS_Vel.v25) * theVars->AVR;
+    double Vt3p = (theVars->PS_Vel.v31 + theVars->PS_Vel.v33) * theVars->AVR;
+    const double CO2AR = TargetFunVal(theVars);
     results = zeros(8);
     results[0] = CarbonRate; //Vc
     results[1] = VPR;        //Vo
     results[2] = Vpgasink;   //PGA
     results[3] = Vt3p;       //VT3P
     results[4] = VStarch;    //Vstarch
-    results[5] = inputVars->PR_Vel.v1in * inputVars->AVR;  //Vt_glycerate
-    results[6] = inputVars->PR_Vel.v2out * inputVars->AVR; //Vt_glycolate
+    results[5] = theVars->PR_Vel.v1in * theVars->AVR;  //Vt_glycerate
+    results[6] = theVars->PR_Vel.v2out * theVars->AVR; //Vt_glycolate
     results[7] = CO2AR;
 
-    if(inputVars->record) {
-        makeFluxTR(inputVars);
+    if(theVars->record) {
+        makeFluxTR(theVars);
     }
-    delete trDynaPS_res;
-    IniModelCom(inputVars);
+
 }

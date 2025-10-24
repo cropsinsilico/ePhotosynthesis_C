@@ -111,12 +111,36 @@ Variables::~Variables() {}
 Variables::Variables(const Variables* other) :
   Variables(*other) {}
 
+void Variables::__copyNonMembers(const Variables& other) {
+  this->alfa = other.alfa;
+  this->fc = other.fc;
+  this->lightParam = other.lightParam;
+  this->CO2A = other.CO2A;
+  this->RedoxReg_MP = other.RedoxReg_MP;
+#define DO_MEMBERS(mod, pt)
+#define DO_MEMBERS_PACKED(args) DO_MEMBERS args
+#define DO_MEMBERS_CORE(mod)						\
+  this->CONCATENATE(mod, _Param) = other.CONCATENATE(mod, _Param)
+#define DO_MEMBERS_CONNECTION(mod)
+  VARS_INST_APPLY_TO_MEMBERS(DO_MEMBERS);
+#undef DO_MEMBERS
+#undef DO_MEMBERS_PACKED
+#undef DO_MEMBERS_CORE
+#undef DO_MEMBERS_CONNECTION
+#define DO_MOD(mod)							\
+  this->CONCATENATE(mod, _Vel) = other.CONCATENATE(mod, _Vel);		\
+  this->CONCATENATE(mod, _VEL) = other.CONCATENATE(mod, _VEL)
+  FOR_EACH(DO_MOD, EXPAND VARS_INST_MODULES);
+#undef DO_MOD
+}
+
 void Variables::__copyMembers(const Variables& other) {
 #ifdef SUNDIALS_CONTEXT_REQUIRED
     _context = other._context;
     _context_flags = other._context_flags;
 #endif // SUNDIALS_CONTEXT_REQUIRED
     inputsFinalized = other.inputsFinalized;
+    inputsUpdated = other.inputsUpdated;
     record = other.record;
     GP = other.GP;
     GRNC = other.GRNC;
@@ -145,9 +169,27 @@ void Variables::__copyMembers(const Variables& other) {
     ProteinTotalRatio = other.ProteinTotalRatio;
 }
 
-void Variables::finalizeInputs() {
-    if (inputsFinalized)
+bool Variables::inputUpdated(const std::string& name,
+                             const bool ignoreClassFlag) const {
+    if (!(ignoreClassFlag || inputsFinalized)) return true;
+    typename std::map<std::string, bool>::const_iterator it = inputsUpdated.find(name);
+    if (it == inputsUpdated.end())
+        return false;
+    return it->second;
+}
+
+void Variables::assertCalcNotUpdated(const std::string& name) const {
+    if (inputUpdated(name, true))
+      throw std::runtime_error(name + " was updated, but is calculated");
+}
+
+void Variables::finalizeInputs(const bool dontReset) {
+    if (inputsFinalized && inputsUpdated.empty()) {
         return;
+    }
+
+    assertCalcNotUpdated("ALL::VARS::CO2_cond");
+    if (inputUpdated("ALL::VARS::CO2_in")) {
     // Conversion from Air_CO2 ppm to intercellular CO2
 #ifdef MAKE_EQUIVALENT_TO_MATLAB
     CO2_in *= 0.7;
@@ -159,7 +201,8 @@ void Variables::finalizeInputs() {
     if (!useC3)
       CO2_cond *= 0.7;
 #endif // MAKE_EQUIVALENT_TO_MATLAB
-    
+    }
+    if (inputUpdated("ALL::VARS::TestLi")) {
     if (PAR_in_Wpm2) {
       // Conversion from W m^{-2} to u moles m^{-2} s^{-1}
       TestLi_Wps = TestLi;
@@ -168,32 +211,23 @@ void Variables::finalizeInputs() {
     } else {
       TestLi_Wps = TestLi / (1.0e6 / 2.35e5);
     }
-    inputsFinalized = true;
+    }
+    if (!dontReset) {
+      inputsFinalized = true;
+      inputsUpdated.clear();
+    }
 }
 
 Variables* Variables::deepcopy() const {
   Variables* out = new Variables(*this);
-  out->alfa = this->alfa;
-  out->fc = this->fc;
-  out->lightParam = this->lightParam;
-  out->CO2A = this->CO2A;
-  out->RedoxReg_MP = this->RedoxReg_MP;
-#define DO_MEMBERS(mod, pt)
-#define DO_MEMBERS_PACKED(args) DO_MEMBERS args
-#define DO_MEMBERS_CORE(mod)						\
-  out->CONCATENATE(mod, _Param) = this->CONCATENATE(mod, _Param)
-#define DO_MEMBERS_CONNECTION(mod)
-  VARS_INST_APPLY_TO_MEMBERS(DO_MEMBERS);
-#undef DO_MEMBERS
-#undef DO_MEMBERS_PACKED
-#undef DO_MEMBERS_CORE
-#undef DO_MEMBERS_CONNECTION
-#define DO_MOD(mod)							\
-  out->CONCATENATE(mod, _Vel) = this->CONCATENATE(mod, _Vel);		\
-  out->CONCATENATE(mod, _VEL) = this->CONCATENATE(mod, _VEL)
-  FOR_EACH(DO_MOD, EXPAND VARS_INST_MODULES);
-#undef DO_MOD
+  out->__copyNonMembers(*this);
   return out;
+}
+
+void Variables::deepcopy(const Variables& rhs) {
+  this->~Variables();
+  new (this) Variables(rhs);
+  this->__copyNonMembers(rhs);
 }
 
 std::string Variables::_diff(const Variables& other,
@@ -343,11 +377,13 @@ void Variables::dump(const std::string& filename,
                      const std::vector<std::string>& skip_keys,
                      const std::map<std::string, std::string>& key_aliases,
                      const std::map<MODULE, const ValueSet_t*>& conditions,
-                     const std::vector<std::string>& subset) const {
+                     const std::vector<std::string>& subset,
+                     const std::map<std::string, double>& additionalVars) const {
     std::ofstream fd;
     fd.open(filename);
     dump(fd, includeSkipped, skip_modules, skip_param_types,
-	 skip_keys, key_aliases, conditions, subset);
+	 skip_keys, key_aliases, conditions, subset,
+         additionalVars);
     fd.close();
 }
 std::ostream& Variables::dump(std::ostream& out,
@@ -357,7 +393,8 @@ std::ostream& Variables::dump(std::ostream& out,
                               const std::vector<std::string>& skip_keys,
                               const std::map<std::string, std::string>& key_aliases,
                               const std::map<MODULE, const ValueSet_t*>& conditions,
-                              const std::vector<std::string>& subset) const {
+                              const std::vector<std::string>& subset,
+                              const std::map<std::string, double>& additionalVars) const {
 #ifdef MAKE_EQUIVALENT_TO_MATLAB
     std::size_t pad = 35;
 #else // MAKE_EQUIVALENT_TO_MATLAB
@@ -385,6 +422,11 @@ std::ostream& Variables::dump(std::ostream& out,
                                 skip_keys, key_aliases);
             }
         }
+        if (!additionalVars.empty()) {
+          Variables::print_value_map(additionalVars, out, 0, pad,
+                                     false, includeSkipped,
+                                     skip_keys, key_aliases);
+        }
         return out;
     }
 #define FITER(V, ...)							\
@@ -396,6 +438,11 @@ std::ostream& Variables::dump(std::ostream& out,
     VARS_ITER_MACRO_COND(FITER, out, 0, pad, true, includeSkipped,
 			 skip_keys, key_aliases, true);
 #undef FITER
+    if (!additionalVars.empty()) {
+      Variables::print_value_map(additionalVars, out, 0, pad,
+                                 false, includeSkipped,
+                                 skip_keys, key_aliases);
+    }
     return out;
 }
 std::ostream& Variables::dump(const MODULE& module,
@@ -1097,6 +1144,9 @@ void Variables::updateParam(std::map<std::string, std::string>& inputs,
                     theVars->setControlVar(mod, pt, name, (int)value);
                 else
                     theVars->setVar(mod, pt, name, value);
+                if (theVars->inputsFinalized) {
+                    theVars->inputsUpdated[name_FULL] = true;
+                }
             } else {
                 if (controlVar)
                     setDefaultControlVar(mod, pt, name, (int)value);

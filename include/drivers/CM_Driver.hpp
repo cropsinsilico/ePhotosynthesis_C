@@ -46,16 +46,6 @@ public:
 	     const std::size_t para = 0, const double ratio = 0,
              const bool showWarn = false,
 	     const std::vector<std::string>& outVars = {});
-
-    /**
-      \copydoc drivers::Driver::setup
-      */
-    void setup() override;
-
-    /**
-      \copydoc drivers::Driver::getResults
-      */
-    void getResults() override;
   
 };
 

@@ -161,23 +161,83 @@ class Driver : public DriverParam {
 public:
 
     /**
-      Generate the initial parameter Condition class for the solver to use.
+       Get the current variables for the simulation.
+       \returns Current variables.
+     */
+    const Variables* currentVariables() const;
+    /**
+       Get the current variables for the simulation.
+       \returns Current variables.
+     */
+    Variables* currentVariables();
+
+    /**
+      Set the flags governing connections between modules for this model.
+      \param[in,out] theVars Variables to update.
       */
-    virtual void setup() = 0;
+    virtual void setup_connections(Variables* theVars) = 0;
+
+    /**
+      Set default variable values and calculations for this model.
+      \param[in,out] theVars Variables to update.
+      */
+    virtual void setup_variables(Variables* theVars) = 0;
+
+    /**
+       Set parameters used to shared between modules.
+       \param[in,out] theVars Variables to update.
+     */
+    virtual void setup_param(Variables* theVars) = 0;
+
+    /**
+       Set the initial constraints.
+       \param[in,out] theVars Variables to update.
+     */
+    virtual void setup_constraints(Variables* theVars) = 0;
+
+    /**
+      Generate the initial parameter Condition class for the solver to use.
+      \param[in,out] theVars Variables to update.
+      \param[in] continuingRun If true, the state will not be modified to
+        allow continuation where a previous simulation left off.
+      */
+    void setup(Variables* theVars=nullptr,
+               const bool continuingRun = false);
+
+    /**
+      Finalize a simulation.
+      \param t The final timestamp.
+      \param y A specialized data vector containing the final state.
+      \param[in,out] theVars Final variable value.
+     */
+    void teardown(const realtype& t, const N_Vector& y,
+                  Variables* theVars=nullptr);
 
     /**
       Run the ODE solver and return the results.
 
+      \param[in] continuingRun If true, the state will not be modified to
+        allow continuation where a previous simulation left off.
       \return `std::vector<double>` containg the results of the computations.
       \exception std::runtime_error General failure.
       */
-    arr run();
+    arr run(const bool continuingRun = false);
+
+    /**
+      Run the ODE solver and return the results, continuing from the
+      current state.
+
+      \param[in] endTime Time that the simulation should be continued to.
+      \return `std::vector<double>` containg the results of the computations.
+      \exception std::runtime_error General failure.
+      */
+    arr continue_run(const double endTime);
 
     /**
        Dump out the current set of variables to a file.
        \param[in] filename Name of file where parameters should be written.
        \param[in] theVars Current copy of variables. If not provided,
-         inputVars will be used.
+         currentVars or inputVars will be used.
        \param[in] con Current copy of conditions. If not provided,
          the result from currentCondition will be used.
        \param[in] is_init If true, this is just after initialization and
@@ -190,9 +250,9 @@ public:
 
     /**
        Get output variables.
-       \param inputVars Structure containing current variables.
+       \param theVars Structure containing current variables.
      */
-    void getOutputVars(Variables* inputVars);
+    void getOutputVars(Variables* theVars);
 
     /**
        Set the output variables.
@@ -207,17 +267,32 @@ public:
     void writeOutputTable(std::ostream& s) const;
 
     /**
-       Get a variable given the current state defined by inputVars.
-       \param[in] inputVars Current variable state.
+       Get a variable given the current state defined by theVars.
+       \param[in] theVars Current variable state.
        \param[in] k Name of variable to return.
      */
-    double getVar(const Variables* inputVars, const std::string& k);
+    double getVar(const Variables* theVars, const std::string& k) const;
+  
+    /**
+       Populate a map with calculated variables.
+       \param[in] theVars Current variable state.
+       \param[out] dest Map that should be populated.
+     */
+    void getCalculatedVars(const Variables* theVars,
+                           std::map<std::string, double>& dest) const;
+    /**
+       Get a map containing calculated variables.
+       \param[in] theVars Current variable state.
+       \returns Calculated variables.
+     */
+    std::map<std::string, double> getCalculatedVars(const Variables* theVars) const;
   
     /**
       Runs the solver one more time on the intermediate results to get the solution at the end time
       stamp.
+      \param[in] theVars Current variable state.
       */
-    virtual void getResults() = 0;
+    virtual void getResults(Variables* theVars=nullptr) = 0;
 
     /**
        Gets the current conditions as a value set class based on the
@@ -236,12 +311,22 @@ public:
       appropriate Condition class.
 
       \param t The current timestamp.
-      \param u A specialized data vector containgin the inputs which are converted to a Condition class.
+      \param u A specialized data vector containing the inputs which are converted to a Condition class.
       \returns dy/dt values for the step.
       */
     virtual arr MB(realtype t, N_Vector u) = 0;
+    /**
+      Wrapper for the underlying Module MB function. Takes the inputs and converts them to the
+      appropriate Condition class.
+
+      \param t The current timestamp.
+      \param x A pointer to an array containing the inputs which are converted to a Condition class.
+      \param dont_dump If true, parameters for the step will not be output.
+      \returns dy/dt values for the step.
+      */
+    virtual arr MB(realtype t, realtype* x) = 0;
     virtual ~Driver();
-    EPHOTO_API static Variables *inputVars;  /**< the instance of Variables to use for all calculations. */
+    EPHOTO_API static Variables *inputVars;  /**< the instance of Variables provided as input that should be updated upon completion. */
     arr constraints;   /**< serialized version of the Condition class being used. */
     std::string fname_vars_init; /**< Name of file where initial parameter values should be be output */
     std::string fname_vars_last; /**< Name of file where final parameter values should be be output */
@@ -331,6 +416,14 @@ protected:
       \param user_data Any user supplied data.
       */
     static int calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
+    /**
+       Get the set of variable names that the driver can calculate. These
+       variables can be retrieved via the Driver::getVar method or
+       getCalculatedVars.
+     */
+    static const std::vector<std::string>&
+    getCalculatedVarNames();
+    
 
 #ifdef SUNDIALS_CONTEXT_REQUIRED
 private:
@@ -350,12 +443,14 @@ public:
     double maxStep;
     void *cvode_mem;
 protected:
+    void _clear_cvode_mem();
     void _dump(realtype t, ValueSet_t* con);
 private:
     Driver() {}
-    Variables* origVars;
+    Variables* currentVars;
     bool _lastStep;
     bool _dumpStep;
+    bool _firstPass;
 };
 
 /**
@@ -458,11 +553,24 @@ const MODULE DriverBase<T, M>::module = M;
   static void enableC3(const bool x = true);				\
   /** \copydoc drivers::Driver::currentConditions */			\
   ValueSet_t* currentConditions(realtype *x = nullptr) override;	\
+  /** \copydoc drivers::Driver::setup_connections */                    \
+  void setup_connections(Variables* theVars) override;                  \
+  /** \copydoc drivers::Driver::setup_variables */                      \
+  void setup_variables(Variables* theVars) override;                    \
+  /** \copydoc drivers::Driver::setup_param */                          \
+  void setup_param(Variables* theVars) override;                        \
+  /** \copydoc drivers::Driver::setup_constraints */                    \
+  void setup_constraints(Variables* theVars) override;                  \
+  /** \copydoc drivers::Driver::getResults */                           \
+  void getResults(Variables* theVars=nullptr) override;                 \
   /** Initialize the variables */					\
 private:								\
   DECLARE_DRIVER_TESTING(name);						\
+  /** \param[in,out] theVars Variables to use. */                       \
   /** \returns A condition object for input into calculations */	\
-  VARS_CLASS_VAR(name, COND)* name ## _Ini();				\
+  VARS_CLASS_VAR(name, COND)* name ## _Ini(Variables *theVars = nullptr); \
+  /** \copydoc drivers::Driver::MB */					\
+  arr MB(realtype t, realtype* x) override;                             \
   /** \copydoc drivers::Driver::MB */					\
   arr MB(realtype t, N_Vector u) override;
 #define DEFINE_DRIVER(name)						\
@@ -478,7 +586,7 @@ private:								\
   void name ## Driver::select(const bool x) {				\
     return VARS_CLASS_CALL(select, (x), name, MOD);			\
   }									\
-  void name ## Driver::enableC3(const bool x) {			\
+  void name ## Driver::enableC3(const bool x) {                         \
     return VARS_CLASS_CALL(enableC3, (x), name, MOD);			\
   }									\
   ValueSet_t* name ## Driver::currentConditions(realtype *x) {		\
@@ -490,16 +598,25 @@ private:								\
       }									\
       return new VARS_CLASS_VAR(name, COND)(constraints);		\
   }									\
-  VARS_CLASS_VAR(name, COND)* name ## Driver::name ## _Ini() {		\
-      return VARS_CLASS_VAR(name, MOD)::init(inputVars);		\
+  VARS_CLASS_VAR(name, COND)* name ## Driver::name ## _Ini(Variables *theVars) { \
+      if (!theVars) theVars = currentVariables();                       \
+      return VARS_CLASS_VAR(name, MOD)::init(theVars);                  \
   }									\
-  arr name ## Driver::MB(realtype t, N_Vector u) {			\
-      realtype *x = N_VGetArrayPointer(u);				\
+  arr name ## Driver::MB(realtype t, realtype* x) {                     \
       VARS_CLASS_VAR(name, COND)* name ## _con = new VARS_CLASS_VAR(name, COND)(x); \
-      arr dxdt = VARS_CLASS_VAR(name, MOD)::MB(t, name ## _con, inputVars); \
+      arr dxdt = VARS_CLASS_VAR(name, MOD)::MB(t, name ## _con, currentVariables()); \
       _dump(t, name ## _con);						\
       delete name ## _con;						\
       return dxdt;							\
+  }                                                                     \
+  arr name ## Driver::MB(realtype t, N_Vector u) {			\
+      realtype *x = N_VGetArrayPointer(u);				\
+      return MB(t, x);                                                  \
+  }                                                                     \
+  void name ## Driver::setup_constraints(Variables* theVars) {          \
+      VARS_CLASS_VAR(name, COND)* cond = name ## _Ini(theVars);         \
+      constraints = cond->toArray();                                    \
+      delete cond;                                                      \
   }
 
 }  // namespace drivers

@@ -49,16 +49,6 @@ public:
 		 const bool showWarn = false,
 		 const std::vector<std::string>& outVars = {});
 
-    /**
-      \copydoc drivers::Driver::setup
-      */
-    void setup() override;
-
-    /**
-      \copydoc drivers::Driver::getResults
-      */
-    void getResults() override;
-
 };
 
 }  // namespace drivers

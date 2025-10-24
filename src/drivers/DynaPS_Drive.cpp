@@ -62,101 +62,90 @@ DynaPSDriver::DynaPSDriver(Variables *theVars, const double startTime,
       outputVars.push_back("CO2AR");
     }
 }
-void DynaPSDriver::setup() {
-    // This part include the function to begin the simulation.
-
-    // The time information is set in a global variable called tglobal in SYSInitial.
-    if (ParaNum <= 103) {
-        inputVars->PSRatio[ParaNum] = Ratio;
-    } else if (ParaNum <= 169) {
-        inputVars->SUCSRatio[ParaNum - 103] = Ratio;
-    } else if (ParaNum <= 217) {
-        inputVars->PRRatio[ParaNum - 169] = Ratio;
-    } else if (ParaNum <= 233) {
-        inputVars->RuACTRatio[ParaNum - 217] = Ratio;
-    } else if (ParaNum <= 256) {
-        inputVars->FIRatio[ParaNum - 233] = Ratio;
-    } else if (ParaNum <= 305) {
-        inputVars->BFRatio[ParaNum - 256] = Ratio;
-    } else if (ParaNum <= 309) {
-        inputVars->XanCycleRatio[ParaNum - 305] = Ratio;
-    }
-
-    // This part include the function to begin the simulation.
-    // The time information is set in a global variable called tglobal in SYSInitial.
-
-    SYSInitial(inputVars);
-
-    ////////////////////////////////////////////////
-    //   Calculation  step //
-    ////////////////////////////////////////////////
-
-    IniModelCom(inputVars);        // Initialize the structure of the model, i.e. Is this model separate or combined with others.
+void DynaPSDriver::setup_connections(Variables* theVars) {
 
     // The combination of BF and FI model
-    inputVars->BF_FI_com = true;
+    theVars->BF_FI_com = true;
 
     // This is a variable indicating whether the PR model is actually need to be combined with PS or not. If 1 then means combined; 0 means not.
-    inputVars->PR_PS_com = true;
+    theVars->PR_PS_com = true;
 
     // 1 means that the overall EPS model is used. 0 means partial model of FIBF is used.
-    inputVars->FIBF_PSPR_com = true;
+    theVars->FIBF_PSPR_com = true;
 
     // A global variable to indicate whether the RuACT is run by itself or combined with others.
     // langmm: This is true in the MATLAB code, but was false in the
     //   original translation to C++
-    inputVars->RuACT_EPS_com = true;        // Since this is run within this program, it is combinbed, therefore, it is assigned value true, otherwise, assign value false.
+    theVars->RuACT_EPS_com = true;        // Since this is run within this program, it is combinbed, therefore, it is assigned value true, otherwise, assign value false.
 
     // This is the connection between Redox and RA.
-    inputVars->RedoxReg_RA_com = false;        // This means that the connection is not provided there.
+    theVars->RedoxReg_RA_com = false;        // This means that the connection is not provided there.
 
-    inputVars->XanCycle_BF_com = true;
+    theVars->XanCycle_BF_com = true;
 
-    inputVars->EPS_SUCS_com = true;
+    theVars->EPS_SUCS_com = true;
 
     // This is a variable indicating whether the PSPR model is actually need to be combined with SUCS or not. If 1 then means combined; 0 means not.
-    inputVars->PSPR_SUCS_com = true;
+    theVars->PSPR_SUCS_com = true;
 
-    inputVars->SUCS_Param = zeros(2);
+}
+void DynaPSDriver::setup_variables(Variables* theVars) {
 
-    // Next is to initialize the vector.
+    if (ParaNum <= 103) {
+        theVars->PSRatio[ParaNum] = Ratio;
+    } else if (ParaNum <= 169) {
+        theVars->SUCSRatio[ParaNum - 103] = Ratio;
+    } else if (ParaNum <= 217) {
+        theVars->PRRatio[ParaNum - 169] = Ratio;
+    } else if (ParaNum <= 233) {
+        theVars->RuACTRatio[ParaNum - 217] = Ratio;
+    } else if (ParaNum <= 256) {
+        theVars->FIRatio[ParaNum - 233] = Ratio;
+    } else if (ParaNum <= 305) {
+        theVars->BFRatio[ParaNum - 256] = Ratio;
+    } else if (ParaNum <= 309) {
+        theVars->XanCycleRatio[ParaNum - 305] = Ratio;
+    }
 
-    DynaPSCondition* DynaPS_con = DynaPS_Ini();
+    theVars->alpha1 = 1.0;
+    theVars->alpha2 = 1.0;
+
+}
+
+void DynaPSDriver::setup_param(Variables* theVars) {
+
+    theVars->SUCS_Param = zeros(2);
 
     const double va1 = 0;
     // The ratio of the PSI unit to the PSII unit
-    inputVars->BF_Param[0] = va1;
-    inputVars->BF_Param[1] = inputVars->PS12ratio;
+    theVars->BF_Param[0] = va1;
+    theVars->BF_Param[1] = theVars->PS12ratio;
 
-    inputVars->FI_Param[0] = va1;
-    inputVars->FI_Param[1] = inputVars->PS12ratio;
+    theVars->FI_Param[0] = va1;
+    theVars->FI_Param[1] = theVars->PS12ratio;
 
-    inputVars->PS_PR_Param = 0.;
+    theVars->PS_PR_Param = 0.;
 
-    inputVars->RuACT_Param[0] = va1;
-    inputVars->RuACT_Param[1] = inputVars->PS12ratio;
+    theVars->RuACT_Param[0] = va1;
+    theVars->RuACT_Param[1] = theVars->PS12ratio;
 
-    inputVars->XanCycle_Param[0] = va1;
-    inputVars->XanCycle_Param[1] = inputVars->PS12ratio;
+    theVars->XanCycle_Param[0] = va1;
+    theVars->XanCycle_Param[1] = theVars->PS12ratio;
 
-    constraints = DynaPS_con->toArray();
-    delete DynaPS_con;
 }
 
-void DynaPSDriver::getResults() {
+void DynaPSDriver::getResults(Variables* theVars) {
 
-    DynaPSCondition* dyna_int_con = new DynaPSCondition(intermediateRes);
+    if (!theVars) theVars = currentVariables();
 
-    arr temp = DynaPS::MB(time, dyna_int_con, inputVars);
-
-    double PSIIabs = inputVars->FI_Vel.vP680_d;
-    double PSIabs = inputVars->BF_Vel.Vbf11;
-    double CarbonRate = inputVars->RuACT_Vel.v6_1 * inputVars->AVR;
-    double VPR = inputVars->RuACT_Vel.v6_2 * inputVars->AVR;
-    double Vpgasink = inputVars->SUCS_Vel.vpga_use * inputVars->AVR;
-    double VStarch = (inputVars->PS_Vel.v23 - inputVars->PS_Vel.v25) * inputVars->AVR;
-    double Vsucrose = inputVars->SUCS_Vel.vdhap_in * inputVars->AVR;
-    const double CO2AR = TargetFunVal(inputVars);
+    double PSIIabs = theVars->FI_Vel.vP680_d;
+    double PSIabs = theVars->BF_Vel.Vbf11;
+    double CarbonRate = theVars->RuACT_Vel.v6_1 * theVars->AVR;
+    double VPR = theVars->RuACT_Vel.v6_2 * theVars->AVR;
+    double Vpgasink = theVars->SUCS_Vel.vpga_use * theVars->AVR;
+    double VStarch = (theVars->PS_Vel.v23 - theVars->PS_Vel.v25) * theVars->AVR;
+    double Vsucrose = theVars->SUCS_Vel.vdhap_in * theVars->AVR;
+    const double CO2AR = TargetFunVal(theVars);
 
     results = zeros(8);
 
@@ -170,20 +159,9 @@ void DynaPSDriver::getResults() {
     results[6] = VStarch;
     results[7] = CO2AR;
 
-    if(inputVars->record) {
-        makeFluxTR(inputVars);
+    if(theVars->record) {
+        makeFluxTR(theVars);
     }
-    // This is to set the regualtions to be as beginning.
-    //theVars->ATPActive = 0;
-    inputVars->BF_FI_com = false;
-    inputVars->PR_PS_com = false;
-    inputVars->FIBF_PSPR_com = false;
-    inputVars->RuACT_EPS_com = false;
-    inputVars->RedoxReg_RA_com = false;
-    inputVars->XanCycle_BF_com = false;
-
-    delete dyna_int_con;
-    IniModelCom(inputVars);
-    //save FDC2
+    
 }
 

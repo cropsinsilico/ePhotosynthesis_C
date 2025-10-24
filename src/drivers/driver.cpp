@@ -56,7 +56,7 @@ Driver::Driver(Variables *theVars, const double startTime,
   initialStep = stepSize;
   maxStep = 20. * step;
   data = nullptr;
-  origVars = nullptr;
+  currentVars = nullptr;
   intermediateRes = nullptr;
   _lastStep = false;
   _dumpStep = true; // Output the first step
@@ -64,18 +64,86 @@ Driver::Driver(Variables *theVars, const double startTime,
       throw std::runtime_error("EnzymeAct must be set if useC3 is True (automatically set for EPS driver)");
 }
 
-arr Driver::run() {
-    if (origVars != nullptr) {
-        delete origVars;
-        origVars = nullptr;
+const Variables* Driver::currentVariables() const {
+  if (currentVars) return currentVars;
+  return inputVars;
+}
+
+Variables* Driver::currentVariables() {
+  if (currentVars) return currentVars;
+  return inputVars;
+}
+
+void Driver::setup(Variables* theVars, const bool continuingRun) {
+  if (!theVars) {
+    if (currentVars) {
+      delete currentVars;
+      currentVars = nullptr;
     }
-    origVars = new Variables(inputVars);
+    currentVars = new Variables(inputVars);
+    theVars = currentVars;
+  }
+  bool dumpStep = _dumpStep;
+  if (continuingRun)
+    _dumpStep = false;
+  theVars->finalizeInputs(true);
+  // Initialize the structure of the model, i.e. Is this model separate
+  // or combined with others.
+  IniModelCom(theVars);
+  setup_connections(theVars);
+  // The time information is set in a global variable called tglobal in SYSInitial.
+  SYSInitial(theVars);
+  setup_variables(theVars);
+  arr prev_constraints = constraints;
+  if (!continuingRun) {
+    setup_param(theVars);
+  }
+  setup_constraints(theVars);
+  if (continuingRun) {
+    constraints = prev_constraints;
+  }
+  theVars->inputsFinalized = true;
+  theVars->inputsUpdated.clear();
+  if (continuingRun)
+    _dumpStep = dumpStep;
+}
+
+void Driver::teardown(const realtype& t, const N_Vector& y,
+                      Variables* theVars) {
+  if (!theVars) theVars = currentVariables();
+  intermediateRes = N_VGetArrayPointer(y);
+  for (size_t i = 0; i < constraints.size(); i++)
+    constraints[i] = intermediateRes[i];
+  _lastStep = true;
+  _dumpStep = true;
+  time = t;
+  getOutputVars(theVars);
+  MB(t, y);
+  getResults(theVars);
+  
+  if (theVars != inputVars)
+    inputVars->deepcopy(theVars);
+  IniModelCom(inputVars); // Reset connections
+}
+
+arr Driver::continue_run(const double endTime) {
+    this->start = this->endtime;
+    this->endtime = endTime;
+    step = initialStep;
+    _lastStep = false;
+    _clear_cvode_mem();
+    return run(true);
+}
+
+arr Driver::run(const bool continuingRun) {
+
     uint count = 0;
+    _firstPass = true;
 
     while (count < 10){
         maxStep = 20. * step;
 
-        setup();
+        setup(nullptr, continuingRun);
 
         sunindextype N =  static_cast<long>(constraints.size());
         N_Vector y;
@@ -133,34 +201,35 @@ arr Driver::run() {
         realtype t = 0;
         bool runOK = true;
         realtype tout = start + step;
-        while (t <= endtime) {
+        while (t < endtime) {
             if (CVode(cvode_mem, tout, y, &t, CV_NORMAL) != CV_SUCCESS) {
                 std::cout << "CVode failed at t=" << tout << "  " << t << std::endl;
                 runOK = false;
                 break;
             }
             tout += step;
+            if (tout > endtime)
+                tout = endtime;
         }
         if (runOK) {
-            intermediateRes = N_VGetArrayPointer(y);
-            time = t;
-            _lastStep = true;
-	    _dumpStep = true;
-	    getOutputVars(inputVars); // Before reset called from getResults
-            getResults();
+            teardown(t, y);
         }
 
         SUNNonlinSolFree(NLS);
         SUNLinSolFree(LS);
         SUNMatDestroy(A);
         N_VDestroy(y);
+        intermediateRes = nullptr;
+        if (currentVars) {
+            delete currentVars;
+            currentVars = nullptr;
+        }
         if (runOK)
             return results;
 
-        inputVars = origVars;
-
         count++;
         step = initialStep / (count + 1);
+        _firstPass = false;
         std::cout << "Retrying with smaller step size: " << step << std::endl;
     }
     throw std::runtime_error("No valid solution found");
@@ -192,11 +261,11 @@ void Driver::outputParam(const OutputFreq& frequency,
     outputParam(finit, flast, fstep, vars);
 }
 
-void Driver::getOutputVars(Variables* inputVars) {
+void Driver::getOutputVars(Variables* theVars) {
     output.clear();
     for (typename std::vector<std::string>::const_iterator it = outputVars.begin();
 	 it != outputVars.end(); it++) {
-	output[*it] = getVar(inputVars, *it);
+	output[*it] = getVar(theVars, *it);
     }
 }
 
@@ -222,39 +291,64 @@ void Driver::writeOutputTable(std::ostream& s) const {
     s << std::endl;
 }
 
-double Driver::getVar(const Variables* inputVars, const std::string& k) {
+const std::vector<std::string>&
+Driver::getCalculatedVarNames() {
+    static const std::vector<std::string> out = {
+        "Vc", "Vo", "VPGA", "Vstarch", "Vsucrose", "VT3P",
+        "Vt_glycerate", "Vt_glycolate", "PSIIabs", "PSIabs",
+        "CO2AR"
+    };
+    return out;
+}
+
+void Driver::getCalculatedVars(const Variables* theVars,
+                               std::map<std::string, double>& dest) const {
+  const std::vector<std::string>& names = Driver::getCalculatedVarNames();
+  for (typename std::vector<std::string>::const_iterator it = names.begin();
+       it != names.end(); it++) {
+      dest[*it] = getVar(theVars, *it);
+  }
+}
+std::map<std::string, double>
+Driver::getCalculatedVars(const Variables* theVars) const {
+    std::map<std::string, double> out;
+    getCalculatedVars(theVars, out);
+    return out;
+}
+
+double Driver::getVar(const Variables* theVars, const std::string& k) const {
     if (k == "Light intensity")
-	return inputVars->TestLi;
+	return theVars->TestLi;
     else if (k == "Vc")
-	return inputVars->RuACT_Vel.v6_1 * inputVars->AVR;
+	return theVars->RuACT_Vel.v6_1 * theVars->AVR;
     else if (k == "Vo")
-	return inputVars->RuACT_Vel.v6_2 * inputVars->AVR;
+	return theVars->RuACT_Vel.v6_2 * theVars->AVR;
     else if (k == "VPGA")
-	return inputVars->SUCS_Vel.vpga_use * inputVars->AVR;
+	return theVars->SUCS_Vel.vpga_use * theVars->AVR;
     else if (k == "Vstarch")
-	return (inputVars->PS_Vel.v23 - inputVars->PS_Vel.v25) * inputVars->AVR;
+	return (theVars->PS_Vel.v23 - theVars->PS_Vel.v25) * theVars->AVR;
     else if (k == "Vsucrose")
-	return inputVars->SUCS_Vel.vdhap_in * inputVars->AVR;
+	return theVars->SUCS_Vel.vdhap_in * theVars->AVR;
     else if (k == "VT3P")
-	return (inputVars->PS_Vel.v31 + inputVars->PS_Vel.v33) * inputVars->AVR;
+	return (theVars->PS_Vel.v31 + theVars->PS_Vel.v33) * theVars->AVR;
     else if (k == "Vt_glycerate")
-	return inputVars->PR_Vel.v1in * inputVars->AVR;
+	return theVars->PR_Vel.v1in * theVars->AVR;
     else if (k == "Vt_glycolate")
-	return inputVars->PR_Vel.v2out * inputVars->AVR;
+	return theVars->PR_Vel.v2out * theVars->AVR;
     else if (k == "PSIIabs")
-	return inputVars->FI_Vel.vP680_d;
+	return theVars->FI_Vel.vP680_d;
     else if (k == "PSIabs")
-	return inputVars->BF_Vel.Vbf11;
+	return theVars->BF_Vel.Vbf11;
     else if (k == "CO2AR")
-	return TargetFunVal(inputVars);
+	return TargetFunVal(theVars);
     else
-	return inputVars->getVar(k);
+	return theVars->getVar(k);
 }
 
 void Driver::dump(const std::string& filename, const Variables* theVars,
 		  const ValueSet_t* con, const bool is_init) {
     bool con_created = false;
-    if (!theVars) theVars = inputVars;
+    if (!theVars) theVars = currentVariables();
     if (!con) {
 	con = currentConditions();
 	con_created = true;
@@ -302,28 +396,29 @@ void Driver::dump(const std::string& filename, const Variables* theVars,
     if (is_init)
 	skip_param_types.push_back(PARAM_TYPE_VEL);
     std::map<MODULE, const ValueSet_t*> conditions;
+    std::map<std::string, double> calculatedVars;
+    getCalculatedVars(theVars, calculatedVars);
     if (con) {
 	// theVars->getCompositeValueSets(con, conditions);
 	Variables* theVars2 = theVars->deepcopy();
 	theVars2->setRecord(con, conditions);
 	theVars2->dump(filename, true, {}, skip_param_types,
-		       skip_keys, key_aliases, conditions, param_vars);
+		       skip_keys, key_aliases, conditions, param_vars,
+                       calculatedVars);
 	delete theVars2;
     } else {
 	theVars->dump(filename, true, {}, skip_param_types,
-		      skip_keys, key_aliases, conditions, param_vars);
+		      skip_keys, key_aliases, conditions, param_vars,
+                      calculatedVars);
     }
     if (con_created && con)
 	delete con;
 }
 
 Driver::~Driver() {
-    if (origVars != nullptr)
-        delete origVars;
-    CVodeMem *cmem = nullptr;
-    cmem = &CVodeMem::create();
-    cmem->cvode_mem_free();
-    cvode_mem = nullptr;
+    if (currentVars != nullptr)
+        delete currentVars;
+    _clear_cvode_mem();
 #ifdef SUNDIALS_CONTEXT_REQUIRED
     if (_context.use_count() == 1)
         SUNContext_Free(_context.get());
@@ -331,18 +426,30 @@ Driver::~Driver() {
 #endif // SUNDIALS_CONTEXT_REQUIRED
 }
 
+void Driver::_clear_cvode_mem() {
+    CVodeMem *cmem = nullptr;
+    cmem = &CVodeMem::create();
+    cmem->cvode_mem_free();
+    cvode_mem = nullptr;
+    data = nullptr;
+}
+
 void Driver::_dump(realtype t, ValueSet_t* con) {
     if (!_dumpStep) return;
-    if (t == 0) {
-	if (!fname_vars_init.empty())
-	    dump(fname_vars_init, nullptr, con, true);
-    } else if (_lastStep) {
-	if (!fname_vars_last.empty())
-	    dump(fname_vars_last, nullptr, con, true);
-    } else {
-        if (!fname_vars_step.empty()) {
-            std::string ifile = fname_vars_step + std::to_string(t) + ".txt";
-        }
+    if (t == 0 && !fname_vars_init.empty()) {
+      dump(fname_vars_init, nullptr, con, true);
+    } else if (_lastStep && !fname_vars_last.empty()) {
+      dump(fname_vars_last, nullptr, con, false);
+    }
+    if (!fname_vars_step.empty()) {
+      if (t >= endtime) return;
+      std::ostringstream tss;
+      tss.precision(6);
+      tss << std::fixed << t;
+      std::string tstr = tss.str();
+      tstr = std::string(13 - tstr.length(), '0') + tstr;
+      std::string ifile = fname_vars_step + tstr + ".txt";
+      dump(ifile, nullptr, con, false);
     }
     if (fname_vars_step.empty())
         _dumpStep = false;

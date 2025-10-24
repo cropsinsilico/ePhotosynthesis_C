@@ -70,6 +70,9 @@ namespace ePhotosynthesis {
      @param[in] outputParamVars Vector of the names of variables that
          should be output at the times during the run indicated by
          outputParam. If not provided, all variables will be output.
+     @param[in] iterations Mapping of values to iterate over.
+     @param[in] iterationsPreserveState If true, the state will be
+         preserved between iterations (including via yggdrasil).
      @returns Map of variables names and values at the end of the simulation.
    */
   EPHOTO_API std::map<std::string, double>
@@ -85,7 +88,9 @@ namespace ePhotosynthesis {
                  const std::vector<std::string>& outputVars={},
                  int outputParam=0,
                  const std::string& outputParamBase="",
-                 const std::vector<std::string>& outputParamVars={});
+                 const std::vector<std::string>& outputParamVars={},
+                 const std::map<std::string, std::vector<std::string> > iterations={},
+                 const bool iterationsPreserveState=false);
 
   /**
      @brief Run a simulation
@@ -115,6 +120,12 @@ namespace ePhotosynthesis {
          activities.
      @param[in] grnFile The full path to the file containing transcription
          factor ratios for relevant enzymes.
+     @param[in] iterationsFile The full path to the file containing
+         parameter values that should be updated for simulations run
+         in sequence. If time is included, the simulation will be run
+         continuously for the provided timesteps and the state will be
+         preserved. Otherwise, the state will be reset before each
+         simulation.
      @param[in] outputFile Full path to the text file where outputs
          should be saved.
      @param[in] outputVars Vector of the names of variables that should
@@ -141,6 +152,8 @@ namespace ePhotosynthesis {
      @param[in] debugInternal Debug internals.
      @param[in] record Record output values for all steps (this can
          significantly slow the program).
+     @param[in] iterationsPreserveState If true, the state will be
+         preserved between iterations (including via yggdrasil).
      @param[in] theVars Variables instance containing some parameters
          for the simulation. It will be updated with variables passed
          as arguments and read from provided input files. This instance
@@ -161,6 +174,7 @@ namespace ePhotosynthesis {
                  const std::string& atpcostFile="",
                  const std::string& enzymeFile="",
                  const std::string& grnFile="",
+                 const std::string& iterationsFile="",
                  const std::string& outputFile="",
                  const std::vector<std::string>& outputVars={},
                  const int& outputParam=0,
@@ -170,6 +184,7 @@ namespace ePhotosynthesis {
                  const bool debugDelta=false,
                  const bool debugInternal=false,
                  const bool& record=false,
+                 const bool iterationsPreserveState=false,
                  Variables *theVars=nullptr);
   
 }

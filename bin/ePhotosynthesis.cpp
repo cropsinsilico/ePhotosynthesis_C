@@ -93,6 +93,7 @@ void param2ygg(const std::map<std::string, T>& v,
 #define varSearchD(x) varSearch(x, convD)
 #define varSearchI(x) varSearch(x, convI)
 #define varSearchS(x) varSearch(x, convS)
+#define varSearchB(x) varSearch(x, convB)
 #define varSet(xcli, xfile) (result.count(#xcli) || inputs.count(#xfile))
 #define fileProvided(xcli, xfile) varSet(xcli, xfile)
 
@@ -118,10 +119,12 @@ int main(int argc, const char* argv[]) {
     try {
         bool record = false;
         bool useC3 = false;
+        bool iterationsPreserveState = false;
         cxxopts::Options options("ePhoto", "Command line interface to C++ implementation of the matlab original");
         options.show_positional_help();
         std::string evn, atpcost, optionsFile, enzymeFile, grnFile,
-	  outputFile, outputVars, outputParamVars, outputParamBase;
+	  outputFile, outputVars, outputParamVars, outputParamBase,
+          iterationsFile;
         double stoptime, begintime, stepsize;
         double abstol, reltol;
         double Tp;
@@ -137,6 +140,10 @@ int main(int argc, const char* argv[]) {
                 ("n,enzyme", "The file (including path) containing enzyme activities like InputEnzyme.txt", cxxopts::value<std::string>(enzymeFile)->default_value(""))
                 ("g,grn", "The file (including path) containing protein ratios for relevant genes like InputGRNC.txt",
 		 cxxopts::value<std::string>(grnFile)->default_value(""))
+                ("iterations", "The file (including path) times and variables that should be updated at those times",
+                 cxxopts::value<std::string>(iterationsFile)->default_value(""))
+                ("iterationsPreserveState", "Preserve the internal state when iterations are performed (including for yggdrasil iterations)",
+                 cxxopts::value<bool>(iterationsPreserveState)->default_value("false"))
                 ("b,begintime", "The starting time for the calculations.", cxxopts::value<double>(begintime)->default_value("0.0"))
                 ("s,stoptime", "The time to stop calculations.", cxxopts::value<double>(stoptime)->default_value("5000.0"))
                 ("z,stepsize", "The step size to use in the calculations.", cxxopts::value<double>(stepsize)->default_value("1.0"))
@@ -253,6 +260,7 @@ int main(int argc, const char* argv[]) {
             varSearchS(enzymeFile);
             varSearchS(grnFile);
             varSearchS(outputFile);
+            varSearchS(iterationsFile);
             varSearchD(begintime);
             varSearchD(stoptime);
             varSearchD(stepsize);
@@ -266,6 +274,7 @@ int main(int argc, const char* argv[]) {
             varSearchI(outputParam);
             varSearchS(outputParamBase);
             varSearchS(outputParamVars);
+            varSearchB(iterationsPreserveState);
         }
         driverChoice = static_cast<DriverType>(driver);
 	// TODO: Do yggdrasil initial input before this point so driver
@@ -312,6 +321,7 @@ int main(int argc, const char* argv[]) {
         if (!fileProvided(atpcost, atpcost)) atpcost = "";
         if (!fileProvided(enzyme, enzymeFile)) enzymeFile = "";
         if (!fileProvided(grn, grnFile)) grnFile = "";
+        if (!fileProvided(iterations, iterationsFile)) iterationsFile = "";
 
         std::vector<std::string> outputVarsV;
         if (!outputVars.empty())
@@ -323,10 +333,11 @@ int main(int argc, const char* argv[]) {
                        begintime, stoptime, stepsize, maxSubSteps,
                        abstol, reltol, inputs, useC3,
                        evn, atpcost, enzymeFile, grnFile,
+                       iterationsFile,
                        outputFile, outputVarsV, outputParam,
                        outputParamBase, outputParamVarsV,
                        dbglvl, debugDelta, debugInternal, record,
-                       theVars);
+                       iterationsPreserveState, theVars);
         return (EXIT_SUCCESS);
     } catch (std::exception& e) {
         std::cout << "An error occurred: " << e.what() << std:: endl;

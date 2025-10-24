@@ -1,5 +1,5 @@
 # Name          Value   Docs
-GP              0       # ?
+GP              0       # If 0, PS V1-V23 will be set to EnzymeAct
 GRNC            0       # If 1, VfactorCp values will be used to scale enzyme activities in the PS, PR, & SUCS modules when CO2 > 0
 GRNT            0       # If 1, VfactorT values will be used to scale enzyme activities in the PS, PR, & SUCS modules when T > 25
 PAR_in_Wpm2     0       # If 1, the input TestLi will be taken to be in units of W/m**2

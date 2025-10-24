@@ -149,12 +149,17 @@ public:
     
  protected:
     static void _initStaticMembers();
-    
+
+    /**
+       Copy non-member attributes.
+       \param[in] other Variables instance to copy.
+     */
+    void __copyNonMembers(const Variables& other);
     /**
        Copy additional members.
          Some variables are not included in the default copy (e.g. alfa, 
 	 fc, lightParam, CO2A, RedoxReg_MP, module *_Param values, & 
-	 rates). To include these, use deepcopy.
+	 rates). To include these, use deepcopy (or __copyNonMembers).
        \param[in] other Variables instance to copy.
      */
     void __copyMembers(const Variables& other) override;
@@ -167,15 +172,36 @@ public:
  public:
 
     /**
-       Finalize variables read from input including any unit changes.
+       Check if a variable was updated since the last time the input
+       was finalized.
+       \param[in] name Variable name.
+       \param[in] ignoreClassFlag If true, only return true if the
+         specific variable was updated.
      */
-    EPHOTO_API void finalizeInputs();
+    EPHOTO_API bool inputUpdated(const std::string& name,
+                                 const bool ignoreClassFlag=false) const;
+    /**
+       Throw an error if the named variable was updated.
+     */
+    EPHOTO_API void assertCalcNotUpdated(const std::string& name) const;
+    /**
+       Finalize variables read from input including any unit changes.
+       \param[in] dontReset If true, don't set the inputsFinalized flag
+         to true or clear inputsUpdated.
+     */
+    EPHOTO_API void finalizeInputs(const bool dontReset=false);
     /**
        Create a deep copy of this instance including variables excluded
          from a default copy.
        \returns New instance with all parameters copied.
      */
     EPHOTO_API Variables* deepcopy() const;
+    /**
+       Copy another instance including variables excluded from a default
+         copy.
+       \param[in] Instance to copy.
+     */
+    EPHOTO_API void deepcopy(const Variables& rhs);
     /** \copydoc ValueSet::equals */
     bool equals(const ValueSet_t& b,
 		const bool noChildren = false) const override;
@@ -211,6 +237,7 @@ public:
        \param[in] conditions Map of conditions for composite modules that
          are not stored on Variables instances.
        \param[in] subset Subset of parameters to output.
+       \param[in] additionalVars Map of additional names & values to dump.
      */
     void dump(const std::string& filename,
               const bool includeSkipped = false,
@@ -219,7 +246,8 @@ public:
               const std::vector<std::string>& skip_keys={},
               const std::map<std::string, std::string>& key_aliases={},
               const std::map<MODULE, const ValueSet_t*>& conditions={},
-              const std::vector<std::string>& subset={}) const;
+              const std::vector<std::string>& subset={},
+              const std::map<std::string, double>& additionalVars={}) const;
     /**
        Serialize all parameters attached to this instance to an output
          stream.
@@ -234,6 +262,7 @@ public:
        \param[in] conditions Map of conditions for composite modules that
          are not stored on Variables instances.
        \param[in] subset Subset of parameters to output.
+       \param[in] additionalVars Map of additional names & values to dump.
        \returns Updated output stream.
      */
     std::ostream& dump(std::ostream& out,
@@ -243,7 +272,8 @@ public:
                        const std::vector<std::string>& skip_keys={},
                        const std::map<std::string, std::string>& key_aliases={},
                        const std::map<MODULE, const ValueSet_t*>& conditions={},
-                       const std::vector<std::string>& subset={}) const;
+                       const std::vector<std::string>& subset={},
+                       const std::map<std::string, double>& additionalVars={}) const;
     /**
        Serialize parameters for a single value set to an output stream.
        \param[in] module ID for module that should be serialized.
@@ -810,6 +840,7 @@ public:
     EPHOTO_API void readGRN(const std::string& fname);
 
     bool inputsFinalized = false;
+    std::map<std::string, bool> inputsUpdated; /**< Name of variables that were updated after inputs were finalized. */
     bool record = false;
     int GP = 0;
     int GRNC = 0; /**< Control parameter; if 1, VfactorCp values will be used to scale enzyme activities in the PS, PR, & SUCS modules when CO2 > 0 */

@@ -138,6 +138,49 @@ void ePhotosynthesis::Condition(double t, Variables *theVars) {
 // #endif // MAKE_EQUIVALENT_TO_MATLAB
 }
 
+void ePhotosynthesis::readTable(const std::string &filename,
+                                std::map<std::string, std::vector<std::string> > &mapper) {
+    std::vector<std::string> names;
+    std::vector<std::string> tempVec;
+    std::string input;
+    std::ifstream inputfile(filename);
+    typename std::map<std::string, std::string>::iterator existing;
+    std::string msg_prefix = "readTable[" + filename + "]: ";
+    if (!mapper.empty()) {
+        throw std::runtime_error(msg_prefix + "Input mapper not empty");
+    }
+    if(inputfile.fail()) {
+        throw std::runtime_error(msg_prefix + "Could not open file for reading");
+    }
+    size_t lineno = 0;
+    while (std::getline(inputfile, input)) {
+        lineno++;
+        if (input.empty())
+            continue;
+        tempVec = utils::str_split_whitespace(input);
+        if (mapper.empty()) {
+            for (typename std::vector<std::string>::const_iterator it = tempVec.begin(); it != tempVec.end(); it++) {
+                names.push_back(*it);
+                mapper.insert(std::pair<std::string, std::vector<std::string> >(*it, {}));
+            }
+            continue;
+        }
+        if (tempVec.size() != mapper.size()) {
+            std::cerr << msg_prefix << "Line " << lineno << " contains " << tempVec.size() << " values, but " << mapper.size() << " columns were named." << std::endl;
+            throw std::runtime_error(msg_prefix + "Invalid table");
+        }
+        size_t icol = 0;
+        for (typename std::vector<std::string>::const_iterator it = names.begin();
+             it != names.end(); it++, icol++) {
+            typename std::map<std::string, std::vector<std::string> >::iterator itmap = mapper.find(*it);
+            itmap->second.push_back(tempVec[icol]);
+        }
+    }
+    if (mapper.empty()) {
+        throw std::runtime_error(msg_prefix + "Table empty");
+    }
+}
+
 void ePhotosynthesis::readFile(const std::string &filename, std::map<std::string, std::string> &mapper) {
     std::vector<std::string> tempVec;
     std::string input;

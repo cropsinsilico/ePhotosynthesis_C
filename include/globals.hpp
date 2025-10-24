@@ -73,6 +73,19 @@ double TargetFunVal(const Variables *theVars);
 
 void makeFluxTR(Variables *theVars);
 
+  
+/**
+  Utility function to read a table from a text file and convert it to a map. The input text file
+  must be formatted with the parameter names on the first line and values on subsequent lines
+  with whitespace separations between names/values on each line.
+
+  @param filename The name of the file to open and read.
+  @param[in, out] mapper The std::map to put the contents of the file into
+  @exception std::runtime_error If the opening of the file fails.
+  */
+EPHOTO_API void readTable(const std::string &filename,
+                          std::map<std::string, std::vector<std::string> > &mapper);
+
 /**
   Overloaded utility function to read a text file and convert it to a map. The input text file
   must be formatted with key/value pairs, one pair per line, and white space between

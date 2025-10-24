@@ -185,17 +185,17 @@ void PS::_initOrig(Variables *theVars, PSCondition* PS_con) {
         // Initialize the values of the global variables
 
         if (theVars->GP == 0) {
-            PS::V1 = theVars->EnzymeAct.at("V1");
-            PS::V2 = theVars->EnzymeAct.at("V2");
-            PS::V3 = theVars->EnzymeAct.at("V3");
-            PS::V5 = theVars->EnzymeAct.at("V5");
-            PS::V6 = theVars->EnzymeAct.at("V6");
-            PS::V7 = theVars->EnzymeAct.at("V7");
-            PS::V8 = theVars->EnzymeAct.at("V8");
-            PS::V9 = theVars->EnzymeAct.at("V9");
-            PS::V10 = theVars->EnzymeAct.at("V10");
-            PS::V13 = theVars->EnzymeAct.at("V13");
-            PS::V23 = theVars->EnzymeAct.at("V23");
+            PS::V1 = theVars->alpha1 * theVars->EnzymeAct.at("V1");
+            PS::V2 = theVars->alpha2 * theVars->EnzymeAct.at("V2");
+            PS::V3 = theVars->alpha2 * theVars->EnzymeAct.at("V3");
+            PS::V5 = theVars->alpha2 * theVars->EnzymeAct.at("V5");
+            PS::V6 = theVars->alpha2 * theVars->EnzymeAct.at("V6");
+            PS::V7 = theVars->alpha2 * theVars->EnzymeAct.at("V7");
+            PS::V8 = theVars->alpha2 * theVars->EnzymeAct.at("V8");
+            PS::V9 = theVars->alpha2 * theVars->EnzymeAct.at("V9");
+            PS::V10 = theVars->alpha2 * theVars->EnzymeAct.at("V10");
+            PS::V13 = theVars->alpha2 * theVars->EnzymeAct.at("V13");
+            PS::V23 = theVars->alpha2 * theVars->EnzymeAct.at("V23");
             PS::V16 = theVars->EnzymeAct.at("V16");
         }
 
@@ -417,17 +417,17 @@ void PS::_initCalc(Variables *theVars, PSCondition* PS_con) {
         PS::KM12 = 0.244 * exp(PS::c_o - PS::dHa_o * 1000. / (PS::R * (theVars->Tp + 273.15))) / 165.82;
 	
         if (theVars->GP == 0) {
-            PS::V1 = theVars->EnzymeAct.at("V1");
-            PS::V2 = theVars->EnzymeAct.at("V2");
-            PS::V3 = theVars->EnzymeAct.at("V3");
-            PS::V5 = theVars->EnzymeAct.at("V5");
-            PS::V6 = theVars->EnzymeAct.at("V6");
-            PS::V7 = theVars->EnzymeAct.at("V7");
-            PS::V8 = theVars->EnzymeAct.at("V8");
-            PS::V9 = theVars->EnzymeAct.at("V9");
-            PS::V10 = theVars->EnzymeAct.at("V10");
-            PS::V13 = theVars->EnzymeAct.at("V13");
-            PS::V23 = theVars->EnzymeAct.at("V23");
+            PS::V1 = theVars->alpha1 * theVars->EnzymeAct.at("V1");
+            PS::V2 = theVars->alpha2 * theVars->EnzymeAct.at("V2");
+            PS::V3 = theVars->alpha2 * theVars->EnzymeAct.at("V3");
+            PS::V5 = theVars->alpha2 * theVars->EnzymeAct.at("V5");
+            PS::V6 = theVars->alpha2 * theVars->EnzymeAct.at("V6");
+            PS::V7 = theVars->alpha2 * theVars->EnzymeAct.at("V7");
+            PS::V8 = theVars->alpha2 * theVars->EnzymeAct.at("V8");
+            PS::V9 = theVars->alpha2 * theVars->EnzymeAct.at("V9");
+            PS::V10 = theVars->alpha2 * theVars->EnzymeAct.at("V10");
+            PS::V13 = theVars->alpha2 * theVars->EnzymeAct.at("V13");
+            PS::V23 = theVars->alpha2 * theVars->EnzymeAct.at("V23");
             PS::V16 = theVars->EnzymeAct.at("V16");
         }
         PS::PsV1_0 = PS::V1 * PS::Vfactor1 * PS::Vf_T1 ;   //  1   Rubisco RuBP+CO2<->2PGA

@@ -1058,9 +1058,11 @@ namespace ePhotosynthesis {
       }
       std::map<std::string, std::string>::const_iterator it_alias = key_aliases.find(iname);
       if (!utils::contains(skip_keys, iname)) {
-        out << space << std::setw(pad + tab_size) << std::left;
         if (it_alias != key_aliases.end())
           iname = it_alias->second;
+        if (iname.length() > pad)
+          pad = iname.length();
+        out << space << std::setw(pad + tab_size) << std::left;
         out << iname;
         print_value(val, out, show_pointers);
         out << std::endl;
@@ -1110,7 +1112,7 @@ namespace ePhotosynthesis {
     }
     /**
        Display the values in a value map.
-       \tparam V Type of value in value map.
+       \tparam V Value map value type.
        \param vals Value map to display.
        \param out Output stream.
        \param tab Number of tabs to prefix each line in the output with.
@@ -1143,6 +1145,44 @@ namespace ePhotosynthesis {
         print_value(it->first, it->second,
                     out, tab, pad, includePrefixes, includeSkipped,
                     skip_keys, key_aliases, show_pointers);
+      }
+      return out;
+    }
+    /**
+       Display the values in a value map.
+       \tparam V Value map value type.
+       \param vals Value map to display.
+       \param out Output stream.
+       \param tab Number of tabs to prefix each line in the output with.
+       \param pad Number of characters that key names should be padded
+         to fill.
+       \param includePrefixes If true, the module & parameter type
+         prefixes will be added to the member names.
+       \param includeSkipped If true, skipped keys will be output.
+       \param skip_keys Key strings to skip in output.
+       \param key_aliases String aliases to use for keys.
+       \param show_pointers If true, the pointers will be displayed
+         instead of the values.
+       \returns Output stream.
+     */
+    template<typename V>
+    static std::ostream& print_value_map(const std::map<std::string, V>& vals,
+					 std::ostream &out,
+					 const uint tab=0,
+					 std::size_t pad=0,
+					 bool includePrefixes=false,
+					 bool includeSkipped=false,
+					 const std::vector<std::string>& skip_keys={},
+					 const std::map<std::string, std::string>& key_aliases={},
+					 bool show_pointers=false) {
+      check_value_map(vals, "print_value_map: ");
+      if (pad == 0)
+        pad = field_width_value_map(vals, includePrefixes);
+      for (typename std::map<std::string, V>::const_iterator it = vals.begin();
+           it != vals.end(); it++) {
+        print_value(it->first, it->second,
+                    out, tab, pad, includePrefixes, includeSkipped,
+                    skip_keys, key_aliases, show_pointers, it->first);
       }
       return out;
     }
@@ -1248,12 +1288,13 @@ namespace ePhotosynthesis {
 			      const std::string& context = "");
     /**
        Throw an error if a map is empty;
-       \tparam V Value map type.
+       \tparam K Value map key type.
+       \tparam V Value map value type.
        \param vals Value map to check.
        \param context String to prefix the error message with.
      */
-    template<typename V>
-    static void check_value_map(const std::map<EnumType, V>& vals,
+    template<typename K, typename V>
+    static void check_value_map(const std::map<K, V>& vals,
 				const std::string& context = "") {
       if (vals.empty() && !defaults.empty()) {
         ERROR_VALUE_SET(context, "Value map empty");
