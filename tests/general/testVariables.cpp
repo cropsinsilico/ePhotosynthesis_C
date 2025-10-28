@@ -52,7 +52,7 @@ TEST_F(VariableFramework, TestOutput) {
 }
 
 TEST_F(VariableFramework, TestGetAlias) {
-  EXPECT_EQ(Variables::getAlias("PAR"),
+  EXPECT_EQ(Variables::getAlias("PFD"),
             Variables::EnumClass::TestLi);
 }
 
@@ -74,8 +74,10 @@ TEST_F(VariableFramework, TestParseVar) {
     TEST_VAR(Tp, Tp);
     TEST_VAR(WeatherTemperature, Tp);
     TEST_VAR(TestLi, TestLi);
-    TEST_VAR(PAR, TestLi);
-    TEST_VAR(Radiation_PAR, TestLi);
+    TEST_VAR(PFD, TestLi);
+    TEST_VAR(PPFD, TestLi);
+    TEST_VAR(PAR, TestLi_Wps);
+    TEST_VAR(Radiation_PAR, TestLi_Wps);
     TEST_VAR(CO2, CO2_in);
     TEST_VAR(Air_CO2, CO2_in);
 #undef TEST_VAR

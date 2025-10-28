@@ -26,70 +26,47 @@
  *
  **********************************************************************************************************************************************/
 
-#include <math.h>
 #include "../definitions.hpp"
-#include "FICondition.hpp"
-#include "BFCondition.hpp"
-
-#define PARENT_FIBF EPS
-#define NRATIO_FIBF 0
-#define CHILDREN_FIBF BF, FI
-#define PARAM_TYPES_FIBF COND, POOL, RC
+#include "RCBase.hpp"
 
 namespace ePhotosynthesis {
+namespace RC {
 
-  FORWARD_DECLARE_CONDITION(FIBF);
-  
-namespace conditions {
-
-/**
- Class for input to FIBF_mb
- */
-class FIBFCondition : public ConditionBase<FIBFCondition, EPSCondition, MODULE_FIBF> {
+// class for holding RedoxRegRC data
+class RedoxRegRC : public RCBase<RedoxRegRC, MODULE_RedoxReg> {
 public:
-    DECLARE_CONDITION_COMPOSITE(FIBF)
-    FIBFCondition(EPSCondition* par = nullptr) : BF_con(new BFCondition(this)), FI_con(new FICondition(this)) {
-        setParent(par);
+    DECLARE_VALUE_SET(RedoxRegRC, RCBase<RedoxRegRC, MODULE_RedoxReg>)
+    RedoxRegRC() : RCBase<RedoxRegRC, MODULE_RedoxReg>() {
         initMembers();
     }
-    ~FIBFCondition() override {
-        _clear();
+
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The RedoxRegRC object to copy
+      */
+    RedoxRegRC(const RedoxRegRC &other) : RCBase<RedoxRegRC, MODULE_RedoxReg>(other) {
+      initMembers();
+      *this = other;
     }
-
-    /**
-      Constructor to create an object from the contained classes
-
-      @param bother A BFCondition object to incorporate
-      @param fother A FICondition object to incorporate
-      */
-    FIBFCondition(BFCondition* bother, FICondition* fother);
-
-    /**
-      Constructor to create an object from the input vector, starting at the given index
-
-      @param vec Vector to create the object from
-      @param offset The index in vec to start creating the object from
-      */
-    FIBFCondition(const arr &vec, const std::size_t offset = 0);
-
-
-    BFCondition* BF_con = nullptr;  // child Condition
-    FICondition* FI_con = nullptr;  // child Condition
-
-private:
-    /**
-      Get the size of the data vector
-
-      \returns The size of the serialized vector.
-      */
-    static std::size_t _size() {
-        count = BFCondition::size() + FICondition::size() + 1;
-        return count;
+    RedoxRegRC& operator=(const RedoxRegRC &other) {
+      Em_Thiom = other.Em_Thiom;
+      Em_FBPase = other.Em_FBPase;
+      Em_SBPase = other.Em_SBPase;
+      Em_PRK = other.Em_PRK;
+      Em_ATPase = other.Em_ATPase;
+      Thiom0 = other.Thiom0;
+      FBPase0 = other.FBPase0;
+      SBPase0 = other.SBPase0;
+      PRK0 = other.PRK0;
+      ATPase0 = other.ATPase0;
+      copyMembers(other);
+      return *this;
     }
 
 };
 
-  DEFINE_CONDITION_COMPOSITE_HEADER(FIBF);
+  DEFINE_VALUE_SET_HEADER(RedoxRegRC);
 
-}  // namespace conditions
+}  // namespace RC
 }  // namespace ePhotosynthesis

@@ -1,0 +1,60 @@
+Table II.1: Definitions of the reaction rates used in the e-Photosynthesis model and their units.
+Name,C++ Parameter,Units,Description
+vra1,,mmol l-1 s-1,Rate of dissociation of RuBP from Rubisco
+vran1,,mmol l-1 s-1,Rate of RuBP binding to Rubisco
+vra7,,mmol l-1 s-1,Rate of RuBP binding to ECM to form ECMR
+vra6_1,,mmol l-1 s-1,The rate of ECMR carboxylation
+vra6_2,,mmol l-1 s-1,The rate of ECMR oxygenation
+vav,,mmol l-1 s-1,Rate of conversion from Ax to Vx
+vva,,mmol l-1 s-1,Rate of conversion from Vx to Ax
+vaz,,mmol l-1 s-1,Rate of conversion from Ax to Zx
+vza,,mmol l-1 s-1,Rate of conversion from Zx to Ax
+vbfn2,,mmol l-1s-1,The rate of NADPH generation
+ve2GADPH,,mmol l-1s-1,Rate of electron transfer from Thior to GAPDHo
+ve2FBPase,,mmol l-1s-1,Rate of electron transfer from Thior to FBPaseo
+ve2SBPase,,mmol l-1s-1,Rate of electron transfer from Thior to SBPaseo
+ve2PRK,,mmol l-1s-1,Rate of electron transfer from Thior to PRKo
+ve2ATPase,,mmol l-1s-1,Rate of electron transfer from Thior to ATPaseo
+ve2ADPGPP,,mmol l-1s-1,Rate of electron transfer from Thior to ADPGPPo
+ve2RuACT,,mmol l-1s-1,Rate of electron transfer from Thior to Activaseo
+veFd2Thio,,mmol l-1s-1,Rate of electron transfer from Fdr to Thioo
+vs3s0,,mmol m-2s-1,Rate of state transition from the S3 state to S0 state of oxygen evolving complex
+vqb,,mmol m-2s-1,The rate of proton uptake for protonation of PQ2- at QB site of PSII
+v3,,mmol m-2 s-1,The rate of exchange of PQ with QB2- associated with QA
+v3_n,,mmol m-2 s-1,The rate of exchange of PQ with QB2- associated with QA-
+v_r3,,mmol m-2 s-1,The rate of the exchange of PQH2 with QB associated with QA
+v_r3_n,,mmol m-2 s-1,The rate of exchange of PQH2 with QB associated with QA-
+v1,,mmol l-1 s-1,Rate of Rubisco catalyzed reaction:  RuBP+CO2→2PGA
+v2,,mmol l-1 s-1,Rate of PGA Kinase  catalyzed reaction PGA+ATP → ADP + DPGA
+v3,,mmol l-1 s-1,Rate of GAP dehydragenase catalyzed reaction DPGA+NADPH →GAP + Pi+NADP
+v5,,mmol l-1 s-1,Rate of FBP Aldolase catalyzed reaction GAP+DHAP →FBP
+v6,,mmol l-1 s-1,Rate of FBPase catalyzed reaction FBP→F6P+Pi
+v7,,mmol l-1 s-1,Rate of transketolase catalyzed reaction F6P+GAP→E4P+Xu5P
+v8,,mmol l-1 s-1,Rate of aldolase catalyzed reaction E4P+DHAP→SBP
+v9,,mmol l-1 s-1,Rate of SBPase catalyzed reaction SBP→S7P+Pi
+v10,,mmol l-1 s-1,Rate of transketolase catalyzed reaction S7P+GAP→Ri5P+Xu5P
+v13,,mmol l-1 s-1,Rate of Ribulosebiphosphate kinase catalyzed reaction Ru5P+ATP→RuBP+ADP
+v16,,mmol l-1 s-1,Rate of ATP synthase catalyzed reaction ADP+Pi→ATP
+v23,,mmol l-1 s-1,Rate of ADP-glucose pyrophosphorylase and  Starch Synthase catalyzed reaction ADPG+Gn→G(n+1)+ADP
+v31,,mmol l-1 s-1,Rate of phosphate translocator catalyzed reaction  DHAPi→DHAPo
+v32,,mmol l-1 s-1,Rate of phosphate translocator catalyzed reaction  PGAi→PGAo
+v33,,mmol l-1 s-1,Rate of phosphate translocator catalyzed reaction  GAPi→GAPo
+v111,,mmol l-1 s-1,Rate of Rubisco RuBP + O2 →  PGA + PGCA catalyzed reaction
+v112,,mmol l-1 s-1,Rate of phosphoglycolate phosphatase catalyzed reaction 2-PGCA +H2O → GCA + Pi
+v113,,mmol l-1 s-1,Rate of glycerate kinase catalyzed reaction GCEA + ATP → PGA + ADP
+v121,,mmol l-1 s-1,Rate of glycolate oxidase catalyzed reaction GCAC+O2 → H2O2+GOAc
+v122,,mmol l-1 s-1,Rate of serine glyoxylate aminotransferase catalyzed reaction GOAc +SERc → HPRc + GLYc
+v123,,mmol l-1 s-1,Rate of NADH-hydroxypyruvate reductase catalyzed reaction HPRc + NADc → NADHc + GCEAc
+v124,,mmol l-1 s-1,Rate of glutamate glyoxylate aminotransferase  catalyzed reaction (GGAT) GOAc + GLUc → KGc + GLYc
+v131,,mmol l-1 s-1,Rate of Glycine decarboxylase catalyzed reaction GLYc + NADc → CO2 + NH3 + SERc +NADHc
+v1T,,mmol l-1 s-1,Rate of glycerate/glycolate transporter catalyzed reaction GCEAc ↔ GCEA
+v2T,,mmol l-1 s-1,Rate of glycerate/glycolate transporter catalyzed reaction GCAc ↔ GCA
+v51,,mmol l-1 s-1,Rate of FBP aldolasec catalyzed reaction DHAPc + PGAc ↔ FBPc
+v52,,mmol l-1 s-1,Rate of FBPasec catalyzed reaction FBPc ↔ F6Pc + Pic
+v55,,mmol l-1 s-1,Rate of UDP glucose pyrophosphorylase catalyzed reaction G1Pc + UTPc ↔ GDPc + UDPGc
+v56,,mmol l-1 s-1,Rate of Sucrose phosphate synthase catalyzed reaction UDPGc + F6Pc ↔  SUCPc + UDPc
+v57,,mmol l-1 s-1,Rate of sucrose phosphatase catalyzed reaction catalyzed reaction SUCPc ↔ Pic + SUCc
+v58,,mmol l-1 s-1,"Rate of fructose-2,6-bisphosphate 2-phosphatase catalyzed reaction F26BPc ↔ F6Pc + Pic"
+v59,,mmol l-1 s-1,Rate of 6-phosphofructo-2-kinase catalyzed reaction F6Pc + ATPc ↔ F26BPc + ADPc
+v60,,mmol l-1 s-1,Rate of nucleoside-diphosphate kinase catalyzed reaction ATPc + UDPc ↔ UTPc + ADPc
+

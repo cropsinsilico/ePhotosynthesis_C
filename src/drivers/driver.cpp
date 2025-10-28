@@ -37,6 +37,30 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::drivers;
 using namespace ePhotosynthesis::conditions;
 
+#define INITIALIZE_VARS_AND_CONDITIONS                  \
+  bool con_created = false;                             \
+  if (!theVars0) theVars0 = currentVariables();         \
+  Variables* cpyVars = nullptr;                         \
+  const Variables* theVars = theVars0;                  \
+  if (!con) {                                           \
+    con = currentConditions();                          \
+    con_created = true;                                 \
+  }                                                     \
+  std::map<MODULE, const ValueSet_t*> conditions;       \
+  if (con) {                                            \
+    cpyVars = theVars0->deepcopy();                     \
+    cpyVars->setRecord(con, conditions);                \
+    theVars = cpyVars;                                  \
+  }
+
+#define FINALIZE_VARS_AND_CONDITIONS            \
+  if (cpyVars) {                                \
+    delete cpyVars;                             \
+  }                                             \
+  if (con_created && con) {                     \
+    delete con;                                 \
+  }
+
 bool DriverParam::showWarnings = false;
 
 Driver::Driver(Variables *theVars, const double startTime,
@@ -198,7 +222,7 @@ arr Driver::run(const bool continuingRun) {
             std::rethrow_exception(eptr);
         }
 
-        realtype t = 0;
+        realtype t = start;
         bool runOK = true;
         realtype tout = start + step;
         while (t < endtime) {
@@ -261,12 +285,15 @@ void Driver::outputParam(const OutputFreq& frequency,
     outputParam(finit, flast, fstep, vars);
 }
 
-void Driver::getOutputVars(Variables* theVars) {
+void Driver::getOutputVars(const Variables* theVars0,
+                           const ValueSet_t* con) {
+    INITIALIZE_VARS_AND_CONDITIONS;
     output.clear();
     for (typename std::vector<std::string>::const_iterator it = outputVars.begin();
 	 it != outputVars.end(); it++) {
-	output[*it] = getVar(theVars, *it);
+        output[*it] = getVar(*it, theVars, conditions);
     }
+    FINALIZE_VARS_AND_CONDITIONS;
 }
 
 void Driver::setOutputVars(const std::vector<std::string>& newVars) {
@@ -291,69 +318,24 @@ void Driver::writeOutputTable(std::ostream& s) const {
     s << std::endl;
 }
 
-const std::vector<std::string>&
-Driver::getCalculatedVarNames() {
-    static const std::vector<std::string> out = {
-        "Vc", "Vo", "VPGA", "Vstarch", "Vsucrose", "VT3P",
-        "Vt_glycerate", "Vt_glycolate", "PSIIabs", "PSIabs",
-        "CO2AR"
-    };
+double Driver::getVar(const std::string& k, const Variables* theVars0,
+                      const ValueSet_t* con) const {
+    INITIALIZE_VARS_AND_CONDITIONS;
+    double out = theVars->getVar(k, false, conditions);
+    FINALIZE_VARS_AND_CONDITIONS;
     return out;
 }
-
-void Driver::getCalculatedVars(const Variables* theVars,
-                               std::map<std::string, double>& dest) const {
-  const std::vector<std::string>& names = Driver::getCalculatedVarNames();
-  for (typename std::vector<std::string>::const_iterator it = names.begin();
-       it != names.end(); it++) {
-      dest[*it] = getVar(theVars, *it);
-  }
-}
-std::map<std::string, double>
-Driver::getCalculatedVars(const Variables* theVars) const {
-    std::map<std::string, double> out;
-    getCalculatedVars(theVars, out);
-    return out;
+double Driver::getVar(const std::string& k, const Variables* theVars,
+                      const std::map<MODULE, const ValueSet_t*>& conditions) const {
+    return theVars->getVar(k, false, conditions);
 }
 
-double Driver::getVar(const Variables* theVars, const std::string& k) const {
-    if (k == "Light intensity")
-	return theVars->TestLi;
-    else if (k == "Vc")
-	return theVars->RuACT_Vel.v6_1 * theVars->AVR;
-    else if (k == "Vo")
-	return theVars->RuACT_Vel.v6_2 * theVars->AVR;
-    else if (k == "VPGA")
-	return theVars->SUCS_Vel.vpga_use * theVars->AVR;
-    else if (k == "Vstarch")
-	return (theVars->PS_Vel.v23 - theVars->PS_Vel.v25) * theVars->AVR;
-    else if (k == "Vsucrose")
-	return theVars->SUCS_Vel.vdhap_in * theVars->AVR;
-    else if (k == "VT3P")
-	return (theVars->PS_Vel.v31 + theVars->PS_Vel.v33) * theVars->AVR;
-    else if (k == "Vt_glycerate")
-	return theVars->PR_Vel.v1in * theVars->AVR;
-    else if (k == "Vt_glycolate")
-	return theVars->PR_Vel.v2out * theVars->AVR;
-    else if (k == "PSIIabs")
-	return theVars->FI_Vel.vP680_d;
-    else if (k == "PSIabs")
-	return theVars->BF_Vel.Vbf11;
-    else if (k == "CO2AR")
-	return TargetFunVal(theVars);
-    else
-	return theVars->getVar(k);
-}
-
-void Driver::dump(const std::string& filename, const Variables* theVars,
+void Driver::dump(const std::string& filename, const Variables* theVars0,
 		  const ValueSet_t* con, const bool is_init) {
-    bool con_created = false;
-    if (!theVars) theVars = currentVariables();
-    if (!con) {
-	con = currentConditions();
-	con_created = true;
-    }
+    INITIALIZE_VARS_AND_CONDITIONS;
+    bool skipCalculated = false;
 #ifdef MAKE_EQUIVALENT_TO_MATLAB
+    skipCalculated = true;  // Not output by MATLAB
     // Matlab uses different names for the pool variables
     static std::map<std::string, std::string> key_aliases = {
 	{"BF::POOL::kA_d", "BF::POOL::Tcyt"},
@@ -395,24 +377,10 @@ void Driver::dump(const std::string& filename, const Variables* theVars,
     std::vector<PARAM_TYPE> skip_param_types;
     if (is_init)
 	skip_param_types.push_back(PARAM_TYPE_VEL);
-    std::map<MODULE, const ValueSet_t*> conditions;
-    std::map<std::string, double> calculatedVars;
-    getCalculatedVars(theVars, calculatedVars);
-    if (con) {
-	// theVars->getCompositeValueSets(con, conditions);
-	Variables* theVars2 = theVars->deepcopy();
-	theVars2->setRecord(con, conditions);
-	theVars2->dump(filename, true, {}, skip_param_types,
-		       skip_keys, key_aliases, conditions, param_vars,
-                       calculatedVars);
-	delete theVars2;
-    } else {
-	theVars->dump(filename, true, {}, skip_param_types,
-		      skip_keys, key_aliases, conditions, param_vars,
-                      calculatedVars);
-    }
-    if (con_created && con)
-	delete con;
+    theVars->dump(filename, true, {}, skip_param_types,
+                  skip_keys, key_aliases, conditions, param_vars,
+                  {}, skipCalculated);
+    FINALIZE_VARS_AND_CONDITIONS;
 }
 
 Driver::~Driver() {
@@ -467,3 +435,6 @@ int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
 const std::map<std::string, double>& Driver::getOutput() const {
     return output;
 }
+
+#undef INITIALIZE_VARS_AND_CONDITIONS
+#undef FINALIZE_VARS_AND_CONDITIONS

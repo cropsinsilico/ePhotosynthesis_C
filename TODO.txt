@@ -22,3 +22,5 @@
 - Standardize setVar for control parameters on Variables
 - Update variables from yggdrasil document
 - Only export select members of value set
+- Include yaml file in installation (e.g. share)
+- Fix variable names in BF_Pool

@@ -171,6 +171,7 @@ Q10_9		2.0		# [CONST] Q10 for PsV9; unused w/o C3
 Q10_10		2.0		# [CONST] Q10 for PsV10; unused w/o C3
 Q10_13		2.0		# [CONST] Q10 for PsV13; unused w/o C3
 Q10_23		2.0		# [CONST] Q10 for PsV23; unused w/o C3
+F               96490           # [CONST] Faraday’s constant 96485 C mole-1 or J mole-1 V-1
 R		8.314		# [CONST] ideal gas constant J mole-1 K-1; BioCro: 8.314E-3; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
 c_c		38.28		# [CONST] dimensionless; BioCro: 38.05; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
 dHa_c		80.99		# [CONST] J / mol activation_energy; BioCro: 79.43; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x

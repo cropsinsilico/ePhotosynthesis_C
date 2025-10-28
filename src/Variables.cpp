@@ -169,9 +169,7 @@ void Variables::__copyMembers(const Variables& other) {
     ProteinTotalRatio = other.ProteinTotalRatio;
 }
 
-bool Variables::inputUpdated(const std::string& name,
-                             const bool ignoreClassFlag) const {
-    if (!(ignoreClassFlag || inputsFinalized)) return true;
+bool Variables::inputUpdated(const std::string& name) const {
     typename std::map<std::string, bool>::const_iterator it = inputsUpdated.find(name);
     if (it == inputsUpdated.end())
         return false;
@@ -179,7 +177,7 @@ bool Variables::inputUpdated(const std::string& name,
 }
 
 void Variables::assertCalcNotUpdated(const std::string& name) const {
-    if (inputUpdated(name, true))
+    if (inputUpdated(name))
       throw std::runtime_error(name + " was updated, but is calculated");
 }
 
@@ -188,30 +186,53 @@ void Variables::finalizeInputs(const bool dontReset) {
         return;
     }
 
-    assertCalcNotUpdated("ALL::VARS::CO2_cond");
-    if (inputUpdated("ALL::VARS::CO2_in")) {
-    // Conversion from Air_CO2 ppm to intercellular CO2
-#ifdef MAKE_EQUIVALENT_TO_MATLAB
-    CO2_in *= 0.7;
-#endif // MAKE_EQUIVALENT_TO_MATLAB
-  
-    // Conversion to umoles
-    CO2_cond = CO2_in / (3. * pow(10., 4.));
+    if (inputUpdated("ALL::VARS::CO2_cond")) {
+      if (inputUpdated("ALL::VARS::CO2_in"))
+        throw std::runtime_error("Both ALL::VARS::CO2_cond and ALL::VARS::CO2_in were updated, but they are different ways of specifying the same quantity");
+      // Convert intercelluar CO2 (umol/mol) to atmospheric CO2 (ppm)
+      CO2_in = CO2_cond * (3. * pow(10., 4.));
 #ifndef MAKE_EQUIVALENT_TO_MATLAB
-    if (!useC3)
-      CO2_cond *= 0.7;
+      CO2_in /= 0.7;
+#endif // MAKE_EQUIVALENT_TO_MATLAB
+    } else if ((!inputsFinalized) || inputUpdated("ALL::VARS::CO2_in")) {
+      // Convert atmospheric CO2 (ppm) to intercellular CO2 (umol/mol)
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+      CO2_in *= 0.7;
+#endif // MAKE_EQUIVALENT_TO_MATLAB
+      CO2_cond = CO2_in / (3. * pow(10., 4.));
+#ifndef MAKE_EQUIVALENT_TO_MATLAB
+      if (!useC3)
+        CO2_cond *= 0.7;
 #endif // MAKE_EQUIVALENT_TO_MATLAB
     }
-    if (inputUpdated("ALL::VARS::TestLi")) {
-    if (PAR_in_Wpm2) {
+
+    if (inputUpdated("ALL::VARS::O2")) {
+      if (inputUpdated("ALL::VARS::O2_cond"))
+        throw std::runtime_error("Both ALL::VARS::O2_cond and ALL::VARS::O2 were updated, but they are different ways of specifying the same quantity");
+      O2_cond = 1.26 * (O2 / (3. * pow(10., 4.)));
+    } else if ((!inputsFinalized) || inputUpdated("ALL::VARS::O2_cond")) {
+      O2_cond *= 1.26;
+      O2 = (O2_cond * (3. * pow(10., 4.))) / 1.26;
+    }
+
+    if (inputUpdated("ALL::VARS::TestLi_Wps")) {
+      if (inputUpdated("ALL::VARS::TestLi"))
+        throw std::runtime_error("Both ALL::VARS::TestLi_Wps and ALL::VARS::TestLi were updated, but they are different ways of specifying the same quantity");
       // Conversion from W m^{-2} to u moles m^{-2} s^{-1}
-      TestLi_Wps = TestLi;
       TestLi = TestLi_Wps * 1.0e6 / 2.35e5;
       PAR_in_Wpm2 = 0;
-    } else {
-      TestLi_Wps = TestLi / (1.0e6 / 2.35e5);
+    } else if ((!inputsFinalized) || inputUpdated("ALL::VARS::TestLi")) {
+      if (PAR_in_Wpm2) {
+        TestLi_Wps = TestLi;
+        // Conversion from W m^{-2} to u moles m^{-2} s^{-1}
+        TestLi = TestLi_Wps * 1.0e6 / 2.35e5;
+        PAR_in_Wpm2 = 0;
+      } else {
+        // Conversion from u moles m^{-2} s^{-1} to W m^{-2}
+        TestLi_Wps = TestLi / (1.0e6 / 2.35e5);
+      }
     }
-    }
+    
     if (!dontReset) {
       inputsFinalized = true;
       inputsUpdated.clear();
@@ -378,12 +399,13 @@ void Variables::dump(const std::string& filename,
                      const std::map<std::string, std::string>& key_aliases,
                      const std::map<MODULE, const ValueSet_t*>& conditions,
                      const std::vector<std::string>& subset,
-                     const std::map<std::string, double>& additionalVars) const {
+                     const std::map<std::string, double>& additionalVars,
+                     const bool skip_calculated) const {
     std::ofstream fd;
     fd.open(filename);
     dump(fd, includeSkipped, skip_modules, skip_param_types,
 	 skip_keys, key_aliases, conditions, subset,
-         additionalVars);
+         additionalVars, skip_calculated);
     fd.close();
 }
 std::ostream& Variables::dump(std::ostream& out,
@@ -394,7 +416,8 @@ std::ostream& Variables::dump(std::ostream& out,
                               const std::map<std::string, std::string>& key_aliases,
                               const std::map<MODULE, const ValueSet_t*>& conditions,
                               const std::vector<std::string>& subset,
-                              const std::map<std::string, double>& additionalVars) const {
+                              const std::map<std::string, double>& additionalVars,
+                              const bool skip_calculated) const {
 #ifdef MAKE_EQUIVALENT_TO_MATLAB
     std::size_t pad = 35;
 #else // MAKE_EQUIVALENT_TO_MATLAB
@@ -438,6 +461,15 @@ std::ostream& Variables::dump(std::ostream& out,
     VARS_ITER_MACRO_COND(FITER, out, 0, pad, true, includeSkipped,
 			 skip_keys, key_aliases, true);
 #undef FITER
+    if (!skip_calculated) {
+      std::map<std::string, double> calculatedVars;
+      getCalculatedVars(calculatedVars, conditions);
+      if (!calculatedVars.empty()) {
+        Variables::print_value_map(calculatedVars, out, 0, pad,
+                                   false, includeSkipped,
+                                   skip_keys, key_aliases);
+      }
+    }
     if (!additionalVars.empty()) {
       Variables::print_value_map(additionalVars, out, 0, pad,
                                  false, includeSkipped,
@@ -899,29 +931,178 @@ void Variables::setVar(const std::string& k, const double& value,
 double Variables::getVar(const MODULE& module,
 			 const PARAM_TYPE& param_type,
 			 const std::string& name,
-			 const bool& isGlymaID) const {
+			 const bool& isGlymaID,
+                         const std::map<MODULE, const ValueSet_t*>& conditions) const {
     if ((!isGlymaID) && isControlVar(module, param_type, name)) {
         return getControlVar(module, param_type, name);
     }
-    return GET_VALUE_SET(module, param_type)->get(name, isGlymaID);
+    return GET_VALUE_SET_COND(module, param_type)->get(name, isGlymaID);
 }
 double Variables::getVar(const MODULE& module,
 			 const PARAM_TYPE& param_type,
-			 const int& key) const {
-    return GET_VALUE_SET(module, param_type)->get(key);
+			 const int& key,
+                         const std::map<MODULE, const ValueSet_t*>& conditions) const {
+    return GET_VALUE_SET_COND(module, param_type)->get(key);
 }
 double Variables::getVar(const std::string& k,
-			 const bool& isGlymaID) const {
+			 const bool& isGlymaID,
+                         const std::map<MODULE, const ValueSet_t*>& conditions) const {
     std::string name;
     MODULE mod = MODULE_NONE;
     PARAM_TYPE pt = PARAM_TYPE_NONE;
     bool controlVar = false;
-    name = parseVar(k, mod, pt, isGlymaID, false, false, &controlVar);
+    name = parseVar(k, mod, pt, isGlymaID, false, (!isGlymaID),
+                    &controlVar);
     if (controlVar) {
         return static_cast<double>(getControlVar(mod, pt, name));
     }
-    return getVar(mod, pt, name, isGlymaID);
+    if (name.empty())
+      return getVarCalculated(k, conditions);
+    return getVar(mod, pt, name, isGlymaID, conditions);
 }
+double Variables::getVarCalculated(const std::string& k,
+                                   const std::map<MODULE, const ValueSet_t*>& conditions) const {
+    if (k == "Light intensity")
+	return TestLi;
+    else if (k == "Vc")
+	return RuACT_Vel.v6_1 * AVR;
+    else if (k == "Vo")
+	return RuACT_Vel.v6_2 * AVR;
+    else if (k == "VPGA")
+	return SUCS_Vel.vpga_use * AVR;
+    else if (k == "Vstarch")
+	return (PS_Vel.v23 - PS_Vel.v25) * AVR;
+    else if (k == "Vsucrose")
+	return SUCS_Vel.vdhap_in * AVR;
+    else if (k == "VT3P")
+	return (PS_Vel.v31 + PS_Vel.v33) * AVR;
+    else if (k == "Vt_glycerate")
+	return PR_Vel.v1in * AVR;
+    else if (k == "Vt_glycolate")
+	return PR_Vel.v2out * AVR;
+    else if (k == "PSIIabs")
+	return FI_Vel.vP680_d;
+    else if (k == "PSIabs")
+	return BF_Vel.Vbf11;
+    else if (k == "CO2AR")
+	return TargetFunVal(this);
+    else if (k == "ROE")
+        return FI_Vel.vS3_S0;
+        // return BF_Vel.VgPQH2 * 2.;
+    else if (k == "dissipation") {
+        const double vA_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vA_d");
+        const double vU_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vU_d");
+        return vA_d + vU_d;
+    } else if (k == "fluoresence") {
+        const double vA_f = getVar(MODULE_FI, PARAM_TYPE_VEL, "vA_f");
+        const double vU_f = getVar(MODULE_FI, PARAM_TYPE_VEL, "vU_f");
+        return vA_f + vU_f;
+    } else if (k == "fPSII") {
+        double It = 0.0;
+        if (useC3)
+            It = lightParam;
+        else
+            It = GLight;
+        if (It == 0)
+            return 0.0;
+        const double It2 = It * 27.0 / 47.0;
+        const double vA_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vA_d");
+        const double vU_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vU_d");
+        const double f = getVarCalculated("fluoresence");
+        return (It2 - f - vA_d - vU_d) / It2;
+    } else if (k == "MembranePotential") {
+        const double PHs = getVar(MODULE_BF, PARAM_TYPE_COND, "PHs");
+        const double Hfs = pow(10., -PHs) * 1000.;
+        const double OHs = pow(10., -14.) / (Hfs / 1000.) * 1000.;
+        const double BFHs = getVar(MODULE_BF, PARAM_TYPE_COND, "BFHs");
+        const double BFs = BFHs - Hfs;
+        const double kz = getVar(MODULE_BF, PARAM_TYPE_POOL, "kz");
+        const double BFns = kz - BFs;
+        const double Ks = getVar(MODULE_BF, PARAM_TYPE_COND, "Ks");
+        const double Mgs = getVar(MODULE_BF, PARAM_TYPE_COND, "Mgs");
+        const double Cls = getVar(MODULE_BF, PARAM_TYPE_COND, "Cls");
+        const double RVA = getVar(MODULE_BF, PARAM_TYPE_RC, "RVA");
+        double NetCharge = Hfs + Ks + 2. * Mgs - OHs - Cls - BFns;
+        NetCharge = NetCharge / 1000.;
+        NetCharge = NetCharge * RVA;
+        const double AfC = 6.022 * pow(10., 23.);
+        const double UnitCharge = 1.6 * pow(10., -19.);
+        NetCharge = NetCharge * AfC * UnitCharge;
+        return 2. * NetCharge / 6. * pow(10., 6.);
+    } else {
+        ERROR_VALUE_SET("Could not find variable matching string \"",
+                        k, "\" (including calculated variables)");
+    }
+}
+const std::map<std::string, std::vector<MODULE> >&
+Variables::getCalculatedVariableRegistry() {
+  static std::map<std::string, std::vector<MODULE> > out = {};
+#define ADD_VAR(name, ...)                      \
+  out[#name] = {PREFIX_EACH(MODULE_, __VA_ARGS__)}
+  ADD_VAR(Light intensity, ALL);
+  ADD_VAR(Vc, RuACT);
+  ADD_VAR(Vo, RuACT);
+  ADD_VAR(VPGA, SUCS);
+  ADD_VAR(Vstarch, PS);
+  ADD_VAR(Vsucrose, SUCS);
+  ADD_VAR(VT3P, PS);
+  ADD_VAR(Vt_glycerate, PR);
+  ADD_VAR(Vt_glycolate, PR);
+  ADD_VAR(PSIIabs, FI);
+  ADD_VAR(PSIabs, BF);
+  ADD_VAR(CO2AR, PS, PR);
+  ADD_VAR(dissipation, FI);
+  ADD_VAR(fluoresence, FI);
+  ADD_VAR(fPSII, FI);
+  ADD_VAR(MembranePotential, BF);
+  // ADD_VAR(ROE, BF);
+  ADD_VAR(ROE, FI);
+#undef ADD_VAR
+  return out;
+}
+const std::vector<std::string>&
+Variables::getCalculatedVarNames() const {
+    std::vector<std::string> out;
+    const std::map<std::string, std::vector<MODULE> >& registry = Variables::getCalculatedVariableRegistry();
+    for (typename std::map<std::string, std::vector<MODULE> >::const_iterator it = registry.begin();
+         it != registry.end(); it++) {
+        bool allSelected = true;
+        for (typename std::vector<MODULE>::const_iterator imod = it->second.begin();
+             imod != it->second.end(); imod++) {
+            if (*imod == MODULE_ALL)
+                continue;
+            if (!isSelected(*imod, PARAM_TYPE_MOD)) {
+                allSelected = false;
+                break;
+            }
+        }
+        if (allSelected) {
+            out.push_back(it->first);
+        }
+    }
+    return out;
+}
+void Variables::getCalculatedVars(std::map<std::string, double>& dest,
+                                  const std::map<MODULE, const ValueSet_t*>& conditions) const {
+    const std::map<std::string, std::vector<MODULE> >& registry = Variables::getCalculatedVariableRegistry();
+    for (typename std::map<std::string, std::vector<MODULE> >::const_iterator it = registry.begin();
+         it != registry.end(); it++) {
+        bool allSelected = true;
+        for (typename std::vector<MODULE>::const_iterator imod = it->second.begin();
+             imod != it->second.end(); imod++) {
+            if (*imod == MODULE_ALL)
+                continue;
+            if (!isSelected(*imod, PARAM_TYPE_MOD)) {
+                allSelected = false;
+                break;
+            }
+        }
+        if (allSelected) {
+            dest[it->first] = getVar(it->first, false, conditions);
+        }
+    }
+}
+
 std::string Variables::getDocs(const MODULE& module,
                                const PARAM_TYPE& param_type,
                                const std::string& name,
@@ -1144,9 +1325,10 @@ void Variables::updateParam(std::map<std::string, std::string>& inputs,
                     theVars->setControlVar(mod, pt, name, (int)value);
                 else
                     theVars->setVar(mod, pt, name, value);
-                if (theVars->inputsFinalized) {
-                    theVars->inputsUpdated[name_FULL] = true;
-                }
+                // if (theVars->inputsFinalized) {
+                //     std::cerr << "UPDATING: " << name_FULL << std::endl;
+                theVars->inputsUpdated[name_FULL] = true;
+                // }
             } else {
                 if (controlVar)
                     setDefaultControlVar(mod, pt, name, (int)value);

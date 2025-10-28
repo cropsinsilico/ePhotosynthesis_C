@@ -1,0 +1,507 @@
+RuACT::RC::k1              0.006                 # [kra1] 
+RuACT::RC::kn1             0.0016                # [kran1] 
+RuACT::RC::Ke2             0.1                   # [Krae2] 
+RuACT::RC::Ke3             1.6                   # [Krae3] 
+RuACT::RC::k6              2.5                   # [kra6] 
+RuACT::RC::ko              0.448                 # [ko] 
+RuACT::RC::kc              0.016                 # [kc] 
+RROEA::RC::ke2FBPase       1.38                  # [ke2FBPase] 
+RROEA::RC::ke2ATPase       1.0                   # [ke2ATPase] 
+RROEA::RC::keFd2Thio       10.0                  # [keFd2Thio] 
+RedoxReg::RC::Em_FBPase    -0.305                # [Em_FBPase] 
+RedoxReg::RC::Em_SBPase    -0.3                  # [Em_SBPase] 
+RedoxReg::RC::Em_PRK       -0.295                # [Em_PRK] 
+RedoxReg::RC::Em_ATPase    -0.28                 # [Em_ATPase] 
+RedoxReg::RC::Em_Thiom     -0.3                  # [Em_Thiom] 
+BF::RC::K3                 50000000.0            # [kbf3] 
+BF::RC::K4                 50000000.0            # [kbf4] 
+BF::RC::K5                 50000000.0            # [kbf5] 
+BF::RC::K6                 50000000.0            # [kbf6] 
+BF::RC::K7                 10000.0               # [kbf7] 
+BF::RC::K8                 1000.0                # [kbf8] 
+BF::RC::K9                 8300000.0             # [kbf9] 
+BF::RC::K10                800000000.0           # [kbf10] 
+BF::RC::Vmax11             6.0                   # [Vbf1max] 
+BF::RC::Kqi                1000.0                # [kqi] 
+BF::RC::PK                 3.6e-08               # [PK] 
+BF::RC::PMg                3.6e-08               # [PMg] 
+BF::RC::PCl                1.8e-08               # [PCl] 
+FI::RC::kU_A               10000000000.0         # [kUA] 
+BF::RC::K15                10000000000.0         # [k15] 
+BF::RC::K16                100000.0              # [k16] 
+BF::RC::Em_IPS             0.31                  # [Em_ISP] 
+BF::RC::Em_Cytf            0.27                  # [Em_Cytc1] 
+BF::RC::KM1ATP             0.12                  # [KM1ATP] 
+BF::RC::KM1ADP             0.014                 # [KM1ADP] 
+BF::RC::KM1PI              0.3                   # [KM1PI] 
+ALL::VARS::HPR             4.66                  # [HPR] 
+BF::RC::KM2NADP            0.05                  # [KM2NADP] 
+BF::RC::KM2NADPH           0.035                 # [KM2NADPH] 
+BF::RC::V2M                27.8                  # [V2M] 
+BF::MOD::RT                2477.572              # [R] 
+FIBF::RC::RC0              0.1                   # [kro] 
+FIBF::RC::RC               0.1                   # [kr] 
+BF::RC::MemCap             6e-07                 # [C] 
+PS::MOD::KM11              0.0115                # [KM11] 
+PS::MOD::KM12              0.222                 # [KM12] 
+PS::MOD::KM13              0.02                  # [KM13] 
+PS::RC::KM13               0.02                  # [KM13] 
+PS::MOD::KI11              0.84                  # [KI11] 
+PS::RC::KI11               0.84                  # [KI11] 
+PS::MOD::KI12              0.04                  # [KI12] 
+PS::RC::KI12               0.04                  # [KI12] 
+PS::MOD::KI13              0.075                 # [KI13] 
+PS::RC::KI13               0.075                 # [KI13] 
+PS::MOD::KI14              0.9                   # [KI14] 
+PS::RC::KI14               0.9                   # [KI14] 
+PS::MOD::KI15              0.07                  # [KI15] 
+PS::RC::KI15               0.07                  # [KI15] 
+PS::MOD::V1                2.93                  # [Vm1] 
+PS::MOD::KM21              0.24                  # [KM21] 
+PS::RC::KM21               0.24                  # [KM21] 
+PS::MOD::KM22              0.39                  # [KM22] 
+PS::RC::KM22               0.39                  # [KM22] 
+PS::MOD::KM23              0.23                  # [KM23] 
+PS::RC::KM23               0.23                  # [KM23] 
+PS::MOD::V2                30.15                 # [Vm2] 
+PS::RC::KM31a              0.004                 # [KM31] 
+PS::MOD::KM32b             0.1                   # [KM32] 
+PS::MOD::V3                4.04                  # [Vm3] 
+PS::RC::KE4                0.05                  # [KE4] 
+PS::MOD::KM51              0.3                   # [KM51] 
+PS::RC::KM51               0.3                   # [KM51] 
+PS::MOD::KM52              0.4                   # [KM52] 
+PS::RC::KM52               0.4                   # [KM52] 
+PS::MOD::KM53              0.02                  # [KM53] 
+PS::RC::KM53               0.02                  # [KM53] 
+PS::MOD::KE5               7.1                   # [KE5] 
+PS::RC::KE5                7.1                   # [KE5] 
+PS::MOD::V5                1.22                  # [Vm5] 
+PS::MOD::KM61              0.033                 # [KM61] 
+PS::RC::KM61               0.033                 # [KM61] 
+PS::MOD::KI61              0.7                   # [KI61] 
+PS::RC::KI61               0.7                   # [KI61] 
+PS::MOD::KI62              12.0                  # [KI62] 
+PS::RC::KI62               12.0                  # [KI62] 
+PS::MOD::V6                0.734                 # [Vm6] 
+PS::RC::KM71               0.1                   # [KM71] 
+PS::RC::KM72               0.1                   # [KM72] 
+PS::RC::KM73               0.1                   # [KM73] 
+PS::RC::KE7                10.0                  # [KE7] 
+PS::MOD::KM81              0.4                   # [KM81] 
+PS::RC::KM81               0.4                   # [KM81] 
+PS::MOD::KM82              0.2                   # [KM82] 
+PS::RC::KM82               0.2                   # [KM82] 
+PS::MOD::V8                1.22                  # [Vm8] 
+PS::MOD::KM9               0.05                  # [KM9] 
+PS::RC::KM9                0.05                  # [KM9] 
+PS::MOD::KI9               12.0                  # [KI9] 
+PS::RC::KI9                12.0                  # [KI9] 
+PS::MOD::V9                0.96                  # [Vm9] 
+PS::MOD::KM101             0.1                   # [KM101] 
+PS::RC::KM101              0.1                   # [KM101] 
+PS::RC::KM102              0.072                 # [KM102] 
+PS::RC::KM103              0.46                  # [KM103] 
+PS::RC::KM10               1.5                   # [KM10] 
+PS::MOD::KE11              0.4                   # [KE11] 
+PS::RC::KE11               0.4                   # [KE11] 
+PS::MOD::KE12              0.67                  # [KE12] 
+PS::RC::KE12               0.67                  # [KE12] 
+PS::MOD::KM131             0.05                  # [KM131] 
+PS::RC::KM131              0.05                  # [KM131] 
+PS::MOD::KM132             0.059                 # [KM132] 
+PS::RC::KM132              0.059                 # [KM132] 
+PS::MOD::KI131             2.0                   # [KI131] 
+PS::RC::KI131              2.0                   # [KI131] 
+PS::MOD::KI132             0.7                   # [KI132] 
+PS::RC::KI132              0.7                   # [KI132] 
+PS::MOD::KI133             4.0                   # [KI133] 
+PS::RC::KI133              4.0                   # [KI133] 
+PS::MOD::KI134             2.5                   # [KI134] 
+PS::RC::KI134              2.5                   # [KI134] 
+PS::RC::KI135              0.4                   # [KE135] 
+PS::RC::KE13               6846.0                # [KI13_c] 
+PS::MOD::V13               10.81                 # [Vm13] 
+PS::MOD::KM161             0.014                 # [KM161] 
+PS::RC::KM161              0.014                 # [KM161] 
+PS::MOD::KM162             0.3                   # [KM162] 
+PS::RC::KM162              0.3                   # [KM162] 
+PS::MOD::KM163             0.3                   # [KM163] 
+PS::RC::KM163              0.3                   # [KM163] 
+PS::MOD::V16               5.47                  # [Vm16] 
+PS::MOD::KE21              2.3                   # [KE21] 
+PS::RC::KE21               2.3                   # [KE21] 
+PS::MOD::KE22              0.058                 # [KE22] 
+PS::RC::KE22               0.058                 # [KE22] 
+PS::MOD::KM231             0.031                 # [KM231] 
+PS::RC::KM231              0.031                 # [KM231] 
+PS::MOD::KM232             0.045                 # [KM232] 
+PS::RC::KM232              0.045                 # [KM232] 
+PS::MOD::KM233             0.14                  # [KM233] 
+PS::RC::KM233              0.14                  # [KM233] 
+PS::MOD::KM234             0.8                   # [KM234] 
+PS::RC::KM234              0.8                   # [KM234] 
+PS::MOD::KE23              0.0076                # [Ke23] 
+PS::MOD::KI231             0.9                   # [KI231] 
+PS::RC::KI231              0.9                   # [KI231] 
+PS::MOD::KVmo              0.007                 # [KVmo] 
+PS::RC::KVmo               0.007                 # [KVmo] 
+PS::MOD::KM311             0.077                 # [KM311] 
+PS::RC::KM311              0.077                 # [KM311] 
+PS::RC::KM312              0.63                  # [KM312] 
+PS::MOD::KM313             0.74                  # [KM313] 
+PS::RC::KM313              0.74                  # [KM313] 
+PS::MOD::KM32              0.25                  # [KM32] 
+PS::RC::KM32               0.25                  # [KM32] 
+PS::MOD::KM33              0.075                 # [KM33] 
+PS::RC::KM33               0.075                 # [KM33] 
+PR::RC::V111               0.24                  # [Vm111] 
+PR::MOD::KM112             0.026                 # [KM112] 
+PR::RC::KM112              0.026                 # [KM112] 
+PR::MOD::KM1131            0.21                  # [KM1131] 
+PR::RC::KM1131             0.21                  # [KM1131] 
+PR::MOD::KM1132            0.25                  # [KM1132] 
+PR::RC::KM1132             0.25                  # [KM1132] 
+PR::MOD::KI113             0.36                  # [KI113] 
+PR::RC::KI113              0.36                  # [KI113] 
+PR::MOD::KE113             300.0                 # [KE113] 
+PR::RC::KE113              300.0                 # [KE113] 
+PR::MOD::KM121             0.1                   # [KM121] 
+PR::RC::KM121              0.1                   # [KM121] 
+PR::MOD::KM1221            0.15                  # [KM1221] 
+PR::RC::KM1221             0.15                  # [KM1221] 
+PR::MOD::KM1222            2.7                   # [KM1222] 
+PR::RC::KM1222             2.7                   # [KM1222] 
+PR::MOD::KI1221            33.0                  # [KI1221] 
+PR::RC::KI1221             33.0                  # [KI1221] 
+PR::MOD::KE122             0.24                  # [KE122] 
+PR::RC::KE122              0.24                  # [KE122] 
+PR::MOD::KM123             0.09                  # [KM123] 
+PR::RC::KM123              0.09                  # [KM123] 
+PR::MOD::KI123             12.0                  # [KI123] 
+PR::RC::KI123              12.0                  # [KI123] 
+PR::MOD::KE123             250000.0              # [KE123] 
+PR::RC::KE123              250000.0              # [KE123] 
+PR::MOD::KM1241            0.15                  # [KM1241] 
+PR::RC::KM1241             0.15                  # [KM1241] 
+PR::MOD::KM1242            1.7                   # [KM1242] 
+PR::RC::KM1242             1.7                   # [KM1242] 
+PR::MOD::KE124             607.0                 # [KE124] 
+PR::RC::KE124              607.0                 # [KE124] 
+PR::MOD::KM1311            6.0                   # [KM1311] 
+PR::RC::KM1311             6.0                   # [KM1311] 
+PR::MOD::KI1311            4.0                   # [KI1311] 
+PR::RC::KI1311             4.0                   # [KI1311] 
+PR::MOD::KM1011            0.39                  # [KM1011] 
+PR::RC::KM1011             0.39                  # [KM1011] 
+PR::MOD::KI1011            0.28                  # [KI1011] 
+PR::RC::KI1011             0.28                  # [KI1011] 
+PR::MOD::KM1012            0.2                   # [KM1012] 
+PR::RC::KM1012             0.2                   # [KM1012] 
+PR::MOD::KI1012            0.22                  # [KI1012] 
+PR::RC::KI1012             0.22                  # [KI1012] 
+SUCS::MOD::KE501           20.0                  # [KE501] 
+SUCS::RC::KE501            20.0                  # [KE501] 
+SUCS::MOD::Km511           0.02                  # [Km511] 
+SUCS::RC::Km511            0.02                  # [Km511] 
+SUCS::MOD::Km512           0.3                   # [Km512] 
+SUCS::RC::Km512            0.3                   # [Km512] 
+SUCS::MOD::Km513           0.4                   # [Km513] 
+SUCS::RC::Km513            0.4                   # [Km513] 
+SUCS::MOD::KE51            12.0                  # [KE51] 
+SUCS::RC::KE51             12.0                  # [KE51] 
+SUCS::MOD::Km521           0.0025                # [Km521] 
+SUCS::RC::Km521            0.0025                # [Km521] 
+SUCS::MOD::KI521           0.7                   # [KI521] 
+SUCS::RC::KI521            0.7                   # [KI521] 
+SUCS::MOD::KI522           12.0                  # [KI522] 
+SUCS::RC::KI522            12.0                  # [KI522] 
+SUCS::MOD::KI523           7e-05                 # [KI523] 
+SUCS::RC::KI523            7e-05                 # [KI523] 
+SUCS::MOD::KE52            6663.0                # [KE52] 
+SUCS::RC::KE52             6663.0                # [KE52] 
+SUCS::RC::KE531            2.3                   # [KE31] 
+SUCS::RC::KE541            0.0584                # [KE41] 
+SUCS::MOD::Km551           0.14                  # [Km551] 
+SUCS::RC::Km551            0.14                  # [Km551] 
+SUCS::MOD::Km552           0.1                   # [Km552] 
+SUCS::RC::Km552            0.1                   # [Km552] 
+SUCS::MOD::Km553           0.11                  # [Km553] 
+SUCS::RC::Km553            0.11                  # [Km553] 
+SUCS::MOD::Km554           0.12                  # [Km554] 
+SUCS::RC::Km554            0.12                  # [Km554] 
+SUCS::MOD::KE55            0.31                  # [KE55] 
+SUCS::RC::KE55             0.31                  # [KE55] 
+SUCS::MOD::Km561           0.8                   # [Km561] 
+SUCS::RC::Km561            0.8                   # [Km561] 
+SUCS::MOD::Km562           2.4                   # [Km562] 
+SUCS::RC::Km562            2.4                   # [Km562] 
+SUCS::MOD::KI561           0.7                   # [KI561] 
+SUCS::RC::KI561            0.7                   # [KI561] 
+SUCS::MOD::KI562           0.8                   # [KI562] 
+SUCS::RC::KI562            0.8                   # [KI562] 
+SUCS::MOD::KI563           0.4                   # [KI563] 
+SUCS::RC::KI563            0.4                   # [KI563] 
+SUCS::MOD::KI564           11.0                  # [KI564] 
+SUCS::RC::KI564            11.0                  # [KI564] 
+SUCS::MOD::KI565           50.0                  # [KI565] 
+SUCS::RC::KI565            50.0                  # [KI565] 
+SUCS::MOD::KE56            10.0                  # [KE56] 
+SUCS::RC::KE56             10.0                  # [KE56] 
+SUCS::MOD::Km571           0.35                  # [Km571] 
+SUCS::RC::Km571            0.35                  # [Km571] 
+SUCS::MOD::Ki572           10.0                  # [Ki572] 
+SUCS::RC::Ki572            10.0                  # [Ki572] 
+SUCS::RC::KE57             780.0                 # [KE57] 
+SUCS::MOD::KE57            780.0                 # [KE57] 
+SUCS::MOD::Km581           0.032                 # [Km581] 
+SUCS::RC::Km581            0.032                 # [Km581] 
+SUCS::MOD::KI581           0.1                   # [KI581] 
+SUCS::RC::KI581            0.1                   # [KI581] 
+SUCS::MOD::KI582           0.5                   # [KI582] 
+SUCS::RC::KI582            0.5                   # [KI582] 
+SUCS::RC::Km592            0.021                 # [Km592] 
+SUCS::MOD::KI591           0.16                  # [KI591] 
+SUCS::RC::KI591            0.16                  # [KI591] 
+SUCS::RC::KI592            0.7                   # [KI592] 
+SUCS::MOD::KE59            590.0                 # [KE59] 
+SUCS::RC::KE59             590.0                 # [KE59] 
+SUCS::MOD::V59             0.03                  # [Vm59] 
+SUCS::RC::Km601            0.042                 # [Km601] 
+SUCS::RC::Km602            1.66                  # [Km602] 
+SUCS::RC::Km603            0.28                  # [Km603] 
+SUCS::RC::Km604            16.0                  # [Km604] 
+SUCS::RC::KE60             16.0                  # [KE60] 
+SUCS::MOD::Km621           5.0                   # [Km621] 
+SUCS::RC::Km621            5.0                   # [Km621] 
+SUCS::MOD::V62             2.0                   # [Vm62] 
+BF::COND::cytc1            1.0                   # [cyt f] 
+RuACT::POOL::M             5.0                   # [MT] 
+RuACT::MOD::activase       80.0                  # [Rubisco activase] 
+XanCycle::COND::Ax         10.0                  # [Ax] 
+XanCycle::COND::Vx         160.0                 # [Vx] 
+XanCycle::COND::Zx         5.0                   # [Zx] 
+RROEA::POOL::ThioT         0.081                 # [Thioo] 
+RROEA::POOL::FdT           0.081                 # [Fdo] 
+RROEA::POOL::RuACTT        0.0056                # [Activaseo] 
+BF::COND::ISPo             1.0                   # [ISPox] 
+BF::COND::ISPoQH2          0.0                   # [ISPoxQH2] 
+BF::COND::QHsemi           0.0                   # [PQH·] 
+BF::COND::cytbL            1.0                   # [Cyt bL] 
+BF::COND::Q                1.0                   # [PQ] 
+BF::COND::cytbH            1.0                   # [Cyt bH] 
+BF::COND::Qn               0.0                   # [Qn] 
+BF::COND::Qr               0.0                   # [PQ2-] 
+BF::COND::QH2              5.0                   # [PQH2] 
+BF::COND::P700             0.5                   # [P700] 
+BF::COND::ADP              0.82                  # [ADP] 
+BF::MOD::_Pi               0.9                   # [Pi] 
+BF::COND::ATP              0.68                  # [ATP] 
+BF::COND::Ks               10.0                  # [K+s] 
+BF::COND::Mgs              5.0                   # [Mg2+s] 
+BF::COND::Cls              1.0                   # [Cl-s] 
+BF::COND::Aip              0.0                   # [AIP] 
+BF::COND::U                0.0                   # [UI] 
+BF::COND::Fdn              0.3                   # [Fdr] 
+BF::COND::BFHs             19.0001               # [BFHs] 
+BF::POOL::BFTs             38.0                  # [BFTs] 
+BF::COND::BFHl             19.0001               # [BFHl] 
+BF::POOL::BFTl             38.0                  # [BFTl] 
+BF::COND::ISPHr            0.0                   # [ISPHred] 
+BF::COND::An               0.0                   # [A0-] 
+BF::COND::cytc2            1.0                   # [PC] 
+BF::POOL::TFd              1.0                   # [FdT] 
+BF::POOL::Tcyt             1.0                   # [CytbT] 
+FI::POOL::PQT              8.0                   # [PQT] 
+FIBF::POOL::PQT            8.0                   # [PQT] 
+BF::POOL::TA               1.0                   # [A0T] 
+PS::COND::RuBP             2.0                   # [RuBP] 
+PR::COND::RuBP             2.0                   # [RuBP] 
+RuACT::COND::RuBP          2.0                   # [RuBP] 
+PS::COND::PGA              2.4                   # [PGA] 
+PS::COND::DPGA             0.0011                # [DPGA] 
+PS::COND::FBP              0.67                  # [FBP] 
+PS::COND::E4P              0.05                  # [E4P] 
+PS::COND::S7P              2.0                   # [S7P] 
+PS::COND::SBP              0.3                   # [SBP] 
+PS::COND::ATP              0.68                  # [ATP] 
+PR::RC::ATP                0.68                  # [ATP] 
+BF::COND::NADPH            0.21                  # [NADPH] 
+RuACT::POOL::C             0.012                 # [CO2] 
+RuACT::POOL::O             0.26                  # [O2] 
+PS::COND::HexP             2.2                   # [HexP] 
+PS::COND::PenP             0.25                  # [PenP] 
+PS::RC::CA                 1.5                   # [CA] 
+PS::MOD::PS_PEXT           0.5                   # [Pext] 
+PR::MOD::NADHc             0.47                  # [NADHc] 
+PR::RC::NADHc              0.47                  # [NADHc] 
+PR::MOD::NADc              0.4                   # [NADc] 
+PR::RC::NADc               0.4                   # [NADc] 
+PR::RC::ADP                0.82                  # [ADP] 
+PR::MOD::GLUc              24.0                  # [GLUc] 
+PR::RC::GLUc               24.0                  # [GLUc] 
+PR::MOD::KGc               0.4                   # [KGc] 
+PR::RC::KGc                0.4                   # [KGc] 
+PR::COND::SERc             7.5                   # [SERc] 
+PR::COND::GLYc             1.8                   # [GLYc] 
+PR::MOD::PGA               4.3                   # [PGA] 
+PR::RC::PGA                4.3                   # [PGA] 
+PR::COND::GOAc             0.028                 # [GOAc] 
+PR::COND::GCA              0.36                  # [GCA] 
+PR::COND::GCAc             0.36                  # [GCAc] 
+PR::COND::PGCA             0.0029                # [PGCA] 
+PR::COND::HPRc             0.0035                # [HPRc] 
+PR::COND::GCEA             0.1812                # [GCEA] 
+PR::COND::GCEAc            0.1812                # [GCEAc] 
+SUCS::COND::FBPc           2.0                   # [FBPc] 
+SUCS::POOL::PTc            15.0                  # [PTc] 
+SUCS::POOL::ATc            1.0                   # [ATc] 
+BF::POOL::k1               1000000.0             # [kbf1] Does not match any default values
+RuACT::RC::k7              200.0                 # [kra7] Does not match any default values
+RuACT::RC::kn7             4.8                   # [kran7] Does not match any default values
+XanCycle::MOD::kav         0.003                 # [kav] Does not match any default values
+XanCycle::RC::kav          0.003                 # [kav] Does not match any default values
+XanCycle::MOD::kva         0.012                 # [kva] Does not match any default values
+XanCycle::RC::kva          0.012                 # [kva] Does not match any default values
+XanCycle::MOD::kaz         0.002                 # [kaz] Does not match any default values
+XanCycle::RC::kaz          0.002                 # [kaz] Does not match any default values
+XanCycle::MOD::kza         0.002                 # [kza] Does not match any default values
+XanCycle::RC::kza          0.002                 # [kza] Does not match any default values
+RROEA::RC::ke2GAPDH        22.2                  # [ke2GADPH] Does not match any default values
+RROEA::RC::ke2SBPase       1.68                  # [ke2SBPase] Does not match any default values
+RROEA::RC::ke2PRK          60.0                  # [ke2PRK] Does not match any default values
+RROEA::RC::ke2RubACT       6.6                   # [ke2RuACT] Does not match any default values
+RROEA::RC::ke2ATPGPP       6.0                   # [ke2ADPGPP] Does not match any default values
+FI::RC::kA_U               1010.0                # [kAU] Does not match any default values
+BF::RC::Kf                 1300000.0             # [kf] Does not match any default values
+FIBF::COND::kd             200000000.0           # [kd] Does not match any default values
+FI::RC::kA_f               0.0                   # [kf,ps1] Does not match any default values
+FI::RC::kU_f               0.0                   # [kU_f] Does not match any default values
+BF::RC::Em_PG              0.35000000000000003   # [Em_Cytc2] Does not match any default values
+BF::RC::RVA                80000000000.0         # [RVA] Does not match any default values
+BF::RC::K2                 495.0                 # [K2] Does not match any default values
+BF::RC::KBs                0.015                 # [Kbs] Does not match any default values
+BF::RC::KBl                0.015                 # [Kbl] Does not match any default values
+ALL::VARS::T               298.0                 # [T] Does not match any default values
+BF::RC::KE8                0.21                  # [KE8] Does not match any default values
+BF::RC::KE9                22.55                 # [KE9] Does not match any default values
+RuACT::RC::RCA             7.68403258029e-05     # [kra] Does not match any default values
+BF::RC::KE2                0.00076               # [KE2] Does not match any default values
+PS::MOD::KE6               670000.0              # [KE6] Does not match any default values
+PS::RC::KE6                670000.0              # [KE6] Does not match any default values
+PS::MOD::V7                6.24                  # [Vm7] Does not match any default values
+PS::RC::KE8                1.07                  # [KE8] Does not match any default values
+PS::RC::KE9                670000.0              # [KE9] Does not match any default values
+PS::MOD::KE10              1.17                  # [KE10] Does not match any default values
+PS::RC::KE10               1.17                  # [KE10] Does not match any default values
+PS::MOD::V10               6.24                  # [Vm10] Does not match any default values
+PS::MOD::KE16              5.7                   # [KE16] Does not match any default values
+PS::RC::KE16               5.7                   # [KE16] Does not match any default values
+PS::MOD::KA231             2.3                   # [KA231] Does not match any default values
+PS::RC::KA231              2.3                   # [KA231] Does not match any default values
+PS::MOD::V23               0.293                 # [Vm23] Does not match any default values
+PS::MOD::V31               0.879                 # [Vm31] Does not match any default values
+PS::MOD::V32               0.879                 # [Vm32] Does not match any default values
+PS::MOD::V33               0.879                 # [Vm33] Does not match any default values
+PR::MOD::KI1121            94.0                  # [KI1121] Does not match any default values
+PR::RC::KI1121             94.0                  # [KI1121] Does not match any default values
+PR::MOD::KI1122            2.55                  # [KI1122] Does not match any default values
+PR::RC::KI1122             2.55                  # [KI1122] Does not match any default values
+PR::MOD::V112              52.42                 # [Vm112] Does not match any default values
+PR::MOD::V113              5.72                  # [Vm113] Does not match any default values
+PR::MOD::V121              1.46                  # [Vm121] Does not match any default values
+PR::MOD::V122              9.92                  # [Vm122] Does not match any default values
+PR::MOD::V123              10.01                 # [Vm123] Does not match any default values
+PR::MOD::V124              2.75                  # [Vm124] Does not match any default values
+PR::MOD::V131              2.49                  # [Vm131] Does not match any default values
+PR::RC::V1T                1.2                   # [Vm101a] Does not match any default values
+PR::RC::V2T                1.2                   # [Vm101b] Does not match any default values
+SUCS::MOD::V51             0.107                 # [Vm51] Does not match any default values
+SUCS::MOD::V52             0.064                 # [Vm52] Does not match any default values
+SUCS::MOD::V55             0.115                 # [Vm55] Does not match any default values
+SUCS::MOD::V56             0.056                 # [Vm56] Does not match any default values
+SUCS::MOD::V57             0.56                  # [Vm57] Does not match any default values
+SUCS::MOD::V58             0.017                 # [Vm58] Does not match any default values
+SUCS::MOD::Km591           5.0                   # [Km591] Does not match any default values
+SUCS::RC::Km591            5.0                   # [Km591] Does not match any default values
+SUCS::MOD::Km593           0.55                  # [Km593] Does not match any default values
+SUCS::RC::Km593            0.55                  # [Km593] Does not match any default values
+SUCS::MOD::KE61            12000000.0            # [KE61] Does not match any default values
+SUCS::RC::KE61             12000000.0            # [KE61] Does not match any default values
+SUCS::MOD::V61             1000.0                # [Vm61] Does not match any default values
+RuACT::COND::Eaf           0.0                   # [Eaf] Does not match any default values
+RuACT::COND::ER            0.3                   # [ER] Does not match any default values
+RuACT::COND::ECMR          0.0                   # [ECMR] Does not match any default values
+RROEA::POOL::GAPDH         0.0033                # [GADPHo] Does not match any default values
+RROEA::POOL::FBPase        0.003                 # [FBPaseo] Does not match any default values
+RROEA::POOL::SBPase        0.0004                # [SBPaseo] Does not match any default values
+RROEA::POOL::PRK           0.293                 # [PRKo] Does not match any default values
+RROEA::POOL::ATPase        0.0036                # [ATPaseo] Does not match any default values
+RROEA::POOL::ATPGPP        0.048                 # [ADPGPPo] Does not match any default values
+RROEA::COND::Thio          0.0                   # [Thior] Does not match any default values
+RROEA::COND::RuACT         0.0                   # [Activaser] Does not match any default values
+RROEA::COND::GAPDH         0.0                   # [GADPHr] Does not match any default values
+RROEA::COND::FBPase        0.0                   # [FBPaser] Does not match any default values
+RROEA::COND::SBPase        0.0                   # [SBPaser] Does not match any default values
+RROEA::COND::PRK           0.0                   # [PRKr] Does not match any default values
+RROEA::COND::ATPase        0.0                   # [ATPaser] Does not match any default values
+RROEA::COND::ATPGPP        0.0                   # [ADPGPPr] Does not match any default values
+FI::COND::PQn              0.0                   # [PQ-] Does not match any default values
+RROEA::COND::Fd            0.7                   # [Fd] Does not match any default values
+BF::COND::Qi               1.0                   # [Qi] Does not match any default values
+ALL::VARS::Pi              5.0                   # [Pi] Does not match any default values
+PS::RC::CP                 15.0                  # [CP] Does not match any default values
+PS::RC::CN                 0.5                   # [CN] Does not match any default values
+SUCS::MOD::ADPc            0.64                  # [ADPc] Does not match any default values
+SUCS::COND::F26BPc         7e-06                 # [F26BPc] Does not match any default values
+SUCS::POOL::UTc            1.0                   # [UTc] Does not match any default values
+SUCS::COND::HexPc          6.0                   # [HexPc] Does not match any default values
+PS::MOD::KE4               0.05                  # [KE4] Matches default C3 value
+PS::MOD::KM71              0.1                   # [KM71] Matches default C3 value
+PS::MOD::KM72              0.1                   # [KM72] Matches default C3 value
+PS::MOD::KM73              0.1                   # [KM73] Matches default C3 value
+PS::MOD::KE7               10.0                  # [KE7] Matches default C3 value
+PS::MOD::KM102             0.072                 # [KM102] Matches default C3 value
+PS::MOD::KM103             0.46                  # [KM103] Matches default C3 value
+PS::MOD::KM10              1.5                   # [KM10] Matches default C3 value
+PS::MOD::KM312             0.63                  # [KM312] Matches default C3 value
+PR::MOD::KI124             2.0                   # [KI124] Matches default C3 value
+SUCS::MOD::Km592           0.021                 # [Km592] Matches default C3 value
+SUCS::MOD::KI592           0.7                   # [KI592] Matches default C3 value
+SUCS::MOD::Km601           0.042                 # [Km601] Matches default C3 value
+SUCS::MOD::Km602           1.66                  # [Km602] Matches default C3 value
+SUCS::MOD::Km603           0.28                  # [Km603] Matches default C3 value
+SUCS::MOD::Km604           16.0                  # [Km604] Matches default C3 value
+SUCS::MOD::KE60            16.0                  # [KE60] Matches default C3 value
+SUCS::MOD::ATPc            0.35                  # [ATPc] Matches default C3 value
+Em_GADPH                   -0.34                 # [Em_GADPH] No match
+Em_RuACT                   -0.295                # [Em_RuACT] No match
+Em_ADPGPP                  -0.29                 # [Em_ADPGPP] No match
+Em_Fd                      -0.42                 # [Em_Fd] No match
+Em_Thiof                   -0.29                 # [Em_Thiof] No match
+Em_CytbL                   -0.09                 # [Em_CytbL] No match
+Em_CytbH                   0.05                  # [Em_CytbH] No match
+kdmo                       56000000.0            # [kdmo] No match
+ISPH                       0.0                   # [ISPH] No match
+Rubisco                    1072.0                # [Rubisco] No match
+PC                         1.0                   # [PC] No match
+A0                         1.0                   # [A0] No match
+NADP                       0.79                  # [NADP] No match
+E.bL.bH                    1.0                   # [E.bL.bH] No match
+E.bL.bH.ISPox.PQH2         0.0                   # [E.bL.bH.ISPox.PQH2] No match
+E.bL.bH.PQH·               0.0                   # [E.bL.bH.PQH·] No match
+ISPH+ox                    1.0                   # [ISPH+ox] No match
+E.bL--bH                   0.0                   # [E.bL­-bH] No match
+E.bL.bH-                   0.0                   # [E.bL.bH-] No match
+H+                         0.0001                # [H+] No match
+PQ                         1.0                   # [PQ] No match
+QH                         0.031                 # [QH] No match
+Hfl                        0.0001                # [Hfl] No match
+Hfs                        0.0001                # [Hfs] No match
+Netcharge                  0.0                   # [Netcharge] No match
+DY                         0.0                   # [DY] No match
+NADH                       0.22                  # [NADH] No match
+NAD                        0.08                  # [NAD] No match
+Pic                        5.0                   # [Pic] No match
+TPc                        2.3                   # [TPc] No match
+UDPG                       0.6                   # [UDPG] No match

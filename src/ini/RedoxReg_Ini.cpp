@@ -92,24 +92,24 @@ void RedoxReg::_initCalc(Variables *theVars, RedoxRegCondition* RedoxReg_con) {
     for (int i = 0; i < 5; i++)
         theVars->RedoxReg_MP.push_back(zeros(3));
     theVars->RedoxReg_MP[0][0] = 1000.;
-    theVars->RedoxReg_MP[0][1] = - 0.3;
-    theVars->RedoxReg_MP[0][2] = 0.5;
+    theVars->RedoxReg_MP[0][1] = theVars->RedoxReg_RC.Em_Thiom;
+    theVars->RedoxReg_MP[0][2] = theVars->RedoxReg_RC.Thiom0;
 
     theVars->RedoxReg_MP[1][0] = 6.;             // FBPase
-    theVars->RedoxReg_MP[1][1] = - 0.305;
-    theVars->RedoxReg_MP[1][2] = 0.5;
+    theVars->RedoxReg_MP[1][1] = theVars->RedoxReg_RC.Em_FBPase;
+    theVars->RedoxReg_MP[1][2] = theVars->RedoxReg_RC.FBPase0;
 
     theVars->RedoxReg_MP[2][0] = 9.;             // SBPase
-    theVars->RedoxReg_MP[2][1] = - 0.3;
-    theVars->RedoxReg_MP[2][2] = 0.5;
+    theVars->RedoxReg_MP[2][1] = theVars->RedoxReg_RC.Em_SBPase;
+    theVars->RedoxReg_MP[2][2] = theVars->RedoxReg_RC.SBPase0;
 
     theVars->RedoxReg_MP[3][0] = 13.;            // PRK
-    theVars->RedoxReg_MP[3][1] = - 0.295;
-    theVars->RedoxReg_MP[3][2] = 0.5;
+    theVars->RedoxReg_MP[3][1] = theVars->RedoxReg_RC.Em_PRK;
+    theVars->RedoxReg_MP[3][2] = theVars->RedoxReg_RC.PRK0;
 
     theVars->RedoxReg_MP[4][0] = 16.;            // ATPase
-    theVars->RedoxReg_MP[4][1] = - 0.28;
-    theVars->RedoxReg_MP[4][2] = 0.5;
+    theVars->RedoxReg_MP[4][1] = theVars->RedoxReg_RC.Em_ATPase;
+    theVars->RedoxReg_MP[4][2] = theVars->RedoxReg_RC.ATPase0;
 
     //theVars->BF2RedoxReg_Fdt = theVars->BF_Pool.kU_f;
 }

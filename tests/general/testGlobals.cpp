@@ -22,16 +22,17 @@ class ConditionTest : public VariableFramework {
 TEST_F(ConditionTest, TestUseC3) {
     theVars->useC3 = true;
     theVars->CO2_in = 1.0;
+    theVars->O2 = 6300.0;
     Condition(0, theVars);
     EXPECT_DOUBLE_EQ(theVars->CO2_cond, (1./3.)*1.e-4);
-    EXPECT_DOUBLE_EQ(theVars->O2_cond, .2646);
     EXPECT_DOUBLE_EQ(theVars->O2_cond, .2646);
 
     theVars->CO2_in = 125.;
     theVars->TestLi = 425;
+    theVars->O2 = 3000.0;
     Condition(5, theVars);
     EXPECT_DOUBLE_EQ(theVars->CO2_cond, (125./3.)*1.e-4);
-    EXPECT_DOUBLE_EQ(theVars->O2_cond, .2646);
+    EXPECT_DOUBLE_EQ(theVars->O2_cond, .126);
 #ifdef MAKE_EQUIVALENT_TO_MATLAB
     EXPECT_DOUBLE_EQ(theVars->GLight, 425);
 #else // MAKE_EQUIVALENT_TO_MATLAB
@@ -43,8 +44,9 @@ TEST_F(ConditionTest, TestUseC3) {
 TEST_F(ConditionTest, TestGeneral) {
     theVars->CO2_in = 1.0;
     theVars->TestLi = 1.0;
+    theVars->O2 = 1.0;
     Condition(0, theVars);
-    EXPECT_DOUBLE_EQ(theVars->O2_cond, .2646);
+    EXPECT_DOUBLE_EQ(theVars->O2_cond, (1.26/3.)*1.e-4);
 #ifdef MAKE_EQUIVALENT_TO_MATLAB
     EXPECT_DOUBLE_EQ(theVars->CO2_cond, (1./3.)*1.e-4);
     EXPECT_DOUBLE_EQ(theVars->GLight, 1);
@@ -55,6 +57,7 @@ TEST_F(ConditionTest, TestGeneral) {
 
     theVars->CO2_in = 125.;
     theVars->TestLi = 425;
+    theVars->O2 = 6300.0;
     Condition(5, theVars);
     EXPECT_DOUBLE_EQ(theVars->O2_cond, .2646);
 #ifdef MAKE_EQUIVALENT_TO_MATLAB

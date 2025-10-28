@@ -1,0 +1,3 @@
+# Name		Value	C3Value	Docs
+RC0             0.1             # Maximal relaxation constant for changes in the ‘rate constant’ of heat dissipation, which is one term borrowed from Laisk et al., 1997;
+RC              0.1             # Maximal relaxation constant for changes in ‘rate constant’ of heat dissipation under a particular Xstate,Laisk et al. (1997)

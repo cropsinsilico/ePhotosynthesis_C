@@ -69,10 +69,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, double> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::defaults = {
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)AVR              , 30.0 },
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)HPR              , 4.66 },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2               , 210.0},
+    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2               , 0.0  },
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_cond         , 0.0  },
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)GLight           , 0.0  },
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2_cond          , 0.0  },
+    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2_cond          , 0.21 },
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS12ratio        , 0.0  },
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)ADP              , 0.0  },
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Pi               , 0.0  },
@@ -102,11 +102,15 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::glymaids = {};
   template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::aliases = {
+    {"O2_in"             , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2         },
+    {"Air_O2"            , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2         },
     {"ATPCost"           , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestATPCost},
     {"CO2"               , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_in     },
     {"Air_CO2"           , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_in     },
-    {"PAR"               , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi     },
-    {"Radiation_PAR"     , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi     },
+    {"PAR"               , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi_Wps },
+    {"Radiation_PAR"     , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi_Wps },
+    {"PFD"               , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi     },
+    {"PPFD"              , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi     },
     {"Temp"              , ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Tp         },
     {"WeatherTemperature", ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Tp         }
   };
@@ -114,14 +118,15 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::docs = {
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)AVR              , "[CONST] The conversion factor between volume and area (micromole per meter square per second and milimole per liter per second)."},
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)HPR              , "[CONST]"},
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2               , "[CONST] Seems to be unused currently"},
+    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2               , "[CONST,ALIASES={O2_in,Air_O2}] Air O2 concentration in ppm; Seems to be unused currently"},
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_cond         , "[CALC] Intercellular CO2 in umoles m^{-3}, calculated from air CO2 (CO2_in)"},
+    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2_cond          , "[CALC] Intercellular O2 in umoles m^{-3}, calculated from air O2 (O2)"},
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS12ratio        , "[CALC] Calcualted from input_PSI & input_PSIIcore in SYSInitial"},
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Pi               , "[CALC] Pi used when useC3 is true and EPS module selected"},
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestATPCost      , "[ALIASES={ATPCost}] Extra ATP cost when useC3 is false (in units per area)"},
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_in           , "[CALC,ALIASES={CO2,Air_CO2}] Air CO2 concentration in ppm"},
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi_Wps       , "[CALC] Light intensity (in units of W s^{-1})"},
-    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi           , "[CALC,ALIASES={PAR,Radiation_PAR}] Light intensity (in units of umoles m^{-2} s^{-1})"},
+    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi_Wps       , "[CALC,ALIASES={PAR,Radiation_PAR}] Photosynthetically active radiation (in units of W s^{-1})"},
+    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)TestLi           , "[CALC,ALIASES={PFD,PPFD}] Photosynthetically action photo flux density (in units of umoles m^{-2} s^{-1})"},
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS2BF_Pi         , "Pi Shared by PS & BF modules when useC3 is false and EPS module is selected"},
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS_PR_Param      , "Seems to unused currently"},
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Tp               , "[ALIASES={Temp,WeatherTemperature}] Temperature"},
@@ -146,6 +151,7 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)HPR              , (STATIC_VALUE_FLAG_CONST)},
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2               , (STATIC_VALUE_FLAG_CONST)},
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_cond         , (STATIC_VALUE_FLAG_CALC) },
+    {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)O2_cond          , (STATIC_VALUE_FLAG_CALC) },
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)PS12ratio        , (STATIC_VALUE_FLAG_CALC) },
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Pi               , (STATIC_VALUE_FLAG_CALC) },
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)CO2_in           , (STATIC_VALUE_FLAG_CALC) },

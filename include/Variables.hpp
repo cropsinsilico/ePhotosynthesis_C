@@ -172,14 +172,11 @@ public:
  public:
 
     /**
-       Check if a variable was updated since the last time the input
-       was finalized.
+       Check if a variable was explicitly updated since the last time
+         the input was finalized.
        \param[in] name Variable name.
-       \param[in] ignoreClassFlag If true, only return true if the
-         specific variable was updated.
      */
-    EPHOTO_API bool inputUpdated(const std::string& name,
-                                 const bool ignoreClassFlag=false) const;
+    EPHOTO_API bool inputUpdated(const std::string& name) const;
     /**
        Throw an error if the named variable was updated.
      */
@@ -238,6 +235,8 @@ public:
          are not stored on Variables instances.
        \param[in] subset Subset of parameters to output.
        \param[in] additionalVars Map of additional names & values to dump.
+       \param[in] skip_calculated If true, don't output the calculated
+         variables.
      */
     void dump(const std::string& filename,
               const bool includeSkipped = false,
@@ -247,7 +246,8 @@ public:
               const std::map<std::string, std::string>& key_aliases={},
               const std::map<MODULE, const ValueSet_t*>& conditions={},
               const std::vector<std::string>& subset={},
-              const std::map<std::string, double>& additionalVars={}) const;
+              const std::map<std::string, double>& additionalVars={},
+              const bool skip_calculated=false) const;
     /**
        Serialize all parameters attached to this instance to an output
          stream.
@@ -263,6 +263,8 @@ public:
          are not stored on Variables instances.
        \param[in] subset Subset of parameters to output.
        \param[in] additionalVars Map of additional names & values to dump.
+       \param[in] skip_calculated If true, don't output the calculated
+         variables.
        \returns Updated output stream.
      */
     std::ostream& dump(std::ostream& out,
@@ -273,7 +275,8 @@ public:
                        const std::map<std::string, std::string>& key_aliases={},
                        const std::map<MODULE, const ValueSet_t*>& conditions={},
                        const std::vector<std::string>& subset={},
-                       const std::map<std::string, double>& additionalVars={}) const;
+                       const std::map<std::string, double>& additionalVars={},
+                       const bool skip_calculated=false) const;
     /**
        Serialize parameters for a single value set to an output stream.
        \param[in] module ID for module that should be serialized.
@@ -649,11 +652,14 @@ public:
        \param[in] name String identifying the variable.
        \param[in] isGlymaID If true, name will be treated as a GlymaID.
          If false, name will be treated as the variable name.
+       \param[in] conditions Map of conditions for composite modules that
+         are not stored on Variables instances.
        \returns Variable value.
      */
     EPHOTO_API double getVar(const MODULE& mod, const PARAM_TYPE& pt,
                              const std::string& name,
-                             const bool& isGlymaID = false) const;
+                             const bool& isGlymaID = false,
+                             const std::map<MODULE, const ValueSet_t*>& conditions={}) const;
     /**
        Get the value of a variable in a value set.
        \param[in] mod Module associated with the value set that the
@@ -661,19 +667,60 @@ public:
        \param[in] pt Parameter type associated with the value set that the
          variable is part of.
        \param[in] key Key identifying the variable.
+       \param[in] conditions Map of conditions for composite modules that
+         are not stored on Variables instances.
        \returns Variable value.
      */
     EPHOTO_API double getVar(const MODULE& mod, const PARAM_TYPE& pt,
-                             const int& key) const;
+                             const int& key,
+                             const std::map<MODULE, const ValueSet_t*>& conditions={}) const;
     /**
        Get the value of a variable in a value set.
        \param[in] k String identifying the variable.
        \param[in] isGlymaID If true, name will be treated as a GlymaID.
          If false, name will be treated as the variable name.
+       \param[in] conditions Map of conditions for composite modules that
+         are not stored on Variables instances.
        \returns Variable value.
      */
     EPHOTO_API double getVar(const std::string& k,
-                             const bool& isGlymaID = false) const;
+                             const bool& isGlymaID = false,
+                             const std::map<MODULE, const ValueSet_t*>& conditions={}) const;
+    /**
+       Get the value of a calculated quantity using variables from the
+         current value sets.
+       \param[in] name String identifying the variable.
+       \param[in] conditions Map of conditions for composite modules that
+         are not stored on Variables instances.
+       \returns Variable value.
+     */
+    EPHOTO_API double getVarCalculated(const std::string& name,
+                                       const std::map<MODULE, const ValueSet_t*>& conditions={}) const;
+    
+    /**
+       Get information about the modules required to calculate variables.
+       These variables can be retrieved via the Variables::getVar,
+       Variables::getVarCalculated or Variables::getCalculatedVars
+       methods.
+     */
+    EPHOTO_API static const std::map<std::string, std::vector<MODULE> >&
+      getCalculatedVariableRegistry();
+    /**
+       Get the set of variable names that can be calculated. These
+       variables can be retrieved via the Variables::getVar,
+       Variables::getVarCalculated or Variables::getCalculatedVars
+       methods.
+     */
+    EPHOTO_API const std::vector<std::string>&
+      getCalculatedVarNames() const;
+    /**
+       Populate a map with calculated variables.
+       \param[out] dest Map that should be populated.
+       \param[in] conditions Map of conditions for composite modules that
+         are not stored on Variables instances.
+     */
+    EPHOTO_API void getCalculatedVars(std::map<std::string, double>& dest,
+                                      const std::map<MODULE, const ValueSet_t*>& conditions) const;
     /**
        Get the documentation string for a variable in a value set.
        \param[in] mod Module associated with the value set that the

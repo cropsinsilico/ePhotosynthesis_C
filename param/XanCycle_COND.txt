@@ -1,5 +1,5 @@
 # Name		Value	C3Value	Docs
-Vx		160.0		# [CALC] * 0.37; The concentration of Violozanthin
-Ax		10.0		# [CALC] * 0.37; The concentration of Anthrozanthin
-Zx		5.0		# [CALC] * 0.37; The concentration of Zeaznthin
+Vx		160.0		# [CALC] * 0.37; The concentration of Violoxanthin
+Ax		10.0		# [CALC] * 0.37; The concentration of Anthroxanthin
+Zx		5.0		# [CALC] * 0.37; The concentration of Zeaxanthin
 ABA		1.0		# [CALC] The concentration of ABA

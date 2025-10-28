@@ -43,10 +43,10 @@ void ePhotosynthesis::Condition(double t, Variables *theVars) {
     if (!theVars->useC3)
         CO2Temp *= 0.7;
 #endif // MAKE_EQUIVALENT_TO_MATLAB
-    const double O2Temp = 0.21;          // O2 concentration  //default is 0.21, i.e. 21//.
+    const double O2Temp = theVars->O2;   // O2 concentration  //default is 0.21 umol mol-1, i.e. 210 mmol mol-1//.
 
     theVars->CO2_cond = CO2Temp / (3. * pow(10., 4.));
-    theVars->O2_cond = O2Temp * 1.26;
+    theVars->O2_cond = O2Temp * 1.26 / (3. * pow(10., 4.));
 #ifdef MAKE_EQUIVALENT_TO_MATLAB
     const double light = theVars->TestLi; // light umol m-2 s-1
 #else // MAKE_EQUIVALENT_TO_MATLAB

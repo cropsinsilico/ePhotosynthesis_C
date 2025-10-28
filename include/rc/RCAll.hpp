@@ -29,5 +29,7 @@
 #include "RCBase.hpp"
 #include "BFRC.hpp"
 #include "FIRC.hpp"
+#include "FIBFRC.hpp"
 #include "RROEARC.hpp"
 #include "RuACTRC.hpp"
+#include "RedoxRegRC.hpp"

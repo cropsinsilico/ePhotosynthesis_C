@@ -28,6 +28,6 @@
 
 #include "../ValueSet.hpp"
 
-#define MEMBERS_RC BF, FI, RROEA, RuACT
+#define MEMBERS_RC BF, FI, FIBF, RROEA, RuACT, RedoxReg
 
 DECLARE_PARAM_BASE(RC)

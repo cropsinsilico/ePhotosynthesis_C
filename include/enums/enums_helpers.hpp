@@ -958,6 +958,7 @@ namespace ePhotosynthesis {
       EPS_ATP_Rate     ,		\
       _Pi              ,		\
       PMODTEM          ,		\
+      F                ,		\
       RT               ,		\
       DeltaGo          ,		\
       MAX
@@ -1318,6 +1319,7 @@ namespace ePhotosynthesis {
       Q10_10        ,		\
       Q10_13        ,		\
       Q10_23        ,		\
+      F             ,		\
       R             ,		\
       c_c           ,		\
       dHa_c         ,		\
@@ -1634,7 +1636,9 @@ namespace ePhotosynthesis {
 }
 namespace ePhotosynthesis {
   #define MEMBERS_FIBFRC		\
-      NONE   ,		\
+      NONE     ,		\
+      RC0      ,		\
+      RC       ,		\
       MAX
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_FIBF_RC : int {
@@ -1916,11 +1920,17 @@ namespace ePhotosynthesis {
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RedoxRegRC		\
-      NONE               ,		\
-      Fd_Thio_ET         ,		\
-      ThioT              ,		\
-      Thio_Oxidation     ,		\
-      Thion0             ,		\
+      NONE          ,		\
+      Thiom0        ,		\
+      FBPase0       ,		\
+      SBPase0       ,		\
+      PRK0          ,		\
+      ATPase0       ,		\
+      Em_Thiom      ,		\
+      Em_FBPase     ,		\
+      Em_SBPase     ,		\
+      Em_PRK        ,		\
+      Em_ATPase     ,		\
       MAX
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RedoxReg_RC : int {
@@ -1947,6 +1957,8 @@ namespace ePhotosynthesis {
       ko       ,		\
       k7       ,		\
       kr       ,		\
+      kn7      ,		\
+      RCA      ,		\
       MAX
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RuACT_RC : int {

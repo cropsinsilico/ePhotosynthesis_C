@@ -1,5 +1,12 @@
 # Name		Value	C3Value	Docs
-Fd_Thio_ET	500
-ThioT		0.5
-Thio_Oxidation	0.1
-Thion0		0.25		# This is a wild guess
+Thiom0          0.5             # Initial Thio ratio
+FBPase0         0.5             # Initial FBPase ratio
+SBPase0         0.5             # Initial SBPase ratio
+PRK0            0.5             # Initial PRK ratio
+ATPase0         0.5             # Initial ATPase ratio
+Em_Thiom        -0.3            # V
+Em_FBPase       -0.305          # V; Equation 6
+Em_SBPase       -0.3            # V; Equation 9
+Em_PRK          -0.295          # V; Equation 13
+Em_ATPase       -0.28           # V; Equation 16
+

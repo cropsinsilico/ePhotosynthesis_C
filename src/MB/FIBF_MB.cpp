@@ -76,7 +76,7 @@ FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* const FIBF_Con
     const double Hl = pow(10., BF_con->PHl);
     const double QH = pow(10., 5.5) / (Hl + pow(10., 5.5));
 
-    const double RC = 0.1;                   // RC is the relaxation constant, which is one term borrowed from Laisk et al., 1997;
+    double RC = theVars->FIBF_RC.RC0;                   // RC is the relaxation constant, which is one term borrowed from Laisk et al., 1997;
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     //   Here is the section implementing the nonphotochemical quenching.
@@ -88,6 +88,7 @@ FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* const FIBF_Con
     if (theVars->XanCycle_BF_com) {
         if (XanCycle::getXanCycle2FIBF_Xstate() > 0.3) {
             dmax = dmax * XanCycle::getXanCycle2FIBF_Xstate() / 0.3;
+            RC = theVars->FIBF_RC.RC;
         }
     }
     dydt->kd = RC * (dmax - FIBF_Con->kd);

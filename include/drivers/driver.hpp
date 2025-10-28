@@ -250,9 +250,11 @@ public:
 
     /**
        Get output variables.
-       \param theVars Structure containing current variables.
+       \param[in] theVars Structure containing current variables.
+       \param[in] con Pointer to current conditions.
      */
-    void getOutputVars(Variables* theVars);
+    void getOutputVars(const Variables* theVars=nullptr,
+                       const ValueSet_t* con=nullptr);
 
     /**
        Set the output variables.
@@ -268,24 +270,22 @@ public:
 
     /**
        Get a variable given the current state defined by theVars.
-       \param[in] theVars Current variable state.
        \param[in] k Name of variable to return.
+       \param[in] theVars Current variable state.
+       \param[in] con Pointer to current conditions.
      */
-    double getVar(const Variables* theVars, const std::string& k) const;
+    double getVar(const std::string& k, const Variables* theVars=nullptr,
+                  const ValueSet_t* con=nullptr) const;
   
     /**
-       Populate a map with calculated variables.
+       Get a variable given the current state defined by theVars.
+       \param[in] k Name of variable to return.
        \param[in] theVars Current variable state.
-       \param[out] dest Map that should be populated.
+       \param[in] conditions Map of conditions for composite modules that
+         are not stored on Variables instances.
      */
-    void getCalculatedVars(const Variables* theVars,
-                           std::map<std::string, double>& dest) const;
-    /**
-       Get a map containing calculated variables.
-       \param[in] theVars Current variable state.
-       \returns Calculated variables.
-     */
-    std::map<std::string, double> getCalculatedVars(const Variables* theVars) const;
+    double getVar(const std::string& k, const Variables* theVars,
+                  const std::map<MODULE, const ValueSet_t*>& conditions) const ;
   
     /**
       Runs the solver one more time on the intermediate results to get the solution at the end time
@@ -301,7 +301,7 @@ public:
          should be created from.
        \returns Conditions value set.
      */
-    virtual ValueSet_t* currentConditions(realtype *x = nullptr) {
+    virtual ValueSet_t* currentConditions(realtype *x = nullptr) const {
 	UNUSED(x);
 	return nullptr;
     }
@@ -416,13 +416,6 @@ protected:
       \param user_data Any user supplied data.
       */
     static int calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data);
-    /**
-       Get the set of variable names that the driver can calculate. These
-       variables can be retrieved via the Driver::getVar method or
-       getCalculatedVars.
-     */
-    static const std::vector<std::string>&
-    getCalculatedVarNames();
     
 
 #ifdef SUNDIALS_CONTEXT_REQUIRED
@@ -552,7 +545,7 @@ const MODULE DriverBase<T, M>::module = M;
   /** \copydoc drivers::DriverBase::enableC3 */				\
   static void enableC3(const bool x = true);				\
   /** \copydoc drivers::Driver::currentConditions */			\
-  ValueSet_t* currentConditions(realtype *x = nullptr) override;	\
+  ValueSet_t* currentConditions(realtype *x = nullptr) const override;	\
   /** \copydoc drivers::Driver::setup_connections */                    \
   void setup_connections(Variables* theVars) override;                  \
   /** \copydoc drivers::Driver::setup_variables */                      \
@@ -589,7 +582,7 @@ private:								\
   void name ## Driver::enableC3(const bool x) {                         \
     return VARS_CLASS_CALL(enableC3, (x), name, MOD);			\
   }									\
-  ValueSet_t* name ## Driver::currentConditions(realtype *x) {		\
+  ValueSet_t* name ## Driver::currentConditions(realtype *x) const {    \
       if (x) {								\
 	return new VARS_CLASS_VAR(name, COND)(x);			\
       }									\

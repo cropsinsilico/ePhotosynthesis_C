@@ -61,6 +61,8 @@ public:
         ko = other.ko;
         k7 = other.k7;
         kr = other.kr;
+        kn7 = other.kn7;
+        RCA = other.RCA;
 	copyMembers(other);
 	return *this;
     }

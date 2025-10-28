@@ -74,7 +74,7 @@ void EPSDriver::setup_connections(Variables* theVars) {
 void EPSDriver::setup_variables(Variables* theVars) {
 
     //Ca = theVars->TestCa;
-    if (theVars->inputUpdated("ALL::VARS::TestLi", true)) {
+    if (theVars->inputUpdated("ALL::VARS::TestLi")) {
         Li = theVars->TestLi;
     }
     theVars->TestLi = Li / 30.;

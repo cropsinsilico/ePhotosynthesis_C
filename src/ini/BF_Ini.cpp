@@ -56,12 +56,12 @@ void BF::_initCalc(Variables *theVars, BFCondition* BF_con) {
         }
         // ISPHr + cytc1 --> ISPHox + cytc1-
         double DeltaEm = theVars->BF_RC.Em_Cytf - theVars->BF_RC.Em_IPS;
-        double DeltaG = DeltaEm * -9.649 * pow(10., 4.);
+        double DeltaG = -DeltaEm * BF::F;
         const double KE8 = exp(-DeltaG / BF::RT);  // ISPHr + cytc1 --> ISPHox + cytc1- Unit: s-1
 
         // cytc1- + cytc2 --> cytc1 + cytc2-
         DeltaEm = theVars->BF_RC.Em_PG - theVars->BF_RC.Em_Cytf;
-        DeltaG = DeltaEm * -9.649 * pow(10., 4.);
+        DeltaG = -DeltaEm * BF::F;
         const double KE9 = exp(-DeltaG / BF::RT);  // cytc1- + cytc2 --> cytc1 + cytc2- Unit: s-1
 
         // Assign values to the array for rate constant

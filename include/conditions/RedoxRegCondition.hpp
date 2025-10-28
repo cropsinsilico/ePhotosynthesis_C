@@ -31,7 +31,7 @@
 #define PARENT_RedoxReg RedoxReg
 #define NRATIO_RedoxReg 0
 #define CHILDREN_RedoxReg RA
-#define PARAM_TYPES_RedoxReg COND, VEL
+#define PARAM_TYPES_RedoxReg COND, VEL, RC
 #define CONNECT_RedoxReg
 #define COUNT_RedoxReg
 #define CONTROL_RedoxReg

@@ -1,4 +1,6 @@
 import os
+import math
+import pdb
 import copy
 import shutil
 import sys
@@ -11,11 +13,14 @@ import site
 from collections import OrderedDict
 import matplotlib.pyplot as plt
 import numpy as np
+from io import StringIO
 
 
 _source_dir = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
 _utils_dir = os.path.join(_source_dir, 'utils')
 _data_dir = os.path.join(_source_dir, 'tests', 'data')
+_scripts_dir = os.path.abspath(os.path.dirname(__file__))
+_param_dir = os.path.join(_source_dir, 'param')
 
 _platform = None
 _library_path_var = None
@@ -33,6 +38,54 @@ elif sys.platform in ['win32', 'cygwin']:
 def cli_param(x):
     k, v = x.split(':')
     return k, float(v)
+
+
+def search_directory(pattern, directory, ext=None, check=False,
+                     ignore_prefix=None):
+    if isinstance(ignore_prefix, str):
+        ignore_prefix = [ignore_prefix]
+    if ext is None:
+        ext = r'\.*'
+    cmd = ['grep', pattern, os.path.join(directory, f'*{ext}')]
+    raw_output = subprocess.run(
+        ' '.join(cmd), capture_output=True, shell=True, check=check,
+    ).stdout.decode('utf-8')
+    out = {}
+    for x in raw_output.splitlines():
+        fname, line = x.split(':', maxsplit=1)
+        if ignore_prefix and fname.startswith(tuple(ignore_prefix)):
+            continue
+        fname = os.path.relpath(fname, _source_dir)
+        out[fname] = line
+    return out
+
+
+def get_matlab_aliases(reverse=False, strip_prefix=False):
+    aliases = {
+        "BF::POOL::kA_d": "BF::POOL::Tcyt",
+        "BF::POOL::kA_f": "BF::POOL::Tcytc2",
+        "BF::POOL::kA_U": "BF::POOL::TK",
+        "BF::POOL::kU_A": "BF::POOL::TMg",
+        "BF::POOL::kU_d": "BF::POOL::TCl",
+        "BF::POOL::kU_f": "BF::POOL::TFd",
+        "BF::POOL::k1": "BF::POOL::TA",
+        "BF::POOL::k_r1": "BF::POOL::TQ",
+        "BF::POOL::kz": "BF::POOL::BFTs",
+        "BF::POOL::k12": "BF::POOL::BFTl",
+        "BF::POOL::k23": "BF::POOL::P700T",
+        "BF::POOL::k30": "BF::POOL::NADPHT",
+    }
+    out = aliases
+    if reverse:
+        out = {v: k for k, v in out.items()}
+    if strip_prefix:
+        if strip_prefix in ['keys', True]:
+            out = {k.rsplit('::', maxsplit=1)[-1]: v
+                   for k, v in out.items()}
+        if strip_prefix in ['values', True]:
+            out = {k: v.rsplit('::', maxsplit=1)[-1]
+                   for k, v in out.items()}
+    return out
 
 
 def add_directory_to_path(directory, return_path=False,
@@ -73,22 +126,120 @@ def find_matlab(required=False):
     return sorted(locations)[-1]  # Return newest version
 
 
-def read_param(fname):
+def read_default_param(with_prefixes=False):
+    defaults = OrderedDict()
+    param_files = sorted(glob.glob(os.path.join(_param_dir, '*.txt')))
+    for param_file in param_files:
+        base = os.path.splitext(os.path.basename(param_file))[0]
+        if base in ["README", "RedoxReg_MP", "VAR"]:
+            continue
+        mod, pt = base.rsplit('_', maxsplit=1)
+        iparam = read_param(param_file, default=True)
+        if with_prefixes:
+            for k, v in iparam.items():
+                kp = '::'.join([mod, pt, k])
+                defaults[kp] = iparam
+        else:
+            defaults.setdefault(mod, OrderedDict())
+            defaults[mod][pt] = read_param(param_file, default=True)
+    return defaults
+
+
+def read_param(fname, default=False):
     out = OrderedDict()
     with open(fname, 'r') as fd:
         contents = fd.readlines()
-    for x in contents:
-        name, value = x.split('#')[0].split()
-        out[name] = float(value)
+    for x0 in contents:
+        x = x0
+        if '#' in x0:
+            x, comment = x0.split('#', maxsplit=1)
+        x = x.strip()
+        if not x:
+            continue
+        if default:
+            fields = x.split()
+            name = fields[0]
+            out[name] = {'value': float(fields[1]),
+                         'comment': comment.strip()}
+            if len(fields) == 2:
+                out[name]['value_c3'] = out[name]['value']
+            elif len(fields) == 3:
+                out[name]['value_c3'] = float(fields[2])
+            else:
+                raise ValueError(f"More than 3 fields: \"{x}\"")
+        else:
+            name, value = x.rsplit(maxsplit=1)
+            out[name] = float(value)
     return out
 
 
-def write_param(fname, param):
-    maxlen = len(max(param.keys(), key=len)) + 4
+def read_param_table(fname):
+    import pandas as pd
+    with open(fname, 'r') as fd:
+        title = fd.readlines()[0].strip()
+        # df = pd.read_csv(fd)
+    df = pd.read_csv(fname, header=1)
+    return df, title
+
+
+def write_param_table(fname, param, title=None):
+    import pandas as pd
+    if title is None:
+        title = ''
+    assert isinstance(param, pd.DataFrame)
     with open(fname, 'w') as fd:
-        for k, v in param.items():
-            pad = ' ' * (maxlen - len(k))
-            fd.write(f'{k}{pad}{v}\n')
+        fd.write(title + '\n')
+        param.to_csv(fd, index=False)
+
+
+def write_param(fname, param, sort=False):
+    maxlen = len(max(param.keys(), key=len)) + 4
+    maxlen_value = len(
+        max([f'{v["value"]}' if isinstance(v, dict) else f'{v}'
+             for v in param.values()], key=len)
+    )
+    if maxlen_value > 20:
+        maxlen_value = 20
+    if fname is True:
+        fd = StringIO()
+    else:
+        fd = open(fname, 'w')
+    order = param.keys()
+    if sort in [True, 'names']:
+        order = sorted(order)
+    elif isinstance(sort, str):
+
+        def get_sortkey(x):
+            v = param[x]
+            if isinstance(v, Parameter):
+                return getattr(v, sort)
+            else:
+                return v[sort]
+
+        order = sorted(order, key=get_sortkey)
+    for k in order:
+        v = param[k]
+        pad = ' ' * (maxlen - len(k))
+        comment = ''
+        if isinstance(v, dict):
+            comment = v.get('comment', '')
+            value = v['value']
+        elif isinstance(v, Parameter):
+            comment += f'[{v.original_name}] '
+            value = v.value
+            if v.comment:
+                comment += v.comment
+        else:
+            value = v
+        vstr = f'{value}'
+        if comment:
+            comment = (
+                ' ' * (maxlen_value - len(vstr) + 2) + f'# {comment}'
+            )
+        fd.write(f'{k}{pad}{vstr}{comment}\n')
+    if fname is True:
+        return fd.getvalue()
+    fd.close()
 
 
 def read_output_table(fname, sep=','):
@@ -263,6 +414,8 @@ class SubTask:
             v0 = getattr(args, k0)
             if v0:
                 parts = os.path.splitext(v0)
+                if parts[0].endswith('_') and not suffix.endswith('_'):
+                    suffix = suffix + '_'
                 if suffix.startswith('_') and parts[0].endswith('_'):
                     v = suffix.lstrip('_').join(os.path.splitext(v0))
                 else:
@@ -677,6 +830,776 @@ class test(BuildSubTask):
 #         super(ygginfo, self).__init__(args, cmds=cmds)
 
 
+class ParameterError(ValueError):
+    pass
+
+
+class ParameterNanError(ParameterError):
+    pass
+
+
+class ParameterNoMatchError(ParameterError):
+    pass
+
+
+class ParameterConflictError(ParameterError):
+
+    def __init__(self, first, *args):
+        self.choices = [first] + list(args)
+        names = [x.original_name for x in self.choices]
+        names = ' vs. '.join(names)
+        self.msg = (
+            f'Multiple parameters resolved to \"{first.fullname}\" '
+            f'({names})\n'
+        )
+        for i, x in enumerate(self.choices):
+            self.msg += '\n' + str(x) + '\n'
+        super(ParameterConflictError, self).__init__(self.msg)
+
+
+class DuplicateParameterError(ParameterError):
+
+    def __init__(self, first, *args):
+        self.choices = [first] + list(args)
+        names = [x.fullname for x in self.choices]
+        names = ' vs. '.join(names)
+        self.msg = (
+            f'Multiple options for \"{first.original_name}\" '
+            f'({names})\n'
+        )
+        for i, x in enumerate(self.choices):
+            self.msg += '\n' + str(x) + '\n'
+        super(DuplicateParameterError, self).__init__(self.msg)
+
+
+class Parameter:
+
+    _default_attr = [
+        'name', 'mod', 'pt', 'default', 'comment', 'ffinalize',
+    ]
+    _table_attr = [
+        'title', 'description', 'reference', 'units',  # 'value',
+    ]
+
+    def __init__(self, name, mod=None, pt=None, aliases=None,
+                 value=None, value_c3=None, comment=None,
+                 title=None, description=None, reference=None,
+                 units=None, default=None, original_name=None,
+                 original_value=None, ffinalize=None):
+        if aliases is None:
+            aliases = []
+        if isinstance(aliases, dict):
+            aliases = list(aliases.values())
+        if name.count('::') == 2:
+            mod, pt, name = name.split('::')
+            if comment is None:
+                comment = "Explicit"
+        elif name.count('::') == 1:
+            mod, name = name.split('::')
+        if original_name is None:
+            original_name = name
+        if original_value is None:
+            original_value = value
+        self.original_name = original_name
+        self.original_value = original_value
+        self.name = name
+        self.mod = mod
+        self.pt = pt
+        self.value = value
+        self.value_c3 = value_c3
+        self.title = title
+        self.description = description
+        self.reference = reference
+        self.units = units
+        self.comment = comment
+        self.aliases = OrderedDict()
+        self.default = default
+        self.choices = OrderedDict()
+        self.ffinalize = ffinalize
+        for v in aliases:
+            self.add_alias(v)
+
+    def __str__(self):
+        return self._make_string()
+
+    def finalize(self, defaults=None, existing=None, aliases=None):
+        if self.is_complete and self.ffinalize and existing:
+            self.ffinalize(self, existing)
+        if defaults:
+            self.check_against_default(defaults, aliases=aliases)
+
+    def check_against_default(self, defaults, aliases=None):
+        self.comment = ''
+        if not self.is_complete:
+            self.comment += "No match"
+            return
+        mod = self.mod
+        pt = self.pt
+        name = self.name
+        if name not in defaults[self.mod][self.pt]:
+            if aliases is None:
+                aliases = self.get_aliases()
+            if name in aliases:
+                mod, pt, name = aliases[name].split('::')
+        default = self.from_default_entry(
+            self.name, self.mod, self.pt,
+            defaults[mod][pt][name],
+        )
+        if not self.value_matches_default(default):
+            self.comment += 'Does not match any default values'
+        elif not self.value_matches_default(default, no_c3=True):
+            self.comment += 'Matches default C3 value'
+
+    def _make_string(self, indent=0, tab='    ', extras=None, prefix=''):
+        if extras is None:
+            extras = OrderedDict()
+        if self.aliases:
+            extras.setdefault('aliases', list(self.aliases.keys()))
+        if self.choices:
+            extras.setdefault('choices', list(self.choices.keys()))
+        if self.default:
+            extras.setdefault('default', self.default)
+        out = f'{prefix}{self.fullname} ({self.original_name})'
+        for k in self._table_attr + ['value']:
+            if getattr(self, k) is None:
+                continue
+            out += f'\n{tab}{k:16}: {getattr(self, k)}'
+        for k, v in extras.items():
+            vstr = str(v)
+            if '\n' in vstr:
+                vstr = f'\n{tab}'.join(vstr.split('\n'))
+            out += f'\n{tab}{k:16}: {vstr}'
+        if indent > 0:
+            out = (
+                (indent * tab)
+                + f'\n{indent * tab}'.join(out.split('\n'))
+            )
+        return out
+
+    @classmethod
+    def from_default_entry(cls, name, mod, pt, x):
+        kwargs = dict(x)
+        kwargs['description'] = kwargs.pop('comment')
+        return Parameter(name, mod=mod, pt=pt, **kwargs)
+
+    @classmethod
+    def from_table_entry(cls, row, title=None,
+                         ignore_existing_names=False):
+        name = row['Name']
+        if isinstance(name, float) and math.isnan(name):
+            raise ParameterNanError
+        value = float(row['Value'])
+        if math.isnan(value):
+            raise ParameterNanError
+        aliases = None
+        original_name = name
+        if (((not ignore_existing_names)
+             and isinstance(row['C++ Parameter'], str))):
+            name = row['C++ Parameter']
+            if name.startswith('IGNORED'):
+                raise ParameterNanError
+            if ',' in name:
+                names = name.split(',')
+                name = names[0]
+                aliases = names[1:]
+        assert isinstance(name, str)
+        kwargs = {}
+        for k in ['description', 'reference', 'units']:
+            if k.title() in row and isinstance(row[k.title()], str):
+                kwargs[k] = row[k.title()]
+        if 'units' in kwargs:
+            kwargs['units'] = kwargs['units'].replace('\xad', '-')
+            kwargs['units'] = kwargs['units'].replace('--', '-')
+        kconv = 'C++ Parameter conversion'
+        if kconv in row and not isinstance(row[kconv], float):
+            print("Non-float conversion:")
+            print(row)
+            pdb.set_trace()
+        if ((kconv in row and isinstance(row[kconv], float)
+             and not math.isnan(row[kconv]))):
+            kwargs['original_value'] = value
+            value *= row[kconv]
+        name = name.replace('\xad', '-')
+        return Parameter(name, aliases=aliases,
+                         value=value, title=title,
+                         original_name=original_name, **kwargs)
+
+    @classmethod
+    def user_selection(cls, choices, preamble=None, matchto=None,
+                       existing=None, mask=None, include_none=True,
+                       include_all=False, other_options=None):
+        if other_options is None:
+            other_options = []
+        if isinstance(choices, list):
+            choices = OrderedDict([(i, x) for i, x in enumerate(choices)])
+        if mask is None:
+            mask = {k: True for k in choices.keys()}
+        selected = OrderedDict(
+            [(k, x) for k, x in choices.items() if mask[k]]
+        )
+        if not selected:
+            return None
+        if len(selected) == 1:
+            return list(selected.keys())[0]
+        msg = ''
+        if preamble:
+            msg += preamble
+        if include_none:
+            other_options.append(None)
+            msg += (
+                f'\n[{len(other_options) - 1}] '
+                f'Don\'t select any parameter\n'
+            )
+        if include_all:
+            other_options.append(True)
+            msg += (
+                f'\n[{len(other_options) - 1}] '
+                f'Select all parameters\n'
+            )
+        nadded_opt = len(other_options)
+        for i, x in enumerate(selected.values()):
+            extras = OrderedDict()
+            if existing:
+                extras['exists'] = (x.fullname in existing)
+            if matchto:
+                extras['matches'] = matchto.value_matches_default(x)
+            msg += x._make_string(prefix=f'\n[{i + nadded_opt}] ',
+                                  extras=extras)
+        print(msg)
+        while True:
+            x = input(
+                'Which parameter should be selected? [0]: '
+            )
+            if not x:
+                return None
+            if not x.isnumeric():
+                continue
+            x = int(x)
+            if x >= 0 and x < (len(selected) + nadded_opt):
+                if x < nadded_opt:
+                    return other_options[x]
+                return list(selected.keys())[x - nadded_opt]
+
+    def has_external_choices(self, mod=None):
+        if mod is None:
+            mod = self.mod
+        for x in self.choices.values():
+            if x.fullname == self.fullname:
+                continue
+            if x.mod != mod:
+                return True
+        return False
+
+    def update_from_choices(self, existing=False, ask_user=False,
+                            discard_current=False, ignore=None):
+        if discard_current:
+            self.clear()
+        if self.is_complete or not self.choices:
+            return
+        if ignore is None:
+            ignore = []
+        selected = None
+        discard_duplicates = False
+        mask = {k: True for k in self.choices.keys()}
+        if ignore:
+            for k in ignore:
+                mask[k] = False
+
+        def from_mask(imask):
+            if sum(imask.values()) == 1:
+                for k, v in imask.items():
+                    if v:
+                        return k
+            return None
+
+        if selected is None and len(self.choices) == 1:
+            selected = list(self.choices.keys())[0]
+        if selected is None and len(self.choices) > 1:
+            is_equal = {
+                k: self.value_matches_default(x)
+                for k, x in self.choices.items()
+            }
+            selected = from_mask(is_equal)
+            if selected is not None:
+                discard_duplicates = True
+        if selected is None and len(self.choices) > 1 and existing:
+            for k, v in self.choices.items():
+                if v.fullname in existing:
+                    mask[k] = False
+            # is_missing = {
+            #     k: (x.fullname not in existing)
+            #     for k, x in self.choices.items()
+            # ]
+            # selected = from_mask(is_missing)
+            # if selected is not None:
+            #     discard_duplicates = True
+        first = list(self.choices.values())[0]
+        if selected is None and not self.has_external_choices(mod=first.mod):
+            selected = first.fullname
+        if selected is None and ask_user:
+            selected = self.user_selection(
+                self.choices, matchto=self, existing=existing, mask=mask,
+                include_all=True,
+                preamble=(
+                    f'\n{self}\n\nSelect one of the following choices '
+                    f'to direct the above parameter to: \n'
+                )
+            )
+            if selected is True:
+                selected = first.fullname
+                for x in list(self.choices.values())[1:]:
+                    self.add_alias(x.fullname)
+            discard_duplicates = True
+        if selected is not None:
+            self.update_from_default(self.choices[selected])
+        if selected is None or ((not discard_duplicates)
+                                and self.has_external_choices(mod=first.mod)):
+            raise DuplicateParameterError(*self.choices.values())
+
+    @classmethod
+    def resolve_conflict(cls, *args, ask_user=True,
+                         existing=None):
+        name = args[0].fullname
+        idx_edit = [
+            i for i, x in enumerate(args)
+            if len(x.choices) > 1
+        ]
+        idx_preserve = [
+            i for i, x in enumerate(args)
+            if len(x.choices) <= 1
+        ]
+        if len(idx_preserve) > 1:
+            raise ParameterConflictError(*args)
+        if len(idx_edit) > 1 and (not idx_preserve) and ask_user:
+            idx_keep = cls.user_selection(
+                [args[idx] for idx in idx_edit], preamble=(
+                    f'Select a parameter to assign to '
+                    f'\"{name}\": \n'
+                )
+            )
+            if idx_keep is not None:
+                idx_preserve.append(idx_keep)
+                del idx_edit[idx_keep]
+        for idx in idx_edit:
+            args[idx].update_from_choices(
+                existing=existing, ask_user=ask_user,
+                discard_current=True, ignore=[name],
+            )
+
+    def value_matches_default(self, x, only_c3=False, no_c3=False):
+        if x.default:
+            return self.value_matches_default(x.default, only_c3=only_c3)
+        if (not only_c3) and self.value == x.value:
+            return True
+        if not no_c3:
+            return self.value == x.value_c3
+        return False
+
+    def add_alias(self, x):
+        if isinstance(x, str):
+            return self.add_alias(Parameter(x, value=self.value))
+        if x.fullname in self.aliases:
+            return
+        self.aliases[x.fullname] = x
+
+    def add_choice(self, x):
+        if x.default:
+            x = x.default
+        else:
+            x.clear_table()
+        if ((x.fullname in self.choices
+             and not x.matches(self.choices[x.fullname]))):
+            err = ParameterConflictError(self.choices[x.fullname], x)
+            print(err.msg)
+            pdb.set_trace()  # TODO
+            raise err
+        self.choices[x.fullname] = x
+
+    def alternative(self, name=None):
+        alternative = copy.copy(self)
+        alternative.aliases = OrderedDict()
+        alternative.choices = OrderedDict()
+        if name is not None:
+            alternative.name = name
+        return alternative
+
+    def alternative_from_default(self, mod, pt, x, **kwargs):
+        alternative = self.alternative(**kwargs)
+        alternative.update_from_default(mod, pt, x)
+        return alternative
+
+    def update_from_default(self, mod, pt=None, x=None):
+        if isinstance(mod, Parameter):
+            assert pt is None and x is None
+            for k in self._default_attr:
+                setattr(self, k, getattr(mod, k))
+            self.default = mod
+        else:
+            assert pt is not None and x is not None
+            self.mod = mod
+            self.pt = pt
+            self.default = self.from_default_entry(self.name, mod, pt, x)
+        if not self.value_matches_default(self):
+            self.comment = 'Does not match any default values'
+        elif self.value_matches_default(self, only_c3=True):
+            self.comment = 'Matches default C3 value'
+
+    def clear(self):
+        for k in self._default_attr:
+            setattr(self, k, None)
+        self.name = self.original_name
+
+    def clear_table(self):
+        for k in self._table_attr:
+            setattr(self, k, None)
+
+    def matches(self, other):
+        return (str(self) == str(other))
+
+    @property
+    def all_names(self):
+        out = [self.fullname]
+        for x in self.aliases.values():
+            out += [xx for xx in x.all_names if xx not in out]
+        for x in self.choices.values():
+            if x.fullname == self.fullname:
+                continue
+            if x.mod == self.mod:
+                out += x.all_names
+        return out
+
+    @property
+    def all_param(self):
+        out = [self]
+        for x in self.aliases.values():
+            out += x.all_param
+        return out
+
+    @property
+    def fullname(self):
+        if self.is_complete:
+            return '::'.join([self.mod, self.pt, self.name])
+        return self.name
+
+    @property
+    def is_complete(self):
+        return bool(self.mod and self.pt)
+
+    def add_to_registry(self, existing, complete=False, **kwargs):
+        kwargs['existing'] = existing
+        if complete and not self.is_complete:
+            try:
+                self.complete(**kwargs)
+            except ParameterError:
+                pass
+        if ((self.fullname in existing
+             and not self.matches(existing[self.fullname]))):
+            # print("DUPLICATE", self.fullname)
+            other = existing.pop(self.fullname)
+            try:
+                # print(f"Revising existing {other.fullname}...")
+                other.complete(**kwargs)
+            except ParameterError:
+                pass
+            # print("AFTER", other.fullname, other.is_complete)
+            existing[other.fullname] = other
+            try:
+                # print(f"Revising new {self.fullname}...")
+                self.complete(**kwargs)
+            except ParameterError:
+                if not other.is_complete:
+                    raise
+        # print(f"ADDING {self.fullname}:\n{self}")
+        # if kwargs.get('defaults', None):
+        #     self.check_against_default(kwargs['defaults'])
+        existing[self.fullname] = self
+        kwargs.pop('existing')
+        for x in self.aliases.values():
+            x.add_to_registry(existing, complete=complete, **kwargs)
+
+    def gather_info(self):
+        if self.name.startswith("Em_"):
+            return
+        pattern = f'\"{self.original_name}\"'
+        ires_par = search_directory(
+            pattern, _param_dir,
+            ext='.txt'
+        )
+        ires_src = search_directory(
+            pattern, os.path.join(_source_dir, 'src', '*'),
+            ignore_prefix=[
+                os.path.join(_source_dir, 'src', 'enum'),
+            ]
+        )
+        if ires_par:
+            print('\n=== Parameter files ' + 80 * '=')
+            print(write_param(True, ires_par, sort=True))
+        if ires_src:
+            print('\n=== Source files    ' + 80 * '=')
+            print(write_param(True, ires_src, sort=True))
+        if ires_par or ires_src:
+            print(f'\n{self}')
+            pdb.set_trace()
+
+    def try_replace(self, krep, ksub='', mod=None, pt=None,
+                    prefix=False, suffix=False, swap_prefix_suffix=False,
+                    if_no_choices=False, **kwargs):
+        k = self.name
+        if ((self.is_complete
+             or ((not (prefix or suffix)) and krep not in k)
+             or (prefix and (k == krep or not k.startswith(krep)))
+             or (suffix and (k == krep or not k.endswith(krep)))
+             or (if_no_choices and self.choices))):
+            return
+        if prefix:
+            ktry = ksub + k[len(krep):]
+            if swap_prefix_suffix:
+                ktry += krep
+        elif suffix:
+            ktry = k[:(len(k) - len(krep))] + ksub
+            if swap_prefix_suffix:
+                ktry = krep + ktry
+        else:
+            ktry = k.replace(krep, ksub)
+        print(f"{k}: Trying {ktry} (mod={mod}, pt={pt})")
+        alternative = self.alternative(name=ktry)
+        try:
+            alternative.complete(mod=mod, pt=pt, **kwargs)
+            assert alternative.is_complete
+            self.add_choice(alternative)
+        except (ParameterNoMatchError, DuplicateParameterError,
+                ParameterConflictError):
+            pass
+
+    def complete(self, mod=None, pt=None,
+                 defaults=None, aliases=None, existing=None,
+                 ask_user=True, ffinalize=None):
+        if self.is_complete:
+            if ffinalize is not None:
+                self.ffinalize = ffinalize
+            return
+        if defaults is None:
+            defaults = read_default_param()
+        if aliases is None:
+            aliases = self.get_aliases()
+        if existing is None:
+            existing = {}
+        # Aliased
+        if self.name in aliases:
+            imod, ipt, iname = aliases[self.name].split('::')
+            self.add_choice(
+                self.alternative_from_default(
+                    imod, ipt,
+                    defaults[imod][ipt][iname],
+                    name=self.name,
+                )
+            )
+        # Check all modules/parameter types
+        modlist = list(defaults.keys())
+        if self.mod and mod is None:
+            modlist.remove(self.mod)
+            modlist.insert(0, self.mod)
+        if mod is not None:
+            modlist = [mod]
+        for imod in modlist:
+            ptlist = list(defaults[imod].keys())
+            if pt is not None:
+                ptlist = [pt]
+            for ipt in ptlist:
+                if self.name in defaults[imod][ipt]:
+                    alternative = self.alternative_from_default(
+                        imod, ipt,
+                        defaults[imod][ipt][self.name]
+                    )
+                    self.add_choice(alternative)
+        # Alternative names
+        kws = dict(defaults=defaults, aliases=aliases, existing=existing)
+
+        def do_try_replace(*args, **kwargs):
+            if mod:
+                if kwargs.get('mod', mod) != mod:
+                    return
+                kwargs.setdefault('mod', mod)
+            if pt:
+                if kwargs.get('mod', pt) != pt:
+                    return
+                kwargs.setdefault('pt', pt)
+            kwargs.update(**kws)
+            self.try_replace(*args, **kwargs)
+
+        do_try_replace('Cyt f', 'cytf1', **kws)
+        do_try_replace('cyt f', 'cytf1', **kws)
+        do_try_replace('-', 'n', **kws)
+        do_try_replace('+', 'p', **kws)
+        do_try_replace('bf', mod='BF', **kws)
+        do_try_replace('BF', mod='BF', prefix=True, **kws)
+        do_try_replace('ra', mod='RuACT', **kws)
+        do_try_replace('GADPH', 'GAPDH', **kws)
+        do_try_replace('RuACT', 'RubACT', **kws)
+        do_try_replace('ADPGPP', 'ATPGPP', **kws)
+        do_try_replace('K+', 'K', **kws)
+        do_try_replace('Mg2+', 'Mg', **kws)
+        do_try_replace('Cl-', 'Cl', **kws)
+        # do_try_replace('AU', 'A_U', **kws)
+        # do_try_replace('UA', 'U_A', **kws)
+        do_try_replace('red', 'r', suffix=True, **kws)
+        do_try_replace('r', mod='RROEA', pt='COND', suffix=True, **kws)
+        do_try_replace('Activase', 'RuACT', **kws)
+        # do_try_replace('Rubisco', 'RuBP', **kws)
+        do_try_replace('Ke', 'KE', prefix=True, **kws)
+        do_try_replace('Vm', 'V', prefix=True, mod='PS', **kws)
+        do_try_replace('Vm', 'V', prefix=True, mod='PR', **kws)
+        do_try_replace('Vm', 'V', prefix=True, mod='SUCS', **kws)
+        do_try_replace('ox', 'o', suffix=True, **kws)
+        do_try_replace('T', suffix=True, swap_prefix_suffix=True, **kws)
+        # do_try_replace('o', '0', suffix=True, **kws)
+        do_try_replace('k', 'K', prefix=True, if_no_choices=True, **kws)
+        do_try_replace('a', '1', suffix=True, if_no_choices=True, **kws)
+        do_try_replace('b', '2', suffix=True, if_no_choices=True, **kws)
+        do_try_replace('Cytc1', 'Cytf', **kws)
+
+        def oxidized2total(p, existing):
+            base = p.fullname[:-1]
+            p.value = existing[base + 'o'] + existing[base + 'r']
+
+        do_try_replace('o', 'T', suffix=True,
+                       mod='RROEA', pt='POOL',
+                       ffinalize=oxidized2total, **kws)
+        do_try_replace('o', '', suffix=True,
+                       mod='RROEA', pt='POOL',
+                       ffinalize=oxidized2total, **kws)
+        self.update_from_choices(existing=existing, ask_user=ask_user)
+        if existing and self.fullname in existing:
+            # Exclue existing values from choices in update_from_choices?
+            self.resolve_conflict(
+                existing[self.fullname], self, ask_user=ask_user,
+            )
+        if not self.is_complete:
+            raise ParameterNoMatchError(
+                f'Could not locate parameter \"{self.fullname}\" '
+                f'(mod={mod}, pt={pt}):\n\n{self}'
+            )
+        if ffinalize:
+            self.ffinalize = ffinalize
+
+    @classmethod
+    def get_aliases(cls):
+        aliases = get_matlab_aliases(reverse=True,
+                                     strip_prefix='keys')
+        aliases['T'] = 'ALL::VARS::Tp'
+        return aliases
+
+
+class zhu2012(SubTask):
+
+    @classmethod
+    def adjust_args(cls, args):
+        if args.split_tables:
+            args.complete_param = True
+        cls.prefix_path_args(args, ['tables_file', 'table_base',
+                                    'param_file'],
+                             prefix=_scripts_dir)
+        super(zhu2012, cls).adjust_args(args)
+
+    def run_commands(self, args, **kwargs):
+        defaults = read_default_param()
+        aliases = Parameter.get_aliases()
+        if args.split_tables:
+            with open(args.tables_file, 'r') as fd:
+                contents = fd.read()
+            split_on = 'Table II.'
+            tables = [split_on + x for x in contents.split(split_on)
+                      if x]
+            for i in range(len(tables) - 1):
+                if tables[i].endswith('"'):
+                    tables[i] = tables[i][:-1]
+                    tables[i + 1] = '"' + tables[i + 1]
+            for i, table in enumerate(tables):
+                fname = f'{args.table_base}{i}.csv'
+                with open(fname, 'w') as fd:
+                    fd.write(table)
+            if os.path.isfile(args.param_file):
+                os.remove(args.param_file)
+        tables = sorted(glob.glob(f'{args.table_base}*.csv'))
+        if not tables:
+            args.split_tables = True
+            return self.run_commands(args, **kwargs)
+        if args.complete_param:
+            existing = OrderedDict()
+            if os.path.isfile(args.param_file):
+                os.remove(args.param_file)
+            for ftable in tables:
+                self.read_table_file(
+                    ftable, defaults=defaults, aliases=aliases,
+                    existing=existing, complete=True,
+                    inspect_missing=args.inspect_missing,
+                    ignore_existing_names=args.ignore_existing_names,
+                )
+            args.inspect_missing = False
+        if args.make_param:
+            existing = OrderedDict()
+            for ftable in tables:
+                self.read_table_file(
+                    ftable, defaults=defaults, aliases=aliases,
+                    existing=existing,
+                    inspect_missing=args.inspect_missing,
+                )
+            for k, v in existing.items():
+                v.finalize(defaults=defaults, existing=existing,
+                           aliases=aliases)
+            write_param(args.param_file, existing, sort=args.sort_param)
+            print(f"WROTE {args.param_file}")
+
+    @classmethod
+    def read_table_file(cls, ftable, defaults=None, aliases=None,
+                        existing=None, complete=False,
+                        incremental_update=False,
+                        ignore_existing_names=False,
+                        inspect_missing=False):
+        if defaults is None:
+            defaults = read_default_param()
+        if aliases is None:
+            aliases = Parameter.get_aliases()
+        if existing is None:
+            existing = OrderedDict()
+        df, title = read_param_table(ftable)
+        if 'Value' not in df:
+            return
+        index2param = {}
+        # First just add parameters so that explicit parameters are
+        # used first
+        for index, row in df.iterrows():
+            try:
+                p = Parameter.from_table_entry(
+                    row, title=title,
+                    ignore_existing_names=ignore_existing_names,
+                )
+            except ParameterNanError:
+                continue
+            if p.is_complete:
+                p.add_to_registry(
+                    existing, defaults=defaults, aliases=aliases
+                )
+            index2param[index] = p
+        for index, p in index2param.items():
+            if not p.is_complete:
+                p.add_to_registry(existing, complete=complete,
+                                  defaults=defaults, aliases=aliases)
+            if not p.is_complete:
+                if inspect_missing:
+                    p.gather_info()
+                continue
+            new_value = ",".join(p.all_names)
+            if df.loc[index, 'C++ Parameter'] == new_value:
+                continue
+            df.loc[index, 'C++ Parameter'] = new_value
+            if complete and incremental_update:
+                write_param_table(ftable, df, title=title)
+        if complete:
+            write_param_table(ftable, df, title=title)
+        return existing
+
+
 class ephoto(BuildSubTask):
 
     direct_args = ['stoptime']
@@ -692,6 +1615,12 @@ class ephoto(BuildSubTask):
                              prefix=args.input_dir)
         cls.prefix_path_args(args, ['output_file', 'output_param_base'],
                              prefix=args.output_dir)
+        if args.output_suffix:
+            if args.output_suffix is True:
+                args.output_suffix = '_' + cls._driver_map[args.driver]
+            cls.suffix_path_args(
+                args, ['output_file', 'output_param_base'],
+                args.output_suffix)
         if not os.path.isdir(args.output_dir):
             os.mkdir(args.output_dir)
         if args.dont_run:
@@ -738,6 +1667,8 @@ class ephoto(BuildSubTask):
                     ]
             if args.iterations_file:
                 cmds[0] += f' --iterations {args.iterations_file}'
+            if args.useC3:
+                cmds[0] += ' --c3'
             for k in self.direct_args:
                 if getattr(args, k, None):
                     cmds[0] += f' --{k} {getattr(args, k)}'
@@ -750,9 +1681,10 @@ class ephoto(BuildSubTask):
         suffix_paths += ['output_file', 'output_param_base']
         for i in range(len(cls._drivers)):
             args.driver = i + 1
-            cls.suffix_path_args(args, suffix_paths,
-                                 '_' + cls._driver_map[args.driver])
-            func(args, **kwargs)
+            args.output_suffix = True
+            # cls.suffix_path_args(args, suffix_paths,
+            #                      '_' + cls._driver_map[args.driver])
+            # func(args, **kwargs)
 
 
 class ephoto_iterations(ephoto):
@@ -765,32 +1697,109 @@ class ephoto_iterations(ephoto):
     def adjust_args(cls, args):
         if not args.param:
             args.param = {}
+        args.plot_limits = {}
+        args.plot_aliases = {}
         if args.light_profile:
-            # args.evn_file = None
             args.iterations_file = (
                 f'InputTimeIteration_{args.light_profile}.txt'
             )
-            if args.plot_file:
-                args.plot_file = (
-                    f'TimeIterationResult_{args.light_profile}.png'
-                )
-        if args.light_profile in ['paper', 'paper_exp1', 'paper_exp3']:
-            args.driver = 2
+        ROEvar = 'FI::VEL::vS3_S0'
+        PSIIvar = 'fPSII'
+        args.plot_aliases = {
+            ROEvar: 'O2 Evolution',
+            PSIIvar: 'PhiII',
+            'CO2AR': 'A',
+            'ALL::VARS::TestLi': 'PFD',
+            'fluoresence': 'Fluoresence',
+            'dissipation': 'Excitons dissipated as heat',
+        }
+        args.plot_units = {
+            'CO2AR': 'umol m**-2 s**-1',
+            'dissipation': 'umol m**-2 s**-1',
+            ROEvar: 'umol m**-2 s**-1',
+            'fluoresence': 'umol m**-2 s**-1',
+            'MembranePotential': 'V',
+            'BF::COND::Ks': 'mM',
+            'BF::COND::Mgs': 'mM',
+            'BF::COND::Cls': 'mM',
+            'ALL::VARS::TestLi': 'umol m**-2 s**-1',
+        }
+        if args.light_profile.startswith('Zhu2012'):
+            args.match_limits = True
+            args.evn_file = None
+            args.param.update(
+                O2_cond=0.210,  # mmol mol-1
+                CO2_cond=280,   # umol mol-1
+                Tp=25,          # C
+                GP=1,
+                # ProteinTotalRatio=0.973,
+                # GRNC=1.0,
+            )
+            if args.light_profile in ['Zhu2012', 'Zhu2012_exp1']:
+                args.plot_limits = {
+                    'CO2AR': (0, 20),
+                    'dissipation': (0, 700),
+                    ROEvar: (0, 20),
+                    'fluoresence': (0, 24),
+                    'MembranePotential': (-0.02, 0.00),
+                    PSIIvar: (0, 0.6),
+                    'BF::COND::PHs': (7, 7.6),
+                    'BF::COND::PHl': (6.5, 7),
+                    'BF::COND::Ks': (9, 15),
+                    'BF::COND::Mgs': (5, 7),
+                    'BF::COND::Cls': (0, 1.2),
+                }
+                args.plot_var = [
+                    'CO2AR', 'dissipation',
+                    ROEvar,  'fluoresence',
+                    'MembranePotential', PSIIvar,
+                    'BF::COND::PHs', 'BF::COND::PHl',
+                    'BF::COND::Ks', 'BF::COND::Mgs',
+                    'BF::COND::Cls', 'ALL::VARS::TestLi',
+                ]
+            elif args.light_profile == 'Zhu2012_exp3':
+                args.plot_limits = {
+                    'CO2AR': (0, 32),
+                    'dissipation': (0, 500),
+                    ROEvar: (10, 20),
+                    'fluoresence': (0, 50),
+                    'MembranePotential': (-0.03, 0.03),
+                    PSIIvar: (0, 0.6),
+                    'BF::COND::PHs': (7, 8.25),
+                    'BF::COND::PHl': (6.5, 7),
+                    'ALL::VARS::TestLi': (0, 1000),
+                }
+                args.plot_var = [
+                    'CO2AR', 'dissipation',
+                    ROEvar,  'fluoresence',
+                    'MembranePotential', PSIIvar,
+                    'BF::COND::PHs', 'BF::COND::PHl',
+                    'ALL::VARS::TestLi',
+                ]
+        elif args.light_profile in ['Zaks2012', 'Zaks2012_FigS3']:
             args.plot_var = [
-                'CO2AR', 'FI::VEL::vA_d',
-                'ALL::VARS::O2_cond',  # fluoresence
-                # membrange potential
-                'PSIIabs',
-                'BF::COND::PHs', 'BF::COND::PHl',
-                'BF::COND::Ks', 'BF::COND::Mgs',
-                'BF::COND::Cls',
-                'ALL::VARS::TestLi',
+                'BF::COND::PHl',
             ]
-            args.param['O2'] = 210  # mmol mol-1
-            args.param['CO2_in'] = 280  # umol mol-1 (or CO2_cond?)
-            args.param['CO2_in'] *= 3. * pow(10., 4.)  # Convert to ppm
-            args.param['Tp'] = 25  # C
+            args.plot_limits = {
+                'BF::COND::PHl': (1, 8),
+            }
+            args.evn_file = None
+            args.param.update(
+                O2_cond=0.210,  # mmol mol-1
+                CO2_cond=280,   # umol mol-1
+                Tp=25,          # C
+                ProteinTotalRatio=0.973,
+                GRNC=1.0,
+                ATPc=2e-10,     # molprotons∕V∕cm ∕s
+            )
+        if not args.output_suffix:
+            args.output_suffix = '_' + cls._driver_map[args.driver]
+            if args.light_profile:
+                args.output_suffix = (
+                    f'_{args.light_profile}{args.output_suffix}'
+                )
         cls.prefix_path_args(args, ['plot_file'], prefix=args.output_dir)
+        cls.suffix_path_args(args, ['plot_file'], args.output_suffix)
         super(ephoto_iterations, cls).adjust_args(args)
 
     def run_commands(self, args, cmds=None, ephoto_args=None, **kwargs):
@@ -802,7 +1811,7 @@ class ephoto_iterations(ephoto):
     def create_light_profile(self, args):
         if not args.light_profile:
             return None
-        variables = {'time': [], 'PAR': []}
+        variables = {'time': [], 'PFD': []}
         if args.light_profile == 'dilkaran':
             variables['time'] = [
                 0,
@@ -810,40 +1819,40 @@ class ephoto_iterations(ephoto):
                 800,
                 1200,
             ]
-            variables['PAR'] = [
+            variables['PFD'] = [
                 0,
                 600,
                 0,
                 0,
             ]
-        elif args.light_profile in ['paper', 'paper_exp1']:
+        elif args.light_profile in ['Zhu2012', 'Zhu2012_Fig2']:
             variables['time'] = [
                 0,
                 200,
                 400,
                 600,
             ]
-            variables['PAR'] = [
+            variables['PFD'] = [
                 1000,
                 100,
                 1000,
                 1000,
             ]
-        elif args.light_profile == 'paper_exp3':
+        elif args.light_profile == 'Zhu2012_Fig3':
             # 100 µmol m−2 s−1 increments
-            variables['PAR'] = np.linspace(0, 1000, 11)
-            variables['PAR'].append(variables['PAR'][-1])
+            variables['PFD'] = np.linspace(0, 1000, 11)
+            variables['PFD'].append(variables['PFD'][-1])
             variables['time'] = [
-                200 * x for x in range(len(variables['PAR']))
+                200 * x for x in range(len(variables['PFD']))
             ]
-        elif args.light_profile == 'zaks':
+        elif args.light_profile in ['Zaks2012', 'Zaks2012_FigS3']:
             variables['time'] = [
                 0,
                 150,
                 900,
                 1500,
             ]
-            variables['PAR'] = [
+            variables['PFD'] = [
                 0,
                 1000,
                 0,
@@ -852,7 +1861,7 @@ class ephoto_iterations(ephoto):
         else:
             raise ValueError(f"Unsupported light profile: "
                              f"{args.light_profile}")
-        args.param['PAR'] = variables['PAR'][0]
+        args.param['PFD'] = variables['PFD'][0]
         args.stoptime = max(variables['time'])
         self._generated_files += [
             args.iterations_file
@@ -869,7 +1878,7 @@ class ephoto_iterations(ephoto):
             args.output_param_base + 'step*.txt'
         ))
         assert param_files
-        variables = {'time': []}
+        variables = OrderedDict([('time', [])])
         for v in args.plot_var:
             variables[v] = []
         for x in param_files:
@@ -881,7 +1890,10 @@ class ephoto_iterations(ephoto):
                 assert variables['time'][-1] > variables['time'][-2]
             data = read_param(x)
             for v in args.plot_var:
-                variables[v].append(data[v])
+                if v in data:
+                    variables[v].append(data[v])
+                else:
+                    raise KeyError(f'Missing field \"{v}\"')
         return variables
 
     def plot(self, data):
@@ -889,20 +1901,26 @@ class ephoto_iterations(ephoto):
         variables = list(data.keys())
         variables.remove('time')
         nplots = len(variables)
-        if args.light_profile.startswith('paper'):
+        if args.light_profile == 'Zhu2012_Fig3':
             nplots += 1
         ncol = 1 if nplots == 1 else 2
         nrow = int(np.ceil(nplots / ncol))
-        fig, axs = plt.subplots(nrow, ncol, figsize=(10, 3 * nrow),
+        fig, axs = plt.subplots(nrow, ncol, figsize=(5, 1.5 * nrow),
                                 layout='constrained')
         for ax, v in zip(axs.flat, variables):
-            ax.set_xlabel('time')
-            ax.set_ylabel(v.split('::')[-1])
+            ax.set_xlabel('time (s)')
+            vname = args.plot_aliases.get(v, v.split('::')[-1])
+            if v in args.plot_units:
+                vname += f' ({args.plot_units[v]})'
+            ax.set_ylabel(vname)
             ax.plot(data['time'], data[v])
-        if args.light_profile.startswith('paper'):
+            ax.set_xlim(min(data['time']), max(data['time']))
+            if args.match_limits and v in args.plot_limits:
+                ax.set_ylim(*args.plot_limits[v])
+        if args.light_profile == 'Zhu2012_Fig3':
             ax = axs.flat[-1]
-            ax.set_xlabel('ALL::VARS::TestLi')
-            ax.set_ylabel('CO2AR')
+            ax.set_xlabel(f'PFD ({args.plot_units["ALL::VARS::TestLi"]})')
+            ax.set_ylabel(f'A ({args.plot_units["CO2AR"]})')
             ax.plot(data['ALL::VARS::TestLi'], data['CO2AR'])
         if args.plot_file:
             fig.savefig(args.plot_file)
@@ -1202,6 +2220,38 @@ if __name__ == "__main__":
         '--refresh-output', action='store_true',
         help="Refresh the copies of expected test output")
 
+    parser_zhu2012 = subparsers.add_parser(
+        'zhu2012', help="Create parameters for zhu2012",
+        func=zhu2012)
+    parser_zhu2012.add_argument(
+        '--tables-file', type=str, default='Zhu2012_tables.csv',
+        help="Name of the CSV containing all of the tables")
+    parser_zhu2012.add_argument(
+        '--table-base', type=str, default='Zhu2012_table_',
+        help="Base name for CSVs containing individual tables")
+    parser_zhu2012.add_argument(
+        '--param-file', type=str, default='Zhu2012_param.txt',
+        help="Parameter file that should be generated from the tables")
+    parser_zhu2012.add_argument(
+        '--sort-param', nargs='?', const=True, default=False,
+        choices=[False, True, 'comment', 'name'],
+        help="How parameters should be sorted in the file")
+    parser_zhu2012.add_argument(
+        '--split-tables', action='store_true',
+        help="Split the CSV into the individual tables")
+    parser_zhu2012.add_argument(
+        '--make-param', action='store_true',
+        help='Regenerate the parameter file')
+    parser_zhu2012.add_argument(
+        '--complete-param', action='store_true',
+        help='Filling in missing C++ parameter names in the tables')
+    parser_zhu2012.add_argument(
+        '--ignore-existing-names', action='store_true',
+        help='Don\' use \"C++ Parameter\" values from tables')
+    parser_zhu2012.add_argument(
+        '--inspect-missing', action='store_true',
+        help=('Step through parameters that don\'t have an assigned '
+              'version for the C++ code'))
     parser_ephoto = subparsers.add_parser(
         'ephoto', help="Run ephoto executable",
         func=ephoto)
@@ -1219,15 +2269,20 @@ if __name__ == "__main__":
             'BF::COND::PHs', 'BF::COND::PHl',
         ])
     parser_iterations.add_argument(
+        '--match-limits', action='store_true', default=False,
+        help="Match limits to those for published plots")
+    parser_iterations.add_argument(
         '--plot-file', type=str,
         nargs='?', const='TimeIterationResult.png',
         help="Location where the generated plot should be saved")
     parser_iterations.add_argument(
-        '--tmin', type=float, default=1,
+        '--tmin', type=float, default=0,
         help="Minimum time that should be plot")
     parser_iterations.add_argument(
-        '--light-profile', choices=['dilkaran', 'paper'],
-        default='paper',
+        '--light-profile', choices=['dilkaran', 'Zhu2012',
+                                    'Zhu2012_Fig2', 'Zhu2012_Fig3',
+                                    'Zaks2012', 'Zaks2012_FigS3'],
+        default='Zhu2012',
         help=("Create an input file that produces a desired light "
               "profile"))
     # parser_yggdrasil = subparsers.add_parser(
@@ -1449,7 +2504,14 @@ if __name__ == "__main__":
         help="Driver to run",
         subparsers={'task': ephoto_tasks + ['compare-files']},
         subparser_defaults={
-            'ephoto-iterations': 4
+            'ephoto-iterations': 2
+        })
+    parser.add_argument(
+        "--useC3", action="store_true",
+        help="Run the C3 version",
+        subparsers={'task': ephoto_tasks},
+        subparser_defaults={
+            'ephoto-iterations': False,
         })
     parser.add_argument(
         '--input-dir', type=str, default=_data_dir,
@@ -1488,6 +2550,10 @@ if __name__ == "__main__":
     parser.add_argument(
         '--output-file', '--output', type=str, default='output.data',
         help="File where driver output should be saved",
+        subparsers={'task': ephoto_tasks})
+    parser.add_argument(
+        '--output-suffix', type=str, const=True, nargs='?',
+        help="Suffix to add to output files.",
         subparsers={'task': ephoto_tasks})
     parser.add_argument(
         "--output-param", choices=[0, 1, 2, 3], type=int,
