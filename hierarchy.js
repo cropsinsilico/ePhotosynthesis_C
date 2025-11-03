@@ -291,8 +291,10 @@ var hierarchy =
     ] ],
     [ "RCBase", null, [
       [ "ePhotosynthesis::RC::BFRC", "df/d63/classe_photosynthesis_1_1_r_c_1_1_b_f_r_c.html", null ],
+      [ "ePhotosynthesis::RC::FIBFRC", "d5/dca/classe_photosynthesis_1_1_r_c_1_1_f_i_b_f_r_c.html", null ],
       [ "ePhotosynthesis::RC::FIRC", "d5/df9/classe_photosynthesis_1_1_r_c_1_1_f_i_r_c.html", null ],
       [ "ePhotosynthesis::RC::RROEARC", "d0/df0/classe_photosynthesis_1_1_r_c_1_1_r_r_o_e_a_r_c.html", null ],
+      [ "ePhotosynthesis::RC::RedoxRegRC", "d2/d66/classe_photosynthesis_1_1_r_c_1_1_redox_reg_r_c.html", null ],
       [ "ePhotosynthesis::RC::RuACTRC", "df/d1a/classe_photosynthesis_1_1_r_c_1_1_ru_a_c_t_r_c.html", null ]
     ] ],
     [ "ePhotosynthesis::conditions::RedoxRegCondition", "dc/dbf/classe_photosynthesis_1_1conditions_1_1_redox_reg_condition.html", [
