@@ -214,6 +214,10 @@ void Variables::finalizeInputs(const bool dontReset) {
       O2_cond *= 1.26;
       O2 = (O2_cond * (3. * pow(10., 4.))) / 1.26;
     }
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+    // Store O2 in mmol mol-1
+    O2 /= 30.0;
+#endif // MAKE_EQUIVALENT_TO_MATLAB
 
     if (inputUpdated("ALL::VARS::TestLi_Wps")) {
       if (inputUpdated("ALL::VARS::TestLi"))

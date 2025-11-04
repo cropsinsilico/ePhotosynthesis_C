@@ -361,6 +361,11 @@ void Driver::dump(const std::string& filename, const Variables* theVars0,
 	"PS::MOD::KE1Ratio",
 	"PS::MOD::KE2Ratio",
 	"SUCS::MOD::KE5Ratio",
+        // Add for explicit definition of Zhu 2012 parameters
+        "FIBF::RC::RC0",
+        "FIBF::RC::RC",
+        "BF::MOD::F",
+        "PS::MOD::F"
     };
     // Only used if useC3 false which is incompatible with C3 matlab
     if (theVars->useC3) {
