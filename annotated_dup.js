@@ -102,9 +102,7 @@ var annotated_dup =
       ] ],
       [ "RC", "d6/d95/namespacee_photosynthesis_1_1_r_c.html", [
         [ "BFRC", "df/d63/classe_photosynthesis_1_1_r_c_1_1_b_f_r_c.html", "df/d63/classe_photosynthesis_1_1_r_c_1_1_b_f_r_c" ],
-        [ "FIBFRC", "d5/dca/classe_photosynthesis_1_1_r_c_1_1_f_i_b_f_r_c.html", "d5/dca/classe_photosynthesis_1_1_r_c_1_1_f_i_b_f_r_c" ],
         [ "FIRC", "d5/df9/classe_photosynthesis_1_1_r_c_1_1_f_i_r_c.html", "d5/df9/classe_photosynthesis_1_1_r_c_1_1_f_i_r_c" ],
-        [ "RedoxRegRC", "d2/d66/classe_photosynthesis_1_1_r_c_1_1_redox_reg_r_c.html", "d2/d66/classe_photosynthesis_1_1_r_c_1_1_redox_reg_r_c" ],
         [ "RROEARC", "d0/df0/classe_photosynthesis_1_1_r_c_1_1_r_r_o_e_a_r_c.html", "d0/df0/classe_photosynthesis_1_1_r_c_1_1_r_r_o_e_a_r_c" ],
         [ "RuACTRC", "df/d1a/classe_photosynthesis_1_1_r_c_1_1_ru_a_c_t_r_c.html", "df/d1a/classe_photosynthesis_1_1_r_c_1_1_ru_a_c_t_r_c" ]
       ] ],

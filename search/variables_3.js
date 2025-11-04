@@ -9,7 +9,6 @@ var searchData=
   ['constraints_6',['constraints',['../de/d29/classe_photosynthesis_1_1drivers_1_1_driver.html#af0ff7391019d32cff699373b57100e7a',1,'ePhotosynthesis::drivers::Driver']]],
   ['ctx_7',['ctx',['../dc/d7c/classe_photosynthesis_1_1_value.html#aad1374d57d9c4e639d01778634f4e51e',1,'ePhotosynthesis::Value']]],
   ['current_8',['current',['../d4/dc0/classe_photosynthesis_1_1_time_series.html#a352a03386dfddb0c98f9f6ec839eb24f',1,'ePhotosynthesis::TimeSeries']]],
-  ['currentvars_9',['currentVars',['../de/d29/classe_photosynthesis_1_1drivers_1_1_driver.html#ad8cb5216548d379fe44366234b15738f',1,'ePhotosynthesis::drivers::Driver']]],
-  ['cvode_5fmem_10',['cvode_mem',['../de/d29/classe_photosynthesis_1_1drivers_1_1_driver.html#afdffd7d56dc42d4f28cd663df85cdf68',1,'ePhotosynthesis::drivers::Driver']]],
-  ['cvodemem_11',['CVodeMem',['../de/d29/classe_photosynthesis_1_1drivers_1_1_driver.html#acdd80c7f9d442c41e2f6177b1f1d1258',1,'ePhotosynthesis::drivers::Driver']]]
+  ['cvode_5fmem_9',['cvode_mem',['../de/d29/classe_photosynthesis_1_1drivers_1_1_driver.html#afdffd7d56dc42d4f28cd663df85cdf68',1,'ePhotosynthesis::drivers::Driver']]],
+  ['cvodemem_10',['CVodeMem',['../de/d29/classe_photosynthesis_1_1drivers_1_1_driver.html#acdd80c7f9d442c41e2f6177b1f1d1258',1,'ePhotosynthesis::drivers::Driver']]]
 ];

@@ -96,8 +96,6 @@ $(function(){initNavTree('d5/d15/driver_8cpp.html','../../'); initResizable(true
 </div>
 
 <div class="header">
-  <div class="summary">
-<a href="#define-members">Macros</a>  </div>
   <div class="headertitle"><div class="title">driver.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
@@ -260,75 +258,6 @@ $(function(){initNavTree('d5/d15/driver_8cpp.html','../../'); initResizable(true
 </div>
 </div>
 <p><a href="../../d5/d15/driver_8cpp_source.html">Go to the source code of this file.</a></p>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a2258dd419c7e336210f56690d08df998" id="r_a2258dd419c7e336210f56690d08df998"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2258dd419c7e336210f56690d08df998">INITIALIZE_VARS_AND_CONDITIONS</a></td></tr>
-<tr class="separator:a2258dd419c7e336210f56690d08df998"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9a74561decc878395344507a4100eb7" id="r_af9a74561decc878395344507a4100eb7"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af9a74561decc878395344507a4100eb7">FINALIZE_VARS_AND_CONDITIONS</a></td></tr>
-<tr class="separator:af9a74561decc878395344507a4100eb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a id="af9a74561decc878395344507a4100eb7" name="af9a74561decc878395344507a4100eb7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af9a74561decc878395344507a4100eb7">&#9670;&#160;</a></span>FINALIZE_VARS_AND_CONDITIONS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define FINALIZE_VARS_AND_CONDITIONS</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordflow">if</span> (cpyVars) {                                \</div>
-<div class="line">    <span class="keyword">delete</span> cpyVars;                             \</div>
-<div class="line">  }                                             \</div>
-<div class="line">  if (con_created &amp;&amp; con) {                     \</div>
-<div class="line">    <span class="keyword">delete</span> con;                                 \</div>
-<div class="line">  }</div>
-</div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="../../d5/d15/driver_8cpp_source.html#l00056">56</a> of file <a class="el" href="../../d5/d15/driver_8cpp_source.html">driver.cpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="../../d5/d15/driver_8cpp_source.html#l00333">ePhotosynthesis::drivers::Driver::dump()</a>, <a class="el" href="../../d5/d15/driver_8cpp_source.html#l00288">ePhotosynthesis::drivers::Driver::getOutputVars()</a>, and <a class="el" href="../../d5/d15/driver_8cpp_source.html#l00321">ePhotosynthesis::drivers::Driver::getVar()</a>.</p>
-
-</div>
-</div>
-<a id="a2258dd419c7e336210f56690d08df998" name="a2258dd419c7e336210f56690d08df998"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2258dd419c7e336210f56690d08df998">&#9670;&#160;</a></span>INITIALIZE_VARS_AND_CONDITIONS</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define INITIALIZE_VARS_AND_CONDITIONS</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Value:</b><div class="fragment"><div class="line">  <span class="keywordtype">bool</span> con_created = <span class="keyword">false</span>;                             \</div>
-<div class="line">  if (!theVars0) theVars0 = currentVariables();         \</div>
-<div class="line">  <a class="code hl_class" href="../../da/d90/classe_photosynthesis_1_1_variables.html">Variables</a>* cpyVars = <span class="keyword">nullptr</span>;                         \</div>
-<div class="line">  <span class="keyword">const</span> <a class="code hl_class" href="../../da/d90/classe_photosynthesis_1_1_variables.html">Variables</a>* theVars = theVars0;                  \</div>
-<div class="line">  if (!con) {                                           \</div>
-<div class="line">    con = currentConditions();                          \</div>
-<div class="line">    con_created = <span class="keyword">true</span>;                                 \</div>
-<div class="line">  }                                                     \</div>
-<div class="line">  std::map&lt;MODULE, const ValueSet_t*&gt; <a class="code hl_namespace" href="../../d2/d15/namespacee_photosynthesis_1_1conditions.html">conditions</a>;       \</div>
-<div class="line">  if (con) {                                            \</div>
-<div class="line">    cpyVars = theVars0-&gt;<a class="code hl_function" href="../../da/d90/classe_photosynthesis_1_1_variables.html#a7ef199dc6c140ba2cf2491519ed4e5cd">deepcopy</a>();                     \</div>
-<div class="line">    cpyVars-&gt;<a class="code hl_function" href="../../da/d90/classe_photosynthesis_1_1_variables.html#a124c8b693885d903abff9c5488a1796a">setRecord</a>(con, <a class="code hl_namespace" href="../../d2/d15/namespacee_photosynthesis_1_1conditions.html">conditions</a>);                \</div>
-<div class="line">    theVars = cpyVars;                                  \</div>
-<div class="line">  }</div>
-<div class="ttc" id="aclasse_photosynthesis_1_1_variables_html"><div class="ttname"><a href="../../da/d90/classe_photosynthesis_1_1_variables.html">ePhotosynthesis::Variables</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/dae/_variables_8hpp_source.html#l00086">Variables.hpp:86</a></div></div>
-<div class="ttc" id="aclasse_photosynthesis_1_1_variables_html_a124c8b693885d903abff9c5488a1796a"><div class="ttname"><a href="../../da/d90/classe_photosynthesis_1_1_variables.html#a124c8b693885d903abff9c5488a1796a">ePhotosynthesis::Variables::setRecord</a></div><div class="ttdeci">void setRecord(const ValueSet_t *x, std::map&lt; MODULE, const ValueSet_t * &gt; &amp;conditions)</div><div class="ttdef"><b>Definition</b> <a href="../../de/dfe/_variables_8cpp_source.html#l01237">Variables.cpp:1237</a></div></div>
-<div class="ttc" id="aclasse_photosynthesis_1_1_variables_html_a7ef199dc6c140ba2cf2491519ed4e5cd"><div class="ttname"><a href="../../da/d90/classe_photosynthesis_1_1_variables.html#a7ef199dc6c140ba2cf2491519ed4e5cd">ePhotosynthesis::Variables::deepcopy</a></div><div class="ttdeci">EPHOTO_API Variables * deepcopy() const</div><div class="ttdef"><b>Definition</b> <a href="../../de/dfe/_variables_8cpp_source.html#l00242">Variables.cpp:242</a></div></div>
-<div class="ttc" id="anamespacee_photosynthesis_1_1conditions_html"><div class="ttname"><a href="../../d2/d15/namespacee_photosynthesis_1_1conditions.html">ePhotosynthesis::conditions</a></div><div class="ttdef"><b>Definition</b> <a href="../../dd/d9b/_b_f_condition_8hpp_source.html#l00044">BFCondition.hpp:44</a></div></div>
-</div><!-- fragment -->
-<p class="definition">Definition at line <a class="el" href="../../d5/d15/driver_8cpp_source.html#l00040">40</a> of file <a class="el" href="../../d5/d15/driver_8cpp_source.html">driver.cpp</a>.</p>
-
-<p class="reference">Referenced by <a class="el" href="../../d5/d15/driver_8cpp_source.html#l00333">ePhotosynthesis::drivers::Driver::dump()</a>, <a class="el" href="../../d5/d15/driver_8cpp_source.html#l00288">ePhotosynthesis::drivers::Driver::getOutputVars()</a>, and <a class="el" href="../../d5/d15/driver_8cpp_source.html#l00321">ePhotosynthesis::drivers::Driver::getVar()</a>.</p>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

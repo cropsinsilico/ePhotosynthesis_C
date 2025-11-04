@@ -1,6 +1,5 @@
 var _variables_8cpp =
 [
-    [ "ADD_VAR", "de/dfe/_variables_8cpp.html#aad95787fb1179e5e2406c9cc47ac3602", null ],
     [ "CHECK", "de/dfe/_variables_8cpp.html#a3c05a13962538c8e9516e6299ff6f56b", null ],
     [ "CHECK_COM", "de/dfe/_variables_8cpp.html#a73bbc787d0eb98f278d646db1b0e3a98", null ],
     [ "CHECK_CONTROL", "de/dfe/_variables_8cpp.html#a58ef7f62d9bee72aae54b7aa17641d1c", null ],
