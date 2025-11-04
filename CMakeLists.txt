@@ -782,6 +782,10 @@ if(BUILD_TESTS AND BUILD_CXX)
     # Build executable directly from source files so that
     # non-exported symbols can still be tested by unit tests
     add_executable(testRunner ${TEST_LIST} ${ePhoto_SOURCES})
+    set_target_properties(
+      testRunner PROPERTIES
+      DEFINE_SYMBOL "${CXX_LIBRARY_NAME}_EXPORTS"
+    )
     if(ePhoto_DEPENDENCIES)
       add_dependencies(testRunner ${ePhoto_DEPENDENCIES})
     endif()
