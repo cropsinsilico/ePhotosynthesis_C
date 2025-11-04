@@ -31,15 +31,17 @@ outputs:
       license_file: LICENSE.md
     requirements:
       build:
-        - cmake
+        - cmake                                  # [build_platform != target_platform]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-        - make  # [unix]
-        - ninja  # [win]
+        - ninja                                  # [build_platform != target_platform]
         - python                                 # [build_platform != target_platform]
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - yggdrasil
       host:
+        - cmake
+        - ninja
         - python
         - sundials >=5.7.0
         - yggdrasil
@@ -70,19 +72,21 @@ outputs:
       license_file: LICENSE.md
     requirements:
       build:
-        - cmake
+        - cmake                                  # [build_platform != target_platform]
         - cross-python_{{ target_platform }}     # [build_platform != target_platform]
-        - make  # [unix]
-        - ninja  # [win]
+        - ninja                                  # [build_platform != target_platform]
         - python                                 # [build_platform != target_platform]
         - scikit-build-core
         - setuptools_scm
+        - {{ stdlib('c') }}
         - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - yggdrasil
       host:
+        - cmake
         - libboost-devel >=1.36.0
         - libboost-python-devel >=1.36.0
+        - ninja
         - python
         - scikit-build-core
         - setuptools_scm
@@ -96,7 +100,7 @@ outputs:
         - yggdrasil
     test:
       imports:
-        - pyPhotosynthesis
+        - ePhotosynthesis
 
 
 about:
