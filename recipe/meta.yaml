@@ -36,6 +36,7 @@ outputs:
         - make  # [unix]
         - ninja  # [win]
         - python                                 # [build_platform != target_platform]
+        - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - yggdrasil
       host:
@@ -76,6 +77,7 @@ outputs:
         - python                                 # [build_platform != target_platform]
         - scikit-build-core
         - setuptools_scm
+        - {{ compiler('c') }}
         - {{ compiler('cxx') }}
         - yggdrasil
       host:
