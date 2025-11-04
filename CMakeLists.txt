@@ -75,6 +75,7 @@ endif("${CMAKE_SOURCE_DIR}" STREQUAL "${CMAKE_BINARY_DIR}")
 set(CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${PROJECT_SOURCE_DIR}/cmake")
 
 include(SearchTools)
+include(AddYggInterface)
 find_package_python(REQUIRED COMPONENTS Interpreter VERBOSE)
 
 option(BUILD_CXX "Build CXX library & executable." ON)
@@ -318,7 +319,6 @@ if(WITH_YGGDRASIL)
     if(YggInterface_FOUND)
         set(BUILD_WITH_YGGINTERFACE OFF)
     else()
-        include(AddYggInterface)
         set(YGGDRASIL_ARGS)
         set(SKBUILD_ISOLATED)
         if(SKBUILD)
@@ -349,14 +349,14 @@ if(WITH_YGGDRASIL)
             ${YGGDRASIL_ARGS}
           )
           transfer_interface_properties(
-            yggPhoto DEST_PREFIX ePhoto_
+            yggPhoto DEST_PREFIX ePhoto_ VERBOSE
             EXCLUDE_REGEX_LINK_LIBRARIES "Python::Python"
             DESTLIST_LINK_LIBRARIES ePhoto_PRIVATE_LIBRARIES_Python
             PROPERTIES SOURCES INCLUDE_DIRECTORIES COMPILE_OPTIONS
             LINK_LIBRARIES
           )
           transfer_interface_properties(
-            yggPhoto++ DEST_PREFIX ePhoto_
+            yggPhoto++ DEST_PREFIX ePhoto_ VERBOSE
             PROPERTIES SOURCES INCLUDE_DIRECTORIES COMPILE_OPTIONS
           )
           # TODO: Try building YggInterface::CXX in ePhotosynthesis?
