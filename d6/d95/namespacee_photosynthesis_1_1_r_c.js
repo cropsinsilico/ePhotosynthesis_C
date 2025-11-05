@@ -1,7 +1,9 @@
 var namespacee_photosynthesis_1_1_r_c =
 [
     [ "BFRC", "df/d63/classe_photosynthesis_1_1_r_c_1_1_b_f_r_c.html", "df/d63/classe_photosynthesis_1_1_r_c_1_1_b_f_r_c" ],
+    [ "FIBFRC", "d5/dca/classe_photosynthesis_1_1_r_c_1_1_f_i_b_f_r_c.html", "d5/dca/classe_photosynthesis_1_1_r_c_1_1_f_i_b_f_r_c" ],
     [ "FIRC", "d5/df9/classe_photosynthesis_1_1_r_c_1_1_f_i_r_c.html", "d5/df9/classe_photosynthesis_1_1_r_c_1_1_f_i_r_c" ],
+    [ "RedoxRegRC", "d2/d66/classe_photosynthesis_1_1_r_c_1_1_redox_reg_r_c.html", "d2/d66/classe_photosynthesis_1_1_r_c_1_1_redox_reg_r_c" ],
     [ "RROEARC", "d0/df0/classe_photosynthesis_1_1_r_c_1_1_r_r_o_e_a_r_c.html", "d0/df0/classe_photosynthesis_1_1_r_c_1_1_r_r_o_e_a_r_c" ],
     [ "RuACTRC", "df/d1a/classe_photosynthesis_1_1_r_c_1_1_ru_a_c_t_r_c.html", "df/d1a/classe_photosynthesis_1_1_r_c_1_1_ru_a_c_t_r_c" ],
     [ "BF", "d6/d95/namespacee_photosynthesis_1_1_r_c.html#ae895835194066bb09e0d91c7e7312a00", null ],
@@ -15,7 +17,9 @@ var namespacee_photosynthesis_1_1_r_c =
     [ "SUCS", "d6/d95/namespacee_photosynthesis_1_1_r_c.html#abddfe7b3c78fc82b306d88eba083a732", null ],
     [ "XanCycle", "d6/d95/namespacee_photosynthesis_1_1_r_c.html#aab0a054c48fc9f83e5bd390f243ef606", null ],
     [ "DEFINE_VALUE_SET_HEADER", "d6/d95/namespacee_photosynthesis_1_1_r_c.html#ae0e8db64f717c959e4d31815c252743e", null ],
+    [ "DEFINE_VALUE_SET_HEADER", "d6/d95/namespacee_photosynthesis_1_1_r_c.html#af0c0d3fa4747c1090d5a373382964dd2", null ],
     [ "DEFINE_VALUE_SET_HEADER", "d6/d95/namespacee_photosynthesis_1_1_r_c.html#a911e35017c0076d1d032a56b4839736a", null ],
+    [ "DEFINE_VALUE_SET_HEADER", "d6/d95/namespacee_photosynthesis_1_1_r_c.html#af547c4ff93a045994dc2a47582eb566b", null ],
     [ "DEFINE_VALUE_SET_HEADER", "d6/d95/namespacee_photosynthesis_1_1_r_c.html#a6e802cf9828cad70fc3af50f1f476efd", null ],
     [ "DEFINE_VALUE_SET_HEADER", "d6/d95/namespacee_photosynthesis_1_1_r_c.html#a9f0729eb30ec329dc0caeac0feaa7276", null ]
 ];
