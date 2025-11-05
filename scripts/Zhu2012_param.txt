@@ -474,34 +474,34 @@ SUCS::MOD::Km603           0.28                  # [Km603] Matches default C3 va
 SUCS::MOD::Km604           16.0                  # [Km604] Matches default C3 value
 SUCS::MOD::KE60            16.0                  # [KE60] Matches default C3 value
 SUCS::MOD::ATPc            0.35                  # [ATPc] Matches default C3 value
-Em_GADPH                   -0.34                 # [Em_GADPH] No match
-Em_RuACT                   -0.295                # [Em_RuACT] No match
-Em_ADPGPP                  -0.29                 # [Em_ADPGPP] No match
-Em_Fd                      -0.42                 # [Em_Fd] No match
-Em_Thiof                   -0.29                 # [Em_Thiof] No match
-Em_CytbL                   -0.09                 # [Em_CytbL] No match
-Em_CytbH                   0.05                  # [Em_CytbH] No match
-kdmo                       56000000.0            # [kdmo] No match
-ISPH                       0.0                   # [ISPH] No match
-Rubisco                    1072.0                # [Rubisco] No match
-PC                         1.0                   # [PC] No match
-A0                         1.0                   # [A0] No match
-NADP                       0.79                  # [NADP] No match
-E.bL.bH                    1.0                   # [E.bL.bH] No match
-E.bL.bH.ISPox.PQH2         0.0                   # [E.bL.bH.ISPox.PQH2] No match
-E.bL.bH.PQH·               0.0                   # [E.bL.bH.PQH·] No match
-ISPH+ox                    1.0                   # [ISPH+ox] No match
-E.bL--bH                   0.0                   # [E.bL­-bH] No match
-E.bL.bH-                   0.0                   # [E.bL.bH-] No match
-H+                         0.0001                # [H+] No match
-PQ                         1.0                   # [PQ] No match
-QH                         0.031                 # [QH] No match
-Hfl                        0.0001                # [Hfl] No match
-Hfs                        0.0001                # [Hfs] No match
-Netcharge                  0.0                   # [Netcharge] No match
-DY                         0.0                   # [DY] No match
-NADH                       0.22                  # [NADH] No match
-NAD                        0.08                  # [NAD] No match
-Pic                        5.0                   # [Pic] No match
-TPc                        2.3                   # [TPc] No match
-UDPG                       0.6                   # [UDPG] No match
+# Em_GADPH                   -0.34                 # [Em_GADPH] No match
+# Em_RuACT                   -0.295                # [Em_RuACT] No match
+# Em_ADPGPP                  -0.29                 # [Em_ADPGPP] No match
+# Em_Fd                      -0.42                 # [Em_Fd] No match
+# Em_Thiof                   -0.29                 # [Em_Thiof] No match
+# Em_CytbL                   -0.09                 # [Em_CytbL] No match
+# Em_CytbH                   0.05                  # [Em_CytbH] No match
+# kdmo                       56000000.0            # [kdmo] No match
+# ISPH                       0.0                   # [ISPH] No match
+# Rubisco                    1072.0                # [Rubisco] No match
+# PC                         1.0                   # [PC] No match
+# A0                         1.0                   # [A0] No match
+# NADP                       0.79                  # [NADP] No match
+# E.bL.bH                    1.0                   # [E.bL.bH] No match
+# E.bL.bH.ISPox.PQH2         0.0                   # [E.bL.bH.ISPox.PQH2] No match
+# E.bL.bH.PQH·               0.0                   # [E.bL.bH.PQH·] No match
+# ISPH+ox                    1.0                   # [ISPH+ox] No match
+# E.bL--bH                   0.0                   # [E.bL­-bH] No match
+# E.bL.bH-                   0.0                   # [E.bL.bH-] No match
+# H+                         0.0001                # [H+] No match
+# PQ                         1.0                   # [PQ] No match
+# QH                         0.031                 # [QH] No match
+# Hfl                        0.0001                # [Hfl] No match
+# Hfs                        0.0001                # [Hfs] No match
+# Netcharge                  0.0                   # [Netcharge] No match
+# DY                         0.0                   # [DY] No match
+# NADH                       0.22                  # [NADH] No match
+# NAD                        0.08                  # [NAD] No match
+# Pic                        5.0                   # [Pic] No match
+# TPc                        2.3                   # [TPc] No match
+# UDPG                       0.6                   # [UDPG] No match

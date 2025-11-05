@@ -192,7 +192,7 @@ def write_param_table(fname, param, title=None):
         param.to_csv(fd, index=False)
 
 
-def write_param(fname, param, sort=False):
+def write_param(fname, param, sort=False, comment_incomplete=False):
     maxlen = len(max(param.keys(), key=len)) + 4
     maxlen_value = len(
         max([f'{v["value"]}' if isinstance(v, dict) else f'{v}'
@@ -229,6 +229,8 @@ def write_param(fname, param, sort=False):
             value = v.value
             if v.comment:
                 comment += v.comment
+            if comment_incomplete and not v.is_complete:
+                k = f'# {k}'
         else:
             value = v
         vstr = f'{value}'
@@ -481,8 +483,17 @@ class BuildSubTask(SubTask):
         self.adjust_args(args)
         kwargs.setdefault('cwd', args.build_dir)
         kwargs.setdefault('env', {})
+        add_dirs = [args.build_dir]
+        if os.environ.get('CONDA_PREFIX'):
+            conda_prefix = os.environ['CONDA_PREFIX']
+            if sys.platform in ['win32', 'cygwin']:
+                conda_prefix = os.path.join(
+                    conda_prefix, 'Library', 'lib')
+            else:
+                conda_prefix = os.path.join(conda_prefix, 'lib')
+            add_dirs.append(conda_prefix)
         kwargs['env'][_library_path_var] = add_directory_to_path(
-            args.build_dir, return_path=True, prepend=True,
+            add_dirs, return_path=True, prepend=True,
             prev_value=kwargs['env'].get(_library_path_var, None),
         )
         super(BuildSubTask, self).__init__(args, **kwargs)
@@ -1547,7 +1558,8 @@ class zhu2012(SubTask):
             for k, v in existing.items():
                 v.finalize(defaults=defaults, existing=existing,
                            aliases=aliases)
-            write_param(args.param_file, existing, sort=args.sort_param)
+            write_param(args.param_file, existing, sort=args.sort_param,
+                        comment_incomplete=(not args.include_missing))
             print(f"WROTE {args.param_file}")
 
     @classmethod
@@ -1725,7 +1737,6 @@ class ephoto_iterations(ephoto):
             'ALL::VARS::TestLi': 'umol m**-2 s**-1',
         }
         if args.light_profile.startswith('Zhu2012'):
-            args.match_limits = True
             args.evn_file = None
             args.param.update(
                 O2_cond=0.210,  # mmol mol-1
@@ -1923,6 +1934,7 @@ class ephoto_iterations(ephoto):
             ax.set_ylabel(f'A ({args.plot_units["CO2AR"]})')
             ax.plot(data['ALL::VARS::TestLi'], data['CO2AR'])
         if args.plot_file:
+            print(f'Saving plot to \"{args.plot_file}\"')
             fig.savefig(args.plot_file)
         else:
             plt.show()
@@ -2251,6 +2263,10 @@ if __name__ == "__main__":
     parser_zhu2012.add_argument(
         '--inspect-missing', action='store_true',
         help=('Step through parameters that don\'t have an assigned '
+              'version for the C++ code'))
+    parser_zhu2012.add_argument(
+        '--include-missing', action='store_true',
+        help=('Include parameters that don\'t have an assigned '
               'version for the C++ code'))
     parser_ephoto = subparsers.add_parser(
         'ephoto', help="Run ephoto executable",
