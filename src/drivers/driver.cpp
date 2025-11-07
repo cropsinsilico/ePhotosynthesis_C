@@ -365,7 +365,11 @@ void Driver::dump(const std::string& filename, const Variables* theVars0,
         "FIBF::RC::RC0",
         "FIBF::RC::RC",
         "BF::MOD::F",
-        "PS::MOD::F"
+        "PS::MOD::F",
+        "FIBF::RC::kdm0",
+        "RuACT::RC::factor_n7",
+        "RuACT::RC::kn7",
+        "RuACT::RC::RCA"
     };
     // Only used if useC3 false which is incompatible with C3 matlab
     if (theVars->useC3) {

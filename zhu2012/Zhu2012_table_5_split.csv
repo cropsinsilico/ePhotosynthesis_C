@@ -1,0 +1,12 @@
+Table II.6: Molecular weight and catalytic number of the enzymes in photosynthetic carbon metabolism
+Name,Value,Units,C++ Parameter,Reference,Description
+mw_GAPDH,180000.0,D,RROEA::POOL::mw_GAPDH,Speranza and Ferri (1982),
+SA_GAPDH,50.0,s-1,RROEA::POOL::SA_GAPDH,Speranza and Ferri (1982),
+mw_FBPase,160000.0,D,RROEA::POOL::mw_FBPase,"Tang et al. (2000), Reichert et al.(2000)",
+SA_FBPase,22.9,s-1,RROEA::POOL::SA_FBPase,"Tang et al. (2000), Reichert et al.(2000)",
+mw_SBPase,66000.0,D,RROEA::POOL::mw_SBPase,"Cadet et al. (1988), Cadet and Meunier (1987)",
+SA_SBPase,81.0,s-1,RROEA::POOL::SA_SBPase,"Cadet et al. (1988), Cadet and Meunier (1987)",
+mw_PRK,90000.0,D,RROEA::POOL::mw_PRK,"Surek et al. (1985), Porter et al. (1986)",
+SA_PRK,615.0,s-1,RROEA::POOL::SA_PRK,"Surek et al. (1985), Porter et al. (1986)",
+mw_ADPGPP,210000.0,D,RROEA::POOL::mw_ATPGPP,"Kleczkowski et al. (1991), Li and Preiss(1992)",
+SA_ADPGPP,546.0,s-1,RROEA::POOL::SA_ATPGPP,"Kleczkowski et al. (1991), Li and Preiss(1992)",

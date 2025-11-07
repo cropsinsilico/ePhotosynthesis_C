@@ -305,13 +305,13 @@ ePhotosynthesis::run_simulation(DriverType driverChoice,
 
     // Add variables from inputs
     if (!inputs.empty()) {
-        Variables::updateParam(inputs, theVars,
+        Variables::updateParam(inputs, theVars, true,
                                "ePhotosynthesis raw inputs");
     }
     
     // Ensure that command line argument takes precedence
-    theVars->readParam(evnFile, inputs);
-    theVars->readParam(atpcostFile, inputs);
+    theVars->readParam(evnFile, inputs, true);
+    theVars->readParam(atpcostFile, inputs, true);
 
     // Read transcription factors and set enzyme activity levels
     if (!enzymeFile.empty()) {

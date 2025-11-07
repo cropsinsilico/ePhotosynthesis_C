@@ -104,8 +104,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kua     , 1.0e10 },
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kf      , 6.3e6  },
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kd      , 2.0e8  },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE8     , 0.0    },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE9     , 0.0    },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE8     , 0.21   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE9     , 22.55  },
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K15     , 1.0e10 },
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K16     , 1.0e5  },
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_IPS  , 0.31   },
@@ -113,8 +113,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_PG   , 0.35   },
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)MemCap  , 0.6e-6 },
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RVA     , 8.0e-10},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KBs     , 1.1e-8 },
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KBl     , 5.1e-6 },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KBs     , 0.015  },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KBl     , 0.015  },
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1ATP  , 0.12   },
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1ADP  , 0.014  },
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1PI   , 0.3    },
@@ -159,8 +159,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_PG   , "[CONST] cytc1- + cytc2 --> cytc1 + cytc2-"},
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)MemCap  , "The membrane capacity"},
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RVA     , "The ratio of lumen volume to thylakoid membrane area"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KBs     , "The buffer equilibrium constant in stroma"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KBl     , "The buffer equilibrium constant in lumen"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KBs     , "The buffer equilibrium constant in stroma; mol l-1 (pH unit)-1"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KBl     , "The buffer equilibrium constant in lumen; mol l-1 (pH unit)-1"},
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1ATP  , "The michaelis menton constant for ATP for ATP synthesis"},
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1ADP  , "The michaelis menton constant for ATP for ADP synthesis"},
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1PI   , "The michaelis menton constant for ATP for PI synthesis"},
@@ -185,18 +185,21 @@ namespace ePhotosynthesis {
   };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::all = {
-    ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC0,
-    ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC 
+    ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC0 ,
+    ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC  ,
+    ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kdm0
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::names = {
-    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC0, "RC0"},
-    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC , "RC" }
+    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC0 , "RC0" },
+    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC  , "RC"  },
+    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kdm0, "kdm0"}
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::defaults = {
-    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC0, 0.1},
-    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC , 0.1}
+    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC0 , 0.1  },
+    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC  , 0.1  },
+    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kdm0, 5.0e8}
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::defaults_C3 = {};
@@ -206,8 +209,9 @@ namespace ePhotosynthesis {
   const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::docs = {
-    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC0, "Maximal relaxation constant for changes in the ‘rate constant’ of heat dissipation, which is one term borrowed from Laisk et al., 1997;"},
-    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC , "Maximal relaxation constant for changes in ‘rate constant’ of heat dissipation under a particular Xstate,Laisk et al. (1997)"}
+    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC0 , "Maximal relaxation constant for changes in the ‘rate constant’ of heat dissipation, which is one term borrowed from Laisk et al., 1997;"},
+    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC  , "Maximal relaxation constant for changes in ‘rate constant’ of heat dissipation under a particular Xstate,Laisk et al. (1997)"},
+    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kdm0, "Maximum heat dissipation ‘rate constant’"}
   };
   template<>
   std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::value_flags = {};
@@ -1186,48 +1190,51 @@ namespace ePhotosynthesis {
   };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::all = {
-    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k1 ,
-    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn1,
-    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)km1,
-    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke2,
-    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke3,
-    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k6 ,
-    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kc ,
-    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ko ,
-    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k7 ,
-    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kr ,
-    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn7,
-    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RCA
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k1       ,
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn1      ,
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)km1      ,
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke2      ,
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke3      ,
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k6       ,
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kc       ,
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ko       ,
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k7       ,
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kr       ,
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)factor_n7,
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn7      ,
+    ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RCA      
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::names = {
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k1 , "k1" },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn1, "kn1"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)km1, "km1"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke2, "Ke2"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke3, "Ke3"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k6 , "k6" },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kc , "kc" },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ko , "ko" },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k7 , "k7" },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kr , "kr" },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn7, "kn7"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RCA, "RCA"}
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k1       , "k1"       },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn1      , "kn1"      },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)km1      , "km1"      },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke2      , "Ke2"      },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke3      , "Ke3"      },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k6       , "k6"       },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kc       , "kc"       },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ko       , "ko"       },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k7       , "k7"       },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kr       , "kr"       },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)factor_n7, "factor_n7"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn7      , "kn7"      },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RCA      , "RCA"      }
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::defaults = {
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k1 , 0.006                },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn1, 1.6e-3               },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)km1, 20e-6                },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke2, 0.1                  },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke3, 1.600                },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k6 , 2.5                  },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kc , 0.016                },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ko , 0.448                },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k7 , 10.0                 },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kr , 20.0e-3              },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn7, 1.0                  },
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RCA, 0.0000768403258029814}
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k1       , 0.006                },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn1      , 1.6e-3               },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)km1      , 20e-6                },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke2      , 0.1                  },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke3      , 1.600                },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k6       , 2.5                  },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kc       , 0.016                },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ko       , 0.448                },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k7       , 10.0                 },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kr       , 20.0e-3              },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)factor_n7, 1.0                  },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn7      , 0.5                  },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RCA      , 0.0000768403258029814}
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::defaults_C3 = {};
@@ -1237,18 +1244,19 @@ namespace ePhotosynthesis {
   const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::docs = {
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k1 , "The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco theVars->activase content or activity;"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn1, "The rate constant of E inactivation by binding of RuBP; Lazar 1999, with a lifetime of 5 ns at closed reaction center"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)km1, "The michaelis menton constant for RuBP with E."},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke2, "Data from Mate et al 1996. Unit: micormolar; Reference needed, a guess"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke3, "Data from Mate et al 1996. Unit: micormolar;"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k6 , "micromolar per meter square per second, transfered to unit"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kc , "Michaelis menton constant for CO2"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ko , "Michaelis menton constant for O2"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k7 , "The rate constant for ecm to ecmr"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kr , "The apparaent michaelis menton constant for RuBP"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn7, "Rate constants for RuBP dissociation from ECMR"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RCA, "1 / (60. * 216.9); The rate constant of the activation reaction which will be scaled by the concentration of Rubisco activase"}
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k1       , "The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco theVars->activase content or activity;"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn1      , "The rate constant of E inactivation by binding of RuBP; Lazar 1999, with a lifetime of 5 ns at closed reaction center"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)km1      , "The michaelis menton constant for RuBP with E."},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke2      , "Data from Mate et al 1996. Unit: micormolar; Reference needed, a guess"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke3      , "Data from Mate et al 1996. Unit: micormolar;"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k6       , "micromolar per meter square per second, transfered to unit"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kc       , "Michaelis menton constant for CO2"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ko       , "Michaelis menton constant for O2"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k7       , "The rate constant for ecm to ecmr"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kr       , "The apparaent michaelis menton constant for RuBP"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)factor_n7, "Scale factor for kn7"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn7      , "Rate constant for RuBP dissociation from ECMR"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RCA      , "1 / (60. * 216.9); The rate constant of the activation reaction which will be scaled by the concentration of Rubisco activase"}
   };
   template<>
   std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::value_flags = {};

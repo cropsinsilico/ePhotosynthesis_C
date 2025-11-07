@@ -1,0 +1,23 @@
+Table II.6: Molecular weight and catalytic number of the enzymes in photosynthetic carbon metabolism
+Name,EC,Molecular Weight (D),Catalytic number (s-1),Reference,Description,Symbol
+Rubisco,4.1.1.39,588000,2*,Spreitzer and Salvucci (2002),,
+PGA Kinase,2.7.2.3,45000,540,"Fifis and Scopes (1978), Bentahir et al (2000)",,
+GAP Dehydrogenase,1.2.1.12,180000,50,Speranza and Ferri (1982),,GAPDH
+Aldolase,4.1.2.13,7000,65,"Krueger and Sschnarrenberger (1983), Moorhead and Pplaxton (1990)",,
+FBPase,3.1.3.11,160000,22.9,"Tang et al. (2000), Reichert et al.(2000)",,FBPase
+Transketolase,2.2.1.1,160000,69,Nilsson et al (1998) Teige et al. (1989),,
+SBPase,3.1.3.37,66000,81,"Cadet et al. (1988), Cadet and Meunier (1987)",,SBPase
+PRK,2.7.1.19,90000,615,"Surek et al. (1985), Porter et al. (1986)",,PRK
+ADPG Pyrophospho-rylase,2.7.7.27,210000,546,"Kleczkowski et al. (1991), Li and Preiss(1992)",,ADPGPP
+Phosphoglycolate phosphatase,3.1.3.18,100000,292,"Kim et al. (2004), Kerr and Gear (1974)",,
+Glycerate Kinase,2.7.1.31,47000,200,"Kleczkowski et al. (1985), Kleczkowski and Randall (1988)",,
+Glycolalate oxidase,1.1.1.79,125000,437,"Kleczkowski et al. (1986), Zelitch(1955)",,
+Serine Glyoxylate aminotransferase,2.6.1.45,85000,97,"Ireland and Joy (1983), Paszkowski and Niedzielsa (1990)",,
+Glycerate dehydrogenase,1.1.1.29,90000,1629,"Julliard and Breton-Gilet (1997),  Izumi et al.(1990)",,
+Glutamate Glyoxylate aminotransferase,2.6.1.44,70800,54,Paszkowski and Niedzielska (1989),,
+Glycine decarboxylase,1.4.4.2,270000,18,"Hiraga and Kikuchi (1980), Kochi and Kikuchi (1974)",,
+6-phosphofructo-2-kinase,2.7.1.105,390000,9300,"Villadsen and Nielsen (2001), Baez et al. (2003)",,
+"fructose-2,6-bisphosphate 2-phosphatase",3.1.3.46,390000,1550,"Pilkis et al. (1987), Villadsen and Nielsen (2001),",,
+UDP Glucose pyrophosphorylase,2.7.7.9,53000,400,"Gustafson and Gander (1972), Sowokinos et al (1993)",,
+Sucrose phosphate synthase,2.4.1.14,480000,640,Sonnewald et al. (1993),,
+Sucrose phosphatase,3.1.3.24,120000,2500,"Echeverria and Salerno (1994), Lunn et al. (2000)",,

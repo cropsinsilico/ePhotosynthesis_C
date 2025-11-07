@@ -1639,6 +1639,7 @@ namespace ePhotosynthesis {
       NONE     ,		\
       RC0      ,		\
       RC       ,		\
+      kdm0     ,		\
       MAX
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_FIBF_RC : int {
@@ -1946,19 +1947,20 @@ namespace ePhotosynthesis {
 }
 namespace ePhotosynthesis {
   #define MEMBERS_RuACTRC		\
-      NONE     ,		\
-      k1       ,		\
-      kn1      ,		\
-      km1      ,		\
-      Ke2      ,		\
-      Ke3      ,		\
-      k6       ,		\
-      kc       ,		\
-      ko       ,		\
-      k7       ,		\
-      kr       ,		\
-      kn7      ,		\
-      RCA      ,		\
+      NONE          ,		\
+      k1            ,		\
+      kn1           ,		\
+      km1           ,		\
+      Ke2           ,		\
+      Ke3           ,		\
+      k6            ,		\
+      kc            ,		\
+      ko            ,		\
+      k7            ,		\
+      kr            ,		\
+      factor_n7     ,		\
+      kn7           ,		\
+      RCA           ,		\
       MAX
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_RuACT_RC : int {

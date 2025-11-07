@@ -688,7 +688,7 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ER  , "The concentration of inactive ER"},
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Eaf , "The total concentration of E, EC, AND ECM"},
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ECMR, "The concentration of ECMR"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, "The concentration of ECMR"}
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, "The concentration of RuBP"}
   };
   template<>
   std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::value_flags = {};

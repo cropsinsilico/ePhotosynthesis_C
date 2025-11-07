@@ -94,8 +94,8 @@ BFCondition* BF::_MB_con(const double t, const BFCondition* const BF_con, Variab
 
     dydt->BFHs = (theVars->HPR * theVars->BF_Vel.Vbf11 - Hrqb - Hvqi - theVars->BF_Vel.vbfn2);  // BFHs The proton and protonated buffer species in stroma. The proton concentration is not used in the MB procedure. The reason is that the proton concentration is buffered and therefore did not changed linerly with the generation of the protons.
     dydt->BFHl = (Hvqo1 + Hvqo2 + Hroe - theVars->HPR * theVars->BF_Vel.Vbf11);                 // BFHl The proton and protonated buffer species in lumen, similarly, we can only use the buff concentration, but, the proton concentration can not be used here.
-    dydt->PHs = -(theVars->HPR * theVars->BF_Vel.Vbf11 - Hrqb - Hvqi - theVars->BF_Vel.vbfn2) / 1000. / 0.015; // PHs, The changes of PH in stoma, 0.03 mol /PH from Laisk et al.
-    dydt->PHl = -(Hvqo1 + Hvqo2 + Hroe - theVars->HPR * theVars->BF_Vel.Vbf11) / 1000. / 0.015; //   PHl  The changes in PH of lumen, 0.03 is from Curz et al., 2001, Biochemistry.
+    dydt->PHs = -(theVars->HPR * theVars->BF_Vel.Vbf11 - Hrqb - Hvqi - theVars->BF_Vel.vbfn2) / 1000. / theVars->BF_RC.KBs; // PHs, The changes of PH in stoma, 0.03 mol /PH from Laisk et al.
+    dydt->PHl = -(Hvqo1 + Hvqo2 + Hroe - theVars->HPR * theVars->BF_Vel.Vbf11) / 1000. / theVars->BF_RC.KBl; //   PHl  The changes in PH of lumen, 0.03 is from Curz et al., 2001, Biochemistry.
     dydt->NADPH = theVars->BF_Vel.vbfn2 - theVars->BF_Vel.VsNADPH;
 #ifdef INCDEBUG
     DEBUG_DELTA(dydt)

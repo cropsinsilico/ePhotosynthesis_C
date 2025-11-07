@@ -65,7 +65,7 @@ void XanCycle::_initCalc(Variables *theVars,
     XanCycle::kva *= theVars->XanCycleRatio[0] / 60.; // Ruth Frommolt et a; 2001; Planta
     XanCycle::kaz *= theVars->XanCycleRatio[1] / 60.; // Ruth Frommolt et a; 2001; Planta
     XanCycle::kza *= theVars->XanCycleRatio[2] / 60.; // Ruth Frommolt et a; 2001; Planta
-    XanCycle::kav *= theVars->XanCycleRatio[3]; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
+    XanCycle::kav *= theVars->XanCycleRatio[3] / 60; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
     
     XanCycle_con->Vx = XanCycle::Vx_ * 0.37;
     XanCycle_con->Ax = XanCycle::Ax_ * 0.37;

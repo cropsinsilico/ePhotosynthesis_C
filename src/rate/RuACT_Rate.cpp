@@ -93,12 +93,12 @@ void RuACT::_Rate(const double t, const RuACTCondition* const RuACT_Con, Variabl
     if (FATP < 0.6)
         FATP = 0.6;
 
-    const double factor_n7 = theVars->RuACT_RC.kn7;
+    const double factor_n7 = theVars->RuACT_RC.factor_n7;
 
     theVars->RuACT_Vel.v1 = RCA * RuACT_Con->ER * FATP;
     theVars->RuACT_Vel.vn1 = theVars->RuACT_RC.kn1 * E * RuBP;
     theVars->RuACT_Vel.v7 = theVars->RuACT_RC.k7 * ECM * RuBP;
-    theVars->RuACT_Vel.vn7 = RuACT_Con->ECMR * 0.5 * factor_n7;
+    theVars->RuACT_Vel.vn7 = theVars->RuACT_RC.kn7 * RuACT_Con->ECMR * factor_n7;
     theVars->RuACT_Vel.v6_1 = RuACT_Con->ECMR * theVars->RuACT_RC.k6 * C /
                               (C + theVars->RuACT_RC.kc * (1. + O / theVars->RuACT_RC.ko));
     theVars->RuACT_Vel.v6_2 = RuACT_Con->ECMR * theVars->RuACT_RC.k6 / 3. * O /

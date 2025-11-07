@@ -711,7 +711,7 @@ public:
        Variables::getVarCalculated or Variables::getCalculatedVars
        methods.
      */
-    EPHOTO_API const std::vector<std::string>&
+    EPHOTO_API std::vector<std::string>
       getCalculatedVarNames() const;
     /**
        Populate a map with calculated variables.
@@ -837,16 +837,20 @@ public:
     static void _readParam(const std::string& fname,
                            std::map<std::string, std::string>& inputs,
                            Variables* theVars = nullptr,
+                           const bool init = false,
                            const std::string& context="_readParam");
  public:
     /**
        Update the default parameters from a map.
        \param[in, out] inputs Map of parameters that should be added.
        \param[in] theVars Variable instance that should be updated.
+       \param[in] init If true, condition parameters will be used to set
+         defaults.
        \param[in] context String providing context for errors.
      */
     EPHOTO_API static void updateParam(std::map<std::string, std::string>& inputs,
                                        Variables* theVars = nullptr,
+                                       const bool init = false,
                                        const std::string& context="updateParam");
     
     /**
@@ -865,16 +869,22 @@ public:
     /**
        Read parameters from a file.
        \param[in] fname File to read.
+       \param[in] init If true, condition parameters will be used to set
+         defaults.
      */
-    EPHOTO_API void readParam(const std::string& fname);
+    EPHOTO_API void readParam(const std::string& fname,
+                              const bool init = false);
     /**
        Read parameters from a file, checking for duplicates
        \param[in] fname File to read.
        \param[in, out] inputs Map that read variables should be checked
          against for duplicates and copied into.
+       \param[in] init If true, condition parameters will be used to set
+         defaults.
      */
     EPHOTO_API void readParam(const std::string& fname,
-                              std::map<std::string, std::string>& inputs);
+                              std::map<std::string, std::string>& inputs,
+                              const bool init = false);
     /**
        Read Enzyme activities from a file.
        \param[in] File to read.

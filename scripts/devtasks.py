@@ -11,6 +11,7 @@ import glob
 import difflib
 import site
 from collections import OrderedDict
+from collections.abc import MutableMapping
 import matplotlib.pyplot as plt
 import numpy as np
 from io import StringIO
@@ -21,6 +22,7 @@ _utils_dir = os.path.join(_source_dir, 'utils')
 _data_dir = os.path.join(_source_dir, 'tests', 'data')
 _scripts_dir = os.path.abspath(os.path.dirname(__file__))
 _param_dir = os.path.join(_source_dir, 'param')
+_zhu2012_dir = os.path.join(_source_dir, 'zhu2012')
 
 _platform = None
 _library_path_var = None
@@ -56,7 +58,8 @@ def search_directory(pattern, directory, ext=None, check=False,
         if ignore_prefix and fname.startswith(tuple(ignore_prefix)):
             continue
         fname = os.path.relpath(fname, _source_dir)
-        out[fname] = line
+        out.setdefault(fname, [])
+        out[fname].append(line.lstrip())
     return out
 
 
@@ -131,7 +134,8 @@ def read_default_param(with_prefixes=False):
     param_files = sorted(glob.glob(os.path.join(_param_dir, '*.txt')))
     for param_file in param_files:
         base = os.path.splitext(os.path.basename(param_file))[0]
-        if base in ["README", "RedoxReg_MP", "VAR"]:
+        if base in ["README", "RedoxReg_MP", "VAR",
+                    "PR_RC", "PS_RC", "SUCS_RC", "XanCycle_RC"]:
             continue
         mod, pt = base.rsplit('_', maxsplit=1)
         iparam = read_param(param_file, default=True)
@@ -186,13 +190,18 @@ def write_param_table(fname, param, title=None):
     import pandas as pd
     if title is None:
         title = ''
+    if not isinstance(param, pd.DataFrame):
+        param = pd.DataFrame(param)
     assert isinstance(param, pd.DataFrame)
     with open(fname, 'w') as fd:
         fd.write(title + '\n')
         param.to_csv(fd, index=False)
 
 
-def write_param(fname, param, sort=False, comment_incomplete=False):
+def write_param(fname, param, sort=False, comment_incomplete=False,
+                exclude_param=None):
+    if exclude_param is None:
+        exclude_param = []
     maxlen = len(max(param.keys(), key=len)) + 4
     maxlen_value = len(
         max([f'{v["value"]}' if isinstance(v, dict) else f'{v}'
@@ -221,6 +230,7 @@ def write_param(fname, param, sort=False, comment_incomplete=False):
         v = param[k]
         pad = ' ' * (maxlen - len(k))
         comment = ''
+        added_values = []
         if isinstance(v, dict):
             comment = v.get('comment', '')
             value = v['value']
@@ -231,14 +241,21 @@ def write_param(fname, param, sort=False, comment_incomplete=False):
                 comment += v.comment
             if comment_incomplete and not v.is_complete:
                 k = f'# {k}'
+        elif isinstance(v, list):
+            value = v[0]
+            added_values = v[1:]
         else:
             value = v
+        if k in exclude_param:
+            k = f'# {k}'
         vstr = f'{value}'
         if comment:
             comment = (
                 ' ' * (maxlen_value - len(vstr) + 2) + f'# {comment}'
             )
         fd.write(f'{k}{pad}{vstr}{comment}\n')
+        for x in added_values:
+            fd.write(' ' * maxlen + f'{x}\n')
     if fname is True:
         return fd.getvalue()
     fd.close()
@@ -883,10 +900,19 @@ class DuplicateParameterError(ParameterError):
         super(DuplicateParameterError, self).__init__(self.msg)
 
 
+class ParameterSet(OrderedDict):
+
+    def get_original(self, k0):
+        for v in self.values():
+            if v.original_name == k0:
+                return v
+        raise KeyError(k0)
+
+
 class Parameter:
 
     _default_attr = [
-        'name', 'mod', 'pt', 'default', 'comment', 'ffinalize',
+        'name', 'mod', 'pt', 'default', 'comment',  # 'conversion',
     ]
     _table_attr = [
         'title', 'description', 'reference', 'units',  # 'value',
@@ -896,7 +922,7 @@ class Parameter:
                  value=None, value_c3=None, comment=None,
                  title=None, description=None, reference=None,
                  units=None, default=None, original_name=None,
-                 original_value=None, ffinalize=None):
+                 original_value=None, conversion=None):
         if aliases is None:
             aliases = []
         if isinstance(aliases, dict):
@@ -926,40 +952,79 @@ class Parameter:
         self.aliases = OrderedDict()
         self.default = default
         self.choices = OrderedDict()
-        self.ffinalize = ffinalize
+        self.conversion = conversion
+        self.default_diff = np.nan
         for v in aliases:
             self.add_alias(v)
 
     def __str__(self):
         return self._make_string()
 
-    def finalize(self, defaults=None, existing=None, aliases=None):
-        if self.is_complete and self.ffinalize and existing:
-            self.ffinalize(self, existing)
+    def finalize(self, defaults=None, existing=None, aliases=None,
+                 **kwargs):
+        if self.is_complete and existing:
+            if self.fullname == 'BF::COND::PHl' and not self.conversion:
+                pdb.set_trace()
+            if self.conversion:
+                self.apply_conversion(existing)
         if defaults:
-            self.check_against_default(defaults, aliases=aliases)
+            self.check_against_default(defaults, aliases=aliases,
+                                       **kwargs)
 
-    def check_against_default(self, defaults, aliases=None):
+    def apply_conversion(self, existing):
+        self.original_value = self.value
+        if hasattr(self, f'convert_{self.conversion}'):
+            getattr(self, f'convert_{self.conversion}')(existing)
+        else:
+            try:
+                self.value *= float(self.conversion)
+            except ValueError:
+                pass
+        self.conversion = None
+
+    def convert_oxidized2total(self, existing):
+        base = self.original_name[:-1]
+        self.value += existing.get_original(base + 'r').value
+
+    def convert_H2pH(self, existing):
+        self.value = -np.log10(self.value / 1000.)
+
+    def check_against_default(self, defaults, aliases=None,
+                              min_diff=np.inf, excluded=None):
+        # TODO: include default value & data from tables in comment
+        if excluded is None:
+            excluded = []
         self.comment = ''
+        comment_values = []
         if not self.is_complete:
-            self.comment += "No match"
-            return
-        mod = self.mod
-        pt = self.pt
-        name = self.name
-        if name not in defaults[self.mod][self.pt]:
-            if aliases is None:
-                aliases = self.get_aliases()
-            if name in aliases:
-                mod, pt, name = aliases[name].split('::')
-        default = self.from_default_entry(
-            self.name, self.mod, self.pt,
-            defaults[mod][pt][name],
-        )
-        if not self.value_matches_default(default):
-            self.comment += 'Does not match any default values'
-        elif not self.value_matches_default(default, no_c3=True):
-            self.comment += 'Matches default C3 value'
+            comment_values += ['No match']
+            self.default_diff = np.inf
+            excluded.append(self.fullname)
+        else:
+            mod = self.mod
+            pt = self.pt
+            name = self.name
+            if name not in defaults[self.mod][self.pt]:
+                if aliases is None:
+                    aliases = self.get_aliases()
+                if name in aliases:
+                    mod, pt, name = aliases[name].split('::')
+            if name not in defaults[mod][pt]:
+                print(mod, pt, name)
+                pdb.set_trace()
+            default = self.from_default_entry(
+                self.name, self.mod, self.pt,
+                defaults[mod][pt][name],
+            )
+            self.default_diff = self.diff_default(default)
+            if self.default_diff > 0.01:
+                comment_values += [
+                    f'{self.default_diff}',
+                    f'{default.value}', f'{default.value_c3}'
+                ]
+            if self.default_diff > min_diff:
+                excluded.append(self.fullname)
+        self.comment += ';'.join(comment_values)
 
     def _make_string(self, indent=0, tab='    ', extras=None, prefix=''):
         if extras is None:
@@ -1022,18 +1087,28 @@ class Parameter:
             kwargs['units'] = kwargs['units'].replace('\xad', '-')
             kwargs['units'] = kwargs['units'].replace('--', '-')
         kconv = 'C++ Parameter conversion'
-        if kconv in row and not isinstance(row[kconv], float):
-            print("Non-float conversion:")
-            print(row)
-            pdb.set_trace()
-        if ((kconv in row and isinstance(row[kconv], float)
-             and not math.isnan(row[kconv]))):
-            kwargs['original_value'] = value
-            value *= row[kconv]
+        if kconv in row and not ((isinstance(row[kconv], float)
+                                  and np.isnan(row[kconv]))
+                                 or row[kconv] == 'nan'):
+            kwargs['conversion'] = row[kconv]
         name = name.replace('\xad', '-')
         return Parameter(name, aliases=aliases,
                          value=value, title=title,
                          original_name=original_name, **kwargs)
+
+    def update_row(self, df, index):
+        updated = False
+        if not self.is_complete:
+            return updated
+        new_value = ",".join(self.all_names)
+        if df.loc[index, 'C++ Parameter'] != new_value:
+            df.loc[index, 'C++ Parameter'] = new_value
+            updated = True
+        if ((self.conversion
+             and df.loc[index, 'C++ Parameter conversion'] != self.conversion)):
+            df.loc[index, 'C++ Parameter conversion'] = self.conversion
+            updated = True
+        return updated
 
     @classmethod
     def user_selection(cls, choices, preamble=None, matchto=None,
@@ -1197,9 +1272,33 @@ class Parameter:
                 discard_current=True, ignore=[name],
             )
 
+    def diff_default(self, x, only_c3=False, no_c3=False):
+        if x.default:
+            return self.diff_default(x.default, only_c3=only_c3,
+                                     no_c3=no_c3)
+
+        def do_diff(a, b):
+            if a is None:
+                return None
+            if a == 0 or b == 0:
+                return np.abs(a - b)
+            base = a if np.abs(a) < np.abs(b) else b
+            return np.abs((a - b) / base)
+
+        diff_value = do_diff(x.value, self.value)
+        diff_value_c3 = do_diff(x.value_c3, self.value)
+        if only_c3:
+            return diff_value_c3
+        if no_c3:
+            return diff_value
+        if diff_value_c3 is None:
+            return diff_value
+        return min([diff_value, diff_value_c3])
+
     def value_matches_default(self, x, only_c3=False, no_c3=False):
         if x.default:
-            return self.value_matches_default(x.default, only_c3=only_c3)
+            return self.value_matches_default(x.default, only_c3=only_c3,
+                                              no_c3=no_c3)
         if (not only_c3) and self.value == x.value:
             return True
         if not no_c3:
@@ -1208,14 +1307,23 @@ class Parameter:
 
     def add_alias(self, x):
         if isinstance(x, str):
-            return self.add_alias(Parameter(x, value=self.value))
+            kws = {
+                k: getattr(self, k) for k in [
+                    'value', 'value_c3',
+                    'original_name', 'original_value',
+                ]
+            }
+            return self.add_alias(Parameter(x, **kws))
         if x.fullname in self.aliases:
             return
         self.aliases[x.fullname] = x
 
     def add_choice(self, x):
         if x.default:
+            conversion = x.conversion
             x = x.default
+            if conversion:
+                x.conversion = conversion
         else:
             x.clear_table()
         if ((x.fullname in self.choices
@@ -1242,7 +1350,7 @@ class Parameter:
     def update_from_default(self, mod, pt=None, x=None):
         if isinstance(mod, Parameter):
             assert pt is None and x is None
-            for k in self._default_attr:
+            for k in self._default_attr + ['conversion']:
                 setattr(self, k, getattr(mod, k))
             self.default = mod
         else:
@@ -1372,7 +1480,8 @@ class Parameter:
                 ktry = krep + ktry
         else:
             ktry = k.replace(krep, ksub)
-        print(f"{k}: Trying {ktry} (mod={mod}, pt={pt})")
+        if kwargs.get('verbose', False):
+            print(f"{k}: Trying {ktry} (mod={mod}, pt={pt})")
         alternative = self.alternative(name=ktry)
         try:
             alternative.complete(mod=mod, pt=pt, **kwargs)
@@ -1384,10 +1493,10 @@ class Parameter:
 
     def complete(self, mod=None, pt=None,
                  defaults=None, aliases=None, existing=None,
-                 ask_user=True, ffinalize=None):
+                 ask_user=True, conversion=None, verbose=False):
+        if conversion is not None:
+            self.conversion = conversion
         if self.is_complete:
-            if ffinalize is not None:
-                self.ffinalize = ffinalize
             return
         if defaults is None:
             defaults = read_default_param()
@@ -1424,7 +1533,8 @@ class Parameter:
                     )
                     self.add_choice(alternative)
         # Alternative names
-        kws = dict(defaults=defaults, aliases=aliases, existing=existing)
+        kws = dict(defaults=defaults, aliases=aliases, existing=existing,
+                   verbose=verbose)
 
         def do_try_replace(*args, **kwargs):
             if mod:
@@ -1435,50 +1545,52 @@ class Parameter:
                 if kwargs.get('mod', pt) != pt:
                     return
                 kwargs.setdefault('pt', pt)
+            if kwargs.get('conversion', None):
+                if conversion:
+                    return
+            else:
+                kwargs['conversion'] = conversion
             kwargs.update(**kws)
             self.try_replace(*args, **kwargs)
 
-        do_try_replace('Cyt f', 'cytf1', **kws)
-        do_try_replace('cyt f', 'cytf1', **kws)
-        do_try_replace('-', 'n', **kws)
-        do_try_replace('+', 'p', **kws)
-        do_try_replace('bf', mod='BF', **kws)
-        do_try_replace('BF', mod='BF', prefix=True, **kws)
-        do_try_replace('ra', mod='RuACT', **kws)
-        do_try_replace('GADPH', 'GAPDH', **kws)
-        do_try_replace('RuACT', 'RubACT', **kws)
-        do_try_replace('ADPGPP', 'ATPGPP', **kws)
-        do_try_replace('K+', 'K', **kws)
-        do_try_replace('Mg2+', 'Mg', **kws)
-        do_try_replace('Cl-', 'Cl', **kws)
-        # do_try_replace('AU', 'A_U', **kws)
-        # do_try_replace('UA', 'U_A', **kws)
-        do_try_replace('red', 'r', suffix=True, **kws)
-        do_try_replace('r', mod='RROEA', pt='COND', suffix=True, **kws)
-        do_try_replace('Activase', 'RuACT', **kws)
-        # do_try_replace('Rubisco', 'RuBP', **kws)
-        do_try_replace('Ke', 'KE', prefix=True, **kws)
-        do_try_replace('Vm', 'V', prefix=True, mod='PS', **kws)
-        do_try_replace('Vm', 'V', prefix=True, mod='PR', **kws)
-        do_try_replace('Vm', 'V', prefix=True, mod='SUCS', **kws)
-        do_try_replace('ox', 'o', suffix=True, **kws)
-        do_try_replace('T', suffix=True, swap_prefix_suffix=True, **kws)
-        # do_try_replace('o', '0', suffix=True, **kws)
-        do_try_replace('k', 'K', prefix=True, if_no_choices=True, **kws)
-        do_try_replace('a', '1', suffix=True, if_no_choices=True, **kws)
-        do_try_replace('b', '2', suffix=True, if_no_choices=True, **kws)
-        do_try_replace('Cytc1', 'Cytf', **kws)
-
-        def oxidized2total(p, existing):
-            base = p.fullname[:-1]
-            p.value = existing[base + 'o'] + existing[base + 'r']
-
+        do_try_replace('Cyt f', 'cytf1')
+        do_try_replace('cyt f', 'cytf1')
+        do_try_replace('-', 'n')
+        do_try_replace('+', 'p')
+        do_try_replace('bf', mod='BF')
+        do_try_replace('BF', mod='BF', prefix=True)
+        do_try_replace('ra', mod='RuACT')
+        do_try_replace('GADPH', 'GAPDH')
+        do_try_replace('RuACT', 'RubACT')
+        do_try_replace('ADPGPP', 'ATPGPP')
+        do_try_replace('K+', 'K')
+        do_try_replace('Mg2+', 'Mg')
+        do_try_replace('Cl-', 'Cl')
+        # do_try_replace('AU', 'A_U')
+        # do_try_replace('UA', 'U_A')
+        do_try_replace('red', 'r', suffix=True)
+        do_try_replace('r', mod='RROEA', pt='COND', suffix=True)
+        do_try_replace('Activase', 'RuACT')
+        # do_try_replace('Rubisco', 'RuBP')
+        do_try_replace('Ke', 'KE', prefix=True)
+        do_try_replace('Vm', 'V', prefix=True, mod='PS')
+        do_try_replace('Vm', 'V', prefix=True, mod='PR')
+        do_try_replace('Vm', 'V', prefix=True, mod='SUCS')
+        do_try_replace('ox', 'o', suffix=True)
+        do_try_replace('T', suffix=True, swap_prefix_suffix=True)
+        # do_try_replace('o', '0', suffix=True)
+        do_try_replace('k', 'K', prefix=True, if_no_choices=True)
+        do_try_replace('a', '1', suffix=True, if_no_choices=True)
+        do_try_replace('b', '2', suffix=True, if_no_choices=True)
+        do_try_replace('Cytc1', 'Cytf')
         do_try_replace('o', 'T', suffix=True,
                        mod='RROEA', pt='POOL',
-                       ffinalize=oxidized2total, **kws)
+                       conversion='oxidized2total', **kws)
         do_try_replace('o', '', suffix=True,
                        mod='RROEA', pt='POOL',
-                       ffinalize=oxidized2total, **kws)
+                       conversion='oxidized2total', **kws)
+        do_try_replace('Hf', 'PH', prefix=True,
+                       conversion='H2pH', **kws)
         self.update_from_choices(existing=existing, ask_user=ask_user)
         if existing and self.fullname in existing:
             # Exclue existing values from choices in update_from_choices?
@@ -1490,8 +1602,8 @@ class Parameter:
                 f'Could not locate parameter \"{self.fullname}\" '
                 f'(mod={mod}, pt={pt}):\n\n{self}'
             )
-        if ffinalize:
-            self.ffinalize = ffinalize
+        if conversion:
+            self.conversion = conversion
 
     @classmethod
     def get_aliases(cls):
@@ -1507,9 +1619,13 @@ class zhu2012(SubTask):
     def adjust_args(cls, args):
         if args.split_tables:
             args.complete_param = True
+        if not args.exclude_param:
+            args.exclude_param = []
+        args.exclude_mod = []  # 'RROEA']
+        args.exclude_pt = []
         cls.prefix_path_args(args, ['tables_file', 'table_base',
                                     'param_file'],
-                             prefix=_scripts_dir)
+                             prefix=_zhu2012_dir)
         super(zhu2012, cls).adjust_args(args)
 
     def run_commands(self, args, **kwargs):
@@ -1529,6 +1645,8 @@ class zhu2012(SubTask):
                 fname = f'{args.table_base}{i}.csv'
                 with open(fname, 'w') as fd:
                     fd.write(table)
+                if i == 5:
+                    self.convert_enzyme_table_file(fname)
             if os.path.isfile(args.param_file):
                 os.remove(args.param_file)
         tables = sorted(glob.glob(f'{args.table_base}*.csv'))
@@ -1536,7 +1654,7 @@ class zhu2012(SubTask):
             args.split_tables = True
             return self.run_commands(args, **kwargs)
         if args.complete_param:
-            existing = OrderedDict()
+            existing = ParameterSet()
             if os.path.isfile(args.param_file):
                 os.remove(args.param_file)
             for ftable in tables:
@@ -1544,22 +1662,43 @@ class zhu2012(SubTask):
                     ftable, defaults=defaults, aliases=aliases,
                     existing=existing, complete=True,
                     inspect_missing=args.inspect_missing,
+                    inspect_param=args.inspect_param,
                     ignore_existing_names=args.ignore_existing_names,
+                    verbose=args.verbose,
                 )
             args.inspect_missing = False
+            args.inspect_param = []
         if args.make_param:
-            existing = OrderedDict()
+            existing = ParameterSet()
             for ftable in tables:
                 self.read_table_file(
                     ftable, defaults=defaults, aliases=aliases,
                     existing=existing,
                     inspect_missing=args.inspect_missing,
+                    inspect_param=args.inspect_param,
+                    verbose=args.verbose,
                 )
             for k, v in existing.items():
                 v.finalize(defaults=defaults, existing=existing,
-                           aliases=aliases)
+                           aliases=aliases, excluded=args.exclude_param,
+                           min_diff=args.min_diff)
+                if ((v.mod in args.exclude_mod
+                     or v.pt in args.exclude_pt)):
+                    args.exclude_param.append(v.fullname)
+            include = [
+                'SUCS::MOD::KE61',
+                'RuACT::RC::k7',
+            ]
+            args.exclude_param += [
+                'RuACT::COND::ECMR',
+                'FIBF::RC::kdm0',
+            ]
+            for k in include:
+                if k in args.exclude_param:
+                    args.exclude_param.remove(k)
             write_param(args.param_file, existing, sort=args.sort_param,
-                        comment_incomplete=(not args.include_missing))
+                        comment_incomplete=(not args.include_missing),
+                        exclude_param=args.exclude_param)
             print(f"WROTE {args.param_file}")
 
     @classmethod
@@ -1567,13 +1706,16 @@ class zhu2012(SubTask):
                         existing=None, complete=False,
                         incremental_update=False,
                         ignore_existing_names=False,
-                        inspect_missing=False):
+                        inspect_missing=False, inspect_param=None,
+                        verbose=False):
         if defaults is None:
             defaults = read_default_param()
         if aliases is None:
             aliases = Parameter.get_aliases()
         if existing is None:
-            existing = OrderedDict()
+            existing = ParameterSet()
+        if inspect_param is None:
+            inspect_param = []
         df, title = read_param_table(ftable)
         if 'Value' not in df:
             return
@@ -1590,26 +1732,64 @@ class zhu2012(SubTask):
                 continue
             if p.is_complete:
                 p.add_to_registry(
-                    existing, defaults=defaults, aliases=aliases
+                    existing, defaults=defaults, aliases=aliases,
+                    verbose=verbose,
                 )
             index2param[index] = p
         for index, p in index2param.items():
             if not p.is_complete:
                 p.add_to_registry(existing, complete=complete,
-                                  defaults=defaults, aliases=aliases)
+                                  defaults=defaults, aliases=aliases,
+                                  verbose=verbose)
             if not p.is_complete:
-                if inspect_missing:
+                if inspect_missing or p.name in inspect_param:
                     p.gather_info()
                 continue
-            new_value = ",".join(p.all_names)
-            if df.loc[index, 'C++ Parameter'] == new_value:
-                continue
-            df.loc[index, 'C++ Parameter'] = new_value
-            if complete and incremental_update:
+            elif ((p.original_name in inspect_param
+                   or p.name in inspect_param)):
+                p.gather_info()
+            updated = p.update_row(df, index)
+            if updated and complete and incremental_update:
                 write_param_table(ftable, df, title=title)
         if complete:
             write_param_table(ftable, df, title=title)
         return existing
+
+    @classmethod
+    def convert_enzyme_table_file(cls, ftable, df=None, title=None):
+        ftable_out = '_split'.join(os.path.splitext(ftable))
+        if df is None:
+            df, title = read_param_table(ftable)
+        assert 'Molecular Weight (D)' in df
+        col2prefix = {
+            'Molecular Weight (D)': 'mw_',
+            'Catalytic number (s-1)': 'SA_',
+        }
+        col2units = {
+            k: k.split('(')[-1].split(')')[0]
+            for k in col2prefix.keys()
+        }
+        out = OrderedDict()
+        for index, row in df.iterrows():
+            symbol = row['Symbol']
+            if not isinstance(symbol, str):
+                continue
+            for col, prefix in col2prefix.items():
+                iout = {
+                    'Name': prefix + symbol,
+                    'Value': np.float64(row[col]),
+                    'Units': col2units[col],
+                    'C++ Parameter': np.nan,
+                }
+                if iout['Name'] == 'mw_GAPDH':
+                    iout['C++ Parameter'] = 'RROEA::POOL::mw_GAPDH'
+                for k in ['Reference', 'Description']:
+                    iout[k] = row[k]
+                for k, v in iout.items():
+                    out.setdefault(k, [])
+                    out[k].append(v)
+        write_param_table(ftable_out, out, title=title)
+        return ftable_out
 
 
 class ephoto(BuildSubTask):
@@ -1737,12 +1917,30 @@ class ephoto_iterations(ephoto):
             'ALL::VARS::TestLi': 'umol m**-2 s**-1',
         }
         if args.light_profile.startswith('Zhu2012'):
+            args.make_equivalent_to_matlab = True
             args.evn_file = None
+            if args.match_param == 'matlab':
+                args.evn_file = 'InputEvn_MATLAB_master.txt'
+                cls.prefix_path_args(args, ['evn_file'],
+                                     prefix=_data_dir)
+            elif args.match_param:
+                if args.match_param == 'regen':
+                    subprocess.run(
+                        [sys.executable,
+                         os.path.join(_scripts_dir, 'devtasks.py'),
+                         'zhu2012', '--make-param', '--split-tables'],
+                        cwd=_source_dir,
+                        check=True,
+                    )
+                args.evn_file = 'Zhu2012_param.txt'
+                cls.prefix_path_args(args, ['evn_file'],
+                                     prefix=_zhu2012_dir)
             args.param.update(
-                O2_cond=0.210,  # mmol mol-1
+                O2_cond=0.210,  # umol mol-1, 210 mmol mol-1
                 CO2_cond=280,   # umol mol-1
                 Tp=25,          # C
                 GP=1,
+                RUBISCOMETHOD=2,
                 # ProteinTotalRatio=0.973,
                 # GRNC=1.0,
             )
@@ -2245,8 +2443,8 @@ if __name__ == "__main__":
         '--param-file', type=str, default='Zhu2012_param.txt',
         help="Parameter file that should be generated from the tables")
     parser_zhu2012.add_argument(
-        '--sort-param', nargs='?', const=True, default=False,
-        choices=[False, True, 'comment', 'name'],
+        '--sort-param', nargs='?', const=True, default='default_diff',
+        choices=[False, True, 'comment', 'name', 'default_diff'],
         help="How parameters should be sorted in the file")
     parser_zhu2012.add_argument(
         '--split-tables', action='store_true',
@@ -2268,6 +2466,21 @@ if __name__ == "__main__":
         '--include-missing', action='store_true',
         help=('Include parameters that don\'t have an assigned '
               'version for the C++ code'))
+    parser_zhu2012.add_argument(
+        '--exclude-param', type=str, action='extend',
+        help="Names of parameters that should be excluded")
+    parser_zhu2012.add_argument(
+        '--inspect-param', type=str, action='append',
+        help="Names of parameters that should be inspected")
+    parser_zhu2012.add_argument(
+        '--min-diff', type=float, default=np.inf,
+        help=("Minimum difference that there should be between the "
+              "Zhu 2012 parameter value and the default C++ code value "
+              "to include it in the generated parameter file"))
+    parser_zhu2012.add_argument(
+        '--verbose', action='store_true',
+        help="Turn on verbose parameter matching output")
+
     parser_ephoto = subparsers.add_parser(
         'ephoto', help="Run ephoto executable",
         func=ephoto)
@@ -2301,6 +2514,10 @@ if __name__ == "__main__":
         default='Zhu2012',
         help=("Create an input file that produces a desired light "
               "profile"))
+    parser_iterations.add_argument(
+        '--match-param', nargs='?', const=True,
+        choices=[True, 'regen', 'matlab'],
+        help="Run with the parameters explicitly set to match the paper")
     # parser_yggdrasil = subparsers.add_parser(
     #     'yggdrasil',
     #     help="Return information about the yggdrasil interface library",

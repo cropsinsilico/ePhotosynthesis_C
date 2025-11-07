@@ -42,6 +42,8 @@ void FIBF::_initOrig(Variables *theVars, FIBFCondition* FIBF_con) {
 
     const double FIBF_PQT = 8.;
     theVars->FIBF_Pool.PQT = FIBF_PQT;
+    FIBF_con->kd = pow(10, 8) * 0.5;
+    theVars->FIBF_RC.kdm0 = 5. * pow(10., 8.);
     _initCalc(theVars, FIBF_con);
 
 }

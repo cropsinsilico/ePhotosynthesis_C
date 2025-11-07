@@ -136,9 +136,9 @@ void SUCS::_initCalc(Variables *theVars, SUCSCondition* SUCS_Con) {
         //////////////////////////////////////////////////////////////////
         // Here is some pool values      //
         //////////////////////////////////////////////////////////////////
-        theVars->SUCS_Pool.ATc = 1.0 * theVars->SUCSRatio[12]; // mM
-        theVars->SUCS_Pool.UTc = 1.5 * theVars->SUCSRatio[13]; // mM
-        theVars->SUCS_Pool.PTc = 15. * theVars->SUCSRatio[14];  //
+        theVars->SUCS_Pool.ATc *= theVars->SUCSRatio[12]; // mM
+        theVars->SUCS_Pool.UTc *= theVars->SUCSRatio[13]; // mM
+        theVars->SUCS_Pool.PTc *= theVars->SUCSRatio[14];  //
     }
     SUCS::KE5Ratio = 1. + SUCS::KE541 + 1. / SUCS::KE531;
     SUCS::ADPc = theVars->SUCS_Pool.ATc - SUCS::ATPc;

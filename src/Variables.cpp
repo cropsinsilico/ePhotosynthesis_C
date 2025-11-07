@@ -1064,7 +1064,7 @@ Variables::getCalculatedVariableRegistry() {
 #undef ADD_VAR
   return out;
 }
-const std::vector<std::string>&
+std::vector<std::string>
 Variables::getCalculatedVarNames() const {
     std::vector<std::string> out;
     const std::map<std::string, std::vector<MODULE> >& registry = Variables::getCalculatedVariableRegistry();
@@ -1273,16 +1273,16 @@ void Variables::setRecord(ValueSet_t* x,
 
 void Variables::_readParam(const std::string& fname,
                            std::map<std::string, std::string>& inputs,
-                           Variables* theVars,
+                           Variables* theVars, const bool init,
                            const std::string& context) {
     if (fname.empty())
         return;
     std::cout << "PARAMETER FILE PROVIDED: " << fname << std::endl;
     readFile(fname, inputs);
-    updateParam(inputs, theVars, context);
+    updateParam(inputs, theVars, init, context);
 }
 void Variables::updateParam(std::map<std::string, std::string>& inputs,
-                            Variables* theVars,
+                            Variables* theVars, const bool init,
                             const std::string& context) {
     std::map<std::string, std::string> add_values;
     std::vector<std::string> rm_values;
@@ -1312,12 +1312,19 @@ void Variables::updateParam(std::map<std::string, std::string>& inputs,
             rm_values.push_back(it->first);
             continue;
         }
-        if (controlVar)
-            controlStr = "[CONTROL VARIABLE] ";
         value = static_cast<double>(std::stof(it->second, nullptr));
         name_FULL = utils::enum_key2string(mod) + "::" +
             utils::enum_key2string(pt) + "::" + name;
         name_SET = name_FULL + set_suffix;
+        if (controlVar)
+            controlStr = "[CONTROL VARIABLE] ";
+        else if (!isSelected(mod, pt)) {
+            std::cout << context << ": IGNORING \"" << name_FULL <<
+              "\" - parameter not selected." << std::endl <<
+              "    Ignored value:    " << it->second << std::endl;
+            rm_values.push_back(it->first);
+            continue;
+        }
         if (inputs.find(name_SET) == inputs.end()) {
             std::cout << context << ": READ \"" << name_FULL <<
                 "\" " << controlStr <<
@@ -1325,14 +1332,15 @@ void Variables::updateParam(std::map<std::string, std::string>& inputs,
                 std::endl;
             add_values[name_SET] = it->second;
             if (theVars) {
-                if (controlVar)
+                if (controlVar) {
                     theVars->setControlVar(mod, pt, name, (int)value);
-                else
-                    theVars->setVar(mod, pt, name, value);
-                // if (theVars->inputsFinalized) {
-                //     std::cerr << "UPDATING: " << name_FULL << std::endl;
+                } else {
+                    if (init)
+                        setDefault(mod, pt, name, value);
+                    if (!(init && pt == PARAM_TYPE_COND))
+                        theVars->setVar(mod, pt, name, value);
+                }
                 theVars->inputsUpdated[name_FULL] = true;
-                // }
             } else {
                 if (controlVar)
                     setDefaultControlVar(mod, pt, name, (int)value);
@@ -1402,17 +1410,18 @@ void Variables::readGRN(const std::string& fname) {
 
 void Variables::readDefaults(const std::string& fname) {
     std::map<std::string, std::string> inputs;
-    _readParam(fname, inputs, nullptr, "readDefaults");
+    _readParam(fname, inputs, nullptr, true, "readDefaults");
 }
 void Variables::readDefaults(const std::string& fname,
                              std::map<std::string, std::string>& inputs) {
-    _readParam(fname, inputs, nullptr, "readDefaults");
+    _readParam(fname, inputs, nullptr, true, "readDefaults");
 }
-void Variables::readParam(const std::string& fname) {
+void Variables::readParam(const std::string& fname, const bool init) {
     std::map<std::string, std::string> inputs;
-    _readParam(fname, inputs, this, "readParam");
+    _readParam(fname, inputs, this, init, "readParam");
 }
 void Variables::readParam(const std::string& fname,
-                          std::map<std::string, std::string>& inputs) {
-    _readParam(fname, inputs, this, "readParam");
+                          std::map<std::string, std::string>& inputs,
+                          const bool init) {
+    _readParam(fname, inputs, this, init, "readParam");
 }

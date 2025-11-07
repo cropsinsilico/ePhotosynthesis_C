@@ -83,12 +83,15 @@ FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* const FIBF_Con
     //////////////////////////////////////////////////////////////////////////////////////////////////
     //PHl = theVars->BF2FIBFMB_PHl;
 
-    double dmax = 5. * pow(10., 8.) * QH;
+    double dmax = theVars->FIBF_RC.kdm0 * QH;
 
     if (theVars->XanCycle_BF_com) {
         if (XanCycle::getXanCycle2FIBF_Xstate() > 0.3) {
             dmax = dmax * XanCycle::getXanCycle2FIBF_Xstate() / 0.3;
             RC = theVars->FIBF_RC.RC;
+            // Zhu et al. 2012 describes the heat dissipation relaxation
+            // as also being dependent on Xstate as follows
+            // RC = RC * XanCycle::getXanCycle2FIBF_Xstate() / 0.3;
         }
     }
     dydt->kd = RC * (dmax - FIBF_Con->kd);
@@ -102,7 +105,7 @@ FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* const FIBF_Con
     const double Hvqo2 = theVars->BF_Vel.Vbf3 / theVars->AVR;      // The rate of proton release into lumen through Qo site
 
     dydt->BF_con->BFHl = (Hvqo1 + Hvqo2 + Hroe - theVars->HPR * theVars->BF_Vel.Vbf11); // BFHl The proton and protonated buffer species in lumen, similarly, we can only use the buff concentration, but, the proton concentration can not be used here.
-    dydt->BF_con->PHl = - (Hvqo1 + Hvqo2 + Hroe - theVars->HPR * theVars->BF_Vel.Vbf11) / 1000. / 0.015;//   PHl  The changes in PH of lumen, 0.03 is from Curz et al., 2001, Biochemistry.
+    dydt->BF_con->PHl = - (Hvqo1 + Hvqo2 + Hroe - theVars->HPR * theVars->BF_Vel.Vbf11) / 1000. / theVars->BF_RC.KBl;//   PHl  The changes in PH of lumen, 0.03 is from Curz et al., 2001, Biochemistry.
 
     ////////////////////////////////////////////////////////////////////////////////////////////
     //          Calculate the PH of stroma        //

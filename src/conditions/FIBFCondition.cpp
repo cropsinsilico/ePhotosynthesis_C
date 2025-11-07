@@ -45,7 +45,6 @@ FIBFCondition::FIBFCondition(BFCondition* bother, FICondition* fother) {
     }
     BF_con->setParent(this);
     FI_con->setParent(this);
-    kd = pow(10, 8) * 0.5;
 }
 
 FIBFCondition::FIBFCondition(const arr &vec, const std::size_t offset) {

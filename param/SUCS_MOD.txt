@@ -55,6 +55,8 @@ Km602		0.0		1.66		# Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km602 ATP 1.66 R
 Km603		0.0		0.28		# Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km603 UDP 0.28 Saccharomyces cerevisiae {Jong, 1991 #2518}; Skipped w/o C3
 Km604		0.0		16.		# Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km604 UTP 16 Rattus norvegicus {Fukuchi, 1994 #2519}; Skipped w/o C3
 KE60		0.0		16.		# Nucleoside Diphosphate Kinase 2.7.4.6 60 NI KE60  16 1.04 {Lynn, 1978 #2520}; Skipped w/o C3
+# The version below seems to have been a typo where 10**7 was interpreted as 107
+# KE61		1.2e7		1.2e7		# Pyrophosphate hydrolysis    KE61  1.2*107  {Flodgaard, 1974 #2521}; SUCSRatio 58
 KE61		128.4		128.4		# Pyrophosphate hydrolysis    KE61  1.2*107  {Flodgaard, 1974 #2521}; SUCSRatio 58
 Km621		5.0		5.0		# Vsink   Notice: pH dependent Km621 Sucrose 5  {Weschke, 2000 #2522}
 ATPc		0.4		0.35
@@ -79,7 +81,7 @@ SUCSV58		0.0     	0.0     	# Set by calculation for C3
 # Variables only set during calculations
 SUCS2PS_Pic	0.0		0.0		# [INIT_ONCE]
 KE5Ratio	0.0		0.0		# Calculated from KE541 & KE531
-ADPc		0.0		0.0		# Calculated from ATc & ATPc
+ADPc		0.6		0.65		# Calculated from ATc & ATPc
 Vmatpf		0.25		0.25		# [CONST] Previously stored as constant
 Q10_51		2.0				# [CONST] DHAP+GAP --FBP; unused w/o C3
 Q10_52		1.6				# [CONST] FBP --F6P + Pi; unused w/o C3

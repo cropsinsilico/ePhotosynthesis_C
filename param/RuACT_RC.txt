@@ -9,5 +9,6 @@ kc		0.016		# Michaelis menton constant for CO2
 ko		0.448		# Michaelis menton constant for O2
 k7		10.0		# The rate constant for ecm to ecmr
 kr		20.0e-3		# The apparaent michaelis menton constant for RuBP
-kn7             1.0             # Rate constants for RuBP dissociation from ECMR
+factor_n7       1.0             # Scale factor for kn7
+kn7             0.5             # Rate constant for RuBP dissociation from ECMR
 RCA             0.0000768403258029814  # 1 / (60. * 216.9); The rate constant of the activation reaction which will be scaled by the concentration of Rubisco activase

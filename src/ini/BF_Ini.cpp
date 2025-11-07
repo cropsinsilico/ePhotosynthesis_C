@@ -221,8 +221,12 @@ void BF::_initOrig(Variables *theVars, BFCondition* BF_con) {
         theVars->BF_RC.K16 = theVars->EnzymeAct.at("K16");    // The rate constant for electron tranfer from electron acceptor of PSI to Fd Unit: s-1
         theVars->BF_RC.MemCap = 0.6 * pow(10., -6.); // The membrane capacity
         theVars->BF_RC.RVA = 8. * pow(10., -10.);     // The ratio of lumen volume to thylakoid membrane area
-        theVars->BF_RC.KBs = 1.1 * pow(10., -8.);    // The buffer equilibrium constant in stroma
-        theVars->BF_RC.KBl = 5.1 * pow(10., -6.);    // The buffer equilibrium constant in lumen
+        // langmm: The values from the code were not used, but hard coded
+        // values were that match Zhu 2012
+        theVars->BF_RC.KBs = 0.015; // mol l-1 (pH unit)-1; The buffer equilibrium constant in stroma
+        theVars->BF_RC.KBl = 0.015; // mol l-1 (pH unit)-1; The buffer equilibrium constant in lumen
+        // theVars->BF_RC.KBs = 1.1 * pow(10., -8.);    // The buffer equilibrium constant in stroma
+        // theVars->BF_RC.KBl = 5.1 * pow(10., -6.);    // The buffer equilibrium constant in lumen
         theVars->BF_RC.KM1ATP = 0.12;                // The michaelis menton constant for ATP for ATP synthesis
         theVars->BF_RC.KM1ADP = 0.014;               // The michaelis menton constant for ATP for ADP synthesis
         theVars->BF_RC.KM1PI = 0.3;                  // The michaelis menton constant for ATP for PI synthesis
@@ -269,8 +273,12 @@ void BF::_initOrig(Variables *theVars, BFCondition* BF_con) {
         theVars->BF_RC.K16 = pow(10., 5.) * theVars->BFRatio[20];      // The rate constant for electron tranfer from electron acceptor of PSI to Fd Unit: s-1
         theVars->BF_RC.MemCap = 0.6 * pow(10., -6.) * theVars->BFRatio[26]; // The membrane capacity
         theVars->BF_RC.RVA = 8. * pow(10., -10.) * theVars->BFRatio[27];     // The ratio of lumen volume to thylakoid membrane area
-        theVars->BF_RC.KBs = 1.1 * pow(10., -8.) * theVars->BFRatio[28];    // The buffer equilibrium constant in stroma
-        theVars->BF_RC.KBl = 5.1 * pow(10., -6.) * theVars->BFRatio[29];    // The buffer equilibrium constant in lumen
+        // langmm: The values from the code were not used, but hard coded
+        // values were that match Zhu 2012
+        theVars->BF_RC.KBs = 0.015 * theVars->BFRatio[28]; // mol l-1 (pH unit)-1; The buffer equilibrium constant in stroma
+        theVars->BF_RC.KBl = 0.015 * theVars->BFRatio[29]; // mol l-1 (pH unit)-1; The buffer equilibrium constant in lumen
+        // theVars->BF_RC.KBs = 1.1 * pow(10., -8.) * theVars->BFRatio[28];    // The buffer equilibrium constant in stroma
+        // theVars->BF_RC.KBl = 5.1 * pow(10., -6.) * theVars->BFRatio[29];    // The buffer equilibrium constant in lumen
         theVars->BF_RC.KM1ATP = 0.12 * theVars->BFRatio[30];  // The michaelis menton constant for ATP for ATP synthesis
         theVars->BF_RC.KM1ADP = 0.014 * theVars->BFRatio[31]; // The michaelis menton constant for ATP for ADP synthesis
         theVars->BF_RC.KM1PI = 0.3 * theVars->BFRatio[32];    // The michaelis menton constant for ATP for PI synthesis
