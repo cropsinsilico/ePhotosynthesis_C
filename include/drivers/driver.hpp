@@ -438,12 +438,16 @@ public:
 protected:
     void _clear_cvode_mem();
     void _dump(realtype t, ValueSet_t* con);
+    void _cleanup_dumped_files();
 private:
     Driver() {}
     Variables* currentVars;
     bool _lastStep;
     bool _dumpStep;
     bool _firstPass;
+    realtype _lastDumpTime;
+    double _dumpInterval;
+    std::vector<std::string> _dumpedStepFiles;
 };
 
 /**

@@ -44,6 +44,16 @@ XanCycleCondition* XanCycle::_MB_con(const double t, const XanCycleCondition* co
                theVars->XanCycle_Vel.Vaz;
     dydt->Zx = theVars->XanCycle_Vel.Vaz - theVars->XanCycle_Vel.Vza;
     dydt->ABA = theVars->XanCycle_Vel.Vv2ABA - theVars->XanCycle_Vel.VABAdg;
+
+    if (theVars->UseZaksNPQ) {
+      // The version of Vx from above can be used because Vvf & Vv2ABA
+      //     are set to 0 by default (currently hard coded)
+      // dydt->Vx = theVars->XanCycle_Vel.Vav - theVars->XanCycle_Vel.Vva;
+      dydt->PsbSQ = theVars->XanCycle_Vel.vpsbs_act - theVars->XanCycle_Vel.vpsbs_deact;
+      dydt->ABA = 0.0;
+    } else {
+      dydt->PsbSQ = 0.0;
+    }
 #ifdef INCDEBUG
     DEBUG_DELTA(dydt)
 #endif

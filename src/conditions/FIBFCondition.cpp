@@ -59,7 +59,8 @@ void FIBFCondition::_fromArray(const arr &vec, const std::size_t offset) {
         FI_con = new FICondition(this);
     BF_con->fromArray(vec, offset);
     FI_con->fromArray(vec, offset + BF_con->size());
-    kd = vec[offset + BF_con->size() + FI_con->size()];
+    if (!NPQ_kd)
+        kd = vec[offset + BF_con->size() + FI_con->size()];
 }
 
 arr FIBFCondition::_toArray() const {
@@ -67,7 +68,9 @@ arr FIBFCondition::_toArray() const {
     arr fvec = FI_con->toArray();
     bvec.reserve(size());
     bvec.insert(bvec.end(), fvec.begin(), fvec.end());
-    arr fivec = {kd};
-    bvec.insert(bvec.end(), fivec.begin(), fivec.end());
+    if (!NPQ_kd) {
+      arr fivec = {kd};
+      bvec.insert(bvec.end(), fivec.begin(), fivec.end());
+    }
     return bvec;
 }

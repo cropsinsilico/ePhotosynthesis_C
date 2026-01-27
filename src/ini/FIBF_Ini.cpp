@@ -35,6 +35,8 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 std::size_t FIBFCondition::count = 0;
+bool FIBFCondition::NPQ_kd = false;
+bool FIBF::NPQ_kd = false;
 
 DEFINE_MODULE_COMPOSITE(FIBF);
 
@@ -52,6 +54,7 @@ void FIBF::_initCalc(Variables *theVars, FIBFCondition* FIBF_con) {
     UNUSED(FIBF_con);
     theVars->FI_Pool.PQT = theVars->FIBF_Pool.PQT;
     theVars->BF_Pool.k_r1 = theVars->FIBF_Pool.PQT;
+    FIBF::setNPQ_kd(theVars->UseZaksNPQ);
 }
 
 void FIBF::_reset(const bool noChildren)  {
@@ -60,5 +63,6 @@ void FIBF::_reset(const bool noChildren)  {
     ChlT2 = 0.;
     FIBF2FI_PQ = 0.;
     FIBF2FI_PQa = 0.;
+    setNPQ_kd(false);
     ParentClass::_reset(noChildren);
 }

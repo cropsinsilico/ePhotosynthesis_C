@@ -6,3 +6,5 @@ Vav		0.0		# The rate of A to V
 Vvf		0.0		# The rate of V formation
 Vv2ABA		0.0		# The rate of conversion from v to ABA.
 VABAdg		0.0		# The rate of ABA degradation
+vpsbs_act       0.0             # The rate of PsbSQ activation
+vpsbs_deact     0.0             # The rate of PsbSQ deactivation

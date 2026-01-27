@@ -48,6 +48,7 @@ private:
     SET_GET(ChlT2)
     SET_GET(FIBF2FI_PQ)
     SET_GET(FIBF2FI_PQa)
+    SET_GET_BOOL_MODULE(NPQ_kd, conditions::FIBF)
 
     /**
       Reset the static member variables to their default values.

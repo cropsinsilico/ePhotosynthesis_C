@@ -32,6 +32,7 @@
 #include <sunlinsol/sunlinsol_dense.h>
 #include <sunnonlinsol/sunnonlinsol_newton.h>
 #include "drivers/CVodeMem.hpp"
+#include <cstdio>
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::drivers;
@@ -78,12 +79,14 @@ Driver::Driver(Variables *theVars, const double startTime,
   this->inputVars = theVars;
   theVars->finalizeInputs();
   initialStep = stepSize;
+  _dumpInterval = stepSize;
   maxStep = 20. * step;
   data = nullptr;
   currentVars = nullptr;
   intermediateRes = nullptr;
   _lastStep = false;
   _dumpStep = true; // Output the first step
+  _lastDumpTime = 0.0;
   if (inputVars->useC3 && inputVars->EnzymeAct.empty())
       throw std::runtime_error("EnzymeAct must be set if useC3 is True (automatically set for EPS driver)");
 }
@@ -110,6 +113,8 @@ void Driver::setup(Variables* theVars, const bool continuingRun) {
   bool dumpStep = _dumpStep;
   if (continuingRun)
     _dumpStep = false;
+  else
+    _lastDumpTime = 0.0;
   theVars->finalizeInputs(true);
   // Initialize the structure of the model, i.e. Is this model separate
   // or combined with others.
@@ -161,13 +166,23 @@ arr Driver::continue_run(const double endTime) {
 
 arr Driver::run(const bool continuingRun) {
 
+    int error = CV_SUCCESS;
     uint count = 0;
+    uint max_count = 10;
+    realtype t0 = start;
+    realtype t = start;
+    realtype tout = start + step;
+    realtype hlast = 0;
     _firstPass = true;
+    _dumpedStepFiles.clear();
 
-    while (count < 10){
+    while (count < max_count) {
         maxStep = 20. * step;
 
+        _cleanup_dumped_files(); 
         setup(nullptr, continuingRun);
+        t = t0;
+        tout = t + step;
 
         sunindextype N =  static_cast<long>(constraints.size());
         N_Vector y;
@@ -180,7 +195,6 @@ arr Driver::run(const bool continuingRun) {
 
         for (std::size_t i = 0; i < constraints.size(); i++)
             y_ptr[i] = constraints[i];
-        realtype t0 = start;
 
         CVodeMem *cmem = nullptr;
         try {
@@ -222,12 +236,18 @@ arr Driver::run(const bool continuingRun) {
             std::rethrow_exception(eptr);
         }
 
-        realtype t = start;
         bool runOK = true;
-        realtype tout = start + step;
         while (t < endtime) {
-            if (CVode(cvode_mem, tout, y, &t, CV_NORMAL) != CV_SUCCESS) {
-                std::cout << "CVode failed at t=" << tout << "  " << t << std::endl;
+            if (tout > endtime)
+              tout = endtime;
+            error = CVode(cvode_mem, tout, y, &t, CV_NORMAL);
+            CVodeGetLastStep(cvode_mem, &hlast);
+            if (error != CV_SUCCESS) {
+                std::cout << "CVode failed to solve for t=" << tout <<
+                  " (at t=" << t << " from t0=" << t0 <<
+                  " with step=" << step << " and " <<
+                  "internal_step=" << hlast << ")" <<
+                  std::endl;
                 runOK = false;
                 break;
             }
@@ -254,7 +274,8 @@ arr Driver::run(const bool continuingRun) {
         count++;
         step = initialStep / (count + 1);
         _firstPass = false;
-        std::cout << "Retrying with smaller step size: " << step << std::endl;
+        std::cout << "[t=" << t << "] Retrying with smaller step size: " << step <<
+          " (INTERNAL STEP = " << hlast << ")" << std::endl;
     }
     throw std::runtime_error("No valid solution found");
 }
@@ -420,6 +441,10 @@ void Driver::_dump(realtype t, ValueSet_t* con) {
     }
     if (!fname_vars_step.empty()) {
       if (t >= endtime) return;
+      if (_lastDumpTime > 0 && _dumpInterval > 0 &&
+          ((t - _lastDumpTime) < _dumpInterval))
+        return;
+      _lastDumpTime = t;
       std::ostringstream tss;
       tss.precision(6);
       tss << std::fixed << t;
@@ -427,9 +452,19 @@ void Driver::_dump(realtype t, ValueSet_t* con) {
       tstr = std::string(13 - tstr.length(), '0') + tstr;
       std::string ifile = fname_vars_step + tstr + ".txt";
       dump(ifile, nullptr, con, false);
+      _dumpedStepFiles.push_back(ifile);
     }
     if (fname_vars_step.empty())
         _dumpStep = false;
+}
+
+void Driver::_cleanup_dumped_files() {
+
+    for (typename std::vector<std::string>::const_iterator it = _dumpedStepFiles.begin();
+         it != _dumpedStepFiles.end(); it++) {
+      remove(it->c_str());
+    }
+    _dumpedStepFiles.clear();
 }
 
 int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {

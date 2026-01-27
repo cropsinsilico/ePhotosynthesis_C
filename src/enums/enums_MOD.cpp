@@ -2080,39 +2080,30 @@ namespace ePhotosynthesis {
   };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::all = {
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kva                 ,
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kaz                 ,
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kza                 ,
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kav                 ,
     ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vx_                 ,
     ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Ax_                 ,
     ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Zx_                 ,
     ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)ABA_                ,
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)XanCycle2FIBF_Xstate
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)XanCycle2FIBF_Xstate,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)XanCycle2FIBF_Kd_NPQ
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::names = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kva                 , "kva"                 },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kaz                 , "kaz"                 },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kza                 , "kza"                 },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kav                 , "kav"                 },
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vx_                 , "Vx_"                 },
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Ax_                 , "Ax_"                 },
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Zx_                 , "Zx_"                 },
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)ABA_                , "ABA_"                },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)XanCycle2FIBF_Xstate, "XanCycle2FIBF_Xstate"}
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)XanCycle2FIBF_Xstate, "XanCycle2FIBF_Xstate"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)XanCycle2FIBF_Kd_NPQ, "XanCycle2FIBF_Kd_NPQ"}
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::defaults = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kva                 , 0.163},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kaz                 , 0.691},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kza                 , 0.119},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kav                 , 0.119},
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vx_                 , 160.0},
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Ax_                 , 10.0 },
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Zx_                 , 5.0  },
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)ABA_                , 1.0  },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)XanCycle2FIBF_Xstate, 0.0  }
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)XanCycle2FIBF_Xstate, 0.0  },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)XanCycle2FIBF_Kd_NPQ, 0.0  }
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::defaults_C3 = {};
@@ -2122,15 +2113,12 @@ namespace ePhotosynthesis {
   const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::docs = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kva                 , "/=60; Ruth Frommolt et a; 2001; Planta"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kaz                 , "/=60; Ruth Frommolt et a; 2001; Planta"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kza                 , "/=60; Ruth Frommolt et a; 2001; Planta"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)kav                 , "/=60; Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess."},
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vx_                 , "[CONST, INIT_ONCE] The concentration of Violozanthin"},
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Ax_                 , "[CONST, INIT_ONCE] The concentration of Anthrozanthin"},
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Zx_                 , "[CONST, INIT_ONCE] The concentration of Zeaznthin"},
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)ABA_                , "[CONST, INIT_ONCE] The concentration of ABA"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)XanCycle2FIBF_Xstate, "[CALC] Calculated"}
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)XanCycle2FIBF_Xstate, "[CALC] Calculated"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)XanCycle2FIBF_Kd_NPQ, "[CALC] Heat dissipation rate constant calculated using Zaks et al. 2012 model for non-photochemical quenching"}
   };
   template<>
   std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::value_flags = {};
@@ -2140,7 +2128,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Ax_                 , (STATIC_VALUE_FLAG_CONST | STATIC_VALUE_FLAG_INIT_ONCE)},
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Zx_                 , (STATIC_VALUE_FLAG_CONST | STATIC_VALUE_FLAG_INIT_ONCE)},
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)ABA_                , (STATIC_VALUE_FLAG_CONST | STATIC_VALUE_FLAG_INIT_ONCE)},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)XanCycle2FIBF_Xstate, (STATIC_VALUE_FLAG_CALC)                               }
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)XanCycle2FIBF_Xstate, (STATIC_VALUE_FLAG_CALC)                               },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)XanCycle2FIBF_Kd_NPQ, (STATIC_VALUE_FLAG_CALC)                               }
   };
   std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_MOD& x) {
     out << ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::getName(x);

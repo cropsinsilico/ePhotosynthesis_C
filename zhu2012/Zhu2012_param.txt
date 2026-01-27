@@ -296,7 +296,7 @@ RROEA::COND::RuACT         0.0                   # [Activaser]
 PS::MOD::KE16              5.7                   # [KE16] 
 PS::MOD::KE6               670000.0              # [KE6] 
 PS::MOD::KE9               670000.0              # [KE9] 
-XanCycle::MOD::kza         0.12                  # [kza] 
+XanCycle::RC::kza         0.12                  # [kza] 
 SUCS::MOD::V56             0.056                 # [Vm56] 
 SUCS::MOD::V57             0.56                  # [Vm57] 
 RROEA::RC::ke2GAPDH        22.2                  # [ke2GADPH] 
@@ -324,7 +324,7 @@ RuACT::COND::ER            0.3                   # [ER] 0.4999999999999999;0.2;0
 PS::MOD::PS_C_CN           0.5                   # [CN] 0.5;0.0;1.0
 SUCS::POOL::UTc            1.0                   # [UTc] 0.5;1.5;1.5
 RROEA::POOL::SA_PRK        615.0                 # [SA_PRK] 0.5;410.0;410.0
-XanCycle::MOD::kav         0.18                  # [kav] 0.5126050420168068;0.119;0.119
+XanCycle::RC::kav         0.18                  # [kav] 0.5126050420168068;0.119;0.119
 # RuACT::COND::ECMR          0.0                   # [ECMR] 0.8;0.8;0.8
 PS::MOD::V7                6.24                  # [Vm7] 1.0;12.48;12.48
 BF::COND::Qi               1.0                   # [Qi] 1.0;0.0;0.0
@@ -333,11 +333,11 @@ RuACT::RC::k7              25.0                  # [kra7] 1.5;10.0;10.0
 PR::MOD::V111              0.24                  # [Vm111] 2.7;0.888;0.888
 FIBF::COND::kd             200000000.0           # [kd] 3.0;50000000.0;50000000.0
 PR::MOD::V1T               1.2                   # [Vm101a] 3.1666666666666665;5.0;5.0
-XanCycle::MOD::kva         0.72                  # [kva] 3.417177914110429;0.163;0.163
+XanCycle::RC::kva         0.72                  # [kva] 3.417177914110429;0.163;0.163
 BF::RC::Kf                 1300000.0             # [kf] 3.8461538461538463;6300000.0;6300000.0
 RROEA::POOL::SA_FBPase     22.9                  # [SA_FBPase] 4.1965065502183405;119.0;119.0
 PR::MOD::V2T               1.2                   # [Vm101b] 4.333333333333334;6.4;6.4
-XanCycle::MOD::kaz         0.12                  # [kaz] 4.758333333333333;0.691;0.691
+XanCycle::RC::kaz         0.12                  # [kaz] 4.758333333333333;0.691;0.691
 FI::COND::PQn              0.0                   # [PQ-] 5.0;5.0;5.0
 ALL::VARS::Pi              5.0                   # [Pi] 5.0;0.0;0.0
 PS::MOD::V23               0.293                 # [Vm23] 5.825938566552901;2.0;2.0

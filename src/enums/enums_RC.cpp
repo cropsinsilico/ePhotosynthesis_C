@@ -1514,24 +1514,48 @@ namespace ePhotosynthesis {
   };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::all = {
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kva,
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kaz,
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kza,
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kav
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kva             ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kaz             ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kza             ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kav             ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)hill_psbs       ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)pK_psbs         ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)hill_vde        ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)pK_vde          ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kvde_max        ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_ze            ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Fpsbs           ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)psbsQ_converRate
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::names = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kva, "kva"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kaz, "kaz"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kza, "kza"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kav, "kav"}
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kva             , "kva"             },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kaz             , "kaz"             },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kza             , "kza"             },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kav             , "kav"             },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)hill_psbs       , "hill_psbs"       },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)pK_psbs         , "pK_psbs"         },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)hill_vde        , "hill_vde"        },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)pK_vde          , "pK_vde"          },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kvde_max        , "kvde_max"        },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_ze            , "k_ze"            },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Fpsbs           , "Fpsbs"           },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)psbsQ_converRate, "psbsQ_converRate"}
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::defaults = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kva, 0.163},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kaz, 0.691},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kza, 0.119},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kav, 0.119}
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kva             , 0.163},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kaz             , 0.691},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kza             , 0.119},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kav             , 0.119},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)hill_psbs       , 3.0  },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)pK_psbs         , 6.4  },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)hill_vde        , 6.0  },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)pK_vde          , 6.0  },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kvde_max        , 4e-1 },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_ze            , 4e-4 },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Fpsbs           , 0.6  },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)psbsQ_converRate, 1e-1 }
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::defaults_C3 = {};
@@ -1541,10 +1565,18 @@ namespace ePhotosynthesis {
   const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::docs = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kva, "Ruth Frommolt et a; 2001; Planta"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kaz, "Ruth Frommolt et a; 2001; Planta"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kza, "Ruth Frommolt et a; 2001; Planta"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kav, "Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess."}
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kva             , "/=60; Ruth Frommolt et a; 2001; Planta"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kaz             , "/=60; Ruth Frommolt et a; 2001; Planta"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kza             , "/=60; Ruth Frommolt et a; 2001; Planta"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kav             , "/=60; Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess."},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)hill_psbs       , "Zaks et al. 2012, Table S2; Hill coefficient for PsbS protonation; only used when UseZaksNPQ set"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)pK_psbs         , "Zaks et al. 2012, Table S2; pK value for PsbS protonation; only used when UseZaksNPQ set"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)hill_vde        , "Zaks et al. 2012, Table S2; Hill coefficient for VDE activation; only used when UseZaksNPQ set"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)pK_vde          , "Zaks et al. 2012, Table S2; pK value for VDE activation; only used when UseZaksNPQ set"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kvde_max        , "Zaks et al. 2012, Table S2; Max kvde; used to set kva & kaz when UseZaksNPQ set"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_ze            , "Zaks et al. 2012; in s^-1; reverse Zea → Vx; used to set kza & kav when UseZaksNPQ set"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Fpsbs           , "Zaks et al. 2012, Table S2; Fraction of quenching sites with both Zea and PsbS-H; only used when UseZaksNPQ set"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)psbsQ_converRate, "Zaks et al. 2012, Table S2; rate constant for PsbS protonation; only used when UseZaksNPQ set"}
   };
   template<>
   std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::value_flags = {};

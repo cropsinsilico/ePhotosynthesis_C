@@ -37,6 +37,22 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
+
+double XanCycle::update_Kd_NPQ(const XanCycleCondition* const XanCycle_Con,
+                               Variables *theVars) {
+  if (!theVars->UseZaksNPQ)
+    return 0.0;
+  // Protonation and enzyme activation
+  const double Zx_Ax = (XanCycle_Con->Ax + XanCycle_Con->Zx)
+    / (XanCycle_Con->Ax + XanCycle_Con->Vx + XanCycle_Con->Zx);
+  // Total quenching according to Zaks et al. 2012
+  const double Q_zaks = theVars->XanCycle_RC.Fpsbs
+    * XanCycle_Con->PsbSQ * Zx_Ax;
+  double kd = 2.0 * pow(10., 8.0) * Q_zaks;
+  XanCycle::setXanCycle2FIBF_Kd_NPQ(kd);
+  return kd;
+}
+
 void XanCycle::_Rate(const double t, const XanCycleCondition* const XanCycle_Con, Variables *theVars) {
 
     Condition(t, theVars);
@@ -49,7 +65,18 @@ void XanCycle::_Rate(const double t, const XanCycleCondition* const XanCycle_Con
     }
 
     double RegCof;
-    if (pH <= 5.8) {
+    if (theVars->UseZaksNPQ) {
+        // Protonation and enzyme activation
+        const double PsbSQ = XanCycle_Con->PsbSQ;
+        const double expr_psbs = pow(10., (theVars->XanCycle_RC.hill_psbs * (pH - theVars->XanCycle_RC.pK_psbs)));
+        const double QH = 1. / (1 + expr_psbs);
+        const double one_minus_QH = expr_psbs / (1 + expr_psbs);
+        theVars->XanCycle_Vel.vpsbs_act = theVars->XanCycle_RC.psbsQ_converRate * (1 - PsbSQ) * QH;  // Activation rate
+        theVars->XanCycle_Vel.vpsbs_deact = theVars->XanCycle_RC.psbsQ_converRate * PsbSQ * one_minus_QH;  // Deactivation rate
+        const double expr_vde = pow(10., (theVars->XanCycle_RC.hill_vde * (pH - theVars->XanCycle_RC.pK_vde)));
+        XanCycle::update_Kd_NPQ(XanCycle_Con, theVars);
+        RegCof = 1.0 / (1 + expr_vde);
+    } else if (pH <= 5.8) {
         RegCof = 1.;
     } else if (pH > 5.8 && pH < 6.5){
         RegCof = (6.5 - pH) / 0.7;
@@ -57,14 +84,20 @@ void XanCycle::_Rate(const double t, const XanCycleCondition* const XanCycle_Con
         RegCof = 0.;
     }
 
-    theVars->XanCycle_Vel.Vva = XanCycle_Con->Vx * XanCycle::kva * RegCof; // The velocity of v to a conversion
-    theVars->XanCycle_Vel.Vaz = XanCycle_Con->Ax * XanCycle::kaz * RegCof; // The rate of A to z
-    theVars->XanCycle_Vel.Vza = XanCycle_Con->Zx * XanCycle::kza; // THe rate of z to a
-    theVars->XanCycle_Vel.Vav = XanCycle_Con->Ax * XanCycle::kav; // The rate of A to V
+    theVars->XanCycle_Vel.Vva = XanCycle_Con->Vx * theVars->XanCycle_RC.kva * RegCof; // The velocity of v to a conversion
+    theVars->XanCycle_Vel.Vaz = XanCycle_Con->Ax * theVars->XanCycle_RC.kaz * RegCof; // The rate of A to z
+    theVars->XanCycle_Vel.Vza = XanCycle_Con->Zx * theVars->XanCycle_RC.kza; // THe rate of z to a
+    theVars->XanCycle_Vel.Vav = XanCycle_Con->Ax * theVars->XanCycle_RC.kav; // The rate of A to V
     theVars->XanCycle_Vel.Vvf = VVF; // The rate of V formation
     theVars->XanCycle_Vel.Vv2ABA = VV2ABA; // The rate of conversion from v to XanCycle_Con.ABA.
     theVars->XanCycle_Vel.VABAdg = VABADG; // The rate of XanCycle_Con.ABA degradation
 
+    // This was missing in the C++ translation & was disabled by a typo
+    // in the MATLAB version...
+    XanCycle::setXanCycle2FIBF_Xstate(XanCycle_Con->Zx /
+                                      (XanCycle_Con->Ax +
+                                       XanCycle_Con->Vx +
+                                       XanCycle_Con->Zx));
 #ifdef INCDEBUG
     DEBUG_INTERNAL(theVars->XanCycle_Vel)
 #endif

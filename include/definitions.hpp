@@ -210,6 +210,25 @@ enum RequestedDebug : uint {None = 0,
         EPHOTO_API static double NAME;
 //! [SET_GET_NOVS]
 
+//! [SET_GET_BOOL_TOGGLE]
+#define SET_GET_BOOL_TOGGLE(NAME, WHEN_ON, WHEN_OFF) public:    \
+    /** Get the value of NAME \returns The current value */\
+    static bool get ## NAME() {return NAME;}\
+    /** Set the value of NAME \param val The value to set NAME to */\
+    static void set ## NAME(const bool val) {			    \
+      NAME = val;						    \
+      if (val) {						    \
+	addSkipped(EnumClass::WHEN_OFF);                            \
+	removeSkipped(EnumClass::WHEN_ON);                          \
+      } else {							    \
+	addSkipped(EnumClass::WHEN_ON);                             \
+	removeSkipped(EnumClass::WHEN_OFF);                         \
+      }								    \
+    }								    \
+    private:\
+        EPHOTO_API static bool NAME;
+//! [SET_GET_BOOL_TOGGLE]
+
 //! [SET_GET_BOOL]
 #define SET_GET_BOOL(NAME, SKIP) public:				\
     /** Get the value of NAME \returns The current value */\

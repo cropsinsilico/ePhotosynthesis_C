@@ -26,74 +26,50 @@
  *
  **********************************************************************************************************************************************/
 
-#include <math.h>
 #include "../definitions.hpp"
-#include "FICondition.hpp"
-#include "BFCondition.hpp"
-
-#define PARENT_FIBF EPS
-#define NRATIO_FIBF 0
-#define CHILDREN_FIBF BF, FI
-#define PARAM_TYPES_FIBF COND, POOL, RC
+#include "RCBase.hpp"
 
 namespace ePhotosynthesis {
-
-  FORWARD_DECLARE_CONDITION(FIBF);
-  
-namespace conditions {
+namespace RC {
 
 /**
- Class for input to FIBF_mb
+ Class for XanCycle_RC data
  */
-class FIBFCondition : public ConditionBase<FIBFCondition, EPSCondition, MODULE_FIBF> {
+class XanCycleRC : public RCBase<XanCycleRC, MODULE_XanCycle> {
 public:
-    DECLARE_CONDITION_COMPOSITE(FIBF)
-    FIBFCondition(EPSCondition* par = nullptr) : BF_con(new BFCondition(this)), FI_con(new FICondition(this)) {
-        setParent(par);
+    DECLARE_VALUE_SET(XanCycleRC, RCBase<XanCycleRC, MODULE_XanCycle>)
+    XanCycleRC() : RCBase<XanCycleRC, MODULE_XanCycle>() {
         initMembers();
     }
-    ~FIBFCondition() override {
-        _clear();
+    /**
+      Copy constructor that makes a deep copy of the given object
+
+      @param other The XanCycleRC object to copy
+      */
+    XanCycleRC(const XanCycleRC &other) : RCBase<XanCycleRC, MODULE_XanCycle>(other) {
+      initMembers();
+      *this = other;
     }
-
-    /**
-      Constructor to create an object from the contained classes
-
-      @param bother A BFCondition object to incorporate
-      @param fother A FICondition object to incorporate
-      */
-    FIBFCondition(BFCondition* bother, FICondition* fother);
-
-    /**
-      Constructor to create an object from the input vector, starting at the given index
-
-      @param vec Vector to create the object from
-      @param offset The index in vec to start creating the object from
-      */
-    FIBFCondition(const arr &vec, const std::size_t offset = 0);
-
-
-    BFCondition* BF_con = nullptr;  // child Condition
-    FICondition* FI_con = nullptr;  // child Condition
-
-    SET_GET_BOOL(NPQ_kd, kd)
-
-private:
-    /**
-      Get the size of the data vector
-
-      \returns The size of the serialized vector.
-      */
-    static std::size_t _size() {
-        count = BFCondition::size() + FICondition::size();
-        if (!NPQ_kd)
-          count++;
-        return count;
+    XanCycleRC& operator=(const XanCycleRC &other) {
+        kav = other.kav;
+        kaz = other.kaz;
+        kva = other.kva;
+        kza = other.kza;
+        hill_psbs = other.hill_psbs;
+        pK_psbs = other.pK_psbs;
+        hill_vde = other.hill_vde;
+        pK_vde = other.pK_vde;
+        kvde_max = other.kvde_max;
+        k_ze = other.k_ze;
+        Fpsbs = other.Fpsbs;
+        psbsQ_converRate = other.psbsQ_converRate;
+	copyMembers(other);
+	return *this;
     }
 
 };
 
-  DEFINE_CONDITION_COMPOSITE_HEADER(FIBF);
+  DEFINE_VALUE_SET_HEADER(XanCycleRC);
 
-}  // namespace conditions
+}  // namespace RC
 }  // namespace ePhotosynthesis

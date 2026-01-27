@@ -141,13 +141,12 @@ void Variables::__copyMembers(const Variables& other) {
 #endif // SUNDIALS_CONTEXT_REQUIRED
     inputsFinalized = other.inputsFinalized;
     inputsUpdated = other.inputsUpdated;
-    record = other.record;
-    GP = other.GP;
-    GRNC = other.GRNC;
-    GRNT = other.GRNT;
-    PAR_in_Wpm2 = other.PAR_in_Wpm2;
-    VolRatioStCyto = other.VolRatioStCyto;
-    RUBISCOMETHOD = other.RUBISCOMETHOD;
+
+#define DO_CONTROL(x)                           \
+    x = other.x;
+    FOR_EACH(DO_CONTROL, EXPAND(CONTROL_Variables));
+#undef DO_CONTROL
+    
 #define DO_MEMBERS(mod, pt)						\
     VARS_INST_VAR(mod, pt) = other.VARS_INST_VAR(mod, pt)
 #define DO_MEMBERS_PACKED(args) DO_MEMBERS args
@@ -286,8 +285,8 @@ bool Variables::equals(const ValueSet_t &b0,
 #ifdef SUNDIALS_CONTEXT_REQUIRED
     CHECK(_context);
 #endif // SUNDIALS_CONTEXT_REQUIRED
-    FOR_EACH(CHECK, inputsFinalized, record, GP, GRNC, GRNT, PAR_in_Wpm2,
-             VolRatioStCyto, RUBISCOMETHOD, useC3,
+    FOR_EACH(CHECK, EXPAND(CONTROL_Variables));
+    FOR_EACH(CHECK, inputsFinalized, useC3,
 	     EnzymeAct, VfactorCp, VfactorT, FluxTR, CO2A, RedoxReg_MP,
 	     FIBF_Pool);
 #define CHECK_COM(name) CHECK(name ## _com)
@@ -313,19 +312,15 @@ bool Variables::equals(const ValueSet_t &b0,
 
 std::ostream& ePhotosynthesis::operator<<(std::ostream &out, const Variables *in) {
     out << "inputsFinalized = " << in->inputsFinalized << std::endl;
-    out << "record = " << in->record << std::endl;
 #define DO_CONN(mod)						\
     out << #mod << "_com = " << in->mod ## _com << std::endl
     FOR_EACH(DO_CONN, VARS_INST_CONNECTIONS);
 #undef DO_CONN
 
-    out << "GP = " << in->GP << std::endl;
-    out << "GRNC = " << in->GRNC << std::endl;
-    out << "GRNT = " << in->GRNT << std::endl;
-    out << "PAR_in_Wpm2 = " << in->PAR_in_Wpm2 << std::endl;
-    out << "VolRatioStCyto = " << in->VolRatioStCyto << std::endl;
-
-    out << "RUBISCOMETHOD = " << in->RUBISCOMETHOD << std::endl;
+#define DO_CONTROL(x)                           \
+    out << #x << " = " << in->x << std::endl
+    FOR_EACH(DO_CONTROL, EXPAND(CONTROL_Variables));
+#undef DO_CONTROL
 
     out << "CO2_cond = " << in->CO2_cond << std::endl;
 
@@ -699,6 +694,12 @@ std::string Variables::parseVar(const std::string& k,
     return name;
 }
 
+bool Variables::isCalculatedVar(const std::string& name) {
+  const std::map<std::string, std::vector<MODULE> >& registry = getCalculatedVariableRegistry();
+  typename std::map<std::string, std::vector<MODULE> >::const_iterator it = registry.find(name);
+  return (it != registry.end());
+}
+
 bool Variables::isControlVar(const MODULE& mod, const PARAM_TYPE& pt,
                              const std::string& name) {
     // TODO: Use generated code
@@ -786,7 +787,9 @@ std::string Variables::getControlDocs(const MODULE& mod,
     // TODO: Use generated code
     std::string out;
     if (mod == MODULE_ALL && pt == PARAM_TYPE_VARS) {
-        if (name == "GRNC") {
+        if (name == "record") {
+            out += "Record traces for the values at each time step.";
+        } else if (name == "GRNC") {
             out += "If 1, VfactorCp values will be used to scale enzyme activities in the PS, PR, & SUCS modules when CO2 > 0";
         } else if (name == "GRNT") {
             out += "If 1, VfactorT values will be used to scale enzyme activities in the PS, PR, & SUCS modules when T > 25";
@@ -796,6 +799,8 @@ std::string Variables::getControlDocs(const MODULE& mod,
             out += "If 1, the ratio between the volume of the stroma and cytosol is 1, otherwise it will be 4.0/9.0. This factor is used to scale rates for the photorespiration (PR) reactions.";
         } else if (name == "RUBISCOMETHOD") {
             out += "The method to use for rubisco calculations. Choices are: [1] Use enzyme concentration for calculation, [2] DEFAULT Use the michaelis menton and enzyme concentration together for calculation";
+        } else if (name == "UseZaksNPQ") {
+            out += "If 1, use the Zaks et al. 2012 model for non-photochemical quenching.";
         }
     }
     if (mod == MODULE_CM && pt == PARAM_TYPE_MOD &&
@@ -968,9 +973,9 @@ double Variables::getVarCalculated(const std::string& k,
                                    const std::map<MODULE, const ValueSet_t*>& conditions) const {
     if (k == "Light intensity")
 	return TestLi;
-    else if (k == "Vc")
+    else if (k == "Vc")  // CarbonRate
 	return RuACT_Vel.v6_1 * AVR;
-    else if (k == "Vo")
+    else if (k == "Vo")  // VPR
 	return RuACT_Vel.v6_2 * AVR;
     else if (k == "VPGA")
 	return SUCS_Vel.vpga_use * AVR;
@@ -1033,6 +1038,16 @@ double Variables::getVarCalculated(const std::string& k,
         const double UnitCharge = 1.6 * pow(10., -19.);
         NetCharge = NetCharge * AfC * UnitCharge;
         return 2. * NetCharge / 6. * pow(10., 6.);
+    } else if ((k == "expr_psbs") || (k == "QH")) {
+        const double pH = getVar(MODULE_BF, PARAM_TYPE_COND, "PHl");
+        const double hill_psbs = getVar(MODULE_XanCycle, PARAM_TYPE_RC,
+                                        "hill_psbs");
+        const double pK_psbs = getVar(MODULE_XanCycle, PARAM_TYPE_RC,
+                                      "pK_psbs");
+        const double expr_psbs = pow(10., (hill_psbs * (pH - pK_psbs)));
+        if (k == "expr_psbs")
+            return expr_psbs;
+        return 1.0 / (1.0 + expr_psbs);
     } else {
         ERROR_VALUE_SET("Could not find variable matching string \"",
                         k, "\" (including calculated variables)");
@@ -1059,6 +1074,8 @@ Variables::getCalculatedVariableRegistry() {
   ADD_VAR(fluoresence, FI);
   ADD_VAR(fPSII, FI);
   ADD_VAR(MembranePotential, BF);
+  ADD_VAR(expr_psbs, XanCycle, BF);
+  ADD_VAR(QH, XanCycle, BF);
   // ADD_VAR(ROE, BF);
   ADD_VAR(ROE, FI);
 #undef ADD_VAR
@@ -1305,10 +1322,15 @@ void Variables::updateParam(std::map<std::string, std::string>& inputs,
         name = parseVar(it->first, mod, pt, false, false, true,
                         &controlVar);
         if (name.empty()) {
-            std::cout << context << ": IGNORING \"" << it->first <<
-              "\" - it does not match any known parameters or belongs "
-              "to a value set not used selected by the current driver."
-                      << std::endl;
+            if (isCalculatedVar(it->first)) {
+                std::cout << context << ": IGNORING \"" << it->first <<
+                  "\" - it is a calculated variable." << std::endl;
+            } else {
+                std::cout << context << ": IGNORING \"" << it->first <<
+                  "\" - it does not match any known parameters or belongs "
+                  "to a value set not used selected by the current driver."
+                          << std::endl;
+            }
             rm_values.push_back(it->first);
             continue;
         }
@@ -1333,6 +1355,9 @@ void Variables::updateParam(std::map<std::string, std::string>& inputs,
             add_values[name_SET] = it->second;
             if (theVars) {
                 if (controlVar) {
+                    // if (init)
+                    //   setDefaultControlVar(mod, pt, name, (int)value);
+                    // else
                     theVars->setControlVar(mod, pt, name, (int)value);
                 } else {
                     if (init)
@@ -1348,10 +1373,12 @@ void Variables::updateParam(std::map<std::string, std::string>& inputs,
                     setDefault(mod, pt, name, value);
             }
         } else {
-            std::cout << context << ": IGNORING \"" << name_FULL <<
+            if (inputs.at(name_SET) != it->second) {
+              std::cout << context << ": IGNORING \"" << name_FULL <<
                 "\" - parameter already set." << std::endl <<
                 "    Current value:    " << inputs.at(name_SET) << std::endl <<
                 "    Ignored value:    " << it->second << std::endl;
+            }
             rm_values.push_back(name);
         }
         rm_values.push_back(it->first);

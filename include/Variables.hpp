@@ -41,8 +41,9 @@ namespace ePhotosynthesis {
 
 #define MEMBERS_Variables MEMBERS_ALLVARS
 #define PARAM_TYPES_ALL VARS
-#define CONTROL_Variables                                       \
-  GRNC, GRNT, PAR_in_Wpm2, VolRatioStCyto, RUBISCOMETHOD
+#define CONTROL_Variables                                             \
+  record, GP, GRNC, GRNT, PAR_in_Wpm2, VolRatioStCyto, RUBISCOMETHOD, \
+    UseZaksNPQ
 
 #ifdef SUNDIALS_CONTEXT_REQUIRED
 extern std::shared_ptr<SUNContext> global_context; //!< Global context
@@ -431,6 +432,14 @@ public:
                                   const bool& isGlymaID = false,
                                   bool* controlVar = nullptr);
     
+    /**
+       Check if a string matches a calculated parameter.
+       \param[in] name String to check against calculated parameters.
+       \returns true if the variable is a calculated parameter, false
+         otherwise.
+     */
+    EPHOTO_API static bool isCalculatedVar(const std::string& name);
+
     /**
        Check if a string matches a control parameter.
        \param[in] mod Module associated with the value set that should
@@ -910,6 +919,8 @@ public:
 #else // MAKE_EQUIVALENT_TO_MATLAB
     int RUBISCOMETHOD = 1;
 #endif // MAKE_EQUIVALENT_TO_MATLAB
+
+    int UseZaksNPQ = 0; /**< If 1, Use the Zaks et al. 2012 model for non-photochemical quenching. */
 
     std::map<std::string, double> EnzymeAct; /**< Map of enzyme activity levels used when GP == 0 */
 

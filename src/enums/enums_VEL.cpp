@@ -747,33 +747,39 @@ namespace ePhotosynthesis {
   };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::all = {
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vva   ,
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vaz   ,
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vza   ,
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vav   ,
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vvf   ,
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vv2ABA,
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)VABAdg
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vva        ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vaz        ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vza        ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vav        ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vvf        ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vv2ABA     ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)VABAdg     ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vpsbs_act  ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vpsbs_deact
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::names = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vva   , "Vva"   },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vaz   , "Vaz"   },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vza   , "Vza"   },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vav   , "Vav"   },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vvf   , "Vvf"   },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vv2ABA, "Vv2ABA"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)VABAdg, "VABAdg"}
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vva        , "Vva"        },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vaz        , "Vaz"        },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vza        , "Vza"        },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vav        , "Vav"        },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vvf        , "Vvf"        },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vv2ABA     , "Vv2ABA"     },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)VABAdg     , "VABAdg"     },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vpsbs_act  , "vpsbs_act"  },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vpsbs_deact, "vpsbs_deact"}
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::defaults = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vva   , 0.0},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vaz   , 0.0},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vza   , 0.0},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vav   , 0.0},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vvf   , 0.0},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vv2ABA, 0.0},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)VABAdg, 0.0}
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vva        , 0.0},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vaz        , 0.0},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vza        , 0.0},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vav        , 0.0},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vvf        , 0.0},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vv2ABA     , 0.0},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)VABAdg     , 0.0},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vpsbs_act  , 0.0},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vpsbs_deact, 0.0}
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::defaults_C3 = {};
@@ -783,13 +789,15 @@ namespace ePhotosynthesis {
   const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::docs = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vva   , "The velocity of v to a conversion"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vaz   , "The rate of A to z"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vza   , "THe rate of z to a"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vav   , "The rate of A to V"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vvf   , "The rate of V formation"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vv2ABA, "The rate of conversion from v to ABA."},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)VABAdg, "The rate of ABA degradation"}
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vva        , "The velocity of v to a conversion"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vaz        , "The rate of A to z"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vza        , "THe rate of z to a"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vav        , "The rate of A to V"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vvf        , "The rate of V formation"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)Vv2ABA     , "The rate of conversion from v to ABA."},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)VABAdg     , "The rate of ABA degradation"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vpsbs_act  , "The rate of PsbSQ activation"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::SCOPED_ENUM_TYPE(Type)vpsbs_deact, "The rate of PsbSQ deactivation"}
   };
   template<>
   std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_VEL>::value_flags = {};

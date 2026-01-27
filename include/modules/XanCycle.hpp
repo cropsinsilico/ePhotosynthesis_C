@@ -42,6 +42,18 @@ namespace modules {
 class XanCycle : public MODULE_BASE(XanCycle) {
 public:
     DECLARE_MODULE(XanCycle)
+
+    /**
+      Method for updating the static variable that stores the Kd
+      calculated using the Zaks et a. 2012 model for non-photochemical
+      quenching (NPQ).
+      
+      \param condition The input Condition class.
+      \param theVars Pointer to the global variables
+      \return The calculated kd value (0 if not supported).
+      */
+    static double update_Kd_NPQ(const conditions::XanCycleCondition* const XanCycle_Con,
+                                Variables *theVars);
 private:
     /**
       Function to set the initial state of the XanCycleCondition class.
@@ -55,20 +67,17 @@ private:
       Reset the static member variables to their default values.
       */
     static void _reset(const bool noChildren = false) {
-        kav = 0.;
-        kaz = 0.;
-        kva = 0.;
-        kza = 0.;
+        setXanCycle2FIBF_Xstate(0.);
+        setXanCycle2FIBF_Kd_NPQ(0.);
+        setNPQ_connect(false);
         TIME = 0.;
         N = 1;
-	ParentClass::_reset(noChildren);
+        ParentClass::_reset(noChildren);
     }
 
-    SET_GET(kav)
-    SET_GET(kaz)
-    SET_GET(kva)
-    SET_GET(kza)
     SET_GET(XanCycle2FIBF_Xstate)
+    SET_GET(XanCycle2FIBF_Kd_NPQ)
+    SET_GET_BOOL_MODULE(NPQ_connect, conditions::XanCycle)
 
 };
 

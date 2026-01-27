@@ -10,8 +10,8 @@ import subprocess
 import glob
 import difflib
 import site
+import warnings
 from collections import OrderedDict
-from collections.abc import MutableMapping
 import matplotlib.pyplot as plt
 import numpy as np
 from io import StringIO
@@ -535,7 +535,6 @@ class scikit_build(SubTask):
             args.build_dir += '_scikit'
         args.target = None
         args.component = None
-        # import warnings
         # if args.isolated_scikit_build:
         #     warnings.warn(
         #         "Build must occur within the current environment that "
@@ -624,6 +623,8 @@ class build(SubTask):
         config_args += ['-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON']
         if args.make_equivalent_to_matlab:
             config_args += ['-DMAKE_EQUIVALENT_TO_MATLAB:BOOL=ON']
+        else:
+            config_args += ['-DMAKE_EQUIVALENT_TO_MATLAB:BOOL=OFF']
         if args.with_asan:
             config_args += ['-DWITH_ASAN:BOOL=ON']
         if args.with_coverage:
@@ -1105,7 +1106,8 @@ class Parameter:
             df.loc[index, 'C++ Parameter'] = new_value
             updated = True
         if ((self.conversion
-             and df.loc[index, 'C++ Parameter conversion'] != self.conversion)):
+             and (df.loc[index, 'C++ Parameter conversion']
+                  != self.conversion))):
             df.loc[index, 'C++ Parameter conversion'] = self.conversion
             updated = True
         return updated
@@ -1827,20 +1829,44 @@ class ephoto(BuildSubTask):
             ephoto_args = []
         if cmds is None and not args.dont_run:
             execFile = os.path.join(args.build_dir, 'ePhoto')
-            if args.param:
+            if args.param or args.evn_file:
+                exclusive_param = [
+                    ('ALL::VARS::O2_cond', 'ALL::VARS::O2',
+                     'O2_cond', 'O2'),
+                    ('ALL::VARS::CO2_cond', 'ALL::VARS::CO2_in',
+                     'CO2_cond', 'CO2_in', 'CO2'),
+                    ('ALL::VARS::TestLi',  'ALL::VARS::TestLi_Wps',
+                     'TestLi', 'TestLi_Wps', 'PFD'),
+                ]
                 if args.evn_file:
                     param = read_param(args.evn_file)
+                    for v in exclusive_param:
+                        if any(vv in args.param for vv in v):
+                            for vv in v:
+                                param.pop(vv, None)
+                        for i, vv in enumerate(v):
+                            if vv in param:
+                                for valt in v[(i + 1):]:
+                                    param.pop(valt, None)
+                                break
                     args.param = dict(param, **args.param)
                 args.evn_file = os.path.join(
                     args.input_dir, 'GeneratedEvn.txt'
                 )
                 write_param(args.evn_file, args.param)
                 self._generated_files.append(args.evn_file)
+            if args.grn_file:
+                ephoto_args += ['--grn', args.grn_file]
+            if args.atpcost_file:
+                ephoto_args += ['--atpcost', args.atpcost_file]
+            if args.enzyme_file:
+                ephoto_args += ['--enzyme', args.enzyme_file]
+            if args.evn_file:
+                ephoto_args += ['--evn', args.evn_file]
+            if args.output_file:
+                ephoto_args += ['--output', args.output_file]
             cmds = [
                 f'{execFile} -d {args.driver} '
-                f'--enzyme {args.enzyme_file} --grn {args.grn_file} '
-                f'--evn {args.evn_file} --atpcost {args.atpcost_file} '
-                f'--output {args.output_file} '
                 f'{" ".join(ephoto_args)}',
                 f'cat {args.output_file}'
             ]
@@ -1882,8 +1908,11 @@ class ephoto(BuildSubTask):
 class ephoto_iterations(ephoto):
 
     def __init__(self, args, **kwargs):
-        super(ephoto_iterations, self).__init__(args, **kwargs)
-        self.plot(self.read_param(args))
+        try:
+            super(ephoto_iterations, self).__init__(args, **kwargs)
+        finally:
+            self.record_last_param(args)
+            self.plot(self.read_param(args))
 
     @classmethod
     def adjust_args(cls, args):
@@ -1891,10 +1920,41 @@ class ephoto_iterations(ephoto):
             args.param = {}
         args.plot_limits = {}
         args.plot_aliases = {}
-        if args.light_profile:
-            args.iterations_file = (
-                f'InputTimeIteration_{args.light_profile}.txt'
-            )
+        args.result_file = True  # Force output
+        if args.light_profile in ['dark-steady-state',
+                                  'light-steady-state']:
+            args.evn_file = False
+            args.first_param_file = True
+            args.final_param_file = True
+        if not args.output_suffix:
+            args.output_suffix = '_' + cls._driver_map[args.driver]
+            if args.light_profile:
+                light_profile = args.light_profile
+                if light_profile in ['dark-light-dark',
+                                     'light-dark-light',
+                                     'dark-steady-state',
+                                     'light-steady-state']:
+                    if args.low_light_level is None:
+                        args.low_light_level = 100
+                    if args.high_light_level is None:
+                        args.high_light_level = 1000
+                    if light_profile == 'dark-steady-state':
+                        light_profile = 'steady-state'
+                        light_profile += f'_{args.low_light_level}'
+                    elif light_profile == 'light-steady-state':
+                        light_profile = 'steady-state'
+                        light_profile += f'_{args.high_light_level}'
+                    else:
+                        light_profile += (
+                            f'_{args.low_light_level}_to_'
+                            f'{args.high_light_level}'
+                        )
+                args.output_suffix = (
+                    f'_{light_profile}{args.output_suffix}'
+                )
+            if ((args.use_zaks_npq
+                 and not args.light_profile.startswith('Zaks'))):
+                args.output_suffix += '_ZaksNPQ'
         ROEvar = 'FI::VEL::vS3_S0'
         PSIIvar = 'fPSII'
         args.plot_aliases = {
@@ -1916,13 +1976,69 @@ class ephoto_iterations(ephoto):
             'BF::COND::Cls': 'mM',
             'ALL::VARS::TestLi': 'umol m**-2 s**-1',
         }
-        if args.light_profile.startswith('Zhu2012'):
+        if args.light_profile == 'NPQ-explore':
+            evn_base = None
+            args.use_zaks_npq = True
+            if evn_base == 'Zhu2012':
+                args.evn_file = 'Zhu2012_param.txt'
+                cls.prefix_path_args(args, ['evn_file'],
+                                     prefix=_zhu2012_dir)
+                args.param.update(
+                    GRNC=1.0,
+                    ProteinTotalRatio=0.973,
+                    RUBISCOMETHOD=2,
+                )
+            elif evn_base == 'steady-state':
+                args.evn_file = (
+                    'TimeIterationFinalParam_steady-state_50.0_'
+                    'DynaPS_ZaksNPQ.txt'
+                )
+                cls.prefix_path_args(args, ['evn_file'],
+                                     prefix=args.output_dir)
+            if not args.plot_var:
+                if args.plot_ncol is None:
+                    args.plot_ncol = 5
+                args.plot_var = [
+                    'ALL::VARS::TestLi',
+                    'BF::COND::PHl',
+                    # 'BF::VEL::VsATP',
+                    'PS::COND::ATP',
+                    'dissipation',
+                    'FI::RC::kA_d',
+                    # 'FI::RC::kU_d',
+                    'BF::RC::Kd',
+                    'XanCycle::COND::Vx',
+                    'XanCycle::COND::Ax',
+                    'XanCycle::COND::Zx',
+                    'XanCycle::COND::PsbSQ',
+                    'XanCycle::MOD::XanCycle2FIBF_Kd_NPQ',
+                    'FI::VEL::v_r1',
+                    'FI::VEL::vP680qU',
+                    'expr_psbs',
+                    'QH',
+                    'XanCycle::VEL::vpsbs_act',
+                    'XanCycle::VEL::vpsbs_deact',
+                    'Vc',
+                    'Vo',
+                    'CO2AR',
+                ]
+            args.plot_aliases.update(**{
+                'CO2AR': 'Assim',
+                'BF::COND::ATP': 'ATPStroma',
+                'dissipation': 'ExcitonsDissipatedBF',
+            })
+        elif args.light_profile.startswith('Zhu2012'):
             args.make_equivalent_to_matlab = True
             args.evn_file = None
             if args.match_param == 'matlab':
                 args.evn_file = 'InputEvn_MATLAB_master.txt'
                 cls.prefix_path_args(args, ['evn_file'],
                                      prefix=_data_dir)
+            elif args.match_param == 'Zaks_init':
+                args.evn_file = 'InputEnv_Zaks.txt'
+                cls.prefix_path_args(args, ['evn_file'],
+                                     # _data_dir)
+                                     prefix=args.output_dir)
             elif args.match_param:
                 if args.match_param == 'regen':
                     subprocess.run(
@@ -1985,13 +2101,8 @@ class ephoto_iterations(ephoto):
                     'BF::COND::PHs', 'BF::COND::PHl',
                     'ALL::VARS::TestLi',
                 ]
-        elif args.light_profile in ['Zaks2012', 'Zaks2012_FigS3']:
-            args.plot_var = [
-                'BF::COND::PHl',
-            ]
-            args.plot_limits = {
-                'BF::COND::PHl': (1, 8),
-            }
+        elif args.light_profile.startswith('Zaks2012'):
+            args.use_zaks_npq = True
             args.evn_file = None
             args.param.update(
                 O2_cond=0.210,  # mmol mol-1
@@ -1999,16 +2110,77 @@ class ephoto_iterations(ephoto):
                 Tp=25,          # C
                 ProteinTotalRatio=0.973,
                 GRNC=1.0,
+                RUBISCOMETHOD=2,
+                PsbSQ=1,
                 ATPc=2e-10,     # molprotons∕V∕cm ∕s
             )
-        if not args.output_suffix:
-            args.output_suffix = '_' + cls._driver_map[args.driver]
-            if args.light_profile:
-                args.output_suffix = (
-                    f'_{args.light_profile}{args.output_suffix}'
-                )
-        cls.prefix_path_args(args, ['plot_file'], prefix=args.output_dir)
-        cls.suffix_path_args(args, ['plot_file'], args.output_suffix)
+            if args.light_profile in ['Zaks2012', 'Zaks2012_FigS3']:
+                args.plot_var = [
+                    'BF::COND::PHl',
+                    'BF::COND::ATP',  # 'ATPStroma',
+                    'dissipation',  # 'ExcitonsDissipatedBF',
+                    'XanCycle::MOD::XanCycle2FIBF_Kd_NPQ',
+                    'FIBF::COND::kd',
+                    'FI::RC::kA_d',
+                    'FI::RC::kU_d',
+                    'BF::RC::Kd',
+                    'XanCycle::COND::Vx',
+                    'XanCycle::COND::Ax',
+                    'XanCycle::COND::Zx',
+                    'XanCycle::COND::PsbSQ',
+                    'FI::VEL::vP680qU',
+                ]
+                args.plot_limits = {
+                    'BF::COND::PHl': (1, 8),
+                }
+        if args.use_zaks_npq:
+            args.param.update(
+                UseZaksNPQ=1,
+                psbsQ_converRate=4.0e-2,
+                Fpsbs=1.0,
+                O2_cond=0.210,  # mmol mol-1
+                CO2_cond=280,   # umol mol-1
+                Tp=25,          # C
+                ProteinTotalRatio=0.973,
+                GRNC=1.0,
+                RUBISCOMETHOD=2,
+                # ATPc=2e-10,     # molprotons∕V∕cm ∕s
+            )
+        if not args.plot_var:
+            if args.plot_ncol is None:
+                args.plot_ncol = 2
+            args.plot_var = [
+                'CO2AR', 'dissipation',
+                ROEvar,  'fluoresence',
+                'MembranePotential', PSIIvar,
+                'BF::VEL::Vbf8',
+                'BF::VEL::Vbf3',
+                'BF::VEL::VgPQH2',
+                'ALL::VARS::ADP',
+                'PS::COND::ATP',
+                'ALL::VARS::PS2BF_Pi',
+                'BF::VEL::Vbf11',
+                'BF::COND::PHs', 'BF::COND::PHl',
+                'BF::COND::Ks', 'BF::COND::Mgs',
+                'BF::COND::Cls', 'ALL::VARS::TestLi',
+            ]
+        if args.plot_ncol is None:
+            args.plot_ncol = 2
+        if args.result_file is True:
+            args.result_file = 'TimeIterationResult.txt'
+        if args.first_param_file is True:
+            args.first_param_file = 'TimeIterationFirstParam.txt'
+        if args.final_param_file is True:
+            args.final_param_file = 'TimeIterationFinalParam.txt'
+        cls.prefix_path_args(args, ['plot_file', 'result_file',
+                                    'first_param_file',
+                                    'final_param_file'],
+                             prefix=args.output_dir)
+        cls.suffix_path_args(args, ['plot_file', 'result_file',
+                                    'first_param_file',
+                                    'final_param_file',
+                                    'iterations_file'],
+                             args.output_suffix)
         super(ephoto_iterations, cls).adjust_args(args)
 
     def run_commands(self, args, cmds=None, ephoto_args=None, **kwargs):
@@ -2021,32 +2193,19 @@ class ephoto_iterations(ephoto):
         if not args.light_profile:
             return None
         variables = {'time': [], 'PFD': []}
+        light_profile = args.light_profile
         if args.light_profile == 'dilkaran':
-            variables['time'] = [
-                0,
-                400,
-                800,
-                1200,
-            ]
-            variables['PFD'] = [
-                0,
-                600,
-                0,
-                0,
-            ]
+            light_profile = 'dark-light-dark'
+            args.low_light_level = 0
+            args.high_light_level = 600
+            args.tstart_light_change = 400
+            args.duration_light_change = 400
         elif args.light_profile in ['Zhu2012', 'Zhu2012_Fig2']:
-            variables['time'] = [
-                0,
-                200,
-                400,
-                600,
-            ]
-            variables['PFD'] = [
-                1000,
-                100,
-                1000,
-                1000,
-            ]
+            light_profile = 'light-dark-light'
+            args.low_light_level = 100
+            args.high_light_level = 1000
+            args.tstart_light_change = 200
+            args.duration_light_change = 200
         elif args.light_profile == 'Zhu2012_Fig3':
             # 100 µmol m−2 s−1 increments
             variables['PFD'] = np.linspace(0, 1000, 11)
@@ -2054,22 +2213,71 @@ class ephoto_iterations(ephoto):
             variables['time'] = [
                 200 * x for x in range(len(variables['PFD']))
             ]
-        elif args.light_profile in ['Zaks2012', 'Zaks2012_FigS3']:
+        elif args.light_profile == 'NPQ-explore':
+            # light_profile = 'dark-light-dark'
+            args.low_light_level = 50
+            args.high_light_level = 1800
             variables['time'] = [
                 0,
-                150,
-                900,
-                1500,
+                200,  # 40,
+                400,  # 180,
+                600,  # 250,
             ]
             variables['PFD'] = [
-                0,
-                1000,
-                0,
-                0,
+                args.low_light_level,
+                args.high_light_level,
+                args.low_light_level,
+                args.low_light_level,
+            ]
+        elif args.light_profile in ['Zaks2012', 'Zaks2012_FigS3']:
+            light_profile = 'dark-light-dark'
+            args.low_light_level = 100
+            args.high_light_level = 1000
+            args.tstart_light_change = 2000.0 / 3
+            args.duration_light_change = 2000.0 / 3
+        elif args.light_profile == 'light-steady-state':
+            variables['PFD'] = [args.high_light_level]
+            variables['PFD'].append(variables['PFD'][-1])
+            variables['time'] = [
+                200 * x for x in range(len(variables['PFD']))
+            ]
+        elif args.light_profile == 'dark-steady-state':
+            variables['PFD'] = [args.low_light_level]
+            variables['PFD'].append(variables['PFD'][-1])
+            variables['time'] = [
+                200 * x for x in range(len(variables['PFD']))
             ]
         else:
             raise ValueError(f"Unsupported light profile: "
                              f"{args.light_profile}")
+        if light_profile == 'dark-light-dark':
+            variables['time'] = [
+                0,
+                args.tstart_light_change,
+                args.tstart_light_change + args.duration_light_change,
+                2 * args.tstart_light_change + args.duration_light_change,
+            ]
+            variables['PFD'] = [
+                args.low_light_level,
+                args.high_light_level,
+                args.low_light_level,
+                args.low_light_level,
+            ]
+        elif light_profile == 'light-dark-light':
+            variables['time'] = [
+                0,
+                args.tstart_light_change,
+                args.tstart_light_change + args.duration_light_change,
+                2 * args.tstart_light_change + args.duration_light_change,
+            ]
+            variables['PFD'] = [
+                args.high_light_level,
+                args.low_light_level,
+                args.high_light_level,
+                args.high_light_level,
+            ]
+        else:
+            assert 'PFD' in variables
         args.param['PFD'] = variables['PFD'][0]
         args.stoptime = max(variables['time'])
         self._generated_files += [
@@ -2081,6 +2289,36 @@ class ephoto_iterations(ephoto):
         import pandas as pd
         df = pd.DataFrame(data)
         df.to_csv(fname, sep='\t', index=False)
+
+    def record_last_param(self, args):
+        if not (args.first_param_file or args.final_param_file):
+            return
+        param_files = sorted(glob.glob(
+            args.output_param_base + 'step*.txt'
+        ))
+        print("PARAM_FILES")
+        pprint.pprint(param_files)
+        if not param_files:
+            warnings.warn(f"No parameter files available matching \""
+                          f"{args.output_param_base}step*.txt\"")
+            return
+        first_file = None
+        final_file = None
+        times = []
+        for x in param_files:
+            t = float(x.rsplit('_step', 1)[-1].split('.txt')[0])
+            times.append(t)
+            if first_file is None or t < first_file[0]:
+                first_file = (t, x)
+            if final_file is None or t > final_file[0]:
+                final_file = (t, x)
+        times = sorted(times)
+        print("TIMES")
+        pprint.pprint(times)
+        if args.first_param_file and first_file:
+            shutil.copy2(first_file[1], args.first_param_file)
+        if args.final_param_file and final_file:
+            shutil.copy2(final_file[1], args.final_param_file)
 
     def read_param(self, args):
         param_files = sorted(glob.glob(
@@ -2102,7 +2340,10 @@ class ephoto_iterations(ephoto):
                 if v in data:
                     variables[v].append(data[v])
                 else:
-                    raise KeyError(f'Missing field \"{v}\"')
+                    warnings.warn(f'Missing field \"{v}\" for t = {t}')
+                    variables[v].append(np.nan)
+        if args.result_file:
+            write_param_table(args.result_file, variables)
         return variables
 
     def plot(self, data):
@@ -2112,9 +2353,10 @@ class ephoto_iterations(ephoto):
         nplots = len(variables)
         if args.light_profile == 'Zhu2012_Fig3':
             nplots += 1
-        ncol = 1 if nplots == 1 else 2
+        ncol = 1 if nplots == 1 else args.plot_ncol
         nrow = int(np.ceil(nplots / ncol))
-        fig, axs = plt.subplots(nrow, ncol, figsize=(5, 1.5 * nrow),
+        fig, axs = plt.subplots(nrow, ncol,
+                                figsize=(2.5 * ncol, 1.5 * nrow),
                                 layout='constrained')
         for ax, v in zip(axs.flat, variables):
             ax.set_xlabel('time (s)')
@@ -2489,17 +2731,32 @@ if __name__ == "__main__":
         'ephoto-iterations', help="Run an ephoto time series",
         func=ephoto_iterations)
     parser_iterations.add_argument(
+        '--plot-ncol', type=int,
+        help="Number of columns in figure.",
+    )
+    parser_iterations.add_argument(
         '--plot-var', '--var', type=str, action='append',
         help="Variable that should be plot against time",
-        default=[
-            'ALL::VARS::TestLi', 'CO2AR',
-            'ALL::VARS::O2_cond', 'ALL::VARS::CO2_cond',
-            'FI::VEL::vU_d', 'FI::VEL::vA_d',
-            'BF::COND::PHs', 'BF::COND::PHl',
-        ])
+    )
     parser_iterations.add_argument(
         '--match-limits', action='store_true', default=False,
         help="Match limits to those for published plots")
+    parser_iterations.add_argument(
+        '--result-file', type=str,
+        nargs='?', const='TimeIterationResult.txt',
+        help=(
+            "Location where the results for the output time steps "
+            "should be saved"
+        ),
+    )
+    parser_iterations.add_argument(
+        '--first-param_file', type=str,
+        nargs='?', const='TimeIterationFirstParam.txt',
+        help="Location where the first parameter file should be saved.")
+    parser_iterations.add_argument(
+        '--final-param_file', type=str,
+        nargs='?', const='TimeIterationFinalParam.txt',
+        help="Location where the final parameter file should be saved.")
     parser_iterations.add_argument(
         '--plot-file', type=str,
         nargs='?', const='TimeIterationResult.png',
@@ -2508,15 +2765,51 @@ if __name__ == "__main__":
         '--tmin', type=float, default=0,
         help="Minimum time that should be plot")
     parser_iterations.add_argument(
-        '--light-profile', choices=['dilkaran', 'Zhu2012',
-                                    'Zhu2012_Fig2', 'Zhu2012_Fig3',
-                                    'Zaks2012', 'Zaks2012_FigS3'],
+        '--light-profile', choices=[
+            'dilkaran', 'Zhu2012',
+            'Zhu2012_Fig2', 'Zhu2012_Fig3',
+            'Zaks2012', 'Zaks2012_FigS3',
+            'light-dark-light', 'dark-light-dark',
+            'light-steady-state', 'dark-steady-state',
+            'NPQ-explore',
+        ],
         default='Zhu2012',
         help=("Create an input file that produces a desired light "
               "profile"))
     parser_iterations.add_argument(
+        '--use-zaks-npq', action='store_true',
+        help=(
+            "Use the Zaks et al. 2012 model of non-photochemical "
+            "quenching"
+        ),
+    )
+    parser_iterations.add_argument(
+        '--low-light-level', type=float,
+        help="Light level for the low light condition.",
+    )
+    parser_iterations.add_argument(
+        '--high-light-level', type=float,
+        help="Light level for the high light condition.",
+    )
+    parser_iterations.add_argument(
+        '--tstart-light-change', type=float,
+        help=(
+            'Time after which the change in light should be triggered.'
+            'Valid for light profiles of "light-dark-light" and '
+            '"dark-light-dark."'
+        ),
+    )
+    parser_iterations.add_argument(
+        '--duration-light-change', type=float,
+        help=(
+            'Time that change should persist before being reverted. '
+            'Valid for light profiles of "light-dark-light" and '
+            '"dark-light-dark."'
+        ),
+    )
+    parser_iterations.add_argument(
         '--match-param', nargs='?', const=True,
-        choices=[True, 'regen', 'matlab'],
+        choices=[True, 'regen', 'matlab', 'Zaks_init'],
         help="Run with the parameters explicitly set to match the paper")
     # parser_yggdrasil = subparsers.add_parser(
     #     'yggdrasil',
@@ -2740,7 +3033,7 @@ if __name__ == "__main__":
             'ephoto-iterations': 2
         })
     parser.add_argument(
-        "--useC3", action="store_true",
+        "--useC3", "--c3", action="store_true",
         help="Run the C3 version",
         subparsers={'task': ephoto_tasks},
         subparser_defaults={

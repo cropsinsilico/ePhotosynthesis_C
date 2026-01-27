@@ -33,18 +33,19 @@ using namespace ePhotosynthesis::conditions;
 
 double XanCycle::TIME = 0.;
 std::size_t XanCycle::N = 1;
-
-const std::size_t XanCycleCondition::count = 4;
+const std::size_t XanCycleCondition::count = COUNT_XanCycle;
+bool XanCycle::NPQ_connect = false;
+bool XanCycleCondition::NPQ_connect = false;
 
 DEFINE_MODULE(XanCycle);
 
 void XanCycle::_initOrig(Variables *theVars,
 			 XanCycleCondition* XanCycle_con) {
 
-    XanCycle::kva = 0.163 / 60. * theVars->XanCycleRatio[0]; // Ruth Frommolt et a; 2001; Planta
-    XanCycle::kaz = 0.691 / 60. * theVars->XanCycleRatio[1]; // Ruth Frommolt et a; 2001; Planta
-    XanCycle::kza = 0.119 / 60. * theVars->XanCycleRatio[2]; // Ruth Frommolt et a; 2001; Planta
-    XanCycle::kav = 0.119 / 60. * theVars->XanCycleRatio[3]; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
+    theVars->XanCycle_RC.kva = 0.163 / 60. * theVars->XanCycleRatio[0]; // Ruth Frommolt et a; 2001; Planta
+    theVars->XanCycle_RC.kaz = 0.691 / 60. * theVars->XanCycleRatio[1]; // Ruth Frommolt et a; 2001; Planta
+    theVars->XanCycle_RC.kza = 0.119 / 60. * theVars->XanCycleRatio[2]; // Ruth Frommolt et a; 2001; Planta
+    theVars->XanCycle_RC.kav = 0.119 / 60. * theVars->XanCycleRatio[3]; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
     
     XanCycle::Vx_ = 160.;
     XanCycle::Ax_ = 10.;
@@ -62,16 +63,35 @@ void XanCycle::_initOrig(Variables *theVars,
 
 void XanCycle::_initCalc(Variables *theVars,
 			 XanCycleCondition* XanCycle_con) {
-    XanCycle::kva *= theVars->XanCycleRatio[0] / 60.; // Ruth Frommolt et a; 2001; Planta
-    XanCycle::kaz *= theVars->XanCycleRatio[1] / 60.; // Ruth Frommolt et a; 2001; Planta
-    XanCycle::kza *= theVars->XanCycleRatio[2] / 60.; // Ruth Frommolt et a; 2001; Planta
-    XanCycle::kav *= theVars->XanCycleRatio[3] / 60; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
-    
+    XanCycle::setNPQ_connect(theVars->UseZaksNPQ);
+    theVars->XanCycle_RC.kva *= theVars->XanCycleRatio[0] / 60.; // Ruth Frommolt et a; 2001; Planta
+    theVars->XanCycle_RC.kaz *= theVars->XanCycleRatio[1] / 60.; // Ruth Frommolt et a; 2001; Planta
+    theVars->XanCycle_RC.kza *= theVars->XanCycleRatio[2] / 60.; // Ruth Frommolt et a; 2001; Planta
+    theVars->XanCycle_RC.kav *= theVars->XanCycleRatio[3] / 60; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
+
     XanCycle_con->Vx = XanCycle::Vx_ * 0.37;
     XanCycle_con->Ax = XanCycle::Ax_ * 0.37;
     XanCycle_con->Zx = XanCycle::Zx_ * 0.37;
     XanCycle_con->ABA = XanCycle::ABA_;
-
+ 
+    if (theVars->UseZaksNPQ) {
+      theVars->XanCycle_RC.kva = theVars->XanCycle_RC.kvde_max;
+      theVars->XanCycle_RC.kaz = theVars->XanCycle_RC.kvde_max;
+      theVars->XanCycle_RC.kza = theVars->XanCycle_RC.k_ze;
+      theVars->XanCycle_RC.kav = theVars->XanCycle_RC.k_ze;
+      XanCycle::Vx_ = 0.7;
+      XanCycle::Ax_ = 0.2;
+      XanCycle::Zx_ = 0.1;
+      XanCycle::ABA_ = 0.0;
+      XanCycle_con->Vx = XanCycle::Vx_;
+      XanCycle_con->Ax = XanCycle::Ax_;
+      XanCycle_con->Zx = XanCycle::Zx_;
+      XanCycle_con->ABA = XanCycle::ABA_;
+      XanCycle::update_Kd_NPQ(XanCycle_con, theVars);
+    } else {
+      XanCycle_con->PsbSQ = 0.0;
+    }
+    
     XanCycle::XanCycle2FIBF_Xstate = XanCycle::Zx_ /
       (XanCycle::Ax_ + XanCycle::Vx_ + XanCycle::Zx_);
 }

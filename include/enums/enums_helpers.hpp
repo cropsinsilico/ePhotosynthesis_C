@@ -527,11 +527,12 @@ namespace ePhotosynthesis {
 }
 namespace ePhotosynthesis {
   #define MEMBERS_XanCycleCondition		\
-      NONE     ,		\
-      Vx       ,		\
-      Ax       ,		\
-      Zx       ,		\
-      ABA      ,		\
+      NONE      ,		\
+      Vx        ,		\
+      Ax        ,		\
+      Zx        ,		\
+      ABA       ,		\
+      PsbSQ     ,		\
       MAX
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_XanCycle_COND : int {
@@ -1542,15 +1543,12 @@ namespace ePhotosynthesis {
 namespace ePhotosynthesis {
   #define MEMBERS_XanCycle		\
       NONE                     ,		\
-      kva                      ,		\
-      kaz                      ,		\
-      kza                      ,		\
-      kav                      ,		\
       Vx_                      ,		\
       Ax_                      ,		\
       Zx_                      ,		\
       ABA_                     ,		\
       XanCycle2FIBF_Xstate     ,		\
+      XanCycle2FIBF_Kd_NPQ     ,		\
       MAX
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_XanCycle_MOD : int {
@@ -2047,11 +2045,19 @@ namespace ePhotosynthesis {
 }
 namespace ePhotosynthesis {
   #define MEMBERS_XanCycleRC		\
-      NONE     ,		\
-      kva      ,		\
-      kaz      ,		\
-      kza      ,		\
-      kav      ,		\
+      NONE                 ,		\
+      kva                  ,		\
+      kaz                  ,		\
+      kza                  ,		\
+      kav                  ,		\
+      hill_psbs            ,		\
+      pK_psbs              ,		\
+      hill_vde             ,		\
+      pK_vde               ,		\
+      kvde_max             ,		\
+      k_ze                 ,		\
+      Fpsbs                ,		\
+      psbsQ_converRate     ,		\
       MAX
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_XanCycle_RC : int {
@@ -2409,14 +2415,16 @@ namespace ePhotosynthesis {
 }
 namespace ePhotosynthesis {
   #define MEMBERS_XanCycleVel		\
-      NONE       ,		\
-      Vva        ,		\
-      Vaz        ,		\
-      Vza        ,		\
-      Vav        ,		\
-      Vvf        ,		\
-      Vv2ABA     ,		\
-      VABAdg     ,		\
+      NONE            ,		\
+      Vva             ,		\
+      Vaz             ,		\
+      Vza             ,		\
+      Vav             ,		\
+      Vvf             ,		\
+      Vv2ABA          ,		\
+      VABAdg          ,		\
+      vpsbs_act       ,		\
+      vpsbs_deact     ,		\
       MAX
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_XanCycle_VEL : int {

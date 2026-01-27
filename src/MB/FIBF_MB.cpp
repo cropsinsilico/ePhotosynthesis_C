@@ -83,6 +83,8 @@ FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* const FIBF_Con
     //////////////////////////////////////////////////////////////////////////////////////////////////
     //PHl = theVars->BF2FIBFMB_PHl;
 
+    if (!FIBF::getNPQ_kd()) {
+
     double dmax = theVars->FIBF_RC.kdm0 * QH;
 
     if (theVars->XanCycle_BF_com) {
@@ -95,6 +97,8 @@ FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* const FIBF_Con
         }
     }
     dydt->kd = RC * (dmax - FIBF_Con->kd);
+
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // Calculate the proton generation rate from the model of FI and use that to calculate the lumen PH //            //

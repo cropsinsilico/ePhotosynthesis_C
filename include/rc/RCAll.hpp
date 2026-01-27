@@ -33,3 +33,4 @@
 #include "RROEARC.hpp"
 #include "RuACTRC.hpp"
 #include "RedoxRegRC.hpp"
+#include "XanCycleRC.hpp"

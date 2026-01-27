@@ -55,6 +55,8 @@ public:
         Vvf = other.Vvf;
         Vv2ABA = other.Vv2ABA;
         VABAdg = other.VABAdg;
+        vpsbs_act = other.vpsbs_act;
+        vpsbs_deact = other.vpsbs_deact;
 	copyMembers(other);
     }
 

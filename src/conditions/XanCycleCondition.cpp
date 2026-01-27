@@ -40,10 +40,15 @@ void XanCycleCondition::_fromArray(const arr &vec, const std::size_t offset) {
     Vx = vec[offset];
     Ax = vec[offset + 1];
     Zx = vec[offset + 2];
-    ABA = vec[offset + 3];
+    if (NPQ_connect)
+      PsbSQ = vec[offset + 3];
+    else
+      ABA = vec[offset + 3];
 }
 
 arr XanCycleCondition::_toArray() const {
+    if (NPQ_connect)
+        return {Vx, Ax, Zx, PsbSQ};
     arr array = {Vx, Ax, Zx, ABA};
     return array;
 }
@@ -53,4 +58,5 @@ void XanCycleCondition::_clear() {
     Ax = 0.;
     Zx = 0.;
     ABA = 0.;
+    PsbSQ = 0.;
 }

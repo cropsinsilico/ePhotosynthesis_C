@@ -30,7 +30,7 @@
 
 #define PARENT_XanCycle DynaPS
 #define NRATIO_XanCycle 4
-#define PARAM_TYPES_XanCycle COND, VEL
+#define PARAM_TYPES_XanCycle COND, VEL, RC
 #define CONNECT_XanCycle
 #define COUNT_XanCycle 4
 #define CONTROL_XanCycle
@@ -57,6 +57,7 @@ public:
       */
     XanCycleCondition(const arr &vec, const std::size_t offset = 0);
 
+    SET_GET_BOOL_TOGGLE(NPQ_connect, PsbSQ, ABA)
 private:
     /** \copydoc ConditionBase::_clear */
     void _clear() override;
@@ -75,6 +76,7 @@ private:
       */
     static void _reset(const bool noChildren = false) {
       ParentClass::_reset(noChildren);
+      setNPQ_connect(false);
     }
 
 };

@@ -758,24 +758,27 @@ namespace ePhotosynthesis {
   };
   template<>
   const std::vector<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::all = {
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx ,
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax ,
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx ,
-    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx   ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax   ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx   ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA  ,
+    ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PsbSQ
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::names = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx , "Vx" },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax , "Ax" },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx , "Zx" },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA, "ABA"}
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx   , "Vx"   },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax   , "Ax"   },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx   , "Zx"   },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA  , "ABA"  },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PsbSQ, "PsbSQ"}
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::defaults = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx , 160.0},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax , 10.0 },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx , 5.0  },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA, 1.0  }
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx   , 160.0},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax   , 10.0 },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx   , 5.0  },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA  , 1.0  },
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PsbSQ, 1e-8 }
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::defaults_C3 = {};
@@ -785,19 +788,21 @@ namespace ePhotosynthesis {
   const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::docs = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx , "[CALC] * 0.37; The concentration of Violoxanthin"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax , "[CALC] * 0.37; The concentration of Anthroxanthin"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx , "[CALC] * 0.37; The concentration of Zeaxanthin"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA, "[CALC] The concentration of ABA"}
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx   , "[CALC] * 0.37; The concentration of Violoxanthin"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax   , "[CALC] * 0.37; The concentration of Anthroxanthin"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx   , "[CALC] * 0.37; The concentration of Zeaxanthin"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA  , "[CALC] The concentration of ABA"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PsbSQ, "[CALC] The fraction of protonated PsbS"}
   };
   template<>
   std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::static_value_flags = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx , (STATIC_VALUE_FLAG_CALC)},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax , (STATIC_VALUE_FLAG_CALC)},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx , (STATIC_VALUE_FLAG_CALC)},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA, (STATIC_VALUE_FLAG_CALC)}
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Vx   , (STATIC_VALUE_FLAG_CALC)},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Ax   , (STATIC_VALUE_FLAG_CALC)},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Zx   , (STATIC_VALUE_FLAG_CALC)},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ABA  , (STATIC_VALUE_FLAG_CALC)},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PsbSQ, (STATIC_VALUE_FLAG_CALC)}
   };
   std::ostream& operator<<(std::ostream& out, const ENUM_XanCycle_COND& x) {
     out << ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::getName(x);
