@@ -1025,8 +1025,8 @@ double Variables::getVarCalculated(const std::string& k,
         const double OHs = pow(10., -14.) / (Hfs / 1000.) * 1000.;
         const double BFHs = getVar(MODULE_BF, PARAM_TYPE_COND, "BFHs");
         const double BFs = BFHs - Hfs;
-        const double kz = getVar(MODULE_BF, PARAM_TYPE_POOL, "kz");
-        const double BFns = kz - BFs;
+        const double BFTs = getVar(MODULE_BF, PARAM_TYPE_POOL, "BFTs");
+        const double BFns = BFTs - BFs;
         const double Ks = getVar(MODULE_BF, PARAM_TYPE_COND, "Ks");
         const double Mgs = getVar(MODULE_BF, PARAM_TYPE_COND, "Mgs");
         const double Cls = getVar(MODULE_BF, PARAM_TYPE_COND, "Cls");

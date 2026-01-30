@@ -10,4 +10,4 @@ pK_vde             6.0                  # Zaks et al. 2012, Table S2; pK value f
 kvde_max           4e-1                 # Zaks et al. 2012, Table S2; Max kvde; used to set kva & kaz when UseZaksNPQ set
 k_ze               4e-4                 # Zaks et al. 2012; in s^-1; reverse Zea → Vx; used to set kza & kav when UseZaksNPQ set
 Fpsbs              0.6                  # Zaks et al. 2012, Table S2; Fraction of quenching sites with both Zea and PsbS-H; only used when UseZaksNPQ set
-psbsQ_converRate   1e-1                 # Zaks et al. 2012, Table S2; rate constant for PsbS protonation; only used when UseZaksNPQ set
+psbsQ_converRate   4e-2                 # Zaks et al. 2012, Table S2; rate constant for PsbS protonation; only used when UseZaksNPQ set

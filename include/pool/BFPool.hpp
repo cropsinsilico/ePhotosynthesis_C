@@ -52,27 +52,21 @@ public:
       *this = other;
     }
     BFPool& operator=(const BFPool &other) {
-        kA_d = other.kA_d;
-        kA_f = other.kA_f;
-        kA_U = other.kA_U;
-        kU_A = other.kU_A;
-        kU_d = other.kU_d;
-        kU_f = other.kU_f;
-        k1 = other.k1;
-        k_r1 = other.k_r1;
-        kz = other.kz;
-        k12 = other.k12;
-        k23 = other.k23;
-        k30 = other.k30;
-        // k01 = other.k01;
-        // k2 = other.k2;
-        // kAB1 = other.kAB1;
-        // kBA1 = other.kBA1;
-        // kAB2 = other.kAB2;
-        // kBA2 = other.kBA2;
-        // k3 = other.k3;
-        // k_r3 = other.k_r3;
-        // k_pq_oxy = other.k_pq_oxy;
+        // The commented names were the names incorrectly used when the
+        //   MATLAB code was first translated (they are actually values in
+        //   FI::RC).
+        Tcyt = other.Tcyt;     // kA_d
+        Tcytc2 = other.Tcytc2; // kA_f
+        TK = other.TK;         // kA_U
+        TMg = other.TMg;       // kU_A
+        TCl = other.TCl;       // kU_d
+        TFd = other.TFd;       // kU_f
+        TA = other.TA;         // k1
+        TQ = other.TQ;         // k_r1
+        BFTs = other.BFTs;     // kz
+        BFTl = other.BFTl;     // k12
+        P700T = other.P700T;   // k23
+        NADPHT = other.NADPHT; // k30
 	copyMembers(other);
 	return *this;
     }

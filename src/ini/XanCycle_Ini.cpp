@@ -47,53 +47,41 @@ void XanCycle::_initOrig(Variables *theVars,
     theVars->XanCycle_RC.kza = 0.119 / 60. * theVars->XanCycleRatio[2]; // Ruth Frommolt et a; 2001; Planta
     theVars->XanCycle_RC.kav = 0.119 / 60. * theVars->XanCycleRatio[3]; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
     
-    XanCycle::Vx_ = 160.;
-    XanCycle::Ax_ = 10.;
-    XanCycle::Zx_ = 5.;
-    XanCycle::ABA_ = 1.;
-    XanCycle_con->Vx = XanCycle::Vx_ * 0.37;
-    XanCycle_con->Ax = XanCycle::Ax_ * 0.37;
-    XanCycle_con->Zx = XanCycle::Zx_ * 0.37;
-    XanCycle_con->ABA = XanCycle::ABA_;
+    XanCycle_con->Vx = 160.0 * 0.37;
+    XanCycle_con->Ax = 10.0 * 0.37;
+    XanCycle_con->Zx = 5.0 * 0.37;
+    XanCycle_con->ABA = 1.0;
 
-    XanCycle::XanCycle2FIBF_Xstate = XanCycle::Zx_ /
-      (XanCycle::Ax_ + XanCycle::Vx_ + XanCycle::Zx_);
+    XanCycle::update_shared(XanCycle_con, theVars);
 
 }
 
 void XanCycle::_initCalc(Variables *theVars,
 			 XanCycleCondition* XanCycle_con) {
     XanCycle::setNPQ_connect(theVars->UseZaksNPQ);
-    theVars->XanCycle_RC.kva *= theVars->XanCycleRatio[0] / 60.; // Ruth Frommolt et a; 2001; Planta
-    theVars->XanCycle_RC.kaz *= theVars->XanCycleRatio[1] / 60.; // Ruth Frommolt et a; 2001; Planta
-    theVars->XanCycle_RC.kza *= theVars->XanCycleRatio[2] / 60.; // Ruth Frommolt et a; 2001; Planta
-    theVars->XanCycle_RC.kav *= theVars->XanCycleRatio[3] / 60; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
-
-    XanCycle_con->Vx = XanCycle::Vx_ * 0.37;
-    XanCycle_con->Ax = XanCycle::Ax_ * 0.37;
-    XanCycle_con->Zx = XanCycle::Zx_ * 0.37;
-    XanCycle_con->ABA = XanCycle::ABA_;
- 
     if (theVars->UseZaksNPQ) {
       theVars->XanCycle_RC.kva = theVars->XanCycle_RC.kvde_max;
       theVars->XanCycle_RC.kaz = theVars->XanCycle_RC.kvde_max;
       theVars->XanCycle_RC.kza = theVars->XanCycle_RC.k_ze;
       theVars->XanCycle_RC.kav = theVars->XanCycle_RC.k_ze;
-      XanCycle::Vx_ = 0.7;
-      XanCycle::Ax_ = 0.2;
-      XanCycle::Zx_ = 0.1;
-      XanCycle::ABA_ = 0.0;
-      XanCycle_con->Vx = XanCycle::Vx_;
-      XanCycle_con->Ax = XanCycle::Ax_;
-      XanCycle_con->Zx = XanCycle::Zx_;
-      XanCycle_con->ABA = XanCycle::ABA_;
-      XanCycle::update_Kd_NPQ(XanCycle_con, theVars);
+      // theVars->XanCycle_RC.kva = theVars->XanCycleRatio[0] * theVars->XanCycle_RC.kvde_max;
+      // theVars->XanCycle_RC.kaz = theVars->XanCycleRatio[1] * theVars->XanCycle_RC.kvde_max;
+      // theVars->XanCycle_RC.kza = theVars->XanCycleRatio[2] * theVars->XanCycle_RC.k_ze;
+      // theVars->XanCycle_RC.kav = theVars->XanCycleRatio[3] * theVars->XanCycle_RC.k_ze;
+      if (XanCycle_con->Vx > 1) {
+        const double Tot = XanCycle_con->Vx + XanCycle_con->Ax + XanCycle_con->Zx;
+        XanCycle_con->Vx /= Tot;
+        XanCycle_con->Ax /= Tot;
+        XanCycle_con->Zx /= Tot;
+      }
     } else {
-      XanCycle_con->PsbSQ = 0.0;
+      // TODO: Move factors from ini functions into param files
+      theVars->XanCycle_RC.kva *= theVars->XanCycleRatio[0] / 60.; // Ruth Frommolt et a; 2001; Planta
+      theVars->XanCycle_RC.kaz *= theVars->XanCycleRatio[1] / 60.; // Ruth Frommolt et a; 2001; Planta
+      theVars->XanCycle_RC.kza *= theVars->XanCycleRatio[2] / 60.; // Ruth Frommolt et a; 2001; Planta
+      theVars->XanCycle_RC.kav *= theVars->XanCycleRatio[3] / 60; // Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
     }
-    
-    XanCycle::XanCycle2FIBF_Xstate = XanCycle::Zx_ /
-      (XanCycle::Ax_ + XanCycle::Vx_ + XanCycle::Zx_);
+    XanCycle::update_shared(XanCycle_con, theVars);
 }
 
 DEFINE_DEFAULT_CHECKALT(XanCycle)

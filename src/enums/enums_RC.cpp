@@ -1555,7 +1555,7 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kvde_max        , 4e-1 },
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_ze            , 4e-4 },
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Fpsbs           , 0.6  },
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)psbsQ_converRate, 1e-1 }
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)psbsQ_converRate, 4e-2 }
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::defaults_C3 = {};

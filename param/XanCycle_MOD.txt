@@ -1,7 +1,3 @@
 # Name			Value	C3Value	Docs
-Vx_			160.0		# [CONST, INIT_ONCE] The concentration of Violozanthin
-Ax_			10.0		# [CONST, INIT_ONCE] The concentration of Anthrozanthin
-Zx_			5.0		# [CONST, INIT_ONCE] The concentration of Zeaznthin
-ABA_			1.0		# [CONST, INIT_ONCE] The concentration of ABA
 XanCycle2FIBF_Xstate	0.0		# [CALC] Calculated
 XanCycle2FIBF_Kd_NPQ    0.0             # [CALC] Heat dissipation rate constant calculated using Zaks et al. 2012 model for non-photochemical quenching

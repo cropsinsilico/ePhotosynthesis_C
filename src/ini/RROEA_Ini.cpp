@@ -136,7 +136,7 @@ void RROEA::_initOrig(Variables *theVars, RROEACondition* RROEA_con) {
     theVars->RROEA_Pool.mw_ATPase = mw_ATPase;
 
     if (theVars->RROEA_EPS_com)
-        FdT = theVars->BF_Pool.kU_f;
+        FdT = theVars->BF_Pool.TFd;
 
     theVars->RROEA_Pool.GAPDH = PS::getV3() * 1000. * 60. / SA_GAPDH / mw_GAPDH;
     theVars->RROEA_Pool.FBPase = PS::getV6() * 1000. * 60. / SA_FBPase / mw_FBPase;
@@ -232,7 +232,7 @@ void RROEA::_initCalc(Variables *theVars, RROEACondition* RROEA_con) {
     const double mw_ATPase = theVars->RROEA_Pool.mw_ATPase;
 
     if (theVars->RROEA_EPS_com)
-        theVars->RROEA_Pool.FdT = theVars->BF_Pool.kU_f;
+        theVars->RROEA_Pool.FdT = theVars->BF_Pool.TFd;
 
     theVars->RROEA_Pool.GAPDH = PS::getV3() * 1000. * 60. / SA_GAPDH / mw_GAPDH;
     theVars->RROEA_Pool.FBPase = PS::getV6() * 1000. * 60. / SA_FBPase / mw_FBPase;

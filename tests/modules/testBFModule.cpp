@@ -24,12 +24,12 @@ TEST_F(BFModuleTest, InitTest) {
 
     BFCondition* bfc2 = BF::init(theVars2);
 
-    EXPECT_NE(theVars->BF_Pool.kA_d, theVars2->BF_Pool.kA_d);
-    EXPECT_NE(theVars->BF_Pool.kU_A, theVars2->BF_Pool.kU_A);
-    EXPECT_NE(theVars->BF_Pool.kU_f, theVars2->BF_Pool.kU_f);
-    EXPECT_NE(theVars->BF_Pool.k12, theVars2->BF_Pool.k12);
-    EXPECT_NE(theVars->BF_Pool.k30, theVars2->BF_Pool.k30);
-    EXPECT_NE(theVars->BF_Pool.kU_d, theVars2->BF_Pool.kU_d);
+    EXPECT_NE(theVars->BF_Pool.Tcyt, theVars2->BF_Pool.Tcyt);
+    EXPECT_NE(theVars->BF_Pool.TMg, theVars2->BF_Pool.TMg);
+    EXPECT_NE(theVars->BF_Pool.TFd, theVars2->BF_Pool.TFd);
+    EXPECT_NE(theVars->BF_Pool.BFTl, theVars2->BF_Pool.BFTl);
+    EXPECT_NE(theVars->BF_Pool.NADPHT, theVars2->BF_Pool.NADPHT);
+    EXPECT_NE(theVars->BF_Pool.TCl, theVars2->BF_Pool.TCl);
     delete bfc;
     delete bfc2;
     delete theVars2;

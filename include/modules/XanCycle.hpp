@@ -44,16 +44,13 @@ public:
     DECLARE_MODULE(XanCycle)
 
     /**
-      Method for updating the static variable that stores the Kd
-      calculated using the Zaks et a. 2012 model for non-photochemical
-      quenching (NPQ).
-      
+      Method for updating the shared static variables.
       \param condition The input Condition class.
       \param theVars Pointer to the global variables
-      \return The calculated kd value (0 if not supported).
       */
-    static double update_Kd_NPQ(const conditions::XanCycleCondition* const XanCycle_Con,
+      static void update_shared(const conditions::XanCycleCondition* const XanCycle_Con,
                                 Variables *theVars);
+
 private:
     /**
       Function to set the initial state of the XanCycleCondition class.

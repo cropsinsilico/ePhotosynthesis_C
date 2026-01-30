@@ -53,19 +53,19 @@ void BF::_Rate(const double t, const BFCondition* const BF_con, Variables *theVa
     // Get the auxiliary variables //
     //////////////////////////////////////////////////////////////
 
-    const double cytc1n = theVars->BF_Pool.kA_d - BF_con->cytc1; // The concentration of reduced cytc1
-    const double cytbLn = theVars->BF_Pool.kA_d - BF_con->cytbL; // The concentration of reduced cytbL
-    const double cytbHn = theVars->BF_Pool.kA_d - BF_con->cytbH; // The concentration of reduced cytbH
-    const double cytc2n = theVars->BF_Pool.kA_f - BF_con->cytc2; // The concentration of reduced cytc2
-    const double Kl = theVars->BF_Pool.kA_U - BF_con->Ks;        // The concentration of K in lumen
-    const double Mgl = theVars->BF_Pool.kU_A - BF_con->Mgs;      // The concentration of Mg in lumen
-    const double Cll = theVars->BF_Pool.kU_d - BF_con->Cls;      // The concentration of Cl in lumen
-    const double Fd = theVars->BF_Pool.kU_f - Fdn;       // The conncentration of oxidized Fd in stroma
-    const double A = theVars->BF_Pool.k1 - BF_con->An;           // The concentration of oxidized electron acceptor in PSI
-    const double QST = theVars->BF_Pool.kA_d;                    // Assuming that the total number of cytochrome is equal to the total number of quinone binding site;
+    const double cytc1n = theVars->BF_Pool.Tcyt - BF_con->cytc1; // The concentration of reduced cytc1
+    const double cytbLn = theVars->BF_Pool.Tcyt - BF_con->cytbL; // The concentration of reduced cytbL
+    const double cytbHn = theVars->BF_Pool.Tcyt - BF_con->cytbH; // The concentration of reduced cytbH
+    const double cytc2n = theVars->BF_Pool.Tcytc2 - BF_con->cytc2; // The concentration of reduced cytc2
+    const double Kl = theVars->BF_Pool.TK - BF_con->Ks;        // The concentration of K in lumen
+    const double Mgl = theVars->BF_Pool.TMg - BF_con->Mgs;      // The concentration of Mg in lumen
+    const double Cll = theVars->BF_Pool.TCl - BF_con->Cls;      // The concentration of Cl in lumen
+    const double Fd = theVars->BF_Pool.TFd - Fdn;       // The conncentration of oxidized Fd in stroma
+    const double A = theVars->BF_Pool.TA - BF_con->An;           // The concentration of oxidized electron acceptor in PSI
+    const double QST = theVars->BF_Pool.Tcyt;                    // Assuming that the total number of cytochrome is equal to the total number of quinone binding site;
     const double QSe = QST - BF_con->Qi - BF_con->Qn - BF_con->Qr;
-    const double P700p = theVars->BF_Pool.k23 - BF_con->P700;    // The number of positive P700;
-    const double NADP = theVars->BF_Pool.k30 - BF_con->NADPH;
+    const double P700p = theVars->BF_Pool.P700T - BF_con->P700;    // The number of positive P700;
+    const double NADP = theVars->BF_Pool.NADPHT - BF_con->NADPH;
 
     if (theVars->FIBF_PSPR_com) {
         ADP = theVars->ADP;
@@ -83,7 +83,7 @@ void BF::_Rate(const double t, const BFCondition* const BF_con, Variables *theVa
 
     const double BFs = BF_con->BFHs - Hfs;          // The concentration of the protonated buffer speices.
                                                    // Notice here the variable BFHs represent the total concentration of both proton and the protonated buffer species in stroma
-    const double BFns = theVars->BF_Pool.kz - BFs; // The total concentration of deprotonated buffer species in stroma;
+    const double BFns = theVars->BF_Pool.BFTs - BFs; // The total concentration of deprotonated buffer species in stroma;
 
     const double RegPHs = 1.;
 
@@ -100,26 +100,26 @@ void BF::_Rate(const double t, const BFCondition* const BF_con, Variables *theVa
 
     const double Vmax = theVars->BF_RC.K1 * (BF_con->ISPo + BF_con->ISPHr);                     // The maximum rate of formation of enzyme substrate complex
     theVars->BF_Vel.Vbf1 = Vmax * BF_con->ISPo / (BF_con->ISPo + BF_con->ISPHr) * BF_con->QH2 /
-                           theVars->BF_Pool.k_r1; // Unit: micromole s-1 m-2 leaf area
+                           theVars->BF_Pool.TQ; // Unit: micromole s-1 m-2 leaf area
     theVars->BF_Vel.Vbf2 = theVars->BF_RC.K2 * BF_con->ISPoQH2 * RegPHl;                       // Unit: micromole s-1 m-2 leaf area
-    theVars->BF_Vel.Vbf3 = theVars->BF_RC.K3 * BF_con->QHsemi * BF_con->cytbL / theVars->BF_Pool.kA_d *
+    theVars->BF_Vel.Vbf3 = theVars->BF_RC.K3 * BF_con->QHsemi * BF_con->cytbL / theVars->BF_Pool.Tcyt *
                            RegPHl; // Unit: micromole s-1 m-2 leaf area
-    theVars->BF_Vel.Vbf4 = theVars->BF_RC.K4 * cytbLn * BF_con->cytbH / theVars->BF_Pool.kA_d; // Unit: micromole s-1 m-2 leaf area
-    theVars->BF_Vel.Vbf5 = theVars->BF_RC.K5 * cytbHn * BF_con->Qi / theVars->BF_Pool.kA_d;    //;Unit: micromole s-1 m-2 leaf area
-    theVars->BF_Vel.Vbf6 = theVars->BF_RC.K6 * cytbHn * BF_con->Qn / theVars->BF_Pool.kA_d;    // Unit: micromole s-1 m-2 leaf area
-    theVars->BF_Vel.Vbf7 = theVars->BF_RC.K7 * theVars->BF_Pool.kA_d * QSe / QST * BF_con->Q /
-                           theVars->BF_Pool.k_r1; // QSe ans QST represent the empty quinone binding site and the total number of quinone binding site respectively. Unit: micromole s-1 per meter squareleaf area;
-    theVars->BF_Vel.Vbf8 = theVars->BF_RC.K8 * theVars->BF_Pool.kA_d *
-                           (BF_con->ISPHr / theVars->BF_Pool.kA_d * BF_con->cytc1 /
-                            theVars->BF_Pool.kA_d - BF_con->ISPo / theVars->BF_Pool.kA_d * cytc1n /
-                            theVars->BF_Pool.kA_d / theVars->BF_RC.KE8) * RegPHl; // Unit: micromole s-1 m-2 leaf area
-    theVars->BF_Vel.Vbf9 = theVars->BF_RC.K9 * theVars->BF_Pool.kA_d *
-                           (cytc1n / theVars->BF_Pool.kA_d * BF_con->cytc2 / theVars->BF_Pool.kA_d -
-                            BF_con->cytc1 / theVars->BF_Pool.kA_d * cytc2n / theVars->BF_Pool.kA_d /
+    theVars->BF_Vel.Vbf4 = theVars->BF_RC.K4 * cytbLn * BF_con->cytbH / theVars->BF_Pool.Tcyt; // Unit: micromole s-1 m-2 leaf area
+    theVars->BF_Vel.Vbf5 = theVars->BF_RC.K5 * cytbHn * BF_con->Qi / theVars->BF_Pool.Tcyt;    //;Unit: micromole s-1 m-2 leaf area
+    theVars->BF_Vel.Vbf6 = theVars->BF_RC.K6 * cytbHn * BF_con->Qn / theVars->BF_Pool.Tcyt;    // Unit: micromole s-1 m-2 leaf area
+    theVars->BF_Vel.Vbf7 = theVars->BF_RC.K7 * theVars->BF_Pool.Tcyt * QSe / QST * BF_con->Q /
+                           theVars->BF_Pool.TQ; // QSe ans QST represent the empty quinone binding site and the total number of quinone binding site respectively. Unit: micromole s-1 per meter squareleaf area;
+    theVars->BF_Vel.Vbf8 = theVars->BF_RC.K8 * theVars->BF_Pool.Tcyt *
+                           (BF_con->ISPHr / theVars->BF_Pool.Tcyt * BF_con->cytc1 /
+                            theVars->BF_Pool.Tcyt - BF_con->ISPo / theVars->BF_Pool.Tcyt * cytc1n /
+                            theVars->BF_Pool.Tcyt / theVars->BF_RC.KE8) * RegPHl; // Unit: micromole s-1 m-2 leaf area
+    theVars->BF_Vel.Vbf9 = theVars->BF_RC.K9 * theVars->BF_Pool.Tcyt *
+                           (cytc1n / theVars->BF_Pool.Tcyt * BF_con->cytc2 / theVars->BF_Pool.Tcyt -
+                            BF_con->cytc1 / theVars->BF_Pool.Tcyt * cytc2n / theVars->BF_Pool.Tcyt /
                             theVars->BF_RC.KE9); // Unit: micromole s-1 m-2 leaf area
     const double KE10 = 10.;
-    theVars->BF_Vel.Vbf10 = theVars->BF_RC.K10 * P700p * cytc2n / theVars->BF_Pool.k23 -
-                            theVars->BF_RC.K10 * BF_con->cytc2 * BF_con->P700 / theVars->BF_Pool.k23 /
+    theVars->BF_Vel.Vbf10 = theVars->BF_RC.K10 * P700p * cytc2n / theVars->BF_Pool.P700T -
+                            theVars->BF_RC.K10 * BF_con->cytc2 * BF_con->P700 / theVars->BF_Pool.P700T /
                             KE10; // Unit: micromole s-1 m-2 leaf area
 
     double Ytemp;
@@ -151,7 +151,7 @@ void BF::_Rate(const double t, const BFCondition* const BF_con, Variables *theVa
     const double MaxCO2Rate = 100. * CO2 / (CO2 + 460.);
 
     theVars->BF_Vel.VsATP = MaxCO2Rate * 1.5 / CoeffVol * ATP / 1.5;        //(ADP + ATP); // The sink for ATP utilizaiton, 20 represent the of CO2 assimilation, since 1 meter square amount to 27 ml, therefore, the sink capacity should be 20 * 1.5 * 1.5 mmol / 27 l-1 s-1. The 1.5 represents the 1.5 ATP consumption per CO2 fixation.  Unit: mmol l-2 s-1
-    theVars->BF_Vel.VsNADPH = MaxCO2Rate / CoeffVol * 1 * BF_con->NADPH / theVars->BF_Pool.k30; // For 6 C6 = 5 C6 + 1C6;
+    theVars->BF_Vel.VsNADPH = MaxCO2Rate / CoeffVol * 1 * BF_con->NADPH / theVars->BF_Pool.NADPHT; // For 6 C6 = 5 C6 + 1C6;
     theVars->BF_Vel.VgPQH2 = BF_con->Q * 800. * RegPHs;                              // Assuming that the rate of generation of PQH2 through QB site only depend on the PQ and PQH2 exchange capacity.
     double NetCharge = Hfs + BF_con->Ks + 2. * BF_con->Mgs - OHs - BF_con->Cls - BFns; // The difference between the positive and negative charge in stroma. It was assumed that the charge is in equilibrium state in the beginning of the model, therefore, the difference in the positive and negative charges reflect the charges forming electrical potential cross the membrane. The unit is mmol l-1.
     NetCharge = NetCharge / 1000.;                                                  // The unit conversion. Convert from mmol l-1 to mol l-1.
@@ -181,9 +181,9 @@ void BF::_Rate(const double t, const BFCondition* const BF_con, Variables *theVa
     theVars->BF_Vel.JClc  = JCl / theVars->BF_RC.RVA / 100.;                   // 100 represent the conversion to cm-2;  theVars->BF_RC.RVA is the ratio between the lumen volume and thylakoid membrane area.
 
 
-    const double P700e = BF_con->U * (theVars->BF_Pool.k23 - P700p) / 120.;                // The amount of excited P700; micromole m-2 leaf area
-    theVars->BF_Vel.Vbf15 = P700e * theVars->BF_RC.K15 * A / theVars->BF_Pool.k1;        // The rate of PSI primary charge separation; unit: micromole m-2 leaf area per second
-    theVars->BF_Vel.Vbf16 = BF_con->An * theVars->BF_RC.K16 * Fd / theVars->BF_Pool.kU_f; // The rate of electron transport from the electron acceptor of PSI to Fd; Unit: micromole m-2 leaf area s-1;
+    const double P700e = BF_con->U * (theVars->BF_Pool.P700T - P700p) / 120.;                // The amount of excited P700; micromole m-2 leaf area
+    theVars->BF_Vel.Vbf15 = P700e * theVars->BF_RC.K15 * A / theVars->BF_Pool.TA;        // The rate of PSI primary charge separation; unit: micromole m-2 leaf area per second
+    theVars->BF_Vel.Vbf16 = BF_con->An * theVars->BF_RC.K16 * Fd / theVars->BF_Pool.TFd; // The rate of electron transport from the electron acceptor of PSI to Fd; Unit: micromole m-2 leaf area s-1;
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -206,12 +206,12 @@ void BF::_Rate(const double t, const BFCondition* const BF_con, Variables *theVa
     BF::EPS_ATP_Rate = Vbf11;
 
     theVars->BF_Vel.vbfn2 = 2. * theVars->BF_RC.V2M *
-                            (Fdn * NADP / theVars->BF_Pool.kU_f - Fd * BF_con->NADPH /
-                             (theVars->BF_Pool.kU_f * theVars->BF_RC.KE2)) /
+                            (Fdn * NADP / theVars->BF_Pool.TFd - Fd * BF_con->NADPH /
+                             (theVars->BF_Pool.TFd * theVars->BF_RC.KE2)) /
                             (theVars->BF_RC.KM2NADP * (1. + NADP / theVars->BF_RC.KM2NADP +
                                                        BF_con->NADPH / theVars->BF_RC.KM2NADPH)); // mmol/l/s  //QF add 2*
 
-    theVars->BF_Vel.vcet = theVars->BF_RC.V2M * BF_con->Qi * Fdn / theVars->BF_Pool.kU_f * CoeffVol;
+    theVars->BF_Vel.vcet = theVars->BF_RC.V2M * BF_con->Qi * Fdn / theVars->BF_Pool.TFd * CoeffVol;
 
     ////////////////////////////////////////////////////////////////////////////////
 

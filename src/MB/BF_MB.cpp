@@ -80,7 +80,7 @@ BFCondition* BF::_MB_con(const double t, const BFCondition* const BF_con, Variab
               theVars->BF_Vel.Vdc - theVars->BF_Vel.Vfc; // Ui The number of photons in core antenna
     dydt->An = theVars->BF_Vel.Vbf15 - theVars->BF_Vel.Vbf16; // An: the reduced electron acceptor in PSI
     if (!BF::RROEA_connect)
-        dydt->Fdn = theVars->BF_Vel.Vbf16 / 2. - theVars->BF_Vel.vbfn2 / 2. * theVars->AVR -
+        dydt->Fdn = (theVars->BF_Vel.Vbf16 / 2.) - (theVars->BF_Vel.vbfn2 / 2.) * theVars->AVR -
                     theVars->BF_Vel.vcet / 2.;
 
     const double vqb = theVars->BF_Vel.VgPQH2 * 2.; // The rate of quinone protonation

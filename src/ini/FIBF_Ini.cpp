@@ -53,7 +53,7 @@ void FIBF::_initOrig(Variables *theVars, FIBFCondition* FIBF_con) {
 void FIBF::_initCalc(Variables *theVars, FIBFCondition* FIBF_con) {
     UNUSED(FIBF_con);
     theVars->FI_Pool.PQT = theVars->FIBF_Pool.PQT;
-    theVars->BF_Pool.k_r1 = theVars->FIBF_Pool.PQT;
+    theVars->BF_Pool.TQ = theVars->FIBF_Pool.PQT;
     FIBF::setNPQ_kd(theVars->UseZaksNPQ);
 }
 

@@ -272,7 +272,7 @@ arr Driver::run(const bool continuingRun) {
             return results;
 
         count++;
-        step = initialStep / (count + 1);
+        step = initialStep / pow(2, count + 1);
         _firstPass = false;
         std::cout << "[t=" << t << "] Retrying with smaller step size: " << step <<
           " (INTERNAL STEP = " << hlast << ")" << std::endl;
@@ -358,20 +358,7 @@ void Driver::dump(const std::string& filename, const Variables* theVars0,
 #ifdef MAKE_EQUIVALENT_TO_MATLAB
     skipCalculated = true;  // Not output by MATLAB
     // Matlab uses different names for the pool variables
-    static std::map<std::string, std::string> key_aliases = {
-	{"BF::POOL::kA_d", "BF::POOL::Tcyt"},
-	{"BF::POOL::kA_f", "BF::POOL::Tcytc2"},
-	{"BF::POOL::kA_U", "BF::POOL::TK"},
-	{"BF::POOL::kU_A", "BF::POOL::TMg"},
-	{"BF::POOL::kU_d", "BF::POOL::TCl"},
-	{"BF::POOL::kU_f", "BF::POOL::TFd"},
-	{"BF::POOL::k1", "BF::POOL::TA"},
-	{"BF::POOL::k_r1", "BF::POOL::TQ"},
-	{"BF::POOL::kz", "BF::POOL::BFTs"},
-	{"BF::POOL::k12", "BF::POOL::BFTl"},
-	{"BF::POOL::k23", "BF::POOL::P700T"},
-	{"BF::POOL::k30", "BF::POOL::NADPHT"}
-    };
+    static std::map<std::string, std::string> key_aliases = {};
     static std::vector<std::string> skip_keys = {
         // Not used by either model
 	"ALL::VARS::GLight",
@@ -446,10 +433,10 @@ void Driver::_dump(realtype t, ValueSet_t* con) {
         return;
       _lastDumpTime = t;
       std::ostringstream tss;
-      tss.precision(6);
+      tss.precision(8);
       tss << std::fixed << t;
       std::string tstr = tss.str();
-      tstr = std::string(13 - tstr.length(), '0') + tstr;
+      tstr = std::string(15 - tstr.length(), '0') + tstr;
       std::string ifile = fname_vars_step + tstr + ".txt";
       dump(ifile, nullptr, con, false);
       _dumpedStepFiles.push_back(ifile);

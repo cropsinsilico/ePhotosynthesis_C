@@ -130,28 +130,36 @@ void FI::_Rate(const double t, const FICondition* const FI_Con, Variables *theVa
 
     theVars->FI_Vel.v2_1 = FI_Con->P680pPheon * theVars->FI_RC.k2 * q; // v2_1 The rate of FI_Con.P680pPheon oxidation
     theVars->FI_Vel.v2_2 = FI_Con->P680Pheon * theVars->FI_RC.k2 * q;  // v2_1 The rate of FI_Con.P680pPheon oxidation
-    const double a = FI_Con->QAQB / (FI_Con->QAQB + FI_Con->QAQBn + FI_Con->QAQB2n);
-    const double b = FI_Con->QAQBn / (FI_Con->QAQB + FI_Con->QAQBn + FI_Con->QAQB2n);
-    const double c = FI_Con->QAQB2n / (FI_Con->QAQB + FI_Con->QAQBn + FI_Con->QAQB2n);
-
-    theVars->FI_Vel.v2_00_1 = theVars->FI_Vel.v2_1 * a; // v2_00_1 The rate of reduction of FI_Con.QAQB by P680pPheon
-    theVars->FI_Vel.v2_01_1 = theVars->FI_Vel.v2_1 * b; // v2_01_1 The rate of reduction of FI_Con.QAQBn by P680pPheon
-    theVars->FI_Vel.v2_02_1 = theVars->FI_Vel.v2_1 * c; // v2_02_1 The rate of reduction of FI_Con.QAQB2n by P680pPheon
-
-    theVars->FI_Vel.v2_00_2 = theVars->FI_Vel.v2_2 * a; // v2_00_2 The rate of reduction of FI_Con.QAQB by P680Pheon
-    theVars->FI_Vel.v2_01_2 = theVars->FI_Vel.v2_2 * b; // v2_01_2 The rate of reduction of FI_Con.QAQBn by P680Pheon
-    theVars->FI_Vel.v2_02_2 = theVars->FI_Vel.v2_2 * c; // v2_02_2 The rate of reduction of FI_Con.QAQB2n by P680Pheon
+    
+    const double a = FI_Con->QAQB / 
+      (FI_Con->QAQB + FI_Con->QAQBn +
+       FI_Con->QAQB2n + FI_Con->QAnQB +
+       FI_Con->QAnQBn + FI_Con->QAnQB2n) * theVars->FI_RC.k2;
+    const double b = FI_Con->QAQBn / 
+      (FI_Con->QAQB + FI_Con->QAQBn +
+       FI_Con->QAQB2n + FI_Con->QAnQB +
+       FI_Con->QAnQBn + FI_Con->QAnQB2n) * theVars->FI_RC.k2;
+    const double c = FI_Con->QAQB2n / 
+      (FI_Con->QAQB + FI_Con->QAQBn +
+       FI_Con->QAQB2n + FI_Con->QAnQB +
+       FI_Con->QAnQBn + FI_Con->QAnQB2n) * theVars->FI_RC.k2;
+    theVars->FI_Vel.v2_00_1 = FI_Con->P680pPheon * a;
+    theVars->FI_Vel.v2_01_1 = FI_Con->P680pPheon * b;
+    theVars->FI_Vel.v2_02_1 = FI_Con->P680pPheon * c;
+    theVars->FI_Vel.v2_00_2 = FI_Con->P680Pheon * a;
+    theVars->FI_Vel.v2_01_2 = FI_Con->P680Pheon * b;
+    theVars->FI_Vel.v2_02_2 = FI_Con->P680Pheon * c;
 
     const double Coeff1 = FI_Con->P680pPheo / P680PheoT;
-    theVars->FI_Vel.vr2_00_1 = FI_Con->QAnQB * theVars->FI_RC.k2 / KE * Coeff1;   // vr2_00_1 The reverse reaction of The rate of reduction of FI_Con.QAQB by P680pPheon
-    theVars->FI_Vel.vr2_01_1 = FI_Con->QAnQBn * theVars->FI_RC.k2 / KE * Coeff1;  // vr2_01_1 The reverse reaction of The rate of reduction of FI_Con.QAQBn by P680pPheon
-    theVars->FI_Vel.vr2_02_1 = FI_Con->QAnQB2n * theVars->FI_RC.k2 / KE * Coeff1; // vr2_02_1 The reverse reaction of The rate of reduction of FI_Con.QAQB2n by P680pPheon
+    theVars->FI_Vel.vr2_00_1 = FI_Con->QAnQB * (theVars->FI_RC.k2 / KE) * Coeff1;   // vr2_00_1 The reverse reaction of The rate of reduction of FI_Con.QAQB by P680pPheon
+    theVars->FI_Vel.vr2_01_1 = FI_Con->QAnQBn * (theVars->FI_RC.k2 / KE) * Coeff1;  // vr2_01_1 The reverse reaction of The rate of reduction of FI_Con.QAQBn by P680pPheon
+    theVars->FI_Vel.vr2_02_1 = FI_Con->QAnQB2n * (theVars->FI_RC.k2 / KE) * Coeff1; // vr2_02_1 The reverse reaction of The rate of reduction of FI_Con.QAQB2n by P680pPheon
     theVars->FI_Vel.vr2_1 = theVars->FI_Vel.vr2_00_1 + theVars->FI_Vel.vr2_01_1 + theVars->FI_Vel.vr2_02_1;
 
     const double Coeff2 = P680Pheo / P680PheoT;// Coeff2
-    theVars->FI_Vel.vr2_00_2 = FI_Con->QAnQB * theVars->FI_RC.k2 / KE * Coeff2;// vr2_00_2 The reverse reaction of The rate of reduction of FI_Con.QAQB by P680Pheon
-    theVars->FI_Vel.vr2_01_2 = FI_Con->QAnQBn * theVars->FI_RC.k2 / KE * Coeff2;// vr2_01_2 The reverse reaction of The rate of reduction of FI_Con.QAQBn by P680Pheon
-    theVars->FI_Vel.vr2_02_2 = FI_Con->QAnQB2n * theVars->FI_RC.k2 / KE * Coeff2;// vr2_02_2 The reverse reaction of The rate of reduction of FI_Con.QAQB2n by P680Pheon
+    theVars->FI_Vel.vr2_00_2 = FI_Con->QAnQB * (theVars->FI_RC.k2 / KE) * Coeff2;// vr2_00_2 The reverse reaction of The rate of reduction of FI_Con.QAQB by P680Pheon
+    theVars->FI_Vel.vr2_01_2 = FI_Con->QAnQBn * (theVars->FI_RC.k2 / KE) * Coeff2;// vr2_01_2 The reverse reaction of The rate of reduction of FI_Con.QAQBn by P680Pheon
+    theVars->FI_Vel.vr2_02_2 = FI_Con->QAnQB2n * (theVars->FI_RC.k2 / KE) * Coeff2;// vr2_02_2 The reverse reaction of The rate of reduction of FI_Con.QAQB2n by P680Pheon
     theVars->FI_Vel.vr2_2 = theVars->FI_Vel.vr2_00_2 + theVars->FI_Vel.vr2_01_2 + theVars->FI_Vel.vr2_02_2;// vr2_2
 
     theVars->FI_Vel.vP680qU = pow(10., 9.) * FI_Con->U * (FI_Con->P680pPheo + FI_Con->P680pPheon) +

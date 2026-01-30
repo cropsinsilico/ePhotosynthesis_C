@@ -53,8 +53,8 @@ DynaPSCondition* DynaPS::_MB_con(const double t, const DynaPSCondition* const Dy
 
     // Update kd in FIBF from NPQ prior to FIBF MB (called by RA)
     if (theVars->UseZaksNPQ) {
-      double kd = XanCycle::update_Kd_NPQ(DynaPS_con->XanCycle_con, theVars);
-      DynaPS_con->RA_con->EPS_con->FIBF_con->kd = kd;
+      XanCycle::update_shared(DynaPS_con->XanCycle_con, theVars);
+      DynaPS_con->RA_con->EPS_con->FIBF_con->kd = XanCycle::getXanCycle2FIBF_Kd_NPQ();
     }
 
     RACondition* RAdydt = RA::MB_con(t, DynaPS_con->RA_con, theVars);

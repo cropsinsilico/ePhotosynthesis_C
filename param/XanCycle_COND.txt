@@ -1,6 +1,6 @@
 # Name		Value	C3Value	Docs
-Vx		160.0		# [CALC] * 0.37; The concentration of Violoxanthin
-Ax		10.0		# [CALC] * 0.37; The concentration of Anthroxanthin
-Zx		5.0		# [CALC] * 0.37; The concentration of Zeaxanthin
-ABA		1.0		# [CALC] The concentration of ABA
-PsbSQ           1e-8            # [CALC] The fraction of protonated PsbS
+Vx		59.2		# 160.0 * 0.37; The concentration of Violoxanthin
+Ax		3.7		# 10.0 * 0.37; The concentration of Anthroxanthin
+Zx		1.85		# 5.0 * 0.37; The concentration of Zeaxanthin
+ABA		1.0		# The concentration of ABA
+PsbSQ           1e-8            # The fraction of protonated PsbS

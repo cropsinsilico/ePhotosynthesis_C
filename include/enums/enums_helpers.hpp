@@ -565,19 +565,19 @@ namespace ePhotosynthesis {
 
 namespace ePhotosynthesis {
   #define MEMBERS_BFPool		\
-      NONE     ,		\
-      kA_d     ,		\
-      kA_f     ,		\
-      kA_U     ,		\
-      kU_A     ,		\
-      kU_d     ,		\
-      kU_f     ,		\
-      k1       ,		\
-      k_r1     ,		\
-      kz       ,		\
-      k12      ,		\
-      k23      ,		\
-      k30      ,		\
+      NONE       ,		\
+      Tcyt       ,		\
+      Tcytc2     ,		\
+      TK         ,		\
+      TMg        ,		\
+      TCl        ,		\
+      TFd        ,		\
+      TA         ,		\
+      TQ         ,		\
+      BFTs       ,		\
+      BFTl       ,		\
+      P700T      ,		\
+      NADPHT     ,		\
       MAX
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_BF_POOL : int {
@@ -1543,10 +1543,6 @@ namespace ePhotosynthesis {
 namespace ePhotosynthesis {
   #define MEMBERS_XanCycle		\
       NONE                     ,		\
-      Vx_                      ,		\
-      Ax_                      ,		\
-      Zx_                      ,		\
-      ABA_                     ,		\
       XanCycle2FIBF_Xstate     ,		\
       XanCycle2FIBF_Kd_NPQ     ,		\
       MAX
