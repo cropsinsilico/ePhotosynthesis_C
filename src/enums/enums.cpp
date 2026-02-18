@@ -156,6 +156,24 @@ namespace ePhotosynthesis {
     return it->first;
   };
   template<MODULE M, PARAM_TYPE PT>
+  std::vector<std::string> ValueSetEnum<M, PT>::getRequiredModule(const typename ValueSetEnum<M, PT>::Type& x) {
+    typename std::map<typename ValueSetEnum<M, PT>::Type, std::vector<std::string>>::const_iterator it;
+    it = required_modules.find(x);
+    if (it == required_modules.end()) {
+      throw std::runtime_error("Could not locate RequiredModule for '" + names.find(x)->second + "'");
+    }
+    return it->second;
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  std::vector<std::string> ValueSetEnum<M, PT>::getRequiredModule(const typename ValueSetEnum<M, PT>::Type& x, const std::vector<std::string>& defaultV) {
+    typename std::map<typename ValueSetEnum<M, PT>::Type, std::vector<std::string>>::const_iterator it;
+    it = required_modules.find(x);
+    if (it == required_modules.end()) {
+      return defaultV;
+    }
+    return it->second;
+  };
+  template<MODULE M, PARAM_TYPE PT>
   int ValueSetEnum<M, PT>::getValueFlag(const typename ValueSetEnum<M, PT>::Type& x) {
     typename std::map<typename ValueSetEnum<M, PT>::Type, int>::const_iterator it;
     it = value_flags.find(x);
@@ -312,6 +330,27 @@ namespace ePhotosynthesis {
     return (it->second & STATIC_VALUE_FLAG_INIT_ONCE);
   };
   template<MODULE M, PARAM_TYPE PT>
+  bool ValueSetEnum<M, PT>::isInteger(const typename ValueSetEnum<M, PT>::Type& x) {
+    typename std::map<typename ValueSetEnum<M, PT>::Type, int>::const_iterator it;
+    it = static_value_flags.find(x);
+    if (it == static_value_flags.end()) return false;
+    return (it->second & STATIC_VALUE_FLAG_INT);
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  bool ValueSetEnum<M, PT>::isControl(const typename ValueSetEnum<M, PT>::Type& x) {
+    typename std::map<typename ValueSetEnum<M, PT>::Type, int>::const_iterator it;
+    it = static_value_flags.find(x);
+    if (it == static_value_flags.end()) return false;
+    return (it->second & STATIC_VALUE_FLAG_CTRL);
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  bool ValueSetEnum<M, PT>::isOndemand(const typename ValueSetEnum<M, PT>::Type& x) {
+    typename std::map<typename ValueSetEnum<M, PT>::Type, int>::const_iterator it;
+    it = static_value_flags.find(x);
+    if (it == static_value_flags.end()) return false;
+    return (it->second & STATIC_VALUE_FLAG_ON_DEMAND);
+  };
+  template<MODULE M, PARAM_TYPE PT>
   void ValueSetEnum<M, PT>::checkConstant(const typename ValueSetEnum<M, PT>::Type& x, const std::string& context) {
     if (!isConstant(x)) {
       throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in static_value_flags");
@@ -342,6 +381,24 @@ namespace ePhotosynthesis {
     }
   };
   template<MODULE M, PARAM_TYPE PT>
+  void ValueSetEnum<M, PT>::checkInteger(const typename ValueSetEnum<M, PT>::Type& x, const std::string& context) {
+    if (!isInteger(x)) {
+      throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in static_value_flags");
+    }
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  void ValueSetEnum<M, PT>::checkControl(const typename ValueSetEnum<M, PT>::Type& x, const std::string& context) {
+    if (!isControl(x)) {
+      throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in static_value_flags");
+    }
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  void ValueSetEnum<M, PT>::checkOndemand(const typename ValueSetEnum<M, PT>::Type& x, const std::string& context) {
+    if (!isOndemand(x)) {
+      throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is not in static_value_flags");
+    }
+  };
+  template<MODULE M, PARAM_TYPE PT>
   void ValueSetEnum<M, PT>::checkNotConstant(const typename ValueSetEnum<M, PT>::Type& x, const std::string& context) {
     if (isConstant(x)) {
       throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in static_value_flags");
@@ -368,6 +425,24 @@ namespace ePhotosynthesis {
   template<MODULE M, PARAM_TYPE PT>
   void ValueSetEnum<M, PT>::checkNotInitonce(const typename ValueSetEnum<M, PT>::Type& x, const std::string& context) {
     if (isInitonce(x)) {
+      throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in static_value_flags");
+    }
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  void ValueSetEnum<M, PT>::checkNotInteger(const typename ValueSetEnum<M, PT>::Type& x, const std::string& context) {
+    if (isInteger(x)) {
+      throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in static_value_flags");
+    }
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  void ValueSetEnum<M, PT>::checkNotControl(const typename ValueSetEnum<M, PT>::Type& x, const std::string& context) {
+    if (isControl(x)) {
+      throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in static_value_flags");
+    }
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  void ValueSetEnum<M, PT>::checkNotOndemand(const typename ValueSetEnum<M, PT>::Type& x, const std::string& context) {
+    if (isOndemand(x)) {
       throw std::runtime_error(error_prefix() + context + ": '" + names.find(x)->second + "' is in static_value_flags");
     }
   };
@@ -418,6 +493,36 @@ namespace ePhotosynthesis {
     typename std::map<typename ValueSetEnum<M, PT>::Type, int>::const_iterator it;
     for (it = static_value_flags.begin(); it != static_value_flags.end(); it++) {
       if (it->second & STATIC_VALUE_FLAG_INIT_ONCE) out++;
+    }
+    return out;
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  std::size_t ValueSetEnum<M, PT>::countInteger() {
+    std::size_t out;
+    out = 0;
+    typename std::map<typename ValueSetEnum<M, PT>::Type, int>::const_iterator it;
+    for (it = static_value_flags.begin(); it != static_value_flags.end(); it++) {
+      if (it->second & STATIC_VALUE_FLAG_INT) out++;
+    }
+    return out;
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  std::size_t ValueSetEnum<M, PT>::countControl() {
+    std::size_t out;
+    out = 0;
+    typename std::map<typename ValueSetEnum<M, PT>::Type, int>::const_iterator it;
+    for (it = static_value_flags.begin(); it != static_value_flags.end(); it++) {
+      if (it->second & STATIC_VALUE_FLAG_CTRL) out++;
+    }
+    return out;
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  std::size_t ValueSetEnum<M, PT>::countOndemand() {
+    std::size_t out;
+    out = 0;
+    typename std::map<typename ValueSetEnum<M, PT>::Type, int>::const_iterator it;
+    for (it = static_value_flags.begin(); it != static_value_flags.end(); it++) {
+      if (it->second & STATIC_VALUE_FLAG_ON_DEMAND) out++;
     }
     return out;
   };
@@ -477,6 +582,39 @@ namespace ePhotosynthesis {
     typename std::map<typename ValueSetEnum<M, PT>::Type, int>::const_iterator it;
     for (it = static_value_flags.begin(); it != static_value_flags.end(); it++){
       if (it->second & STATIC_VALUE_FLAG_INIT_ONCE) {
+        out.push_back(it->first);
+      }
+    }
+    return out;
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::listInteger() {
+    std::vector<typename ValueSetEnum<M, PT>::Type> out;
+    typename std::map<typename ValueSetEnum<M, PT>::Type, int>::const_iterator it;
+    for (it = static_value_flags.begin(); it != static_value_flags.end(); it++){
+      if (it->second & STATIC_VALUE_FLAG_INT) {
+        out.push_back(it->first);
+      }
+    }
+    return out;
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::listControl() {
+    std::vector<typename ValueSetEnum<M, PT>::Type> out;
+    typename std::map<typename ValueSetEnum<M, PT>::Type, int>::const_iterator it;
+    for (it = static_value_flags.begin(); it != static_value_flags.end(); it++){
+      if (it->second & STATIC_VALUE_FLAG_CTRL) {
+        out.push_back(it->first);
+      }
+    }
+    return out;
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  std::vector<typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::listOndemand() {
+    std::vector<typename ValueSetEnum<M, PT>::Type> out;
+    typename std::map<typename ValueSetEnum<M, PT>::Type, int>::const_iterator it;
+    for (it = static_value_flags.begin(); it != static_value_flags.end(); it++){
+      if (it->second & STATIC_VALUE_FLAG_ON_DEMAND) {
         out.push_back(it->first);
       }
     }

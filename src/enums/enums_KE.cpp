@@ -18,6 +18,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::docs = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, std::vector<std::string>> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_KE>::static_value_flags = {};
@@ -39,6 +41,8 @@ namespace ePhotosynthesis {
   const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::docs = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_KE>::value_flags = {};
   template<>
@@ -62,6 +66,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::docs = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_KE>::static_value_flags = {};
@@ -84,6 +90,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::docs = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_KE>::static_value_flags = {};
@@ -105,6 +113,8 @@ namespace ePhotosynthesis {
   const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::docs = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_KE>::value_flags = {};
   template<>
@@ -160,6 +170,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::SCOPED_ENUM_TYPE(Type)KEe2ATPase, "[CONST] 2.177727336 was set in code, but not used"}
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_KE>::static_value_flags = {
@@ -184,6 +196,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::docs = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_KE>::static_value_flags = {};
@@ -205,6 +219,8 @@ namespace ePhotosynthesis {
   const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::docs = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_KE>::value_flags = {};
   template<>
@@ -228,6 +244,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::docs = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, std::vector<std::string>> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_KE>::static_value_flags = {};
@@ -249,6 +267,8 @@ namespace ePhotosynthesis {
   const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::docs = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, std::vector<std::string>> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_KE>::value_flags = {};
   template<>

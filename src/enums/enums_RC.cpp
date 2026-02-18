@@ -170,6 +170,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE2     , "Equilibrium constant"}
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::static_value_flags = {
@@ -213,6 +215,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC  , "Maximal relaxation constant for changes in ‘rate constant’ of heat dissipation under a particular Xstate,Laisk et al. (1997)"},
     {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kdm0, "Maximum heat dissipation ‘rate constant’"}
   };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::value_flags = {};
   template<>
@@ -323,6 +327,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_r3    , "The rate constant of the exchange of QB and PQH2 Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)"},
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_pq_oxy, "The rate constant of the PQH2 oxidation Lazar (1999),50~500"}
   };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::value_flags = {};
   template<>
@@ -577,6 +583,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vf_T122   , "VfactorT used with GRNT & Tp > 25"},
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vf_T112   , "VfactorT used with GRNT & Tp > 25"}
   };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::value_flags = {};
   template<>
@@ -1038,6 +1046,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vf_T23   , "VfactorT used with GRNT & Tp > 25"}
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::static_value_flags = {};
@@ -1112,6 +1122,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Coeff      , "[CONST] Used to scale electron transfer rate constants (with the exception of ke2ATPase)"}
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::static_value_flags = {
@@ -1180,6 +1192,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_PRK   , "V; Equation 13"},
     {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_ATPase, "V; Equation 16"}
   };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::value_flags = {};
   template<>
@@ -1258,6 +1272,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn7      , "Rate constant for RuBP dissociation from ECMR"},
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RCA      , "1 / (60. * 216.9); The rate constant of the activation reaction which will be scaled by the concentration of Rubisco activase"}
   };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::value_flags = {};
   template<>
@@ -1505,6 +1521,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE60    , "Nucleoside Diphosphate Kinase 2.7.4.6 60 NI KE60  16 1.04 {Lynn, 1978 #2520}"}
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::static_value_flags = {};
@@ -1578,6 +1596,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Fpsbs           , "Zaks et al. 2012, Table S2; Fraction of quenching sites with both Zea and PsbS-H; only used when UseZaksNPQ set"},
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)psbsQ_converRate, "Zaks et al. 2012, Table S2; rate constant for PsbS protonation; only used when UseZaksNPQ set"}
   };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::value_flags = {};
   template<>

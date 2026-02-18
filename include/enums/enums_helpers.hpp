@@ -167,19 +167,28 @@ namespace ePhotosynthesis {
       STATIC_VALUE_FLAG_NON_VECTOR             ,		\
       STATIC_VALUE_FLAG_RESET_ONE              ,		\
       STATIC_VALUE_FLAG_INIT_ONCE              ,		\
+      STATIC_VALUE_FLAG_INT                    ,		\
+      STATIC_VALUE_FLAG_CTRL                   ,		\
+      STATIC_VALUE_FLAG_ON_DEMAND              ,		\
       STATIC_VALUE_FLAG_MAX
   #define MEMBER_NAMES_COMPLETE_STATIC_VALUE		\
       CONST                  ,		\
       CALC                   ,		\
       NON_VECTOR             ,		\
       RESET_ONE              ,		\
-      INIT_ONCE
+      INIT_ONCE              ,		\
+      INT                    ,		\
+      CTRL                   ,		\
+      ON_DEMAND
   #define MEMBER_NAMES_STATIC_VALUE		\
       CONST                  ,		\
       CALC                   ,		\
       NON_VECTOR             ,		\
       RESET_ONE              ,		\
-      INIT_ONCE
+      INIT_ONCE              ,		\
+      INT                    ,		\
+      CTRL                   ,		\
+      ON_DEMAND
   enum STATIC_VALUE_FLAG : int {
       STATIC_VALUE_FLAG_NONE       = 0x00000000,
       STATIC_VALUE_FLAG_CONST      = 0x00000001,
@@ -187,14 +196,20 @@ namespace ePhotosynthesis {
       STATIC_VALUE_FLAG_NON_VECTOR = 0x00000004,
       STATIC_VALUE_FLAG_RESET_ONE  = 0x00000008,
       STATIC_VALUE_FLAG_INIT_ONCE  = 0x00000010,
-      STATIC_VALUE_FLAG_MAX        = 0x00000020,
+      STATIC_VALUE_FLAG_INT        = 0x00000020,
+      STATIC_VALUE_FLAG_CTRL       = 0x00000040,
+      STATIC_VALUE_FLAG_ON_DEMAND  = 0x00000080,
+      STATIC_VALUE_FLAG_MAX        = 0x00000100,
   };
   static const std::vector<STATIC_VALUE_FLAG> ALL_STATIC_VALUE_FLAG = {
     STATIC_VALUE_FLAG_CONST     ,
     STATIC_VALUE_FLAG_CALC      ,
     STATIC_VALUE_FLAG_NON_VECTOR,
     STATIC_VALUE_FLAG_RESET_ONE ,
-    STATIC_VALUE_FLAG_INIT_ONCE 
+    STATIC_VALUE_FLAG_INIT_ONCE ,
+    STATIC_VALUE_FLAG_INT       ,
+    STATIC_VALUE_FLAG_CTRL      ,
+    STATIC_VALUE_FLAG_ON_DEMAND 
   };  /**< All enum values */
 }
 
@@ -977,7 +992,8 @@ namespace ePhotosynthesis {
 }
 namespace ePhotosynthesis {
   #define MEMBERS_CM		\
-      NONE   ,		\
+      NONE            ,		\
+      TestSucPath     ,		\
       MAX
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_CM_MOD : int {
@@ -1063,83 +1079,84 @@ namespace ePhotosynthesis {
 }
 namespace ePhotosynthesis {
   #define MEMBERS_PR		\
-      NONE             ,		\
-      V111             ,		\
-      V112             ,		\
-      V113             ,		\
-      V121             ,		\
-      V122             ,		\
-      V123             ,		\
-      V124             ,		\
-      V131             ,		\
-      NADHc            ,		\
-      NADc             ,		\
-      GLUc             ,		\
-      KGc              ,		\
-      PR_ADP           ,		\
-      PR_ATP           ,		\
-      KO               ,		\
-      KC               ,		\
-      KR               ,		\
-      KM112            ,		\
-      KI1122           ,		\
-      KI1121           ,		\
-      KM1131           ,		\
-      KM1132           ,		\
-      KI113            ,		\
-      KE113            ,		\
-      KM121            ,		\
-      KM1221           ,		\
-      KM1222           ,		\
-      KI1221           ,		\
-      KE122            ,		\
-      KM123            ,		\
-      KI123            ,		\
-      KE123            ,		\
-      KM1241           ,		\
-      KM1242           ,		\
-      KI124            ,		\
-      KE124            ,		\
-      KM1311           ,		\
-      KI1311           ,		\
-      KM1312           ,		\
-      KI1312           ,		\
-      V1T              ,		\
-      KM1011           ,		\
-      KI1011           ,		\
-      V2T              ,		\
-      KM1012           ,		\
-      KI1012           ,		\
-      Vfactor112       ,		\
-      Vfactor113       ,		\
-      Vfactor121       ,		\
-      Vfactor122       ,		\
-      Vfactor123       ,		\
-      Vfactor124       ,		\
-      Vfactor131       ,		\
-      Vf_T131          ,		\
-      Vf_T113          ,		\
-      Vf_T123          ,		\
-      Vf_T121          ,		\
-      Vf_T122          ,		\
-      Vf_T112          ,		\
-      PGA              ,		\
-      RUBISCOTOTAL     ,		\
-      PrV112           ,		\
-      PrV113           ,		\
-      PrV121           ,		\
-      PrV122           ,		\
-      PrV123           ,		\
-      PrV124           ,		\
-      PrV131           ,		\
-      Q10_112          ,		\
-      Q10_113          ,		\
-      Q10_121          ,		\
-      Q10_122          ,		\
-      Q10_123          ,		\
-      Q10_124          ,		\
-      Q10_131          ,		\
-      CE               ,		\
+      NONE              ,		\
+      V111              ,		\
+      V112              ,		\
+      V113              ,		\
+      V121              ,		\
+      V122              ,		\
+      V123              ,		\
+      V124              ,		\
+      V131              ,		\
+      NADHc             ,		\
+      NADc              ,		\
+      GLUc              ,		\
+      KGc               ,		\
+      PR_ADP            ,		\
+      PR_ATP            ,		\
+      KO                ,		\
+      KC                ,		\
+      KR                ,		\
+      KM112             ,		\
+      KI1122            ,		\
+      KI1121            ,		\
+      KM1131            ,		\
+      KM1132            ,		\
+      KI113             ,		\
+      KE113             ,		\
+      KM121             ,		\
+      KM1221            ,		\
+      KM1222            ,		\
+      KI1221            ,		\
+      KE122             ,		\
+      KM123             ,		\
+      KI123             ,		\
+      KE123             ,		\
+      KM1241            ,		\
+      KM1242            ,		\
+      KI124             ,		\
+      KE124             ,		\
+      KM1311            ,		\
+      KI1311            ,		\
+      KM1312            ,		\
+      KI1312            ,		\
+      V1T               ,		\
+      KM1011            ,		\
+      KI1011            ,		\
+      V2T               ,		\
+      KM1012            ,		\
+      KI1012            ,		\
+      Vfactor112        ,		\
+      Vfactor113        ,		\
+      Vfactor121        ,		\
+      Vfactor122        ,		\
+      Vfactor123        ,		\
+      Vfactor124        ,		\
+      Vfactor131        ,		\
+      Vf_T131           ,		\
+      Vf_T113           ,		\
+      Vf_T123           ,		\
+      Vf_T121           ,		\
+      Vf_T122           ,		\
+      Vf_T112           ,		\
+      PGA               ,		\
+      RUBISCOTOTAL      ,		\
+      PrV112            ,		\
+      PrV113            ,		\
+      PrV121            ,		\
+      PrV122            ,		\
+      PrV123            ,		\
+      PrV124            ,		\
+      PrV131            ,		\
+      Q10_112           ,		\
+      Q10_113           ,		\
+      Q10_121           ,		\
+      Q10_122           ,		\
+      Q10_123           ,		\
+      Q10_124           ,		\
+      Q10_131           ,		\
+      CE                ,		\
+      RUBISCOMETHOD     ,		\
       MAX
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_PR_MOD : int {
@@ -2099,6 +2116,32 @@ namespace ePhotosynthesis {
       PSIIantennaSize       ,		\
       PSIantennaSize        ,		\
       ProteinTotalRatio     ,		\
+      record                ,		\
+      GP                    ,		\
+      GRNC                  ,		\
+      GRNT                  ,		\
+      PAR_in_Wpm2           ,		\
+      VolRatioStCyto        ,		\
+      UseZaksNPQ            ,		\
+      Vc                    ,		\
+      Vo                    ,		\
+      VPGA                  ,		\
+      Vstarch               ,		\
+      Vsucrose              ,		\
+      VT3P                  ,		\
+      Vt_glycerate          ,		\
+      Vt_glycolate          ,		\
+      PSIIabs               ,		\
+      PSIabs                ,		\
+      CO2AR                 ,		\
+      dissipation           ,		\
+      fluoresence           ,		\
+      fPSII                 ,		\
+      MembranePotential     ,		\
+      expr_psbs             ,		\
+      QH                    ,		\
+      one_minus_QH          ,		\
+      ROE                   ,		\
       MAX
   #ifdef EPHOTO_USE_SCOPED_ENUM
   enum class ENUM_ALL_VARS : int {

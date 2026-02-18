@@ -28,6 +28,7 @@
 #include "modules/BF.hpp"
 #include "modules/trDynaPS.hpp"
 #include "modules/FIBF.hpp"
+#include "modules/PS.hpp"
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
@@ -99,8 +100,7 @@ void BF::_Rate(const double t, const BFCondition* const BF_con, Variables *theVa
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     const double Vmax = theVars->BF_RC.K1 * (BF_con->ISPo + BF_con->ISPHr);                     // The maximum rate of formation of enzyme substrate complex
-    theVars->BF_Vel.Vbf1 = Vmax * BF_con->ISPo / (BF_con->ISPo + BF_con->ISPHr) * BF_con->QH2 /
-                           theVars->BF_Pool.TQ; // Unit: micromole s-1 m-2 leaf area
+    theVars->BF_Vel.Vbf1 = theVars->BF_RC.K1 * BF_con->ISPo * (BF_con->QH2 / theVars->BF_Pool.TQ); // Unit: micromole s-1 m-2 leaf area
     theVars->BF_Vel.Vbf2 = theVars->BF_RC.K2 * BF_con->ISPoQH2 * RegPHl;                       // Unit: micromole s-1 m-2 leaf area
     theVars->BF_Vel.Vbf3 = theVars->BF_RC.K3 * BF_con->QHsemi * BF_con->cytbL / theVars->BF_Pool.Tcyt *
                            RegPHl; // Unit: micromole s-1 m-2 leaf area
@@ -150,8 +150,8 @@ void BF::_Rate(const double t, const BFCondition* const BF_con, Variables *theVa
 
     const double MaxCO2Rate = 100. * CO2 / (CO2 + 460.);
 
-    theVars->BF_Vel.VsATP = MaxCO2Rate * 1.5 / CoeffVol * ATP / 1.5;        //(ADP + ATP); // The sink for ATP utilizaiton, 20 represent the of CO2 assimilation, since 1 meter square amount to 27 ml, therefore, the sink capacity should be 20 * 1.5 * 1.5 mmol / 27 l-1 s-1. The 1.5 represents the 1.5 ATP consumption per CO2 fixation.  Unit: mmol l-2 s-1
-    theVars->BF_Vel.VsNADPH = MaxCO2Rate / CoeffVol * 1 * BF_con->NADPH / theVars->BF_Pool.NADPHT; // For 6 C6 = 5 C6 + 1C6;
+    theVars->BF_Vel.VsATP = MaxCO2Rate * 1.5 / CoeffVol * (ATP / 1.5);        //(ADP + ATP); // The sink for ATP utilizaiton, 20 represent the of CO2 assimilation, since 1 meter square amount to 27 ml, therefore, the sink capacity should be 20 * 1.5 * 1.5 mmol / 27 l-1 s-1. The 1.5 represents the 1.5 ATP consumption per CO2 fixation.  Unit: mmol l-2 s-1
+    theVars->BF_Vel.VsNADPH = (MaxCO2Rate / CoeffVol) * 1 * (BF_con->NADPH / theVars->BF_Pool.NADPHT); // For 6 C6 = 5 C6 + 1C6;
     theVars->BF_Vel.VgPQH2 = BF_con->Q * 800. * RegPHs;                              // Assuming that the rate of generation of PQH2 through QB site only depend on the PQ and PQH2 exchange capacity.
     double NetCharge = Hfs + BF_con->Ks + 2. * BF_con->Mgs - OHs - BF_con->Cls - BFns; // The difference between the positive and negative charge in stroma. It was assumed that the charge is in equilibrium state in the beginning of the model, therefore, the difference in the positive and negative charges reflect the charges forming electrical potential cross the membrane. The unit is mmol l-1.
     NetCharge = NetCharge / 1000.;                                                  // The unit conversion. Convert from mmol l-1 to mol l-1.
@@ -182,8 +182,8 @@ void BF::_Rate(const double t, const BFCondition* const BF_con, Variables *theVa
 
 
     const double P700e = BF_con->U * (theVars->BF_Pool.P700T - P700p) / 120.;                // The amount of excited P700; micromole m-2 leaf area
-    theVars->BF_Vel.Vbf15 = P700e * theVars->BF_RC.K15 * A / theVars->BF_Pool.TA;        // The rate of PSI primary charge separation; unit: micromole m-2 leaf area per second
-    theVars->BF_Vel.Vbf16 = BF_con->An * theVars->BF_RC.K16 * Fd / theVars->BF_Pool.TFd; // The rate of electron transport from the electron acceptor of PSI to Fd; Unit: micromole m-2 leaf area s-1;
+    theVars->BF_Vel.Vbf15 = P700e * theVars->BF_RC.K15 * (A / theVars->BF_Pool.TA);        // The rate of PSI primary charge separation; unit: micromole m-2 leaf area per second
+    theVars->BF_Vel.Vbf16 = (BF_con->An * theVars->BF_RC.K16 * Fd) / theVars->BF_Pool.TFd; // The rate of electron transport from the electron acceptor of PSI to Fd; Unit: micromole m-2 leaf area s-1;
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -198,20 +198,21 @@ void BF::_Rate(const double t, const BFCondition* const BF_con, Variables *theVa
                           (theVars->BF_RC.KM1ADP * theVars->BF_RC.KM1PI))); // Unit: mmol l- s-1; The stroma volume is used as a basis for the volume
     double Vbf11 = Temp;
 
-    if (Vbf11 < 0.)
-        Vbf11 = 0.;
+    // Disable this for NPQ? It does not impact the test results
+    // if (Vbf11 < 0.)
+    //     Vbf11 = 0.;
 
 
     // The EPS_ATP_Rate is used in the overall model for the calculation of the mass balance equation of ATP.
     BF::EPS_ATP_Rate = Vbf11;
 
     theVars->BF_Vel.vbfn2 = 2. * theVars->BF_RC.V2M *
-                            (Fdn * NADP / theVars->BF_Pool.TFd - Fd * BF_con->NADPH /
-                             (theVars->BF_Pool.TFd * theVars->BF_RC.KE2)) /
-                            (theVars->BF_RC.KM2NADP * (1. + NADP / theVars->BF_RC.KM2NADP +
-                                                       BF_con->NADPH / theVars->BF_RC.KM2NADPH)); // mmol/l/s  //QF add 2*
+      ((Fdn * NADP / theVars->BF_Pool.TFd) -
+       (Fd * BF_con->NADPH) / (theVars->BF_Pool.TFd * theVars->BF_RC.KE2)) /
+      (theVars->BF_RC.KM2NADP * (1 + (NADP / theVars->BF_RC.KM2NADP) +
+                                 (BF_con->NADPH / theVars->BF_RC.KM2NADPH))); // mmol/l/s  //QF add 2*
 
-    theVars->BF_Vel.vcet = theVars->BF_RC.V2M * BF_con->Qi * Fdn / theVars->BF_Pool.TFd * CoeffVol;
+    theVars->BF_Vel.vcet = theVars->BF_RC.V2M * BF_con->Qi * (Fdn / theVars->BF_Pool.TFd) * CoeffVol;
 
     ////////////////////////////////////////////////////////////////////////////////
 

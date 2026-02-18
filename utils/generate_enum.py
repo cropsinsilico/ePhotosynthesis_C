@@ -17,6 +17,10 @@ _bitflags = [
     '0x00000020',
     '0x00000040',
     '0x00000080',
+    '0x00000100',
+    '0x00000200',
+    '0x00000400',
+    '0x00000800',
 ]
 
 
@@ -2109,8 +2113,9 @@ class ParamFileParser(EnumParserBase):
     required_keys = ['name', 'val']
     optional_keys = ['doc', 'val_alt', 'qualifiers']
     qualifier_regex = re.compile(
-        r'\s*(?P<name>\w+)(?:\s*=\s*(?P<value>(?:[\w\.]+)|(?:'
-        r'\{\s*\w+\s*(?:\,\w+\s*)*\})))?'
+        r'\s*(?P<name>\w+)(?:\s*=\s*(?P<value>(?:\w[\w\.\s]*)|(?:'
+        r'\{\s*\w[\w\s]*\s*(?:\,\s*\w[\w\s]*)*\})))?'
+        r'\s*(?:(?:\,\s*)|(?:$))'
     )
 
     def parse(self, src, **kwargs):
@@ -2682,7 +2687,8 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 return []
         if function_type == 'from' and (
                 self.value_type == 'double'
-                or self.value_key == 'ALIASES'):
+                or self.value_key == 'ALIASES'
+                or self.packed):
             return []
         enum_name = kwargs.pop('enum_name', 'Type')
         enum_is_class = kwargs.pop('enum_is_class', self.parent.as_class)
@@ -3223,6 +3229,10 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
             'type': str,
             'help': "C++ type of values in the map",
         },
+        packed={
+            'action': 'store_true',
+            'help': "Push value types in a vector",
+        },
         reversed={
             'action': 'store_true',
             'help': "Use value type as key and enum as value",
@@ -3238,6 +3248,7 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
     )
     default_value_type = None
     default_reversed = False
+    default_packed = False
     default_explicit = False
     default_ragged_right = False
     collection_type = 'std::map'
@@ -3259,6 +3270,8 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
             *args, **kwargs)
         if self.reversed:
             out = [value_type] + out
+        elif self.packed:
+            out.append(f'std::vector<{value_type}>')
         else:
             out.append(value_type)
         return out
@@ -3292,6 +3305,12 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
                 out = [f"\"{xx}\"" for xx in out]
             else:
                 out = f"\"{out}\""
+        if self.packed:
+            if out:
+                assert isinstance(out, list)
+                out = '{ ' + ', '.join(out) + ' }'
+            else:
+                out = '{}'
         return out
 
     def generate_member(self, x, width=None, width_value=None,
@@ -3377,6 +3396,10 @@ class CEnumGeneratorFlagMapBase(CEnumGeneratorMapBase):
             'type': str,
             'help': "Prefix that should be used for flags & flag type",
         },
+        implicit_value_flags={
+            'action': 'append',
+            'help': "Value flags that imply other flags.",
+        },
     )
     _additional_functions = (
         CEnumGeneratorCollectionBase._additional_functions + [
@@ -3386,6 +3409,7 @@ class CEnumGeneratorFlagMapBase(CEnumGeneratorMapBase):
     default_ragged_right = True
     default_value_type = 'int'
     default_value_flags = []
+    default_implicit_value_flags = []
     default_flag_prefix = None
     reversed = False
 
@@ -3425,6 +3449,20 @@ class CEnumGeneratorFlagMapBase(CEnumGeneratorMapBase):
             self._value_flag_map = out
         return self._value_flag_map
 
+    @property
+    def implicit_value_flag_map(self):
+        if getattr(self, '_implicit_value_flag_map', None) is None:
+            if ((self.implicit_value_flags is None
+                 or not isinstance(self.implicit_value_flags, list))):
+                raise NotImplementedError
+            out = {}
+            for x in self.implicit_value_flags:
+                assert ':' in x
+                k, v = x.split(':')
+                out[k] = v.split(',')
+            self._implicit_value_flag_map = out
+        return self._implicit_value_flag_map
+
     def prefix_flags(self, x):
         if isinstance(x, list):
             return [self.prefix_flags(v) for v in x]
@@ -3454,6 +3492,13 @@ class CEnumGeneratorFlagMapBase(CEnumGeneratorMapBase):
             return None
         return self.prefix_flags(
             self.value_flag_map[self.current_flag_collection])
+
+    @property
+    def current_implicit_flags(self):
+        if not self._flag_stack:
+            return None
+        return self.prefix_flags(
+            self.implicit_value_flag_map[self.current_flag_collection])
 
     def make_title(self, x):
         xflag = self.current_flag_collection
@@ -3640,6 +3685,10 @@ class CEnumGeneratorFlagMapBase(CEnumGeneratorMapBase):
         if self.value_key is None or not isinstance(self.value_key, list):
             raise NotImplementedError
         out = [k for k in self.value_key if x.get(k, '')]
+        for k, v in self.implicit_value_flag_map.items():
+            if not x.get(k, ''):
+                continue
+            out += [vv for vv in v if vv not in out]
         if self.explicit and (not out):
             return None
         if not out:
@@ -4091,6 +4140,12 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 'default_explicit': True,
                 'default_ragged_right': True,
             },
+            'required_modules': {
+                'default_value_type': 'std::string',
+                'default_value_key': 'REQUIRED_MODULES',
+                'default_explicit': True,
+                'default_packed': True,
+            },
         },
         'flagmap': {
             'value_flags': {
@@ -4108,9 +4163,16 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                     'nonvector:NON_VECTOR',
                     'resetone:RESET_ONE',
                     'initonce:INIT_ONCE',
+                    'integer:INT',
+                    'control:CTRL',
+                    'ondemand:ON_DEMAND',
                 ],
                 'default_flag_prefix': 'STATIC_VALUE_FLAG',
                 'default_explicit': True,
+                'default_implicit_value_flags': [
+                    'CTRL:INT,CONST',
+                    'ON_DEMAND:CALC',
+                ],
             },
         },
     }
@@ -4812,6 +4874,12 @@ def ePhotosynthesis(args):
             'explicit': True,
             'singular_collection_name': 'docs',
             'ragged_right': True,
+        },
+        'required_modules': {
+            'explicit': True,
+            'singular_collection_name': 'required_module',
+            'ragged_right': True,
+            'packed': True,
         },
         'value_flags': {
             'is_editable': True,

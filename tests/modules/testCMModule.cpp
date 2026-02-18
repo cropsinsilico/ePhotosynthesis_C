@@ -74,7 +74,7 @@ TEST_F(CMModuleTest, MBTestPRPS) {
 
 TEST_F(CMModuleTest, MBTestRUBISCO) {
     CM::setTestSucPath(true);
-    SUCSModuleTest::theVars->RUBISCOMETHOD = 2;
+    PR::setRUBISCOMETHOD(2);
     Variables* orig = new Variables(SUCSModuleTest::theVars);
     SUCSModuleTest::theVars->PSPR_SUCS_com = true;
     CMCondition* cmc = CM::init(SUCSModuleTest::theVars);

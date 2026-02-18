@@ -134,6 +134,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)NADPH  , "The NADPH concentration in stroma, Unit: mmol l-1;"}
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, std::vector<std::string>> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_COND>::static_value_flags = {};
@@ -155,6 +157,8 @@ namespace ePhotosynthesis {
   const std::map<std::string, typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::docs = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, std::vector<std::string>> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_CM, PARAM_TYPE_COND>::value_flags = {};
   template<>
@@ -178,6 +182,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::docs = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, std::vector<std::string>> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_COND>::static_value_flags = {};
@@ -199,6 +205,8 @@ namespace ePhotosynthesis {
   const std::map<std::string, typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::docs = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, std::vector<std::string>> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_EPS, PARAM_TYPE_COND>::value_flags = {};
   template<>
@@ -229,6 +237,8 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::docs = {
     {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)kd, "The initialization of the initial rate constant for heat dissipation"}
   };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_COND>::value_flags = {};
   template<>
@@ -344,6 +354,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PQn       , "The concentration of reduced PQ, i.e. PQH2;"}
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_COND>::static_value_flags = {};
@@ -413,6 +425,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP , "RuBP concentration"},
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v131, "[CONST, NON_VECTOR] ?"}
   };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_COND>::value_flags = {};
   template<>
@@ -493,6 +507,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)_v1 , "[CONST, NON_VECTOR] ?"}
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_COND>::static_value_flags = {
@@ -519,6 +535,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::docs = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_COND>::static_value_flags = {};
@@ -540,6 +558,8 @@ namespace ePhotosynthesis {
   const std::map<std::string, typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::docs = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RA, PARAM_TYPE_COND>::value_flags = {};
   template<>
@@ -611,6 +631,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Coeff , "[CONST, NON_VECTOR] Used to scale Thio, Fd, & RuACT and calculate GAPDH, FBPase, SBPase, PRK, ATPase, ATPGPP from Pool values"}
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_COND>::static_value_flags = {
@@ -648,6 +670,8 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::docs = {
     {ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)Thion, "This is a wild guess"}
   };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_COND>::value_flags = {};
   template<>
@@ -690,6 +714,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)ECMR, "The concentration of ECMR"},
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)RuBP, "The concentration of RuBP"}
   };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_COND>::value_flags = {};
   template<>
@@ -749,6 +775,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::docs = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, std::vector<std::string>> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_COND>::static_value_flags = {};
@@ -795,6 +823,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::SCOPED_ENUM_TYPE(Type)PsbSQ, "The fraction of protonated PsbS"}
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, std::vector<std::string>> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_COND>::static_value_flags = {};
@@ -816,6 +846,8 @@ namespace ePhotosynthesis {
   const std::map<std::string, typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::docs = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, std::vector<std::string>> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::Type, int> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_COND>::value_flags = {};
   template<>

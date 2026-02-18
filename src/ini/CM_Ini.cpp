@@ -33,7 +33,6 @@ using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
 std::size_t CMCondition::count = 0;
-bool CM::TestSucPath = false;
 
 DEFINE_MODULE_COMPOSITE(CM);
 DEFINE_DEFAULT_INITALT(CM)

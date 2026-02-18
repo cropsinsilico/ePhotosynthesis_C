@@ -234,6 +234,21 @@ public:
     arr continue_run(const double endTime);
 
     /**
+       Fill a map with the current set of variables.
+       \param[out] dst Map that should be filled.
+       \param[in] theVars Current copy of variables. If not provided,
+         currentVars or inputVars will be used.
+       \param[in] con Current copy of conditions. If not provided,
+         the result from currentCondition will be used.
+       \param[in] is_init If true, this is just after initialization and
+         velocities should not be included.
+     */
+    void getVarMap(std::map<std::string, double>& dst,
+                   const Variables* theVars = nullptr,
+                   const ValueSet_t* con = nullptr,
+                   const bool is_init = false);
+
+    /**
        Dump out the current set of variables to a file.
        \param[in] filename Name of file where parameters should be written.
        \param[in] theVars Current copy of variables. If not provided,
@@ -330,6 +345,7 @@ public:
     arr constraints;   /**< serialized version of the Condition class being used. */
     std::string fname_vars_init; /**< Name of file where initial parameter values should be be output */
     std::string fname_vars_last; /**< Name of file where final parameter values should be be output */
+    std::string fname_vars_trace; /**< Base name for files where step parameter values should be be output */
     std::string fname_vars_step; /**< Base name for files where step parameter values should be be output */
     std::vector<std::string> param_vars; /** Set of variables that should be output when _dump is called */
     /**
@@ -343,11 +359,14 @@ public:
        \param[in] fname_step Base name that should be used as a base
          for files that step parameter values are output to. If empty,
          step values will not be output.
+       \param[in] fname_trace Name of the file where the parameter trace
+         should be output to. If empty, the trace will not be output.
        \param[in] vars Set of paramters that should be output.
      */
     void outputParam(const std::string& fname_init,
                      const std::string& fname_last = "",
                      const std::string& fname_step = "",
+                     const std::string& fname_trace = "",
                      const std::vector<std::string>& vars = {});
     /**
        Turn on parameter output.
@@ -439,6 +458,8 @@ protected:
     void _clear_cvode_mem();
     void _dump(realtype t, ValueSet_t* con);
     void _cleanup_dumped_files();
+    void _record_trace(realtype t, ValueSet_t* con);
+    void _cleanup_trace();
 private:
     Driver() {}
     Variables* currentVars;
@@ -448,6 +469,8 @@ private:
     realtype _lastDumpTime;
     double _dumpInterval;
     std::vector<std::string> _dumpedStepFiles;
+    size_t _recordedSteps = 0;
+    std::map<std::string, std::vector<double>> _recordedData;
 };
 
 /**
@@ -603,6 +626,7 @@ private:								\
       VARS_CLASS_VAR(name, COND)* name ## _con = new VARS_CLASS_VAR(name, COND)(x); \
       arr dxdt = VARS_CLASS_VAR(name, MOD)::MB(t, name ## _con, currentVariables()); \
       _dump(t, name ## _con);						\
+      _record_trace(t, name ## _con);                                   \
       delete name ## _con;						\
       return dxdt;							\
   }                                                                     \

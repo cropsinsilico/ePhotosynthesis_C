@@ -416,74 +416,11 @@ void PR::_initCalc(Variables *theVars, PRCondition* PR_con) {
 DEFINE_DEFAULT_CHECKALT(PR)
 
 void PR::_reset(const bool noChildren) {
-    PR::KC = 0.;
-    PR::KE113 = 0.;
-    PR::KE122 = 0.;
-    PR::KE123 = 0.;
-    PR::KE124 = 0.;
-    PR::KGc = 0.;
-    PR::KI1011 = 0.;
-    PR::KI1012 = 0.;
-    PR::KI1121 = 0.;
-    PR::KI1122 = 0.;
-    PR::KI113 = 0.;
-    PR::KI1221 = 0.;
-    PR::KI123 = 0.;
-    PR::KI1311 = 0.;
-    PR::KM1011 = 0.;
-    PR::KM1012 = 0.;
-    PR::KM112 = 0.;
-    PR::KM1131 = 0.;
-    PR::KM1132 = 0.;
-    PR::KM121 = 0.;
-    PR::KM1221 = 0.;
-    PR::KM1222 = 0.;
-    PR::KM123 = 0.;
-    PR::KM1241 = 0.;
-    PR::KM1242 = 0.;
-    PR::KM1311 = 0.;
-    PR::KO = 0.;
-    PR::KR = 0.;
-    PR::NADHc = 0.;
-    PR::NADc = 0.;
-    PR::PR_ADP = 0.;
-    PR::PR_ATP = 0.;
-    PR::V111 = 0.;
-    PR::V112 = 0.;
-    PR::V113 = 0.;
-    PR::V121 = 0.;
-    PR::V122 = 0.;
-    PR::V123 = 0.;
-    PR::V124 = 0.;
-    PR::V131 = 0.;
-    PR::V2T = 0.;
-    PR::Vfactor112 = 0.;
-    PR::Vfactor113 = 0.;
-    PR::Vfactor121 = 0.;
-    PR::Vfactor122 = 0.;
-    PR::Vfactor123 = 0.;
-    PR::Vfactor124 = 0.;
-    PR::Vfactor131 = 0.;
-    PR::Vf_T131 = 0.;
-    PR::Vf_T113 = 0.;
-    PR::Vf_T123 = 0.;
-    PR::Vf_T121 = 0.;
-    PR::Vf_T122 = 0.;
-    PR::Vf_T112 = 0.;
-    PR::V1T = 0.;
-    PR::PGA = 0.;
-    PR::GLUc = 0.;
+#define DEFINE_PR_VAR(name) PR::name = 0.
+    FOR_EACH(DEFINE_PR_VAR, EXPAND(MEMBERS_PR));
+#undef DEFINE_PR_VAR
     setPS_connect(false);
     setPS_RuBP(false);
-    PR::RUBISCOTOTAL = 0.;
-
-    PR::PrV112 = 0.;
-    PR::PrV113 = 0.;
-    PR::PrV121 = 0.;
-    PR::PrV122 = 0.;
-    PR::PrV123 = 0.;
-    PR::PrV124 = 0.;
-    PR::PrV131 = 0.;
 
     PR::TIME = 0.;
     PR::N = 1;

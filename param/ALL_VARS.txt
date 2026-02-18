@@ -3,7 +3,7 @@ AVR		  30.0		# [CONST] The conversion factor between volume and area (micromole 
 HPR		  4.66		# [CONST]
 O2		  0.0		# [CONST,ALIASES={O2_in,Air_O2}] Air O2 concentration in ppm; Seems to be unused currently
 CO2_cond	  0.0		# [CALC] Intercellular CO2 in umoles m^{-3}, calculated from air CO2 (CO2_in)
-GLight		  0.0
+GLight		  0.0           # Internal photosynthetically active photon flux density (in units of umoles m^{-2} s^{-1})
 O2_cond		  0.21          # [CALC] Intercellular O2 in umoles m^{-3}, calculated from air O2 (O2)
 PS12ratio	  0.0		# [CALC] Calcualted from input_PSI & input_PSIIcore in SYSInitial
 ADP		  0.0
@@ -11,7 +11,7 @@ Pi		  0.9		# [CALC] Pi used when useC3 is true and EPS module selected
 TestATPCost	  0.0		# [ALIASES={ATPCost}] Extra ATP cost when useC3 is false (in units per area)
 CO2_in		  200.0		# [CALC,ALIASES={CO2,Air_CO2}] Air CO2 concentration in ppm
 TestLi_Wps        0.0           # [CALC,ALIASES={PAR,Radiation_PAR}] Photosynthetically active radiation (in units of W s^{-1})
-TestLi		  0.0		# [CALC,ALIASES={PFD,PPFD}] Photosynthetically action photo flux density (in units of umoles m^{-2} s^{-1})
+TestLi		  0.0		# [CALC,ALIASES={PFD,PPFD,Light intensity}] Photosynthetically active photon flux density (in units of umoles m^{-2} s^{-1})
 PS2BF_Pi	  0.0		# Pi Shared by PS & BF modules when useC3 is false and EPS module is selected
 PS_PR_Param	  0.0		# Seems to unused currently
 Tp		  25.0		# [ALIASES={Temp,WeatherTemperature}] Temperature
@@ -27,3 +27,31 @@ input_PSIIcore	  1.0		# [CONST] Used to set FIBF::ChlT2, FIBF::ChlT & PS12ratio 
 PSIIantennaSize	  37.0		# [CONST] Used to set FIBF::ChlT2 & FIBF::ChlT in SYSInitial
 PSIantennaSize	  95.0		# [CONST] Used to set FIBF::ChlPSI in SYSInitial
 ProteinTotalRatio 0.973         # [CONST] Scaling factor for CM GRN expression levels
+# CONTROL VARIABLES
+record            0             # [CTRL] Record traces
+GP                0             # [CTRL] When 0, Vmax values for reactions in the CM module (PS, PR, SUCS) will be initialized from ratios (from provided enzyme ratios if useC3 set or internal ratios otherwise)
+GRNC              0             # [CTRL] if 1, VfactorCp values will be used to scale enzyme activities in the PS, PR, & SUCS modules when CO2 > 0
+GRNT              0             # [CTRL] if 1, VfactorT values will be used to scale enzyme activities in the PS, PR, & SUCS modules when T > 25
+PAR_in_Wpm2       0             # [CTRL] if 1, the input TestLi will be taken to be in units of W/m**2
+VolRatioStCyto    1             # [CTRL] If 1, the ratio between the volume of the stroma and cytosol is 1, otherwise it will be 4.0/9.0. This factor is used to scale rates for the photorespiration (PR) reactions.
+UseZaksNPQ        0             # [CTRL] If 1, Use the Zaks et al. 2012 model for non-photochemical quenching.
+# VARIABLES CALCULATED ON DEMAND
+Vc                0             # [ON_DEMAND,REQUIRED_MODULES={RuACT}]
+Vo                0             # [ON_DEMAND,REQUIRED_MODULES={RuACT}]
+VPGA              0             # [ON_DEMAND,REQUIRED_MODULES={SUCS}]
+Vstarch           0             # [ON_DEMAND,REQUIRED_MODULES={PS}]
+Vsucrose          0             # [ON_DEMAND,REQUIRED_MODULES={SUCS}]
+VT3P              0             # [ON_DEMAND,REQUIRED_MODULES={PS}]
+Vt_glycerate      0             # [ON_DEMAND,REQUIRED_MODULES={PR}]
+Vt_glycolate      0             # [ON_DEMAND,REQUIRED_MODULES={PR}]
+PSIIabs           0             # [ON_DEMAND,REQUIRED_MODULES={FI}]
+PSIabs            0             # [ON_DEMAND,REQUIRED_MODULES={BF}]
+CO2AR             0             # [ON_DEMAND,REQUIRED_MODULES={PS,PR}]
+dissipation       0             # [ON_DEMAND,REQUIRED_MODULES={FI}]
+fluoresence       0             # [ON_DEMAND,REQUIRED_MODULES={FI}]
+fPSII             0             # [ON_DEMAND,REQUIRED_MODULES={FI}]
+MembranePotential 0             # [ON_DEMAND,REQUIRED_MODULES={BF}]
+expr_psbs         0             # [ON_DEMAND,REQUIRED_MODULES={XanCycle,BF}]
+QH                0             # [ON_DEMAND,REQUIRED_MODULES={XanCycle,BF}]
+one_minus_QH      0             # [ON_DEMAND,REQUIRED_MODULES={XanCycle,BF}]
+ROE               0             # [ON_DEMAND,REQUIRED_MODULES={FI}]

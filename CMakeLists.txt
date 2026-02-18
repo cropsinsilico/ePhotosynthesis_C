@@ -255,7 +255,7 @@ if(ENUM_TARGET)
     COMMAND ${ENUM_COMMAND}
     OUTPUT ${ENUM_STAMP}
     # OUTPUT ${ENUM_GLOBAL_H}
-    # BYPRODUCTS ${ENUM_OUTPUT}
+    BYPRODUCTS ${ENUM_OUTPUT}
     DEPENDS ${ENUM_SOURCES}
   )
   add_custom_target(
@@ -782,10 +782,15 @@ if(BUILD_TESTS AND BUILD_CXX)
     # Build executable directly from source files so that
     # non-exported symbols can still be tested by unit tests
     add_executable(testRunner ${TEST_LIST} ${ePhoto_SOURCES})
-    set_target_properties(
-      testRunner PROPERTIES
-      DEFINE_SYMBOL "${CXX_LIBRARY_NAME}_EXPORTS"
+    # TODO: Set the export flags correctly so that MSVC
+    #   does not try to import the library symbols
+    target_compile_definitions(
+      testRunner PRIVATE "${CXX_LIBRARY_NAME}_EXPORTS"
     )
+    # set_target_properties(
+    #   testRunner PROPERTIES
+    #   DEFINE_SYMBOL "${CXX_LIBRARY_NAME}_EXPORTS"
+    # )
     if(ePhoto_DEPENDENCIES)
       add_dependencies(testRunner ${ePhoto_DEPENDENCIES})
     endif()

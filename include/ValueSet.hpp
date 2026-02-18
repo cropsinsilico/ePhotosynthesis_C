@@ -627,7 +627,19 @@ namespace ePhotosynthesis {
           (std::size_t, padKeys, 0),                                    \
 	  (std::size_t, padVals, 0),                                    \
           (bool, includePrefixes, false),                               \
-	  (bool, noChildren, false)), STRING_INIT_MACRO(""), const)                        \
+	  (bool, noChildren, false)), STRING_INIT_MACRO(""), const)     \
+  /** \copydoc ValueSet::fillMap */					\
+  method(fillMap, void,                                                 \
+	 ((PACK_TYPE(MAP_TYPE_MACRO(std::string, double)&), dst, ),     \
+	  (bool, includePrefixes, false),                               \
+	  (bool, includeSkipped, false),                                \
+	  (const std::vector<std::string>&, skip_keys,                  \
+           PACK_TYPE(VECTOR_INIT_MACRO(std::string))),                  \
+          (PACK_TYPE(const MAP_TYPE_MACRO(std::string, std::string)&),  \
+           key_aliases,                                                 \
+           PACK_TYPE(MAP_INIT_MACRO(std::string, std::string))),        \
+	  (bool, noChildren, false)),					\
+	 , const)							\
   /** \copydoc ValueSet::print */					\
   method(print, std::ostream&,						\
 	 ((std::ostream&, out, ), (const uint, tab, 0),                 \
@@ -902,6 +914,14 @@ namespace ePhotosynthesis {
       return out;
     }
     /**
+       Convert a key to enumerator form.
+       \param[in] k Key.
+       \returns Key as enum.
+     */
+    static EnumType ensure_key(const EnumType& k);
+    static EnumType ensure_key(const int& k);
+    static EnumType ensure_key(const std::string& k);
+    /**
        Determine if a key is included in arrays.
        \param k Key to check.
        \returns true if the key is included in arrays, false otherwise.
@@ -920,6 +940,91 @@ namespace ePhotosynthesis {
     };
 
     // Inspection utilities
+    /**
+       Add a single value from a value map to another map.
+       \param dst Destination map.
+       \param key Parameter key.
+       \param val Parameter value.
+     */
+    static void add_value(std::map<std::string, double>& dst,
+                          const std::string& key, const double& val);
+    static void add_value(std::map<std::string, const double*>& dst,
+                          const std::string& key, const double* val);
+    static void add_value(std::map<std::string, const double*>& dst,
+                          const std::string& key, const double& val);
+    static void add_value(std::map<std::string, double>& dst,
+                          const std::string& key, const double* val);
+    /**
+       Add a single value from a value map to another map.
+       \tparam K Type of key in value map.
+       \tparam V Type of value in value map.
+       \tparam VDST Type of value in the destination map.
+       \param dst Destination map.
+       \param key Parameter key.
+       \param val Parameter value.
+       \param includePrefixes If true, the module & parameter type
+         prefixes will be added to the member names.
+       \param includeSkipped If true, skipped keys will be output.
+       \param skip_keys Key strings to skip in output.
+       \param key_aliases String aliases to use for keys.
+       \param iname Alternate name to use.
+     */
+    template<typename K, typename V, typename VDST>
+    static void add_value(std::map<std::string, VDST>& dst,
+                          const K& key,
+                          V const & val,
+                          bool includePrefixes=false,
+                          bool includeSkipped=false,
+                          const std::vector<std::string>& skip_keys={},
+                          const std::map<std::string, std::string>& key_aliases={},
+                          std::string iname="") {
+      EnumType k = ensure_key(key);
+      if ((!includeSkipped) && (EnumBaseClass::isSkipped(k) ||
+                                EnumBaseClass::isConstant(k)))
+        return;
+      if (iname.empty()) {
+        if (includePrefixes)
+          iname = getNameWithPrefix(key);
+        else
+          iname = getName(key);
+      } else if (includePrefixes) {
+        iname = utils::enum_key2string(module) + "::" +
+          utils::enum_key2string(param_type) + "::" + iname;
+      }
+      std::map<std::string, std::string>::const_iterator it_alias = key_aliases.find(iname);
+      if (utils::contains(skip_keys, iname))
+        return;
+      if (it_alias != key_aliases.end())
+        iname = it_alias->second;
+      add_value(dst, iname, val);
+    }
+    /**
+       Add the values in a value map to another map.
+       \tparam K Type of key in value map.
+       \tparam V Value map value type.
+       \tparam VDST Type of value in the destination map.
+       \param vals Value map to display.
+       \param includePrefixes If true, the module & parameter type
+         prefixes will be added to the member names.
+       \param includeSkipped If true, skipped keys will be output.
+       \param skip_keys Key strings to skip in output.
+       \param key_aliases String aliases to use for keys.
+     */
+    template<typename K, typename V, typename VDST>
+    static void add_value_map(std::map<std::string, VDST>& dst,
+                              const std::map<K, V>& vals,
+                              bool includePrefixes=false,
+                              bool includeSkipped=false,
+                              const std::vector<std::string>& skip_keys={},
+                              const std::map<std::string, std::string>& key_aliases={}) {
+      check_value_map(vals, "add_value_map: ");
+      for (typename std::map<K, V>::const_iterator it = vals.begin();
+           it != vals.end(); it++) {
+        add_value(dst, it->first, it->second,
+                  includePrefixes, includeSkipped,
+                  skip_keys, key_aliases);
+      }
+    }
     /**
        Get the maximum width of the key names in a value map.
        \tparam K Key type.
@@ -2188,7 +2293,7 @@ namespace ePhotosynthesis {
   };
 
   template<class T, class U, MODULE ID, PARAM_TYPE PT>
-  int ValueSetBase<T, U, ID, PT>::static_flags = 0;
+  int ValueSetBase<T, U, ID, PT>::static_flags = VS_FLAG_SELECTED;
   
   template<class T, class U, MODULE ID, PARAM_TYPE PT>
   std::map<typename ValueSetBase<T, U, ID, PT>::EnumType, double>
@@ -2415,6 +2520,24 @@ namespace ePhotosynthesis {
 		     bool includePrefixes=false,
 		     bool noChildren = false) const override;
     /**
+       Fill a map with variables.
+       Common, public interface for the private _print method.
+       \param dst Map that values should be added to.
+       \param includePrefixes If true, the module & parameter type
+         prefixes will be added to the member names.
+       \param includeSkipped If true, skipped keys will be output.
+       \param skip_keys Key strings to skip in output.
+       \param key_aliases String aliases to use for keys.
+       \param noChildren If true, children of composite sets will not
+         be displayed.
+     */
+    void fillMap(std::map<std::string, double>& dst,
+                 bool includePrefixes = false,
+                 bool includeSkipped = false,
+                 const std::vector<std::string>& skip_keys = {},
+                 const std::map<std::string, std::string>& key_aliases = {},
+                 bool noChildren = false) const override;
+    /**
        Display the values in the set.
        Common, public interface for the private _print method.
        \param out Output stream.
@@ -2424,10 +2547,10 @@ namespace ePhotosynthesis {
        \param includePrefixes If true, the module & parameter type
          prefixes will be added to the member names.
        \param includeSkipped If true, skipped keys will be output.
-       \param noChildren If true, children of composite sets will not
-         be displayed.
        \param skip_keys Key strings to skip in output.
        \param key_aliases String aliases to use for keys.
+       \param noChildren If true, children of composite sets will not
+         be displayed.
        \returns Output stream.
      */
     std::ostream& print(std::ostream &out,
@@ -2514,7 +2637,7 @@ namespace ePhotosynthesis {
        \param k Key to get value for.
        \returns Constant value reference.
      */
-    const double& operator[](const EnumType k) const;
+    const double operator[](const EnumType k) const;
     /**
        Record a value set before the value set is initialized so it can
          be ensured once the values are initialized.
@@ -2550,6 +2673,15 @@ namespace ePhotosynthesis {
      */
     void setFromEnzymeAct(const EnumType k,
 			  const std::map<std::string, double>& EnzymeAct);
+    /**
+       Get a calculated value.
+       \param k Key to get value for.
+       \returns Value
+     */
+    virtual double calculate(const EnumType& k) const;
+    double calculate(const int& k) const;
+    double calculate(const std::string& k) const;
+    
     /**
        Get the value associated with a key.
        \param k Key to get value for.
@@ -2641,6 +2773,12 @@ namespace ePhotosynthesis {
 			      std::size_t padVals=0,
 			      bool includePrefixes=false,
 			      bool noChildren = false) const;
+    virtual void _fillMap(std::map<std::string, double>& dst,
+                          bool includePrefixes = false,
+                          bool includeSkipped = false,
+                          const std::vector<std::string>& skip_keys = {},
+                          const std::map<std::string, std::string>& key_aliases = {},
+                          bool noChildren = false) const;
     virtual std::ostream& _print(std::ostream &out,
 				 const uint tab = 0, std::size_t pad = 0,
 				 bool includePrefixes = false,
@@ -2723,6 +2861,13 @@ namespace ePhotosynthesis {
 			    std::size_t padVals=0,
 			    bool includePrefixes=false,
 			    bool noChildren = false);
+    /** \copydoc ValueSet::fillMap */
+    static void fillMap(std::map<std::string, double>& dst,
+                        bool includePrefixes = false,
+                        bool includeSkipped = false,
+                        const std::vector<std::string>& skip_keys = {},
+                        const std::map<std::string, std::string>& key_aliases = {},
+                        bool noChildren = false);
     /** \copydoc ValueSet::print */
     static std::ostream& print(std::ostream &out,
 			       const uint tab = 0, std::size_t pad = 0,
@@ -2809,6 +2954,14 @@ namespace ePhotosynthesis {
     static void setFromEnzymeAct(const EnumType k,
 				 const std::map<std::string, double>& EnzymeAct);
     /**
+       Get a calculated value.
+       \param k Key to get value for.
+       \returns Value
+     */
+    static double calculate(const EnumType& k);
+    static double calculate(const int& k);
+    static double calculate(const std::string& k);
+    /**
        Get the value associated with a key.
        \param k Key to get value for.
        \returns Value.
@@ -2884,6 +3037,12 @@ namespace ePhotosynthesis {
       UNUSED(noChildren);
       return "";
     }
+    static void _fillMap(std::map<std::string, double>& dst,
+                         bool includePrefixes = false,
+                         bool includeSkipped = false,
+                         const std::vector<std::string>& skip_keys = {},
+                         const std::map<std::string, std::string>& key_aliases = {},
+                         bool noChildren = false);
     static std::ostream& _print(std::ostream &out,
 				const uint tab = 0, std::size_t pad = 0,
 				bool includePrefixes = false,

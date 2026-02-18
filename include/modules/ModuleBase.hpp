@@ -473,7 +473,9 @@ public:
     _MB_con(const double t,						\
 	    const VARS_CLASS_VAR(name, COND)*				\
 	    const VARS_INST_VAR_MOD_BASE(name, COND),			\
-	    Variables *theVars);
+	    Variables *theVars);                                        \
+  FOR_EACH(SET_GET, EXPAND(MEMBERS_ ## name));                          \
+  public:
 /**
    Macro for boiler plate declaring a singular module class
    \param name Name of module

@@ -47,7 +47,6 @@ private:
       Reset the static member variables to their default values.
       */
     static void _reset(const bool noChildren = false);
-    SET_GET_BOOL_NOSKIP(TestSucPath)
 };
 
   DEFINE_MODULE_COMPOSITE_HEADER(CM);

@@ -69,7 +69,7 @@ void PR::_Rate(const double t, const PRCondition* const PR_con, Variables *theVa
             PR::KO= PS::getKM12();
         }
 
-        if (theVars->RUBISCOMETHOD == 2) {            // Using michelies and enzyme information
+        if (PR::RUBISCOMETHOD == 2) {            // Using michelies and enzyme information
             double PrV111t;
             if (theVars->PR_PS_com) {       // FOr the combined PS-PR model
                 PrV111t = PrV111*RuBP / (RuBP + PR::KR * PS::getV1Reg());
@@ -85,7 +85,7 @@ void PR::_Rate(const double t, const PRCondition* const PR_con, Variables *theVa
                 theVars->PR_Vel.v111 = theVars->PR_Vel.v111 * RuBP / PR::RUBISCOTOTAL;
 #endif // MAKE_EQUIVALENT_TO_MATLAB
 
-        } else if (theVars->RUBISCOMETHOD == 1) {
+        } else if (PR::RUBISCOMETHOD == 1) {
             theVars->PR_Vel.v111 = PrV111 * theVars->O2_cond / (theVars->O2_cond + PR::KO *
                                                                 (1. + theVars->CO2_cond / PR::KC));
             if (RuBP < PR::RUBISCOTOTAL)
@@ -149,7 +149,7 @@ void PR::_Rate(const double t, const PRCondition* const PR_con, Variables *theVa
         }
 
         double PrV111t;
-        if (theVars->RUBISCOMETHOD == 2) {
+        if (PR::RUBISCOMETHOD == 2) {
             if (theVars->PR_PS_com) {
                 PrV111t = PR::V111 * RuBP / (RuBP + PR::KR * PS::getV1Reg());
             } else {
@@ -162,7 +162,7 @@ void PR::_Rate(const double t, const PRCondition* const PR_con, Variables *theVa
                 theVars->PR_Vel.v111 = theVars->PR_Vel.v111 * (2.5 * RuBP / PrV111t);
 
 
-        } else if (theVars->RUBISCOMETHOD == 1){
+        } else if (PR::RUBISCOMETHOD == 1){
             theVars->PR_Vel.v111 = PR::V111 * theVars->O2_cond / (theVars->O2_cond + PR::KO *
                                                                   (1. + theVars->CO2_cond / PR::KC));
             if (RuBP < PR::RUBISCOTOTAL)

@@ -30,6 +30,7 @@
 #include "conditions/EPSCondition.hpp"
 #include "conditions/RedoxRegCondition.hpp"
 #include "modules/BF.hpp"
+#include "modules/PR.hpp"
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
@@ -108,14 +109,14 @@ void PS::_Rate(const double t, const PSCondition* const PS_con, Variables *theVa
         V1Reg = 1. + PS_con->PGA / PS::KI11 + PS_con->FBP / PS::KI12 + PS_con->SBP / PS::KI13 +
                 theVars->Pi / PS::KI14 + NADPH / PS::KI15;   // SHARED
 
-        if (theVars->RUBISCOMETHOD == 2) {
+        if (PR::getRUBISCOMETHOD() == 2) {
             const double tmp = PS::PsV1 * PS_con->RuBP / (PS_con->RuBP + PS::KM13 * PS::V1Reg);
             theVars->PS_Vel.v1 = tmp * CO2 / (CO2 + PS::KM11 * (1. + O2 / PS::KM12));
             if (PS_con->RuBP < PS::PsV1 / 2.) {
                 theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con->RuBP / (PS::PsV1 / 2.);
             }
 
-        } else if (theVars->RUBISCOMETHOD == 1) {
+        } else if (PR::getRUBISCOMETHOD() == 1) {
             theVars->PS_Vel.v1 = PS::PsV1 * CO2 / (CO2 + KM11 * (1. + O2 / PS::KM12));
             if (PS_con->RuBP < PS::PsV1 / 2.)
                 theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con->RuBP / (PS::PsV1 / 2.);
@@ -233,7 +234,7 @@ void PS::_Rate(const double t, const PSCondition* const PS_con, Variables *theVa
             PS::PsV16 = RedoxRegCondition::getV16();
         }
 
-        if (theVars->RUBISCOMETHOD == 2) {
+        if (PR::getRUBISCOMETHOD() == 2) {
             const double tmp = V1 * PS_con->RuBP / (PS_con->RuBP + PS::KM13 * PS::V1Reg);
             theVars->PS_Vel.v1 = tmp * theVars->CO2_cond / (theVars->CO2_cond + PS::KM11 *
                                                             (1. + theVars->O2_cond / PS::KM12));
@@ -242,7 +243,7 @@ void PS::_Rate(const double t, const PSCondition* const PS_con, Variables *theVa
                 theVars->PS_Vel.v1 = theVars->PS_Vel.v1 * PS_con->RuBP / (PS::V1 / 2.5);
 
 
-        } else if (theVars->RUBISCOMETHOD == 1){
+        } else if (PR::getRUBISCOMETHOD() == 1){
             //fprintf("M1  ");
             theVars->PS_Vel.v1 = PS::V1 * theVars->CO2_cond / (theVars->CO2_cond + PS::KM11 *
                                                                (1. + theVars->O2_cond / PS::KM12));

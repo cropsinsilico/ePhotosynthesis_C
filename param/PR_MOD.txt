@@ -70,7 +70,7 @@ Vf_T121		0.0		1.0
 Vf_T122		0.0		1.0
 Vf_T112		0.0		1.0
 PGA		4.3		2.4
-RUBISCOTOTAL	0.0
+RUBISCOTOTAL	3.0
 PrV112		0.0
 PrV113		0.0
 PrV121		0.0
@@ -86,3 +86,5 @@ Q10_123		2.0			# [CONST] Q10 for PrV123; unused w/o C3
 Q10_124		2.0			# [CONST] Q10 for PrV124; unused w/o C3
 Q10_131		2.0			# [CONST] Q10 for PrV131; unused w/o C3
 CE		1.0			# [CONST] This is the coefficient for calibrating the volume effect; Used to scale V1T & V2T; Comment says default is 4; Unused w/ C3
+# CONTROL VARIABLES
+RUBISCOMETHOD   2                       # [CONST,CTRL,INT] The method to use for rubisco calculations. Choices are: [1] Use enzyme concentration for calculation, [2] DEFAULT Use the michaelis menton and enzyme concentration together for calculation. The default in the MATLAB code is 2.

@@ -43,11 +43,6 @@ class FIBF : public MODULE_BASE(FIBF) {
 public:
     DECLARE_MODULE_COMPOSITE(FIBF)
 private:
-    SET_GET(ChlPSI)
-    SET_GET(ChlT)
-    SET_GET(ChlT2)
-    SET_GET(FIBF2FI_PQ)
-    SET_GET(FIBF2FI_PQa)
     SET_GET_BOOL_MODULE(NPQ_kd, conditions::FIBF)
 
     /**

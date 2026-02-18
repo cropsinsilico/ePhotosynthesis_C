@@ -42,7 +42,6 @@ class FI : public MODULE_BASE(FI) {
 public:
     DECLARE_MODULE(FI)
     SET_GET_BOOL_MODULE(BF_connect, conditions::FI)
-    SET_GET(cpsii)
 private:
 
     /**

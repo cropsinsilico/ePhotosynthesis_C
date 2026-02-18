@@ -142,11 +142,6 @@ void Variables::__copyMembers(const Variables& other) {
     inputsFinalized = other.inputsFinalized;
     inputsUpdated = other.inputsUpdated;
 
-#define DO_CONTROL(x)                           \
-    x = other.x;
-    FOR_EACH(DO_CONTROL, EXPAND(CONTROL_Variables));
-#undef DO_CONTROL
-    
 #define DO_MEMBERS(mod, pt)						\
     VARS_INST_VAR(mod, pt) = other.VARS_INST_VAR(mod, pt)
 #define DO_MEMBERS_PACKED(args) DO_MEMBERS args
@@ -221,10 +216,27 @@ void Variables::finalizeInputs(const bool dontReset) {
     if (inputUpdated("ALL::VARS::TestLi_Wps")) {
       if (inputUpdated("ALL::VARS::TestLi"))
         throw std::runtime_error("Both ALL::VARS::TestLi_Wps and ALL::VARS::TestLi were updated, but they are different ways of specifying the same quantity");
+      if (inputUpdated("ALL::VARS::GLight"))
+        throw std::runtime_error("Both ALL::VARS::TestLi_Wps and ALL::VARS::GLight were updated, but they are different ways of specifying the same quantity");
       // Conversion from W m^{-2} to u moles m^{-2} s^{-1}
       TestLi = TestLi_Wps * 1.0e6 / 2.35e5;
       PAR_in_Wpm2 = 0;
-    } else if ((!inputsFinalized) || inputUpdated("ALL::VARS::TestLi")) {
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+      GLight = TestLi;
+#else
+      GLight = TestLi * 0.85 * 0.85;
+#endif
+    } else if ((!inputsFinalized) || inputUpdated("ALL::VARS::TestLi") ||
+               inputUpdated("ALL::VARS::GLight")) {
+      if (inputUpdated("ALL::VARS::GLight")) {
+        if (inputUpdated("ALL::VARS::TestLi"))
+          throw std::runtime_error("Both ALL::VARS::GLight and ALL::VARS::TestLi were updated, but they are different ways of specifying the same quantity");
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+        TestLi = GLight;
+#else
+        TestLi = GLight / (0.85 * 0.85);
+#endif
+      }
       if (PAR_in_Wpm2) {
         TestLi_Wps = TestLi;
         // Conversion from W m^{-2} to u moles m^{-2} s^{-1}
@@ -234,6 +246,11 @@ void Variables::finalizeInputs(const bool dontReset) {
         // Conversion from u moles m^{-2} s^{-1} to W m^{-2}
         TestLi_Wps = TestLi / (1.0e6 / 2.35e5);
       }
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+      GLight = TestLi;
+#else
+      GLight = TestLi * 0.85 * 0.85;
+#endif
     }
     
     if (!dontReset) {
@@ -261,7 +278,7 @@ std::string Variables::_diff(const Variables& other,
     std::string out = ValueSetClass::_diff(other, padKeys, padVals,
 					   includePrefixes, noChildren);
 #define FITER(V, ...)							\
-    if (V->_virtual_get_param_type() == PARAM_TYPE_VARS) continue;	\
+    if (V->_virtual_get_param_type() == PARAM_TYPE_VARS) continue;      \
     const ValueSet_t* V2 = other.GET_VALUE_SET(V->_virtual_get_module(), \
 	 				       V->_virtual_get_param_type()); \
     out += V->diff(*V2, __VA_ARGS__);
@@ -285,7 +302,6 @@ bool Variables::equals(const ValueSet_t &b0,
 #ifdef SUNDIALS_CONTEXT_REQUIRED
     CHECK(_context);
 #endif // SUNDIALS_CONTEXT_REQUIRED
-    FOR_EACH(CHECK, EXPAND(CONTROL_Variables));
     FOR_EACH(CHECK, inputsFinalized, useC3,
 	     EnzymeAct, VfactorCp, VfactorT, FluxTR, CO2A, RedoxReg_MP,
 	     FIBF_Pool);
@@ -390,6 +406,61 @@ out << std::endl;
     return out;
 }
 
+void Variables::getVarMap(std::map<std::string, double>& dst,
+                          const bool includeSkipped,
+                          const std::vector<MODULE>& skip_modules,
+                          const std::vector<PARAM_TYPE>& skip_param_types,
+                          const std::vector<std::string>& skip_keys,
+                          const std::map<std::string, std::string>& key_aliases,
+                          const std::map<MODULE, const ValueSet_t*>& conditions,
+                          const std::vector<std::string>& subset,
+                          const std::map<std::string, double>& additionalVars,
+                          const bool skip_calculated) const {
+    if (!subset.empty()) {
+        for (typename std::vector<std::string>::const_iterator it = subset.begin();
+             it != subset.end(); it++) {
+            // TODO: Check for skipped values/aliases?
+            MODULE mod = MODULE_NONE;
+            PARAM_TYPE pt = PARAM_TYPE_NONE;
+            std::string name = parseVar(*it, mod, pt, false,
+                                        false, false);
+            const ValueSetClass_t* vs = getValueSetClass(mod, pt, false,
+                                                         // conditions,
+                                                         "getVarMap");
+            dst[*it] = vs->get(name);
+        }
+        if (!additionalVars.empty()) {
+          Variables::add_value_map(dst, additionalVars,
+                                   false, includeSkipped,
+                                   skip_keys, key_aliases);
+        }
+        return;
+    }
+#define FITER(V, ...)							\
+    if (V->_virtual_selected() &&					\
+	!utils::contains(skip_modules, V->_virtual_get_module()) &&     \
+        !utils::contains(skip_param_types, V->_virtual_get_param_type())) { \
+        V->fillMap(__VA_ARGS__);					\
+    }
+    VARS_ITER_MACRO_COND(FITER, dst, true, includeSkipped,
+			 skip_keys, key_aliases, true);
+#undef FITER
+    if (!skip_calculated) {
+      std::map<std::string, double> calculatedVars;
+      getCalculatedVars(calculatedVars, conditions);
+      if (!calculatedVars.empty()) {
+        Variables::add_value_map(dst, calculatedVars,
+                                 false, includeSkipped,
+                                 skip_keys, key_aliases);
+      }
+    }
+    if (!additionalVars.empty()) {
+      Variables::add_value_map(dst, additionalVars,
+                               false, includeSkipped,
+                               skip_keys, key_aliases);
+    }
+}
+
 void Variables::dump(const std::string& filename,
                      const bool includeSkipped,
                      const std::vector<MODULE>& skip_modules,
@@ -427,22 +498,14 @@ std::ostream& Variables::dump(std::ostream& out,
              it != subset.end(); it++) {
             MODULE mod = MODULE_NONE;
             PARAM_TYPE pt = PARAM_TYPE_NONE;
-            bool controlVar = false;
             std::string name = parseVar(*it, mod, pt, false,
-                                        false, false, &controlVar);
+                                        false, false);
             const ValueSetClass_t* vs = getValueSetClass(mod, pt, false,
                                                          // conditions,
                                                          "dump");
-            if (controlVar) {
-                int val = getControlVar(mod, pt, name);
-                vs->print_value("", val, out, 0, pad, true,
-                                includeSkipped, skip_keys, key_aliases,
-                                false, name);
-            } else {
-                double val = vs->get(name);
-                vs->print_value(name, val, out, 0, pad, true, includeSkipped,
-                                skip_keys, key_aliases);
-            }
+            double val = vs->get(name);
+            vs->print_value(name, val, out, 0, pad, true, includeSkipped,
+                            skip_keys, key_aliases);
         }
         if (!additionalVars.empty()) {
           Variables::print_value_map(additionalVars, out, 0, pad,
@@ -578,11 +641,9 @@ std::string Variables::parseVar(const std::string& k,
 				MODULE& mod, PARAM_TYPE& pt,
 				const bool& isGlymaID,
 				const bool& use_1st_match,
-                                const bool& allow_no_match,
-                                bool* controlVar) {
+                                const bool& allow_no_match) {
     mod = MODULE_NONE;
     pt = PARAM_TYPE_NONE;
-    if (controlVar) controlVar[0] = false;
     std::string split="::", var1, var2, name;
     bool var1_used = false, var2_used = false;
     size_t idx1 = k.find(split);
@@ -641,14 +702,16 @@ std::string Variables::parseVar(const std::string& k,
 		break;
 	    for (std::vector<PARAM_TYPE>::const_iterator it_pt = check_param_types.begin();
 		 it_pt != check_param_types.end(); it_pt++) {
-                if ((((*it_mod) == MODULE_ALL) || ((*it_pt) == PARAM_TYPE_VARS)) &&
-                    (((*it_mod) != MODULE_ALL) || ((*it_pt) != PARAM_TYPE_VARS)))
+                if ((*it_mod) == MODULE_ALL &&
+                    (*it_pt) != PARAM_TYPE_VARS)
+                    continue;
+                if ((*it_pt) == PARAM_TYPE_VARS &&
+                    (*it_mod) != MODULE_ALL)
                     continue;
 		if (use_1st_match && !matches.empty())
 		    break;
-		if (hasVar(*it_mod, *it_pt, name, isGlymaID, controlVar)) {
-		    if ((!(controlVar && controlVar[0])) &&
-                        (!isSelected(*it_mod, *it_pt))) {
+		if (hasVar(*it_mod, *it_pt, name, isGlymaID)) {
+                    if (!isSelected(*it_mod, *it_pt)) {
 			INFO_VALUE_SET("Variable \"", k, "\" matches ",
 				       name, " in ",
 				       utils::enum_key2string(*it_mod),
@@ -686,174 +749,24 @@ std::string Variables::parseVar(const std::string& k,
     // INFO_VALUE_SET("parseVar[", k, "] -> ",
     //                utils::enum_key2string(mod), ", ",
     //                utils::enum_key2string(pt), ", ", name);
-    if (controlVar && controlVar[0]) {
-        return getControlAlias(mod, pt, name);
-    }
     if (mod != MODULE_NONE && pt != PARAM_TYPE_NONE && !name.empty())
         return GET_VALUE_SET_CLASS(mod, pt)->getAliasedName(name);
     return name;
 }
 
-bool Variables::isCalculatedVar(const std::string& name) {
-  const std::map<std::string, std::vector<MODULE> >& registry = getCalculatedVariableRegistry();
-  typename std::map<std::string, std::vector<MODULE> >::const_iterator it = registry.find(name);
-  return (it != registry.end());
-}
-
-bool Variables::isControlVar(const MODULE& mod, const PARAM_TYPE& pt,
-                             const std::string& name) {
-    // TODO: Use generated code
-    if (mod == MODULE_ALL && pt == PARAM_TYPE_VARS) {
-#define CHECK_CONTROL(x)                        \
-        if (name == #x) {                       \
-            return true;                        \
-        }
-        FOR_EACH(CHECK_CONTROL, EXPAND(CONTROL_Variables));
-#undef CHECK_CONTROL
-    }
-#define NAME_EQUALS(x) (name == #x)
-#define CHECK_CONTROL_MOD(m, p, ...)                                    \
-    if (mod == MODULE_ ## m && pt == PARAM_TYPE_ ## p &&                \
-        (JOIN_ARGS(SEP_OR, FOR_EACH_COMMA(NAME_EQUALS, __VA_ARGS__)))) { \
-        return true;                                                    \
-    }
-    EVAL(CHECK_CONTROL_MOD(CM, MOD, TestSucPath, SucPath));
-#undef CHECK_CONTROL_MOD
-#undef NAME_EQUALS
-    return false;
-}
-void Variables::setControlVar(const MODULE& mod, const PARAM_TYPE& pt,
-                              const std::string& name,
-                              const int& value) {
-    // TODO: Use generated code
-    if (mod == MODULE_ALL && pt == PARAM_TYPE_VARS) {
-#define SET_CONTROL(x)                          \
-        if (name == #x) {                       \
-            this->x = value;                    \
-            return;                             \
-        }
-        FOR_EACH(SET_CONTROL, EXPAND(CONTROL_Variables));
-#undef SET_CONTROL
-    }
-#define NAME_EQUALS(x) (name == #x)
-#define CHECK_CONTROL_MOD(m, p, ...)                                    \
-    if (mod == MODULE_ ## m && pt == PARAM_TYPE_ ## p &&                \
-        (JOIN_ARGS(SEP_OR, FOR_EACH_COMMA(NAME_EQUALS, __VA_ARGS__)))) { \
-        modules::m::CONCATENATE(set, FIRST_ARG(__VA_ARGS__))(value);    \
-        return;                                                         \
-    }
-    EVAL(CHECK_CONTROL_MOD(CM, MOD, TestSucPath, SucPath));
-#undef CHECK_CONTROL_MOD
-#undef NAME_EQUALS
-    ERROR_VALUE_SET("Unhandled control parameter: ",
-                    utils::enum_key2string(mod), "::",
-                    utils::enum_key2string(pt), "::", name);
-}
-int Variables::getControlVar(const MODULE& mod, const PARAM_TYPE& pt,
-                             const std::string& name) const {
-    // TODO: Use generated code
-    if (mod == MODULE_ALL && pt == PARAM_TYPE_VARS) {
-#define SET_CONTROL(x)                          \
-        if (name == #x) {                       \
-            return this->x;                     \
-        }
-        FOR_EACH(SET_CONTROL, EXPAND(CONTROL_Variables));
-#undef SET_CONTROL
-    }
-#define NAME_EQUALS(x) (name == #x)
-#define CHECK_CONTROL_MOD(m, p, ...)                                    \
-    if (mod == MODULE_ ## m && pt == PARAM_TYPE_ ## p &&                \
-        (JOIN_ARGS(SEP_OR, FOR_EACH_COMMA(NAME_EQUALS, __VA_ARGS__)))) { \
-        return modules::m::CONCATENATE(get, FIRST_ARG(__VA_ARGS__))();  \
-    }
-    EVAL(CHECK_CONTROL_MOD(CM, MOD, TestSucPath, SucPath));
-#undef CHECK_CONTROL_MOD
-#undef NAME_EQUALS
-    ERROR_VALUE_SET("Unhandled control parameter: ",
-                    utils::enum_key2string(mod), "::",
-                    utils::enum_key2string(pt), "::", name);
-}
-std::string Variables::getControlAlias(const MODULE& mod,
-                                       const PARAM_TYPE& pt,
-                                       const std::string& name) {
-    // TODO: Use generated code
-    if (mod == MODULE_CM && pt == PARAM_TYPE_MOD && name == "SucPath")
-        return "TestSucPath";
-    return name;
-}
-std::string Variables::getControlDocs(const MODULE& mod,
-                                      const PARAM_TYPE& pt,
-                                      const std::string& name) {
-    // TODO: Use generated code
-    std::string out;
-    if (mod == MODULE_ALL && pt == PARAM_TYPE_VARS) {
-        if (name == "record") {
-            out += "Record traces for the values at each time step.";
-        } else if (name == "GRNC") {
-            out += "If 1, VfactorCp values will be used to scale enzyme activities in the PS, PR, & SUCS modules when CO2 > 0";
-        } else if (name == "GRNT") {
-            out += "If 1, VfactorT values will be used to scale enzyme activities in the PS, PR, & SUCS modules when T > 25";
-        } else if (name == "PAR_in_Wpm2") {
-            out += "If 1, the input TestLi will be taken to be in units of W/m**2";
-        } else if (name == "VolRatioStCyto") {
-            out += "If 1, the ratio between the volume of the stroma and cytosol is 1, otherwise it will be 4.0/9.0. This factor is used to scale rates for the photorespiration (PR) reactions.";
-        } else if (name == "RUBISCOMETHOD") {
-            out += "The method to use for rubisco calculations. Choices are: [1] Use enzyme concentration for calculation, [2] DEFAULT Use the michaelis menton and enzyme concentration together for calculation";
-        } else if (name == "UseZaksNPQ") {
-            out += "If 1, use the Zaks et al. 2012 model for non-photochemical quenching.";
-        }
-    }
-    if (mod == MODULE_CM && pt == PARAM_TYPE_MOD &&
-        ((name == "TestSucPath") || (name == "SucPath"))) {
-        out += "If 1 include sucrose synthesis(original); If 0 Don't include sucrose synthesis, only T3P output.";
-    }
-    if (!out.empty()) {
-        out = "Control parameter; " + out;
-        return out;
-    }
-    ERROR_VALUE_SET("Cannot get docs for control parameter ",
-                    utils::enum_key2string(mod), "::",
-                    utils::enum_key2string(pt), "::", name);
-    return "";
-}
-void Variables::setDefaultControlVar(const MODULE& mod,
-                                     const PARAM_TYPE& pt,
-                                     const std::string& name,
-                                     const int&) {
-    ERROR_VALUE_SET("Cannot set default for control parameter ",
-                    utils::enum_key2string(mod), "::",
-                    utils::enum_key2string(pt), "::", name);
-}
-int Variables::getDefaultControlVar(const MODULE& mod,
-                                    const PARAM_TYPE& pt,
-                                    const std::string& name) {
-    ERROR_VALUE_SET("Cannot get default for control parameter ",
-                    utils::enum_key2string(mod), "::",
-                    utils::enum_key2string(pt), "::", name);
-    return 0;
-}
-
 bool Variables::hasVar(const MODULE& mod, const PARAM_TYPE& pt,
 		       const std::string& name,
-		       const bool& isGlymaID,
-                       bool* controlVar) {
-    if ((!isGlymaID) && controlVar) {
-        if (isControlVar(mod, pt, name)) {
-            controlVar[0] = true;
-            return true;
-        }
-    }
+		       const bool& isGlymaID) {
     ValueSetClass_t* vs = getValueSetClass(mod, pt, true);
     if (!vs) return false;
     return vs->has(name, isGlymaID);
 }
 bool Variables::hasVar(const std::string& k,
-		       const bool& isGlymaID,
-                       bool* controlVar) {
+		       const bool& isGlymaID) {
     std::string name;
     MODULE mod = MODULE_NONE;
     PARAM_TYPE pt = PARAM_TYPE_NONE;
-    name = parseVar(k, mod, pt, isGlymaID, false, true, controlVar);
+    name = parseVar(k, mod, pt, isGlymaID, false, true);
     if (name.empty())
       return false;
     return hasVar(mod, pt, name, isGlymaID);
@@ -879,19 +792,12 @@ double Variables::getDefault(const std::string& k,
     std::string name;
     MODULE mod = MODULE_NONE;
     PARAM_TYPE pt = PARAM_TYPE_NONE;
-    bool controlVar = false;
-    name = parseVar(k, mod, pt, isGlymaID, false, false, &controlVar);
-    if (controlVar) {
-        return static_cast<double>(getDefaultControlVar(mod, pt, name));
-    }
+    name = parseVar(k, mod, pt, isGlymaID, false, false);
     return getDefault(mod, pt, name, isGlymaID);
 }
 void Variables::setDefault(const MODULE& mod, const PARAM_TYPE& pt,
 			   const std::string& name, const double& value,
 			   const bool& isGlymaID) {
-    if ((!isGlymaID) && isControlVar(mod, pt, name)) {
-        setDefaultControlVar(mod, pt, name, (int)value);
-    }
     GET_VALUE_SET_CLASS(mod, pt)->setDefault(name, value, isGlymaID);
 }
 void Variables::setDefault(const MODULE& mod, const PARAM_TYPE& pt,
@@ -903,11 +809,7 @@ void Variables::setDefault(const std::string& k, const double& value,
     std::string name;
     MODULE mod = MODULE_NONE;
     PARAM_TYPE pt = PARAM_TYPE_NONE;
-    bool controlVar = false;
-    name = parseVar(k, mod, pt, isGlymaID, false, false, &controlVar);
-    if (controlVar) {
-        return setDefaultControlVar(mod, pt, name, (int)value);
-    }
+    name = parseVar(k, mod, pt, isGlymaID, false, false);
     return setDefault(mod, pt, name, value, isGlymaID);
 }
 void Variables::setVar(const MODULE& module,
@@ -915,9 +817,6 @@ void Variables::setVar(const MODULE& module,
 		       const std::string& name,
 		       const double& value,
 		       const bool& isGlymaID) {
-    if ((!isGlymaID) && isControlVar(module, param_type, name)) {
-        setControlVar(module, param_type, name, (int)value);
-    }
     GET_VALUE_SET(module, param_type)->set(name, value, isGlymaID);
 }
 void Variables::setVar(const MODULE& module,
@@ -930,11 +829,7 @@ void Variables::setVar(const std::string& k, const double& value,
     std::string name;
     MODULE mod = MODULE_NONE;
     PARAM_TYPE pt = PARAM_TYPE_NONE;
-    bool controlVar = false;
-    name = parseVar(k, mod, pt, isGlymaID, false, false, &controlVar);
-    if (controlVar) {
-        return setControlVar(mod, pt, name, (int)value);
-    }
+    name = parseVar(k, mod, pt, isGlymaID, false, false);
     return setVar(mod, pt, name, value, isGlymaID);
 }
 double Variables::getVar(const MODULE& module,
@@ -942,9 +837,6 @@ double Variables::getVar(const MODULE& module,
 			 const std::string& name,
 			 const bool& isGlymaID,
                          const std::map<MODULE, const ValueSet_t*>& conditions) const {
-    if ((!isGlymaID) && isControlVar(module, param_type, name)) {
-        return getControlVar(module, param_type, name);
-    }
     return GET_VALUE_SET_COND(module, param_type)->get(name, isGlymaID);
 }
 double Variables::getVar(const MODULE& module,
@@ -959,15 +851,99 @@ double Variables::getVar(const std::string& k,
     std::string name;
     MODULE mod = MODULE_NONE;
     PARAM_TYPE pt = PARAM_TYPE_NONE;
-    bool controlVar = false;
-    name = parseVar(k, mod, pt, isGlymaID, false, (!isGlymaID),
-                    &controlVar);
-    if (controlVar) {
-        return static_cast<double>(getControlVar(mod, pt, name));
-    }
-    if (name.empty())
-      return getVarCalculated(k, conditions);
+    name = parseVar(k, mod, pt, isGlymaID, false, (!isGlymaID));
     return getVar(mod, pt, name, isGlymaID, conditions);
+}
+double Variables::calculate(const EnumType& k) const {
+  switch(k) {
+  case EnumType::Vc:
+    return RuACT_Vel.v6_1 * AVR;
+  case EnumType::Vo:
+    return RuACT_Vel.v6_2 * AVR;
+  case EnumType::VPGA:
+    return SUCS_Vel.vpga_use * AVR;
+  case EnumType::Vstarch:
+    return (PS_Vel.v23 - PS_Vel.v25) * AVR;
+  case EnumType::Vsucrose:
+    return SUCS_Vel.vdhap_in * AVR;
+  case EnumType::VT3P:
+    return (PS_Vel.v31 + PS_Vel.v33) * AVR;
+  case EnumType::Vt_glycerate:
+    return PR_Vel.v1in * AVR;
+  case EnumType::Vt_glycolate:
+    return PR_Vel.v2out * AVR;
+  case EnumType::PSIIabs:
+    return FI_Vel.vP680_d;
+  case EnumType::PSIabs:
+    return BF_Vel.Vbf11;
+  case EnumType::CO2AR:
+    return TargetFunVal(this);
+  case EnumType::ROE:
+    return FI_Vel.vS3_S0; // return BF_Vel.VgPQH2 * 2.;
+  case EnumType::dissipation: {
+    const double vA_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vA_d");
+    const double vU_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vU_d");
+    return vA_d + vU_d;
+  }
+  case EnumType::fluoresence: {
+    const double vA_f = getVar(MODULE_FI, PARAM_TYPE_VEL, "vA_f");
+    const double vU_f = getVar(MODULE_FI, PARAM_TYPE_VEL, "vU_f");
+    return vA_f + vU_f;
+  }
+  case EnumType::fPSII: {
+    double It = 0.0;
+    if (useC3)
+      It = lightParam;
+    else
+      It = GLight;
+    if (It == 0)
+      return 0.0;
+    const double It2 = It * 27.0 / 47.0;
+    const double vA_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vA_d");
+    const double vU_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vU_d");
+    const double f = calculate(EnumType::fluoresence);
+    return (It2 - f - vA_d - vU_d) / It2;
+  }
+  case EnumType::MembranePotential: {
+    const double PHs = getVar(MODULE_BF, PARAM_TYPE_COND, "PHs");
+    const double Hfs = pow(10., -PHs) * 1000.;
+    const double OHs = pow(10., -14.) / (Hfs / 1000.) * 1000.;
+    const double BFHs = getVar(MODULE_BF, PARAM_TYPE_COND, "BFHs");
+    const double BFs = BFHs - Hfs;
+    const double BFTs = getVar(MODULE_BF, PARAM_TYPE_POOL, "BFTs");
+    const double BFns = BFTs - BFs;
+    const double Ks = getVar(MODULE_BF, PARAM_TYPE_COND, "Ks");
+    const double Mgs = getVar(MODULE_BF, PARAM_TYPE_COND, "Mgs");
+    const double Cls = getVar(MODULE_BF, PARAM_TYPE_COND, "Cls");
+    const double RVA = getVar(MODULE_BF, PARAM_TYPE_RC, "RVA");
+    double NetCharge = Hfs + Ks + 2. * Mgs - OHs - Cls - BFns;
+    NetCharge = NetCharge / 1000.;
+    NetCharge = NetCharge * RVA;
+    const double AfC = 6.022 * pow(10., 23.);
+    const double UnitCharge = 1.6 * pow(10., -19.);
+    NetCharge = NetCharge * AfC * UnitCharge;
+    return 2. * NetCharge / 6. * pow(10., 6.);
+  }
+  case EnumType::expr_psbs:
+  case EnumType::QH:
+  case EnumType::one_minus_QH: {
+    const double pH = getVar(MODULE_BF, PARAM_TYPE_COND, "PHl");
+    const double hill_psbs = getVar(MODULE_XanCycle, PARAM_TYPE_RC,
+                                    "hill_psbs");
+    const double pK_psbs = getVar(MODULE_XanCycle, PARAM_TYPE_RC,
+                                  "pK_psbs");
+    const double expr_psbs = pow(10., (hill_psbs * (pH - pK_psbs)));
+    if (k == EnumType::expr_psbs)
+      return expr_psbs;
+    else if (k == EnumType::one_minus_QH)
+      return expr_psbs / (1 + expr_psbs);
+    return 1.0 / (1.0 + expr_psbs);
+  }
+  default:
+    ERROR_VALUE_SET("Could not find variable matching string \"",
+                    k, "\" (including calculated variables)");
+  }
+  return 0.0;
 }
 double Variables::getVarCalculated(const std::string& k,
                                    const std::map<MODULE, const ValueSet_t*>& conditions) const {
@@ -1038,7 +1014,7 @@ double Variables::getVarCalculated(const std::string& k,
         const double UnitCharge = 1.6 * pow(10., -19.);
         NetCharge = NetCharge * AfC * UnitCharge;
         return 2. * NetCharge / 6. * pow(10., 6.);
-    } else if ((k == "expr_psbs") || (k == "QH")) {
+    } else if ((k == "expr_psbs") || (k == "QH") || (k == "one_minus_QH")) {
         const double pH = getVar(MODULE_BF, PARAM_TYPE_COND, "PHl");
         const double hill_psbs = getVar(MODULE_XanCycle, PARAM_TYPE_RC,
                                         "hill_psbs");
@@ -1047,6 +1023,8 @@ double Variables::getVarCalculated(const std::string& k,
         const double expr_psbs = pow(10., (hill_psbs * (pH - pK_psbs)));
         if (k == "expr_psbs")
             return expr_psbs;
+        else if (k == "one_minus_QH")
+            return expr_psbs / (1 + expr_psbs);
         return 1.0 / (1.0 + expr_psbs);
     } else {
         ERROR_VALUE_SET("Could not find variable matching string \"",
@@ -1056,29 +1034,15 @@ double Variables::getVarCalculated(const std::string& k,
 const std::map<std::string, std::vector<MODULE> >&
 Variables::getCalculatedVariableRegistry() {
   static std::map<std::string, std::vector<MODULE> > out = {};
-#define ADD_VAR(name, ...)                      \
-  out[#name] = {PREFIX_EACH(MODULE_, __VA_ARGS__)}
-  ADD_VAR(Light intensity, ALL);
-  ADD_VAR(Vc, RuACT);
-  ADD_VAR(Vo, RuACT);
-  ADD_VAR(VPGA, SUCS);
-  ADD_VAR(Vstarch, PS);
-  ADD_VAR(Vsucrose, SUCS);
-  ADD_VAR(VT3P, PS);
-  ADD_VAR(Vt_glycerate, PR);
-  ADD_VAR(Vt_glycolate, PR);
-  ADD_VAR(PSIIabs, FI);
-  ADD_VAR(PSIabs, BF);
-  ADD_VAR(CO2AR, PS, PR);
-  ADD_VAR(dissipation, FI);
-  ADD_VAR(fluoresence, FI);
-  ADD_VAR(fPSII, FI);
-  ADD_VAR(MembranePotential, BF);
-  ADD_VAR(expr_psbs, XanCycle, BF);
-  ADD_VAR(QH, XanCycle, BF);
-  // ADD_VAR(ROE, BF);
-  ADD_VAR(ROE, FI);
-#undef ADD_VAR
+  for (typename std::map<EnumType, std::vector<std::string> >::const_iterator it = EnumClass::required_modules.begin();
+       it != EnumClass::required_modules.end(); it++) {
+    std::vector<MODULE> ivect;
+    for (typename std::vector<std::string>::const_iterator iv = it->second.begin();
+         iv != it->second.end(); iv++) {
+      ivect.push_back(utils::enum_string2key<MODULE>(*iv));
+    }
+    out[getName(it->first)] = ivect;
+  }
   return out;
 }
 std::vector<std::string>
@@ -1119,7 +1083,8 @@ void Variables::getCalculatedVars(std::map<std::string, double>& dest,
             }
         }
         if (allSelected) {
-            dest[it->first] = getVar(it->first, false, conditions);
+            std::string fullname = "ALL::VARS::" + it->first;
+            dest[fullname] = getVar(it->first, false, conditions);
         }
     }
 }
@@ -1128,9 +1093,6 @@ std::string Variables::getDocs(const MODULE& module,
                                const PARAM_TYPE& param_type,
                                const std::string& name,
                                const bool& isGlymaID) {
-    if ((!isGlymaID) && isControlVar(module, param_type, name)) {
-        return getControlDocs(module, param_type, name);
-    }
     return GET_VALUE_SET_CLASS(module, param_type)->getDocs(name, isGlymaID);
 }
 std::string Variables::getDocs(const MODULE& module,
@@ -1143,11 +1105,7 @@ std::string Variables::getDocs(const std::string& k,
     std::string name;
     MODULE mod = MODULE_NONE;
     PARAM_TYPE pt = PARAM_TYPE_NONE;
-    bool controlVar = false;
-    name = parseVar(k, mod, pt, isGlymaID, false, false, &controlVar);
-    if (controlVar) {
-        return getControlDocs(mod, pt, name);
-    }
+    name = parseVar(k, mod, pt, isGlymaID, false, false);
     return getDocs(mod, pt, name, isGlymaID);
 }
 std::vector<PARAM_TYPE> Variables::getParamTypes(const MODULE& mod,
@@ -1183,11 +1141,13 @@ ValueSetClass_t* Variables::getValueSetClass(const MODULE& mod,
 					     const bool no_error_on_invalid,
 					     const std::string& error_context) {
     bool force_error = false;
-    if (mod == MODULE_ALL || pt == PARAM_TYPE_VARS) {
-	if (mod == MODULE_ALL && pt == PARAM_TYPE_VARS) {
+    if (mod == MODULE_ALL) {
+        if (pt == PARAM_TYPE_VARS) {
 	    return getValueSetClass();
-	}
+        }
 	force_error = true;
+    } else if (pt == PARAM_TYPE_VARS) {
+        force_error = true;
     } else if (pt == PARAM_TYPE_MOD) {
 	SWITCH_MOD(mod, VARS_CLASS_MODULES, VARS_RETURN_CALL,
 		   VARS_CLASS_CALL_STATIC,
@@ -1222,11 +1182,13 @@ const ValueSet_t* Variables::getValueSet(const MODULE& mod,
 					 const std::map<MODULE, const ValueSet_t*>& conditions,
 					 const std::string& error_context) const {
     bool force_error = false;
-    if (mod == MODULE_ALL || pt == PARAM_TYPE_VARS) {
-	if (mod == MODULE_ALL && pt == PARAM_TYPE_VARS) {
+    if (mod == MODULE_ALL) {
+        if (pt == PARAM_TYPE_VARS) {
 	    return getValueSet();
 	}
 	force_error = true;
+    } else if (pt == PARAM_TYPE_VARS) {
+        force_error = true;
     } else if (pt == PARAM_TYPE_MOD) {
 	SWITCH_MOD(mod, VARS_CLASS_MODULES, VARS_RETURN_CALL,
 		   VARS_INST_CALL_STATIC,
@@ -1308,8 +1270,6 @@ void Variables::updateParam(std::map<std::string, std::string>& inputs,
     std::string name, name_SET, name_FULL;
     double value = 0.0;
     static std::string set_suffix = "_SETXXX";
-    bool controlVar = false;
-    std::string controlStr = "";
 
     for (typename std::map<std::string, std::string>::const_iterator it = inputs.begin();
          it != inputs.end(); it++) {
@@ -1317,20 +1277,12 @@ void Variables::updateParam(std::map<std::string, std::string>& inputs,
             continue;
         mod = MODULE_NONE;
         pt = PARAM_TYPE_NONE;
-        controlVar = false;
-        controlStr = "";
-        name = parseVar(it->first, mod, pt, false, false, true,
-                        &controlVar);
+        name = parseVar(it->first, mod, pt, false, false, true);
         if (name.empty()) {
-            if (isCalculatedVar(it->first)) {
-                std::cout << context << ": IGNORING \"" << it->first <<
-                  "\" - it is a calculated variable." << std::endl;
-            } else {
-                std::cout << context << ": IGNORING \"" << it->first <<
-                  "\" - it does not match any known parameters or belongs "
-                  "to a value set not used selected by the current driver."
-                          << std::endl;
-            }
+            std::cout << context << ": IGNORING \"" << it->first <<
+              "\" - it does not match any known parameters or belongs "
+              "to a value set not used selected by the current driver."
+                      << std::endl;
             rm_values.push_back(it->first);
             continue;
         }
@@ -1338,9 +1290,7 @@ void Variables::updateParam(std::map<std::string, std::string>& inputs,
         name_FULL = utils::enum_key2string(mod) + "::" +
             utils::enum_key2string(pt) + "::" + name;
         name_SET = name_FULL + set_suffix;
-        if (controlVar)
-            controlStr = "[CONTROL VARIABLE] ";
-        else if (!isSelected(mod, pt)) {
+        if (!isSelected(mod, pt)) {
             std::cout << context << ": IGNORING \"" << name_FULL <<
               "\" - parameter not selected." << std::endl <<
               "    Ignored value:    " << it->second << std::endl;
@@ -1349,28 +1299,17 @@ void Variables::updateParam(std::map<std::string, std::string>& inputs,
         }
         if (inputs.find(name_SET) == inputs.end()) {
             std::cout << context << ": READ \"" << name_FULL <<
-                "\" " << controlStr <<
-                "from \"" << it->first << "\" (" << it->second << ")" <<
-                std::endl;
+                "\" from \"" << it->first << "\" (" << it->second <<
+                ")" << std::endl;
             add_values[name_SET] = it->second;
             if (theVars) {
-                if (controlVar) {
-                    // if (init)
-                    //   setDefaultControlVar(mod, pt, name, (int)value);
-                    // else
-                    theVars->setControlVar(mod, pt, name, (int)value);
-                } else {
-                    if (init)
-                        setDefault(mod, pt, name, value);
-                    if (!(init && pt == PARAM_TYPE_COND))
-                        theVars->setVar(mod, pt, name, value);
-                }
+                if (init)
+                    setDefault(mod, pt, name, value);
+                if (!(init && pt == PARAM_TYPE_COND))
+                    theVars->setVar(mod, pt, name, value);
                 theVars->inputsUpdated[name_FULL] = true;
             } else {
-                if (controlVar)
-                    setDefaultControlVar(mod, pt, name, (int)value);
-                else
-                    setDefault(mod, pt, name, value);
+                setDefault(mod, pt, name, value);
             }
         } else {
             if (inputs.at(name_SET) != it->second) {
@@ -1451,4 +1390,12 @@ void Variables::readParam(const std::string& fname,
                           std::map<std::string, std::string>& inputs,
                           const bool init) {
     _readParam(fname, inputs, this, init, "readParam");
+}
+void Variables::readParam(const std::string& fname) {
+    std::map<std::string, std::string> inputs;
+    _readParam(fname, inputs, this, false, "readParam");
+}
+void Variables::readParam(const std::string& fname,
+                          std::map<std::string, std::string>& inputs) {
+    _readParam(fname, inputs, this, false, "readParam");
 }

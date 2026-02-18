@@ -328,7 +328,7 @@ ePhotosynthesis::run_simulation(DriverType driverChoice,
 
     theVars->record = record;
     theVars->useC3 = useC3; // Redundant after select_driver
-    modules::PR::setRUBISCOTOTAL(3);
+    // modules::PR::setRUBISCOTOTAL(3);
     if (debugDelta)
         dbglvl += 8;
     if (debugInternal)

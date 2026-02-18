@@ -30,7 +30,7 @@ TEST_F(PRModuleTest, InitTest) {
 
 TEST_F(PRModuleTest, RateTest) {
     const PRVel PRv = theVars->PR_Vel;
-    theVars->RUBISCOMETHOD = 2;
+    PR::setRUBISCOMETHOD(2);
     PRCondition* PRc = PR::init(theVars);
 
     Rate(1., PRc, theVars);
@@ -45,7 +45,7 @@ TEST_F(PRModuleTest, RateTest) {
 TEST_F(PRModuleTest, RateTest2) {
     const PRVel PRv = theVars->PR_Vel;
     theVars->Tp = 27.9;
-    theVars->RUBISCOMETHOD = 1;
+    PR::setRUBISCOMETHOD(1);
     PR::setRUBISCOTOTAL(3);
     PRCondition* PRc = PR::init(theVars);
     theVars->record = true;

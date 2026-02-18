@@ -61,10 +61,6 @@ private:
         N = 1;
 	ParentClass::_reset(noChildren);
     }
-    SET_GET(RedoxReg_VMAX13)
-    SET_GET(RedoxReg_VMAX16)
-    SET_GET(RedoxReg_VMAX6)
-    SET_GET(RedoxReg_VMAX9)
     EPHOTO_API static double TIME;    // The timestamp of the most recent call to _Rate
     EPHOTO_API static std::size_t N;  // The current size of the RedoxReg TimeSeries
 };

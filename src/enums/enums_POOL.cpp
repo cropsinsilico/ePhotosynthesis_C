@@ -83,6 +83,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)NADPHT, "[ALIASES={NADPHT}]   The total concentration of NADPH in stroma; 1 is an guessed value;"}
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::static_value_flags = {};
@@ -110,6 +112,8 @@ namespace ePhotosynthesis {
   const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::docs = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::value_flags = {};
   template<>
@@ -145,6 +149,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PQT, "The total concentration of PQ;"}
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::static_value_flags = {};
@@ -167,6 +173,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::docs = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::static_value_flags = {};
@@ -188,6 +196,8 @@ namespace ePhotosynthesis {
   const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::docs = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::value_flags = {};
   template<>
@@ -313,6 +323,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)MDH_Vmax , "[CONST] This value is assumed and there is no literature about it. Need to be fixed.; Used w/ SA_MDH & mw_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"}
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::static_value_flags = {
@@ -385,6 +397,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::docs = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::static_value_flags = {};
@@ -430,6 +444,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)O  , "mM"}
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::static_value_flags = {};
@@ -467,6 +483,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)UTc, "mM"}
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::required_modules = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::static_value_flags = {};
@@ -488,6 +506,8 @@ namespace ePhotosynthesis {
   const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::docs = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::required_modules = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::value_flags = {};
   template<>

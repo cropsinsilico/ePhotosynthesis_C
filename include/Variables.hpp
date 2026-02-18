@@ -42,7 +42,7 @@ namespace ePhotosynthesis {
 #define MEMBERS_Variables MEMBERS_ALLVARS
 #define PARAM_TYPES_ALL VARS
 #define CONTROL_Variables                                             \
-  record, GP, GRNC, GRNT, PAR_in_Wpm2, VolRatioStCyto, RUBISCOMETHOD, \
+  record, GP, GRNC, GRNT, PAR_in_Wpm2, VolRatioStCyto,                \
     UseZaksNPQ
 
 #ifdef SUNDIALS_CONTEXT_REQUIRED
@@ -200,6 +200,8 @@ public:
        \param[in] Instance to copy.
      */
     EPHOTO_API void deepcopy(const Variables& rhs);
+    /** \copydoc ValueSet::calculate */
+    double calculate(const EnumType& k) const override;
     /** \copydoc ValueSet::equals */
     bool equals(const ValueSet_t& b,
 		const bool noChildren = false) const override;
@@ -221,6 +223,34 @@ public:
     void setRecord(const ValueSet_t* x);
     void setRecord(ValueSet_t* x,
 		   std::map<MODULE, ValueSet_t*>& conditions);
+
+    /**
+       Fill a map with state variables.
+       \param[out] dst Map to fill.
+       \param[in] includeSkipped If true, skipped keys will be output.
+       \param[in] skip_modules Vector of IDs for modules that should not
+         be serialized.
+       \param[in] skip_param_types Vector of IDs for parameter types that
+         should not be serialized.
+       \param[in] skip_keys Key strings to skip in output.
+       \param[in] key_aliases String aliases to use for keys.
+       \param[in] conditions Map of conditions for composite modules that
+         are not stored on Variables instances.
+       \param[in] subset Subset of parameters to output.
+       \param[in] additionalVars Map of additional names & values to dump.
+       \param[in] skip_calculated If true, don't output the calculated
+         variables.
+     */
+    void getVarMap(std::map<std::string, double>& dst,
+                   const bool includeSkipped = false,
+                   const std::vector<MODULE>& skip_modules={},
+                   const std::vector<PARAM_TYPE>& skip_param_types={},
+                   const std::vector<std::string>& skip_keys={},
+                   const std::map<std::string, std::string>& key_aliases={},
+                   const std::map<MODULE, const ValueSet_t*>& conditions={},
+                   const std::vector<std::string>& subset={},
+                   const std::map<std::string, double>& additionalVars={},
+                   const bool skip_calculated=false) const;
 
     /**
        Serialize all parameters attached to this instance to a file.
@@ -383,18 +413,13 @@ public:
 	 than one match, an error will be thrown.
        \param[in] allow_no_match If true, an empty string will be
          returned if there is not match.
-       \param[in] controlVar If provided, the target will be set to
-         true if the string refers to a control parameter and false
-         otherwise. If not provided and k is a control parameter,
-         an error will be raised.
        \returns Variable name extracted from k.
      */
     EPHOTO_API static std::string parseVar(const std::string& k,
                                            MODULE& mod, PARAM_TYPE& pt,
                                            const bool& isGlymaID = false,
                                            const bool& use_1st_match=false,
-                                           const bool& allow_no_match=false,
-                                           bool* controlVar=nullptr);
+                                           const bool& allow_no_match=false);
     /**
        Check if a value set has a variable that matches the provided
          string.
@@ -405,127 +430,23 @@ public:
        \param[in] name String to check against variables in the value set.
        \param[in] isGlymaID If true, name will be treated as a GlymaID.
          If false, name will be treated as the variable name.
-       \param[in] controlVar If provided, the target will be set to
-         true if the string refers to a control parameter and false
-         otherwise. If not provided and k is a control parameter,
-         an error will be raised.
        \returns true if the variable is part of the value set, false
          otherwise.
      */
     EPHOTO_API static bool hasVar(const MODULE& mod, const PARAM_TYPE& pt,
                                   const std::string& name,
-                                  const bool& isGlymaID = false,
-                                  bool* controlVar = nullptr);
+                                  const bool& isGlymaID = false);
     /**
        Check if there is a variable that matches the provided string.
        \param[in] name String to check against variables.
        \param[in] isGlymaID If true, name will be treated as a GlymaID.
          If false, name will be treated as the variable name.
-       \param[in] controlVar If provided, the target will be set to
-         true if the string refers to a control parameter and false
-         otherwise. If not provided and k is a control parameter,
-         an error will be raised.
        \returns true if the variable is part of a value set, false
          otherwise.
      */
     EPHOTO_API static bool hasVar(const std::string& name,
-                                  const bool& isGlymaID = false,
-                                  bool* controlVar = nullptr);
+                                  const bool& isGlymaID = false);
     
-    /**
-       Check if a string matches a calculated parameter.
-       \param[in] name String to check against calculated parameters.
-       \returns true if the variable is a calculated parameter, false
-         otherwise.
-     */
-    EPHOTO_API static bool isCalculatedVar(const std::string& name);
-
-    /**
-       Check if a string matches a control parameter.
-       \param[in] mod Module associated with the value set that should
-         be checked.
-       \param[in] pt Parameter type associated with the value set that
-         should be checked.
-       \param[in] name String to check against control parameters.
-       \returns true if the variable is a control parameter, false
-         otherwise.
-     */
-    EPHOTO_API static bool isControlVar(const MODULE& mod,
-                                        const PARAM_TYPE& pt,
-                                        const std::string& name);
-    /**
-       Set the value for a control variable in a value set.
-       \param[in] mod Module associated with the value set that the
-         variable is part of.
-       \param[in] pt Parameter type associated with the value set that the
-         variable is part of.
-       \param[in] name String identifying the variable.
-       \param[in] value The new value.
-     */
-    EPHOTO_API void setControlVar(const MODULE& mod, const PARAM_TYPE& pt,
-                                  const std::string& name,
-                                  const int& value);
-    /**
-       Get the value of a control variable in a value set.
-       \param[in] mod Module associated with the value set that the
-         variable is part of.
-       \param[in] pt Parameter type associated with the value set that the
-         variable is part of.
-       \param[in] name String identifying the variable.
-       \returns Variable value.
-     */
-    EPHOTO_API int getControlVar(const MODULE& mod, const PARAM_TYPE& pt,
-                                 const std::string& name) const;
-    /**
-       Get the documentation string for a control variable in a value set.
-       \param[in] mod Module associated with the value set that the
-         variable is part of.
-       \param[in] pt Parameter type associated with the value set that the
-         variable is part of.
-       \param[in] name String identifying the variable.
-       \returns Variable doc string.
-     */
-    EPHOTO_API static std::string getControlDocs(const MODULE& mod,
-                                                 const PARAM_TYPE& pt,
-                                                 const std::string& name);
-    /**
-       Get the aliased version of a control variable name.
-       \param[in] mod Module associated with the value set that the
-         variable is part of.
-       \param[in] pt Parameter type associated with the value set that the
-         variable is part of.
-       \param[in] name String identifying the variable.
-       \returns Aliased control variable name.
-     */
-    EPHOTO_API static std::string getControlAlias(const MODULE& mod,
-                                                  const PARAM_TYPE& pt,
-                                                  const std::string& name);
- private:
-    /**
-       Set the default value for a control variable in a value set.
-       \param[in] mod Module associated with the value set that the
-         variable is part of.
-       \param[in] pt Parameter type associated with the value set that the
-         variable is part of.
-       \param[in] name String identifying the variable.
-       \param[in] value The new default value.
-     */
-    static void setDefaultControlVar(const MODULE& mod,
-                                     const PARAM_TYPE& pt,
-                                     const std::string& name,
-                                     const int& value);
-    /**
-       Get the default value of a control variable in a value set.
-       \param[in] mod Module associated with the value set that the
-         variable is part of.
-       \param[in] pt Parameter type associated with the value set that the
-         variable is part of.
-       \param[in] name String identifying the variable.
-       \returns Variable default value.
-     */
-    static int getDefaultControlVar(const MODULE& mod,
-                                    const PARAM_TYPE& pt,
-                                    const std::string& name);
  public:
     
     /**
@@ -882,7 +803,7 @@ public:
          defaults.
      */
     EPHOTO_API void readParam(const std::string& fname,
-                              const bool init = false);
+                              const bool init);
     /**
        Read parameters from a file, checking for duplicates
        \param[in] fname File to read.
@@ -893,7 +814,20 @@ public:
      */
     EPHOTO_API void readParam(const std::string& fname,
                               std::map<std::string, std::string>& inputs,
-                              const bool init = false);
+                              const bool init);
+    /**
+       Read parameters from a file.
+       \param[in] fname File to read.
+     */
+    EPHOTO_API void readParam(const std::string& fname);
+    /**
+       Read parameters from a file, checking for duplicates
+       \param[in] fname File to read.
+       \param[in, out] inputs Map that read variables should be checked
+         against for duplicates and copied into.
+     */
+    EPHOTO_API void readParam(const std::string& fname,
+                              std::map<std::string, std::string>& inputs);
     /**
        Read Enzyme activities from a file.
        \param[in] File to read.
@@ -907,20 +841,6 @@ public:
 
     bool inputsFinalized = false;
     std::map<std::string, bool> inputsUpdated; /**< Name of variables that were updated after inputs were finalized. */
-    bool record = false;
-    int GP = 0;
-    int GRNC = 0; /**< Control parameter; if 1, VfactorCp values will be used to scale enzyme activities in the PS, PR, & SUCS modules when CO2 > 0 */
-    int GRNT = 0; /**< Control parameter; if 1, VfactorT values will be used to scale enzyme activities in the PS, PR, & SUCS modules when T > 25 */
-    int PAR_in_Wpm2 = 0; /**< Control parameter; if 1, the input TestLi will be taken to be in units of W/m**2 */
-    int VolRatioStCyto = 1; /**< Control parameter; If 1, the ratio between the volume of the stroma and cytosol is 1, otherwise it will be 4.0/9.0. This factor is used to scale rates for the photorespiration (PR) reactions. */
-
-#ifdef MAKE_EQUIVALENT_TO_MATLAB
-    int RUBISCOMETHOD = 2;
-#else // MAKE_EQUIVALENT_TO_MATLAB
-    int RUBISCOMETHOD = 1;
-#endif // MAKE_EQUIVALENT_TO_MATLAB
-
-    int UseZaksNPQ = 0; /**< If 1, Use the Zaks et al. 2012 model for non-photochemical quenching. */
 
     std::map<std::string, double> EnzymeAct; /**< Map of enzyme activity levels used when GP == 0 */
 

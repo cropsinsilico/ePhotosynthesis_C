@@ -238,6 +238,19 @@ int CLASS::key2int(const typename CLASS::EnumType& k) {
   return static_cast<int>(k);
 }
 
+TEMPLATE
+typename CLASS::EnumType CLASS::ensure_key(const typename CLASS::EnumType& k) {
+  return k;
+}
+TEMPLATE
+typename CLASS::EnumType CLASS::ensure_key(const int& k) {
+  return int2key(k);
+}
+TEMPLATE
+typename CLASS::EnumType CLASS::ensure_key(const std::string& k) {
+  return fromNameWithAliases(k);
+}
+
 /*
 TEMPLATE
 template<typename V>
@@ -330,6 +343,27 @@ std::size_t CLASS::max_default_value_width(bool noChildren) {
 #undef DO_CHILD
   }
   return out;
+}
+
+TEMPLATE
+void CLASS::add_value(std::map<std::string, double>& dst,
+                      const std::string& key, const double& val) {
+  dst[key] = val;
+}
+TEMPLATE
+void CLASS::add_value(std::map<std::string, const double*>& dst,
+                      const std::string& key, const double* val) {
+  dst[key] = val;
+}
+TEMPLATE
+void CLASS::add_value(std::map<std::string, const double*>& dst,
+                      const std::string& key, const double& val) {
+  dst[key] = &val;
+}
+TEMPLATE
+void CLASS::add_value(std::map<std::string, double>& dst,
+                      const std::string& key, const double* val) {
+  dst[key] = *val;
 }
 
 TEMPLATE
@@ -1759,6 +1793,20 @@ std::string CLASS::diff(const ValueSet_t& other,
                                             noChildren);
 }
 TEMPLATE
+void CLASS::fillMap(std::map<std::string, double>& dst,
+                    bool includePrefixes,
+                    bool includeSkipped,
+                    const std::vector<std::string>& skip_keys,
+                    const std::map<std::string, std::string>& key_aliases,
+                    bool noChildren) const {
+  static_cast<const T*>(this)->_fillMap(dst,
+                                        includePrefixes,
+                                        includeSkipped,
+                                        skip_keys,
+                                        key_aliases,
+                                        noChildren);
+}
+TEMPLATE
 std::ostream& CLASS::print(std::ostream &out,
                            const uint tab, std::size_t pad,
                            bool includePrefixes,
@@ -1855,12 +1903,16 @@ void CLASS::update_values(const std::string& filename,
 TEMPLATE
 typename CLASS::ValueType CLASS::operator[](const typename CLASS::EnumType k) {
   ENSURE_VALUE_POINTERS;
+  if (EnumBaseClass::isOndemand(k))
+    BaseClass::set_value(values, k, calculate(k), "calculate: ");
   return BaseClass::get_value(values, k);
 }
 
 TEMPLATE
-const double& CLASS::operator[](const typename CLASS::EnumType k) const {
+const double CLASS::operator[](const typename CLASS::EnumType k) const {
   ENSURE_VALUE_POINTERS_CONST;
+  if (EnumBaseClass::isOndemand(k))
+    return calculate(k);
   return BaseClass::get_value_const(values, k);
 }
 TEMPLATE
@@ -1894,13 +1946,31 @@ void CLASS::setFromEnzymeAct(const typename CLASS::EnumType k,
   BaseClass::set_value_from_EnzymeAct(values, k, EnzymeAct);
 }
 TEMPLATE
+double CLASS::calculate(const EnumType& k) const {
+  ERROR_VALUE_SET("No method defined to calculate key ",
+                  BaseClass::getNameWithPrefix(k));
+  return 0.0;
+}
+TEMPLATE
+double CLASS::calculate(const int& k) const {
+  return calculate(BaseClass::ensure_key(k));
+}
+TEMPLATE
+double CLASS::calculate(const std::string& k) const {
+  return calculate(BaseClass::ensure_key(k));
+}
+TEMPLATE
 typename CLASS::ValueType CLASS::get(const typename CLASS::EnumType& k) {
   ENSURE_VALUE_POINTERS;
+  if (EnumBaseClass::isOndemand(k))
+    BaseClass::set_value(values, k, calculate(k), "calculate: ");
   return BaseClass::get_value(values, k);
 }
 TEMPLATE
 double CLASS::get(const typename CLASS::EnumType& k) const {
   ENSURE_VALUE_POINTERS_CONST;
+  if (EnumBaseClass::isOndemand(k))
+    return calculate(k);
   return BaseClass::get_value_const(values, k);
 }
 TEMPLATE
@@ -1966,6 +2036,23 @@ std::string CLASS::_diff(const T& other,
                                     padKeys, padVals,
                                     includePrefixes);
   return out;
+}
+TEMPLATE
+void CLASS::_fillMap(std::map<std::string, double>& dst,
+                     bool includePrefixes,
+                     bool includeSkipped,
+                     const std::vector<std::string>& skip_keys,
+                     const std::map<std::string, std::string>& key_aliases,
+                     bool noChildren) const {
+  ENSURE_VALUE_POINTERS_CONST;
+#define DO_CHILD(child, dummy)						\
+  child->fillMap(dst, includePrefixes, includeSkipped,                  \
+                 skip_keys, key_aliases)
+  DO_VALUE_SET_CHILDREN_MACRO(DO_CHILD, const_iterator, );
+#undef DO_CHILD
+  BaseClass::add_value_map(dst, values,
+                           includePrefixes, includeSkipped,
+                           skip_keys, key_aliases);
 }
 TEMPLATE
 std::ostream& CLASS::_print(std::ostream &out,
@@ -2160,6 +2247,15 @@ TEMPLATE std::string CLASS::diff(const ValueSet_t& other,
   }
   return T::_diff(padKeys, padVals, includePrefixes, noChildren);
 }
+TEMPLATE void CLASS::fillMap(std::map<std::string, double>& dst,
+                             bool includePrefixes,
+                             bool includeSkipped,
+                             const std::vector<std::string>& skip_keys,
+                             const std::map<std::string, std::string>& key_aliases,
+                             bool noChildren) {
+  return T::_fillMap(dst, includePrefixes, includeSkipped,
+                     skip_keys, key_aliases, noChildren);
+}
 TEMPLATE std::ostream& CLASS::print(std::ostream &out,
                                   const uint tab, std::size_t pad,
                                   bool includePrefixes,
@@ -2205,6 +2301,7 @@ TEMPLATE void CLASS::setPreInit(const typename CLASS::EnumType& k, const double&
   preinit_values[k] = v;
 }
 TEMPLATE void CLASS::set(const typename CLASS::EnumType& k, const double& v) {
+  // TODO: Verify integer for integer flag
   ENSURE_VALUE_POINTERS;
   setPreInit(k, v);
   BaseClass::set_value(values, k, v);
@@ -2223,8 +2320,21 @@ TEMPLATE void CLASS::setFromEnzymeAct(const typename CLASS::EnumType k,
   ENSURE_VALUE_POINTERS;
   BaseClass::set_value_from_EnzymeAct(values, k, EnzymeAct);
 }
+TEMPLATE double CLASS::calculate(const typename CLASS::EnumType& k) {
+  ERROR_VALUE_SET("No method defined to calculate key ",
+                  BaseClass::getNameWithPrefix(k));
+  return 0.0;
+}
+TEMPLATE double CLASS::calculate(const int& k) {
+  return calculate(BaseClass::ensure_key(k));
+}
+TEMPLATE double CLASS::calculate(const std::string& k) {
+  return calculate(BaseClass::ensure_key(k));
+}
 TEMPLATE double CLASS::get(const typename CLASS::EnumType& k) {
   ENSURE_VALUE_POINTERS;
+  if (EnumBaseClass::isOndemand(k))
+    return calculate(k);
   return BaseClass::get_value_const(values, k);
 }
 TEMPLATE double CLASS::get(const std::string& name,
@@ -2257,6 +2367,22 @@ TEMPLATE void CLASS::fromArray(const arr &vec, const std::size_t offset) {
   T::_fromArray(vec, offset);
 }
     
+TEMPLATE void CLASS::_fillMap(std::map<std::string, double>& dst,
+                              bool includePrefixes,
+                              bool includeSkipped,
+                              const std::vector<std::string>& skip_keys,
+                              const std::map<std::string, std::string>& key_aliases,
+                              bool noChildren) {
+  ENSURE_VALUE_POINTERS;
+#define DO_CHILD(child, dummy)						\
+  child->fillMap(dst, includePrefixes, includeSkipped,                  \
+                 skip_keys, key_aliases)
+  DO_VALUE_SET_CHILD_CLASSES_MACRO(DO_CHILD, const_iterator, );
+#undef DO_CHILD
+  BaseClass::add_value_map(dst, values,
+                           includePrefixes, includeSkipped,
+                           skip_keys, key_aliases);
+}
 TEMPLATE std::ostream& CLASS::_print(std::ostream &out,
                                    const uint tab, std::size_t pad,
                                    bool includePrefixes,

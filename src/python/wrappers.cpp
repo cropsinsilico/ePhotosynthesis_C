@@ -35,32 +35,19 @@ BOOST_PYTHON_MODULE(PYTHON_LIBRARY_NAME) {
         .def_readwrite("RedoxReg_RA_com", &Variables::RedoxReg_RA_com)
         .def_readwrite("RuACT_EPS_com", &Variables::RuACT_EPS_com)
         .def_readwrite("XanCycle_BF_com", &Variables::XanCycle_BF_com)
-        .def_readwrite("GP", &Variables::GP)
-        .def_readwrite("GRNC", &Variables::GRNC)
-        .def_readwrite("GRNT", &Variables::GRNT)
-        .def_readwrite("PAR_in_Wpm2", &Variables::PAR_in_Wpm2)
-        .def_readwrite("VolRatioStCyto", &Variables::VolRatioStCyto)
-        .def_readwrite("RUBISCOMETHOD", &Variables::RUBISCOMETHOD)
-        .def_readonly("AVR", &Variables::AVR)
-        .def_readonly("HPR", &Variables::HPR)
-        .def_readonly("O2", &Variables::O2)
-        .def_readwrite("CO2_cond", &Variables::CO2_cond)
-        .def_readwrite("GLight", &Variables::GLight)
-        .def_readwrite("O2_cond", &Variables::O2_cond)
-        .def_readwrite("PS12ratio", &Variables::PS12ratio)
-        .def_readwrite("ADP", &Variables::ADP)
-        .def_readwrite("Pi", &Variables::Pi)
-        .def_readwrite("TestATPCost", &Variables::TestATPCost)
-        .def_readwrite("CO2_in", &Variables::CO2_in)
-        .def_readwrite("TestLi", &Variables::TestLi)
-        .def_readwrite("PS2BF_Pi", &Variables::PS2BF_Pi)
-        .def_readwrite("PS_PR_Param", &Variables::PS_PR_Param)
-        .def_readwrite("Tp", &Variables::Tp)
-        .def_readwrite("alfa", &Variables::alfa)
-        .def_readwrite("fc", &Variables::fc)
-        .def_readwrite("lightParam", &Variables::lightParam)
-        .def_readonly("alpha1", &Variables::alpha1)
-        .def_readonly("alpha2", &Variables::alpha2)
+#define ADD_MEMBER_READWRITE(name)              \
+      .def_readwrite(#name, &Variables::name)
+      FOR_EACH_GENERIC(ADD_MEMBER_READWRITE, CALL_WITH_EMPTY_ARGS,
+                       SEP_EMPTY, (), EXPAND(MEMBERS_ALLVARS))
+                       // PR_Param, BF_Param, FI_Param, RROEA_Param,
+                       // RuACT_Param, SUCS_Param, XanCycle_Param,
+                       // BF_Vel, FI_Vel, PR_Vel, PS_Vel,
+                       // RROEA_Vel, RedoxReg_Vel, RuACT_Vel,
+                       // SUCS_Vel, XanCycle_Vel,
+                       // BFRatio, FIRatio, PRRatio, PSRatio,
+                       // RuACTRatio, SUCSRatio, XanCycleRatio,
+                       // EnzymeAct)
+#undef ADD_MEMBER_READWRITE
         .def_readwrite("PR_Param", &Variables::PR_Param)
         .def_readwrite("BF_Param", &Variables::BF_Param)
         .def_readwrite("FI_Param", &Variables::FI_Param)
@@ -129,7 +116,9 @@ void python::exportModules() {
             .staticmethod("setTestSucPath");
     bp::class_<modules::PR>("PR", bp::no_init)
             .def("setRUBISCOTOTAL", &modules::PR::setRUBISCOTOTAL)
-            .staticmethod("setRUBISCOTOTAL");
+            .staticmethod("setRUBISCOTOTAL")
+            .def("setRUBISCOMETHOD", &modules::PR::setRUBISCOMETHOD)
+            .staticmethod("setRUBISCOMETHOD");
 }
 
 template<class T>
@@ -165,10 +154,13 @@ bp::object python::Driver_Run(T& drv) {
 FOR_EACH(ADD_DRIVER, EXPAND(MEMBERS_DRIVER))
 #undef ADD_DRIVER
 
-    void python::exportDrivers() {
+void python::exportDrivers() {
+    void (*selectDriver)(const std::string&) = &drivers::select_driver;
+    
     bp::object driverModule(bp::handle<>(bp::borrowed(PyImport_AddModule(STRINGIZE(PYTHON_LIBRARY_NAME) ".drivers"))));
     bp::scope().attr("drivers") = driverModule;
     bp::scope driverScope = driverModule;
+    bp::def("selectDriver", selectDriver);
     bp::class_<std::vector<double> >("stl_vector_double")
             .def(bp::vector_indexing_suite<std::vector<double> >());
     

@@ -41,6 +41,7 @@ namespace ePhotosynthesis {
     static const std::map<Type, std::string> glymaids;  /**< Glymaids for values */
     static const std::map<std::string, Type> aliases;  /**< Aliases for values */
     static const std::map<Type, std::string> docs;  /**< Docs for values */
+    static const std::map<Type, std::vector<std::string>> required_modules;  /**< Required_Modules for values */
     static std::map<Type, int> value_flags;  /**< Value_Flags for values */
     static const std::map<Type, int> static_value_flags;  /**< Static_Value_Flags for values */
     /**
@@ -144,6 +145,19 @@ namespace ePhotosynthesis {
       \return Key
     */
     static Type fromDocs(const std::string& x);
+    /**
+      Get the requiredmodule value corresponding to an enum key
+      \param[in] x Key to get value for
+      \return Value
+    */
+    static std::vector<std::string> getRequiredModule(const Type& x);
+    /**
+      Get the requiredmodule value corresponding to an enum key
+      \param[in] x Key to get value for
+      \param[in] defaultV Value to return if x is not present
+      \return Value
+    */
+    static std::vector<std::string> getRequiredModule(const Type& x, const std::vector<std::string>& defaultV);
     /**
       Get the valueflag value corresponding to an enum key
       \param[in] x Key to get value for
@@ -261,6 +275,24 @@ namespace ePhotosynthesis {
     */
     static bool isInitonce(const Type& x);
     /**
+      Check if a key is in static_value_flags
+      \param[in] x Key to check
+      \return true if x is present, false otherwise
+    */
+    static bool isInteger(const Type& x);
+    /**
+      Check if a key is in static_value_flags
+      \param[in] x Key to check
+      \return true if x is present, false otherwise
+    */
+    static bool isControl(const Type& x);
+    /**
+      Check if a key is in static_value_flags
+      \param[in] x Key to check
+      \return true if x is present, false otherwise
+    */
+    static bool isOndemand(const Type& x);
+    /**
       Throw an error if a key is not in static_value_flags
       \param[in] x Key to check
       \param[in] context String describing context that 
@@ -295,6 +327,27 @@ namespace ePhotosynthesis {
         should be used in the error message
     */
     static void checkInitonce(const Type& x, const std::string& context = "");
+    /**
+      Throw an error if a key is not in static_value_flags
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
+    static void checkInteger(const Type& x, const std::string& context = "");
+    /**
+      Throw an error if a key is not in static_value_flags
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
+    static void checkControl(const Type& x, const std::string& context = "");
+    /**
+      Throw an error if a key is not in static_value_flags
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
+    static void checkOndemand(const Type& x, const std::string& context = "");
     /**
       Throw an error if a key is in static_value_flags
       \param[in] x Key to check
@@ -331,6 +384,27 @@ namespace ePhotosynthesis {
     */
     static void checkNotInitonce(const Type& x, const std::string& context = "");
     /**
+      Throw an error if a key is in static_value_flags
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
+    static void checkNotInteger(const Type& x, const std::string& context = "");
+    /**
+      Throw an error if a key is in static_value_flags
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
+    static void checkNotControl(const Type& x, const std::string& context = "");
+    /**
+      Throw an error if a key is in static_value_flags
+      \param[in] x Key to check
+      \param[in] context String describing context that 
+        should be used in the error message
+    */
+    static void checkNotOndemand(const Type& x, const std::string& context = "");
+    /**
       Get the number of elements in static_value_flags with STATIC_VALUE_FLAG_CONST set.
       \return Number of elements with STATIC_VALUE_FLAG_CONST set.
     */
@@ -355,6 +429,21 @@ namespace ePhotosynthesis {
       \return Number of elements with STATIC_VALUE_FLAG_INIT_ONCE set.
     */
     static std::size_t countInitonce();
+    /**
+      Get the number of elements in static_value_flags with STATIC_VALUE_FLAG_INT set.
+      \return Number of elements with STATIC_VALUE_FLAG_INT set.
+    */
+    static std::size_t countInteger();
+    /**
+      Get the number of elements in static_value_flags with STATIC_VALUE_FLAG_CTRL set.
+      \return Number of elements with STATIC_VALUE_FLAG_CTRL set.
+    */
+    static std::size_t countControl();
+    /**
+      Get the number of elements in static_value_flags with STATIC_VALUE_FLAG_ON_DEMAND set.
+      \return Number of elements with STATIC_VALUE_FLAG_ON_DEMAND set.
+    */
+    static std::size_t countOndemand();
     /**
       Get the number of elements in static_value_flags.
       \return Number of elements.
@@ -385,6 +474,21 @@ namespace ePhotosynthesis {
       \return Set of elements.
     */
     static std::vector<Type> listInitonce();
+    /**
+      Get the set of elements in static_value_flags with STATIC_VALUE_FLAG_INT set.
+      \return Set of elements.
+    */
+    static std::vector<Type> listInteger();
+    /**
+      Get the set of elements in static_value_flags with STATIC_VALUE_FLAG_CTRL set.
+      \return Set of elements.
+    */
+    static std::vector<Type> listControl();
+    /**
+      Get the set of elements in static_value_flags with STATIC_VALUE_FLAG_ON_DEMAND set.
+      \return Set of elements.
+    */
+    static std::vector<Type> listOndemand();
   };
   template<MODULE M, PARAM_TYPE PT>
   const MODULE ValueSetEnum<M, PT>::module = M;
@@ -404,6 +508,8 @@ namespace ePhotosynthesis {
   const std::map<std::string, typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::aliases = {};
   template<MODULE M, PARAM_TYPE PT>
   const std::map<typename ValueSetEnum<M, PT>::Type, std::string> ValueSetEnum<M, PT>::docs = {};
+  template<MODULE M, PARAM_TYPE PT>
+  const std::map<typename ValueSetEnum<M, PT>::Type, std::vector<std::string>> ValueSetEnum<M, PT>::required_modules = {};
   template<MODULE M, PARAM_TYPE PT>
   std::map<typename ValueSetEnum<M, PT>::Type, int> ValueSetEnum<M, PT>::value_flags = {};
   template<MODULE M, PARAM_TYPE PT>

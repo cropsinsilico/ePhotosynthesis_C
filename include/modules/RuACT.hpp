@@ -51,7 +51,6 @@ private:
         N = 1;
 	ParentClass::_reset(noChildren);
     }
-    SET_GET(activase)
 };
 
   DEFINE_MODULE_HEADER(RuACT);

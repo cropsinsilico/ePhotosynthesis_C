@@ -93,8 +93,8 @@ TEST_F(trDynaPSDriverTest, FullTest) {
     theVars->TestLi = 1.;
     theVars->TestATPCost = 14.5;
     theVars->EnzymeAct = Emap;
-    theVars->RUBISCOMETHOD = 1;
     Variables* orig = new Variables(theVars);
+    PR::setRUBISCOMETHOD(1);
     PR::setRUBISCOTOTAL(3);
     driver = new trDynaPSDriver(theVars, 0., 1., 100., 2500, 1e-4, 1e-4, 1, 1);
     arr res;

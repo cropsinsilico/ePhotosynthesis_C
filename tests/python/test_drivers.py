@@ -51,10 +51,10 @@ def driver_vars(fname_InputEvn, fname_InputATPCost,
             x.readParam(fname_InputATPCost)
             x.readEnzymeAct(fname_InputEnzyme)
             x.readGRN(fname_InputGRNC)
-            x.RUBISCOMETHOD = 2
+            ePhotosynthesis.modules.PR.setRUBISCOMETHOD(2)
             x.debuglevel = 0
         elif driver == "CM":
-            x.RUBISCOMETHOD = 2
+            ePhotosynthesis.modules.PR.setRUBISCOMETHOD(2)
         ePhotosynthesis.modules.PR.setRUBISCOTOTAL(3)
         return x
 

@@ -42,16 +42,10 @@ namespace modules {
 class BF : public MODULE_BASE(BF) {
 public:
     DECLARE_MODULE(BF)
-    SET_GET(_Pi)
-    SET_GET(EPS_ATP_Rate)
     SET_GET_BOOL_MODULE(FI_connect, conditions::BF)
     SET_GET_BOOL_MODULE(PS_connect, conditions::BF)
     SET_GET_BOOL_MODULE(RROEA_connect, conditions::BF)
 private:
-
-    SET_GET(cATPsyn)
-    SET_GET(CPSi)
-    SET_GET(cNADPHsyn)
 
     /**
       Reset the static member variables to their default values.

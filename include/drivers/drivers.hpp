@@ -47,9 +47,30 @@
 
 namespace ePhotosynthesis {
 namespace drivers {
-  
+
+  /**
+     Select (or deselect) a single driver.
+     \param[in] driverChoice Driver to (de)select.
+     \param[in] useC3 true if C3 run should be enabled.
+     \param[in] x If true, select driverChoice. If false, deselect it.
+   */
   EPHOTO_API void select_driver(const DriverType& driverChoice,
 				const bool useC3, const bool x = true);
+  /**
+     Select a single driver.
+     \param[in] driverChoice Driver to select.
+   */
+  EPHOTO_API void select_driver(const std::string& driverChoice);
+  /**
+     Deselect a single driver.
+     \param[in] driverChoice Driver to deselect.
+   */
+  EPHOTO_API void deselect_driver(const std::string& driverChoice);
+  /**
+     Select (or deselect) all drivers.
+     \param[in] x If true, select all drivers. If false, deselect them.
+   */
+  EPHOTO_API void select_all_drivers(const bool x = true);
 
   EPHOTO_API Driver* create_driver(const DriverType& driverChoice,
 				   Variables *theVars,

@@ -27,6 +27,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::docs;
   template<>
+  const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::vector<std::string>> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::required_modules;
+  template<>
   std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, int> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::value_flags;
   template<>
   const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, int> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::static_value_flags;

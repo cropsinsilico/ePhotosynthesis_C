@@ -55,14 +55,26 @@ void FIBF::_initCalc(Variables *theVars, FIBFCondition* FIBF_con) {
     theVars->FI_Pool.PQT = theVars->FIBF_Pool.PQT;
     theVars->BF_Pool.TQ = theVars->FIBF_Pool.PQT;
     FIBF::setNPQ_kd(theVars->UseZaksNPQ);
+    
+    BFCondition* BF_con = FIBF_con->BF_con;
+    FICondition* FI_con = FIBF_con->FI_con;
+    const double PQ = theVars->FIBF_Pool.PQT - theVars->FI_Pool.QBt - BF_con->QH2 - BF_con->Qi -
+                      BF_con->Qn - BF_con->Qr - BF_con->ISPoQH2 - BF_con->QHsemi;
+
+    FIBF2FI_PQa = theVars->FI_Pool.QBt + BF_con->Qi + BF_con->Qn + BF_con->Qr + BF_con->ISPoQH2 +
+                  BF_con->QHsemi;
+    BF_con->Q = PQ;
+    FIBF2FI_PQ = PQ;
+
+    theVars->FI_RC.kA_d = FIBF_con->kd;
+    theVars->FI_RC.kU_d = FIBF_con->kd;
+    theVars->BF_RC.Kd = FIBF_con->kd;
 }
 
 void FIBF::_reset(const bool noChildren)  {
-    ChlPSI = 0.;
-    ChlT = 0.;
-    ChlT2 = 0.;
-    FIBF2FI_PQ = 0.;
-    FIBF2FI_PQa = 0.;
+#define DEFINE_FIBF_VAR(name) FIBF::name = 0.
+    FOR_EACH(DEFINE_FIBF_VAR, EXPAND(MEMBERS_FIBF));
+#undef DEFINE_FIBF_VAR
     setNPQ_kd(false);
     ParentClass::_reset(noChildren);
 }

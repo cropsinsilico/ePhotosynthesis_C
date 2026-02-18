@@ -72,8 +72,6 @@ private:
         ParentClass::_reset(noChildren);
     }
 
-    SET_GET(XanCycle2FIBF_Xstate)
-    SET_GET(XanCycle2FIBF_Kd_NPQ)
     SET_GET_BOOL_MODULE(NPQ_connect, conditions::XanCycle)
 
 };

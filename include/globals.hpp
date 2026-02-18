@@ -73,6 +73,51 @@ double TargetFunVal(const Variables *theVars);
 
 void makeFluxTR(Variables *theVars);
 
+/**
+   Write a map to file as a table.
+   \tparam T Type of data in the columns.
+   \param[in] filename The name of the file to save the table to.
+   \param[in] mapper The map that should be written to the table.
+   \param[in] delimiter The string that should be used to separate columns.
+ */
+template<typename T>
+EPHOTO_API void writeTable(const std::string &filename,
+                           const std::map<std::string, std::vector<T> > &mapper,
+                           const std::string& delimiter = ",") {
+  std::ofstream out;
+  out.open(filename);
+  // Header
+  size_t N = 0;
+  std::string msg_prefix = "writeTable[" + filename + "]: ";
+  for (typename std::map<std::string, std::vector<T> >::const_iterator it = mapper.begin();
+       it != mapper.end(); it++) {
+    if (it == mapper.begin()) {
+      N = it->second.size();
+    } else {
+      out << delimiter;
+      if (it->second.size() != N) {
+        throw std::runtime_error(msg_prefix + "Column \"" + it->first +
+                                 "\" contains " + std::to_string(it->second.size()) +
+                                 " elements, but there were " + std::to_string(N) +
+                                 " elements in the first column.");
+      }
+    }
+    out << it->first;
+  }
+  out << std::endl;
+  // Body
+  for (size_t i = 0; i < N; i++) {
+    for (typename std::map<std::string, std::vector<T> >::const_iterator it = mapper.begin();
+         it != mapper.end(); it++) {
+      if (it != mapper.begin()) {
+        out << delimiter;
+      }
+      out << it->second[i];
+    }
+    out << std::endl;
+  }
+  out.close();
+}
   
 /**
   Utility function to read a table from a text file and convert it to a map. The input text file

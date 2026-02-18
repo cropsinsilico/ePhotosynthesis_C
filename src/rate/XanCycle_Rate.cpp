@@ -94,7 +94,9 @@ void XanCycle::_Rate(const double t, const XanCycleCondition* const XanCycle_Con
 
     // The Xstate part of this was missing in the original C++
     // translation & was disabled by a typo in the MATLAB version...
+#ifndef MAKE_EQUIVALENT_TO_MATLAB
     XanCycle::update_shared(XanCycle_Con, theVars);
+#endif // MAKE_EQUIVALENT_TO_MATLAB
     
 #ifdef INCDEBUG
     DEBUG_INTERNAL(theVars->XanCycle_Vel)
