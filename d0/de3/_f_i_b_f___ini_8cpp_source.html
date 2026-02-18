@@ -143,25 +143,27 @@ $(function(){initNavTree('d0/de3/_f_i_b_f___ini_8cpp_source.html','../../'); ini
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keyword">const</span> <span class="keywordtype">double</span> FIBF_PQT = 8.;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    theVars-&gt;FIBF_Pool.PQT = FIBF_PQT;</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    _initCalc(theVars, FIBF_con);</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span> </div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>}</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    FIBF_con-&gt;kd = pow(10, 8) * 0.5;</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    theVars-&gt;FIBF_RC.kdm0 = 5. * pow(10., 8.);</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    _initCalc(theVars, FIBF_con);</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span><span class="keywordtype">void</span> FIBF::_initCalc(Variables *theVars, FIBFCondition* FIBF_con) {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <a class="code hl_define" href="../../db/dbe/macros_8hpp.html#a3eb518156767f2ba878e08a5666c06ed">UNUSED</a>(FIBF_con);</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    theVars-&gt;FI_Pool.PQT = theVars-&gt;FIBF_Pool.PQT;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    theVars-&gt;BF_Pool.k_r1 = theVars-&gt;FIBF_Pool.PQT;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>}</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="../../d2/db0/classe_photosynthesis_1_1modules_1_1_f_i_b_f.html#a997a67f154c0b7513d68b7d8344a1237">   55</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d2/db0/classe_photosynthesis_1_1modules_1_1_f_i_b_f.html#a997a67f154c0b7513d68b7d8344a1237">FIBF::_reset</a>(<span class="keyword">const</span> <span class="keywordtype">bool</span> noChildren)  {</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    ChlPSI = 0.;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    ChlT = 0.;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    ChlT2 = 0.;</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    FIBF2FI_PQ = 0.;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    FIBF2FI_PQa = 0.;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    ParentClass::_reset(noChildren);</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>}</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>}</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span><span class="keywordtype">void</span> FIBF::_initCalc(Variables *theVars, FIBFCondition* FIBF_con) {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <a class="code hl_define" href="../../db/dbe/macros_8hpp.html#a3eb518156767f2ba878e08a5666c06ed">UNUSED</a>(FIBF_con);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    theVars-&gt;FI_Pool.PQT = theVars-&gt;FIBF_Pool.PQT;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    theVars-&gt;BF_Pool.k_r1 = theVars-&gt;FIBF_Pool.PQT;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>}</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="foldopen" id="foldopen00057" data-start="{" data-end="}">
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="../../d2/db0/classe_photosynthesis_1_1modules_1_1_f_i_b_f.html#a997a67f154c0b7513d68b7d8344a1237">   57</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="../../d2/db0/classe_photosynthesis_1_1modules_1_1_f_i_b_f.html#a997a67f154c0b7513d68b7d8344a1237">FIBF::_reset</a>(<span class="keyword">const</span> <span class="keywordtype">bool</span> noChildren)  {</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    ChlPSI = 0.;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    ChlT = 0.;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    ChlT2 = 0.;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    FIBF2FI_PQ = 0.;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    FIBF2FI_PQa = 0.;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    ParentClass::_reset(noChildren);</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>}</div>
 </div>
 <div class="ttc" id="a_b_f_8hpp_html"><div class="ttname"><a href="../../db/d0c/_b_f_8hpp.html">BF.hpp</a></div></div>
 <div class="ttc" id="a_f_i_8hpp_html"><div class="ttname"><a href="../../d6/d5c/_f_i_8hpp.html">FI.hpp</a></div></div>
@@ -171,7 +173,7 @@ $(function(){initNavTree('d0/de3/_f_i_b_f___ini_8cpp_source.html','../../'); ini
 <div class="ttc" id="aclasse_photosynthesis_1_1_variables_html"><div class="ttname"><a href="../../da/d90/classe_photosynthesis_1_1_variables.html">ePhotosynthesis::Variables</a></div><div class="ttdef"><b>Definition</b> <a href="../../d1/dae/_variables_8hpp_source.html#l00086">Variables.hpp:86</a></div></div>
 <div class="ttc" id="aclasse_photosynthesis_1_1conditions_1_1_f_i_b_f_condition_html"><div class="ttname"><a href="../../d6/dcd/classe_photosynthesis_1_1conditions_1_1_f_i_b_f_condition.html">ePhotosynthesis::conditions::FIBFCondition</a></div><div class="ttdef"><b>Definition</b> <a href="../../d9/d16/_f_i_b_f_condition_8hpp_source.html#l00048">FIBFCondition.hpp:48</a></div></div>
 <div class="ttc" id="aclasse_photosynthesis_1_1modules_1_1_f_i_b_f_html"><div class="ttname"><a href="../../d2/db0/classe_photosynthesis_1_1modules_1_1_f_i_b_f.html">ePhotosynthesis::modules::FIBF</a></div><div class="ttdef"><b>Definition</b> <a href="../../d4/dc7/_f_i_b_f_8hpp_source.html#l00042">FIBF.hpp:42</a></div></div>
-<div class="ttc" id="aclasse_photosynthesis_1_1modules_1_1_f_i_b_f_html_a997a67f154c0b7513d68b7d8344a1237"><div class="ttname"><a href="../../d2/db0/classe_photosynthesis_1_1modules_1_1_f_i_b_f.html#a997a67f154c0b7513d68b7d8344a1237">ePhotosynthesis::modules::FIBF::_reset</a></div><div class="ttdeci">static void _reset(const bool noChildren=false)</div><div class="ttdef"><b>Definition</b> <a href="#l00055">FIBF_Ini.cpp:55</a></div></div>
+<div class="ttc" id="aclasse_photosynthesis_1_1modules_1_1_f_i_b_f_html_a997a67f154c0b7513d68b7d8344a1237"><div class="ttname"><a href="../../d2/db0/classe_photosynthesis_1_1modules_1_1_f_i_b_f.html#a997a67f154c0b7513d68b7d8344a1237">ePhotosynthesis::modules::FIBF::_reset</a></div><div class="ttdeci">static void _reset(const bool noChildren=false)</div><div class="ttdef"><b>Definition</b> <a href="#l00057">FIBF_Ini.cpp:57</a></div></div>
 <div class="ttc" id="amacros_8hpp_html_a3eb518156767f2ba878e08a5666c06ed"><div class="ttname"><a href="../../db/dbe/macros_8hpp.html#a3eb518156767f2ba878e08a5666c06ed">UNUSED</a></div><div class="ttdeci">#define UNUSED(arg)</div><div class="ttdef"><b>Definition</b> <a href="../../db/dbe/macros_8hpp_source.html#l00004">macros.hpp:4</a></div></div>
 <div class="ttc" id="anamespacee_photosynthesis_1_1conditions_html"><div class="ttname"><a href="../../d2/d15/namespacee_photosynthesis_1_1conditions.html">ePhotosynthesis::conditions</a></div><div class="ttdef"><b>Definition</b> <a href="../../dd/d9b/_b_f_condition_8hpp_source.html#l00044">BFCondition.hpp:44</a></div></div>
 <div class="ttc" id="anamespacee_photosynthesis_1_1modules_html"><div class="ttname"><a href="../../dc/ddc/namespacee_photosynthesis_1_1modules.html">ePhotosynthesis::modules</a></div><div class="ttdef"><b>Definition</b> <a href="../../db/d0c/_b_f_8hpp_source.html#l00037">BF.hpp:37</a></div></div>
