@@ -48,14 +48,21 @@ _param_sets = _figures + [
     # True, 'Zaks_init',
 ]
 _light_profiles = _param_sets + [
-    'light-dark-light', 'dark-light-dark',
-    # 'light-steady-state', 'dark-steady-state',
+    'light-dark-light', 'dark-light-dark', 'steady-state',
 ]
 
 
 def cli_param(x):
     k, v = x.split(':')
     return k, float(v)
+
+
+def parse_driver(x):
+    if isinstance(x, int):
+        return x
+    if x.isnumeric():
+        return int(x)
+    return SubTask._driver_map_reverse[x]
 
 
 def search_directory(pattern, directory, ext=None, check=False,
@@ -435,6 +442,7 @@ class SubTask:
 
     _drivers = ['trDynaPS', 'DynaPS', 'CM', 'EPS']
     _driver_map = {(i + 1): x for i, x in enumerate(_drivers)}
+    _driver_map_reverse = {x: (i + 1) for i, x in enumerate(_drivers)}
 
     @classmethod
     def adjust_args(cls, args):
@@ -512,7 +520,9 @@ class SubTask:
             cmds = []
         if not cmds:
             return
-        cmdS = '\n\t'.join(cmds)
+        cmdS = [x if isinstance(x, str) else ' '.join(x)
+                for x in cmds]
+        cmdS = '\n\t'.join(cmdS)
         print(f"Running\n{cmdS}\n"
               f"with {pprint.pformat(kwargs)}")
         if kwargs.get('env', None):
@@ -521,7 +531,8 @@ class SubTask:
         if output_file:
             kwargs.update(capture_output=True)
         for x in cmds:
-            ires = subprocess.run(x.split(), **kwargs)
+            xargs = x if isinstance(x, list) else x.split()
+            ires = subprocess.run(xargs, **kwargs)
             if ires.returncode != 0 and not allow_error:
                 raise RuntimeError(f'Error in running \'{x}\'')
             if output_file:
@@ -687,31 +698,61 @@ class build(SubTask):
         if config_args is None:
             config_args = []
         config_args += ['-DCMAKE_VERBOSE_MAKEFILE:BOOL=ON']
-        if args.make_equivalent_to_matlab:
-            config_args += ['-DMAKE_EQUIVALENT_TO_MATLAB:BOOL=ON']
-        else:
-            config_args += ['-DMAKE_EQUIVALENT_TO_MATLAB:BOOL=OFF']
-        if args.with_asan:
-            config_args += ['-DWITH_ASAN:BOOL=ON']
-        if args.with_coverage:
-            config_args += ['-DTEST_COVERAGE:BOOL=ON']
-        if args.target not in [None, 'EPhotosynthesis', 'ePhoto']:
-            config_args += ['-DBUILD_CXX:BOOL=OFF']
+        config_flags = {
+            'BUILD_CXX': (
+                args.target in [None, 'EPhotosynthesis', 'ePhoto']),
+            'BUILD_PYTHON': (
+                args.with_python or args.target == 'pyPhotosynthesis'),
+            'BUILD_TESTS': args.build_tests,
+            'BUILD_DOCS': args.build_docs,
+            'TEST_COVERAGE': args.with_coverage,
+            'MAKE_EQUIVALENT_TO_MATLAB': args.make_equivalent_to_matlab,
+            'WITH_ASAN': args.with_asan,
+            'EPHOTO_USE_SCOPED_ENUM': args.force_scoped_enum,
+            'WITH_YGGDRASIL': args.with_yggdrasil,
+            'BUILD_WITH_YGGINTERFACE': (args.with_yggdrasil == 'direct'),
+        }
+        for k, v in config_flags.items():
+            config_args.append(cls.cmake_bool_flag(k, v))
         if args.with_python or args.target == 'pyPhotosynthesis':
-            config_args += ['-DBUILD_PYTHON:BOOL=ON']
             if not (args.dont_install or for_scikit_build):
                 config_args += [
                     f'-DINSTALL_PREFIX_PYTHON={args.install_dir_python}'
                 ]
         if not (args.dont_install or for_scikit_build):
             config_args += [f'-DCMAKE_INSTALL_PREFIX={args.install_dir}']
-        if args.force_scoped_enum:
-            config_args += ['-DEPHOTO_USE_SCOPED_ENUM:BOOL=ON']
-        if args.with_yggdrasil:
-            config_args += ['-DWITH_YGGDRASIL:BOOL=ON']
-        if args.with_yggdrasil == 'direct':
-            config_args += ['-DBUILD_WITH_YGGINTERFACE:BOOL=ON']
+        cls.prune_duplicate_config_args(config_args)
         return config_args
+
+    @classmethod
+    def prune_duplicate_config_args(cls, config_args):
+        existing = {}
+        duplicates = {}
+        idx_remove = []
+        for idx, arg in enumerate(config_args):
+            if '=' in arg:
+                k, v = arg.split('=', maxsplit=1)
+            else:
+                k = arg
+                v = None
+            if k in existing:
+                if existing[k] == v:
+                    idx_remove.append(idx)
+                else:
+                    duplicates.setdefault(k, [existing[k]])
+                    duplicates[k].append(v)
+            else:
+                existing[k] = v
+        if duplicates:
+            raise ValueError(f'Conflicting configuration arguments:\n'
+                             f'{pprint.pformat(duplicates)}')
+        for idx in idx_remove[::-1]:
+            del config_args[idx]
+
+    @classmethod
+    def cmake_bool_flag(cls, name, condition):
+        value = 'ON' if condition else 'OFF'
+        return f'-D{name}:BOOL={value}'
 
     @classmethod
     def config_cmd(cls, args, **kwargs):
@@ -843,6 +884,7 @@ class test(BuildSubTask):
         if args.refresh_output:
             args.preserve_output = True
         super(test, cls).adjust_args(args)
+        args.build_tests = (args.target != 'pyPhotosynthesis')
 
     def __init__(self, args, test_flags=None,
                  config_args=None, build_args=None, **kwargs):
@@ -853,12 +895,13 @@ class test(BuildSubTask):
             config_args = []
         if build_args is None:
             build_args = []
-        if args.target != 'pyPhotosynthesis':
-            config_args += ['-DBUILD_TESTS:BOOL=ON']
         test_flags += ['-C', args.build_type]
         pytest_flags = ['-sv']
-        if args.preserve_output:
-            config_args += ['-DPRESERVE_TEST_OUTPUT:BOOL=ON']
+        config_args.append(
+            build.cmake_bool_flag(
+                'PRESERVE_TEST_OUTPUT', args.preserve_output
+            )
+        )
         if args.stop_on_error:
             test_flags += ['--stop-on-failure']
             pytest_flags += ['-x']
@@ -1887,8 +1930,14 @@ class ephoto(BuildSubTask):
             cls.match_param(args.match_param, args)
         if args.light_profile:
             create_iterations.adjust_args(args)
+        if args.language == 'matlab' and not args.matlab:
+            args.matlab = True
         if args.matlab is True:
             args.matlab = find_matlab(required=True)
+            assert args.language in [None, 'matlab']
+            args.language = 'matlab'
+        if not args.language:
+            args.language = 'cpp'
         if isinstance(args.param, list):
             args.param = OrderedDict(*args.param)
         cls.prefix_path_args(
@@ -1918,11 +1967,11 @@ class ephoto(BuildSubTask):
         args.output_param_steps = args.output_param_base + 'step*.txt'
         if not os.path.isdir(args.output_dir):
             os.mkdir(args.output_dir)
-        if args.dont_run or args.matlab:
+        if args.dont_run or args.language == 'matlab':
             args.dont_build = True
-        # if args.matlab and args.iterations_file:
-        #     raise NotImplementedError(
-        #         "Iterations file not yet supported")
+        if args.language == 'python':
+            args.only_python = True
+            # args.with_python = True
         super(ephoto, cls).adjust_args(args)
 
     @classmethod
@@ -2302,6 +2351,41 @@ class ephoto(BuildSubTask):
                 cmds[0] += f' --{k} {getattr(args, k)}'
         return cmds
 
+    @classmethod
+    def get_command_python(cls, args, kwargs, ephoto_args):
+        assert not ephoto_args
+        if ephoto_args is None:
+            ephoto_args = []
+        ephoto_args += [f"\"{cls._driver_map[args.driver]}\""]
+        if args.grn_file:
+            ephoto_args += [f'grnFile=\"{args.grn_file}\"']
+        if args.atpcost_file:
+            ephoto_args += [f'atpcostFile=\"{args.atpcost_file}\"']
+        if args.enzyme_file:
+            ephoto_args += [f'enzymeFile=\"{args.enzyme_file}\"']
+        if args.evn_file:
+            ephoto_args += [f'evnFile=\"{args.evn_file}\"']
+        if args.output_file:
+            ephoto_args += [f'outputFile=\"{args.output_file}\"']
+        if args.output_param_base:
+            ephoto_args += [f'outputParamBase=\"{args.output_param_base}\"']
+        if args.output_param:
+            ephoto_args += [f'outputParam={args.output_param}']
+        if args.iterations_file:
+            ephoto_args += [f'iterationsFile=\"{args.iterations_file}\"']
+        # if args.useC3:
+        #     ephoto_args += ['useC3=true']
+        cmd = [
+            sys.executable, '-c',
+        ]
+        ephoto_args = ", ".join(ephoto_args)
+        cmd += [
+            f'\'from ePhotosynthesis import run_simulation; '
+            f'run_simulation({ephoto_args})\''
+        ]
+        # kwargs['cwd'] = args.build_dir
+        return [cmd]
+
     def run_commands(self, args, cmds=None, ephoto_args=None, **kwargs):
         args.iterations_data = None
         if args.light_profile:
@@ -2337,15 +2421,16 @@ class ephoto(BuildSubTask):
             ephoto_args = []
         if cmds is None and not args.dont_run:
             if args.match_param_to_matlab:
-                args.evn_file = self.run_matlab_version(
-                    args,
+                args.evn_file = self.run_language_version(
+                    "matlab", args,
                     overwrite=(
                         args.match_param_to_matlab == 'overwrite'
                     ),
                 )
                 args.param = {}
                 self.incorporate_evn_file(args, from_output=True)
-            self.incorporate_evn_file(args, for_matlab=args.matlab)
+            self.incorporate_evn_file(
+                args, for_matlab=(args.language == "matlab"))
             if args.param:
                 assert not args.evn_file
                 args.evn_file = os.path.join(
@@ -2363,15 +2448,11 @@ class ephoto(BuildSubTask):
             if args.output_param:
                 if args.output_param >= 3:
                     self._generated_files += [args.output_param_steps]
-            if args.matlab and args.generate_matlab_script:
+            if args.language == 'matlab' and args.generate_matlab_script:
                 self.generate_matlab_script(args)
                 self._generated_files += [args.generate_matlab_script]
-            if args.matlab:
-                cmds = self.get_command_matlab(
-                    args, kwargs, ephoto_args=ephoto_args)
-            else:
-                cmds = self.get_command_cpp(
-                    args, kwargs, ephoto_args=ephoto_args)
+            cmds = getattr(self, f'get_command_{args.language}')(
+                args, kwargs, ephoto_args=ephoto_args)
         try:
             return super(ephoto, self).run_commands(
                 args, cmds=cmds, **kwargs)
@@ -2425,8 +2506,8 @@ class ephoto(BuildSubTask):
         if args.light_profile and args.light_profile != args.match_param:
             out += create_iterations.generate_output_suffix(args)
         out += '_' + cls._driver_map[args.driver]
-        if args.matlab:
-            out += '_MATLAB'
+        if args.language != 'cpp':
+            out += '_' + args.language.upper()
         if ((args.use_zaks_npq
              and not args.light_profile.startswith('Zaks'))):
             out += '_ZaksNPQ'
@@ -2438,11 +2519,13 @@ class ephoto(BuildSubTask):
         return out
 
     @classmethod
-    def run_matlab_version(cls, args0, suffix=None, overwrite=False):
-        assert not args0.matlab
+    def run_language_version(cls, language, args0, suffix=None,
+                             overwrite=False):
+        assert args0.language != language
         args = copy.deepcopy(args0)
-        args.matlab = True
-        args.match_param_to_matlab = False
+        args.language = language
+        if language == 'matlab':
+            args.match_param_to_matlab = False
         if args.output_param < 1:
             args.output_param = 1
         for k in cls._output_ftypes:
@@ -2454,7 +2537,8 @@ class ephoto(BuildSubTask):
         cls.assert_no_overlap(args, args0)
         if (not os.path.isfile(args.output_param_first)) or overwrite:
             cls(args)
-        print(f"CREATED MATLAB STATE IN {args.output_param_first}")
+        print(f"CREATED {language.upper()} STATE IN "
+              f"{args.output_param_first}")
         return args.output_param_first
 
     @classmethod
@@ -2854,8 +2938,7 @@ class create_iterations(SubTask):
         # Force output
         args.plot_file = True
         args.result_file = True  # Force output
-        if args.light_profile in ['dark-steady-state',
-                                  'light-steady-state']:
+        if args.light_profile == 'steady-state':
             args.evn_file = False
             args.preserve_output_param = True
             if args.output_param < 2:
@@ -2933,13 +3016,7 @@ class create_iterations(SubTask):
             args.high_light_level = 1000
             args.tstart_light_change = 2000.0 / 3
             args.duration_light_change = 2000.0 / 3
-        elif args.light_profile == 'light-steady-state':
-            variables['PFD'] = [args.high_light_level]
-            variables['PFD'].append(variables['PFD'][-1])
-            variables['time'] = [
-                200 * x for x in range(len(variables['PFD']))
-            ]
-        elif args.light_profile == 'dark-steady-state':
+        elif args.light_profile == 'steady-state':
             variables['PFD'] = [args.low_light_level]
             variables['PFD'].append(variables['PFD'][-1])
             variables['time'] = [
@@ -3016,18 +3093,14 @@ class create_iterations(SubTask):
             light_profile = args.light_profile
             if light_profile in ['dark-light-dark',
                                  'light-dark-light',
-                                 'dark-steady-state',
-                                 'light-steady-state']:
+                                 'steady-state']:
                 if args.low_light_level is None:
                     args.low_light_level = 100
                 if args.high_light_level is None:
                     args.high_light_level = 1000
-                if light_profile == 'dark-steady-state':
+                if light_profile == 'steady-state':
                     light_profile = 'steady-state'
                     light_profile += f'_{args.low_light_level}'
-                elif light_profile == 'light-steady-state':
-                    light_profile = 'steady-state'
-                    light_profile += f'_{args.high_light_level}'
                 else:
                     light_profile += (
                         f'_{args.low_light_level}_to_'
@@ -3174,6 +3247,7 @@ class docs(BuildSubTask):
         args.force_scoped_enum = False
         args.with_coverage = False
         args.with_yggdrasil = False
+        args.build_docs = True
         super(docs, cls).adjust_args(args)
 
     def __init__(self, args, config_args=None, build_args=None,
@@ -3185,7 +3259,8 @@ class docs(BuildSubTask):
             build_args = []
         if install_args is None:
             install_args = []
-        config_args += ['-DBUILD_DOCS=ON', '-DDOXYGEN_CHECK_MISSING=ON']
+        config_args.append(
+            build.cmake_bool_flag('DOXYGEN_CHECK_MISSING', True))
         super(docs, self).__init__(
             args, config_args=config_args,
             build_args=build_args,
@@ -3198,6 +3273,7 @@ class coverage(BuildSubTask):
     @classmethod
     def adjust_args(cls, args):
         args.with_coverage = True
+        args.build_tests = True
         return super(coverage, cls).adjust_args(args)
 
     def __init__(self, args, config_args=None, build_args=None):
@@ -3205,7 +3281,6 @@ class coverage(BuildSubTask):
             config_args = []
         if build_args is None:
             build_args = []
-        config_args += ['-DBUILD_TESTS:BOOL=ON']
         cmds = ['make coverage']
         super(coverage, self).__init__(
             args, cmds=cmds, config_args=config_args,
@@ -3443,7 +3518,7 @@ if __name__ == "__main__":
         func=ephoto)
 
     parser_iterations = subparsers.add_parser(
-        'ephoto-iterations', help="Run an ephoto time series",
+        'create-iterations', help="Create an iterations file",
         func=create_iterations)
     parser_iterations.add_argument(
         '--result-file', type=str,
@@ -3454,8 +3529,12 @@ if __name__ == "__main__":
         ),
     )
     parser_iterations.add_argument(
-        '--low-light-level', type=float,
-        help="Light level for the low light condition.",
+        '--low-light-level', '--light-level', type=float,
+        help=(
+            "Light level for the low light condition for a two-level "
+            "light profile or the constant light condition for a "
+            "steady-state light profile."
+        ),
     )
     parser_iterations.add_argument(
         '--high-light-level', type=float,
@@ -3592,12 +3671,11 @@ if __name__ == "__main__":
         'update-readme',
         'test',
         'ephoto',
-        'ephoto-iterations',
         'compare-matlab',
         'coverage',
     ]
     build_tasks = ['build'] + requires_build
-    ephoto_tasks = ['ephoto', 'ephoto-iterations', 'compare-matlab']
+    ephoto_tasks = ['ephoto', 'compare-matlab']
     compare_tasks = ['compare-matlab', 'compare-files']
     analysis_tasks = ephoto_tasks + ['analyze-trace']
 
@@ -3658,6 +3736,14 @@ if __name__ == "__main__":
         subparsers={'task': [x for x in build_tasks + ['docs']
                              if x != 'compare-matlab']})
     parser.add_argument(
+        '--build-tests', action='store_true',
+        help="Build the tests",
+        subparsers={'task': [x for x in build_tasks if x != 'test']})
+    parser.add_argument(
+        '--build-docs', action='store_true',
+        help="Build the documentation",
+        subparsers={'task': build_tasks})
+    parser.add_argument(
         '--with-python', action='store_true',
         help="Build the Python interface",
         subparsers={'task': build_tasks + ['docs']})
@@ -3709,20 +3795,16 @@ if __name__ == "__main__":
 
     # ePhoto arguments
     parser.add_argument(
-        "--driver", '-d', type=int,
-        default=0, choices=[0, 1, 2, 3, 4],
+        "--driver", '-d', type=parse_driver,
+        default=0, choices=[0, 1, 2, 3, 4] + SubTask._drivers,
         help="Driver to run",
         subparsers={'task': ephoto_tasks + ['compare-files']},
-        subparser_defaults={
-            'ephoto-iterations': 2
-        })
+    )
     parser.add_argument(
         "--useC3", "--c3", action="store_true",
         help="Run the C3 version",
         subparsers={'task': ephoto_tasks},
-        subparser_defaults={
-            'ephoto-iterations': False,
-        })
+    )
     parser.add_argument(
         '--use-zaks-npq', '--npq', action='store_true',
         help=(
@@ -3730,6 +3812,13 @@ if __name__ == "__main__":
             "quenching"
         ),
         subparsers={'task': ephoto_tasks + ['convert-param']},
+    )
+    parser.add_argument(
+        "--language", type=str, choices=['cpp', 'matlab', 'python'],
+        help="Language that the simulation should be run in",
+        subparsers={
+            'task': [x for x in ephoto_tasks if x != 'compare-matlab']
+        }
     )
     parser.add_argument(
         "--matlab", type=str, nargs='?', const=find_matlab(),
@@ -3783,8 +3872,7 @@ if __name__ == "__main__":
         '--output-dir', type=str, default=os.getcwd(),
         help="Directory where output should be saved",
         subparsers={'task': ephoto_tasks},
-        subparser_defaults={'compare-matlab': 'output_CPP',
-                            'ephoto-iterations': 'output_iterations'})
+        subparser_defaults={'compare-matlab': 'output_CPP'})
     parser.add_argument(
         '--output-file', '--output', type=str, default='output.data',
         help="File where driver output should be saved",
@@ -3792,13 +3880,12 @@ if __name__ == "__main__":
     parser.add_argument(
         '--output-suffix', type=str, const=True, nargs='?',
         help="Suffix to add to output files.",
-        subparsers={'task': ephoto_tasks})
+        subparsers={'task': ephoto_tasks + ['create-iterations']})
     parser.add_argument(
         "--output-param", choices=[0, 1, 2, 3], type=int, default=0,
         help="Flag specifying when to output parameters",
         subparsers={'task': ephoto_tasks},
-        subparser_defaults={'compare-matlab': 2,
-                            'ephoto-iterations': 3})
+        subparser_defaults={'compare-matlab': 2})
     parser.add_argument(
         "--output-param-base", type=str, default="param_",
         help="File prefix for output parameter files",
@@ -3820,26 +3907,28 @@ if __name__ == "__main__":
         subparser_defaults={'compare-matlab': 3000})
     parser.add_argument(
         '--param', type=cli_param, action='extend',
-        help="Parameter values that should be set")
+        help="Parameter values that should be set",
+        subparsers={'task': ephoto_tasks + ['create-iterations']},
+    )
     parser.add_argument(
         '--iterations-file', '--iterations', type=str,
-        subparsers={'task': ephoto_tasks},
+        subparsers={'task': ephoto_tasks + ['create-iterations']},
     )
     parser.add_argument(
         '--light-profile', choices=_light_profiles,
         help=("Create an input file that produces a desired light "
               "profile"),
-        subparsers={'task': ephoto_tasks},
+        subparsers={'task': ephoto_tasks + ['create-iterations']},
         subparser_defaults={
-            'ephoto-iterations': 'Zhu2012',
+            'create-iterations': 'Zhu2012',
         },
     )
     parser.add_argument(
         '--overwrite-light-profile', action='store_true',
         help="Overwrite any existing light_profile.",
-        subparsers={'task': ephoto_tasks},
+        subparsers={'task': ephoto_tasks + ['create-iterations']},
         subparser_defaults={
-            'ephoto-iterations': True,
+            'create-iterations': True,
         },
     )
     parser.add_argument(

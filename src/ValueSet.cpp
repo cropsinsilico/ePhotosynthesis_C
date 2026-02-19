@@ -2301,7 +2301,12 @@ TEMPLATE void CLASS::setPreInit(const typename CLASS::EnumType& k, const double&
   preinit_values[k] = v;
 }
 TEMPLATE void CLASS::set(const typename CLASS::EnumType& k, const double& v) {
-  // TODO: Verify integer for integer flag
+  if (EnumBaseClass::isInteger(k) && std::floor(v) != v) {
+    ERROR_VALUE_SET("Integer must be provided for control variable ",
+                    BaseClass::getNameWithPrefix(k),
+                    " not ", std::to_string(v));
+    
+  }
   ENSURE_VALUE_POINTERS;
   setPreInit(k, v);
   BaseClass::set_value(values, k, v);

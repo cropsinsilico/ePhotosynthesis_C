@@ -41,6 +41,7 @@ namespace ePhotosynthesis {
     static const std::map<Type, std::string> glymaids;  /**< Glymaids for values */
     static const std::map<std::string, Type> aliases;  /**< Aliases for values */
     static const std::map<Type, std::string> docs;  /**< Docs for values */
+    static const std::map<Type, std::string> citations;  /**< Citations for values */
     static const std::map<Type, std::vector<std::string>> required_modules;  /**< Required_Modules for values */
     static std::map<Type, int> value_flags;  /**< Value_Flags for values */
     static const std::map<Type, int> static_value_flags;  /**< Static_Value_Flags for values */
@@ -145,6 +146,19 @@ namespace ePhotosynthesis {
       \return Key
     */
     static Type fromDocs(const std::string& x);
+    /**
+      Get the citation value corresponding to an enum key
+      \param[in] x Key to get value for
+      \return Value
+    */
+    static std::string getCitation(const Type& x);
+    /**
+      Get the citation value corresponding to an enum key
+      \param[in] x Key to get value for
+      \param[in] defaultV Value to return if x is not present
+      \return Value
+    */
+    static std::string getCitation(const Type& x, const std::string& defaultV);
     /**
       Get the requiredmodule value corresponding to an enum key
       \param[in] x Key to get value for
@@ -508,6 +522,8 @@ namespace ePhotosynthesis {
   const std::map<std::string, typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::aliases = {};
   template<MODULE M, PARAM_TYPE PT>
   const std::map<typename ValueSetEnum<M, PT>::Type, std::string> ValueSetEnum<M, PT>::docs = {};
+  template<MODULE M, PARAM_TYPE PT>
+  const std::map<typename ValueSetEnum<M, PT>::Type, std::string> ValueSetEnum<M, PT>::citations = {};
   template<MODULE M, PARAM_TYPE PT>
   const std::map<typename ValueSetEnum<M, PT>::Type, std::vector<std::string>> ValueSetEnum<M, PT>::required_modules = {};
   template<MODULE M, PARAM_TYPE PT>

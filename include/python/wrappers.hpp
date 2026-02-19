@@ -23,6 +23,23 @@ namespace python {
     std::shared_ptr<T> Driver_Init(PYTHON_DRIVER_ARG_DEFS);
     template<typename T>
     boost::python::object Driver_Run(T& drv);
+    boost::python::object run_simulation(
+       const std::string& driverName,
+       const double& begintime, // = 0.0,
+       const double& stoptime, // = 5000.0,
+       const double& stepsize, // = 1.0,
+       const int& maxSubSteps, // = 750,
+       const double& abstol, // = 1e-5,
+       const double& reltol, // = 1e-4,
+       // boost::python::object inputs, // = {},
+       const std::string& evnFile, // = "",
+       const std::string& atpcostFile, // = "",
+       const std::string& enzymeFile, // = "",
+       const std::string& grnFile, // = "",
+       const std::string& iterationsFile, // = "",
+       const std::string& outputFile, // = "",
+       const int& outputParam, // = 0,
+       const std::string& outputParamBase); // = "");
 #define ADD_DRIVER(mod)                                                 \
     std::shared_ptr<drivers::mod ## Driver>                             \
     mod ## Driver_Init(PYTHON_DRIVER_ARG_DEFS);                         \

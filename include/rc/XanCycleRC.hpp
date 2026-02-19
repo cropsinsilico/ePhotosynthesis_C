@@ -37,39 +37,10 @@ namespace RC {
  */
 class XanCycleRC : public RCBase<XanCycleRC, MODULE_XanCycle> {
 public:
-    DECLARE_VALUE_SET(XanCycleRC, RCBase<XanCycleRC, MODULE_XanCycle>)
-    XanCycleRC() : RCBase<XanCycleRC, MODULE_XanCycle>() {
-        initMembers();
-    }
-    /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The XanCycleRC object to copy
-      */
-    XanCycleRC(const XanCycleRC &other) : RCBase<XanCycleRC, MODULE_XanCycle>(other) {
-      initMembers();
-      *this = other;
-    }
-    XanCycleRC& operator=(const XanCycleRC &other) {
-        kav = other.kav;
-        kaz = other.kaz;
-        kva = other.kva;
-        kza = other.kza;
-        hill_psbs = other.hill_psbs;
-        pK_psbs = other.pK_psbs;
-        hill_vde = other.hill_vde;
-        pK_vde = other.pK_vde;
-        kvde_max = other.kvde_max;
-        k_ze = other.k_ze;
-        Fpsbs = other.Fpsbs;
-        psbsQ_converRate = other.psbsQ_converRate;
-	copyMembers(other);
-	return *this;
-    }
-
+  DECLARE_RC(XanCycle)
 };
 
-  DEFINE_VALUE_SET_HEADER(XanCycleRC);
+  DEFINE_RC_HEADER(XanCycle);
 
 }  // namespace RC
 }  // namespace ePhotosynthesis

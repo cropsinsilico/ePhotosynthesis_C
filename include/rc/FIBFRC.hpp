@@ -35,30 +35,10 @@ namespace RC {
 // class for holding FIBFRC data
 class FIBFRC : public RCBase<FIBFRC, MODULE_FIBF> {
 public:
-    DECLARE_VALUE_SET(FIBFRC, RCBase<FIBFRC, MODULE_FIBF>)
-    FIBFRC() : RCBase<FIBFRC, MODULE_FIBF>() {
-        initMembers();
-    }
-
-    /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The FIBFRC object to copy
-      */
-    FIBFRC(const FIBFRC &other) : RCBase<FIBFRC, MODULE_FIBF>(other) {
-      initMembers();
-      *this = other;
-    }
-    FIBFRC& operator=(const FIBFRC &other) {
-      RC0 = other.RC0; // The maximal relaxation constant for heat dissipation, which is one term borrowed from Laisk et al., 1997;
-      RC = other.RC;
-      copyMembers(other);
-      return *this;
-    }
-
+  DECLARE_RC(FIBF)
 };
 
-  DEFINE_VALUE_SET_HEADER(FIBFRC);
+  DEFINE_RC_HEADER(FIBF);
 
 }  // namespace RC
 }  // namespace ePhotosynthesis

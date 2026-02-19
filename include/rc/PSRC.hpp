@@ -33,14 +33,14 @@ namespace ePhotosynthesis {
 namespace RC {
 
 /**
- Class for RROEA_RC data
+ Class for holding PS_RC data
  */
-class RROEARC : public RCBase<RROEARC, MODULE_RROEA> {
+class PSRC : public RCBase<PSRC, MODULE_PS> {
 public:
-  DECLARE_RC(RROEA);
+    DECLARE_RC(PS)
 };
 
-  DEFINE_RC_HEADER(RROEA);
+  DEFINE_RC_HEADER(PS);
 
 }  // namespace RC
 }  // namespace ePhotosynthesis

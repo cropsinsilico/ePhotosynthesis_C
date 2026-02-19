@@ -108,79 +108,79 @@ void PS::_initOrig(Variables *theVars, PSCondition* PS_con) {
 
         //PsKM11_0 = ;
         //PsKM12_0 = ;  // O2 1 RuBP+CO2->2PGA  0.28 DEFAUL.
-        PS::KM11 = 0.0097 * exp(PS::c_c - PS::dHa_c * 1000. / (PS::R * (theVars->Tp + 273.15))) / 272.38;
-        PS::KM12 = 0.244 * exp(PS::c_o - PS::dHa_o * 1000. / (PS::R * (theVars->Tp + 273.15))) / 165.82;
+        theVars->PS_RC.KM11 = 0.0097 * exp(PS::c_c - PS::dHa_c * 1000. / (PS::R * (theVars->Tp + 273.15))) / 272.38;
+        theVars->PS_RC.KM12 = 0.244 * exp(PS::c_o - PS::dHa_o * 1000. / (PS::R * (theVars->Tp + 273.15))) / 165.82;
 
-        PS::KM13 = 0.02;   //  RuBP 1 RuBP+CO2->2PGA
-        PS::KI11 = 0.84;   // PGA
-        PS::KI12 = 0.04;   // FBP
-        PS::KI13 = 0.075;  // SBP
-        PS::KI14 = 0.9;    // Pi
-        PS::KI15 = 0.07;   // NADPH
-        PS::KM21 = 0.240;  // PGA 2 PGA+ATP <-> ADP + DPGA
-        PS::KM22 = 0.390;  //  ATP 2 PGA+ATP <-> ADP + DPGA
-        PS::KM23 = 0.23;   //  ADP
-        PS::KM31a = 0.004; // BPGA 3 DPGA+NADPH <->GAP + OP+NADP
-        PS::KM32b = 0.1;   //  NADPH 3 DPGA+NADPH <->GAP + OP+NADP
+        theVars->PS_RC.KM13 = 0.02;   //  RuBP 1 RuBP+CO2->2PGA
+        theVars->PS_RC.KI11 = 0.84;   // PGA
+        theVars->PS_RC.KI12 = 0.04;   // FBP
+        theVars->PS_RC.KI13 = 0.075;  // SBP
+        theVars->PS_RC.KI14 = 0.9;    // Pi
+        theVars->PS_RC.KI15 = 0.07;   // NADPH
+        theVars->PS_RC.KM21 = 0.240;  // PGA 2 PGA+ATP <-> ADP + DPGA
+        theVars->PS_RC.KM22 = 0.390;  //  ATP 2 PGA+ATP <-> ADP + DPGA
+        theVars->PS_RC.KM23 = 0.23;   //  ADP
+        theVars->PS_RC.KM31a = 0.004; // BPGA 3 DPGA+NADPH <->GAP + OP+NADP
+        theVars->PS_RC.KM32b = 0.1;   //  NADPH 3 DPGA+NADPH <->GAP + OP+NADP
         //KM41 = 2.5 ;     // DHAP 4 DHAP <->GAP
         //KM42 = 0.68;     //  GAP 4 DHAP <->GAP
-        PS::KE4 = 0.05;    //   Using the value from Patterson
-        PS::KM51 = 0.3;    // GAP 5 GAP+DHAP <->FBP
-        PS::KM52 = 0.4;    //  DHAP 5 GAP+DHAP <->FBP
-        PS::KM53 = 0.02;   // FBP 5 GAP+DHAP <->FBP     // Original Value: 0.02
-        PS::KE5 = 7.100;   // Defult: 7.1
-        PS::KM61 = 0.033;  //  FBP 6 FBP<->F6P+OP
-        PS::KI61 = 0.7;    //   F6P
-        PS::KI62 = 12.;    //   Pi
-        PS::KE6 = 6.66 * pow(10., 5.);    // The equilibrium constant for this reaction        // New    mM     Laisk or Bassham and Krause 1969 BBA
-        PS::KM71 = 0.100;  // Xu5P 7 F6P+GAP<->E4P+Xu5P      // jn
-        PS::KM72 = 0.100;  //  E4P 7 F6P+GAP<->E4P+Xu5P
-        PS::KM73 = 0.1;    //   F6P This value was based on estimate
-        PS::KM74 = 0.1000; // Estimate for GAP ORIGINAL 0.1
-        PS::KE7 = 10.;     // The equilibrium constant for this reaction             // New           Laisk  Bassham and Krause 1969 BBA
+        theVars->PS_RC.KE4 = 0.05;    //   Using the value from Patterson
+        theVars->PS_RC.KM51 = 0.3;    // GAP 5 GAP+DHAP <->FBP
+        theVars->PS_RC.KM52 = 0.4;    //  DHAP 5 GAP+DHAP <->FBP
+        theVars->PS_RC.KM53 = 0.02;   // FBP 5 GAP+DHAP <->FBP     // Original Value: 0.02
+        theVars->PS_RC.KE5 = 7.100;   // Defult: 7.1
+        theVars->PS_RC.KM61 = 0.033;  //  FBP 6 FBP<->F6P+OP
+        theVars->PS_RC.KI61 = 0.7;    //   F6P
+        theVars->PS_RC.KI62 = 12.;    //   Pi
+        theVars->PS_RC.KE6 = 6.66 * pow(10., 5.);    // The equilibrium constant for this reaction        // New    mM     Laisk or Bassham and Krause 1969 BBA
+        theVars->PS_RC.KM71 = 0.100;  // Xu5P 7 F6P+GAP<->E4P+Xu5P      // jn
+        theVars->PS_RC.KM72 = 0.100;  //  E4P 7 F6P+GAP<->E4P+Xu5P
+        theVars->PS_RC.KM73 = 0.1;    //   F6P This value was based on estimate
+        theVars->PS_RC.KM74 = 0.1000; // Estimate for GAP ORIGINAL 0.1
+        theVars->PS_RC.KE7 = 10.;     // The equilibrium constant for this reaction             // New           Laisk  Bassham and Krause 1969 BBA
         //PsKM8 = 0.02;  // SBP 8 E4P+DHAP<->SBP
-        PS::KM81 = 0.4;    // DHAP
-        PS::KM82 = 0.2;    // E4P estimate
-        PS::KE8 = 1.017;   // The equilibrium constant for this reaction                  // New    mM-1         Laisk  Bassham and Krause 1969 BBA. Default: 1.107
-        PS::KM9 = 0.05;    //  SBP 9 SBP<->S7P+OP
-        PS::KI9 = 12.;     //   The inibintion constant for Pi;
-        PS::KE9 = 6.66 * pow(10., 5.) ; // The equilibrium constant of this reaction           // New   mM      Laisk  Bassham and Krause 1969 BBA
-        PS::KM10 = 1.5;    // R5P 10 S7P+GAP<->Ri5P+Xu5P
-        PS::KM101 = 0.1;   //   Xu5P
-        PS::KM102 = 0.072; //   Estimate for GAP
-        PS::KM103 = 0.46;  //   Estimate for S7P                                    // New
-        PS::KE10 = 1. / 0.85;      //   The equilibrium constant for this reaction          // New From Laisk or Bassham and Krause 1969 BBA
-        PS::KE11 = 0.4;    // Equilibrium Constant 11 Ri5P<-->Ru5P
-        PS::KE12 = 0.67;   //  Equilibrium Constant 12 Xu5P<-->Ru5P
+        theVars->PS_RC.KM81 = 0.4;    // DHAP
+        theVars->PS_RC.KM82 = 0.2;    // E4P estimate
+        theVars->PS_RC.KE8 = 1.017;   // The equilibrium constant for this reaction                  // New    mM-1         Laisk  Bassham and Krause 1969 BBA. Default: 1.107
+        theVars->PS_RC.KM9 = 0.05;    //  SBP 9 SBP<->S7P+OP
+        theVars->PS_RC.KI9 = 12.;     //   The inibintion constant for Pi;
+        theVars->PS_RC.KE9 = 6.66 * pow(10., 5.) ; // The equilibrium constant of this reaction           // New   mM      Laisk  Bassham and Krause 1969 BBA
+        theVars->PS_RC.KM10 = 1.5;    // R5P 10 S7P+GAP<->Ri5P+Xu5P
+        theVars->PS_RC.KM101 = 0.1;   //   Xu5P
+        theVars->PS_RC.KM102 = 0.072; //   Estimate for GAP
+        theVars->PS_RC.KM103 = 0.46;  //   Estimate for S7P                                    // New
+        theVars->PS_RC.KE10 = 1. / 0.85;      //   The equilibrium constant for this reaction          // New From Laisk or Bassham and Krause 1969 BBA
+        theVars->PS_RC.KE11 = 0.4;    // Equilibrium Constant 11 Ri5P<-->Ru5P
+        theVars->PS_RC.KE12 = 0.67;   //  Equilibrium Constant 12 Xu5P<-->Ru5P
 
-        PS::KM131 = 0.05;  // Ru5P 13 Ru5P+ATP<->RuBP+ADP
-        PS::KM132 = 0.059; //  ATP 13 Ru5P+ATP<->RuBP+ADP
-        PS::KI131 = 2.;    // PGA 13 Ru5P+ATP<->RuBP+ADP
-        PS::KI132 = 0.7 ;  // RuBP 13 Ru5P+ATP<->RuBP+ADP
-        PS::KI133 = 4.;    // Pi 13 Ru5P+ATP<->RuBP+ADP
-        PS::KI134 = 2.5;   // ADP 13 Ru5P+ATP<->RuBP+ADP
-        PS::KI135 = 0.4;   // ADP 13 Ru5P+ATP<->RuBP+ADP
-        PS::KE13 = 6.846 * pow(10., 3.);   //   The equilibrium constant for this reaction  // New From Laisk or Bassham and Krause 1969 BBA
-        PS::KM161 = 0.014; // ADP 16 ADP+Pi<->ATP
-        PS::KM162 = 0.3;   // Pi 16 ADP+Pi<-> ATP
-        PS::KM163 = 0.3;   // ATP 16  ADP+Pi<-> ATP                           // New       Based on Laisk
-        PS::KE16 = 5.734;  // The equilibrium constant for this reaction      // NEW, From Laisk or Bassham and Krause 1969 BBA
-        PS::KE21 = 2.3;
-        PS::KE22 = 0.058;
+        theVars->PS_RC.KM131 = 0.05;  // Ru5P 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KM132 = 0.059; //  ATP 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KI131 = 2.;    // PGA 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KI132 = 0.7 ;  // RuBP 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KI133 = 4.;    // Pi 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KI134 = 2.5;   // ADP 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KI135 = 0.4;   // ADP 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KE13 = 6.846 * pow(10., 3.);   //   The equilibrium constant for this reaction  // New From Laisk or Bassham and Krause 1969 BBA
+        theVars->PS_RC.KM161 = 0.014; // ADP 16 ADP+Pi<->ATP
+        theVars->PS_RC.KM162 = 0.3;   // Pi 16 ADP+Pi<-> ATP
+        theVars->PS_RC.KM163 = 0.3;   // ATP 16  ADP+Pi<-> ATP                           // New       Based on Laisk
+        theVars->PS_RC.KE16 = 5.734;  // The equilibrium constant for this reaction      // NEW, From Laisk or Bassham and Krause 1969 BBA
+        theVars->PS_RC.KE21 = 2.3;
+        theVars->PS_RC.KE22 = 0.058;
         //PsKE21 = 2.3;    // Equilibrium constant 21 F6P<->G6P
         //PsKE22 = 0.058;  // Equilibrium constant 22 G6P<->G1P
-        PS::KM231 = 0.08;  // G1P 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
-        PS::KM232 = 0.08;  // ATP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
-        PS::KA231 = 0.1;   // PGA 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
-        PS::KA232 = 0.02;  // F6P 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
-        PS::KA233 = 0.02;  // FBP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
-        PS::KI23 = 10.;    // ADP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
+        theVars->PS_RC.KM231 = 0.08;  // G1P 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
+        theVars->PS_RC.KM232 = 0.08;  // ATP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
+        theVars->PS_RC.KA231 = 0.1;   // PGA 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
+        theVars->PS_RC.KA232 = 0.02;  // F6P 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
+        theVars->PS_RC.KA233 = 0.02;  // FBP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
+        theVars->PS_RC.KI23 = 10.;    // ADP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1
 
-        PS::KM311 = 0.077; // DHAP 31 DHAPi<->DHAPo
-        PS::KM312 = 0.63;  // Pi 31 DHAPi<->DHAPo
-        PS::KM313 = 0.74;  // Pext 31 DHAPi<->DHAPo
-        PS::KM32 = 0.25;   // PGA 32 PGAi<->PGAo
-        PS::KM33 = 0.075;  // GAP 33 GAPi<->GAPo
+        theVars->PS_RC.KM311 = 0.077; // DHAP 31 DHAPi<->DHAPo
+        theVars->PS_RC.KM312 = 0.63;  // Pi 31 DHAPi<->DHAPo
+        theVars->PS_RC.KM313 = 0.74;  // Pext 31 DHAPi<->DHAPo
+        theVars->PS_RC.KM32 = 0.25;   // PGA 32 PGAi<->PGAo
+        theVars->PS_RC.KM33 = 0.075;  // GAP 33 GAPi<->GAPo
 
         // Initialize the values of the global variables
 
@@ -244,76 +244,76 @@ void PS::_initOrig(Variables *theVars, PSCondition* PS_con) {
         PS::PS_PEXT = 0.5 * theVars->PSRatio[3];  // Global constant for the cytosolic Phosphate concentration;
 
         // Initialize the constants for the different reactions
-        PS::KM11 = 0.0115 * theVars->PSRatio[19]; // CO2 1 RuBP+CO2->2PGA
-        PS::KM12 = 0.222 * theVars->PSRatio[20];  // O2 1 RuBP+CO2->2PGA
-        PS::KM13 = 0.02 * theVars->PSRatio[21];   // RuBP 1 RuBP+CO2->2PGA
+        theVars->PS_RC.KM11 = 0.0115 * theVars->PSRatio[19]; // CO2 1 RuBP+CO2->2PGA
+        theVars->PS_RC.KM12 = 0.222 * theVars->PSRatio[20];  // O2 1 RuBP+CO2->2PGA
+        theVars->PS_RC.KM13 = 0.02 * theVars->PSRatio[21];   // RuBP 1 RuBP+CO2->2PGA
 
-        PS::KI11 = 0.84 * theVars->PSRatio[22];   // PGA
-        PS::KI12 = 0.04 * theVars->PSRatio[23];   // FBP
-        PS::KI13 = 0.075 * theVars->PSRatio[24];  // SBP
-        PS::KI14 = 0.9 * theVars->PSRatio[25];    // Pi
-        PS::KI15 = 0.07 * theVars->PSRatio[26];   // NADPH
+        theVars->PS_RC.KI11 = 0.84 * theVars->PSRatio[22];   // PGA
+        theVars->PS_RC.KI12 = 0.04 * theVars->PSRatio[23];   // FBP
+        theVars->PS_RC.KI13 = 0.075 * theVars->PSRatio[24];  // SBP
+        theVars->PS_RC.KI14 = 0.9 * theVars->PSRatio[25];    // Pi
+        theVars->PS_RC.KI15 = 0.07 * theVars->PSRatio[26];   // NADPH
 
-        PS::KM21 = 0.240 * theVars->PSRatio[27];  // PGA 2 PGA+ATP <-> ADP + DPGA
-        PS::KM22 = 0.390 * theVars->PSRatio[28];  // ATP 2 PGA+ATP <-> ADP + DPGA
-        PS::KM23 = 0.23 * theVars->PSRatio[29];   // ADP
+        theVars->PS_RC.KM21 = 0.240 * theVars->PSRatio[27];  // PGA 2 PGA+ATP <-> ADP + DPGA
+        theVars->PS_RC.KM22 = 0.390 * theVars->PSRatio[28];  // ATP 2 PGA+ATP <-> ADP + DPGA
+        theVars->PS_RC.KM23 = 0.23 * theVars->PSRatio[29];   // ADP
 
-        PS::KM31a = 0.004 * theVars->PSRatio[30]; // BPGA 3 DPGA+NADPH <->GAP + OP+NADP
-        PS::KM32b = 0.1 * theVars->PSRatio[31];   // NADPH 3 DPGA+NADPH <->GAP + OP+NADP
+        theVars->PS_RC.KM31a = 0.004 * theVars->PSRatio[30]; // BPGA 3 DPGA+NADPH <->GAP + OP+NADP
+        theVars->PS_RC.KM32b = 0.1 * theVars->PSRatio[31];   // NADPH 3 DPGA+NADPH <->GAP + OP+NADP
 
-        PS::KE4 = 1. / 0.05 * theVars->PSRatio[34]; // Using the value from Patterson
+        theVars->PS_RC.KE4 = 1. / 0.05 * theVars->PSRatio[34]; // Using the value from Patterson
 
-        PS::KM51 = 0.3 * theVars->PSRatio[35];    // GAP 5 GAP+DHAP <->FBP
-        PS::KM52 = 0.4 * theVars->PSRatio[36];    // DHAP 5 GAP+DHAP <->FBP
-        PS::KM53 = 0.02 * theVars->PSRatio[37];   // FBP 5 GAP+DHAP <->FBP     // Original Value: 0.02
-        PS::KE5 = 7.100 * theVars->PSRatio[38];   // Defult: 7.1
+        theVars->PS_RC.KM51 = 0.3 * theVars->PSRatio[35];    // GAP 5 GAP+DHAP <->FBP
+        theVars->PS_RC.KM52 = 0.4 * theVars->PSRatio[36];    // DHAP 5 GAP+DHAP <->FBP
+        theVars->PS_RC.KM53 = 0.02 * theVars->PSRatio[37];   // FBP 5 GAP+DHAP <->FBP     // Original Value: 0.02
+        theVars->PS_RC.KE5 = 7.100 * theVars->PSRatio[38];   // Defult: 7.1
 
-        PS::KM61 = 0.033 * theVars->PSRatio[39];  // FBP 6 FBP<->F6P+OP
-        PS::KI61 = 0.7 * theVars->PSRatio[40];    // F6P
-        PS::KI62 = 12. * theVars->PSRatio[41];    // Pi
-        PS::KE6 = 6.66 * pow(10, 5) * theVars->PSRatio[42];
+        theVars->PS_RC.KM61 = 0.033 * theVars->PSRatio[39];  // FBP 6 FBP<->F6P+OP
+        theVars->PS_RC.KI61 = 0.7 * theVars->PSRatio[40];    // F6P
+        theVars->PS_RC.KI62 = 12. * theVars->PSRatio[41];    // Pi
+        theVars->PS_RC.KE6 = 6.66 * pow(10, 5) * theVars->PSRatio[42];
 
-        PS::KE7 = 0.1 * theVars->PSRatio[47];     // The equilibrium constant for this reaction  New   Laisk  Bassham and Krause 1969 BBA
+        theVars->PS_RC.KE7 = 0.1 * theVars->PSRatio[47];     // The equilibrium constant for this reaction  New   Laisk  Bassham and Krause 1969 BBA
 
-        PS::KM81 = 0.4 * theVars->PSRatio[49];    // DHAP
-        PS::KM82 = 0.2 * theVars->PSRatio[50];    // E4P estimate
-        PS::KE8 = 1.017 * theVars->PSRatio[51];   // The equilibrium constant for this reaction  New  mM-1  Laisk  Bassham and Krause 1969 BBA. Default: 1.107
+        theVars->PS_RC.KM81 = 0.4 * theVars->PSRatio[49];    // DHAP
+        theVars->PS_RC.KM82 = 0.2 * theVars->PSRatio[50];    // E4P estimate
+        theVars->PS_RC.KE8 = 1.017 * theVars->PSRatio[51];   // The equilibrium constant for this reaction  New  mM-1  Laisk  Bassham and Krause 1969 BBA. Default: 1.107
 
-        PS::KM9 = 0.05 * theVars->PSRatio[52];   // SBP 9 SBP<->S7P+OP
-        PS::KI9 = 12. * theVars->PSRatio[53];    // The inibintion constant for Pi;
-        PS::KE9 = 6.66 * pow(10, 5) * theVars->PSRatio[54];
+        theVars->PS_RC.KM9 = 0.05 * theVars->PSRatio[52];   // SBP 9 SBP<->S7P+OP
+        theVars->PS_RC.KI9 = 12. * theVars->PSRatio[53];    // The inibintion constant for Pi;
+        theVars->PS_RC.KE9 = 6.66 * pow(10, 5) * theVars->PSRatio[54];
 
-        PS::KM10 = 0.5 * theVars->PSRatio[55];    // R5P 10 S7P+GAP<->Ri5P+Xu5P
-        PS::KM101 = 0.1 * theVars->PSRatio[56];   // Xu5P
-        PS::KM102 = 0.09 * theVars->PSRatio[57];  // Estimate for GAP
-        PS::KM103 = 0.015 * theVars->PSRatio[58]; // Estimate for S7P
+        theVars->PS_RC.KM10 = 0.5 * theVars->PSRatio[55];    // R5P 10 S7P+GAP<->Ri5P+Xu5P
+        theVars->PS_RC.KM101 = 0.1 * theVars->PSRatio[56];   // Xu5P
+        theVars->PS_RC.KM102 = 0.09 * theVars->PSRatio[57];  // Estimate for GAP
+        theVars->PS_RC.KM103 = 0.015 * theVars->PSRatio[58]; // Estimate for S7P
         //theVars->KE10 = 1 / 0.85 * theVars->PSRatio[59];//   The equilibrium constant for this reaction          // New From Laisk or Bassham and Krause 1969 BBA
 
-        PS::KE11 = 0.4 * theVars->PSRatio[60];    // Equilibrium Constant 11 Ri5P<-->Ru5P
-        PS::KE12 = 0.67 * theVars->PSRatio[61];   // Equilibrium Constant 12 Xu5P<-->Ru5P
+        theVars->PS_RC.KE11 = 0.4 * theVars->PSRatio[60];    // Equilibrium Constant 11 Ri5P<-->Ru5P
+        theVars->PS_RC.KE12 = 0.67 * theVars->PSRatio[61];   // Equilibrium Constant 12 Xu5P<-->Ru5P
 
-        PS::KM131 = 0.05 * theVars->PSRatio[62];  // Ru5P 13 Ru5P+ATP<->RuBP+ADP
-        PS::KM132 = 0.059 * theVars->PSRatio[63]; //  ATP 13 Ru5P+ATP<->RuBP+ADP
-        PS::KI131 = 2. * theVars->PSRatio[64];    // PGA 13 Ru5P+ATP<->RuBP+ADP
-        PS::KI132 = 0.7 * theVars->PSRatio[65];   // RuBP 13 Ru5P+ATP<->RuBP+ADP
-        PS::KI133 = 4. * theVars->PSRatio[66];    // Pi 13 Ru5P+ATP<->RuBP+ADP
-        PS::KI134 = 2.5 * theVars->PSRatio[67];   // ADP 13 Ru5P+ATP<->RuBP+ADP
-        PS::KI135 = 0.4 * theVars->PSRatio[68];   // ADP 13 Ru5P+ATP<->RuBP+ADP
-        PS::KE13 = 6.846 * pow(10, 3) * theVars->PSRatio[69];
+        theVars->PS_RC.KM131 = 0.05 * theVars->PSRatio[62];  // Ru5P 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KM132 = 0.059 * theVars->PSRatio[63]; //  ATP 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KI131 = 2. * theVars->PSRatio[64];    // PGA 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KI132 = 0.7 * theVars->PSRatio[65];   // RuBP 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KI133 = 4. * theVars->PSRatio[66];    // Pi 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KI134 = 2.5 * theVars->PSRatio[67];   // ADP 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KI135 = 0.4 * theVars->PSRatio[68];   // ADP 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KE13 = 6.846 * pow(10, 3) * theVars->PSRatio[69];
 
-        PS::KM161 = 0.014 * theVars->PSRatio[70]; // ADP 16 ADP+Pi<->ATP
-        PS::KM162 = 0.3 * theVars->PSRatio[71];   // Pi 16 ADP+Pi<-> ATP
-        PS::KM163 = 0.3 * theVars->PSRatio[72];   // ATP 16  ADP+Pi<-> ATP                           // New       Based on Laisk
-        PS::KE16 = 5.734 * theVars->PSRatio[73];  // The equilibrium constant for this reaction      // NEW, From Laisk or Bassham and Krause 1969 BBA
+        theVars->PS_RC.KM161 = 0.014 * theVars->PSRatio[70]; // ADP 16 ADP+Pi<->ATP
+        theVars->PS_RC.KM162 = 0.3 * theVars->PSRatio[71];   // Pi 16 ADP+Pi<-> ATP
+        theVars->PS_RC.KM163 = 0.3 * theVars->PSRatio[72];   // ATP 16  ADP+Pi<-> ATP                           // New       Based on Laisk
+        theVars->PS_RC.KE16 = 5.734 * theVars->PSRatio[73];  // The equilibrium constant for this reaction      // NEW, From Laisk or Bassham and Krause 1969 BBA
 
-        PS::KE21 = 2.3 * theVars->PSRatio[74];    // Equilibrium constant 21 F6P<->G6P
-        PS::KE22 = 0.058 * theVars->PSRatio[75];  //  Equilibrium constant 22 G6P<->G1P
+        theVars->PS_RC.KE21 = 2.3 * theVars->PSRatio[74];    // Equilibrium constant 21 F6P<->G6P
+        theVars->PS_RC.KE22 = 0.058 * theVars->PSRatio[75];  //  Equilibrium constant 22 G6P<->G1P
 
-        PS::KM311 = 0.077 * theVars->PSRatio[76]; // DHAP 31 DHAPi<->DHAPo
+        theVars->PS_RC.KM311 = 0.077 * theVars->PSRatio[76]; // DHAP 31 DHAPi<->DHAPo
         //theVars->KM312 = 0.63 * theVars->PSRatio[77];//  Pi 31 DHAPi<->DHAPo
-        PS::KM313 = 0.74 * theVars->PSRatio[78];  // Pext 31 DHAPi<->DHAPo
-        PS::KM32 = 0.25 * theVars->PSRatio[79];   // PGA 32 PGAi<->PGAo
-        PS::KM33 = 0.075 * theVars->PSRatio[80];  // GAP 33 GAPi<->GAPo
+        theVars->PS_RC.KM313 = 0.74 * theVars->PSRatio[78];  // Pext 31 DHAPi<->DHAPo
+        theVars->PS_RC.KM32 = 0.25 * theVars->PSRatio[79];   // PGA 32 PGAi<->PGAo
+        theVars->PS_RC.KM33 = 0.075 * theVars->PSRatio[80];  // GAP 33 GAPi<->GAPo
 
 
         // Now put in the constant for the new ADPG Pyrophosphorylase and starch
@@ -321,22 +321,22 @@ void PS::_initOrig(Variables *theVars, PSCondition* PS_con) {
 
         // ATP + Glucose-1-Phosphate --> ADPG + PPi
 
-        PS::KM231 = 0.031 * theVars->PSRatio[81]; // G1P 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
-        PS::KM232 = 0.045 * theVars->PSRatio[82]; //  ATP 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
-        PS::KM233 = 0.14 * theVars->PSRatio[83];  // ADPG 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
-        PS::KM234 = 0.8 * theVars->PSRatio[84];   //  PPi 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
-        PS::KE23 = 7.6 * pow(10, (-3)) * theVars->PSRatio[85];
+        theVars->PS_RC.KM231 = 0.031 * theVars->PSRatio[81]; // G1P 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
+        theVars->PS_RC.KM232 = 0.045 * theVars->PSRatio[82]; //  ATP 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
+        theVars->PS_RC.KM233 = 0.14 * theVars->PSRatio[83];  // ADPG 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
+        theVars->PS_RC.KM234 = 0.8 * theVars->PSRatio[84];   //  PPi 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
+        theVars->PS_RC.KE23 = 7.6 * pow(10, (-3)) * theVars->PSRatio[85];
 
 
-        PS::KA231 = 0.23 * theVars->PSRatio[86]; // PGA 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
-        PS::KI231 = 0.9 * theVars->PSRatio[87];  //0.9 ;       //   Pi 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989 WY201803
-        PS::KVmo = 0.007 * theVars->PSRatio[88]; //   The minimum maximum velocity        Laisk et al 1989
+        theVars->PS_RC.KA231 = 0.23 * theVars->PSRatio[86]; // PGA 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
+        theVars->PS_RC.KI231 = 0.9 * theVars->PSRatio[87];  //0.9 ;       //   Pi 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989 WY201803
+        theVars->PS_RC.KVmo = 0.007 * theVars->PSRatio[88]; //   The minimum maximum velocity        Laisk et al 1989
         // ADPG --> ADP + Gn     // The starch synthesis reaction 24.     Laisk et al
         // 1989
 
-        PS::KM241 = 0.2 * theVars->PSRatio[89]; //   ADPG    ADPG --> ADP + Gn       Laisk et al 1989
+        theVars->PS_RC.KM241 = 0.2 * theVars->PSRatio[89]; //   ADPG    ADPG --> ADP + Gn       Laisk et al 1989
 
-        PS::KE25 = 1.2 * 107 * theVars->PSRatio[92];
+        theVars->PS_RC.KE25 = 1.2 * 107 * theVars->PSRatio[92];
 
         // Initialize the Vmax for different reactions
 
@@ -365,14 +365,14 @@ void PS::_initOrig(Variables *theVars, PSCondition* PS_con) {
         PS::V31 = 1.0 * theVars->PSRatio[16] * 20;
         PS::V32 = 1.0 * theVars->PSRatio[17];
         PS::V33 = 1.0 * theVars->PSRatio[18] * 20;//WY 2018103
-        PS::KE57 = 1.005 * 0.1 * theVars->PSRatio[93];
-        PS::Km8p5p = 0.118 * theVars->PSRatio[94];
-        PS::Km5p5p = 0.616 * theVars->PSRatio[95];
-        PS::KE810 = 0.8446 * theVars->PSRatio[96];
-        PS::Km5gap = 0.2727 * theVars->PSRatio[97];
-        PS::Km8f6p = 0.5443 * theVars->PSRatio[98];
-        PS::Km8s7p = 0.01576 * theVars->PSRatio[99];
-        PS::Km8gap = 0.09 * theVars->PSRatio[100];
+        theVars->PS_RC.KE57 = 1.005 * 0.1 * theVars->PSRatio[93];
+        theVars->PS_RC.Km8p5p = 0.118 * theVars->PSRatio[94];
+        theVars->PS_RC.Km5p5p = 0.616 * theVars->PSRatio[95];
+        theVars->PS_RC.KE810 = 0.8446 * theVars->PSRatio[96];
+        theVars->PS_RC.Km5gap = 0.2727 * theVars->PSRatio[97];
+        theVars->PS_RC.Km8f6p = 0.5443 * theVars->PSRatio[98];
+        theVars->PS_RC.Km8s7p = 0.01576 * theVars->PSRatio[99];
+        theVars->PS_RC.Km8gap = 0.09 * theVars->PSRatio[100];
         PS::MaxCoeff = 5. * theVars->PSRatio[101];
         PS::PsV31 = PS::V31 * RegFactor; // 31 Phosphate translocator DHAPi<->DHAPo
         PS::PsV32 = PS::V32 * RegFactor; // 32 Phosphate translocator PGAi<->PGAo
@@ -386,8 +386,8 @@ void PS::_initOrig(Variables *theVars, PSCondition* PS_con) {
 
 
     theVars->ADP = PS::PS_C_CA - PS_con->ATP;
-    PS::KE2Ratio = (1. + 1. / PS::KE21 + PS::KE22);
-    PS::KE1Ratio = (1. + 1. / PS::KE11 + 1. / PS::KE12);
+    theVars->PS_RC.KE2Ratio = (1. + 1. / theVars->PS_RC.KE21 + theVars->PS_RC.KE22);
+    theVars->PS_RC.KE1Ratio = (1. + 1. / theVars->PS_RC.KE11 + 1. / theVars->PS_RC.KE12);
 
 }
 
@@ -413,8 +413,8 @@ void PS::_initCalc(Variables *theVars, PSCondition* PS_con) {
             PS::Vf_T23 = theVars->VfactorT[2];
             PS::Vf_T13 = theVars->VfactorT[3];
         }
-        PS::KM11 = 0.0097 * exp(PS::c_c - PS::dHa_c * 1000. / (PS::R * (theVars->Tp + 273.15))) / 272.38;
-        PS::KM12 = 0.244 * exp(PS::c_o - PS::dHa_o * 1000. / (PS::R * (theVars->Tp + 273.15))) / 165.82;
+        theVars->PS_RC.KM11 = 0.0097 * exp(PS::c_c - PS::dHa_c * 1000. / (PS::R * (theVars->Tp + 273.15))) / 272.38;
+        theVars->PS_RC.KM12 = 0.244 * exp(PS::c_o - PS::dHa_o * 1000. / (PS::R * (theVars->Tp + 273.15))) / 165.82;
 	
         if (theVars->GP == 0) {
             PS::V1 = theVars->alpha1 * theVars->EnzymeAct.at("V1");
@@ -470,76 +470,76 @@ void PS::_initCalc(Variables *theVars, PSCondition* PS_con) {
         PS::PS_PEXT *= theVars->PSRatio[3];  // Global constant for the cytosolic Phosphate concentration;
 
         // Initialize the constants for the different reactions
-        PS::KM11 *= theVars->PSRatio[19]; // CO2 1 RuBP+CO2->2PGA
-        PS::KM12 *= theVars->PSRatio[20];  // O2 1 RuBP+CO2->2PGA
-        PS::KM13 *= theVars->PSRatio[21];   // RuBP 1 RuBP+CO2->2PGA
+        theVars->PS_RC.KM11 *= theVars->PSRatio[19]; // CO2 1 RuBP+CO2->2PGA
+        theVars->PS_RC.KM12 *= theVars->PSRatio[20];  // O2 1 RuBP+CO2->2PGA
+        theVars->PS_RC.KM13 *= theVars->PSRatio[21];   // RuBP 1 RuBP+CO2->2PGA
 
-        PS::KI11 *= theVars->PSRatio[22];   // PGA
-        PS::KI12 *= theVars->PSRatio[23];   // FBP
-        PS::KI13 *= theVars->PSRatio[24];  // SBP
-        PS::KI14 *= theVars->PSRatio[25];    // Pi
-        PS::KI15 *= theVars->PSRatio[26];   // NADPH
+        theVars->PS_RC.KI11 *= theVars->PSRatio[22];   // PGA
+        theVars->PS_RC.KI12 *= theVars->PSRatio[23];   // FBP
+        theVars->PS_RC.KI13 *= theVars->PSRatio[24];  // SBP
+        theVars->PS_RC.KI14 *= theVars->PSRatio[25];    // Pi
+        theVars->PS_RC.KI15 *= theVars->PSRatio[26];   // NADPH
 
-        PS::KM21 *= theVars->PSRatio[27];  // PGA 2 PGA+ATP <-> ADP + DPGA
-        PS::KM22 *= theVars->PSRatio[28];  // ATP 2 PGA+ATP <-> ADP + DPGA
-        PS::KM23 *= theVars->PSRatio[29];   // ADP
+        theVars->PS_RC.KM21 *= theVars->PSRatio[27];  // PGA 2 PGA+ATP <-> ADP + DPGA
+        theVars->PS_RC.KM22 *= theVars->PSRatio[28];  // ATP 2 PGA+ATP <-> ADP + DPGA
+        theVars->PS_RC.KM23 *= theVars->PSRatio[29];   // ADP
 
-        PS::KM31a *= theVars->PSRatio[30]; // BPGA 3 DPGA+NADPH <->GAP + OP+NADP
-        PS::KM32b *= theVars->PSRatio[31];   // NADPH 3 DPGA+NADPH <->GAP + OP+NADP
+        theVars->PS_RC.KM31a *= theVars->PSRatio[30]; // BPGA 3 DPGA+NADPH <->GAP + OP+NADP
+        theVars->PS_RC.KM32b *= theVars->PSRatio[31];   // NADPH 3 DPGA+NADPH <->GAP + OP+NADP
 
-        PS::KE4 *= theVars->PSRatio[34]; // Using the value from Patterson
+        theVars->PS_RC.KE4 *= theVars->PSRatio[34]; // Using the value from Patterson
 
-        PS::KM51 *= theVars->PSRatio[35];    // GAP 5 GAP+DHAP <->FBP
-        PS::KM52 *= theVars->PSRatio[36];    // DHAP 5 GAP+DHAP <->FBP
-        PS::KM53 *= theVars->PSRatio[37];   // FBP 5 GAP+DHAP <->FBP     // Original Value: 0.02
-        PS::KE5 *= theVars->PSRatio[38];   // Defult: 7.1
+        theVars->PS_RC.KM51 *= theVars->PSRatio[35];    // GAP 5 GAP+DHAP <->FBP
+        theVars->PS_RC.KM52 *= theVars->PSRatio[36];    // DHAP 5 GAP+DHAP <->FBP
+        theVars->PS_RC.KM53 *= theVars->PSRatio[37];   // FBP 5 GAP+DHAP <->FBP     // Original Value: 0.02
+        theVars->PS_RC.KE5 *= theVars->PSRatio[38];   // Defult: 7.1
 
-        PS::KM61 *= theVars->PSRatio[39];  // FBP 6 FBP<->F6P+OP
-        PS::KI61 *= theVars->PSRatio[40];    // F6P
-        PS::KI62 *= theVars->PSRatio[41];    // Pi
-        PS::KE6 *= theVars->PSRatio[42];
+        theVars->PS_RC.KM61 *= theVars->PSRatio[39];  // FBP 6 FBP<->F6P+OP
+        theVars->PS_RC.KI61 *= theVars->PSRatio[40];    // F6P
+        theVars->PS_RC.KI62 *= theVars->PSRatio[41];    // Pi
+        theVars->PS_RC.KE6 *= theVars->PSRatio[42];
 
-        PS::KE7 *= theVars->PSRatio[47];     // The equilibrium constant for this reaction  New   Laisk  Bassham and Krause 1969 BBA
+        theVars->PS_RC.KE7 *= theVars->PSRatio[47];     // The equilibrium constant for this reaction  New   Laisk  Bassham and Krause 1969 BBA
 
-        PS::KM81 *= theVars->PSRatio[49];    // DHAP
-        PS::KM82 *= theVars->PSRatio[50];    // E4P estimate
-        PS::KE8 *= theVars->PSRatio[51];   // The equilibrium constant for this reaction  New  mM-1  Laisk  Bassham and Krause 1969 BBA. Default: 1.107
+        theVars->PS_RC.KM81 *= theVars->PSRatio[49];    // DHAP
+        theVars->PS_RC.KM82 *= theVars->PSRatio[50];    // E4P estimate
+        theVars->PS_RC.KE8 *= theVars->PSRatio[51];   // The equilibrium constant for this reaction  New  mM-1  Laisk  Bassham and Krause 1969 BBA. Default: 1.107
 
-        PS::KM9 *= theVars->PSRatio[52];   // SBP 9 SBP<->S7P+OP
-        PS::KI9 *= theVars->PSRatio[53];    // The inibintion constant for Pi;
-        PS::KE9 *= theVars->PSRatio[54];
+        theVars->PS_RC.KM9 *= theVars->PSRatio[52];   // SBP 9 SBP<->S7P+OP
+        theVars->PS_RC.KI9 *= theVars->PSRatio[53];    // The inibintion constant for Pi;
+        theVars->PS_RC.KE9 *= theVars->PSRatio[54];
 
-        PS::KM10 *= theVars->PSRatio[55];    // R5P 10 S7P+GAP<->Ri5P+Xu5P
-        PS::KM101 *= theVars->PSRatio[56];   // Xu5P
-        PS::KM102 *= theVars->PSRatio[57];  // Estimate for GAP
-        PS::KM103 *= theVars->PSRatio[58]; // Estimate for S7P
+        theVars->PS_RC.KM10 *= theVars->PSRatio[55];    // R5P 10 S7P+GAP<->Ri5P+Xu5P
+        theVars->PS_RC.KM101 *= theVars->PSRatio[56];   // Xu5P
+        theVars->PS_RC.KM102 *= theVars->PSRatio[57];  // Estimate for GAP
+        theVars->PS_RC.KM103 *= theVars->PSRatio[58]; // Estimate for S7P
         //theVars->KE10 *= theVars->PSRatio[59];//   The equilibrium constant for this reaction          // New From Laisk or Bassham and Krause 1969 BBA
 
-        PS::KE11 *= theVars->PSRatio[60];    // Equilibrium Constant 11 Ri5P<-->Ru5P
-        PS::KE12 *= theVars->PSRatio[61];   // Equilibrium Constant 12 Xu5P<-->Ru5P
+        theVars->PS_RC.KE11 *= theVars->PSRatio[60];    // Equilibrium Constant 11 Ri5P<-->Ru5P
+        theVars->PS_RC.KE12 *= theVars->PSRatio[61];   // Equilibrium Constant 12 Xu5P<-->Ru5P
 
-        PS::KM131 *= theVars->PSRatio[62];  // Ru5P 13 Ru5P+ATP<->RuBP+ADP
-        PS::KM132 *= theVars->PSRatio[63]; //  ATP 13 Ru5P+ATP<->RuBP+ADP
-        PS::KI131 *= theVars->PSRatio[64];    // PGA 13 Ru5P+ATP<->RuBP+ADP
-        PS::KI132 *= theVars->PSRatio[65];   // RuBP 13 Ru5P+ATP<->RuBP+ADP
-        PS::KI133 *= theVars->PSRatio[66];    // Pi 13 Ru5P+ATP<->RuBP+ADP
-        PS::KI134 *= theVars->PSRatio[67];   // ADP 13 Ru5P+ATP<->RuBP+ADP
-        PS::KI135 *= theVars->PSRatio[68];   // ADP 13 Ru5P+ATP<->RuBP+ADP
-        PS::KE13 *= theVars->PSRatio[69];
+        theVars->PS_RC.KM131 *= theVars->PSRatio[62];  // Ru5P 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KM132 *= theVars->PSRatio[63]; //  ATP 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KI131 *= theVars->PSRatio[64];    // PGA 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KI132 *= theVars->PSRatio[65];   // RuBP 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KI133 *= theVars->PSRatio[66];    // Pi 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KI134 *= theVars->PSRatio[67];   // ADP 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KI135 *= theVars->PSRatio[68];   // ADP 13 Ru5P+ATP<->RuBP+ADP
+        theVars->PS_RC.KE13 *= theVars->PSRatio[69];
 
-        PS::KM161 *= theVars->PSRatio[70]; // ADP 16 ADP+Pi<->ATP
-        PS::KM162 *= theVars->PSRatio[71];   // Pi 16 ADP+Pi<-> ATP
-        PS::KM163 *= theVars->PSRatio[72];   // ATP 16  ADP+Pi<-> ATP                           // New       Based on Laisk
-        PS::KE16 *= theVars->PSRatio[73];  // The equilibrium constant for this reaction      // NEW, From Laisk or Bassham and Krause 1969 BBA
+        theVars->PS_RC.KM161 *= theVars->PSRatio[70]; // ADP 16 ADP+Pi<->ATP
+        theVars->PS_RC.KM162 *= theVars->PSRatio[71];   // Pi 16 ADP+Pi<-> ATP
+        theVars->PS_RC.KM163 *= theVars->PSRatio[72];   // ATP 16  ADP+Pi<-> ATP                           // New       Based on Laisk
+        theVars->PS_RC.KE16 *= theVars->PSRatio[73];  // The equilibrium constant for this reaction      // NEW, From Laisk or Bassham and Krause 1969 BBA
 
-        PS::KE21 *= theVars->PSRatio[74];    // Equilibrium constant 21 F6P<->G6P
-        PS::KE22 *= theVars->PSRatio[75];  //  Equilibrium constant 22 G6P<->G1P
+        theVars->PS_RC.KE21 *= theVars->PSRatio[74];    // Equilibrium constant 21 F6P<->G6P
+        theVars->PS_RC.KE22 *= theVars->PSRatio[75];  //  Equilibrium constant 22 G6P<->G1P
 
-        PS::KM311 *= theVars->PSRatio[76]; // DHAP 31 DHAPi<->DHAPo
+        theVars->PS_RC.KM311 *= theVars->PSRatio[76]; // DHAP 31 DHAPi<->DHAPo
         //theVars->KM312 *= theVars->PSRatio[77];//  Pi 31 DHAPi<->DHAPo
-        PS::KM313 *= theVars->PSRatio[78];  // Pext 31 DHAPi<->DHAPo
-        PS::KM32 *= theVars->PSRatio[79];   // PGA 32 PGAi<->PGAo
-        PS::KM33 *= theVars->PSRatio[80];  // GAP 33 GAPi<->GAPo
+        theVars->PS_RC.KM313 *= theVars->PSRatio[78];  // Pext 31 DHAPi<->DHAPo
+        theVars->PS_RC.KM32 *= theVars->PSRatio[79];   // PGA 32 PGAi<->PGAo
+        theVars->PS_RC.KM33 *= theVars->PSRatio[80];  // GAP 33 GAPi<->GAPo
 
 
         // Now put in the constant for the new ADPG Pyrophosphorylase and starch
@@ -547,22 +547,22 @@ void PS::_initCalc(Variables *theVars, PSCondition* PS_con) {
 
         // ATP + Glucose-1-Phosphate --> ADPG + PPi
 
-        PS::KM231 *= theVars->PSRatio[81]; // G1P 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
-        PS::KM232 *= theVars->PSRatio[82]; //  ATP 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
-        PS::KM233 *= theVars->PSRatio[83];  // ADPG 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
-        PS::KM234 *= theVars->PSRatio[84];   //  PPi 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
-        PS::KE23 *= theVars->PSRatio[85];
+        theVars->PS_RC.KM231 *= theVars->PSRatio[81]; // G1P 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
+        theVars->PS_RC.KM232 *= theVars->PSRatio[82]; //  ATP 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
+        theVars->PS_RC.KM233 *= theVars->PSRatio[83];  // ADPG 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
+        theVars->PS_RC.KM234 *= theVars->PSRatio[84];   //  PPi 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
+        theVars->PS_RC.KE23 *= theVars->PSRatio[85];
 
 
-        PS::KA231 *= theVars->PSRatio[86]; // PGA 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
-        PS::KI231 *= theVars->PSRatio[87];  //0.9 ;       //   Pi 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989 WY201803
-        PS::KVmo *= theVars->PSRatio[88]; //   The minimum maximum velocity        Laisk et al 1989
+        theVars->PS_RC.KA231 *= theVars->PSRatio[86]; // PGA 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989
+        theVars->PS_RC.KI231 *= theVars->PSRatio[87];  //0.9 ;       //   Pi 23 G1P+ATP<->ADPG + PPi        Laisk et al 1989 WY201803
+        theVars->PS_RC.KVmo *= theVars->PSRatio[88]; //   The minimum maximum velocity        Laisk et al 1989
         // ADPG --> ADP + Gn     // The starch synthesis reaction 24.     Laisk et al
         // 1989
 
-        PS::KM241 *= theVars->PSRatio[89]; //   ADPG    ADPG --> ADP + Gn       Laisk et al 1989
+        theVars->PS_RC.KM241 *= theVars->PSRatio[89]; //   ADPG    ADPG --> ADP + Gn       Laisk et al 1989
 
-        PS::KE25 *= theVars->PSRatio[92];
+        theVars->PS_RC.KE25 *= theVars->PSRatio[92];
 
         // Initialize the Vmax for different reactions
 
@@ -584,22 +584,22 @@ void PS::_initCalc(Variables *theVars, PSCondition* PS_con) {
         PS::V31 *= theVars->PSRatio[16];
         PS::V32 *= theVars->PSRatio[17];
         PS::V33 *= theVars->PSRatio[18];//WY 2018103
-        PS::KE57 *= theVars->PSRatio[93];
-        PS::Km8p5p *= theVars->PSRatio[94];
-        PS::Km5p5p *= theVars->PSRatio[95];
-        PS::KE810 *= theVars->PSRatio[96];
-        PS::Km5gap *= theVars->PSRatio[97];
-        PS::Km8f6p *= theVars->PSRatio[98];
-        PS::Km8s7p *= theVars->PSRatio[99];
-        PS::Km8gap *= theVars->PSRatio[100];
+        theVars->PS_RC.KE57 *= theVars->PSRatio[93];
+        theVars->PS_RC.Km8p5p *= theVars->PSRatio[94];
+        theVars->PS_RC.Km5p5p *= theVars->PSRatio[95];
+        theVars->PS_RC.KE810 *= theVars->PSRatio[96];
+        theVars->PS_RC.Km5gap *= theVars->PSRatio[97];
+        theVars->PS_RC.Km8f6p *= theVars->PSRatio[98];
+        theVars->PS_RC.Km8s7p *= theVars->PSRatio[99];
+        theVars->PS_RC.Km8gap *= theVars->PSRatio[100];
         PS::MaxCoeff *= theVars->PSRatio[101];
         PS::PsV31 = PS::V31 * PS::RegFactor; // 31 Phosphate translocator DHAPi<->DHAPo
         PS::PsV32 = PS::V32 * PS::RegFactor; // 32 Phosphate translocator PGAi<->PGAo
         PS::PsV33 = PS::V33 * PS::RegFactor; // 33 Phosphate translocator GAPi<->GAPo
     }
     theVars->ADP = PS::PS_C_CA - PS_con->ATP;
-    PS::KE2Ratio = (1. + 1. / PS::KE21 + PS::KE22);
-    PS::KE1Ratio = (1. + 1. / PS::KE11 + 1. / PS::KE12);
+    theVars->PS_RC.KE2Ratio = (1. + 1. / theVars->PS_RC.KE21 + theVars->PS_RC.KE22);
+    theVars->PS_RC.KE1Ratio = (1. + 1. / theVars->PS_RC.KE11 + 1. / theVars->PS_RC.KE12);
 }
 
 DEFINE_DEFAULT_CHECKALT(PS)

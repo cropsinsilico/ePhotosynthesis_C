@@ -5,29 +5,41 @@
 void ePhotosynthesis::drivers::select_driver(const DriverType& driverChoice,
 					     const bool useC3, const bool x) {
   if (x) {
-    std::cerr << "SELECTING DRIVER: " << driverChoice << std::endl;
+    std::cerr << "SELECTING DRIVER: " << driverChoice <<
+      " (useC3 = " << useC3 << ")" << std::endl;
     ePhotosynthesis::drivers::select_all_drivers(false);
   }
 #define CASE_DRIVER(drv)						\
   ePhotosynthesis::drivers::drv ## Driver::enableC3(useC3);		\
   ePhotosynthesis::drivers::drv ## Driver::select(x);			\
   if (x) {                                                              \
-    std::cerr << "DRIVER SELECTED: " << #drv << std::endl;              \
+    std::cerr << "DRIVER SELECTED: " << #drv <<                         \
+      " (useC3 = " << useC3 << ")" << std::endl;                        \
   }
   SWITCH_DRIVER(driverChoice, CASE_DRIVER);
 #undef CASE_DRIVER
 }
 void ePhotosynthesis::drivers::select_driver(const std::string& driverChoice) {
+  if (driverChoice.empty()) {
+    select_all_drivers(true);
+    return;
+  }
   DriverType driverChoiceKey = utils::enum_string2key<DriverType>(driverChoice);
-  ePhotosynthesis::drivers::select_driver(driverChoiceKey, false, true);
+  bool useC3 = (driverChoiceKey == EPS);
+  ePhotosynthesis::drivers::select_driver(driverChoiceKey, useC3, true);
 }
 void ePhotosynthesis::drivers::deselect_driver(const std::string& driverChoice) {
+  if (driverChoice.empty()) {
+    select_all_drivers(false);
+    return;
+  }
   DriverType driverChoiceKey = utils::enum_string2key<DriverType>(driverChoice);
   ePhotosynthesis::drivers::select_driver(driverChoiceKey, false, false);
 }
 
 void ePhotosynthesis::drivers::select_all_drivers(const bool x) {
-#define SELECT_DRIVER(drv)                              \
+#define SELECT_DRIVER(drv)                                      \
+  ePhotosynthesis::drivers::drv ## Driver::enableC3(false);     \
   ePhotosynthesis::drivers::drv ## Driver::select(x)
   FOR_EACH(SELECT_DRIVER, EXPAND(MEMBERS_DRIVER));
 #undef SELECT_DRIVER

@@ -1,11 +1,12 @@
 #ifdef BUILD_PYTHON
 #include "python/wrappers.hpp"
 #include "Variables.hpp"
-#include "modules/CM.hpp"
-#include "modules/PR.hpp"
+#include "modules/ModuleAll.hpp"
 #include "drivers/drivers.hpp"
 #include <boost/python.hpp>
 #include <boost/python/suite/indexing/vector_indexing_suite.hpp>
+#include "macros.hpp"
+#include "ePhotosynthesis.hpp"
 using namespace ePhotosynthesis;
 
 namespace bp = boost::python;
@@ -13,6 +14,9 @@ namespace bp = boost::python;
 #ifndef PYTHON_LIBRARY_NAME
 #define PYTHON_LIBRARY_NAME pyPhotosynthesis
 #endif
+
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(Variables_setVar_overloads, setVar, 2, 3)
+BOOST_PYTHON_MEMBER_FUNCTION_OVERLOADS(Variables_getVar_overloads, getVar, 1, 2)
 
 BOOST_PYTHON_MODULE(PYTHON_LIBRARY_NAME) {
     // bp::object package = bp::scope();
@@ -25,6 +29,8 @@ BOOST_PYTHON_MODULE(PYTHON_LIBRARY_NAME) {
         .def("readParam", readParam2)
         .def("readEnzymeAct", &Variables::readEnzymeAct)
         .def("readGRN", &Variables::readGRN)
+        .def("setVar", static_cast<void(Variables::*)(const std::string&, const double&,const bool&)>(&Variables::setVar), Variables_setVar_overloads())
+        .def("getVar", static_cast<double(Variables::*)(const std::string&,const bool&)const>(&Variables::getVar), Variables_getVar_overloads())
         .def_readwrite("record", &Variables::record)
         .def_readwrite("BF_FI_com", &Variables::BF_FI_com)
         .def_readwrite("EPS_SUCS_com", &Variables::EPS_SUCS_com)
@@ -39,14 +45,6 @@ BOOST_PYTHON_MODULE(PYTHON_LIBRARY_NAME) {
       .def_readwrite(#name, &Variables::name)
       FOR_EACH_GENERIC(ADD_MEMBER_READWRITE, CALL_WITH_EMPTY_ARGS,
                        SEP_EMPTY, (), EXPAND(MEMBERS_ALLVARS))
-                       // PR_Param, BF_Param, FI_Param, RROEA_Param,
-                       // RuACT_Param, SUCS_Param, XanCycle_Param,
-                       // BF_Vel, FI_Vel, PR_Vel, PS_Vel,
-                       // RROEA_Vel, RedoxReg_Vel, RuACT_Vel,
-                       // SUCS_Vel, XanCycle_Vel,
-                       // BFRatio, FIRatio, PRRatio, PSRatio,
-                       // RuACTRatio, SUCSRatio, XanCycleRatio,
-                       // EnzymeAct)
 #undef ADD_MEMBER_READWRITE
         .def_readwrite("PR_Param", &Variables::PR_Param)
         .def_readwrite("BF_Param", &Variables::BF_Param)
@@ -103,6 +101,26 @@ BOOST_PYTHON_MODULE(PYTHON_LIBRARY_NAME) {
         .def_readwrite("SUCS_VEL", &Variables::SUCS_VEL)
         .def_readwrite("XanCycle_VEL", &Variables::XanCycle_VEL)
         .def_readwrite("useC3", &Variables::useC3);
+    // bp::dict dummy;
+    bp::def("run_simulation",
+            python::run_simulation,
+            (bp::arg("driverName"),
+             bp::arg("begintime")=0.0,
+             bp::arg("stoptime")=5000.0,
+             bp::arg("stepsize")=1.0,
+             bp::arg("maxSubSteps")=750,
+             bp::arg("abstol")=1e-5,
+             bp::arg("reltol")=1e-4,
+             // bp::arg("inputs")=dummy,
+             bp::arg("evnFile")="",
+             bp::arg("atpcostFile")="",
+             bp::arg("enzymeFile")="",
+             bp::arg("grnFile")="",
+             bp::arg("iterationsFile")="",
+             bp::arg("outputFile")="",
+             bp::arg("outputParam")=0,
+             bp::arg("outputParamBase")=""),
+            "Run a photosynthesis simulation");
     python::exportModules();
     python::exportDrivers();
 }
@@ -111,14 +129,24 @@ void python::exportModules() {
     bp::object modModule(bp::handle<>(bp::borrowed(PyImport_AddModule(STRINGIZE(PYTHON_LIBRARY_NAME) ".modules"))));
     bp::scope().attr("modules") = modModule;
     bp::scope modScope = modModule;
-    bp::class_<modules::CM>("CM", bp::no_init)
-            .def("setTestSucPath", &modules::CM::setTestSucPath)
-            .staticmethod("setTestSucPath");
-    bp::class_<modules::PR>("PR", bp::no_init)
-            .def("setRUBISCOTOTAL", &modules::PR::setRUBISCOTOTAL)
-            .staticmethod("setRUBISCOTOTAL")
-            .def("setRUBISCOMETHOD", &modules::PR::setRUBISCOMETHOD)
-            .staticmethod("setRUBISCOMETHOD");
+    
+#define ADD_SET_GET_MOD(mod, name)                      \
+    .def("set" #name, &modules::mod::set ## name)       \
+      .staticmethod("set" #name)                        \
+      .def("get" #name, &modules::mod::get ## name)     \
+      .staticmethod("get" #name)
+#define ADD_MODULE_WRAPPERS(mod)                                        \
+    bp::class_<modules::mod>(#mod, bp::no_init)                         \
+      DEFER(FOR_EACH_GENERIC_DEFERED)()(PACK_MACRO(ADD_SET_GET_MOD),    \
+                                        CALL_WITH_PREFIX_ARGS,          \
+                                        SEP_EMPTY, (mod),               \
+                                        EXPAND(MEMBER_NAMES_FOR_MODULE(mod)));
+
+    EVAL(FOR_EACH(ADD_MODULE_WRAPPERS, MEMBER_NAMES_MODULE));
+    
+#undef ADD_MODULE_WRAPPERS
+#undef ADD_SET_GET_MOD
+    
 }
 
 template<class T>
@@ -143,6 +171,64 @@ bp::object python::Driver_Run(T& drv) {
   return out;
 }
 
+bp::object python::run_simulation(const std::string& driverName,
+                                  const double& begintime,
+                                  const double& stoptime,
+                                  const double& stepsize,
+                                  const int& maxSubSteps,
+                                  const double& abstol,
+                                  const double& reltol,
+                                  // bp::object inputs,
+                                  const std::string& evnFile,
+                                  const std::string& atpcostFile,
+                                  const std::string& enzymeFile,
+                                  const std::string& grnFile,
+                                  const std::string& iterationsFile,
+                                  const std::string& outputFile,
+                                  const int& outputParam,
+                                  const std::string& outputParamBase) {
+  DriverType driverChoice = utils::enum_string2key<DriverType>(driverName);
+  std::map<std::string, std::string> inputs_map;
+  bool useC3 = false;
+  std::vector<std::string> outputVars;
+  std::vector<std::string> outputParamVars;
+  ushort dbglvl = 0;
+  bool debugDelta = false;
+  bool debugInternal = false;
+  bool record = false;
+  bool iterationsPreserveState = false;
+  Variables *theVars = nullptr;
+  bp::object inputs;
+  if (inputs) {
+    bp::extract< bp::dict > inputs_ext(inputs);
+    if (inputs_ext.check()) {
+      bp::dict inputs_dict = inputs_ext();
+      bp::list inputs_keys = inputs_dict.keys();
+      for (int i = 0; i < len(inputs_keys); ++i) {
+        bp::object curInput = inputs[inputs_keys[i]];
+        if (curInput) {
+          inputs_map[bp::extract<std::string>(inputs_keys[i])] = bp::extract<double>(curInput);
+        }
+      }
+    }
+  }
+  std::map<std::string, double> out_map = run_simulation(
+         driverChoice,
+         begintime, stoptime, stepsize, maxSubSteps, abstol, reltol,
+         inputs_map, useC3,
+         evnFile, atpcostFile, enzymeFile, grnFile, iterationsFile,
+         outputFile, outputVars,
+         outputParam, outputParamBase, outputParamVars,
+         dbglvl, debugDelta, debugInternal, record,
+         iterationsPreserveState, theVars);
+  bp::dict out;
+  for (typename std::map<std::string, double>::const_iterator it = out_map.begin();
+       it != out_map.end(); it++) {
+    out[it->first] = it->second;
+  }
+  return out;
+}
+
 #define ADD_DRIVER(mod)                                                 \
   std::shared_ptr<drivers::mod ## Driver>                               \
   python::mod ## Driver_Init(PYTHON_DRIVER_ARG_DEFS) {                  \
@@ -156,11 +242,13 @@ FOR_EACH(ADD_DRIVER, EXPAND(MEMBERS_DRIVER))
 
 void python::exportDrivers() {
     void (*selectDriver)(const std::string&) = &drivers::select_driver;
+    void (*deselectDriver)(const std::string&) = &drivers::deselect_driver;
     
     bp::object driverModule(bp::handle<>(bp::borrowed(PyImport_AddModule(STRINGIZE(PYTHON_LIBRARY_NAME) ".drivers"))));
     bp::scope().attr("drivers") = driverModule;
     bp::scope driverScope = driverModule;
-    bp::def("selectDriver", selectDriver);
+    bp::def("selectDriver", selectDriver, (bp::arg("name")=""));
+    bp::def("deselectDriver", deselectDriver), (bp::arg("name")="");
     bp::class_<std::vector<double> >("stl_vector_double")
             .def(bp::vector_indexing_suite<std::vector<double> >());
     

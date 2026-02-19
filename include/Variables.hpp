@@ -614,24 +614,22 @@ public:
        \returns Variable value.
      */
     EPHOTO_API double getVar(const std::string& k,
-                             const bool& isGlymaID = false,
-                             const std::map<MODULE, const ValueSet_t*>& conditions={}) const;
+                             const bool& isGlymaID,
+                             const std::map<MODULE, const ValueSet_t*>& conditions) const;
     /**
-       Get the value of a calculated quantity using variables from the
-         current value sets.
-       \param[in] name String identifying the variable.
-       \param[in] conditions Map of conditions for composite modules that
-         are not stored on Variables instances.
+       Get the value of a variable in a value set.
+       \param[in] k String identifying the variable.
+       \param[in] isGlymaID If true, name will be treated as a GlymaID.
+         If false, name will be treated as the variable name.
        \returns Variable value.
      */
-    EPHOTO_API double getVarCalculated(const std::string& name,
-                                       const std::map<MODULE, const ValueSet_t*>& conditions={}) const;
+    EPHOTO_API double getVar(const std::string& k,
+                             const bool& isGlymaID = false) const;
     
     /**
        Get information about the modules required to calculate variables.
        These variables can be retrieved via the Variables::getVar,
-       Variables::getVarCalculated or Variables::getCalculatedVars
-       methods.
+       method.
      */
     EPHOTO_API static const std::map<std::string, std::vector<MODULE> >&
       getCalculatedVariableRegistry();

@@ -40,23 +40,23 @@ void SUCS::_Rate(const double t, const SUCSCondition* const SUCS_Con, Variables 
     double Pic, OPOPc;
 
     if (theVars->useC3) {
-        Pic = (pow(pow(SUCS::KE61, 2.) + 4. * SUCS::KE61 * PS::getPiTc(), 0.5) - SUCS::KE61) / 2.;
+        Pic = (pow(pow(theVars->SUCS_RC.KE61, 2.) + 4. * theVars->SUCS_RC.KE61 * PS::getPiTc(), 0.5) - theVars->SUCS_RC.KE61) / 2.;
         OPOPc = PS::getPiTc() - Pic;
     } else {
         const double PiTc = theVars->SUCS_Pool.PTc - 2. * (SUCS_Con->FBPc + SUCS_Con->F26BPc) -
                             (SUCS_Con->PGAc + SUCS_Con->T3Pc + SUCS_Con->HexPc + SUCS_Con->SUCP +
                              SUCS::UTPc + SUCS::ATPc);
-        Pic = (pow(pow(SUCS::KE61, 2.) + 4. * SUCS::KE61 * PiTc, 0.5) - SUCS::KE61) / 2.;
+        Pic = (pow(pow(theVars->SUCS_RC.KE61, 2.) + 4. * theVars->SUCS_RC.KE61 * PiTc, 0.5) - theVars->SUCS_RC.KE61) / 2.;
         OPOPc = PiTc - Pic;
     }
     // HexP
 
-    const double F6Pc = (SUCS_Con->HexPc / SUCS::KE5Ratio) / SUCS::KE531;
-    const double G1Pc = SUCS_Con->HexPc * SUCS::KE541 / SUCS::KE5Ratio;
+    const double F6Pc = (SUCS_Con->HexPc / theVars->SUCS_RC.KE5Ratio) / theVars->SUCS_RC.KE531;
+    const double G1Pc = SUCS_Con->HexPc * theVars->SUCS_RC.KE541 / theVars->SUCS_RC.KE5Ratio;
 
     // T3P
-    const double GAPc = SUCS_Con->T3Pc / (1. + SUCS::KE501);
-    const double DHAPc = SUCS_Con->T3Pc * SUCS::KE501 / (1. + SUCS::KE501);
+    const double GAPc = SUCS_Con->T3Pc / (1. + theVars->SUCS_RC.KE501);
+    const double DHAPc = SUCS_Con->T3Pc * theVars->SUCS_RC.KE501 / (1. + theVars->SUCS_RC.KE501);
 
     // UDP
     const double UDPc = theVars->SUCS_Pool.UTc - SUCS::UTPc - SUCS_Con->UDPGc;
@@ -64,58 +64,58 @@ void SUCS::_Rate(const double t, const SUCSCondition* const SUCS_Con, Variables 
     if (theVars->useC3) {
         // Calculate the rate equations
 
-        const double temp51 = SUCS::Km512 * SUCS::Km513 * (1. + GAPc / SUCS::Km512 + DHAPc /
-                                                           SUCS::Km513 + SUCS_Con->FBPc /
-                                                           SUCS::Km511 + GAPc * DHAPc /
-                                                           (SUCS::Km512 * SUCS::Km513));
-        theVars->SUCS_Vel.v51 = SUCS::SUCSV51 * (GAPc * DHAPc - SUCS_Con->FBPc / SUCS::KE51) / temp51;
-        const double Km521AP = SUCS::Km521 * (1. + SUCS_Con->F26BPc / SUCS::KI523);
-        const double temp52 = Km521AP * (1. + SUCS_Con->FBPc / Km521AP + Pic / SUCS::KI522 + F6Pc /
-                                         SUCS::KI521 + Pic * F6Pc / (SUCS::KI521 * SUCS::KI522));
-        theVars->SUCS_Vel.v52 = SUCS::SUCSV52 * (SUCS_Con->FBPc - F6Pc * Pic / SUCS::KE52) / temp52;
+        const double temp51 = theVars->SUCS_RC.Km512 * theVars->SUCS_RC.Km513 * (1. + GAPc / theVars->SUCS_RC.Km512 + DHAPc /
+                                                           theVars->SUCS_RC.Km513 + SUCS_Con->FBPc /
+                                                           theVars->SUCS_RC.Km511 + GAPc * DHAPc /
+                                                           (theVars->SUCS_RC.Km512 * theVars->SUCS_RC.Km513));
+        theVars->SUCS_Vel.v51 = SUCS::SUCSV51 * (GAPc * DHAPc - SUCS_Con->FBPc / theVars->SUCS_RC.KE51) / temp51;
+        const double Km521AP = theVars->SUCS_RC.Km521 * (1. + SUCS_Con->F26BPc / theVars->SUCS_RC.KI523);
+        const double temp52 = Km521AP * (1. + SUCS_Con->FBPc / Km521AP + Pic / theVars->SUCS_RC.KI522 + F6Pc /
+                                         theVars->SUCS_RC.KI521 + Pic * F6Pc / (theVars->SUCS_RC.KI521 * theVars->SUCS_RC.KI522));
+        theVars->SUCS_Vel.v52 = SUCS::SUCSV52 * (SUCS_Con->FBPc - F6Pc * Pic / theVars->SUCS_RC.KE52) / temp52;
 
-        const double temp55 = SUCS::Km551 * SUCS::Km552 * (1. + SUCS::UTPc / SUCS::Km551 + G1Pc /
-                                                           SUCS::Km552 + SUCS_Con->UDPGc /
-                                                           SUCS::Km553 + OPOPc / SUCS::Km554 +
-                                                           SUCS::UTPc * G1Pc / (SUCS::Km551 *
-                                                                                SUCS::Km552) +
-                                                           SUCS_Con->UDPGc * OPOPc / (SUCS::Km553 *
-                                                                                      SUCS::Km554));
+        const double temp55 = theVars->SUCS_RC.Km551 * theVars->SUCS_RC.Km552 * (1. + SUCS::UTPc / theVars->SUCS_RC.Km551 + G1Pc /
+                                                           theVars->SUCS_RC.Km552 + SUCS_Con->UDPGc /
+                                                           theVars->SUCS_RC.Km553 + OPOPc / theVars->SUCS_RC.Km554 +
+                                                           SUCS::UTPc * G1Pc / (theVars->SUCS_RC.Km551 *
+                                                                                theVars->SUCS_RC.Km552) +
+                                                           SUCS_Con->UDPGc * OPOPc / (theVars->SUCS_RC.Km553 *
+                                                                                      theVars->SUCS_RC.Km554));
         theVars->SUCS_Vel.v55 = SUCS::SUCSV55 * (SUCS::UTPc * G1Pc - SUCS_Con->UDPGc * OPOPc /
-                                                 SUCS::KE55) / temp55;
+                                                 theVars->SUCS_RC.KE55) / temp55;
 
-        const double temp56 = (F6Pc + SUCS::Km561 * (1. + SUCS_Con->FBPc / SUCS::KI562)) *
-                              (SUCS_Con->UDPGc + SUCS::Km562 * ( 1. + UDPc / SUCS::KI561) *
-                               (1. + SUCS_Con->SUCP / SUCS::KI563) * (1. + Pic / SUCS::KI564) *
-                               (1. + SUCS_Con->SUC / SUCS::KI565));
+        const double temp56 = (F6Pc + theVars->SUCS_RC.Km561 * (1. + SUCS_Con->FBPc / theVars->SUCS_RC.KI562)) *
+                              (SUCS_Con->UDPGc + theVars->SUCS_RC.Km562 * ( 1. + UDPc / theVars->SUCS_RC.KI561) *
+                               (1. + SUCS_Con->SUCP / theVars->SUCS_RC.KI563) * (1. + Pic / theVars->SUCS_RC.KI564) *
+                               (1. + SUCS_Con->SUC / theVars->SUCS_RC.KI565));
         theVars->SUCS_Vel.v56 = SUCS::SUCSV56 * (F6Pc * SUCS_Con->UDPGc - SUCS_Con->SUCP * UDPc /
-                                                 SUCS::KE56) / temp56;
+                                                 theVars->SUCS_RC.KE56) / temp56;
 
-        const double temp57 = SUCS_Con->SUCP + SUCS::Km571 * (1. + SUCS_Con->SUC / SUCS::Ki572);
-        theVars->SUCS_Vel.v57 = SUCS::SUCSV57 * (SUCS_Con->SUCP - SUCS_Con->SUC * Pic / SUCS::KE57) /
+        const double temp57 = SUCS_Con->SUCP + theVars->SUCS_RC.Km571 * (1. + SUCS_Con->SUC / theVars->SUCS_RC.Ki572);
+        theVars->SUCS_Vel.v57 = SUCS::SUCSV57 * (SUCS_Con->SUCP - SUCS_Con->SUC * Pic / theVars->SUCS_RC.KE57) /
                                 temp57;
 
-        const double temp58 = SUCS::Km581 * (1. + SUCS_Con->F26BPc / SUCS::Km581) *
-                              (1. + Pic / SUCS::KI582) * (1. + F6Pc / SUCS::KI581);
+        const double temp58 = theVars->SUCS_RC.Km581 * (1. + SUCS_Con->F26BPc / theVars->SUCS_RC.Km581) *
+                              (1. + Pic / theVars->SUCS_RC.KI582) * (1. + F6Pc / theVars->SUCS_RC.KI581);
         theVars->SUCS_Vel.v58 = SUCS::SUCSV58 * SUCS_Con->F26BPc / temp58;
 
-        const double temp59 = (F6Pc + SUCS::Km593 * (1. + SUCS_Con->F26BPc / SUCS::Km592) *
-                               (1. + DHAPc / SUCS::KI592)) * (SUCS::ATPc + SUCS::Km591 *
-                                                             (1. + SUCS::ADPc/SUCS::KI591));
+        const double temp59 = (F6Pc + theVars->SUCS_RC.Km593 * (1. + SUCS_Con->F26BPc / theVars->SUCS_RC.Km592) *
+                               (1. + DHAPc / theVars->SUCS_RC.KI592)) * (SUCS::ATPc + theVars->SUCS_RC.Km591 *
+                                                             (1. + SUCS::ADPc/theVars->SUCS_RC.KI591));
         theVars->SUCS_Vel.v59 = SUCS::V59 * SUCS::Vfactor59 * SUCS::Vf_T59 *
-                                (SUCS::ATPc * F6Pc - SUCS::ADPc * SUCS_Con->F26BPc / SUCS::KE59) /
+                                (SUCS::ATPc * F6Pc - SUCS::ADPc * SUCS_Con->F26BPc / theVars->SUCS_RC.KE59) /
                                 temp59;
 
-        const double temp60 = SUCS::Km602 * SUCS::Km603 * (1. + SUCS::ATPc / SUCS::Km602 + UDPc /
-                                                           SUCS::Km603 + SUCS::ATPc * UDPc /
-                                                           (SUCS::Km602 * SUCS::Km603) + SUCS::ADPc /
-                                                           SUCS::Km601 + SUCS::UTPc / SUCS::Km604 +
-                                                           SUCS::ADPc * SUCS::UTPc / (SUCS::Km601 *
-                                                                                      SUCS::Km604));
-        theVars->SUCS_Vel.v60 = V60 * (SUCS::ATPc * UDPc - SUCS::ADPc * SUCS::UTPc / SUCS::KE60 ) /
+        const double temp60 = theVars->SUCS_RC.Km602 * theVars->SUCS_RC.Km603 * (1. + SUCS::ATPc / theVars->SUCS_RC.Km602 + UDPc /
+                                                           theVars->SUCS_RC.Km603 + SUCS::ATPc * UDPc /
+                                                           (theVars->SUCS_RC.Km602 * theVars->SUCS_RC.Km603) + SUCS::ADPc /
+                                                           theVars->SUCS_RC.Km601 + SUCS::UTPc / theVars->SUCS_RC.Km604 +
+                                                           SUCS::ADPc * SUCS::UTPc / (theVars->SUCS_RC.Km601 *
+                                                                                      theVars->SUCS_RC.Km604));
+        theVars->SUCS_Vel.v60 = V60 * (SUCS::ATPc * UDPc - SUCS::ADPc * SUCS::UTPc / theVars->SUCS_RC.KE60 ) /
                                 temp60;
 
-        theVars->SUCS_Vel.v62 = V62 * SUCS_Con->SUC / (SUCS_Con->SUC + SUCS::Km621);
+        theVars->SUCS_Vel.v62 = V62 * SUCS_Con->SUC / (SUCS_Con->SUC + theVars->SUCS_RC.Km621);
 
 
         theVars->SUCS_Vel.vatpf = SUCS::Vmatpf * SUCS::ADPc * Pic /((SUCS::ADPc + 0.014)*(Pic + 0.3));
@@ -133,31 +133,31 @@ void SUCS::_Rate(const double t, const SUCSCondition* const SUCS_Con, Variables 
         ////// Calculate the rate equations
 
         // Here the regulation of FBPase activity via the F26BP need to be implemented.
-        const double Km521AP = SUCS::Km521 * (1. + SUCS_Con->F26BPc / SUCS::KI523);
-        const double temp51 = SUCS::Km512 * SUCS::Km513 * (1. + GAPc / SUCS::Km512 + DHAPc /
-                                                           SUCS::Km513 + SUCS_Con->FBPc / SUCS::Km511 +
-                                                           GAPc * DHAPc / (SUCS::Km512 * SUCS::Km513));
-        const double temp52 = Km521AP * (1. + SUCS_Con->FBPc / Km521AP + Pic / SUCS::KI522 + F6Pc /
-                                         SUCS::KI521 + Pic * F6Pc / (SUCS::KI521 * SUCS::KI522));
-        const double temp55 = SUCS::Km551 * SUCS::Km552 * (1. + SUCS::UTPc / SUCS::Km552 + G1Pc /
-                                                           SUCS::Km551 + SUCS_Con->UDPGc / SUCS::Km554 +
-                                                           OPOPc / SUCS::Km553 + SUCS::UTPc * G1Pc /
-                                                           (SUCS::Km551 * SUCS::Km552) +
+        const double Km521AP = theVars->SUCS_RC.Km521 * (1. + SUCS_Con->F26BPc / theVars->SUCS_RC.KI523);
+        const double temp51 = theVars->SUCS_RC.Km512 * theVars->SUCS_RC.Km513 * (1. + GAPc / theVars->SUCS_RC.Km512 + DHAPc /
+                                                           theVars->SUCS_RC.Km513 + SUCS_Con->FBPc / theVars->SUCS_RC.Km511 +
+                                                           GAPc * DHAPc / (theVars->SUCS_RC.Km512 * theVars->SUCS_RC.Km513));
+        const double temp52 = Km521AP * (1. + SUCS_Con->FBPc / Km521AP + Pic / theVars->SUCS_RC.KI522 + F6Pc /
+                                         theVars->SUCS_RC.KI521 + Pic * F6Pc / (theVars->SUCS_RC.KI521 * theVars->SUCS_RC.KI522));
+        const double temp55 = theVars->SUCS_RC.Km551 * theVars->SUCS_RC.Km552 * (1. + SUCS::UTPc / theVars->SUCS_RC.Km552 + G1Pc /
+                                                           theVars->SUCS_RC.Km551 + SUCS_Con->UDPGc / theVars->SUCS_RC.Km554 +
+                                                           OPOPc / theVars->SUCS_RC.Km553 + SUCS::UTPc * G1Pc /
+                                                           (theVars->SUCS_RC.Km551 * theVars->SUCS_RC.Km552) +
                                                            SUCS_Con->UDPGc * OPOPc /
-                                                           (SUCS::Km553 * SUCS::Km554));
-        const double temp56 = (F6Pc + SUCS::Km561 * (1. + SUCS_Con->FBPc / SUCS::KI562)) *
-                              (SUCS_Con->UDPGc + SUCS::Km562 * (1. + UDPc / SUCS::KI561) *
-                               (1. + SUCS_Con->SUCP / SUCS::KI563) * (1. + Pic / SUCS::KI564) *
-                               (1. + SUCS_Con->SUC / SUCS::KI565));
+                                                           (theVars->SUCS_RC.Km553 * theVars->SUCS_RC.Km554));
+        const double temp56 = (F6Pc + theVars->SUCS_RC.Km561 * (1. + SUCS_Con->FBPc / theVars->SUCS_RC.KI562)) *
+                              (SUCS_Con->UDPGc + theVars->SUCS_RC.Km562 * (1. + UDPc / theVars->SUCS_RC.KI561) *
+                               (1. + SUCS_Con->SUCP / theVars->SUCS_RC.KI563) * (1. + Pic / theVars->SUCS_RC.KI564) *
+                               (1. + SUCS_Con->SUC / theVars->SUCS_RC.KI565));
 
-        const double temp57 = SUCS_Con->SUCP + SUCS::Km571 * (1. + SUCS_Con->SUC / SUCS::Ki572);
-        const double temp58 = SUCS_Con->F26BPc + SUCS::Km581 * (1. + F6Pc / SUCS::KI581) *
+        const double temp57 = SUCS_Con->SUCP + theVars->SUCS_RC.Km571 * (1. + SUCS_Con->SUC / theVars->SUCS_RC.Ki572);
+        const double temp58 = SUCS_Con->F26BPc + theVars->SUCS_RC.Km581 * (1. + F6Pc / theVars->SUCS_RC.KI581) *
                               (1. + SUCS_Con->FBPc / 0.08);
 
-        SUCS::Km591 = 5. * theVars->SUCSRatio[60];
-        SUCS::Km593 = 0.55 * theVars->SUCSRatio[61];
-        const double temp59 = (F6Pc + SUCS::Km593) * (SUCS::ATPc + SUCS::Km591 *
-                                                      (1. + SUCS::ADPc / SUCS::KI591));// This is the orginal equation
+        theVars->SUCS_RC.Km591 = 5. * theVars->SUCSRatio[60];
+        theVars->SUCS_RC.Km593 = 0.55 * theVars->SUCSRatio[61];
+        const double temp59 = (F6Pc + theVars->SUCS_RC.Km593) * (SUCS::ATPc + theVars->SUCS_RC.Km591 *
+                                                      (1. + SUCS::ADPc / theVars->SUCS_RC.KI591));// This is the orginal equation
 
         const double Km_in = 0.6 * theVars->SUCSRatio[62];
 
@@ -182,20 +182,20 @@ void SUCS::_Rate(const double t, const SUCSCondition* const SUCS_Con, Variables 
         ////////////////////////////////////////////////////////////////////////////
         // Assign table
         ////////////////////////////////////////////////////////////////////////////////
-        theVars->SUCS_Vel.v51 = SUCS::V51 * (GAPc * DHAPc - SUCS_Con->FBPc / SUCS::KE51) / temp51;  // DHAP+GAP --FBP
-        theVars->SUCS_Vel.v52 = SUCS::V52 * (SUCS_Con->FBPc - F6Pc * Pic / SUCS::KE52) / temp52;    // FBP --F6P + Pi
-        theVars->SUCS_Vel.v55 = SUCS::V55 * (SUCS::UTPc * G1Pc - SUCS_Con->UDPGc * OPOPc / SUCS::KE55) /
+        theVars->SUCS_Vel.v51 = SUCS::V51 * (GAPc * DHAPc - SUCS_Con->FBPc / theVars->SUCS_RC.KE51) / temp51;  // DHAP+GAP --FBP
+        theVars->SUCS_Vel.v52 = SUCS::V52 * (SUCS_Con->FBPc - F6Pc * Pic / theVars->SUCS_RC.KE52) / temp52;    // FBP --F6P + Pi
+        theVars->SUCS_Vel.v55 = SUCS::V55 * (SUCS::UTPc * G1Pc - SUCS_Con->UDPGc * OPOPc / theVars->SUCS_RC.KE55) /
                                 temp55; // G1P+UTP --OPOP+UDPG
-        theVars->SUCS_Vel.v56 = SUCS::V56 * (F6Pc * SUCS_Con->UDPGc - SUCS_Con->SUCP * UDPc / SUCS::KE56) /
+        theVars->SUCS_Vel.v56 = SUCS::V56 * (F6Pc * SUCS_Con->UDPGc - SUCS_Con->SUCP * UDPc / theVars->SUCS_RC.KE56) /
                                 temp56 * 2. * (SUCS_Con->HexPc / (SUCS_Con->HexPc + 2.));// UDPG+F6P--SUCP + UDP
-        theVars->SUCS_Vel.v57 = SUCS::V57 * (SUCS_Con->SUCP - SUCS_Con->SUC * Pic / SUCS::KE57) / temp57; // SUCP--Pi + SUC
-        theVars->SUCS_Vel.v58 = SUCS::V58 * SUCS_Con->F26BPc / (temp58 * (1. + Pic / SUCS::KI582) *
-                                                                (1. + F6Pc / KI583)); // F26BP--F6P + Pi
+        theVars->SUCS_Vel.v57 = SUCS::V57 * (SUCS_Con->SUCP - SUCS_Con->SUC * Pic / theVars->SUCS_RC.KE57) / temp57; // SUCP--Pi + SUC
+        theVars->SUCS_Vel.v58 = SUCS::V58 * SUCS_Con->F26BPc / (temp58 * (1. + Pic / theVars->SUCS_RC.KI582) *
+                                                                (1. + F6Pc / theVars->SUCS_RC.KI583)); // F26BP--F6P + Pi
         theVars->SUCS_Vel.v59 = SUCS::V59 * (SUCS::ATPc * F6Pc - SUCS::ADPc * SUCS_Con->F26BPc /
-                                             SUCS::KE59) / temp59;     // F6P + ATP --ADP + F26BP
+                                             theVars->SUCS_RC.KE59) / temp59;     // F6P + ATP --ADP + F26BP
         theVars->SUCS_Vel.v60 = 0.;  // ATP+UDP --UTP + ADP
         theVars->SUCS_Vel.v61 = 0.;  // POPO --2PO
-        theVars->SUCS_Vel.v62 = SUCS::V62 * SUCS_Con->SUC / (SUCS_Con->SUC + SUCS::Km621); // SUC SINK
+        theVars->SUCS_Vel.v62 = SUCS::V62 * SUCS_Con->SUC / (SUCS_Con->SUC + theVars->SUCS_RC.Km621); // SUC SINK
         theVars->SUCS_Vel.vdhap_in = SUCS::Vdhap_in * Pic / (Pic + Km_in);         // DHAP IN
         theVars->SUCS_Vel.vgap_in = SUCS::Vgap_in * Pic / (Pic + Km_in);           // GAP Export from chloroplast
         theVars->SUCS_Vel.vpga_in = vpga_in;   // PGA export from chloroplast

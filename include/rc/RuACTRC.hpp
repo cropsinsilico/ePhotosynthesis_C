@@ -37,39 +37,10 @@ namespace RC {
  */
 class RuACTRC : public RCBase<RuACTRC, MODULE_RuACT> {
 public:
-    DECLARE_VALUE_SET(RuACTRC, RCBase<RuACTRC, MODULE_RuACT>)
-    RuACTRC() : RCBase<RuACTRC, MODULE_RuACT>() {
-        initMembers();
-    }
-    /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The RuACTRC object to copy
-      */
-    RuACTRC(const RuACTRC &other) : RCBase<RuACTRC, MODULE_RuACT>(other) {
-      initMembers();
-      *this = other;
-    }
-    RuACTRC& operator=(const RuACTRC &other) {
-        k1 = other.k1;
-        kn1 = other.kn1;
-        km1 = other.km1;
-        Ke2 = other.Ke2;
-        Ke3 = other.Ke3;
-        k6 = other.k6;
-        kc = other.kc;
-        ko = other.ko;
-        k7 = other.k7;
-        kr = other.kr;
-        kn7 = other.kn7;
-        RCA = other.RCA;
-	copyMembers(other);
-	return *this;
-    }
-
+  DECLARE_RC(RuACT)
 };
 
-  DEFINE_VALUE_SET_HEADER(RuACTRC);
+  DEFINE_RC_HEADER(RuACT);
 
 }  // namespace RC
 }  // namespace ePhotosynthesis

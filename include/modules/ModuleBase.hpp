@@ -474,7 +474,7 @@ public:
 	    const VARS_CLASS_VAR(name, COND)*				\
 	    const VARS_INST_VAR_MOD_BASE(name, COND),			\
 	    Variables *theVars);                                        \
-  FOR_EACH(SET_GET, EXPAND(MEMBERS_ ## name));                          \
+  FOR_EACH(SET_GET, EXPAND(MEMBER_NAMES_FOR_MODULE(name)));             \
   public:
 /**
    Macro for boiler plate declaring a singular module class

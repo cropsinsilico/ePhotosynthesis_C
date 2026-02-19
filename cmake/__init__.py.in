@@ -28,4 +28,4 @@ except ImportError:
     from .pyPhotosynthesis import Variables  # noqa: F401
     ## @endcond
 
-from .pyPhotosynthesis import Variables, modules, drivers
+from .pyPhotosynthesis import Variables, modules, drivers, run_simulation

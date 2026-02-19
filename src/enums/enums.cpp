@@ -156,6 +156,24 @@ namespace ePhotosynthesis {
     return it->first;
   };
   template<MODULE M, PARAM_TYPE PT>
+  std::string ValueSetEnum<M, PT>::getCitation(const typename ValueSetEnum<M, PT>::Type& x) {
+    typename std::map<typename ValueSetEnum<M, PT>::Type, std::string>::const_iterator it;
+    it = citations.find(x);
+    if (it == citations.end()) {
+      throw std::runtime_error("Could not locate Citation for '" + names.find(x)->second + "'");
+    }
+    return it->second;
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  std::string ValueSetEnum<M, PT>::getCitation(const typename ValueSetEnum<M, PT>::Type& x, const std::string& defaultV) {
+    typename std::map<typename ValueSetEnum<M, PT>::Type, std::string>::const_iterator it;
+    it = citations.find(x);
+    if (it == citations.end()) {
+      return defaultV;
+    }
+    return it->second;
+  };
+  template<MODULE M, PARAM_TYPE PT>
   std::vector<std::string> ValueSetEnum<M, PT>::getRequiredModule(const typename ValueSetEnum<M, PT>::Type& x) {
     typename std::map<typename ValueSetEnum<M, PT>::Type, std::vector<std::string>>::const_iterator it;
     it = required_modules.find(x);

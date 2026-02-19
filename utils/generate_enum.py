@@ -4,6 +4,9 @@ import glob
 import pprint
 import argparse
 import copy
+from generate_macros import Generator
+
+MAX_MACRO_ARGS = Generator.max_args
 
 
 _registry = {'parser': {}, 'generator': {}}
@@ -1440,6 +1443,11 @@ class EnumParserBase(EnumBase):
         if member['name']:
             self.param[self.current_key].append(member)
             self._current_keys['lastidx'] = int(member['idx'])
+            if len(self.param[self.current_key]) > MAX_MACRO_ARGS:
+                raise RuntimeError(
+                    f'There are more members in {self.current_key} '
+                    f'({len(self.param[self.current_key])}) '
+                    f'than the maximum allowed by macros ({MAX_MACRO_ARGS})')
 
     def parse(self, src, **kwargs):
         with open(src, 'r') as fd:
@@ -2114,7 +2122,8 @@ class ParamFileParser(EnumParserBase):
     optional_keys = ['doc', 'val_alt', 'qualifiers']
     qualifier_regex = re.compile(
         r'\s*(?P<name>\w+)(?:\s*=\s*(?P<value>(?:\w[\w\.\s]*)|(?:'
-        r'\{\s*\w[\w\s]*\s*(?:\,\s*\w[\w\s]*)*\})))?'
+        r'\{\s*\w[\w\s]*\s*(?:\:\s*\w[\w\.\s]*\s*)?'
+        r'(?:\,\s*\w[\w\s]*)*\})))?'
         r'\s*(?:(?:\,\s*)|(?:$))'
     )
 
@@ -2435,6 +2444,10 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
             'action': 'store_true',
             'help': "Allow the static collection to be editable",
         },
+        no_from_function={
+            'action': 'store_true',
+            'help': "Don't add a function for a reverse search.",
+        },
         value_key={
             'type': str,
             'help': ("Name of key where values controlling the "
@@ -2449,6 +2462,7 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
     )
     collection_type = None
     default_is_editable = False
+    default_no_from_function = False
     default_value_key = None
     default_secondary_value_key = None
     _default_function_param = {
@@ -2688,6 +2702,7 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
         if function_type == 'from' and (
                 self.value_type == 'double'
                 or self.value_key == 'ALIASES'
+                or self.no_from_function
                 or self.packed):
             return []
         enum_name = kwargs.pop('enum_name', 'Type')
@@ -4140,12 +4155,19 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 'default_explicit': True,
                 'default_ragged_right': True,
             },
+            'citations': {
+                'default_value_type': 'std::string',
+                'default_value_key': 'CITATION',
+                'default_explicit': True,
+            },
             'required_modules': {
                 'default_value_type': 'std::string',
                 'default_value_key': 'REQUIRED_MODULES',
                 'default_explicit': True,
                 'default_packed': True,
             },
+            # 'conditional_values': {
+            # },
         },
         'flagmap': {
             'value_flags': {
@@ -4869,11 +4891,18 @@ def ePhotosynthesis(args):
             'reversed': True,
             'explicit': True,
             'singular_collection_name': 'alias',
+            'no_from_function': True,
         },
         'docs': {
             'explicit': True,
             'singular_collection_name': 'docs',
             'ragged_right': True,
+        },
+        'citations': {
+            'explicit': True,
+            'singular_collection_name': 'citation',
+            'ragged_right': True,
+            'no_from_function': True,
         },
         'required_modules': {
             'explicit': True,
@@ -4881,6 +4910,8 @@ def ePhotosynthesis(args):
             'ragged_right': True,
             'packed': True,
         },
+        # 'conditional_values': {
+        # },
         'value_flags': {
             'is_editable': True,
             'explicit': True,

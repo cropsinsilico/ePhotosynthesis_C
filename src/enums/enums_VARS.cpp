@@ -250,6 +250,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)ROE              , "[ON_DEMAND,REQUIRED_MODULES={FI}]"}
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::citations = {};
+  template<>
   const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::vector<std::string>> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::required_modules = {
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Vc               , { "RuACT" }},
     {ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::SCOPED_ENUM_TYPE(Type)Vo               , { "RuACT" }},

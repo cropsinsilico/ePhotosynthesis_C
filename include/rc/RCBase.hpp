@@ -28,6 +28,27 @@
 
 #include "../ValueSet.hpp"
 
-#define MEMBERS_RC BF, FI, FIBF, RROEA, RuACT, RedoxReg
+#define MEMBERS_RC BF, FI, FIBF, PR, PS, RROEA, RuACT, RedoxReg, SUCS, XanCycle
 
 DECLARE_PARAM_BASE(RC)
+
+#define COPY_RC_MEMBER(name) name = other.name
+#define DECLARE_RC(name)                                                \
+  DECLARE_VALUE_SET(name ## RC, RCBase<name ## RC, MODULE_ ## name>)    \
+  name ## RC() : RCBase<name ## RC, MODULE_ ## name>() {                \
+    initMembers();                                                      \
+  }                                                                     \
+  /** Copy constructor that makes a deep copy of the given object */    \
+  /**  @param other The RC object to copy */                            \
+  name ## RC(const name ## RC &other) : RCBase<name ## RC, MODULE_ ## name>(other) { \
+    initMembers();                                                      \
+    *this = other;                                                      \
+  }                                                                     \
+  name ## RC& operator=(const name ## RC &other) {                      \
+    FOR_EACH(COPY_RC_MEMBER, VARS_MEMBER_NAMES(name, RC));              \
+    copyMembers(other);                                                 \
+    return *this;                                                       \
+  }
+
+#define DEFINE_RC_HEADER(name)                  \
+  DEFINE_VALUE_SET_HEADER(name ## RC)

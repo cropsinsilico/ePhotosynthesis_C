@@ -35,38 +35,10 @@ namespace RC {
 // class for holding RedoxRegRC data
 class RedoxRegRC : public RCBase<RedoxRegRC, MODULE_RedoxReg> {
 public:
-    DECLARE_VALUE_SET(RedoxRegRC, RCBase<RedoxRegRC, MODULE_RedoxReg>)
-    RedoxRegRC() : RCBase<RedoxRegRC, MODULE_RedoxReg>() {
-        initMembers();
-    }
-
-    /**
-      Copy constructor that makes a deep copy of the given object
-
-      @param other The RedoxRegRC object to copy
-      */
-    RedoxRegRC(const RedoxRegRC &other) : RCBase<RedoxRegRC, MODULE_RedoxReg>(other) {
-      initMembers();
-      *this = other;
-    }
-    RedoxRegRC& operator=(const RedoxRegRC &other) {
-      Em_Thiom = other.Em_Thiom;
-      Em_FBPase = other.Em_FBPase;
-      Em_SBPase = other.Em_SBPase;
-      Em_PRK = other.Em_PRK;
-      Em_ATPase = other.Em_ATPase;
-      Thiom0 = other.Thiom0;
-      FBPase0 = other.FBPase0;
-      SBPase0 = other.SBPase0;
-      PRK0 = other.PRK0;
-      ATPase0 = other.ATPase0;
-      copyMembers(other);
-      return *this;
-    }
-
+  DECLARE_RC(RedoxReg)
 };
 
-  DEFINE_VALUE_SET_HEADER(RedoxRegRC);
+  DEFINE_RC_HEADER(RedoxReg);
 
 }  // namespace RC
 }  // namespace ePhotosynthesis

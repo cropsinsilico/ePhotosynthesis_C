@@ -30,7 +30,7 @@
 
 #define PARENT_PR PS_PR
 #define NRATIO_PR 48
-#define PARAM_TYPES_PR COND, VEL
+#define PARAM_TYPES_PR COND, VEL, RC
 #define CONNECT_PR PS
 #define COUNT_PR 10
 #define BOOL_MEMBERS_PR 

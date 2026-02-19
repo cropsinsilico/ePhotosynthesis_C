@@ -30,7 +30,7 @@
 
 #define PARENT_PS PS_PR
 #define NRATIO_PS 103
-#define PARAM_TYPES_PS COND, VEL
+#define PARAM_TYPES_PS COND, VEL, RC
 #define CONNECT_PS
 #define COUNT_PS 12
 #define CONTROL_PS (C3, ADPG)

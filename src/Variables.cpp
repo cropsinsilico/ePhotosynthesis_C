@@ -854,6 +854,10 @@ double Variables::getVar(const std::string& k,
     name = parseVar(k, mod, pt, isGlymaID, false, (!isGlymaID));
     return getVar(mod, pt, name, isGlymaID, conditions);
 }
+double Variables::getVar(const std::string& k, const bool& isGlymaID) const {
+    std::map<MODULE, const ValueSet_t*> conditions;
+    return getVar(k, isGlymaID, conditions);
+}
 double Variables::calculate(const EnumType& k) const {
   switch(k) {
   case EnumType::Vc:
@@ -944,92 +948,6 @@ double Variables::calculate(const EnumType& k) const {
                     k, "\" (including calculated variables)");
   }
   return 0.0;
-}
-double Variables::getVarCalculated(const std::string& k,
-                                   const std::map<MODULE, const ValueSet_t*>& conditions) const {
-    if (k == "Light intensity")
-	return TestLi;
-    else if (k == "Vc")  // CarbonRate
-	return RuACT_Vel.v6_1 * AVR;
-    else if (k == "Vo")  // VPR
-	return RuACT_Vel.v6_2 * AVR;
-    else if (k == "VPGA")
-	return SUCS_Vel.vpga_use * AVR;
-    else if (k == "Vstarch")
-	return (PS_Vel.v23 - PS_Vel.v25) * AVR;
-    else if (k == "Vsucrose")
-	return SUCS_Vel.vdhap_in * AVR;
-    else if (k == "VT3P")
-	return (PS_Vel.v31 + PS_Vel.v33) * AVR;
-    else if (k == "Vt_glycerate")
-	return PR_Vel.v1in * AVR;
-    else if (k == "Vt_glycolate")
-	return PR_Vel.v2out * AVR;
-    else if (k == "PSIIabs")
-	return FI_Vel.vP680_d;
-    else if (k == "PSIabs")
-	return BF_Vel.Vbf11;
-    else if (k == "CO2AR")
-	return TargetFunVal(this);
-    else if (k == "ROE")
-        return FI_Vel.vS3_S0;
-        // return BF_Vel.VgPQH2 * 2.;
-    else if (k == "dissipation") {
-        const double vA_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vA_d");
-        const double vU_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vU_d");
-        return vA_d + vU_d;
-    } else if (k == "fluoresence") {
-        const double vA_f = getVar(MODULE_FI, PARAM_TYPE_VEL, "vA_f");
-        const double vU_f = getVar(MODULE_FI, PARAM_TYPE_VEL, "vU_f");
-        return vA_f + vU_f;
-    } else if (k == "fPSII") {
-        double It = 0.0;
-        if (useC3)
-            It = lightParam;
-        else
-            It = GLight;
-        if (It == 0)
-            return 0.0;
-        const double It2 = It * 27.0 / 47.0;
-        const double vA_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vA_d");
-        const double vU_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vU_d");
-        const double f = getVarCalculated("fluoresence");
-        return (It2 - f - vA_d - vU_d) / It2;
-    } else if (k == "MembranePotential") {
-        const double PHs = getVar(MODULE_BF, PARAM_TYPE_COND, "PHs");
-        const double Hfs = pow(10., -PHs) * 1000.;
-        const double OHs = pow(10., -14.) / (Hfs / 1000.) * 1000.;
-        const double BFHs = getVar(MODULE_BF, PARAM_TYPE_COND, "BFHs");
-        const double BFs = BFHs - Hfs;
-        const double BFTs = getVar(MODULE_BF, PARAM_TYPE_POOL, "BFTs");
-        const double BFns = BFTs - BFs;
-        const double Ks = getVar(MODULE_BF, PARAM_TYPE_COND, "Ks");
-        const double Mgs = getVar(MODULE_BF, PARAM_TYPE_COND, "Mgs");
-        const double Cls = getVar(MODULE_BF, PARAM_TYPE_COND, "Cls");
-        const double RVA = getVar(MODULE_BF, PARAM_TYPE_RC, "RVA");
-        double NetCharge = Hfs + Ks + 2. * Mgs - OHs - Cls - BFns;
-        NetCharge = NetCharge / 1000.;
-        NetCharge = NetCharge * RVA;
-        const double AfC = 6.022 * pow(10., 23.);
-        const double UnitCharge = 1.6 * pow(10., -19.);
-        NetCharge = NetCharge * AfC * UnitCharge;
-        return 2. * NetCharge / 6. * pow(10., 6.);
-    } else if ((k == "expr_psbs") || (k == "QH") || (k == "one_minus_QH")) {
-        const double pH = getVar(MODULE_BF, PARAM_TYPE_COND, "PHl");
-        const double hill_psbs = getVar(MODULE_XanCycle, PARAM_TYPE_RC,
-                                        "hill_psbs");
-        const double pK_psbs = getVar(MODULE_XanCycle, PARAM_TYPE_RC,
-                                      "pK_psbs");
-        const double expr_psbs = pow(10., (hill_psbs * (pH - pK_psbs)));
-        if (k == "expr_psbs")
-            return expr_psbs;
-        else if (k == "one_minus_QH")
-            return expr_psbs / (1 + expr_psbs);
-        return 1.0 / (1.0 + expr_psbs);
-    } else {
-        ERROR_VALUE_SET("Could not find variable matching string \"",
-                        k, "\" (including calculated variables)");
-    }
 }
 const std::map<std::string, std::vector<MODULE> >&
 Variables::getCalculatedVariableRegistry() {

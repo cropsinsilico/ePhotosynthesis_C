@@ -3304,6 +3304,11 @@ namespace ePhotosynthesis {
   FOR_EACH(CONCATENATE(X, _CORE), EXPAND VARS_INST_MODULES);	\
   FOR_EACH(CONCATENATE(X, _CONNECTION), VARS_INST_CONNECTIONS)
 
+#define VARS_MEMBER_NAMES(mod, pt)                                      \
+  STRIP_FIRST_AND_LAST_ARGS(CONCATENATE(MEMBERS_, VARS_CLASS_VAR_LOCAL(mod,pt)))
+#define MEMBER_NAMES_FOR_MODULE(mod)                    \
+  STRIP_FIRST_AND_LAST_ARGS(CONCATENATE(MEMBERS_, mod))
+
 #define VARS_INST_CALL(X, args, mod, pt)	\
     VARS_INST_VAR(mod, pt).X args
 #define VARS_INST_CALL_STATIC(X, args, mod)	\

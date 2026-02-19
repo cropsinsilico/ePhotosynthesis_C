@@ -555,7 +555,19 @@
 #define FOR_EACH_GENERIC_NESTED_PACKED_NO_ARGS(what, sep, ...)          \
   FOR_EACH_GENERIC_NESTED(what, CALL_NESTED_PACKED_NO_ARGS, sep,        \
                           (), __VA_ARGS__)
-
+// This dosn't work yet, modeled on ADD_MODULE_WRAPPERS in src/python/wrappers.cpp
+/*
+#define FOR_EACH_GENERIC_INNER(out, what, caller, sep, args, finner)    \
+  DEFER(FOR_EACH_GENERIC_DEFERED)()(what, caller, sep, args,            \
+                                    EXPAND(FOR_EACH_GENERIC(ADD_PARENS, CALL_WITH_PREFIX_ARGS, \
+                                                            SEP_COMMA, (out), \
+                                                            CALL_MACRO(finner, out))))
+#define FOR_EACH_GENERIC_OUTER(what, caller, sep_out, sep_in, args, finner, ...) \
+  FOR_EACH_GENERIC(FOR_EACH_GENERIC_INNER,                              \
+                   CALL_WITH_SUFFIX_ARGS,                               \
+                   sep_out, (PACK_MACRO(what), caller, sep_in, args, finner), \
+                   __VA_ARGS__))
+*/
 
 #define COMBO_ARGS_BASE(METHOD, ...)                           \
   FOR_EACH_GENERIC_NESTED(METHOD, CALL_WITH_EMPTY_ARGS_PACKED, \
@@ -595,6 +607,22 @@
 #define VS_ARGS_T_NODEF(args) VS_ARGS_T_NODEF_ args
 #define VS_ARGS_T_NODEF_(...)                                           \
   EVAL(ADD_PARENS(FOR_EACH_COMMA_UNSAFE(MAKE_ARG_T_NODEF, __VA_ARGS__)))
+
+#ifndef GET_ARGS_BEFORE_0
+#define GET_ARGS_BEFORE_0(...)
+#endif
+
+#define STRIP_FIRST_ARG_0(...)
+#define STRIP_FIRST_ARG_1(first, ...) __VA_ARGS__
+#define STRIP_FIRST_ARG(...)                                            \
+  IF_FUNC(IS_MORE_THAN_NARGS_N(1, __VA_ARGS__), STRIP_FIRST_ARG_)(__VA_ARGS__)
+#define STRIP_LAST_ARG_0(...)
+#define STRIP_LAST_ARG_1(first, ...)                            \
+  GET_ARGS_BEFORE_N(NARGS(__VA_ARGS__), first, __VA_ARGS__)
+#define STRIP_LAST_ARG(...)                                             \
+  IF_FUNC(IS_MORE_THAN_NARGS_N(1, __VA_ARGS__), STRIP_LAST_ARG_)(__VA_ARGS__)
+#define STRIP_FIRST_AND_LAST_ARGS(...)          \
+  STRIP_LAST_ARG(STRIP_FIRST_ARG(__VA_ARGS__))
 
 #ifdef DO_TEST_MACROS_PREPROCESS
 
@@ -707,6 +735,14 @@ MACRO_TEST(FOR_EACH, 15, FOR_EACH(PASS_THROUGH, 15));
 MACRO_TEST_NOEQ(FOR_EACH, PACK_MACRO(A; B; C), FOR_EACH(PASS_THROUGH, A, B, C));
 MACRO_TEST_NOEQ(FOR_EACH_COMMA, (A), ADD_PARENS(FOR_EACH_COMMA(PASS_THROUGH, A)));
 MACRO_TEST_NOEQ(FOR_EACH_COMMA, (A, B, C), ADD_PARENS(FOR_EACH_COMMA(PASS_THROUGH, A, B, C)));
+
+MACRO_TEST_NOEQ(STRIP_FIRST_ARG, B, STRIP_FIRST_ARG(A, B));
+MACRO_TEST(STRIP_FIRST_ARG, , STRIP_FIRST_ARG(A));
+MACRO_TEST_NOEQ(STRIP_LAST_ARG, A, STRIP_LAST_ARG(A, B));
+MACRO_TEST(STRIP_LAST_ARG, , STRIP_LAST_ARG(A));
+MACRO_TEST_NOEQ(STRIP_FIRST_AND_LAST_ARGS, B, STRIP_FIRST_AND_LAST_ARGS(A, B, C));
+MACRO_TEST_NOEQ(STRIP_FIRST_AND_LAST_ARGS, (B, C), ADD_PARENS(STRIP_FIRST_AND_LAST_ARGS(A, B, C, D)));
+MACRO_TEST(STRIP_FIRST_AND_LAST_ARGS, , STRIP_FIRST_AND_LAST_ARGS(A, B));
 
 MACRO_TEST_NOEQ(GET_ARG_N_BEFORE_END, A, GET_ARG_N_BEFORE_END(2, A, B, C));
 MACRO_TEST_NOEQ(GET_ARG_N_BEFORE_END, B, GET_ARG_N_BEFORE_END(1, A, B, C));
