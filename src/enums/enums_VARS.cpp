@@ -177,6 +177,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, double> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::defaults_C3 = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::alternate_defaults = {};
+  template<>
   const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::glymaids = {};
   template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::aliases = {

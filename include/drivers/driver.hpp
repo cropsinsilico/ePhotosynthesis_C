@@ -604,9 +604,11 @@ private:								\
     VARS_CLASS_CALL(reset, (), name, MOD);				\
   }									\
   void name ## Driver::select(const bool x) {				\
+    Variables::select(x);                                               \
     return VARS_CLASS_CALL(select, (x), name, MOD);			\
   }									\
   void name ## Driver::enableC3(const bool x) {                         \
+    Variables::enableC3(x);                                             \
     return VARS_CLASS_CALL(enableC3, (x), name, MOD);			\
   }									\
   ValueSet_t* name ## Driver::currentConditions(realtype *x) const {    \

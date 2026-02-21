@@ -80,6 +80,24 @@ namespace ePhotosynthesis {
     return it->second;
   };
   template<MODULE M, PARAM_TYPE PT>
+  std::map<std::string, double> ValueSetEnum<M, PT>::getAlternateDefault(const typename ValueSetEnum<M, PT>::Type& x) {
+    typename std::map<typename ValueSetEnum<M, PT>::Type, std::map<std::string, double>>::const_iterator it;
+    it = alternate_defaults.find(x);
+    if (it == alternate_defaults.end()) {
+      throw std::runtime_error("Could not locate AlternateDefault for '" + names.find(x)->second + "'");
+    }
+    return it->second;
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  std::map<std::string, double> ValueSetEnum<M, PT>::getAlternateDefault(const typename ValueSetEnum<M, PT>::Type& x, const std::map<std::string, double>& defaultV) {
+    typename std::map<typename ValueSetEnum<M, PT>::Type, std::map<std::string, double>>::const_iterator it;
+    it = alternate_defaults.find(x);
+    if (it == alternate_defaults.end()) {
+      return defaultV;
+    }
+    return it->second;
+  };
+  template<MODULE M, PARAM_TYPE PT>
   std::string ValueSetEnum<M, PT>::getGlymaid(const typename ValueSetEnum<M, PT>::Type& x) {
     typename std::map<typename ValueSetEnum<M, PT>::Type, std::string>::const_iterator it;
     it = glymaids.find(x);

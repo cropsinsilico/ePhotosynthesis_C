@@ -126,6 +126,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::defaults_C3 = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::alternate_defaults = {};
+  template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::glymaids = {};
   template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::aliases = {};
@@ -207,6 +209,8 @@ namespace ePhotosynthesis {
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::alternate_defaults = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::glymaids = {};
   template<>
@@ -303,6 +307,8 @@ namespace ePhotosynthesis {
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::alternate_defaults = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::glymaids = {};
   template<>
@@ -450,6 +456,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1012, 0.2  },
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1012, 0.22 }
   };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::alternate_defaults = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::glymaids = {};
   template<>
@@ -802,6 +810,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE2Ratio, 0.0              }
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::alternate_defaults = {};
+  template<>
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::glymaids = {};
   template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::aliases = {};
@@ -942,6 +952,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::defaults_C3 = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::alternate_defaults = {};
+  template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::glymaids = {};
   template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::aliases = {};
@@ -1016,6 +1028,8 @@ namespace ePhotosynthesis {
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::alternate_defaults = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::glymaids = {};
   template<>
@@ -1095,6 +1109,8 @@ namespace ePhotosynthesis {
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::alternate_defaults = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::glymaids = {};
   template<>
@@ -1324,6 +1340,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE5Ratio, 0.0   }
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::alternate_defaults = {};
+  template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::glymaids = {};
   template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::aliases = {};
@@ -1437,6 +1455,8 @@ namespace ePhotosynthesis {
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::alternate_defaults = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::glymaids = {};
   template<>

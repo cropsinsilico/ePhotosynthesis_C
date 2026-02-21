@@ -69,8 +69,10 @@ namespace drivers {
   /**
      Select (or deselect) all drivers.
      \param[in] x If true, select all drivers. If false, deselect them.
+     \param[in] useC3 true if C3 run should be enabled.
    */
-  EPHOTO_API void select_all_drivers(const bool x = true);
+  EPHOTO_API void select_all_drivers(const bool x = true,
+                                     const bool useC3 = false);
 
   EPHOTO_API Driver* create_driver(const DriverType& driverChoice,
 				   Variables *theVars,

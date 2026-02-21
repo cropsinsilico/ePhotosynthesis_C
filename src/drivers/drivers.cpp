@@ -7,7 +7,7 @@ void ePhotosynthesis::drivers::select_driver(const DriverType& driverChoice,
   if (x) {
     std::cerr << "SELECTING DRIVER: " << driverChoice <<
       " (useC3 = " << useC3 << ")" << std::endl;
-    ePhotosynthesis::drivers::select_all_drivers(false);
+    ePhotosynthesis::drivers::select_all_drivers(false, useC3);
   }
 #define CASE_DRIVER(drv)						\
   ePhotosynthesis::drivers::drv ## Driver::enableC3(useC3);		\
@@ -37,9 +37,10 @@ void ePhotosynthesis::drivers::deselect_driver(const std::string& driverChoice) 
   ePhotosynthesis::drivers::select_driver(driverChoiceKey, false, false);
 }
 
-void ePhotosynthesis::drivers::select_all_drivers(const bool x) {
+void ePhotosynthesis::drivers::select_all_drivers(const bool x,
+                                                  const bool useC3) {
 #define SELECT_DRIVER(drv)                                      \
-  ePhotosynthesis::drivers::drv ## Driver::enableC3(false);     \
+  ePhotosynthesis::drivers::drv ## Driver::enableC3(useC3);     \
   ePhotosynthesis::drivers::drv ## Driver::select(x)
   FOR_EACH(SELECT_DRIVER, EXPAND(MEMBERS_DRIVER));
 #undef SELECT_DRIVER

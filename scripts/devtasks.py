@@ -11,6 +11,7 @@ import glob
 import difflib
 import site
 import warnings
+import re
 from collections import OrderedDict
 import matplotlib.pyplot as plt
 import numpy as np
@@ -152,13 +153,43 @@ def find_matlab(required=False):
     return sorted(locations)[-1]  # Return newest version
 
 
+def get_param_files(mod='*', pt='*'):
+    return sorted(glob.glob(os.path.join(_param_dir, f'{mod}_{pt}.txt')))
+
+
+def paramfile2mod(fname):
+    return os.path.splitext(os.path.basename(fname))[0].split('_')[0]
+
+
+def paramfile2pt(fname):
+    return os.path.splitext(os.path.basename(fname))[0].split('_')[1]
+
+
+def get_module_list():
+    return [paramfile2mod(x) for x in get_param_files(pt='MOD')]
+
+
+def get_param_type_list(mod):
+    out = []
+    for x in get_param_files(mod=mod):
+        with open(x, 'r') as fd:
+            if not fd.read():
+                continue
+        out.append(paramfile2pt(x))
+    return out
+
+
+def get_param_names(mod, pt):
+    fname = os.path.join(_param_dir, f'{mod}_{pt}.txt')
+    return list(read_param(fname, default=True).keys())
+
+
 def read_default_param(with_prefixes=False):
     defaults = OrderedDict()
     param_files = sorted(glob.glob(os.path.join(_param_dir, '*.txt')))
     for param_file in param_files:
         base = os.path.splitext(os.path.basename(param_file))[0]
-        if base in ["README", "RedoxReg_MP", "VAR",
-                    "PR_RC", "PS_RC", "SUCS_RC", "XanCycle_RC"]:
+        if base in ["README", "RedoxReg_MP", "VAR"]:
             continue
         mod, pt = base.rsplit('_', maxsplit=1)
         iparam = read_param(param_file, default=True)
@@ -485,6 +516,7 @@ class SubTask:
                     # raise ValueError(f'Cannot prefix a path for '
                     #                  f'\"{k}\" with no default')
                     continue
+                v = os.path.expanduser(v)
                 if not os.path.isabs(v):
                     if prefix:
                         v = os.path.join(prefix, v)
@@ -505,6 +537,7 @@ class SubTask:
                     # raise ValueError(f'Cannot suffix a path for '
                     #                  f'\"{k}\" with no default')
                     continue
+                v0 = os.path.expanduser(v0)
                 parts = os.path.splitext(v0)
                 if parts[0].endswith('_') and not suffix.endswith('_'):
                     suffix = suffix + '_'
@@ -3110,6 +3143,325 @@ class create_iterations(SubTask):
         return out
 
 
+class IrreversiblePatchError(RuntimeError):
+
+    def __init__(self, msg, contents):
+        self.contents = contents
+        super(IrreversiblePatchError, self).__init__(msg)
+
+
+class PatchError(RuntimeError):
+    pass
+
+
+class instrument_matlab(SubTask):
+
+    _comment = '% '
+    _patch_flag_header = (
+        '% THIS FILE HAS BEEN PATCHED TO ALLOW FOR PARAMETER I/O \n'
+        '% BY scripts/devtasks.py FROM THE C++ MODEL REPO\n'
+    )
+
+    @classmethod
+    def adjust_args(cls, args):
+        if not args.matlab:
+            args.matlab = find_matlab(required=True)
+        cls.prefix_path_args(
+            args, ['matlab_repo'], prefix=os.getcwd())
+        print(f"MATLAB REPO: {args.matlab_repo}")
+        super(instrument_matlab, cls).adjust_args(args)
+
+    def run_commands(self, args, **kwargs):
+        self.instrument_matlab(args, **kwargs)
+
+    @classmethod
+    def instrument_matlab(cls, args, **kwargs):
+        replacements_driver = {
+            ' ode15s': ' Drive',
+        }
+        for fname in cls.find_drivers(args):
+            cls.apply_patch(cls.patch_driver, fname, args,
+                            replacements=replacements_driver)
+        for fname in cls.find_rates(args):
+            cls.apply_patch(cls.patch_rate, fname, args)
+        for fname in cls.find_mb(args):
+            mod = cls.fname2module(fname, "MB")
+            fname_rate = cls.find_rates(args, mod=mod)
+            if not fname_rate:
+                cls.apply_patch(cls.patch_rate, fname, args, mod=mod)
+        cls.apply_patch(cls.patch_condition,
+                        os.path.join(args.matlab_repo, "Condition.m"),
+                        args)
+        cls.apply_patch(cls.patch_sysinitial,
+                        os.path.join(args.matlab_repo, "SYSInitial.m"),
+                        args)
+        # TODO: Patch ePhotosynthesis/simulation
+        raise NotImplementedError
+
+    @classmethod
+    def apply_patch(cls, method, fname, args, replacements=None,
+                    **kwargs):
+        with open(fname, 'r') as fd:
+            contents = fd.read()
+        try:
+            contents = cls.remove_patch(contents)
+        except IrreversiblePatchError as e:
+            if args.remove_patch:
+                raise e
+            warnings.warn(str(e))
+            return
+        if args.remove_patch:
+            with open(fname, 'w') as fd:
+                fd.write(contents)
+            return
+        if replacements:
+            print(fname)
+            contents = cls.add_replacements(contents, replacements)
+        contents = method(contents, fname, args, **kwargs)
+        contents = cls._patch_flag_header + contents
+        with open(fname, 'w') as fd:
+            fd.write(contents)
+
+    @classmethod
+    def remove_patch(cls, contents):
+        # if not contents.startswith(cls._patch_flag_header):
+        #     return
+        contents = contents.split(cls._patch_flag_header, maxsplit=1)[-1]
+        contents = cls.remove_replacements(contents)
+        contents = cls.remove_patch_blocks(contents)
+        return contents
+
+    @classmethod
+    def add_utils_path(cls):
+        utils_dir = os.path.join(_scripts_dir, "matlab")
+        return [f'addpath(\"{utils_dir}\");']
+
+    @classmethod
+    def find_file(cls, args, ftype, mod='*'):
+        var = [ftype.title(), ftype.lower()]
+        if ftype not in var:
+            var.insert(0, ftype)
+        matches = []
+        for v in var:
+            matches += glob.glob(os.path.join(args.matlab_repo,
+                                              f'{mod}{ftype}.m'))
+            if mod != '*':
+                matches += glob.glob(os.path.join(args.matlab_repo,
+                                                  f'{mod}_{ftype}.m'))
+        return sorted(list(set(matches)))
+
+    @classmethod
+    def find_drivers(cls, args, **kwargs):
+        return cls.find_file(args, 'Drive', **kwargs)
+
+    @classmethod
+    def find_rates(cls, args, **kwargs):
+        return cls.find_file(args, 'Rate', **kwargs)
+
+    @classmethod
+    def find_mb(cls, args, **kwargs):
+        return cls.find_file(args, 'MB', **kwargs)
+
+    @classmethod
+    def get_patch_guards(cls, ptype, regex=False):
+        ptype_orig = ptype
+        if regex:
+            ptype = "XXXREPLACEXXX"
+        fini = f'\n{cls._comment}DEVTASKS {ptype} START\n'
+        fend = f'\n{cls._comment}DEVTASKS {ptype} END\n'
+        if regex:
+            fini = re.escape(fini).replace(ptype, ptype_orig)
+            fend = re.escape(fend).replace(ptype, ptype_orig)
+        return fini, fend
+
+    @classmethod
+    def add_replacements(cls, contents, replacements):
+        for k, v in replacements.items():
+            fini, fend = cls.get_patch_guards(f'REPLACE {k}->{v}')
+            kregex = (
+                r'(?P<newline_prev>\n)[^\n]*'
+                + f'(?P<orig>{re.escape(k)})'
+                r'[^\n]*(?P<newline_next>\n)'
+            )
+            matches = [m for m in re.finditer(kregex, contents)]
+            idx = 0
+            out = ''
+            for m in matches:
+                out += (
+                    contents[idx:m.end('newline_prev')]
+                    + fini
+                    + contents[m.end('newline_prev'):m.start('orig')]
+                    + v
+                    + contents[m.end('orig'):m.end('newline_next')]
+                    + fend
+                )
+                idx = m.end('newline_next')
+            out += contents[idx:]
+            contents = out
+        return contents
+
+    @classmethod
+    def remove_replacements(cls, contents):
+        fini = cls.get_patch_guards(
+            r'REPLACE (?P<k>.+?)\-\>(?P<v>.+?)', regex=True)[0]
+        matches = [m for m in re.finditer(fini, contents)]
+        idx = 0
+        out = ''
+        for mini in matches:
+            assert mini.start(0) >= idx
+            k = mini.group('k')
+            v = mini.group('v')
+            fend = re.compile(re.escape(
+                cls.get_patch_guards(f'REPLACE {k}->{v}')[1]))
+            mend = fend.search(contents, mini.end(0))
+            out += (
+                contents[idx:mini.start(0)]
+                + contents[mini.end(0):mend.start(0)].replace(v, k)
+            )
+            idx = mend.end(0)
+        out += contents[idx:]
+        return out
+
+    @classmethod
+    def add_patch_block(cls, contents, ptype, patch, regex,
+                        before_regex=False, append_if_no_match=False):
+        fini, fend = cls.get_patch_guards(ptype)
+        if fini in contents:
+            assert contents.count(fini) == 1
+            assert contents.count(fend) == 1
+            contents_before = contents.split(fini, maxsplit=1)[0]
+            contents_after = contents.split(fend, maxsplit=1)[-1]
+        else:
+            match = re.search(regex, contents)
+            if match:
+                if before_regex:
+                    contents_before = contents[:match.start(0)]
+                    contents_after = contents[match.start(0):]
+                else:
+                    contents_before = contents[:match.end(0)]
+                    contents_after = contents[match.end(0):]
+            elif append_if_no_match:
+                contents_before = contents
+                contents_after = ''
+            else:
+                raise PatchError(f'Could not match regex \"{regex}\"')
+        contents = (
+            contents_before + fini + patch + fend + contents_after
+        )
+        return contents
+
+    @classmethod
+    def remove_patch_blocks(cls, contents):
+        fini, fend = cls.get_patch_guards(r'\w+', regex=True)
+        while re.search(fini, contents):
+            contents_before, contents_after = re.split(
+                fini, contents, maxsplit=1)
+            assert re.search(fend, contents_after)
+            contents_after = re.split(
+                fend, contents_after, maxsplit=1)[-1]
+            contents = contents_before + contents_after
+        return contents
+
+    @classmethod
+    def find_patch_var(cls, mod, pt, contents):
+        var = [f'{mod}_{pt}', f'{mod}_{pt.title()}']
+        if pt == 'COND':
+            var = [f'{mod}_con', f'{mod}_Con'] + var
+        if mod in ['PS', 'PR']:
+            if pt == 'COND':
+                var = [f'{mod}s', f'{mod.title()}S'] + var
+            elif pt == "VEL":
+                var = [f'{mod}r', 'Velocity'] + var
+        for v in var:
+            if v in contents:
+                return v
+        return None
+
+    @classmethod
+    def fname2module(cls, fname, ftype):
+        base = os.path.splitext(os.path.basename(fname))[0]
+        var = [ftype.title(), ftype.lower()]
+        if ftype not in var:
+            var.insert(0, ftype)
+        for v in var:
+            if base.endswith(f'_{v}'):
+                return base.split(f'_{v}')[0]
+            if base.endswith(v):
+                return base.split(v)[0]
+        raise PatchError(f"Could not determine module from {ftype} "
+                         f"file \"{fname}\"")
+
+    @classmethod
+    def patch_at_function_start(cls, contents, patch):
+        regex = r'\n[ \t]*function[^\n]+\n'
+        return cls.add_patch_block(contents, 'FUNCTION_INI', patch, regex)
+
+    @classmethod
+    def patch_at_function_end(cls, contents, patch):
+        regex = r'\n[ \t]*end\s*$'
+        return cls.add_patch_block(contents, 'FUNCTION_END', patch, regex,
+                                   before_regex=True,
+                                   append_if_no_match=True)
+
+    @classmethod
+    def patch_condition(cls, contents, fname, args):
+        patch_begin = [
+            'if Condition_patch_begin(t)',
+            '    fini = 1;',
+            '    return;',
+            'end',
+        ]
+        patch_end = [
+            'Condition_patch_end(t);',
+        ]
+        contents = cls.patch_at_function_start(
+            contents, '\n'.join(patch_begin)
+        )
+        contents = cls.patch_at_function_end(
+            contents, '\n'.join(patch_end)
+        )
+        return contents
+
+    @classmethod
+    def patch_sysinitial(cls, contents, fname, args):
+        patch_end = [
+            'SYSInitial_patch_end(Begin);',
+        ]
+        contents = cls.patch_at_function_end(
+            contents, '\n'.join(patch_end)
+        )
+        return contents
+
+    @classmethod
+    def patch_driver(cls, contents, fname, args):
+        return contents
+
+    @classmethod
+    def patch_rate(cls, contents, fname, args, mod=None):
+        if mod is None:
+            mod = cls.fname2module(fname, "rate")
+        param_vars = {}
+        for k in ['COND', 'MOD', 'VEL', 'RC', 'POOL', 'KE']:
+            v = cls.find_patch_var(mod, k, contents)
+            if v:
+                param_vars[k] = v
+        print(fname, mod)
+        pprint.pprint(param_vars)
+        assert 'COND' in param_vars
+        patch = [
+            f'export_mod_data(\"{mod}\", t, {param_vars["COND"]}, ...',
+            '                create_missing=true'
+        ]
+        for k, v in param_vars.items():
+            if k == 'COND':
+                continue
+            patch[-1] += ', ...'
+            patch.append(f'                {k}={v}')
+        patch[-1] += ');'
+        contents = cls.patch_at_function_end(contents, '\n'.join(patch))
+        return contents
+
+
 class compare_matlab(BuildSubTask):
 
     _base_class = ephoto
@@ -3575,9 +3927,6 @@ if __name__ == "__main__":
         'compare-matlab', help="Compare C++ & MATLAB versions",
         func=compare_matlab)
     parser_matlab.add_argument(
-        '--matlab', type=str, default=find_matlab(),
-        help="Path to the MATLAB executable")
-    parser_matlab.add_argument(
         '--matlab-output-dir', type=str, default='output_MTL',
         help="Directory where MATLAB output should be saved")
     parser_matlab.add_argument(
@@ -3635,6 +3984,8 @@ if __name__ == "__main__":
     parser_coverage = subparsers.add_parser(
         'coverage', help="Check test coverage",
         func=coverage)
+
+    # File comparison
     parser_compare_files = subparsers.add_parser(
         'compare-files', help="Compare two files",
         func=compare_files_task)
@@ -3652,6 +4003,15 @@ if __name__ == "__main__":
     parser_compare_files.add_argument(
         '--output-diff', type=str,
         help='File where the diff should be saved')
+
+    # Instrument raw MATLAB model
+    parser_instrument_matlab = subparsers.add_parser(
+        'instrument-matlab',
+        help="Patch a version of the matlab code to allow comparison",
+        func=instrument_matlab)
+    parser_instrument_matlab.add_argument(
+        '--remove-patch', action='store_true',
+        help='Reverse the patch')
 
     # Method to convert files
     parser_convert_param = subparsers.add_parser(
@@ -3678,6 +4038,7 @@ if __name__ == "__main__":
     ephoto_tasks = ['ephoto', 'compare-matlab']
     compare_tasks = ['compare-matlab', 'compare-files']
     analysis_tasks = ephoto_tasks + ['analyze-trace']
+    matlab_tasks = ['compare-matlab', 'instrument-matlab']
 
     # Build arguments
     parser.add_argument(
@@ -3793,6 +4154,13 @@ if __name__ == "__main__":
         help="Separator for values in tables to compare",
         subparsers={'task': compare_tasks})
 
+    # Explicit matlab arguments
+    parser.add_argument(
+        '--matlab', type=str, default=find_matlab(),
+        help="Path to the MATLAB executable",
+        subparsers={'task': matlab_tasks},
+    )
+
     # ePhoto arguments
     parser.add_argument(
         "--driver", '-d', type=parse_driver,
@@ -3827,7 +4195,7 @@ if __name__ == "__main__":
             "be used to specify the location of the MATLAB executable.",
         ),
         subparsers={
-            'task': [x for x in ephoto_tasks if x != 'compare-matlab']
+            'task': [x for x in ephoto_tasks if x not in matlab_tasks]
         }
     )
     parser.add_argument(
@@ -3838,7 +4206,8 @@ if __name__ == "__main__":
         # default=os.path.join(
         #     os.path.dirname(_source_dir), 'ePhotosynthesis'),
         help="Path to the MATLAB version of the model",
-        subparsers={'task': ephoto_tasks},
+        subparsers={'task': ephoto_tasks + [x for x in matlab_tasks
+                                            if x not in ephoto_tasks]},
     )
     parser.add_argument(
         "--generate-matlab-script", type=str,

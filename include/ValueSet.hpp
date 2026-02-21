@@ -2204,6 +2204,7 @@ namespace ePhotosynthesis {
   protected:
     static int static_flags; /**< Bitwise flags describing the value set  static state */
     static std::map<EnumType, double> defaults; /**< Default values */
+    static std::map<EnumType, double> user_defaults; /**< User defined default values */
     static std::map<EnumType, double*> static_values; /**< Static values */
     static std::vector<ValueSetClassWrapper> child_classes; /**< Child classes */
     static const uint tab_size = 2;
@@ -2298,6 +2299,10 @@ namespace ePhotosynthesis {
   template<class T, class U, MODULE ID, PARAM_TYPE PT>
   std::map<typename ValueSetBase<T, U, ID, PT>::EnumType, double>
   ValueSetBase<T, U, ID, PT>::defaults = {};
+  
+  template<class T, class U, MODULE ID, PARAM_TYPE PT>
+  std::map<typename ValueSetBase<T, U, ID, PT>::EnumType, double>
+  ValueSetBase<T, U, ID, PT>::user_defaults = {};
   
   template<class T, class U, MODULE ID, PARAM_TYPE PT>
   std::map<typename ValueSetBase<T, U, ID, PT>::EnumType, double*>

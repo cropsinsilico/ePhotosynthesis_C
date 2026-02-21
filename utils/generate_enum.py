@@ -2155,6 +2155,10 @@ class ParamFileParser(EnumParserBase):
                         elif val.startswith('{') and val.endswith('}'):
                             val = [v.strip() for v in
                                    val[1:-1].split(',')]
+                            if all(':' in v for v in val):
+                                val_kv = [v.split(':', maxsplit=1)
+                                          for v in val]
+                                val = {k: v for k, v in val_kv}
                         qualifiers[x] = val
                     valid_qualifiers = get_registered_value_keys()
                     for k in self.required_keys + self.optional_keys:
@@ -2701,7 +2705,6 @@ class CEnumGeneratorCollectionBase(CEnumGeneratorBaseSource):
                 return []
         if function_type == 'from' and (
                 self.value_type == 'double'
-                or self.value_key == 'ALIASES'
                 or self.no_from_function
                 or self.packed):
             return []
@@ -3245,8 +3248,8 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
             'help': "C++ type of values in the map",
         },
         packed={
-            'action': 'store_true',
-            'help': "Push value types in a vector",
+            'type': str, 'choices': ['std::vector', 'std::map'],
+            'help': "Push value types in a vector/map",
         },
         reversed={
             'action': 'store_true',
@@ -3285,8 +3288,10 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
             *args, **kwargs)
         if self.reversed:
             out = [value_type] + out
-        elif self.packed:
+        elif self.packed == 'std::vector':
             out.append(f'std::vector<{value_type}>')
+        elif self.packed == 'std::map':
+            out.append(f'std::map<std::string, {value_type}>')
         else:
             out.append(value_type)
         return out
@@ -3318,8 +3323,18 @@ class CEnumGeneratorMapBase(CEnumGeneratorCollectionBase):
         if self.value_type == 'std::string':
             if isinstance(out, list):
                 out = [f"\"{xx}\"" for xx in out]
+            elif isinstance(out, dict):
+                out = [f"{{\"{k}\", \"{v}\"}}" for k, v in out.items()]
             else:
                 out = f"\"{out}\""
+        elif self.packed == 'std::map' and out:
+            if not isinstance(out, dict):
+                print(out)
+                print(type(out))
+                import pdb
+                pdb.set_trace()
+            assert isinstance(out, dict)
+            out = [f"{{\"{k}\", {v}}}" for k, v in out.items()]
         if self.packed:
             if out:
                 assert isinstance(out, list)
@@ -4134,6 +4149,11 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 'default_value_key': 'val_alt',
                 'default_explicit': True,
             },
+            'conditional_values': {
+                'default_value_type': 'double',
+                'default_value_key': 'ALT',
+                'default_explicit': True,
+            },
             'glymaids': {
                 'default_value_type': 'std::string',
                 'default_value_key': 'GLYMAID',
@@ -4166,8 +4186,6 @@ class CEnumGeneratorHeader(CEnumGeneratorBaseHeader):
                 'default_explicit': True,
                 'default_packed': True,
             },
-            # 'conditional_values': {
-            # },
         },
         'flagmap': {
             'value_flags': {
@@ -4884,6 +4902,13 @@ def ePhotosynthesis(args):
             'collection_name': 'defaults_C3',
             'singular_collection_name': 'default_C3',
         },
+        'conditional_values': {
+            'collection_name': 'alternate_defaults',
+            'singular_collection_name': 'alternate_default',
+            'no_from_function': True,
+            'packed': 'std::map',
+            'explicit': True,
+        },
         'glymaids': {
             'explicit': True,
         },
@@ -4908,10 +4933,8 @@ def ePhotosynthesis(args):
             'explicit': True,
             'singular_collection_name': 'required_module',
             'ragged_right': True,
-            'packed': True,
+            'packed': 'std::vector',
         },
-        # 'conditional_values': {
-        # },
         'value_flags': {
             'is_editable': True,
             'explicit': True,

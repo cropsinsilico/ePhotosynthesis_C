@@ -38,6 +38,7 @@ namespace ePhotosynthesis {
     static const std::map<Type, std::string> names;  /**< Names for values */
     static const std::map<Type, double> defaults;  /**< Defaults for values */
     static const std::map<Type, double> defaults_C3;  /**< Defaults_C3 for values */
+    static const std::map<Type, std::map<std::string, double>> alternate_defaults;  /**< Alternate_Defaults for values */
     static const std::map<Type, std::string> glymaids;  /**< Glymaids for values */
     static const std::map<std::string, Type> aliases;  /**< Aliases for values */
     static const std::map<Type, std::string> docs;  /**< Docs for values */
@@ -95,6 +96,19 @@ namespace ePhotosynthesis {
       \return Value
     */
     static double getDefaultC3(const Type& x, const double& defaultV);
+    /**
+      Get the alternatedefault value corresponding to an enum key
+      \param[in] x Key to get value for
+      \return Value
+    */
+    static std::map<std::string, double> getAlternateDefault(const Type& x);
+    /**
+      Get the alternatedefault value corresponding to an enum key
+      \param[in] x Key to get value for
+      \param[in] defaultV Value to return if x is not present
+      \return Value
+    */
+    static std::map<std::string, double> getAlternateDefault(const Type& x, const std::map<std::string, double>& defaultV);
     /**
       Get the glymaid value corresponding to an enum key
       \param[in] x Key to get value for
@@ -516,6 +530,8 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<M, PT>::Type, double> ValueSetEnum<M, PT>::defaults = {};
   template<MODULE M, PARAM_TYPE PT>
   const std::map<typename ValueSetEnum<M, PT>::Type, double> ValueSetEnum<M, PT>::defaults_C3 = {};
+  template<MODULE M, PARAM_TYPE PT>
+  const std::map<typename ValueSetEnum<M, PT>::Type, std::map<std::string, double>> ValueSetEnum<M, PT>::alternate_defaults = {};
   template<MODULE M, PARAM_TYPE PT>
   const std::map<typename ValueSetEnum<M, PT>::Type, std::string> ValueSetEnum<M, PT>::glymaids = {};
   template<MODULE M, PARAM_TYPE PT>

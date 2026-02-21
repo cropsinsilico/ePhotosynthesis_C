@@ -48,6 +48,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)_Pi         , 0.9}
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::alternate_defaults = {};
+  template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::glymaids = {
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)cATPsyn  , "Glyma.13G204800"},
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)CPSi     , "Glyma.10G042000"},
@@ -99,6 +101,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::defaults_C3 = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::alternate_defaults = {};
+  template<>
   const std::map<typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::glymaids = {};
   template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_CM, PARAM_TYPE_MOD>::aliases = {
@@ -131,6 +135,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::defaults_C3 = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::alternate_defaults = {};
+  template<>
   const std::map<typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::glymaids = {};
   template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_DynaPS, PARAM_TYPE_MOD>::aliases = {};
@@ -156,6 +162,8 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::defaults = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::alternate_defaults = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_EPS, PARAM_TYPE_MOD>::glymaids = {};
   template<>
@@ -200,6 +208,8 @@ namespace ePhotosynthesis {
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::alternate_defaults = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_MOD>::glymaids = {};
   template<>
@@ -246,6 +256,8 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::defaults_C3 = {
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)cpsii, 1.0}
   };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::alternate_defaults = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::glymaids = {
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)cpsii, "Glyma.01G095900"}
@@ -437,6 +449,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vf_T112   , 1.0},
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)PGA       , 2.4}
   };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::alternate_defaults = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::glymaids = {
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor112, "Glyma.09G015500"},
@@ -865,6 +879,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)J        , 0.0               }
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::alternate_defaults = {};
+  template<>
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::glymaids = {
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor1 , "Glyma.19G046800"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor2 , "Glyma.08G165500"},
@@ -1033,6 +1049,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::defaults_C3 = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::alternate_defaults = {};
+  template<>
   const std::map<typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::glymaids = {};
   template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_PS_PR, PARAM_TYPE_MOD>::aliases = {};
@@ -1058,6 +1076,8 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::defaults = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::alternate_defaults = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RA, PARAM_TYPE_MOD>::glymaids = {};
   template<>
@@ -1096,6 +1116,8 @@ namespace ePhotosynthesis {
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::alternate_defaults = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_MOD>::glymaids = {};
   template<>
@@ -1155,6 +1177,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::defaults_C3 = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::alternate_defaults = {};
+  template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::glymaids = {};
   template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_MOD>::aliases = {};
@@ -1203,6 +1227,8 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::defaults_C3 = {
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)activase, 80.0}
   };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::alternate_defaults = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_MOD>::glymaids = {};
   template<>
@@ -1398,6 +1424,8 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vmatpf     , 0.25 }
   };
   template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::alternate_defaults = {};
+  template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::glymaids = {
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor52, "Glyma.16G168000"},
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_MOD>::SCOPED_ENUM_TYPE(Type)Vfactor56, "Glyma.06G323700"},
@@ -1489,6 +1517,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::defaults_C3 = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::alternate_defaults = {};
+  template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::glymaids = {};
   template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_MOD>::aliases = {};
@@ -1520,6 +1550,8 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::defaults = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, double> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::defaults_C3 = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::alternate_defaults = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::Type, std::string> ValueSetEnum<MODULE_trDynaPS, PARAM_TYPE_MOD>::glymaids = {};
   template<>

@@ -1042,13 +1042,14 @@ void CLASS::initDefaults(const bool useC3,
     static_flags |= VS_FLAG_INIT_DEFAULTS;
   }
   if (useC3 != bool(static_flags & VS_FLAG_DEFAULTS_C3)) {
-    if (static_flags & VS_FLAG_DEFAULTS_EDITED)
-      ERROR_VALUE_SET("Defaults have been modified using "
-                      "values from a file. Changing the "
-                      "default value set to those for "
-                      "useC3 = ", useC3,
-                      " would overwrite those values.");
+    // if (static_flags & VS_FLAG_DEFAULTS_EDITED)
+    //   ERROR_VALUE_SET("Defaults have been modified using "
+    //                   "values from a file. Changing the "
+    //                   "default value set to those for "
+    //                   "useC3 = ", useC3,
+    //                   " would overwrite those values.");
     if (useC3) {
+      // TODO: More generic alternate defaults
       copy_value_map(defaults, CLASS::EnumBaseClass::defaults_C3,
                      "initDefaults: ",
                      false, true, true, true, true);
@@ -1060,13 +1061,21 @@ void CLASS::initDefaults(const bool useC3,
       static_flags &= ~VS_FLAG_DEFAULTS_C3;
     }
   }
+  if (static_flags & VS_FLAG_DEFAULTS_EDITED) {
+    copy_value_map(defaults, user_defaults, "initDefaults[USER]: ",
+                   false, true, true, true, true);
+  }
   T::_initDefaults();
   DO_VALUE_SET_CHILD_CLASSES(initDefaults, (useC3, "", force));
   if (filename.empty())
     return;
-  copy_value_map(defaults, filename, "initDefaults: ",
-                 false, true, true, true, true);
+  copy_value_map(user_defaults, filename, "initDefaults[FILE]: ",
+                 true, true, true, true, true);
   static_flags |= VS_FLAG_DEFAULTS_EDITED;
+  if (static_flags & VS_FLAG_DEFAULTS_EDITED) {
+    copy_value_map(defaults, user_defaults, "initDefaults[USER-FILE]: ",
+                   false, true, true, true, true);
+  }
 }
 
 TEMPLATE
@@ -1164,8 +1173,10 @@ void CLASS::setDefault(const typename CLASS::EnumType& k, const double& v,
                        const bool dontPreserve) {
   checkDefaults("setDefault: ");
   defaults[k] = v;
-  if (!dontPreserve)
+  if (!dontPreserve) {
+    user_defaults[k] = v;
     static_flags |= VS_FLAG_DEFAULTS_EDITED;
+  }
 }
 
 TEMPLATE
@@ -1517,7 +1528,7 @@ TEMPLATE bool CLASS::usesC3() {
   return (static_flags & VS_FLAG_DEFAULTS_C3);
 }
 TEMPLATE void CLASS::enableC3(const bool x,
-                       const bool noChildren) {
+                              const bool noChildren) {
   initDefaults(x, "", true);
   if (x)
     static_flags |= VS_FLAG_DEFAULTS_C3;
@@ -2166,8 +2177,8 @@ TEMPLATE bool CLASS::initialized() {
   return (BaseClass::static_flags & BaseClass::VS_FLAG_INIT_VALUES);
 }
 TEMPLATE void CLASS::initValues(const bool noDefaults,
-                              const bool force,
-                              const bool noChildren) {
+                                const bool force,
+                                const bool noChildren) {
   if ((!force) && initialized()) return;
   initMembers(true);
   if (!noDefaults)

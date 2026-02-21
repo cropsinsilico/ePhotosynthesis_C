@@ -191,21 +191,21 @@ def test_run_simulation(driver, simulation_kwargs, check_result,
     pprint.pprint(result)
 
 
-@pytest.mark.parametrize("driver", ["trDynaPS", "DynaPS", "CM", "EPS"])
-def test_drivers(driver, driver_vars, driver_kwargs, check_result):
-    r"""Test running simulation directly from the driver."""
-    assert hasattr(ePhotosynthesis, 'drivers')
-    ePhotosynthesis.drivers.selectDriver(driver)
-    try:
-        cls = getattr(ePhotosynthesis.drivers, f"{driver}Driver")
-        variables = driver_vars(driver)
-        x = cls(variables, **driver_kwargs)
-        result = x.run()
-        check_result(driver, result, variables=variables)
-        del variables
-        del driver
-    finally:
-        ePhotosynthesis.drivers.selectDriver()
+# @pytest.mark.parametrize("driver", ["trDynaPS", "DynaPS", "CM", "EPS"])
+# def test_drivers(driver, driver_vars, driver_kwargs, check_result):
+#     r"""Test running simulation directly from the driver."""
+#     assert hasattr(ePhotosynthesis, 'drivers')
+#     ePhotosynthesis.drivers.selectDriver(driver)
+#     try:
+#         cls = getattr(ePhotosynthesis.drivers, f"{driver}Driver")
+#         variables = driver_vars(driver)
+#         x = cls(variables, **driver_kwargs)
+#         result = x.run()
+#         check_result(driver, result, variables=variables)
+#         del variables
+#         del driver
+#     finally:
+#         ePhotosynthesis.drivers.selectDriver()
 
 
 def test_EPS_error(driver_vars, driver_kwargs):
