@@ -25,6 +25,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::glymaids;
   template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::units;
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::aliases;
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::docs;
@@ -32,6 +34,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::citations;
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::required_modules;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::enabled_by_controls;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::disabled_by_controls;
   template<>
   std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::value_flags;
   template<>
@@ -69,6 +75,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::glymaids;
   template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::units;
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::aliases;
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::docs;
@@ -76,6 +84,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::citations;
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::required_modules;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::enabled_by_controls;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::disabled_by_controls;
   template<>
   std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::value_flags;
   template<>
@@ -113,6 +125,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::glymaids;
   template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::units;
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::aliases;
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::docs;
@@ -120,6 +134,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::citations;
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::required_modules;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::enabled_by_controls;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::disabled_by_controls;
   template<>
   std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::value_flags;
   template<>
@@ -157,6 +175,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::glymaids;
   template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::units;
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::aliases;
   template<>
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::docs;
@@ -164,6 +184,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::citations;
   template<>
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::required_modules;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::enabled_by_controls;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::disabled_by_controls;
   template<>
   std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::value_flags;
   template<>
@@ -201,6 +225,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::glymaids;
   template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::units;
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::aliases;
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::docs;
@@ -208,6 +234,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::citations;
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::required_modules;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::enabled_by_controls;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::disabled_by_controls;
   template<>
   std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::value_flags;
   template<>
@@ -245,6 +275,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::glymaids;
   template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::units;
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::aliases;
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::docs;
@@ -252,6 +284,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::citations;
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::required_modules;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::enabled_by_controls;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::disabled_by_controls;
   template<>
   std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::value_flags;
   template<>
@@ -289,6 +325,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::glymaids;
   template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::units;
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::aliases;
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::docs;
@@ -296,6 +334,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::citations;
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::required_modules;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::enabled_by_controls;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::disabled_by_controls;
   template<>
   std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::value_flags;
   template<>
@@ -333,6 +375,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::glymaids;
   template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::units;
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::aliases;
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::docs;
@@ -340,6 +384,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::citations;
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::required_modules;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::enabled_by_controls;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::disabled_by_controls;
   template<>
   std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::value_flags;
   template<>
@@ -377,6 +425,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::glymaids;
   template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::units;
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::aliases;
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::docs;
@@ -384,6 +434,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::citations;
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::required_modules;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::enabled_by_controls;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::disabled_by_controls;
   template<>
   std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::value_flags;
   template<>
@@ -421,6 +475,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::glymaids;
   template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::units;
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::aliases;
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::docs;
@@ -428,6 +484,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::citations;
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::required_modules;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::enabled_by_controls;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::disabled_by_controls;
   template<>
   std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::value_flags;
   template<>

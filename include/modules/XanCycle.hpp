@@ -47,9 +47,12 @@ public:
       Method for updating the shared static variables.
       \param condition The input Condition class.
       \param theVars Pointer to the global variables
+      \param from_top If true, the parameters will be updated to match
+        the MATLAB version when called from the DynaPS MB function.
       */
       static void update_shared(const conditions::XanCycleCondition* const XanCycle_Con,
-                                Variables *theVars);
+                                Variables *theVars,
+                                const bool from_top=false);
 
 private:
     /**

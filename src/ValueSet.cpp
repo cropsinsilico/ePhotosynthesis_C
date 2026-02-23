@@ -346,23 +346,23 @@ std::size_t CLASS::max_default_value_width(bool noChildren) {
 }
 
 TEMPLATE
-void CLASS::add_value(std::map<std::string, double>& dst,
-                      const std::string& key, const double& val) {
+void CLASS::add_value0(std::map<std::string, double>& dst,
+                       const std::string& key, const double& val) {
   dst[key] = val;
 }
 TEMPLATE
-void CLASS::add_value(std::map<std::string, const double*>& dst,
-                      const std::string& key, const double* val) {
+void CLASS::add_value0(std::map<std::string, const double*>& dst,
+                       const std::string& key, const double* val) {
   dst[key] = val;
 }
 TEMPLATE
-void CLASS::add_value(std::map<std::string, const double*>& dst,
-                      const std::string& key, const double& val) {
+void CLASS::add_value0(std::map<std::string, const double*>& dst,
+                       const std::string& key, const double& val) {
   dst[key] = &val;
 }
 TEMPLATE
-void CLASS::add_value(std::map<std::string, double>& dst,
-                      const std::string& key, const double* val) {
+void CLASS::add_value0(std::map<std::string, double>& dst,
+                       const std::string& key, const double* val) {
   dst[key] = *val;
 }
 

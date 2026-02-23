@@ -33,6 +33,7 @@
 #define PARENT_DynaPS trDynaPS
 #define CHILDREN_DynaPS RA, XanCycle
 #define PARAM_TYPES_DynaPS COND
+#define COUNT_DynaPS 0
 
 namespace ePhotosynthesis {
 

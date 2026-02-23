@@ -48,8 +48,13 @@ FIBFCondition* FIBF::_MB_con(const double t, const FIBFCondition* const FIBF_Con
     //       Calculate auxilary variable, PQ             //
     ///////////////////////////////////////////////////////////////////////////////////////////////
 
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+    const double PQ = theVars->FIBF_Pool.PQT - theVars->FI_Pool.QBt - FI_Con->PQn - BF_con->Qi -
+                      BF_con->Qn - BF_con->Qr - BF_con->ISPoQH2 - BF_con->QHsemi;
+#else // MAKE_EQUIVALENT_TO_MATLAB
     const double PQ = theVars->FIBF_Pool.PQT - theVars->FI_Pool.QBt - BF_con->QH2 - BF_con->Qi -
                       BF_con->Qn - BF_con->Qr - BF_con->ISPoQH2 - BF_con->QHsemi;
+#endif // MAKE_EQUIVALENT_TO_MATLAB
 
     FIBF2FI_PQa = theVars->FI_Pool.QBt + BF_con->Qi + BF_con->Qn + BF_con->Qr + BF_con->ISPoQH2 +
                   BF_con->QHsemi;

@@ -181,7 +181,6 @@ arr Driver::run(const bool continuingRun) {
         maxStep = 20. * step;
 
         _cleanup_dumped_files();
-        _cleanup_trace();
         setup(nullptr, continuingRun);
         t = t0;
         tout = t + step;
@@ -305,7 +304,7 @@ void Driver::outputParam(const OutputFreq& frequency,
         finit = fname_base_cpy + "init.txt";
     if (frequency >= OUTPUT_FREQ_FIRST_AND_LAST)
         flast = fname_base_cpy + "last.txt";
-    if (inputVars->record)
+    if (frequency >= OUTPUT_FREQ_TRACE)
         ftrace = fname_base_cpy + "trace.txt";
     if (frequency >= OUTPUT_FREQ_STEPS)
         fstep = fname_base_cpy + "step";
@@ -362,42 +361,8 @@ void Driver::getVarMap(std::map<std::string, double>& dst,
                        const ValueSet_t* con, const bool is_init) {
     INITIALIZE_VARS_AND_CONDITIONS;
     bool skipCalculated = false;
-#ifdef MAKE_EQUIVALENT_TO_MATLAB
-    skipCalculated = true;  // Not output by MATLAB
-    // Matlab uses different names for the pool variables
-    static std::map<std::string, std::string> key_aliases = {};
-    static std::vector<std::string> skip_keys = {
-        // Not used by either model
-	"ALL::VARS::GLight",
-	// Not named variables in Matlab
-	"BF::RC::Em_IPS",
-	"BF::RC::Em_Cytf",
-	"BF::RC::Em_PG",
-	"PS::MOD::KE1Ratio",
-	"PS::MOD::KE2Ratio",
-	"SUCS::MOD::KE5Ratio",
-        // Add for explicit definition of Zhu 2012 parameters
-        "FIBF::RC::RC0",
-        "FIBF::RC::RC",
-        "BF::MOD::F",
-        "PS::MOD::F",
-        "FIBF::RC::kdm0",
-        "RuACT::RC::factor_n7",
-        "RuACT::RC::kn7",
-        "RuACT::RC::RCA"
-    };
-    // Only used if useC3 false which is incompatible with C3 matlab
-    if (theVars->useC3) {
-	skip_keys.push_back("PS::MOD::KE57");
-	skip_keys.push_back("PS::COND::ADPG");
-	skip_keys.push_back("SUCS::MOD::KI583");
-	skip_keys.push_back("SUCS::MOD::SC");
-	skip_keys.push_back("SUCS::MOD::SC1");
-    }
-#else // MAKE_EQUIVALENT_TO_MATLAB
     static std::map<std::string, std::string> key_aliases = {};
     static std::vector<std::string> skip_keys = {};
-#endif // MAKE_EQUIVALENT_TO_MATLAB
     std::vector<PARAM_TYPE> skip_param_types;
     if (is_init)
 	skip_param_types.push_back(PARAM_TYPE_VEL);
@@ -411,42 +376,8 @@ void Driver::dump(const std::string& filename, const Variables* theVars0,
 		  const ValueSet_t* con, const bool is_init) {
     INITIALIZE_VARS_AND_CONDITIONS;
     bool skipCalculated = false;
-#ifdef MAKE_EQUIVALENT_TO_MATLAB
-    skipCalculated = true;  // Not output by MATLAB
-    // Matlab uses different names for the pool variables
-    static std::map<std::string, std::string> key_aliases = {};
-    static std::vector<std::string> skip_keys = {
-        // Not used by either model
-	"ALL::VARS::GLight",
-	// Not named variables in Matlab
-	"BF::RC::Em_IPS",
-	"BF::RC::Em_Cytf",
-	"BF::RC::Em_PG",
-	"PS::MOD::KE1Ratio",
-	"PS::MOD::KE2Ratio",
-	"SUCS::MOD::KE5Ratio",
-        // Add for explicit definition of Zhu 2012 parameters
-        "FIBF::RC::RC0",
-        "FIBF::RC::RC",
-        "BF::MOD::F",
-        "PS::MOD::F",
-        "FIBF::RC::kdm0",
-        "RuACT::RC::factor_n7",
-        "RuACT::RC::kn7",
-        "RuACT::RC::RCA"
-    };
-    // Only used if useC3 false which is incompatible with C3 matlab
-    if (theVars->useC3) {
-	skip_keys.push_back("PS::MOD::KE57");
-	skip_keys.push_back("PS::COND::ADPG");
-	skip_keys.push_back("SUCS::MOD::KI583");
-	skip_keys.push_back("SUCS::MOD::SC");
-	skip_keys.push_back("SUCS::MOD::SC1");
-    }
-#else // MAKE_EQUIVALENT_TO_MATLAB
     static std::map<std::string, std::string> key_aliases = {};
     static std::vector<std::string> skip_keys = {};
-#endif // MAKE_EQUIVALENT_TO_MATLAB
     std::vector<PARAM_TYPE> skip_param_types;
     if (is_init)
 	skip_param_types.push_back(PARAM_TYPE_VEL);
@@ -476,23 +407,29 @@ void Driver::_clear_cvode_mem() {
 }
 
 void Driver::_dump(realtype t, ValueSet_t* con) {
-    if (!_dumpStep) return;
-    if (t == 0 && !fname_vars_init.empty()) {
-      dump(fname_vars_init, nullptr, con, true);
-    } else if (_lastStep) {
-      if (!fname_vars_last.empty()) {
-        dump(fname_vars_last, nullptr, con, false);
+    if (_dumpStep) {
+      if (t == 0 && !fname_vars_init.empty()) {
+        dump(fname_vars_init, nullptr, con, true);
+        fname_vars_init.clear();
+        _lastDumpTime = t;
+      } else if (_lastStep) {
+        if (!fname_vars_last.empty()) {
+          dump(fname_vars_last, nullptr, con, false);
+        }
+        if (!fname_vars_trace.empty()) {
+          writeTable(fname_vars_trace, _recordedData);
+        }
       }
-      if (!fname_vars_trace.empty()) {
-        writeTable(fname_vars_trace, _recordedData);
-      }
+      if (fname_vars_step.empty())
+        _dumpStep = false;
     }
+    if (t >= endtime ||
+        (fname_vars_step.empty() && fname_vars_trace.empty()))
+      return;
+    if (_dumpInterval > 0 && ((t - _lastDumpTime) < _dumpInterval))
+      return;
+    _lastDumpTime = t;
     if (!fname_vars_step.empty()) {
-      if (t >= endtime) return;
-      if (_lastDumpTime > 0 && _dumpInterval > 0 &&
-          ((t - _lastDumpTime) < _dumpInterval))
-        return;
-      _lastDumpTime = t;
       std::ostringstream tss;
       tss.precision(8);
       tss << std::fixed << t;
@@ -502,8 +439,9 @@ void Driver::_dump(realtype t, ValueSet_t* con) {
       dump(ifile, nullptr, con, false);
       _dumpedStepFiles.push_back(ifile);
     }
-    if (fname_vars_step.empty())
-        _dumpStep = false;
+    if (!fname_vars_trace.empty()) {
+      _record_trace(t, con);
+    }
 }
 
 void Driver::_cleanup_dumped_files() {
@@ -513,28 +451,29 @@ void Driver::_cleanup_dumped_files() {
       remove(it->c_str());
     }
     _dumpedStepFiles.clear();
+    _cleanup_trace();
 }
 
 void Driver::_record_trace(realtype t, ValueSet_t* con) {
+    if (fname_vars_trace.empty())
+      return;
     const Variables* theVars0 = nullptr;
     INITIALIZE_VARS_AND_CONDITIONS;
-    if (theVars->record && t > 0) {
-      std::map<std::string, double> vars;
-      getVarMap(vars, theVars, con, false);
-      if (_recordedData.empty()) {
-        _recordedData["time"] = std::vector<double>();
-        for (typename std::map<std::string, double>::iterator it = vars.begin();
-             it != vars.end(); it++) {
-          _recordedData[it->first] = std::vector<double>();
-        }
-      }
-      _recordedData["time"].push_back(t);
+    std::map<std::string, double> vars;
+    getVarMap(vars, theVars, con, false);
+    if (_recordedData.empty()) {
+      _recordedData["time"] = std::vector<double>();
       for (typename std::map<std::string, double>::iterator it = vars.begin();
            it != vars.end(); it++) {
-        _recordedData[it->first].push_back(it->second);
+        _recordedData[it->first] = std::vector<double>();
       }
-      _recordedSteps++;
     }
+    _recordedData["time"].push_back(t);
+    for (typename std::map<std::string, double>::iterator it = vars.begin();
+         it != vars.end(); it++) {
+      _recordedData[it->first].push_back(it->second);
+    }
+    _recordedSteps++;
     FINALIZE_VARS_AND_CONDITIONS;
 }
 void Driver::_cleanup_trace() {

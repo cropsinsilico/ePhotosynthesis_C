@@ -34,7 +34,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-std::size_t FIBFCondition::count = 0;
+std::size_t FIBFCondition::count = COUNT_FIBF;
 bool FIBFCondition::NPQ_kd = false;
 bool FIBF::NPQ_kd = false;
 

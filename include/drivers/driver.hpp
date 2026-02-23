@@ -46,6 +46,7 @@ enum OutputFreq : int {
   OUTPUT_FREQ_NEVER,
   OUTPUT_FREQ_FIRST,
   OUTPUT_FREQ_FIRST_AND_LAST,
+  OUTPUT_FREQ_TRACE,
   OUTPUT_FREQ_STEPS,
 };
 
@@ -628,7 +629,6 @@ private:								\
       VARS_CLASS_VAR(name, COND)* name ## _con = new VARS_CLASS_VAR(name, COND)(x); \
       arr dxdt = VARS_CLASS_VAR(name, MOD)::MB(t, name ## _con, currentVariables()); \
       _dump(t, name ## _con);						\
-      _record_trace(t, name ## _con);                                   \
       delete name ## _con;						\
       return dxdt;							\
   }                                                                     \

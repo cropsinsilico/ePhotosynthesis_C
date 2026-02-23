@@ -34,7 +34,7 @@ using namespace ePhotosynthesis::conditions;
 double SUCS::TIME = 0.;
 std::size_t SUCS::N = 1;
 
-const std::size_t SUCSCondition::count = 8;
+const std::size_t SUCSCondition::count = COUNT_SUCS;
 
 DEFINE_MODULE(SUCS);
 
@@ -139,6 +139,15 @@ void SUCS::_initCalc(Variables *theVars, SUCSCondition* SUCS_Con) {
         theVars->SUCS_Pool.ATc *= theVars->SUCSRatio[12]; // mM
         theVars->SUCS_Pool.UTc *= theVars->SUCSRatio[13]; // mM
         theVars->SUCS_Pool.PTc *= theVars->SUCSRatio[14];  //
+        
+        // Unused but helps with comparison to MATLAB version
+        SUCS::SUCSV51 = SUCS::V51;
+        SUCS::SUCSV52 = SUCS::V52;
+        SUCS::SUCSV55 = SUCS::V55;
+        SUCS::SUCSV56 = SUCS::V56;
+        SUCS::SUCSV57 = SUCS::V57;
+        SUCS::SUCSV58 = SUCS::V58;
+        
     }
     theVars->SUCS_RC.KE5Ratio = 1. + theVars->SUCS_RC.KE541 + 1. / theVars->SUCS_RC.KE531;
     SUCS::ADPc = theVars->SUCS_Pool.ATc - SUCS::ATPc;
@@ -372,11 +381,5 @@ void SUCS::_initOrig(Variables *theVars, SUCSCondition* SUCS_Con) {
 }
 
 void SUCS::_reset(const bool noChildren) {
-#define DEFINE_SUCS_VAR(name) SUCS::name = 0.
-    FOR_EACH(DEFINE_SUCS_VAR, EXPAND(MEMBERS_SUCS));
-#undef DEFINE_SUCS_VAR
-    SUCS::TIME = 0.;
-    SUCS::N = 0;
-    ParentClass::_reset(noChildren);
-    // conditions::SUCSCondition::reset();
+    DEFINE_MODULE_RESET_BODY(SUCS);
 }

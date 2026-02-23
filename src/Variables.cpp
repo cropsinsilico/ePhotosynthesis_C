@@ -51,13 +51,6 @@ using namespace ePhotosynthesis;
 
 DEFINE_VALUE_SET(Variables);
 
-#ifdef MAKE_EQUIVALENT_TO_MATLAB
-void Variables::_initDefaults() {
-    setDefault(ValueSetClass::alpha1, 1.0, true);
-    setDefault(ValueSetClass::alpha2, 1.0, true);
-}
-#endif // MAKE_EQUIVALENT_TO_MATLAB
-
 void Variables::_initStaticMembers() {
     select(true); // Variables always selected
     ValueSetClass::_initStaticMembers();
@@ -185,19 +178,13 @@ void Variables::finalizeInputs(const bool dontReset) {
         throw std::runtime_error("Both ALL::VARS::CO2_cond and ALL::VARS::CO2_in were updated, but they are different ways of specifying the same quantity");
       // Convert intercelluar CO2 (umol/mol) to atmospheric CO2 (ppm)
       CO2_in = CO2_cond * (3. * pow(10., 4.));
-#ifndef MAKE_EQUIVALENT_TO_MATLAB
-      CO2_in /= 0.7;
-#endif // MAKE_EQUIVALENT_TO_MATLAB
+      if (!useC3)
+        CO2_in /= 0.7;
     } else if ((!inputsFinalized) || inputUpdated("ALL::VARS::CO2_in")) {
       // Convert atmospheric CO2 (ppm) to intercellular CO2 (umol/mol)
-#ifdef MAKE_EQUIVALENT_TO_MATLAB
-      CO2_in *= 0.7;
-#endif // MAKE_EQUIVALENT_TO_MATLAB
       CO2_cond = CO2_in / (3. * pow(10., 4.));
-#ifndef MAKE_EQUIVALENT_TO_MATLAB
       if (!useC3)
         CO2_cond *= 0.7;
-#endif // MAKE_EQUIVALENT_TO_MATLAB
     }
 
     if (inputUpdated("ALL::VARS::O2")) {
@@ -208,10 +195,6 @@ void Variables::finalizeInputs(const bool dontReset) {
       O2_cond *= 1.26;
       O2 = (O2_cond * (3. * pow(10., 4.))) / 1.26;
     }
-#ifdef MAKE_EQUIVALENT_TO_MATLAB
-    // Store O2 in mmol mol-1
-    O2 /= 30.0;
-#endif // MAKE_EQUIVALENT_TO_MATLAB
 
     if (inputUpdated("ALL::VARS::TestLi_Wps")) {
       if (inputUpdated("ALL::VARS::TestLi"))
@@ -221,21 +204,13 @@ void Variables::finalizeInputs(const bool dontReset) {
       // Conversion from W m^{-2} to u moles m^{-2} s^{-1}
       TestLi = TestLi_Wps * 1.0e6 / 2.35e5;
       PAR_in_Wpm2 = 0;
-#ifdef MAKE_EQUIVALENT_TO_MATLAB
-      GLight = TestLi;
-#else
       GLight = TestLi * 0.85 * 0.85;
-#endif
     } else if ((!inputsFinalized) || inputUpdated("ALL::VARS::TestLi") ||
                inputUpdated("ALL::VARS::GLight")) {
       if (inputUpdated("ALL::VARS::GLight")) {
         if (inputUpdated("ALL::VARS::TestLi"))
           throw std::runtime_error("Both ALL::VARS::GLight and ALL::VARS::TestLi were updated, but they are different ways of specifying the same quantity");
-#ifdef MAKE_EQUIVALENT_TO_MATLAB
-        TestLi = GLight;
-#else
         TestLi = GLight / (0.85 * 0.85);
-#endif
       }
       if (PAR_in_Wpm2) {
         TestLi_Wps = TestLi;
@@ -246,11 +221,7 @@ void Variables::finalizeInputs(const bool dontReset) {
         // Conversion from u moles m^{-2} s^{-1} to W m^{-2}
         TestLi_Wps = TestLi / (1.0e6 / 2.35e5);
       }
-#ifdef MAKE_EQUIVALENT_TO_MATLAB
-      GLight = TestLi;
-#else
       GLight = TestLi * 0.85 * 0.85;
-#endif
     }
     
     if (!dontReset) {
@@ -425,7 +396,6 @@ void Variables::getVarMap(std::map<std::string, double>& dst,
             std::string name = parseVar(*it, mod, pt, false,
                                         false, false);
             const ValueSetClass_t* vs = getValueSetClass(mod, pt, false,
-                                                         // conditions,
                                                          "getVarMap");
             dst[*it] = vs->get(name);
         }
@@ -488,11 +458,7 @@ std::ostream& Variables::dump(std::ostream& out,
                               const std::vector<std::string>& subset,
                               const std::map<std::string, double>& additionalVars,
                               const bool skip_calculated) const {
-#ifdef MAKE_EQUIVALENT_TO_MATLAB
-    std::size_t pad = 35;
-#else // MAKE_EQUIVALENT_TO_MATLAB
     std::size_t pad = max_field_width_all();
-#endif // MAKE_EQUIVALENT_TO_MATLAB
     if (!subset.empty()) {
         for (typename std::vector<std::string>::const_iterator it = subset.begin();
              it != subset.end(); it++) {
@@ -501,7 +467,6 @@ std::ostream& Variables::dump(std::ostream& out,
             std::string name = parseVar(*it, mod, pt, false,
                                         false, false);
             const ValueSetClass_t* vs = getValueSetClass(mod, pt, false,
-                                                         // conditions,
                                                          "dump");
             double val = vs->get(name);
             vs->print_value(name, val, out, 0, pad, true, includeSkipped,
@@ -837,12 +802,22 @@ double Variables::getVar(const MODULE& module,
 			 const std::string& name,
 			 const bool& isGlymaID,
                          const std::map<MODULE, const ValueSet_t*>& conditions) const {
+    if (module == MODULE_ALL && param_type == PARAM_TYPE_VARS) {
+        typename Variables::EnumType k = BaseClass::ensure_key(name);
+        if (EnumBaseClass::isOndemand(k))
+            return calculate(k, conditions);
+    }
     return GET_VALUE_SET_COND(module, param_type)->get(name, isGlymaID);
 }
 double Variables::getVar(const MODULE& module,
 			 const PARAM_TYPE& param_type,
 			 const int& key,
                          const std::map<MODULE, const ValueSet_t*>& conditions) const {
+    if (module == MODULE_ALL && param_type == PARAM_TYPE_VARS) {
+        typename Variables::EnumType k = BaseClass::ensure_key(key);
+        if (EnumBaseClass::isOndemand(k))
+            return calculate(k, conditions);
+    }
     return GET_VALUE_SET_COND(module, param_type)->get(key);
 }
 double Variables::getVar(const std::string& k,
@@ -859,6 +834,11 @@ double Variables::getVar(const std::string& k, const bool& isGlymaID) const {
     return getVar(k, isGlymaID, conditions);
 }
 double Variables::calculate(const EnumType& k) const {
+  std::map<MODULE, const ValueSet_t*> conditions;
+  return calculate(k, conditions);
+}
+double Variables::calculate(const EnumType& k,
+                            const std::map<MODULE, const ValueSet_t*>& conditions) const {
   switch(k) {
   case EnumType::Vc:
     return RuACT_Vel.v6_1 * AVR;
@@ -885,13 +865,17 @@ double Variables::calculate(const EnumType& k) const {
   case EnumType::ROE:
     return FI_Vel.vS3_S0; // return BF_Vel.VgPQH2 * 2.;
   case EnumType::dissipation: {
-    const double vA_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vA_d");
-    const double vU_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vU_d");
+    const double vA_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vA_d",
+                               false, conditions);
+    const double vU_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vU_d",
+                               false, conditions);
     return vA_d + vU_d;
   }
   case EnumType::fluoresence: {
-    const double vA_f = getVar(MODULE_FI, PARAM_TYPE_VEL, "vA_f");
-    const double vU_f = getVar(MODULE_FI, PARAM_TYPE_VEL, "vU_f");
+    const double vA_f = getVar(MODULE_FI, PARAM_TYPE_VEL, "vA_f",
+                               false, conditions);
+    const double vU_f = getVar(MODULE_FI, PARAM_TYPE_VEL, "vU_f",
+                               false, conditions);
     return vA_f + vU_f;
   }
   case EnumType::fPSII: {
@@ -903,23 +887,32 @@ double Variables::calculate(const EnumType& k) const {
     if (It == 0)
       return 0.0;
     const double It2 = It * 27.0 / 47.0;
-    const double vA_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vA_d");
-    const double vU_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vU_d");
-    const double f = calculate(EnumType::fluoresence);
+    const double vA_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vA_d",
+                               false, conditions);
+    const double vU_d = getVar(MODULE_FI, PARAM_TYPE_VEL, "vU_d",
+                               false, conditions);
+    const double f = calculate(EnumType::fluoresence, conditions);
     return (It2 - f - vA_d - vU_d) / It2;
   }
   case EnumType::MembranePotential: {
-    const double PHs = getVar(MODULE_BF, PARAM_TYPE_COND, "PHs");
+    const double PHs = getVar(MODULE_BF, PARAM_TYPE_COND, "PHs",
+                              false, conditions);
     const double Hfs = pow(10., -PHs) * 1000.;
     const double OHs = pow(10., -14.) / (Hfs / 1000.) * 1000.;
-    const double BFHs = getVar(MODULE_BF, PARAM_TYPE_COND, "BFHs");
+    const double BFHs = getVar(MODULE_BF, PARAM_TYPE_COND, "BFHs",
+                               false, conditions);
     const double BFs = BFHs - Hfs;
-    const double BFTs = getVar(MODULE_BF, PARAM_TYPE_POOL, "BFTs");
+    const double BFTs = getVar(MODULE_BF, PARAM_TYPE_POOL, "BFTs",
+                               false, conditions);
     const double BFns = BFTs - BFs;
-    const double Ks = getVar(MODULE_BF, PARAM_TYPE_COND, "Ks");
-    const double Mgs = getVar(MODULE_BF, PARAM_TYPE_COND, "Mgs");
-    const double Cls = getVar(MODULE_BF, PARAM_TYPE_COND, "Cls");
-    const double RVA = getVar(MODULE_BF, PARAM_TYPE_RC, "RVA");
+    const double Ks = getVar(MODULE_BF, PARAM_TYPE_COND, "Ks",
+                             false, conditions);
+    const double Mgs = getVar(MODULE_BF, PARAM_TYPE_COND, "Mgs",
+                              false, conditions);
+    const double Cls = getVar(MODULE_BF, PARAM_TYPE_COND, "Cls",
+                              false, conditions);
+    const double RVA = getVar(MODULE_BF, PARAM_TYPE_RC, "RVA",
+                              false, conditions);
     double NetCharge = Hfs + Ks + 2. * Mgs - OHs - Cls - BFns;
     NetCharge = NetCharge / 1000.;
     NetCharge = NetCharge * RVA;
@@ -931,11 +924,12 @@ double Variables::calculate(const EnumType& k) const {
   case EnumType::expr_psbs:
   case EnumType::QH:
   case EnumType::one_minus_QH: {
-    const double pH = getVar(MODULE_BF, PARAM_TYPE_COND, "PHl");
+    const double pH = getVar(MODULE_BF, PARAM_TYPE_COND, "PHl",
+                             false, conditions);
     const double hill_psbs = getVar(MODULE_XanCycle, PARAM_TYPE_RC,
-                                    "hill_psbs");
+                                    "hill_psbs", false, conditions);
     const double pK_psbs = getVar(MODULE_XanCycle, PARAM_TYPE_RC,
-                                  "pK_psbs");
+                                  "pK_psbs", false, conditions);
     const double expr_psbs = pow(10., (hill_psbs * (pH - pK_psbs)));
     if (k == EnumType::expr_psbs)
       return expr_psbs;
@@ -1141,9 +1135,7 @@ void Variables::setRecord(const ValueSet_t* x,
     PARAM_TYPE pt = x->_virtual_get_param_type();
     if (pt == PARAM_TYPE_MOD) return;
     const std::vector<ValueSet_t**>& children = x->getChildren();
-    if (children.size() > 0) {
-	conditions[m] = x;
-    }
+    conditions[m] = x;
     for (typename std::vector<ValueSet_t**>::const_iterator it = children.begin();
 	 it != children.end(); it++) {
 	setRecord(**it, conditions);

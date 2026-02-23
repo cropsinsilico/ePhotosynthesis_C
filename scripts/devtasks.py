@@ -12,6 +12,8 @@ import difflib
 import site
 import warnings
 import re
+import tempfile
+import scipy
 from collections import OrderedDict
 import matplotlib.pyplot as plt
 import numpy as np
@@ -38,6 +40,7 @@ elif sys.platform in ['win32', 'cygwin']:
     _platform = 'win'
     _library_path_var = 'PATH'
 
+sys.path.append(_utils_dir)
 
 _figures = [
     'Zhu2012_Fig2', 'Zhu2012_Fig3',
@@ -53,6 +56,15 @@ _light_profiles = _param_sets + [
 ]
 
 
+class NoDefault(object):
+    pass
+
+
+def is_case_sensitive(src):
+    with tempfile.NamedTemporaryFile(prefix='TmP', dir=src) as tmp_file:
+        return (not os.path.exists(tmp_file.name.lower()))
+
+
 def cli_param(x):
     k, v = x.split(':')
     return k, float(v)
@@ -63,6 +75,8 @@ def parse_driver(x):
         return x
     if x.isnumeric():
         return int(x)
+    if x == 'all':
+        return 0
     return SubTask._driver_map_reverse[x]
 
 
@@ -87,20 +101,22 @@ def search_directory(pattern, directory, ext=None, check=False,
     return out
 
 
+# TODO: This is not necessary after migration of these variables
+#   to the correct names.
 def get_matlab_aliases(reverse=False, strip_prefix=False):
     aliases = {
-        "BF::POOL::kA_d": "BF::POOL::Tcyt",
-        "BF::POOL::kA_f": "BF::POOL::Tcytc2",
-        "BF::POOL::kA_U": "BF::POOL::TK",
-        "BF::POOL::kU_A": "BF::POOL::TMg",
-        "BF::POOL::kU_d": "BF::POOL::TCl",
-        "BF::POOL::kU_f": "BF::POOL::TFd",
-        "BF::POOL::k1": "BF::POOL::TA",
-        "BF::POOL::k_r1": "BF::POOL::TQ",
-        "BF::POOL::kz": "BF::POOL::BFTs",
-        "BF::POOL::k12": "BF::POOL::BFTl",
-        "BF::POOL::k23": "BF::POOL::P700T",
-        "BF::POOL::k30": "BF::POOL::NADPHT",
+        # "BF::POOL::kA_d": "BF::POOL::Tcyt",
+        # "BF::POOL::kA_f": "BF::POOL::Tcytc2",
+        # "BF::POOL::kA_U": "BF::POOL::TK",
+        # "BF::POOL::kU_A": "BF::POOL::TMg",
+        # "BF::POOL::kU_d": "BF::POOL::TCl",
+        # "BF::POOL::kU_f": "BF::POOL::TFd",
+        # "BF::POOL::k1": "BF::POOL::TA",
+        # "BF::POOL::k_r1": "BF::POOL::TQ",
+        # "BF::POOL::kz": "BF::POOL::BFTs",
+        # "BF::POOL::k12": "BF::POOL::BFTl",
+        # "BF::POOL::k23": "BF::POOL::P700T",
+        # "BF::POOL::k30": "BF::POOL::NADPHT",
     }
     out = aliases
     if reverse:
@@ -153,35 +169,50 @@ def find_matlab(required=False):
     return sorted(locations)[-1]  # Return newest version
 
 
-def get_param_files(mod='*', pt='*'):
+def get_param_files(mod=None, pt=None):
+    if mod is None:
+        mod = '*'
+    if pt is None:
+        pt = '*'
     return sorted(glob.glob(os.path.join(_param_dir, f'{mod}_{pt}.txt')))
 
 
 def paramfile2mod(fname):
-    return os.path.splitext(os.path.basename(fname))[0].split('_')[0]
+    return os.path.splitext(
+        os.path.basename(fname))[0].rsplit('_', maxsplit=1)[0]
 
 
 def paramfile2pt(fname):
-    return os.path.splitext(os.path.basename(fname))[0].split('_')[1]
+    return os.path.splitext(
+        os.path.basename(fname))[0].rsplit('_', maxsplit=1)[1]
 
 
-def get_module_list():
-    return [paramfile2mod(x) for x in get_param_files(pt='MOD')]
+def get_module_list(pt=None, exclude_NPQ=False, include_ALL=False,
+                    exclude_empty=False):
+    out = ParameterSet.all_modules(pt=pt)
+    if not exclude_empty:
+        modules = [paramfile2mod(f) for f in get_param_files(pt="MOD")]
+        out += [x for x in modules if x not in out]
+    if exclude_NPQ and 'NPQ' in out:
+        out.remove('NPQ')
+    elif (not exclude_NPQ) and 'NPQ' not in out:
+        out.append('NPQ')
+    if include_ALL and 'ALL' not in out:
+        out.append('ALL')
+    elif (not include_ALL) and 'ALL' in out:
+        out.remove('ALL')
+    return sorted(out)
 
 
-def get_param_type_list(mod):
-    out = []
-    for x in get_param_files(mod=mod):
-        with open(x, 'r') as fd:
-            if not fd.read():
-                continue
-        out.append(paramfile2pt(x))
-    return out
+def get_param_type_list(mod=None):
+    return ParameterSet.all_param_types(mod=mod)
 
 
-def get_param_names(mod, pt):
-    fname = os.path.join(_param_dir, f'{mod}_{pt}.txt')
-    return list(read_param(fname, default=True).keys())
+def get_param_names(mod, pt, return_dict=False, **kwargs):
+    param = ParameterSet.all_parameters().select(mod, pt, **kwargs)
+    if return_dict:
+        return param
+    return list([v.name for v in param.values()])
 
 
 def read_default_param(with_prefixes=False):
@@ -199,7 +230,7 @@ def read_default_param(with_prefixes=False):
                 defaults[kp] = iparam
         else:
             defaults.setdefault(mod, OrderedDict())
-            defaults[mod][pt] = read_param(param_file, default=True)
+            defaults[mod][pt] = iparam
     return defaults
 
 
@@ -211,7 +242,8 @@ def norm_param(src, dst, maxlen=None):
     write_param(dst, out, sort=True, maxlen=maxlen)
 
 
-def read_param(fname, default=False):
+def read_param(fname, default=False, include_qualifiers=None,
+               exclude_qualifiers=None):
     out = OrderedDict()
     with open(fname, 'r') as fd:
         contents = fd.readlines()
@@ -225,14 +257,21 @@ def read_param(fname, default=False):
         if default:
             fields = x.split()
             name = fields[0]
-            out[name] = {'value': float(fields[1]),
-                         'comment': comment.strip()}
+            iout = {'value': float(fields[1]),
+                    'comment': comment.strip()}
             if len(fields) == 2:
-                out[name]['value_c3'] = out[name]['value']
+                iout['value_c3'] = iout['value']
             elif len(fields) == 3:
-                out[name]['value_c3'] = float(fields[2])
+                iout['value_c3'] = float(fields[2])
             else:
                 raise ValueError(f"More than 3 fields: \"{x}\"")
+            if include_qualifiers and not any(x in iout['comment']
+                                              for x in include_qualifiers):
+                continue
+            if exclude_qualifiers and any(x in iout['comment']
+                                          for x in exclude_qualifiers):
+                continue
+            out[name] = iout
         else:
             name, value = x.rsplit(maxsplit=1)
             out[name] = float(value)
@@ -264,7 +303,7 @@ def write_param_table(fname, param, title=None):
 
 
 def write_param(fname, param, sort=False, comment_incomplete=False,
-                exclude_param=None, maxlen=None):
+                exclude_param=None, maxlen=None, header=None):
     if exclude_param is None:
         exclude_param = []
     if maxlen is None:
@@ -279,6 +318,8 @@ def write_param(fname, param, sort=False, comment_incomplete=False,
         fd = StringIO()
     else:
         fd = open(fname, 'w')
+    if header:
+        fd.write(header)
     order = param.keys()
     if sort in [True, 'names']:
         order = sorted(order)
@@ -330,42 +371,79 @@ def write_param(fname, param, sort=False, comment_incomplete=False,
 def read_output_table(fname, sep=','):
     with open(fname, 'r') as fd:
         contents = fd.readlines()
-    if len(contents) == 1:
-        names = ['ALL::VARS::CO2AR']
-    else:
-        names = contents[0].strip().split(sep)
-    values = [float(x) for x in contents[-1].strip().split(sep)]
+    if len(contents) > 1:
+        return read_param_table(fname, no_title=True)
+    names = ['ALL::VARS::CO2AR']
+    values = [
+        np.array([float(x)]) for x in contents[-1].strip().split(sep)
+    ]
     out = {k: v for k, v in zip(names, values)}
     return out
 
 
+class ComparisonError(RuntimeError):
+    pass
+
+
 def check_output(f1, f2, reltol=1.0e-05, abstol=1.0e-08, sep=',',
-                 label_f1='file A', label_f2='file B'):
+                 label_f1='file A', label_f2='file B',
+                 f1_prune=None, f2_prune=None, **kwargs):
     x1dict = read_output_table(f1, sep=sep)
     x2dict = read_output_table(f2, sep=sep)
-    return compare_dict(x1dict, x2dict, reltol=reltol, abstol=abstol,
-                        label_f1=label_f1, label_f2=label_f2)
+    if f1_prune is not None:
+        kwargs.setdefault('x1rem', {})
+    if f2_prune is not None:
+        kwargs.setdefault('x2rem', {})
+    out = compare_dict(x1dict, x2dict, reltol=reltol, abstol=abstol,
+                       label_f1=label_f1, label_f2=label_f2, **kwargs)
+    if not out:
+        if f1_prune is not None:
+            write_param_table(f1_prune, kwargs['x1rem'], title=False)
+        if f2_prune is not None:
+            write_param_table(f2_prune, kwargs['x2rem'], title=False)
+    return out
 
 
 def check_param(f1, f2, reltol=1.0e-05, abstol=1.0e-08, sep='\t',
-                label_f1='file A', label_f2='file B'):
+                label_f1='file A', label_f2='file B',
+                f1_prune=None, f2_prune=None, **kwargs):
     x1dict = read_param(f1)
     x2dict = read_param(f2)
-    return compare_dict(x1dict, x2dict, reltol=reltol, abstol=abstol,
-                        label_f1=label_f1, label_f2=label_f2)
+    if f1_prune is not None:
+        kwargs.setdefault('x1rem', {})
+    if f2_prune is not None:
+        kwargs.setdefault('x2rem', {})
+    out = compare_dict(x1dict, x2dict, reltol=reltol, abstol=abstol,
+                       label_f1=label_f1, label_f2=label_f2,
+                       **kwargs)
+    if not out:
+        if f1_prune is not None:
+            write_param(f1_prune, kwargs['x1rem'], sort=True,
+                        header=f'# {label_f1}\n# {f1}\n')
+        if f2_prune is not None:
+            write_param(f2_prune, kwargs['x2rem'], sort=True,
+                        header=f'# {label_f2}\n# {f2}\n')
+    return out
 
 
 def compare_dict(x1dict, x2dict, reltol=1.0e-05, abstol=1.0e-08,
-                 label_f1='file A', label_f2='file B'):
+                 label_f1='file A', label_f2='file B', quiet=False,
+                 x1rem=None, x2rem=None):
     out = True
     for k in x1dict.keys():
         if k not in x2dict:
-            print(f"\"{k}\" missing from {label_f2}")
+            if not quiet:
+                print(f"\"{k}\" missing from {label_f2}")
             out = False
+            if x1rem is not None:
+                x1rem[k] = x1dict[k]
     for k in x2dict.keys():
         if k not in x1dict:
-            print(f"\"{k}\" missing from {label_f1}")
+            if not quiet:
+                print(f"\"{k}\" missing from {label_f1}")
             out = False
+            if x2rem is not None:
+                x2rem[k] = x2dict[k]
     for k in x1dict.keys():
         if k not in x2dict:
             continue
@@ -374,22 +452,42 @@ def compare_dict(x1dict, x2dict, reltol=1.0e-05, abstol=1.0e-08,
         iout = np.isclose(x1, x2, rtol=reltol, atol=abstol)
         if not iout:
             out = False
-            reldiff = np.abs(x1 - x2) / x2
-            absdiff = np.abs(x1 - x2)
-            print(f"Values differ for \"{k}\": {x1} vs {x2}\n"
-                  f"    Relative diff: {reldiff} (reltol = {reltol})\n"
-                  f"    Absolute diff: {absdiff} (abstol = {abstol}\n")
+            if x1rem is not None:
+                x1rem[k] = x1dict[k]
+            if x2rem is not None:
+                x2rem[k] = x2dict[k]
+            if not quiet:
+                reldiff = np.abs(x1 - x2) / x2
+                absdiff = np.abs(x1 - x2)
+                print(
+                    f"Values differ for \"{k}\": {x1} vs {x2}\n"
+                    f"    Relative diff: {reldiff} (reltol = {reltol})\n"
+                    f"    Absolute diff: {absdiff} (abstol = {abstol}\n"
+                )
     return out
 
 
 def compare_files(f1, f2, check_files=None, ftype='parameter',
-                  check_files_kwargs={}, output_diff=None):
+                  check_files_kwargs=None, output_diff=None,
+                  dont_prune_diff=False):
+    if check_files_kwargs is None:
+        check_files_kwargs = {}
     with open(f1, 'r') as fd:
         lines1 = fd.readlines()
     with open(f2, 'r') as fd:
         lines2 = fd.readlines()
     line_diff = list(difflib.unified_diff(lines1, lines2,
                                           fromfile=f1, tofile=f2))
+    generated_files = []
+    if output_diff and not dont_prune_diff:
+        if 'f1_prune' not in check_files_kwargs:
+            check_files_kwargs['f1_prune'] = '_TMP'.join(
+                os.path.splitext(f1))
+            generated_files.append(check_files_kwargs['f1_prune'])
+        if 'f2_prune' not in check_files_kwargs:
+            check_files_kwargs['f2_prune'] = '_TMP'.join(
+                os.path.splitext(f2))
+            generated_files.append(check_files_kwargs['f2_prune'])
     if line_diff:
         if check_files is None:
             if ftype == 'output':
@@ -399,12 +497,25 @@ def compare_files(f1, f2, check_files=None, ftype='parameter',
         if (((check_files is not None)
              and check_files(f1, f2, **check_files_kwargs))):
             return
-        print(line_diff)
         line_diff = ''.join(line_diff)
         if output_diff:
-            subprocess.run(
-                f'diff {f1} {f2} &> {output_diff}', shell=True)
-        raise RuntimeError(
+            f1tmp = f1
+            f2tmp = f2
+            if (((not dont_prune_diff)
+                 and os.path.isfile(check_files_kwargs['f1_prune'])
+                 and os.path.isfile(check_files_kwargs['f2_prune']))):
+                f1tmp = check_files_kwargs['f1_prune']
+                f2tmp = check_files_kwargs['f2_prune']
+            try:
+                subprocess.run(
+                    f'diff {f1tmp} {f2tmp} &> {output_diff}', shell=True)
+            finally:
+                for x in generated_files:
+                    if os.path.isfile(x):
+                        os.remove(x)
+            # line_diff += f'\nOUTPUT_DIFF: {output_diff}\n  {f1}\n  {f2}'
+            return
+        raise ComparisonError(
             f"{ftype.title()} files differ:\n{line_diff}"
         )
 
@@ -474,6 +585,7 @@ class SubTask:
     _drivers = ['trDynaPS', 'DynaPS', 'CM', 'EPS']
     _driver_map = {(i + 1): x for i, x in enumerate(_drivers)}
     _driver_map_reverse = {x: (i + 1) for i, x in enumerate(_drivers)}
+    _languages = ['cpp', 'matlab', 'python']
 
     @classmethod
     def adjust_args(cls, args):
@@ -518,12 +630,26 @@ class SubTask:
                     continue
                 v = os.path.expanduser(v)
                 if not os.path.isabs(v):
-                    if prefix:
+                    if prefix and not os.path.dirname(v):
                         v = os.path.join(prefix, v)
                     if not os.path.isabs(v):
                         v = os.path.abspath(v)
                     v = os.path.normpath(v)
                 setattr(args, k, os.path.expanduser(v))
+
+    @classmethod
+    def reset_path_args(cls, args, names, value=NoDefault,
+                        set_to_base=False):
+        for k in names:
+            if hasattr(args, f'original_{k}'):
+                if set_to_base == 'original':
+                    setattr(args, k, getattr(args, f'original_{k}'))
+                delattr(args, f'original_{k}')
+            if value is not NoDefault:
+                assert not set_to_base
+                setattr(args, k, value)
+            elif set_to_base and isinstance(getattr(args, k, None), str):
+                setattr(args, k, os.path.basename(getattr(args, k)))
 
     @classmethod
     def suffix_path_args(cls, args, names, suffix):
@@ -976,7 +1102,7 @@ class test(BuildSubTask):
                                        build_args=build_args, **kwargs)
         finally:
             if args.refresh_output:
-                for drv in compare_matlab._drivers:
+                for drv in BuildSubTask._drivers:
                     fsrc = os.path.join(args.build_dir,
                                         f'output_{drv}.data')
                     fdst = os.path.join(_source_dir, 'tests',
@@ -1045,11 +1171,197 @@ class DuplicateParameterError(ParameterError):
 
 class ParameterSet(OrderedDict):
 
-    def get_original(self, k0):
+    _all_parameters = None
+    _all_modules = {}
+    _all_param_types = {}
+
+    def get_original(self, k0, default=NoDefault):
         for v in self.values():
             if v.original_name == k0:
                 return v
+        if default != NoDefault:
+            return default
         raise KeyError(k0)
+
+    def find(self, name, default=NoDefault, mod=None, pt=None,
+             exclude_fullname=False, exclude_name=False,
+             include_aliases=False, include_original=False,
+             include_matlab_var=False):
+        fullname = name
+        if mod and pt and not exclude_fullname:
+            fullname = f'{mod}::{pt}::{name}'
+            if fullname in self:
+                return self[fullname]
+
+        def check(v):
+            if mod and v.mod != mod:
+                return False
+            if pt and v.pt != pt:
+                return False
+            if (not exclude_fullname) and v.fullname == name:
+                return True
+            if (not exclude_name) and v.name == name:
+                return True
+            if include_aliases and name in v.aliases:
+                return True
+            if include_original and v.original_name == name:
+                return True
+            if include_matlab_var and v.matlab_var == name:
+                return True
+            return False
+
+        matches = [v for v in self.values() if check(v)]
+        if len(matches) > 1:
+            raise ParameterNoMatchError(
+                f'Multiple matches for parameter \"{fullname}\": '
+                f'{[v.fullname for v in matches]}'
+            )
+        elif len(matches) == 0:
+            if default is not NoDefault:
+                return default
+            raise ParameterNoMatchError(
+                f'No matches for parameter \"{fullname}\"'
+            )
+        return matches[0]
+
+    def get_param(self, mod, pt, name, default=NoDefault, **kwargs):
+        return self.find(name, default=default, mod=mod, pt=pt, **kwargs)
+
+    def select(self, mod=None, pt=None,
+               control_values=None, qualifiers=None,
+               args=None, inverse=False):
+        if control_values is None:
+            control_values = {}
+        if qualifiers is None:
+            qualifiers = {}
+
+        def set_default(x):
+            if x is None:
+                return []
+            elif isinstance(x, str):
+                return [x]
+            return x
+
+        mod = set_default(mod)
+        pt = set_default(pt)
+        if args is not None:
+            control_values.setdefault('ALL::VARS::useC3', args.useC3)
+            control_values.setdefault(
+                'ALL::VARS::UseZaksNPQ', args.use_zaks_npq)
+            if not mod:
+                driver_name = SubTask._driver_map[args.driver]
+                mod = ['ALL'] + instrument_matlab.get_children(driver_name)
+
+        def check(k, v):
+            if isinstance(mod, dict) and not mod.get(v.mod, True):
+                return False
+            elif mod and v.mod not in mod:
+                return False
+            if isinstance(pt, dict) and not pt.get(v.pt, True):
+                return False
+            elif pt and v.pt not in pt:
+                return False
+            for kq, vq in qualifiers.items():
+                if vq:
+                    if not v.qualifiers.get(kq, False):
+                        return False
+                else:
+                    if v.qualifiers.get(kq, False):
+                        return False
+            if not all(control_values.get(ctrl, True)
+                       for ctrl in v.qualifiers.get('CTRL_ON', [])):
+                return False
+            if any(control_values.get(ctrl, False)
+                   for ctrl in v.qualifiers.get('CTRL_OFF', [])):
+                return False
+            return True
+
+        out = type(self)()
+        for k, v in self.items():
+            if inverse:
+                if check(k, v):
+                    continue
+            else:
+                if not check(k, v):
+                    continue
+            out[k] = v
+        return out
+
+    def modules(self, pt=None):
+        r"""list: Set of modules represented in this set."""
+        if isinstance(pt, str):
+            pt = [pt]
+        return sorted(
+            list(set([v.mod for v in self.values()
+                      if v.mod and (pt is None or v.pt in pt)]))
+        )
+
+    def param_types(self, mod=None):
+        r"""list: Set of parameter types represented in this set."""
+        if isinstance(mod, str):
+            mod = [mod]
+        return sorted(
+            list(set([v.pt for v in self.values()
+                      if v.pt and (mod is None or v.mod in mod)]))
+        )
+
+    def read_defaults_file(self, fname):
+        from generate_enum import ParamFileParser
+        base = os.path.splitext(os.path.basename(fname))[0]
+        if base in ["README", "RedoxReg_MP", "VAR"]:
+            return
+        mod, pt = base.rsplit('_', maxsplit=1)
+        with open(fname, 'r') as fd:
+            lines = fd.readlines()
+        for line in lines:
+            member = ParamFileParser.parse_line(
+                line, src=fname, dont_promote_qualifiers=True)
+            if not member:
+                continue
+            x = Parameter.from_enum_member(mod, pt, member)
+            self[x.fullname] = x
+
+    @classmethod
+    def from_defaults_files(cls):
+        out = cls()
+        param_files = sorted(glob.glob(os.path.join(_param_dir, '*.txt')))
+        for param_file in param_files:
+            out.read_defaults_file(param_file)
+        return out
+
+    @classmethod
+    def all_parameters(cls):
+        if cls._all_parameters is None:
+            cls._all_parameters = cls.from_defaults_files()
+        return cls._all_parameters
+
+    @classmethod
+    def all_modules(cls, pt=None):
+        if pt not in cls._all_modules:
+            cls._all_modules[pt] = cls.all_parameters().modules(pt=pt)
+        return copy.deepcopy(cls._all_modules[pt])
+
+    @classmethod
+    def all_param_types(cls, mod=None):
+        if mod not in cls._all_param_types:
+            cls._all_param_types[mod] = cls.all_parameters().param_types(
+                mod=mod)
+        return copy.deepcopy(cls._all_param_types[mod])
+
+    @classmethod
+    def name2fullname(cls, name, **kwargs):
+        return cls.all_parameters().find(name, **kwargs).fullname
+
+    @classmethod
+    def normalize_dict(cls, param, discard_duplicates=False):
+        for k in list(param.keys()):
+            kfull = cls.name2fullname(k, include_aliases=True)
+            if kfull != k:
+                v = param.pop(k)
+                if kfull in param and discard_duplicates:
+                    continue
+                assert kfull not in param
+                param[kfull] = v
 
 
 class Parameter:
@@ -1065,11 +1377,18 @@ class Parameter:
                  value=None, value_c3=None, comment=None,
                  title=None, description=None, reference=None,
                  units=None, default=None, original_name=None,
-                 original_value=None, conversion=None):
+                 original_value=None, conversion=None,
+                 qualifiers=None, matlab_var=None):
+        if qualifiers is None:
+            qualifiers = {}
         if aliases is None:
-            aliases = []
+            aliases = qualifiers.get('ALIASES', [])
         if isinstance(aliases, dict):
             aliases = list(aliases.values())
+        if reference is None:
+            reference = qualifiers.get('CITATION', None)
+        if matlab_var is None:
+            matlab_var = qualifiers.get('MATLAB_VAR', None)
         if name.count('::') == 2:
             mod, pt, name = name.split('::')
             if comment is None:
@@ -1092,6 +1411,8 @@ class Parameter:
         self.reference = reference
         self.units = units
         self.comment = comment
+        self.qualifiers = qualifiers
+        self.matlab_var = matlab_var
         self.aliases = OrderedDict()
         self.default = default
         self.choices = OrderedDict()
@@ -1102,6 +1423,25 @@ class Parameter:
 
     def __str__(self):
         return self._make_string()
+
+    @classmethod
+    def from_enum_member(cls, mod, pt, member):
+        kwmap = {
+            'val': 'value',
+            'val_alt': 'value_c3',
+            'doc': 'description',
+        }
+        for k in ['qualifiers']:
+            kwmap[k] = k
+        kws = {
+            'mod': mod,
+            'pt': pt,
+        }
+        for k, v in kwmap.items():
+            if k not in member:
+                continue
+            kws[v] = member[k]
+        return cls(member['name'], **kws)
 
     def finalize(self, defaults=None, existing=None, aliases=None,
                  **kwargs):
@@ -1938,14 +2278,29 @@ class zhu2012(SubTask):
 
 class ephoto(BuildSubTask):
 
-    direct_args = ['stoptime']
+    direct_args = ['begintime', 'stoptime', 'stepsize',
+                   'abstol', 'reltol']
     _output_ftypes = [
         'output_file', 'output_param_base',
-        'plot_file', 'find_inflections',
+        'plot_file', 'find_inflections', 'plot_trace_diffs',
+        'output_diff',
     ]
+    _input_ftypes = [
+        'enzyme_file', 'grn_file',
+        'evn_file', 'atpcost_file',
+        'iterations_file',
+    ]
+    _file_defaults = {
+        'enzyme_file': 'InputEnzyme.txt',
+        'grn_file': 'InputGRNC.txt',
+        'evn_file': 'InputEvn.txt',
+        'atpcost_file': 'InputATPCost.txt',
+    }
 
     @classmethod
-    def adjust_args(cls, args):
+    def adjust_args(cls, args, suffix_kws=None, add_output_ftypes=[]):
+        if suffix_kws is None:
+            suffix_kws = {}
         if args.match_param:
             if args.output_suffix is None:
                 args.output_suffix = True
@@ -1963,6 +2318,17 @@ class ephoto(BuildSubTask):
             cls.match_param(args.match_param, args)
         if args.light_profile:
             create_iterations.adjust_args(args)
+        if isinstance(args.language, list):
+            args.all_languages = [args.language[0]]
+            for x in args.language[1:]:
+                if x == 'all':
+                    args.all_languages += [
+                        xx for xx in SubTask._languages
+                        if xx not in args.all_languages
+                    ]
+                elif x not in args.all_languages:
+                    args.all_languages.append(x)
+            args.language = args.language[0]
         if args.language == 'matlab' and not args.matlab:
             args.matlab = True
         if args.matlab is True:
@@ -1971,40 +2337,102 @@ class ephoto(BuildSubTask):
             args.language = 'matlab'
         if not args.language:
             args.language = 'cpp'
+        if not getattr(args, 'all_languages', None):
+            args.all_languages = [args.language]
+        if 'matlab' in args.all_languages and len(args.all_languages) > 1:
+            args.make_equivalent_to_matlab = True
+        if not args.driver:
+            args.driver = list(SubTask._driver_map.keys())
+        if isinstance(args.driver, list):
+            args.all_drivers = [args.driver[0]]
+            for x in args.driver:
+                if x == 0:
+                    args.all_drivers += [
+                        xx for xx in SubTask._driver_map.keys()
+                        if xx not in args.all_drivers
+                    ]
+                elif x not in args.all_drivers:
+                    args.all_drivers.append(x)
+            args.driver = args.all_drivers[0]
+        if not getattr(args, 'all_drivers', None):
+            args.all_drivers = [args.driver]
+        if args.dont_run_language is None:
+            args.dont_run_language = []
         if isinstance(args.param, list):
             args.param = OrderedDict(*args.param)
+        if args.use_zaks_npq:
+            if args.param is None:
+                args.param = {}
+            args.param.update(**{
+                'ALL::VARS::UseZaksNPQ': 1,
+                'XanCycle::RC::psbsQ_converRate': 4.0e-2,
+                'XanCycle::RC::Fpsbs': 0.6,
+                'ALL::VARS::GRNC': 0,
+            })
+            # TODO: Check if Vx, Ax, Zx in file
+            if not (args.steady_state_start or args.evn_file):
+                args.param.update(**{
+                    'XanCycle::COND::Vx': 0.7,
+                    'XanCycle::COND::Ax': 0.2,
+                    'XanCycle::COND::Zx': 0.1,
+                    # 'SUCS::MOD::KE61': 1.2e7,
+                    # 'PR::MOD::PGA': 0.0,
+                    # 'PS::MOD::PS_C_CN': 1.0,
+                    # 'ALL::VARS::Pi': 0.967608,
+                })
+        if 'matlab' in args.all_languages:
+            for ftype in ['grn_file', 'evn_file']:
+                if getattr(args, ftype, None) is None:
+                    setattr(args, ftype, '_MATLAB'.join(
+                        os.path.splitext(cls._file_defaults[ftype])))
+        for ftype, v in cls._file_defaults.items():
+            if getattr(args, ftype, None) is None:
+                setattr(args, ftype, v)
+        if args.output_diff is True:
+            args.output_diff = f'{args.language}.diff'
+        if args.plot_file and args.output_param < 3:
+            args.output_param = 3
+        if args.compare and args.output_param < 2:
+            args.output_param = 2
+        if not isinstance(args.output_param_base, str):
+            args.output_param_base = 'param_'
+        if args.plot_file is True:
+            args.plot_file = args.output_param_base + 'trace.png'
         cls.prefix_path_args(
             args, ['matlab_repo'], prefix=os.getcwd())
         cls.prefix_path_args(args, ['input_dir', 'output_dir',
                                     'generate_matlab_script'])
-        cls.prefix_path_args(args, ['enzyme_file', 'grn_file',
-                                    'evn_file', 'atpcost_file',
-                                    'iterations_file'],
+        cls.prefix_path_args(args, cls._input_ftypes,
                              prefix=args.input_dir)
-        cls.prefix_path_args(args, cls._output_ftypes,
+        cls.prefix_path_args(args,
+                             cls._output_ftypes + add_output_ftypes,
                              prefix=args.output_dir)
-        if args.plot_file and args.output_param < 3:
-            args.output_param = 3
-        if args.output_param and not isinstance(args.output_param_base, str):
-            args.output_param_base = 'param_'
         if args.output_suffix is None:
             args.output_suffix = True
         if args.output_suffix:
             if args.output_suffix is True:
-                args.output_suffix = cls.generate_output_suffix(args)
-            cls.suffix_path_args(args, cls._output_ftypes,
-                                 args.output_suffix)
+                args.output_suffix = cls.generate_output_suffix(
+                    args, **suffix_kws)
+            if isinstance(args.output_suffix, str):
+                cls.suffix_path_args(
+                    args, cls._output_ftypes + add_output_ftypes,
+                    args.output_suffix)
         args.output_param_first = args.output_param_base + 'init.txt'
         args.output_param_final = args.output_param_base + 'last.txt'
         args.output_param_trace = args.output_param_base + 'trace.txt'
         args.output_param_steps = args.output_param_base + 'step*.txt'
         if not os.path.isdir(args.output_dir):
             os.mkdir(args.output_dir)
-        if args.dont_run or args.language == 'matlab':
+        if args.dont_run or ('cpp' not in args.all_languages
+                             and 'python' not in args.all_languages):
             args.dont_build = True
-        if args.language == 'python':
-            args.only_python = True
-            # args.with_python = True
+        if 'python' in args.all_languages:
+            if len(args.all_languages) == 1:
+                args.only_python = True
+            else:
+                args.with_python = True
+        if args.language == 'matlab':
+            instrument_matlab.adjust_args(args)
         super(ephoto, cls).adjust_args(args)
 
     @classmethod
@@ -2023,10 +2451,13 @@ class ephoto(BuildSubTask):
         ]
         if args.param is None:
             args.param = {}
+        else:
+            ParameterSet.normalize_dict(args.param)
         if args.evn_file:
             if not hasattr(args, 'evn_file_subset'):
                 args.evn_file_subset = None
             param = read_param(args.evn_file)
+            ParameterSet.normalize_dict(param)
             if isinstance(args.evn_file_subset, list):
                 param = {k: param[k] for k in args.evn_file_subset}
             for v in exclusive_param:
@@ -2309,6 +2740,17 @@ class ephoto(BuildSubTask):
         assert not ephoto_args
         if ephoto_args is None:
             ephoto_args = []
+        ephoto_args += [
+            str(args.driver),
+            f'\'{args.matlab_repo}\'',
+        ]
+        for k in cls.direct_args:
+            v = getattr(args, k, None)
+            if v is None:
+                continue
+            if isinstance(v, str):
+                v = f'\'{v}\''
+            ephoto_args += [f'{k}={v}']
         if args.grn_file:
             ephoto_args += [f'GRNFile=\'{args.grn_file}\'']
         if args.atpcost_file:
@@ -2334,6 +2776,7 @@ class ephoto(BuildSubTask):
             # '-nojvm',
         ]
         if args.generate_matlab_script:
+            cls.generate_matlab_script(args, ephoto_args)
             script_dir, script_name = os.path.split(
                 args.generate_matlab_script)
             cmd += [
@@ -2341,13 +2784,11 @@ class ephoto(BuildSubTask):
             ]
             kwargs['cwd'] = script_dir
         else:
-            ephoto_args = [str(args.driver)] + ephoto_args
-            ephoto_args = ",".join(ephoto_args)
             cmd += [
                 '-batch',
-                'ePhotosynthesis(' + ephoto_args + ');'
+                'ePhotosynthesis(' + ",".join(ephoto_args) + ');'
             ]
-            kwargs['cwd'] = args.matlab_repo
+            kwargs['cwd'] = args.matlab_utils
         cmd = [' '.join(cmd)]
         return cmd
 
@@ -2356,6 +2797,11 @@ class ephoto(BuildSubTask):
         if ephoto_args is None:
             ephoto_args = []
         execFile = os.path.join(args.build_dir, 'ePhoto')
+        for k in cls.direct_args:
+            v = getattr(args, k, None)
+            if v is None:
+                continue
+            ephoto_args += [f'--{k}', str(v)]
         if args.grn_file:
             ephoto_args += ['--grn', args.grn_file]
         if args.atpcost_file:
@@ -2379,9 +2825,6 @@ class ephoto(BuildSubTask):
             f'{" ".join(ephoto_args)}',
             f'cat {args.output_file}'
         ]
-        for k in cls.direct_args:
-            if getattr(args, k, None):
-                cmds[0] += f' --{k} {getattr(args, k)}'
         return cmds
 
     @classmethod
@@ -2390,6 +2833,13 @@ class ephoto(BuildSubTask):
         if ephoto_args is None:
             ephoto_args = []
         ephoto_args += [f"\"{cls._driver_map[args.driver]}\""]
+        for k in cls.direct_args:
+            v = getattr(args, k, None)
+            if v is None:
+                continue
+            if isinstance(v, str):
+                v = f'\"{v}\"'
+            ephoto_args += [f'{k}={v}']
         if args.grn_file:
             ephoto_args += [f'grnFile=\"{args.grn_file}\"']
         if args.atpcost_file:
@@ -2447,8 +2897,31 @@ class ephoto(BuildSubTask):
             )
             args.param = {}
             ephoto.incorporate_evn_file(args, from_output=True)
-        if args.driver == 0 and cmds is None:
-            self.iter_drivers(self.run_commands, args, **kwargs)
+        if cmds is None and (args.driver == 0
+                             or len(args.all_drivers) > 1
+                             or len(args.all_languages) > 1):
+            super(ephoto, self).run_commands(args, cmds=[], **kwargs)
+            update_args = {
+                'dont_build': True,
+                'rebuild': False,
+                'output_diff': False,
+            }
+            self.iterate(self.run_commands, args,
+                         update_args=update_args, **kwargs)
+            if args.plot_file or args.compare:
+                self._generated_files += self.normalize_param(
+                    *args.iteration_args.values())
+            if args.plot_file:
+                args.result_file = [
+                    x.output_param_trace
+                    for x in args.iteration_args.values()
+                ]
+                args.plot_labels = list(args.iteration_args.keys())
+                analyze_trace(args)
+            if args.compare:
+                arglist = list(args.iteration_args.values())
+                arglist[0].output_diff = args.output_diff
+                self.diff(*arglist)
             return
         if ephoto_args is None:
             ephoto_args = []
@@ -2467,7 +2940,8 @@ class ephoto(BuildSubTask):
             if args.param:
                 assert not args.evn_file
                 args.evn_file = os.path.join(
-                    args.input_dir, 'GeneratedEvn.txt'
+                    args.input_dir,
+                    f'GeneratedEvn_{args.language.upper()}.txt'
                 )
                 write_param(args.evn_file, args.param)
                 self._generated_files.append(args.evn_file)
@@ -2481,48 +2955,77 @@ class ephoto(BuildSubTask):
             if args.output_param:
                 if args.output_param >= 3:
                     self._generated_files += [args.output_param_steps]
-            if args.language == 'matlab' and args.generate_matlab_script:
-                self.generate_matlab_script(args)
-                self._generated_files += [args.generate_matlab_script]
+            if args.language == 'matlab' and not args.dont_patch_matlab:
+                instrument_matlab.instrument_matlab(args)
             cmds = getattr(self, f'get_command_{args.language}')(
                 args, kwargs, ephoto_args=ephoto_args)
+            if args.language == 'matlab' and args.generate_matlab_script:
+                self._generated_files += [args.generate_matlab_script]
         try:
             return super(ephoto, self).run_commands(
                 args, cmds=cmds, **kwargs)
         finally:
+            if ((args.language == 'matlab'
+                 and not (args.dont_patch_matlab
+                          or args.preserve_patch_matlab))):
+                args.remove_patch = True
+                instrument_matlab.instrument_matlab(args)
             self.record_last_param(args)
-            if args.plot_file or args.find_inflections:
-                args.result_file = args.output_param_trace
+            if ((args.plot_file or args.find_inflections
+                 or args.plot_trace_diffs)):
+                args.plot_labels = None
+                args.result_file = [args.output_param_trace]
                 analyze_trace(args)
 
     @classmethod
-    def iter_drivers(cls, func, args, **kwargs):
-        for i in range(len(cls._drivers)):
-            args.driver = i + 1
-            args.output_suffix = True
-            func(args, **kwargs)
+    def iterate(cls, func, args0, drivers=None, languages=None,
+                update_args=None, **kwargs):
+        if drivers is None:
+            if args0.driver == 0:
+                drivers = [i + 1 for i in range(len(cls._drivers))]
+            else:
+                drivers = args0.all_drivers
+        if languages is None:
+            languages = args0.all_languages
+        if update_args is None:
+            update_args = {}
+        if not hasattr(args0, 'iteration_args'):
+            args0.iteration_args = {}
+        for driver in drivers:
+            for language in languages:
+                args = copy.deepcopy(args0)
+                for k, v in update_args.items():
+                    setattr(args, k, v)
+                args.driver = driver
+                args.language = language
+                args.all_languages = []
+                args.all_drivers = []
+                args.dont_run_language = []
+                args.compare = False
+                if language in args0.dont_run_language:
+                    args.dont_run = True
+                if language == 'matlab':
+                    if not args.matlab:
+                        args.matlab = find_matlab(required=True)
+                else:
+                    args.matlab = False
+                args.output_dir = os.path.join(
+                    args0.output_dir, f'output_{language.upper()}')
+                cls.reset_path_args(args, cls._output_ftypes,
+                                    set_to_base='original')
+                args.find_inflections = False
+                args.plot_trace_diffs = False
+                args.output_suffix = True
+                cls.adjust_args(args)
+                cls.assert_no_overlap(args, args0)
+                args0.iteration_args[args.output_suffix.strip('_')] = args
+                func(args, **kwargs)
 
     @classmethod
-    def generate_matlab_script(cls, args):
+    def generate_matlab_script(cls, args, ephoto_args):
         lines = [
-            f'addpath("{args.matlab_repo}");',
-            f'driver = {args.driver};',
-            f'evn_file = "{args.evn_file}";',
-            f'grn_file = "{args.grn_file}";',
-            f'enzyme_file = "{args.enzyme_file}";',
-            f'atpcost_file = "{args.atpcost_file}";',
-            f'iterations_file = "{args.iterations_file}";',
-            f'output_file = "{args.output_file}";',
-            f'output_param_base = "{args.output_param_base}";',
-            f'output_param_level = "{args.output_param}";',
-            'Arate = ePhotosynthesis(driver, EnvFile=evn_file,'
-            ' GRNFile=grn_file,'
-            ' EnzymeFile=enzyme_file,'
-            ' ATPCostFile=atpcost_file,'
-            ' OutputFile=output_file,'
-            ' OutputParamBase=output_param_base,'
-            ' OutputParamLevel=output_param_level,'
-            ' IterationsFile=iterations_file)'
+            f"addpath(\"{args.matlab_utils}\")"
+            f"Arate = ePhotosynthesis({', '.join(ephoto_args)})"
         ]
         contents = '\n'.join(lines)
         print(f'{80*"="}\n'
@@ -2532,17 +3035,26 @@ class ephoto(BuildSubTask):
             fd.write(contents)
 
     @classmethod
-    def generate_output_suffix(cls, args, extra_suffix=''):
+    def generate_output_suffix(cls, args, extra_suffix='',
+                               ignore_language=False):
         out = extra_suffix
         if args.match_param:
             out += f'_{args.match_param}'
         if args.light_profile and args.light_profile != args.match_param:
             out += create_iterations.generate_output_suffix(args)
-        out += '_' + cls._driver_map[args.driver]
-        if args.language != 'cpp':
+        if len(args.all_drivers) == 1 and args.driver != 0:
+            out += '_' + cls._driver_map[args.driver]
+        if len(args.all_languages) == 1 and not ignore_language:
             out += '_' + args.language.upper()
+        if args.compare:
+            out += '_COMPARE'
+            if len(args.all_drivers) > 1:
+                out += '_DRIVERS'
+            if len(args.all_languages) > 1:
+                out += '_LANGUAGES'
         if ((args.use_zaks_npq
-             and not args.light_profile.startswith('Zaks'))):
+             and not (args.light_profile
+                      and args.light_profile.startswith('Zaks')))):
             out += '_ZaksNPQ'
         if args.steady_state_start:
             assert not args.light_profile.endswith('steady-state')
@@ -2561,9 +3073,7 @@ class ephoto(BuildSubTask):
             args.match_param_to_matlab = False
         if args.output_param < 1:
             args.output_param = 1
-        for k in cls._output_ftypes:
-            delattr(args, f'original_{k}')
-            setattr(args, k, True)
+        cls.reset_path_args(args, cls._output_ftypes, value=True)
         if suffix is not None:
             args.output_suffix = cls.generate_output_suffix(args, suffix)
         cls.adjust_args(args)
@@ -2585,9 +3095,7 @@ class ephoto(BuildSubTask):
         args.light_profile = None
         if args.output_param < 2:
             args.output_param = 2
-        for k in cls._output_ftypes:
-            delattr(args, f'original_{k}')
-            setattr(args, k, True)
+        cls.reset_path_args(args, cls._output_ftypes, value=True)
         if not args.param:
             args.param = {}
         if values:
@@ -2604,7 +3112,107 @@ class ephoto(BuildSubTask):
     @classmethod
     def assert_no_overlap(cls, args1, args2):
         for k in cls._output_ftypes:
+            if getattr(args1, k) == getattr(args2, k):
+                if getattr(args1, k) in [None, True, False]:
+                    continue
+                print(k)
+                print(getattr(args1, k))
+                print(getattr(args2, k))
             assert getattr(args1, k) != getattr(args2, k)
+
+    @classmethod
+    def normalize_param(cls, *args):
+        generated_files = []
+        suffix = '_DIFFNORM'
+        for x in args:
+            cmp_language = [
+                y.language for y in args
+                if y.language != x.language
+            ]
+            for ftype in ['output_param_first',
+                          'output_param_final',
+                          'output_param_trace']:
+                src = getattr(x, ftype)
+                if (not os.path.isfile(src)) or suffix in src:
+                    continue
+                dst = suffix.join(os.path.splitext(src))
+                convert_matlab_param_task.normalize_param(
+                    x, src, dst, src_language=x.language,
+                    dst_language='cpp', cmp_language=cmp_language[0],
+                    ftype=('trace' if 'trace' in ftype else None),
+                )
+                generated_files.append(dst)
+                setattr(x, ftype, dst)
+        return generated_files
+
+    @classmethod
+    def do_compare(cls, farg, *args, **kwargs):
+        x1 = args[0]
+        if x1.output_diff is True:
+            x1.output_diff = f'{x1.language}.diff'
+        if not hasattr(x1, 'diff_errors'):
+            x1.diff_errors = []
+        for x2 in args[1:]:
+            cls.suffix_path_args(x1, ['output_diff'],
+                                 f'_vs_{x2.language}_{farg}')
+            f1 = getattr(x1, farg)
+            f2 = getattr(x2, farg)
+            kwargs.setdefault('check_files_kwargs', {})
+            kwargs['check_files_kwargs'].update(
+                label_f1=x1.language,
+                label_f2=x2.language,
+                quiet=bool(x1.output_diff),
+            )
+            kwargs.update(
+                output_diff=x1.output_diff,
+                dont_prune_diff=x1.dont_prune_diff,
+            )
+            compare_files(f1, f2, **kwargs)
+            if x1.output_diff and os.path.isfile(x1.output_diff):
+                x1.diff_errors.append(x1.output_diff)
+
+    @classmethod
+    def diff(cls, *args):
+        cls.normalize_param(*args)
+        if not hasattr(args[0], 'output_diff'):
+            args[0].output_diff = False
+        cls.do_compare('output_param_first', *args)
+        cls.do_compare('output_param_final', *args)
+        # cls.do_compare(
+        #     'output_file', *args, ftype='output',
+        #     check_files=check_output,
+        #     check_files_kwargs={
+        #         'reltol': args[0].reltol,
+        #         'abstol': args[0].abstol,
+        #         'sep': ',',
+        #     }
+        # )
+        # cls.do_compare(
+        #     'output_param_trace', *args, ftype='trace',
+        #     check_files=check_output,
+        #     check_files_kwargs={
+        #         'reltol': args[0].reltol,
+        #         'abstol': args[0].abstol,
+        #         'sep': ',',
+        #     },
+        # )
+        if args[0].diff_errors:
+            raise ComparisonError('Files differ:\n\t'
+                                  + '\n\t'.join(args[0].diff_errors))
+
+    # @clasmethod
+    # def diff_trace(cls, *args):
+    #     t0, x0 = args[0][:]
+    #     values = [x0]
+    #     diffs = []
+    #     tot = x0
+    #     for t, x in args[1:]:
+    #         y = np.interp(t0, t, x)
+    #         values.append(y)
+    #         tot = tot + y
+    #     mean = np.abs(tot) / len(args)
+    #     diffs = [np.abs(y - x0) / mean for y in values[1:]]
+    #     return diffs
 
 
 class analyze_trace(SubTask):
@@ -2672,62 +3280,185 @@ class analyze_trace(SubTask):
             args.plot_ncol = 2
         if args.plot_file is True:
             args.plot_file = os.path.splitext(
-                args.result_file)[0] + '.png'
+                args.result_file[0])[0] + '.png'
         if args.find_inflections is True:
-            args.find_inflections = 'Inflections'.join(os.path.splitext(
-                args.plot_file))
-        cls.prefix_path_args(args, ['plot_file', 'find_inflections'],
+            args.find_inflections = os.path.splitext(
+                args.result_file[0])[0] + '_Inflections.png'
+        if args.plot_trace_diffs is True:
+            args.plot_trace_diffs = os.path.splitext(
+                args.result_file[0])[0] + '_TraceDiffs.png'
+        cls.prefix_path_args(args, ['plot_file', 'find_inflections',
+                                    'plot_trace_diffs'],
                              prefix=args.output_dir)
-        cls.suffix_path_args(args, ['plot_file', 'find_inflections'],
+        cls.suffix_path_args(args, ['plot_file', 'find_inflections',
+                                    'plot_trace_diffs'],
                              args.output_suffix)
+        if args.plot_labels:
+            assert len(args.plot_labels) == len(args.result_file)
+        elif len(args.result_file) > 1:
+            args.plot_labels = [
+                os.path.basename(x) for x in args.result_file
+            ]
+        else:
+            args.plot_labels = [None]
         super(analyze_trace, cls).adjust_args(args)
 
     def __init__(self, args, **kwargs):
         super(analyze_trace, self).__init__(args, **kwargs)
-        args.output_param_trace = args.result_file
-        data = ephoto.read_trace(args)
-        self.plot(
-            data, names=args.plot_var, ncol=args.plot_ncol,
-            tmin=args.plot_tmin, tmax=args.plot_tmax,
-            vlines={'all': args.plot_tline},
-            fname=args.plot_file,
-            include_AvL=args.plot_AvL,
-            shading=args.plot_light_profile,
-            match_figure=args.match_figure,
-        )
-        if args.find_inflections:
-            inflections = self.find_inflection(
-                data, tmin=args.inflection_tmin,
-                tmax=args.inflection_tmax,
-                tol=args.inflection_tol,
-                N=args.inflection_N,
-            )
-            pprint.pprint(inflections)
-            inflections = inflections.sort_values('time').T
-            vlines = {'all': args.plot_tline}
-            for k in inflections.columns:
-                vlines[k] = (
-                    inflections[k]['time'],
-                    {'ls': ':', 'color': 'r'}
-                )
-            if args.inflection_tmin:
-                vlines['all'].append((
-                    args.inflection_tmin,
-                    {'ls': ':', 'color': 'o'}
-                ))
-            if args.inflection_tmax:
-                vlines['all'].append((
-                    args.inflection_tmax,
-                    {'ls': ':', 'color': 'o'}
-                ))
-            self.plot_data(
-                data, names=inflections.columns, ncol=5,
+        subplots = True
+        subplots_inflection = True
+        subplots_trace_diff = True
+        if not hasattr(args, 'plot_light_profile'):
+            args.plot_light_profile = {}
+        limits = {}
+        data0 = None
+        for i, fname in enumerate(args.result_file):
+            data = read_param_table(fname, no_title=True)
+            # data.set_index('time')
+            if i == 0:
+                data0 = data
+            subplots = self.plot(
+                data, names=args.plot_var, ncol=args.plot_ncol,
                 tmin=args.plot_tmin, tmax=args.plot_tmax,
-                fname=args.find_inflections,
-                vlines=vlines,
+                limits=limits,
+                vlines={'all': args.plot_tline},
+                include_AvL=args.plot_AvL,
                 shading=args.plot_light_profile,
                 match_figure=args.match_figure,
+                return_subplots=subplots,
+                label=args.plot_labels[i],
             )
+            if args.plot_trace_diffs and i > 0:
+                assert i < 2
+                data_resampled = self.resample_data(data0, data)
+                trace_diffs = self.find_trace_diff(
+                    data0, data_resampled, tmin=args.inflection_tmin,
+                    tmax=args.inflection_tmax,
+                    tol=args.reltol,
+                    N=args.inflection_N,
+                    dont_resample=True,
+                )
+                pprint.pprint(trace_diffs)
+                trace_diffs = trace_diffs.sort_values('time').T
+                vlines = {'all': args.plot_tline}
+                for k in trace_diffs.columns:
+                    vlines[k] = (
+                        trace_diffs[k]['time'],
+                        {'ls': ':', 'color': 'r'}
+                    )
+                if args.inflection_tmin:
+                    vlines['all'].append((
+                        args.inflection_tmin,
+                        {'ls': ':', 'color': 'o'}
+                    ))
+                if args.inflection_tmax:
+                    vlines['all'].append((
+                        args.inflection_tmax,
+                        {'ls': ':', 'color': 'o'}
+                    ))
+                subplots_trace_diff = self.plot_data(
+                    data_resampled, names=trace_diffs.columns, ncol=5,
+                    tmin=args.plot_tmin, tmax=args.plot_tmax,
+                    vlines=vlines,
+                    shading=args.plot_light_profile,
+                    return_subplots=subplots_trace_diff,
+                    label=args.plot_labels[i],
+                    diff_data=data0,
+                )
+            if args.find_inflections:
+                assert i < 2
+                inflections = self.find_inflection(
+                    data, tmin=args.inflection_tmin,
+                    tmax=args.inflection_tmax,
+                    tol=args.inflection_tol,
+                    N=args.inflection_N,
+                )
+                pprint.pprint(inflections)
+                inflections = inflections.sort_values('time').T
+                vlines = {'all': args.plot_tline}
+                for k in inflections.columns:
+                    vlines[k] = (
+                        inflections[k]['time'],
+                        {'ls': ':', 'color': 'r'}
+                    )
+                if args.inflection_tmin:
+                    vlines['all'].append((
+                        args.inflection_tmin,
+                        {'ls': ':', 'color': 'o'}
+                    ))
+                if args.inflection_tmax:
+                    vlines['all'].append((
+                        args.inflection_tmax,
+                        {'ls': ':', 'color': 'o'}
+                    ))
+                subplots_inflection = self.plot_data(
+                    data, names=inflections.columns, ncol=5,
+                    tmin=args.plot_tmin, tmax=args.plot_tmax,
+                    vlines=vlines,
+                    shading=args.plot_light_profile,
+                    return_subplots=subplots_inflection,
+                    label=args.plot_labels[i],
+                )
+        add_legend = (len(args.result_file) > 1
+                      and None not in args.plot_labels)
+        self.finalize_plot(*subplots, fname=args.plot_file,
+                           add_legend=add_legend)
+        if args.plot_trace_diffs:
+            self.finalize_plot(*subplots_trace_diff,
+                               fname=args.plot_trace_diffs,
+                               add_legend=add_legend)
+        if args.find_inflections:
+            self.finalize_plot(*subplots_inflection,
+                               fname=args.find_inflections,
+                               add_legend=add_legend)
+
+    @classmethod
+    def resample_data(cls, data0, data):
+        interp = scipy.interpolate.CubicSpline(data['time'], data)
+        data_orig = data
+        data = pd.DataFrame(interp(data0['time']))
+        data.columns = data_orig.columns
+        return data
+
+    @classmethod
+    def find_trace_diff(cls, data0, data, name=None,
+                        tmin=None, tmax=None,
+                        tol=None, N=None, dont_resample=False):
+        if tol is None:
+            tol = 20
+        if tmin is not None:
+            data0 = data0[data0['time'] >= tmin]
+        if tmax is not None:
+            data0 = data0[data0['time'] <= tmax]
+        if not dont_resample:
+            data = cls.resample_data(data0, data)
+        if name is None:
+            values = {}
+            pd.set_option('display.max_rows', None)
+            for k in data0.columns:
+                if k == 'time':
+                    continue
+                try:
+                    values[k] = cls.find_trace_diff(
+                        data0, data, name=k, tol=tol,
+                        dont_resample=True,
+                    )
+                except KeyError:
+                    continue
+            values = pd.DataFrame(values).T.sort_values('diff')
+            values = values[values['diff'] != np.inf]
+            if N is not None:
+                values = values.iloc[-N:, :]
+            return values
+        t = data['time']
+        mean = (data[name] + data0[name]) / 2
+        y = np.abs(data[name] - data0[name]) / np.abs(mean)
+        idx = t.index[
+            abs(y) > tol
+        ].min()
+        tidx = t[idx]
+        yidx = y[idx]
+        return {'idx': idx, 'time': tidx, 'diff': yidx}
 
     @classmethod
     def find_inflection(cls, data, name=None, tmin=None, tmax=None,
@@ -2742,6 +3473,8 @@ class analyze_trace(SubTask):
             values = {}
             pd.set_option('display.max_rows', None)
             for k in data.columns:
+                if k == 'time':
+                    continue
                 try:
                     values[k] = cls.find_inflection(
                         data, name=k, tol=tol)
@@ -2782,9 +3515,13 @@ class analyze_trace(SubTask):
 
     @classmethod
     def plot_data(cls, data, names=None, ncol=2, tmin=None, tmax=None,
-                  limits={}, units={}, aliases={},
+                  limits=None, units={}, aliases={},
                   fname=None, include_AvL=False, vlines=None,
-                  shading={}):
+                  shading={}, return_subplots=False, label=None,
+                  diff_data=None):
+        first_pass = (not isinstance(return_subplots, tuple))
+        if limits is None:
+            limits = {}
         if not units:
             units = {
                 'ALL::VARS::CO2AR': 'umol m**-2 s**-1',
@@ -2815,47 +3552,72 @@ class analyze_trace(SubTask):
         if nplots == 1:
             ncol = 1
         nrow = int(np.ceil(nplots / ncol))
-        fig, axs = plt.subplots(nrow, ncol,
-                                figsize=(2.5 * ncol, 1.5 * nrow),
-                                layout='constrained')
+        if isinstance(return_subplots, tuple):
+            assert len(return_subplots) == 2
+            fig, axs = return_subplots[:]
+        else:
+            fig, axs = plt.subplots(nrow, ncol,
+                                    figsize=(2.5 * ncol, 1.5 * nrow),
+                                    layout='constrained')
         for ax, v in zip(axs.flat, names):
             ax.set_xlabel('time (s)')
             vname = aliases.get(v, v.split('::')[-1])
             if v in units:
                 vname += f' ({units[v]})'
             ax.set_ylabel(vname)
-            ax.plot(data['time'], data[v])
             ax.set_xlim(*xlim)
-            if v in limits:
-                ylim = limits[v]
+            draw_lines = first_pass
+            if v not in data:
+                print(f"MISSING PLOT VAR: {v}")
             else:
-                ylim = (min(data[v]), max(data[v]))
-                buff = 0.1 * (ylim[1] - ylim[0])
-                ylim = (ylim[0] - buff, ylim[1] + buff)
+                if diff_data is not None:
+                    vmean = np.abs(data[v] + diff_data[v]) / 2
+                    vdata = np.abs(data[v] - diff_data[v]) / vmean
+                else:
+                    vdata = data[v]
+                ax.plot(data['time'], vdata, label=label)
+                if v not in limits:
+                    ylim = (min(vdata), max(vdata))
+                    buff = 0.1 * (ylim[1] - ylim[0])
+                    ylim = (ylim[0] - buff, ylim[1] + buff)
+                    limits[v] = ylim
+                    draw_lines = True
+            ylim = limits.get(v, (0, 0))
             if ylim[0] != ylim[1]:
                 ax.set_ylim(*ylim)
-            ivlines = copy.deepcopy(vlines.get('all', []))
-            if v in vlines:
-                if isinstance(vlines[v], list):
-                    ivlines += vlines[v]
-                else:
-                    ivlines.append(vlines[v])
-            for x in ivlines:
-                kws = {'ls': ':'}
-                if isinstance(x, tuple):
-                    kws = x[1]
-                    x = x[0]
-                ax.vlines(x, *ylim, **kws)
-            if shading:
+            if ylim[0] != ylim[1] and draw_lines:
+                ivlines = copy.deepcopy(vlines.get('all', []))
+                if ivlines is None:
+                    ivlines = []
+                if v in vlines:
+                    if isinstance(vlines[v], list):
+                        ivlines += vlines[v]
+                    else:
+                        ivlines.append(vlines[v])
+                for x in ivlines:
+                    kws = {'ls': ':'}
+                    if isinstance(x, tuple):
+                        kws = x[1]
+                        x = x[0]
+                    ax.vlines(x, *ylim, **kws)
+            if shading and first_pass:
                 for band in args.plot_light_profile.get('dark', []):
                     ax.axvspan(*band, alpha=0.1)  # , color='blue')
                 for band in args.plot_light_profile.get('light', []):
                     ax.axvspan(*band, alpha=0.1, color='yellow')
         if include_AvL:
             ax = axs.flat[-1]
+            ax.plot(data['ALL::VARS::TestLi'], data['ALL::VARS::CO2AR'])
             ax.set_xlabel(f'PFD ({units.get("ALL::VARS::TestLi", "")})')
             ax.set_ylabel(f'A ({units.get("ALL::VARS::CO2AR", "")})')
-            ax.plot(data['ALL::VARS::TestLi'], data['ALL::VARS::CO2AR'])
+        if return_subplots:
+            return (fig, axs)
+        cls.finalize_plot(fig, axs, fname=fname)
+
+    @classmethod
+    def finalize_plot(cls, fig, axs, fname=None, add_legend=False):
+        if add_legend:
+            axs.flat[0].legend()
         if fname:
             print(f'Saving plot to \"{fname}\"')
             fig.savefig(fname)
@@ -2882,11 +3644,10 @@ class analyze_trace(SubTask):
                     'FI::VEL::vP680qU',
                 ]
             )
-            kwargs.setdefault(
-                'limits', {
-                    'BF::COND::PHl': (1, 8),
-                }
-            )
+            kwargs.setdefault('limits', {})
+            kwargs['limits'].update(**{
+                'BF::COND::PHl': (1, 8),
+            })
         else:
             raise NotImplementedError(figure)
         return cls.plot_data(data, **kwargs)
@@ -2908,21 +3669,20 @@ class analyze_trace(SubTask):
             }
         )
         if figure in ['Exp1', 'Fig2']:
-            kwargs.setdefault(
-                'limits', {
-                    'ALL::VARS::CO2AR': (0, 20),
-                    'ALL::VARS::dissipation': (0, 700),
-                    ROEvar: (0, 20),
-                    'ALL::VARS::fluoresence': (0, 24),
-                    'ALL::VARS::MembranePotential': (-0.02, 0.00),
-                    PSIIvar: (0, 0.6),
-                    'BF::COND::PHs': (7, 7.6),
-                    'BF::COND::PHl': (6.5, 7),
-                    'BF::COND::Ks': (9, 15),
-                    'BF::COND::Mgs': (5, 7),
-                    'BF::COND::Cls': (0, 1.2),
-                }
-            )
+            kwargs.setdefault('limits', {})
+            kwargs['limits'].update(**{
+                'ALL::VARS::CO2AR': (0, 20),
+                'ALL::VARS::dissipation': (0, 700),
+                ROEvar: (0, 20),
+                'ALL::VARS::fluoresence': (0, 24),
+                'ALL::VARS::MembranePotential': (-0.02, 0.00),
+                PSIIvar: (0, 0.6),
+                'BF::COND::PHs': (7, 7.6),
+                'BF::COND::PHl': (6.5, 7),
+                'BF::COND::Ks': (9, 15),
+                'BF::COND::Mgs': (5, 7),
+                'BF::COND::Cls': (0, 1.2),
+            })
             kwargs.setdefault('ncol', 2)
             kwargs.setdefault(
                 'names', [
@@ -2935,19 +3695,18 @@ class analyze_trace(SubTask):
                 ]
             )
         elif figure in ['Exp3', 'Fig3']:
-            kwargs.setdefault(
-                'limits', {
-                    'ALL::VARS::CO2AR': (0, 32),
-                    'ALL::VARS::dissipation': (0, 500),
-                    ROEvar: (10, 20),
-                    'ALL::VARS::fluoresence': (0, 50),
-                    'ALL::VARS::MembranePotential': (-0.03, 0.03),
-                    PSIIvar: (0, 0.6),
-                    'BF::COND::PHs': (7, 8.25),
-                    'BF::COND::PHl': (6.5, 7),
-                    'ALL::VARS::TestLi': (0, 1000),
-                }
-            )
+            kwargs.setdefault('limits', {})
+            kwargs['limits'].update(**{
+                'ALL::VARS::CO2AR': (0, 32),
+                'ALL::VARS::dissipation': (0, 500),
+                ROEvar: (10, 20),
+                'ALL::VARS::fluoresence': (0, 50),
+                'ALL::VARS::MembranePotential': (-0.03, 0.03),
+                PSIIvar: (0, 0.6),
+                'BF::COND::PHs': (7, 8.25),
+                'BF::COND::PHl': (6.5, 7),
+                'ALL::VARS::TestLi': (0, 1000),
+            })
             kwargs.setdefault(
                 'names', [
                     'ALL::VARS::CO2AR', 'ALL::VARS::dissipation',
@@ -3157,18 +3916,221 @@ class PatchError(RuntimeError):
 class instrument_matlab(SubTask):
 
     _comment = '% '
+    _generated_header = (
+        '% THIS FILE HAS BEEN GENERATED BY scripts/devtasks.py AND\n'
+        '% SHOULD NOT BE EDITED DIRECTLY\n'
+    )
     _patch_flag_header = (
         '% THIS FILE HAS BEEN PATCHED TO ALLOW FOR PARAMETER I/O \n'
         '% BY scripts/devtasks.py FROM THE C++ MODEL REPO\n'
     )
+    _param_array_length = {
+        'PR': {
+            'COND': 13,
+        },
+        'PS': {
+            'COND': 15,
+        },
+        'RROEA': {
+            'POOL': 10,
+            'RC': 10,
+            'COND': 10,
+        },
+        'RuACT': {
+            'RC': 10,
+        },
+        'NPQ': {
+            'RC': 7,
+        },
+    }
+    _param_substitutions = {
+        # So that the output matches the stored parameter instead of
+        #   the local variable
+        'RuACT': {
+            'RC': {
+                'RCA': 'RCA / activase',
+            },
+        },
+        'BF': {
+            'MOD': {
+                '_Pi': 'BF_con(16)',
+            },
+        },
+    }
+    _param_defaults = {
+        'FIBF': {
+            'kdm0': 'dmax ./ QH',
+        },
+        'PS': {
+            'v4': '0',
+            'KE1Ratio': '(1. + 1. ./ KE11 + 1. ./ KE12)',
+            'KE2Ratio': '(1. + 1. ./ KE21 + KE22)',
+        },
+        'SUCS': {
+            'v61': '0',
+            'KE5Ratio': '1.0 + KE541 + 1.0 ./ KE531',
+        },
+        'ALL': {
+            # Defaults
+            'alfa': 0.85,
+            'fc': 0.15,
+            'Theta': 0.7,
+            'beta': 0.7519,
+            'PS2BF_Pi': 0.0,
+            'alpha1': 1.0,
+            'alpha2': 1.0,
+            'F': '9.649 * 10^4',
+            'R': '8.314',
+            'RT': '8.314 * 298',
+            # Calculated
+            'Vc': 'v6_1 .* AVR',
+            'Vo': 'v6_2 .* AVR',
+            'VPGA': 'vpga_use .* AVR',
+            'Vstarch': '(v23 - v25) .* AVR',
+            'Vsucrose': 'vdhap_in .* AVR',
+            'VT3P': '(v31 + v33) .* AVR',
+            'Vt_glycerate': 'v1in .* AVR',
+            'Vt_glycolate': 'v2out .* AVR',
+            # TODO: This is 'vP680_d' in C++, but 'vU_P680' came from a
+            #   MATLAB version
+            'PSIIabs': 'vP680_d',
+            # TODO: This is 'Vbf11' in C++, but 'Vbf10' came from a
+            #   MATLAB version
+            'PSIabs': 'Vbf11',
+            'CarbonRate': 'v6_1 .* AVR',
+            'CO2Release': 'v131 .* AVR',
+            'CO2AR': 'CarbonRate - CO2Release',
+            'ROE': 'vS3_S0',
+            'dissipation': 'vA_d + vU_d',
+            'fluoresence': 'vA_f + vU_f',
+            'fPSII': (
+                '1 - (fluoresence + dissipation) ./ (GLight .* 27.0 ./ 47.0)'
+            ),
+            'Hfs': '(10.^-PHs) .* 1000.',
+            'OHs': '(10.^-14.) ./ (Hfs ./ 1000.) .* 1000.',
+            'BFs': 'BFHs - Hfs',
+            'BFns': 'BFTs - BFs',
+            'AfC': '6.022 .* (10.^ 23.)',
+            'UnitCharge': '1.6 .* (10.^-19.)',
+            'NetCharge': (
+                '(Hfs + Ks + 2. .* Mgs - OHs - Cls - BFns) .* '
+                'RVA .* AfC .* UnitCharge ./ 1000'
+            ),
+            'MembranePotential': (
+                '2.0 .* NetCharge ./ 6.0 .* (10.^6)'
+            ),
+            'expr_psbs': '10.^(hill_psbs .* (PHl - pK_psbs))',
+            'QH': '1.0 ./ (1.0 + expr_psbs)',
+            'one_minus_QH': 'expr_psbs ./ (1.0 + expr_psbs)',
+        },
+    }
+    _param_cond_start = {
+        'CM': 36,
+        'DynaPS': 96,
+        'EPS': 87,
+        'FIBF': 52,
+        'PS_PR': 24,
+        'RA': 92,
+        'trDynaPS': 120,
+    }
+    _param_names_extra = {
+        'BF': {
+            'COND': {15: 'Pi'},
+        },
+        'PR': {
+            'COND': {
+                2: 'PGA',
+                11: 'CO2',
+                12: 'O2',
+            },
+        },
+        'PS': {
+            'COND': {
+                10: 'NADPH',
+                11: 'CO2',
+                12: 'O2',
+            },
+        },
+        'SUCS': {
+            'COND': {
+                4: 'ATPc',
+                5: 'ADPc',
+                6: 'OPOPc',
+                8: 'UTPc',
+            },
+        },
+    }
+    _param_names_remove = {
+        'BF': {
+            'RC': ['Em_IPS', 'Em_Cytf', 'Em_PG'],
+        },
+        'PS': {
+            'VEL': ['Pi'],
+            'MOD': ['c_c', 'c_o', 'dHa_c', 'dHa_o'],
+            'RC': ['KM11_A', 'KM12_A'],
+        },
+    }
+    _param_children = {
+        'CM': ["PS_PR", "SUCS"],
+        'DynaPS': ["RA", "XanCycle"],
+        'EPS': ["FIBF", "CM"],
+        'FIBF': ["BF", "FI"],
+        'PS_PR': ["PS", "PR"],
+        'RA': ["EPS", "RuACT"],
+        'trDynaPS': ["DynaPS", "RROEA"],
+    }
+    _param_explicit = {
+        'NPQ': {
+            'MOD': ['XanCycle2FIBF_Kd_NPQ'],
+            'RC': ['hill_psbs', 'pK_psbs', 'hill_vde', 'pK_vde',
+                   'kvde_max', 'Fpsbs', 'psbsQ_converRate', 'k_ze'],
+            'COND': ['Vx', 'Ax', 'Zx', 'PsbSQ'],
+            'VEL': ['Vva', 'Vaz', 'Vza', 'Vav', 'vpsbs_act',
+                    'vpsbs_deact'],
+        },
+        'XanCycle': {
+            'MOD': ['XanCycle2FIBF_Xstate'],
+            'RC': ['kva', 'kaz', 'kza', 'kav'],
+            'COND': ['Vx', 'Ax', 'Zx', 'ABA'],
+            'VEL': ['Vva', 'Vaz', 'Vza', 'Vav', 'Vvf',
+                    'Vv2ABA', 'VABAdg'],
+        },
+    }
+    _condition_vars = [
+        'ALL::VARS::TestLi', 'ALL::VARS::TestLi_Wps', 'ALL::VARS::GLight',
+        'ALL::VARS::CO2_in', 'ALL::VARS::CO2_cond',
+        'ALL::VARS::O2', 'ALL::VARS::O2_cond',
+        'ALL::VARS::Tp',
+        'PR::MOD::RUBISCOMETHOD',
+    ]
+
+    @classmethod
+    def get_children(cls, mod):
+        out = [mod]
+        for k in cls._param_children.get(mod, []):
+            out += cls.get_children(k)
+        return out
 
     @classmethod
     def adjust_args(cls, args):
+        for k in ['remove_patch', 'force_reset', 'patch_extra',
+                  'implicit_missing', 'generate_functions']:
+            if not hasattr(args, k):
+                setattr(args, k, False)
         if not args.matlab:
             args.matlab = find_matlab(required=True)
         cls.prefix_path_args(
             args, ['matlab_repo'], prefix=os.getcwd())
-        print(f"MATLAB REPO: {args.matlab_repo}")
+        args.matlab_repo_case_sensitive = is_case_sensitive(
+            args.matlab_repo)
+        if not args.remove_patch:
+            print(f"MATLAB REPO: {args.matlab_repo} (case sensitive = "
+                  f"{args.matlab_repo_case_sensitive})")
+        args.matlab_utils = os.path.join(_scripts_dir, "matlab")
+        args.all_modules = get_module_list(include_ALL=True)
+        args.all_param_types = get_param_type_list()
+        # print(f"MODULES = {args.all_modules}")
+        # print(f"PARAM_TYPES = {args.all_param_types}")
         super(instrument_matlab, cls).adjust_args(args)
 
     def run_commands(self, args, **kwargs):
@@ -3176,91 +4138,140 @@ class instrument_matlab(SubTask):
 
     @classmethod
     def instrument_matlab(cls, args, **kwargs):
-        replacements_driver = {
-            ' ode15s': ' Drive',
-        }
-        for fname in cls.find_drivers(args):
-            cls.apply_patch(cls.patch_driver, fname, args,
-                            replacements=replacements_driver)
-        for fname in cls.find_rates(args):
-            cls.apply_patch(cls.patch_rate, fname, args)
-        for fname in cls.find_mb(args):
-            mod = cls.fname2module(fname, "MB")
-            fname_rate = cls.find_rates(args, mod=mod)
-            if not fname_rate:
-                cls.apply_patch(cls.patch_rate, fname, args, mod=mod)
+        args.patched = []
         cls.apply_patch(cls.patch_condition,
                         os.path.join(args.matlab_repo, "Condition.m"),
                         args)
         cls.apply_patch(cls.patch_sysinitial,
                         os.path.join(args.matlab_repo, "SYSInitial.m"),
                         args)
-        # TODO: Patch ePhotosynthesis/simulation
-        raise NotImplementedError
+        for mod in args.all_modules:
+            cls.patch_module(mod, args)
+        if args.patch_extra or args.remove_patch:
+            extra_drivers = cls.find_file(args, "Drive")
+            for x in extra_drivers:
+                if x in args.patched:
+                    continue
+                mod = cls.fname2module(x, "Drive")
+                cls.patch_module(mod, args, verbose=True)
+
+    @classmethod
+    def sysinitial_contents(cls, args):
+        if not hasattr(args, 'sysinitial_contents'):
+            fname_sysini = os.path.join(args.matlab_repo, 'SYSInitial.m')
+            assert os.path.isfile(fname_sysini)
+            with open(fname_sysini, 'r') as fd:
+                args.sysinitial_contents = fd.read()
+        return args.sysinitial_contents
+
+    @classmethod
+    def patch_module(cls, mod, args, verbose=False):
+        if mod == 'ALL':
+            if args.generate_functions:
+                fnames = os.path.join(args.matlab_utils, f'{mod}_NAMES.m')
+                fvalue = os.path.join(args.matlab_utils,
+                                      f'{mod}_VALUES.m')
+                cls.write_matlab_names(mod, fnames)
+                cls.write_matlab_values(mod, fvalue,
+                                        allow_calc_trace=True)
+            return
+        fname_driver = cls.find_file(args, "Drive", mod=mod)
+        fname_rate = cls.find_file(args, "Rate", mod=mod)
+        if not fname_rate:
+            fname_rate = cls.find_file(args, "MB", mod=mod)
+        fname_ini = cls.find_file(args, "Ini", mod=mod)
+        if fname_driver:
+            cls.apply_patch(
+                cls.patch_drive, fname_driver[0], args, mod=mod,
+                verbose=verbose,
+            )
+        missing = {}
+        if fname_rate:
+            assert len(fname_rate) == 1
+            cls.apply_patch(cls.patch_rate, fname_rate[0], args, mod=mod,
+                            verbose=verbose, missing=missing)
+        if fname_ini:
+            assert len(fname_ini) == 1
+            cls.apply_patch(cls.patch_ini, fname_ini[0], args, mod=mod,
+                            verbose=verbose, missing=missing)
+        if args.generate_functions:
+            fnames = os.path.join(args.matlab_utils, f'{mod}_NAMES.m')
+            fvalue = os.path.join(args.matlab_utils, f'{mod}_VALUES.m')
+            cls.write_matlab_names(mod, fnames)
+            cls.write_matlab_values(mod, fvalue, allow_calc_trace=True)
 
     @classmethod
     def apply_patch(cls, method, fname, args, replacements=None,
-                    **kwargs):
+                    verbose=False, **kwargs):
+        if fname in args.patched:
+            return
         with open(fname, 'r') as fd:
             contents = fd.read()
+        contents0 = copy.deepcopy(contents)
         try:
-            contents = cls.remove_patch(contents)
+            contents = cls.remove_patch(
+                contents, force=args.force_reset)
         except IrreversiblePatchError as e:
             if args.remove_patch:
                 raise e
             warnings.warn(str(e))
             return
         if args.remove_patch:
-            with open(fname, 'w') as fd:
-                fd.write(contents)
+            if contents != contents0:
+                with open(fname, 'w') as fd:
+                    fd.write(contents)
+            args.patched.append(fname)
             return
+        contents_unpatched = copy.deepcopy(contents)
         if replacements:
-            print(fname)
             contents = cls.add_replacements(contents, replacements)
         contents = method(contents, fname, args, **kwargs)
-        contents = cls._patch_flag_header + contents
-        with open(fname, 'w') as fd:
-            fd.write(contents)
+        if contents != contents_unpatched:
+            contents = cls._patch_flag_header + contents
+            if verbose:
+                print(f'PATCHED \"{fname}\"')
+        if contents != contents0:
+            with open(fname, 'w') as fd:
+                fd.write(contents)
+        args.patched.append(fname)
 
     @classmethod
-    def remove_patch(cls, contents):
-        # if not contents.startswith(cls._patch_flag_header):
-        #     return
+    def remove_patch(cls, contents, force=False):
+        if not (force or contents.startswith(cls._patch_flag_header)):
+            return contents
         contents = contents.split(cls._patch_flag_header, maxsplit=1)[-1]
         contents = cls.remove_replacements(contents)
         contents = cls.remove_patch_blocks(contents)
         return contents
 
     @classmethod
-    def add_utils_path(cls):
-        utils_dir = os.path.join(_scripts_dir, "matlab")
-        return [f'addpath(\"{utils_dir}\");']
-
-    @classmethod
-    def find_file(cls, args, ftype, mod='*'):
-        var = [ftype.title(), ftype.lower()]
-        if ftype not in var:
-            var.insert(0, ftype)
+    def find_file(cls, args, ftype, mod=None):
+        if mod is None:
+            mod = '*'
+        if args.matlab_repo_case_sensitive:
+            var = [ftype.title(), ftype.lower()]
+            if ftype not in var:
+                var.insert(0, ftype)
+        else:
+            var = [ftype]
+        if ftype == "Ini":
+            var += ["Initial"]
+            if args.matlab_repo_case_sensitive:
+                var += ["initial"]
         matches = []
         for v in var:
             matches += glob.glob(os.path.join(args.matlab_repo,
-                                              f'{mod}{ftype}.m'))
+                                              f'{mod}{v}.m'))
             if mod != '*':
                 matches += glob.glob(os.path.join(args.matlab_repo,
-                                                  f'{mod}_{ftype}.m'))
-        return sorted(list(set(matches)))
+                                                  f'{mod}_{v}.m'))
+        return sorted(list(set([os.path.realpath(x) for x in matches])))
 
     @classmethod
-    def find_drivers(cls, args, **kwargs):
-        return cls.find_file(args, 'Drive', **kwargs)
-
-    @classmethod
-    def find_rates(cls, args, **kwargs):
-        return cls.find_file(args, 'Rate', **kwargs)
-
-    @classmethod
-    def find_mb(cls, args, **kwargs):
-        return cls.find_file(args, 'MB', **kwargs)
+    def get_param_type_list(cls, mod, **kwargs):
+        if mod == 'NPQ':
+            mod = 'XanCycle'
+        return get_param_type_list(mod, **kwargs)
 
     @classmethod
     def get_patch_guards(cls, ptype, regex=False):
@@ -3363,24 +4374,375 @@ class instrument_matlab(SubTask):
         return contents
 
     @classmethod
+    def find_variable(cls, contents, names, default=None):
+        if isinstance(names, str):
+            names = [names]
+        for x in names:
+            m = re.search(r'\n([^\%]*\W)?' + re.escape(x) + r'\W',
+                          contents)
+            if m:
+                return x
+        return default
+
+    @classmethod
+    def find_all_variables(cls, line):
+        regex = (
+            r'(?:(?:\W)|(?:^))\W*?'
+            r'(?P<name>[a-zA-Z]\w*)'
+            r'\W*?(?:(?:\W)|(?:$))'
+        )
+        return [m.group('name') for m in re.finditer(regex, line)]
+
+    @classmethod
+    def find_param(cls, contents, name, mod, pt, default=None,
+                   missing=None):
+        aliases = [name]
+        if name in cls._param_substitutions.get(mod, {}).get(pt, {}):
+            return cls._param_substitutions[mod][pt][name]
+        mod0 = 'XanCycle' if mod == 'NPQ' else mod
+        param = ParameterSet.all_parameters().get_param(
+            mod0, pt, name, default=None)
+        if param is not None and param.matlab_var:
+            if contents is True:
+                return param.matlab_var
+            aliases.append(param.matlab_var)
+        if contents is True:
+            return name
+        if ((default is None and pt != 'CALC'
+             and name in cls._param_defaults.get(mod, {}))):
+            default = cls._param_defaults[mod][name]
+        missing_var = f'{mod}_{pt}_{name}'
+        if isinstance(missing, dict):
+            if default is None:
+                default = missing_var
+            aliases.append(missing_var)
+        if default is None:
+            default = 0
+        if mod == 'XanCycle':
+            aliases.append(f'XanCycle_{name}')
+        out = cls.find_variable(contents, aliases, default=default)
+        if isinstance(missing, dict) and out == missing_var:
+            missing[(mod, pt, name)] = missing_var
+        return out
+
+    @classmethod
     def find_patch_var(cls, mod, pt, contents):
         var = [f'{mod}_{pt}', f'{mod}_{pt.title()}']
         if pt == 'COND':
             var = [f'{mod}_con', f'{mod}_Con'] + var
-        if mod in ['PS', 'PR']:
+        elif pt == 'VEL':
+            var = [f'{mod}_{pt.title()}']
+        if mod in ['PS', 'PR', 'PS_PR']:
             if pt == 'COND':
                 var = [f'{mod}s', f'{mod.title()}S'] + var
             elif pt == "VEL":
                 var = [f'{mod}r', 'Velocity'] + var
-        for v in var:
-            if v in contents:
-                return v
-        return None
+        return cls.find_variable(contents, var)
+
+    @classmethod
+    def get_matlab_param_names(cls, mod, pt, **kwargs):
+        mod0 = 'XanCycle' if mod == 'NPQ' else mod
+        if pt in ['CALC', 'CTRL']:
+            kwargs.setdefault('qualifiers', {})
+            if pt == "CALC":
+                kwargs['qualifiers']['ON_DEMAND'] = True
+            else:
+                kwargs['qualifiers'][pt] = True
+            pt = 'VARS' if mod0 == 'ALL' else 'MOD'
+            try:
+                out = get_param_names(mod0, pt, **kwargs)
+            except FileNotFoundError:
+                out = []
+        else:
+            out = get_param_names(mod0, pt, **kwargs)
+        if pt in cls._param_explicit.get(mod, {}):
+            out = [x for x in cls._param_explicit[mod][pt] if x in out]
+        for idx, name in cls._param_names_extra.get(
+                mod, {}).get(pt, {}).items():
+            out.insert(idx, name)
+        for name in cls._param_names_remove.get(mod, {}).get(pt, []):
+            if name in out:
+                out.remove(name)
+        return out
+
+    @classmethod
+    def matlab_code_global_vars(cls, names, defaults=None):
+        out = [
+            f'global {x};' for x in names
+        ]
+        if defaults:
+            for x in names:
+                out += [
+                    f'if isempty({x})',
+                    f'    {x} = {defaults.get(x, 0)};',
+                    'end',
+                ]
+        return out
+
+    @classmethod
+    def name2fullname(cls, k):
+        for mod, param_types in cls._param_explicit.items():
+            for pt, names in param_types.items():
+                if k in names:
+                    return f'{mod}::{pt}::{k}'
+        return ParameterSet.name2fullname(k)
+
+    @classmethod
+    def matlab_code_get_vars(cls, names, trace=False,
+                             allow_missing=False):
+        if trace is False:
+            trace = 'false'
+        elif trace is True:
+            trace = 'true'
+        assert isinstance(trace, str)
+        if allow_missing:
+            trace = trace + ', allow_missing=true'
+        return [
+            f'{k}\t = get_var(\"{cls.name2fullname(k)}\", {trace});'
+            for k in names
+        ]
+
+    @classmethod
+    def matlab_code_array(cls, name, values, strings=False, comments=None,
+                          multiline=False):
+        contents = [f'"{v}"' if strings else str(v)
+                    for v in values]
+        if multiline:
+            out = [
+                f'{name} = [ ...',
+            ]
+            contents = [f'    {x}, ...' for x in contents]
+            if comments:
+                contents = [f'{x} \t% {comments[i]}' for
+                            i, x in enumerate(contents)]
+            out += contents + ['];']
+        else:
+            assert not comments
+            out = f'{name} = [' + ', '.join(contents) + '];'
+        return out
+
+    @classmethod
+    def matlab_code_dict(cls, name, values, strings=False,
+                         string_keys=True, comments=None,
+                         multiline=False):
+        if string_keys:
+            values = {f'"{k}"': v for k, v in values.items()}
+        if strings:
+            values = {k: f'"{v}"' for k, v in values.items()}
+        contents = [f'{k}, {v}' for k, v in values.items()]
+        if multiline:
+            out = [
+                f'{name} = dictionary( ...'
+            ]
+            contents = [f'    {x}, ...' for x in contents]
+            if comments:
+                contents = [f'{x} \t% {comments[i]}' for
+                            i, x in enumerate(contents)]
+            contents[-1] = contents[-1].rsplit(',', maxsplit=1)[0] + ');'
+            out += contents
+        else:
+            assert not comments
+            out = f'{name} = dictionary(' + ', '.join(contents) + ');'
+        return out
+
+    @classmethod
+    def matlab_code_param_array(cls, name, param, **kwargs):
+        kwargs.setdefault('multiline', True)
+        kwargs.setdefault('comments', list(param.keys()))
+        return cls.matlab_code_array(name, list(param.values()), **kwargs)
+
+    @classmethod
+    def matlab_code_strings_array(cls, name, strings, **kwargs):
+        kwargs['strings'] = True
+        return cls.matlab_code_array(name, strings, **kwargs)
+
+    @classmethod
+    def write_matlab_code(cls, fname, contents):
+        if isinstance(contents, list):
+            contents = '\n'.join(contents)
+        contents = cls._generated_header + contents
+        with open(fname, 'w') as fd:
+            fd.write(contents)
+
+    @classmethod
+    def write_matlab_values(cls, mod, fname, allow_calc_trace=False):
+        function_name = os.path.splitext(os.path.basename(fname))[0]
+        lines = []
+        param_types = cls.get_param_type_list(mod)
+        for pt in param_types + ['CTRL', 'CALC']:
+            isbase = (pt in ['VARS', 'MOD'])
+            if mod == 'ALL' or pt in ['CTRL', 'CALC']:
+                ipatch = cls.build_parameter_array(
+                    True, mod, pt, name='out',
+                    qualifiers=({'ON_DEMAND': False, 'CTRL': False}
+                                if isbase else {}),
+                    set_global_defaults=cls._param_defaults.get(mod, {}),
+                    allow_calc_trace=allow_calc_trace,
+                )
+                if isbase:
+                    ipatch += [
+                        f'out = cat(2, out, {function_name}("CTRL"));',
+                    ]
+            else:
+                ptvar = f'{mod}_{pt}'
+                if pt == "VEL":
+                    ptvar = f'{mod}_Vel'
+                elif pt == "POOL":
+                    ptvar = f'{mod}_Pool'
+                ipatch = [
+                    f'global {ptvar};',
+                    f'out = {ptvar};',
+                ]
+            if isbase and not ipatch:
+                ipatch = ['out = zeros(0, 0);']
+            if ipatch:
+                lines += [
+                    ('else' if lines else '') + f'if (pt == "{pt}")',
+                ] + [
+                    f'    {x}' for x in ipatch
+                ]
+            if isbase:
+                lines += [
+                    '    if options.include_calc',
+                    f'        out = cat(2, out, {function_name}("CALC"));',
+                    '    else',
+                    f'        names = get_names(\"{mod}\", \"CALC\");',
+                    '        N_CALC = length(names);',
+                    '        out = cat(2, out, zeros(1, N_CALC));',
+                    '    end',
+                ]
+        lines += [
+            'else',
+            '    out = zeros(0, 0);',
+            'end',
+        ]
+        body = lines
+        lines = [
+            f'function out = {function_name}(pt, options)',
+        ]
+        if allow_calc_trace:
+            lines += [
+                '    arguments',
+                '        pt (1,1) string',
+                '        options.trace (1,1) logical = 0',
+                '        options.include_calc (1,1) logical = 0',
+                '    end',
+            ]
+        else:
+            lines += [
+                '    arguments',
+                '        pt (1,1) string',
+                '        options.include_calc (1,1) logical = 0',
+                '    end',
+            ]
+        lines += ['    ' + x for x in body] + [
+            'end',
+        ]
+        cls.write_matlab_code(fname, lines)
+
+    @classmethod
+    def write_matlab_names(cls, mod, fname):
+        param_types = cls.get_param_type_list(mod)
+        print(mod, param_types)
+        start = cls._param_cond_start.get(mod, 1)
+        lines = [
+            f'global {mod}_COND_START;',
+            f'{mod}_COND_START = {start};',
+            'if (pt == "PARAM_TYPES")',
+            '    ' + cls.matlab_code_strings_array(
+                'out', [x for x in param_types
+                        if x not in ['MOD', 'COND', 'VEL']]
+                ),
+        ]
+        if mod == 'ALL':
+            lines += [
+                'elseif (pt == "MODULES")',
+                '    ' + cls.matlab_code_strings_array(
+                    'out', [x for x in get_module_list() if x != 'ALL']),
+                'elseif (pt == "COND")',
+            ] + [
+                f'    {x}' for x in cls.matlab_code_strings_array(
+                    'out', cls._condition_vars, multiline=True)
+            ]
+        if mod == 'DynaPS':
+            lines += [
+                'elseif (pt == "CHILDREN")',
+                '    global UseZaksNPQ;',
+                '    if UseZaksNPQ == 0',
+                '        out = ["RA", "XanCycle"];',
+                '    else',
+                '        out = ["RA", "NPQ"];',
+                '    end',
+            ]
+        else:
+            lines += [
+                'elseif (pt == "CHILDREN")',
+                '    ' + cls.matlab_code_strings_array(
+                    'out', cls._param_children.get(mod, [])),
+            ]
+        matlab_var = {}
+        aliases = {}
+        for pt in param_types + ['CTRL', 'CALC']:
+            param_names = cls.get_matlab_param_names(mod, pt)
+            if not param_names:
+                continue
+            lines += [
+                f'elseif (pt == "{pt}")',
+            ] + [
+                f'    {x}' for x in cls.matlab_code_strings_array(
+                    'out', param_names, multiline=True)
+            ]
+            if pt in ['CTRL', 'CALC']:
+                continue
+            for x in param_names:
+                param = ParameterSet.all_parameters().find(
+                    x, default=None, mod=mod, pt=pt)
+                if param is None:
+                    continue
+                if param.matlab_var:
+                    assert x not in matlab_var
+                    matlab_var[x] = param.matlab_var
+                    xx = param.matlab_var
+                    if x != xx and xx not in aliases:
+                        aliases[xx] = x
+                if param.aliases:
+                    for xx in sorted(list(param.aliases.keys())):
+                        if xx == x:
+                            continue
+                        assert xx not in aliases
+                        aliases[xx] = x
+        if matlab_var:
+            lines += [
+                'elseif (pt == "MATLAB_VAR")',
+            ] + [
+                f'    {x}' for x in cls.matlab_code_dict(
+                    'out', matlab_var, strings=True, multiline=True)
+            ]
+        if aliases:
+            lines += [
+                'elseif (pt == "ALIASES")',
+            ] + [
+                f'    {x}' for x in cls.matlab_code_dict(
+                    'out', aliases, strings=True, multiline=True)
+            ]
+        lines += [
+            'else',
+            '    out = strings(0, 0);',
+            'end',
+        ]
+        lines = [
+            f'function out = {mod}_NAMES(pt)',
+        ] + ['    ' + x for x in lines] + [
+            'end',
+        ]
+        cls.write_matlab_code(fname, lines)
 
     @classmethod
     def fname2module(cls, fname, ftype):
         base = os.path.splitext(os.path.basename(fname))[0]
         var = [ftype.title(), ftype.lower()]
+        if ftype.lower() == 'ini':
+            var += ['Initial', 'initial']
         if ftype not in var:
             var.insert(0, ftype)
         for v in var:
@@ -3402,6 +4764,27 @@ class instrument_matlab(SubTask):
         return cls.add_patch_block(contents, 'FUNCTION_END', patch, regex,
                                    before_regex=True,
                                    append_if_no_match=True)
+
+    @classmethod
+    def patch_ftype(cls, args, ftype, fname=None, mod=None, **kwargs):
+        if isinstance(mod, list):
+            assert fname is None
+            for x in mod:
+                cls.patch_ftype(args, ftype, mod=x, **kwargs)
+            return
+        if isinstance(ftype, list):
+            assert fname is None
+            for x in ftype:
+                cls.patch_ftype(args, x, mod=mod, **kwargs)
+            return
+        if fname is None:
+            fname = cls.find_file(args, ftype, mod=mod)
+        if isinstance(fname, list):
+            for x in fname:
+                cls.patch_ftype(args, ftype, fname=x, mod=mod, **kwargs)
+            return
+        method = getattr(cls, f'patch_{ftype.lower()}')
+        cls.apply_patch(method, fname, args, mod=mod, **kwargs)
 
     @classmethod
     def patch_condition(cls, contents, fname, args):
@@ -3433,25 +4816,185 @@ class instrument_matlab(SubTask):
         return contents
 
     @classmethod
-    def patch_driver(cls, contents, fname, args):
+    def patch_drive(cls, contents, fname, args, mod=None):
+        replacements = {'ode15s': 'Drive'}
+        contents = cls.add_replacements(contents, replacements)
         return contents
 
     @classmethod
-    def patch_rate(cls, contents, fname, args, mod=None):
+    def patch_ini(cls, contents, fname, args, mod=None, missing=None):
+        if mod is None:
+            mod = cls.fname2module(fname, "ini")
+        if missing is None:
+            missing = {}
+        patch_begin = [
+            'global registered_modules;',
+            f'registered_modules(\"{mod}\") = true;',
+        ]
+        patch_end = []
+        for k, v in missing.items():
+            patch_begin += [
+                f'global {v};',
+                f'{v} = 0;',
+            ]
+            # TODO: Use actual default if the variable can't be located?
+            vvar = cls.find_variable(contents, [k[2]], None)
+            if vvar is None:
+                vvar = cls.find_variable(cls.sysinitial_contents(args),
+                                         [k[2]], None)
+                if vvar is not None:
+                    patch_end += [
+                        f'global {vvar};',
+                    ]
+            if vvar is not None:
+                patch_end += [
+                    f'{v} = {vvar};',
+                ]
+        if patch_begin:
+            contents = cls.patch_at_function_start(
+                contents, '\n'.join(patch_begin)
+            )
+        if patch_end:
+            contents = cls.patch_at_function_end(
+                contents, '\n'.join(patch_end)
+            )
+        return contents
+
+    @classmethod
+    def build_parameter_array(cls, contents, mod, pt, name=None,
+                              extends=None, extends_length=0,
+                              missing=None, no_global_missing=False,
+                              set_global_defaults=None,
+                              allow_calc_trace=False, **kwargs):
+        if name is None:
+            if extends is None:
+                name = f'{mod}_{pt}'
+            else:
+                name = f'{extends}_EXTENDED'
+        try:
+            param_names = cls.get_matlab_param_names(mod, pt, **kwargs)
+        except FileNotFoundError:
+            param_names = []
+        if not param_names:
+            return []
+        if contents is True and missing is None:
+            missing = {}
+        new_missing = None if missing is None else {}
+        param = OrderedDict()
+        patch = []
+        if extends:
+            for i in range(extends_length):
+                param[param_names[i]] = f'{extends}({i + 1})'
+        if mod == 'RedoxReg' and pt == 'RC':
+            N = int(len(param_names) / 2)
+            for i, x in enumerate(param_names):
+                if i < extends_length:
+                    continue
+                if i < N:
+                    param[x] = f'RedoxReg_MP({i + 1}, 3)'
+                else:
+                    param[x] = f'RedoxReg_MP({i + 1 - N}, 2)'
+        elif mod == 'RedoxReg' and pt == 'POOL':
+            for i, x in enumerate(param_names):
+                if i < extends_length:
+                    continue
+                j = int(i / 2)
+                if (i % 2) == 0:
+                    param[x] = f'RedoxReg_MP({j + 1}, 2)'
+                else:
+                    param[x] = f'RedoxReg_MP({j + 1}, 3)'
+        elif pt == 'CALC':
+            for x in param_names[extends_length:]:
+                param[x] = cls._param_defaults[mod][x]
+        else:
+            for x in param_names[extends_length:]:
+                param[x] = cls.find_param(contents, x, mod, pt,
+                                          missing=new_missing)
+                if contents is True:
+                    new_missing[(mod, pt, x)] = param[x]
+        if missing is None:
+            new_missing = {}
+        else:
+            missing.update(new_missing)
+        patch = []
+        if allow_calc_trace and pt != 'CALC':
+            patch += [
+                'if options.trace',
+                f'    error(\"trace not supported for {pt}\");',
+                'end',
+            ]
+        if pt == 'CALC':
+            required_vars = []
+            required_calc = []
+
+            def add_vars(k):
+                for xx in cls.find_all_variables(k):
+                    if xx in cls._param_defaults[mod]:
+                        if xx not in required_calc:
+                            add_vars(cls._param_defaults[mod][xx])
+                            if xx not in required_calc:
+                                required_calc.append(xx)
+                    else:
+                        if xx not in required_vars:
+                            required_vars.append(xx)
+
+            for k in param.values():
+                add_vars(k)
+            trace = 'options.trace' if allow_calc_trace else False
+            patch += cls.matlab_code_get_vars(required_vars, trace=trace,
+                                              allow_missing=True)
+            for xx in required_calc:
+                patch += [
+                    f'{xx} \t= {cls._param_defaults[mod][xx]};'
+                ]
+                if xx in param:
+                    param[xx] = xx
+        elif not no_global_missing:
+            patch += cls.matlab_code_global_vars(
+                list(new_missing.values()), defaults=set_global_defaults)
+        patch += cls.matlab_code_param_array(name, param)
+        return patch
+
+    @classmethod
+    def patch_mb(cls, contents, fname, args, mod=None, **kwargs):
+        if mod is None:
+            mod = cls.fname2module(fname, "MB")
+        fname_rate = cls.find_file(args, "Rate", mod=mod)
+        if fname_rate:
+            return contents
+        return cls.patch_rate(contents, fname, args, mod=mod, **kwargs)
+
+    @classmethod
+    def patch_rate(cls, contents, fname, args, mod=None, missing=None):
         if mod is None:
             mod = cls.fname2module(fname, "rate")
         param_vars = {}
-        for k in ['COND', 'MOD', 'VEL', 'RC', 'POOL', 'KE']:
+        patch = []
+        for k in args.all_param_types:
             v = cls.find_patch_var(mod, k, contents)
             if v:
+                if k in cls._param_array_length.get(mod, {}):
+                    vextends = v
+                    v = f'{vextends}_EXTENDED'
+                    patch += cls.build_parameter_array(
+                        contents, mod, k, name=v, missing=missing,
+                        extends=vextends,
+                        extends_length=cls._param_array_length[mod][k])
                 param_vars[k] = v
-        print(fname, mod)
-        pprint.pprint(param_vars)
+            elif not args.implicit_missing:
+                v = f'{mod}_{k}'
+                ipatch = cls.build_parameter_array(
+                    contents, mod, k, name=v, missing=missing)
+                if ipatch:
+                    patch += ipatch
+                    param_vars[k] = v
         assert 'COND' in param_vars
-        patch = [
-            f'export_mod_data(\"{mod}\", t, {param_vars["COND"]}, ...',
-            '                create_missing=true'
+        patch += [
+            f'export_mod_data(\"{mod}\", t, {param_vars["COND"]}',
         ]
+        if args.implicit_missing:
+            patch[-1] += ', ...'
+            patch.append('                create_missing=true')
         for k, v in param_vars.items():
             if k == 'COND':
                 continue
@@ -3460,127 +5003,6 @@ class instrument_matlab(SubTask):
         patch[-1] += ');'
         contents = cls.patch_at_function_end(contents, '\n'.join(patch))
         return contents
-
-
-class compare_matlab(BuildSubTask):
-
-    _base_class = ephoto
-
-    @classmethod
-    def adjust_args(cls, args):
-        if args.generate_matlab_script and args.dont_run_matlab:
-            args.no_diff = True
-        if args.diff or args.dont_run:
-            args.dont_run_matlab = True
-            args.dont_run_cpp = True
-        if args.no_diff:
-            args.dont_cleanup = True
-        if args.dont_run_cpp:
-            args.dont_build = True
-        # C++ version of arguments
-        args_cpp = copy.deepcopy(args)
-        args_cpp.dont_run = args.dont_run_cpp
-        args_cpp.matlab = False
-        args_cpp.generate_matlab_script = False
-        # Matlab version of arguments
-        # args_cpp.make_equivalent_to_matlab = True
-        args_matlab = copy.deepcopy(args)
-        args_matlab.dont_run = args.dont_run_matlab
-        if not args_matlab.matlab:
-            args_matlab.matlab = find_matlab(required=True)
-        for k in ['output_dir', 'output_file', 'output_param_base']:
-            setattr(args_matlab, k, getattr(args, f'matlab_{k}'))
-        cls._base_class.adjust_args(args_cpp)
-        cls._base_class.adjust_args(args_matlab)
-        assert args_cpp.output_file != args_matlab.output_file
-        assert args_cpp.output_param_base != args_matlab.output_param_base
-        args.args_cpp = args_cpp
-        args.args_matlab = args_matlab
-
-    def __init__(self, args, config_args=None, build_args=None):
-        self.adjust_args(args)
-        if config_args is None:
-            config_args = []
-        if build_args is None:
-            build_args = []
-        cmds = []
-        super(compare_matlab, self).__init__(
-            args, cmds=cmds, config_args=config_args,
-            build_args=build_args, cwd=_source_dir,
-        )
-        args.rebuild = False
-        args.dont_build = True
-        args.args_cpp.rebuild = False
-        args.args_cpp.dont_build = True
-        self.compare(args)
-
-    def compare(self, args, driver_iteration=None):
-        if args.driver == 0:
-            assert driver_iteration is None
-            args.args_cpp.output_suffix = True
-            args.args_matlab.output_suffix = True
-            self._base_class.iter_drivers(
-                self.compare, args, driver_iteration=True)
-            return
-        if driver_iteration is not None:
-            for x in [args.args_cpp, args.args_matlab]:
-                x.driver = args.driver
-                x.output_suffix = True
-        if args.dont_run_matlab:
-            out_matlab = False
-        else:
-            out_matlab = self._base_class(
-                args.args_matlab, dont_cleanup=True)
-        if args.dont_run_cpp:
-            out_cpp = False
-        else:
-            out_cpp = self._base_class(
-                args.args_cpp, dont_cleanup=True)
-        if not args.no_diff:
-            self.diff(args, out_matlab, out_cpp)
-
-    def diff(self, args, out1, out2):
-        self._generated_files += [
-            args.args_cpp.output_file,
-            args.args_cpp.output_param_first,
-            args.args_cpp.output_param_final,
-            args.args_cpp.output_param_trace,
-            args.args_cpp.output_dir,
-            args.args_matlab.output_file,
-            args.args_matlab.output_param_first,
-            args.args_matlab.output_param_final,
-            args.args_matlab.output_param_trace,
-            args.args_matlab.output_dir,
-        ]
-
-        def do_compare(farg, **kwargs):
-            f1 = getattr(args.args_matlab, farg)
-            f2 = getattr(args.args_cpp, farg)
-            compare_files(f1, f2, **kwargs)
-
-        compare_files('output_param_first')
-        compare_files(
-            'output_file', ftype='output',
-            check_files=check_output,
-            check_files_kwargs={
-                'reltol': args.reltol,
-                'abstol': args.abstol,
-                'label_f1': 'MATLAB',
-                'label_f2': 'C++',
-                'sep': args.sep,
-            },
-        )
-        compare_files(
-            'output_param_trace', ftype='trace',
-            check_files=check_output,
-            check_files_kwargs={
-                'reltol': args.reltol,
-                'abstol': args.abstol,
-                'label_f1': 'MATLAB',
-                'label_f2': 'C++',
-                'sep': args.sep,
-            },
-        )
 
 
 class docs(BuildSubTask):
@@ -3670,6 +5092,32 @@ class preprocess(SubTask):
 
 class convert_matlab_param_task(SubTask):
 
+    _npq_keys = [
+        'XanCycle::MOD::XanCycle2FIBF_Kd_NPQ',
+        'XanCycle::COND::PsbSQ', 'XanCycle::RC::k_ze',
+        'XanCycle::RC::hill_psbs', 'XanCycle::RC::pK_psbs',
+        'XanCycle::RC::hill_vde', 'XanCycle::RC::pK_vde',
+        'XanCycle::RC::kvde_max', 'XanCycle::RC::psbsQ_converRate',
+        'XanCycle::RC::Fpsbs',
+        'ALL::VARS::expr_psbs', 'ALL::VARS::QH',
+        'ALL::VARS::one_minus_QH',
+        'XanCycle::VEL::vpsbs_act',
+        'XanCycle::VEL::vpsbs_deact',
+    ]
+    _npq_keys_shared = [
+        'XanCycle::COND::Vx', 'XanCycle::COND::Ax', 'XanCycle::COND::Zx',
+        'XanCycle::VEL::Vva', 'XanCycle::VEL::Vaz',
+        'XanCycle::VEL::Vza', 'XanCycle::VEL::Vav',
+    ]
+    _npq_keys_skip = [
+        'XanCycle::RC::kav',
+        'XanCycle::RC::kaz',
+        'XanCycle::RC::kva',
+        'XanCycle::RC::kza',
+        'XanCycle::COND::ABA',
+        'XanCycle::MOD::XanCycle2FIBF_Xstate',
+    ]
+
     def __init__(self, args, **kwargs):
         super(convert_matlab_param_task, self).__init__(args, **kwargs)
         if args.dst_language == 'cpp':
@@ -3680,6 +5128,70 @@ class convert_matlab_param_task(SubTask):
                 args.src, dst=args.dst, use_zaks_npq=args.use_zaks_npq)
         else:
             raise NotImplementedError(args.dst_language)
+
+    @classmethod
+    def normalize_param(cls, args, src, dst=False, src_language=None,
+                        dst_language=None, cmp_language=None,
+                        skip_keys=None, transform_keys=None,
+                        ftype=None, **kwargs):
+        if skip_keys is None:
+            skip_keys = []
+        else:
+            skip_keys = copy.deepcopy(skip_keys)
+        if transform_keys is None:
+            transform_keys = {}
+        not_selected = ParameterSet.all_parameters().select(
+            args=args, inverse=True)
+        skip_keys += list(not_selected.keys())
+        if args.use_zaks_npq:
+            if src_language == 'matlab' and dst_language != 'matlab':
+                for k in cls._npq_keys + cls._npq_keys_shared:
+                    if 'XanCycle::' not in k:
+                        continue
+                    transform_keys[k.replace('XanCycle::', 'NPQ::')] = k
+            elif dst_language == 'matlab' and src_language != 'matlab':
+                for k in cls._npq_keys + cls._npq_keys_shared:
+                    if 'XanCycle::' not in k:
+                        continue
+                    transform_keys[k] = k.replace('XanCycle::', 'NPQ::')
+            skip_keys += cls._npq_keys_skip
+        else:
+            skip_keys += cls._npq_keys
+        if src_language == 'matlab' and (
+                dst_language != 'matlab'
+                or (cmp_language and cmp_language != 'matlab')):
+            for mod, added_pt in instrument_matlab._param_names_extra.items():
+                for pt, added_vars in added_pt.items():
+                    skip_keys += [f'{mod}::{pt}::{v}' for v in
+                                  added_vars.values()]
+        elif src_language != 'matlab' and (dst_language == 'matlab' or
+                                           cmp_language == 'matlab'):
+            for mod, rm_pt in instrument_matlab._param_names_remove.items():
+                for pt, rm_vars in rm_pt.items():
+                    skip_keys += [f'{mod}::{pt}::{v}' for v in rm_vars]
+        kwargs.setdefault('sort', True)
+        if src_language is not None and 'header' not in kwargs:
+            kwargs['header'] = f'# {src_language.upper()}\n'
+            if isinstance(src, str):
+                kwargs['header'] += f'# {src}\n'
+        if isinstance(src, dict):
+            param = src
+        elif ftype == 'trace':
+            df = read_param_table(src, no_title=True)
+            param = {k: np.array(df[k]) for k in df.columns}
+        else:
+            param = read_param(src)
+        for k in skip_keys:
+            param.pop(k, None)
+        for k, v in transform_keys.items():
+            if k in param:
+                param[v] = param.pop(k)
+        if dst:
+            if ftype == 'trace':
+                write_param_table(dst, param, title=False)
+            else:
+                write_param(dst, param, **kwargs)
+        return param
 
     @classmethod
     def convert_from_matlab(cls, src, dst=False, use_zaks_npq=False,
@@ -3711,22 +5223,22 @@ class convert_matlab_param_task(SubTask):
             # Not used by either model
             # "ALL::VARS::GLight",
             # Not named variables in Matlab
-            "BF::RC::Em_IPS",
-            "BF::RC::Em_Cytf",
-            "BF::RC::Em_PG",
-            "PS::MOD::KE1Ratio",
-            "PS::MOD::KE2Ratio",
-            "SUCS::MOD::KE5Ratio",
+            # "PS::MOD::KE1Ratio",
+            # "PS::MOD::KE2Ratio",
+            # "SUCS::MOD::KE5Ratio",
             # Add for explicit definition of Zhu 2012 parameters
-            "FIBF::RC::RC0",
-            "FIBF::RC::RC",
-            "BF::MOD::F",
-            "PS::MOD::F",
-            "FIBF::RC::kdm0",
-            "RuACT::RC::factor_n7",
-            "RuACT::RC::kn7",
-            "RuACT::RC::RCA",
+            # "FIBF::RC::RC0",
+            # "FIBF::RC::RC",
+            # "BF::MOD::F",
+            # "PS::MOD::F",
+            # "FIBF::RC::kdm0",
+            # "RuACT::RC::factor_n7",
+            # "RuACT::RC::kn7",
+            # "RuACT::RC::RCA",
         ]
+        for mod, param_types in instrument_matlab._param_names_remove.items():
+            for pt, names in param_types.items():
+                skip_keys += [f'{mod}::{pt}::{v}' for v in names]
         transform_keys = {}  # TODO
         if use_zaks_npq:
             for k in ['::COND::Vx', '::COND::Ax', '::COND::Zx',
@@ -3918,41 +5430,13 @@ if __name__ == "__main__":
         'analyze-trace', help="Analyze an output trace",
         func=analyze_trace)
     parser_analyze_trace.add_argument(
-        'result_file', type=str,
-        help="Path to a file containing an ePhotosynthesis trace",
+        'result_file', type=str, nargs='+', action='extend',
+        help="Path to one or more files containing ePhotosynthesis traces",
     )
-
-    # MATLAB/C++ Comparison
-    parser_matlab = subparsers.add_parser(
-        'compare-matlab', help="Compare C++ & MATLAB versions",
-        func=compare_matlab)
-    parser_matlab.add_argument(
-        '--matlab-output-dir', type=str, default='output_MTL',
-        help="Directory where MATLAB output should be saved")
-    parser_matlab.add_argument(
-        '--matlab-output-file', '--matlab-output',
-        type=str, default='output.data',
-        help="File where MATLAB driver output should be saved")
-    parser_matlab.add_argument(
-        "--matlab-output-param-base", type=str, default='output_param_',
-        help="File prefix for MATLAB output parameter files")
-    parser_matlab.add_argument(
-        "--dont-run-matlab", action='store_true',
-        help=("Don't run MATLAB, but assume it has "
-              "already been run with the required "
-              "parameters "))
-    parser_matlab.add_argument(
-        "--dont-run-cpp", action='store_true',
-        help=("Don't run C++, but assume it has "
-              "already been run with the required "
-              "parameters "))
-    parser_matlab.add_argument(
-        "--no-diff", action='store_true',
-        help="Don't perform the diff on the output from the two models")
-    parser_matlab.add_argument(
-        "--diff", action='store_true',
-        help=("Just perform the diff on the output from the two models "
-              "assuming that it was already generated"))
+    parser_analyze_trace.add_argument(
+        '--plot-labels', type=str, nargs='+', action='extend',
+        help="Labels for different files",
+    )
 
     parser_docs = subparsers.add_parser(
         'docs', help="Build the docs",
@@ -4012,6 +5496,26 @@ if __name__ == "__main__":
     parser_instrument_matlab.add_argument(
         '--remove-patch', action='store_true',
         help='Reverse the patch')
+    parser_instrument_matlab.add_argument(
+        '--force-reset', action='store_true',
+        help=(
+            'Force the removal of patches even when the flag is not '
+            'present'
+        ),
+    )
+    parser_instrument_matlab.add_argument(
+        '--patch-extra', action='store_true',
+        help='Patch modules not implemented by the C++ model')
+    parser_instrument_matlab.add_argument(
+        '--implicit-missing', action='store_true',
+        help='Don\'t define missing parameters.')
+    parser_instrument_matlab.add_argument(
+        '--generate-functions', action='store_true',
+        help=(
+            'Generate MATLAB helper functions for outputing parameter '
+            'names for a given module'
+        ),
+    )
 
     # Method to convert files
     parser_convert_param = subparsers.add_parser(
@@ -4031,14 +5535,13 @@ if __name__ == "__main__":
         'update-readme',
         'test',
         'ephoto',
-        'compare-matlab',
         'coverage',
     ]
     build_tasks = ['build'] + requires_build
-    ephoto_tasks = ['ephoto', 'compare-matlab']
-    compare_tasks = ['compare-matlab', 'compare-files']
+    ephoto_tasks = ['ephoto']
+    compare_tasks = ['compare-files']
     analysis_tasks = ephoto_tasks + ['analyze-trace']
-    matlab_tasks = ['compare-matlab', 'instrument-matlab']
+    matlab_tasks = ['instrument-matlab']
 
     # Build arguments
     parser.add_argument(
@@ -4094,8 +5597,7 @@ if __name__ == "__main__":
         '--make-equivalent-to-matlab', action='store_true',
         help=("Build with changes enabled to make the model equivalent "
               "to the MATLAB version of the model"),
-        subparsers={'task': [x for x in build_tasks + ['docs']
-                             if x != 'compare-matlab']})
+        subparsers={'task': build_tasks + ['docs']})
     parser.add_argument(
         '--build-tests', action='store_true',
         help="Build the tests",
@@ -4142,14 +5644,6 @@ if __name__ == "__main__":
 
     # Comparison arguments
     parser.add_argument(
-        "--reltol", type=float, default=1.0e-05,
-        help="Relative tolerance to use when comparing output files",
-        subparsers={'task': compare_tasks})
-    parser.add_argument(
-        "--abstol", type=float, default=1.0e-08,
-        help="Absolute tolerance to use when comparing output files",
-        subparsers={'task': compare_tasks})
-    parser.add_argument(
         "--sep", type=str, default=',',
         help="Separator for values in tables to compare",
         subparsers={'task': compare_tasks})
@@ -4163,8 +5657,9 @@ if __name__ == "__main__":
 
     # ePhoto arguments
     parser.add_argument(
-        "--driver", '-d', type=parse_driver,
-        default=0, choices=[0, 1, 2, 3, 4] + SubTask._drivers,
+        "--driver", '-d', '--drivers', type=parse_driver,
+        choices=[0, 1, 2, 3, 4, 'all'] + SubTask._drivers,
+        action='extend', nargs='+',
         help="Driver to run",
         subparsers={'task': ephoto_tasks + ['compare-files']},
     )
@@ -4182,11 +5677,32 @@ if __name__ == "__main__":
         subparsers={'task': ephoto_tasks + ['convert-param']},
     )
     parser.add_argument(
-        "--language", type=str, choices=['cpp', 'matlab', 'python'],
-        help="Language that the simulation should be run in",
-        subparsers={
-            'task': [x for x in ephoto_tasks if x != 'compare-matlab']
-        }
+        "--language", "--languages", type=str,
+        choices=['all'] + SubTask._languages,
+        action='extend', nargs='+',
+        help="Language(s) that the simulation should be run in",
+        subparsers={'task': ephoto_tasks},
+    )
+    parser.add_argument(
+        "--compare", action='store_true',
+        help="Compare outputs from the provided drivers/languages",
+        subparsers={'task': ephoto_tasks},
+    )
+    parser.add_argument(
+        "--output-diff", nargs='?', type=str, const=True,
+        help=(
+            "Base name for paths where output file diffs should be "
+            "stored during comparison",
+        ),
+        subparsers={'task': ephoto_tasks},
+    )
+    parser.add_argument(
+        "--dont-prune-diff", action='store_true',
+        help=(
+            "Don't prune diffs based on provided tolerances during "
+            "comparison",
+        ),
+        subparsers={'task': ephoto_tasks},
     )
     parser.add_argument(
         "--matlab", type=str, nargs='?', const=find_matlab(),
@@ -4216,32 +5732,39 @@ if __name__ == "__main__":
         subparsers={'task': ephoto_tasks},
     )
     parser.add_argument(
+        "--dont-patch-matlab", action="store_true",
+        help="Don\'t patch the matlab repository code",
+        subparsers={'task': ephoto_tasks},
+    )
+    parser.add_argument(
+        "--preserve-patch-matlab", action="store_true",
+        help="Preserve the matlab repository code patches after the run",
+        subparsers={'task': ephoto_tasks},
+    )
+    parser.add_argument(
         '--input-dir', type=str, default=_data_dir,
         help="Directory containing input files",
         subparsers={'task': ephoto_tasks})
     parser.add_argument(
-        '--enzyme-file', '--enzyme', type=str, default='InputEnzyme.txt',
+        '--enzyme-file', '--enzyme', type=str,
         help="File containing enzyme concentrations.",
         subparsers={'task': ephoto_tasks})
     parser.add_argument(
-        '--grn-file', '--grn', type=str, default='InputGRNC.txt',
+        '--grn-file', '--grn', type=str,
         help="File containing transcription factor levels.",
-        subparsers={'task': ephoto_tasks},
-        subparser_defaults={'compare-matlab': 'InputGRNC_MATLAB.txt'})
+        subparsers={'task': ephoto_tasks})
     parser.add_argument(
-        '--evn-file', '--evn', type=str, default='InputEvn.txt',
+        '--evn-file', '--evn', '--env', type=str,
         help="File containing environmental parameters.",
-        subparsers={'task': ephoto_tasks},
-        subparser_defaults={'compare-matlab': 'InputEvn_MATLAB.txt'})
+        subparsers={'task': ephoto_tasks})
     parser.add_argument(
-        '--atpcost-file', '--atp', type=str, default='InputATPCost.txt',
+        '--atpcost-file', '--atp', type=str,
         help="File containing ATP cost",
         subparsers={'task': ephoto_tasks})
     parser.add_argument(
         '--output-dir', type=str, default=os.getcwd(),
         help="Directory where output should be saved",
-        subparsers={'task': ephoto_tasks},
-        subparser_defaults={'compare-matlab': 'output_CPP'})
+        subparsers={'task': ephoto_tasks})
     parser.add_argument(
         '--output-file', '--output', type=str, default='output.data',
         help="File where driver output should be saved",
@@ -4253,13 +5776,11 @@ if __name__ == "__main__":
     parser.add_argument(
         "--output-param", choices=[0, 1, 2, 3], type=int, default=0,
         help="Flag specifying when to output parameters",
-        subparsers={'task': ephoto_tasks},
-        subparser_defaults={'compare-matlab': 2})
+        subparsers={'task': ephoto_tasks})
     parser.add_argument(
         "--output-param-base", type=str, default="param_",
         help="File prefix for output parameter files",
-        subparsers={'task': ephoto_tasks},
-        subparser_defaults={'compare-matlab': 'output_param_'})
+        subparsers={'task': ephoto_tasks})
     parser.add_argument(
         "--preserve-output-param", action="store_true",
         help="Don't cleanup output param files (first, final & trace)",
@@ -4270,10 +5791,40 @@ if __name__ == "__main__":
         help="Don\'t run ephotosynthesis, only post-process",
         subparsers={'task': ephoto_tasks})
     parser.add_argument(
-        '--stoptime', type=int,
-        help="Stop time for the run",
+        "--dont-run-language", type=str, action='extend', nargs='+',
+        help=(
+            "Languages that should not be run during comparison. "
+            "It will be assumed that the language has already been run "
+            "with the required parameters and that the required "
+            "output files for comparison already exist."
+        ),
+    )
+    parser.add_argument(
+        '--begintime', type=float, default=0,
+        help="Begin time for the run (in seconds)",
         subparsers={'task': ephoto_tasks},
-        subparser_defaults={'compare-matlab': 3000})
+    )
+    parser.add_argument(
+        '--stoptime', type=float, default=250,
+        help="Stop time for the run (in seconds)",
+        subparsers={'task': ephoto_tasks},
+    )
+    parser.add_argument(
+        '--stepsize', type=float, default=1.0,
+        help=(
+            "The initial step size (in seconds). Also used as the "
+            "interval for outputing parames if that is enabled."
+        ),
+        subparsers={'task': ephoto_tasks},
+    )
+    parser.add_argument(
+        "--abstol", type=float, default=1.0e-05,
+        help="Absolute tolerance to use when comparing output files",
+        subparsers={'task': ephoto_tasks + ['compare-files']})
+    parser.add_argument(
+        "--reltol", type=float, default=1.0e-04,
+        help="Relative tolerance to use when comparing output files",
+        subparsers={'task': ephoto_tasks + ['compare-files']})
     parser.add_argument(
         '--param', type=cli_param, action='extend',
         help="Parameter values that should be set",
@@ -4379,6 +5930,15 @@ if __name__ == "__main__":
         subparsers={'task': analysis_tasks},
     )
     parser.add_argument(
+        '--plot-trace-diffs', type=str,
+        nargs='?', const=True,
+        help=(
+            "Location where a plot should be saved showing the "
+            "parameters with the largest diffs in their traces"
+        ),
+        subparsers={'task': analysis_tasks},
+    )
+    parser.add_argument(
         '--inflection-tmin', type=float,
         help="Minimum time that should be checked for inflections",
         subparsers={'task': analysis_tasks},
@@ -4394,9 +5954,10 @@ if __name__ == "__main__":
         subparsers={'task': analysis_tasks},
     )
     parser.add_argument(
-        '--inflection-N', type=float, default=25,
+        '--inflection-N', '--trace-diff-N', type=float, default=25,
         help=(
-            "If --find-inflections is specified, this is the number "
+            "If --find-inflections or --plot-trace-diffs is specified, "
+            "this is the number "
             "of parameters that will plotted, selecting those with the "
             "largest changes in their second derivative."
         ),

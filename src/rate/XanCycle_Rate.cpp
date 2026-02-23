@@ -39,7 +39,7 @@ using namespace ePhotosynthesis::conditions;
 
 
 void XanCycle::update_shared(const XanCycleCondition* const XanCycle_con,
-                             Variables *theVars) {
+                             Variables *theVars, const bool from_top) {
   XanCycle::XanCycle2FIBF_Xstate = XanCycle_con->Zx /
     (XanCycle_con->Ax + XanCycle_con->Vx + XanCycle_con->Zx);
   if (!theVars->UseZaksNPQ)
@@ -48,8 +48,11 @@ void XanCycle::update_shared(const XanCycleCondition* const XanCycle_con,
   const double Zx_Ax = (XanCycle_con->Ax + XanCycle_con->Zx)
     / (XanCycle_con->Ax + XanCycle_con->Vx + XanCycle_con->Zx);
   // Total quenching according to Zaks et al. 2012
-  const double Q_zaks = theVars->XanCycle_RC.Fpsbs
-    * XanCycle_con->PsbSQ * Zx_Ax;
+  double Q_zaks = XanCycle_con->PsbSQ * Zx_Ax;
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+  if (!from_top)
+#endif // MAKE_EQUIVALENT_TO_MATLAB
+    Q_zaks *= theVars->XanCycle_RC.Fpsbs;
   double kd = 2.0 * pow(10., 8.0) * Q_zaks;
   XanCycle::XanCycle2FIBF_Kd_NPQ = kd;
 }
@@ -93,9 +96,13 @@ void XanCycle::_Rate(const double t, const XanCycleCondition* const XanCycle_Con
     theVars->XanCycle_Vel.VABAdg = VABADG; // The rate of XanCycle_Con.ABA degradation
 
     // The Xstate part of this was missing in the original C++
-    // translation & was disabled by a typo in the MATLAB version...
-#ifndef MAKE_EQUIVALENT_TO_MATLAB
-    XanCycle::update_shared(XanCycle_Con, theVars);
+    // translation & was disabled by a typo in the MATLAB C3 version...
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+    if (theVars->UseZaksNPQ) {
+#endif // MAKE_EQUIVALENT_TO_MATLAB
+      XanCycle::update_shared(XanCycle_Con, theVars);
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+    }
 #endif // MAKE_EQUIVALENT_TO_MATLAB
     
 #ifdef INCDEBUG

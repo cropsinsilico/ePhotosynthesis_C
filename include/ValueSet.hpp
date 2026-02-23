@@ -942,20 +942,6 @@ namespace ePhotosynthesis {
     // Inspection utilities
     /**
        Add a single value from a value map to another map.
-       \param dst Destination map.
-       \param key Parameter key.
-       \param val Parameter value.
-     */
-    static void add_value(std::map<std::string, double>& dst,
-                          const std::string& key, const double& val);
-    static void add_value(std::map<std::string, const double*>& dst,
-                          const std::string& key, const double* val);
-    static void add_value(std::map<std::string, const double*>& dst,
-                          const std::string& key, const double& val);
-    static void add_value(std::map<std::string, double>& dst,
-                          const std::string& key, const double* val);
-    /**
-       Add a single value from a value map to another map.
        \tparam K Type of key in value map.
        \tparam V Type of value in value map.
        \tparam VDST Type of value in the destination map.
@@ -996,8 +982,22 @@ namespace ePhotosynthesis {
         return;
       if (it_alias != key_aliases.end())
         iname = it_alias->second;
-      add_value(dst, iname, val);
+      add_value0(dst, iname, val);
     }
+    /**
+       Add a single value from a value map to another map.
+       \param dst Destination map.
+       \param key Parameter key.
+       \param val Parameter value.
+     */
+    static void add_value0(std::map<std::string, double>& dst,
+                           const std::string& key, const double& val);
+    static void add_value0(std::map<std::string, const double*>& dst,
+                           const std::string& key, const double* val);
+    static void add_value0(std::map<std::string, const double*>& dst,
+                           const std::string& key, const double& val);
+    static void add_value0(std::map<std::string, double>& dst,
+                           const std::string& key, const double* val);
     /**
        Add the values in a value map to another map.
        \tparam K Type of key in value map.

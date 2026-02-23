@@ -34,7 +34,7 @@ using namespace ePhotosynthesis::conditions;
 
 double RROEA::TIME = 0.;
 std::size_t RROEA::N = 1;
-const std::size_t RROEACondition::count = 10;
+const std::size_t RROEACondition::count = COUNT_RROEA;
 
 DEFINE_MODULE(RROEA);
 

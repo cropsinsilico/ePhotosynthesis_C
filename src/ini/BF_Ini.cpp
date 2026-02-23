@@ -33,7 +33,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-const std::size_t BFCondition::count = 28;
+const std::size_t BFCondition::count = COUNT_BF;
 bool BFCondition::FI_connect = false;
 bool BF::FI_connect = false;
 bool BF::PS_connect = false;
@@ -56,13 +56,13 @@ void BF::_initCalc(Variables *theVars, BFCondition* BF_con) {
         }
         // ISPHr + cytc1 --> ISPHox + cytc1-
         double DeltaEm = theVars->BF_RC.Em_Cytf - theVars->BF_RC.Em_IPS;
-        double DeltaG = -DeltaEm * BF::F;
-        const double KE8 = exp(-DeltaG / BF::RT);  // ISPHr + cytc1 --> ISPHox + cytc1- Unit: s-1
+        double DeltaG = -DeltaEm * theVars->F;
+        const double KE8 = exp(-DeltaG / theVars->RT);  // ISPHr + cytc1 --> ISPHox + cytc1- Unit: s-1
 
         // cytc1- + cytc2 --> cytc1 + cytc2-
         DeltaEm = theVars->BF_RC.Em_PG - theVars->BF_RC.Em_Cytf;
-        DeltaG = -DeltaEm * BF::F;
-        const double KE9 = exp(-DeltaG / BF::RT);  // cytc1- + cytc2 --> cytc1 + cytc2- Unit: s-1
+        DeltaG = -DeltaEm * theVars->F;
+        const double KE9 = exp(-DeltaG / theVars->RT);  // cytc1- + cytc2 --> cytc1 + cytc2- Unit: s-1
 
         // Assign values to the array for rate constant
         theVars->BF_RC.K1 = theVars->EnzymeAct.at("K1");     // The rate constant for formation of ISP.QH2 complex; unit:  per second
@@ -92,13 +92,13 @@ void BF::_initCalc(Variables *theVars, BFCondition* BF_con) {
         // ISPHr + cytc1 --> ISPHox + cytc1-
         double DeltaEm = theVars->BF_RC.Em_Cytf * theVars->BFRatio[22] - theVars->BF_RC.Em_IPS * theVars->BFRatio[21];
         double DeltaG = DeltaEm * -9.649 * pow(10., 4.);
-        const double KE8 = exp(-DeltaG / BF::RT);
+        const double KE8 = exp(-DeltaG / theVars->RT);
 
         // cytc1- + cytc2 --> cytc1 + cytc2-
         DeltaEm = theVars->BF_RC.Em_PG * theVars->BFRatio[25] - theVars->BF_RC.Em_Cytf * theVars->BFRatio[22];
         DeltaG = DeltaEm * -9.649 * pow(10., 4.);
 
-        const double KE9 = exp(-DeltaG / BF::RT);
+        const double KE9 = exp(-DeltaG / theVars->RT);
 
         theVars->BF_RC.K1 *= theVars->BFRatio[0];     // The rate constant for formation of ISP.QH2 complex; unit:  per second
         theVars->BF_RC.K2 *= theVars->BFRatio[1];            // The rate constant for ISP.QH2-->QH(semi) + ISPH(red) ; unit:  per second
@@ -159,7 +159,7 @@ void BF::_initOrig(Variables *theVars, BFCondition* BF_con) {
     // Indicate in the beginning there is no ATP synthesis activity.
     BF::EPS_ATP_Rate = 0.;
     BF::PMODTEM = 1.0;
-    BF::RT = (8.314 * 298.);
+    // BF::RT = (8.314 * 298.);
     theVars->BF_RC.Em_IPS = 0.31;
     theVars->BF_RC.Em_Cytf = 0.27;
     theVars->BF_RC.Em_PG = 0.35;
@@ -188,12 +188,12 @@ void BF::_initOrig(Variables *theVars, BFCondition* BF_con) {
         // ISPHr + cytc1 --> ISPHox + cytc1-
         double DeltaEm = theVars->BF_RC.Em_Cytf - theVars->BF_RC.Em_IPS;
         double DeltaG = DeltaEm * -9.649 * pow(10., 4.);
-        const double KE8 = exp(-DeltaG / BF::RT);  // ISPHr + cytc1 --> ISPHox + cytc1- Unit: s-1
+        const double KE8 = exp(-DeltaG / theVars->RT);  // ISPHr + cytc1 --> ISPHox + cytc1- Unit: s-1
 
         // cytc1- + cytc2 --> cytc1 + cytc2-
         DeltaEm = theVars->BF_RC.Em_PG - theVars->BF_RC.Em_Cytf;
         DeltaG = DeltaEm * -9.649 * pow(10., 4.);
-        const double KE9 = exp(-DeltaG / BF::RT);  // cytc1- + cytc2 --> cytc1 + cytc2- Unit: s-1
+        const double KE9 = exp(-DeltaG / theVars->RT);  // cytc1- + cytc2 --> cytc1 + cytc2- Unit: s-1
 
         // Assign values to the array for rate constant
         theVars->BF_RC.K1 = theVars->EnzymeAct.at("K1");     // The rate constant for formation of ISP.QH2 complex; unit:  per second
@@ -240,13 +240,13 @@ void BF::_initOrig(Variables *theVars, BFCondition* BF_con) {
         // ISPHr + cytc1 --> ISPHox + cytc1-
         double DeltaEm = theVars->BF_RC.Em_Cytf * theVars->BFRatio[22] - theVars->BF_RC.Em_IPS * theVars->BFRatio[21];
         double DeltaG = DeltaEm * -9.649 * pow(10., 4.);
-        const double KE8 = exp(-DeltaG / BF::RT);
+        const double KE8 = exp(-DeltaG / theVars->RT);
 
         // cytc1- + cytc2 --> cytc1 + cytc2-
         DeltaEm = theVars->BF_RC.Em_PG * theVars->BFRatio[25] - theVars->BF_RC.Em_Cytf * theVars->BFRatio[22];
         DeltaG = DeltaEm * -9.649 * pow(10., 4.);
 
-        const double KE9 = exp(-DeltaG / BF::RT);
+        const double KE9 = exp(-DeltaG / theVars->RT);
 
         theVars->BF_RC.K1 = pow(10., 6.) * theVars->BFRatio[0];     // The rate constant for formation of ISP.QH2 complex; unit:  per second
         theVars->BF_RC.K2 = 500. * theVars->BFRatio[1];            // The rate constant for ISP.QH2-->QH(semi) + ISPH(red) ; unit:  per second

@@ -974,8 +974,6 @@ namespace ePhotosynthesis {
       EPS_ATP_Rate     ,		\
       _Pi              ,		\
       PMODTEM          ,		\
-      F                ,		\
-      RT               ,		\
       DeltaGo          ,		\
       MAX
   #ifdef EPHOTO_USE_SCOPED_ENUM
@@ -1225,8 +1223,6 @@ namespace ePhotosynthesis {
       Q10_10        ,		\
       Q10_13        ,		\
       Q10_23        ,		\
-      F             ,		\
-      R             ,		\
       c_c           ,		\
       dHa_c         ,		\
       c_o           ,		\
@@ -1867,6 +1863,9 @@ namespace ePhotosynthesis {
   #define MEMBERS_ALLVARS		\
       NONE                  ,		\
       AVR                   ,		\
+      F                     ,		\
+      R                     ,		\
+      RT                    ,		\
       HPR                   ,		\
       O2                    ,		\
       CO2_cond              ,		\

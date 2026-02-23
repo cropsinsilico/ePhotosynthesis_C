@@ -35,6 +35,7 @@
 #define NRATIO_FIBF 0
 #define CHILDREN_FIBF BF, FI
 #define PARAM_TYPES_FIBF COND, POOL, RC
+#define COUNT_FIBF 0
 
 namespace ePhotosynthesis {
 

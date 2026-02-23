@@ -1,45 +1,45 @@
 # Name		Default		C3Default	Docs
-V51		0.107376831	0.0		# from EnzymeAct for C3, *= SC with GP; DHAP+GAP --FBP     default 0.5; Unit: mmol l-1 s-1
-V52		0.063979048	0.0		# from EnzymeAct for C3, *= SC with GP; FBP --F6P + Pi; Unit: mmol l-1 s-1
-V55		0.115403205	0.0		# from EnzymeAct for C3, *= SC with GP; G1P+UTP --OPOP+UDPG; Unit: mmol l-1 s-1
-V56		0.055503446	0.0		# from EnzymeAct for C3, *= SC with GP; UDPG+F6P--SUCP + UDP; Unit: mmol l-1 s-1
-V57		0.55503446	0.0		# from EnzymeAct for C3, *= SC1 with GP; SUCP--Pi + SUC; 0.27 DEFALT; Unit: mmol l-1 s-1
-V58		0.016819226	0.0		# from EnzymeAct for C3, *= SC with GP; F26BP--F6P + Pi; Unit: mmol l-1 s-1
-V59		0.03		0.0		# from EnzymeAct for C3, *= SC; F6P + ATP --ADP + F26BP; default 0.03  (* 0.3); Unit: mmol l-1 s-1
-V60		0.0		6.1		# ATP+UDP --UTP + ADP; Unused w/o C3
-V61		0.0		10000		# POPO --2PO; Unused w/o C3, constant set in globals.hpp
-V62		2.0		2		# SUC Sink; 0.2 works for C3; 0.9 works w/o C3 & *= SC1.
-Vdhap_in	1.05		0.0		# DHAP export from chloroplast; *= SC1 w/o C3
-Vgap_in		1.05		0.0		# GAP export from chloroplast; *= SC1 w/o C3
-Vpga_in		1.05		0.0		# PGA export from chloropalst; *= SC1 w/o C3
-ATPc		0.4		0.35
-UTPc		0.75		0.75
+V51		0.107376831	0.0		# [UNITS="mmol l^{-1} s^{-1}"] from EnzymeAct for C3, *= SC with GP; DHAP+GAP --FBP; default 0.5
+V52		0.063979048	0.0		# [UNITS="mmol l^{-1} s^{-1}"] from EnzymeAct for C3, *= SC with GP; FBP --F6P + Pi
+V55		0.115403205	0.0		# [UNITS="mmol l^{-1} s^{-1}"] from EnzymeAct for C3, *= SC with GP; G1P+UTP --OPOP+UDPG
+V56		0.055503446	0.0		# [UNITS="mmol l^{-1} s^{-1}"] from EnzymeAct for C3, *= SC with GP; UDPG+F6P--SUCP + UDP
+V57		0.55503446	0.0		# [UNITS="mmol l^{-1} s^{-1}"] from EnzymeAct for C3, *= SC1 with GP; SUCP--Pi + SUC; default 0.27
+V58		0.016819226	0.0		# [UNITS="mmol l^{-1} s^{-1}"] from EnzymeAct for C3, *= SC with GP; F26BP--F6P + Pi
+V59		0.03		0.0		# [UNITS="mmol l^{-1} s^{-1}"] from EnzymeAct for C3, *= SC; F6P + ATP --ADP + F26BP; default 0.03; (* 0.3)
+V60		6.1				# [CTRL_ON={ALL::VARS::useC3}] ATP+UDP --UTP + ADP; Unused w/o C3
+V61		10000				# [CTRL_ON={ALL::VARS::useC3}] POPO --2PO; Unused w/o C3, constant set in globals.hpp
+V62		2.0				# SUC Sink; 0.2 works for C3; 0.9 works w/o C3 & *= SC1.
+Vdhap_in	1.05		0.0		# [ALT={ALL::VARS::useC3=0.0}] DHAP export from chloroplast; *= SC1 w/o C3
+Vgap_in		1.05		0.0		# [ALT={ALL::VARS::useC3=0.0}] GAP export from chloroplast; *= SC1 w/o C3
+Vpga_in		1.05		0.0		# [ALT={ALL::VARS::useC3=0.0}] PGA export from chloropalst; *= SC1 w/o C3
+ATPc		0.4		0.35            # [ALT={ALL::VARS::useC3=0.35}]
+UTPc		0.75
 # Only used with C3
-Vf_T52		0.0		1.0		# Set by VfactorT if GRNT & Tp > 25 for C3
-Vf_T59		0.0		1.0		# Set by VfactorT if GRNT & Tp > 25 for C3
-Vf_T57		0.0		1.0		# Set by VfactorT if GRNT & Tp > 25 for C3
-Vf_T51		0.0		1.0		# Set by VfactorT if GRNT & Tp > 25 for C3
-Vf_T56		0.0		1.0		# Set by VfactorT if GRNT & Tp > 25 for C3
-Vfactor51	0.0		1.0
-Vfactor52	0.0		1.0		# [GLYMAID=Glyma.16G168000] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
-Vfactor56	0.0		1.0		# [GLYMAID=Glyma.06G323700] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
-Vfactor57	0.0		1.0		# [GLYMAID=Glyma.10G086600] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
-Vfactor59	0.0		1.0		# [GLYMAID=Glyma.11G169700] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
-SUCSV51		0.0		0.0		# Set by calculation for C3
-SUCSV52		0.0     	0.0     	# Set by calculation for C3
-SUCSV55		0.0     	0.0     	# Set by calculation for C3
-SUCSV56		0.0     	0.0     	# Set by calculation for C3
-SUCSV57		0.0     	0.0     	# Set by calculation for C3
-SUCSV58		0.0     	0.0     	# Set by calculation for C3
+Vf_T52		1.0		   		# [CTRL_ON={ALL::VARS::useC3}] Set by VfactorT if GRNT & Tp > 25 for C3
+Vf_T59		1.0		   		# [CTRL_ON={ALL::VARS::useC3}] Set by VfactorT if GRNT & Tp > 25 for C3
+Vf_T57		1.0		   		# [CTRL_ON={ALL::VARS::useC3}] Set by VfactorT if GRNT & Tp > 25 for C3
+Vf_T51		1.0		   		# [CTRL_ON={ALL::VARS::useC3}] Set by VfactorT if GRNT & Tp > 25 for C3
+Vf_T56		1.0		   		# [CTRL_ON={ALL::VARS::useC3}] Set by VfactorT if GRNT & Tp > 25 for C3
+Vfactor51	1.0		                # [CTRL_ON={ALL::VARS::useC3}]
+Vfactor52	1.0		   		# [GLYMAID=Glyma.16G168000,CTRL_ON={ALL::VARS::useC3}] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
+Vfactor56	1.0		   		# [GLYMAID=Glyma.06G323700,CTRL_ON={ALL::VARS::useC3}] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
+Vfactor57	1.0		   		# [GLYMAID=Glyma.10G086600,CTRL_ON={ALL::VARS::useC3}] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
+Vfactor59	1.0		   		# [GLYMAID=Glyma.11G169700,CTRL_ON={ALL::VARS::useC3}] Set by VfactorCp if GRNC & CO2_cond > 0 for C3
+SUCSV51		0.0		   		# [CALC,CTRL_ON={ALL::VARS::useC3}] Set by calculation for C3
+SUCSV52		0.0     	        	# [CALC,CTRL_ON={ALL::VARS::useC3}] Set by calculation for C3
+SUCSV55		0.0     	        	# [CALC,CTRL_ON={ALL::VARS::useC3}] Set by calculation for C3
+SUCSV56		0.0     	        	# [CALC,CTRL_ON={ALL::VARS::useC3}] Set by calculation for C3
+SUCSV57		0.0     	        	# [CALC,CTRL_ON={ALL::VARS::useC3}] Set by calculation for C3
+SUCSV58		0.0     	        	# [CALC,CTRL_ON={ALL::VARS::useC3}] Set by calculation for C3
 # Variables only set during calculations
-SUCS2PS_Pic	0.0		0.0		# [INIT_ONCE]
-ADPc		0.6		0.65		# Calculated from ATc & ATPc
-Vmatpf		0.25		0.25		# [CONST] Previously stored as constant
-Q10_51		2.0				# [CONST] DHAP+GAP --FBP; unused w/o C3
-Q10_52		1.6				# [CONST] FBP --F6P + Pi; unused w/o C3
-Q10_55		2.0				# [CONST] G1P+UTP --OPOP+UDPG; unused w/o C3
-Q10_56		2.0				# [CONST] UDPG+F6P--SUCP + UDP; unused w/o C3
-Q10_57		2.0				# [CONST] SUCP--Pi + SUC; unused w/o C3
-Q10_58		2.0				# [CONST] F26BP--F6P + Pi; unused w/o C3
-SC		10.0				# [CONST] Scale factor for SUCS module parameters V51, V52, V55, V56 & V58 when GP set and V59 always; unused w/o C3
-SC1		1.0				# [CONST] Scale factor for SUCS module parameters V62, Vdhap_in, Vgap_in & Vpga_in always and V57 when GP set; unused w/o C3
+SUCS2PS_Pic	0.0				# [INIT_ONCE]
+ADPc		0.6		0.65		# [CALC,ALT={ALL::VARS::useC3=0.65}] Calculated from ATc & ATPc
+Vmatpf		0.25				# [CONST,CTRL_ON={ALL::VARS::useC3}] Previously stored as constant
+Q10_51		2.0				# [CONST,CTRL_ON={ALL::VARS::useC3}] DHAP+GAP --FBP; unused w/o C3
+Q10_52		1.6				# [CONST,CTRL_ON={ALL::VARS::useC3}] FBP --F6P + Pi; unused w/o C3
+Q10_55		2.0				# [CONST,CTRL_ON={ALL::VARS::useC3}] G1P+UTP --OPOP+UDPG; unused w/o C3
+Q10_56		2.0				# [CONST,CTRL_ON={ALL::VARS::useC3}] UDPG+F6P--SUCP + UDP; unused w/o C3
+Q10_57		2.0				# [CONST,CTRL_ON={ALL::VARS::useC3}] SUCP--Pi + SUC; unused w/o C3
+Q10_58		2.0				# [CONST,CTRL_ON={ALL::VARS::useC3}] F26BP--F6P + Pi; unused w/o C3
+SC		10.0				# [CONST,CTRL_OFF={ALL::VARS::useC3}] Scale factor for SUCS module parameters V51, V52, V55, V56 & V58 when GP set and V59 always; unused w/o C3
+SC1		1.0				# [CONST,CTRL_OFF={ALL::VARS::useC3}] Scale factor for SUCS module parameters V62, Vdhap_in, Vgap_in & Vpga_in always and V57 when GP set; unused w/o C3

@@ -1,25 +1,28 @@
 # Name		  Value	C3Value	Docs
-AVR		  30.0		# [CONST] The conversion factor between volume and area (micromole per meter square per second and milimole per liter per second).
+AVR		  30.0		# [CONST,UNITS="umol m^{-2} s^{-1} mmol^{-1} L s"] The conversion factor between volume and area (micromole per meter square per second and milimole per liter per second).
+F                 96490.0       # [CONST,UNITS="J mol^{-1} V^{-1}"] Faraday’s constant 96485 C mole-1 or J mole-1 V-1
+R                 8.314         # [CONST,UNITS="J mol^{-1} K^{-1}"] ideal gas constant; BioCro: 8.314E-3; Temperature corrections are from Bernacchi et al. (2003) Plant, Cell and Environment, 26(9), 1419-1430 https://doi.org/10.1046/j.0016-8025.2003.01050.x and Bernacchi et al. (2001) Plant, Cell and Environment, 24(2), 253-259. https://doi.org/10.1111/j.1365-3040.2001.00668.x
+RT		2477.572	# [CONST] 8.314 * 298.; Gas constant and the temperature. Used to calculate BF::RC parameters KE8, KE9 & KE11
 HPR		  4.66		# [CONST]
-O2		  0.0		# [CONST,ALIASES={O2_in,Air_O2}] Air O2 concentration in ppm; Seems to be unused currently
-CO2_cond	  0.0		# [CALC] Intercellular CO2 in umoles m^{-3}, calculated from air CO2 (CO2_in)
-GLight		  0.0           # Internal photosynthetically active photon flux density (in units of umoles m^{-2} s^{-1})
-O2_cond		  0.21          # [CALC] Intercellular O2 in umoles m^{-3}, calculated from air O2 (O2)
+O2		  0.0		# [CONST,ALIASES={O2_in,Air_O2},MATLAB_VAR=TestO2] Air O2 concentration in ppm; Seems to be unused currently
+CO2_cond	  0.0		# [CALC,UNITS="umol m^{-3}"] Intercellular CO2, calculated from air CO2 (CO2_in)
+GLight		  0.0           # [UNITS="umol m^{-2} s^{-1}"] Internal photosynthetically active photon flux density
+O2_cond		  0.21          # [CALC,UNITS="umol m^{-3}"] Intercellular O2, calculated from air O2 (O2)
 PS12ratio	  0.0		# [CALC] Calcualted from input_PSI & input_PSIIcore in SYSInitial
-ADP		  0.0
-Pi		  0.9		# [CALC] Pi used when useC3 is true and EPS module selected
+ADP		  0.0           # [MATLAB_VAR=PS2BF_ADP]
+Pi		  0.9		# [CALC,MATLAB_VAR=PS2BF_Pi] Pi used when useC3 is true and EPS module selected
 TestATPCost	  0.0		# [ALIASES={ATPCost}] Extra ATP cost when useC3 is false (in units per area)
-CO2_in		  200.0		# [CALC,ALIASES={CO2,Air_CO2}] Air CO2 concentration in ppm
-TestLi_Wps        0.0           # [CALC,ALIASES={PAR,Radiation_PAR}] Photosynthetically active radiation (in units of W s^{-1})
-TestLi		  0.0		# [CALC,ALIASES={PFD,PPFD,Light intensity}] Photosynthetically active photon flux density (in units of umoles m^{-2} s^{-1})
+CO2_in		  200.0		# [CALC,ALIASES={CO2,Air_CO2},MATLAB_VAR=TestCa,UNITS="ppm"] Air CO2 concentration
+TestLi_Wps        0.0           # [CALC,ALIASES={PAR,Radiation_PAR},UNITS="W s^{-1}"] Photosynthetically active radiation
+TestLi		  0.0		# [CALC,ALIASES={PFD,PPFD,Light intensity},UNITS="umol m^{-2} s^{-1}"] Photosynthetically active photon flux density
 PS2BF_Pi	  0.0		# Pi Shared by PS & BF modules when useC3 is false and EPS module is selected
 PS_PR_Param	  0.0		# Seems to unused currently
-Tp		  25.0		# [ALIASES={Temp,WeatherTemperature}] Temperature
-alfa		  0.0		# [CONST] Used for scaling light (*= alpha * (1 - fc))
-fc		  0.0		# [CONST] Used for scaling light (*= alpha * (1 - fc))
+Tp		  25.0		# [ALIASES={Temp,WeatherTemperature},UNITS=degC] Temperature
+alfa		  0.0		# [CONST,CTRL_ON={ALL::VARS::useC3}] Used for scaling light (*= alpha * (1 - fc))
+fc		  0.0		# [CONST,CTRL_ON={ALL::VARS::useC3}] Used for scaling light (*= alpha * (1 - fc))
 lightParam	  0.0		# [CALC]
-alpha1		  1.205		# [CONST] originally 1.205 in C++ code, 1 for Matlab equivalent
-alpha2		  2.06		# [CONST] originally 2.06 in C++ code, 1 for Matlab equivalent
+alpha1		  1.205		# [CONST,CTRL_ON={ALL::VARS::useC3}] originally 1.205 in C++ code, 1 for Matlab equivalent
+alpha2		  2.06		# [CONST,CTRL_ON={ALL::VARS::useC3}] originally 2.06 in C++ code, 1 for Matlab equivalent
 input_LHCI	  6.0		# [CONST] Used to set FIBF::ChlPSI in SYSInitial
 input_LHCII	  13.0		# [CONST] Used to set FIBF::ChlT in SYSInitial
 input_PSI	  1.0		# [CONST] Used to set FIBF::ChlPSI & PS12ratio in SYSInitial

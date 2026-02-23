@@ -1,13 +1,13 @@
 # Name		Value	C3Value	Docs
-Tcyt		1.0		# [ALIASES={Tcyt}] The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area
-Tcytc2		1.0		# [ALIASES={Tcytc2}] The total amount of cytc; Unit: micromole m-2 leaf area
-TK		20.0		# [ALIASES={TK}] The total concentration of K in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant.
-TMg		10.0		# [ALIASES={TMg}] The total concentration of Mg in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant.
-TCl		2.0		# [ALIASES={TCl}] The total concentration of Cl in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant.
+Tcyt		1.0		# [ALIASES={Tcyt},UNITS="umol m^{-2}"] The total amount of cytbH or cytbL
+Tcytc2		1.0		# [ALIASES={Tcytc2},UNITS="umol m^{-2}"] The total amount of cytc; Unit: micromole m-2 leaf area
+TK		20.0		# [ALIASES={TK},UNITS="mmol l^{-1}"] The total concentration of K in both stroma and lumen. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant.
+TMg		10.0		# [ALIASES={TMg},UNITS="mmol l^{-1}"] The total concentration of Mg in both stroma and lumen. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant.
+TCl		2.0		# [ALIASES={TCl},UNITS="mmol l^{-1}"] The total concentration of Cl in both stroma and lumen. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant.
 TFd		1.0		# [ALIASES={TFd}] The total concentration of Ferrodoxin
-TA		1.0		# [ALIASES={TA}] The total concentration of the primary electron acceptor of PSI; Unit: micromole m-2 leaf area
-TQ		8.0		# [ALIASES={TQ}] The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area
-BFTs		38.0		# [ALIASES={BFTs}] The total concentration of buffer in stroma; unit: mmol per liter
-BFTl		38.0		# [ALIASES={BFTl}] The total concentration of buffer in lumen; unit: mmol per liter
-P700T		1.0		# [ALIASES={P700T}] The total number of P700; unit: micromole m-2 leaf area
-NADPHT		1.0		# [ALIASES={NADPHT}]   The total concentration of NADPH in stroma; 1 is an guessed value;
+TA		1.0		# [ALIASES={TA},UNITS="umol m^{-2}"] The total concentration of the primary electron acceptor of PSI
+TQ		8.0		# [ALIASES={TQ},UNITS="umol m^{-2}"] The total concentration of plastoquinone in thylakoid membrane.
+BFTs		38.0		# [ALIASES={BFTs},UNITS="mmol l^{-1}"] The total concentration of buffer in stroma
+BFTl		38.0		# [ALIASES={BFTl},UNITS="mmol l^{-1}"] The total concentration of buffer in lumen
+P700T		1.0		# [ALIASES={P700T},UNITS="umol m^{-2}"] The total number of P700
+NADPHT		1.0		# [ALIASES={NADPHT}] The total concentration of NADPH in stroma; 1 is an guessed value;

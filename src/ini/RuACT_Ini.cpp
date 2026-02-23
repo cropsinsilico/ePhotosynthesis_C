@@ -37,7 +37,7 @@ bool RuACTCondition::EPS_connect = false;
 double RuACT::TIME = 0.;
 std::size_t RuACT::N = 1;
 
-const std::size_t RuACTCondition::count = 4;
+const std::size_t RuACTCondition::count = COUNT_RuACT;
 
 DEFINE_MODULE(RuACT);
 
@@ -88,7 +88,11 @@ void RuACT::_initCalc(Variables *theVars, RuACTCondition* RuACT_Con) {
     theVars->RuACT_RC.k6 *= theVars->RuACTRatio[5] * 4. / 3.;          // micromolar per meter square per second, transfered to unit
     theVars->RuACT_RC.kc *= theVars->RuACTRatio[6];                // Michaelis menton constant for CO2
     theVars->RuACT_RC.ko *= theVars->RuACTRatio[7];                // Michaelis menton constant for O2
-    theVars->RuACT_RC.k7 *= theVars->RuACTRatio[8]; // The rate constant for ecm to ecmr
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+    theVars->RuACT_RC.k7 *= theVars->RuACT_RC.k6 * theVars->RuACTRatio[8]; // The rate constant for ecm to ecmr
+#else // MAKE_EQUIVALENT_TO_MATLAB
+    theVars->RuACT_RC.k7 *= theVars->RuACTRatio[8];
+#endif // MAKE_EQUIVALENT_TO_MATLAB
     theVars->RuACT_RC.kr *= theVars->RuACTRatio[9];   // The apparaent michaelis menton constant for RuBP
 
     //factor = 0.224/0.3;

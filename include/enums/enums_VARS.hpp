@@ -25,6 +25,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::glymaids;
   template<>
+  const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::units;
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::aliases;
   template<>
   const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::docs;
@@ -32,6 +34,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::string> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::citations;
   template<>
   const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::vector<std::string>> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::required_modules;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::vector<std::string>> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::enabled_by_controls;
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, std::vector<std::string>> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::disabled_by_controls;
   template<>
   std::map<typename ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::Type, int> ValueSetEnum<MODULE_ALL, PARAM_TYPE_VARS>::value_flags;
   template<>

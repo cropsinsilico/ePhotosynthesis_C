@@ -1,7 +1,12 @@
 CO2                     400.0
-PAR                     339.575  # umol s**-1 m**-2
-PAR_in_Wpm2             1
+PFD                     1445.0  # 2000 * 0.85 * 0.85 umol s**-1 m**-2
 SucPath	                0
 WeatherTemperature	25.0
 ProteinTotalRatio	0.973
 GRNC                    1.0
+BF::RC::KBl             0.015  # Hard coded value used by MATLAB
+BF::RC::KBs             0.015  # Hard coded value used by MATLAB
+# ALL::VARS::alpha1       1.0
+# ALL::VARS::alpha2       1.0
+# PR::MOD::V2T            6.0
+# PS::MOD::PS_C_CP        25.0

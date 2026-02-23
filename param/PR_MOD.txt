@@ -13,41 +13,41 @@ NADc		0.4                     # NAD concentration in cytosol
 # 10 & 11 skipped in PRRatio
 GLUc		24.0                    # GLU concentration in cytosol
 KGc		0.4                     # KG concentration in cytosol
-PR_ADP		0.82		0.0     # ADP concentration in chloroplast
-PR_ATP		0.68		0.0     # ATP concentration in chloroplast
+PR_ADP		0.82		0.0     # [ALT={ALL::VARS::useC3=0.0}] ADP concentration in chloroplast
+PR_ATP		0.68		0.0     # [ALT={ALL::VARS::useC3=0.0}] ATP concentration in chloroplast
 # PGA is here in the ratio order
-# PGA		4.3		2.4     # PGA in chloroplast (2.4 with C3)
+# PGA		4.3		2.4     # [ALT={ALL::VARS::useC3=2.4}] PGA in chloroplast (2.4 with C3)
 V1T		5.0	      	  	# *= CE if not C3
 V2T		6.4	       	        # *= CE if not C3, 6 for C3
-Vfactor112	0.0		1.0	# [GLYMAID=Glyma.09G015500] VfactorCp used with GRNC and CO2 > 0
-Vfactor113	0.0		1.0	# [GLYMAID=Glyma.15G012500] VfactorCp used with GRNC and CO2 > 0
-Vfactor121	0.0		1.0	# [GLYMAID=Glyma.06G017900] VfactorCp used with GRNC and CO2 > 0
-Vfactor122	0.0		1.0	# [GLYMAID=Glyma.08G302600] VfactorCp used with GRNC and CO2 > 0
-Vfactor123	0.0		1.0	# [GLYMAID=Glyma.09G255200] VfactorCp used with GRNC and CO2 > 0
-Vfactor124	0.0		1.0	# [GLYMAID=Glyma.01G026700] VfactorCp used with GRNC and CO2 > 0
-Vfactor131	0.0		1.0	# [GLYMAID=Glyma.13G222300] VfactorCp used with GRNC and CO2 > 0
-Vf_T131		0.0		1.0     # VfactorT used with GRNT & Tp > 25
-Vf_T113		0.0		1.0     # VfactorT used with GRNT & Tp > 25
-Vf_T123		0.0		1.0     # VfactorT used with GRNT & Tp > 25
-Vf_T121		0.0		1.0     # VfactorT used with GRNT & Tp > 25
-Vf_T122		0.0		1.0     # VfactorT used with GRNT & Tp > 25
-Vf_T112		0.0		1.0     # VfactorT used with GRNT & Tp > 25
-PGA		4.3		2.4     # PGA in chloroplast (2.4 with C3)
+Vfactor112	1.0		   	# [GLYMAID=Glyma.09G015500,CTRL_ON={ALL::VARS::useC3}] VfactorCp used with GRNC and CO2 > 0
+Vfactor113	1.0		   	# [GLYMAID=Glyma.15G012500,CTRL_ON={ALL::VARS::useC3}] VfactorCp used with GRNC and CO2 > 0
+Vfactor121	1.0		   	# [GLYMAID=Glyma.06G017900,CTRL_ON={ALL::VARS::useC3}] VfactorCp used with GRNC and CO2 > 0
+Vfactor122	1.0		   	# [GLYMAID=Glyma.08G302600,CTRL_ON={ALL::VARS::useC3}] VfactorCp used with GRNC and CO2 > 0
+Vfactor123	1.0		   	# [GLYMAID=Glyma.09G255200,CTRL_ON={ALL::VARS::useC3}] VfactorCp used with GRNC and CO2 > 0
+Vfactor124	1.0		   	# [GLYMAID=Glyma.01G026700,CTRL_ON={ALL::VARS::useC3}] VfactorCp used with GRNC and CO2 > 0
+Vfactor131	1.0		   	# [GLYMAID=Glyma.13G222300,CTRL_ON={ALL::VARS::useC3}] VfactorCp used with GRNC and CO2 > 0
+Vf_T131		1.0		        # [CTRL_ON={ALL::VARS::useC3}] VfactorT used with GRNT & Tp > 25
+Vf_T113		1.0		        # [CTRL_ON={ALL::VARS::useC3}] VfactorT used with GRNT & Tp > 25
+Vf_T123		1.0		        # [CTRL_ON={ALL::VARS::useC3}] VfactorT used with GRNT & Tp > 25
+Vf_T121		1.0		        # [CTRL_ON={ALL::VARS::useC3}] VfactorT used with GRNT & Tp > 25
+Vf_T122		1.0		        # [CTRL_ON={ALL::VARS::useC3}] VfactorT used with GRNT & Tp > 25
+Vf_T112		1.0		        # [CTRL_ON={ALL::VARS::useC3}] VfactorT used with GRNT & Tp > 25
+PGA		4.3		2.4     # [MATLAB_VAR=Pga,ALT={ALL::VARS::useC3=2.4}] PGA in chloroplast (2.4 with C3)
 RUBISCOTOTAL	3.0
-PrV112		0.0
-PrV113		0.0
-PrV121		0.0
-PrV122		0.0
-PrV123		0.0
-PrV124		0.0
-PrV131		0.0
-Q10_112		1.81			# [CONST] Q10 for PrV112; unused w/o C3
-Q10_113		2.0			# [CONST] Q10 for PrV113; unused w/o C3
-Q10_121		2.0			# [CONST] Q10 for PrV121; unused w/o C3
-Q10_122		2.01			# [CONST] Q10 for PrV122; unused w/o C3
-Q10_123		2.0			# [CONST] Q10 for PrV123; unused w/o C3
-Q10_124		2.0			# [CONST] Q10 for PrV124; unused w/o C3
-Q10_131		2.0			# [CONST] Q10 for PrV131; unused w/o C3
-CE		1.0			# [CONST] This is the coefficient for calibrating the volume effect; Used to scale V1T & V2T; Comment says default is 4; Unused w/ C3
+PrV112		0.0                     # [CALC,CTRL_ON={ALL::VARS::useC3}]
+PrV113		0.0                     # [CALC,CTRL_ON={ALL::VARS::useC3}]
+PrV121		0.0                     # [CALC,CTRL_ON={ALL::VARS::useC3}]
+PrV122		0.0                     # [CALC,CTRL_ON={ALL::VARS::useC3}]
+PrV123		0.0                     # [CALC,CTRL_ON={ALL::VARS::useC3}]
+PrV124		0.0                     # [CALC,CTRL_ON={ALL::VARS::useC3}]
+PrV131		0.0                     # [CALC,CTRL_ON={ALL::VARS::useC3}]
+Q10_112		1.81			# [CONST,CTRL_ON={ALL::VARS::useC3}] Q10 for PrV112; unused w/o C3
+Q10_113		2.0			# [CONST,CTRL_ON={ALL::VARS::useC3}] Q10 for PrV113; unused w/o C3
+Q10_121		2.0			# [CONST,CTRL_ON={ALL::VARS::useC3}] Q10 for PrV121; unused w/o C3
+Q10_122		2.01			# [CONST,CTRL_ON={ALL::VARS::useC3}] Q10 for PrV122; unused w/o C3
+Q10_123		2.0			# [CONST,CTRL_ON={ALL::VARS::useC3}] Q10 for PrV123; unused w/o C3
+Q10_124		2.0			# [CONST,CTRL_ON={ALL::VARS::useC3}] Q10 for PrV124; unused w/o C3
+Q10_131		2.0			# [CONST,CTRL_ON={ALL::VARS::useC3}] Q10 for PrV131; unused w/o C3
+CE		1.0			# [CONST,CTRL_OFF={ALL::VARS::useC3}] This is the coefficient for calibrating the volume effect; Used to scale V1T & V2T; Comment says default is 4; Unused w/ C3
 # CONTROL VARIABLES
 RUBISCOMETHOD   2                       # [CONST,CTRL,INT] The method to use for rubisco calculations. Choices are: [1] Use enzyme concentration for calculation, [2] DEFAULT Use the michaelis menton and enzyme concentration together for calculation. The default in the MATLAB code is 2.

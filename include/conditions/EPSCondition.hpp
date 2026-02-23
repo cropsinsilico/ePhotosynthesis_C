@@ -32,6 +32,7 @@
 #define PARENT_EPS RA
 #define CHILDREN_EPS FIBF, CM
 #define PARAM_TYPES_EPS COND
+#define COUNT_EPS 0
 
 namespace ePhotosynthesis {
 

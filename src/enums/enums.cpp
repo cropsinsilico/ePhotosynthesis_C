@@ -127,6 +127,24 @@ namespace ePhotosynthesis {
     return it->first;
   };
   template<MODULE M, PARAM_TYPE PT>
+  std::string ValueSetEnum<M, PT>::getUnits(const typename ValueSetEnum<M, PT>::Type& x) {
+    typename std::map<typename ValueSetEnum<M, PT>::Type, std::string>::const_iterator it;
+    it = units.find(x);
+    if (it == units.end()) {
+      throw std::runtime_error("Could not locate Units for '" + names.find(x)->second + "'");
+    }
+    return it->second;
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  std::string ValueSetEnum<M, PT>::getUnits(const typename ValueSetEnum<M, PT>::Type& x, const std::string& defaultV) {
+    typename std::map<typename ValueSetEnum<M, PT>::Type, std::string>::const_iterator it;
+    it = units.find(x);
+    if (it == units.end()) {
+      return defaultV;
+    }
+    return it->second;
+  };
+  template<MODULE M, PARAM_TYPE PT>
   typename ValueSetEnum<M, PT>::Type ValueSetEnum<M, PT>::getAlias(const std::string& x) {
     typename std::map<std::string, typename ValueSetEnum<M, PT>::Type>::const_iterator it;
     it = aliases.find(x);
@@ -205,6 +223,42 @@ namespace ePhotosynthesis {
     typename std::map<typename ValueSetEnum<M, PT>::Type, std::vector<std::string>>::const_iterator it;
     it = required_modules.find(x);
     if (it == required_modules.end()) {
+      return defaultV;
+    }
+    return it->second;
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  std::vector<std::string> ValueSetEnum<M, PT>::getEnabledByControl(const typename ValueSetEnum<M, PT>::Type& x) {
+    typename std::map<typename ValueSetEnum<M, PT>::Type, std::vector<std::string>>::const_iterator it;
+    it = enabled_by_controls.find(x);
+    if (it == enabled_by_controls.end()) {
+      throw std::runtime_error("Could not locate EnabledByControl for '" + names.find(x)->second + "'");
+    }
+    return it->second;
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  std::vector<std::string> ValueSetEnum<M, PT>::getEnabledByControl(const typename ValueSetEnum<M, PT>::Type& x, const std::vector<std::string>& defaultV) {
+    typename std::map<typename ValueSetEnum<M, PT>::Type, std::vector<std::string>>::const_iterator it;
+    it = enabled_by_controls.find(x);
+    if (it == enabled_by_controls.end()) {
+      return defaultV;
+    }
+    return it->second;
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  std::vector<std::string> ValueSetEnum<M, PT>::getDisabledByControl(const typename ValueSetEnum<M, PT>::Type& x) {
+    typename std::map<typename ValueSetEnum<M, PT>::Type, std::vector<std::string>>::const_iterator it;
+    it = disabled_by_controls.find(x);
+    if (it == disabled_by_controls.end()) {
+      throw std::runtime_error("Could not locate DisabledByControl for '" + names.find(x)->second + "'");
+    }
+    return it->second;
+  };
+  template<MODULE M, PARAM_TYPE PT>
+  std::vector<std::string> ValueSetEnum<M, PT>::getDisabledByControl(const typename ValueSetEnum<M, PT>::Type& x, const std::vector<std::string>& defaultV) {
+    typename std::map<typename ValueSetEnum<M, PT>::Type, std::vector<std::string>>::const_iterator it;
+    it = disabled_by_controls.find(x);
+    if (it == disabled_by_controls.end()) {
       return defaultV;
     }
     return it->second;

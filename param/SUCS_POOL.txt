@@ -1,4 +1,4 @@
 # Name		Value	C3Value	Docs
-ATc		1.0		# mM
-UTc		1.5		# mM
+ATc		1.0		# [UNITS=mM]
+UTc		1.5		# [UNITS=mM]
 PTc		15.0		#

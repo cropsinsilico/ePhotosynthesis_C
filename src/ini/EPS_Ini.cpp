@@ -35,7 +35,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-std::size_t EPSCondition::count = 0;
+std::size_t EPSCondition::count = COUNT_EPS;
 
 DEFINE_MODULE_COMPOSITE(EPS);
 DEFINE_DEFAULT_INITALT(EPS)

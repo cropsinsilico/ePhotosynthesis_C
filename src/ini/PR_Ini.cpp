@@ -34,19 +34,13 @@ using namespace ePhotosynthesis::conditions;
 
 double PR::TIME = 0.;
 std::size_t PR::N = 1;
-const std::size_t PRCondition::count = 10;
+const std::size_t PRCondition::count = COUNT_PR;
 bool PRCondition::PS_connect = false;
 bool PR::PS_connect = false;
 bool PRCondition::PS_RuBP = false;
 bool PR::PS_RuBP = false;
 
 DEFINE_MODULE(PR);
-
-#ifdef MAKE_EQUIVALENT_TO_MATLAB
-void PR::_initDefaults() {
-    setDefault(ValueSetClass::V2T, 6.0, true);
-}
-#endif // MAKE_EQUIVALENT_TO_MATLAB
 
 void PR::_initOrig(Variables *theVars, PRCondition* PR_con) {
     PR::setPS_connect(theVars->PR_PS_com);
@@ -410,20 +404,22 @@ void PR::_initCalc(Variables *theVars, PRCondition* PR_con) {
             PR::V124 *= theVars->PRRatio[6];
             PR::V131 *= theVars->PRRatio[7];
         }
+        
+        // Unused but helps with comparison to MATLAB version
+        PR::PrV112 = PR::V112;
+        PR::PrV113 = PR::V113;
+        PR::PrV121 = PR::V121;
+        PR::PrV122 = PR::V122;
+        PR::PrV123 = PR::V123;
+        PR::PrV124 = PR::V124;
+        PR::PrV131 = PR::V131;
     }
 }
 
 DEFINE_DEFAULT_CHECKALT(PR)
 
 void PR::_reset(const bool noChildren) {
-#define DEFINE_PR_VAR(name) PR::name = 0.
-    FOR_EACH(DEFINE_PR_VAR, EXPAND(MEMBERS_PR));
-#undef DEFINE_PR_VAR
     setPS_connect(false);
     setPS_RuBP(false);
-
-    PR::TIME = 0.;
-    PR::N = 1;
-    ParentClass::_reset(noChildren);
-    // conditions::PRCondition::reset();
+    DEFINE_MODULE_RESET_BODY(PR);
 }

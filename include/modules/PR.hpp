@@ -44,10 +44,6 @@ public:
     DECLARE_MODULE(PR)
 private:
 
-#ifdef MAKE_EQUIVALENT_TO_MATLAB
-    static void _initDefaults();
-#endif // MAKE_EQUIVALENT_TO_MATLAB
-    
     /**
       Reset the static member variables to their default values.
       */

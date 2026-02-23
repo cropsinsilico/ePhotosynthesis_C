@@ -40,10 +40,13 @@ namespace ePhotosynthesis {
     static const std::map<Type, double> defaults_C3;  /**< Defaults_C3 for values */
     static const std::map<Type, std::map<std::string, double>> alternate_defaults;  /**< Alternate_Defaults for values */
     static const std::map<Type, std::string> glymaids;  /**< Glymaids for values */
+    static const std::map<Type, std::string> units;  /**< Units for values */
     static const std::map<std::string, Type> aliases;  /**< Aliases for values */
     static const std::map<Type, std::string> docs;  /**< Docs for values */
     static const std::map<Type, std::string> citations;  /**< Citations for values */
     static const std::map<Type, std::vector<std::string>> required_modules;  /**< Required_Modules for values */
+    static const std::map<Type, std::vector<std::string>> enabled_by_controls;  /**< Enabled_By_Controls for values */
+    static const std::map<Type, std::vector<std::string>> disabled_by_controls;  /**< Disabled_By_Controls for values */
     static std::map<Type, int> value_flags;  /**< Value_Flags for values */
     static const std::map<Type, int> static_value_flags;  /**< Static_Value_Flags for values */
     /**
@@ -129,6 +132,19 @@ namespace ePhotosynthesis {
     */
     static Type fromGlymaid(const std::string& x);
     /**
+      Get the units value corresponding to an enum key
+      \param[in] x Key to get value for
+      \return Value
+    */
+    static std::string getUnits(const Type& x);
+    /**
+      Get the units value corresponding to an enum key
+      \param[in] x Key to get value for
+      \param[in] defaultV Value to return if x is not present
+      \return Value
+    */
+    static std::string getUnits(const Type& x, const std::string& defaultV);
+    /**
       Get the alias value corresponding to an enum key
       \param[in] x Key to get value for
       \return Value
@@ -186,6 +202,32 @@ namespace ePhotosynthesis {
       \return Value
     */
     static std::vector<std::string> getRequiredModule(const Type& x, const std::vector<std::string>& defaultV);
+    /**
+      Get the enabledbycontrol value corresponding to an enum key
+      \param[in] x Key to get value for
+      \return Value
+    */
+    static std::vector<std::string> getEnabledByControl(const Type& x);
+    /**
+      Get the enabledbycontrol value corresponding to an enum key
+      \param[in] x Key to get value for
+      \param[in] defaultV Value to return if x is not present
+      \return Value
+    */
+    static std::vector<std::string> getEnabledByControl(const Type& x, const std::vector<std::string>& defaultV);
+    /**
+      Get the disabledbycontrol value corresponding to an enum key
+      \param[in] x Key to get value for
+      \return Value
+    */
+    static std::vector<std::string> getDisabledByControl(const Type& x);
+    /**
+      Get the disabledbycontrol value corresponding to an enum key
+      \param[in] x Key to get value for
+      \param[in] defaultV Value to return if x is not present
+      \return Value
+    */
+    static std::vector<std::string> getDisabledByControl(const Type& x, const std::vector<std::string>& defaultV);
     /**
       Get the valueflag value corresponding to an enum key
       \param[in] x Key to get value for
@@ -535,6 +577,8 @@ namespace ePhotosynthesis {
   template<MODULE M, PARAM_TYPE PT>
   const std::map<typename ValueSetEnum<M, PT>::Type, std::string> ValueSetEnum<M, PT>::glymaids = {};
   template<MODULE M, PARAM_TYPE PT>
+  const std::map<typename ValueSetEnum<M, PT>::Type, std::string> ValueSetEnum<M, PT>::units = {};
+  template<MODULE M, PARAM_TYPE PT>
   const std::map<std::string, typename ValueSetEnum<M, PT>::Type> ValueSetEnum<M, PT>::aliases = {};
   template<MODULE M, PARAM_TYPE PT>
   const std::map<typename ValueSetEnum<M, PT>::Type, std::string> ValueSetEnum<M, PT>::docs = {};
@@ -542,6 +586,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<M, PT>::Type, std::string> ValueSetEnum<M, PT>::citations = {};
   template<MODULE M, PARAM_TYPE PT>
   const std::map<typename ValueSetEnum<M, PT>::Type, std::vector<std::string>> ValueSetEnum<M, PT>::required_modules = {};
+  template<MODULE M, PARAM_TYPE PT>
+  const std::map<typename ValueSetEnum<M, PT>::Type, std::vector<std::string>> ValueSetEnum<M, PT>::enabled_by_controls = {};
+  template<MODULE M, PARAM_TYPE PT>
+  const std::map<typename ValueSetEnum<M, PT>::Type, std::vector<std::string>> ValueSetEnum<M, PT>::disabled_by_controls = {};
   template<MODULE M, PARAM_TYPE PT>
   std::map<typename ValueSetEnum<M, PT>::Type, int> ValueSetEnum<M, PT>::value_flags = {};
   template<MODULE M, PARAM_TYPE PT>

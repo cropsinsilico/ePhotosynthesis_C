@@ -655,3 +655,12 @@ public:
     UNUSED(theVars);							\
     UNUSED(VARS_INST_VAR_MOD_BASE(name, COND));				\
   }
+#define DEFINE_MODULE_RESET_BODY_SET(name)      \
+  name = 0.
+#define DEFINE_MODULE_RESET_BODY(name)                  \
+  FOR_EACH(DEFINE_MODULE_RESET_BODY_SET,                \
+           EXPAND(MEMBER_NAMES_FOR_MODULE(name)));      \
+  name::TIME = 0.;                                      \
+  name::N = 1;                                          \
+  ParentClass::_reset(noChildren)
+// conditions::name ## Condition::reset()

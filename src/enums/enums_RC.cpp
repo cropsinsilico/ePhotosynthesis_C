@@ -130,51 +130,86 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::glymaids = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::units = {
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K1      , "s^{-1}"                   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K2      , "s^{-1}"                   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K3      , "s^{-1}"                   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K4      , "s^{-1}"                   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K5      , "s^{-1}"                   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K6      , "s^{-1}"                   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K7      , "s^{-1}"                   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K8      , "s^{-1}"                   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K9      , "s^{-1}"                   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K10     , "s^{-1}"                   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vmax11  , "mmol l^{-1} s^{-1}"       },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kqi     , "s^{-1}"                   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)PK      , "cm s^{-1}"                },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)PMg     , "cm s^{-1}"                },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)PCl     , "cm s^{-1}"                },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kau     , "s^{-1}"                   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kua     , "s^{-1}"                   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kf      , "s^{-1}"                   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kd      , "s^{-1}"                   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE8     , "s^{-1}"                   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE9     , "s^{-1}"                   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K15     , "s^{-1}"                   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K16     , "s^{-1}"                   },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KBs     , "mol l^{-1} (pH unit)^{-1}"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KBl     , "mol l^{-1} (pH unit)^{-1}"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM2NADP , "mmol l^{-1} s^{-1}"       },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM2NADPH, "mmol l^{-1} s^{-1}"       },
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V2M     , "mmol l^{-1} s^{-1}"       }
+  };
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::docs = {
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K1      , "The rate constant for formation of ISP.QH2 complex; unit:  per second"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K2      , "The rate constant for ISP.QH2-->QH(semi) + ISPH(red) ; unit:  per second"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K3      , "The rate constant for QH. + cytbL --> Q + cytbL- + H+ Unit: s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K4      , "The rate constant for cytbL- + cytbH --> cytbL + cytbH- Unit: s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K5      , "The rate constant for CytbH- + Q --> cytbH + Q- Unit: s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K6      , "The rate constant  for CytbH- + Q- --> cytbH + Q2- Unit: s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K7      , "The rate constant for Q binding to Qi site; which assumed half time as 200 us, following Croft's website Unit: s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K8      , "The rate constant for ISPH + CytC1 --> ISPH(ox) + CytC1+ Unit: s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K9      , "The rate constant for the electron transport from cytc1 to cytc2 Unit: s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K10     , "The rate constant for the electron transport from cytc2 to P700 Unit: s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vmax11  , "The maximum rate of ATP synthesis Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kqi     , "The rate constant for uptake of two protons from the stroma to Q2- s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)PK      , "The permeability constant for K Unit: cm s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)PMg     , "The permeability constant for Mg Unit: cm s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)PCl     , "The permeability constant for Cl Unit: cm s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kau     , "The rate constant for exciton transfer from perpheral antenna to core antenna, see FI Unit: s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kua     , "The rate constant for exciton transfer from core antenna to peripheral antenna, SEE FI Unit: s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kf      , "The rate constant for fluorescence emission, see the note in FI Unit: s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kd      , "The rate constant for heat dissipation; see the note for FI Unit: s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE8     , "[CALC] ISPHr + cytc1 --> ISPHox + cytc1-; Calculated from Em_IPS, Em_Cytf & Em_PG; Unit: s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE9     , "[CALC] cytc1- + cytc2 --> cytc1 + cytc2-; Calculated from Em_IPS, Em_Cytf & Em_PG; Unit: s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K15     , "The rate constant for primary charge separation in PSI Unit: s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K16     , "The rate constant for electron tranfer from electron acceptor of PSI to Fd Unit: s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_IPS  , "[CONST] ISPHr + cytc1 --> ISPHox + cytc1-"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_Cytf , "[CONST] ISPHr + cytc1 --> ISPHox + cytc1-"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_PG   , "[CONST] cytc1- + cytc2 --> cytc1 + cytc2-"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K1      , "The rate constant for formation of ISP.QH2 complex"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K2      , "The rate constant for ISP.QH2-->QH(semi) + ISPH(red)"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K3      , "The rate constant for QH. + cytbL --> Q + cytbL- + H+"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K4      , "The rate constant for cytbL- + cytbH --> cytbL + cytbH-"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K5      , "The rate constant for CytbH- + Q --> cytbH + Q-"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K6      , "The rate constant  for CytbH- + Q- --> cytbH + Q2-"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K7      , "The rate constant for Q binding to Qi site; which assumed half time as 200 us, following Croft's website"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K8      , "The rate constant for ISPH + CytC1 --> ISPH(ox) + CytC1+"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K9      , "The rate constant for the electron transport from cytc1 to cytc2"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K10     , "The rate constant for the electron transport from cytc2 to P700"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Vmax11  , "The maximum rate of ATP synthesis; The unit for the reactions that occur in the stroma is mmol l-1 s-1"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kqi     , "The rate constant for uptake of two protons from the stroma to Q2-"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)PK      , "The permeability constant for K"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)PMg     , "The permeability constant for Mg"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)PCl     , "The permeability constant for Cl"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kau     , "The rate constant for exciton transfer from perpheral antenna to core antenna, see FI"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kua     , "The rate constant for exciton transfer from core antenna to peripheral antenna, see FI"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kf      , "The rate constant for fluorescence emission, see the note in FI"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Kd      , "The rate constant for heat dissipation; see the note for FI"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE8     , "ISPHr + cytc1 --> ISPHox + cytc1-; Calculated from Em_IPS, Em_Cytf & Em_PG"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE9     , "cytc1- + cytc2 --> cytc1 + cytc2-; Calculated from Em_IPS, Em_Cytf & Em_PG"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K15     , "The rate constant for primary charge separation in PSI"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)K16     , "The rate constant for electron tranfer from electron acceptor of PSI to Fd"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_IPS  , "ISPHr + cytc1 --> ISPHox + cytc1-"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_Cytf , "ISPHr + cytc1 --> ISPHox + cytc1-"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Em_PG   , "cytc1- + cytc2 --> cytc1 + cytc2-"},
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)MemCap  , "The membrane capacity"},
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RVA     , "The ratio of lumen volume to thylakoid membrane area"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KBs     , "The buffer equilibrium constant in stroma; mol l-1 (pH unit)-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KBl     , "The buffer equilibrium constant in lumen; mol l-1 (pH unit)-1"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KBs     , "The buffer equilibrium constant in stroma"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KBl     , "The buffer equilibrium constant in lumen"},
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1ATP  , "The michaelis menton constant for ATP for ATP synthesis"},
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1ADP  , "The michaelis menton constant for ATP for ADP synthesis"},
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1PI   , "The michaelis menton constant for ATP for PI synthesis"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM2NADP , "The michaelis menten constant for NADP Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM2NADPH, "The michaelis menten constant for NADPH Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V2M     , "The maximum rate of NADPH formation Unit: mmol l-1 s-1; The unit for the reactions occurrs in stroma is mmol l-1 s-1"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM2NADP , "The michaelis menten constant for NADP; The unit for the reactions that occurs in the stroma is mmol l-1 s-1"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM2NADPH, "The michaelis menten constant for NADPH; The unit for the reactions that occurs in the stroma is mmol l-1 s-1"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)V2M     , "The maximum rate of NADPH formation; The unit for the reactions that occurs in the stroma is mmol l-1 s-1"},
     {ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE2     , "Equilibrium constant"}
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::citations = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::required_modules = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::enabled_by_controls = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::disabled_by_controls = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_RC>::value_flags = {};
   template<>
@@ -214,17 +249,26 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::glymaids = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::units = {};
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::docs = {
     {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC0 , "Maximal relaxation constant for changes in the ‘rate constant’ of heat dissipation, which is one term borrowed from Laisk et al., 1997;"},
-    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC  , "Maximal relaxation constant for changes in ‘rate constant’ of heat dissipation under a particular Xstate,Laisk et al. (1997)"},
+    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC  , "Maximal relaxation constant for changes in ‘rate constant’ of heat dissipation under a particular Xstate"},
     {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kdm0, "Maximum heat dissipation ‘rate constant’"}
   };
   template<>
-  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::citations = {};
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::citations = {
+    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC0, "Laisk et al. (1997)"},
+    {ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RC , "Laisk et al. (1997)"}
+  };
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::required_modules = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::enabled_by_controls = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::disabled_by_controls = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_RC>::value_flags = {};
   template<>
@@ -312,35 +356,57 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::glymaids = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::units = {};
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::docs = {
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kA_d    , "The rate constant of heat dissipation from peripheral antenna Lazar (1999), 0.25~1 *10^(9)"},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kA_f    , "The rate constant of fluorescence emission from peripheral antenna Lazar 1999, with a lifetime of 5 ns at closed reaction center"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kA_d    , "The rate constant of heat dissipation from peripheral antenna, 0.25~1 *10^(9)"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kA_f    , "The rate constant of fluorescence emission from peripheral antenna, with a lifetime of 5 ns at closed reaction center"},
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kA_U    , "The rate constant of exciton transfer from periphral antenna to core antenna Reference needed, a guess"},
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kU_A    , "The rate constant of exciton transfer from core antenna to peripheral antenna Reference needed, a guess"},
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kU_d    , "The rate constant of heat emission from core antenna"},
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kU_f    , "The rate constant of fluorescence emission from core antenna"},
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k1      , "The rate constant of primary charge separation for open reaction center"},
     {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_r1    , "The rate constant of charge recombination for open reactoin center"},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kz      , "The rate constant of the Tyrosine oxidation Lazar (1999); 3.8~50 * 10^6"},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k12     , "The rate constant of the S1 to S2 transition Lazar (1999); 0.667~33.3 * 10^3"},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k23     , "The rate constant of the S2 to S3 transition Lazar (1999); 0.667~33.3 * 10^3"},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k30     , "The rate constant of the S3 to S0 transition Lazar (1999); 0.667~33.3 * 10^3"},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k01     , "The rate constant of the S0 to S1 transition Lazar (1999); 0.667~33.3 * 10^3"},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k2      , "The rate constant of the QA reduction by Pheo- Lazar (1999); 2~2.3 * 10^9"},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kAB1    , "The rate constant of QAQB-->QAQB- Lazar (1999); 2.5~5 * 10^3"},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kBA1    , "The rate constant of the QAQB- -->QAQB Lazar (1999)"},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kAB2    , "The rate constant of the QAQB- --> QAQB2- Lazar (1999); 1.25~3.33 * 10^3"},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kBA2    , "The rate constant of the QAQB2- --> QAQB- Lazar (1999), or same as kAB2 depend on the equilibium constant"},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k3      , "The rate constant of the exchange of PQ and QBH2 Lazar (1999),0.12~1 for the fast PQ pool, or 3~8 for the slow recycling PQ pool"},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_r3    , "The rate constant of the exchange of QB and PQH2 Lazar (1999), since the equilibrium constant is 1 (205 in Lazar, 1999)"},
-    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_pq_oxy, "The rate constant of the PQH2 oxidation Lazar (1999),50~500"}
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kz      , "The rate constant of the Tyrosine oxidation; 3.8~50 * 10^6"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k12     , "The rate constant of the S1 to S2 transition; 0.667~33.3 * 10^3"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k23     , "The rate constant of the S2 to S3 transition; 0.667~33.3 * 10^3"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k30     , "The rate constant of the S3 to S0 transition; 0.667~33.3 * 10^3"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k01     , "The rate constant of the S0 to S1 transition; 0.667~33.3 * 10^3"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k2      , "The rate constant of the QA reduction by Pheo-; 2~2.3 * 10^9"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kAB1    , "The rate constant of QAQB-->QAQB-; 2.5~5 * 10^3"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kBA1    , "The rate constant of the QAQB- -->QAQB"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kAB2    , "The rate constant of the QAQB- --> QAQB2-; 1.25~3.33 * 10^3"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kBA2    , "The rate constant of the QAQB2- --> QAQB-, or same as kAB2 depend on the equilibium constant"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k3      , "The rate constant of the exchange of PQ and QBH2,0.12~1 for the fast PQ pool, or 3~8 for the slow recycling PQ pool"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_r3    , "The rate constant of the exchange of QB and PQH2, since the equilibrium constant is 1 (205 in Lazar, 1999)"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_pq_oxy, "The rate constant of the PQH2 oxidation,50~500"}
   };
   template<>
-  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::citations = {};
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::citations = {
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kA_d    , "Lazar (1999)"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kA_f    , "Lazar (1999)"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kz      , "Lazar (1999)"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k12     , "Lazar (1999)"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k23     , "Lazar (1999)"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k30     , "Lazar (1999)"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k01     , "Lazar (1999)"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k2      , "Lazar (1999)"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kAB1    , "Lazar (1999)"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kBA1    , "Lazar (1999)"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kAB2    , "Lazar (1999)"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kBA2    , "Lazar (1999)"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k3      , "Lazar (1999)"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_r3    , "Lazar (1999)"},
+    {ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_pq_oxy, "Lazar (1999)"}
+  };
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::required_modules = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::enabled_by_controls = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::disabled_by_controls = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_RC>::value_flags = {};
   template<>
@@ -437,29 +503,25 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE123 , 250000.0},
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1241, 0.15    },
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1242, 1.7     },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI124 , 0.0     },
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI124 , 2.0     },
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE124 , 607.0   },
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1311, 6.0     },
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1311, 4.0     },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1312, 0.0     },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1312, 0.0     },
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1312, 0.075   },
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1312, 0.015   },
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1011, 0.39    },
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1011, 0.28    },
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1012, 0.2     },
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1012, 0.22    }
   };
   template<>
-  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::defaults_C3 = {
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI124 , 2.0  },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1312, 0.075},
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1312, 0.015},
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1012, 0.2  },
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1012, 0.22 }
-  };
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::defaults_C3 = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::alternate_defaults = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::glymaids = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::units = {};
   template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::aliases = {};
   template<>
@@ -484,21 +546,33 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE123 , "Equilibrium constant for hydroxypyruvate;"},
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1241, "Michaelis constant for glyoxylate"},
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1242, "Michaelis constant for Glu"},
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI124 , "[CONST] This KI is one guessed, not scaled by PRRatio"},
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI124 , "This KI is one guessed, not scaled by PRRatio"},
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE124 , "New: Cooper, A.J.L.; Meister, A.; Biochemistry; 11, 661 (1972).; K' 607."},
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1311, "Michaelis constant for Glycine"},
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1311, "Inhibition constant for Serine"},
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1312, "[CONST] Michaelis constant for NAD;"},
-    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1312, "[CONST] Inhibition constant for NADH; Since in the current program, we assume that P protein limit the rate of the overall glycin decarboxylase; the KI1312 and KM1312 were not used."},
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1312, "Michaelis constant for NAD;"},
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1312, "Inhibition constant for NADH; Since in the current program, we assume that P protein limit the rate of the overall glycin decarboxylase; the KI1312 and KM1312 were not used."},
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1011, "Michaelis constant for glycerate"},
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1011, "Inhibition constant for glycerate"},
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1012, "Michaelis constant for glycolate"},
     {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1012, "Inhibition constant for glycolate"}
   };
   template<>
-  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::citations = {};
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::citations = {
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE113, "Kleczkowski et al., Archives of Biochemistry and Biophysics (1985)"},
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE122, "Guynn, R.W., Arch. Biochem. Biophys., 218, 14 (1982)"},
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE124, "Cooper, A.J.L., Meister, A.. Biochemistry; 11, 661 (1972)."}
+  };
   template<>
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::required_modules = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::enabled_by_controls = {
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI124 , { "ALL::VARS::useC3" }},
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM1312, { "ALL::VARS::useC3" }},
+    {ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI1312, { "ALL::VARS::useC3" }}
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::disabled_by_controls = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_RC>::value_flags = {};
   template<>
@@ -687,132 +761,157 @@ namespace ePhotosynthesis {
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::defaults = {
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM11    , 0.0115 },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM11_A  , 0.0097 },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM12    , 0.222  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM12_A  , 0.244  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM13    , 0.02   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI11    , 0.84   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI12    , 0.04   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI13    , 0.075  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI14    , 0.9    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI15    , 0.07   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM21    , 0.240  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM22    , 0.390  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM23    , 0.23   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM31a   , 0.004  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM32b   , 0.1    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE4     , 20.0   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM51    , 0.3    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM52    , 0.4    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM53    , 0.02   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE5     , 7.100  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM61    , 0.033  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI61    , 0.7    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI62    , 12.    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE6     , 6.66e5 },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM71    , 0.0    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM72    , 0.0    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM73    , 0.0    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM74    , 0.0    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE7     , 0.1    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM81    , 0.4    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM82    , 0.2    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE8     , 1.017  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM9     , 0.05   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI9     , 12.0   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE9     , 6.66e5 },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM10    , 0.5    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM101   , 0.1    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM102   , 0.09   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM103   , 0.015  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE10    , 0.0    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE11    , 0.4    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE12    , 0.67   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM131   , 0.05   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM132   , 0.059  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI131   , 2.0    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI132   , 0.7    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI133   , 4.0    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI134   , 2.5    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI135   , 0.4    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE13    , 6.846e3},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM161   , 0.014  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM162   , 0.3    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM163   , 0.3    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE16    , 5.734  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE21    , 2.3    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE22    , 0.058  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM311   , 0.077  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM312   , 0.0    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM313   , 0.74   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM32    , 0.25   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM33    , 0.075  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM231   , 0.031  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM232   , 0.045  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM233   , 0.14   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM234   , 0.8    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE23    , 7.6e-3 },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA231   , 0.23   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI231   , 0.9    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KVmo    , 0.007  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM241   , 0.2    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA232   , 0.0    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA233   , 0.0    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI23    , 0.0    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE25    , 128.4  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE57    , 0.1005 },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8p5p  , 0.118  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km5p5p  , 0.616  },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE810   , 0.8446 },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km5gap  , 0.2727 },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8f6p  , 0.5443 },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8s7p  , 0.01576},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8gap  , 0.09   },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE1Ratio, 0.0    },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE2Ratio, 0.0    }
-  };
-  template<>
-  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::defaults_C3 = {
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE4     , 0.05             },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM11    , 0.0115           },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM11_A  , 0.0097           },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM12    , 0.222            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM12_A  , 0.244            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM13    , 0.02             },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI11    , 0.84             },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI12    , 0.04             },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI13    , 0.075            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI14    , 0.9              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI15    , 0.07             },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM21    , 0.240            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM22    , 0.390            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM23    , 0.23             },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM31a   , 0.004            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM32b   , 0.1              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE4     , 20.0             },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM51    , 0.3              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM52    , 0.4              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM53    , 0.02             },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE5     , 7.100            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM61    , 0.033            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI61    , 0.7              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI62    , 12.              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE6     , 6.66e5           },
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM71    , 0.100            },
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM72    , 0.100            },
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM73    , 0.1              },
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM74    , 0.1000           },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE7     , 10.0             },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM10    , 1.5              },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM102   , 0.072            },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM103   , 0.46             },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE7     , 0.1              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM81    , 0.4              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM82    , 0.2              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE8     , 1.017            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM9     , 0.05             },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI9     , 12.0             },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE9     , 6.66e5           },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM10    , 0.5              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM101   , 0.1              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM102   , 0.09             },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM103   , 0.015            },
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE10    , 1.176470588235294},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE11    , 0.4              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE12    , 0.67             },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM131   , 0.05             },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM132   , 0.059            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI131   , 2.0              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI132   , 0.7              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI133   , 4.0              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI134   , 2.5              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI135   , 0.4              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE13    , 6.846e3          },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM161   , 0.014            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM162   , 0.3              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM163   , 0.3              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE16    , 5.734            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE21    , 2.3              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE22    , 0.058            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM311   , 0.077            },
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM312   , 0.63             },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM231   , 0.08             },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM232   , 0.08             },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM233   , 0.0              },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM234   , 0.0              },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE23    , 0.0              },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA231   , 0.1              },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI231   , 0.0              },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KVmo    , 0.0              },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM241   , 0.0              },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA232   , 0.02             },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA233   , 0.02             },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI23    , 10.0             },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE25    , 0.0              },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE57    , 0.0              },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8p5p  , 0.0              },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km5p5p  , 0.0              },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE810   , 0.0              },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km5gap  , 0.0              },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8f6p  , 0.0              },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8s7p  , 0.0              },
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8gap  , 0.0              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM313   , 0.74             },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM32    , 0.25             },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM33    , 0.075            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM231   , 0.031            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM232   , 0.045            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM233   , 0.14             },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM234   , 0.8              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE23    , 7.6e-3           },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA231   , 0.23             },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI231   , 0.9              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KVmo    , 0.007            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM241   , 0.2              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA232   , 0.0              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA233   , 0.0              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI23    , 0.0              },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE25    , 128.4            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE57    , 0.1005           },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8p5p  , 0.118            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km5p5p  , 0.616            },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE810   , 0.8446           },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km5gap  , 0.2727           },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8f6p  , 0.5443           },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8s7p  , 0.01576          },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8gap  , 0.09             },
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE1Ratio, 0.0              },
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE2Ratio, 0.0              }
   };
   template<>
-  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::alternate_defaults = {};
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::defaults_C3 = {
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE4   , 0.05 },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE7   , 10.0 },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM10  , 1.5  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM102 , 0.072},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM103 , 0.46 },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM231 , 0.08 },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM232 , 0.08 },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM233 , 0.0  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM234 , 0.0  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE23  , 0.0  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA231 , 0.1  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI231 , 0.0  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KVmo  , 0.0  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM241 , 0.0  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA232 , 0.02 },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA233 , 0.02 },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI23  , 10.0 },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE25  , 0.0  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE57  , 0.0  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8p5p, 0.0  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km5p5p, 0.0  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE810 , 0.0  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km5gap, 0.0  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8f6p, 0.0  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8s7p, 0.0  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8gap, 0.0  }
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::alternate_defaults = {
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE4   , { {"ALL::VARS::useC3", 0.05} } },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE7   , { {"ALL::VARS::useC3", 10.0} } },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM10  , { {"ALL::VARS::useC3", 1.5} }  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM102 , { {"ALL::VARS::useC3", 0.072} }},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM103 , { {"ALL::VARS::useC3", 0.46} } },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM231 , { {"ALL::VARS::useC3", 0.08} } },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM232 , { {"ALL::VARS::useC3", 0.08} } },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM233 , { {"ALL::VARS::useC3", 0.0} }  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM234 , { {"ALL::VARS::useC3", 0.0} }  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE23  , { {"ALL::VARS::useC3", 0.0} }  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA231 , { {"ALL::VARS::useC3", 0.1} }  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI231 , { {"ALL::VARS::useC3", 0.0} }  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KVmo  , { {"ALL::VARS::useC3", 0.0} }  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM241 , { {"ALL::VARS::useC3", 0.0} }  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA232 , { {"ALL::VARS::useC3", 0.02} } },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA233 , { {"ALL::VARS::useC3", 0.02} } },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI23  , { {"ALL::VARS::useC3", 10.0} } },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE25  , { {"ALL::VARS::useC3", 0.0} }  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE57  , { {"ALL::VARS::useC3", 0.0} }  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8p5p, { {"ALL::VARS::useC3", 0.0} }  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km5p5p, { {"ALL::VARS::useC3", 0.0} }  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE810 , { {"ALL::VARS::useC3", 0.0} }  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km5gap, { {"ALL::VARS::useC3", 0.0} }  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8f6p, { {"ALL::VARS::useC3", 0.0} }  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8s7p, { {"ALL::VARS::useC3", 0.0} }  },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km8gap, { {"ALL::VARS::useC3", 0.0} }  }
+  };
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::glymaids = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::units = {
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE6, "mM"     },
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE8, "mM^{-1}"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE9, "mM"     }
+  };
   template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::aliases = {};
   template<>
@@ -840,23 +939,23 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM61    , "FBP 6 FBP<->F6P+OP"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI61    , "F6P"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI62    , "Pi"},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE6     , "The equilibrium constant for this reaction  New: mM Laisk or Bassham and Krause 1969 BBA"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE6     , "The equilibrium constant for this reaction; New"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM71    , "Xu5P 7 F6P+GAP<->E4P+Xu5P; jn"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM72    , "E4P 7 F6P+GAP<->E4P+Xu5P"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM73    , "F6P This value was based on estimate"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM74    , "Estimate for GAP ORIGINAL 0.1"},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE7     , "The equilibrium constant for this reaction  New: Laisk Bassham and Krause 1969 BBA"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE7     , "The equilibrium constant for this reaction; New"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM81    , "DHAP"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM82    , "E4P estimate"},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE8     , "The equilibrium constant for this reaction  New: mM-1  Laisk  Bassham and Krause 1969 BBA. Default: 1.107"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE8     , "The equilibrium constant for this reaction; New: Default: 1.107"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM9     , "SBP 9 SBP<->S7P+OP"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI9     , "The inhibition constant for Pi;"},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE9     , "The equilibrium constant of this reaction  New:  mM      Laisk  Bassham and Krause 1969 BBA"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE9     , "The equilibrium constant of this reaction; New"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM10    , "R5P 10 S7P+GAP<->Ri5P+Xu5P"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM101   , "Xu5P"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM102   , "Estimate for GAP"},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM103   , "Estimate for S7P  New"},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE10    , "The equilibrium constant for this reaction; New: From Laisk or Bassham and Krause 1969 BBA"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM103   , "Estimate for S7P; New"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE10    , "The equilibrium constant for this reaction; New"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE11    , "Equilibrium Constant 11 Ri5P<-->Ru5P"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE12    , "Equilibrium Constant 12 Xu5P<-->Ru5P"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM131   , "Ru5P 13 Ru5P+ATP<->RuBP+ADP"},
@@ -866,11 +965,11 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI133   , "Pi 13 Ru5P+ATP<->RuBP+ADP"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI134   , "ADP 13 Ru5P+ATP<->RuBP+ADP"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI135   , "ADP 13 Ru5P+ATP<->RuBP+ADP"},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE13    , "The equilibrium constant for this reaction; New: From Laisk or Bassham and Krause 1969 BBA"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE13    , "The equilibrium constant for this reaction; New"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM161   , "ADP 16 ADP+Pi<->ATP"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM162   , "Pi 16 ADP+Pi<-> ATP"},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM163   , "ATP 16  ADP+Pi<-> ATP; New: Based on Laisk"},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE16    , "The equilibrium constant for this reaction; New: From Laisk or Bassham and Krause 1969 BBA"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM163   , "ATP 16  ADP+Pi<-> ATP; New"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE16    , "The equilibrium constant for this reaction; New"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE21    , "Equilibrium constant 21 F6P<->G6P"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE22    , "Equilibrium constant 22 G6P<->G1P"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM311   , "DHAP 31 DHAPi<->DHAPo"},
@@ -878,14 +977,14 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM313   , "Pext 31 DHAPi<->DHAPo"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM32    , "PGA 32 PGAi<->PGAo"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM33    , "GAP 33 GAPi<->GAPo"},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM231   , "G1P 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)"},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM232   , "ATP 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)"},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM233   , "ADPG 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)"},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM234   , "PPi 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)"},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA231   , "PGA 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989)"},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI231   , "Pi 23 G1P+ATP<->ADPG + PPi (Laisk et al 1989) WY201803"},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KVmo    , "The minimum maximum velocity (Laisk et al 1989)"},
-    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM241   , "ADPG    ADPG --> ADP + Gn (Laisk et al 1989)"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM231   , "G1P 23 G1P+ATP<->ADPG + PPi"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM232   , "ATP 23 G1P+ATP<->ADPG + PPi"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM233   , "ADPG 23 G1P+ATP<->ADPG + PPi"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM234   , "PPi 23 G1P+ATP<->ADPG + PPi"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA231   , "PGA 23 G1P+ATP<->ADPG + PPi"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI231   , "Pi 23 G1P+ATP<->ADPG + PPi WY201803"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KVmo    , "The minimum maximum velocity"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM241   , "ADPG    ADPG --> ADP + Gn"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA232   , "F6P 23 G1P+ATP+Gn<->PPi+ADP+Gn+1; skipped in PSRatio"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA233   , "FBP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1; skipped in PSRatio"},
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI23    , "ADP 23 G1P+ATP+Gn<->PPi+ADP+Gn+1; skipped in PSRatio"},
@@ -893,13 +992,44 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE2Ratio, "Calculated from KE21 & KE22"}
   };
   template<>
-  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::citations = {};
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::citations = {
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE6  , "Laisk, Bassham and Krause 1969 BBA"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE7  , "Laisk or Bassham and Krause 1969 BBA"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE8  , "Laisk, Bassham and Krause 1969 BBA"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE9  , "Laisk, Bassham and Krause 1969 BBA"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE10 , "Laisk or Bassham and Krause 1969 BBA"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE13 , "Laisk, Bassham and Krause 1969 BBA"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM163, "Laisk"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE16 , "Laisk, Bassham and Krause 1969 BBA"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM231, "Laisk et al 1989"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM232, "Laisk et al 1989"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM233, "Laisk et al 1989"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM234, "Laisk et al 1989"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KA231, "Laisk et al 1989"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI231, "Laisk et al 1989"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KVmo , "Laisk et al 1989"},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM241, "Laisk et al 1989"}
+  };
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::required_modules = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::enabled_by_controls = {
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM71 , { "ALL::VARS::useC3" }},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM72 , { "ALL::VARS::useC3" }},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM73 , { "ALL::VARS::useC3" }},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM74 , { "ALL::VARS::useC3" }},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE10 , { "ALL::VARS::useC3" }},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KM312, { "ALL::VARS::useC3" }}
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::disabled_by_controls = {};
+  template<>
   std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::value_flags = {};
   template<>
-  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::static_value_flags = {};
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::static_value_flags = {
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE1Ratio, (STATIC_VALUE_FLAG_CALC)},
+    {ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE2Ratio, (STATIC_VALUE_FLAG_CALC)}
+  };
   std::ostream& operator<<(std::ostream& out, const ENUM_PS_RC& x) {
     out << ValueSetEnum<MODULE_PS, PARAM_TYPE_RC>::getName(x);
     return out;
@@ -956,6 +1086,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::glymaids = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::units = {};
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::docs = {
@@ -964,18 +1096,22 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ke2FBPase  , "*= Coeff / 60; The rate constant of electron transfer from thioredoxin to FBPase."},
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ke2SBPase  , "*= Coeff / 60; The rate constant of electron tranfer from thioredoxin to SBPase"},
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ke2PRK     , "*= Coeff / 60; The rate constant of electron transfer from thioredoxin to PRK, Phosphoribulase kinase"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ke2ATPase  , "[CONST] The rate constant of electron transfer to ATPase; This was constant in the code"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ke2ATPase  , "The rate constant of electron transfer to ATPase; This was constant in the code"},
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ke2RubACT  , "*= Coeff / 60; The rate constant of electron transfer from thioredoxin to Rubisco activase"},
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ke2Fd      , "*= Coeff; The rate constant of electron transfer to fe"},
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)keFd2Thio  , "*= Coeff; The rate constant of electron transfer from fd to thio"},
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)keFd2Calvin, "*= Coeff; The rate constant of electron transfer from fd to Calvin cycle"},
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ke2ATPGPP  , "*= Coeff / 60; The rate constant of electron transfer to ATPGPP"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Coeff      , "[CONST] Used to scale electron transfer rate constants (with the exception of ke2ATPase)"}
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Coeff      , "Used to scale electron transfer rate constants (with the exception of ke2ATPase)"}
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::citations = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::required_modules = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::enabled_by_controls = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::disabled_by_controls = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_RC>::value_flags = {};
   template<>
@@ -1033,6 +1169,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::glymaids = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::units = {};
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::docs = {
@@ -1051,6 +1189,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::citations = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::required_modules = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::enabled_by_controls = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::disabled_by_controls = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_RC>::value_flags = {};
   template<>
@@ -1114,27 +1256,40 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::glymaids = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::units = {
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke2, "uM"              },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke3, "uM"              },
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k6 , "uM m^{-2} s^{-1}"}
+  };
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::docs = {
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k1       , "The rate constant of the activation of the Rubisco bound with RuBP. This step is associated with the ARubisco theVars->activase content or activity;"},
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn1      , "The rate constant of E inactivation by binding of RuBP; Lazar 1999, with a lifetime of 5 ns at closed reaction center"},
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)km1      , "The michaelis menton constant for RuBP with E."},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke2      , "Data from Mate et al 1996. Unit: micormolar; Reference needed, a guess"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke3      , "Data from Mate et al 1996. Unit: micormolar;"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k6       , "micromolar per meter square per second, transfered to unit"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke2      , "Reference needed, a guess"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k6       , "transfered to unit, scaled by 4 / 3"},
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kc       , "Michaelis menton constant for CO2"},
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)ko       , "Michaelis menton constant for O2"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k7       , "The rate constant for ecm to ecmr"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k7       , "The rate constant for ecm to ecmr; *= k6 * ratio"},
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kr       , "The apparaent michaelis menton constant for RuBP"},
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)factor_n7, "Scale factor for kn7"},
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn7      , "Rate constant for RuBP dissociation from ECMR"},
     {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)RCA      , "1 / (60. * 216.9); The rate constant of the activation reaction which will be scaled by the concentration of Rubisco activase"}
   };
   template<>
-  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::citations = {};
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::citations = {
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kn1, "Lazar 1999"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke2, "Mate et al 1996"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ke3, "Mate et al 1996"}
+  };
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::required_modules = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::enabled_by_controls = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::disabled_by_controls = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_RC>::value_flags = {};
   template<>
@@ -1276,55 +1431,6 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI582   , 0.5   },
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI583   , 1.55  },
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km591   , 0.5   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km592   , 0.0   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km593   , 0.5   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI591   , 0.16  },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI592   , 0.0   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE59    , 590.0 },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km601   , 0.0   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km602   , 0.0   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km603   , 0.0   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km604   , 0.0   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE60    , 0.0   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE61    , 128.4 },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km621   , 5.0   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE5Ratio, 0.0   }
-  };
-  template<>
-  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::defaults_C3 = {
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE501   , 0.05  },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km511   , 0.02  },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km512   , 0.3   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km513   , 0.4   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE51    , 12.0  },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km521   , 0.0025},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI521   , 0.7   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI522   , 12.0  },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI523   , 7.0e-5},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE52    , 6663.0},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE531   , 2.3   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE541   , 0.0584},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km551   , 0.14  },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km552   , 0.1   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km553   , 0.11  },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km554   , 0.12  },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE55    , 0.31  },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km561   , 0.8   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km562   , 2.4   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI561   , 0.7   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI562   , 0.8   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI563   , 0.4   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI564   , 11.0  },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI565   , 50.0  },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE56    , 10.0  },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km571   , 0.35  },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ki572   , 80.0  },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE57    , 780.  },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km581   , 0.032 },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI581   , 0.1   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI582   , 0.5   },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI583   , 1.55  },
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km591   , 0.5   },
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km592   , 0.021 },
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km593   , 0.5   },
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI591   , 0.16  },
@@ -1340,69 +1446,137 @@ namespace ePhotosynthesis {
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE5Ratio, 0.0   }
   };
   template<>
-  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::alternate_defaults = {};
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, double> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::defaults_C3 = {
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE501, 0.05},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ki572, 80.0}
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::map<std::string, double>> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::alternate_defaults = {
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE501, { {"ALL::VARS::useC3", 0.05} }},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ki572, { {"ALL::VARS::useC3", 80.0} }}
+  };
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::glymaids = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::units = {};
   template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::docs = {
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE501   , "Equilibrium Constant  50  KE501  0.05  [Bassham, 1869 #832]"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km511   , "FBP 4.1.2.13 51  Km511 FBP 0.02 Pisum sativum (Anderson, Heinrikson et al. 1975)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km512   , "FBP 4.1.2.13 51  Km512 GAP 0.3 Spinacia oleracea (Iwaki, Wadano et al. 1991)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km513   , "FBP 4.1.2.13 51  Km513 DHAP 0.4 Spinacia oleracea (Iwaki, Wadano et al. 1991)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE51    , "Based on Thomas et al 1997 Biochem Journal. The fifth citation in the paper."},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km521   , "FBPase[1] 3.1.3.11 52  Km521 FBP 0.0025 Pisum sativum (Jang, Lee et al. 2003)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI521   , "FBPase 3.1.3.11 52  KI521 F6P 0.7  [Heldt, 1983 #841]"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI522   , "FBPase 3.1.3.11 52  KI522 Pi 12 Pisum sativum (Charles & Halliwell 1997)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI523   , "FBPase 3.1.3.11 52  KI523 F26BP 7*10^(-5) Pisum sativum <Com> {Jang, 2003 #2523}"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE52    , "FBPase 3.1.3.11 52  KE52   6663 [Bassham, 1869 #832]"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE531   , "Equilibrium Constant 5.3.1.9 53  KE531  2.3[2]  [Bassham, 1869 #832]"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE541   , "Equilibrium Constant 5.4.2.2 54 G1P G6P KE541 G1P G6P 0.0584  [Bassham, 1869 #832]"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km551   , "UGPase 2.7.7.9 55  Km551 G1P 0.14 Solanum tuberosum (Nakano, Omura et al. 1989)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km552   , "UDPase 2.7.7.9 55  Km552 UTP 0.1 Solanum tuberosum (Nakano, Omura et al. 1989)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km553   , "UGPase 2.7.7.9 55  Km553 OPOP 0.11 Solanum tuberosum (Nakano, Omura et al. 1989)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km554   , "UGPase 2.7.7.9 55  Km554 UDPGlu 0.12 Solanum tuberosum (Nakano, Omura et al. 1989)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE55    , "UGPase 2.7.7.9 55  KE55 Equi 0.31  Lunn and Rees 1990"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km561   , "SPase 2.4.1.14 56  Km561 D-F6P 0.8 Pisum sativum (Lunn and Ap Rees 1990)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km562   , "Spase 2.4.1.14 56  Km562 UDP-glucose 2.4 Pisum sativum (Lunn and Ap Rees 1990)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI561   , "Inhibitor KI561 UDP 0.7 Spinacia oleracea (Harbron, Foyer et al. 1981)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI562   , "Sucrose Synthesase   Inhibitor KI562 FBP 0.8 Spinacia oleracea (Harbron, Foyer et al. 1981)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI563   , "Inhibitor KI563 SUCP 0.4 Spinacia oleracea (Harbron, Foyer et al. 1981)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI564   , "2.4.1.14 56 Inhibitor KI564 Pi 11 Spinacia oleracea (Harbron, Foyer et al. 1981)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI565   , "2.4.1.14 56 Inhibitor KI565 Sucrose 50 Spinacia oleracea {Salerno, 1978 #2525}"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE56    , "KE56  10 Pisum sativum Lunn and Rees, 1990"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km571   , "SPP 3.1.3.24 57.1  Km571 SUCP 0.35 Pisum sativum (Whitaker 1984)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ki572   , "SPP 3.1.3.24 57.2  Ki572 SUC 80 Daucus carota (Whitaker 1984)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE57    , "SPP 3.1.3.24 57.2  KE57 Equili 780  Lunn and Rees 1990"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km581   , "F26BPa 3.1.3.46 58  Km581 F26BP 0.032 Spinacia oleracea (Macdonald, Chou et al. 1989)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI581   , "F26BPa 3.1.3.46 58  KI581 F6P 0.1 Arabidopsis thaliana (V5lladsen and Nielsen 2001)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI582   , "F26BPa 3.1.3.46 58  KI582 OP 0.5 Arabidopsis thaliana (Villadsen and Nielsen 2001)"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI583   , "[CONST] F26BPa 3.1.3.46 58  KI583 ? 1.55 Arabidopsis thaliana (Villadsen and Nielsen 2001); Previously stored as constant, not scaled by ratio"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km591   , "6PF2K 2.7.1.105 59  Km591 ATP 0.5 Spinacia oleracea (Walker and Huber 1987); SUCSRatio 47"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km592   , "6PF2K 2.7.1.105 59  Km592 F26BP 0.021 Sparus aurate (Garcia de Frutos and Baanante 1995); Skipped w/o C3"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km593   , "6PF2K 2.7.1.105 59  Km593 F6P 0.5 Spinacia oleracea (Walker and Huber 1987); SUCSRatio 49"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI591   , "59  KI591 ADP 0.16 Rattus norvegicus (Kretschmer and Hofmann 1984); SUCSRatio 50"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI592   , "6PF2K 2.7.1.105 59  KI592 DHAP 0.7 Spinacia oleracea {Markham, 2002 #2524}; Skipped w/o C3"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE59    , "6PF2K 2.7.1.105 59  KE59  590  Cornish-Bowden, 1997; SUCSRatio 52"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km601   , "Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km601 ADP 0.042 Rat Kamura and Shimada 1988; Skipped w/o C3"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km602   , "Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km602 ATP 1.66 Rat Kamura and Shimada 1988; Skipped w/o C3"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km603   , "Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km603 UDP 0.28 Saccharomyces cerevisiae {Jong, 1991 #2518}; Skipped w/o C3"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km604   , "Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km604 UTP 16 Rattus norvegicus {Fukuchi, 1994 #2519}; Skipped w/o C3"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE60    , "Nucleoside Diphosphate Kinase 2.7.4.6 60 NI KE60  16 1.04 {Lynn, 1978 #2520}; Skipped w/o C3"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE61    , "Pyrophosphate hydrolysis    KE61  1.2*107  {Flodgaard, 1974 #2521}; SUCSRatio 58"},
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km621   , "Vsink   Notice: pH dependent Km621 Sucrose 5  {Weschke, 2000 #2522}"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE501   , "Equilibrium Constant  50  KE501  0.05"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km511   , "FBP 4.1.2.13 51  Km511 FBP 0.02 Pisum sativum"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km512   , "FBP 4.1.2.13 51  Km512 GAP 0.3 Spinacia oleracea"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km513   , "FBP 4.1.2.13 51  Km513 DHAP 0.4 Spinacia oleracea"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km521   , "FBPase[1] 3.1.3.11 52  Km521 FBP 0.0025 Pisum sativum"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI521   , "FBPase 3.1.3.11 52  KI521 F6P 0.7"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI522   , "FBPase 3.1.3.11 52  KI522 Pi 12 Pisum sativum"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI523   , "FBPase 3.1.3.11 52  KI523 F26BP 7*10^(-5) Pisum sativum <Com>"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE52    , "FBPase 3.1.3.11 52  KE52   6663"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE531   , "Equilibrium Constant 5.3.1.9 53  KE531  2.3[2]"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE541   , "Equilibrium Constant 5.4.2.2 54 G1P G6P KE541 G1P G6P 0.0584"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km551   , "UGPase 2.7.7.9 55  Km551 G1P 0.14 Solanum tuberosum"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km552   , "UDPase 2.7.7.9 55  Km552 UTP 0.1 Solanum tuberosum"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km553   , "UGPase 2.7.7.9 55  Km553 OPOP 0.11 Solanum tuberosum"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km554   , "UGPase 2.7.7.9 55  Km554 UDPGlu 0.12 Solanum tuberosum"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE55    , "UGPase 2.7.7.9 55  KE55 Equi 0.31"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km561   , "SPase 2.4.1.14 56  Km561 D-F6P 0.8 Pisum sativum"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km562   , "Spase 2.4.1.14 56  Km562 UDP-glucose 2.4 Pisum sativum"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI561   , "Inhibitor KI561 UDP 0.7 Spinacia oleracea"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI562   , "Sucrose Synthesase   Inhibitor KI562 FBP 0.8 Spinacia oleracea"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI563   , "Inhibitor KI563 SUCP 0.4 Spinacia oleracea"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI564   , "2.4.1.14 56 Inhibitor KI564 Pi 11 Spinacia oleracea"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI565   , "2.4.1.14 56 Inhibitor KI565 Sucrose 50 Spinacia oleracea"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE56    , "KE56  10 Pisum sativum"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km571   , "SPP 3.1.3.24 57.1  Km571 SUCP 0.35 Pisum sativum"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ki572   , "SPP 3.1.3.24 57.2  Ki572 SUC 80 Daucus carota"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE57    , "SPP 3.1.3.24 57.2  KE57 Equili 780"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km581   , "F26BPa 3.1.3.46 58  Km581 F26BP 0.032 Spinacia oleracea"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI581   , "F26BPa 3.1.3.46 58  KI581 F6P 0.1 Arabidopsis thaliana"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI582   , "F26BPa 3.1.3.46 58  KI582 OP 0.5 Arabidopsis thaliana"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI583   , "F26BPa 3.1.3.46 58  KI583 ? 1.55 Arabidopsis thaliana; Previously stored as constant, not scaled by ratio"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km591   , "6PF2K 2.7.1.105 59  Km591 ATP 0.5 Spinacia oleracea; SUCSRatio 47"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km592   , "6PF2K 2.7.1.105 59  Km592 F26BP 0.021 Sparus aurate; Skipped w/o C3"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km593   , "6PF2K 2.7.1.105 59  Km593 F6P 0.5 Spinacia oleracea; SUCSRatio 49"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI591   , "59  KI591 ADP 0.16 Rattus norvegicus; SUCSRatio 50"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI592   , "6PF2K 2.7.1.105 59  KI592 DHAP 0.7 Spinacia oleracea; Skipped w/o C3"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE59    , "6PF2K 2.7.1.105 59  KE59  590 ; SUCSRatio 52"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km601   , "Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km601 ADP 0.042 Rat; Skipped w/o C3"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km602   , "Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km602 ATP 1.66 Rat; Skipped w/o C3"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km603   , "Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km603 UDP 0.28 Saccharomyces cerevisiae; Skipped w/o C3"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km604   , "Nucleoside Diphosphate Kinase 2.7.4.6 60 NI Km604 UTP 16 Rattus norvegicus; Skipped w/o C3"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE60    , "Nucleoside Diphosphate Kinase 2.7.4.6 60 NI KE60  16 1.04; Skipped w/o C3"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE61    , "Pyrophosphate hydrolysis    KE61  1.2*107; SUCSRatio 58"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km621   , "Vsink   Notice: pH dependent Km621 Sucrose 5"},
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE5Ratio, "Calculated from KE541 & KE531"}
   };
   template<>
-  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::citations = {};
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::citations = {
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE501, "Bassham, 1869 #832"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km511, "Anderson, Heinrikson et al. 1975"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km512, "Iwaki, Wadano et al. 1991"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km513, "Iwaki, Wadano et al. 1991"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE51 , "Thomas et al 1997 Biochem Journal. The fifth citation in the paper."},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km521, "Jang, Lee et al. 2003"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI521, "Heldt, 1983 #841"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI522, "Charles & Halliwell 1997"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI523, "Jang, 2003 #2523"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE52 , "Bassham, 1869 #832"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE531, "Bassham, 1869 #832"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE541, "Bassham, 1869 #832"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km551, "Nakano, Omura et al. 1989"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km552, "Nakano, Omura et al. 1989"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km553, "Nakano, Omura et al. 1989"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km554, "Nakano, Omura et al. 1989"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE55 , "Lunn and Rees 1990"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km561, "Lunn and Ap Rees 1990"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km562, "Lunn and Ap Rees 1990"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI561, "Harbron, Foyer et al. 1981"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI562, "Harbron, Foyer et al. 1981"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI563, "Harbron, Foyer et al. 1981"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI564, "Harbron, Foyer et al. 1981"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI565, "Salerno, 1978 #2525"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE56 , "Lunn and Rees, 1990"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km571, "Whitaker 1984"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Ki572, "Whitaker 1984"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE57 , "Lunn and Rees 1990"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km581, "Macdonald, Chou et al. 1989"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI581, "Villadsen and Nielsen 2001"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI582, "Villadsen and Nielsen 2001"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI583, "Villadsen and Nielsen 2001"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km591, "Walker and Huber 1987"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km592, "Garcia de Frutos and Baanante 1995"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km593, "Walker and Huber 1987"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI591, "Kretschmer and Hofmann 1984"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI592, "Markham, 2002 #2524"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE59 , "Cornish-Bowden, 1997"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km601, "Kamura and Shimada 1988"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km602, "Kamura and Shimada 1988"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km603, "Jong, 1991 #2518"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km604, "Fukuchi, 1994 #2519"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE60 , "Lynn, 1978 #2520"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE61 , "Flodgaard, 1974 #2521"},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km621, "Weschke, 2000 #2522"}
+  };
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::required_modules = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::enabled_by_controls = {
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km592, { "ALL::VARS::useC3" }},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI592, { "ALL::VARS::useC3" }},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km601, { "ALL::VARS::useC3" }},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km602, { "ALL::VARS::useC3" }},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km603, { "ALL::VARS::useC3" }},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Km604, { "ALL::VARS::useC3" }},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE60 , { "ALL::VARS::useC3" }}
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::disabled_by_controls = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::value_flags = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::static_value_flags = {
-    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI583, (STATIC_VALUE_FLAG_CONST)}
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KI583   , (STATIC_VALUE_FLAG_CONST)},
+    {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)KE5Ratio, (STATIC_VALUE_FLAG_CALC) }
   };
   std::ostream& operator<<(std::ostream& out, const ENUM_SUCS_RC& x) {
     out << ValueSetEnum<MODULE_SUCS, PARAM_TYPE_RC>::getName(x);
@@ -1460,26 +1634,56 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::glymaids = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::units = {
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_ze, "s^{-1}"}
+  };
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::docs = {
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kva             , "/=60; Ruth Frommolt et a; 2001; Planta"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kaz             , "/=60; Ruth Frommolt et a; 2001; Planta"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kza             , "/=60; Ruth Frommolt et a; 2001; Planta"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kav             , "/=60; Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess."},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)hill_psbs       , "Zaks et al. 2012, Table S2; Hill coefficient for PsbS protonation; only used when UseZaksNPQ set"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)pK_psbs         , "Zaks et al. 2012, Table S2; pK value for PsbS protonation; only used when UseZaksNPQ set"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)hill_vde        , "Zaks et al. 2012, Table S2; Hill coefficient for VDE activation; only used when UseZaksNPQ set"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)pK_vde          , "Zaks et al. 2012, Table S2; pK value for VDE activation; only used when UseZaksNPQ set"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kvde_max        , "Zaks et al. 2012, Table S2; Max kvde; used to set kva & kaz when UseZaksNPQ set"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_ze            , "Zaks et al. 2012; in s^-1; reverse Zea → Vx; used to set kza & kav when UseZaksNPQ set"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Fpsbs           , "Zaks et al. 2012, Table S2; Fraction of quenching sites with both Zea and PsbS-H; only used when UseZaksNPQ set"},
-    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)psbsQ_converRate, "Zaks et al. 2012, Table S2; rate constant for PsbS protonation; only used when UseZaksNPQ set"}
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kva             , "/=60"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kaz             , "/=60"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kza             , "/=60"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kav             , "/=60; This is not given in the paper. Therefore, the value is really an educated guess."},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)hill_psbs       , "Hill coefficient for PsbS protonation; only used when UseZaksNPQ set"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)pK_psbs         , "pK value for PsbS protonation; only used when UseZaksNPQ set"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)hill_vde        , "Hill coefficient for VDE activation; only used when UseZaksNPQ set"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)pK_vde          , "pK value for VDE activation; only used when UseZaksNPQ set"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kvde_max        , "Max kvde; used to set kva & kaz when UseZaksNPQ set"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_ze            , "reverse Zea → Vx; used to set kza & kav when UseZaksNPQ set"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Fpsbs           , "Fraction of quenching sites with both Zea and PsbS-H; only used when UseZaksNPQ set"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)psbsQ_converRate, "rate constant for PsbS protonation; only used when UseZaksNPQ set"}
   };
   template<>
-  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::citations = {};
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::citations = {
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kva             , "Ruth Frommolt et al., Planta (2001)"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kaz             , "Ruth Frommolt et al., Planta (2001)"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kza             , "Ruth Frommolt et al., Planta (2001)"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kav             , "Ruth Frommolt et al., Planta (2001)"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)hill_psbs       , "Zaks et al. 2012, Table S2"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)pK_psbs         , "Zaks et al. 2012, Table S2"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)hill_vde        , "Zaks et al. 2012, Table S2"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)pK_vde          , "Zaks et al. 2012, Table S2"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kvde_max        , "Zaks et al. 2012, Table S2"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_ze            , "Zaks et al. 2012"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Fpsbs           , "Zaks et al. 2012, Table S2"},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)psbsQ_converRate, "Zaks et al. 2012, Table S2"}
+  };
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::required_modules = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::enabled_by_controls = {
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)hill_psbs       , { "ALL::VARS::UseZaksNPQ" }},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)pK_psbs         , { "ALL::VARS::UseZaksNPQ" }},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)hill_vde        , { "ALL::VARS::UseZaksNPQ" }},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)pK_vde          , { "ALL::VARS::UseZaksNPQ" }},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)kvde_max        , { "ALL::VARS::UseZaksNPQ" }},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)k_ze            , { "ALL::VARS::UseZaksNPQ" }},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)Fpsbs           , { "ALL::VARS::UseZaksNPQ" }},
+    {ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::SCOPED_ENUM_TYPE(Type)psbsQ_converRate, { "ALL::VARS::UseZaksNPQ" }}
+  };
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, std::vector<std::string>> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::disabled_by_controls = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_RC>::value_flags = {};
   template<>

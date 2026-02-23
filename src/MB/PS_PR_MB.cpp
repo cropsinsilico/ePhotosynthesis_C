@@ -60,6 +60,9 @@ PS_PRCondition* PS_PR::_MB_con(const double t, const PS_PRCondition* const PS_PR
     PR_Param[0] = theVars->PS_PR_Param;      // To indicate that the calcualtion is using the combined model
     // for the PS-PR combined model. 0: Combined model; 1: Separate model
     PR_Param[1] = theVars->Pi;
+#ifdef MAKE_EQUIVALENT_TO_MATLAB
+    theVars->PR_Param = PR_Param;
+#endif // MAKE_EQUIVALENT_TO_MATLAB
 
     PRCondition* PRdydt = PR::MB_con(t, PR_con, theVars);
 

@@ -39,23 +39,13 @@ void ePhotosynthesis::Condition(double t, Variables *theVars) {
     (void)t;
     // This variable is transfered from PSInitial for modificatin of V16, the rate of ATP synthesis.
     double CO2Temp = theVars->CO2_in;//280;          // CO2 concentation  // ppm
-#ifndef MAKE_EQUIVALENT_TO_MATLAB
     if (!theVars->useC3)
         CO2Temp *= 0.7;
-#endif // MAKE_EQUIVALENT_TO_MATLAB
-#ifdef MAKE_EQUIVALENT_TO_MATLAB
-    const double O2Temp = theVars->O2 * 30.0;   // O2 concentration in mmol mol-1
-#else // MAKE_EQUIVALENT_TO_MATLAB
     const double O2Temp = theVars->O2;   // O2 concentration  //default is 0.21 umol mol-1, i.e. 210 mmol mol-1//.
-#endif // MAKE_EQUIVALENT_TO_MATLAB
 
     theVars->CO2_cond = CO2Temp / (3. * pow(10., 4.));
     theVars->O2_cond = O2Temp * 1.26 / (3. * pow(10., 4.));
-#ifdef MAKE_EQUIVALENT_TO_MATLAB
-    const double light = theVars->TestLi; // light umol m-2 s-1
-#else // MAKE_EQUIVALENT_TO_MATLAB
     const double light = theVars->TestLi * 0.85 * 0.85;// light umol m-2 s-1
-#endif // MAKE_EQUIVALENT_TO_MATLAB
 
     // Here the time dependent variable is regulated.
 
@@ -135,11 +125,7 @@ void ePhotosynthesis::Condition(double t, Variables *theVars) {
     //     light = 1000.;
     // }
 
-// #ifdef MAKE_EQUIVALENT_TO_MATLAB
-//     theVars->GLight = 1000;
-// #else // MAKE_EQUIVALENT_TO_MATLAB
     theVars->GLight = light;
-// #endif // MAKE_EQUIVALENT_TO_MATLAB
 }
 
 void ePhotosynthesis::readTable(const std::string &filename,

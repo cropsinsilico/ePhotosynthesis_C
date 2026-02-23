@@ -89,10 +89,6 @@ public:
     DECLARE_VALUE_SET(Variables, VALUE_SET_PARENT(Variables, Variables, MODULE_ALL, PARAM_TYPE_VARS))
     using ValueSetClass::getValueSetClass;
 
-#ifdef MAKE_EQUIVALENT_TO_MATLAB
-    static void _initDefaults();
-#endif // MAKE_EQUIVALENT_TO_MATLAB
-
 #ifdef SUNDIALS_CONTEXT_REQUIRED
 
 private:
@@ -202,6 +198,14 @@ public:
     EPHOTO_API void deepcopy(const Variables& rhs);
     /** \copydoc ValueSet::calculate */
     double calculate(const EnumType& k) const override;
+    /**
+       Calculate a variable.
+       \param[in] k Parameter enum.
+       \param[in] conditions Map of conditions to use for calculations.
+       \returns Calculated variable.
+     */
+    double calculate(const EnumType& k,
+                     const std::map<MODULE, const ValueSet_t*>& conditions) const;
     /** \copydoc ValueSet::equals */
     bool equals(const ValueSet_t& b,
 		const bool noChildren = false) const override;

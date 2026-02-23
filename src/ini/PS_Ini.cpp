@@ -33,7 +33,7 @@ using namespace ePhotosynthesis::conditions;
 
 double PS::TIME = 0.;
 std::size_t PS::N = 1;
-const std::size_t PSCondition::count = 12;
+const std::size_t PSCondition::count = COUNT_PS;
 bool PSCondition::C3 = false;
 bool PS::C3 = false;
 
@@ -44,7 +44,7 @@ DEFINE_MODULE(PS);
 void PS::_initOrig(Variables *theVars, PSCondition* PS_con) {
     setC3(theVars->useC3);
 
-    PS::R = 8.314;
+    // PS::R = 8.314;
     PS::c_c = 38.28;
     PS::dHa_c = 80.99;
     PS::c_o = 14.68;
@@ -108,8 +108,8 @@ void PS::_initOrig(Variables *theVars, PSCondition* PS_con) {
 
         //PsKM11_0 = ;
         //PsKM12_0 = ;  // O2 1 RuBP+CO2->2PGA  0.28 DEFAUL.
-        theVars->PS_RC.KM11 = 0.0097 * exp(PS::c_c - PS::dHa_c * 1000. / (PS::R * (theVars->Tp + 273.15))) / 272.38;
-        theVars->PS_RC.KM12 = 0.244 * exp(PS::c_o - PS::dHa_o * 1000. / (PS::R * (theVars->Tp + 273.15))) / 165.82;
+        theVars->PS_RC.KM11 = 0.0097 * exp(PS::c_c - PS::dHa_c * 1000. / (theVars->R * (theVars->Tp + 273.15))) / 272.38;
+        theVars->PS_RC.KM12 = 0.244 * exp(PS::c_o - PS::dHa_o * 1000. / (theVars->R * (theVars->Tp + 273.15))) / 165.82;
 
         theVars->PS_RC.KM13 = 0.02;   //  RuBP 1 RuBP+CO2->2PGA
         theVars->PS_RC.KI11 = 0.84;   // PGA
@@ -413,8 +413,8 @@ void PS::_initCalc(Variables *theVars, PSCondition* PS_con) {
             PS::Vf_T23 = theVars->VfactorT[2];
             PS::Vf_T13 = theVars->VfactorT[3];
         }
-        theVars->PS_RC.KM11 = 0.0097 * exp(PS::c_c - PS::dHa_c * 1000. / (PS::R * (theVars->Tp + 273.15))) / 272.38;
-        theVars->PS_RC.KM12 = 0.244 * exp(PS::c_o - PS::dHa_o * 1000. / (PS::R * (theVars->Tp + 273.15))) / 165.82;
+        theVars->PS_RC.KM11 = 0.0097 * exp(PS::c_c - PS::dHa_c * 1000. / (theVars->R * (theVars->Tp + 273.15))) / 272.38;
+        theVars->PS_RC.KM12 = 0.244 * exp(PS::c_o - PS::dHa_o * 1000. / (theVars->R * (theVars->Tp + 273.15))) / 165.82;
 	
         if (theVars->GP == 0) {
             PS::V1 = theVars->alpha1 * theVars->EnzymeAct.at("V1");
@@ -596,6 +596,36 @@ void PS::_initCalc(Variables *theVars, PSCondition* PS_con) {
         PS::PsV31 = PS::V31 * PS::RegFactor; // 31 Phosphate translocator DHAPi<->DHAPo
         PS::PsV32 = PS::V32 * PS::RegFactor; // 32 Phosphate translocator PGAi<->PGAo
         PS::PsV33 = PS::V33 * PS::RegFactor; // 33 Phosphate translocator GAPi<->GAPo
+
+        // Unused but helps with comparison to MATLAB version
+        PS::PsV1_0 = PS::V1;
+        PS::PsV2_0 = PS::V2;
+        PS::PsV3_0 = PS::V3;
+        PS::PsV5_0 = PS::V5;
+        PS::PsV6_0 = PS::V6;
+        PS::PsV7_0 = PS::V7;
+        PS::PsV8_0 = PS::V8;
+        PS::PsV9_0 = PS::V9;
+        PS::PsV10_0 = PS::V10;
+        PS::PsV13_0 = PS::V13;
+        PS::PsV16 = PS::V16;
+        PS::PsV23_0 = PS::V23;
+        // PS::PsV1 is used by PR_Rate.cpp even when useC3 is not set
+        // In MATLAB, this is initialized, but the C++ version did not,
+        // possibly a typo.
+        // PS::PsV1 = PS::V1;
+        PS::PsV2 = PS::V2;
+        PS::PsV3 = PS::V3;
+        PS::PsV5 = PS::V5;
+        // PS::PsV6 = PS::V6;
+        PS::PsV7 = PS::V7;
+        PS::PsV8 = PS::V8;
+        // PS::PsV9 = PS::V9;
+        PS::PsV10 = PS::V10;
+        // PS::PsV13 = PS::V13;
+        // V16 is not set in C3
+        PS::PsV23 = PS::V23;
+        
     }
     theVars->ADP = PS::PS_C_CA - PS_con->ATP;
     theVars->PS_RC.KE2Ratio = (1. + 1. / theVars->PS_RC.KE21 + theVars->PS_RC.KE22);
@@ -605,9 +635,7 @@ void PS::_initCalc(Variables *theVars, PSCondition* PS_con) {
 DEFINE_DEFAULT_CHECKALT(PS)
 
 void PS::_reset(const bool noChildren) {
-#define DEFINE_PS_VAR(name) PS::name = 0.
-    FOR_EACH(DEFINE_PS_VAR, EXPAND(MEMBERS_PS));
-#undef DEFINE_PS_VAR
+    DEFINE_MODULE_RESET_BODY(PS);
 #define DEFINE_Vfactor(num)                     \
     PS::Vfactor ## num = 1.;                    \
     PS::Vf_T ## num = 1.
@@ -620,8 +648,4 @@ void PS::_reset(const bool noChildren) {
     PS::C3 = false;
 
     PS::Param = {0., 0.};
-    PS::TIME = 0.;
-    PS::N = 1;
-    ParentClass::_reset(noChildren);
-    // conditions::PSCondition::reset();
 }

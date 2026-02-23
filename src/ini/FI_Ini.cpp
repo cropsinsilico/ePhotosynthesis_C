@@ -34,7 +34,7 @@ using namespace ePhotosynthesis::conditions;
 
 double FI::TIME = 0.;
 std::size_t FI::N = 1;
-const std::size_t FICondition::count = 22;
+const std::size_t FICondition::count = COUNT_FI;
 bool FICondition::BF_connect = false;
 bool FI::BF_connect = false;
 

@@ -33,6 +33,7 @@
 #define PARENT_CM EPS
 #define CHILDREN_CM PS_PR, SUCS
 #define PARAM_TYPES_CM COND
+#define COUNT_CM 0
 
 namespace ePhotosynthesis {
 

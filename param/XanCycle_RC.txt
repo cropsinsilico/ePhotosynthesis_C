@@ -1,13 +1,13 @@
 # Name		   Value	C3Value	Docs
-kva		   0.163		# /=60; Ruth Frommolt et a; 2001; Planta
-kaz		   0.691		# /=60; Ruth Frommolt et a; 2001; Planta
-kza		   0.119		# /=60; Ruth Frommolt et a; 2001; Planta
-kav		   0.119		# /=60; Ruth Frommolt et a; 2001; Planta. This is not given in the paper. Therefore, teh value is really an educated guess.
-hill_psbs          3.0                  # Zaks et al. 2012, Table S2; Hill coefficient for PsbS protonation; only used when UseZaksNPQ set
-pK_psbs            6.4                  # Zaks et al. 2012, Table S2; pK value for PsbS protonation; only used when UseZaksNPQ set
-hill_vde           6.0                  # Zaks et al. 2012, Table S2; Hill coefficient for VDE activation; only used when UseZaksNPQ set
-pK_vde             6.0                  # Zaks et al. 2012, Table S2; pK value for VDE activation; only used when UseZaksNPQ set
-kvde_max           4e-1                 # Zaks et al. 2012, Table S2; Max kvde; used to set kva & kaz when UseZaksNPQ set
-k_ze               4e-4                 # Zaks et al. 2012; in s^-1; reverse Zea → Vx; used to set kza & kav when UseZaksNPQ set
-Fpsbs              0.6                  # Zaks et al. 2012, Table S2; Fraction of quenching sites with both Zea and PsbS-H; only used when UseZaksNPQ set
-psbsQ_converRate   4e-2                 # Zaks et al. 2012, Table S2; rate constant for PsbS protonation; only used when UseZaksNPQ set
+kva		   0.163		# [CITATION="Ruth Frommolt et al., Planta (2001)"] /=60
+kaz		   0.691		# [CITATION="Ruth Frommolt et al., Planta (2001)"] /=60
+kza		   0.119		# [CITATION="Ruth Frommolt et al., Planta (2001)"] /=60
+kav		   0.119		# [CITATION="Ruth Frommolt et al., Planta (2001)"] /=60; This is not given in the paper. Therefore, the value is really an educated guess.
+hill_psbs          3.0                  # [CTRL_ON={ALL::VARS::UseZaksNPQ},CITATION="Zaks et al. 2012, Table S2"] Hill coefficient for PsbS protonation; only used when UseZaksNPQ set
+pK_psbs            6.4                  # [CTRL_ON={ALL::VARS::UseZaksNPQ},CITATION="Zaks et al. 2012, Table S2"] pK value for PsbS protonation; only used when UseZaksNPQ set
+hill_vde           6.0                  # [CTRL_ON={ALL::VARS::UseZaksNPQ},CITATION="Zaks et al. 2012, Table S2"] Hill coefficient for VDE activation; only used when UseZaksNPQ set
+pK_vde             6.0                  # [CTRL_ON={ALL::VARS::UseZaksNPQ},CITATION="Zaks et al. 2012, Table S2"] pK value for VDE activation; only used when UseZaksNPQ set
+kvde_max           4e-1                 # [CTRL_ON={ALL::VARS::UseZaksNPQ},CITATION="Zaks et al. 2012, Table S2"] Max kvde; used to set kva & kaz when UseZaksNPQ set
+k_ze               4e-4                 # [CTRL_ON={ALL::VARS::UseZaksNPQ},UNITS="s^{-1}",CITATION="Zaks et al. 2012"] reverse Zea → Vx; used to set kza & kav when UseZaksNPQ set
+Fpsbs              0.6                  # [CTRL_ON={ALL::VARS::UseZaksNPQ},CITATION="Zaks et al. 2012, Table S2"] Fraction of quenching sites with both Zea and PsbS-H; only used when UseZaksNPQ set
+psbsQ_converRate   4e-2                 # [CTRL_ON={ALL::VARS::UseZaksNPQ},CITATION="Zaks et al. 2012, Table S2"] rate constant for PsbS protonation; only used when UseZaksNPQ set

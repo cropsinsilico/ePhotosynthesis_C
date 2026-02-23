@@ -11,14 +11,14 @@ KI1121		2.55			# The competitive Pi inhibition for PGlycolate
 KM1131		0.21			# Km for ATP
 KM1132		0.25			# Km for Gcea
 KI113		0.36			# Competitive inhibition for ATP; in original paper it is 0.36
-KE113		300.0			# New: Kleczkowski et al . 1985 Archives of Biochemistry and Biophysics  300, as default
+KE113		300.0			# [CITATION="Kleczkowski et al., Archives of Biochemistry and Biophysics (1985)"] New: Kleczkowski et al . 1985 Archives of Biochemistry and Biophysics  300, as default
 # Reaction 121: Glycolate +O2<-->H2O2+Glyoxylate
 KM121		0.1                     # Km for Glycolate
 # Reaction 122: Glyoxylate + Serine<--> Hydoxypyruvate + Glycine
 KM1221		0.15	     		# Michaelis constant for glyoxylate
 KM1222		2.7			# Michaelis constant for serinie
 KI1221		33.0			# Inhibition constant for Glycine
-KE122		0.24			# New: Guynn, R.W.; Arch. Biochem. Biophys.; 218, 14 (1982).; 0.24. At 25 degree.
+KE122		0.24			# [CITATION="Guynn, R.W., Arch. Biochem. Biophys., 218, 14 (1982)"] New: Guynn, R.W.; Arch. Biochem. Biophys.; 218, 14 (1982).; 0.24. At 25 degree.
 # Reaction 123: HydroxylPyruvate + NAD <--> NADH + Glycerate
 KM123		0.09		        # Michaelis constant for hydroxylpyruvate
 KI123		12.0			# Inhibition constant for hydroxypyruvate
@@ -26,16 +26,16 @@ KE123		250000.0                # Equilibrium constant for hydroxypyruvate;
 # Reaction 124: Glyoxylate + Glu  <--> KG + Glycine;
 KM1241		0.15	     	        # Michaelis constant for glyoxylate
 KM1242		1.7			# Michaelis constant for Glu
-KI124		0.0		2.0	# [CONST] This KI is one guessed, not scaled by PRRatio
-KE124		607.0			# New: Cooper, A.J.L.; Meister, A.; Biochemistry; 11, 661 (1972).; K' 607.
+KI124		2.0			# [CONST,CTRL_ON={ALL::VARS::useC3}] This KI is one guessed, not scaled by PRRatio
+KE124		607.0			# [CITATION="Cooper, A.J.L., Meister, A.. Biochemistry; 11, 661 (1972)."] New: Cooper, A.J.L.; Meister, A.; Biochemistry; 11, 661 (1972).; K' 607.
 # Reaction 131: NAD+Glycine <--> CO2+ NADH + NH3
 KM1311		6.0	    	        # Michaelis constant for Glycine
 KI1311		4.0			# Inhibition constant for Serine
-KM1312		0.0		0.075	# [CONST] Michaelis constant for NAD;
-KI1312		0.0		0.015	# [CONST] Inhibition constant for NADH; Since in the current program, we assume that P protein limit the rate of the overall glycin decarboxylase; the KI1312 and KM1312 were not used.
+KM1312		0.075			# [CONST,CTRL_ON={ALL::VARS::useC3}] Michaelis constant for NAD;
+KI1312		0.015			# [CONST,CTRL_ON={ALL::VARS::useC3}] Inhibition constant for NADH; Since in the current program, we assume that P protein limit the rate of the overall glycin decarboxylase; the KI1312 and KM1312 were not used.
 # The consant for calculating the glycerate uptake.
 KM1011		0.39                    # Michaelis constant for glycerate
 KI1011		0.28                    # Inhibition constant for glycerate
 # The constant for calculating the glycolate output
-KM1012		0.2		0.2     # Michaelis constant for glycolate
-KI1012		0.22		0.22    # Inhibition constant for glycolate
+KM1012		0.2		        # Michaelis constant for glycolate
+KI1012		0.22		        # Inhibition constant for glycolate

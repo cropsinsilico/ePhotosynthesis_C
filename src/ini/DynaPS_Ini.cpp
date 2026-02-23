@@ -32,7 +32,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-std::size_t DynaPSCondition::count = 0;
+std::size_t DynaPSCondition::count = COUNT_DynaPS;
 
 DEFINE_MODULE_COMPOSITE(DynaPS);
 DEFINE_DEFAULT_INITALT(DynaPS)

@@ -32,7 +32,7 @@ using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::modules;
 using namespace ePhotosynthesis::conditions;
 
-std::size_t CMCondition::count = 0;
+std::size_t CMCondition::count = COUNT_CM;
 
 DEFINE_MODULE_COMPOSITE(CM);
 DEFINE_DEFAULT_INITALT(CM)

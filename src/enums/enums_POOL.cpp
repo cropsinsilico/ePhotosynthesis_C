@@ -55,6 +55,19 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::glymaids = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::units = {
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)Tcyt  , "umol m^{-2}"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)Tcytc2, "umol m^{-2}"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)TK    , "mmol l^{-1}"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)TMg   , "mmol l^{-1}"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)TCl   , "mmol l^{-1}"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)TA    , "umol m^{-2}"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)TQ    , "umol m^{-2}"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)BFTs  , "mmol l^{-1}"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)BFTl  , "mmol l^{-1}"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)P700T , "umol m^{-2}"}
+  };
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::aliases = {
     {"Tcyt"  , ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)Tcyt  },
     {"Tcytc2", ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)Tcytc2},
@@ -71,23 +84,27 @@ namespace ePhotosynthesis {
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::docs = {
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)Tcyt  , "[ALIASES={Tcyt}] The total amount of cytbH or cytbL; Unit: micromole m-2 leaf area"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)Tcytc2, "[ALIASES={Tcytc2}] The total amount of cytc; Unit: micromole m-2 leaf area"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)TK    , "[ALIASES={TK}] The total concentration of K in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant."},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)TMg   , "[ALIASES={TMg}] The total concentration of Mg in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant."},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)TCl   , "[ALIASES={TCl}] The total concentration of Cl in both stroma and lumen. Unit: mmol l-1. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant."},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)TFd   , "[ALIASES={TFd}] The total concentration of Ferrodoxin"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)TA    , "[ALIASES={TA}] The total concentration of the primary electron acceptor of PSI; Unit: micromole m-2 leaf area"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)TQ    , "[ALIASES={TQ}] The total concentration of plastoquinone in thylakoid membrane. ; Unit: micromole m-2 leaf area"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)BFTs  , "[ALIASES={BFTs}] The total concentration of buffer in stroma; unit: mmol per liter"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)BFTl  , "[ALIASES={BFTl}] The total concentration of buffer in lumen; unit: mmol per liter"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)P700T , "[ALIASES={P700T}] The total number of P700; unit: micromole m-2 leaf area"},
-    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)NADPHT, "[ALIASES={NADPHT}]   The total concentration of NADPH in stroma; 1 is an guessed value;"}
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)Tcyt  , "The total amount of cytbH or cytbL"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)Tcytc2, "The total amount of cytc; Unit: micromole m-2 leaf area"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)TK    , "The total concentration of K in both stroma and lumen. In this model, it was assumed that the total concentration of K, and Mg and Cl as well, is constant."},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)TMg   , "The total concentration of Mg in both stroma and lumen. In this model, it was assumed that the total concentration of Mg, and K and Cl as well, is constant."},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)TCl   , "The total concentration of Cl in both stroma and lumen. In this model, it was assumed that the total concentration of Cl in both stroma and lumen is constant."},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)TFd   , "The total concentration of Ferrodoxin"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)TA    , "The total concentration of the primary electron acceptor of PSI"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)TQ    , "The total concentration of plastoquinone in thylakoid membrane."},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)BFTs  , "The total concentration of buffer in stroma"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)BFTl  , "The total concentration of buffer in lumen"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)P700T , "The total number of P700"},
+    {ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)NADPHT, "The total concentration of NADPH in stroma; 1 is an guessed value;"}
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::citations = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::required_modules = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::enabled_by_controls = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::disabled_by_controls = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_BF, PARAM_TYPE_POOL>::value_flags = {};
   template<>
@@ -115,6 +132,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::glymaids = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::units = {};
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::docs = {};
@@ -122,6 +141,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::citations = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::required_modules = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::enabled_by_controls = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::disabled_by_controls = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FIBF, PARAM_TYPE_POOL>::value_flags = {};
   template<>
@@ -152,6 +175,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::glymaids = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::units = {};
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::docs = {
@@ -162,6 +187,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::citations = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::required_modules = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::enabled_by_controls = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::disabled_by_controls = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_FI, PARAM_TYPE_POOL>::value_flags = {};
   template<>
@@ -183,6 +212,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::glymaids = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::units = {};
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::docs = {};
@@ -190,6 +221,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::citations = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::required_modules = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::enabled_by_controls = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::disabled_by_controls = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PR, PARAM_TYPE_POOL>::value_flags = {};
   template<>
@@ -211,6 +246,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::glymaids = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::units = {};
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::docs = {};
@@ -218,6 +255,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::citations = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::required_modules = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::enabled_by_controls = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::disabled_by_controls = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_PS, PARAM_TYPE_POOL>::value_flags = {};
   template<>
@@ -317,37 +358,43 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::glymaids = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::units = {};
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::docs = {
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)GAPDH    , "[CALC] The initial concentration of active GAPDH; *=V3; SA = 620.0, mw = 147000.0, PS::V3"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FBPase   , "[CALC] The initial concentration of active FBPase; *=V6; SA = 119.0, mw = 195000.0, PS::V6"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SBPase   , "[CALC] The initial concentration of active SBPase; *=V9; SA = 70.0, mw = 66000.0, PS::V9"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PRK      , "[CALC] The initial concentration of active PRK; *=V13; SA = 410.0, mw = 40000.0 PS::V13"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPase   , "[CALC] The initial concentration of active ATPase; *=V16; SA = 100.0, mw = 500000.0 PS::V16"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPGPP   , "[CALC] The initial concentration of active ATPGPP; *=V23; SA = 10.0, mw = 210000.0 PS::V23"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)MDH      , "[CALC] The initial concentration of active MDH; *=MDH_Vmax; SA = 184.0, mw = 87000.0; MDH_Vmax = 2 value is assumed, but no literature to support. Needs to be fixed."},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)GAPDH    , "The initial concentration of active GAPDH; *=V3; SA = 620.0, mw = 147000.0, PS::V3"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FBPase   , "The initial concentration of active FBPase; *=V6; SA = 119.0, mw = 195000.0, PS::V6"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SBPase   , "The initial concentration of active SBPase; *=V9; SA = 70.0, mw = 66000.0, PS::V9"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)PRK      , "The initial concentration of active PRK; *=V13; SA = 410.0, mw = 40000.0 PS::V13"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPase   , "The initial concentration of active ATPase; *=V16; SA = 100.0, mw = 500000.0 PS::V16"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATPGPP   , "The initial concentration of active ATPGPP; *=V23; SA = 10.0, mw = 210000.0 PS::V23"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)MDH      , "The initial concentration of active MDH; *=MDH_Vmax; SA = 184.0, mw = 87000.0; MDH_Vmax = 2 value is assumed, but no literature to support. Needs to be fixed."},
     {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)FdT      , "Comes from BF if used with RROEA_EPS"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_GAPDH , "[CONST] Used w/ mw_GAPDH to calculate GAPDH from PS::V3; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_FBPase, "[CONST] Used w/ mw_FBPase to calculate FBPase from PS::V6; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_SBPase, "[CONST] Used w/ mw_SBPase to calculate SBPase from PS::V9; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_PRK   , "[CONST] Used w/ mw_PRK to calculate PRK from PS::V13; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_ATPase, "[CONST] Used w/ mw_ATPase to calculate ATPase from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_ATPGPP, "[CONST] Used w/ mw_ATPGPP to calculate ATPGPP from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_MDH   , "[CONST] Used w/ MDH_Vmax & mw_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_GAPDH , "[CONST] Used w/ SA_GAPDH to calculate GAPDH from PS::V3; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_FBPase, "[CONST] Used w/ SA_FBPase to calculate FBPase from PS::V6; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_SBPase, "[CONST] Used w/ SA_SBPase to calculate SBPase from PS::V9; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_PRK   , "[CONST] Used w/ SA_PRK to calculate PRK from PS::V13; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_ATPase, "[CONST] Used w/ SA_ATPase to calculate ATPase from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_ATPGPP, "[CONST] Used w/ SA_ATPGPP to calculate ATPGPP from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_MDH   , "[CONST] Used w/ MDH_Vmax & SA_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
-    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)MDH_Vmax , "[CONST] This value is assumed and there is no literature about it. Need to be fixed.; Used w/ SA_MDH & mw_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"}
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_GAPDH , "Used w/ mw_GAPDH to calculate GAPDH from PS::V3; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_FBPase, "Used w/ mw_FBPase to calculate FBPase from PS::V6; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_SBPase, "Used w/ mw_SBPase to calculate SBPase from PS::V9; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_PRK   , "Used w/ mw_PRK to calculate PRK from PS::V13; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_ATPase, "Used w/ mw_ATPase to calculate ATPase from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_ATPGPP, "Used w/ mw_ATPGPP to calculate ATPGPP from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)SA_MDH   , "Used w/ MDH_Vmax & mw_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_GAPDH , "Used w/ SA_GAPDH to calculate GAPDH from PS::V3; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_FBPase, "Used w/ SA_FBPase to calculate FBPase from PS::V6; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_SBPase, "Used w/ SA_SBPase to calculate SBPase from PS::V9; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_PRK   , "Used w/ SA_PRK to calculate PRK from PS::V13; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_ATPase, "Used w/ SA_ATPase to calculate ATPase from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_ATPGPP, "Used w/ SA_ATPGPP to calculate ATPGPP from PS::V16; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)mw_MDH   , "Used w/ MDH_Vmax & SA_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"},
+    {ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)MDH_Vmax , "This value is assumed and there is no literature about it. Need to be fixed.; Used w/ SA_MDH & mw_MDH to calculate MDH; = Vmax * 1000.0 * 60.0 / SA_var / mw_var"}
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::citations = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::required_modules = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::enabled_by_controls = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::disabled_by_controls = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RROEA, PARAM_TYPE_POOL>::value_flags = {};
   template<>
@@ -419,6 +466,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::glymaids = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::units = {};
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::docs = {};
@@ -426,6 +475,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::citations = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::required_modules = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::enabled_by_controls = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::disabled_by_controls = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RedoxReg, PARAM_TYPE_POOL>::value_flags = {};
   template<>
@@ -465,18 +518,27 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::glymaids = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::units = {
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ET , "mM"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)Rac, "mM"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)C  , "mM"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)O  , "mM"}
+  };
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::docs = {
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ET , "The total concentraiton of E, ER, EC, ECM, ECMR , mM;"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)Rac, "The concentration of the activase, mM"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)C  , "mM"},
-    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)O  , "mM"}
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ET , "The total concentraiton of E, ER, EC, ECM, ECMR"},
+    {ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)Rac, "The concentration of the activase"}
   };
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::citations = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::required_modules = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::enabled_by_controls = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::disabled_by_controls = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_RuACT, PARAM_TYPE_POOL>::value_flags = {};
   template<>
@@ -510,16 +572,22 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::glymaids = {};
   template<>
-  const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::aliases = {};
-  template<>
-  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::docs = {
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::units = {
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)ATc, "mM"},
     {ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::SCOPED_ENUM_TYPE(Type)UTc, "mM"}
   };
   template<>
+  const std::map<std::string, typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::aliases = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::docs = {};
+  template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::citations = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::required_modules = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::enabled_by_controls = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::disabled_by_controls = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_SUCS, PARAM_TYPE_POOL>::value_flags = {};
   template<>
@@ -541,6 +609,8 @@ namespace ePhotosynthesis {
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::glymaids = {};
   template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::units = {};
+  template<>
   const std::map<std::string, typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::aliases = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::docs = {};
@@ -548,6 +618,10 @@ namespace ePhotosynthesis {
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::string> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::citations = {};
   template<>
   const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::required_modules = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::enabled_by_controls = {};
+  template<>
+  const std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, std::vector<std::string>> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::disabled_by_controls = {};
   template<>
   std::map<typename ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::Type, int> ValueSetEnum<MODULE_XanCycle, PARAM_TYPE_POOL>::value_flags = {};
   template<>

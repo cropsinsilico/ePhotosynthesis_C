@@ -188,9 +188,9 @@ void BF::_Rate(const double t, const BFCondition* const BF_con, Variables *theVa
     ////////////////////////////////////////////////////////////////////////////////
 
     const double DiffPH = BF_con->PHs - BF_con->PHl;
-    const double DeltaG11 = BF::DeltaGo - 2.3 * BF::RT * theVars->HPR * DiffPH + theVars->HPR * MPotential *
+    const double DeltaG11 = BF::DeltaGo - 2.3 * theVars->RT * theVars->HPR * DiffPH + theVars->HPR * MPotential *
                             9.6 * pow(10., 4.);
-    const double KE11 = exp(-DeltaG11 / (BF::RT)); // The equilibrium constant of ATP synthesis
+    const double KE11 = exp(-DeltaG11 / (theVars->RT)); // The equilibrium constant of ATP synthesis
 
     const double Temp = theVars->BF_RC.Vmax11 * (ADP * Pi - ATP / KE11) /
                         ((theVars->BF_RC.KM1ADP * theVars->BF_RC.KM1PI) *
