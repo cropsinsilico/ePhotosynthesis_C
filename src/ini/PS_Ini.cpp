@@ -281,7 +281,7 @@ PSCondition* PS::_init(Variables *theVars) {
         PS::KM72 = 0.100;  //  E4P 7 F6P+GAP<->E4P+Xu5P
         PS::KM73 = 0.1;    //   F6P This value was based on estimate
         PS::KM74 = 0.1000; // Estimate for GAP ORIGINAL 0.1
-        PS::KE7 = 10.;     // The equilibrium constant for this reaction             // New           Laisk  Bassham and Krause 1969 BBA
+        PS::KE7 = 0.076;   // The equilibrium constant for this reaction             // New           Laisk  Bassham and Krause 1969 BBA // YH: Jablonsky et al. BMC Systems Biology 2011
         //PsKM8 = 0.02;  // SBP 8 E4P+DHAP<->SBP
         PS::KM81 = 0.4;    // DHAP
         PS::KM82 = 0.2;    // E4P estimate
