@@ -171,54 +171,57 @@ arr Driver::run() {
           }
         }//end while (t <= endtime)
 
-        // Calculate an ordinary least-squares gradient for each variable:
-        // slope = sum((t - mean(t)) * (y - mean(y))) /
-        //         sum((t - mean(t))^2)
-        if (steadyStateData.size() < 2) {
-          throw std::runtime_error(
-              "fewer than two data points in the steady-state window");
-        }
-
-        const size_t nVariables = steadyStateData.front().size();
-        if (nVariables < 52) {
-          std::cout << "steady-state data has size of: "
-                    << nVariables << std::endl;
-          throw std::runtime_error("invalid data size");
-        }
-
-        double meanTime = 0.0;
-        for (double sampleTime : steadyStateTimes) {
-          meanTime += sampleTime;
-        }
-        meanTime /= static_cast<double>(steadyStateTimes.size());
-
-        double timeVarianceSum = 0.0;
-        for (double sampleTime : steadyStateTimes) {
-          const double dt = sampleTime - meanTime;
-          timeVarianceSum += dt * dt;
-        }
-        if (timeVarianceSum <= 0.0) {
-          throw std::runtime_error(
-              "steady-state data points do not span a nonzero time interval");
-        }
-
-        difference.assign(nVariables, 0.0);
-        for (size_t variable = 0; variable < nVariables; ++variable) {
-          double meanValue = 0.0;
-          for (const auto& sample : steadyStateData) {
-            meanValue += sample[variable];
-          }
-          meanValue /= static_cast<double>(steadyStateData.size());
-
-          double covarianceSum = 0.0;
-          for (size_t sample = 0; sample < steadyStateData.size(); ++sample) {
-            covarianceSum +=
-                (steadyStateTimes[sample] - meanTime) *
-                (steadyStateData[sample][variable] - meanValue);
+        if (runOK) {
+          // Calculate an ordinary least-squares gradient for each variable:
+          // slope = sum((t - mean(t)) * (y - mean(y))) /
+          //         sum((t - mean(t))^2)
+          if (steadyStateData.size() < 2) {
+            throw std::runtime_error(
+                "fewer than two data points in the steady-state window");
           }
 
-          // Steady state depends on the magnitude, not the sign, of the trend.
-          difference[variable] = std::abs(covarianceSum / timeVarianceSum);
+          const size_t nVariables = steadyStateData.front().size();
+          if (nVariables < 52) {
+            std::cout << "steady-state data has size of: "
+                      << nVariables << std::endl;
+            throw std::runtime_error("invalid data size");
+          }
+
+          double meanTime = 0.0;
+          for (double sampleTime : steadyStateTimes) {
+            meanTime += sampleTime;
+          }
+          meanTime /= static_cast<double>(steadyStateTimes.size());
+
+          double timeVarianceSum = 0.0;
+          for (double sampleTime : steadyStateTimes) {
+            const double dt = sampleTime - meanTime;
+            timeVarianceSum += dt * dt;
+          }
+          if (timeVarianceSum <= 0.0) {
+            throw std::runtime_error(
+                "steady-state data points do not span a nonzero time interval");
+          }
+
+          difference.assign(nVariables, 0.0);
+          for (size_t variable = 0; variable < nVariables; ++variable) {
+            double meanValue = 0.0;
+            for (const auto& sample : steadyStateData) {
+              meanValue += sample[variable];
+            }
+            meanValue /= static_cast<double>(steadyStateData.size());
+
+            double covarianceSum = 0.0;
+            for (size_t sample = 0; sample < steadyStateData.size(); ++sample) {
+              covarianceSum +=
+                  (steadyStateTimes[sample] - meanTime) *
+                  (steadyStateData[sample][variable] - meanValue);
+            }
+
+            // Steady state depends on the magnitude, not the sign, of the trend.
+            difference[variable] =
+                std::abs(covarianceSum / timeVarianceSum);
+          }
         }
 
 // Threshold value for checking steady-state metabolite
