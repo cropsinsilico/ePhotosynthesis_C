@@ -127,7 +127,13 @@ arr Driver::run() {
         realtype t = 0;
         bool runOK = true;
         realtype tout = start + step;
-        std::vector<double> lastData1,difference; // Declare lastData1 outside the loop
+        // Store all output points from the final 100 seconds. The steady-state
+        // metric is the absolute least-squares slope of each output variable.
+        const double steadyStateWindow = 100.0;
+        const double windowStart = std::max(start, endtime - steadyStateWindow);
+        std::vector<double> steadyStateTimes;
+        std::vector<std::vector<double>> steadyStateData;
+        std::vector<double> difference; // absolute gradients, retained name for downstream code
         while (t <= endtime) {
             if (CVode(cvode_mem, tout, y, &t, CV_NORMAL) != CV_SUCCESS) {
                 std::cout << "CVode failed at t=" << tout << "  " << t << std::endl;
@@ -149,30 +155,74 @@ arr Driver::run() {
              }
              std::cout << std::endl;
            }
-//get the data at endtime-100
-          if (std::abs(t - (endtime - 100)) < 1e-6) {
-            GenOut(t,inputVars);
-            TimeSeries<std::vector<double> > metabolites = inputVars->CO2A;
-            lastData1 = metabolites.getLastData();
-          }
-//get the data at endtime and calculate the difference
-          if(std::abs(t - endtime) < 1e-6){
-            GenOut(t,inputVars);
-            TimeSeries<std::vector<double> > metabolites = inputVars->CO2A;
-            auto lastData2 = metabolites.getLastData();
-// Ensure difference vector is properly sized
-            difference.resize(lastData1.size());
-            if(lastData1.size()<52) 
-            {
-              std::cout << "lastData1 has size of: ";
-              std::cout << lastData1.size() <<std::endl;
-              throw std::runtime_error("invalid data size"); 
+// Collect every output point in the final steadyStateWindow seconds.
+          if (t >= windowStart - 1e-9 && t <= endtime + 1e-9) {
+            GenOut(t, inputVars);
+            TimeSeries<std::vector<double>> metabolites = inputVars->CO2A;
+            const std::vector<double> currentData = metabolites.getLastData();
+
+            if (!steadyStateData.empty() &&
+                currentData.size() != steadyStateData.front().size()) {
+              throw std::runtime_error("inconsistent metabolite data size");
             }
-            for (size_t i = 0; i < lastData1.size(); ++i) {
-                difference[i] = (lastData2[i] - lastData1[i])/100.;//divide delta t
-            }
+
+            steadyStateTimes.push_back(static_cast<double>(t));
+            steadyStateData.push_back(currentData);
           }
         }//end while (t <= endtime)
+
+        if (runOK) {
+          // Calculate an ordinary least-squares gradient for each variable:
+          // slope = sum((t - mean(t)) * (y - mean(y))) /
+          //         sum((t - mean(t))^2)
+          if (steadyStateData.size() < 2) {
+            throw std::runtime_error(
+                "fewer than two data points in the steady-state window");
+          }
+
+          const size_t nVariables = steadyStateData.front().size();
+          if (nVariables < 52) {
+            std::cout << "steady-state data has size of: "
+                      << nVariables << std::endl;
+            throw std::runtime_error("invalid data size");
+          }
+
+          double meanTime = 0.0;
+          for (double sampleTime : steadyStateTimes) {
+            meanTime += sampleTime;
+          }
+          meanTime /= static_cast<double>(steadyStateTimes.size());
+
+          double timeVarianceSum = 0.0;
+          for (double sampleTime : steadyStateTimes) {
+            const double dt = sampleTime - meanTime;
+            timeVarianceSum += dt * dt;
+          }
+          if (timeVarianceSum <= 0.0) {
+            throw std::runtime_error(
+                "steady-state data points do not span a nonzero time interval");
+          }
+
+          difference.assign(nVariables, 0.0);
+          for (size_t variable = 0; variable < nVariables; ++variable) {
+            double meanValue = 0.0;
+            for (const auto& sample : steadyStateData) {
+              meanValue += sample[variable];
+            }
+            meanValue /= static_cast<double>(steadyStateData.size());
+
+            double covarianceSum = 0.0;
+            for (size_t sample = 0; sample < steadyStateData.size(); ++sample) {
+              covarianceSum +=
+                  (steadyStateTimes[sample] - meanTime) *
+                  (steadyStateData[sample][variable] - meanValue);
+            }
+
+            // Steady state depends on the magnitude, not the sign, of the trend.
+            difference[variable] =
+                std::abs(covarianceSum / timeVarianceSum);
+          }
+        }
 
 // Threshold value for checking steady-state metabolite
         double threshold = 1e-4;
@@ -219,7 +269,7 @@ arr Driver::run() {
           }
 // Extract subvector
 // we only need the difference for metabolites
-// difference has a length of 100
+// difference contains one absolute fitted gradient per output variable
           std::vector<double> sub_vector(difference.begin() + 7,
                                          difference.begin() + 51);
           double penalty = smoothPenalty(sub_vector, threshold);
