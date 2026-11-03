@@ -32,6 +32,25 @@
 #include <sunlinsol/sunlinsol_dense.h>
 #include <sunnonlinsol/sunnonlinsol_newton.h>
 #include "drivers/CVodeMem.hpp"
+#include <cmath>
+
+namespace {
+// CVODE borrows the solvers and vector: release it before its dependencies.
+struct SolverResources {
+    ePhotosynthesis::drivers::CVodeMem* memory = nullptr;
+    N_Vector y = nullptr;
+    SUNMatrix matrix = nullptr;
+    SUNNonlinearSolver nonlinear = nullptr;
+    SUNLinearSolver linear = nullptr;
+    ~SolverResources() {
+        if (memory) memory->cvode_mem_free();
+        if (nonlinear) SUNNonlinSolFree(nonlinear);
+        if (linear) SUNLinSolFree(linear);
+        if (matrix) SUNMatDestroy(matrix);
+        if (y) N_VDestroy(y);
+    }
+};
+}
 
 using namespace ePhotosynthesis;
 using namespace ePhotosynthesis::drivers;
@@ -56,18 +75,40 @@ Driver::Driver(Variables *theVars, const double startTime, const double stepSize
   reltol = rtol;
   maxStep = 20. * step;
   data = nullptr;
-  origVars = nullptr;
+  cvode_mem = nullptr;
   intermediateRes = nullptr;
   if (inputVars->useC3 && inputVars->EnzymeAct.empty())
       throw std::runtime_error("EnzymeAct must be set if useC3 is True (automatically set for EPS driver)");
 }
 
 arr Driver::run() {
-    origVars = new Variables(inputVars);
+    if (!std::isfinite(runtimeLimitSeconds) || runtimeLimitSeconds <= 0.0) {
+        throw std::invalid_argument("runtimeLimitSeconds must be finite and positive");
+    }
+    if (!std::isfinite(start) || !std::isfinite(endtime) || endtime <= start ||
+        !std::isfinite(initialStep) || initialStep <= 0.0) {
+        throw std::invalid_argument("run requires finite start < endtime and a positive step");
+    }
+    runStarted = std::chrono::steady_clock::now();
+    lastRunStatus = RunStatus::notRun;
+    // Keep the caller's pointer valid even when retries or exceptions use a copy.
+    struct InputPointerGuard {
+        Variables* original;
+        ~InputPointerGuard() { Driver::inputVars = original; }
+    } inputGuard{inputVars};
+    std::unique_ptr<Variables> originalVars(inputVars->deepcopy());
+    std::unique_ptr<Variables> retryVars;
+    step = initialStep;
     uint count = 0;
     int max_count = 10; 
     while (count < max_count){
+        if (runtimeExpired()) break;
+        if (count > 0) {
+            retryVars.reset(originalVars->deepcopy());
+            inputVars = retryVars.get();
+        }
         maxStep = 20. * step;
+        SolverResources resources;
 
         setup();
 
@@ -78,55 +119,47 @@ arr Driver::run() {
 #else // SUNDIALS_CONTEXT_REQUIRED
         y = N_VNew_Serial(N);
 #endif // SUNDIALS_CONTEXT_REQUIRED
+        resources.y = y;
+        if (!y) throw std::runtime_error("N_VNew_Serial failed");
 	sunrealtype* y_ptr = N_VGetArrayPointer(y);
 
         for (std::size_t i = 0; i < constraints.size(); i++)
             y_ptr[i] = constraints[i];
         realtype t0 = start;
 
-        CVodeMem *cmem = nullptr;
-        try {
-            cmem = &CVodeMem::create();
-            cmem->cvode_mem_init(this, t0, y);
-        } catch(...) {
-            std::exception_ptr eptr = std::current_exception();
-            N_VDestroy(y);
-            std::rethrow_exception(eptr);
-        }
-
-        data->drv = this;
+        resources.memory = &CVodeMem::create();
+        resources.memory->cvode_mem_init(this, t0, y);
 
 #ifdef SUNDIALS_CONTEXT_REQUIRED
         SUNMatrix A = SUNDenseMatrix(N, N, context());
+        resources.matrix = A;
+        if (!A) throw std::runtime_error("SUNDenseMatrix failed");
         SUNNonlinearSolver NLS = SUNNonlinSol_Newton(y, context());
+        resources.nonlinear = NLS;
+        if (!NLS) throw std::runtime_error("SUNNonlinSol_Newton failed");
         SUNLinearSolver LS = SUNLinSol_Dense(y, A, context());
 #else // SUNDIALS_CONTEXT_REQUIRED
         SUNMatrix A = SUNDenseMatrix(N, N);
+        resources.matrix = A;
+        if (!A) throw std::runtime_error("SUNDenseMatrix failed");
         SUNNonlinearSolver NLS = SUNNonlinSol_Newton(y);
+        resources.nonlinear = NLS;
+        if (!NLS) throw std::runtime_error("SUNNonlinSol_Newton failed");
         SUNLinearSolver LS = SUNLinSol_Dense(y, A);
 #endif // SUNDIALS_CONTEXT_REQUIRED
 
-        try {
-            if (CVodeSetNonlinearSolver(cvode_mem, NLS) != CV_SUCCESS) {
-                std::cout << "CVodeSetNonlinearSolver failed" << std::endl;
-                throw std::runtime_error("CVodeSetNonlinearSolver failed");
-            }
-            if (CVodeSetLinearSolver(cvode_mem, LS, A) != CV_SUCCESS) {
-                std::cout << "CVodeSetLinearSolver failed" << std::endl;
-                throw std::runtime_error("CVodeSetLinearSolver failed");
-            }
-        } catch(...) {
-            std::exception_ptr eptr = std::current_exception();
-            SUNNonlinSolFree(NLS);
-            SUNLinSolFree(LS);
-            SUNMatDestroy(A);
-            N_VDestroy(y);
-            std::rethrow_exception(eptr);
+        resources.linear = LS;
+        if (!LS) throw std::runtime_error("SUNLinSol_Dense failed");
+        if (CVodeSetNonlinearSolver(cvode_mem, NLS) != CV_SUCCESS) {
+            throw std::runtime_error("CVodeSetNonlinearSolver failed");
+        }
+        if (CVodeSetLinearSolver(cvode_mem, LS, A) != CV_SUCCESS) {
+            throw std::runtime_error("CVodeSetLinearSolver failed");
         }
 
-        realtype t = 0;
+        realtype t = start;
         bool runOK = true;
-        realtype tout = start + step;
+        realtype tout = std::min(start + step, endtime);
         // Store all output points from the final 100 seconds. The steady-state
         // metric is the absolute least-squares slope of each output variable.
         const double steadyStateWindow = 100.0;
@@ -134,20 +167,39 @@ arr Driver::run() {
         std::vector<double> steadyStateTimes;
         std::vector<std::vector<double>> steadyStateData;
         std::vector<double> difference; // absolute gradients, retained name for downstream code
-        while (t <= endtime) {
-            if (CVode(cvode_mem, tout, y, &t, CV_NORMAL) != CV_SUCCESS) {
-                std::cout << "CVode failed at t=" << tout << "  " << t << std::endl;
+        while (t < endtime) {
+            const realtype previousTime = t;
+            int flag = CV_RHSFUNC_FAIL;
+            if (!runtimeExpired()) {
+                flag = CVode(cvode_mem, tout, y, &t, CV_NORMAL);
+            }
+            if (flag != CV_SUCCESS || runtimeExpired() || t <= previousTime) {
+                long int internalSteps = 0;
+                realtype internalStep = 0.0;
+                CVodeGetNumSteps(cvode_mem, &internalSteps);
+                CVodeGetCurrentStep(cvode_mem, &internalStep);
+                const double elapsed = std::chrono::duration<double>(
+                    std::chrono::steady_clock::now() - runStarted).count();
+                std::cerr << "ePhoto integration failed: attempt=" << count + 1
+                          << " status=" << (lastRunStatus == RunStatus::timedOut ? "timeout" : "solver_failure")
+                          << " cvode_flag=" << flag << " target_t=" << tout
+                          << " reached_t=" << t << " internal_steps=" << internalSteps
+                          << " internal_step=" << internalStep
+                          << " elapsed_seconds=" << elapsed
+                          << " CO2_in=" << originalVars->CO2_in
+                          << " light=" << originalVars->TestLi
+                          << " temperature=" << inputVars->Tp << std::endl;
                 runOK = false;
                 break;
             }
-            tout += step;
+            tout = std::min(t + step, endtime);
 
 //this print out all metabolites concentration for each time step
 //be careful of adpative time step
            if(inputVars->saveMetabolite){
              std::cout << "t = " << t <<std::endl; 
              GenOut(t,inputVars);
-             TimeSeries<std::vector<double> > metabolites = inputVars->CO2A;
+             auto& metabolites = inputVars->CO2A;
              std::vector<double> lastData = metabolites.getLastData();
              std::cout << "This step data:\n";
              for (double val : lastData) {
@@ -158,7 +210,7 @@ arr Driver::run() {
 // Collect every output point in the final steadyStateWindow seconds.
           if (t >= windowStart - 1e-9 && t <= endtime + 1e-9) {
             GenOut(t, inputVars);
-            TimeSeries<std::vector<double>> metabolites = inputVars->CO2A;
+            auto& metabolites = inputVars->CO2A;
             const std::vector<double> currentData = metabolites.getLastData();
 
             if (!steadyStateData.empty() &&
@@ -169,7 +221,8 @@ arr Driver::run() {
             steadyStateTimes.push_back(static_cast<double>(t));
             steadyStateData.push_back(currentData);
           }
-        }//end while (t <= endtime)
+        }//end integration loop
+        if (runOK && runtimeExpired()) runOK = false;
 
         if (runOK) {
           // Calculate an ordinary least-squares gradient for each variable:
@@ -248,12 +301,10 @@ arr Driver::run() {
             intermediateRes = N_VGetArrayPointer(y);
             time = t;
             getResults();
+            if (runtimeExpired()) runOK = false;
         }
 
-        SUNNonlinSolFree(NLS);
-        SUNLinSolFree(LS);
-        SUNMatDestroy(A);
-        N_VDestroy(y);
+        intermediateRes = nullptr;
 //if condition 1: ODE runs AND
 //condition 2: all metabolites are converged, which is as a penalty
         if (runOK){
@@ -262,7 +313,7 @@ arr Driver::run() {
 //turn it on for analysis purpose
 	  if(inputVars->saveMetabolite){
             GenOut(time,inputVars);
-            TimeSeries<std::vector<double> > metabolites = inputVars->CO2A;
+            auto& metabolites = inputVars->CO2A;
             auto lastData = metabolites.getLastData();
             std::string filename = "last_data.txt";
             saveLastDataToFile(lastData, filename);
@@ -295,31 +346,45 @@ arr Driver::run() {
           if(inputVars->runBioCro==false){
             results[0] = results[0] - multiplier * penalty;
           }
+          lastRunStatus = RunStatus::success;
           return results;
         }
 
-// Restore inputVars to its original state
-        inputVars = origVars;
-
+        if (lastRunStatus == RunStatus::timedOut) break;
         count++;
         step = initialStep / (count + 1);
-//        std::cout << "Retrying with smaller step size: " << step << std::endl;
-//        std::cout << "Retry attempt #" << count + 1 << " with step = " << step << std::endl;
+        if (count < max_count) {
+            std::cerr << "ePhoto retrying from original inputs: attempt=" << count + 1
+                      << " output_step=" << step << " max_internal_step=" << 20. * step
+                      << std::endl;
+        }
     }
-//    throw std::runtime_error("No valid solution found");
-//  Create an array of some values
-    std::cout << "No solution was found after all adaptive steps." << std::endl;
-    arr no_solution_results;
-    for (int i = 0; i < 3; ++i) {
-//0.5 is used as a negligible value for gross assimilation
-        no_solution_results.push_back(0.5);
+    if (lastRunStatus != RunStatus::timedOut) {
+        lastRunStatus = RunStatus::retriesExhausted;
     }
-    return no_solution_results; // Return an array of x if no valid solution found
+    std::cerr << "ePhoto returned fallback: status="
+              << (lastRunStatus == RunStatus::timedOut ? "timeout" : "retries_exhausted")
+              << " CO2_in=" << originalVars->CO2_in
+              << " light=" << originalVars->TestLi << " temperature=" << inputVars->Tp
+              << " elapsed_seconds=" << std::chrono::duration<double>(
+                     std::chrono::steady_clock::now() - runStarted).count()
+              << std::endl;
+    // Match the BioCro [A, Vc, PR, penalty] contract, with an explicit failure penalty.
+    results.assign(failureResultSize(), 0.5);
+    results[3] = 1.0;
+    return results;
+}
+
+bool Driver::runtimeExpired() {
+    if (std::chrono::duration<double>(std::chrono::steady_clock::now() - runStarted).count()
+        >= runtimeLimitSeconds) {
+        lastRunStatus = RunStatus::timedOut;
+        return true;
+    }
+    return false;
 }
 
 Driver::~Driver() {
-    if (origVars != nullptr)
-        delete origVars;
     CVodeMem *cmem = nullptr;
     cmem = &CVodeMem::create();
     cmem->cvode_mem_free();
@@ -334,7 +399,10 @@ Driver::~Driver() {
 int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
     realtype *dxdt = N_VGetArrayPointer(u_dot);
     CalcData *data = static_cast<CalcData*>(user_data);
+    // A negative callback status makes CVODE return immediately without recovery retries.
+    if (data->drv->runtimeExpired()) return -1;
     arr ddxdt = data->drv->MB(t, u);
+    if (data->drv->runtimeExpired()) return -1;
     for (std::size_t index = 0; index < ddxdt.size(); index++)
         dxdt[index] = ddxdt[index];
     return 0;

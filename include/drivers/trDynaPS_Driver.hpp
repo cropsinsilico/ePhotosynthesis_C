@@ -68,6 +68,7 @@ public:
     void getResults() override;
 
 private:
+    std::size_t failureResultSize() const override { return 7; }
 #ifdef TESTING
     friend class test::trDynaPSDriverTest;
 #endif

@@ -58,7 +58,7 @@ void EPSDriver::setup() {
     double Theta_base = 0.76; //0.76 is the default of Theta used in BioCro 
     double Theta = Theta_base + 0.01713 * Tp - 3.75 * pow(Tp,2.0) / 10000.0;//Yufeng: match Farquhar Matlab
     PS::setTheta(Theta);
-    PS::setbeta(0.7519);
+    PS::setbeta(0.7519);//Used when coupled with FIBF. ATP production is replaced by BF's ATP
     inputVars->BF_FI_com = true;
     //inputVars->EnzymeAct.at("V1") *= inputVars->alpha1;
     //inputVars->EnzymeAct.at("V2") *= inputVars->alpha2;
