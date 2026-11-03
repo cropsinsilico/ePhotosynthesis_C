@@ -28,6 +28,7 @@
 
 #include <vector>
 #include <memory>
+#include <chrono>
 
 #include "definitions.hpp"
 #include <nvector/nvector_serial.h>
@@ -91,6 +92,12 @@ public:
       */
     arr run();
 
+    enum class RunStatus { notRun, success, timedOut, retriesExhausted };
+    RunStatus lastRunStatus = RunStatus::notRun;
+    // Total wall-clock budget for run(), including all retries. Must be positive.
+    // Edit the default below and rebuild to change the budget.
+    double runtimeLimitSeconds = 300.0;
+
     /**
       Runs the solver one more time on the intermediate results to get the solution at the end time
       stamp.
@@ -112,6 +119,8 @@ public:
 
 protected:
     friend CVodeMem;
+    // EPS/BioCro requires four outputs; other drivers can require a longer result.
+    virtual std::size_t failureResultSize() const { return 4; }
     /**
       This sets up initial values for the class.
 
@@ -169,7 +178,8 @@ public:
     EPHOTO_API static bool showWarnings;
 private:
     Driver() {}
-    Variables* origVars;
+    std::chrono::steady_clock::time_point runStarted;
+    bool runtimeExpired();
 };
 
 }  // namespace drivers

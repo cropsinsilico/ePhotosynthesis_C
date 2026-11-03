@@ -85,6 +85,23 @@ Variables::~Variables() {}
 
 Variables* Variables::deepcopy() const {
   Variables* out = new Variables(*this);
+  out->saveMetabolite = this->saveMetabolite;
+  out->runBioCro = this->runBioCro;
+  out->PS_scaling_factor = this->PS_scaling_factor;
+  out->Q10_1 = this->Q10_1;
+  out->Q10_2 = this->Q10_2;
+  out->Q10_3 = this->Q10_3;
+  out->Q10_5 = this->Q10_5;
+  out->Q10_6 = this->Q10_6;
+  out->Q10_7 = this->Q10_7;
+  out->Q10_8 = this->Q10_8;
+  out->Q10_9 = this->Q10_9;
+  out->Q10_10 = this->Q10_10;
+  out->Q10_13 = this->Q10_13;
+  out->Q10_23 = this->Q10_23;
+#ifdef INCDEBUG
+  out->debuglevel = this->debuglevel;
+#endif
   out->alfa = this->alfa;
   out->fc = this->fc;
   out->Phi_max = this->Phi_max;
