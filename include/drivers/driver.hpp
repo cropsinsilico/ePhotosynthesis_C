@@ -29,6 +29,7 @@
 #include <vector>
 #include <memory>
 #include <chrono>
+#include <string>
 
 #include "definitions.hpp"
 #include <nvector/nvector_serial.h>
@@ -97,6 +98,9 @@ public:
     // Total wall-clock budget for run(), including all retries. Must be positive.
     // Edit the default below and rebuild to change the budget.
     double runtimeLimitSeconds = 300.0;
+    std::size_t rejectedStateTrials = 0;
+    std::size_t nonfiniteRhsTrials = 0;
+    std::string firstRejectedState;
 
     /**
       Runs the solver one more time on the intermediate results to get the solution at the end time
@@ -119,6 +123,11 @@ public:
 
 protected:
     friend CVodeMem;
+    // Models can add physical-domain checks without imposing the same bounds
+    // on unrelated drivers or on auxiliary bookkeeping states.
+    virtual void configureSolver(N_Vector) {}
+    virtual const char* stateError(N_Vector state) const;
+    virtual void writeState(std::ostream& out, N_Vector state) const;
     // EPS/BioCro requires four outputs; other drivers can require a longer result.
     virtual std::size_t failureResultSize() const { return 4; }
     /**

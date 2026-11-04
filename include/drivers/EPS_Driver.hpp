@@ -79,7 +79,16 @@ public:
     void getResults() override;
     //arr trDynaPS_Drive(size_t ParaNum, double Ratio);
 
+protected:
+    void configureSolver(N_Vector initial) override;
+    const char* stateError(N_Vector state) const override;
+    void writeState(std::ostream& out, N_Vector state) const override;
+
 private:
+    std::size_t psOffset = 0, prOffset = 0, sucsOffset = 0, nadphIndex = 0;
+    arr nonnegativeMask;
+    arr solverAbsoluteTolerances;
+    std::vector<std::string> stateNames;
 #ifdef TESTING
     friend class test::EPSDriverTest;
 #endif
