@@ -97,7 +97,7 @@ public:
     RunStatus lastRunStatus = RunStatus::notRun;
     // Total wall-clock budget for run(), including all retries. Must be positive.
     // Edit the default below and rebuild to change the budget.
-    double runtimeLimitSeconds = 300.0;
+    double runtimeLimitSeconds = 100.0;
     std::size_t rejectedStateTrials = 0;
     std::size_t nonfiniteRhsTrials = 0;
     std::string firstRejectedState;
