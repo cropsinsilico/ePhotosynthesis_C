@@ -158,6 +158,7 @@ private:
     SET_GET(Vf_T56)
     SET_GET(Vf_T57)
     SET_GET(Vf_T59)
+    // Fixed UTP for legacy non-C3 modules; C3 rates use SUCSCondition::UTPc.
     SET_GET(UTPc)
     SET_GET(ATPc)
 

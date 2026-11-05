@@ -41,6 +41,8 @@ void SUCS::_Rate(const double t, const SUCSCondition* const SUCS_Con, Variables 
     ////////////////////////////////////////////////////////////
     //const double SUC = SUCS_Con->SUC;
     double Pic, OPOPc;
+    // C3 UTP is an ODE state. Keep the fixed concentration for legacy non-C3.
+    const double UTPc = theVars->useC3 ? SUCS_Con->UTPc : SUCS::UTPc;
 
     if (theVars->useC3) {
         Pic = (pow(pow(SUCS::KE61, 2.) + 4. * SUCS::KE61 * PS::getPiTc(), 0.5) - SUCS::KE61) / 2.;
@@ -48,7 +50,7 @@ void SUCS::_Rate(const double t, const SUCSCondition* const SUCS_Con, Variables 
     } else {
         const double PiTc = theVars->SUCS_Pool.PTc - 2. * (SUCS_Con->FBPc + SUCS_Con->F26BPc) -
                             (SUCS_Con->PGAc + SUCS_Con->T3Pc + SUCS_Con->HexPc + SUCS_Con->SUCP +
-                             SUCS::UTPc + SUCS::ATPc);
+                             UTPc + SUCS::ATPc);
         Pic = (pow(pow(SUCS::KE61, 2.) + 4. * SUCS::KE61 * PiTc, 0.5) - SUCS::KE61) / 2.;
         OPOPc = PiTc - Pic;
     }
@@ -62,7 +64,7 @@ void SUCS::_Rate(const double t, const SUCSCondition* const SUCS_Con, Variables 
     const double DHAPc = SUCS_Con->T3Pc * SUCS::KE501 / (1. + SUCS::KE501);
 
     // UDP
-    const double UDPc = theVars->SUCS_Pool.UTc - SUCS::UTPc - SUCS_Con->UDPGc;
+    const double UDPc = theVars->SUCS_Pool.UTc - UTPc - SUCS_Con->UDPGc;
 
     if (theVars->useC3) {
         // Calculate the rate equations
@@ -77,14 +79,14 @@ void SUCS::_Rate(const double t, const SUCSCondition* const SUCS_Con, Variables 
                                          SUCS::KI521 + Pic * F6Pc / (SUCS::KI521 * SUCS::KI522));
         theVars->SUCS_Vel.v52 = SUCS::SUCSV52 * (SUCS_Con->FBPc - F6Pc * Pic / SUCS::KE52) / temp52;
 
-        const double temp55 = SUCS::Km551 * SUCS::Km552 * (1. + SUCS::UTPc / SUCS::Km551 + G1Pc /
+        const double temp55 = SUCS::Km551 * SUCS::Km552 * (1. + UTPc / SUCS::Km551 + G1Pc /
                                                            SUCS::Km552 + SUCS_Con->UDPGc /
                                                            SUCS::Km553 + OPOPc / SUCS::Km554 +
-                                                           SUCS::UTPc * G1Pc / (SUCS::Km551 *
+                                                           UTPc * G1Pc / (SUCS::Km551 *
                                                                                 SUCS::Km552) +
                                                            SUCS_Con->UDPGc * OPOPc / (SUCS::Km553 *
                                                                                       SUCS::Km554));
-        theVars->SUCS_Vel.v55 = SUCS::SUCSV55 * (SUCS::UTPc * G1Pc - SUCS_Con->UDPGc * OPOPc /
+        theVars->SUCS_Vel.v55 = SUCS::SUCSV55 * (UTPc * G1Pc - SUCS_Con->UDPGc * OPOPc /
                                                  SUCS::KE55) / temp55;
 
         const double temp56 = (F6Pc + SUCS::Km561 * (1. + SUCS_Con->FBPc / SUCS::KI562)) *
@@ -112,10 +114,10 @@ void SUCS::_Rate(const double t, const SUCSCondition* const SUCS_Con, Variables 
         const double temp60 = SUCS::Km602 * SUCS::Km603 * (1. + SUCS::ATPc / SUCS::Km602 + UDPc /
                                                            SUCS::Km603 + SUCS::ATPc * UDPc /
                                                            (SUCS::Km602 * SUCS::Km603) + SUCS::ADPc /
-                                                           SUCS::Km601 + SUCS::UTPc / SUCS::Km604 +
-                                                           SUCS::ADPc * SUCS::UTPc / (SUCS::Km601 *
+                                                           SUCS::Km601 + UTPc / SUCS::Km604 +
+                                                           SUCS::ADPc * UTPc / (SUCS::Km601 *
                                                                                       SUCS::Km604));
-        theVars->SUCS_Vel.v60 = V60 * (SUCS::ATPc * UDPc - SUCS::ADPc * SUCS::UTPc / SUCS::KE60 ) /
+        theVars->SUCS_Vel.v60 = V60 * (SUCS::ATPc * UDPc - SUCS::ADPc * UTPc / SUCS::KE60 ) /
                                 temp60;
 
         theVars->SUCS_Vel.v62 = V62 * SUCS_Con->SUC / (SUCS_Con->SUC + SUCS::Km621);
@@ -142,9 +144,9 @@ void SUCS::_Rate(const double t, const SUCSCondition* const SUCS_Con, Variables 
                                                            GAPc * DHAPc / (SUCS::Km512 * SUCS::Km513));
         const double temp52 = Km521AP * (1. + SUCS_Con->FBPc / Km521AP + Pic / SUCS::KI522 + F6Pc /
                                          SUCS::KI521 + Pic * F6Pc / (SUCS::KI521 * SUCS::KI522));
-        const double temp55 = SUCS::Km551 * SUCS::Km552 * (1. + SUCS::UTPc / SUCS::Km552 + G1Pc /
+        const double temp55 = SUCS::Km551 * SUCS::Km552 * (1. + UTPc / SUCS::Km552 + G1Pc /
                                                            SUCS::Km551 + SUCS_Con->UDPGc / SUCS::Km554 +
-                                                           OPOPc / SUCS::Km553 + SUCS::UTPc * G1Pc /
+                                                           OPOPc / SUCS::Km553 + UTPc * G1Pc /
                                                            (SUCS::Km551 * SUCS::Km552) +
                                                            SUCS_Con->UDPGc * OPOPc /
                                                            (SUCS::Km553 * SUCS::Km554));
@@ -187,7 +189,7 @@ void SUCS::_Rate(const double t, const SUCSCondition* const SUCS_Con, Variables 
         ////////////////////////////////////////////////////////////////////////////////
         theVars->SUCS_Vel.v51 = SUCS::V51 * (GAPc * DHAPc - SUCS_Con->FBPc / SUCS::KE51) / temp51;  // DHAP+GAP --FBP
         theVars->SUCS_Vel.v52 = SUCS::V52 * (SUCS_Con->FBPc - F6Pc * Pic / SUCS::KE52) / temp52;    // FBP --F6P + Pi
-        theVars->SUCS_Vel.v55 = SUCS::V55 * (SUCS::UTPc * G1Pc - SUCS_Con->UDPGc * OPOPc / SUCS::KE55) /
+        theVars->SUCS_Vel.v55 = SUCS::V55 * (UTPc * G1Pc - SUCS_Con->UDPGc * OPOPc / SUCS::KE55) /
                                 temp55; // G1P+UTP --OPOP+UDPG
         theVars->SUCS_Vel.v56 = SUCS::V56 * (F6Pc * SUCS_Con->UDPGc - SUCS_Con->SUCP * UDPc / SUCS::KE56) /
                                 temp56 * 2. * (SUCS_Con->HexPc / (SUCS_Con->HexPc + 2.));// UDPG+F6P--SUCP + UDP
