@@ -56,7 +56,9 @@ SUCSCondition* SUCS::_MB_con(const double t, const SUCSCondition* const SUCS_Con
                   theVars->SUCS_Vel.v58 - theVars->SUCS_Vel.v56;// HexPc
     dydt->F26BPc = theVars->SUCS_Vel.v59 - theVars->SUCS_Vel.v58; // F26BPc
     dydt->UDPGc = theVars->SUCS_Vel.v55 - theVars->SUCS_Vel.v56; // UDPGc
-    //dydt->UTPc = 0; //  v60 - v55  ;   // UTPc
+    // v55 consumes UTP to form UDPG; v60 regenerates UTP from UDP.
+    // With UDP = UTc - UTP - UDPG, this also gives dUDP/dt = v56 - v60.
+    dydt->UTPc = theVars->useC3 ? theVars->SUCS_Vel.v60 - theVars->SUCS_Vel.v55 : 0.;
     dydt->SUCP = theVars->SUCS_Vel.v56 - theVars->SUCS_Vel.v57; // SUCP
     dydt->SUC = theVars->SUCS_Vel.v57 - theVars->SUCS_Vel.v62; // SUC
     if (theVars->useC3) {

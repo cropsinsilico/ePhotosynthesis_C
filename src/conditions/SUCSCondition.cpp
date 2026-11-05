@@ -38,6 +38,7 @@ SUCSCondition::SUCSCondition(const SUCSCondition* const other) {
     SUCP = other->SUCP;
     SUC = other->SUC;
     PGAc = other->PGAc;
+    UTPc = other->UTPc;
 }
 
 SUCSCondition::SUCSCondition(const arr &vec, const std::size_t offset) {
@@ -54,6 +55,7 @@ void SUCSCondition::_fromArray(const arr &vec, const std::size_t offset) {
     SUCP = vec[offset + current++];
     SUC = vec[offset + current++];
     PGAc = vec[offset + current++];
+    UTPc = vec[offset + current++];
 }
 
 void SUCSCondition::_clear() {
@@ -65,8 +67,9 @@ void SUCSCondition::_clear() {
     SUCP = 0.;
     SUC = 0.;
     PGAc = 0.;
+    UTPc = 0.;
 }
 
 arr SUCSCondition::_toArray() const {
-    return {T3Pc, FBPc, HexPc, F26BPc, UDPGc, SUCP, SUC, PGAc};
+    return {T3Pc, FBPc, HexPc, F26BPc, UDPGc, SUCP, SUC, PGAc, UTPc};
 }
