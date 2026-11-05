@@ -33,6 +33,7 @@
 #include <sunnonlinsol/sunnonlinsol_newton.h>
 #include "drivers/CVodeMem.hpp"
 #include <cmath>
+#include <iomanip>
 
 namespace {
 // CVODE borrows the solvers and vector: release it before its dependencies.
@@ -89,8 +90,15 @@ arr Driver::run() {
         !std::isfinite(initialStep) || initialStep <= 0.0) {
         throw std::invalid_argument("run requires finite start < endtime and a positive step");
     }
+    if (!std::isfinite(abstol) || abstol < 0.0 || !std::isfinite(reltol) || reltol < 0.0 ||
+        (abstol == 0.0 && reltol == 0.0)) {
+        throw std::invalid_argument("ODE tolerances must be finite, nonnegative, and not both zero");
+    }
     runStarted = std::chrono::steady_clock::now();
     lastRunStatus = RunStatus::notRun;
+    rejectedStateTrials = 0;
+    nonfiniteRhsTrials = 0;
+    firstRejectedState.clear();
     // Keep the caller's pointer valid even when retries or exceptions use a copy.
     struct InputPointerGuard {
         Variables* original;
@@ -157,6 +165,11 @@ arr Driver::run() {
             throw std::runtime_error("CVodeSetLinearSolver failed");
         }
 
+        configureSolver(y);
+        if (const char* reason = stateError(y)) {
+            throw std::runtime_error(std::string("invalid initial ODE state: ") + reason);
+        }
+
         realtype t = start;
         bool runOK = true;
         realtype tout = std::min(start + step, endtime);
@@ -173,22 +186,35 @@ arr Driver::run() {
             if (!runtimeExpired()) {
                 flag = CVode(cvode_mem, tout, y, &t, CV_NORMAL);
             }
-            if (flag != CV_SUCCESS || runtimeExpired() || t <= previousTime) {
+            const char* invalidState = stateError(y);
+            if (flag != CV_SUCCESS || runtimeExpired() || t <= previousTime || invalidState) {
                 long int internalSteps = 0;
                 realtype internalStep = 0.0;
                 CVodeGetNumSteps(cvode_mem, &internalSteps);
                 CVodeGetCurrentStep(cvode_mem, &internalStep);
                 const double elapsed = std::chrono::duration<double>(
                     std::chrono::steady_clock::now() - runStarted).count();
-                std::cerr << "ePhoto integration failed: attempt=" << count + 1
-                          << " status=" << (lastRunStatus == RunStatus::timedOut ? "timeout" : "solver_failure")
+                const char* reason = lastRunStatus == RunStatus::timedOut ? "timeout" :
+                    (invalidState ? "invalid_state" : (flag != CV_SUCCESS ? "solver_failure" : "no_progress"));
+                std::cerr << std::setprecision(17) << "ePhoto integration failed: attempt=" << count + 1
+                          << " status=" << reason
                           << " cvode_flag=" << flag << " target_t=" << tout
                           << " reached_t=" << t << " internal_steps=" << internalSteps
                           << " internal_step=" << internalStep
                           << " elapsed_seconds=" << elapsed
                           << " CO2_in=" << originalVars->CO2_in
                           << " light=" << originalVars->TestLi
-                          << " temperature=" << inputVars->Tp << std::endl;
+                          << " temperature=" << inputVars->Tp
+                          << " rejected_state_trials=" << rejectedStateTrials
+                          << " nonfinite_rhs_trials=" << nonfiniteRhsTrials
+                          << " state_error=" << (invalidState ? invalidState : "none")
+                          << " first_rejected_state=" << (firstRejectedState.empty() ? "none" : firstRejectedState)
+                          << std::endl;
+                if (invalidState) {
+                    std::cerr << "invalid_accepted_state_begin\n";
+                    writeState(std::cerr, y);
+                    std::cerr << "invalid_accepted_state_end\n";
+                }
                 runOK = false;
                 break;
             }
@@ -362,7 +388,7 @@ arr Driver::run() {
     if (lastRunStatus != RunStatus::timedOut) {
         lastRunStatus = RunStatus::retriesExhausted;
     }
-    std::cerr << "ePhoto returned fallback: status="
+    std::cerr << std::setprecision(17) << "ePhoto returned fallback: status="
               << (lastRunStatus == RunStatus::timedOut ? "timeout" : "retries_exhausted")
               << " CO2_in=" << originalVars->CO2_in
               << " light=" << originalVars->TestLi << " temperature=" << inputVars->Tp
@@ -396,15 +422,43 @@ Driver::~Driver() {
 #endif // SUNDIALS_CONTEXT_REQUIRED
 }
 
+const char* Driver::stateError(N_Vector state) const {
+    const auto values = N_VGetArrayPointer(state);
+    for (sunindextype i = 0; i < NV_LENGTH_S(state); ++i) {
+        if (!std::isfinite(values[i])) return "nonfinite_state";
+    }
+    return nullptr;
+}
+
+void Driver::writeState(std::ostream& out, N_Vector state) const {
+    const auto values = N_VGetArrayPointer(state);
+    for (sunindextype i = 0; i < NV_LENGTH_S(state); ++i) out << "state[" << i << "]=" << values[i] << '\n';
+}
+
 int Driver::calculate(realtype t, N_Vector u, N_Vector u_dot, void *user_data) {
-    realtype *dxdt = N_VGetArrayPointer(u_dot);
     CalcData *data = static_cast<CalcData*>(user_data);
-    // A negative callback status makes CVODE return immediately without recovery retries.
-    if (data->drv->runtimeExpired()) return -1;
-    arr ddxdt = data->drv->MB(t, u);
-    if (data->drv->runtimeExpired()) return -1;
-    for (std::size_t index = 0; index < ddxdt.size(); index++)
-        dxdt[index] = ddxdt[index];
+    Driver* driver = data->drv;
+    // Positive asks CVODE to recover from an inadmissible Newton trial by
+    // reducing the step and retrying. Unrecoverable failures return negative.
+    if (driver->runtimeExpired()) return -1;
+    if (const char* reason = driver->stateError(u)) {
+        ++driver->rejectedStateTrials;
+        if (driver->firstRejectedState.empty()) driver->firstRejectedState = reason;
+        return 1;
+    }
+    arr ddxdt = driver->MB(t, u);
+    if (driver->runtimeExpired()) return -1;
+    if (ddxdt.size() != static_cast<std::size_t>(NV_LENGTH_S(u_dot))) {
+        if (driver->firstRejectedState.empty()) driver->firstRejectedState = "rhs_dimension_mismatch";
+        return -1;
+    }
+    for (double value : ddxdt) {
+        if (!std::isfinite(value)) {
+            ++driver->nonfiniteRhsTrials;
+            return 1;
+        }
+    }
+    std::copy(ddxdt.begin(), ddxdt.end(), N_VGetArrayPointer(u_dot));
     return 0;
 }
 
