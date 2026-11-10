@@ -172,7 +172,7 @@ void EPSDriver::configureSolver(N_Vector initial) {
     prOffset = psOffset + state.CM_con->PS_PR_con->PS_con->size();
     sucsOffset = psOffset + state.CM_con->PS_PR_con->size();
     nadphIndex = bfSize - 1;
-    if (prOffset - psOffset != 11 || sucsOffset - prOffset != 9 || n - sucsOffset != 8) {
+    if (prOffset - psOffset != 11 || sucsOffset - prOffset != 9 || n - sucsOffset != 9) {
         throw std::runtime_error("unsupported C3 EPS state layout for solver protection");
     }
     nonnegativeMask.assign(n, 0.0);
@@ -186,10 +186,10 @@ void EPSDriver::configureSolver(N_Vector initial) {
     stateNames[nadphIndex] = "negative NADPH";
     const char* psNames[] = {"RuBP", "PGA", "DPGA", "T3P", "FBP", "E4P", "S7P", "SBP", "ATP", "HexP", "PenP"};
     const char* prNames[] = {"GCEA", "GCA", "PGCA", "GCAc", "GOAc", "SERc", "GLYc", "HPRc", "GCEAc"};
-    const char* sucsNames[] = {"T3Pc", "FBPc", "HexPc", "F26BPc", "UDPGc", "SUCP", "SUC", "PGAc"};
+    const char* sucsNames[] = {"T3Pc", "FBPc", "HexPc", "F26BPc", "UDPGc", "SUCP", "SUC", "PGAc", "UTPc"};
     for (std::size_t i = 0; i < 11; ++i) stateNames[psOffset + i] = std::string("negative PS.") + psNames[i];
     for (std::size_t i = 0; i < 9; ++i) stateNames[prOffset + i] = std::string("negative PR.") + prNames[i];
-    for (std::size_t i = 0; i < 8; ++i) stateNames[sucsOffset + i] = std::string("negative SUCS.") + sucsNames[i];
+    for (std::size_t i = 0; i < 9; ++i) stateNames[sucsOffset + i] = std::string("negative SUCS.") + sucsNames[i];
     for (std::size_t i = bfSize; i < bfSize + std::min<std::size_t>(fiSize, 6); ++i) {
         solverAbsoluteTolerances[i] = std::min<double>(abstol, 1e-12);
     }
@@ -236,9 +236,11 @@ const char* EPSDriver::stateError(N_Vector state) const {
     double pi = PS::getPS_C_CP() - y[prOffset + 2];
     for (std::size_t i = 0; i < 11; ++i) pi -= weights[i] * y[psOffset + i];
     if (pi < -margin || pi > PS::getPS_C_CP() + margin) return "stromal phosphate outside pool";
+    const double udp = inputVars->SUCS_Pool.UTc - y[sucsOffset + 8] - y[sucsOffset + 4];
+    if (udp < -margin) return "UTP and UDPG exceed uridine pool (negative UDP)";
     const double pic = inputVars->SUCS_Pool.PTc - 2 * (y[sucsOffset + 1] + y[sucsOffset + 3])
         - (y[sucsOffset + 7] + y[sucsOffset] + y[sucsOffset + 2] + y[sucsOffset + 5]
-           + SUCS::getUTPc() + SUCS::getATPc());
+           + y[sucsOffset + 8] + SUCS::getATPc());
     if (pic < -margin || pic > inputVars->SUCS_Pool.PTc + margin) return "cytosolic phosphate outside pool";
     if (y[nadphIndex] > inputVars->BF_Pool.k30 + margin) return "NADPH exceeds NADP pool";
     return nullptr;
@@ -248,7 +250,11 @@ void EPSDriver::writeState(std::ostream& out, N_Vector state) const {
     if (!nonnegativeMask.empty() && static_cast<std::size_t>(NV_LENGTH_S(state)) == nonnegativeMask.size()) {
         EPSCondition condition(N_VGetArrayPointer(state));
         out << "total_phosphate=" << PS::getPS_C_CP()
-            << " total_adenylate=" << PS::getPS_C_CA() << '\n' << condition;
+            << " total_adenylate=" << PS::getPS_C_CA()
+            << " total_uridine=" << inputVars->SUCS_Pool.UTc
+            << " UDP=" << inputVars->SUCS_Pool.UTc - condition.CM_con->SUCS_con->UTPc
+                                                   - condition.CM_con->SUCS_con->UDPGc
+            << '\n' << condition;
     } else {
         Driver::writeState(out, state);
     }

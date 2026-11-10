@@ -39,6 +39,7 @@ std::ostream& SUCSCondition::_print(std::ostream &out, const uint tab) const {
     out << space << "  SUCP= " << SUCP<< std::endl;
     out << space << "  SUC = " << SUC << std::endl;
     out << space << "  PGAc= " << PGAc<< std::endl;
+    out << space << "  UTPc= " << UTPc<< std::endl;
 
     return out;
 }

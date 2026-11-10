@@ -103,6 +103,7 @@ void ePhotosynthesis::GenOut(double t, Variables *theVars) {
         co2a[37] = theVars->SUCS2OUT.HexPc;//
         co2a[38] = theVars->SUCS2OUT.F26BPc;//
         co2a[42] = theVars->SUCS2OUT.UDPGc;//
+        co2a[43] = theVars->SUCS2OUT.UTPc; // Include dynamic UTP in steady-state diagnostics.
         co2a[44] = theVars->SUCS2OUT.SUCP;//
         co2a[45] = theVars->SUCS2OUT.SUC;   //
         co2a[46] = theVars->SUCS2OUT.PGAc;//

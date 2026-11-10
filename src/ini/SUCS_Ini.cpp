@@ -112,11 +112,12 @@ double SUCS::SUCSV57 = 0.;
 double SUCS::SUCSV58 = 0.;
 std::size_t SUCS::N = 1;
 
-const std::size_t SUCSCondition::count = 8;
+const std::size_t SUCSCondition::count = 9;
 
 SUCSCondition* SUCS::_init(Variables *theVars) {
     SUCSCondition* SUCS_Con = new SUCSCondition();
     SUCS::UTPc = 0.75;
+    SUCS_Con->UTPc = SUCS::UTPc;
     if (theVars->useC3) {
 
         SUCS::Vf_T52 = 1.;
@@ -229,7 +230,6 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
         SUCS_Con->F26BPc = 7.8 * pow(10., -6.);
         SUCS::ATPc = 0.35;
         SUCS_Con->UDPGc = 0.57;
-        //SUCS_Con->UTPc = 0.75;
         SUCS_Con->SUCP = 0.;
         SUCS_Con->SUC = 0.;
         SUCS_Con->PGAc = 0.;
@@ -289,7 +289,6 @@ SUCSCondition* SUCS::_init(Variables *theVars) {
         SUCS_Con->F26BPc = 7.8 * pow(10., -6.);
         SUCS::ATPc = 0.4;
         SUCS_Con->UDPGc = 0.57;
-        //SUCS_Con->UTPc = 0.75;
         SUCS_Con->SUCP = 0.;
         SUCS_Con->SUC = 0.;
         SUCS_Con->PGAc = 0.5;

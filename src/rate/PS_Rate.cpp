@@ -83,7 +83,7 @@ void PS::_Rate(const double t, const PSCondition* const PS_con, Variables *theVa
 
         PS::PiTc = theVars->SUCS_Pool.PTc - 2. * (SUCS_con->FBPc + SUCS_con->F26BPc) -
                    (SUCS_con->PGAc + SUCS_con->T3Pc + SUCS_con->HexPc + SUCS_con->SUCP +
-                    SUCS::getUTPc() + SUCS::getATPc());
+                    SUCS_con->UTPc + SUCS::getATPc());
         PsPEXT = (pow(pow(SUCS::getKE61(), 2.) + 4. * SUCS::getKE61() * PS::PiTc, 0.5) -
                   SUCS::getKE61()) / 2.;   //  SHARED
 

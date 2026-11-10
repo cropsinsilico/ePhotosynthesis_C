@@ -66,6 +66,8 @@ public:
     double SUCP = 0.;
     double SUC = 0.;
     double PGAc = 0.;
+    // Integrated in C3; appended to preserve the existing metabolite indices.
+    double UTPc = 0.;
 
     /**
       Write the contents of the instance to the output stream.
