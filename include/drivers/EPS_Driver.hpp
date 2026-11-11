@@ -81,6 +81,7 @@ public:
 
 protected:
     void configureSolver(N_Vector initial) override;
+    bool reusableFinalState(N_Vector state) override;
     const char* stateError(N_Vector state) const override;
     void writeState(std::ostream& out, N_Vector state) const override;
 

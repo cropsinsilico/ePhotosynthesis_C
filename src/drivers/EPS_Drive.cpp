@@ -210,10 +210,26 @@ void EPSDriver::configureSolver(N_Vector initial) {
     if (CVodeSetConstraints(cvode_mem, bounds.get()) != CV_SUCCESS) {
         throw std::runtime_error("CVodeSetConstraints failed");
     }
-    if (CVodeSVtolerances(cvode_mem, std::min<double>(reltol, 1e-7), tolerance.get()) != CV_SUCCESS) {
+    if (CVodeSVtolerances(cvode_mem, std::min<double>(reltol, 1e-6), tolerance.get()) != CV_SUCCESS) {
         throw std::runtime_error("CVodeSVtolerances failed");
     }
     // CVODE copies both vectors; their temporary storage can be released here.
+}
+
+// A completed integration is not necessarily a usable steady-state seed.
+// Reject endpoints with appreciable instantaneous carbon-pool drift. This is
+// a seed eligibility check, not an integration stopping rule.
+bool EPSDriver::reusableFinalState(N_Vector state) {
+    if (!inputVars->useC3 || stateError(state)) return false;
+    const arr derivative = MB(time, state);
+    if (derivative.size() != static_cast<std::size_t>(NV_LENGTH_S(state))) return false;
+    for (std::size_t i = psOffset; i < derivative.size(); ++i) {
+        // Match the existing metabolite steady-state threshold (concentration
+        // per model second), and also inspect the instantaneous derivative.
+        const double limit = 1e-4;
+        if (!std::isfinite(derivative[i]) || std::abs(derivative[i]) > limit) return false;
+    }
+    return true;
 }
 
 const char* EPSDriver::stateError(N_Vector state) const {

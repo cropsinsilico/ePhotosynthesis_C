@@ -96,6 +96,9 @@ arr Driver::run() {
     }
     runStarted = std::chrono::steady_clock::now();
     lastRunStatus = RunStatus::notRun;
+    finalState.clear();
+    usedInitialState = false;
+    finalStateReusable = false;
     rejectedStateTrials = 0;
     nonfiniteRhsTrials = 0;
     firstRejectedState.clear();
@@ -168,6 +171,21 @@ arr Driver::run() {
         configureSolver(y);
         if (const char* reason = stateError(y)) {
             throw std::runtime_error(std::string("invalid initial ODE state: ") + reason);
+        }
+
+        usedInitialState = false;
+        if (count == 0 && initialState.size() == constraints.size()) {
+            std::copy(initialState.begin(), initialState.end(), y_ptr);
+            if (stateError(y)) {
+                std::copy(constraints.begin(), constraints.end(), y_ptr);
+            } else {
+                // CVodeInit already copied the default state. ReInit loads the
+                // seed and retains tolerances, constraints, and solver options.
+                if (CVodeReInit(cvode_mem, start, y) != CV_SUCCESS) {
+                    throw std::runtime_error("CVodeReInit for initial state failed");
+                }
+                usedInitialState = true;
+            }
         }
 
         realtype t = start;
@@ -372,6 +390,9 @@ arr Driver::run() {
           if(inputVars->runBioCro==false){
             results[0] = results[0] - multiplier * penalty;
           }
+          finalStateReusable = reusableFinalState(y);
+          if (runtimeExpired()) break;
+          finalState.assign(y_ptr, y_ptr + constraints.size());
           lastRunStatus = RunStatus::success;
           return results;
         }
@@ -385,6 +406,7 @@ arr Driver::run() {
                       << std::endl;
         }
     }
+    finalStateReusable = false;
     if (lastRunStatus != RunStatus::timedOut) {
         lastRunStatus = RunStatus::retriesExhausted;
     }

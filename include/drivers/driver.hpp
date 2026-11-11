@@ -95,6 +95,12 @@ public:
 
     enum class RunStatus { notRun, success, timedOut, retriesExhausted };
     RunStatus lastRunStatus = RunStatus::notRun;
+    // Optional state seed for the first attempt only. setup() still initializes
+    // all parameters and pools; invalid seeds and retries use its default state.
+    arr initialState;
+    arr finalState;
+    bool usedInitialState = false;
+    bool finalStateReusable = false;
     // Total wall-clock budget for run(), including all retries. Must be positive.
     // Edit the default below and rebuild to change the budget.
     double runtimeLimitSeconds = 100.0;
@@ -126,6 +132,7 @@ protected:
     // Models can add physical-domain checks without imposing the same bounds
     // on unrelated drivers or on auxiliary bookkeeping states.
     virtual void configureSolver(N_Vector) {}
+    virtual bool reusableFinalState(N_Vector) { return false; }
     virtual const char* stateError(N_Vector state) const;
     virtual void writeState(std::ostream& out, N_Vector state) const;
     // EPS/BioCro requires four outputs; other drivers can require a longer result.
