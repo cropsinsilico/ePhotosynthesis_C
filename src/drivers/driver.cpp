@@ -99,6 +99,8 @@ arr Driver::run() {
     finalState.clear();
     usedInitialState = false;
     finalStateReusable = false;
+    totalInternalSteps = 0;
+    totalRhsEvaluations = 0;
     rejectedStateTrials = 0;
     nonfiniteRhsTrials = 0;
     firstRejectedState.clear();
@@ -266,6 +268,11 @@ arr Driver::run() {
             steadyStateData.push_back(currentData);
           }
         }//end integration loop
+        long attemptSteps = 0, attemptRhsEvaluations = 0;
+        CVodeGetNumSteps(cvode_mem, &attemptSteps);
+        CVodeGetNumRhsEvals(cvode_mem, &attemptRhsEvaluations);
+        totalInternalSteps += attemptSteps;
+        totalRhsEvaluations += attemptRhsEvaluations;
         if (runOK && runtimeExpired()) runOK = false;
 
         if (runOK) {

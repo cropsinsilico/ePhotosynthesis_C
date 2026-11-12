@@ -101,6 +101,9 @@ public:
     arr finalState;
     bool usedInitialState = false;
     bool finalStateReusable = false;
+    // Cumulative CVODE work across all attempts in the last run().
+    long totalInternalSteps = 0;
+    long totalRhsEvaluations = 0;
     // Total wall-clock budget for run(), including all retries. Must be positive.
     // Edit the default below and rebuild to change the budget.
     double runtimeLimitSeconds = 100.0;
