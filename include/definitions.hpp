@@ -29,6 +29,7 @@
 #include <vector>
 #include <iostream>
 #include <algorithm>
+#include <limits>
 #include <fstream>
 #include "ePhotosynthesis_export.h"
 #include <cmath>
@@ -321,6 +322,9 @@ public:
 
 private:
     std::size_t current = 0;
+    // True while stored step numbers are nonnegative and strictly increasing.
+    // Out-of-order insertions retain the original first-match lookup semantics.
+    bool _stepsIncreasing = true;
     std::vector<T> _data;            // a vector of the accumulated data
     std::vector<int> _step;          // the step number for each entry
     std::vector<double> _timestamp;  // the timestamp for each entry
@@ -331,9 +335,27 @@ private:
 // add the new data to the vector
 template <typename T>
 void TimeSeries<T>::insert(std::size_t step, double time, T &input) {
-    std::vector<int>::iterator it = std::find(_step.begin(), _step.end(), step);
+    auto it = _step.end();
+    const bool representable = step <= static_cast<std::size_t>(std::numeric_limits<int>::max());
+    if (!_step.empty()) {
+        if (_stepsIncreasing && representable) {
+            // ODE callbacks usually append a new step or revise the latest one.
+            // Neither operation needs to scan the growing history.
+            if (step == static_cast<std::size_t>(_step.back())) {
+                it = _step.end() - 1;
+            } else if (step < static_cast<std::size_t>(_step.back())) {
+                it = std::lower_bound(_step.begin(), _step.end(), static_cast<int>(step));
+                if (it == _step.end() || *it != static_cast<int>(step)) it = _step.end();
+            }
+        } else {
+            // Preserve arbitrary-order and legacy out-of-range step behavior.
+            it = std::find(_step.begin(), _step.end(), step);
+        }
+    }
     T vec(input);
     if (it == _step.end()) {
+        _stepsIncreasing = _stepsIncreasing && representable &&
+            (_step.empty() || step > static_cast<std::size_t>(_step.back()));
         _step.push_back(static_cast<int>(step));
         _timestamp.push_back(time);
         _data.push_back(vec);
